@@ -492,6 +492,56 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[jerseyPickModal,setJerseyPickModal]=useState(false); // Sprint 74: jersey number picker
   const[pendingJerseyNum,setPendingJerseyNum]=useState(null); // Sprint 81: confirm step
 
+  /* [giro 201 · PO-428 (G189-16)] NESSUNA SCELTA SI PERDE CHIUDENDO L'APP. Le finestre con una scelta vivevano solo nello stato di React:
+     il gioco, aprendole, segnava gia' nel salvataggio «mostrata» (lastMonthlyReview, richiamo198, svincWarn94, impulseSeen, saga a null…),
+     quindi chi chiudeva l'app prima di rispondere non le rivedeva mai piu' (misura nel rapporto del giro 201). Ora le finestre aperte si
+     copiano in player.scelte201 = {s, w, m:{tipo:dati}} (campo additivo, nessun bump di SAVE_VERSION) e al montaggio della carriera, se
+     stagione e settimana sono le stesse, si riaprono identiche. I dati con funzioni (il momento di carriera) si salvano per id. Una
+     finestra con dati non serializzabili non si salva (e il guardiano scelte-201 lo vede). Rosso __CPM_NO_G201 = come prima. */
+  const _g201=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G201);
+  const _rest201=useRef(false);
+  const _SC201=[
+    ["offerta",transferOffer,setTransferOffer],
+    ["richiamo",richiamo198,setRichiamo198],
+    ["svincolato",svinc198,setSvinc198],
+    ["rinnovo",negoModal,setNegoModal],
+    ["settimana",weekLiveModal,setWeekLiveModal],
+    ["intervista",interviewModal,setInterviewModal],
+    ["verifica",monthlyReviewModal,setMonthlyReviewModal],
+    ["momento",careerMomentModal&&careerMomentModal.id?{id:careerMomentModal.id}:null,(v)=>{const m=(CAREER_MOMENTS||[]).find(x=>x&&x.id===(v&&v.id));if(m)setCareerMomentModal(m);}],
+    ["procuratore",agentIntro,setAgentIntro],
+    ["mister",coachModal&&!coachModal.chosen?coachModal:null,setCoachModal],
+  ];
+  const _j201=(v)=>{try{let fn=false;const t=JSON.stringify(v,(k,x)=>{if(typeof x==="function"){fn=true;return undefined;}return x;});if(fn||!t)return null;return JSON.parse(t);}catch(_e){return null;}};
+  useEffect(()=>{try{
+    if(!_g201())return;
+    const sc=player.scelte201;
+    if(sc&&sc.m&&sc.s===(player.season||1)&&sc.w===(player.week||1)){
+      for(const [k,,set] of _SC201){if(sc.m[k]!=null){try{set(sc.m[k]);}catch(_e2){}}}
+      try{if(typeof window!=='undefined')window.__CPM_SC201R=Object.keys(sc.m);}catch(_e3){}
+    }
+  }catch(_e){}finally{_rest201.current="primo";}},[]);// eslint-disable-line — solo al montaggio
+  useEffect(()=>{try{
+    if(!_g201())return;
+    if(_rest201.current!==true){if(_rest201.current==="primo")_rest201.current=true;return;}/* il primo giro, prima che le finestre riaperte arrivino a schermo, non cancella la copia */
+    const m={};let n=0;
+    for(const [k,v] of _SC201){if(v==null||v===false)continue;const j=_j201(v);if(j){m[k]=j;n++;}}
+    const snap=n?{s:player.season||1,w:player.week||1,m}:null;
+    setPlayer(p=>{const a=JSON.stringify(p.scelte201||null),b=JSON.stringify(snap);return a===b?p:{...p,scelte201:snap};});
+  }catch(_e){}},[transferOffer,richiamo198,svinc198,negoModal,weekLiveModal,interviewModal,monthlyReviewModal,careerMomentModal,agentIntro,coachModal,player.season,player.week]);// eslint-disable-line
+  /* [giro 201 · PO-428] L'OFFERTA RESTA IN AGENTE FINO ALLA SCADENZA: «Ci penso» sull'offerta la parcheggia in player.offerta201
+     {o, s, scad} (campo additivo). Scadenza = fine della finestra di mercato in cui e' arrivata (sett. 5 d'estate, 23 d'inverno);
+     fuori finestra la settimana dopo. Passata la scadenza (o cambiata stagione) l'offerta decade con una riga nel registro. */
+  const _scad201=(w)=>w>=1&&w<=5?5:(w>=19&&w<=23?23:Math.min(38,(w||1)+1));
+  const _offAtt201=(p)=>{try{const x=p&&p.offerta201;return !!(_g201()&&x&&x.o&&x.s===(p.season||1)&&(p.week||1)<=(x.scad||0));}catch(_e){return false;}};
+  useEffect(()=>{try{
+    const x=player.offerta201;if(!x||!_g201())return;
+    if(_offAtt201(player))return;
+    const cl=(x.o&&x.o.club&&x.o.club.n)||"il club";
+    setPlayer(p=>p.offerta201?{...p,offerta201:null,log:[`⌛ L'offerta di ${cl} è scaduta: la finestra di mercato si è chiusa senza una tua risposta.`,...(p.log||[])].slice(0,60)}:p);
+    setTimeout(()=>notify(`⌛ L'offerta di ${cl} è scaduta.`,TH.muted),400);
+  }catch(_e){}},[player.season,player.week,player.offerta201]);// eslint-disable-line
+
   /* [7.147.0 collaudo PO «i toast di inizio stagione sono frenetici, durano troppo poco, illeggibili»] notify
      SOVRASCRIVEVA il toast corrente (una raffica = ogni messaggio visibile una frazione di secondo, e il clear
      a 2800ms di un vecchio toast poteva spegnere il successivo). Ora CODA: un toast alla volta, 3.6s l'uno
@@ -1372,7 +1422,7 @@ const getThisWeekMatchday=()=>{
       if(curW===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(curW===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
       if(curW===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);
-        if(p.transferListed&&!transferOffer){const _o19=generateTransferOffer(p,p.transferRequest?.pref);if(_o19)setTimeout(()=>setTransferOffer(_o19),600);}}
+        if(p.transferListed&&!transferOffer&&!_offAtt201(p)){const _o19=generateTransferOffer(p,p.transferRequest?.pref);if(_o19)setTimeout(()=>setTransferOffer(_o19),600);}}
       if(curW===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       /* risoluzione task agente (stessi effetti del blocco inline ~22213) */
       if(p.agentTask&&p.hasAgent){
@@ -1388,7 +1438,7 @@ const getThisWeekMatchday=()=>{
         const _outgrowth=Math.max(0,(p.ovr||60)-(p.club?.p||60));
         const _outB=Math.min(0.22,Math.max(0,(_outgrowth-6)*0.013));
         const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.52,0.12+agentSearchBoost+_outB)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));
-        if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&Math.random()<offerProb){
+        if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&!_offAtt201(p)&&Math.random()<offerProb){
           const offer=generateTransferOffer(p,p.transferRequest?.pref);
           if(offer){
             const _lateWin=(isSummerWin&&curW>=4)||(isWinterWin&&curW>=22)||!inWindow;
@@ -5049,7 +5099,7 @@ const getThisWeekMatchday=()=>{
       const _outgrowth=Math.max(0,(p.ovr||60)-(p.club?.p||60));
       const _outB=Math.min(0.22,Math.max(0,(_outgrowth-6)*0.013));
       const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.52,0.12+agentSearchBoost+_outB)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));/* [5.98.0 EC-8] fuori finestra: solo un rivolo (7% listed / 4% task) — le stelle firmano nelle finestre */
-      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
+      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&!_offAtt201(p)&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
         /* [7.17.0 SAGA DEL MERCATO — backlog favola] l'offerta non piomba più dal nulla: diventa una STORIA a
            3 episodi (indiscrezione → pressing dei media → offerta ufficiale), card sul dashboard derivate da
            p.transferSaga (offerta VERA conservata verbatim, consegnata dall'episodio 3). A ridosso della
@@ -5062,7 +5112,7 @@ const getThisWeekMatchday=()=>{
       }}
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
-      if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p,p.transferRequest?.pref);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
+      if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer&&!_offAtt201(p)){const _off19=generateTransferOffer(p,p.transferRequest?.pref);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
       if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
       /* [7.412.0 EVOLUTIVA «VITA DELL'EROE»] prima si tenta un evento di VITA (contestuale, col motore
@@ -7445,6 +7495,10 @@ const getThisWeekMatchday=()=>{
               <Btn onClick={declineTransferOffer} v="secondary" size="lg" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" size="lg" fw>Accetta</Btn>
             </div>
+            {_g201()&&!transferOffer.isRenewal&&(()=>{const _sc=transferOffer._scad201||_scad201(player.week||1);return(
+              <Btn data-cpm="offerta201-dopo" v="ghost" fw style={{marginTop:8}} onClick={()=>{const o=transferOffer;setTransferOffer(null);
+                setPlayer(p=>({...p,offerta201:{o:{...o,_scad201:_sc},s:p.season||1,scad:_sc},log:[`📩 Offerta di ${o.club?.n||"un club"} in sospeso: la trovi nella scheda Agente fino alla settimana ${_sc}.`,...(p.log||[])].slice(0,60)}));
+                notify(`📩 L'offerta resta nella scheda Agente fino alla settimana ${_sc}.`,TH.primary);}}>⏳ Ci penso · resta in Agente fino alla sett. {_sc}</Btn>);})()}{/* [giro 201 · PO-428] */}
           </div>
         </Modal>
       )}
@@ -11501,6 +11555,13 @@ const getThisWeekMatchday=()=>{
           <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
             {_uff13&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
 />}{/* [PO-302 tappa 2 · V2Agente/V2Ufficio] */}
+            {tab==="agente"&&!transferOffer&&_offAtt201(player)&&(()=>{const x=player.offerta201,o=x.o||{};return(/* [giro 201 · PO-428] l'offerta in sospeso resta qui fino alla scadenza */
+              <Card data-cpm="offerta201-agente" style={{padding:"10px 12px",borderLeft:"3px solid "+TH.primary}}>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted,marginBottom:4}}>Offerta in attesa di risposta</div>
+                <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,lineHeight:1.3}}>📩 {o.club?.n||"Un club"}{o.type?" · "+o.type:""}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4,margin:"3px 0 8px"}}>{(o.wage||0).toLocaleString("it-IT")}€ a settimana{o.duration?" · "+o.duration+(o.duration===1?" anno":" anni"):""} · scade alla settimana {x.scad}{(x.scad-(player.week||1))>0?" (ancora "+(x.scad-(player.week||1))+(x.scad-(player.week||1)===1?" settimana)":" settimane)"):" (è l'ultima settimana)"}</div>
+                <Btn data-cpm="offerta201-rivedi" v="primary" fw onClick={()=>{setPlayer(p=>({...p,offerta201:null}));setTransferOffer(o);}}>💼 Rivedi l'offerta</Btn>
+              </Card>);})()}
             {tab==="agente"&&_g198()&&(player.proStatus||"u18")!=="u18"&&(()=>{
               /* [giro 198 · PO-456, G195-08] «DA FARE ORA» IN CIMA ALL'AGENTE: le cose che hanno una scadenza, ciascuna col suo tasto —
                  il contratto (stessa guardia del tasto «Negozia rinnovo» del riquadro Il tuo contratto), il compito della settimana se non

@@ -565,7 +565,19 @@ function OffersScreen({player,trialStats,onChoose}){
   const _dk=window.innerWidth>=640;
   const _ass49=trialStats.reduce((a,m)=>a+(m.assists||0),0);/* [7.999.49 parte A] assist nel riepilogo in una riga */
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
-  const[offers]=useState(()=>[...ALL_U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
+  /* [giro 201 · PO-418 (G189-06)] LE OFFERTE NASCONO DAL NOME E DAI PROVINI: il rumore del sorteggio era Math.random, quindi chiudendo e
+     riaprendo l'app (la schermata offerte riparte da cpm-trial-prog) arrivavano club diversi. Ora il rumore e' seminato da nome, nazione e
+     risultati dei tre provini: stessi provini = stesse offerte. La regola resta quella di prima (punteggio = gol×2 + voto medio×5; oltre 50
+     tre offerte dalle squadre piu' forti, altrimenti due dalle meno forti), ma ora e' SCRITTA sulla schermata. Rosso __CPM_NO_G201 = come prima. */
+  const _no201=(typeof window!=="undefined"&&window.__CPM_NO_G201);
+  const[offers]=useState(()=>{const _rn=_no201?Math.random:seededRng((Math.abs(hashStr("offerte201|"+(player&&player.name||"")+"|"+(player&&player.nation||"")+"|"+trialStats.map(m=>(m.goals||0)+"-"+(m.assists||0)+"-"+(m.rating||0)).join(",")))>>>0)||1);
+    const _nz={};ALL_U18_CLUBS.forEach(c=>{_nz[c.id]=c.p+(_rn()-.5)*30;});
+    return [...ALL_U18_CLUBS].sort((a,b)=>{const sa=_nz[a.id],sb=_nz[b.id];return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2);});
+  const _pt201=Math.round(perf*10)/10,_manca201=Math.max(0,Math.floor(50-perf)+1);
+  const _lg201=[...new Set(offers.map(o=>o.lg).filter(Boolean))].join(" e ");
+  const _mot201=perf>50
+    ?`${total} gol e voto medio ${avg.toFixed(1).replace(".",",")}: per gli osservatori fanno ${String(_pt201).replace(".",",")} punti (gol ×2 + voto ×5), oltre la soglia di 50. Ti cercano tre club fra i più forti (${_lg201}).`
+    :`${total} gol e voto medio ${avg.toFixed(1).replace(".",",")}: per gli osservatori fanno ${String(_pt201).replace(".",",")} punti (gol ×2 + voto ×5). Per le tre offerte dei club più forti servivano più di 50 punti: te ne mancavano ${_manca201}, cioè circa ${Math.max(1,Math.ceil(_manca201/2))} gol in più. Ti cercano due club della fascia più bassa (${_lg201}).`;
   const[selIdx,setSelIdx]=useState(0);
   /* [7.999.49 parte A] «Consigliata» alla squadra di prestigio PIÙ ALTO (a pari merito nessuna), non alla prima di una lista ordinata con rumore */
   const _maxP49=Math.max(...offers.map(o=>o.p||0)),_top49=offers.filter(o=>(o.p||0)===_maxP49).length===1?offers.findIndex(o=>(o.p||0)===_maxP49):-1;
@@ -584,6 +596,7 @@ function OffersScreen({player,trialStats,onChoose}){
     <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
+      {!_no201&&<p data-cpm="offerte201-motivo" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
       
       <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
