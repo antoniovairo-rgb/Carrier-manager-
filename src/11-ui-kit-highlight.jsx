@@ -192,7 +192,18 @@ function FiguraV2({player,w=54,grande=false}){
    il comportamento di prima (nome intero coi puntini). */
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
-function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const ab=abbreviaSquadra182(n);if(ab!==n)out.push(ab);const sg=team&&(team.a||team.abbr);if(sg&&out.indexOf(sg)<0)out.push(String(sg));return out;}
+/* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Valmora Primavera → FC Valmora U19) prima di ogni altra cosa;
+   (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
+       «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
+   Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
+const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+function _no190(k){return typeof window!=='undefined'&&!!window["__CPM_NO_G190"+k];}
+function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const add=(x)=>{x=String(x||"").trim();if(x&&out.indexOf(x)<0)out.push(x);};
+  const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
+  const ab=abbreviaSquadra182(u19);add(ab);
+  if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
@@ -219,6 +230,17 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
     style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
+/* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
+   Si mostrano le frasi del testo dalla prima in poi, quante ne stanno in `righe` righe: mai una frase a meta', mai i tre puntini.
+   Se nemmeno la prima frase ci sta, la prima frase va a capo per intero (il riquadro cresce, il testo resta leggibile). */
+function FraseIntera190({testo,righe=2,style={},cpm}){
+  const fr=String(testo||"").match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g)||[String(testo||"")];
+  const parti=fr.map(x=>x.trim()).filter(Boolean);const key=parti.join("|");
+  const[n,setN]=useState(parti.length);const ref=useRef(null);
+  useEffect(()=>{setN(parti.length);},[key]);// eslint-disable-line
+  (React.useLayoutEffect||useEffect)(()=>{const el=ref.current;if(!el)return;const lh=parseFloat(getComputedStyle(el).lineHeight)||16;
+    if(el.scrollHeight>lh*righe+2&&n>1)setN(n-1);});
+  return(<div ref={ref} data-cpm={cpm||"frase-intera-190"} data-frasi190={n+"/"+parti.length} style={{...style,whiteSpace:"normal",overflowWrap:"anywhere"}}>{parti.slice(0,Math.max(1,n)).join(" ")}</div>);}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>

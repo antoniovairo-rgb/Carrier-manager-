@@ -2765,7 +2765,7 @@ const VITA_EVENTS=[
   {id:"vita_cena_squadra",cat:"squadra",r:"c",txt:"🍕 Cena di squadra improvvisata dopo l'allenamento: il portiere paga per una scommessa persa. Si ride fino a mezzanotte.",ef:{morale:7,chem:3}},
   {id:"vita_scherzo_scarpe",cat:"squadra",r:"c",txt:"🧦 Trovi gli scarpini appesi alla traversa. Il veterano fischietta innocente. La tradizione va rispettata: domani tocca a te scegliere la vittima.",ef:{morale:4}},
   {id:"vita_consiglio_veterano",cat:"squadra",r:"c",cond:p=>(p.ovr||60)<78,txt:"🎙️ Il capitano ti trattiene a fine allenamento: «Guarda meno il pallone e più lo spazio. Il resto viene da sé.» Te lo scrivi mentalmente.",ef:{form:3,morale:4}},
-  {id:"vita_aiuto_compagno",cat:"squadra",r:"r",txt:"🤝 Il ragazzo della Primavera ti chiede di restare dopo l'allenamento per i tiri. Un'ora dopo segna il suo primo gol in partitella e corre ad abbracciare TE.",ef:{morale:6,coachTrust:4},mem:"Il giorno in cui hai fatto da maestro"},
+  {id:"vita_aiuto_compagno",cat:"squadra",r:"r",cond:p=>_no190("A")||(p.proStatus||"u18")==="pro",/* [giro 190 G181-01] «il ragazzo della Primavera» lo racconta chi non e' piu' della Primavera */txt:"🤝 Il ragazzo della Primavera ti chiede di restare dopo l'allenamento per i tiri. Un'ora dopo segna il suo primo gol in partitella e corre ad abbracciare TE.",ef:{morale:6,coachTrust:4},mem:"Il giorno in cui hai fatto da maestro"},
   {id:"vita_sale_pranzo",cat:"squadra",r:"c",cond:p=>(p.coachTrust||60)<60,txt:"😠 Il tuo concorrente di reparto non ti passa il sale a pranzo da tre giorni. La panchina pesa a tutti — ma il sale, dai.",ef:{morale:-3}},
   {id:"vita_gruppo_meme",cat:"squadra",r:"c",cond:p=>(p.popularity||20)>=40,txt:"📱 Il gruppo squadra è pieno di meme sulla tua ultima intervista. Il migliore lo ha fatto il magazziniere. Lo salvi anche tu.",ef:{morale:4,popularity:2}},
   {id:"vita_karaoke",cat:"squadra",r:"r",txt:"🎤 Serata karaoke d'iniziazione per i nuovi: uno stona così tanto che il mister, di passaggio, applaude per pietà. Il video resta nel gruppo per sempre.",ef:{morale:6,chem:3},mem:"La serata karaoke passata alla storia"},
@@ -8062,7 +8062,47 @@ function calcCoachDecision(player,matchWeight=1,rng){
       ?"Le ultime prestazioni ti hanno guadagnato la maglia da titolare."
       :"Sei in formazione. Dai il massimo.";
   }
+  /* [giro 190 · PO-380b · G181-02 «la frase del mister e' identica 6 volte su 6»] LA CONVOCAZIONE RACCONTA LA SETTIMANA VERA.
+     La scelta del mister (status, minuto d'ingresso) resta quella di sopra, intatta; cambia solo la FRASE, scelta fra i fatti
+     della settimana: l'avversario in calendario, l'ultimo voto e contro chi, la serie di gol, la stanchezza, la forma. Nessun
+     sorteggio: la variante si sceglie da un hash di stagione/settimana/nome, quindi la stessa settimana dice sempre la stessa
+     cosa. Rosso __CPM_NO_G190B = la frase fissa di prima. */
+  try{if(!(typeof window!=='undefined'&&window.__CPM_NO_G190B)){const _r190=fraseConvocazione190(player,status,reason,{trust,fatigue,form,avgRating,matchWeight,ovrEdge:_ovrEdge});if(_r190)reason=_r190;}}catch(_e190){}
   return{status,reason,entryMinute};
+}
+function fraseConvocazione190(player,status,base,f){
+  const wk=player.week||1;const cal=Array.isArray(player.calendar)?player.calendar:[];
+  const md=cal.find(m=>m&&m.week===wk&&!m.played)||null;const avv=md&&(md.opponentName||(md.opponent&&md.opponent.n))||null;
+  const mh=Array.isArray(player.matchHistory)?player.matchHistory:[];const ult=mh.length?mh[mh.length-1]:null;
+  const voto=ult&&typeof ult.rating==="number"?ult.rating:null;const vt=voto!=null?voto.toFixed(1).replace(".",","):null;const prec=ult&&ult.opponent?String(ult.opponent):null;
+  let serie=0;for(let i=mh.length-1;i>=0;i--){if((mh[i]&&mh[i].goals)>0)serie++;else break;}
+  const gUlt=ult&&ult.goals>0?ult.goals:0;
+  const c=[];/* ogni candidata cita un fatto della settimana; si scelgono solo quelle vere */
+  if(status==="starter"){
+    if(serie>=2)c.push(`${serie} partite di fila in gol: chi segna non si tocca. Titolare${avv?" contro "+avv:""}.`);
+    if(gUlt>0&&prec)c.push(`${gUlt>1?gUlt+" gol":"Il gol"} al ${prec} ti ha messo in vetrina: ${avv?"contro "+avv+" ":""}parti dal primo minuto.`);
+    if(voto!=null&&voto>=7.3)c.push(`Quel ${vt} in pagella${prec?" contro il "+prec:""} è ancora sulla lavagna dello spogliatoio. Titolare.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Dopo il ${vt} contro il ${prec} il mister ti rimette dentro: titolare${avv?" contro "+avv:""}, rispondi in campo.`);
+    if(f.fatigue>=55)c.push(`Le gambe sono un po' pesanti, ma${avv?" contro "+avv:""} il mister non rinuncia a te: titolare, dosa le energie.`);
+    if(f.matchWeight>=7&&avv)c.push(`Contro ${avv} si decide molto: il mister conta su di te dal primo minuto.`);
+    if(avv&&f.ovrEdge>=8)c.push(`Contro ${avv} il mister non ci pensa due volte: sei tra i migliori della rosa, titolare.`);
+    if(avv&&f.trust>=80)c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
+    if(avv&&f.form>=75)c.push(`In settimana in allenamento sei stato il più brillante: contro ${avv} giochi dall'inizio.`);
+    if(avv)c.push(`Contro ${avv} parti dal primo minuto: il mister ti ha comunicato la formazione dopo la rifinitura.`);
+  }else if(status==="bench"){
+    if(f.fatigue>78)c.push(`Hai nelle gambe tutte le partite delle ultime settimane: ${avv?"contro "+avv+" ":""}parti dalla panchina, tieniti pronto.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Il ${vt} contro il ${prec} pesa ancora: ${avv?"con "+avv+" ":""}si parte dalla panchina. Fatti trovare pronto.`);
+    if(gUlt>0&&prec)c.push(`Il gol al ${prec} non è bastato per la maglia da titolare: ${avv?"contro "+avv+" ":""}panchina, ma il mister ti terrà d'occhio.`);
+    if(avv&&f.trust<40)c.push(`Contro ${avv} il mister preferisce chi c'è davanti a te. Panchina: in allenamento puoi cambiargli idea.`);
+    if(avv)c.push(`Contro ${avv} parti dalla panchina: scelta tattica del mister, ma la partita è lunga.`);
+  }else if(status==="not_called"){
+    if(f.fatigue>80)c.push(`Il fisico chiede riposo: ${avv?"la gara con "+avv+" la guardi":"questa la guardi"} dalla tribuna.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Dopo il ${vt} contro il ${prec} il mister ha scelto altri. ${avv?"Contro "+avv+" non":"Non"} sei tra i convocati.`);
+    if(avv)c.push(`La lista per ${avv} è appesa in bacheca e il tuo nome non c'è. Lavora in allenamento per tornarci.`);
+  }
+  if(!c.length)return null;/* senza fatti (prima giornata, nessun avversario) resta la frase di sempre */
+  const h=Math.abs(hashStr("conv190|"+(player.season||1)+"|"+wk+"|"+(player.name||"")+"|"+status));
+  return c[h%c.length];
 }
 
 /* ========================================
@@ -11795,7 +11835,18 @@ function FiguraV2({player,w=54,grande=false}){
    il comportamento di prima (nome intero coi puntini). */
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
-function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const ab=abbreviaSquadra182(n);if(ab!==n)out.push(ab);const sg=team&&(team.a||team.abbr);if(sg&&out.indexOf(sg)<0)out.push(String(sg));return out;}
+/* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Valmora Primavera → FC Valmora U19) prima di ogni altra cosa;
+   (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
+       «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
+   Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
+const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+function _no190(k){return typeof window!=='undefined'&&!!window["__CPM_NO_G190"+k];}
+function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const add=(x)=>{x=String(x||"").trim();if(x&&out.indexOf(x)<0)out.push(x);};
+  const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
+  const ab=abbreviaSquadra182(u19);add(ab);
+  if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
@@ -11822,6 +11873,17 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
     style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
+/* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
+   Si mostrano le frasi del testo dalla prima in poi, quante ne stanno in `righe` righe: mai una frase a meta', mai i tre puntini.
+   Se nemmeno la prima frase ci sta, la prima frase va a capo per intero (il riquadro cresce, il testo resta leggibile). */
+function FraseIntera190({testo,righe=2,style={},cpm}){
+  const fr=String(testo||"").match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g)||[String(testo||"")];
+  const parti=fr.map(x=>x.trim()).filter(Boolean);const key=parti.join("|");
+  const[n,setN]=useState(parti.length);const ref=useRef(null);
+  useEffect(()=>{setN(parti.length);},[key]);// eslint-disable-line
+  (React.useLayoutEffect||useEffect)(()=>{const el=ref.current;if(!el)return;const lh=parseFloat(getComputedStyle(el).lineHeight)||16;
+    if(el.scrollHeight>lh*righe+2&&n>1)setN(n-1);});
+  return(<div ref={ref} data-cpm={cpm||"frase-intera-190"} data-frasi190={n+"/"+parti.length} style={{...style,whiteSpace:"normal",overflowWrap:"anywhere"}}>{parti.slice(0,Math.max(1,n)).join(" ")}</div>);}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
@@ -27785,7 +27847,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         </div>
         {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
         <div style={{padding:"12px 18px 16px"}}>
-          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
+          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||(_no190("A")?"Torna alla dashboard":"Torna alla Home")} →</button>
         </div>
       </div>
     </div>
@@ -28110,7 +28172,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         <Btn onClick={onSimulate} v="ghost" fw style={{marginTop:8,padding:"10px",fontSize:FS.small}}>⏩ Simula partita</Btn>
       )}
       {onBack&&(
-        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:RAD.sm,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>← Torna alla dashboard</button>
+        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:RAD.sm,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>{_no190("A")?"← Torna alla dashboard":"← Torna alla Home"}</button>
       )}
     </div>
   );
@@ -34381,7 +34443,18 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     else if(e.t==='intercetto'){txt=_pk(["✋ "+_nm(e.chi)+" legge il passaggio di "+_nm(e.da)+" e intercetta!","✋ Intercetto di "+_nm(e.chi)+": la palla cambia squadra."],"i");at="tackle";}
     else if(e.t==='recupero'){txt=_pk(["🔄 "+_nm(e.chi)+" raccoglie il pallone vagante "+_dove(e,l)+".","🔄 Palla recuperata da "+_nm(e.chi)+"."],"r");}
     else if(e.t==='palla_persa'){txt=_pk(["😬 "+_nm(e.chi)+" perde il controllo: palla vagante.","😬 Controllo sbagliato di "+_nm(e.chi)+"."],"pp");}
-    else if(e.t==='fallo'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["🟡 Fischia l'arbitro: fallo di "+c+" su "+su+", punizione "+_dove(e,e.per||l)+".","🟡 "+c+" stende "+su+": punizione per "+_club(e.per||l)+"."],"fl");}
+    else if(e.t==='fallo'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};
+      /* [giro 190 · PO-380a · G181-01] «fallo di un giocatore su un giocatore»: quando il motore non da' il nome di uno dei due,
+         la riga non inventa un segnaposto — racconta il fallo con chi c'e' (o senza nomi). Rosso __CPM_NO_G190A. */
+      const _anon190=(x,n)=>!x||!x.nome||/^un (giocatore|compagno)$/i.test(String(n).trim());
+      const _a190=!(typeof window!=='undefined'&&window.__CPM_NO_G190A)&&(_anon190(e.chi,c)||_anon190(e.su,su));
+      if(_a190){const _kc=!_anon190(e.chi,c);let _su190=su,_ks=!_anon190(e.su,su);
+        /* il fallo nato dentro la scena dell'eroe (src/14, esito fouled/win_freekick) non porta ne' chi ne' su: chi lo subisce e' l'eroe */
+        if(!_ks&&!e.chi&&!e.su&&e.scena){_su190="{P}";_ks=true;}const su2=_su190;
+        txt=_kc?_pk(["🟡 Fischia l'arbitro: fallo di "+c+", punizione "+_dove(e,e.per||l)+".","🟡 Entrata in ritardo di "+c+": punizione per "+_club(e.per||l)+"."],"fl")
+          :_ks?_pk(["🟡 Fischia l'arbitro: fallo su "+su2+", punizione "+_dove(e,e.per||l)+".","🟡 "+su2+" viene steso: punizione per "+_club(e.per||l)+"."],"fl")
+          :_pk(["🟡 Fischia l'arbitro: fallo, punizione "+_dove(e,e.per||l)+".","🟡 Contatto duro e fischio: punizione per "+_club(e.per||l)+"."],"fl");}
+      else txt=_pk(["🟡 Fischia l'arbitro: fallo di "+c+" su "+su+", punizione "+_dove(e,e.per||l)+".","🟡 "+c+" stende "+su+": punizione per "+_club(e.per||l)+"."],"fl");}
     else if(e.t==='rigore'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["📢 RIGORE! Fallo di "+c+" su "+su+" in piena area: l'arbitro indica il dischetto.","📢 RIGORE per "+_club(e.per||l)+": "+su+" atterrato in area da "+c+"!"],"rg");}
     else if(e.t==='rimessa'){txt=_pk(["⏸️ Palla sul fondo della fascia: rimessa laterale per "+_club(e.per||l)+".","↔️ Rimessa laterale per "+_club(e.per||l)+"."],"rm");}
     else if(e.t==='corner'){ms={corners:1};txt=_pk(["🚩 Angolo per "+_club(e.per||l)+": la difesa ha spazzato oltre la linea.","🚩 Calcio d'angolo per "+_club(e.per||l)+"."],"cr");}
@@ -43043,7 +43116,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
                       <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                         <div data-cpm="titolo-hl-v2" style={{fontSize:FS.title,fontWeight:700,lineHeight:1.05,color:TINTE.testo,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                        {_sub901&&<div style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
+                        {_sub901&&(_no190("A")?<div style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>
+                           :<FraseIntera190 testo={_sub901} righe={2} style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec}}/>)}{/* [giro 190 PO-380a G181-01] il consiglio non si taglia coi puntini: frasi intere, al massimo due righe */}
                       </div>
                     </div>
                     {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
@@ -43658,7 +43732,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
           <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}} data-cpm="post-continua-v2">
-            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
+            {context==="trial"?"📋 Risultati provino":(_no190("A")?"🏟️ Torna alla dashboard":"🏟️ Torna alla Home")} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
           </Btn>
         </div>
         </div>
@@ -48465,7 +48539,7 @@ const LOCALE={
     talkCoach:"Parla col Mister",singleActions:"Azioni singole",
     export:"Esporta salvataggio JSON",toggleDark:"Scuro",toggleLight:"Chiaro",
     langChanged:"Lingua: Italiano 🇮🇹",
-    backToCareer:"← Home",backToDashboard:"🏟️ Torna alla Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Torna alla Dashboard":"🏟️ Torna alla Home",
     postMatch:"POST MATCH",
     goalLabel:"Gol",assistLabel:"Assist",ratingLabel:"Voto",
     shots:"Tiri",possession:"Possesso",fouls:"Falli",corners:"Corner",
@@ -48477,7 +48551,7 @@ const LOCALE={
     advanceInjured:"⏭️ Avanza (infortunato)",
     matchPromptTitle:"Hai una partita!",matchPromptCup:"Gara di Coppa!",matchPromptWhat:"cosa vuoi fare?",
     understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
-    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
+    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:_no190("A")?"rimani in dashboard":"resta nella Home",
     weekHeader:"Settimana",thisWeek:"Questa settimana",
     weekLivedNote:"Settimana vissuta. Ora gioca la partita o passa alla prossima settimana col pulsante in Home.",/* [7.999.49 parte A] niente «Clicca» ne' «Avanza» (pulsante che in Home non c'e') */
     rehabCompletedNote:"Sessione completata. Passa alla prossima settimana col pulsante in Home per continuare il recupero.",
@@ -48499,7 +48573,7 @@ const LOCALE={
     talkCoach:"Talk to Coach",singleActions:"Single Actions",
     export:"Export save JSON",toggleDark:"Dark",toggleLight:"Light",
     langChanged:"Language: English 🇬🇧",
-    backToCareer:"← Home",backToDashboard:"🏟️ Back to Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Back to Dashboard":"🏟️ Back to Home",
     postMatch:"POST MATCH",
     goalLabel:"Goals",assistLabel:"Assists",ratingLabel:"Rating",
     shots:"Shots",possession:"Possession",fouls:"Fouls",corners:"Corners",
@@ -48511,7 +48585,7 @@ const LOCALE={
     advanceInjured:"⏭️ Advance (injured)",
     matchPromptTitle:"You have a match!",matchPromptCup:"Cup Match!",matchPromptWhat:"what do you want to do?",
     understood:"✅ Got it",cannotPlayInjured:"Can't play (injured)",
-    skipAndRecover:"⏭️ Skip and recover week",cancelStay:"stay on dashboard",
+    skipAndRecover:"⏭️ Skip and recover week",cancelStay:_no190("A")?"stay on dashboard":"stay on Home",
     weekHeader:"Week",thisWeek:"This week",
     weekLivedNote:"Week completed. Click 'Advance' to go to the next or play the match first.",
     rehabCompletedNote:"Session completed. Click 'Advance Week' to continue your recovery.",
@@ -49058,7 +49132,7 @@ const generateBio=(p)=>{
 /* === SPRINT 56 — TUTORIAL ONBOARDING === */
 const TUTORIAL_STEPS=[
   {icon:"🌟",title:"Benvenuto in Korward Elite!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
-  {icon:"📋",title:"La Dashboard",text:"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
+  {icon:"📋",title:_no190("A")?"La Dashboard":"La Home",text:_no190("A")?"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni.":"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Ufficio."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
   {icon:"⚽",title:"Gioca le Partite",text:"Quando in settimana c'è una partita, il tasto GIOCA ti porta in campo: vivi i momenti decisivi in 3D e decidi tu il risultato. Ogni gol, assist e trofeo resta nel tuo diario di carriera."},/* [7.331.0 collaudo PO «le partite non si possono saltare, non è corretta la scritta»] */
   {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi."},
   {icon:"⚡",title:"Fatica & Infortuni",text:"Tieni d'occhio la barra FATICA: oltre 80 rischi un infortunio e salti le partite. Il mister inserisce sessioni di recupero quando serve — fidati del suo piano."},
@@ -49112,6 +49186,21 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
 /* [7.999.127] TrainPanel eliminato con la vista «Allenamento» (decisione PO 03/10): era raggiungibile solo dal tab "training", che nessun bottone apriva. */
 // MIGRAZIONE SAVE (estratta da CareerApp, A1/#50): pura, testabile, byte-identica al blocco originale.
 //   player -> {player, changed}. Backfill per-campo. Esposta come window.__CPM_MIGRATE per il test save-compat.
+/* [giro 190 · PO-380c] vedi la nota in fondo a migratePlayer. Pura: restituisce {p,n} (n = parole sostituite). */
+const _NOMI_PROPRI190=new Set(["Kylian","Bukayo","Erling","Vinicius","Pedri","Neymar"]);
+function pulisciNomiReali190(pl){
+  /* il nome dell'EROE l'ha scelto il giocatore: le sue parole non si toccano mai, ne' nel nome ne' nei testi che lo citano */
+  const _mio=String((pl&&pl.name)||"");const lista=(typeof _CR_PLAYERS!=="undefined"?_CR_PLAYERS:[]).filter(w=>_mio.indexOf(w)<0).sort((a,b)=>b.length-a.length);if(!lista.length)return{p:pl,n:0};
+  const L="A-Za-zÀ-ÖØ-öø-ÿ";const rx=new RegExp("(^|[^"+L+"])("+lista.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![" + L + "])","g");
+  const map={};const nuovo=(w)=>{if(map[w])return map[w];const h=Math.abs(hashStr("g190|"+w));const ar=_NOMI_PROPRI190.has(w)?RIVAL_FIRST:RIVAL_LAST;let c=ar[h%ar.length];
+    if(lista.indexOf(c)>=0)c=ar[(h+1)%ar.length];return(map[w]=c);};
+  let n=0;const giro=(v,d)=>{if(d>8)return v;
+    if(typeof v==="string"){if(!rx.test(v)){rx.lastIndex=0;return v;}rx.lastIndex=0;return v.replace(rx,(m,a,w)=>{n++;return a+nuovo(w);});}
+    if(Array.isArray(v)){let cambio=false;const o=v.map(x=>{const y=giro(x,d+1);if(y!==x)cambio=true;return y;});return cambio?o:v;}
+    if(v&&typeof v==="object"){let cambio=false;const o={};for(const k of Object.keys(v)){const y=giro(v[k],d+1);if(y!==v[k])cambio=true;o[k]=y;}return cambio?o:v;}
+    return v;};
+  const out=giro(pl,0);return{p:out,n};}
+if(typeof window!=='undefined'){window.__CPM_NOMI190={pulisci:pulisciNomiReali190};}
 function migratePlayer(player){
     let changed=false;
     let newP={...player};
@@ -49859,6 +49948,12 @@ function migratePlayer(player){
   /* [giro 183 PO-375] memoria delle domande d'intervista della stagione {s,h}: campo additivo e idempotente (assente o malformato
      -> vuoto; una memoria di una stagione passata resta e vale vuota). Nessun bump di SAVE_VERSION. */
   if(!newP.ivMem183||typeof newP.ivMem183!=="object"||!Array.isArray(newP.ivMem183.h)){newP={...newP,ivMem183:{s:newP.season||1,h:[]}};changed=true;}
+  /* [giro 190 · PO-380c · G181-06] NESSUN NOME REALE DI CALCIATORE NEI SALVATAGGI VECCHI. Un rivale generato prima dei nomi
+     inventati («Bukayo Saka · FC Hammers», salvataggio di prova della stagione 12) restava scritto in player.rival e in ogni
+     testo che lo citava (diario, premi). Si rinomina al caricamento: ogni parola della lista di controllo _CR_PLAYERS presente in
+     un testo del salvataggio diventa un nome inventato, scelto in modo DETERMINISTICO dalla parola stessa (stesso nome ovunque,
+     stesso nome a ogni caricamento). Additiva e idempotente, SAVE_VERSION resta 9. Rosso __CPM_NO_G190C. */
+  try{if(!(typeof window!=='undefined'&&window.__CPM_NO_G190C)){const _rp=pulisciNomiReali190(newP);if(_rp.n>0){newP=_rp.p;changed=true;}}}catch(_e190){}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}
@@ -54241,7 +54336,7 @@ const getThisWeekMatchday=()=>{
       return upd;
     });
     const bits=[];
-    if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
+    if(ef.morale)bits.push(`${(ef.morale<0&&!_no190("A"))?"😟":"😄"}${ef.morale>0?"+":""}${ef.morale}`);/* [giro 190 G181-01] faccina triste sul morale che scende */
     if(ef.form)bits.push(`💪${ef.form>0?"+":""}${ef.form}`);
     if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
     {const _dp155=popAvviso155(player,ef.popularity);/* [giro 155 B6, collaudo 177: «+3 dichiarato, +1 effettivo»] l'avviso dice cio' che si applica (popGain), non il valore grezzo. Rosso __CPM_NO_G155_B6 */
@@ -56667,7 +56762,7 @@ const getThisWeekMatchday=()=>{
               <>
                 {Object.keys(weekLiveModal.changes||{}).length>0&&(
                   <div style={{display:"flex",gap:8,marginBottom:9,flexWrap:"wrap"}}>
-                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}{weekLiveModal.changes.morale>0&&(player.morale||0)>=100?" · al massimo":""}</div>}
+                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>{(weekLiveModal.changes.morale<0&&!_no190("A"))?"😟":"😄"} Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}{weekLiveModal.changes.morale>0&&(player.morale||0)>=100?" · al massimo":""}</div>}
                     {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.form>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.form>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
                     {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.fatigue<0?TH.bgGreen:TH.bgAmber,color:weekLiveModal.changes.fatigue<0?TH.txGreen:TH.txAmber,fontSize:FS.caption,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
                   </div>
@@ -56894,7 +56989,7 @@ const getThisWeekMatchday=()=>{
                   }));
                   setCoachModal(m=>({...m,chosen:opt.key}));
                   setTimeout(()=>setCoachModal(null),1800);
-                  const bits=[];if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
+                  const bits=[];if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);if(ef.morale)bits.push(`${(ef.morale<0&&!_no190("A"))?"😟":"😄"}${ef.morale>0?"+":""}${ef.morale}`);/* [giro 190 G181-01] faccina triste sul morale che scende */if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
                   notify(`🎙️ ${opt.label.substring(0,30)}… ${bits.join(" ")}`,opt.color);
                 }} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",display:"block",width:"100%"}}
                   onMouseEnter={e=>{e.currentTarget.style.background=`${opt.color}12`;e.currentTarget.style.borderColor=opt.color;}}
@@ -57416,7 +57511,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,jerseyNumSeason:p.season||1}))}>Tieni #{player.jerseyNum||10}</Btn>
                 <Btn v="ghost" onClick={()=>{setOpeningWiz(false);setJerseyPickModal(true);}} style={{flexShrink:0}}>👕 Scegli</Btn>
               </div>
-              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.</div>
+              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>{_no190("A")?"Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.":"Se scegli un numero nuovo, poi torni qui col tasto Avanza."}</div>
             </div>)}
             {k==="addio"&&(<div>
               <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>è l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
@@ -57435,7 +57530,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={()=>{setOpeningWiz(false);setPresEvent({beat:0});}}>🏟️ Vai allo stadio</Btn>
                 <Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0}}>Salta</Btn>
               </div>
-              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>Dopo la presentazione riprendi il wizard col tasto Avanza.</div>
+              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>{_no190("A")?"Dopo la presentazione riprendi il wizard col tasto Avanza.":"Dopo la presentazione si riparte da qui col tasto Avanza."}</div>
             </div>)}
             {k==="sorteggi"&&(<div>
               <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🎱 <strong>La notte dei sorteggi</strong> · {_ecNW} — le urne sono pronte: estrai le tue avversarie del girone.</div>
@@ -61581,7 +61676,7 @@ const getThisWeekMatchday=()=>{
                     const _d=Math.max(1,player.contract?.duration||seasonLeft||1),_rest=Math.max(0,isExpired49?0:seasonLeft),_pas=Math.max(0,Math.min(1,(_d-_rest)/_d));
                     const _col=isExpired49||_rest<=0?TINTE.rosso:_rest<=1?TINTE.giallo:TINTE.verde;
                     return(<div data-cpm="contratto-v2" style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
-                      <div style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:FS.small,color:TINTE.sec}}><span>Contratto trascorso · scade a fine St. {expiresS}</span><span className="cpm-num" style={{color:_col,fontWeight:FW.bold,whiteSpace:"nowrap"}}>{isExpired49?"scaduto":_rest===1?"1 stagione":_rest+" stagioni"}</span></div>
+                      <div style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:FS.small,color:TINTE.sec}}><span>{_no190("A")?"Contratto trascorso":"Contratto in corso"} · scade a fine St. {expiresS}</span><span className="cpm-num" style={{color:_col,fontWeight:FW.bold,whiteSpace:"nowrap"}}>{isExpired49?"scaduto":_rest===1?"1 stagione":_rest+" stagioni"}</span></div>
                       <div role="img" aria-label={"Contratto: "+Math.round(_pas*100)+"% trascorso"} style={{height:6,borderRadius:RAD.pill,background:TINTE.anello,overflow:"hidden"}}><div style={{width:Math.round(_pas*100)+"%",height:"100%",background:_col}}/></div>
                     </div>);})()}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>

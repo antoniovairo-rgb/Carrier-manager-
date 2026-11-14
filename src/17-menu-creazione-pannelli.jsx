@@ -1399,7 +1399,7 @@ const LOCALE={
     talkCoach:"Parla col Mister",singleActions:"Azioni singole",
     export:"Esporta salvataggio JSON",toggleDark:"Scuro",toggleLight:"Chiaro",
     langChanged:"Lingua: Italiano 🇮🇹",
-    backToCareer:"← Home",backToDashboard:"🏟️ Torna alla Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Torna alla Dashboard":"🏟️ Torna alla Home",
     postMatch:"POST MATCH",
     goalLabel:"Gol",assistLabel:"Assist",ratingLabel:"Voto",
     shots:"Tiri",possession:"Possesso",fouls:"Falli",corners:"Corner",
@@ -1411,7 +1411,7 @@ const LOCALE={
     advanceInjured:"⏭️ Avanza (infortunato)",
     matchPromptTitle:"Hai una partita!",matchPromptCup:"Gara di Coppa!",matchPromptWhat:"cosa vuoi fare?",
     understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
-    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
+    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:_no190("A")?"rimani in dashboard":"resta nella Home",
     weekHeader:"Settimana",thisWeek:"Questa settimana",
     weekLivedNote:"Settimana vissuta. Ora gioca la partita o passa alla prossima settimana col pulsante in Home.",/* [7.999.49 parte A] niente «Clicca» ne' «Avanza» (pulsante che in Home non c'e') */
     rehabCompletedNote:"Sessione completata. Passa alla prossima settimana col pulsante in Home per continuare il recupero.",
@@ -1433,7 +1433,7 @@ const LOCALE={
     talkCoach:"Talk to Coach",singleActions:"Single Actions",
     export:"Export save JSON",toggleDark:"Dark",toggleLight:"Light",
     langChanged:"Language: English 🇬🇧",
-    backToCareer:"← Home",backToDashboard:"🏟️ Back to Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Back to Dashboard":"🏟️ Back to Home",
     postMatch:"POST MATCH",
     goalLabel:"Goals",assistLabel:"Assists",ratingLabel:"Rating",
     shots:"Shots",possession:"Possession",fouls:"Fouls",corners:"Corners",
@@ -1445,7 +1445,7 @@ const LOCALE={
     advanceInjured:"⏭️ Advance (injured)",
     matchPromptTitle:"You have a match!",matchPromptCup:"Cup Match!",matchPromptWhat:"what do you want to do?",
     understood:"✅ Got it",cannotPlayInjured:"Can't play (injured)",
-    skipAndRecover:"⏭️ Skip and recover week",cancelStay:"stay on dashboard",
+    skipAndRecover:"⏭️ Skip and recover week",cancelStay:_no190("A")?"stay on dashboard":"stay on Home",
     weekHeader:"Week",thisWeek:"This week",
     weekLivedNote:"Week completed. Click 'Advance' to go to the next or play the match first.",
     rehabCompletedNote:"Session completed. Click 'Advance Week' to continue your recovery.",
@@ -1992,7 +1992,7 @@ const generateBio=(p)=>{
 /* === SPRINT 56 — TUTORIAL ONBOARDING === */
 const TUTORIAL_STEPS=[
   {icon:"🌟",title:"Benvenuto in Korward Elite!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
-  {icon:"📋",title:"La Dashboard",text:"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
+  {icon:"📋",title:_no190("A")?"La Dashboard":"La Home",text:_no190("A")?"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni.":"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Ufficio."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
   {icon:"⚽",title:"Gioca le Partite",text:"Quando in settimana c'è una partita, il tasto GIOCA ti porta in campo: vivi i momenti decisivi in 3D e decidi tu il risultato. Ogni gol, assist e trofeo resta nel tuo diario di carriera."},/* [7.331.0 collaudo PO «le partite non si possono saltare, non è corretta la scritta»] */
   {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi."},
   {icon:"⚡",title:"Fatica & Infortuni",text:"Tieni d'occhio la barra FATICA: oltre 80 rischi un infortunio e salti le partite. Il mister inserisce sessioni di recupero quando serve — fidati del suo piano."},
@@ -2046,6 +2046,21 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
 /* [7.999.127] TrainPanel eliminato con la vista «Allenamento» (decisione PO 03/10): era raggiungibile solo dal tab "training", che nessun bottone apriva. */
 // MIGRAZIONE SAVE (estratta da CareerApp, A1/#50): pura, testabile, byte-identica al blocco originale.
 //   player -> {player, changed}. Backfill per-campo. Esposta come window.__CPM_MIGRATE per il test save-compat.
+/* [giro 190 · PO-380c] vedi la nota in fondo a migratePlayer. Pura: restituisce {p,n} (n = parole sostituite). */
+const _NOMI_PROPRI190=new Set(["Kylian","Bukayo","Erling","Vinicius","Pedri","Neymar"]);
+function pulisciNomiReali190(pl){
+  /* il nome dell'EROE l'ha scelto il giocatore: le sue parole non si toccano mai, ne' nel nome ne' nei testi che lo citano */
+  const _mio=String((pl&&pl.name)||"");const lista=(typeof _CR_PLAYERS!=="undefined"?_CR_PLAYERS:[]).filter(w=>_mio.indexOf(w)<0).sort((a,b)=>b.length-a.length);if(!lista.length)return{p:pl,n:0};
+  const L="A-Za-zÀ-ÖØ-öø-ÿ";const rx=new RegExp("(^|[^"+L+"])("+lista.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![" + L + "])","g");
+  const map={};const nuovo=(w)=>{if(map[w])return map[w];const h=Math.abs(hashStr("g190|"+w));const ar=_NOMI_PROPRI190.has(w)?RIVAL_FIRST:RIVAL_LAST;let c=ar[h%ar.length];
+    if(lista.indexOf(c)>=0)c=ar[(h+1)%ar.length];return(map[w]=c);};
+  let n=0;const giro=(v,d)=>{if(d>8)return v;
+    if(typeof v==="string"){if(!rx.test(v)){rx.lastIndex=0;return v;}rx.lastIndex=0;return v.replace(rx,(m,a,w)=>{n++;return a+nuovo(w);});}
+    if(Array.isArray(v)){let cambio=false;const o=v.map(x=>{const y=giro(x,d+1);if(y!==x)cambio=true;return y;});return cambio?o:v;}
+    if(v&&typeof v==="object"){let cambio=false;const o={};for(const k of Object.keys(v)){const y=giro(v[k],d+1);if(y!==v[k])cambio=true;o[k]=y;}return cambio?o:v;}
+    return v;};
+  const out=giro(pl,0);return{p:out,n};}
+if(typeof window!=='undefined'){window.__CPM_NOMI190={pulisci:pulisciNomiReali190};}
 function migratePlayer(player){
     let changed=false;
     let newP={...player};
@@ -2793,6 +2808,12 @@ function migratePlayer(player){
   /* [giro 183 PO-375] memoria delle domande d'intervista della stagione {s,h}: campo additivo e idempotente (assente o malformato
      -> vuoto; una memoria di una stagione passata resta e vale vuota). Nessun bump di SAVE_VERSION. */
   if(!newP.ivMem183||typeof newP.ivMem183!=="object"||!Array.isArray(newP.ivMem183.h)){newP={...newP,ivMem183:{s:newP.season||1,h:[]}};changed=true;}
+  /* [giro 190 · PO-380c · G181-06] NESSUN NOME REALE DI CALCIATORE NEI SALVATAGGI VECCHI. Un rivale generato prima dei nomi
+     inventati («Bukayo Saka · FC Hammers», salvataggio di prova della stagione 12) restava scritto in player.rival e in ogni
+     testo che lo citava (diario, premi). Si rinomina al caricamento: ogni parola della lista di controllo _CR_PLAYERS presente in
+     un testo del salvataggio diventa un nome inventato, scelto in modo DETERMINISTICO dalla parola stessa (stesso nome ovunque,
+     stesso nome a ogni caricamento). Additiva e idempotente, SAVE_VERSION resta 9. Rosso __CPM_NO_G190C. */
+  try{if(!(typeof window!=='undefined'&&window.__CPM_NO_G190C)){const _rp=pulisciNomiReali190(newP);if(_rp.n>0){newP=_rp.p;changed=true;}}}catch(_e190){}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}

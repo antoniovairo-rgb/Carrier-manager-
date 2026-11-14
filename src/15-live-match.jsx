@@ -3529,7 +3529,18 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     else if(e.t==='intercetto'){txt=_pk(["✋ "+_nm(e.chi)+" legge il passaggio di "+_nm(e.da)+" e intercetta!","✋ Intercetto di "+_nm(e.chi)+": la palla cambia squadra."],"i");at="tackle";}
     else if(e.t==='recupero'){txt=_pk(["🔄 "+_nm(e.chi)+" raccoglie il pallone vagante "+_dove(e,l)+".","🔄 Palla recuperata da "+_nm(e.chi)+"."],"r");}
     else if(e.t==='palla_persa'){txt=_pk(["😬 "+_nm(e.chi)+" perde il controllo: palla vagante.","😬 Controllo sbagliato di "+_nm(e.chi)+"."],"pp");}
-    else if(e.t==='fallo'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["🟡 Fischia l'arbitro: fallo di "+c+" su "+su+", punizione "+_dove(e,e.per||l)+".","🟡 "+c+" stende "+su+": punizione per "+_club(e.per||l)+"."],"fl");}
+    else if(e.t==='fallo'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};
+      /* [giro 190 · PO-380a · G181-01] «fallo di un giocatore su un giocatore»: quando il motore non da' il nome di uno dei due,
+         la riga non inventa un segnaposto — racconta il fallo con chi c'e' (o senza nomi). Rosso __CPM_NO_G190A. */
+      const _anon190=(x,n)=>!x||!x.nome||/^un (giocatore|compagno)$/i.test(String(n).trim());
+      const _a190=!(typeof window!=='undefined'&&window.__CPM_NO_G190A)&&(_anon190(e.chi,c)||_anon190(e.su,su));
+      if(_a190){const _kc=!_anon190(e.chi,c);let _su190=su,_ks=!_anon190(e.su,su);
+        /* il fallo nato dentro la scena dell'eroe (src/14, esito fouled/win_freekick) non porta ne' chi ne' su: chi lo subisce e' l'eroe */
+        if(!_ks&&!e.chi&&!e.su&&e.scena){_su190="{P}";_ks=true;}const su2=_su190;
+        txt=_kc?_pk(["🟡 Fischia l'arbitro: fallo di "+c+", punizione "+_dove(e,e.per||l)+".","🟡 Entrata in ritardo di "+c+": punizione per "+_club(e.per||l)+"."],"fl")
+          :_ks?_pk(["🟡 Fischia l'arbitro: fallo su "+su2+", punizione "+_dove(e,e.per||l)+".","🟡 "+su2+" viene steso: punizione per "+_club(e.per||l)+"."],"fl")
+          :_pk(["🟡 Fischia l'arbitro: fallo, punizione "+_dove(e,e.per||l)+".","🟡 Contatto duro e fischio: punizione per "+_club(e.per||l)+"."],"fl");}
+      else txt=_pk(["🟡 Fischia l'arbitro: fallo di "+c+" su "+su+", punizione "+_dove(e,e.per||l)+".","🟡 "+c+" stende "+su+": punizione per "+_club(e.per||l)+"."],"fl");}
     else if(e.t==='rigore'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["📢 RIGORE! Fallo di "+c+" su "+su+" in piena area: l'arbitro indica il dischetto.","📢 RIGORE per "+_club(e.per||l)+": "+su+" atterrato in area da "+c+"!"],"rg");}
     else if(e.t==='rimessa'){txt=_pk(["⏸️ Palla sul fondo della fascia: rimessa laterale per "+_club(e.per||l)+".","↔️ Rimessa laterale per "+_club(e.per||l)+"."],"rm");}
     else if(e.t==='corner'){ms={corners:1};txt=_pk(["🚩 Angolo per "+_club(e.per||l)+": la difesa ha spazzato oltre la linea.","🚩 Calcio d'angolo per "+_club(e.per||l)+"."],"cr");}
@@ -12191,7 +12202,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
                       <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                         <div data-cpm="titolo-hl-v2" style={{fontSize:FS.title,fontWeight:700,lineHeight:1.05,color:TINTE.testo,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                        {_sub901&&<div style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
+                        {_sub901&&(_no190("A")?<div style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>
+                           :<FraseIntera190 testo={_sub901} righe={2} style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec}}/>)}{/* [giro 190 PO-380a G181-01] il consiglio non si taglia coi puntini: frasi intere, al massimo due righe */}
                       </div>
                     </div>
                     {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
@@ -12806,7 +12818,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
           <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}} data-cpm="post-continua-v2">
-            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
+            {context==="trial"?"📋 Risultati provino":(_no190("A")?"🏟️ Torna alla dashboard":"🏟️ Torna alla Home")} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
           </Btn>
         </div>
         </div>

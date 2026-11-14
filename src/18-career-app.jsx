@@ -4355,7 +4355,7 @@ const getThisWeekMatchday=()=>{
       return upd;
     });
     const bits=[];
-    if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
+    if(ef.morale)bits.push(`${(ef.morale<0&&!_no190("A"))?"😟":"😄"}${ef.morale>0?"+":""}${ef.morale}`);/* [giro 190 G181-01] faccina triste sul morale che scende */
     if(ef.form)bits.push(`💪${ef.form>0?"+":""}${ef.form}`);
     if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
     {const _dp155=popAvviso155(player,ef.popularity);/* [giro 155 B6, collaudo 177: «+3 dichiarato, +1 effettivo»] l'avviso dice cio' che si applica (popGain), non il valore grezzo. Rosso __CPM_NO_G155_B6 */
@@ -6781,7 +6781,7 @@ const getThisWeekMatchday=()=>{
               <>
                 {Object.keys(weekLiveModal.changes||{}).length>0&&(
                   <div style={{display:"flex",gap:8,marginBottom:9,flexWrap:"wrap"}}>
-                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}{weekLiveModal.changes.morale>0&&(player.morale||0)>=100?" · al massimo":""}</div>}
+                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>{(weekLiveModal.changes.morale<0&&!_no190("A"))?"😟":"😄"} Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}{weekLiveModal.changes.morale>0&&(player.morale||0)>=100?" · al massimo":""}</div>}
                     {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.form>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.form>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
                     {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.fatigue<0?TH.bgGreen:TH.bgAmber,color:weekLiveModal.changes.fatigue<0?TH.txGreen:TH.txAmber,fontSize:FS.caption,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
                   </div>
@@ -7008,7 +7008,7 @@ const getThisWeekMatchday=()=>{
                   }));
                   setCoachModal(m=>({...m,chosen:opt.key}));
                   setTimeout(()=>setCoachModal(null),1800);
-                  const bits=[];if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
+                  const bits=[];if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);if(ef.morale)bits.push(`${(ef.morale<0&&!_no190("A"))?"😟":"😄"}${ef.morale>0?"+":""}${ef.morale}`);/* [giro 190 G181-01] faccina triste sul morale che scende */if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
                   notify(`🎙️ ${opt.label.substring(0,30)}… ${bits.join(" ")}`,opt.color);
                 }} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",display:"block",width:"100%"}}
                   onMouseEnter={e=>{e.currentTarget.style.background=`${opt.color}12`;e.currentTarget.style.borderColor=opt.color;}}
@@ -7530,7 +7530,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,jerseyNumSeason:p.season||1}))}>Tieni #{player.jerseyNum||10}</Btn>
                 <Btn v="ghost" onClick={()=>{setOpeningWiz(false);setJerseyPickModal(true);}} style={{flexShrink:0}}>👕 Scegli</Btn>
               </div>
-              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.</div>
+              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>{_no190("A")?"Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.":"Se scegli un numero nuovo, poi torni qui col tasto Avanza."}</div>
             </div>)}
             {k==="addio"&&(<div>
               <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>è l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
@@ -7549,7 +7549,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={()=>{setOpeningWiz(false);setPresEvent({beat:0});}}>🏟️ Vai allo stadio</Btn>
                 <Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0}}>Salta</Btn>
               </div>
-              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>Dopo la presentazione riprendi il wizard col tasto Avanza.</div>
+              <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>{_no190("A")?"Dopo la presentazione riprendi il wizard col tasto Avanza.":"Dopo la presentazione si riparte da qui col tasto Avanza."}</div>
             </div>)}
             {k==="sorteggi"&&(<div>
               <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🎱 <strong>La notte dei sorteggi</strong> · {_ecNW} — le urne sono pronte: estrai le tue avversarie del girone.</div>
@@ -11695,7 +11695,7 @@ const getThisWeekMatchday=()=>{
                     const _d=Math.max(1,player.contract?.duration||seasonLeft||1),_rest=Math.max(0,isExpired49?0:seasonLeft),_pas=Math.max(0,Math.min(1,(_d-_rest)/_d));
                     const _col=isExpired49||_rest<=0?TINTE.rosso:_rest<=1?TINTE.giallo:TINTE.verde;
                     return(<div data-cpm="contratto-v2" style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
-                      <div style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:FS.small,color:TINTE.sec}}><span>Contratto trascorso · scade a fine St. {expiresS}</span><span className="cpm-num" style={{color:_col,fontWeight:FW.bold,whiteSpace:"nowrap"}}>{isExpired49?"scaduto":_rest===1?"1 stagione":_rest+" stagioni"}</span></div>
+                      <div style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:FS.small,color:TINTE.sec}}><span>{_no190("A")?"Contratto trascorso":"Contratto in corso"} · scade a fine St. {expiresS}</span><span className="cpm-num" style={{color:_col,fontWeight:FW.bold,whiteSpace:"nowrap"}}>{isExpired49?"scaduto":_rest===1?"1 stagione":_rest+" stagioni"}</span></div>
                       <div role="img" aria-label={"Contratto: "+Math.round(_pas*100)+"% trascorso"} style={{height:6,borderRadius:RAD.pill,background:TINTE.anello,overflow:"hidden"}}><div style={{width:Math.round(_pas*100)+"%",height:"100%",background:_col}}/></div>
                     </div>);})()}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
