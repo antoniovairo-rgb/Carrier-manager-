@@ -1,0 +1,628 @@
+«Gioca vs Portogallo» → 🌍 Gioca vs Portogallo — Coppa NazioniPartita 1/3 · 0pt · po → 🌍 COPPA DELLE NAZIONI · Fase a gironi · Giornata 1/3 · ESP · Spagna · La tua squadra · Casa · VS · POR · Port
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/18-prepartita-nazioni-pc.png
+  t+0s TASTI ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Simula la partita","Torna alla home"]
+     TESTO 🌍 COPPA DELLE NAZIONI · Fase a gironi · Giornata 1/3 · ESP · Spagna · La tua squadra · Casa · VS · POR · Portogallo · Ospite · 🔥 Gioca: alta intensità, ritmo forsennato · STADIO · Stadio Nazionale — Spagna · SPETTATORI · 35.100 · METEO · 🌈 Arcobaleno · ORARIO · 12:00 · IL MISTER · COME VINCERLA · Palle filtranti — si abbassano tardi in transizione: verticalizza dietro la difesa. · Tiri potenti — il portiere è insi
+     ► Vedi le formazioni
+  t+1s TASTI ["Salta l'ingresso","Ingresso in campo"]
+     TESTO FORMAZIONI · COPPA DELLE NAZIONI · Fase a gironi · Giornata 1/3 · ESP · Spagna · VS · Portogallo · POR · Spagna · 5-3-2 · 10 · 10 · CAZARES · 77 · 77 · VAIRO · 7 · 7 · HIDALGO · 8 · 8 · PUYAL · 9 · 9 · MOLINA · 2 · 2 · OLMEDO · 3 · 3 · LUNA · 4 · 4 · NÚÑEZ · 5 · 5 · CASTILLO · 6 · 6 · LOZANO · 1 · 1 · DOMÍNGUEZ · Portogallo · 4-2-3-1 · 11 · 11 · FEIO · 8 · 8 · MIRANDA · 9 · 9 · ASSUNÇÃO · 10 · 10 · FIGUEIRA · 6 · 6 ·
+     ► Ingresso in campo
+  t+19s TASTI ["Salta ingresso →"]
+     TESTO ESP · SPAGNA · 0–0 · 🏃 · 🌈 · INGRESSO IN CAMPO · POR · PORTOGALLO · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · SPAGNA · Casa · VS · PORTOGALLO · Ospite · 0 · PUNTI NEL GIRONE · 0 · GARE DISPUTATE · Esordio in questa competizione · DIRETTA · · · Stadio Nazionale — Spagna · 👥 35.100 · 🕐 12:00 · Salta ingresso → · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 100% · ⚡ ENERG. · 0–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Area avvers
+     ► Salta ingresso →
+  t+23s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 0–0 · 1' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🟡 Puyal (ESP) stende Cabral (POR): punizione per Portogallo. · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 100% · ⚡ ENERG. · 0–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Area avversaria  ·  🟡 1  ·  🏳️ 0  ·  xG 0.00 · ESP · POR · POSSESSO · – · – · TIRI · 0 · 0 · IN PORTA · 0 · 0 · XG · 0,00 · 0,00 · STATISTICHE · PAGELLE · › · ESP · 1 · Domínguez · 6,5 · 2
+  t+26s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · ⚡ Tentativo di tiro · RAPOSO prova a chiudere. · ⚔️ ATTACCO · Tocca per iniziare · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 100% · ⚡ ENERG. · 0–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Bordo area  ·  🟡 3  ·  🏳️ 0  ·  xG 0.00
+  t+28s TASTI ["⏸","🔊","2×","⚠️","1🎯 Cerca l'angolo","2⚡ Conclusione di prima","3🎯 Conclusione precisa"]
+     TESTO ESP · SPAGNA · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 4' — ⚡ Tentativo di tiro · 🏃 · Spazio libero · 1 · 🎯 Cerca l'angolo · 2 · ⚡ Conclusione di prima · 3 · 🎯 Conclusione precisa · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 100% · ⚡ ENERG. · 0–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Bordo area  ·  🟡 3  ·  🏳️ 0  ·  xG 0.00
+     ► 1🎯 Cerca l'angolo
+  t+31s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ 🦵 Tiro a giro… · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 87% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Bordo area  ·  🟡 3  ·  🏳️ 0  ·  xG 0.11
+  t+48s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 💨 TIRO FUORI DI POCO · ❌ Tiro fuori di poco · 🦵 Tiro a giro · 😬 Tiro fuori! · ❌ Palla persa. · Continua · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 87% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Bordo area  ·  🟡 3  ·  🏳️ 0  ·  xG 0.11
+     ► Continua
+  t+52s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 0–0 · 6' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 😬 Tiro fuori! · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 87% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Bordo area  ·  🟡 3  ·  🏳️ 0  ·  xG 0.11 · ESP · POR · POSSESSO · 13% · 87% · TIRI · 1 · 0 · IN PORTA · 0 · 0 · XG · 0,02 · 0,00 · STATISTICHE · PAGELLE · › · ESP · 1 · Domínguez · 6,5 · 2 · Olmedo · 6,4 · 3 · Luna · 6,4 · 4 · Núñez · 6,
+  t+55s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 9' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · 🔥 Pressing alto su TRINDADE: riconquista palla! · Sei il più vicino: tocca a te. · 🛡️ DIFESA · Tocca per iniziare · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 87% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Trequarti  ·  🟡 4  ·  🏳️ 0  ·  xG 0.11
+  t+58s TASTI ["⏸","🔊","2×","⚠️","1🧠 Anticipa sul primo controllo","2🛑 Chiusura immediata","3🤼 Raddoppio coordinato col compagno"]
+     TESTO ESP · SPAGNA · 0–0 · 9' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 9' — 🔥 Pressing alto su TRINDADE: riconquista palla! · 🏃 · Spazio libero · 1 · 🧠 Anticipa sul primo controllo · 2 · 🛑 Chiusura immediata · 3 · 🤼 Raddoppio coordinato col compagno · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 87% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Trequarti  ·  🟡 4  ·  🏳️ 0  ·  xG 0.11
+     ► 3🤼 Raddoppio coordinato col compagno
+  t+61s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 9' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ 🤼 Raddoppio coordinato col compagno… · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 73% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Trequarti  ·  🟡 4  ·  🏳️ 0  ·  xG 0.11
+  t+70s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 0–0 · 9' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🔄 INTERCETTO PERFETTO · ✅ Intercetto perfetto · 🤼 Raddoppio coordinato col compagno · ✋ Anticipo perfetto! · ✅ Bella giocata! · Continua · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 73% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.8 · ⭐ RATING · 📍 Trequarti  ·  🟡 4  ·  🏳️ 0  ·  xG 0.11
+     ► Continua
+  t+74s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 0–0 · 11' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🟡 Fischia l'arbitro: fallo di Puyal (ESP) su Assunção (POR), punizione sulla trequarti. · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 73% · ⚡ ENERG. · 1–0 · 💥 TIRI · 5.9 · ⭐ RATING · 📍 Trequarti  ·  🟡 6  ·  🏳️ 0  ·  xG 0.11 · ESP · POR · POSSESSO · 43% · 57% · TIRI · 1 · 0 · IN PORTA · 0 · 0 · XG · 0,02 · 0,00 · STATISTICHE · PAGELLE · › · ESP 
+  t+92s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 31' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · 📐 Punizione a 25 metri: MAGALHÃES sistema la barriera! · Da qui anche il pallone in area è un'idea. · ⚔️ ATTACCO · Tocca per iniziare · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 73% · ⚡ ENERG. · 3–6 · 💥 TIRI · 6.1 · ⭐ RATING · 📍 Bordo area  ·  🟡 13  ·  🏳️ 0  ·  xG 0.11
+  t+93s TASTI ["⏸","🔊","2×","⚠️","✅ Pronto [0]"]
+     TESTO ESP · SPAGNA · 0–0 · 31' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 31' — 📐 Punizione a 25 metri: MAGALHÃES sistema la barriera! · 📍 Bordo area · WASD · ✅ Pronto [0] · 0 · ⚽ GOL · 0 · 🎯 ASSIST · 73% · ⚡ ENERG. · 3–6 · 💥 TIRI · 6.1 · ⭐ RATING · 📍 Bordo area  ·  🟡 13  ·  🏳️ 0  ·  xG 0.11
+     ► ✅ Pronto [0]
+  t+97s TASTI ["⏸","🔊","2×","⚠️","1🌀 Giro sopra la barrieraA scavalcare il muro, verso l'angolo alto: l","2💥 Bordata potenteDritta e fortissima, anche attraverso la barriera: ","3⚡ Rasoterra sotto la barrieraIl colpo furbo: se il muro salta, passa ","4↗️ ↗️ Palla in areaLa mira è sul compagno, non sulla porta."]
+     TESTO ESP · SPAGNA · 0–0 · 31' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 31' — 📐 Punizione a 25 metri: MAGALHÃES sistema la barriera! · 🏃 · Spazio libero · 🤫 Silenzio. Solo tu e il portiere. · 1🌀 Giro sopra la barriera · A scavalcare il muro, verso l'angolo alto: la classica dello specialista. · 2💥 Bordata potente · Dritta e fortissima, anche attraverso la barriera: il portiere può solo respingere. ·
+     ► 1🌀 Giro sopra la barrieraA scavalcare il muro, verso l'ango
+  t+98s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 0–0 · 31' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ Punizione — Giro sopra la barriera… · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–6 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 13  ·  🏳️ 0  ·  xG 0.11
+  t+99s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 1–0 · 31' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ GOL! · ✅ Riuscito · Punizione — Giro sopra la barriera · ⚽ Sotto l'incrocio! Esecuzione da fuoriclasse. · ✅ Bella giocata! · ⚽ gol 1 · Continua · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–6 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 13  ·  🏳️ 0  ·  xG 0.11
+     ► Continua
+     ► Continua
+  t+101s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–0 · 33' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ Sotto l'incrocio! Esecuzione da fuoriclasse. · ⚽ SI RIPARTE DAL CENTRO · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–6 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Centrocampo  ·  🟡 13  ·  🏳️ 0  ·  xG 0.11 · ESP · POR · POSSESSO · 51% · 49% · TIRI · 4 · 6 · IN PORTA · 1 · 0 · XG · 0,50 · 0,60 · STATISTICHE · PAGELLE · › · ESP · 4 · Núñez ·
+  t+105s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · 🧠 Fra le linee, CABRAL esce in ritardo! · Uno-due con CAZARES: te la ridà. Nessun taglio in profondità: valuta il tiro o il dai e vai. · ⚔️ ATTACCO · Tocca per iniziare · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.11
+  t+108s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","✅ Pronto [0]"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 37' — 🧠 Fra le linee, CABRAL esce in ritardo! · ▲ · ◀ · ▶ · ▼ · 📍 Bordo area · WASD · ●●○ 2 mov · ⏱ Pressione · 95% · 🏃 Difensore · Lontano · ✅ Pronto [0] · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.11
+     ► ✅ Pronto [0]
+  t+109s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","1🔁 Uno-due con CAZARES","2🏃 Conduci palla al piede e tira","3💥 Tiro da fuori"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 37' — 🧠 Fra le linee, CABRAL esce in ritardo! · ▲ · ◀ · ▶ · ▼ · 📍 Bordo area · ●●○ 2 mov · 🏃 · Spazio libero · 1 · 🔁 Uno-due con CAZARES · 2 · 🏃 Conduci palla al piede e tira · 3 · 💥 Tiro da fuori · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.11
+     ► ▲
+     ► ◀
+  t+111s TASTI ["⏸","🔊","2×","⚠️","1🔁 Uno-due con CAZARES","2🏃 Conduci palla al piede e tira","3💥 Tiro da fuori"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 37' — 🧠 Fra le linee, CABRAL esce in ritardo! · 🏃 · Spazio libero · 1 · 🔁 Uno-due con CAZARES · 2 · 🏃 Conduci palla al piede e tira · 3 · 💥 Tiro da fuori · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 65% · ⚡ ENERG. · 4–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.11
+     ► 3💥 Tiro da fuori
+  t+113s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ 💥 Tiro da fuori… · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 51% · ⚡ ENERG. · 5–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.27
+  t+124s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 1–0 · 37' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🧱 IL DIFENSORE SI OPPONE · ❌ Il difensore si oppone · 💥 Tiro da fuori · 🧱 La difesa mura la conclusione. · ❌ Palla persa. · ⚽ gol 1 · Continua · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 51% · ⚡ ENERG. · 5–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.27
+     ► Continua
+  t+125s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–0 · 39' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🧱 La difesa mura la conclusione. · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 51% · ⚡ ENERG. · 5–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 14  ·  🏳️ 0  ·  xG 0.27 · ESP · POR · POSSESSO · 49% · 51% · TIRI · 5 · 7 · IN PORTA · 1 · 0 · XG · 0,52 · 0,63 · STATISTICHE · PAGELLE · › · ESP · 4 · Núñez · 7,6 · 77 · Vairo · ⚽ · 7,4 · 3 · Luna ·
+  t+130s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 45' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · ✈️ Tentativo di inserimento in area · VEIGA ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 51% · ⚡ ENERG. · 5–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Area avversaria  ·  🟡 16  ·  🏳️ 0  ·  xG 0.27
+  t+133s TASTI ["⏸","🔊","2×","⚠️","1💥 Conclusione potente","2✈️ Attacca il pallone","3✈️ Testa di potenza"]
+     TESTO ESP · SPAGNA · 1–0 · 45' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 45' — ✈️ Tentativo di inserimento in area · 🏃 · Spazio libero · 1 · 💥 Conclusione potente · 2 · ✈️ Attacca il pallone · 3 · ✈️ Testa di potenza · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 51% · ⚡ ENERG. · 5–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Area avversaria  ·  🟡 16  ·  🏳️ 0  ·  xG 0.27
+     ► 2✈️ Attacca il pallone
+  t+134s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 45' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ ✈️ Stacco in corsa potente… · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 35% · ⚡ ENERG. · 6–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Area avversaria  ·  🟡 16  ·  🏳️ 0  ·  xG 0.40
+  t+145s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 1–0 · 45' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🧱 IL DIFENSORE SI OPPONE · ❌ Il difensore si oppone · ✈️ Stacco in corsa potente · ❌ Murato dalla difesa. · ❌ Palla persa. · ⚽ gol 1 · Continua · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 35% · ⚡ ENERG. · 6–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Area avversaria  ·  🟡 16  ·  🏳️ 0  ·  xG 0.40
+     ► Continua
+  t+146s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–0 · 47' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · CAMBIO CAMPO · POR · PORTOGALLO · ↔️ Le squadre si scambiano il campo: nella ripresa si attacca sotto l'altra curva. · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 35% · ⚡ ENERG. · 6–7 · 💥 TIRI · 7.4 · ⭐ RATING · 📍 Bordo area  ·  🟡 16  ·  🏳️ 0  ·  xG 0.40 · ESP · POR · POSSESSO · 49% · 51% · TIRI · 6 · 7 · IN PORTA · 1 · 0 · XG · 0,54 · 0,63 · STATISTICHE · PAGELLE
+  t+154s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 55' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⚽ · 🚩 Calcio d'angolo: il pallone spiove in area! · ASSUNÇÃO ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 35% · ⚡ ENERG. · 7–7 · 💥 TIRI · 7 · ⭐ RATING · 📍 Area avversaria  ·  🟡 18  ·  🏳️ 0  ·  xG 0.40
+  t+156s TASTI ["⏸","🔊","2×","⚠️","1✈️ Attacca il pallone","2💥 Conclusione potente","3✈️ Testa di potenza"]
+     TESTO ESP · SPAGNA · 1–0 · 55' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 55' — 🚩 Calcio d'angolo: il pallone spiove in area! · 🏃 · Spazio libero · 1 · ✈️ Attacca il pallone · 2 · 💥 Conclusione potente · 3 · ✈️ Testa di potenza · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 35% · ⚡ ENERG. · 7–7 · 💥 TIRI · 7 · ⭐ RATING · 📍 Area avversaria  ·  🟡 18  ·  🏳️ 0  ·  xG 0.40
+     ► 1✈️ Attacca il pallone
+  t+158s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · SPAGNA · 1–0 · 55' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏳ ✈️ Stacco in corsa potente… · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 19% · ⚡ ENERG. · 8–7 · 💥 TIRI · 7.1 · ⭐ RATING · 📍 Area avversaria  ·  🟡 18  ·  🏳️ 0  ·  xG 0.53
+  t+175s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · SPAGNA · 1–0 · 55' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🧤 IL PORTIERE DICE DI NO · ❌ Il portiere dice di no · ✈️ Stacco in corsa potente · ❌ Tiro debole, para comodo. · ❌ Palla persa. · ⚽ gol 1 · Continua · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 19% · ⚡ ENERG. · 8–7 · 💥 TIRI · 7.1 · ⭐ RATING · 📍 Area avversaria  ·  🟡 18  ·  🏳️ 0  ·  xG 0.53
+     ► Continua
+  t+176s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–0 · 57' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⛈️ L'erba bagnata rallenta le combinazioni. · 🧤 IL PORTIERE DICE DI NO · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 19% · ⚡ ENERG. · 8–7 · 💥 TIRI · 7.1 · ⭐ RATING · 📍 Bordo area  ·  🟡 19  ·  🏳️ 0  ·  xG 0.53 · ESP · POR · POSSESSO · 42% · 58% · TIRI · 8 · 7 · IN PORTA · 2 · 0 · XG · 0,63 · 0,63 · STATISTICHE · PAGELLE · › · ESP · 4 · Núñez · 7
+  t+189s TASTI ["1Approfittiamone, tutti suPremio: più tiri contro una squadra in dieci","2Palla a terra, li facciamo correrePremio: loro tirano di menoRischio:","3Cerco l'uno contro unoPremio: la prossima occasione è tua, primaRisch"]
+     TESTO ESP · SPAGNA · 1–1 · 71' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🟥 Loro in dieci al 71': il mister si sbraccia, «adesso tocca a noi». · 📣 IL MISTER · CT Nieto · 71' · Loro in dieci al 71': il mister si sbraccia, «adesso tocca a noi». · 1Approfittiamone, tutti su · Premio: più tiri contro una squadra in dieci · Rischio: squadra alta: i loro contropiedi fanno più male · 2Palla a terra, li facciamo
+     ► 3Cerco l'uno contro unoPremio: la prossima occasione è tua, 
+  t+190s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–1 · 73' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 🌧️ Il portiere deve fare attenzione ai palloni scivolosi! · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 27% · ⚡ ENERG. · 9–10 · 💥 TIRI · 6.8 · ⭐ RATING · 📍 Centrocampo  ·  🟡 24  ·  🏳️ 0  ·  xG 0.53 · ESP · POR · POSSESSO · 42% · 58% · TIRI · 9 · 9 · IN PORTA · 3 · 1 · XG · 0,71 · 0,72 · STATISTICHE · PAGELLE · › · ESP · 4 · Núñez · 7,2 · 77 · V
+  t+199s TASTI ["1Andiamo a vincerlaPremio: più tiri nel finaleRischio: un contropiede ","2Il punto va bene, teniamo pallaPremio: loro tirano di menoRischio: da","3Aspetto la palla giustaPremio: la prossima palla buona è tua, primaRi"]
+     TESTO ESP · SPAGNA · 1–1 · 83' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · 📢 Pari al 83': il mister guarda la panchina, poi te. «Si può vincere». · 📣 IL MISTER · CT Nieto · 83' · Pari al 83': il mister guarda la panchina, poi te. «Si può vincere». · 1Andiamo a vincerla · Premio: più tiri nel finale · Rischio: un contropiede può costare il punto · 2Il punto va bene, teniamo palla · Premio: loro tirano di m
+     ► 1Andiamo a vincerlaPremio: più tiri nel finaleRischio: un co
+  t+200s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · SPAGNA · 1–1 · 85' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 NAZIONALE · POR · PORTOGALLO · ⏸️ Pallone di Puyal (ESP) troppo lungo: esce sulla fascia, rimessa laterale. · 1 · ⚽ GOL · 0 · 🎯 ASSIST · 27% · ⚡ ENERG. · 9–10 · 💥 TIRI · 6.8 · ⭐ RATING · 📍 Centrocampo  ·  🟡 25  ·  🏳️ 0  ·  xG 0.53 · ESP · POR · POSSESSO · 43% · 57% · TIRI · 9 · 11 · IN PORTA · 3 · 1 · XG · 0,71 · 0,86 · STATISTICHE · PAGELLE · › · ESP · 4 · N
+  t+209s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+211s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+212s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+214s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+217s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+218s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+219s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+222s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+225s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+226s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+227s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+230s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+232s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+233s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+235s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+237s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+240s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+241s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+242s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+245s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+247s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+249s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+250s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+252s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+255s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+256s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+257s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+260s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+262s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+264s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+265s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+268s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+270s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+271s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+273s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+275s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+278s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+279s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+280s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+283s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+285s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+287s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+288s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+290s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+293s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+294s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+295s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+298s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+300s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+302s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+303s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+306s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+308s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+309s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+311s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+313s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+316s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+317s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+318s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+321s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+323s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+324s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+326s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+328s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+331s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+332s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+333s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+336s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+338s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+340s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+341s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+343s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+346s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+347s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+349s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+351s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+354s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+355s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+356s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+359s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+361s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+362s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+364s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+366s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+369s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+370s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+371s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+374s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+376s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+378s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+379s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+381s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+384s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+385s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+387s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+389s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+392s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+393s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+394s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+397s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+399s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+400s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+402s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+404s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+407s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+408s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+409s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+412s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+414s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Tabellino della gara›
+  t+416s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · Spag
+     ► Tabellino della gara›
+  t+417s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+419s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Sport in Rete · Stag. 14 · Sett. 21 · VAIRO SEGNA, FINISCE PARI · COPPA DELLE NAZIONI · FASE A GIRONI · GIORNATA 1/3 · FISCHIO FINALE · SPAGNA · 1–1 · PORTOGALLO · PAREGGIO · 🧠 La tua scelta al 71': «Cerco l'uno contro uno» → un tiro per noi, 2 tiri per loro fino all'83' · 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subito fino al fischio · IL TUO TABELLINO · › · ⚽ · 1 · Gol · 🎯 · 0 · Assist ·
+     ► Il tuo tabellino›
+  fine osservazione dopo 421 s
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/20-dopo-nazioni-pc.png
+«Torna alla home» → 🏟️ Torna alla Home → MER · FC MERSEYSIDE · Premier Division · St. 14 · Sett. 21/38 · 1° posto · salvato 11:29 · v 7.999.193 · ⏩ Vai
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/21-home-dopo-nazioni-pc.png
+TASTI: ["Salva carriera, ultimo salvataggio 11:29 [coperto]","Opzioni [coperto]","🌍 Gioca vs Francia — Coppa NazioniPartita 2/3 · 1pt · poi: FC Dorset  [coperto]","Calendario [coperto]","94ATT [coperto]","☕ Sostieni il progetto [coperto]","💡 Idee e feedback [coperto]","Home [coperto]","Stagione [coperto]","Club [coperto]","Carriera [coperto]","Agente [coperto]","Ufficio [coperto]","🤝 Diplomatico«Cambia la responsabilità. Rappresenti un intero paese, ","🔥 Ambizioso«Mi esalta. Con questa maglia voglio essere decisivo ogni ","🙏 Umile«Cambia l'emozione dell'inno. Poi provo solo a fare quello che"] 
+TESTO: MER
+FC MERSEYSIDE
+Premier Division · St. 14 · Sett. 21/38 · 1° posto
+salvato 11:29
+v 7.999.193
+⏩ Vai al prossimo momento
+prima la Nazionale
+PROSSIMA · COPPA NAZIONI · PARTITA 2/3
+SETT. 21 · CASA
+ESP
+SPAGNA
+VS
+FRA
+FRANCIA
+Poi: FC Dorset · sett. 21 · casa
+🌍 GIOCA VS FRANCIA — COPPA NAZIONI
+Partita 2/3 · 1pt · poi: FC Dorset W.21
+SIMULA
+prima la Nazionale
+Calendario
+STAGIONE 14 · SETTIMANA 21 DI 38
+26
+PARTITE
+14
+GOL
+7
+ASSIST
+🔥 8 di fila
+94
+ATT
+Samuelito Vairo
+Spagna · Attaccante · 30 anni · in rotazione
+82
+FORMA
+100
+MORALE
+37
+FATICA
+🤝
+100/100
+Fiducia del mister
+⭐
+100/100
+Popolarità
+La tua settimana
+›
+🔥
+Nel pieno della carriera
+30 anni
+Duello capocannoniere
+›
+🏷️ Mercato Invernale aperto
+3 settimane rimanenti
+COPPA DELLE NAZIONI · S.14
+PRIORITÀ
+vs Francia — Partita 2/3
+Punti accumulati: 1/9
+⏭️ Dopo: FC Dorset · in casa · sett. 21
+Obiettivi della stagione
+›
+Obiettivi personali
+›
+🏹 Batti il tuo record: 29+ gol (S.13: 28)
+14 / 29
+✅ Media voto ≥ 6.7 (almeno 5 gare)
+FATTO
+A fine stagione presenti il conto a te stesso.
+Notizie della settimana
+›
+Voci di mercato
+›
+Classifica
+›
+Ultime notizie
+›
+☕ Sostieni il progetto
+💡 Idee e feedback
+Home
+Stagione
+Club
+Carriera
+Agente
+Ufficio
+Korward Elite
+Vesta Assicura
+Korward Elite
+Vesta Assicura
+Korward Elite
+Korward Elite
+SPAGNA
+Korward Elite
+SPAGNA
+Korward Elite
+ESP
+1 – 1
+Portogallo
+In casa · Il tuo voto 6,8 · 1 gol
+Korward Elite
+Vesta Assicu
+VAIRO
+SIR
+CDS
+ZM
+Korward Elite
+ESP
+Spagna
+INTERVISTA
+Sprint Sportivo
+In sala
+Greco
+in sala
+Neri
+in sala
+Lombardi
+in sala
+«Con la maglia della Nazionale addosso cambia qualcosa nel modo di giocare?»
+RISPONDI TU
+Samuelito Vairo
+🤝 DIPLOMATICO
+«Cambia la responsabilità. Rappresenti un intero paese, non solo un club.»
+🔥 AMBIZIOSO
+«Mi esalta. Con questa maglia voglio essere decisivo ogni volta.»
+🙏 UMILE
+«Cambia l'emozione dell'inno. Poi provo solo a fare quello che faccio nel club.»
+Scegli il tono della risposta: gli effetti li vedrai subito dopo.
+STATO {"n":"Samuelito Vairo","club":"FC Merseyside","lg":"Premier Division","s":14,"w":21,"lived":true,"pro":"pro","ovr":94,"g":14,"a":7,"m":26,"tg":474,"age":30,"trust":100,"mor":100,"pop":100,"bank":144473849,"fase":null}

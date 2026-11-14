@@ -33,7 +33,7 @@ async function auto(n, pol, stop) {
     if (b.some(x => /^(⏸|▶)$/.test(x)) && b.some(x => /×$/.test(x))) return 'IN PARTITA';
     let fatto = null;
     if (b.some(x => /Inizia Stagione \d+/.test(x))) { if (process.env.G193_FOTO_FINE) await H.foto(process.env.G193_FOTO_FINE + '-' + String(i).padStart(2, '0'), true); console.log('     BILANCIO: ' + (await H.txt(5000)).replace(/\n/g, ' · ').slice(0, 3500)); fatto = await H.tap(/Inizia Stagione \d+/); }
-    if (!fatto && b.some(x => /^Vedi le formazioni/.test(x))) return 'PREPARTITA';
+    if (!fatto && b.some(x => /^Vedi le formazioni/.test(x))) { if (process.env.G193_GIOCA || !b.some(x => /^Simula la partita/.test(x))) return 'PREPARTITA'; console.log('     PREPARTITA simulata: ' + (await H.txt(200)).replace(/\n/g, ' · ')); fatto = await H.tap(/^Simula la partita/); }
     if (!fatto && b.some(x => /^Simula e avanza la settimana/.test(x))) { console.log('     PARTITA PROPOSTA: ' + (await H.txt(600)).replace(/\n/g, ' · ').slice(0, 330)); fatto = await H.tap(process.env.G193_GIOCA ? /^Gioca la partita/ : /^Simula e avanza la settimana/); }
     if (aperto && !fatto) { const c = b.filter(x => !NO.test(x)); if (c.length) { const sc = c.filter(x => !PREF.test(x) && !/^(Non ora|Annulla|Più tardi|Dopo|No, )/i.test(x)); /* scelte vere prima dei tasti di passaggio */
         const rf = process.env.G189_ACCETTA ? null : c.find(x => /Rifiut|Resto qui|Declin|No, grazie/i.test(x)); if (rf) { fatto = await H.tap(rf.slice(0, 30)); console.log('     OFFERTA/PROPOSTA rifiutata fra: ' + JSON.stringify(c.map(x => x.slice(0, 40)))); }
