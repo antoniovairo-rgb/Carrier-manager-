@@ -1748,5 +1748,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaApi1n8b6Xt5Ee75PS",
+    "titolo": "giro 202 rassegna: tabellino nella scheda 1, tasti fissi in fondo (PO-461)",
+    "creata": "2026-11-14T20:36:03Z",
+    "chiusa": "2026-11-14T22:22:39Z",
+    "cost_usd": 8.70198392,
+    "output_tokens": 78667,
+    "cache_read_tokens": 25503561,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]
