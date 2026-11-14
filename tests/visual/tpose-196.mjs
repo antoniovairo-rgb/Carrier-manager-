@@ -72,7 +72,7 @@ async function scenario(nome) {
         const bad = f.noCg + f.tpose + f.proc; if (bad) { out.cattivi[k]++; if (f.noCg) out.noCg++; if (f.tpose) out.tpose++; if (f.proc) out.proc++; for (const c of f.chi) out.chi[c] = (out.chi[c] || 0) + 1; } }
       const cattivo = s.w.some(f => VISTA(f.ph) && !f.v && (f.noCg + f.tpose + f.proc));
       const fk = s.ph === 'walkout' ? 'walkout' : (/^hl_/.test(s.ph || '') ? 'hl' : null);
-      if (fk && !foto[fk] && (cattivo || out.frames[fk] > 60)) { foto[fk] = 1; await page.screenshot({ path: path.join(FOTO, `${ROSSO ? 'rosso' : (process.env.CPM_PRIMA ? 'prima' : 'dopo')}-${nome}-${fk}.png`) }).catch(() => {}); }
+      if (fk && !foto[fk] && (cattivo || out.frames[fk] > 60 || (s.p2d && fk === 'hl'))) { foto[fk] = 1; await page.screenshot({ path: path.join(FOTO, `${ROSSO ? 'rosso' : (process.env.CPM_PRIMA ? 'prima' : 'dopo')}-${nome}-${fk}.png`) }).catch(() => {}); }
       if (s.ph === 'ended' || out.scene >= SCENE) break;
       if (s.ph === 'matchday' || s.ph === 'formations') await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua/i.test(b.textContent || '') && !/Salta/i.test(b.textContent || '')); if (x) x.click(); }).catch(() => {});
       if (s.ph === 'playing' && s.c >= 8 && s.c !== ultimaRich) { ultimaRich = s.c; await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); }).catch(() => {}); }
