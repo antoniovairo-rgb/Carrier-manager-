@@ -1562,3 +1562,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO ha scelto 14 proposte su 15, raggruppate in PO-452…459; G195-10 (striscia «Sostieni / Idee») scartata: «Lasciala com'è».
 - Ordine (PO «Scelte nella 195, resto 196»): nella 195 PO-452 scelte sempre in vista e PO-456 Agente «da fare ora» (stesso giro di PO-446); le altre nella 196.
 - Giro 195: 11,73 $.
+- Madre: creato lavoro/195 da lavoro/194 (dab34a71). Partono due giri della 195 nei posti liberi (con il 196 sono 3): giro 197 scelte sempre in vista (PO-452; PO-389 resta nella 196, il giro lascia spazio ai testi) e giro 198 Agente «da fare ora» + tasto che porta al rinnovo + svincolato (PO-456, 446, 432). Il 196 resta dentro la 194; poi si unisce anche in lavoro/195.
