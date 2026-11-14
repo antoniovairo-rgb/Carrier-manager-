@@ -1504,3 +1504,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:45 Roma — giro 189 (Fable) seconda tornata di idee
 - PO: «va bene così» sulle scelte del giro 181 (sfida del giorno resta fuori); «fagli trovare nuove idee migliorie». Giro 189 su Fable, ramo collaudo/giro189-idee, senza ripetere G181 né le voci già in BACKLOG. Giri in corso: 188 (Opus) e 189 (Fable), sotto il tetto di 3.
+
+## 14/11 09:55 Roma — 7.999.193 pubblicata (main 2bd80d9e) e 194 ondata 1
+- 193 rapida: PO-400, verifica mirata 11/11 verde.
+- 194 ondata 1 (tetto 3 giri): 189 idee (Fable, in corso), 190 testi, frase del mister, nomi U19 e barra a 375 px (PO-380, PO-396, PO-397, Opus), 191 doppio rigore e lotteria (PO-399, PO-403, Opus). Ondate successive: PO-401 misura diagonali, PO-402 + scene 3D ondata 2, PO-385, PO-381…383, PO-386…395.
