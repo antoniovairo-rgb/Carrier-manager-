@@ -1527,3 +1527,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 14/11 ~11:20 Roma — PO-412 ingresso in campo scenico + piano del blocco scene 3D
 - PO: tutte e 4 le idee (coreografia, fumogeni e coriandoli, inno coi bambini, regia per tipo), nella 194 col giro cerimonie.
 - Decisione della madre: il blocco scene 3D della 194 (PO-402, 404, 406, 407, 412, più PO-373 notte) è troppo grande per un giro solo: si fa in due giri in sequenza, A cerimonie (premiazione, coppa, mister, presentazione, parata) e B ingresso in campo e notte; peso e fotogrammi al secondo misurati sul telefono in entrambi.
+
+## 14/11 ~11:40 Roma — idee del giro 189 (Fable) e ordine 194/195
+- PO ha scelto tutte le 18 proposte G189 → PO-413…430. Scelte anche le idee che toccano decisioni chiuse il 20/10 (G189-10 cerimonie, G189-12 economia): vale come riapertura limitata a quel punto.
+- Ordine (PO «194 difetti, 195 idee»): la 194 chiude i difetti segnalati (PO-380, 385, 396, 397, 399, 401 misura, 402…412) più G189-16 scelte perse (PO-428) e G189-06 provini (PO-418); le idee G181 (PO-381…383, 386…395) e le altre G189 vanno nella 195, a ondate da 3 giri.
+- Giro 189: 15,64 $.
