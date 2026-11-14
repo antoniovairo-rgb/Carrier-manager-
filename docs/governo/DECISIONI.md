@@ -1608,3 +1608,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Partita 2D di riserva: provare rigori finali e cerimonie in 2D nella 195 (PO-465).
 - Svincolato «fermati un anno»: sì, nella 199 carriera lunga (PO-466).
 - Voci vecchie distribuite per tema: PO-349 e 356 → 197; PO-376 e 377 → 198; PO-367 → 195 (giri scene 3D); PO-322 → 196 (Store); PO-155 chiusa dentro PO-440 (200).
+
+## 14/11 ~23:15 Roma — giro 201 unito in lavoro/195
+- Giro 201 (PO-418, 428): offerte dei provini uguali dopo 4 riaperture e con motivo; 15/15 scelte aperte tornano dopo il ricaricamento (prima 4/15); offerte di mercato restano in Agente con «Ci penso» fino alla scadenza. 11/11 controlli verdi. Unito (edda74f3; ci-runner: catene e LENTI ricomposti a mano). 6,47 $.
+- Dubbi per il PO da chiedere dopo le 07:00: scadenza dell'offerta (fine finestra di mercato, sett. 5/23; fuori finestra la settimana dopo); tasto nuovo «Ci penso».
+- Madre: G189-06 (c)(d) non fatte → PO-467 nella 197 (coerenza).

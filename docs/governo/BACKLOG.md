@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (102)
+## Voci aperte o parziali (103)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.196 1 · 7.999.197 2 · 7.999.195 | 20 · 7.999.198 | 12 · 7.999.194 | 15 · 7.999.201 | 7 · 7.999.197 | 10 · 7.999.200 | 6 · 7.999.199 | 12 · 7.999.196 | 7.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.196 1 · 7.999.197 2 · 7.999.195 | 20 · 7.999.198 | 12 · 7.999.194 | 15 · 7.999.201 | 7 · 7.999.197 | 11 · 7.999.200 | 6 · 7.999.199 | 12 · 7.999.196 | 7.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -122,6 +122,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-464 | 14/11 22:45 | PO, questionario: clip «Rohr» (assets/cgtrader-clip-rohr.glb, 3,30 MB) ricompressa sotto il tetto di 3,00 MB di clip-180 senza perdere movimenti (controllo animazioni prima/dopo); il tetto non si tocca | difetto (peso asset) | DA FARE — 195 | 7.999.195 |
 | PO-465 | 14/11 22:45 | PO, questionario: partita in 2D di riserva (giro 196, PO-449): provare e correggere lotteria dei rigori dopo il pareggio e cerimonie (premiazione, festa) in modalità 2D forzata (__CPM_CAP196 basso o caricamento fallito) | difetto (partita 2D, cerimonie) | DA FARE — 195 | 7.999.195 |
 | PO-466 | 14/11 22:45 | PO, questionario: terza strada dello svincolato «fermati un anno» (proposta G193-01, non fatta nel giro 198): un anno senza squadra, poi si riparte con offerte più basse; regola nuova | nuova funzione (contratti) | DA FARE — 199 | 7.999.199 |
+| PO-467 | 14/11 23:15 | Dal giro 201 (madre): parti (c) e (d) di G189-06 non fatte con PO-418 — cosa promette ogni offerta dei provini (ruolo, mister, stadio, crescita) e titoli dopo ogni provino con la stessa misura delle offerte («Prestazione da predestinato!» dipende ancora dal voto del singolo provino) | miglioramento (provini, coerenza) | DA FARE — 197 | 7.999.197 |
 
 ## Storico — voci chiuse (364)
 
