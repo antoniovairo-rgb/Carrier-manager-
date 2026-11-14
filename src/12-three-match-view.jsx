@@ -874,6 +874,7 @@ function ThreeMatchView(props){
         g.scale.y=_rs.y;g.scale.x=g.scale.z=_rs.xz;
       }
       g.traverse(m=>{if(m.isMesh){m.castShadow=isDesktop||isUser;m.receiveShadow=true;}});
+      g.traverse(o=>{if(o.isMesh){o.userData.proc196=1;o._procG196=g;}});/* [giro 196] corpo procedurale (riserva): lo conta il testimone __CPM_T196W */
       return g;
     };
 
@@ -1218,6 +1219,52 @@ function ThreeMatchView(props){
       if(ferme)return {pronti:false,motivo:'clip',ferme,corpi};
       return {pronti:true,motivo:st||'ch38',corpi};}catch(_e){return {pronti:true,motivo:'errore'};}};
     try{window.__CPM_CORPI232=_corpi232;}catch(_e){}
+    /* [giro 196 PO-449 «T pose e non CGTrader non deve mai capitare»] TESTIMONE PER FOTOGRAMMA (solo con window.__CPM_T196W, armato
+       dalla sonda): dopo ogni disegno conta i corpi VISIBILI e INQUADRATI della scena 3D — per scheletro: CGTrader si/no (marca
+       userData.cg196 messa da loadGLB) e T-pose (le ossa delle braccia e delle cosce ferme a meno di 6 gradi dalla rotazione di riposo
+       del file, userData.rq196: nessuna clip le muove); in piu' le figure procedurali visibili (userData.proc196). Registra anche
+       chi e' il corpo (nome della mesh, ruolo) per risalire al percorso del codice. */
+    const _t196v=new THREE.Vector3(),_t196q=new THREE.Quaternion();
+    const _t196in=o=>{try{o.getWorldPosition(_t196v);_t196v.y+=0.8;_t196v.project(camera);return Math.abs(_t196v.x)<=1.02&&Math.abs(_t196v.y)<=1.02&&_t196v.z<1;}catch(_e){return false;}};
+    const _t196ruolo=o=>{for(let x=o,k=0;x&&k<8;x=x.parent,k++){if(x._isRef)return 'arbitro';if(x._isCoach)return 'panchina';if(x._mascot196)return 'bambino';if(x===hero)return 'eroe';}return '';};
+    /* [giro 196 PO-449 — rosso __CPM_NO_G196] PRONTEZZA «NESSUN CORPO SBAGLIATO». Regola del PO: mai corpi di riserva ne' T-pose; se i
+       corpi CGTrader o le loro clip non sono pronti il gioco ASPETTA (schermata con barra, LiveMatch) e, oltre il tetto, passa alla
+       partita 2D. Pronto = pacchetto CGTrader montato e compilato, teste caricate, e in TUTTA la scena (non solo nell'inquadratura:
+       chi e' al tunnel entra in quadro dopo) nessun corpo visibile non CGTrader, nessuno in T-pose, nessuna figura procedurale.
+       `pct` (0..1) = byte CGTrader arrivati (loadGLB, __CPM_GLBP196) piu' i passi finali: e' la barra. */
+    const _conta196=()=>{const sk=new Set(),pr=new Set(),c={cg:0,noCg:0,tpose:0,proc:0,chi:[]};
+      scene.traverseVisible(o=>{if(!o.isMesh)return;
+        if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);c.proc++;if(c.chi.length<4){g.getWorldPosition(_t196v);c.chi.push('proc:'+(_t196ruolo(g)||'giocatore')+'@'+_t196v.x.toFixed(0)+','+_t196v.z.toFixed(0)+(g._glbDriven?'g':'')+(g.parent===scene?'s':''));}return;}
+        if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||!bs.length||sk.has(bs[0]))return;sk.add(bs[0]);
+        let n=0,maxA=0;for(let i=0;i<bs.length;i++){const b=bs[i];if(!/^(upperarm|lowerarm|thigh|calf)_[lr]$/i.test(b.name||''))continue;const r=b.userData&&b.userData.rq196;if(!r)continue;_t196q.fromArray(r);const a=b.quaternion.angleTo(_t196q);if(a>maxA)maxA=a;n++;}
+        const cg=!!(o.userData&&o.userData.cg196);if(cg)c.cg++;else c.noCg++;const tp=n>0&&maxA<0.105;if(tp)c.tpose++;
+        if((!cg||tp)&&c.chi.length<4)c.chi.push((cg?'cg':'nocg')+(tp?'-tpose':'')+':'+(_t196ruolo(o)||'giocatore'));});
+      return c;};
+    const _pronti196=()=>{try{
+      if(!_useGLB)return {pronti:true,motivo:'glb-off',pct:1};
+      const st=String(window.__CPM_HYPER_CASUAL_STATUS||'');
+      if(/^fallback/.test(st)||window.__CPM_GLB_FAIL==='error')return {pronti:false,fallito:true,motivo:'fallito',pct:0};
+      const G=window.__CPM_GLBP196||{};let l=0,t=0;for(const k in G){if(!/cgtrader/i.test(k))continue;const v=G[k];l+=v[0]||0;t+=Math.max(v[1]||0,v[0]||0);}
+      const fb=t>0?Math.min(1,l/t):0;
+      if(window.__CPM_GLB_READY!==true)return {pronti:false,motivo:'regular',pct:+(0.05+0.75*fb).toFixed(3)};
+      if(!/^ready/.test(st))return {pronti:false,motivo:'cgtrader',pct:+(0.05+0.75*fb).toFixed(3)};
+      if(!window.__CPM_HYPER_COMPILED74)return {pronti:false,motivo:'compila',pct:0.85};
+      if(sr.current&&(sr.current._testePend232|0)>0)return {pronti:false,motivo:'testa',pct:0.9};
+      const c=_conta196();
+      if(c.noCg||c.tpose||c.proc)return {pronti:false,motivo:'corpi',pct:0.95,...c};
+      return {pronti:true,motivo:st,pct:1,...c};}catch(_e){return {pronti:false,motivo:'errore',pct:0};}};
+    try{window.__CPM_PRONTI196=_pronti196;}catch(_e){}
+    const _t196=()=>{try{const W=window.__CPM_T196W;if(!Array.isArray(W)||W.length>=(+window.__CPM_T196MAX||20000))return;
+      const P=propsRef.current||{};const sk=new Set(),pr=new Set();const out={t:+(performance.now()/1000).toFixed(2),ph:P.matchPhase||'',v:!!(window.__CPM_ATT196||window.__CPM_2D196),st:String(window.__CPM_HYPER_CASUAL_STATUS||''),cg:0,noCg:0,tpose:0,proc:0,chi:[]};
+      scene.traverseVisible(o=>{if(!o.isMesh)return;
+        if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);if(!_t196in(g))return;out.proc++;if(out.chi.length<6)out.chi.push('proc:'+(_t196ruolo(g)||'giocatore'));return;}
+        if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||!bs.length||sk.has(bs[0]))return;sk.add(bs[0]);/* un corpo = un insieme di ossa (i cloni danno a ogni mesh il suo oggetto Skeleton sulle stesse ossa) */
+        if(!_t196in(bs[0]))return;
+        let n=0,maxA=0;for(let i=0;i<bs.length;i++){const b=bs[i];if(!/^(upperarm|lowerarm|thigh|calf)_[lr]$/i.test(b.name||''))continue;const r=b.userData&&b.userData.rq196;if(!r)continue;_t196q.fromArray(r);const a=b.quaternion.angleTo(_t196q);if(a>maxA)maxA=a;n++;}
+        const cg=!!(o.userData&&o.userData.cg196);if(cg)out.cg++;else out.noCg++;
+        const tp=n>0&&maxA<0.105;if(tp)out.tpose++;
+        if((!cg||tp)&&out.chi.length<6)out.chi.push((cg?'cg':'nocg')+(tp?'-tpose':'')+':'+(_t196ruolo(o)||'giocatore')+':'+(o.name||'').slice(0,18));});
+      W.push(out);}catch(_e){}};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
     const _w232v=new THREE.Vector3();
@@ -1932,7 +1979,7 @@ function ThreeMatchView(props){
       /* Gli assistenti restano agganciati ai marker di bordo esistenti: la loro
          logica di posizione non cambia, sostituiamo esclusivamente la figura. */
       const _replaceAssistantsWithHyper=(pkg,assistants)=>{
-        if(!_hyperFull||!assistants||assistants.length!==2)return [];
+        if((!_hyperFull&&(typeof window!=='undefined'&&window.__CPM_NO_G196))||!assistants||assistants.length!==2)return [];/* [giro 196] anche nella modalita' predefinita: i guardalinee erano le ultime due figure procedurali in campo */
         const idleClip=(pkg.animations||[]).find(c=>c&&c.name==='idle')||null;if(!pkg||!pkg.scene||!idleClip)throw new Error('Hyper Casual assistant-referee clip is unavailable');
         const made=[];
         assistants.forEach((marker,index)=>{if(!marker)return;
@@ -2001,6 +2048,7 @@ function ThreeMatchView(props){
              (CGTrader ottimizzata) i bambini dell'ingresso restavano figure procedurali, mentre il ramo CH38 dei bambini e'
              spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
           if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
+          if(!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_G196)){try{const _ka=(_trioLod&&packages&&packages[2])||pkg;if(!_ka.animations||!_ka.animations.length)_ka.animations=pkg.animations;window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(_ka,list);const _ap=window.__CPM_HYPER_ASSISTANT_LIST;if(_ap)window.__CPM_HYPER_ASSISTANT_BUILDER(_ap);}catch(_e196a){try{console.warn('[CPM-196] guardalinee',_e196a&&_e196a.message);}catch(_e){}}}/* [giro 196 PO-449] guardalinee CGTrader (LOD leggero) anche fuori dalla modalita' «full». Rosso __CPM_NO_G196 */
           if(_hideBench293){try{const _kb=(_trioLod&&packages&&packages[2])||pkg;if(!_kb.animations||!_kb.animations.length)_kb.animations=pkg.animations;_replaceBenchWithCgtrader293(_kb);}catch(_e293){try{console.warn('[CPM-293] panchina fail',_e293&&_e293.message);}catch(_e){}try{benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
@@ -2507,7 +2555,7 @@ function ThreeMatchView(props){
       const _hcol=_HAIR[(Math.random()*_HAIR.length)|0];
       const hr=mk(new THREE.SphereGeometry(0.20,10,8),new THREE.MeshLambertMaterial({color:_hcol}),0,1.585,-0.012);hr.scale.set(1.05,0.84,1.10);// capelli folti (corona+nuca)
       g.scale.setScalar(hy/1.6);
-      g._ph=Math.random()*6.28;return g;};
+      g._ph=Math.random()*6.28;g.traverse(o=>{if(o.isMesh){o.userData.proc196=1;o._procG196=g;}});/* [giro 196] figura procedurale: la conta il testimone __CPM_T196W */return g;};
     // A) Arbitro principale — divisa nera, si muove con la palla
     const refMesh=mkFig(0x111111);scene.add(refMesh);
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
@@ -2543,7 +2591,7 @@ function ThreeMatchView(props){
     const _mascots=[];
     /* [7.911.0 — C11] `casa` dice di quale squadra e' il CALCIATORE accompagnato: il bambino indossa la divisa
        AVVERSARIA (com'e' sempre stato), e serve saperlo per vestirlo col kit giusto quando diventa un corpo CH38. */
-    const _mkMascot=(pmesh,kitInt,casa)=>{const c=mkFig(kitInt,1.04);c.visible=false;scene.add(c);_mascots.push({c,p:pmesh,casa:!!casa});};
+    const _mkMascot=(pmesh,kitInt,casa)=>{const c=mkFig(kitInt,1.04);c._mascot196=true;c.visible=false;scene.add(c);_mascots.push({c,p:pmesh,casa:!!casa});};
     _homeMeshes.forEach(m=>_mkMascot(m,_aColInt,true));_awayMeshes.forEach(m=>_mkMascot(m,_hColInt,false));
     try{window.__CPM_HYPER_MASCOT_LIST=_mascots;if(window.__CPM_HYPER_MASCOT_BUILDER)window.__CPM_HYPER_MASCOT_BUILDER(_mascots);}catch(_e){}
 
@@ -6773,6 +6821,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
+      if(isWalk&&!_wasWalk&&typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||window.__CPM_T196ON)&&!window.__CPM_2D196){try{if(!_pronti196().pronti)window.__CPM_ATT196=true;}catch(_e196){}}/* [giro 196] il primo fotogramma dell'ingresso non aspetta LiveMatch: se i corpi non sono pronti l'attesa parte qui (e il disegno si sospende) */
       if(isWalk&&!_wasWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))){sr.current._walkHoldT74=0;
         const _toTunnel=(m)=>{if(!m||m._wStartX==null)return;m.position.x=m._wStartX;m.position.z=m._wStartZ;m.position.y=0;m._px=m.position.x;m._pz=m.position.z;m._sp=0;m._idle=0;};
         sr.current.players.forEach(pp=>_toTunnel(pp.mesh));_toTunnel(hero);
@@ -6798,7 +6847,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
          aspettano al tunnel finche' il 3D e' pronto (__CPM_GLB_READY, lo stesso segnale del fischio d'inizio; tetto 10 s) e
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
-      const _hold74=isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10));
+      const _hold74=(isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10)))||(isWalk&&typeof window!=='undefined'&&window.__CPM_ATT196===true)/* [giro 196] la schermata d'attesa dei corpi (LiveMatch) tiene le squadre al tunnel finche' tutti sono CGTrader con clip */;
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){
@@ -12853,9 +12902,10 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       __w266c('R');
-      renderer.render(scene,camera);
+      if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
+      if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
     };
     loop();
 
