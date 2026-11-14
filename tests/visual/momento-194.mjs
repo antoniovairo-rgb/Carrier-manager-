@@ -108,14 +108,14 @@ try {
   if (fai('B')) {
     console.log('B) PO-410 · il riepilogo senza «Ok» sparisce alla prossima azione');
     for (const [flag, rosso] of [[null, false], ['__CPM_NO_G194B', true]]) {
-      const { page, errors } = await apri(salva(), flag);
+      const { page, errors } = await apri(salva(), flag, 375);
       const premuto = (await clicca(page, '[data-cpm="salta163-tasto"]')) && (await sleep(450), await clicca(page, '[data-cpm="salta163-vai"]'));
       const finita = premuto && await aspettaFine(page, 90000);
       await sleep(600);
       const leggi = () => page.evaluate(() => { const rp = document.querySelector('[data-cpm="salta163-riepilogo"]'); return rp ? { c: true, ok: [...rp.querySelectorAll('button')].some(b => /^ok$/i.test(b.innerText.trim())), t: rp.innerText.split('\n')[0] } : { c: false }; });
       const a = await leggi(); await sleep(2500); const b = await leggi();
-      if (!rosso && b.c) await page.screenshot({ path: path.join(FOTO, 'dopo-riepilogo-senza-ok-412.png') });
-      if (rosso && b.c) await page.screenshot({ path: path.join(FOTO, 'prima-riepilogo-con-ok-412.png') });
+      if (!rosso && b.c) await page.screenshot({ path: path.join(FOTO, 'dopo-riepilogo-senza-ok-375.png') });
+      if (rosso && b.c) await page.screenshot({ path: path.join(FOTO, 'prima-riepilogo-con-ok-375.png') });
       const passo = await page.evaluate(() => window.__CPM_CAREER.step()); await sleep(1500);
       const c = await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} return !!document.querySelector('[data-cpm="salta163-riepilogo"]'); });
       console.log(`    ${rosso ? 'rosso' : 'verde'}: corsa ${finita ? 'finita' : 'NON finita'} · riepilogo «${a.t || '-'}» presente ${a.c} · Ok ${a.ok} · dopo 2,5 s ${b.c} · azione «${passo}» → presente ${c}`);
