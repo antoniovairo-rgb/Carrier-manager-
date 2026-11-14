@@ -13510,6 +13510,12 @@ const _glbCache={};
        dopo (GLB asincroni) e per le luci animate.
    NON sceglie nessun colore: lo stesso esadecimale, deciso altrove (giri 168/171), appare uguale in tutte le scene.
    Rosso __CPM_NO_G178_COLORE: la funzione non fa nulla e ogni scena torna alla sua catena di prima. Guardiano npm run scene-178. */
+/* [giro 192 · PO-407 «la coppa taglia il viso, non e' tra le mani»] LA PRESA DELLA COPPA E' UNA SOLA, per podio e parata: le mani
+   stringono i manici (base = mani - presa) e il VOLTO (mento = sommita' - 0,30 .. sommita') non si copre mai: mani alte -> coppa sopra la
+   testa, mani basse -> coppa sotto il mento. Era la regola del podio (7.997, _ALZA24); la parata non l'aveva. Tutte le quote nello stesso
+   riferimento verticale; basso/alto = punto piu' basso/alto del trofeo rispetto alla sua base. */
+function presaCoppa192(o){let b=o.mani-o.presa;const mento=o.testa-0.30;
+  if(b+o.alto>mento&&b+o.basso<o.testa){if(o.mani>=o.testa-0.35)b=o.testa+0.03-o.basso;else b=mento-o.alto;}return b;}
 const SVIL178={expo:0.52};
 /* guadagno di luce per scena (vedi sopra): tarato MISURANDO la luminanza media prima/dopo (docs/sviluppo/RAPPORTO-giro178.md) */
 const LUCE178={intro:1,presentazione:2.3,parata:4.0,gala:2.2};/* regola: il guadagno piu' piccolo che lascia la luminanza media >= 90% di prima (misure cal1-cal3) */
@@ -23902,7 +23908,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              sequenza calma consegna -> capitano -> l'eroe alza la coppa sul podio -> foto di gruppo; il capitano e' il primo
              compagno di movimento, esce dal gruppo che festeggia e va al podio. Rosso __CPM_NO_PREMIO23. */
           const _team23=!(typeof window!=='undefined'&&window.__CPM_NO_PREMIO23)&&_ck422!=="promo"&&_ck422!=="bigwin"&&!(P.ceremony&&P.ceremony.light);
-          const _cap23=_team23?(_cel.shift()||null):null;
+          /* [giro 192 · PO-404] se l'eroe E' il capitano non c'e' un altro capitano: la coppa la prende lui e gli resta in mano. Rosso __CPM_NO_G192B */
+          const _g192b=!(typeof window!=='undefined'&&window.__CPM_NO_G192B);
+          const _eroeCap192=_g192b&&_team23&&!!(propsRef.current.heroCaptain||(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_EROE_CAPITANO192));
+          const _cap23=(_team23&&!_eroeCap192)?(_cel.shift()||null):null;
           const _cSgn=(propsRef.current.heroStandHome===false)?-1:1;sr.current._cerSgn=_cSgn;/* [7.278.0 collaudo PO «il festeggiamento del trofeo deve avvenire sotto la curva dei propri tifosi»] La Curva Sud (x=+) ospita i tifosi della squadra di CASA REALE (lato-tribuna, lezione 7.52.2): in trasferta i tuoi stanno nella curva opposta, e il giro di campo andava sotto quella sbagliata. */
           const _NC=Math.max(1,_cel.length),CURVA_X=_cSgn*(AWAY_GOAL_X-6);
           /* [7.425.0 EVOLUTIVA CELEBRAZIONI — direttiva PO «ogni grande traguardo deve essere un
@@ -23927,8 +23936,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_ck422==="bigwin")_bs=[_mk("burst",2.4),_mk("hug",2.8),_mk("fest",3.0)];
             else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];
             if(_team23){/* [giro 47 · PO-002 + PO-150 «differenziarle»] PREMIAZIONE DI SQUADRA PER COMPETIZIONE: il capitano alza la coppa e la PASSA all'eroe (beat `pass`, rosso __CPM_NO_PASSA137); lo scudetto chiude con la festa sul palco, la coppa (cerimonia formale) si chiude sul sollevamento lungo, la Nazionale festeggia sul palco e chiude con l'alzata. MISURATO e scartato nei provini GLB: la corsa sotto la curva (eroe in scivolata, mani a 0,1, coppa sotto il prato), l'abbraccio del mister (eroe in ginocchio con la coppa a terra, mister ancora dietro il palco), il CT prima della consegna (coppa eroe-capitano-eroe) (rosso del copione unico __CPM_NO_VARIA137) */
-              const _w=(typeof window!=="undefined")?window:{},_pa=!_w.__CPM_NO_PASSA137?[_mk("pass",2.6)]:[];
+              const _w=(typeof window!=="undefined")?window:{},_pa=(!_w.__CPM_NO_PASSA137&&!_eroeCap192)?[_mk("pass",2.6)]:[];
               if(_w.__CPM_NO_VARIA137)_bs=[_mk("present",3.0),_mk("captain",3.4)].concat(_pa,[_mk("lift",3.8),_mk("fest",3.6)]);
+              else if(_eroeCap192)_bs=[_mk("present",3.4)].concat(_ck422==="cup"?[_mk("lift",5.2)]:_ck422==="int"?[_mk("fest",3.4),_mk("lift",4.4)]:[_mk("lift",3.8),_mk("fest",3.6)]);/* [giro 192] eroe capitano: la prende lui dal palco e la alza */
               else if(_ck422==="cup")_bs=[_mk("present",3.4),_mk("captain",3.4)].concat(_pa,[_mk("lift",5.2)]);
               else if(_ck422==="int")_bs=[_mk("present",2.8),_mk("captain",3.2)].concat(_pa,[_mk("fest",3.4),_mk("lift",4.4)]);
               else _bs=[_mk("present",3.0),_mk("captain",3.4)].concat(_pa,[_mk("lift",3.8),_mk("fest",3.6)]);}/* [24/09 POC] premiazione di squadra: niente burst/hug/lap/curva *//* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
@@ -24330,6 +24340,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            sr.current._pv80={x:hero.position.x,z:hero.position.z};}
           const _muove80=!(typeof window!=='undefined'&&window.__CPM_NO_VOLO80)&&(sr.current._cv80||0)>1.5&&!_onPodium;
           sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)&&!_muove80?(_armsUp?1:2):0;
+          if(_eroeCap192&&_bk==="present"&&(sr.current._grab192k!==_SC||(sr.current._grab192||0)<1))sr.current._cerLift=0;/* [giro 192] l'eroe-capitano tiene le braccia giu' finche' non ha preso la coppa dal piedistallo */
           const _liftU=Math.min(_ct/1.5,1);
           let _thSet=false;
           try{const _hAv=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;
@@ -24359,6 +24370,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _top24=hero.position.y+sr.current._hh24;
             const _hands24=trophyGrp.position.y-0.10,_hi24=(_lg24?0.69:1.25)*_sc24,_chin24=_top24-0.30;
             let _base24=_hands24-_grip24;/* le mani stringono i manici */
+            if(typeof presaCoppa192==='function')_base24=presaCoppa192({mani:_hands24,presa:_grip24,basso:_low24,alto:_hi24,testa:_top24});/* [giro 192] la stessa regola della parata (src/11): identica a quella qui sotto, che resta come ripiego */
             /* il VOLTO (mento..sommita') non si copre mai: mani alte -> coppa sopra la testa, mani basse -> coppa davanti al petto, sotto il mento */
             if(_base24+_hi24>_chin24&&_base24+_low24<_top24){if(_hands24>=_top24-0.35)_base24=_top24+0.03-_low24;else _base24=_chin24-_hi24;}
             trophyGrp.position.y=_base24;
@@ -24395,6 +24407,42 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_bk==="lift"||_bk==="fest"){const _hy=Math.atan2(-_cSgn*10-hero.position.x,8-hero.position.z);hero.rotation.y=_hy;try{const _hAv=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_hAv&&_hAv.root)_hAv.root.rotation.y=_hy;}catch(_eH){}}/* la foto: l'eroe alza la coppa GUARDANDO la camera, non di spalle */
             try{const _cA=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);let _my=null;if(_cA&&_cA._handL&&_cA._handR){const _q=sr.current._thv3||(sr.current._thv3=new THREE.Vector3());_q.setFromMatrixPosition(_cA._handL.matrixWorld);_my=_q.y;_q.setFromMatrixPosition(_cA._handR.matrixWorld);_my=+((_my+_q.y)/2).toFixed(2);}
               window.__CPM_PREMIO23={beat:_bk,capitano:!!_cap23,ry:+podiumGrp.rotation.y.toFixed(3),rett:!!podiumGrp._rett24,tx:+_cT.x.toFixed(2),tz:+_cT.z.toFixed(2),x:+_cap23.position.x.toFixed(2),z:+_cap23.position.z.toFixed(2),maniY:_my,esu:_cA?+(_cA._esu31||0).toFixed(2):null,gesto:_cA?(_cA._gName||null):null,clipLift:!!(_cA&&_cA.gestures&&_cA.gestures.lift)};}catch(_e){}}
+          /* [giro 192 · PO-404 «la coppa all'inizio non deve volare: e' il capitano che la deve prendere e solo dopo la passa all'eroe»]
+             MISURATO (testimone __CPM_G192B, sonda cerimonie-192): nella consegna la coppa partiva dal centro del podio e VOLAVA per 2,7u
+             fino alle mani dell'EROE (ultimo 40% di `present`), poi al 25% di `captain` saltava in un fotogramma alle mani del capitano
+             (1,2u) e solo dopo tornava all'eroe col passaggio. Ora la coppa aspetta FERMA sul bordo del palco davanti a chi la ritira, il
+             capitano (o l'eroe, se il capitano e' lui) la prende con le mani a un passo di distanza, e il passaggio capitano->eroe resta
+             quello del giro 47. Rosso __CPM_NO_G192B. */
+          if(_g192b&&_team23&&trophyGrp.visible&&(_bk==="present"||_bk==="captain")){try{
+            /* chi la ritira e dove stara': il capitano accanto all'eroe sul fronte del palco (stessa formula del giro 47), oppure l'eroe.
+               MISURATO alla prima stesura: appoggiata sul BORDO del palco la coppa restava a 1,7u dalle mani del capitano, perche' la
+               regola del 191 tiene i corpi fuori dal gradino. Sta su un PIEDISTALLO (come nelle premiazioni vere, il tavolo del trofeo)
+               mezzo metro davanti a chi la ritira, e la presa parte quando le mani sono a portata (0,75u), non a un'ora fissa. */
+            const _ry=Math.atan2(_cSgn*0.781,-0.625),_c=Math.cos(_ry),_s=Math.sin(_ry);
+            const _hx=-_cSgn*2.3,_hz=1.4,_hl=_hx*_c-_hz*_s,_hlz=_hx*_s+_hz*_c;
+            const _ql=_cap23?_hl+1.25:_hl,_qz=_hlz+(_hlz<0?0.5:-0.5);
+            const _R={x:_ql*_c+_qz*_s,z:-_ql*_s+_qz*_c};const _top=1.05,_ry0=_top-0.25*(trophyGrp.scale.y||0.62);
+            if(!sr.current._ped192){const _pg=new THREE.Group();const _pm=new THREE.MeshLambertMaterial({color:0x1d1a28});
+              const _col=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.26,_top-0.06,16),_pm);_col.position.y=(_top-0.06)/2;_pg.add(_col);
+              const _tp=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.06,20),_goldMat);_tp.position.y=_top-0.03;_pg.add(_tp);
+              scene.add(_pg);sr.current._ped192=_pg;}
+            sr.current._ped192.visible=true;sr.current._ped192.position.set(_R.x,0,_R.z);sr.current._ped192._on=_SC;
+            const _who=_cap23||hero;let _M=null;const _wA=(glbAvatars||[]).find(a=>a&&a.proc===_who);
+            if(_wA&&_wA._handL&&_wA._handR){const _w1=sr.current._thv1||(sr.current._thv1=new THREE.Vector3()),_w2=sr.current._thv2||(sr.current._thv2=new THREE.Vector3());
+              _w1.setFromMatrixPosition(_wA._handL.matrixWorld);_w2.setFromMatrixPosition(_wA._handR.matrixWorld);_M={x:(_w1.x+_w2.x)/2,y:(_w1.y+_w2.y)/2+0.10,z:(_w1.z+_w2.z)/2};}
+            else _M={x:_who.position.x,y:_who.position.y+1.75,z:_who.position.z+0.1};
+            const _turno=_cap23?(_bk==="captain"):(_bk==="present"&&_bp>0.55);
+            if(sr.current._grab192k!==_SC){sr.current._grab192k=_SC;sr.current._grab192=0;}
+            const _vic=Math.hypot(_M.x-_R.x,_M.y-(_ry0+0.3),_M.z-_R.z)<0.75;
+            if(_turno&&(_vic||sr.current._grab192>0||(_cap23?_bp>0.45:_bp>0.85)))sr.current._grab192=Math.min(1,sr.current._grab192+aDt/0.35);
+            const _u=sr.current._grab192,_w=_u*_u*(3-2*_u);
+            trophyGrp.position.set(_R.x+(_M.x-_R.x)*_w,_ry0+(_M.y-_ry0)*_w,_R.z+(_M.z-_R.z)*_w);
+            sr.current._rest192=_w<1e-3;}catch(_e192){}}
+          else if(sr.current._ped192&&(!_team23||(_bk!=="present"&&_bk!=="captain")))sr.current._ped192.visible=(_g192b&&_team23&&(_bk==="pass"||_bk==="lift"||_bk==="fest"));/* il piedistallo resta in scena, vuoto, dopo la presa */
+          if(!(_g192b&&_team23&&trophyGrp.visible&&(_bk==="present"||_bk==="captain")))sr.current._rest192=false;
+          if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 192] testimone: coppa e mani di eroe e capitano nello stesso fotogramma */
+            const _W=window.__CPM_G192B||(window.__CPM_G192B={fr:[]});if(_W.fr.length<900){const _mm=(m)=>{const a=m&&(glbAvatars||[]).find(x=>x&&x.proc===m);if(!a||!a._handL||!a._handR)return null;const v1=new THREE.Vector3().setFromMatrixPosition(a._handL.matrixWorld),v2=new THREE.Vector3().setFromMatrixPosition(a._handR.matrixWorld);return [+((v1.x+v2.x)/2).toFixed(3),+((v1.y+v2.y)/2+0.10).toFixed(3),+((v1.z+v2.z)/2).toFixed(3)];};
+              _W.fr.push({b:_bk,bp:+_bp.toFixed(3),t:[+trophyGrp.position.x.toFixed(3),+trophyGrp.position.y.toFixed(3),+trophyGrp.position.z.toFixed(3)],e:_mm(hero),c:_cap23?_mm(_cap23):null,r:!!sr.current._rest192,cap:!!_cap23});}}catch(_e){}}
           trophyGrp.rotation.y+=aDt*1.3;
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
           /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
@@ -24486,7 +24534,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             fwMat.opacity=1;fwActive=true;fwT=0;
             goalBurstLight.position.set(_fx,_fy,_fz);goalBurstLight.intensity=_ck422==="euro"?4.2:3.2;}
           if(goalBurstLight.intensity>0.05)goalBurstLight.intensity*=(1-aDt*1.8);
-        } else if(ceremonyT>=0){ceremonyT=-1;sr.current._capLift137=null;if(sr.current._capMesh137){sr.current._capMesh137._capVit137=false;sr.current._capMesh137=null;}trophyGrp.visible=false;trophyGrp.position.y=-50;podiumGrp.visible=false;sr.current._cerLift=0;sr.current._cer425=null;sr.current._cerCam=null;if(sr.current._cerCoachGrp)sr.current._cerCoachGrp.visible=false;if(sr.current._cerFlags426)sr.current._cerFlags426.visible=false;try{ball.visible=true;ballHalo.visible=true;}catch(_e429b){}if(sr.current._cerPhones429)sr.current._cerPhones429.visible=false;/* [7.425.0/7.426.0/7.429.0] script, regia, mister, bandiere e telefonini non sopravvivono alla cerimonia; il pallone torna */}
+        } else if(ceremonyT>=0){ceremonyT=-1;if(sr.current._ped192)sr.current._ped192.visible=false;sr.current._capLift137=null;if(sr.current._capMesh137){sr.current._capMesh137._capVit137=false;sr.current._capMesh137=null;}trophyGrp.visible=false;trophyGrp.position.y=-50;podiumGrp.visible=false;sr.current._cerLift=0;sr.current._cer425=null;sr.current._cerCam=null;if(sr.current._cerCoachGrp)sr.current._cerCoachGrp.visible=false;if(sr.current._cerFlags426)sr.current._cerFlags426.visible=false;try{ball.visible=true;ballHalo.visible=true;}catch(_e429b){}if(sr.current._cerPhones429)sr.current._cerPhones429.visible=false;/* [7.425.0/7.426.0/7.429.0] script, regia, mister, bandiere e telefonini non sopravvivono alla cerimonia; il pallone torna */}
         // [7.31.0 direttiva PO] CALCI DI RIGORE 3D dal dischetto (turni KO pareggiati) — scena guidata dal
         //   prop shootout.kick {key,side,dir,high,scored,wide}: porta AWAY (x=+46), spot a ~11u; run-up del
         //   kicker (eroe sui tuoi, un avversario vero sui loro), volo palla in rete/parata/fuori, tuffo del
@@ -42300,7 +42348,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={_tempo143}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} heroCaptain={!!(player&&player.isCaptain)}/* [giro 192 PO-404] se l'eroe e' il capitano la coppa resta a lui */ shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
                   if(mw>=7||_isNeutralFinal){const _bmPool=_isNeutralFinal
@@ -45433,8 +45481,15 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       const pts=new THREE.Points(g,m);worldGrp.add(pts);smokes.push({g,sp,sv,n,sx,sz});}
     /* IL PULLMAN SCOPERTO (fermo in scena: il mondo gli scorre incontro) */
     const bus=new THREE.Group();
-    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),_N23?new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex),roughness:0.42,metalness:0.18}):new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);
-    if(_N23){const _low=new THREE.Mesh(new THREE.BoxGeometry(6.44,1.5,16.04),new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex).multiplyScalar(0.55),roughness:0.5,metalness:0.2}));_low.position.y=1.55;bus.add(_low);}/* fascia bassa scura: la livrea ha un disegno, non una tinta sola */
+    /* [giro 192 · PO-407 «colore sbiadito del pullman»] MISURATO (cerimonie-192 D, pixel della fiancata, FC Merseyside #dc2626): saturazione
+       0,57 contro 0,83 del colore del club, luminosita' 1,0 (bruciata), tono spostato di 18° verso l'arancio. La causa e' l'ESPOSIZIONE: la
+       parata moltiplica le luci per 4 (LUCE178.parata, tarato sulla luminanza MEDIA della scena notturna) e la livrea piena, la superficie
+       piu' grande e piu' illuminata, finisce oltre il bianco dove ACES la sbianca. La livrea si scrive gia' in lineare e scalata (k=_LIV192)
+       per la luce che riceve: il colore resta quello del club, la scena resta luminosa. Rosso __CPM_NO_G192D. */
+    const _g192d=!(typeof window!=='undefined'&&window.__CPM_NO_G192D),_LIV192=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_LIV192)?+window.__CPM_LIV192:0.3;
+    const _liv192=(m,mul)=>{if(!_g192d||!m||!m.color)return m;m.color=new THREE.Color(homeHex).convertSRGBToLinear().multiplyScalar(_LIV192*(mul||1));if(m.userData)m.userData._c178=m.color.getHex();if('metalness' in m)m.metalness=0;return m;};
+    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),_N23?new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex),roughness:0.42,metalness:0.18}):new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);_liv192(body.material);
+    if(_N23){const _low=new THREE.Mesh(new THREE.BoxGeometry(6.44,1.5,16.04),new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex).multiplyScalar(0.55),roughness:0.5,metalness:0.2}));_liv192(_low.material,0.55*0.55);_low.position.y=1.55;bus.add(_low);}/* fascia bassa scura: la livrea ha un disegno, non una tinta sola */
     const band=new THREE.Mesh(new THREE.BoxGeometry(6.45,1.1,16.05),new THREE.MeshLambertMaterial({color:0x1c2230}));band.position.y=3.4;bus.add(band);
     /* [7.429.0 collaudo PO «pullman scoperto che sembra uno scatolo di scarpe»] IL MUSETTO E I DETTAGLI:
        parabrezza inclinato, mascherina e fari a prua, paraurti, MONTANTI sulla fascia finestrini (la
@@ -45448,7 +45503,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       for(const _hx of [-2.2,2.2]){const _hl=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.38,0.1),new THREE.MeshLambertMaterial({color:0xfff4c8,emissive:0xd9c26a}));_hl.position.set(_hx,1.75,8.09);bus.add(_hl);}
       const _bum=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.5,0.3),new THREE.MeshLambertMaterial({color:0x11151d}));_bum.position.set(0,1.1,8.05);bus.add(_bum);
       const _bum2=_bum.clone();_bum2.position.z=-8.05;bus.add(_bum2);
-      for(let _pi=0;_pi<5;_pi++){for(const _sx of [-3.24,3.24]){const _pl2=new THREE.Mesh(new THREE.BoxGeometry(0.02,1.14,0.22),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));_pl2.position.set(_sx,3.4,-6.4+_pi*3.2);bus.add(_pl2);}}
+      for(let _pi=0;_pi<5;_pi++){for(const _sx of [-3.24,3.24]){const _pl2=new THREE.Mesh(new THREE.BoxGeometry(0.02,1.14,0.22),_liv192(new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)})));_pl2.position.set(_sx,3.4,-6.4+_pi*3.2);bus.add(_pl2);}}
       for(const _sx of [-3.3,3.3]){const _mir=new THREE.Mesh(new THREE.BoxGeometry(0.14,0.5,0.3),new THREE.MeshLambertMaterial({color:0x1a1f2a}));_mir.position.set(_sx,4.3,7.6);bus.add(_mir);}
       const _skirt=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.35,16.1),new THREE.MeshLambertMaterial({color:new THREE.Color(awayHex)}));_skirt.position.y=0.95;bus.add(_skirt);
     }catch(_e429p){}
@@ -45529,7 +45584,10 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       /* [24/09 POC] la squadra sul tetto con gli STESSI corpi CGTrader degli highlight e della premiazione: l'eroe (davanti, al
          centro) alza la coppa sopra la testa, gli altri salutano con le braccia (clip «throwin» tenuta attorno all'apice, fasi
          diverse per uomo: mai un plotone sincronizzato). Postura corretta come in partita. Senza il file: gli omini di prima. */
-      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+      /* [giro 192 · PO-407] +cgtrader-clip-po: l'eroe sul tetto alza la coppa con la STESSA posa del podio (mx-victory al 45%, misurata nel
+         giro 191: in piedi, braccia tese sopra la testa). La clip «throwin» all'apice e' la rimessa laterale: mani DIETRO la testa e gomiti
+         piegati — la coppa finiva sul viso. Rosso __CPM_NO_G192D. */
+      Promise.all([loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb'),(!(typeof window!=='undefined'&&window.__CPM_NO_G192D))?loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null):Promise.resolve(null)]).then(([pkg,po192])=>{
         const _A=n=>pkg&&(pkg.animations||[]).find(c=>c&&c.name===n);const clip0=_A('throwin'),idle0=_A('idle');
         if(!pkg||!clip0||!idle0){placeMen(mkFallback);return;}
         /* la POSA: gambe e busto dall'idle (in piedi, fermi), BRACCIA dal throwin (sopra la testa). Le due clip sono filtrate per
@@ -45547,8 +45605,10 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
               if(hd&&hs.length===2){let best=-1e9;const va=new THREE.Vector3(),vb=new THREE.Vector3();
                 for(let k=0;k<=40;k++){const tt=clip.duration*k/40;act.time=tt;mx.update(0);av.updateMatrixWorld(true);hd.getWorldPosition(va);let m=1e9;for(const h of hs){h.getWorldPosition(vb);m=Math.min(m,vb.y-va.y);}if(m>best){best=m;apice=tt;}}
                 try{if(window.__CPM_PARATA)window.__CPM_PARATA.apice23=+(apice/clip.duration).toFixed(3);}catch(_e){}}}catch(_e){}}
-          av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;}
-        men.forEach(m=>{if(m._cg23)m._cg23.apice=apice;});
+          av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;
+          if(eroe){av._alt192=1.78+R(i*31)*0.12;try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
+          if(eroe&&po192){try{const _vc=(po192.animations||[]).find(c=>c&&c.name==='mx-victory');if(_vc){act.stop();ia.stop();const _va=mx.clipAction(_vc);_va.play();_va.paused=true;_va.time=_vc.duration*0.45;mx.update(0);av._cg23.act=_va;av._cg23.d=_vc.duration;av._cg23.vit192=_vc.duration*0.45;}}catch(_e){}}}
+        men.forEach(m=>{if(m._cg23)m._cg23.apice=(m._cg23.vit192!=null)?m._cg23.vit192:apice;});
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
           cped.visible=false;}
         cup.position.set(0,5.75,7.0);bus.add(cup);
@@ -45611,6 +45671,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         :new THREE.PointsMaterial({color:_cfCols[_ci],size:0.34-_ci*0.07,transparent:true,opacity:0.95,depthWrite:false});
       const _pts=new THREE.Points(cgs[_ci],cm);_pts.renderOrder=2;scene.add(_pts);}
     try{if(typeof window!=="undefined")window.__CPM_PARATA={men:NM,glb:false,euro:!!euroWin,v:2};}catch(_e){}
+    try{if(typeof window!=="undefined"&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARATA){window.__CPM_PARATA.bus=bus;window.__CPM_PARATA.cam=cam;window.__CPM_PARATA.cup=cup;window.__CPM_PARATA.homeHex=homeHex;window.__CPM_PARATA.eroe=()=>eroe23;}}catch(_e){}/* [giro 192] solo collaudo: pullman, camera, coppa ed eroe per le misure di cerimonie-192 */
     /* REGIA: tre inquadrature che si alternano con blend morbido */
     const SHOTS=[
       {p:[8.5,9.6,24],a:[0,4.3,-8]},      /* tre-quarti frontale «da telegiornale» */
@@ -45651,14 +45712,30 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
            scalata al 40% dell'altezza dell'eroe (la coppa europea vera misura ~74 cm su un uomo di 1,84 m), e
            impugnata per i MANICI (piatto di campionato: per il centro). Testimone __CPM_COPPA24 = altezza
            coppa / altezza eroe. Rosso __CPM_NO_COPPA24 = aggancio storico. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA24)){
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_G192D)&&eroe23._testa192&&typeof presaCoppa192==='function'){
+          /* [giro 192 · PO-407] la presa unica (presaCoppa192, la stessa del podio): manici alle mani, volto mai coperto */
+          /* proporzione del PODIO (0,31x l'eroe, 7.997): a 0,40x il corpo della coppa sotto i manici era piu' lungo del margine fra mani e
+             testa, e per non coprire il viso la coppa saliva 0,24 sopra le mani (misurato) — non era piu' «fra le mani» */
+          const _alt=euroWin?1.36:1.54,_s=Math.min(_TSC453,(0.31*(eroe23._alt192||1.84))/_alt);
+          if(cped.visible)cped.visible=false;cup._spin429.scale.setScalar(_s);
+          const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s),_lo=euroWin?0.2+0.225*_s:0.2+0.29*_s,_hi=euroWin?0.2+1.58*_s:0.2+1.61*_s;
+          eroe23._testa192.getWorldPosition(_v23b);bus.worldToLocal(_v23b);
+          cup.position.set(_v23a.x,presaCoppa192({mani:_v23a.y,presa:_pres,basso:_lo,alto:_hi,testa:_v23b.y+0.16}),_v23a.z);
+          if(typeof window!=='undefined')window.__CPM_COPPA24=+((_alt*_s)/(eroe23._alt192||1.84)).toFixed(3);
+        }else if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA24)){
           if(eroe23._h24==null){try{const _b=new THREE.Box3().setFromObject(eroe23);eroe23._h24=Math.max(1.2,(_b.max.y-_b.min.y)/Math.max(1e-3,bus.scale.y||1));}catch(_e){eroe23._h24=1.84;}}
           const _alt=euroWin?1.36:1.54,_s=Math.min(_TSC453,(0.40*eroe23._h24)/_alt);
           if(cped.visible)cped.visible=false;cup._spin429.scale.setScalar(_s);
           const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s);
           cup.position.set(_v23a.x,_v23a.y-_pres,_v23a.z);
           if(typeof window!=='undefined')window.__CPM_COPPA24=+((_alt*_s)/eroe23._h24).toFixed(3);
-        }else cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);}catch(_e){}}
+        }else cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);
+        if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARATA&&eroe23._testa192){try{/* [giro 192] testimone della presa, nei due bracci: viso coperto, mani sopra la testa, scarto manici-mani, gomiti */
+          const T=THREE,_w=(o)=>{const v=new T.Vector3();o.getWorldPosition(v);bus.worldToLocal(v);return v;};const _s=cup._spin429.scale.x;
+          const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s),_lo=euroWin?0.2+0.225*_s:0.2+0.29*_s,_hi=euroWin?0.2+1.58*_s:0.2+1.61*_s;
+          const _top=_w(eroe23._testa192).y+0.16,_b=cup.position.y,_g=(u,l,h)=>{if(!u||!l||!h)return null;const a=_w(u),e=_w(l),m=_w(h);return +(a.sub(e).angleTo(m.sub(e))*180/Math.PI).toFixed(1);};
+          window.__CPM_PARATA.d192={faccia:+Math.max(0,Math.min(_b+_hi,_top)-Math.max(_b+_lo,_top-0.30)).toFixed(3),sopra:+(_v23a.y-_top).toFixed(3),presa:+Math.abs(_b+_pres-_v23a.y).toFixed(3),gomL:_g(eroe23._uaL,eroe23._laL,eroe23._hdL),gomR:_g(eroe23._uaR,eroe23._laR,eroe23._hdR)};}catch(_e){}}
+        }catch(_e){}}
       if(folla23.length){const q=(Math.floor(el2*60))%4;folla23.forEach(F=>{const o=F.o;for(let i=q;i<F.n;i+=4){const p=F.P[i],j=Math.abs(Math.sin(el2*3.2+p.ph))*0.35;
           o.position.set(p.x,p.h*0.55+0.25+j,p.z);o.scale.set(1,p.h,1);o.rotation.set(0,0,0);o.updateMatrix();F.bodyM.setMatrixAt(i,o.matrix);
           o.position.set(p.x,p.h*1.15+0.45+j,p.z);o.scale.set(1,1,1);o.updateMatrix();F.headM.setMatrixAt(i,o.matrix);

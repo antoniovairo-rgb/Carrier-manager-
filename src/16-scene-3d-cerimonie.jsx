@@ -1733,8 +1733,15 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       const pts=new THREE.Points(g,m);worldGrp.add(pts);smokes.push({g,sp,sv,n,sx,sz});}
     /* IL PULLMAN SCOPERTO (fermo in scena: il mondo gli scorre incontro) */
     const bus=new THREE.Group();
-    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),_N23?new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex),roughness:0.42,metalness:0.18}):new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);
-    if(_N23){const _low=new THREE.Mesh(new THREE.BoxGeometry(6.44,1.5,16.04),new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex).multiplyScalar(0.55),roughness:0.5,metalness:0.2}));_low.position.y=1.55;bus.add(_low);}/* fascia bassa scura: la livrea ha un disegno, non una tinta sola */
+    /* [giro 192 · PO-407 «colore sbiadito del pullman»] MISURATO (cerimonie-192 D, pixel della fiancata, FC Merseyside #dc2626): saturazione
+       0,57 contro 0,83 del colore del club, luminosita' 1,0 (bruciata), tono spostato di 18° verso l'arancio. La causa e' l'ESPOSIZIONE: la
+       parata moltiplica le luci per 4 (LUCE178.parata, tarato sulla luminanza MEDIA della scena notturna) e la livrea piena, la superficie
+       piu' grande e piu' illuminata, finisce oltre il bianco dove ACES la sbianca. La livrea si scrive gia' in lineare e scalata (k=_LIV192)
+       per la luce che riceve: il colore resta quello del club, la scena resta luminosa. Rosso __CPM_NO_G192D. */
+    const _g192d=!(typeof window!=='undefined'&&window.__CPM_NO_G192D),_LIV192=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_LIV192)?+window.__CPM_LIV192:0.3;
+    const _liv192=(m,mul)=>{if(!_g192d||!m||!m.color)return m;m.color=new THREE.Color(homeHex).convertSRGBToLinear().multiplyScalar(_LIV192*(mul||1));if(m.userData)m.userData._c178=m.color.getHex();if('metalness' in m)m.metalness=0;return m;};
+    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),_N23?new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex),roughness:0.42,metalness:0.18}):new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);_liv192(body.material);
+    if(_N23){const _low=new THREE.Mesh(new THREE.BoxGeometry(6.44,1.5,16.04),new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex).multiplyScalar(0.55),roughness:0.5,metalness:0.2}));_liv192(_low.material,0.55*0.55);_low.position.y=1.55;bus.add(_low);}/* fascia bassa scura: la livrea ha un disegno, non una tinta sola */
     const band=new THREE.Mesh(new THREE.BoxGeometry(6.45,1.1,16.05),new THREE.MeshLambertMaterial({color:0x1c2230}));band.position.y=3.4;bus.add(band);
     /* [7.429.0 collaudo PO «pullman scoperto che sembra uno scatolo di scarpe»] IL MUSETTO E I DETTAGLI:
        parabrezza inclinato, mascherina e fari a prua, paraurti, MONTANTI sulla fascia finestrini (la
@@ -1748,7 +1755,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       for(const _hx of [-2.2,2.2]){const _hl=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.38,0.1),new THREE.MeshLambertMaterial({color:0xfff4c8,emissive:0xd9c26a}));_hl.position.set(_hx,1.75,8.09);bus.add(_hl);}
       const _bum=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.5,0.3),new THREE.MeshLambertMaterial({color:0x11151d}));_bum.position.set(0,1.1,8.05);bus.add(_bum);
       const _bum2=_bum.clone();_bum2.position.z=-8.05;bus.add(_bum2);
-      for(let _pi=0;_pi<5;_pi++){for(const _sx of [-3.24,3.24]){const _pl2=new THREE.Mesh(new THREE.BoxGeometry(0.02,1.14,0.22),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));_pl2.position.set(_sx,3.4,-6.4+_pi*3.2);bus.add(_pl2);}}
+      for(let _pi=0;_pi<5;_pi++){for(const _sx of [-3.24,3.24]){const _pl2=new THREE.Mesh(new THREE.BoxGeometry(0.02,1.14,0.22),_liv192(new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)})));_pl2.position.set(_sx,3.4,-6.4+_pi*3.2);bus.add(_pl2);}}
       for(const _sx of [-3.3,3.3]){const _mir=new THREE.Mesh(new THREE.BoxGeometry(0.14,0.5,0.3),new THREE.MeshLambertMaterial({color:0x1a1f2a}));_mir.position.set(_sx,4.3,7.6);bus.add(_mir);}
       const _skirt=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.35,16.1),new THREE.MeshLambertMaterial({color:new THREE.Color(awayHex)}));_skirt.position.y=0.95;bus.add(_skirt);
     }catch(_e429p){}
@@ -1829,7 +1836,10 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       /* [24/09 POC] la squadra sul tetto con gli STESSI corpi CGTrader degli highlight e della premiazione: l'eroe (davanti, al
          centro) alza la coppa sopra la testa, gli altri salutano con le braccia (clip «throwin» tenuta attorno all'apice, fasi
          diverse per uomo: mai un plotone sincronizzato). Postura corretta come in partita. Senza il file: gli omini di prima. */
-      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+      /* [giro 192 · PO-407] +cgtrader-clip-po: l'eroe sul tetto alza la coppa con la STESSA posa del podio (mx-victory al 45%, misurata nel
+         giro 191: in piedi, braccia tese sopra la testa). La clip «throwin» all'apice e' la rimessa laterale: mani DIETRO la testa e gomiti
+         piegati — la coppa finiva sul viso. Rosso __CPM_NO_G192D. */
+      Promise.all([loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb'),(!(typeof window!=='undefined'&&window.__CPM_NO_G192D))?loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null):Promise.resolve(null)]).then(([pkg,po192])=>{
         const _A=n=>pkg&&(pkg.animations||[]).find(c=>c&&c.name===n);const clip0=_A('throwin'),idle0=_A('idle');
         if(!pkg||!clip0||!idle0){placeMen(mkFallback);return;}
         /* la POSA: gambe e busto dall'idle (in piedi, fermi), BRACCIA dal throwin (sopra la testa). Le due clip sono filtrate per
@@ -1847,8 +1857,10 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
               if(hd&&hs.length===2){let best=-1e9;const va=new THREE.Vector3(),vb=new THREE.Vector3();
                 for(let k=0;k<=40;k++){const tt=clip.duration*k/40;act.time=tt;mx.update(0);av.updateMatrixWorld(true);hd.getWorldPosition(va);let m=1e9;for(const h of hs){h.getWorldPosition(vb);m=Math.min(m,vb.y-va.y);}if(m>best){best=m;apice=tt;}}
                 try{if(window.__CPM_PARATA)window.__CPM_PARATA.apice23=+(apice/clip.duration).toFixed(3);}catch(_e){}}}catch(_e){}}
-          av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;}
-        men.forEach(m=>{if(m._cg23)m._cg23.apice=apice;});
+          av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;
+          if(eroe){av._alt192=1.78+R(i*31)*0.12;try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
+          if(eroe&&po192){try{const _vc=(po192.animations||[]).find(c=>c&&c.name==='mx-victory');if(_vc){act.stop();ia.stop();const _va=mx.clipAction(_vc);_va.play();_va.paused=true;_va.time=_vc.duration*0.45;mx.update(0);av._cg23.act=_va;av._cg23.d=_vc.duration;av._cg23.vit192=_vc.duration*0.45;}}catch(_e){}}}
+        men.forEach(m=>{if(m._cg23)m._cg23.apice=(m._cg23.vit192!=null)?m._cg23.vit192:apice;});
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
           cped.visible=false;}
         cup.position.set(0,5.75,7.0);bus.add(cup);
@@ -1911,6 +1923,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         :new THREE.PointsMaterial({color:_cfCols[_ci],size:0.34-_ci*0.07,transparent:true,opacity:0.95,depthWrite:false});
       const _pts=new THREE.Points(cgs[_ci],cm);_pts.renderOrder=2;scene.add(_pts);}
     try{if(typeof window!=="undefined")window.__CPM_PARATA={men:NM,glb:false,euro:!!euroWin,v:2};}catch(_e){}
+    try{if(typeof window!=="undefined"&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARATA){window.__CPM_PARATA.bus=bus;window.__CPM_PARATA.cam=cam;window.__CPM_PARATA.cup=cup;window.__CPM_PARATA.homeHex=homeHex;window.__CPM_PARATA.eroe=()=>eroe23;}}catch(_e){}/* [giro 192] solo collaudo: pullman, camera, coppa ed eroe per le misure di cerimonie-192 */
     /* REGIA: tre inquadrature che si alternano con blend morbido */
     const SHOTS=[
       {p:[8.5,9.6,24],a:[0,4.3,-8]},      /* tre-quarti frontale «da telegiornale» */
@@ -1951,14 +1964,30 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
            scalata al 40% dell'altezza dell'eroe (la coppa europea vera misura ~74 cm su un uomo di 1,84 m), e
            impugnata per i MANICI (piatto di campionato: per il centro). Testimone __CPM_COPPA24 = altezza
            coppa / altezza eroe. Rosso __CPM_NO_COPPA24 = aggancio storico. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA24)){
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_G192D)&&eroe23._testa192&&typeof presaCoppa192==='function'){
+          /* [giro 192 · PO-407] la presa unica (presaCoppa192, la stessa del podio): manici alle mani, volto mai coperto */
+          /* proporzione del PODIO (0,31x l'eroe, 7.997): a 0,40x il corpo della coppa sotto i manici era piu' lungo del margine fra mani e
+             testa, e per non coprire il viso la coppa saliva 0,24 sopra le mani (misurato) — non era piu' «fra le mani» */
+          const _alt=euroWin?1.36:1.54,_s=Math.min(_TSC453,(0.31*(eroe23._alt192||1.84))/_alt);
+          if(cped.visible)cped.visible=false;cup._spin429.scale.setScalar(_s);
+          const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s),_lo=euroWin?0.2+0.225*_s:0.2+0.29*_s,_hi=euroWin?0.2+1.58*_s:0.2+1.61*_s;
+          eroe23._testa192.getWorldPosition(_v23b);bus.worldToLocal(_v23b);
+          cup.position.set(_v23a.x,presaCoppa192({mani:_v23a.y,presa:_pres,basso:_lo,alto:_hi,testa:_v23b.y+0.16}),_v23a.z);
+          if(typeof window!=='undefined')window.__CPM_COPPA24=+((_alt*_s)/(eroe23._alt192||1.84)).toFixed(3);
+        }else if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA24)){
           if(eroe23._h24==null){try{const _b=new THREE.Box3().setFromObject(eroe23);eroe23._h24=Math.max(1.2,(_b.max.y-_b.min.y)/Math.max(1e-3,bus.scale.y||1));}catch(_e){eroe23._h24=1.84;}}
           const _alt=euroWin?1.36:1.54,_s=Math.min(_TSC453,(0.40*eroe23._h24)/_alt);
           if(cped.visible)cped.visible=false;cup._spin429.scale.setScalar(_s);
           const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s);
           cup.position.set(_v23a.x,_v23a.y-_pres,_v23a.z);
           if(typeof window!=='undefined')window.__CPM_COPPA24=+((_alt*_s)/eroe23._h24).toFixed(3);
-        }else cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);}catch(_e){}}
+        }else cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);
+        if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARATA&&eroe23._testa192){try{/* [giro 192] testimone della presa, nei due bracci: viso coperto, mani sopra la testa, scarto manici-mani, gomiti */
+          const T=THREE,_w=(o)=>{const v=new T.Vector3();o.getWorldPosition(v);bus.worldToLocal(v);return v;};const _s=cup._spin429.scale.x;
+          const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s),_lo=euroWin?0.2+0.225*_s:0.2+0.29*_s,_hi=euroWin?0.2+1.58*_s:0.2+1.61*_s;
+          const _top=_w(eroe23._testa192).y+0.16,_b=cup.position.y,_g=(u,l,h)=>{if(!u||!l||!h)return null;const a=_w(u),e=_w(l),m=_w(h);return +(a.sub(e).angleTo(m.sub(e))*180/Math.PI).toFixed(1);};
+          window.__CPM_PARATA.d192={faccia:+Math.max(0,Math.min(_b+_hi,_top)-Math.max(_b+_lo,_top-0.30)).toFixed(3),sopra:+(_v23a.y-_top).toFixed(3),presa:+Math.abs(_b+_pres-_v23a.y).toFixed(3),gomL:_g(eroe23._uaL,eroe23._laL,eroe23._hdL),gomR:_g(eroe23._uaR,eroe23._laR,eroe23._hdR)};}catch(_e){}}
+        }catch(_e){}}
       if(folla23.length){const q=(Math.floor(el2*60))%4;folla23.forEach(F=>{const o=F.o;for(let i=q;i<F.n;i+=4){const p=F.P[i],j=Math.abs(Math.sin(el2*3.2+p.ph))*0.35;
           o.position.set(p.x,p.h*0.55+0.25+j,p.z);o.scale.set(1,p.h,1);o.rotation.set(0,0,0);o.updateMatrix();F.bodyM.setMatrixAt(i,o.matrix);
           o.position.set(p.x,p.h*1.15+0.45+j,p.z);o.scale.set(1,1,1);o.updateMatrix();F.headM.setMatrixAt(i,o.matrix);

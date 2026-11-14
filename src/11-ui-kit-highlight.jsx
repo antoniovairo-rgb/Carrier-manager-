@@ -1907,6 +1907,12 @@ const _glbCache={};
        dopo (GLB asincroni) e per le luci animate.
    NON sceglie nessun colore: lo stesso esadecimale, deciso altrove (giri 168/171), appare uguale in tutte le scene.
    Rosso __CPM_NO_G178_COLORE: la funzione non fa nulla e ogni scena torna alla sua catena di prima. Guardiano npm run scene-178. */
+/* [giro 192 · PO-407 «la coppa taglia il viso, non e' tra le mani»] LA PRESA DELLA COPPA E' UNA SOLA, per podio e parata: le mani
+   stringono i manici (base = mani - presa) e il VOLTO (mento = sommita' - 0,30 .. sommita') non si copre mai: mani alte -> coppa sopra la
+   testa, mani basse -> coppa sotto il mento. Era la regola del podio (7.997, _ALZA24); la parata non l'aveva. Tutte le quote nello stesso
+   riferimento verticale; basso/alto = punto piu' basso/alto del trofeo rispetto alla sua base. */
+function presaCoppa192(o){let b=o.mani-o.presa;const mento=o.testa-0.30;
+  if(b+o.alto>mento&&b+o.basso<o.testa){if(o.mani>=o.testa-0.35)b=o.testa+0.03-o.basso;else b=mento-o.alto;}return b;}
 const SVIL178={expo:0.52};
 /* guadagno di luce per scena (vedi sopra): tarato MISURANDO la luminanza media prima/dopo (docs/sviluppo/RAPPORTO-giro178.md) */
 const LUCE178={intro:1,presentazione:2.3,parata:4.0,gala:2.2};/* regola: il guadagno piu' piccolo che lascia la luminanza media >= 90% di prima (misure cal1-cal3) */

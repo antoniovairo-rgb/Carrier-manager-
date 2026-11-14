@@ -492,6 +492,7 @@
     "parata-198": "node parata-198.mjs",
     "busta-199": "node busta-199.mjs",
     "presentazione-200": "node presentazione-200.mjs",
+    "cerimonie-192": "node cerimonie-192.mjs",
     "scene-178": "node scene-178.mjs && CPM_ROSSO=1 node scene-178.mjs",
     "guanti-201": "node guanti-201.mjs",
     "formazioni-204": "node formazioni-204.mjs",
