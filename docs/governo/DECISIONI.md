@@ -1591,3 +1591,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Unione 54a7de5e + d18cee1b: catena completa ricomposta (il ramo del giro aveva la catena vecchia), foto del giro 194 rigenerate e riga di roadmap del ramo riportate com'erano; GAME_VERSION 7.999.194; check-src identico.
 - Verifica parte B partita (20 controlli, uno alla volta).
 - highlight-95: 1 difetto D3 in una corsa interrotta del giro, 0 alla corsa completa: tenuto d'occhio come instabile.
+- PO (questionario ~21:00): tetto dell'attesa dei giocatori 3D **120 s** (non 60). Applicato su lavoro/194 (e1adac36); verifica B ripartita da capo.
