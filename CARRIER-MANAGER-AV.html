@@ -17105,7 +17105,7 @@ function ThreeMatchView(props){
         sx.font="900 38px Arial, sans-serif";
         sx.fillStyle="#9fb3d8";sx.fillText(hA,100,120);sx.fillText(aA,412,120);
         sx.fillStyle="#ffffff";sx.font="900 92px Arial, sans-serif";sx.fillText(h+" - "+a,256,124);
-        sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);};
+        try{if(typeof window!=="undefined"&&window.__CPM_SB204!==undefined)window.__CPM_SB204=clk;}catch(_e){}/* [giro 204] testimone armato dalla sonda: l'ultimo minuto disegnato sul maxischermo (-1 = nessuno) */if(clk>=0){sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);}};/* [giro 204 PO-450] clk<0 = nessun minuto (lotteria dei rigori) */
       _sbDraw(homeAbbr,awayAbbr,scoreHome,scoreAway,props.matchClock||0);_sbTex=new THREE.CanvasTexture(sc);}
     /* [7.455.0 collaudo PO «schermo sospeso in aria negli stadi piccoli!»] IL MAXISCHERMO SI APPOGGIA A
        CIO' CHE HA DIETRO. La quota era FISSA a 15.5 per qualunque impianto, e il pilone fu tolto su
@@ -26419,7 +26419,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       for(let i=0;i<LED_SEG;i++){const c=_ledCols[(i+_ledOff)%3],kbr=Math.min(0.42+_ledBoost+0.28*Math.sin(_ledPhase*3+i*0.5),0.82);// 3DV-2: cap 0.82, ridotti (era max 1.63 → saturazione)
         ledStrips[i].material.color.copy(c).multiplyScalar(kbr);ledStrips[i+LED_SEG].material.color.copy(c).multiplyScalar(kbr);}
       // item 1 (5.49.9): TABELLONE — ridisegna solo quando cambia punteggio o minuto (economico)
-      if(_sbDraw){const _h=P.scoreHome||0,_a=P.scoreAway||0,_c=(P.matchClock||0)|0;if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c);_sbTex.needsUpdate=true;}}
+      if(_sbDraw){const _h=P.scoreHome||0,_a=P.scoreAway||0,_c=(P.shootout&&!(typeof window!=="undefined"&&window.__CPM_NO_G204))?-1:((P.matchClock||0)|0);/* [giro 204 PO-450 — rosso __CPM_NO_G204] durante la lotteria dei rigori il maxischermo dietro la porta non mostra piu' il minuto: dalla camera del rigorista il «90'» cadeva proprio dietro il punteggio del tabellone «CALCI DI RIGORE» (misurato: sonda-90-204, foto giro204/prima) */if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c);_sbTex.needsUpdate=true;}}
       // 3DV-7: scorrimento banner competizione LED (UV offset su RepeatWrapping)
       {const _bs=now*0.000032;compBanner1.material.map.offset.x=_bs;compBanner2.material.map.offset.x=-_bs;}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
