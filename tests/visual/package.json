@@ -638,6 +638,7 @@
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",
     "misura-198": "node misura-198.mjs",
+    "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
     "cronaca-nomi-190": "node cronaca-nomi-190.mjs"
   },
