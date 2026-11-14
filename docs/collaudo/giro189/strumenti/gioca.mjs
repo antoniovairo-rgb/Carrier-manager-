@@ -22,23 +22,27 @@ let giro = 0;
    altrimenti tocca il tasto principale della Home secondo la politica:
    sim = simula le partite · gioca = le gioca (poi serve @partita) · momento = «Vai al prossimo momento importante».
    Si ferma (ritorna il motivo) quando trova un tasto di partita, un testo di stop o non sa cosa fare. */
-const NO = /^(Salva carriera|Opzioni|Home|Stagione|Club|Carriera|Agente|Ufficio|Calendario|☕|💡|BUTTON|INPUT|SELECT)|Chiudi — riprendi|Licenzia|lista transfer|Cambia procuratore|Richiedi cessione/i;
+const NO = /^\d+ATT|La tua settimana|Obiettivi della|Ultime notizie|^(Salva carriera|Opzioni|Home|Stagione|Club|Carriera|Agente|Ufficio|Calendario|☕|💡|BUTTON|INPUT|SELECT)|Chiudi — riprendi|Licenzia|lista transfer|Cambia procuratore|Richiedi cessione/i;
 const PREF = /Capito|Continua|Avanti|Prosegui|Va bene|^OK|Fatto|Conferma|Inizia|Accetta|Firma|Chiudi|Salta|Torna|Vai|Grazie|Ricevuto|Apri|Scopri|Prossim/i;
 async function auto(n, pol, stop) {
-  const reStop = stop ? new RegExp(stop, 'i') : null; let fermo = 0, ultimo = '';
+  const reStop = stop ? new RegExp(stop, 'i') : null; let fermo = 0, ultimo = '', ultimoTap = null, rip = 0;
   for (let i = 0; i < n; i++) {
-    const tutti = await H.btns(); const b = tutti.filter(x => !/\[coperto\]/.test(x)); const aperto = tutti.some(x => /\[coperto\]/.test(x));
+    const tutti = await H.btns(); const b = tutti.filter(x => !/\[coperto\]/.test(x)); const aperto = tutti.some(x => /^(Home|Stagione|Agente|Ufficio) \[coperto\]/.test(x)) || !tutti.some(x => /^Home/.test(x));
     const testo = await H.txt(2500);
     if (reStop && reStop.test(testo)) return 'STOP testo «' + stop + '»';
     if (b.some(x => /^(⏸|▶)$/.test(x)) && b.some(x => /×$/.test(x))) return 'IN PARTITA';
     let fatto = null;
-    if (aperto) { const c = b.filter(x => !NO.test(x)); if (c.length) { const sc = c.filter(x => !PREF.test(x)); /* scelte vere prima dei tasti di passaggio */
-        const k = sc.length ? sc[(giro++) % sc.length] : c[0]; fatto = await H.tap(k.slice(0, 45).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); if (sc.length > 1) console.log('     scelte: ' + JSON.stringify(sc.map(x => x.slice(0, 50)))); } }
-    else { const ord = pol === 'momento' ? [/Vai al prossimo momento/i, /Avvia Stagione/i, /Vivi la settimana/i, /^.{0,3}Simula/i, /^.{0,3}Gioca/i] : pol === 'gioca' ? [/Avvia Stagione/i, /Vivi la settimana/i, /^.{0,3}Gioca/i, /^.{0,3}Simula/i] : [/Avvia Stagione/i, /Vivi la settimana/i, /^.{0,3}Simula/i, /^.{0,3}Gioca/i];
+    if (aperto) { const c = b.filter(x => !NO.test(x)); if (c.length) { const sc = c.filter(x => !PREF.test(x) && !/^(Non ora|Annulla|Più tardi|Dopo|No, )/i.test(x)); /* scelte vere prima dei tasti di passaggio */
+        const rf = process.env.G189_ACCETTA ? null : c.find(x => /Rifiut|Resto qui|Declin|No, grazie/i.test(x)); if (rf) { fatto = await H.tap(rf.slice(0, 30).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); console.log('     OFFERTA/PROPOSTA rifiutata fra: ' + JSON.stringify(c.map(x => x.slice(0, 40)))); }
+        const cf = c.find(x => /Conferma|Tieni #/.test(x)); const k = (sc.length > 8 && cf) ? cf : sc.length ? sc[(giro++) % sc.length] : c[0]; if (!fatto) fatto = await H.tap(k.slice(0, 45).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); if (sc.length > 8) { const r2 = await H.tap(/Conferma/); console.log('     griglia di ' + sc.length + ' tasti: scelto ' + fatto + ', poi ' + r2); } else if (sc.length > 1) console.log('     scelte(' + sc.length + '): ' + JSON.stringify(sc.slice(0, 6).map(x => x.slice(0, 60)))); } }
+    else { const ord = pol === 'momento' ? [/Vai al prossimo momento/i, /Avvia Stagione/i, /Vivi la settimana/i, /Avanza Settimana/i, /^.{0,3}Simula/i, /^.{0,3}Gioca/i] : pol === 'gioca' ? [/Avvia Stagione/i, /Vivi la settimana/i, /Avanza Settimana/i, /^.{0,3}Gioca/i, /^.{0,3}Simula/i] : [/Avvia Stagione/i, /Vivi la settimana/i, /Avanza Settimana/i, /^.{0,3}Simula/i, /^.{0,3}Gioca/i];
       for (const re of ord) { if (b.some(x => re.test(x))) { fatto = await H.tap(re); break; } }
-      if (!fatto) { const c = b.filter(x => !NO.test(x)); const k = c.find(x => PREF.test(x)) || null; if (k) fatto = await H.tap(k.slice(0, 45).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); } }
-    const t = (await breve(120));
-    if (fatto) { console.log(`  [${i}] ${aperto ? '▣' : '·'} ${fatto} → ${t}`); fermo = 0; } else { fermo++; if (t !== ultimo) console.log(`  [${i}] (nessun tasto) ${t} | ${JSON.stringify(b).slice(0, 300)}`); await sleep(1200); if (fermo > 6) return 'FERMO'; }
+      if (!fatto && b.includes('Vai')) fatto = await H.tap(/^Vai$/);
+      if (!fatto && b.includes('Home') && !b.some(x => /Vai al prossimo momento/.test(x))) fatto = await H.tap(/^Home$/);
+      if (!fatto) { const c = b.filter(x => !NO.test(x)); const k = c.find(x => PREF.test(x)) || (c.length === 1 ? c[0] : null); if (k) fatto = await H.tap(k.slice(0, 45).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); } }
+    const t = (await breve(/prossimo momento/i.test(fatto || '') ? 330 : 120));
+    if (fatto && fatto === ultimoTap) { if (++rip >= 4) return 'RIPETO «' + fatto + '»'; } else rip = 0; ultimoTap = fatto;
+    if (fatto) { console.log(`  [${i}] ${aperto ? '▣' : '·'} ${fatto} → ${t}`); fermo = 0; } else { fermo++; if (t !== ultimo) console.log(`  [${i}] (nessun tasto) ${t} | ${JSON.stringify(b).slice(0, 300)}`); if (/Tocca per chiudere/.test(testo)) await H.tocca(195, 420); await sleep(1200); if (fermo > 6) return 'FERMO'; }
     ultimo = t; await sleep(450);
   }
   return 'passi finiti';
