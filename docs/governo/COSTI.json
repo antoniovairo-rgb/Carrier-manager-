@@ -1552,5 +1552,19 @@
     "cache_read_tokens": 18346501,
     "worker_epoch": 2,
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaA3Swv5yh21nLGNzd1",
+    "titolo": "giro 188 «Gioca» quando il tasto momento si ferma (PO-400)",
+    "versione": "7.999.193",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-14T07:08:29Z",
+    "chiusa": "2026-11-14T07:50:26Z",
+    "cost_usd": 2.0540068,
+    "output_tokens": 13906,
+    "cache_read_tokens": 4582246,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-14"
   }
 ]
