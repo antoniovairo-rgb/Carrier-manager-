@@ -1501,3 +1501,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:35 Roma — PO-403 lotteria dei rigori
 - Tre regole: stacco fra un rigore e l'altro (breve, col tabellino dei rigori), rigorista già rivolto alla porta prima della rincorsa, nessun portiere del rigore precedente in scena. Giro dedicato nella 194, con rosso e guardiano per ciascun punto.
+
+## 14/11 ~08:45 Roma — giro 189 (Fable) seconda tornata di idee
+- PO: «va bene così» sulle scelte del giro 181 (sfida del giorno resta fuori); «fagli trovare nuove idee migliorie». Giro 189 su Fable, ramo collaudo/giro189-idee, senza ripetere G181 né le voci già in BACKLOG. Giri in corso: 188 (Opus) e 189 (Fable), sotto il tetto di 3.
