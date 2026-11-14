@@ -639,6 +639,7 @@
     "figurina-199": "node figurina-199.mjs",
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",
+    "rassegna-202": "node rassegna-202.mjs",
     "misura-198": "node misura-198.mjs",
     "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
