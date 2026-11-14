@@ -1538,5 +1538,19 @@
     "modello": "claude-opus-5-5",
     "worker_epoch": 1,
     "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYia8cs54dm9VKMLi3N9E",
+    "titolo": "giro 187 dopo la partita riproducibile: rigore-139, solo-highlight-166, minuto 0/1 (PO-372) — worker riavviato, costo forse parziale",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T22:30:08Z",
+    "chiusa": "2026-11-14T03:59:04Z",
+    "cost_usd": 5.12365898,
+    "output_tokens": 39046,
+    "cache_read_tokens": 18346501,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-14"
   }
 ]

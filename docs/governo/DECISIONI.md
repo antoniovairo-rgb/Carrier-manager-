@@ -1480,3 +1480,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Barra partita a 375 px: nome abbreviato, sigla solo se non entra → PO-397 (193). La madre le mette nella 193 per non riaprire la 192 a contenuto chiuso.
 - Interviste in Primavera 4 su 34: «Va bene così», nessuna modifica a PO-375.
 - Il questionario programmato per le 07:05 è annullato: fatto ora.
+
+## 14/11 ~06:25 Roma — giro 187 unito in lavoro/192 (f1f36681)
+- Corretto: il minuto del primo turno al calcio d'inizio (rosso __CPM_NO_G187, guardiano riproduci-187); solo-highlight-166 controllo 12 riscritto come «interviste uguali alla partita intera con lo stesso seme» più il 12b con la sorpresa seedata (non più permissivo: il rosso cade su 3, 7 e 8); rigore-139 con una testimone provocata all'89' (criterio e minimi invariati: verde giudicato 4 su 4, rosso visto 4 su 4). Nessun doppio rigore in 173 partite naturali.
+- Decisione tecnica della madre sui dubbi del giro 187: (1) riproduci-175 ha un secondo residuo raro (1 ripetizione su 45), non riprodotto: nella 192 si dichiara «instabile» nella ROADMAP se il controllo di rito non lo passa, e si apre PO-398 per la 193; (2) doppio rigore nella scena r187d-11: difetto vero del gioco, fuori dal contenuto chiuso della 192 → PO-399 (193), con la regola «se il motore ha già calciato, la scena mostra quel calcio, mai un secondo»; (3) testimone provocata accettata: quella naturale costerebbe più di 173 partite.
