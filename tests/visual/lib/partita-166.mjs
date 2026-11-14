@@ -81,7 +81,16 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   out.g166 = await page.evaluate(() => window.__CPM_G166 || null).catch(() => null);
   out.lm = await page.evaluate(() => window.__CPM_LM166 || null).catch(() => null);
   await sleep(1500);
-  out.finale = await page.evaluate(() => (document.body.innerText || '').replace(/[ \t]+/g, ' ').replace(/\n+/g, '\n').trim()).catch(() => '');
+  /* [giro 200 · PO-385] la rassegna e' a quattro schede: il testo della schermata finale e' quello di TUTTE le schede (si sfogliano con
+     Avanti e si torna alla prima coi puntini), cosi' il confronto del controllo 11 resta sull'intera rassegna come prima. */
+  const parti = [];
+  for (let k = 0; k < 4; k++) {
+    parti.push(await page.evaluate(() => (document.body.innerText || '').replace(/[ \t]+/g, ' ').replace(/\n+/g, '\n').trim()).catch(() => ''));
+    const av = await page.evaluate(() => { const b = document.querySelector('[data-cpm="avanti200"]'); if (!b) return false; b.click(); return true; }).catch(() => false);
+    if (!av) break; await sleep(350);
+  }
+  await page.evaluate(() => { const d = document.querySelector('[data-cpm="puntino200"]'); if (d) d.click(); }).catch(() => {}); await sleep(300);
+  out.finale = parti.join('\n');
   return out;
 }
 
