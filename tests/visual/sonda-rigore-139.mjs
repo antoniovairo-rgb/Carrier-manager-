@@ -20,6 +20,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const N = +(process.env.CPM_N || 6), PAR = Math.max(1, +(process.env.CPM_PAR || 2)), TAG = process.env.CPM_TAG || 'g139';
 const K = process.env.CPM_K != null && process.env.CPM_K !== '' ? +process.env.CPM_K : null;
+const PROVOCA = +(process.env.CPM_PROVOCA || 0); /* [giro 187] vedi il ciclo di partita */
 const SOLO = !!process.env.CPM_SOLO; /* [giro 187] CPM_SOLO=1: soli highlight forzati dal gancio __CPM_SOLO166 (solo per CERCARE candidati in fretta: il guardiano gioca la partita intera) */
 const SPEED = process.env.CPM_SPEED || '2', ROSSO = !!process.env.CPM_ROSSO, CAP = +(process.env.CPM_CAP || 420000);
 const NOMI = process.env.CPM_NOMI ? process.env.CPM_NOMI.split(',') : Array.from({ length: N }, (_, i) => `${TAG}-${i}`);
@@ -49,13 +50,17 @@ async function partita(nome, idx) {
   if (process.env.CPM_SPIA) await page.evaluate(() => { const arm = () => { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); if (!M || !M.tick || M._spia139) return !!(M && M._spia139);
     M._spia139 = 1; const W = (window.__CPM_SPIA139 = []); const t0 = M.tick.bind(M); const S = M._S;
     M.tick = function (ctx) { const f = S.fermo; const out = t0(ctx); const f2 = S.fermo; const pen = (f && f.kind === 'pen') || (f2 && f2.kind === 'pen');
-      if (pen || out.some(e => e && (e.t === 'battuta' || e.t === 'occasione_eroe')) ) { if (W.length < 4000) W.push({ min: ctx.min, dec: !!ctx.dec, o27: f ? f._o27 | 0 : null, acc: f ? f._acc94 | 0 : null, t: f ? f.t : null, ev: out.filter(e => e && /battuta|occasione_eroe|rigore|tiro|gol/.test(e.t)).map(e => e.t + (e.chi && e.chi.eroe ? '*' : '')).join(',') }); }
+      if (pen || out.some(e => e && (e.t === 'battuta' || e.t === 'occasione_eroe')) ) { if (W.length < 4000) W.push({ min: ctx.min, dec: !!ctx.dec, sc: !!S.scena, rp: !!(S.richieste && S.richieste.piazzati), o27: f ? f._o27 | 0 : null, acc: f ? f._acc94 | 0 : null, t: f ? f.t : null, ev: out.filter(e => e && /battuta|occasione_eroe|rigore|tiro|gol/.test(e.t)).map(e => e.t + (e.chi && e.chi.eroe ? '*' : '')).join(',') }); }
       return out; };
     const ap = M.chiedi && M.chiedi.attendiPiazzato; if (ap) M.chiedi.attendiPiazzato = function () { const r = ap.apply(this, arguments); W.push({ attendi: 1, r, min: S.min, o27: S.fermo ? S.fermo._o27 | 0 : null }); return r; };
     return true; }; window.__arm139 = setInterval(() => { if (arm()) clearInterval(window.__arm139); }, 50); });
-  const fasi = []; let ph = '', last = '';
+  const fasi = []; let ph = '', last = '', provocato = false;
   while (Date.now() - t0 < CAP) {
     const s = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), min: M && M._S ? M._S.min | 0 : null, no94: M && M._S ? M._S.noPiaz94 : null }; } catch (e) { return {}; } });
+    /* [giro 187] CPM_PROVOCA=<minuto>: cio' che il gioco non produce si provoca dalla sonda (PROCESSO.md). A quel minuto del motore, a
+       gioco fluido, si chiede al motore un rigore per la squadra dell'eroe con l'eroe battitore (chiedi.piazzato, come carriera3-94 D2):
+       da li' in poi offerta, attesa, scena e battuta seguono il gioco. Una volta sola; testimone in __CPM_PEN94 (t:'provocato'). */
+    if (PROVOCA && !provocato && s.min != null && s.min >= PROVOCA && s.ph === 'playing') provocato = await page.evaluate((m) => { try { const M = window.__CPM_MOTORE_OBJ(); M.chiedi.piazzato({ lato: 'home', kind: 'pen', x: 89, y: 50, batt: 21 }); (window.__CPM_PEN94 = window.__CPM_PEN94 || []).push({ min: M._S.min | 0, t: 'provocato', fermo: M._S.fermo ? M._S.fermo.kind + ':' + (M._S.fermo.batt) : null }); return true; } catch (e) { return false; } }, PROVOCA);
     ph = s.ph || ''; if (ph !== last) { fasi.push((s.min == null ? '?' : s.min) + ':' + ph + (s.no94 != null ? '|g' + s.no94 : '')); last = ph; }
     if (ph === 'ended' || ph === 'ceremony') break; await sleep(400);
   }
