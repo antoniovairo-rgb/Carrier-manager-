@@ -1540,3 +1540,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO: «194 a metà stasera, resto nella 195». Nella 194: giri 190 (fatto, unito: f986f1a4), 191 rigori, 192 cerimonie, giro del tasto momento (PO-405, 410, 411) più PO-431 (convocazione-235 rosso preesistente). Passano alla 195: PO-373, 385, 401, 408, 409, 412, 418, 428, insieme alle idee.
 - Giro 190: i 5 guardiani nuovi (nomi-190, nomi-salvati-190, convocazione-190, testi-190, cronaca-nomi-190) messi dalla madre nella catena completa. Consiglio su due righe accettato (decisione tecnica della madre).
 - Giro 193 idee (Fable) partito al posto liberato dal 190, come promesso al PO.
+
+## 14/11 ~12:05 Roma — giro Fable su grafica, fruibilità, usabilità (giro 195)
+- PO: «Dopo il tasto momento» (secondo posto libero, la 194 di stasera non slitta). Focus: tutti e quattro — telefono piccolo e leggibilità; percorsi e numero di tocchi; coerenza grafica; prestazioni e accessibilità. Solo analisi con foto e proposte G195-xx, non tocca src/. Non ripete voci già in BACKLOG (PO-376…431) né G181/G189.
