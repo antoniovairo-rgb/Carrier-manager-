@@ -15872,7 +15872,7 @@ function ThreeMatchView(props){
        `pct` (0..1) = byte CGTrader arrivati (loadGLB, __CPM_GLBP196) piu' i passi finali: e' la barra. */
     const _conta196=()=>{const sk=new Set(),pr=new Set(),c={cg:0,noCg:0,tpose:0,proc:0,chi:[]};
       scene.traverseVisible(o=>{if(!o.isMesh)return;
-        if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);c.proc++;if(c.chi.length<4)c.chi.push('proc:'+(_t196ruolo(g)||'giocatore'));return;}
+        if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);c.proc++;if(c.chi.length<4){g.getWorldPosition(_t196v);c.chi.push('proc:'+(_t196ruolo(g)||'giocatore')+'@'+_t196v.x.toFixed(0)+','+_t196v.z.toFixed(0)+(g._glbDriven?'g':'')+(g.parent===scene?'s':''));}return;}
         if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||!bs.length||sk.has(bs[0]))return;sk.add(bs[0]);
         let n=0,maxA=0;for(let i=0;i<bs.length;i++){const b=bs[i];if(!/^(upperarm|lowerarm|thigh|calf)_[lr]$/i.test(b.name||''))continue;const r=b.userData&&b.userData.rq196;if(!r)continue;_t196q.fromArray(r);const a=b.quaternion.angleTo(_t196q);if(a>maxA)maxA=a;n++;}
         const cg=!!(o.userData&&o.userData.cg196);if(cg)c.cg++;else c.noCg++;const tp=n>0&&maxA<0.105;if(tp)c.tpose++;
@@ -16617,7 +16617,7 @@ function ThreeMatchView(props){
       /* Gli assistenti restano agganciati ai marker di bordo esistenti: la loro
          logica di posizione non cambia, sostituiamo esclusivamente la figura. */
       const _replaceAssistantsWithHyper=(pkg,assistants)=>{
-        if(!_hyperFull||!assistants||assistants.length!==2)return [];
+        if((!_hyperFull&&(typeof window!=='undefined'&&window.__CPM_NO_G196))||!assistants||assistants.length!==2)return [];/* [giro 196] anche nella modalita' predefinita: i guardalinee erano le ultime due figure procedurali in campo */
         const idleClip=(pkg.animations||[]).find(c=>c&&c.name==='idle')||null;if(!pkg||!pkg.scene||!idleClip)throw new Error('Hyper Casual assistant-referee clip is unavailable');
         const made=[];
         assistants.forEach((marker,index)=>{if(!marker)return;
@@ -16686,6 +16686,7 @@ function ThreeMatchView(props){
              (CGTrader ottimizzata) i bambini dell'ingresso restavano figure procedurali, mentre il ramo CH38 dei bambini e'
              spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
           if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
+          if(!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_G196)){try{const _ka=(_trioLod&&packages&&packages[2])||pkg;if(!_ka.animations||!_ka.animations.length)_ka.animations=pkg.animations;window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(_ka,list);const _ap=window.__CPM_HYPER_ASSISTANT_LIST;if(_ap)window.__CPM_HYPER_ASSISTANT_BUILDER(_ap);}catch(_e196a){try{console.warn('[CPM-196] guardalinee',_e196a&&_e196a.message);}catch(_e){}}}/* [giro 196 PO-449] guardalinee CGTrader (LOD leggero) anche fuori dalla modalita' «full». Rosso __CPM_NO_G196 */
           if(_hideBench293){try{const _kb=(_trioLod&&packages&&packages[2])||pkg;if(!_kb.animations||!_kb.animations.length)_kb.animations=pkg.animations;_replaceBenchWithCgtrader293(_kb);}catch(_e293){try{console.warn('[CPM-293] panchina fail',_e293&&_e293.message);}catch(_e){}try{benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
