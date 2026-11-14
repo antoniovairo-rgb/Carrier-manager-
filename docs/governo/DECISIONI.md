@@ -1498,3 +1498,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:25 Roma — PO-402 il mister vola nella premiazione (coppa/europea)
 - Ricaduta di un difetto già corretto in 7.476.0. PO: «Nella 194, col giro scene 3D». Il giro deve anche capire perché il guardiano di allora non l'ha visto.
+
+## 14/11 ~08:35 Roma — PO-403 lotteria dei rigori
+- Tre regole: stacco fra un rigore e l'altro (breve, col tabellino dei rigori), rigorista già rivolto alla porta prima della rincorsa, nessun portiere del rigore precedente in scena. Giro dedicato nella 194, con rosso e guardiano per ciascun punto.
