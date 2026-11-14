@@ -8,7 +8,7 @@ Non toccati audio-161, tifosi-171, box-fischio-169 (giro 186).
 - **Punto 3 (riproduci-175, «Livio Corradini» 0≠1):** causa trovata e misurata — un sotto-tick caduto fra il battito del minuto e
   il render annotava il turno con `clockRef` vecchio. Corretta in src/15 col rosso `__CPM_NO_G187` (nessuna taratura del motore
   cambiata). Guardiano nuovo **`riproduci-187`** che **provoca** la finestra: verde uguale su 2 nomi, rosso separato su 2 nomi
-  proprio sull'evento segnalato. **Ma `riproduci-175` è verde in 2 corse su 3, non 3 su 3** (+ una quarta, sotto): la corsa 2 ha
+  proprio sull'evento segnalato. **Ma `riproduci-175` è verde in 2 corse su 3, non 3 su 3** (+ una quarta verde: 3 su 4): la corsa 2 ha
   trovato un **secondo residuo**, diverso (il motore stesso si separa al 6' dopo una scena, 1 ripetizione su 45), non riprodotto e
   non corretto (§1).
 - **Punto 2 (solo-highlight-166, controllo 12):** riscritto come «interviste uguali alla partita intera con lo stesso seme» (conto +
@@ -65,7 +65,7 @@ GIUDICATO solo se la finestra è stata attraversata da almeno un turno **dentro*
 reso il giudizio più severo — il turno deve stare nel tratto confrontato — e portato la finestra a 6 sotto-tick su 22.)
 
 **riproduci-175 dopo la correzione:** corsa 1 **VERDE PASSA** (5/5 nomi, compreso «Livio Corradini» 5-0 a tutte e tre le velocità;
-corpi accesi = spenti; rosso 2/2 separati) · corsa 2 **NON PASSA** · corsa 3 **VERDE PASSA** (5/5) · corsa 4: <!-- R175-4 -->.
+corpi accesi = spenti; rosso 2/2 separati) · corsa 2 **NON PASSA** · corsa 3 **VERDE PASSA** (5/5) · corsa 4 **VERDE PASSA** (5/5, rosso 2/2).
 
 ⚠️ **La corsa 2 è un secondo residuo, diverso da quello corretto.** «Collaudo Salienti» a 1,5×: 1-2 con 247 voci e 5 scene, contro
 1-0, 269 voci, 7 scene a 1× e 2×; prima differenza alla voce 14 — nella ripetizione a 1,5× **manca** il turno
@@ -153,7 +153,7 @@ identico byte per byte dopo ogni modifica a src/.
 | controllo | esito |
 |---|---|
 | `riproduci-187` (nuovo) | verde PASSA (2/2 uguali), rosso CADE (2/2 separati) |
-| `riproduci-175` | corsa 1 verde · corsa 2 **rossa** (residuo nuovo, §1) · corsa 3 verde · corsa 4 <!-- R175-4b --> |
+| `riproduci-175` | corsa 1 verde · corsa 2 **rossa** (residuo nuovo, §1) · corsa 3 verde · corsa 4 verde |
 | `solo-highlight-166` | VERDE PASSA · ROSSO CADE su 3, 7 e 8 (1 corsa) |
 | `rigore-139` | VERDE in 4 corse (rosso visto in 4) |
 | `rigore-79` | ✅ verde (rosso `__CPM_NO_RIG79` cade) |
