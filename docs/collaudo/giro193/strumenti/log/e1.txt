@@ -1,0 +1,115 @@
+«Sto benissimo qui» → Sto benissimo qui. → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:58 · Il confronto · Claud
+«Chiudi|Continua|Ok» → Chiudi → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:58 · v 7.999.193 · Claudi
+«^Home$» → Home → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:58 · ⏩ Vai al prossimo mo
+«Continua la storia» → Continua la storia → → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:59 · ⏩ Vai al prossimo mo
+«Da mentore» → 🎓 Da mentore → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:59 · ⏩ Vai al prossimo mo
+TASTI: ["Salva carriera, ultimo salvataggio 11:59","Opzioni","🏁 Avvia Stagioneritiro, raduno e presentazioni","Calendario","91ATT [coperto]","☕ Sostieni il progetto","💡 Idee e feedback","Home","Stagione","Club","Carriera","Agente","Ufficio"] 
+TESTO: MER
+FC MERSEYSIDE
+Premier Division · St. 18 · Sett. 1/38 · 2° posto
+salvato 11:59
+⏩ Vai al prossimo momento
+prima trova una squadra
+PROSSIMA · PREMIER DIVISION · 1ª GIORNATA
+SETT. 1 · TRASFERTA
+NOT
+FC
+«Negozia rinnovo» → 📋 Negozia rinnovo → 📋 · Negoziazione Contratto · FC Merseyside · S.18 · Proposta del club · €25 mln / anno · 2 anni · €25 mln/ann
+«Accetta l'offerta del club» → Accetta l'offerta del clubRinnovo sicuro alle condizioni pro → ✅ · Contratto rinnovato! 2 anni · €28,7 mln/anno · MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/3
+STATO {"n":"Samuelito Vairo","club":"FC Merseyside","lg":"Premier Division","s":18,"w":1,"lived":false,"pro":"pro","ovr":91,"g":0,"a":0,"m":0,"tg":547,"age":34,"trust":100,"mor":100,"pop":100,"bank":188195163,"fase":null}
+  [0] · Home → ✅ · Contratto rinnovato! 2 anni · €28,7 mln/anno · MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° pos
+  [1] · 🏁 Avvia Stagioneritiro, raduno e presentazioni → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 1 di 8 — 🏕️ Ritiro pre-campionato · ♨️ La società ha scelto: 12 giorni a Ba
+  [2] ▣ 🚌 Parti per il ritiro → RITIRO PRE-CAMPIONATO · STAGIONE 18 · ♨️ · Destinazione Bad Quellen · 12 giorni · clima termale · Il pullman della squad
+  [3] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🧠 · La decisione dello staff · intensità cerebrale · Riunione tecnica la prima se
+  [4] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🗓️ · La vita del ritiro · i giorni al campo · 🎯 Lavoro sui calci piazzati — sche
+  [5] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 📋 · Le gerarchie del mister · il responso dello staff · 📰 Dal mercato: Alex Maso
+  [6] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🤝 · Amichevole 1 · la squadra del posto · FC Merseyside 2-0 Selezione Bad Quellen
+  [7] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🤝 · Amichevole 2 · pari categoria · FC Merseyside 2-0 FC Griffin · La decisione d
+  [8] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🤝 · Amichevole 3 · big europea · FC Merseyside 1-1 FC Valdenau · La decisione del
+  [9] ▣ Avanti → → RITIRO PRE-CAMPIONATO · STAGIONE 18 · 🧭 · La tua risposta · l'unica cosa che decidi tu · La società organizza, il miste
+     scelte(2): ["💪Testa bassa: lavora più di tuttiPrimo ad arrivare al campo","🤝Aiuta i nuovi a inserirsiIl gruppo prima di tutto: cene, c"]
+  [10] ▣ 🤝Aiuta i nuovi a inserirsiIl gruppo prima di tutto: cene, c → 🏕️ · Ritiro concluso: 12 giorni a Bad Quellen. Sei vicino ai titolari: le gerarchie sono aperte e le deciderà il campo.
+  [11] · 🏁 Avvia Stagioneritiro, raduno e presentazioni → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 2 di 8 — 🏛️ Il Presidente ti convoca · 🏛️ Il Presidente ti convoca nel suo
+  [12] ▣ Capito, Presidente → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 3 di 8 — 📰 Presentazione del mercato · 📰 Primo giorno di raduno: il mister
+  [13] ▣ Benvenuti ai nuovi → → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 4 di 8 — 🎙️ Conferenza stampa · 🎙️ Sala stampa piena per la conferenza d'a
+     scelte(3): ["🔥 «Puntiamo in alto — parlo di traguardi importanti»","🎯 «Obiettivi chiari, un passo alla volta»","🤫 «Basso profilo: parlerà il campo»"]
+  [14] ▣ 🔥 «Puntiamo in alto — parlo di traguardi importanti» → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 5 di 8 — 👕 Numero di maglia · 👕 Il magazziniere aspetta: che numero vestir
+     scelte(2): ["Tieni #8","👕 Scegli"]
+  [15] ▣ Tieni #8 → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 6 di 8 — 🏟️ Presentazione della squadra · 🏟️ Lo stadio si riempie per la s
+  [16] ▣ 🏟️ Vai allo stadio → BUONASERA E BENVENUTI ALLO · Mersey Stadium · 🏟️ SERATA DI PRESENTAZIONE · STAGIONE 18 · Avanti → · Salta
+  [17] ▣ Avanti → → Korward Elite · MER · FC Merseyside · SIGNORE E SIGNORI… ECCO A VOI · IL VOSTRO FC MERSEYSIDE! · 🏟️ SERATA DI PRESENTAZ
+  [18] ▣ Avanti → → Nigel Murray · Korward Elite · MER · FC Merseyside · NUOVO ACQUISTO · PORTIERE · Nigel Murray · 🏟️ SERATA DI PRESENTAZI
+  [19] ▣ Avanti → → Alex Mason · Korward Elite · MER · FC Merseyside · NUOVO ACQUISTO · ATTACCANTE · Alex Mason · 🏟️ SERATA DI PRESENTAZION
+  [20] ▣ Avanti → → Bradley Roberts · Korward Elite · MER · FC Merseyside · NUOVO ACQUISTO · MEDIANO · Bradley Roberts · 🏟️ SERATA DI PRESE
+  [21] ▣ Avanti → → Archie Drake · Korward Elite · MER · FC Merseyside · IL RIVALE INTERNO · TERZINO · Archie Drake · 🏟️ SERATA DI PRESENTA
+  [22] ▣ Avanti → → David Marsh · Korward Elite · MER · FC Merseyside · IL MENTORE · CENTROCAMPISTA · David Marsh · 🏟️ SERATA DI PRESENTAZI
+  [23] ▣ Avanti → → 8 · SAMUELITO VAIRO! · Korward Elite · MER · FC Merseyside · …E IL VOSTRO NUMERO 8 · SAMUELITO VAIRO! · 🏟️ SERATA DI PR
+  [24] ▣ 🎉 Che la stagione cominci → → MER · FC MERSEYSIDE · Premier Division · St. 18 · Sett. 1/38 · 2° posto · salvato 11:59 · v 7.999.193 · ⏩ Vai al prossim
+  [25] · 🏁 Avvia Stagioneritiro, raduno e presentazioni → SETTIMANA DI APERTURA · STAGIONE 18 · Passo 7 di 8 — 🏁 L'ultima stagione? · 🏁 Hai 34 anni. Nello spogliatoio nessuno l
+  AUTO → STOP testo «Annuncio il ritiro»
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/38-ultima-stagione-domanda-tel.png
+TASTI: ["📣 Annuncio il ritiro — questa è l'ultima stagione","🔁 Non ancora — si gioca","Chiudi — riprendi quando vuoi col tasto Avanza","Salva carriera, ultimo salvataggio 11:59 [coperto]","Opzioni [coperto]","🏁 Avvia Stagioneritiro, raduno e presentazioni [coperto]","Calendario [coperto]","91ATT [coperto]","☕ Sostieni il progetto [coperto]","💡 Idee e feedback [coperto]","Home [coperto]","Stagione [coperto]","Club [coperto]","Carriera [coperto]","Agente [coperto]","Ufficio [coperto]"] 
+TESTO: SETTIMANA DI APERTURA · STAGIONE 18
+Passo 7 di 8 — 🏁 L'ultima stagione?
+🏁 Hai 34 anni. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: è l'ultima stagione? Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.
+📣 Annuncio il ritiro — questa è l'ultima stagione
+🔁 Non ancora — si gioca
+Chiudi — riprendi quando vuoi col tasto Avanza
+MER
+FC MERSEYSIDE
+Premier Division · St. 18 · Sett. 1/38 · 2° posto
+salvato 11:59
+⏩ Vai al prossimo momento
+prima avvia la stagione
+PROSSIMA · PREMIER DIVISION · 1ª GIORNATA
+SETT. 1 · TRASFERTA
+NOT
+FC NOTTINGHAM
+16ª in classifica
+VS
+MER
+FC MERSEYSIDE
+2ª in classifica
+Forza 68/99 · più debole
+⚠️ Avversario in zona retrocessione
+🏁 AVVIA STAGIONE
+ritiro, raduno e presentazioni
+SIMULA
+prima vivi la settimana
+Calendario
+STAGIONE 18 · SETTIMANA 1 DI 38
+0
+PARTITE
+0
+GOL
+0
+ASSIST
+🔥 8 di fila
+91
+ATT
+Samuelito Vairo
+Spagna · Attaccante · 34 anni · in rotazione
+83
+FORMA
+100
+MORALE
+8
+FATICA
+🤝
+100/100
+Fiducia del mister
+⭐
+100/100
+Popolarità
+La tua settimana
+›
+🎖️
+Veterano
+34 anni
+🏷️ Mercato Estivo aperto
+5 settimane rimanenti
+Obiettivi della stagione
+›
+Obiettivi personali
+›
+🏹 Batti il tuo record: 24+ gol (S.
