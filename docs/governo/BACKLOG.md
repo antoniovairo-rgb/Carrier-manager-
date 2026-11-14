@@ -104,6 +104,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-446 | 14/11 13:00 | PO dal giro 193 (G193-16), questionario: Il tasto che blocca dice dove andare (es. rinnovo) e ci porta; con PO-405/410/411 | miglioramento (tasto momento) | DA FARE — 195 | 7.999.195 |
 | PO-447 | 14/11 13:00 | PO dal giro 193 (G193-17), questionario: Dieci anni di te: alla 10ª e 15ª stagione una pagina che guarda indietro | nuova funzione (memoria) | DA FARE — 196 | 7.999.196 |
 | PO-448 | 14/11 13:00 | PO dal giro 193 (G193-18), questionario: Rifiniture viste negli anni lunghi: numeri e testi che non tornano | difetto (testi, numeri) | DA FARE — 195 | 7.999.195 |
+| PO-449 | 14/11 15:55 | PO (foto docs/collaudo-po/193-tpose-ingresso.jpg, 193-tpose-ingresso-alto.jpg, 193-tpose-partita.jpg, 7.999.193, notturna MER-VLD coppa KCC): «T pose e non CGTrader non deve mai capitare». Madre: file CGTrader presenti sul sito (200); ipotesi caricamento lento/fallito o clip non legate. Questionario: «Subito, quarto giro, dentro la 194»; se non pronti «Aspetta con schermata di caricamento» (barra; dopo un tempo lungo partita 2D), mai corpi di riserva né T-pose. Giro 196 | difetto grave (scene 3D) | DA FARE — 194 (giro 196) | 7.999.194 |
 
 ## Storico — voci chiuse (364)
 

@@ -1548,3 +1548,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO ha scelto 17 proposte su 18 (non G193-03 energie del veterano) → PO-432…448. PO-155 RIAPERTA per il Mondiale come cammino (G193-10, PO-441).
 - Ordine (PO «195 difetti, 196 idee»): 195 = difetti rimasti (PO-373, 385, 401, 408, 409, 412, 418, 428) + G193-01 svincolato (PO-432), G193-16 tasto che dice dove andare (PO-446), G193-18 rifiniture (PO-448); tutte le idee G181, G189 e G193 nella 196 e oltre, a ondate da 3 giri.
 - Giro 193: 15,52 $.
+
+## 14/11 ~16:00 Roma — PO-449 T-pose e corpi non CGTrader
+- PO: «non deve mai capitare». «Subito, quarto giro, dentro la 194» (eccezione al tetto di 3 solo per questo); regola: se corpi o animazioni non sono pronti si aspetta con barra di caricamento, poi 2D; mai corpi di riserva né T-pose. Giro 196 (Opus). La 194 può slittare a tarda sera o domattina.
