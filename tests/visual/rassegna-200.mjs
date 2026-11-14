@@ -9,7 +9,7 @@
         deve stare in una delle 4 schede; la scheda 4 ha classifica e prossima partita;
         zero errori di pagina.
      B. partita intera (velocita' 2): stesse 4 schede, Avanti fino alla 4, i puntini riportano alla 2, Salta = torna alla carriera
-        salvando la partita (matchHistory +1, fase non piu' ended).
+        salvando la partita (matchHistory +1, la rassegna non e' piu' a schermo).
      C. Simula dal prompt: nessuna rassegna (oggi dopo Simula c'e' solo l'avviso col risultato), la partita si salva, zero errori.
    ROSSO window.__CPM_NO_G200 (dall'avvio): pagina unica di prima → nessun puntino ne' Avanti, pagina oltre 1,3 schermi → DEVE essere bocciato.
    «Non giudicato» (partita non finita, scheda non trovata) = rosso. Verde e rosso stampati per ultimi. Foto in docs/sviluppo/giro200/.
@@ -84,8 +84,9 @@ console.log('B) verde — partita intera (velocita\' 2)');
     await p.evaluate(() => { const d = document.querySelectorAll('[data-cpm="puntino200"]'); if (d[1]) d[1].click(); }); await sleep(400);
     const t2 = (await misuraFine(p) || {}).scheda;
     const n0 = await storia(p); const salta = await clic(p, '[data-cpm="salta200"]');
-    let n1 = n0, f1 = null; for (let i = 0; i < 30; i++) { await sleep(500); n1 = await storia(p); f1 = await fase(p); if (n1 > n0) break; }
-    ok(verde, /^2\/4/.test(t2 || '') && salta && n1 === n0 + 1 && f1 !== 'ended' && A.errs.length === 0, `puntino → «${t2}»; Salta torna alla carriera e salva (matchHistory ${n0}→${n1}, fase ${f1}) · errori ${A.errs.length}`);
+    let n1 = n0, f1 = null; for (let i = 0; i < 30; i++) { await sleep(500); n1 = await storia(p); if (n1 > n0) break; }
+    await sleep(800); f1 = await p.evaluate(() => document.querySelector('[data-cpm="rassegna200"]') ? 'rassegna ancora a schermo' : 'carriera');/* __CPM_PHASE resta all\'ultimo valore dopo lo smontaggio: si guarda il DOM */
+    ok(verde, /^2\/4/.test(t2 || '') && salta && n1 === n0 + 1 && f1 === 'carriera' && A.errs.length === 0, `puntino → «${t2}»; Salta torna alla carriera e salva (matchHistory ${n0}→${n1}, fase ${f1}) · errori ${A.errs.length}`);
   } catch (e) { ok(verde, false, 'non giudicato: ' + String(e.message).slice(0, 160)); }
   await A.b.close(); A.srv.close();
 }
