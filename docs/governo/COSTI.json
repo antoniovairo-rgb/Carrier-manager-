@@ -1580,5 +1580,19 @@
     "cache_read_tokens": 25053828,
     "worker_epoch": 1,
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaBZp6begZV82W3nxp6",
+    "titolo": "giro 190 testi, frase del mister, nomi U19, barra a 375 px (PO-380, PO-396, PO-397)",
+    "versione": "7.999.194",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-14T08:57:36Z",
+    "chiusa": "2026-11-14T10:30:53Z",
+    "cost_usd": 9.47194338,
+    "output_tokens": 88355,
+    "cache_read_tokens": 28708160,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-14"
   }
 ]

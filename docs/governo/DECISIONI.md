@@ -1535,3 +1535,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~11:50 Roma — terza tornata di idee (giro 193, Fable)
 - PO: «Al primo posto libero», tema «Da tifoso esigente, a tutto campo»: gioca 2-3 stagioni intere, anche da veterano e fine carriera (mai viste dai giri 181/189); nessuna ripetizione di G181, G189 e voci in BACKLOG; G181-09 altri ruoli resta scartata. Parte prima degli altri giri della 194 in coda.
+
+## 14/11 ~12:00 Roma — 194 a metà stasera
+- PO: «194 a metà stasera, resto nella 195». Nella 194: giri 190 (fatto, unito: f986f1a4), 191 rigori, 192 cerimonie, giro del tasto momento (PO-405, 410, 411) più PO-431 (convocazione-235 rosso preesistente). Passano alla 195: PO-373, 385, 401, 408, 409, 412, 418, 428, insieme alle idee.
+- Giro 190: i 5 guardiani nuovi (nomi-190, nomi-salvati-190, convocazione-190, testi-190, cronaca-nomi-190) messi dalla madre nella catena completa. Consiglio su due righe accettato (decisione tecnica della madre).
+- Giro 193 idee (Fable) partito al posto liberato dal 190, come promesso al PO.
