@@ -1602,3 +1602,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Giro 197 (PO-452): scelte alte 56 px e tutte a schermo da 360×640, titolo della mossa a capo; 8/8 controlli verdi; unito (catene ricomposte, 81141069). 4,66 $.
 - PO (questionario): «Sì, fino al 51% sui bassi» — eccezione alla regola 7.901 (riquadro ≤ 44%) solo sotto 909 px di altezza; sopra resta 44%.
 - Madre: hud-c3 (asserisce ≤ 44% a 412×915) non eseguito dal giro → va nella verifica della 195.
+
+## 14/11 ~22:45 Roma — questionario sui dubbi aperti
+- clip-180: ricomprimere la clip Rohr sotto 3,00 MB nella 195 (PO-464); tetto invariato.
+- Partita 2D di riserva: provare rigori finali e cerimonie in 2D nella 195 (PO-465).
+- Svincolato «fermati un anno»: sì, nella 199 carriera lunga (PO-466).
+- Voci vecchie distribuite per tema: PO-349 e 356 → 197; PO-376 e 377 → 198; PO-367 → 195 (giri scene 3D); PO-322 → 196 (Store); PO-155 chiusa dentro PO-440 (200).
