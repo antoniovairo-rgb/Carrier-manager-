@@ -1706,5 +1706,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaAXJzv3cDREWpjPE93",
+    "titolo": "giro 200 rassegna a quattro schede e rifiniture degli anni lunghi (PO-385, 448)",
+    "creata": "2026-11-14T18:46:49Z",
+    "chiusa": "2026-11-14T20:30:57Z",
+    "cost_usd": 15.74990374,
+    "output_tokens": 124915,
+    "cache_read_tokens": 51610690,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]

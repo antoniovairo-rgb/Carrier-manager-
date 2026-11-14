@@ -1592,3 +1592,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Verifica parte B partita (20 controlli, uno alla volta).
 - highlight-95: 1 difetto D3 in una corsa interrotta del giro, 0 alla corsa completa: tenuto d'occhio come instabile.
 - PO (questionario ~21:00): tetto dell'attesa dei giocatori 3D **120 s** (non 60). Applicato su lavoro/194 (e1adac36); verifica B ripartita da capo.
+
+## 14/11 ~21:40 Roma — giro 200 unito in lavoro/195, questionario sulla rassegna
+- Giro 200 (PO-385, 448): rassegna a 4 schede (0,71-1,25 schermi ciascuna, 96/96 righe di prima presenti), 10 rifiniture su 12 corrette; controlli verdi; unito senza conflitti; rassegna-200 e rifiniture-200 nella catena completa. 15,75 $.
+- PO (questionario): niente rassegna dopo Simula; tabellino nella scheda 1 accorciato; Salta = salva e torna alla carriera; tasti fissi in fondo → PO-461 (giro breve nella 195).
+- Madre: punti non corretti del giro 200 messi in BACKLOG: PO-462 intervista tagliata su PC (198 partita/PC, misura prima), PO-463 Sempreverde al ritiro e coda Coppa delle Nazioni (197 coerenza carriera).
