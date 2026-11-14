@@ -2538,6 +2538,11 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [soState,setSoState]=useState(null);
   const soStateRef=useRef(null);useEffect(()=>{soStateRef.current=soState;},[soState]);
   const [soFx,setSoFx]=useState(null);
+  /* [giro 191 PO-403 B — stacco «breve col tabellone» fra un rigore e l'altro. Rosso __CPM_NO_G191B] Al cambio di rigore (dal secondo in
+     poi) lo schermo va al nero per STACCO191_MS col tabellino ✓ ✗ sopra; sotto il nero il 3D rifa' la scena (src/12, _sh191) e la
+     rincorsa parte dopo lo stacco. Solo presentazione: la serie, gli esiti e i tempi del tabellino restano quelli di prima. */
+  const STACCO191_MS=600;const [st191,setSt191]=useState(null);
+  useEffect(()=>{const k=soFx&&soFx.key;if(!(k>=1)||(typeof window!=='undefined'&&window.__CPM_NO_G191B))return;setSt191(k);const t=setTimeout(()=>setSt191(s=>s===k?null:s),STACCO191_MS);return()=>clearTimeout(t);},[soFx&&soFx.key]);// eslint-disable-line
   const soDoneRef=useRef(false);
   function _startShootout(){
     try{
@@ -2588,7 +2593,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     }
     const st=soState.step+1;
     const kickN=Math.floor(Math.max(0,st)/2);
-    const delay=soState.step<-1?1500:(soState.step<0?1500:(st%2===0?1250:1950));
+    const delay=soState.step<-1?1500:(soState.step<0?1500:(st%2===0?1250:1950+((kickN>=1&&!(typeof window!=='undefined'&&window.__CPM_NO_G191B))?STACCO191_MS:0)));/* [giro 191 B] dal secondo rigore l'esito arriva dopo lo stacco: il tiro e' spostato di tanto quanto */
     const t=setTimeout(()=>{
       if(st>=0&&kickN>=soState.seq.length){setSoState(s=>({...s,step:st,cur:null,done:true}));return;}
       if(st<0){setSoState(s=>({...s,step:st}));return;}
@@ -5461,7 +5466,15 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         }
         /* [7.999.158 tetto 7, misura 16 partite] i posti aggiunti PRIMA del tetto (reattiva, sotto 63'/76', origine) aprivano l'ottava scena: oltre il tetto non si apre nessuna scena salvo il rigore, e il fatto del motore si lascia cadere (rosso __CPM_NO_TETTO7). */
         const _blk7=_apre803&&_tetto7()&&!(occEroe879Ref.current&&occEroe879Ref.current.origine&&occEroe879Ref.current.origine.kind==="rigore");if(_blk7)occEroe879Ref.current=null;
-        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803&&!_blk7){
+        /* [giro 191 PO-399 — rosso __CPM_NO_G191A] LA SCENA PROGRAMMATA NON RICALCIA UN PIAZZATO GIA' CALCIATO. Se il fatto corrente e' un
+           rigore/punizione dell'eroe e la scena si sta per aprire: col piazzato ancora sul dischetto il motore lo ASPETTA (attendiPiazzato,
+           come il percorso brain-origine del giro 94 D2, che questo percorso non chiamava); se il motore l'ha gia' calciato, la scena del
+           piazzato non si apre (il fatto si lascia cadere: mai un secondo calcio dello stesso rigore). */
+        let _gia191=false;if(_apre803&&!_blk7&&!(typeof window!=='undefined'&&window.__CPM_NO_G191A)){try{const _o191=occEroe879Ref.current,_M191=motoreRef.current;
+          if(_o191&&_o191.origine&&(_o191.origine.kind==="rigore"||(_o191.origine.kind==="punizione"&&_o191.tipo==="punizione"))&&_M191&&_M191.chiedi&&_M191.chiedi.piazzatoStato191){const _s191=_M191.chiedi.piazzatoStato191();
+            if(_s191.attesa){_M191.chiedi.attendiPiazzato&&_M191.chiedi.attendiPiazzato();try{cpmEv("piazzato191",{min:nx|0,stato:"attesa"});}catch(_e){}}
+            else{_gia191=true;occEroe879Ref.current=null;try{cpmEv("piazzato191",{min:nx|0,stato:"calciato",ult:_s191.ult});if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:nx|0,t:'scena_negata191',ult:_s191.ult});}catch(_e){}}}}catch(_e191){}}
+        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803&&!_blk7&&!_gia191){
           _M803.ult=nx;
           if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] lo slot bruciato in panchina non e' un'occasione giocata */}else{
             const _sc=scoreRef.current;
@@ -6386,7 +6399,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                dell'eroe (il rigore con origine e una «spalle»); la scena del rigore veniva inserita, ma qui si registrava la PRIMA
                dell'elenco, e la scheda aperta era «Solo davanti al portiere!» invece del rigore. Se la scena dell'origine e' stata
                inserita, l'occasione corrente e' quella. Rosso __CPM_NO_ORIG98. */
-            /* [7.999.158 PO-221 parte 2, misura 16 partite su 7.999.157] LA PUNIZIONE RESPINTA DAL TETTO NON DIVENTA L'OCCASIONE CORRENTE: il tetto «1 punizione a partita» bloccava l'inserimento, ma l'occasione restava qui come fatto corrente e la scena successiva (finestra o slot aggiunto) si apriva comunque come punizione: 27 scene-punizione su 16 partite contro 14 passate dal ramo col tetto. Rosso __CPM_NO_PZTOT221. */const _pzRif221=(e)=>!!(e&&e.origine&&e.origine.kind==="punizione"&&e.tipo==="punizione"&&!_ins26&&(occ28Ref.current.punz221|0)>=1&&!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PUNZ221||window.__CPM_NO_PZTOT221)));const _oc=(_ins26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG98))?_oc26:_evM870.find(e=>e&&e.t==='occasione_eroe'&&!_pzRif221(e));if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null,preludio:_oc.preludio||null};}/* [7.999.150 strato 5] la copia porta anche il preludio (gli ultimi passaggi veri) */
+            /* [7.999.158 PO-221 parte 2, misura 16 partite su 7.999.157] LA PUNIZIONE RESPINTA DAL TETTO NON DIVENTA L'OCCASIONE CORRENTE: il tetto «1 punizione a partita» bloccava l'inserimento, ma l'occasione restava qui come fatto corrente e la scena successiva (finestra o slot aggiunto) si apriva comunque come punizione: 27 scene-punizione su 16 partite contro 14 passate dal ramo col tetto. Rosso __CPM_NO_PZTOT221. */const _pzRif221=(e)=>!!(e&&e.origine&&e.origine.kind==="punizione"&&e.tipo==="punizione"&&!_ins26&&(occ28Ref.current.punz221|0)>=1&&!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PUNZ221||window.__CPM_NO_PZTOT221)));const _oc=(_ins26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG98))?_oc26:_evM870.find(e=>e&&e.t==='occasione_eroe'&&!_pzRif221(e));if(_oc&&!_ins26&&_oc.origine&&(_oc.origine.kind==="rigore"||(_oc.origine.kind==="punizione"&&_oc.tipo==="punizione"))&&!(typeof window!=='undefined'&&window.__CPM_NO_G191A)){try{_M.chiedi.ponte191&&_M.chiedi.ponte191(60);cpmEv("ponte191",{min:nx|0,kind:_oc.origine.kind});}catch(_e191p){}}/* [giro 191 PO-399] il piazzato e' il fatto corrente ma non e' stato inserito: il motore lo tiene sul dischetto per il battito in cui la scena programmata lo apre (src/14, ponte191) */if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null,preludio:_oc.preludio||null};}/* [7.999.150 strato 5] la copia porta anche il preludio (gli ultimi passaggi veri) */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _P94=(window.__CPM_PEN94=window.__CPM_PEN94||[]);for(const _e94 of _evM870){if(_e94&&(_e94.t==='rigore'||(_e94.t==='battuta'&&_e94.kind==='pen')||(_e94.t==='tiro'&&_e94.intent==='penalty')||(_e94.t==='gol'&&_e94.chi&&_e94.chi.eroe)||(_e94.t==='occasione_eroe'&&_e94.origine&&_e94.origine.kind==='rigore'))&&_P94.length<300)_P94.push({min:nx|0,t:_e94.t,eroe:!!(_e94.chi&&_e94.chi.eroe),per:_e94.per||null,ph:String(phaseRef.current)});}}catch(_e94r){}}/* [giro 94 D2] testimone dei rigori del motore (solo __CPM_REC) */
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0,costr167:!(typeof window!=='undefined'&&window.__CPM_NO_G167)&&_fase501==='costruzione'});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
@@ -11599,6 +11612,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 const _lastRev=(!_cur&&_revealed>0&&!soState.done)?soState.seq[_revealed-1]:null;
                 const _finTxt=soState.won?((context==="cup"&&(player.cup?.round||0)>=4)||((context==="euro_ko"&&player.euro?.phase==="final"))||((context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final"))||((context==="nationsCup"&&!!player.nationsCupQueue?.isFinal))?"🏆 DAL DISCHETTO ALLA GLORIA!":"✅ PASSI IL TURNO!"):"❌ ELIMINATI AI RIGORI";
                 return(<React.Fragment>
+                {st191!=null&&!soState.done&&<div data-cpm="stacco191" style={{position:"absolute",inset:0,zIndex:23,pointerEvents:"none",background:"#050a16"}}/>}{/* [giro 191 B] il nero dello stacco: sopra resta il tabellino */}
                 <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))"}}>
                   <div style={{fontSize:FS.caption,letterSpacing:3,color:"#fbbf24",fontWeight:800}}>⚽ CALCI DI RIGORE</div>
                   <div className="cpm-num" style={{fontSize:isNarrow?24:30,fontWeight:900,color:"#fff",marginTop:2,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{soState.hs} — {soState.as}</div>

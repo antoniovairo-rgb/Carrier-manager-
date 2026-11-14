@@ -9921,9 +9921,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_old&&_old!==_km){if(_old._hd)_old._hd.rotation.x=0;if(_old._aL){_old._aL.rotation.x=-0.5;_old._aR.rotation.x=-0.5;}_old.position.y=0;}
             sr.current._soKicker=_km;
             _km.position.set(32.8,0,1.1);_km._px=32.8;_km._pz=1.1;_km._vx=0;_km._vz=0;
+            /* [giro 191 PO-403 «deve esserci un cambio scena tra un rigore ed un altro e chi calcia deve essere gia' rivolto verso la porta
+               prima della rincorsa ed il portiere del rigore precedente non deve esserci nella scena!»; stacco deciso dal PO: «breve col
+               tabellone»]. Al cambio di rigore la scena si RIFA' tutta nello stesso fotogramma, coperta dallo stacco del DOM (LiveMatch):
+               B — la rincorsa parte dopo lo stacco (_sh191 secondi spostano tutta la linea del tempo del rigore), e chi ha calciato prima
+                   torna in fila di colpo invece di camminarci davanti alla camera. Rosso __CPM_NO_G191B.
+               C — il rigorista nasce GIA' girato verso la porta: corpo 3D compreso, e il salto dalla fila al dischetto non conta come
+                   corsa (prima il corpo 3D si girava verso la direzione del salto e restava cosi' fino alla rincorsa). Rosso __CPM_NO_G191C.
+               D — il portiere che non e' di turno va subito al suo posto d'attesa, fuori dal quadro (prima tornava a piedi dalla linea di
+                   porta attraversando l'inquadratura). Rosso __CPM_NO_G191D. */
+            {const _W191=(typeof window!=='undefined')?window:{};const _av191=(m)=>(glbAvatars||[]).find(a=>a&&a.proc===m)||null;
+             const _snap191=(m,x,z)=>{if(!m)return;m.position.set(x,0,z);m._px=x;m._pz=z;m._vx=0;m._vz=0;const a=_av191(m);if(a&&a.root){a.root.position.set(x,0,z);a.lx=x;a.lz=z;}};
+             sr.current._sh191=(_W191.__CPM_NO_G191B||!(_k.key>=1))?0:0.6;
+             if(!_W191.__CPM_NO_G191B&&_k.key>=1&&_old&&_old!==_km){if(_old===hero)_snap191(hero,-2,8.6);else sr.current.players.forEach((pp,ii)=>{const s0=(P.allPlayers||[])[ii];if(pp.mesh!==_old||!s0)return;const _ln=s0.team==='away'?1:0;_snap191(_old,-2-_ln*4.5,((ii%11)-5)*3.4);});}
+             if(!_W191.__CPM_NO_G191C){const _ry=Math.atan2(48-32.8,0-1.1);_km.rotation.y=_ry;const a=_av191(_km);if(a&&a.root){a.root.rotation.y=_ry;a.lx=32.8;a.lz=1.1;}}
+             if(!_W191.__CPM_NO_G191D)sr.current.players.forEach((pp,ii)=>{const s0=(P.allPlayers||[])[ii];if(!s0||!s0.gk||!pp.mesh||pp.mesh===_gkS)return;_snap191(pp.mesh,-8,(!_no58&&s0.team==='away')?-14:14);});}
           }
           if(_k&&sr.current._soT0!=null){
-            const _u=(now-sr.current._soT0)/1000;const _km=sr.current._soKicker||hero;
+            const _u=(now-sr.current._soT0)/1000-(+sr.current._sh191||0);/* [giro 191 B] la linea del tempo del rigore parte dopo lo stacco */const _km=sr.current._soKicker||hero;
             if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _av80=(glbAvatars||[]).find(a=>a&&a.proc===_km);const _gk80=(glbAvatars||[]).find(a=>a&&a.proc===_gkS);(window.__CPM_SO80=window.__CPM_SO80||[]).push({key:_k.key,u:+_u.toFixed(2),kx:+_km.position.x.toFixed(1),kz:+_km.position.z.toFixed(1),hero:_km===hero,av:_av80?{vis:!!_av80.root.visible,x:+_av80.root.position.x.toFixed(1),z:+_av80.root.position.z.toFixed(1)}:null,gk:_gk80?{vis:!!_gk80.root.visible,x:+_gk80.root.position.x.toFixed(1),z:+_gk80.root.position.z.toFixed(1),g:_gk80._gName||null}:null,inq:(()=>{try{const f=(o,y)=>{if(!o||typeof camera==='undefined')return null;const v=new THREE.Vector3(o.position.x,(o.position.y||0)+y,o.position.z).project(camera);return Math.abs(v.x)<=0.98&&Math.abs(v.y)<=0.98&&v.z<1;};return{k:f(_km,1.0),g:f(_gkS,1.0)};}catch(_e){return null;}})(),ball:sr.current.ball?[+sr.current.ball.position.x.toFixed(1),+sr.current.ball.position.y.toFixed(2),+sr.current.ball.position.z.toFixed(1)]:null,cam:(typeof camera!=='undefined'&&camera)?[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]:null,fov:(typeof camera!=='undefined'&&camera)?+camera.fov.toFixed(0):null,asp:(typeof camera!=='undefined'&&camera)?+camera.aspect.toFixed(2):null});if(window.__CPM_SO80.length>400)window.__CPM_SO80.shift();}catch(_e80){}}/* [7.999.58] testimone di prova: rigorista e portiere */
             _km.rotation.y=Math.atan2(46-_km.position.x,0-_km.position.z);
             sr.current._soHold58=(_u<0.85&&!(typeof window!=='undefined'&&window.__CPM_NO_RIGORI58));if(sr.current._soHold58&&_bl){_bl.position.set(35,0.35,0);}/* [7.999.58] MISURATO: prima del calcio un altro scrittore trascinava il pallone dal dischetto verso la camera (x 35→25 in 0,8 s) — resta sul dischetto finche' non parte il tiro */
@@ -12504,6 +12519,16 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       if(_toonOn941())_toonPassa941(scene);/* [7.941] i corpi entrano in scena a partita in corso: si converte cio' che e' nuovo, una volta sola per mesh */
       {const _pr=sr.current._presaRev;/* [22/09 POC — IL POSSESSO DOPO LA PRESA, solo review] Finito l'arco un altro scrittore riportava la palla a terra (0,22 m) mentre il portiere aveva le mani a 1,2 m. Dopo il contatto la palla segue il punto medio delle mani fino al cambio di scena. Rosso __CPM_NO_PRESA (il canale non si arma). */if(_pr&&_pr.held&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')){try{const _ka=(glbAvatars||[]).find(a=>a&&a.proc===_pr.proc);if(_ka&&_ka._handL&&_ka._handR){const _l=sr.current._gkHandL||(sr.current._gkHandL=new THREE.Vector3()),_r=sr.current._gkHandR||(sr.current._gkHandR=new THREE.Vector3());_ka._handL.getWorldPosition(_l);_ka._handR.getWorldPosition(_r);ball.position.set((_l.x+_r.x)*0.5,(_l.y+_r.y)*0.5,(_l.z+_r.z)*0.5);}}catch(_ePr){}}}
       if(sr.current._soHold58&&propsRef.current&&propsRef.current.shootout&&sr.current.ball){sr.current.ball.position.set(35,0.35,0);}/* [7.999.58] l'ultima parola prima del disegno: pallone sul dischetto fino al calcio */
+      /* [giro 191 PO-403] TESTIMONE DELLA LOTTERIA (solo prova, armato da window.__CPM_SO191=[]): a fine fotogramma, dopo pose e giri dei
+         corpi, per ogni fotogramma della serie: rigore in corso, tempo dal suo avvio, angolo fra lo sguardo del rigorista (corpo 3D se c'e')
+         e il centro della porta, portieri NON di turno visibili dentro il quadro, stacco in corso. Nessun effetto sul gioco. */
+      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&Array.isArray(window.__CPM_SO191)&&propsRef.current&&propsRef.current.shootout){try{
+        const _P1=propsRef.current,_k1=_P1.shootout.kick,_km1=sr.current._soKicker,_gk1=sr.current._soGk58;
+        const _av1=(m)=>(glbAvatars||[]).find(a=>a&&a.proc===m)||null;
+        const _q1=(o)=>{if(!o||typeof camera==='undefined'||!camera)return false;const v=new THREE.Vector3(o.position.x,(o.position.y||0)+1.0,o.position.z).project(camera);return Math.abs(v.x)<=1&&Math.abs(v.y)<=1&&v.z<1;};
+        let _ang1=null,_kx=null,_kz=null;if(_km1){const _a=_av1(_km1);const o=_a?_a.root:_km1;const ta=Math.atan2(48-o.position.x,0-o.position.z);const d=((ta-o.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_ang1=+(Math.abs(d)*180/Math.PI).toFixed(1);_kx=+o.position.x.toFixed(1);_kz=+o.position.z.toFixed(1);}
+        const _alt1=[];sr.current.players.forEach((pp,ii)=>{const s0=(_P1.allPlayers||[])[ii];if(!s0||!s0.gk||!pp.mesh||pp.mesh===_gk1)return;const a=_av1(pp.mesh);const o=a?a.root:pp.mesh;const vis=a?!!a.root.visible:!!pp.mesh.visible;if(vis&&_q1(o))_alt1.push(s0.team);});
+        const W=window.__CPM_SO191;W.push({key:_k1?_k1.key:null,u:(_k1&&sr.current._soT0!=null)?+((performance.now()-sr.current._soT0)/1000).toFixed(2):null,sh:+(sr.current._sh191||0),ang:_ang1,kx:_kx,kz:_kz,altri:_alt1,gkT:(()=>{let t=null;sr.current.players.forEach((pp,ii)=>{const s0=(_P1.allPlayers||[])[ii];if(s0&&pp.mesh===_gk1)t=s0.team;});return t;})()});if(W.length>3000)W.shift();}catch(_e191w){}}
       /* [7.999.72 collaudo Codex 001/002, gi31 «Scivolata netta»: nella scelta i protagonisti stanno sotto il pannello delle azioni.
          Rosso __CPM_NO_PAN72] Misurato: pallone a y 746-755 px, pulsanti da 736 px. La camera non sa del pannello (DOM di LiveMatch,
          ~35% basso del quadro). Solo in hl_choose: se il pallone cade sotto ndc -0,30 la FINESTRA di proiezione scorre in basso
