@@ -1566,5 +1566,19 @@
     "cache_read_tokens": 4582246,
     "worker_epoch": 1,
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaAFN4Ewrhw8SYta1HM",
+    "titolo": "giro 189 idee e migliorie, seconda tornata",
+    "versione": "7.999.194",
+    "tipo": "collaudo",
+    "modello": "claude-fable-5-2",
+    "creata": "2026-11-14T07:26:16Z",
+    "chiusa": "2026-11-14T08:52:36Z",
+    "cost_usd": 15.63701966,
+    "output_tokens": 95672,
+    "cache_read_tokens": 25053828,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-14"
   }
 ]
