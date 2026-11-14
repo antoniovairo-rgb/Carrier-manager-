@@ -72,11 +72,54 @@ senza posta. Il `>= 1` chiedeva quindi al gioco di disobbedire alla decisione de
 **Non è più permissivo:** il conto resta confrontato, si aggiunge il confronto della **domanda**, e il `>= 1` resta, sul caso
 dove il gioco deve davvero chiederla. La libreria `lib/partita-166.mjs` ora legge anche `__CPM_IV183` (solo lettura in più).
 
-Esito (corsa del 13-14/11): <!-- SH166 -->
+Esito (corsa del 13-14/11, dopo il punto 3): **VERDE PASSA, ROSSO CADE su 3, 7 e 8**. 12: soli highlight 0 · intera 0,
+decisione `{"si":false,"motivo":"nessuna posta"}` in entrambe. 12b («Collaudo Sorpresa 7»): 1 · 1, decisione
+`{"si":true,"motivo":"🎲 Sorpresa","q":"Il tuo gol ha messo la partita sulla strada giusta. Raccontaci quell'azione."}` in
+entrambe, partite al 92'. Controllo 10 sul nome principale: 269/269 voci uguali, 1-0. Durata: intera 195,8 s, soli highlight
+57,6 s.
 
 ## 3. Punto 1 — rigore-139: battute e testimone dall'89'
 
-<!-- RIG139 -->
+**Sintomo (della madre):** «NO verde GIUDICATO: battute di rigore dell'eroe 2 (minimo 3), testimone k1d-11 col rigore offerto
+dall'89' false», quindi rosso non visto. Con la partita riproducibile le partite fisse del guardiano sono altre partite.
+
+**Ricerca nel braccio rosso** (`sonda-rigore-139`, salvataggio 190, `__CPM_RIG190_K=1`, 2×; il nome cambia la partita):
+
+| lotto | partite | battute dell'eroe | rigori offerti all'89'-90' | doppi del meccanismo 139 |
+|---|---|---|---|---|
+| r187a (0-31, PAR 4) | 32 | 12 | r187a-23 al 90' (il motore calcia da solo, nessuna scena) | 0 |
+| r187b (0-47, PAR 8) | 48 (47 giudicate) | 24 | nessuno | 0 |
+| r187d (0-39, PAR 8; fermato dal riavvio del container) | 40 | — | r187d-25 all'89' (una battuta, in scena, anche nel rosso) | 0 |
+| r187d (40-92, PAR 8; fermato al tetto dei 30 minuti, 53/56) | 53 | 13 partite con battute | r187d-40 all'88' | 0 |
+
+**173 partite naturali, zero doppi del giro 139.** (Un tentativo a PAR 12 ha esaurito la memoria — processi uccisi dal kernel,
+aperture fallite — ed è stato fermato e scartato.) Il caso esiste ancora nel codice (sotto), ma nel gioco attuale è troppo raro
+per una partita fissa naturale. `PROCESSO.md`: «ciò che il gioco non produce si provoca dalla sonda».
+
+**La testimone è provocata.** Opzione nuova della sonda `CPM_PROVOCA=89`: al primo controllo con il motore al minuto ≥89, a gioco
+fluido, la sonda chiede al motore un rigore per la squadra dell'eroe con l'eroe battitore (`chiedi.piazzato`, come carriera3-94
+D2); offerta, attesa, scena e battuta seguono il gioco. «r187d-56», seme 57: **verde** `89' provocato · 90' rigore · 90'
+occasione_eroe* · 91' piazzato_giocato[pen:37,tolto] · 91' scena_gol` (una battuta); **rosso** `__CPM_NO_G139` `… 90' occasione_eroe*
+· 90' battuta* 90' tiro* · 91' piazzato_giocato[nullo:volo] · 91' scena_gol · 92' gol*` — lo stesso doppio di k1d-11 nel giro 139.
+
+**Partite del guardiano ora:** verde = testimone provocata r187d-56/57 + tre naturali r187d-25/26 (rigore offerto all'89' **da
+solo**), r187d-40/41, r187a-22/23; rosso = r187d-56/57 provocata con `__CPM_NO_G139`. Criterio (N = 5', ≥3 battute, testimone con
+occasione dall'89', 0 doppi, rosso visto) **invariato**.
+
+**Esito, 4 corse:** verde giudicato in tutte, battute **7 · 7 · 6 · 7**, 0 doppi, 0 errori; rosso visto in tutte (90' motore + 91'
+scena). ⚠️ La corsa con 6 battute non l'ho attribuita a una partita (stampavo solo il riassunto): sospetto lo strumento — la
+provocazione scatta al primo controllo della sonda (ogni 400 ms) col motore al minuto ≥89, quindi su un passo diverso a ogni corsa.
+Non verificato.
+
+**Difetto trovato e NON corretto (fuori dal mandato del punto 1): «r187d-11», seme 12, doppio anche nel VERDE.** `59' rigore ·
+59' occasione_eroe* · 60' piazzato_giocato[nullo:volo] · 60' scena_gol · 61' battuta* 61' tiro*`, identico in tre corse (due rosse,
+una verde). Spia della sonda (`CPM_SPIA=1`, campo nuovo `sc`/`rp`): richiesta dei piazzati accesa, scena mai aperta nel motore,
+`_acc94` mai acceso, nessuna chiamata ad `attendiPiazzato`; il motore aspetta 40 passi (`_o27` 1→40 fra il 58' e il 59') e calcia.
+La scena arriva al 60' dal percorso **`motore-occasione`** (scena programmata n.7, `evento:{min:59}`), che — a differenza del
+percorso `brain-origine` (src/15, ~r.6384) — non chiama `attendiPiazzato`: è la classe del giro 94 D2 («misura 3») su un percorso
+che quella correzione non copre. La sonda gira con `__CPM_NO_G154` (le battute del motore dell'eroe esistono solo così); **in
+produzione** il motore farebbe calciare un compagno: lo stesso rigore battuto due volte, da due giocatori. Non misurato in
+produzione. Va deciso chi lo corregge; il caso è pronto per un guardiano (nome e seme sopra).
 
 ## 4. Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`, `free -m`/`df -h` prima)
 
