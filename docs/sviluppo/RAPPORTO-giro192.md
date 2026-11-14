@@ -116,7 +116,7 @@ modifica a `src/` `node tools/build-src.mjs` + `node tools/check-src.mjs`.
 | cerimonie | ✅ |
 | festa-3d | ✅ |
 | griglia-mobile | ✅ (14 schermate × 5 larghezze; le foto rigenerate in `docs/collaudo-grafico/g0` non le ho committate) |
-| highlight-95 | ESITO_H95 |
+| highlight-95 | ✅ verde 98 highlight · 0 difetti · 0 non giudicabili; rosso 109 highlight · 171 difetti. ⚠️ In due corse: la prima (verde+rosso) è stata **interrotta da me** durante il rosso perché avevo stimato male il tempo (le partite s12 del rosso sono cadute per l'interruzione, non per il gioco); il rosso è stato rifatto da solo con `CPM_ARMI=rosso` sullo stesso build. Durata misurata: ~67 min il verde, ~70 il rosso. |
 | test:logic | ✅ |
 | save-compat | ✅ 12 pass · 0 fail |
 
