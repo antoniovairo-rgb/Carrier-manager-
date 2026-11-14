@@ -1585,3 +1585,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~20:00 Roma — PO-460 sigle tagliate nella barra della partita
 - PO (foto su 7.999.193): sigle tagliate in alto. La correzione del giro 190 (PO-397) arriva con la 194, ma a 375 px restano 4-5 px tagliati (misura giro 195). PO: «Nella 195»; la 194 non slitta.
+
+## 14/11 ~20:55 Roma — giro 196 unito in lavoro/194, GAME_VERSION 7.999.194
+- Giro 196 (PO-449): 0 fotogrammi sbagliati su 4 scenari (rosso 102), attesa con barra «Caricamento dei giocatori», oltre 60 s partita in 2D, guardalinee CGTrader. Controlli del giro verdi tranne clip-180 (preesistente, rohr 3,30 MB contro tetto 3,00 MB, già dichiarato nella 192). 10,03 $.
+- Unione 54a7de5e + d18cee1b: catena completa ricomposta (il ramo del giro aveva la catena vecchia), foto del giro 194 rigenerate e riga di roadmap del ramo riportate com'erano; GAME_VERSION 7.999.194; check-src identico.
+- Verifica parte B partita (20 controlli, uno alla volta).
+- highlight-95: 1 difetto D3 in una corsa interrotta del giro, 0 alla corsa completa: tenuto d'occhio come instabile.
