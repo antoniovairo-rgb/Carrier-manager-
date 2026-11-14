@@ -9450,11 +9450,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   {let xm=Infinity,xM=-Infinity,ym=Infinity,zm=Infinity,zM=-Infinity;
                    av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(_bv);if(_bv.x<xm)xm=_bv.x;if(_bv.x>xM)xM=_bv.x;if(_bv.y<ym)ym=_bv.y;if(_bv.z<zm)zm=_bv.z;if(_bv.z>zM)zM=_bv.z;});
                    if(isFinite(xm)){av.position.x+=-(xm+xM)/2;av.position.z+=-(zm+zM)/2;av.position.y+=-ym;av.updateMatrixWorld(true);}}
-                  let _aLb=null,_aRb=null,_fLb=null,_fRb=null,_tLb=null,_tRb=null;/* [7.476.0] +cosce: senza gambe il mister non cammina, trasla */
+                  let _aLb=null,_aRb=null,_fLb=null,_fRb=null,_tLb=null,_tRb=null,_cLb=null,_cRb=null,_pLb=null,_pRb=null;/* [7.476.0] +cosce: senza gambe il mister non cammina, trasla · [giro 192] +polpacci e piedi: la falcata vera piega il ginocchio */
                   av.traverse(b=>{if(!b.isBone)return;const bn=(b.name||"").replace(/[:_. ]/g,"").toLowerCase();/* matcher 7.142: mixamo E Biped (actor-presenter e' Rocketbox: Bip01_R_UpperArm) */
                     if(/rightforearm$|rforearm$/.test(bn))_fRb=b;else if(/leftforearm$|lforearm$/.test(bn))_fLb=b;
                     else if(/rightarm$|rupperarm$/.test(bn))_aRb=b;else if(/leftarm$|lupperarm$/.test(bn))_aLb=b;
-                    else if(/rightupleg$|rightthigh$|rthigh$/.test(bn))_tRb=b;else if(/leftupleg$|leftthigh$|lthigh$/.test(bn))_tLb=b;});
+                    else if(/rightupleg$|rightthigh$|rthigh$/.test(bn))_tRb=b;else if(/leftupleg$|leftthigh$|lthigh$/.test(bn))_tLb=b;
+                    else if(/rightleg$|rcalf$/.test(bn))_cRb=b;else if(/leftleg$|lcalf$/.test(bn))_cLb=b;
+                    else if(/rightfoot$|rfoot$/.test(bn))_pRb=b;else if(/leftfoot$|lfoot$/.test(bn))_pLb=b;});
                   /* braccia giu' dal T-pose (world-space, una volta): stessa rotazione della sala stampa */
                   const _axF=new THREE.Vector3(0,0,1);
                   const _rotW=(bone,axis,ang)=>{if(!bone||!bone.parent)return;av.updateMatrixWorld(true);
@@ -9465,9 +9467,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   _cg._lp434.visible=false;_cg.add(av);_cg._glb434=av;
                   if(_aLb&&_aRb){_cg._aL=_aLb;_cg._aR=_aRb;_cg._fL434=_fLb;_cg._fR434=_fRb;_cg._glbArms434=true;}
                   if(_tLb&&_tRb){_cg._tL476=_tLb;_cg._tR476=_tRb;}
+                  if(_cLb&&_cRb&&_pLb&&_pRb){_cg._cL192=_cLb;_cg._cR192=_cRb;_cg._pL192=_pLb;_cg._pR192=_pRb;}
                 }catch(_e434){}}).catch(()=>{});}
               }catch(_e){}}
-            if(sr.current._cerCoachGrp){sr.current._cerCoachGrp.visible=true;sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*9,0,_cerHz0-4.5);}/* [collaudo PO nazionale «il mister vola»] spawn gia' sul lato di scena che i bersagli di follow usano (z-4,5, fuori dal corridoio camera): prima partiva a z+6 e attraversava l'inquadratura in planata */
+            if(sr.current._cerCoachGrp){sr.current._cerCoachGrp.visible=true;
+              /* [giro 192 · PO-402 «il mister vola sull'erba, non cammina»] MISURATO (sonda misura-mister-192): il mister partiva a 9u
+                 dall'eroe (posizione di fine partita, ovunque nel campo) e attraversava il campo per TUTTA la consegna. Nella premiazione
+                 di squadra entra a pochi passi dal suo posto accanto al palco; altrove a 4,5u dall'eroe. Rosso __CPM_NO_G192A. */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G192A)){if(_team23)sr.current._cerCoachGrp.position.set(-_cSgn*6.4,0,-5.4);else sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*4.5,0,_cerHz0-4.5);sr.current._cerCoachGrp._ph192=0;}
+              else sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*9,0,_cerHz0-4.5);}/* [collaudo PO nazionale «il mister vola»] spawn gia' sul lato di scena che i bersagli di follow usano (z-4,5, fuori dal corridoio camera): prima partiva a z+6 e attraversava l'inquadratura in planata */
             /* [collaudo PO finale NAZIONALE «i giocatori sembra che si riscaldano... i compagni non
                festeggiano»] L'APERTURA DELLA CERIMONIA E' UNO STACCO: la nazionale ci arriva dalla
                lotteria dei rigori coi giocatori SPARSI per il campo (misurato GLB-ON: al beat hug
@@ -9544,16 +9552,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                costante (3,2 u/s, poi rallenta sotto il metro) con una falcata verticale leggera
                mentre e' in moto — a destinazione sta fermo e la falcata muore. */
             {const _cdx=_cto.x-_co.position.x,_cdz=_cto.z-_co.position.z,_cdl=Math.hypot(_cdx,_cdz);
-             if(_cdl>0.05){const _cst=Math.min(_cdl,(_cdl<1?1.4:3.2)*aDt);_co.position.x+=_cdx/_cdl*_cst;_co.position.z+=_cdz/_cdl*_cst;
-               _co._walk439=(_co._walk439||0)+aDt;_co.position.y=Math.abs(Math.sin(_co._walk439*7))*0.05;_co._mv476=1;}
-             else {_co._walk439=0;_co.position.y=0;_co._mv476=0;}
+             /* [giro 192 · PO-402, RICADUTA del 7.476] MISURATO (sonda misura-mister-192, coppa e coppa europea, corpi 3D): il mister si
+                spostava a 3,2 u/s — 11,5 km/h, passo di CORSA per un uomo di 1,88 — con le cosce che oscillavano a tempo FISSO (7 rad/s)
+                e gambe tese: SLITTAMENTO dei piedi 0,28-0,30 (il piede piu' fermo viaggiava col corpo per un terzo del suo moto). Il 7.476
+                aveva corretto «gambe ferme» ma la sua prova (ceremony-shot) dava per buono «un uomo cammina a ~3 u/s» e guardava solo la
+                velocita', mai i piedi: per questo la ricaduta non si e' vista. Le clip Rohr non servono qui: nessuna e' una camminata e
+                sono per lo scheletro CGTrader, non per il Biped dell'attore. Ora: passo da uomo (1,45 u/s), falcata legata alla
+                DISTANZA percorsa (fase = metri / ciclo 1,3), piede d'appoggio che arretra alla stessa velocita' del corpo (resta
+                piantato), ginocchio che si piega nell'oscillazione, bacino che scende quando le gambe si aprono, e il mister guarda
+                dove va finche' cammina. Rosso __CPM_NO_G192A (comportamento 7.476). */
+             const _g192a=!(typeof window!=='undefined'&&window.__CPM_NO_G192A);
+             if(_cdl>0.05){const _cst=_g192a?Math.min(_cdl,(_cdl<0.5?0.8:1.45)*aDt):Math.min(_cdl,(_cdl<1?1.4:3.2)*aDt);_co.position.x+=_cdx/_cdl*_cst;_co.position.z+=_cdz/_cdl*_cst;
+               _co._walk439=(_co._walk439||0)+aDt;_co._mv476=1;_co._ph192=((_co._ph192||0)+_cst/1.3)%1;_co._amp192=Math.min(1,(_co._amp192||0)+aDt*4);
+               if(!_g192a)_co.position.y=Math.abs(Math.sin(_co._walk439*7))*0.05;
+               if(_g192a&&_cdl>0.3){let _dy=Math.atan2(_cdx,_cdz)-(_co._ry192!=null?_co._ry192:_co.rotation.y);_dy=Math.atan2(Math.sin(_dy),Math.cos(_dy));_co._ry192=(_co._ry192!=null?_co._ry192:_co.rotation.y)+_dy*Math.min(1,aDt*6);}}
+             else {_co._walk439=0;if(!_g192a)_co.position.y=0;_co._mv476=0;_co._amp192=Math.max(0,(_co._amp192||0)-aDt*3);}
              /* [7.476.0] anche il mister sta fuori dal solido del podio (stessa regola dell'eroe) */
              if(podiumGrp.visible&&!(typeof window!=='undefined'&&window.__CPM_NO476)){
                const _dp476=Math.hypot(_co.position.x-podiumGrp.position.x,_co.position.z-podiumGrp.position.z);
                if(_dp476>0.001&&_dp476<2.15){const _k476=2.15/_dp476;
                  _co.position.x=podiumGrp.position.x+(_co.position.x-podiumGrp.position.x)*_k476;
                  _co.position.z=podiumGrp.position.z+(_co.position.z-podiumGrp.position.z)*_k476;}}}
-            _co.rotation.y=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
+            {const _yh192=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
+             if(!(typeof window!=='undefined'&&window.__CPM_NO_G192A)&&_co._mv476&&_co._ry192!=null)_co.rotation.y=_co._ry192;/* [giro 192] cammina guardando dove va */
+             else{if(!(typeof window!=='undefined'&&window.__CPM_NO_G192A)&&_co._ry192!=null){let _dy=_yh192-_co._ry192;_dy=Math.atan2(Math.sin(_dy),Math.cos(_dy));_co._ry192+=_dy*Math.min(1,aDt*5);_co.rotation.y=_co._ry192;}else _co.rotation.y=_yh192;}}
             const _B77=!(typeof window!=='undefined'&&window.__CPM_NO_BRACCIA77);
             if(_co._glbArms434){/* [7.434.0] ossa GLB in WORLD-SPACE (lezione 7.340: gli euler per-rig su Biped cadono male): base in quaternione catturata dopo la posa, rotazione attorno all'asse LATERALE del personaggio */
               const _ry434=_co.rotation.y,_lat434=new THREE.Vector3(Math.cos(_ry434),0,-Math.sin(_ry434));
@@ -9570,7 +9592,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  non cammina: plana. Ora, mentre si sposta, le cosce oscillano in controfase con la stessa
                  macchina world-space gia' usata per le braccia — nessun asset nuovo, nessun mixer, e a
                  destinazione la falcata muore da sola perche' l'ampiezza segue `_mv476`. */
-              {const _sw476=(_co._mv476?Math.sin((_co._walk439||0)*7)*0.55:0);
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G192A)&&_co._tL476&&_co._cL192){
+                /* [giro 192] LA FALCATA: per gamba, fase 0-0,6 appoggio (il piede arretra di 2S mentre il corpo avanza di 0,6 cicli = 2S:
+                   resta fermo sul prato), 0,6-1 oscillazione (il piede torna avanti, il ginocchio si piega). Segni delle ossa CALIBRATI una
+                   volta sul corpo (il Biped non dice da che parte gira un osso): coscia + = piede avanti, ginocchio + = piede indietro. */
+                if(_co._sg192==null){try{const _fw=new THREE.Vector3(Math.sin(_co.rotation.y),0,Math.cos(_co.rotation.y)),_v=new THREE.Vector3(),_h=new THREE.Vector3();
+                  const _fz=()=>{_co._pL192.getWorldPosition(_v);_co._tL476.getWorldPosition(_h);return _v.sub(_h).dot(_fw);};
+                  _gW(_co._tL476,0);_gW(_co._cL192,0);const _z0=_fz();_co._pL192.getWorldPosition(_v);_co._tL476.getWorldPosition(_h);const _L=Math.max(0.5,_v.distanceTo(_h)/Math.max(1e-3,_co.scale.y||1));
+                  _gW(_co._tL476,0.3);const _z1=_fz();_gW(_co._tL476,0);_gW(_co._cL192,0.5);const _z2=_fz();_gW(_co._cL192,0);
+                  _co._sg192={t:_z1>=_z0?1:-1,k:_z2<=_z0?1:-1,L:_L};}catch(_eC){_co._sg192={t:1,k:1,L:0.9};}}
+                const _G=_co._sg192,_S=0.39,_A=_co._amp192||0;let _drop=0;
+                const _leg=(ph)=>{let s,k;if(ph<0.6){s=_S*(1-2*ph/0.6);k=0.06;_drop=Math.max(_drop,_G.L-Math.sqrt(Math.max(0,_G.L*_G.L-s*s*_A*_A)));}
+                  else{const u=(ph-0.6)/0.4;s=-_S+2*_S*(0.5-0.5*Math.cos(Math.PI*u));k=0.06+0.85*Math.sin(Math.PI*u);}
+                  return [Math.asin(Math.max(-0.95,Math.min(0.95,s*_A/_G.L)))*_G.t,(k*_A)*_G.k];};
+                const _ph=_co._ph192||0,_l=_leg(_ph),_r=_leg((_ph+0.5)%1);
+                _gW(_co._tL476,_l[0]);_gW(_co._cL192,_l[1]);_gW(_co._tR476,_r[0]);_gW(_co._cR192,_r[1]);
+                _gW(_co._pL192,-(_l[0]+_l[1]));_gW(_co._pR192,-(_r[0]+_r[1]));/* la caviglia compensa: la pianta resta piatta sul prato (senza, la punta ruotava con la gamba e strisciava) */
+                _co.position.y=-_drop*(_co.scale.y||1);}
+              else{const _sw476=(_co._mv476?Math.sin((_co._walk439||0)*7)*0.55:0);
                if(_co._tL476)_gW(_co._tL476,_sw476);if(_co._tR476)_gW(_co._tR476,-_sw476);}
               if(_B77){_braccia77(_co,_bk,_ct);}
               else if(_bk==="coach"){_gW(_co._aL,-1.5);_gW(_co._aR,-1.5);_gW(_co._fL434,0);_gW(_co._fR434,0);}
@@ -9653,6 +9692,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            else if(_bk==="present"||_bk==="captain")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
            else if(_bk==="lift")_shot={x:-_cSgn*(9+_bp*6),y:3.4+_bp*3,z:6+_bp*4,lx:0,ly:2.4,lz:0};
            else _shot={x:_hx3-_cSgn*16,y:7,z:_hz3+10,lx:_hx3,ly:2,lz:_hz3};
+           if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_CERCAM192==='mister'&&sr.current._cerCoachGrp){const _c=sr.current._cerCoachGrp.position;_shot={x:_c.x+2.6,y:1.5,z:_c.z+2.6,lx:_c.x,ly:0.9,lz:_c.z};}/* [giro 192] solo collaudo: primo piano sul mister per guardare la falcata */
            sr.current._cerCam=_shot;}
           if(sr.current._cerFlags426&&sr.current._cerFlags426.visible)sr.current._cerFlags426.children.forEach((t,fi)=>{t.rotation.z=Math.sin(_ct*2.4+fi*1.3)*0.28;t.rotation.x=Math.sin(_ct*1.7+fi)*0.12;});
           if(sr.current._cerPhones429&&sr.current._cerPhones429.visible){const _pm429=sr.current._cerPhones429.material;_pm429.opacity=0.55+Math.sin(_ct*9)*0.2+Math.sin(_ct*23.7)*0.12;}/* [7.429.0] il tremolio dei telefonini */
