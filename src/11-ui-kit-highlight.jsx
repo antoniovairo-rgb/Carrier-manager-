@@ -769,6 +769,7 @@ function makeCrowdTex(spec){
     texLow.needsUpdate=true;texUp.needsUpdate=true;texFull.needsUpdate=true;
   };
   redraw(0,0,0);// primo frame statico
+  try{if(spec.cnt192)spec.cnt192.n+=seats.filter(x=>!x.empty).length;}catch(_e){}/* [giro 192] testimone: tifosi DIPINTI nella tela (la presentazione li vuole qui) */
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
@@ -1164,11 +1165,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurva=_SF141.curvaCasa,_awBase=_SF141.away,_fillCurvaAw=_SF141.curvaOsp,_fillTrib=_SF141.tribuna;
   /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
      window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
-  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;if(stadCfg&&stadCfg.noFolla129)return null;/* [giro 192] la presentazione chiede la folla dipinta */
     let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
     return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
   const _f129Planes=[];
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla

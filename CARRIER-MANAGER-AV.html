@@ -12372,6 +12372,7 @@ function makeCrowdTex(spec){
     texLow.needsUpdate=true;texUp.needsUpdate=true;texFull.needsUpdate=true;
   };
   redraw(0,0,0);// primo frame statico
+  try{if(spec.cnt192)spec.cnt192.n+=seats.filter(x=>!x.empty).length;}catch(_e){}/* [giro 192] testimone: tifosi DIPINTI nella tela (la presentazione li vuole qui) */
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
@@ -12767,11 +12768,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurva=_SF141.curvaCasa,_awBase=_SF141.away,_fillCurvaAw=_SF141.curvaOsp,_fillTrib=_SF141.tribuna;
   /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
      window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
-  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;if(stadCfg&&stadCfg.noFolla129)return null;/* [giro 192] la presentazione chiede la folla dipinta */
     let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
     return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
   const _f129Planes=[];
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -44827,6 +44828,32 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
    di riposo. Poi, a ogni fotogramma, una vita leggera e sfasata scritta in ASSOLUTO sulla base (mai accumulata): respiro sul busto,
    peso che si sposta, sguardo che gira verso la tribuna, braccia che oscillano appena. Tutto dal seme: nessun Math.random.
    Rosso __CPM_NO_G142 (la fila di prima). */
+/* [giro 192 · PO-406] postura della fila: spalle e braccia a riposo, in spazio MONDO e in ASSOLUTO (si parte ogni volta dalla posa che la
+   clip e la vita hanno appena scritto: niente accumulo). salutaR>0: il braccio destro e' del saluto e non si tocca. */
+const _P192={v:null};
+function _posa192(av,i,salutaR){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
+  const V=_P192.v,B=av.userData._b192||(av.userData._b192=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|ball_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
+  if(!B.pelvis||!B.neck_01||!B.clavicle_l||!B.upperarm_l||!B.lowerarm_l||!B.hand_l||!B.ball_l||!B.ball_r)return;
+  av.updateMatrixWorld(true);
+  const ruota=(b,asse,ang)=>{b.parent.getWorldQuaternion(V.qp);V.qb.copy(V.qp).multiply(b.quaternion);V.q.setFromAxisAngle(asse,ang);V.qb.premultiply(V.q);b.quaternion.copy(V.qp.invert().multiply(V.qb));b.updateMatrixWorld(true);};
+  const punta=(b,figlio,dir)=>{b.getWorldPosition(V.a);figlio.getWorldPosition(V.b);V.c.copy(V.b).sub(V.a).normalize();V.q.setFromUnitVectors(V.c,dir);
+    b.parent.getWorldQuaternion(V.qp);V.qb.copy(V.qp).multiply(b.quaternion);V.qb.premultiply(V.q);b.quaternion.copy(V.qp.invert().multiply(V.qb));b.updateMatrixWorld(true);};
+  /* avanti del corpo: dal bacino al punto medio delle punte */
+  B.pelvis.getWorldPosition(V.a);B.ball_l.getWorldPosition(V.b);B.ball_r.getWorldPosition(V.c);
+  const fwd=new T.Vector3((V.b.x+V.c.x)/2-V.a.x,0,(V.b.z+V.c.z)/2-V.a.z);if(fwd.lengthSq()<1e-6)fwd.set(0,0,1);fwd.normalize();
+  const k=(((i*2654435761)>>>0)%1000)/1000;
+  for(const s of ['l','r']){const cl=B['clavicle_'+s],ua=B['upperarm_'+s],la=B['lowerarm_'+s],hd=B['hand_'+s];if(!cl||!ua||!la||!hd)continue;
+    /* (1) spalla: pendenza collo->spalla a -22 gradi (due passi di Newton sull'angolo misurato) */
+    for(let it=0;it<2;it++){B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);V.d.copy(V.b).sub(V.a);const h=Math.hypot(V.d.x,V.d.z)||1e-6;
+      const ang=Math.atan2(V.d.y,h),err=(-22*Math.PI/180)-ang;if(Math.abs(err)<0.004)break;
+      V.c.set(V.d.x/h,0,V.d.z/h);const asse=new T.Vector3().crossVectors(V.c,V.up).normalize();ruota(cl,asse,err);}
+    if(s==='r'&&salutaR>0.01)continue;
+    /* (2) braccio a riposo: lato = dal collo alla spalla, in orizzontale */
+    B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);const lat=new T.Vector3(V.b.x-V.a.x,0,V.b.z-V.a.z).normalize();
+    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k).addScaledVector(fwd,0.05+0.04*k).normalize();
+    punta(ua,la,dU);
+    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05).addScaledVector(fwd,0.24+0.06*k).normalize();
+    punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
   const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr])$/.test(o.name))B[o.name]=o;});
   if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
@@ -44965,7 +44992,16 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       const circ=new THREE.Mesh(new THREE.RingGeometry(9.0,9.3,64),lm);circ.rotation.x=-Math.PI/2;circ.position.y=0.02;scene.add(circ);}
     try{let _cfg=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club||{p:60,lg:"Lega A"},null):{prestige:(club&&club.p)||60,style:0};
       if(!(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23))_cfg={..._cfg,sponsor:sponsorDi947(club)};
-      buildStadium(scene,homeHex,awayHex,_cfg);}catch(_e){}
+      /* [giro 192 · PO-406 «mancano un po' di tifosi alla presentazione»] Foto del PO (telefono, stagione 15): sedute dipinte nelle tele
+         degli spalti, NESSUNA persona. In headless la stessa scena ha 13.433 tifosi della folla a sagome (giro 129), che e' un secondo
+         strato: istanze con uno shader proprio. La causa sul telefono NON e' riprodotta qui (lo dichiaro nel rapporto); quello che le foto
+         dimostrano e' che la tela degli spalti sul telefono si disegna e lo strato a istanze no. La serata usa quindi la folla DIPINTA
+         nella tela (la via di prima del 129, la stessa che disegna le sedute): non dipende dallo strato che manca, e costa meno (niente
+         13.000 istanze). Rosso __CPM_NO_G192C. */
+      const _g192c=!(typeof window!=='undefined'&&window.__CPM_NO_G192C);const _cnt192={n:0};
+      _cfg={..._cfg,noFolla129:_g192c,cnt192:_cnt192};
+      buildStadium(scene,homeHex,awayHex,_cfg);
+      try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PRES192={dipinti:_cnt192.n,f129:_g192c?0:((window.__CPM_FOLLA129||{}).n||0)};}catch(_e){}}catch(_e){}
     /* notturna da presentazione. ⚠️ La prima versione aggiungeva QUATTRO PointLight da 0.9 sopra l'ambiente e il
        direzionale: il prato verde andava in saturazione e si leggeva CIANO (verificato a schermo). Qui si usa la
        taratura NOTTURNA del match (7.278.0). E soprattutto: `buildStadium` INSTALLA GIA' I FARI (4 SpotLight da 1.4
@@ -45115,6 +45151,12 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         const _sl=men[i].userData&&men[i].userData.saluto144;if(_sl)_sl((called&&i===pi)?_w144:0,Math.sin(Math.max(0,_t144-1.1)*Math.PI*2*1.6));}
       /* [giro 146 PO-348] la regola unica delle spalle (src/12 _spalle146), dopo clip, vita della fila e saluto: la serata non ha la postura del gioco */
       if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
+      /* [giro 192 · PO-406 «spalle troppo aggobbate e movimento del braccio innaturale»] MISURATO (sonda misura-pres-192, tutta la fila):
+         spalle a -33/-37 gradi sotto la linea del collo contro -21 della posa di riferimento (stesso corpo, idle + stessa correzione di
+         postura), gomiti a 116-140 gradi con le mani 13-25 cm davanti al corpo. Dopo clip, vita e spalle-146: la clavicola riporta la
+         spalla a -22 gradi, il braccio che NON saluta pende lungo il fianco (omero quasi verticale, gomito ~165, mano accanto alla coscia),
+         con piccole differenze per uomo. Il braccio del saluto resta al giro 144. Rosso __CPM_NO_G192C. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G192C))for(let i=0;i<men.length;i++){try{_posa192(men[i],i,(called&&i===pi)?_w144:0);}catch(_e){}}
       try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142){window.__CPM_PRES142.pi144=called?pi:-1;window.__CPM_PRES142.t144=_t144;window.__CPM_PRES142.w144=_w144;}}catch(_e){}
       /* [7.419.0] IL CHIAMATO SALUTA I SUOI TIFOSI: braccio destro su con rampa morbida e un
          ondeggio di avambraccio — additivo DOPO il mixer (pattern 7.24.2/gk: il mixer riapplica la
@@ -45763,6 +45805,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       cpos.set(A.p[0]+(B.p[0]-A.p[0])*ww+Math.sin(el2*0.35)*1.4,A.p[1]+(B.p[1]-A.p[1])*ww+Math.sin(el2*0.5)*0.5,A.p[2]+(B.p[2]-A.p[2])*ww);
       caim.set(A.a[0]+(B.a[0]-A.a[0])*ww,A.a[1]+(B.a[1]-A.a[1])*ww,A.a[2]+(B.a[2]-A.a[2])*ww);
       cam.position.copy(cpos);cam.lookAt(caim);
+      if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARCAM192&&eroe23){try{const _e=new THREE.Vector3();eroe23.getWorldPosition(_e);cam.position.set(_e.x+1.2,_e.y+1.9,_e.z+3.4);cam.lookAt(_e.x,_e.y+1.9,_e.z);}catch(_e){}}/* [giro 192] solo collaudo: primo piano sull'eroe con la coppa */
       renderer.render(scene,cam);};
     tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
