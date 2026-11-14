@@ -1,0 +1,3706 @@
+{
+ "dashboard": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 34,
+    "sotto48": 5,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 333,
+      "h": 45,
+      "nome": "Il gruppo prima di tutto →"
+     },
+     {
+      "tag": "button",
+      "w": 326,
+      "h": 45,
+      "nome": "Una stretta di mano →"
+     },
+     {
+      "tag": "button",
+      "w": 333,
+      "h": 45,
+      "nome": "Girone e calendario →"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 29,
+    "elenco": [
+     {
+      "a": "⚡ VIVI LA SETTIMANA allename",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Calendario",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "Il progetto del club ›",
+      "b": "Offerta di sponsor · Nexon W",
+      "d": 4
+     },
+     {
+      "a": "Offerta di sponsor · Nexon W",
+      "b": "Il tuo procuratore: boutique",
+      "d": 4
+     },
+     {
+      "a": "Obiettivi della stagione ›",
+      "b": "Obiettivi personali ›",
+      "d": 0
+     },
+     {
+      "a": "Notizie della settimana ›",
+      "b": "Voci di mercato ›",
+      "d": 0
+     },
+     {
+      "a": "Voci di mercato ›",
+      "b": "🟡 Korward Europa Cup ›",
+      "d": 1.9
+     },
+     {
+      "a": "Classifica ›",
+      "b": "Ultime notizie ›",
+      "d": 1.7
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2982,
+    "schermi": 4.47
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 34,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 3,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 5,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 75,
+    "13": 21,
+    "15": 5,
+    "17": 9,
+    "20": 4,
+    "27": 3,
+    "32": 4
+   },
+   "nTesto": 121,
+   "goTab": true,
+   "foto": [
+    "dashboard-1.png",
+    "dashboard-2.png",
+    "dashboard-3.png",
+    "dashboard-4.png",
+    "dashboard-5.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 34,
+    "sotto48": 9,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 167,
+      "h": 45,
+      "nome": "🤝 «Ci sto»"
+     },
+     {
+      "tag": "button",
+      "w": 167,
+      "h": 45,
+      "nome": "«Parlo sul campo»"
+     },
+     {
+      "tag": "button",
+      "w": 343,
+      "h": 45,
+      "nome": "Il gruppo prima di tutto →"
+     },
+     {
+      "tag": "button",
+      "w": 337,
+      "h": 45,
+      "nome": "Una stretta di mano →"
+     },
+     {
+      "tag": "button",
+      "w": 343,
+      "h": 45,
+      "nome": "Girone e calendario →"
+     },
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     },
+     {
+      "tag": "button",
+      "w": 47,
+      "h": 58,
+      "nome": "Home [M]"
+     }
+    ]
+   },
+   "V": {
+    "n": 20,
+    "elenco": [
+     {
+      "a": "Il progetto del club ›",
+      "b": "Offerta di sponsor · Nexon W",
+      "d": 4
+     },
+     {
+      "a": "Offerta di sponsor · Nexon W",
+      "b": "Il tuo procuratore: boutique",
+      "d": 4
+     },
+     {
+      "a": "Obiettivi della stagione ›",
+      "b": "Obiettivi personali ›",
+      "d": 0
+     },
+     {
+      "a": "Notizie della settimana ›",
+      "b": "Voci di mercato ›",
+      "d": 0
+     },
+     {
+      "a": "Voci di mercato ›",
+      "b": "🟡 Korward Europa Cup ›",
+      "d": 1.9
+     },
+     {
+      "a": "Classifica ›",
+      "b": "Ultime notizie ›",
+      "d": 1.7
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 2.2
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 2.2
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 2.2
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 2.2
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 2.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2968,
+    "schermi": 3.52
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 34,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 3,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 5,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 75,
+    "13": 21,
+    "15": 5,
+    "17": 9,
+    "20": 4,
+    "27": 3,
+    "32": 4
+   },
+   "nTesto": 121,
+   "goTab": true,
+   "foto": [
+    "dashboard-1.png",
+    "dashboard-2.png",
+    "dashboard-3.png",
+    "dashboard-4.png"
+   ]
+  }
+ },
+ "standings": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 19,
+    "sotto48": 6,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "select[data-cpm=lega23]",
+      "w": 288,
+      "h": 47,
+      "nome": "Deutsche Liga Lega A Premier Division Li"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 19,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "⚽ CAPOCANNONIERI ›",
+      "b": "DAGLI ALTRI CAMPIONATI ›",
+      "d": 0
+     },
+     {
+      "a": "DAGLI ALTRI CAMPIONATI ›",
+      "b": "Albo d'oro — storico campion",
+      "d": 0
+     },
+     {
+      "a": "Albo d'oro — storico campion",
+      "b": "Marcatori storici ›",
+      "d": 1.8
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 3.2
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1331,
+    "schermi": 2
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 19,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 19,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 207,
+    "13": 23,
+    "15": 1,
+    "17": 1,
+    "20": 1,
+    "27": 19,
+    "32": 1
+   },
+   "nTesto": 253,
+   "goTab": true,
+   "foto": [
+    "standings-1.png",
+    "standings-2.png",
+    "standings-3.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 19,
+    "sotto48": 8,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "select[data-cpm=lega23]",
+      "w": 298,
+      "h": 47,
+      "nome": "Deutsche Liga Lega A Premier Division Li"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 19,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "⚽ CAPOCANNONIERI ›",
+      "b": "DAGLI ALTRI CAMPIONATI ›",
+      "d": 0
+     },
+     {
+      "a": "DAGLI ALTRI CAMPIONATI ›",
+      "b": "Albo d'oro — storico campion",
+      "d": 0
+     },
+     {
+      "a": "Albo d'oro — storico campion",
+      "b": "Marcatori storici ›",
+      "d": 1.8
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 2.2
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 2.2
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 2.2
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 2.2
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 2.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1331,
+    "schermi": 1.58
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 19,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 19,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 207,
+    "13": 23,
+    "15": 1,
+    "17": 1,
+    "20": 1,
+    "27": 19,
+    "32": 1
+   },
+   "nTesto": 253,
+   "goTab": true,
+   "foto": [
+    "standings-1.png",
+    "standings-2.png"
+   ]
+  }
+ },
+ "calendar": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 17,
+    "sotto48": 5,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 18,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "PROSSIME PARTITE ›",
+      "b": "Gioca ›",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "STAGIONE 5 — CALENDARIO ›",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 3.2
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1545,
+    "schermi": 2.32
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 17,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 9,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 157,
+    "13": 3,
+    "17": 1,
+    "27": 9,
+    "32": 1
+   },
+   "nTesto": 171,
+   "goTab": true,
+   "foto": [
+    "calendar-1.png",
+    "calendar-2.png",
+    "calendar-3.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 17,
+    "sotto48": 7,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 24,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "PROSSIME PARTITE ›",
+      "b": "Gioca ›",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "STAGIONE 5 — CALENDARIO ›",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "PARTITE GIOCATE ›",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 2.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1470,
+    "schermi": 1.74
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 17,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 9,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 158,
+    "13": 3,
+    "17": 1,
+    "27": 9,
+    "32": 1
+   },
+   "nTesto": 172,
+   "goTab": true,
+   "foto": [
+    "calendar-1.png",
+    "calendar-2.png"
+   ]
+  }
+ },
+ "coppe": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 15,
+    "sotto48": 5,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 115,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 24,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "CAPOCANNONIERI COPPA — S.5 ›",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 3.2
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 960,
+    "schermi": 1.44
+   },
+   "G": {
+    "n": 3,
+    "elenco": [
+     {
+      "testo": "✅ Ottavi",
+      "fs": 12,
+      "rapporto": 2.4,
+      "soglia": 4.5,
+      "col": "rgb(217, 249, 157)"
+     },
+     {
+      "testo": "🟡 Korward Europa Cup",
+      "fs": 12,
+      "rapporto": 2.8,
+      "soglia": 4.5,
+      "col": "rgb(255, 255, 255)"
+     },
+     {
+      "testo": "Stagione 5",
+      "fs": 12,
+      "rapporto": 2.8,
+      "soglia": 4.5,
+      "col": "rgba(255, 255, 255, 0.7)"
+     }
+    ]
+   },
+   "A": {
+    "bersagli": 15,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 63,
+    "13": 2,
+    "17": 1,
+    "27": 1,
+    "32": 1
+   },
+   "nTesto": 68,
+   "goTab": true,
+   "foto": [
+    "coppe-1.png",
+    "coppe-2.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 15,
+    "sotto48": 7,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📊 Classifica"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "📅 Calendario"
+     },
+     {
+      "tag": "button",
+      "w": 119,
+      "h": 47,
+      "nome": "🏆 Coppe"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 16,
+    "elenco": [
+     {
+      "a": "📊 Classifica",
+      "b": "📅 Calendario",
+      "d": 4.5
+     },
+     {
+      "a": "📅 Calendario",
+      "b": "🏆 Coppe",
+      "d": 4.5
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 2.2
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 2.2
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 2.2
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 2.2
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 2.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 960,
+    "schermi": 1.14
+   },
+   "G": {
+    "n": 3,
+    "elenco": [
+     {
+      "testo": "✅ Ottavi",
+      "fs": 12,
+      "rapporto": 2.4,
+      "soglia": 4.5,
+      "col": "rgb(217, 249, 157)"
+     },
+     {
+      "testo": "🟡 Korward Europa Cup",
+      "fs": 12,
+      "rapporto": 2.8,
+      "soglia": 4.5,
+      "col": "rgb(255, 255, 255)"
+     },
+     {
+      "testo": "Stagione 5",
+      "fs": 12,
+      "rapporto": 2.8,
+      "soglia": 4.5,
+      "col": "rgba(255, 255, 255, 0.7)"
+     }
+    ]
+   },
+   "A": {
+    "bersagli": 15,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 63,
+    "13": 2,
+    "17": 1,
+    "27": 1,
+    "32": 1
+   },
+   "nTesto": 68,
+   "goTab": true,
+   "foto": [
+    "coppe-1.png",
+    "coppe-2.png"
+   ]
+  }
+ },
+ "club": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 18,
+    "sotto48": 2,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 37,
+    "elenco": [
+     {
+      "a": "STADIO ›",
+      "b": "PIAZZAMENTI ›",
+      "d": 0
+     },
+     {
+      "a": "PIAZZAMENTI ›",
+      "b": "Contratto: scade a fine stag",
+      "d": 0
+     },
+     {
+      "a": "PIAZZAMENTI ›",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "PIAZZAMENTI ›",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "ALLENATORE ›",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "STAFF TECNICO ›",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "Ufficio [U]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1267,
+    "schermi": 1.9
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 18,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 2,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 47,
+    "13": 7,
+    "15": 2,
+    "17": 1,
+    "24": 1,
+    "27": 2,
+    "32": 1
+   },
+   "nTesto": 61,
+   "goTab": true,
+   "foto": [
+    "club-1.png",
+    "club-2.png",
+    "club-3.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 18,
+    "sotto48": 4,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 37,
+    "elenco": [
+     {
+      "a": "STADIO ›",
+      "b": "PIAZZAMENTI ›",
+      "d": 0
+     },
+     {
+      "a": "PIAZZAMENTI ›",
+      "b": "Contratto: scade a fine stag",
+      "d": 0
+     },
+     {
+      "a": "Contratto: scade a fine stag",
+      "b": "ALLENATORE ›",
+      "d": 0
+     },
+     {
+      "a": "ALLENATORE ›",
+      "b": "STAFF TECNICO ›",
+      "d": 0
+     },
+     {
+      "a": "STAFF TECNICO ›",
+      "b": "ROSA 24 ›",
+      "d": 0
+     },
+     {
+      "a": "ROSA 24 ›",
+      "b": "BACHECA — FC FRANKFURT ›",
+      "d": 0
+     },
+     {
+      "a": "ROSA 24 ›",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "ROSA 24 ›",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "LO SPOGLIATOIO 3 ›",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "BACHECA — FC FRANKFURT ›",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "LO SPOGLIATOIO 3 ›",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "LO SPOGLIATOIO 3 ›",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "LO SPOGLIATOIO 3 ›",
+      "b": "Club [L]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1229,
+    "schermi": 1.46
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 18,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 2,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 47,
+    "13": 7,
+    "15": 2,
+    "17": 1,
+    "24": 1,
+    "27": 2,
+    "32": 1
+   },
+   "nTesto": 61,
+   "goTab": true,
+   "foto": [
+    "club-1.png",
+    "club-2.png"
+   ]
+  }
+ },
+ "profile": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 32,
+    "sotto48": 4,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 175,
+      "h": 47,
+      "nome": "👤 Profilo"
+     },
+     {
+      "tag": "button",
+      "w": 175,
+      "h": 47,
+      "nome": "🌍 Nazionale"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 31,
+    "elenco": [
+     {
+      "a": "👤 Profilo",
+      "b": "🌍 Nazionale",
+      "d": 4.5
+     },
+     {
+      "a": "BIOGRAFIA ›",
+      "b": "STATISTICHE CARRIERA ›",
+      "d": 0
+     },
+     {
+      "a": "STATISTICHE CARRIERA ›",
+      "b": "RECORD PERSONALI 4 ›",
+      "d": 0
+     },
+     {
+      "a": "RECORD PERSONALI 4 ›",
+      "b": "STORICO ALLENATORI 3 ›",
+      "d": 0
+     },
+     {
+      "a": "STORICO ALLENATORI 3 ›",
+      "b": "RIVALE: LORENZO MÜLLER ›",
+      "d": 0
+     },
+     {
+      "a": "RIVALE: LORENZO MÜLLER ›",
+      "b": "LA STAMPA 3 ›",
+      "d": 0
+     },
+     {
+      "a": "LA STAMPA 3 ›",
+      "b": "LA CITTÀ TI RICORDA ›",
+      "d": 0
+     },
+     {
+      "a": "LA CITTÀ TI RICORDA ›",
+      "b": "MATCH DEL CUORE ›",
+      "d": 0
+     },
+     {
+      "a": "MATCH DEL CUORE ›",
+      "b": "PREMI PERSONALI ›",
+      "d": 0
+     },
+     {
+      "a": "PREMI PERSONALI ›",
+      "b": "CORSA AI PREMI ›",
+      "d": 0
+     },
+     {
+      "a": "CORSA AI PREMI ›",
+      "b": "MVP DEL MESE 8 ›",
+      "d": 0
+     },
+     {
+      "a": "MVP DEL MESE 8 ›",
+      "b": "MEMORIA DELLA CARRIERA 15 ›",
+      "d": 0
+     },
+     {
+      "a": "MEMORIA DELLA CARRIERA 15 ›",
+      "b": "DIARIO DI CARRIERA 55 ›",
+      "d": 0
+     },
+     {
+      "a": "DIARIO DI CARRIERA 55 ›",
+      "b": "CONTRATTO ›",
+      "d": 0
+     },
+     {
+      "a": "ATTRIBUTI 8 ›",
+      "b": "TIMELINE STAGIONI 4 ›",
+      "d": 0
+     },
+     {
+      "a": "TIMELINE STAGIONI 4 ›",
+      "b": "MILESTONE ›",
+      "d": 0
+     },
+     {
+      "a": "MILESTONE ›",
+      "b": "ACHIEVEMENT (4/34) ›",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2121,
+    "schermi": 3.18
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 32,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 1
+   },
+   "corpi": {
+    "12": 63,
+    "13": 21,
+    "15": 13,
+    "17": 7,
+    "20": 1,
+    "24": 2,
+    "27": 1,
+    "32": 4,
+    "44": 1
+   },
+   "nTesto": 113,
+   "goTab": true,
+   "foto": [
+    "profile-1.png",
+    "profile-2.png",
+    "profile-3.png",
+    "profile-4.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 32,
+    "sotto48": 6,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 180,
+      "h": 47,
+      "nome": "👤 Profilo"
+     },
+     {
+      "tag": "button",
+      "w": 180,
+      "h": 47,
+      "nome": "🌍 Nazionale"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 31,
+    "elenco": [
+     {
+      "a": "👤 Profilo",
+      "b": "🌍 Nazionale",
+      "d": 4.5
+     },
+     {
+      "a": "BIOGRAFIA ›",
+      "b": "STATISTICHE CARRIERA ›",
+      "d": 0
+     },
+     {
+      "a": "STATISTICHE CARRIERA ›",
+      "b": "RECORD PERSONALI 4 ›",
+      "d": 0
+     },
+     {
+      "a": "RECORD PERSONALI 4 ›",
+      "b": "STORICO ALLENATORI 3 ›",
+      "d": 0
+     },
+     {
+      "a": "STORICO ALLENATORI 3 ›",
+      "b": "RIVALE: LORENZO MÜLLER ›",
+      "d": 0
+     },
+     {
+      "a": "RIVALE: LORENZO MÜLLER ›",
+      "b": "LA STAMPA 3 ›",
+      "d": 0
+     },
+     {
+      "a": "LA STAMPA 3 ›",
+      "b": "LA CITTÀ TI RICORDA ›",
+      "d": 0
+     },
+     {
+      "a": "LA CITTÀ TI RICORDA ›",
+      "b": "MATCH DEL CUORE ›",
+      "d": 0
+     },
+     {
+      "a": "MATCH DEL CUORE ›",
+      "b": "PREMI PERSONALI ›",
+      "d": 0
+     },
+     {
+      "a": "PREMI PERSONALI ›",
+      "b": "CORSA AI PREMI ›",
+      "d": 0
+     },
+     {
+      "a": "CORSA AI PREMI ›",
+      "b": "MVP DEL MESE 8 ›",
+      "d": 0
+     },
+     {
+      "a": "MVP DEL MESE 8 ›",
+      "b": "MEMORIA DELLA CARRIERA 15 ›",
+      "d": 0
+     },
+     {
+      "a": "MEMORIA DELLA CARRIERA 15 ›",
+      "b": "DIARIO DI CARRIERA 55 ›",
+      "d": 0
+     },
+     {
+      "a": "DIARIO DI CARRIERA 55 ›",
+      "b": "CONTRATTO ›",
+      "d": 0
+     },
+     {
+      "a": "ATTRIBUTI 8 ›",
+      "b": "TIMELINE STAGIONI 4 ›",
+      "d": 0
+     },
+     {
+      "a": "TIMELINE STAGIONI 4 ›",
+      "b": "MILESTONE ›",
+      "d": 0
+     },
+     {
+      "a": "MILESTONE ›",
+      "b": "ACHIEVEMENT (4/34) ›",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2120,
+    "schermi": 2.51
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 32,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 1
+   },
+   "corpi": {
+    "12": 63,
+    "13": 21,
+    "15": 13,
+    "17": 7,
+    "20": 1,
+    "24": 2,
+    "27": 1,
+    "32": 4,
+    "44": 1
+   },
+   "nTesto": 113,
+   "goTab": true,
+   "foto": [
+    "profile-1.png",
+    "profile-2.png",
+    "profile-3.png"
+   ]
+  }
+ },
+ "nazionale": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 14,
+    "sotto48": 4,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 175,
+      "h": 47,
+      "nome": "👤 Profilo"
+     },
+     {
+      "tag": "button",
+      "w": 175,
+      "h": 47,
+      "nome": "🌍 Nazionale"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 15,
+    "elenco": [
+     {
+      "a": "👤 Profilo",
+      "b": "🌍 Nazionale",
+      "d": 4.5
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 3.2
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Agente [G]",
+      "b": "Ufficio [U]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1117,
+    "schermi": 1.67
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 14,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 47,
+    "13": 3,
+    "15": 5,
+    "17": 1,
+    "20": 1,
+    "27": 1,
+    "52": 1
+   },
+   "nTesto": 59,
+   "goTab": true,
+   "foto": [
+    "nazionale-1.png",
+    "nazionale-2.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 14,
+    "sotto48": 6,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 180,
+      "h": 47,
+      "nome": "👤 Profilo"
+     },
+     {
+      "tag": "button",
+      "w": 180,
+      "h": 47,
+      "nome": "🌍 Nazionale"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 21,
+    "elenco": [
+     {
+      "a": "👤 Profilo",
+      "b": "🌍 Nazionale",
+      "d": 4.5
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "PROSSIMI TORNEI DELLA NAZION",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     },
+     {
+      "a": "Home [M]",
+      "b": "Stagione [C]",
+      "d": 2.2
+     },
+     {
+      "a": "Stagione [C]",
+      "b": "Club [L]",
+      "d": 2.2
+     },
+     {
+      "a": "Club [L]",
+      "b": "Carriera [R]",
+      "d": 2.2
+     },
+     {
+      "a": "Carriera [R]",
+      "b": "Agente [G]",
+      "d": 2.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1117,
+    "schermi": 1.32
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 14,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 0,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 47,
+    "13": 3,
+    "15": 5,
+    "17": 1,
+    "20": 1,
+    "27": 1,
+    "52": 1
+   },
+   "nTesto": 59,
+   "goTab": true,
+   "foto": [
+    "nazionale-1.png",
+    "nazionale-2.png"
+   ]
+  }
+ },
+ "agente": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 28,
+    "sotto48": 7,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 183,
+      "h": 45,
+      "nome": "Vediamo"
+     },
+     {
+      "tag": "button",
+      "w": 138,
+      "h": 45,
+      "nome": "Più tardi"
+     },
+     {
+      "tag": "button",
+      "w": 240,
+      "h": 45,
+      "nome": "📣 Assegna «Costruisci immagine»"
+     },
+     {
+      "tag": "button",
+      "w": 333,
+      "h": 45,
+      "nome": "Cambia procuratore"
+     },
+     {
+      "tag": "button",
+      "w": 333,
+      "h": 45,
+      "nome": "🔍 Fai girare il nome — cerca offerta"
+     },
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 26,
+    "elenco": [
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "📣 Assegna «Costruisci immag",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "🌊 FINESTRA DI MERCATO — INV",
+      "b": "📋 Mettiti in lista transfer",
+      "d": 0
+     },
+     {
+      "a": "RICHIEDI CESSIONE ›",
+      "b": "STATO PRESTITO ›",
+      "d": 0
+     },
+     {
+      "a": "🔍 Cerca offerte Più probabi",
+      "b": "📋 Prepara rinnovo +10% sull",
+      "d": 6.7
+     },
+     {
+      "a": "📋 Prepara rinnovo +10% sull",
+      "b": "📣 Costruisci immagine +4 po",
+      "d": 6.7
+     },
+     {
+      "a": "📣 Costruisci immagine +4 po",
+      "b": "🤐 Silenzio stampa +6 fiduci",
+      "d": 6.7
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 3.2
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 3.2
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2222,
+    "schermi": 3.33
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 28,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 4,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 69,
+    "13": 15,
+    "15": 1,
+    "17": 5,
+    "27": 4,
+    "32": 1
+   },
+   "nTesto": 95,
+   "goTab": true,
+   "foto": [
+    "agente-1.png",
+    "agente-2.png",
+    "agente-3.png",
+    "agente-4.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 28,
+    "sotto48": 9,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 189,
+      "h": 45,
+      "nome": "Vediamo"
+     },
+     {
+      "tag": "button",
+      "w": 144,
+      "h": 45,
+      "nome": "Più tardi"
+     },
+     {
+      "tag": "button",
+      "w": 240,
+      "h": 45,
+      "nome": "📣 Assegna «Costruisci immagine»"
+     },
+     {
+      "tag": "button",
+      "w": 343,
+      "h": 45,
+      "nome": "Cambia procuratore"
+     },
+     {
+      "tag": "button",
+      "w": 343,
+      "h": 45,
+      "nome": "🔍 Fai girare il nome — cerca offerta"
+     },
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 25,
+    "elenco": [
+     {
+      "a": "Cambia procuratore",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "Cambia procuratore",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "Cambia procuratore",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "Cambia procuratore",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "Cambia procuratore",
+      "b": "Agente [G]",
+      "d": 0
+     },
+     {
+      "a": "Cambia procuratore",
+      "b": "Ufficio [U]",
+      "d": 0
+     },
+     {
+      "a": "🌊 FINESTRA DI MERCATO — INV",
+      "b": "📋 Mettiti in lista transfer",
+      "d": 0
+     },
+     {
+      "a": "RICHIEDI CESSIONE ›",
+      "b": "STATO PRESTITO ›",
+      "d": 0
+     },
+     {
+      "a": "🔍 Cerca offerte Più probabi",
+      "b": "📋 Prepara rinnovo +10% sull",
+      "d": 6.7
+     },
+     {
+      "a": "📋 Prepara rinnovo +10% sull",
+      "b": "📣 Costruisci immagine +4 po",
+      "d": 6.7
+     },
+     {
+      "a": "📣 Costruisci immagine +4 po",
+      "b": "🤐 Silenzio stampa +6 fiduci",
+      "d": 6.7
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Home [M]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Stagione [C]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Club [L]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Sostieni lo sviluppo di Korw",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Carriera [R]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Agente [G]",
+      "d": 6.6
+     },
+     {
+      "a": "Invia idee e feedback allo s",
+      "b": "Ufficio [U]",
+      "d": 6.6
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 2207,
+    "schermi": 2.61
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 28,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 2,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 4,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 69,
+    "13": 15,
+    "15": 1,
+    "17": 5,
+    "27": 4,
+    "32": 1
+   },
+   "nTesto": 95,
+   "goTab": true,
+   "foto": [
+    "agente-1.png",
+    "agente-2.png",
+    "agente-3.png"
+   ]
+  }
+ },
+ "ufficio": {
+  "375": {
+   "VW": 375,
+   "VH": 667,
+   "radice": "body",
+   "T": {
+    "n": 36,
+    "sotto48": 2,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 270,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 271,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 41,
+    "elenco": [
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "velocità 70 +1 ogni ~13 sett",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "tecnica 74 +1 ogni ~13 sett.",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "tecnica 74 +1 ogni ~13 sett.",
+      "b": "fisico 69 +1 ogni ~13 sett.",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "mentalità 82 +1 ogni ~24 set",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "d": 0
+     },
+     {
+      "a": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "b": "passaggio 69 +1 ogni ~13 set",
+      "d": 0
+     },
+     {
+      "a": "passaggio 69 +1 ogni ~13 set",
+      "b": "dribbling 68 +1 ogni ~13 set",
+      "d": 0
+     },
+     {
+      "a": "dribbling 68 +1 ogni ~13 set",
+      "b": "posizionamento 69 +1 ogni ~1",
+      "d": 0
+     },
+     {
+      "a": "Abbassa Personal trainer",
+      "b": "Alza Personal trainer",
+      "d": 0
+     },
+     {
+      "a": "Abbassa Preparatore atletico",
+      "b": "Alza Preparatore atletico",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 111,
+    "libero": 556,
+    "quotaLibera": 83,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 111,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1870,
+    "schermi": 2.8
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 36,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 8,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 94,
+    "13": 9,
+    "15": 9,
+    "17": 1,
+    "27": 1,
+    "32": 1,
+    "44": 1
+   },
+   "nTesto": 116,
+   "goTab": true,
+   "foto": [
+    "ufficio-1.png",
+    "ufficio-2.png",
+    "ufficio-3.png",
+    "ufficio-4.png"
+   ]
+  },
+  "390": {
+   "VW": 390,
+   "VH": 844,
+   "radice": "body",
+   "T": {
+    "n": 36,
+    "sotto48": 4,
+    "sotto44": 0,
+    "sotto32": 0,
+    "elenco": [
+     {
+      "tag": "button",
+      "w": 45,
+      "h": 58,
+      "nome": "Club [L]"
+     },
+     {
+      "tag": "button",
+      "w": 46,
+      "h": 58,
+      "nome": "Home [M]"
+     },
+     {
+      "tag": "button",
+      "w": 260,
+      "h": 47,
+      "nome": "Sostieni lo sviluppo di Korward Elite"
+     },
+     {
+      "tag": "button",
+      "w": 261,
+      "h": 47,
+      "nome": "Invia idee e feedback allo sviluppatore"
+     }
+    ]
+   },
+   "V": {
+    "n": 53,
+    "elenco": [
+     {
+      "a": "generale 74 +10% allenamenti",
+      "b": "velocità 70 +1 ogni ~13 sett",
+      "d": 0
+     },
+     {
+      "a": "velocità 70 +1 ogni ~13 sett",
+      "b": "tecnica 74 +1 ogni ~13 sett.",
+      "d": 0
+     },
+     {
+      "a": "tecnica 74 +1 ogni ~13 sett.",
+      "b": "fisico 69 +1 ogni ~13 sett.",
+      "d": 0
+     },
+     {
+      "a": "tecnica 74 +1 ogni ~13 sett.",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "tecnica 74 +1 ogni ~13 sett.",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "mentalità 82 +1 ogni ~24 set",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Sostieni lo sviluppo di Korw",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Invia idee e feedback allo s",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "fisico 69 +1 ogni ~13 sett.",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "Stagione [C]",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "Club [L]",
+      "d": 0
+     },
+     {
+      "a": "mentalità 82 +1 ogni ~24 set",
+      "b": "Carriera [R]",
+      "d": 0
+     },
+     {
+      "a": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "b": "passaggio 69 +1 ogni ~13 set",
+      "d": 0
+     },
+     {
+      "a": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "b": "Home [M]",
+      "d": 0
+     },
+     {
+      "a": "tiro 68 +1 ogni ~13 sett. ★ ",
+      "b": "Stagione [C]",
+      "d": 0
+     }
+    ]
+   },
+   "C": {
+    "n": 0,
+    "elenco": []
+   },
+   "F": {
+    "alto": 0,
+    "basso": 118,
+    "libero": 726,
+    "quotaLibera": 86,
+    "fissi": [
+     {
+      "dove": "basso",
+      "h": 118,
+      "tag": "div"
+     }
+    ]
+   },
+   "S": {
+    "altezza": 1825,
+    "schermi": 2.16
+   },
+   "G": {
+    "n": 0,
+    "elenco": []
+   },
+   "A": {
+    "bersagli": 36,
+    "senzaNome": 0,
+    "senzaNomeElenco": [],
+    "conAria": 8,
+    "nonSemantici": 0,
+    "nonFocus": 0,
+    "titoli": 1,
+    "live": 0,
+    "dialog": 0,
+    "nav": 0,
+    "svgSenzaNome": 1,
+    "imgSenzaAlt": 0
+   },
+   "corpi": {
+    "12": 94,
+    "13": 9,
+    "15": 9,
+    "17": 1,
+    "27": 1,
+    "32": 1,
+    "44": 1
+   },
+   "nTesto": 116,
+   "goTab": true,
+   "foto": [
+    "ufficio-1.png",
+    "ufficio-2.png",
+    "ufficio-3.png"
+   ]
+  }
+ }
+}
