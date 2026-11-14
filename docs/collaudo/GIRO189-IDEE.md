@@ -49,16 +49,16 @@ Ordinate per rapporto valore/costo. I costi sono **stime mie** in giri.
 | Cosa | Dove | Come | Esito |
 |---|---|---|---|
 | Creazione del calciatore («Dario Ferrante») | telefono | da zero | foto `03-crea-tel.png` |
-| 3 provini dal vivo | telefono | a 2× (più un provino a 1× per i tempi) | 0 gol 1 assist 7,0 · 0 gol 1 assist 7,0 · 2 gol 7,8 → totale 2 gol, 2 assist, voto 7,3 (`11-dopo-provini-tel.png`) |
+| 3 provini dal vivo (più altri 3 di prova, uno a 1× per i tempi) | telefono | a 2× | 0 gol 1 assist 7,0 · 0 gol 1 assist 7,0 · 2 gol 7,8 → totale 2 gol, 2 assist, voto 7,3 (`11-dopo-provini-tel.png`) |
 | Offerte | telefono | aperte quattro volte di fila | sempre 2 club di Primavera 2, ogni volta diversi (vedi 1.4) |
 | **Stagione 1 — Primavera** (FC Cremona Primavera, Primavera 2) | telefono | sett. 1-6 «Simula» dalla Home; sett. 7 **dal vivo**; sett. 8-37 con «Vai al prossimo momento importante» e simulate; sett. 38 **dal vivo** | 5° posto · 34 presenze · 8 gol · 5 assist · OVR 66→68 |
 | Fine Primavera e firma | telefono | una schermata | primo contratto con FC Cremona, Lega B (`31-chiusura-st1-00-tel.png`) |
 | **Stagione 2 — professionista** (FC Cremona, Lega B) | PC | apertura completa (ritiro, presidente, mercato, conferenza, maglia, presentazione); sett. 1-38 con «Vai al prossimo momento» e simulate | 15° su 18 · 36 presenze · 7 gol · 2 assist · OVR 68→71 · Coppa: fuori ai quarti |
 | Una partita di Lega B dal vivo (3ª giornata) | PC | a 2×, su una copia del salvataggio | 3–0, 7 azioni mie, 1 assist, voto 7,2 (`61-live-pro-02-pc.png`, `62-dopo-live-pro-pc.png`) |
 | Galà, premi, bilancio della stagione 2 | PC | tutte le buste, poi anche «Salta il galà» | nessun premio mio (`45-chiusura-st2-06-pc.png`, `46-premi-st2-pc.png`, `47-bilancio-st2-pc.png`) |
-| Schede Stagione, Club, Carriera, Agente, Ufficio | telefono | col salvataggio da professionista | foto `50`…`56` |
+| Schede Stagione, Club, Carriera, Agente, Ufficio | telefono | col salvataggio da professionista | foto da `50-home-pro-tel.png` a `56-figurina-carriera-tel.png` |
 
-In tutto: 7 partite giocate dal vivo (4 provini, 2 di Primavera, 1 di Lega B), circa 65 simulate, 2 stagioni chiuse.
+In tutto: 9 partite giocate dal vivo (6 provini, di cui 3 validi per la carriera; 2 di Primavera; 1 di Lega B), circa 70 simulate, 2 stagioni chiuse.
 
 **Limiti dichiarati.**
 - Le azioni le ha scelte un pilota semplice (a rotazione fra i tasti): **non posso dire nulla sulla difficoltà vera**.
@@ -78,12 +78,12 @@ In tutto: 7 partite giocate dal vivo (4 provini, 2 di Primavera, 1 di Lega B), c
 
 ### 1.3 Cosa annoia
 
-- **Una partita dal vivo può avere una sola azione tua.** 7ª giornata di Primavera, giocata a 2× in 101 secondi: l'unica azione mia è stata un contrasto al 47'. Poi all'82' la domanda del mister, e basta. Dopo la partita: «Abbiamo vinto ma mi aspetto di più da te. Sii più decisivo.» [misurato, `23-dopo-partita-tel.png`]. Nelle altre partite dal vivo le azioni sono state 6-7 (ultima di Primavera: 7; Lega B: 7). L'obiettivo scritto in PO-221 è 5-7 a partita [letto in BACKLOG].
+- **Una partita dal vivo può avere una sola azione tua.** 7ª giornata di Primavera, giocata a 2× in 101 secondi: l'unica azione mia è stata un contrasto al 47'. Poi all'82' la domanda del mister, e basta. Dopo la partita: «Abbiamo vinto ma mi aspetto di più da te. Sii più decisivo.» [misurato, `23-dopo-partita-tel.png`]. Nelle altre due partite di campionato dal vivo le azioni sono state 7 e 7; nei tre provini validi 19 in tutto. L'obiettivo scritto in PO-221 è 5-7 a partita [letto in BACKLOG].
 - **Lunghi minuti senza toccare palla.** Primo provino a 1×: dal 21' al 76' nessuna azione mia, 92 secondi di orologio a guardare [misurato]. Nella 7ª di Primavera: dall'1' al 47' e dal 47' all'82'.
 - **Il galà quando non vinci niente.** Stagione 2: 5 premi, 19 tocchi per aprire tutte le buste, e 5 volte la riga «Non eri in corsa per questo premio» (`45-chiusura-st2-06-pc.png`) [misurato]. Il podio dell'MVP è lo stesso del capocannoniere, con gli stessi 18-19-19 gol (già notato dal giro 181).
-- **L'apertura della stagione da professionista è lunga.** Circa 30 tocchi prima della prima partita: 6 passi, di cui il ritiro sono 9 pagine di «Avanti →» e la presentazione altre 6 o più [misurato]. Nel ritiro le tre amichevoli sono solo raccontate: «FC Cremona 1-1 Selezione Alpe Chiara. Il tuo voto: 7.1» [visto].
+- **L'apertura della stagione da professionista è lunga.** Circa 30 tocchi prima della prima partita: 6 passi, di cui il ritiro sono circa 9 pagine di «Avanti →» e la presentazione altre 6 o più [misurato]. Nel ritiro le tre amichevoli sono solo raccontate: «FC Cremona 1-1 Selezione Alpe Chiara. Il tuo voto: 7.1» [visto].
 - **Il passaggio buono non paga.** Ultima di Primavera: 3 passaggi riusciti su 3 e tre volte il compagno sbaglia («la difesa chiude SERRA sul tiro», «SERRA spreca», «RIZZI si fa parare il tiro») [misurato su una partita]. Il giro 181 aveva visto 5 su 5. Nei provini e in Lega B due assist veri: non è sempre così. Campione piccolo.
-- **Frasi che tornano uguali.** Il mentore racconta «quella volta che perse la finale» alla settimana 5 e di nuovo alla 12 [visto]. Dopo due vittorie diverse (0–1 in Primavera, 3–0 in Lega B) la rassegna ha le stesse quattro righe: «Blocco difensivo impeccabile. Il contropiede ha fatto la differenza», «Solidità premia…», «VITTORIA FONDAMENTALE!», «Tattica vincente…» [visto, `23` e `62`]. Lo segnalo come prova per PO-385 e PO-375, non come proposta.
+- **Frasi che tornano uguali.** Il mentore racconta «quella volta che perse la finale» alla settimana 5 e di nuovo alla 12 [visto]. Dopo due vittorie diverse (0–1 in Primavera, 3–0 in Lega B) la rassegna ha le stesse quattro righe: «Blocco difensivo impeccabile. Il contropiede ha fatto la differenza», «Solidità premia…», «VITTORIA FONDAMENTALE!», «Tattica vincente…» [visto, `23-dopo-partita-tel.png` e `62-dopo-live-pro-pc.png`]. Lo segnalo come prova per PO-385 e PO-375, non come proposta.
 
 ### 1.4 Dove ci si perde o non ci si crede
 
@@ -154,7 +154,7 @@ Ogni scheda: cosa ho visto · proposta · cosa cambia per chi gioca · valore ·
 - *Conflitti:* PO-221 ha già misurato 0,15 assist a partita e resta com'è; (a) non cambia nessuna probabilità. La parte (b) è solo misura.
 
 **G189-04 — Chi batte rigori e punizioni**
-- *Visto:* punizioni dal limite all'eroe diciassettenne in quattro partite su sette giocate [visto].
+- *Visto:* punizioni dal limite all'eroe diciassettenne in quattro partite su nove giocate [visto].
 - *Proposta:* nella scheda Club compare «Calci piazzati: 1° Serra · 2° tu». Si sale con la fiducia del mister e con i piazzati riusciti. Finché non sei il primo, sui piazzati hai un ruolo diverso (sponda, ribattuta, barriera da saltare); quando lo diventi, è un traguardo che il gioco festeggia.
 - *Per chi gioca:* un obiettivo da calciatore vero, che si conquista in campo.
 - *Valore:* medio. *Costo:* 2-3. *Rischio:* medio.
@@ -301,7 +301,7 @@ Totale stimato se si facesse tutto: 25-33 giri.
 
 - Nessuna prova su un telefono vero. Tempi, fluidità e audio non sono giudicati.
 - Difficoltà e bilanciamento: il pilota sceglieva a rotazione.
-- Il numero di azioni per partita (G189-01) viene da 7 partite: serve la misura larga prima di toccare.
+- Il numero di azioni per partita (G189-01) viene da 9 partite: serve la misura larga prima di toccare.
 - I passaggi sprecati (G189-03): una partita mia più le cinque del giro 181. Non è una media.
 - Le finestre non riapparse (G189-16): viste due volte, causa non accertata.
 - Quante settimane salta «Vai al prossimo momento»: non misurato (vedi limiti).
