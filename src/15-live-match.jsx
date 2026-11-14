@@ -3001,7 +3001,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      partiva con figure procedurali (giocatori e bambini) e corpi regular — 102 fotogrammi su 356 dell'ingresso; in partita l'attesa dei
      corpi PO-232 mollava dopo 8 s e il bottone «Gioca comunque senza modelli 3D» rimetteva i procedurali. Ora ingresso e scene dell'eroe
      ASPETTANO window.__CPM_PRONTI196 (src/12: tutti i corpi visibili CGTrader, con clip, nessun procedurale) dietro una schermata OPACA
-     con barra; oltre il tetto (__CPM_CAP196, 60 s) o a caricamento fallito la partita passa alla vista 2D per il resto della gara. */
+     con barra; oltre il tetto (__CPM_CAP196, 120 s, decisione PO 14/11) o a caricamento fallito la partita passa alla vista 2D per il resto della gara. */
   const _g196On=()=>typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||!!window.__CPM_T196ON);
   const [att196,setAtt196]=useState(null);
   const att196Ref=useRef({t:0,k:''});
@@ -3012,7 +3012,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _chk196=(fase)=>{try{const r=window.__CPM_PRONTI196();const c=att196Ref.current;
     if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}
     if(!c.t)c.t=Date.now();
-    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||60000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
+    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
   useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */

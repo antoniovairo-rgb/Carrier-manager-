@@ -94,3 +94,7 @@ Foto: `giro196/prima-campionato-notte-walkout.png`; foto del PO: `giro196/po-193
   perché questo giro non cambia asset: va deciso se ricomprimere la clip o rivedere il tetto.
 - **highlight-95** ha dato un difetto D3 una volta e zero alla corsa completa: è un candidato «instabile», da riparare se si ripete.
 - Il giro non è stato promosso su `main` e non ha un numero di versione: `GAME_VERSION` è fuori dal mio perimetro.
+
+## Decisione del PO dopo il giro (14/11 ~21:00 Roma)
+
+Tetto dell'attesa portato da 60 s a **120 s** (questionario: «120 secondi»). Guardiano tpose-196 ripetuto nella verifica B della 7.999.194.
