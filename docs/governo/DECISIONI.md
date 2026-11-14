@@ -1582,3 +1582,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 14/11 ~19:50 Roma — giro 199 unito in lavoro/195
 - Giro 199 (PO-408, 409): 11/11 verdi, unito senza conflitti; home-199 e figurina-199 nella catena completa. 4,77 $.
 - Decisioni tecniche della madre: il tasto del momento con 3 scelte aperte scende appena sotto il primo schermo (conseguenza dell'ordine deciso dal PO, accettato); «Vivi la settimana» resta il primo elemento (decisione 6.5.4); i riquadri che nel gioco sono già finestre restano finestre.
+
+## 14/11 ~20:00 Roma — PO-460 sigle tagliate nella barra della partita
+- PO (foto su 7.999.193): sigle tagliate in alto. La correzione del giro 190 (PO-397) arriva con la 194, ma a 375 px restano 4-5 px tagliati (misura giro 195). PO: «Nella 195»; la 194 non slitta.

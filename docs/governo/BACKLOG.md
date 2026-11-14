@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (96)
+## Voci aperte o parziali (97)
 
-Per lotto: L3 1 · L6 2 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.192 | 3 · 7.999.195 | 15 · 7.999.194 | 15 · 7.999.198 | 9 · 7.999.201 | 7 · 7.999.197 | 9 · 7.999.200 | 6 · 7.999.199 | 11 · 7.999.196 | 7.
+Per lotto: L3 1 · L6 2 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.192 | 3 · 7.999.195 | 16 · 7.999.194 | 15 · 7.999.198 | 9 · 7.999.201 | 7 · 7.999.197 | 9 · 7.999.200 | 6 · 7.999.199 | 11 · 7.999.196 | 7.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -116,6 +116,7 @@ Per lotto: L3 1 · L6 2 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-457 | 14/11 17:45 | PO dal giro 195 (G195-09), questionario: Profilo in 4-5 gruppi con nomi chiari al posto di 20 fisarmoniche; italiano al posto di Milestone/Achievement; contratto completo in un posto solo (Agente), altrove un rimando; stesso giro di PO-409 | miglioria (profilo) | DA FARE — 196 | 7.999.196 |
 | PO-458 | 14/11 17:45 | PO dal giro 195 (G195-11+12+13), questionario: Grafica coerente: un solo stile per il tasto principale (oggi 4, partendo da PO-411); stessa testata e titolo in ogni scheda e stesso menu fuori/dentro carriera (testata compatta 02/11); fiducia e popolarità con la stessa forma (dentro PO-391) | miglioria (grafica) | DA FARE — 196 | 7.999.196 |
 | PO-459 | 14/11 17:45 | PO dal giro 195 (G195-15+06), questionario: Rifiniture a 375 px (Club meno stretto, «tocca per riprendere» senza «Premi P», testi Coppe leggibili su sfumatura, versione in Opzioni, colori uguali nei due manifest, descrizione in italiano) e minimo per lettori di schermo (titoli, finestre, voce attiva, 12 comandi Opzioni con nome) | miglioria (rifiniture, accessibilità) | DA FARE — 196 | 7.999.196 |
+| PO-460 | 14/11 19:55 | PO (foto docs/collaudo-po/193-sigle-tagliate-barra.jpg, partita, 7.999.193): «Nomi / iniziali delle squadre tagliate nel menù in alto» («FF» per FFT, «WO» coperto dallo stemma). Seguito di PO-397: il giro 195 ha misurato su lavoro/194 sigle ancora tagliate di 4-5 px a 375 px. Questionario: «Nella 195»; guardiano: sigla o nome abbreviato sempre interi e mai coperti dallo stemma a 360, 375, 390 px | difetto (partita, telefono) | DA FARE — 195 | 7.999.195 |
 
 ## Storico — voci chiuse (363)
 
