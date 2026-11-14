@@ -631,6 +631,7 @@
     "nomi-salvati-190": "node nomi-salvati-190.mjs",
     "convocazione-190": "node convocazione-190.mjs",
     "momento-194": "node momento-194.mjs",
+    "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
     "cronaca-nomi-190": "node cronaca-nomi-190.mjs"
   },

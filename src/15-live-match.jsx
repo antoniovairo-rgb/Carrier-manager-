@@ -11081,6 +11081,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      che il PO ha chiesto di togliere) ma diventano piccoli, incassati nella riga del minuto. Rosso
      __CPM_NO901 = la barra di prima (due righe, ~92 px, «PREMIER DIVISION»/poss./momentum per squadra). */
   const _no901=!!(typeof window!=='undefined'&&window.__CPM_NO901);
+  const _g197=!(typeof window!=='undefined'&&window.__CPM_NO_G197);/* [giro 197 · PO-452] scelte dell'eroe tutte a schermo sui telefoni bassi (360x640) e titolo dell'azione intero su <=2 righe. Rosso __CPM_NO_G197 = scheda tappata al 44vh con la lista che scorre e titolo della mossa su una riga coi puntini */
   const _hl94=!(typeof window!=='undefined'&&window.__CPM_NO_HL94);/* [7.999.83 #94] nuova veste degli highlight (scheda del movimento, D-pad, barra «in corso»). Rosso __CPM_NO_HL94 = la veste della 7.905 */
   const _compTag901=(()=>{
     if(phase==="walkout")return"Ingresso in campo";
@@ -12098,8 +12099,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       l'etichetta sopra (il suo senso lo dice la riga di aiuto, che ne prende il colore), le mosse
                       rimaste DENTRO il D-pad al posto dei pallini, aiuto e «Scegli» impilati accanto al pad. */}
                   <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
-                    <div style={{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                    {ZONES[zone]?.label&&<span style={{flexShrink:0,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
+                    <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
+                    {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
                   {curSit.maxMoves>0&&<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
@@ -12191,7 +12192,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
-                  <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
+                  <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:_g197?"max(44vh, 400px)":"44vh",/* [giro 197] sui telefoni bassi il 44vh (282 px a 640) non conteneva titolo + tre scelte: la scheda prende altezza alla scena fino a 400 px; da 909 px di altezza in su resta il 44vh di prima */boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
                     {/* [PO-302 tappa 3 · V2Highlight] l'occhiello «La tua giocata» in oro prende il posto della maniglia (stessa riga, +4 px) */}
                     <div data-cpm="occhiello-hl-v2" style={{fontSize:FS.caption,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:TINTE.oro,lineHeight:1.2,flexShrink:0}}>La tua giocata</div>
                     {/* [7.902.0 — C3 v2, nota PO 15/09: «la scheda non regge le situazioni con molte opzioni» — misurato: 7 opzioni schiacciate a 34 px] header e riga di stato SEMPRE alla loro dimensione (flexShrink:0): a schiacciarsi, se qualcosa deve, e' la lista sotto, mai queste due righe. */}
@@ -12220,10 +12221,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                            :<FraseIntera190 testo={_sub901} righe={2} style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec}}/>)}{/* [giro 190 PO-380a G181-01] il consiglio non si taglia coi puntini: frasi intere, al massimo due righe */}
                       </div>
                     </div>
-                    {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
+                    {!curSit.lockMovement&&!_g197&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
                     {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
-                      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>
+                      {_g197?<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec,lineHeight:1.3}}>Pressione<span data-cpm="aiuto" style={{fontWeight:600}}> · scegli prima che il marcatore arrivi</span></div>/* [giro 197] la riga di aiuto sale nella riga della barra: 22 px in piu' alle scelte, il tempo limite resta com'e' */
+                       :<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>}
                       <div data-cpm="tempo-hl-v2" style={{position:"relative",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TINTE.oro}}>
                         <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
                       </div>
@@ -12237,10 +12239,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.08)",background:TINTE.sup,color:TINTE.testo,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left",borderRadius:RAD.md}} data-cpm="scelta-v2">
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",...(_g197?{flex:"0 0 auto",minHeight:56}:{flex:"0 0 52px",height:52}),boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.08)",background:TINTE.sup,color:TINTE.testo,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left",borderRadius:RAD.md}} data-cpm="scelta-v2">
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
-                            <div style={{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
+                            <div style={_g197?{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere"}:{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>{/* [giro 197] riga alta almeno 56 px che cresce col testo: c'e' posto per le scelte piu' lunghe di PO-389 senza puntini */}
                             <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.sec,letterSpacing:".06em",fontFamily:FONT_TV,textTransform:"uppercase",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.attr}</div>
                           </div>
                         </button>
