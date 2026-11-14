@@ -97,8 +97,12 @@ Guardiano **`npm run nomi-190`** (≈ 2 min): scala pura su tutti i club, censim
 | **convocazione-235** | **ROSSO — già rosso sulla base 7.999.193** (eseguito su un worktree di `origin/lavoro/194`: stesso esito «card del kit 0» su tutti e quattro i casi). Non causato da questo giro; la schermata `NationalCallupScreen` non è stata toccata. Da riparare in un giro dedicato. |
 | lessico-218 | VERDE |
 | griglia-mobile | uscita 0, misura completa 14 schermate × 5 larghezze |
-| career-critical | vedi sotto |
-| test:logic | vedi sotto |
-| save-compat | vedi sotto |
+| career-critical | VERDE (uscita 0, 11 guardiani della catena, 26 PASS) |
+| test:logic | VERDE 51/51 |
+| save-compat | VERDE 12 pass · 0 fail |
+| audit-copyright (in più) | OK, 0 riferimenti (la lista non contiene «Kappa»: il dubbio sul marchio dello sponsor resta aperto) |
+
+⚠️ I cinque guardiani nuovi non sono stati aggiunti a `tests/visual/ci-runner.mjs` (né alle catene `mirata`/`notte`): la scelta di dove metterli spetta al PO. Durate: nomi-190 ≈ 2 min · nomi-salvati-190 ≈ 2 min · convocazione-190 ≈ 30 s · testi-190 ≈ 5 min · cronaca-nomi-190 ≈ 4,5 min.
+⚠️ `griglia-mobile` riscrive le foto in `docs/collaudo-grafico/g0/`: le ho rimesse com'erano (non sono risultati di questo giro).
 
 Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.mjs` → IDENTICO BYTE PER BYTE.
