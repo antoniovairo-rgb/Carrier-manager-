@@ -380,6 +380,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[transferPref,setTransferPref]=useState("any"); // E-2: transfer preference (any/ambizioso/top)
   const[simula302,setSimula302]=useState(false);/* [PO-302 tappa 2] il prompt della partita aperto dal tasto Simula */
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
+  /* [giro 198 · PO-432] i due richiami del presidente (metà stagione e ultime 6 settimane) e la schermata dello svincolato a inizio
+     stagione: stato della sola finestra, la memoria «gia' visto» sta in player.richiamo198 (campo additivo, nessun bump SAVE). */
+  const[richiamo198,setRichiamo198]=useState(null);
+  const[svinc198,setSvinc198]=useState(null);
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   // Sprint 116/123 — calculate and lock coach decision when match prompt opens
@@ -394,8 +398,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       setTimeout(()=>notify(`📋 Contratto in scadenza a fine stagione: ${p.club?.n||"il club"} ti propone di parlare del rinnovo.`,TH.warning),900);}
     if(p.contractExpired&&(p.svincWarn94||0)!==sn){
       setPlayer(q=>((q.svincWarn94||0)===(q.season||1)?q:{...q,svincWarn94:q.season||1,log:[`⛔ Contratto scaduto: sei svincolato e non puoi giocare con ${q.club?.n||"il club"}. Rinnova o cerca una squadra dal Procuratore.`,...(q.log||[])].slice(0,60)}));
-      setTimeout(()=>{notify("⛔ Sei svincolato: senza contratto non giochi. Rinnova o cerca una nuova squadra.",TH.danger);try{goTab("agente");}catch(_e){}},900);}
-  }catch(_e94){}},[player.season,player.week,player.contractExpired]);// eslint-disable-line
+      /* [giro 198 · PO-432 b] lo svincolo si dice con una schermata sola, non con un avviso che scorre: chi era il club, perche' non
+         giochi, le due strade (tornare a trattare · cercare una squadra). Rosso __CPM_NO_G198 = l'avviso e il salto all'Agente di prima. */
+      if(_g198())setTimeout(()=>{setSvinc198({club:p.club?.n||"il club",s:sn});},700);
+      else setTimeout(()=>{notify("⛔ Sei svincolato: senza contratto non giochi. Rinnova o cerca una nuova squadra.",TH.danger);try{goTab("agente");}catch(_e){}},900);}
+    /* [giro 198 · PO-432 a] IL CLUB TI RICHIAMA: se il contratto e' all'ultimo anno e non e' rinnovato, il presidente richiama due
+       volte in una finestra (non un avviso): a meta' stagione (dalla sett. 19) e nelle ultime sei settimane (dalla 33). Solo se il
+       club vuole trattare (stessa soglia di openNegoModal: chi il club rifiuta non riceve una telefonata che poi smentisce). Vale
+       anche dopo un «Non ora» o una trattativa saltata: e' proprio il caso del giro 193. Nessuna regola economica cambia. */
+    if(_g198()&&!p.contractExpired&&(p.contract?.duration||2)<=1&&(p.renewalSeason||0)!==sn&&_clubTratta198(p)){
+      const r=(p.richiamo198&&p.richiamo198.s===sn)?(p.richiamo198.n||0):0;const n=w>=33&&r<2?2:(w>=19&&r<1?1:0);
+      if(n){setPlayer(q=>(q.richiamo198&&q.richiamo198.s===(q.season||1)&&(q.richiamo198.n||0)>=n)?q:{...q,richiamo198:{s:q.season||1,n},
+          log:[`🎩 Il presidente ti richiama (${n===1?"metà stagione":"ultime settimane"}): il contratto con ${q.club?.n||"il club"} scade a fine stagione e il club vuole parlarne.`,...(q.log||[])].slice(0,60)});
+        setRichiamo198({n,club:p.club?.n||"il club",left:Math.max(0,38-w+1)});}}
+  }catch(_e94){}},[player.season,player.week,player.contractExpired,player.renewalSeason]);// eslint-disable-line
   useEffect(()=>{
     if(!showMatchPrompt){setCoachDecision(null);coachDecisionRef.current=null;return;}
     const isLeague=showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro"&&showMatchPrompt.type!=="national";
@@ -1511,6 +1527,12 @@ const getThisWeekMatchday=()=>{
      RAPPORTO-giro182 §C. Rosso __CPM_NO_G182_OFFERTE = routine come prima. */
   const OFFERTE182=["wi_videogioco","wi_docufilm","wi_biografia","wi_esports","wi_bonus_gol_social","wi_scuola_calcio"];
   const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
+  /* [giro 198] interruttore del giro: rosso __CPM_NO_G198 = la scheda Agente, il tasto del momento e lo svincolo come prima */
+  const _g198=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G198);
+  /* [giro 198] il club vuole trattare? la stessa soglia con cui openNegoModal rifiuta (fiducia < 40, o riserva con fiducia < 52) */
+  const _clubTratta198=(p)=>{try{const ro=(typeof calcSquadRole==="function")?calcSquadRole(p):null;return !((p.coachTrust||60)<40||(ro==="riserva"&&(p.coachTrust||60)<52));}catch(_e){return true;}};
+  /* [giro 198 · PO-446] il tasto che si ferma porta dove c'e' la cosa da fare: la scheda Agente, col riquadro «Da fare ora» in vista */
+  const _vaiAgente198=()=>{try{goTab("agente");setTimeout(()=>{try{const el=document.querySelector('[data-cpm="agente198-ora"]');if(el)el.scrollIntoView({block:"start",behavior:"instant"});}catch(_e){}},120);}catch(_e){}};
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
     const id=String((wl&&wl.impId)||""),tx=String((wl&&wl.event&&wl.event.txt)||"");
@@ -1541,6 +1563,7 @@ const getThisWeekMatchday=()=>{
     if((player.week||1)>38)return "stagione finita";
     const _nq=player.nationsCupQueue,_em=player.euroMondiale;
     if((_nq&&_nq.active&&!_nq.done)||(_em&&_em.active&&!_em.done&&!_emInAttesa(_em)))return "prima la Nazionale";
+    if(richiamo198||svinc198)return "chiudi prima la finestra aperta";/* [giro 198] */
     if(weekLiveModal||showMatchPrompt||transferOffer||negoModal||agentIntro||milestoneModal||careerMomentModal||presEvent||ritiroEvent||interviewModal||monthlyReviewModal||nationalCallupData)return "chiudi prima la finestra aperta";
     return null;};
   const _saltaStop163=(motivo,extra)=>{const st=salta163||{};
@@ -1579,6 +1602,7 @@ const getThisWeekMatchday=()=>{
       if(openingPending().length)return _saltaStop163("apertura di stagione");
       /* mercato e chiamate: si fermano SEMPRE, con la finestra aperta davanti */
       if(transferOffer||negoModal||agentIntro)return _saltaStop163("mercato");
+      if(richiamo198||svinc198)return _saltaStop163("rinnovo");/* [giro 198 · PO-432] il richiamo del presidente ferma la corsa */
       /* stati che RESTANO nel salvataggio (saga di mercato con la sua card sulla home, controllo del procuratore): fermano una
          volta per settimana. Misurato (salta-163, 2° giro): la saga gia' consegnata (delivered) o di un'altra stagione resta in
          player.transferSaga senza card, e leggerla come «mercato aperto» fermava la corsa 76 volte di fila. Le condizioni sono
@@ -7365,6 +7389,42 @@ const getThisWeekMatchday=()=>{
             <Btn v="primary" fw onClick={()=>setRefuseEvent(null)} style={{marginTop:8}}>{st?"Resto qui →":"Avanti →"}</Btn>
           </Modal>);})()}
 
+      {/* [giro 198 · PO-432 a] IL PRESIDENTE TI RICHIAMA: due volte a stagione (sett. 19 e dalla 33) se il contratto scade e non hai
+          rinnovato. Una finestra, non un avviso: «Parliamo del rinnovo» apre la trattativa vera (openNegoModal), «Ci penso» chiude. */}
+      {richiamo198&&!negoModal&&(
+        <Modal open dismissable={false} width={420} cpm="richiamo198">
+          <div data-cpm="richiamo198-corpo" data-n={richiamo198.n} style={{textAlign:"center",marginBottom:10}}>
+            <div style={{fontSize:34,lineHeight:1}}>🎩</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginTop:6}}>{richiamo198.n===1?"Primo richiamo · metà stagione":"Ultimo richiamo · fine stagione vicina"}</div>
+            <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,marginTop:2}}>Il presidente ti richiama</div>
+          </div>
+          <div style={{background:TH.surface2,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:10,borderLeft:"3px solid "+TH.warning}}>
+            <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>{richiamo198.n===1
+              ?<>«Il tuo contratto con {richiamo198.club} scade a fine stagione. Ti vogliamo qui: parliamone adesso, con calma.»</>
+              :<>«Mancano {richiamo198.left} settiman{richiamo198.left===1?"a":"e"}. Se a fine stagione non hai firmato sei svincolato: non potremo più schierarti e le partite le giocheremo senza di te.»</>}</div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            <Btn data-cpm="richiamo198-tratta" v="primary" fw onClick={()=>{setRichiamo198(null);openNegoModal();}}>📋 Parliamo del rinnovo</Btn>
+            <Btn data-cpm="richiamo198-dopo" v="ghost" fw onClick={()=>setRichiamo198(null)}>Ci penso</Btn>
+          </div>
+        </Modal>)}
+      {/* [giro 198 · PO-432 b] SEI SVINCOLATO: la schermata di inizio stagione quando il contratto e' scaduto. Dice chi era il club,
+          perche' non giochi, e le due strade che il gioco ha davvero (tornare a trattare · cercare una squadra dall'Agente). */}
+      {svinc198&&!negoModal&&(
+        <Modal open dismissable={false} width={420} cpm="svincolato198">
+          <div style={{textAlign:"center",marginBottom:10}}>
+            <div style={{fontSize:34,lineHeight:1}}>⛔</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginTop:6}}>Stagione {svinc198.s} · senza contratto</div>
+            <div style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,marginTop:2}}>Sei svincolato</div>
+          </div>
+          <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,marginBottom:12}}>Il contratto con <b>{svinc198.club}</b> è scaduto a fine stagione e non hai firmato. Senza contratto non sei convocato: {svinc198.club} gioca le sue partite senza di te, e i tuoi numeri restano fermi finché non firmi.</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            <Btn data-cpm="svincolato198-tratta" v="primary" fw onClick={()=>{setSvinc198(null);openNegoModal();}}>📋 Torna a trattare con {svinc198.club}</Btn>
+            <Btn data-cpm="svincolato198-agente" v="outline" fw onClick={()=>{setSvinc198(null);_vaiAgente198();}}>💼 Cerca una squadra (Agente)</Btn>
+            <Btn data-cpm="svincolato198-casa" v="ghost" fw onClick={()=>setSvinc198(null)}>Ho capito</Btn>
+          </div>
+        </Modal>)}
+
       {/* Sprint 54: Contract Negotiation Modal */}
       {negoModal&&(()=>{
         const{baseWage,baseDuration,step,playerAsk,clubFinalWage,clubFinalDuration}=negoModal;
@@ -7714,7 +7774,9 @@ const getThisWeekMatchday=()=>{
             Ora la riga 1 e' stemma · nome · Salva · Opzioni; la meta e la versione scendono in una riga 2 larga quanto la testata
             meno lo stemma. Il nome va a capo solo FRA parole (mai dentro) e sopra i 14 caratteri scende di un gradino. Rosso __CPM_NO_G106A */
         (()=>{const _no106A=typeof window!=="undefined"&&!!window.__CPM_NO_G106A;const _nm=me.n||me.name||"\u2013";
-          const _meta=[lg,"St.\u00a0"+season,week>38?"Fine\u00a0stagione":"Sett.\u00a0"+week+"/38",_pos>=0?(_pos+1)+"\u00b0\u00a0posto":""].filter(Boolean).join(" \u00b7 ");
+          /* [giro 198 · PO-432 c] da svincolato la testata non racconta il club come tuo: «Svincolato · ultimo club», senza la posizione */
+          const _sv198=_g198()&&(player.proStatus||"u18")==="pro"&&!!player.contractExpired;
+          const _meta=(_sv198?["Svincolato \u00b7 ultimo club","St.\u00a0"+season,week>38?"Fine\u00a0stagione":"Sett.\u00a0"+week+"/38"]:[lg,"St.\u00a0"+season,week>38?"Fine\u00a0stagione":"Sett.\u00a0"+week+"/38",_pos>=0?(_pos+1)+"\u00b0\u00a0posto":""]).filter(Boolean).join(" \u00b7 ");
           if(!_no106A)return(
         <header data-cpm="testata-v2" style={{display:"flex",flexDirection:"column",gap:3,padding:"2px 0 4px",marginBottom:_sb(9)}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -7845,6 +7907,16 @@ const getThisWeekMatchday=()=>{
             <Btn v="outline" fw onClick={_festeggia} style={{background:_n30("rgba(0,0,0,0.32)","transparent"),border:`1px solid ${_n30(_oro[2],_oro[1])}`,color:_n30("#fff",TH.text),fontWeight:800}}>🎉 Festeggia con la squadra</Btn>
           </Card>
         </>);})()}
+      {/* [giro 198 · PO-432 c] DA SVINCOLATO LA HOME LO DICE PER PRIMA COSA: lo stesso riquadro del giro 94 (rinnova · cerca una
+          squadra), portato sopra il tasto del momento e la prossima partita del club, con la frase che spiega perche' non giochi. */}
+      {tab==="dashboard"&&_g198()&&player.contractExpired&&(player.proStatus||"u18")==="pro"&&(
+        <Card data-cpm="svincolato198-home" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"10px 12px"}}>
+          <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.txAmber,marginBottom:4}}>⛔ Sei svincolato</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.9,1),lineHeight:1.45,marginBottom:8}}>Il contratto con {player.club?.n||"il club"} è scaduto: le sue partite si giocano senza di te finché non firmi. Rinnova con il club o cerca una nuova squadra.</div>
+          <Btn data-cpm="svincolato198-home-tratta" onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
+          {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn data-cpm="svincolato198-home-agente" onClick={_vaiAgente198} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Agente)</Btn>}
+        </Card>
+      )}
       {/* [giro 163 · PO-356 F + idea 3] CORSA ALLA PRIMA SQUADRA: la barra dell'Indice Primavera (5 tacche, mai il numero; rosso
           __CPM_NO_IP153 = barra assente) e il tasto «Vai al prossimo momento importante» (rosso __CPM_NO_SALTA153 = tasto assente).
           Solo in Primavera. Il tasto prima chiede (pannello), poi corre sui percorsi veri, poi dice dove si e' fermato e perche'. */}
@@ -7887,7 +7959,10 @@ const getThisWeekMatchday=()=>{
                   <span data-cpm="salta163-titolo" style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.04em",textTransform:"uppercase",textAlign:"center",lineHeight:1.1,color:_ink}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</span>
                   {_dove&&<span data-cpm="salta163-dove" className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2,color:_ink}}>{_dove}</span>}
                 </button>);})()}
-              {_mot&&<div data-cpm="salta163-motivo" style={{fontSize:FS.small,color:TH.muted,textAlign:"center",marginTop:SP.xs}}>{_mot}</div>}
+              {_mot&&(_g198()&&_isPro&&(_mot==="Prima rispondi al rinnovo"||_mot==="prima trova una squadra")
+                /* [giro 198 · PO-446] il motivo che blocca e' un collegamento: porta alla scheda Agente col riquadro «Da fare ora» in vista */
+                ?<button data-cpm="salta163-motivo" data-g198="vai" onClick={_vaiAgente198} className="cpm-press" style={{display:"block",width:"100%",minHeight:44,marginTop:SP.xs,background:"transparent",border:"none",fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,textAlign:"center",cursor:"pointer",textDecoration:"underline",textUnderlineOffset:3}}>{_mot+" → vai all'Agente"}</button>
+                :<div data-cpm="salta163-motivo" style={{fontSize:FS.small,color:TH.muted,textAlign:"center",marginTop:SP.xs}}>{_mot}</div>)}
             </>)}
             {_prev&&(<div data-cpm="salta163-conferma" style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
               {_isPro?<div style={{fontSize:FS.body,color:TH.text,lineHeight:1.5}}>Simulo le partite senza posta in gioco. <b>Mi fermo</b> sulla prossima partita che conta (derby, ex club, scontri diretti, traguardi, rientro, contratto, finali e coppe), su ogni scelta, offerta, rinnovo e momento della tua storia.</div>
@@ -7906,6 +7981,11 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text}}>{(_MOT[fn.motivo]||fn.motivo)+(fn.perche?(" · "+fn.perche):"")}</div>
               <div className="cpm-num" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{fn.sett+" settiman"+(fn.sett===1?"a":"e")+" · "+fn.partite+" partit"+(fn.partite===1?"a":"e")+(fn.partite?(": "+fn.v+"V "+fn.n+"N "+fn.pe+"P · "+fn.g+" gol, "+fn.a+" assist"):"")}</div>
               {(fn.scelte||[]).length>0&&<div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45,marginTop:SP.xs}}>{"Scelte fatte da solo: "+fn.scelte.map(c=>"sett. "+c.w+" «"+c.txt+"»").join(" · ")}</div>}
+              {_g198()&&_isPro&&fn.motivo==="rinnovo"&&(/* [giro 198 · PO-446] la fermata dice DOVE andare e ha il tasto che ti porta li' */
+                <div data-cpm="salta198-dove" style={{marginTop:SP.sm,display:"flex",flexDirection:"column",gap:SP.xs}}>
+                  <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{player.contractExpired?"Sei svincolato: il rinnovo e la ricerca di una squadra sono nella scheda Agente, in cima.":"Il club aspetta una risposta sul rinnovo: la trovi nella scheda Agente, in cima."}</div>
+                  <Btn data-cpm="salta198-vai" v="primary" fw onClick={_vaiAgente198}>{player.contractExpired?"💼 Vai all'Agente →":"📋 Vai al rinnovo →"}</Btn>
+                </div>)}
               {(typeof window!=='undefined'&&window.__CPM_NO_G194B)&&<div style={{display:"flex",justifyContent:"flex-end",marginTop:SP.xs}}><Btn v="ghost" onClick={()=>setSaltaFine163(null)}>Ok</Btn></div>}{/* [giro 194 · PO-410] niente «Ok»: il riepilogo sparisce alla prossima azione. Rosso __CPM_NO_G194B */}
             </div>)}
           </div>)}
@@ -8129,7 +8209,7 @@ const getThisWeekMatchday=()=>{
         </div>
       )}
       {tab==="dashboard"&&(()=>{/* [PO-302 V2 · V2Home] la figurina piccola con gli anelli di forma e morale */
-        const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
+        const _rl=(_g198()&&(player.proStatus||"u18")==="pro"&&player.contractExpired)?"svincolato"/* [giro 198 · PO-432 c] */:({primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"");
         /* [PO-302 tappa 2] la testata e' compatta: qui arrivano nazione e FATICA (terzo anello, colore al contrario: bassa = verde)
            e il ritratto che apre la figurina completa (era nella testata). */
         const _fat=Math.round(player.fatigue||0),_fc=_fat<=35?TINTE.verde:_fat<=65?TINTE.giallo:TINTE.rosso;
@@ -8993,7 +9073,7 @@ const getThisWeekMatchday=()=>{
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
-      {tab==="dashboard"&&player.contractExpired&&(
+      {tab==="dashboard"&&player.contractExpired&&!_g198()&&(/* [giro 198] da svincolato il riquadro sale in cima alla Home (svincolato198-home) */
         <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
           <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
@@ -11380,10 +11460,50 @@ const getThisWeekMatchday=()=>{
         ];
         var currentTask=player.agentTask;
         var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
+        /* [giro 198] «Fai girare il nome»: lo stesso gestore per il tasto del mercato e per il riquadro «Da fare ora» */
+        var _cercaOfferta=function(){
+                        var offer=generateTransferOffer(player);
+                        if(offer){
+                          setTransferOffer(offer);
+                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
+                          notify("📨 Offerta ricevuta! Vai alla dashboard.",TH.success);
+                        }else{
+                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
+                          notify("🔍 Nessun club interessato al momento.",TH.muted);
+                        }
+                      };
+        var _assegna198=function(t){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Compito assegnato: "+t.l,TH.primary);};
         return(
           <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
             {_uff13&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
 />}{/* [PO-302 tappa 2 · V2Agente/V2Ufficio] */}
+            {tab==="agente"&&_g198()&&(player.proStatus||"u18")!=="u18"&&(()=>{
+              /* [giro 198 · PO-456, G195-08] «DA FARE ORA» IN CIMA ALL'AGENTE: le cose che hanno una scadenza, ciascuna col suo tasto —
+                 il contratto (stessa guardia del tasto «Negozia rinnovo» del riquadro Il tuo contratto), il compito della settimana se non
+                 e' assegnato (i quattro compiti, stessi effetti), il mercato aperto se la ricerca non e' ancora fatta (stesso gestore).
+                 Si riordina: nessuna regola cambia, il resto della scheda resta sotto com'era. Rosso __CPM_NO_G198 = niente riquadro. */
+              var _rinOk=(((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1))||(player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)))&&!player.loan;
+              var _tsk=!!(player.hasAgent&&!currentTask);
+              var _mkt=!!(player.hasAgent&&txOpen&&!player.windowOfferUsed);
+              if(!_rinOk&&!_tsk&&!_mkt)return null;
+              var _riga=function(k,tit,sub,figli){return(<div data-cpm={"agente198-"+k} style={{display:"flex",flexDirection:"column",gap:6,padding:"9px 0",borderTop:"1px solid "+TH.cardBorder}}>
+                <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,lineHeight:1.3}}>{tit}</div>
+                {sub&&<div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{sub}</div>}
+                {figli}</div>);};
+              return(<Card data-cpm="agente198-ora" style={{padding:"10px 12px 4px",borderLeft:"3px solid "+TH.warning}}>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted,marginBottom:2}}>Da fare ora</div>
+                {_rinOk&&_riga("contratto",player.contractExpired?"⛔ Contratto scaduto: sei svincolato":"📋 Il contratto scade a fine stagione",
+                  player.contractExpired?"Senza contratto non giochi: rinnova col club o cerca una squadra qui sotto.":("Il rinnovo si tratta fino alla settimana 35"+(player.hasAgent?" · il compito «Prepara rinnovo» vale +10% sull'offerta":"")+"."),
+                  <Btn data-cpm="agente198-rinnovo" v="primary" fw onClick={openNegoModal}>📋 Negozia rinnovo</Btn>)}
+                {_tsk&&_riga("compito","🤵 Compito della settimana","Ancora da assegnare per questa settimana.",
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:6}}>
+                    {TASKS.map(function(t){return(<button key={t.k} data-cpm={"agente198-compito-"+t.k} onClick={function(){_assegna198(t);}} className="cpm-press" title={t.d}
+                      style={{minHeight:44,display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderRadius:RAD.sm,border:"1px solid "+(t.k==="rinnovo"&&_rinOk&&!player.contractExpired?TH.warning:TH.cardBorder),background:TH.surface2,color:TH.text,cursor:"pointer",textAlign:"left",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,lineHeight:1.2}}>
+                      <span aria-hidden="true" style={{fontSize:FS.bodyLg,flexShrink:0}}>{t.e}</span><span style={{minWidth:0}}>{t.l}</span></button>);})}
+                  </div>)}
+                {_mkt&&_riga("mercato","🌊 Mercato aperto · fino alla settimana "+(week<=5?5:23),"Una ricerca per finestra: il procuratore fa girare il tuo nome.",
+                  <Btn data-cpm="agente198-cerca" v="green" fw onClick={_cercaOfferta}>🔍 Fai girare il nome</Btn>)}
+              </Card>);})()}
             {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
             {(!_uff13||tab==="ufficio")&&(player.proStatus||"u18")!=="u18"&&(
               <>{/* [7.999.49 parte A] tre fisarmoniche al posto di una: Patrimonio · Staff privato · Acquisti e investimenti */}
@@ -11676,17 +11796,7 @@ const getThisWeekMatchday=()=>{
                     )}
                     {/* Genera offerta */}
                     {!player.windowOfferUsed?(
-                      <Btn v="green" fw onClick={function(){
-                        var offer=generateTransferOffer(player);
-                        if(offer){
-                          setTransferOffer(offer);
-                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
-                          notify("📨 Offerta ricevuta! Vai alla dashboard.",TH.success);
-                        }else{
-                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
-                          notify("🔍 Nessun club interessato al momento.",TH.muted);
-                        }
-                      }}>🔍 Fai girare il nome — cerca offerta</Btn>
+                      <Btn v="green" fw onClick={_cercaOfferta}>🔍 Fai girare il nome — cerca offerta</Btn>
                     ):(
                       <div style={{padding:"8px 10px",borderRadius:RAD.sm,background:TH.surface2,border:"1px solid #d1fae5",fontSize:FS.caption,color:TH.muted,textAlign:"center"}}>
                         ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"estate, stagione "+((player.season||1)+1):"inverno, sett. 19"}{/* [6.45.0 RC] parentesi: prima concatenava "S."+season+"1" (es. "S.31" invece di "S.4") */}
@@ -11861,7 +11971,7 @@ const getThisWeekMatchday=()=>{
                   );
                 })()}
                 {/* Agent task card */}
-                <Fisarmonica id="agente-task" titolo="Compito della settimana" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                {!(_g198()&&!currentTask)&&/* [giro 198] da assegnare, il compito sta nel riquadro «Da fare ora» in cima: qui resta lo stato */<Fisarmonica id="agente-task" titolo="Compito della settimana" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                   
                   {currentTask?(
                     <div>
@@ -11887,7 +11997,7 @@ const getThisWeekMatchday=()=>{
                       </div>
                     </div>
                   )}
-                </Card></Fisarmonica>
+                </Card></Fisarmonica>}
                 {/* Active offer — agent opinion */}
                 {transferOffer&&!transferOffer.isRenewal&&(
                   <Fisarmonica id="s24-opinione-agente-offerta-atti" titolo="Parere del procuratore — offerta attiva" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
