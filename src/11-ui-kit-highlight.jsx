@@ -791,6 +791,7 @@ function makeCrowdTex(spec){
     texLow.needsUpdate=true;texUp.needsUpdate=true;texFull.needsUpdate=true;
   };
   redraw(0,0,0);// primo frame statico
+  try{if(spec.cnt192)spec.cnt192.n+=seats.filter(x=>!x.empty).length;}catch(_e){}/* [giro 192] testimone: tifosi DIPINTI nella tela (la presentazione li vuole qui) */
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
@@ -1186,11 +1187,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurva=_SF141.curvaCasa,_awBase=_SF141.away,_fillCurvaAw=_SF141.curvaOsp,_fillTrib=_SF141.tribuna;
   /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
      window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
-  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;if(stadCfg&&stadCfg.noFolla129)return null;/* [giro 192] la presentazione chiede la folla dipinta */
     let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
     return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
   const _f129Planes=[];
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -1929,6 +1930,12 @@ const _glbCache={};
        dopo (GLB asincroni) e per le luci animate.
    NON sceglie nessun colore: lo stesso esadecimale, deciso altrove (giri 168/171), appare uguale in tutte le scene.
    Rosso __CPM_NO_G178_COLORE: la funzione non fa nulla e ogni scena torna alla sua catena di prima. Guardiano npm run scene-178. */
+/* [giro 192 · PO-407 «la coppa taglia il viso, non e' tra le mani»] LA PRESA DELLA COPPA E' UNA SOLA, per podio e parata: le mani
+   stringono i manici (base = mani - presa) e il VOLTO (mento = sommita' - 0,30 .. sommita') non si copre mai: mani alte -> coppa sopra la
+   testa, mani basse -> coppa sotto il mento. Era la regola del podio (7.997, _ALZA24); la parata non l'aveva. Tutte le quote nello stesso
+   riferimento verticale; basso/alto = punto piu' basso/alto del trofeo rispetto alla sua base. */
+function presaCoppa192(o){let b=o.mani-o.presa;const mento=o.testa-0.30;
+  if(b+o.alto>mento&&b+o.basso<o.testa){if(o.mani>=o.testa-0.35)b=o.testa+0.03-o.basso;else b=mento-o.alto;}return b;}
 const SVIL178={expo:0.52};
 /* guadagno di luce per scena (vedi sopra): tarato MISURANDO la luminanza media prima/dopo (docs/sviluppo/RAPPORTO-giro178.md) */
 const LUCE178={intro:1,presentazione:2.3,parata:4.0,gala:2.2};/* regola: il guadagno piu' piccolo che lascia la luminanza media >= 90% di prima (misure cal1-cal3) */
