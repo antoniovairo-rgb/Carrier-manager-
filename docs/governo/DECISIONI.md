@@ -1567,3 +1567,14 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 14/11 ~18:50 Roma — giro 198 unito in lavoro/195
 - Giro 198 (PO-456, 446, 432): 10/10 controlli verdi; unito senza conflitti; guardiani agente-198 e svincolato-198 già nella catena completa. 7,72 $.
 - Decisioni tecniche della madre sui dubbi: soglia dei richiami = quella di rifiuto già nel gioco (accettata); «fermati un anno» non fatto (regola nuova, resta fuori); «Fai girare il nome» a 375×667 resta sotto la barra con piccolo scorrimento (accettato); card prossima partita e fiducia del mister da svincolato → seguito in PO-448 rifiniture.
+
+## 14/11 ~19:05 Roma — la 196 divisa in 6 release (questionario)
+- PO: «6 release, una a pacchetto»; primo il pacchetto Store; poi «C, B, D, E1, E2».
+- 7.999.196 A Store e primo impatto: PO-393, 430, 453, 455, 457, 458, 459.
+- 7.999.197 C Coerenza della carriera: PO-386, 391, 417, 419, 420, 421, 424, 425, 436.
+- 7.999.198 B Partita: PO-381, 389, 392, 413, 414, 415, 416, 429, 454.
+- 7.999.199 D Carriera lunga e contratti: PO-390, 394, 395, 427, 433, 434, 435, 437, 438, 439, 442.
+- 7.999.200 E1 Nazionale e cerimonie: PO-387, 388, 422, 423, 440, 441.
+- 7.999.201 E2 Fine carriera e memoria: PO-382, 383, 426, 443, 444, 445, 447.
+- Google Play: «Dopo il pacchetto Store» — uscita della 7.999.196, poi prova chiusa coi 12 tester; le release seguenti come aggiornamenti. I passi del PO (chiave di firma, scheda, tester) restano come in USCITA-STORE-184.md.
+- Nota: i numeri dei giri (197, 198, 199…) non coincidono con i numeri delle release.
