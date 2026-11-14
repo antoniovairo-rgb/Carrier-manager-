@@ -64,9 +64,9 @@ async function scenario(nome) {
     while (Date.now() - t0 < TMAX) {
       const s = await page.evaluate(() => { const W = window.__CPM_T196W; const w = Array.isArray(W) ? W.splice(0) : [];
         return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), c: window.__CPM_CLOCK ? window.__CPM_CLOCK() : 0, w,
-          att: !!document.querySelector('[data-cpm="attesa196"]'), p2d: !!window.__CPM_2D196, bar: (document.querySelector('[data-cpm="attesa196-barra"]') || {}).style ? document.querySelector('[data-cpm="attesa196-barra"]').style.width : null }; }).catch(() => null);
+          att: !!document.querySelector('[data-cpm="attesa196"]'), mot: (() => { try { const r = window.__CPM_PRONTI196 && window.__CPM_PRONTI196(); return r ? (r.pronti ? 'pronti' : r.motivo + (r.chi && r.chi.length ? '[' + r.chi.join(',') + ']' : '')) : null; } catch (e) { return 'err'; } })(), p2d: !!window.__CPM_2D196, bar: (document.querySelector('[data-cpm="attesa196-barra"]') || {}).style ? document.querySelector('[data-cpm="attesa196-barra"]').style.width : null }; }).catch(() => null);
       if (!s) break;
-      out.fasi[s.ph] = (out.fasi[s.ph] || 0) + 1; if (s.att) out.attesa = true; if (s.p2d) out.partita2D = true;
+      out.fasi[s.ph] = (out.fasi[s.ph] || 0) + 1; if (s.mot && !(out.motivi = out.motivi || {})[s.mot]) out.motivi[s.mot] = +((Date.now() - t0) / 1000).toFixed(0); if (s.att) out.attesa = true; if (s.p2d) out.partita2D = true;
       if (s.att && !foto.attesa) { foto.attesa = 1; await page.screenshot({ path: path.join(FOTO, `${ROSSO ? 'rosso' : 'dopo'}-${nome}-attesa.png`) }).catch(() => {}); }
       for (const f of s.w) { if (!VISTA(f.ph)) continue; if (f.v) { out.coperti = (out.coperti || 0) + 1; continue; } /* sotto la schermata d'attesa opaca o col campo 2D sopra: il 3D non si vede */ const k = f.ph === 'walkout' ? 'walkout' : 'hl'; out.frames[k]++; out.maxCg = Math.max(out.maxCg, f.cg);
         const bad = f.noCg + f.tpose + f.proc; if (bad) { out.cattivi[k]++; if (f.noCg) out.noCg++; if (f.tpose) out.tpose++; if (f.proc) out.proc++; for (const c of f.chi) out.chi[c] = (out.chi[c] || 0) + 1; } }
@@ -81,6 +81,7 @@ async function scenario(nome) {
       await sleep(400);
     }
     out.durS = +((Date.now() - t0) / 1000).toFixed(0);
+    out.ev = await page.evaluate(() => ((typeof window.__CPM_EV === 'function' && window.__CPM_EV()) || []).filter(e => e && /196/.test(e.ev || '')).map(e => { const o = { ...e }; delete o.ts; return o; }).slice(0, 6)).catch(() => []);
     out.st = await page.evaluate(() => String(window.__CPM_HYPER_CASUAL_STATUS || '')).catch(() => '?');
   } catch (e) { out.errore = String(e.message).slice(0, 160); }
   out.file = file.length; out.mb = +(file.reduce((a, f) => a + f[1], 0) / 1e6).toFixed(1); out.errori = errs.slice(0, 3);

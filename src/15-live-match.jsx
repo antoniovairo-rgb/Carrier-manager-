@@ -3002,7 +3002,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const att196Ref=useRef({t:0,k:''});
   const [modo2D196,setModo2D196]=useState(false);
   const modo2D196Ref=useRef(false);
-  const _att196=r=>{try{const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;window.__CPM_ATT196=!!r;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
+  const _att196=r=>{try{window.__CPM_ATT196=!!r;const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
   const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
   const _chk196=(fase)=>{try{const r=window.__CPM_PRONTI196();const c=att196Ref.current;
     if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}

@@ -6820,6 +6820,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
+      if(isWalk&&!_wasWalk&&typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||window.__CPM_T196ON)&&!window.__CPM_2D196){try{if(!_pronti196().pronti)window.__CPM_ATT196=true;}catch(_e196){}}/* [giro 196] il primo fotogramma dell'ingresso non aspetta LiveMatch: se i corpi non sono pronti l'attesa parte qui (e il disegno si sospende) */
       if(isWalk&&!_wasWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))){sr.current._walkHoldT74=0;
         const _toTunnel=(m)=>{if(!m||m._wStartX==null)return;m.position.x=m._wStartX;m.position.z=m._wStartZ;m.position.y=0;m._px=m.position.x;m._pz=m.position.z;m._sp=0;m._idle=0;};
         sr.current.players.forEach(pp=>_toTunnel(pp.mesh));_toTunnel(hero);
@@ -12793,10 +12794,10 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       __w266c('R');
-      renderer.render(scene,camera);
+      if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
-      if(typeof window!=='undefined'&&window.__CPM_T196W)_t196();/* [giro 196] testimone per fotogramma */
+      if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
     };
     loop();
 
