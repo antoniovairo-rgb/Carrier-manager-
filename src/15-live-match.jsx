@@ -3017,7 +3017,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     att196Ref.current.t=0;_chk196('walkout');
     const iv=setInterval(()=>{_chk196('walkout');},250);
     return()=>{clearInterval(iv);_att196(null);};
-  },[phase,glbTry]);
+  },[phase]);
   const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
   useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
