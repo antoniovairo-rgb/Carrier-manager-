@@ -1532,3 +1532,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO ha scelto tutte le 18 proposte G189 → PO-413…430. Scelte anche le idee che toccano decisioni chiuse il 20/10 (G189-10 cerimonie, G189-12 economia): vale come riapertura limitata a quel punto.
 - Ordine (PO «194 difetti, 195 idee»): la 194 chiude i difetti segnalati (PO-380, 385, 396, 397, 399, 401 misura, 402…412) più G189-16 scelte perse (PO-428) e G189-06 provini (PO-418); le idee G181 (PO-381…383, 386…395) e le altre G189 vanno nella 195, a ondate da 3 giri.
 - Giro 189: 15,64 $.
+
+## 14/11 ~11:50 Roma — terza tornata di idee (giro 193, Fable)
+- PO: «Al primo posto libero», tema «Da tifoso esigente, a tutto campo»: gioca 2-3 stagioni intere, anche da veterano e fine carriera (mai viste dai giri 181/189); nessuna ripetizione di G181, G189 e voci in BACKLOG; G181-09 altri ruoli resta scartata. Parte prima degli altri giri della 194 in coda.
