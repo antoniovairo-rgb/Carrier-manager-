@@ -1,0 +1,10 @@
+== pc (prima) — coppa round 4
+  dopo il fischio d'inizio: {"ph":"playing","d2":true,"vista2d":true,"att":false}
+  fasi: playing@0.0s v2d=true so2d=false cer2d=false → shootout@0.3s v2d=true so2d=false cer2d=false → ceremony@59.5s v2d=true so2d=false cer2d=false → ended@77.1s v2d=false so2d=false cer2d=false
+  lotteria finale: {"phase":"ended","step":28,"hs":5,"as":4,"done":true,"won":true,"len":14}
+  rassegna si · passi avanti,avanti,avanti,torna · matchHistory 0→1 · carriera true · cup {"round":5,"elim":false,"champ":true,"last":{"round":4,"name":"FINALE","opponent":"FC Valmora","homeScore":1,"awayScore":1,"won":true,"penalties":true}} · testo «🏆 COPPA VINTA! FC Salernum Coppa · Stagione 4 🎉 Festeggia SAL FC SALERNUM Lega B · St. 4 · Sett. 13/38 · 13° posto salvato 23:43 v 7.999.1»
+  errori: 0
+== pc — cerimonie forzate
+  cup: in cerimonia d2=true ph=ceremony vista2d=true cer2d=false · fine dopo 17.5s fase ended · rassegna true · passi avanti,avanti,avanti,torna · carriera true · errori 0
+  league: in cerimonia d2=true ph=ceremony vista2d=true cer2d=false · fine dopo 23.4s fase ended · rassegna true · passi avanti,avanti,avanti,torna · carriera true · errori 0
+  festa: in cerimonia d2=true ph=ceremony vista2d=true cer2d=false · fine dopo 9.4s fase ended · rassegna true · passi avanti,avanti,avanti,torna · carriera true · errori 0
