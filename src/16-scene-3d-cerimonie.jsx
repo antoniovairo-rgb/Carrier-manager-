@@ -2974,8 +2974,13 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
     const _spec=_all.filter(d=>d.prestige);return _spec.length?_spec:_all;})();
   const _presLine100=(_presPool100.length>0?_presPool100:SEASON_END_PRESIDENT.filter(d=>_presRet445?d.retire:(d.result===_presResult100&&!d.retire)))[hashStr((player.name||"x")+"p"+String(season||1))%Math.max(1,(_presPool100.length||1))];
   const bestMatch=getBestSeasonMatch(player.matchHistory||[]);
-  const contractYearsLeft=(player.contract?.duration||0);
+  /* [giro 200 · PO-448 p.3] «Contratto attivo · 3 anni rimanenti» dopo una firma di 2 anni: la durata conta anche la stagione appena
+     finita. Gli anni che restano si leggono dalla scadenza vera (_contratto49, la stessa della scheda Agente); all'addio annunciato
+     la riga non parla di contratto. Rosso __CPM_NO_G200 = la durata come prima. */
+  const _c200=_g200x()?_contratto49(player):null;
+  const contractYearsLeft=_c200?(_c200.scaduto?0:_c200.left):(player.contract?.duration||0);
   const contractExpiredNow=contractYearsLeft<=0;
+  const _addio200=_g200x()&&player.retireAnnounced===(player.season||1);
 
   // sorted standings already from doAdvanceWeek
   const sorted=finalStandings||[];
@@ -3225,7 +3230,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {euroActive&&(
         <Fisarmonica id="fine-sezione" titolo={<>{euro.competition==="UCL"?"⭐ Korward Champions Cup":euro.competition==="UEL"?"🟡 Korward Europa Cup":"🟣 Korward Conference Cup"}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-            <span style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{euroPhaseLabel}</span>
+            <span style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{(()=>{/* [giro 200 · PO-448 p.2] «Eliminato · 12 pt nel girone» sopra
+                «Corsa finita agli ottavi»: l'intestazione dice DOVE si e' usciti (ultimo turno KO giocato). Rosso __CPM_NO_G200 = com'era. */
+              const _ko=(euro.koResults||[]),_l=_ko.length?String(_ko[_ko.length-1].phase||""):"";
+              const _D={r16:"agli ottavi",quarti:"ai quarti",sf:"in semifinale",final:"in finale"};
+              return (_g200x()&&euroElim&&_D[_l])?("Eliminato "+_D[_l]):euroPhaseLabel;})()}</span>
             <span style={{fontSize:FS.caption,color:TH.muted}}>{euro.pts||0} pt nel girone</span>
           </div>
           {(euro.groupResults||[]).length>0&&(
@@ -3389,7 +3398,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <span style={{fontSize:FS.bodyLg}}>{contractExpiredNow?"❌":contractYearsLeft===1?"⚠️":"📄"}</span>
         <div>
           <div style={{fontSize:FS.caption,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
-            {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
+            {_addio200?"Ultima stagione: hai annunciato il ritiro":(contractExpiredNow&&_c200&&!_c200.scaduto)?"Contratto in scadenza — tratta il rinnovo o trova una squadra":contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
           </div>
           {(player.contract?.wage||0)>0&&<div style={{fontSize:FS.caption,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
         </div>
