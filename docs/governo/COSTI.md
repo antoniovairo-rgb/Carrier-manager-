@@ -116,6 +116,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | giro 185 tasto momento: in corsa al titolo solo le partite decisive (PO-384) | sviluppo | claude-opus-5-5 | 0,8 | 3,08 $ | 33324 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 186 strumenti dopo la partita riproducibile (audio-161, tifosi-171, box-fischio-169) | sviluppo | claude-opus-5-5 | 1,7 | 3,51 $ | 26928 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 187 dopo la partita riproducibile: rigore-139, solo-highlight-166, minuto 0/1 (PO-372) — worker riavviato, costo forse parziale | sviluppo | claude-opus-5-5 | 5,5 | 5,12 $ | 39046 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.193 | giro 188 «Gioca» quando il tasto momento si ferma (PO-400) | sviluppo | claude-opus-5-5 | 0,7 | 2,05 $ | 13906 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -129,3 +130,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
 | 7.999.191 | **TOTALE 7.999.191** (19 sessioni) |  |  |  | almeno 122,89 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.192 | **TOTALE 7.999.192** (23 sessioni) |  |  |  | almeno 236,54 $ |  |  | 6 sessioni parziali: totale minimo |
+| 7.999.193 | **TOTALE 7.999.193** (1 sessioni) |  |  |  | 2,05 $ |  |  | tutte complete |
