@@ -1543,3 +1543,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~12:05 Roma — giro Fable su grafica, fruibilità, usabilità (giro 195)
 - PO: «Dopo il tasto momento» (secondo posto libero, la 194 di stasera non slitta). Focus: tutti e quattro — telefono piccolo e leggibilità; percorsi e numero di tocchi; coerenza grafica; prestazioni e accessibilità. Solo analisi con foto e proposte G195-xx, non tocca src/. Non ripete voci già in BACKLOG (PO-376…431) né G181/G189.
+
+## 14/11 ~13:00 Roma — idee del giro 193 (Fable) e ordine 195/196
+- PO ha scelto 17 proposte su 18 (non G193-03 energie del veterano) → PO-432…448. PO-155 RIAPERTA per il Mondiale come cammino (G193-10, PO-441).
+- Ordine (PO «195 difetti, 196 idee»): 195 = difetti rimasti (PO-373, 385, 401, 408, 409, 412, 418, 428) + G193-01 svincolato (PO-432), G193-16 tasto che dice dove andare (PO-446), G193-18 rifiniture (PO-448); tutte le idee G181, G189 e G193 nella 196 e oltre, a ondate da 3 giri.
+- Giro 193: 15,52 $.

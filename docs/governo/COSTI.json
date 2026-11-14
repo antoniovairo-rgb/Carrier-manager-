@@ -1594,5 +1594,19 @@
     "cache_read_tokens": 28708160,
     "worker_epoch": 1,
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYia9MCWsQshUsYG8bdEq",
+    "titolo": "giro 193 idee, terza tornata: tifoso esigente, carriera lunga",
+    "versione": "7.999.194",
+    "tipo": "collaudo",
+    "modello": "claude-fable-5-2",
+    "creata": "2026-11-14T10:55:23Z",
+    "chiusa": "2026-11-14T12:19:43Z",
+    "cost_usd": 15.51807556,
+    "output_tokens": 101421,
+    "cache_read_tokens": 29198026,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-14"
   }
 ]
