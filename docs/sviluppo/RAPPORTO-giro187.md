@@ -5,7 +5,21 @@ Non toccati audio-161, tifosi-171, box-fischio-169 (giro 186).
 
 ## 0. In breve
 
-<!-- IN-BREVE -->
+- **Punto 3 (riproduci-175, «Livio Corradini» 0≠1):** causa trovata e misurata — un sotto-tick caduto fra il battito del minuto e
+  il render annotava il turno con `clockRef` vecchio. Corretta in src/15 col rosso `__CPM_NO_G187` (nessuna taratura del motore
+  cambiata). Guardiano nuovo **`riproduci-187`** che **provoca** la finestra: verde uguale su 2 nomi, rosso separato su 2 nomi
+  proprio sull'evento segnalato. **Ma `riproduci-175` è verde in 2 corse su 3, non 3 su 3** (+ una quarta, sotto): la corsa 2 ha
+  trovato un **secondo residuo**, diverso (il motore stesso si separa al 6' dopo una scena, 1 ripetizione su 45), non riprodotto e
+  non corretto (§1).
+- **Punto 2 (solo-highlight-166, controllo 12):** riscritto come «interviste uguali alla partita intera con lo stesso seme» (conto +
+  decisione + domanda) e aggiunto **12b**, un caso con la sorpresa seedata del giro 183 dove l'intervista c'è in entrambe. Verde
+  passa, rosso cade (§2).
+- **Punto 1 (rigore-139):** in **173 partite naturali** il doppio del giro 139 non si è mai prodotto; la testimone ora è
+  **provocata** dalla sonda (rigore chiesto al motore all'89', poi tutto segue il gioco). Criterio e minimi invariati. Verde
+  giudicato 4 corse su 4 (battute 7·7·6·7), rosso visto 4 su 4 (§3).
+- **Trovato e non corretto:** «r187d-11» seme 12, **lo stesso rigore battuto due volte anche nel verde** (scena dal percorso
+  `motore-occasione`, che non chiama `attendiPiazzato`). Classe del giro 94 D2 (§3).
+- `GAME_VERSION` non toccata. Nessun file del giro 186 toccato.
 
 ## 1. Punto 3 — riproduci-175: il minuto del primo turno cambiava fra due ripetizioni (difetto del GIOCO)
 
@@ -50,7 +64,17 @@ GIUDICATO solo se la finestra è stata attraversata da almeno un turno **dentro*
 (Con n=3 il rosso di «Tobia Ferrante» non si separava: l'unico turno nella finestra cadeva al 21', fuori dal confronto. Ho
 reso il giudizio più severo — il turno deve stare nel tratto confrontato — e portato la finestra a 6 sotto-tick su 22.)
 
-<!-- R175 -->
+**riproduci-175 dopo la correzione:** corsa 1 **VERDE PASSA** (5/5 nomi, compreso «Livio Corradini» 5-0 a tutte e tre le velocità;
+corpi accesi = spenti; rosso 2/2 separati) · corsa 2 **NON PASSA** · corsa 3 **VERDE PASSA** (5/5) · corsa 4: <!-- R175-4 -->.
+
+⚠️ **La corsa 2 è un secondo residuo, diverso da quello corretto.** «Collaudo Salienti» a 1,5×: 1-2 con 247 voci e 5 scene, contro
+1-0, 269 voci, 7 scene a 1× e 2×; prima differenza alla voce 14 — nella ripetizione a 1,5× **manca** il turno
+`{"causa":"motore-contrasto","dir":-1,"min":6}` e arriva subito una recita al 7'. Qui non cambia un'etichetta: è il motore che ha
+ricevuto qualcosa di diverso. Nel libro mastro di riferimento, subito prima: scena al 4' (`motore-occasione`), poi
+`{"causa":"rip202"}` (i passi del minuto della scena recuperati dopo, PO-202), poi la separazione al 5'-6'. Ipotesi (NON
+verificata): è il residuo che il giro 175 §7 aveva lasciato aperto — dopo una scena il motore riprende con la posizione dell'eroe
+letta dalle mesh 3D, cioè dal tempo di render. Tentativo di riprodurlo: `_diag175`, 9 giri a 1,5×, 3 in parallelo, fino al 15':
+motore **identico chiamata per chiamata** in tutti e 9. Frequenza osservata: 1 ripetizione su 45 (tre corse × 15). Non corretto.
 
 ## 2. Punto 2 — solo-highlight-166, controllo 12
 
@@ -123,8 +147,39 @@ produzione. Va deciso chi lo corregge; il caso è pronto per un guardiano (nome 
 
 ## 4. Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`, `free -m`/`df -h` prima)
 
-<!-- CONTROLLI -->
+Tutti dal build del commit `171317f` in poi (src/ non è più cambiato dopo), `node tools/build-src.mjs` + `node tools/check-src.mjs`
+identico byte per byte dopo ogni modifica a src/.
+
+| controllo | esito |
+|---|---|
+| `riproduci-187` (nuovo) | verde PASSA (2/2 uguali), rosso CADE (2/2 separati) |
+| `riproduci-175` | corsa 1 verde · corsa 2 **rossa** (residuo nuovo, §1) · corsa 3 verde · corsa 4 <!-- R175-4b --> |
+| `solo-highlight-166` | VERDE PASSA · ROSSO CADE su 3, 7 e 8 (1 corsa) |
+| `rigore-139` | VERDE in 4 corse (rosso visto in 4) |
+| `rigore-79` | ✅ verde (rosso `__CPM_NO_RIG79` cade) |
+| `partita-vera` | ✅ uscita 0, 12/12 bande, partite finite 2/2 |
+| `validate-situations` | ✅ PASS, fingerprint 00001505, 0 failure |
+| `test:logic` | 51 pass · 0 fail |
+| `save-compat` | 12 pass · 0 fail |
+
+Strumenti nuovi o estesi (non guardiani): `sonda-187.mjs` (finestra battito/render), `sonda-iv187.mjs` (nomi con la sorpresa),
+`sonda-rigore-139.mjs` (`CPM_SOLO`, `CPM_PROVOCA`, campi `sc`/`rp` della spia).
 
 ## 5. Dubbi e cose non chiuse
 
-<!-- DUBBI -->
+1. **riproduci-175 non è verde in 3 corse su 3** come chiesto: residuo nuovo (§1), raro, non riprodotto. Chi decide se va cercato
+   ora (strumento: `_diag175` con più giri a processore conteso) o se il guardiano resta così.
+2. **r187d-11 (§3)**: lo stesso rigore battuto due volte nel verde. È un difetto del gioco, fuori dal mio mandato; in produzione
+   lo batterebbe un compagno (non misurato). Rimedio probabile: chiamare `attendiPiazzato` anche quando la scena del piazzato
+   dell'eroe arriva dal percorso `motore-occasione` — ma la scena arriva un battito DOPO che i 40 passi sono finiti, quindi non
+   basta da solo: va deciso cosa mostra quella scena se il motore ha già calciato.
+3. **rigore-139 ora prova il rimedio del 139 su un rigore provocato**, non concesso da un fallo vero (le altre tre partite sono
+   naturali e una ha il rigore offerto all'89' da sola). Se il PO vuole la testimone naturale, il costo misurato è >173 partite.
+   Battute 6 in una corsa su 4 (attribuzione non fatta, sospetto lo strumento).
+4. **Modalità soli highlight forzata dal gancio `__CPM_SOLO166` su `playMatch()`** (sonda rigore, salvataggio 190): «r187a-1» seme
+   2 ha dato un'altra partita rispetto al percorso intero (1-4 contro 2-2). Non è il percorso del guardiano 166 (che passa dal
+   bottone del prompt e lì il libro mastro è identico 269/269). Non indagato.
+5. Durante le corse Chromium ha provato a collegarsi a `mtalk.google.com:5228` (servizio di Chromium stesso, non del gioco): 13
+   connessioni rifiutate dal proxy. Nessun dato inviato dal gioco.
+6. Un tentativo di ricerca con 12 partite in parallelo ha esaurito la memoria del container; scartato, rifatto a 8. Il container è
+   stato anche riavviato una volta durante una ricerca (lotto r187d fermato a 40).
