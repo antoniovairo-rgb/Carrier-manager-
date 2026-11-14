@@ -1578,3 +1578,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 7.999.201 E2 Fine carriera e memoria: PO-382, 383, 426, 443, 444, 445, 447.
 - Google Play: «Dopo il pacchetto Store» — uscita della 7.999.196, poi prova chiusa coi 12 tester; le release seguenti come aggiornamenti. I passi del PO (chiave di firma, scheda, tester) restano come in USCITA-STORE-184.md.
 - Nota: i numeri dei giri (197, 198, 199…) non coincidono con i numeri delle release.
+
+## 14/11 ~19:50 Roma — giro 199 unito in lavoro/195
+- Giro 199 (PO-408, 409): 11/11 verdi, unito senza conflitti; home-199 e figurina-199 nella catena completa. 4,77 $.
+- Decisioni tecniche della madre: il tasto del momento con 3 scelte aperte scende appena sotto il primo schermo (conseguenza dell'ordine deciso dal PO, accettato); «Vivi la settimana» resta il primo elemento (decisione 6.5.4); i riquadri che nel gioco sono già finestre restano finestre.

@@ -1678,5 +1678,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYia9mK6SA2YkKg1L4saV",
+    "titolo": "giro 199 scelte «Da decidere» in cima alla Home, figurina compatta (PO-408, 409)",
+    "creata": "2026-11-14T17:47:36Z",
+    "chiusa": "2026-11-14T18:39:55Z",
+    "cost_usd": 4.7685623,
+    "output_tokens": 41639,
+    "cache_read_tokens": 12420112,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]
