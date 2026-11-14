@@ -230,6 +230,17 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
     style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
+/* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
+   Si mostrano le frasi del testo dalla prima in poi, quante ne stanno in `righe` righe: mai una frase a meta', mai i tre puntini.
+   Se nemmeno la prima frase ci sta, la prima frase va a capo per intero (il riquadro cresce, il testo resta leggibile). */
+function FraseIntera190({testo,righe=2,style={},cpm}){
+  const fr=String(testo||"").match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g)||[String(testo||"")];
+  const parti=fr.map(x=>x.trim()).filter(Boolean);const key=parti.join("|");
+  const[n,setN]=useState(parti.length);const ref=useRef(null);
+  useEffect(()=>{setN(parti.length);},[key]);// eslint-disable-line
+  (React.useLayoutEffect||useEffect)(()=>{const el=ref.current;if(!el)return;const lh=parseFloat(getComputedStyle(el).lineHeight)||16;
+    if(el.scrollHeight>lh*righe+2&&n>1)setN(n-1);});
+  return(<div ref={ref} data-cpm={cpm||"frase-intera-190"} data-frasi190={n+"/"+parti.length} style={{...style,whiteSpace:"normal",overflowWrap:"anywhere"}}>{parti.slice(0,Math.max(1,n)).join(" ")}</div>);}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>

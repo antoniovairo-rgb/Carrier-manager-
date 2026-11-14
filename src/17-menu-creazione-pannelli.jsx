@@ -1399,7 +1399,7 @@ const LOCALE={
     talkCoach:"Parla col Mister",singleActions:"Azioni singole",
     export:"Esporta salvataggio JSON",toggleDark:"Scuro",toggleLight:"Chiaro",
     langChanged:"Lingua: Italiano 🇮🇹",
-    backToCareer:"← Home",backToDashboard:"🏟️ Torna alla Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Torna alla Dashboard":"🏟️ Torna alla Home",
     postMatch:"POST MATCH",
     goalLabel:"Gol",assistLabel:"Assist",ratingLabel:"Voto",
     shots:"Tiri",possession:"Possesso",fouls:"Falli",corners:"Corner",
@@ -1411,7 +1411,7 @@ const LOCALE={
     advanceInjured:"⏭️ Avanza (infortunato)",
     matchPromptTitle:"Hai una partita!",matchPromptCup:"Gara di Coppa!",matchPromptWhat:"cosa vuoi fare?",
     understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
-    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
+    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:_no190("A")?"rimani in dashboard":"resta nella Home",
     weekHeader:"Settimana",thisWeek:"Questa settimana",
     weekLivedNote:"Settimana vissuta. Ora gioca la partita o passa alla prossima settimana col pulsante in Home.",/* [7.999.49 parte A] niente «Clicca» ne' «Avanza» (pulsante che in Home non c'e') */
     rehabCompletedNote:"Sessione completata. Passa alla prossima settimana col pulsante in Home per continuare il recupero.",
@@ -1433,7 +1433,7 @@ const LOCALE={
     talkCoach:"Talk to Coach",singleActions:"Single Actions",
     export:"Export save JSON",toggleDark:"Dark",toggleLight:"Light",
     langChanged:"Language: English 🇬🇧",
-    backToCareer:"← Home",backToDashboard:"🏟️ Back to Dashboard",
+    backToCareer:"← Home",backToDashboard:_no190("A")?"🏟️ Back to Dashboard":"🏟️ Back to Home",
     postMatch:"POST MATCH",
     goalLabel:"Goals",assistLabel:"Assists",ratingLabel:"Rating",
     shots:"Shots",possession:"Possession",fouls:"Fouls",corners:"Corners",
@@ -1445,7 +1445,7 @@ const LOCALE={
     advanceInjured:"⏭️ Advance (injured)",
     matchPromptTitle:"You have a match!",matchPromptCup:"Cup Match!",matchPromptWhat:"what do you want to do?",
     understood:"✅ Got it",cannotPlayInjured:"Can't play (injured)",
-    skipAndRecover:"⏭️ Skip and recover week",cancelStay:"stay on dashboard",
+    skipAndRecover:"⏭️ Skip and recover week",cancelStay:_no190("A")?"stay on dashboard":"stay on Home",
     weekHeader:"Week",thisWeek:"This week",
     weekLivedNote:"Week completed. Click 'Advance' to go to the next or play the match first.",
     rehabCompletedNote:"Session completed. Click 'Advance Week' to continue your recovery.",
@@ -1992,7 +1992,7 @@ const generateBio=(p)=>{
 /* === SPRINT 56 — TUTORIAL ONBOARDING === */
 const TUTORIAL_STEPS=[
   {icon:"🌟",title:"Benvenuto in Korward Elite!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
-  {icon:"📋",title:"La Dashboard",text:"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
+  {icon:"📋",title:_no190("A")?"La Dashboard":"La Home",text:_no190("A")?"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Opzioni.":"Qui trovi statistiche, obiettivi e la tua settimana. La barra in basso ti porta su Stagione (classifica, calendario e coppe), Club, Carriera, Agente e Ufficio."},/* [7.331.0 collaudo PO «il wizard va aggiornato»] via i nomi inglesi di tab che non esistono più */
   {icon:"⚽",title:"Gioca le Partite",text:"Quando in settimana c'è una partita, il tasto GIOCA ti porta in campo: vivi i momenti decisivi in 3D e decidi tu il risultato. Ogni gol, assist e trofeo resta nel tuo diario di carriera."},/* [7.331.0 collaudo PO «le partite non si possono saltare, non è corretta la scritta»] */
   {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi."},
   {icon:"⚡",title:"Fatica & Infortuni",text:"Tieni d'occhio la barra FATICA: oltre 80 rischi un infortunio e salti le partite. Il mister inserisce sessioni di recupero quando serve — fidati del suo piano."},

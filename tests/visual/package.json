@@ -626,7 +626,9 @@
     "nomi-182": "node nomi-182.mjs",
     "nomi-190": "node nomi-190.mjs",
     "nomi-salvati-190": "node nomi-salvati-190.mjs",
-    "convocazione-190": "node convocazione-190.mjs"
+    "convocazione-190": "node convocazione-190.mjs",
+    "testi-190": "node testi-190.mjs",
+    "cronaca-nomi-190": "node cronaca-nomi-190.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
