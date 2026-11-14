@@ -1495,3 +1495,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:15 Roma — PO-401 diagonali negli highlight dell'eroe
 - PO: «Prima misura, poi nella 194». Primo giro della 194: misura della scelta a 4 direzioni e proposta per 8.
+
+## 14/11 ~08:25 Roma — PO-402 il mister vola nella premiazione (coppa/europea)
+- Ricaduta di un difetto già corretto in 7.476.0. PO: «Nella 194, col giro scene 3D». Il giro deve anche capire perché il guardiano di allora non l'ha visto.
