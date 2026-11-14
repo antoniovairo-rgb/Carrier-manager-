@@ -23,6 +23,7 @@ const K = process.env.CPM_K != null && process.env.CPM_K !== '' ? +process.env.C
 const PROVOCA = +(process.env.CPM_PROVOCA || 0); /* [giro 187] vedi il ciclo di partita */
 const SOLO = !!process.env.CPM_SOLO; /* [giro 187] CPM_SOLO=1: soli highlight forzati dal gancio __CPM_SOLO166 (solo per CERCARE candidati in fretta: il guardiano gioca la partita intera) */
 const PROD = !!process.env.CPM_PROD, ROSSO191 = !!process.env.CPM_ROSSO191; /* [giro 191] */
+const PROVA204 = !!process.env.CPM_PROVA204, ROSSO204 = !!process.env.CPM_ROSSO204; /* [giro 204] */
 const SPEED = process.env.CPM_SPEED || '2', ROSSO = !!process.env.CPM_ROSSO, CAP = +(process.env.CPM_CAP || 420000);
 const NOMI = process.env.CPM_NOMI ? process.env.CPM_NOMI.split(',') : Array.from({ length: N }, (_, i) => `${TAG}-${i}`);
 const SEMI = process.env.CPM_SEMI ? process.env.CPM_SEMI.split(',').map(Number) : null; /* seme dell'autoplay per partita (default: indice+1) */
@@ -32,9 +33,9 @@ async function partita(nome, idx) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + nome;
-  await page.addInitScript(([s, k, sp, r, so, pr, r191]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
-    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; if (so) window.__CPM_SOLO166 = 1; if (!pr) window.__CPM_NO_G154 = 1; if (r191) window.__CPM_NO_G191A = 1;/* [giro 191] CPM_PROD=1: come in produzione (il rigore dell'eroe fuori scena lo batte un compagno); CPM_ROSSO191=1: braccio rosso del giro 191 *//* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
-    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO, SOLO, PROD, ROSSO191]);
+  await page.addInitScript(([s, k, sp, r, so, pr, r191, p204, r204]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
+    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; if (so) window.__CPM_SOLO166 = 1; if (!pr) window.__CPM_NO_G154 = 1; if (r191) window.__CPM_NO_G191A = 1; if (p204) window.__CPM_PROVA_GIACALCIATO204 = 1; if (r204) window.__CPM_NO_G204 = 1;/* [giro 204] CPM_PROVA204=1: strumento di prova, il motore calcia prima della scena (ramo «gia' calciato»); CPM_ROSSO204=1: braccio rosso del giro 204 *//* [giro 191] CPM_PROD=1: come in produzione (il rigore dell'eroe fuori scena lo batte un compagno); CPM_ROSSO191=1: braccio rosso del giro 191 *//* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
+    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO, SOLO, PROD, ROSSO191, PROVA204, ROSSO204]);
   const t0 = Date.now();
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 90000 });
@@ -55,21 +56,22 @@ async function partita(nome, idx) {
       return out; };
     const ap = M.chiedi && M.chiedi.attendiPiazzato; if (ap) M.chiedi.attendiPiazzato = function () { const r = ap.apply(this, arguments); W.push({ attendi: 1, r, min: S.min, o27: S.fermo ? S.fermo._o27 | 0 : null }); return r; };
     return true; }; window.__arm139 = setInterval(() => { if (arm()) clearInterval(window.__arm139); }, 50); });
-  const fasi = []; let ph = '', last = '', provocato = false;
+  const fasi = []; let ph = '', last = '', provocato = false; const visDom = [], visti = new Set();
   while (Date.now() - t0 < CAP) {
-    const s = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), min: M && M._S ? M._S.min | 0 : null, no94: M && M._S ? M._S.noPiaz94 : null }; } catch (e) { return {}; } });
+    const s = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const V = document.querySelector('[data-cpm="visione204"]'); const btn = !!document.querySelector('[data-cpm="azioni"] button, .cpm-azioni button'); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), min: M && M._S ? M._S.min | 0 : null, no94: M && M._S ? M._S.noPiaz94 : null, vis: V ? { min: M && M._S ? M._S.min | 0 : null, txt: V.textContent.slice(0, 80), esito: (V.querySelector('[data-cpm="visione204-esito"]') || {}).textContent || null, btn } : null }; } catch (e) { return {}; } });
     /* [giro 187] CPM_PROVOCA=<minuto>: cio' che il gioco non produce si provoca dalla sonda (PROCESSO.md). A quel minuto del motore, a
        gioco fluido, si chiede al motore un rigore per la squadra dell'eroe con l'eroe battitore (chiedi.piazzato, come carriera3-94 D2):
        da li' in poi offerta, attesa, scena e battuta seguono il gioco. Una volta sola; testimone in __CPM_PEN94 (t:'provocato'). */
     if (PROVOCA && !provocato && s.min != null && s.min >= PROVOCA && s.ph === 'playing') provocato = await page.evaluate((m) => { try { const M = window.__CPM_MOTORE_OBJ(); M.chiedi.piazzato({ lato: 'home', kind: 'pen', x: 89, y: 50, batt: 21 }); (window.__CPM_PEN94 = window.__CPM_PEN94 || []).push({ min: M._S.min | 0, t: 'provocato', fermo: M._S.fermo ? M._S.fermo.kind + ':' + (M._S.fermo.batt) : null }); return true; } catch (e) { return false; } }, PROVOCA);
+    if (s.vis) { const k = s.vis.min + '|' + s.vis.txt; if (!visti.has(k)) { visti.add(k); visDom.push({ ...s.vis, ph: s.ph }); } }
     ph = s.ph || ''; if (ph !== last) { fasi.push((s.min == null ? '?' : s.min) + ':' + ph + (s.no94 != null ? '|g' + s.no94 : '')); last = ph; }
     if (ph === 'ended' || ph === 'ceremony') break; await sleep(400);
   }
-  const R = await page.evaluate(() => ({ spia: window.__CPM_SPIA139 || null, pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
+  const R = await page.evaluate(() => ({ vis204: window.__CPM_VIS204 || [], vis3d: (window.__CPM_VIS204_3D || []).slice(-80), spia: window.__CPM_SPIA139 || null, pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
     ev: (typeof window.__CPM_EV === 'function' ? window.__CPM_EV() : []).filter(e => e && /goal|scena|recita|fine|rigore|pen/i.test(JSON.stringify(e))).slice(0, 200).map(e => JSON.stringify(e).slice(0, 160)),
     conta: (() => { try { const S = window.__CPM_MOTORE_OBJ()._S; return { piaz94: S.conta.piaz94 | 0, piazNo94: S.conta.piazNo94 | 0, rigNo190: S.conta.rigNo190 | 0, g139: S.conta.g139 | 0 }; } catch (e) { return null; } })() })).catch(e => ({ err: String(e.message) }));
   await ctx.close();
-  return { nome, fine: ph, s: Math.round((Date.now() - t0) / 1000), errs: errs.length, fasi, ...R };
+  return { nome, fine: ph, s: Math.round((Date.now() - t0) / 1000), errs: errs.length, fasi, visDom, ...R };
 }
 
 /* battute di rigore dell'eroe: dalla registrazione __CPM_PEN94 */

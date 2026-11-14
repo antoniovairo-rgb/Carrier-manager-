@@ -1889,7 +1889,14 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         const clip=new THREE.AnimationClip('braccia23',clip0.duration,clip0.tracks.filter(t=>_BR.test(t.name)));
         const idle=new THREE.AnimationClip('gambe23',idle0.duration,idle0.tracks.filter(t=>!_BR.test(t.name)));
         let apice=clip0.duration*0.34;
-        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;
+        /* [giro 204 PO-451 — rosso __CPM_NO_G204] LE MAGLIE SUL TETTO HANNO IL COLORE DEL CLUB. Le maglie dei corpi prendevano la stessa luce
+           x4 della parata (LUCE178.parata) che il giro 192 ha corretto sulla livrea del pullman, e risultavano piu' chiare del colore del club
+           (misura prima/dopo: pullman-204). Stesso rimedio della livrea: il colore del kit (maglia, pantaloncini, calzettoni) si scrive in
+           lineare e scalato per la luce che riceve (_KIT204, tarato con la sonda). */
+        const _KIT204=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_KIT204)?+window.__CPM_KIT204:0.3;
+        const _kit204=(av)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G204)return;try{av.traverse(m=>{if(!m.isMesh||!m.material)return;const L=Array.isArray(m.material)?m.material:[m.material];
+          for(const c of L){if(!c||!/^Hyper(Shirt|Shorts|Socks)$/.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
+        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);
           const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
           av.position.set(sx,5.3,sz);av.rotation.y=eroe?0:(sx<0?-1:1)*Math.PI/2+(R(i*7)-0.5)*0.5;bus.add(av);
           const mx=new THREE.AnimationMixer(av),act=mx.clipAction(clip);act.play();act.paused=true;const ia=mx.clipAction(idle);ia.play();ia.paused=true;ia.time=0;/* in piedi, fermi: l'idle scorrendo alzava un ginocchio */
@@ -1905,7 +1912,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
           cped.visible=false;}
         cup.position.set(0,5.75,7.0);bus.add(cup);
-        try{if(window.__CPM_PARATA){window.__CPM_PARATA.glb=true;window.__CPM_PARATA.cg23=men.length;}}catch(_e){}
+        try{if(window.__CPM_PARATA){window.__CPM_PARATA.glb=true;window.__CPM_PARATA.cg23=men.length;if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PARATA.men23=men;}}catch(_e){}/* [giro 204] men23: i corpi del tetto, solo collaudo (la sonda pullman-204 misura il colore delle maglie) */
       }).catch(()=>{placeMen(mkFallback);});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{

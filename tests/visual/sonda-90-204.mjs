@@ -52,7 +52,7 @@ export async function misura90(browser, port, { rosso = false, foto = null, view
   return { errs: errs.length, giudicati: giud.length, minutoDisegnato: giud.filter(c => c.sb != null && c.sb >= 0).length, senzaMinuto: giud.filter(c => c.sb === -1).length,
     pixelGiudicati: px.length, pixelGialliMax: px.length ? Math.max(...px.map(c => c.giallo)) : null };
 }
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === `file://${process.argv[1]}` || process.argv[1].endsWith("/sonda-90-204.mjs")) {
   const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
   const r = await misura90(browser, port, { rosso: !!process.env.CPM_ROSSO, foto: process.env.CPM_FOTO || null });
   console.log(JSON.stringify(r)); await browser.close(); srv.close();
