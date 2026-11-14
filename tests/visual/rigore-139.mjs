@@ -8,25 +8,34 @@
    della squadra dell'eroe osservata nel campione dista 27 minuti.
    Due bracci, sulle stesse partite di carriera vere (salvataggio 190, nome+seme fissi ⇒ partita fissa, rigore CONCESSO DAL MOTORE da un
    fallo in area, __CPM_RIG190_K=1 per la sola frequenza):
-     verde (4 partite, compresa la testimone «k1d-11»): 0 doppi; GIUDICATO solo se ≥3 battute di rigore dell'eroe in tutto E la testimone
+     verde (4 partite, compresa la testimone «r187d-56», dal giro 187 provocata — vedi sotto): 0 doppi; GIUDICATO solo se ≥3 battute di rigore dell'eroe in tutto E la testimone
            ha davvero il rigore offerto dall'89' in poi — altrimenti «NON GIUDICATO» = rosso;
      rosso (testimone con __CPM_NO_G139): deve riprodurre il doppio, altrimenti «ROSSO NON VISTO» = rosso.
-   Uscita 0 solo con verde giudicato pulito e rosso visto. ~8-9 minuti. */
+   Uscita 0 solo con verde giudicato pulito e rosso visto. ~8-9 minuti.
+   [giro 187] Con la partita riproducibile (giri 175/187) le partite di prima non davano piu' il caso: «k1d-11» non aveva piu' il rigore
+   all'89' e le quattro partite davano 2 battute. Criterio e minimi INVARIATI; cambiano le partite. Ricerca nel braccio rosso su 173 partite
+   naturali (docs/sviluppo/RAPPORTO-giro187.md §3): un solo rigore offerto all'89' (r187d-25) e nessun doppio del meccanismo 139. Quindi,
+   come vuole PROCESSO.md («cio' che il gioco non produce si provoca dalla sonda»), la TESTIMONE e' provocata: «r187d-56» seme 57, al
+   minuto 89 del motore la sonda chiede un rigore per la squadra dell'eroe con l'eroe battitore (sonda-rigore-139 CPM_PROVOCA=89); offerta,
+   attesa, scena e battuta seguono il gioco. Le altre tre partite sono naturali e una (r187d-25) ha il rigore offerto all'89' da sola. */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-const N = 5, TESTE = 'k1d-11';
+const N = 5, TESTE = 'r187d-56', SEME_TESTE = '57', PROVOCA = '89';
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rig139-'));
 function corri(env, out) { return new Promise((res) => { const p = spawn(process.execPath, [new URL('./sonda-rigore-139.mjs', import.meta.url).pathname],
   { env: { ...process.env, CPM_K: '1', CPM_SPEED: '2', CPM_OUT: out, ...env }, stdio: ['ignore', 'pipe', 'pipe'] }); let log = '';
   p.stdout.on('data', d => { log += d; }); p.stderr.on('data', d => { log += d; }); p.on('close', c => res({ c, log })); }); }
 const fv = path.join(dir, 'verde.json'), fr = path.join(dir, 'rosso.json');
-const [V, R] = await Promise.all([
-  corri({ CPM_NOMI: `${TESTE},k1c-2,k1d-7,k1a-6`, CPM_SEMI: '12,3,8,7', CPM_PAR: '3' }, fv),
-  corri({ CPM_NOMI: TESTE, CPM_SEMI: '12', CPM_PAR: '1', CPM_ROSSO: '1' }, fr)]);
+const ft = path.join(dir, 'teste.json');
+const [V, T, R] = await Promise.all([
+  corri({ CPM_NOMI: 'r187d-25,r187d-40,r187a-22', CPM_SEMI: '26,41,23', CPM_PAR: '3' }, fv),
+  corri({ CPM_NOMI: TESTE, CPM_SEMI: SEME_TESTE, CPM_PAR: '1', CPM_PROVOCA: PROVOCA }, ft),
+  corri({ CPM_NOMI: TESTE, CPM_SEMI: SEME_TESTE, CPM_PAR: '1', CPM_ROSSO: '1', CPM_PROVOCA: PROVOCA }, fr)]);
 const leggi = (f, r) => { try { return JSON.parse(fs.readFileSync(f)); } catch (e) { console.log(r.log.slice(-1500)); return null; } };
-const dv = leggi(fv, V), dr = leggi(fr, R);
+const dv0 = leggi(fv, V), dt = leggi(ft, T), dr = leggi(fr, R);
+const dv = (dv0 && dt) ? { res: [...dt.res, ...dv0.res] } : null;
 function battute(P) { const out = []; let occ = -99;
   for (const e of P) { if (e.t === 'occasione_eroe') occ = e.min; if (e.t === 'battuta' && e.eroe) out.push({ min: e.min, via: 'motore' });
     if (e.t === 'piazzato_giocato' && e.min - occ <= 6) out.push({ min: e.min, via: 'scena' }); } return out; }

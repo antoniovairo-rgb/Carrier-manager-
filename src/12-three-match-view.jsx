@@ -405,7 +405,7 @@ function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchPa
 function ThreeMatchView(props){
   const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
-    stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
+    stadiumHomeCol,stadiumAwayCol,stadiumAwayCol2=null,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
     isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
@@ -2572,7 +2572,7 @@ function ThreeMatchView(props){
     //   striscioni uscivano coi colori sbagliati. sHome/sAway = colori sociali (homeTeamObj/awayTeamObj); il
     //   secondario di casa è homeClub.c2 (sociale), quello ospite un accento neutro (nessun prop awayClub).
     const _tHCol=sHome,_tACol=sAway;
-    const _hc2=homeClub?.c2||"#f0f0f0",_ac2="#f0f0f0";
+    const _hc2=homeClub?.c2||"#f0f0f0",_ac2=(!(typeof window!=='undefined'&&window.__CPM_NO_G171)&&stadiumAwayCol2)||"#f0f0f0";/* [giro 171 PO-368] bandiere, sciarpe e teli ospiti col SECONDO colore sociale del club ospite (era un bianco fisso). Rosso __CPM_NO_G171 */
     const _tifoSeed=(_adSeed44>>>0)||1;/* seed per-match (deterministico) per disegni bandiere/nomi gruppi */
     const _ultrasToken=(nm)=>{const t=String(nm||"").replace(/\b(FC|AC|AS|US|SS|SC|CF|CD|SD|RC|AT|KV|BV|SV|VF[BL]|Real|Athletic|Atletico|Sporting|Racing|Club|Deportivo|United|City|Town|County|Calcio|U18)\b/gi," ").trim().split(/\s+/).filter(Boolean).sort((a,b)=>b.length-a.length)[0]||"";return t.toUpperCase();};
     /* [7.174.0 collaudo PO «perché le bandiere hanno la F?»] l iniziale era charAt(0) del nome GREZZO («FC Parmense» → F
@@ -3020,7 +3020,8 @@ function ThreeMatchView(props){
         cancelli:{home:!!_tifoHome,away:!!_tifoAway},tier:_ctier,
         bandiere:{home:_c(flagGroups,true),away:_c(flagGroups,false)},
         sciarpe:{home:_c(scarfMs,true),away:_c(scarfMs,false)},
-        teli:{home:_c(teloMs,true),away:_c(teloMs,false)}};
+        teli:{home:_c(teloMs,true),away:_c(teloMs,false)},
+        colori171:{stadio:{home:sHome,away:sAway},scenografia:{home:[_tHCol,_hc2],away:[_tACol,_ac2]},kit:{home:homeCol||null,away:oppCol||null}}};/* [giro 171] i colori con cui folla e scenografia sono stati COSTRUITI */
     }catch(e){return{err:String(e&&e.message||e)};}};
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
@@ -3301,12 +3302,73 @@ function ThreeMatchView(props){
     const _rinc144=()=>!(typeof window!=='undefined'&&window.__CPM_NO_RINC144);
     const _tiro34Arma=(P,t)=>{try{sr.current._t34=null;if(P.hlDef||(typeof window!=='undefined'&&window.__CPM_NO_TIRO34))return null;
       const _v144=String(P.hlVariant||'');const _alt144=_rinc144()&&((t==='cross'&&_v144!=='cross_cutback'&&_v144!=='cross_rabona')||(t==='pass'&&/^(pass_lofted|long_pass|chip_pass)$/.test(_v144)));
-      if(t!=='shot'&&!_alt144)return null;
+      if(t!=='shot'&&!_alt144&&!(t==='freekick'&&_g177Pun()&&hero&&hero._glbDriven))return null;/* [giro 177, solo con __CPM_SI_PUN177] punizione col tiro in corsa */
       if(/rovesciat|sforbiciat/i.test(String(P.hlActLbl||''))||(!_rinc144()&&(P.hlVariant==='shot_chip'||P.hlVariant==='shot_volley')))return null;
       const av=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(!av||!av._gStrike34||!av._gStrike34.R)return null;const r=av._gStrike34.R.getClip()._root34;if(!r)return null;
       let sc=0.0105;try{const pb=av._pel34||(av._pel34=_findBone904(av.visualRoot||av.root,/^pelvis$/i));if(pb){const v=new THREE.Vector3();pb.getWorldPosition(v);const h=v.y-(hero.position.y||0);if(h>0.4&&h<3)sc=h/r.y0;}}catch(_e){}
       const vApp=Math.max(0.5,_tiro34D(r,0.375)/0.375*sc),vIn=Math.hypot(hero._hvx||0,hero._hvz||0),fit=clamp(vIn/vApp,1.0,1.5);
       sr.current._t34={k:P.hlSitKey,fit:fit,pre:_C34/fit,sc:sc,C:_C34,vIn:+vIn.toFixed(2),vApp:+vApp.toFixed(2),piede:(_PIEDE31==='L'?'L':'R')};return sr.current._t34;}catch(_e){return null;}};
+    /* [giro 177 PO-367 — PROVA PILOTA: NEL RIGORE IL PALLONE PARTE DAL PIEDE. Rosso __CPM_NO_G177]
+       MISURATO (banco gesti-170b, 12 esecuzioni su 4 semi, tempo virtuale 1/60 s): il pallone partiva 0,18 s prima del picco del piede
+       e il piede che calcia non scendeva sotto 1 m dal pallone. Tre cause, tutte di codice:
+       (a) il caricamento era una costante di famiglia (GESTURE_WIN.pre 0,24 s) mentre il contatto della clip `penalty` cade a
+           u 0,54 (CONTATTO_CLIP; 0,50 riletto qui a passo fine), cioe' 0,35-0,38 s di scena alla velocita' di riproduzione;
+       (b) la rincorsa era una curva analitica (3,2 → 0,62 u in 0,22 s) slegata dai passi della clip, e il corpo veniva fermato col
+           pallone accanto al piede SINISTRO (_SP_PLANT, tarato sulla vecchia clip mancina) mentre `penalty` calcia di destro;
+       (c) il saltello del corpo procedurale (hero.position.y = 0,2·sin) sollevava anche il corpo 3D: piede d'appoggio in aria.
+       Qui il PROFILO si ricava dalla clip stessa, una volta per corpo: su una copia dello scheletro si leggono le due punte in ~70
+       istanti; l'avanzamento della radice e' quello che tiene FERMO il piede a terra (Q), e la punta che calcia al contatto (K) dice
+       dove deve stare la radice perche' il piede arrivi sul pallone. Tutto nel riferimento locale della radice del mixer: nessuna
+       ipotesi su verso o scala del modello. Consumatori: armo dell'arco (il caricamento dura quanto manca al contatto), attesa
+       per-fotogramma (il pallone parte nel fotogramma in cui la clip passa il contatto), posizione dell'eroe sul piazzato.
+       Fuori ambito, dichiarato: serie dei rigori (ha la sua macchina), punizione e passaggio corto (vedi _g177Keys e il rapporto). */
+    const _g177On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G177);
+    const _G177_TOCCO=0.12;/* punta dell'osso dietro il centro del pallone al contatto, lungo il verso del calcio (raggio del pallone 0,20) */
+    /* famiglia dell'azione → chiave del gesto che l'eroe montera'. Di serie SOLO IL RIGORE.
+       PUNIZIONE e PASSAGGIO CORTO restano fuori, misurato (rapporto giro 177 §3): per le clip `kick` e `pass` (0,46 s, da fermo) CONTATTO_CLIP
+       indica u 0,90 / 0,96, che sul corpo di gioco e' il RIENTRO della gamba: la spinta in avanti ha il picco a u ~0,4 e finisce a
+       u ~0,6, dove oggi parte il pallone. Legare la partenza a quella u la sposta a gamba gia' rientrata: provato e tolto.
+       La punizione e' provabile con window.__CPM_SI_PUN177 (spenta di serie: e' una scelta del PO): monta il tiro in corsa
+       «Strike Forward Jog» (7.999.34) al posto di `kick` e gli applica la stessa leva del rigore. */
+    const _g177Pun=()=>_g177On()&&typeof window!=='undefined'&&!!window.__CPM_SI_PUN177;
+    const _g177Keys=(t,P)=>t==='penalty'?['penalty']:(t==='freekick'&&_g177Pun())?['kick']:null;
+    /* la clip che l'eroe sta suonando per quel gesto o, prima del montaggio, quella che la scelta per piede (7.999.31) gli dara' */
+    const _g177Act=(av,keys)=>{try{if(!av||!av.gestures||!keys)return null;if(keys[0]==='kick')return (av._gStrike34&&((_PIEDE31==='L'?av._gStrike34.L:av._gStrike34.R)||av._gStrike34.R))||null;/* punizione di prova: sempre e solo il tiro in corsa */
+      if(av._gAct&&keys.indexOf(av._gName)>=0)return av._gAct;const g=keys[0];if(!av.gestures[g])return null;
+      const nm=x=>((x&&x.getClip&&x.getClip())||{}).name;let v=(av._gVar&&av._gVar[g])||[av.gestures[g]];
+      if(_PIEDE31&&v.length>1&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31)){const pl=v.filter(x=>_PIEDE_CLIP31[nm(x)]===_PIEDE31);if(pl.length)v=pl;}
+      return v[0]||av.gestures[g];}catch(_e){return null;}};
+    const _g177V=(A,pr,t)=>{const x=clamp(t/pr.dur,0,1)*pr.N,i=Math.min(pr.N-1,Math.floor(x)),u=x-i,a=3*i;return [A[a]+(A[a+3]-A[a])*u,A[a+1]+(A[a+4]-A[a+1])*u,A[a+2]+(A[a+5]-A[a+2])*u];};
+    const _g177S=(pr,t)=>{const x=clamp(t/pr.dur,0,1)*pr.N,i=Math.min(pr.N-1,Math.floor(x));return pr.S[i]+(pr.S[i+1]-pr.S[i])*(x-i);};
+    const _g177Prof=(av,act)=>{try{if(!av||!act||!av.mx)return null;const clip=act.getClip();const kc=clip&&CONTATTO_CLIP[clip.name];if(!kc||!(clip.duration>0.2))return null;
+      const C=(av._g177c=av._g177c||{}),key=clip.name+'|'+(av._cgLod||'');if(C[key]!==undefined)return C[key];C[key]=null;
+      const root=av.mx.getRoot();if(!root||!THREE.SkeletonUtils)return null;root.updateMatrixWorld(true);
+      const c=THREE.SkeletonUtils.clone(root);c.updateMatrixWorld(true);
+      const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i);if(!bl||!br)return null;
+      const mx=new THREE.AnimationMixer(c),a2=mx.clipAction(clip);a2.setLoop(THREE.LoopOnce,1);a2.clampWhenFinished=true;a2.play();
+      const inv=new THREE.Matrix4().copy(c.matrixWorld).invert(),e=root.matrixWorld.elements,v=new THREE.Vector3();
+      const N=Math.max(24,Math.min(160,Math.round(clip.duration*60))),dur=clip.duration,PL=new Float32Array(3*(N+1)),PR=new Float32Array(3*(N+1)),HL=new Float32Array(N+1),HR=new Float32Array(N+1),Q=new Float32Array(3*(N+1));
+      let g=1e9;for(let i=0;i<=N;i++){mx.setTime(Math.min(dur*i/N,dur-1e-4));c.updateMatrixWorld(true);
+        v.setFromMatrixPosition(bl.matrixWorld).applyMatrix4(inv);PL[3*i]=v.x;PL[3*i+1]=v.y;PL[3*i+2]=v.z;HL[i]=e[1]*v.x+e[5]*v.y+e[9]*v.z;
+        v.setFromMatrixPosition(br.matrixWorld).applyMatrix4(inv);PR[3*i]=v.x;PR[3*i+1]=v.y;PR[3*i+2]=v.z;HR[i]=e[1]*v.x+e[5]*v.y+e[9]*v.z;g=Math.min(g,HL[i],HR[i]);}
+      try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}
+      /* avanzamento della radice che tiene fermo il piede a terra: il piede d'appoggio e' quello entro 0,07 u dalla quota minima
+         (con memoria: non si cambia piede finche' quello di prima e' ancora giu'); in volo si conserva l'ultimo passo */
+      let st=0,d0=0,d1=0,d2=0;for(let i=1;i<=N;i++){const l=HL[i]-g<0.07,r=HR[i]-g<0.07;let f=0;if(l&&r)f=(HL[i]<=HR[i])?1:2;else if(l)f=1;else if(r)f=2;if((st===1&&l)||(st===2&&r))f=st;
+        if(f){const P=f===1?PL:PR,a=3*i;d0=-(P[a]-P[a-3]);d1=-(P[a+1]-P[a-2]);d2=-(P[a+2]-P[a-1]);}st=f;Q[3*i]=Q[3*i-3]+d0;Q[3*i+1]=Q[3*i-2]+d1;Q[3*i+2]=Q[3*i-1]+d2;}
+      const K=kc.dx?PR:PL,pr={clip:clip,nome:clip.name,dur:dur,N:N,tc:kc.u*dur,dx:!!kc.dx,K:K,Q:Q,HK:kc.dx?HR:HL,HS:kc.dx?HL:HR,g:g};
+      /* il contatto e' il PICCO di velocita' vera (piede + radice) del piede che calcia, letto su questo profilo a passo 1/60 s. La tabella
+         CONTATTO_CLIP lo aveva misurato su 25 istanti (passo 0,04 della clip): si raffina solo dentro quella tolleranza (±0,08), altrimenti vale la tabella */
+      {let vm=0,im=0;for(let i=1;i<=N;i++){const a=3*i;const s=Math.hypot(K[a]-K[a-3]+Q[a]-Q[a-3],K[a+1]-K[a-2]+Q[a+1]-Q[a-2],K[a+2]-K[a-1]+Q[a+2]-Q[a-1]);if(s>vm){vm=s;im=i;}}pr.uPicco=+((im-0.5)/N).toFixed(3);pr.uTab=kc.u;if(/^mx-strike-foward-jog/.test(clip.name))pr.tc=Math.min(_C34,dur);/* il tiro in corsa ha gia' il suo contatto dichiarato (7.999.34): una fonte sola */else if(Math.abs(pr.uPicco-kc.u)<=0.08)pr.tc=pr.uPicco*dur;}
+      pr.kc=_g177V(K,pr,pr.tc);pr.qc=_g177V(Q,pr,pr.tc);
+      {const S=new Float32Array(N+1);for(let i=1;i<=N;i++){const a=3*i;S[i]=S[i-1]+Math.hypot(Q[a]-Q[a-3],Q[a+1]-Q[a-2],Q[a+2]-Q[a-1]);}pr.S=S;pr.sc=_g177S(pr,pr.tc);}/* strada fatta dalla radice (unita' locali), per sapere a che punto della rincorsa si e' */
+      {const h=0.03,a=_g177V(K,pr,pr.tc-h),b=_g177V(K,pr,pr.tc+h),qa=_g177V(Q,pr,pr.tc-h),qb=_g177V(Q,pr,pr.tc+h);pr.vk=[b[0]-a[0]+qb[0]-qa[0],b[1]-a[1]+qb[1]-qa[1],b[2]-a[2]+qb[2]-qa[2]];}
+      C[key]=pr;return pr;}catch(_e){return null;}};
+    /* caricamento del pallone: quanto manca al contatto della clip alla velocita' a cui verra' suonata (stessa regola del montaggio, 7.356) */
+    const _g177Pre=(P,t)=>{try{sr.current._g177s=null;const keys=_g177Keys(t,P);if(!keys||!_g177On()||!hero||!hero._glbDriven||P.hlDef||P.shootout)return 0;
+      const _s34=(sr.current._t34&&sr.current._t34.k===P.hlSitKey)?sr.current._t34:null;if(_s34&&keys[0]!=='kick')return 0;/* il tiro in corsa ha gia' il suo caricamento */if(!_s34&&keys[0]==='kick')return 0;
+      const av=(glbAvatars||[]).find(a=>a&&a.proc===hero);const pr=av&&_g177Prof(av,_g177Act(av,keys));if(!pr)return 0;
+      const win=gwOf(t,'clip'),ts=_s34?_s34.fit:((pr.dur>win+0.02)?Math.min(pr.dur/win,6):1);sr.current._g177s={k:P.hlSitKey,av:av,w:0,pre:pr.tc/ts,keys:keys,t:t};return pr.tc/ts;}catch(_e){return 0;}};
     /* [7.534.0 MP-1 — IL VOCABOLARIO DEL GESTO (prima ondata), rosso __CPM_NO547] La tabella GESTI e' il
        punto unico famiglia→variante→{clip, profilo-palla}: l'audit MP ha misurato che la clip usciva da una
        catena if (nove famiglie, sei clip, varianti mute) e che il PROFILO del volo non esisteva — un
@@ -4381,6 +4443,21 @@ function ThreeMatchView(props){
            quota all'impatto scendeva a 0,49-0,60. Il pallone passa accanto alla testa (0,26u, quota 1,47-1,65) PRIMA che l'arco del colpo sia
            armato; all'armo (caricamento -0,24) e' gia' a 1,35-1,47, sotto il pavimento 1,5 di questa regola, che quindi non scatta mai: gara
            fra armo e discesa. Pavimento a 1,3 (la quota minima che il guardiano accetta per un colpo di testa). */
+        /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_PIEDE174_LONTANO): senza P1B2 e rincorsa il pallone al lancio del
+           cross sta oggi a 2,1-2,9 dal piede (gi16/gi42, varia da prova a prova) e il guardiano piede-cross-p1b2 non vedeva cadere il suo rosso
+           in modo stabile (soglia 2,5). Il gancio rimette il difetto pieno misurato al 7.999.143 (pallone a 3,8-4,7 dal piede): al primo
+           fotogramma del caricamento del cross il pallone sta 4 u alle spalle dell'eroe, a terra. Una volta per scena. */
+        if(_preT74<0&&P.hlType==='cross'&&hero&&typeof window!=='undefined'&&window.__CPM_PIEDE174_LONTANO&&(_CPM_TEST||_SIT_TEST)&&sr.current._p174k!==P.hlSitKey){sr.current._p174k=P.hlSitKey;
+          const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*4.0;ball.position.z=hero.position.z-_fz174*4.0;ball.position.y=0.22;ballArcY0=ball.position.y;
+          try{(window.__CPM_PIEDE174=window.__CPM_PIEDE174||[]).push(String(P.hlSitKey));}catch(_e){}}
+        /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_TESTA174_LONTANO): oggi, senza il 146, l'eroe arriva sul
+           pallone e lo supera nel caricamento (testa a 2,4-2,6 u al lancio, misurato su gi6/gi7/gi55) e il guardiano testa-146 non vedeva
+           piu' cadere il suo rosso (soglia 2,5). Il gancio rimette il difetto che il 146 ripara, com'era descritto al 7.999.144: al primo
+           fotogramma del caricamento il pallone sta 3 u PRIMA della testa (alle spalle della direzione dell'eroe), alla quota della testa.
+           Una volta per scena. Fuori da cpmtest non esiste. */
+        if(_preT74<0&&P.hlType==='header'&&hero&&typeof window!=='undefined'&&window.__CPM_TESTA174_LONTANO&&(_CPM_TEST||_SIT_TEST)&&sr.current._t174k!==P.hlSitKey){sr.current._t174k=P.hlSitKey;
+          const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*3.0;ball.position.z=hero.position.z-_fz174*3.0;ball.position.y=(hero.position.y||0)+1.75;ballArcY0=ball.position.y;
+          try{(window.__CPM_TESTA174=window.__CPM_TESTA174||[]).push(String(P.hlSitKey));}catch(_e){}}
         if(_preT74<0&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA76)&&ball.position.y>=((typeof window!=='undefined'&&window.__CPM_NO_TESTA76B)?1.5:1.3)&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8){ballArcT=-aDt;}
         /* [7.999.144 decisione PO 06/10 «colpo di testa» in L1. Rosso __CPM_NO_TESTA146] MISURATO (testimone testa-pallone, scene forzate
            gi1/gi36/gi44 e una partita S12): quando parte l'arco del colpo di testa la testa dell'eroe e' a 3,1-3,3 u dal pallone in due scene
@@ -4402,6 +4479,8 @@ function ThreeMatchView(props){
           const S=sr.current;if(S._wk31!==P.hlSitKey){S._wk31=P.hlSitKey;S._ww31=0;}
           if(actType==="tackle"&&actT<0.31&&S._ww31<1.2){S._ww31+=aDt;ballArcT=-aDt;}}
         {const _V274=sr.current._volo274;if(_V274&&_V274.on&&_V274.k===P.hlSitKey&&ballArcT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_VOLO274)&&_V274.f<_V274.D-Math.abs(_V274.t0)&&_V274.tr<2.4){ballArcT=Math.min(ballArcT,_V274.t0-aDt);}}/* [giro 53 PO-274] il calcio aspetta il pallone in volo (sotto, ramo _cgKickContact) */
+        {const _s177=sr.current._g177s;if(_s177&&_s177.k===P.hlSitKey&&ballArcActive&&ballArcT<=0&&isResult&&actType===_s177.t&&_s177.w<1.5&&_g177On()){/* [giro 177] la partenza del pallone e' legata al fotogramma di contatto della clip: finche' la clip del gesto non arriva al contatto l'arco aspetta (tetto 1,5 s: mai un pallone inchiodato) */
+          const _a177=_s177.av&&_s177.av._gAct;if(_a177&&_s177.keys.indexOf(_s177.av._gName)>=0){const _pr177=_g177Prof(_s177.av,_a177);if(_pr177){_s177.w+=aDt;const _ts177=Math.max(0.2,+_a177.getEffectiveTimeScale()||1);ballArcT=-Math.max(0,(_pr177.tc-(+_a177.time||0))/_ts177);}}}}
         ballArcT+=aDt;
         /* [giro 121 PO-323, strumento sola lettura] IL CONTATTO VERO. __CPM_CONT53 annota il primo fotogramma con ballArcT>=0, ma le
            attese del colpo di testa (TESTA146, ARRIVO31) rimettono ballArcT=-aDt e dopo l'incremento vale 0 esatto: il testimone scattava
@@ -5151,7 +5230,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           MISURATO (gesto-eroe-review, CPM_INTENT=shot, 21 fotogrammi): distanza minima piede-palla 0,739 m — il piede non toccava mai la
           palla. Durante il caricamento (ballArcT<0) la palla sta davanti all'eroe e nell'ultimo tratto della clip (u 0,72-0,98, contatto
           misurato sull'asset a u=0,9) si aggancia all'osso del piede sinistro. Solo il pallone DISEGNATO: esito, arco e stato intatti. */
-       const _cgKickContact=!!(typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV&&ballArcActive&&ballArcT<0&&hero&&_cgAvatar&&(_cgAvatar._gName==="kick"||((_cgAvatar._gName==="pass"||_cgAvatar._gName==="cross"||_cgAvatar._gName==="longPass")&&!window.__CPM_NO_P1B2)||(!(typeof window!=="undefined"&&window.__CPM_NO_ROV69)&&_cgAvatar._gScissor&&_cgAvatar._gAct===_cgAvatar._gScissor))&&_cgAvatar._gAct);/* [7.999.68 taccuino PO #1 «Rovesciata» (000). Rosso __CPM_NO_ROV69] la sforbiciata si monta col nome «volley» e l'aggancio al piede non scattava mai: il pallone cadeva a 0,4 e l'eroe lo superava di 3u. La clip ha gia' la sua taratura (contatto u 0,29, alto). */
+       const _cgKickContact=!!(typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV&&ballArcActive&&ballArcT<0&&hero&&_cgAvatar&&((_cgAvatar._gName==="kick"&&!(actType==="freekick"&&sr.current._g177s&&sr.current._g177s.t==="freekick"&&sr.current._g177s.k===(propsRef.current&&propsRef.current.hlSitKey)&&_g177On()))/* [giro 177, solo punizione di prova] il pallone resta sul punto di battuta fino al calcio: misurato, l'aggancio del tiro (pensato per il gioco aperto) lo tira indietro verso l'eroe in rincorsa (fino a 1,9 u) e la battuta parte da un altro punto */||((_cgAvatar._gName==="pass"||_cgAvatar._gName==="cross"||_cgAvatar._gName==="longPass")&&!window.__CPM_NO_P1B2)||(!(typeof window!=="undefined"&&window.__CPM_NO_ROV69)&&_cgAvatar._gScissor&&_cgAvatar._gAct===_cgAvatar._gScissor))&&_cgAvatar._gAct);/* [7.999.68 taccuino PO #1 «Rovesciata» (000). Rosso __CPM_NO_ROV69] la sforbiciata si monta col nome «volley» e l'aggancio al piede non scattava mai: il pallone cadeva a 0,4 e l'eroe lo superava di 3u. La clip ha gia' la sua taratura (contatto u 0,29, alto). */
        /* [7.999.143 misura PO-068 P1-b, solo sotto test] distanza pallone-piede (sinistro e destro) per fotogramma durante i gesti che calciano */
        if(typeof window!=='undefined'&&window.__CPM_P1B2&&_cgAvatar&&_cgAvatar._gAct&&_cgAvatar._gName){try{const _c=_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip();const _d=(_c&&_c.duration)||1;const _v=new THREE.Vector3();const _bl=_cgAvatar._ballL||_cgAvatar._footL,_br=_cgAvatar._ballR||_cgAvatar._footR;if(_bl&&_br&&window.__CPM_P1B2.length<6000){_bl.getWorldPosition(_v);const dl=_v.distanceTo(ball.position);_br.getWorldPosition(_v);const dr=_v.distanceTo(ball.position);let dh=-1;try{const _hb=_cgAvatar._head145||(_cgAvatar._head145=_findBone904(_cgAvatar.visualRoot||_cgAvatar.root,/^head$/i));if(_hb){_hb.getWorldPosition(_v);dh=+_v.distanceTo(ball.position).toFixed(3);}}catch(_eh){}window.__CPM_P1B2.push([String(_cgAvatar._gName),(_c&&_c.name)||'?',+((+_cgAvatar._gAct.time||0)/_d).toFixed(3),+dl.toFixed(3),+dr.toFixed(3),ballArcActive?1:0,+(+ballArcT).toFixed(3),String((propsRef.current&&propsRef.current.hlSitKey)||''),dh]);}}catch(_e){}}
        if(_cgDribbleTouch){
@@ -5989,7 +6068,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              alla lista. Testimone __CPM_PRE513 (flag dedicato) sulla riga della concessione. */
           if(ballArcActive&&!P.hlDef){
             if(typeof window!=='undefined'&&window.__CPM_NO513){if(t==="shot"||t==="penalty"||t==="freekick"||t==="header")ballArcT=-0.24;}
-            else{let _pre513=gwOf(t,"pre")||0;{const _k34=_tiro34Arma(P,t);if(_k34)_pre513=_k34.pre;}/* [7.999.34] il pallone parte al contatto della clip caricata */if(_pre513>0)ballArcT=-_pre513;}
+            else{let _pre513=gwOf(t,"pre")||0;{const _k34=_tiro34Arma(P,t);if(_k34)_pre513=_k34.pre;}/* [7.999.34] il pallone parte al contatto della clip caricata */{const _p177=_g177Pre(P,t);if(_p177>0)_pre513=_p177;}/* [giro 177] rigore e punizione: il caricamento dura fino al contatto della clip che l'eroe suonera' */if(_pre513>0)ballArcT=-_pre513;}
             if(typeof window!=='undefined'&&window.__CPM_PRE513!==undefined){try{window.__CPM_PRE513.push({t:t,pre:+(-Math.min(0,ballArcT)).toFixed(2)});}catch(_e){}}
           }
           // 5.65.0 — TRAIETTORIA DIFENSIVA VARIA (post-guard universale): sostituisce il rinvio lungo automatico
@@ -8604,7 +8683,33 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               sposta il corpo di poco a lato dell'asse (perpendicolare (-_az,_ax)): il piede d'appoggio accanto
               alla palla, la gamba che calcia in linea. */
            hero.position.x=_bx-_ax*sr.current._spOff+(-_az)*_SP_PLANT;hero.position.z=_bz-_az*sr.current._spOff+(_ax)*_SP_PLANT;}
-         } else if(sr.current._spOff!=null||sr.current._spB0){sr.current._spOff=null;sr.current._spDone=false;sr.current._spB0=null;}}
+           /* [giro 177 PO-367, rosso __CPM_NO_G177] RIGORE, corpo 3D: la posizione dell'eroe si ricava dal profilo della clip. La radice
+              sta dove serve perche' la punta che calcia, al contatto, sia sul pallone (_G177_TOCCO dietro il centro), e prima e dopo il
+              contatto avanza quanto avanza il piede a terra della clip (niente piedi che pattinano, niente curva analitica). In attesa
+              l'eroe aspetta gia' nel punto di partenza della clip, cosi' al via non c'e' salto. Si legge la rotazione VERA della radice
+              a ogni fotogramma: se la mira (7.517) gira il corpo durante la rincorsa, la posizione la segue. Vale fino a fine gesto
+              (accompagnamento compreso), poi il movimento torna al driver normale. */
+           if(!P.hlDef&&!P.shootout&&hero._glbDriven&&_g177On()){try{const _k7=_g177Keys(P.hlType,P);const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _pr=_av&&_k7&&_g177Prof(_av,_g177Act(_av,_k7));const S7=sr.current;
+             if(_pr){const _on=_kick&&_k7.indexOf(_av._gName)>=0&&_av._gAct&&_av._gAct.getClip()===_pr.clip;
+               if(!(S7._spDone&&!_on)){const _e=_av.mx.getRoot().matrixWorld.elements;const _t=_on?Math.min(+_av._gAct.time||0,_pr.dur):0;const _q=_g177V(_pr.Q,_pr,_t),_kc=_pr.kc,_qc=_pr.qc,_vk=_pr.vk;
+                 let _fx=_e[0]*_vk[0]+_e[4]*_vk[1]+_e[8]*_vk[2],_fz=_e[2]*_vk[0]+_e[6]*_vk[1]+_e[10]*_vk[2];const _fl=Math.hypot(_fx,_fz)||1;_fx/=_fl;_fz/=_fl;
+                 const _dx=_kc[0]+_qc[0]-_q[0],_dy=_kc[1]+_qc[1]-_q[1],_dz=_kc[2]+_qc[2]-_q[2];
+                 const _tx=_bx-_fx*_G177_TOCCO-(_e[0]*_dx+_e[4]*_dy+_e[8]*_dz),_tz=_bz-_fz*_G177_TOCCO-(_e[2]*_dx+_e[6]*_dy+_e[10]*_dz);
+                 if(!S7._g177P)S7._g177P={x:hero.position.x,z:hero.position.z};
+                 if(!_kick){const _g=Math.min(aDt*4.5,1);S7._g177P.x+=(_tx-S7._g177P.x)*_g;S7._g177P.z+=(_tz-S7._g177P.z)*_g;S7._g177q=null;}
+                 else if(!_on){/* primo fotogramma della battuta, gesto non ancora montato: l'eroe resta dov'e' */}
+                 else{/* in battuta la posizione e' quella ESATTA del profilo (piede a terra fermo, punta sul pallone al contatto). Se al via il
+                         punto giusto e' altrove — la mira (7.517) gira il corpo verso l'angolo scelto: misurato 10° in un fotogramma, 0,4 u —
+                         lo scarto non si recupera con un salto ne' da fermi: si scioglie lungo il primo 60% della rincorsa, in proporzione
+                         alla strada fatta (passi appena piu' lunghi o piu' corti), e gli ultimi passi e il calcio sono esatti. */
+                   if(!S7._g177q){S7._g177q={ox:S7._g177P.x-_tx,oz:S7._g177P.z-_tz};if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{(window.__CPM_G177=window.__CPM_G177||{n:0,att:0,calcio:0}).scartoVia=+Math.hypot(S7._g177q.ox,S7._g177q.oz).toFixed(3);}catch(_e7){}}}
+                   const _sw7=_pr.sc*Math.hypot(_e[0],_e[1],_e[2]);/* rincorsa della clip in unita' di mondo: se non c'e' (calcio da fermo) lo scarto si scioglie nel tempo */
+                   const _pp=(_sw7>0.3)?clamp(_g177S(_pr,_t)/Math.max(_pr.sc*0.6,1e-4),0,1):clamp(_t/Math.max(_pr.tc*0.6,1e-3),0,1),_w=1-_pp*_pp*(3-2*_pp);
+                   S7._g177P.x=_tx+S7._g177q.ox*_w;S7._g177P.z=_tz+S7._g177q.oz*_w;}
+                 hero.position.x=S7._g177P.x;hero.position.z=S7._g177P.z;
+                 if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_G177=window.__CPM_G177||{n:0,att:0,calcio:0});W.n++;if(_on)W.calcio++;else W.att++;W.fam=P.hlType;W.clip=_pr.nome;W.tc=+_pr.tc.toFixed(3);W.dur=+_pr.dur.toFixed(3);W.uPicco=_pr.uPicco;W.t=+_t.toFixed(3);W.pre=S7._g177s?+S7._g177s.pre.toFixed(3):null;
+                   W.quotaPunta=+((_pr.HK[Math.round(_pr.tc/_pr.dur*_pr.N)]-_pr.g)).toFixed(3);W.quotaAppoggio=+((_pr.HS[Math.round(_pr.tc/_pr.dur*_pr.N)]-_pr.g)).toFixed(3);W.rincorsa=+Math.hypot(_e[0]*_qc[0]+_e[4]*_qc[1]+_e[8]*_qc[2],_e[2]*_qc[0]+_e[6]*_qc[1]+_e[10]*_qc[2]).toFixed(2);}}}}catch(_e177){}}
+         } else if(sr.current._spOff!=null||sr.current._spB0){sr.current._spOff=null;sr.current._spDone=false;sr.current._spB0=null;sr.current._g177P=null;sr.current._g177q=null;}}
         if(actType){
           /* [7.415.0 collaudo PO gi190 «alza la gamba a vuoto»] IL CONTRASTO PARTE QUANDO LA PALLA
              ARRIVA. Il gesto difensivo partiva a t+0 dell'esito, SEMPRE (misurato su tre repliche:
@@ -8881,12 +8986,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(actType==="penalty"){
             const _ku=u<0.35?u/0.35:1;
             if(P.hlVariant==="penalty_panenka"){// cucchiaio/Panenka: tocco delicatissimo, nessuna potenza, salto minimo
-              hero._lR.rotation.x=-1.6*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.5*sw;hero._aL.rotation.x=0.8*sw;hero._aR.rotation.x=-0.3*sw;hero.position.y=sw*0.1;if(hero._torso)hero._torso.rotation.y=sw*0.12;
+              hero._lR.rotation.x=-1.6*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.5*sw;hero._aL.rotation.x=0.8*sw;hero._aR.rotation.x=-0.3*sw;hero.position.y=(hero._glbDriven&&_g177On())?0:sw*0.1;/* [giro 177] col corpo 3D la quota la porta la clip: il saltello procedurale staccava il piede d'appoggio dal prato */if(hero._torso)hero._torso.rotation.y=sw*0.12;
             }else{// rigore normale: rincorsa caricata + kick potente
-              hero._lR.rotation.x=-3.2*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.8*sw;hero._aL.rotation.x=1.3*sw;hero.position.y=sw*0.2;if(hero._torso)hero._torso.rotation.y=sw*0.3;
+              hero._lR.rotation.x=-3.2*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.8*sw;hero._aL.rotation.x=1.3*sw;hero.position.y=(hero._glbDriven&&_g177On())?0:sw*0.2;/* [giro 177] idem */if(hero._torso)hero._torso.rotation.y=sw*0.3;
             }
           }
-          else if(actType==="freekick"){hero._lR.rotation.x=-2.5*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.4*sw;hero._aR.rotation.x=-0.7*sw;hero.position.y=sw*0.15;}
+          else if(actType==="freekick"){hero._lR.rotation.x=-2.5*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.4*sw;hero._aR.rotation.x=-0.7*sw;hero.position.y=(hero._glbDriven&&_g177Pun())?0:sw*0.15;/* [giro 177] idem, solo nella punizione di prova */}
           else if(actType==="header"){
             if(P.hlVariant==="header_diving"){// tuffo rasoterra: salto basso, braccia tese in avanti, torso inclinato
               hero.position.y=sw*0.85;if(hero._hd)hero._hd.rotation.x=sw*1.2;hero._aL.rotation.x=-2.8*sw;hero._aR.rotation.x=-2.8*sw;if(hero._torso)hero._torso.rotation.x=sw*0.45;
@@ -9495,6 +9600,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              cioe' dentro il solido. La spinta fuori dal rettangolo (7.997) valeva solo per i compagni della festa: chi «resta dove si trova»
              (avversari, compagni fuori dalla festa) poteva trovarsi dove il palco compare. Ora la spinta vale per ogni corpo tranne l'eroe.
              Rosso __CPM_NO_PALCO191B. */
+          /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_PALCO174_INTRUSO): oggi nessun corpo si trova dove il palco
+             compare, quindi il guardiano palco-corpi-191 non poteva vedere il suo rosso (verde e rosso entrambi «dentro 0»). Il gancio
+             mette a ogni fotogramma un compagno e un avversario (mai l'eroe) dentro l'impronta del corpo del palco, PRIMA della spinta:
+             col 191 la spinta li deve espellere, senza (__CPM_NO_PALCO191B) restano dentro. Fuori da cpmtest non esiste. */
+          if(podiumGrp.visible&&podiumGrp._rett24&&typeof window!=='undefined'&&window.__CPM_PALCO174_INTRUSO&&(_CPM_TEST||_SIT_TEST)){const _ci=Math.cos(podiumGrp.rotation.y),_si=Math.sin(podiumGrp.rotation.y);
+            for(const [_sq,_lx] of [['home',1.2],['away',-1.2]]){const _pp=(sr.current.players||[]).find(pp=>pp&&pp.mesh&&pp.mesh!==hero&&pp.team===_sq&&pp.mesh.visible!==false);
+              if(_pp){_pp.mesh.position.x=podiumGrp.position.x+_lx*_ci+0.4*_si;_pp.mesh.position.z=podiumGrp.position.z-_lx*_si+0.4*_ci;}}}
           if(podiumGrp.visible&&podiumGrp._rett24&&!(typeof window!=='undefined'&&window.__CPM_NO_PALCO191B)){const _c191=Math.cos(podiumGrp.rotation.y),_s191=Math.sin(podiumGrp.rotation.y),_px191=podiumGrp.position.x,_pz191=podiumGrp.position.z;
             for(const pp of (sr.current.players||[])){const m=pp&&pp.mesh;if(!m||m===hero)continue;const dx=m.position.x-_px191,dz=m.position.z-_pz191;let lx=dx*_c191-dz*_s191,lz=dx*_s191+dz*_c191;
               if(Math.abs(lx)<4.0&&Math.abs(lz)<2.2){if(4.0-Math.abs(lx)<2.2-Math.abs(lz))lx=Math.sign(lx||1)*4.0;else lz=Math.sign(lz||1)*2.2;
@@ -11849,7 +11961,13 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
                il rilascio della clip. Quindi la guardia non e' «dopo la fine niente di nuovo»: e' «un
                montaggio per istanza d'azione», per il solo EROE — i compagni hanno catene legittime a due
                gesti (ricevi→tira) che vivono su azioni diverse e non c'entrano col codice 000. */
-            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'');/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'')/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+               /* [giro 174 PO-371, doppio-gesto-148 rosso preesistente. Rosso __CPM_NO_G174_DOPPIO] MISURATO (gi18 «Sterzata e assist»,
+                  GLB acceso, __CPM_GST): nel tratto di finta dell'esito la catena VUOLE «change» ma la clip non si monta mai. Sulle scene
+                  con intento dribbling l'avvicinamento dei 23/09 (clip «dribble» in hl_move/hl_choose, actType vuoto) spendeva questa chiave,
+                  e la finta dell'azione scelta (hl_result, actType ancora vuoto) aveva la stessa chiave: scartata come secondo gesto della
+                  stessa azione. L'azione scelta comincia alla risoluzione: la chiave ora separa la scelta dall'esito. */
+               +((propsRef.current&&propsRef.current.matchPhase==='hl_result'&&!(typeof window!=='undefined'&&window.__CPM_NO_G174_DOPPIO))?'|esito':'');
              /* [7.582.0 — CONTARE I GESTI DELL'EROE PER SCENA, e farlo contare AL GIOCO.
                 Collaudo PO (appunti 7.578, SIT #45): «codice 000 — gesto scoordinato». La guardia del
                 7.396 concede UN montaggio per istanza d'azione, ma la chiave include `actType`: quando

@@ -6,6 +6,8 @@ Giro 25b (15/10, decisione PO «Rimettile con la loro fonte»): le ultime cinque
 
 Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy shouting crowd» (n. 3022, licenza propria del sito d'origine, non CC0) è uscito dal repo, dal gioco e dai Crediti; la sua riga è tolta. Il testo della licenza letto l'11/11 resta come documentazione in `docs/sviluppo/giro161/`.
 
+Giro 184 (13/11, PO-374, decisione PO 12/11 «Toglierli dal repo»): gli originali CGTrader (`assets/source/cgtrader-soccer-player/originals/`: FBX, OBJ/MTL, GLB parziali; e `TEXTURES.zip`) sono tolti dal repo e dal sito il 13/11; restano nella storia git (nessun force push, decisione PO) e il PO li conserva nel suo acquisto CGTrader. Il gioco usa solo i GLB convertiti in `assets/` (verificato con grep e sulla rete del browser, rapporto `docs/sviluppo/RAPPORTO-giro184.md`). Guardiano `licenze-184`: nessun originale CGTrader/Mixamo/Rohr in `assets/`, `dist/`, `dist-web/`.
+
 | Risorsa | Autore | Licenza | Fonte |
 |---|---|---|---|
 | Giocatori 3D «Soccer Player - Rigged» (CGTrader) | Hisenberg | Royalty Free (standard) — dichiarata dal PO | ordine CGTrader #17876008 del 2026-09-20, foto docs/governo/foto/po238-ordine-cgtrader.jpg |
@@ -28,3 +30,20 @@ Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy sho
 | GLTFLoader e SkeletonUtils (esempi di three@0.128.0) | three.js authors | MIT, come Three.js — «Copyright © 2010-2021 three.js authors» | src/00-head.html righe 64-65 (three@0.128.0/examples/js/...); LICENSE del pacchetto npm three 0.128.0 (devDependency di tests/visual/package.json), che contiene anche examples/js |
 | Effetti sonori sintetizzati con Web Audio | realizzati per Korward Elite | — | assets/audio/README.md (righe 6-7), src/09-audio-scout-anagrafiche.jsx |
 | Icone dell'app e grafiche dello store | realizzate per Korward Elite | — | tools/gen-pwa-icons.mjs, tools/gen-store-graphics.mjs |
+
+## Clip Anderson Rohr (giro 180b, 12/11/2026) — registrate qui, FUORI dalla tabella
+
+**Perché fuori dalla tabella:** il guardiano `crediti-254` pretende nella finestra Crediti del gioco ogni riga della tabella qui
+sopra (conta ogni riga che comincia con «|», per questo qui è un elenco); aggiungere la riga senza toccare `src/` lo renderebbe rosso, e il mandato del giro 180b vieta cambi a `src/` (le clip non
+sono ancora collegate ai gesti). La riga entra in tabella **quando** le clip entreranno nel gioco — domanda aperta per la
+sessione madre nel rapporto 180b §6. **Decisione madre (180c):** la riga entra in tabella e nella finestra Crediti solo quando le clip
+entreranno nel gioco; la riga di cortesia è preparata (non attivata) nel rapporto 180c §7.
+
+- **Risorsa:** 28 clip di animazione (giro 184 = 180d; 24 nel 180c, 9 nel 180b) convertite e riadattate allo scheletro CGTrader, file `assets/cgtrader-clip-rohr.glb` (nessuna mesh, solo animazioni; **fuori da `dist/`** finché il gioco non lo carica)
+- **Autore:** Anderson Rohr
+- **Fonte:** «Free mocap pack 05: Soccer» <https://andersonrohr.gumroad.com/l/mocap_pack5> e «Free mocap pack 04: Crowd Reactions» <https://andersonrohr.gumroad.com/l/mocap_pack4> (Gumroad)
+- **Licenza, parola per parola (sezione «Licensing», identica sulle due pagine, riletta alla fonte il 12/11/2026):** «This pack can be used for free in both personal and commercial projects. Attribution is not required, but feel free to tag me (my socials: https://linktr.ee/andersonrohr). I’d love to see what you create with it. You may not redistribute, resell, or repackage this pack as a standalone product.»
+- **Credito nel gioco:** non richiesto dalla licenza («Attribution is not required»)
+- **Scaricamento:** **scaricato dal PO il 12/11/2026** (carrello Gumroad a prezzo 0) e messo a disposizione della sessione tramite una sua cartella Drive condivisa via link; zip: pack 05 135.824.549 byte, sha256 `1a26159823911a0b509cee8b82e1f9916714dcf0dc71e90139ece7fc99792c44` · pack 04 161.335.621 byte, sha256 `56fcdcc77ceb7d4591309fbb088f32c35f2a39aebe087344fff1282c69721786`
+- **Originali:** gli zip e gli FBX **non sono nel repository né in `dist/`** (tenuti solo in una cartella temporanea fuori dal clone e cancellati a fine giro); rete di sicurezza in `.gitignore`
+- **Rischio repo pubblico:** il GLB convertito si scarica come file a sé dal repository pubblico; se questo sia «redistribute … as a standalone product»: Non posso confermarlo. **Rischio accettato dal PO il 12/11/2026**, come per CGTrader e Mixamo

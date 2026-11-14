@@ -55,11 +55,24 @@ for (const [fid, F] of Object.entries(FORMATI)) {
     esitoB = { letture, uguali, diff };
   }
   for (const E of ESITI) {
-    await page.evaluate((festa) => window.__CPM_FORCE_CEREMONY({ name: festa.titolo, kind: 'bigwin', light: true, festa }), E.festa);
-    let box = null; for (let i = 0; i < 30 && !box; i++) { await sleep(200); box = await page.$('[data-cpm="festa47"] > div:nth-child(2)'); }
-    if (!box) { righe.push(`  ${fid}/${E.id}: riquadro NON TROVATO`); nonGiudicatiA++; continue; }
-    await sleep(400);
-    const mis = await box.evaluate((el, clubs) => {
+    /* [giro 186] FOTO E MISURA DELLO STESSO ISTANTE. Misurato (sonda 186, PC): la cerimonia leggera forzata dura ~7 s e poi la
+       partita passa a «ended», dove al posto del riquadro c'e' la schermata finale con le statistiche. La vecchia sequenza
+       (trova il riquadro → 400 ms → rettangolo → foto) poteva scattare la foto DOPO quel passaggio: era il «pixel 1,15» con
+       «Passaggi»/«Precisione passaggi» nella foto (DECISIONI 13/11 00:40). Ora: si aspetta il riquadro di QUESTO esito (il suo
+       punteggio) in fase ceremony con il rettangolo fermo su due letture; lo si marca; misura e foto; poi si ricontrolla che lo
+       stesso nodo marcato sia ancora montato, in ceremony, con lo stesso rettangolo. Se no si rifà la cerimonia (3 tentativi);
+       mai coerente = non giudicato = rosso. */
+    const stato = (tag) => page.evaluate(({ tag, pun }) => { const el = document.querySelector('[data-cpm="festa47"] > div:nth-child(2)'); const f = window.__CPM_PHASE && window.__CPM_PHASE();
+      if (!el || f !== 'ceremony' || !(el.textContent || '').includes(pun)) return null; if (tag) el.setAttribute('data-g186', tag); const R = el.getBoundingClientRect();
+      return { tag: el.getAttribute('data-g186') || '', r: [R.left, R.top, R.width, R.height].map(v => Math.round(v * 10) / 10).join(',') }; }, { tag, pun: E.festa.punteggio });
+    let box = null, mis = null, shot = null, tentativi = 0, perche = '';
+    for (; tentativi < 3 && !mis; tentativi++) {
+      await page.evaluate((festa) => window.__CPM_FORCE_CEREMONY({ name: festa.titolo, kind: 'bigwin', light: true, festa }), E.festa);
+      let prima = null, fermo = false; const tag = `${fid}-${E.id}-${tentativi}`;
+      for (let i = 0; i < 30 && !fermo; i++) { await sleep(200); const a = await stato(null); if (a && prima && a.r === prima.r) fermo = true; prima = a; }
+      if (!fermo) { perche = 'riquadro mai fermo in ceremony'; continue; }
+      const a0 = await stato(tag); box = await page.$('[data-g186="' + tag + '"]'); if (!a0 || !box) { perche = 'riquadro sparito prima della misura'; continue; }
+      const m0 = await box.evaluate((el, clubs) => {
       const parse = (s) => { const m = String(s).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(x => parseFloat(x)); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; };
       const hex = (h) => { h = String(h || '').replace('#', ''); if (h.length === 3) h = h.split('').map(c => c + c).join(''); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; };
       const fondiDietro = [[255, 255, 255], [0, 0, 0]];
@@ -73,7 +86,13 @@ for (const [fid, F] of Object.entries(FORMATI)) {
       walk(el);
       return { bg, fondiDietro, testi, rect: { x: R.left, y: R.top, w: R.width, h: R.height } };
     }, ['ful', 'liv', 'new', 'wol', 'tot']);
-    const shot = await page.screenshot({ clip: { x: mis.rect.x, y: mis.rect.y, width: mis.rect.w, height: mis.rect.h } });
+      const s0 = await page.screenshot({ clip: { x: m0.rect.x, y: m0.rect.y, width: m0.rect.w, height: m0.rect.h } });
+      const a1 = await stato(null);
+      if (!a1 || a1.tag !== tag || a1.r !== a0.r) { perche = `layout cambiato fra misura e foto (${a0.r} → ${a1 ? a1.r + ' ' + a1.tag : 'riquadro assente o fuori da ceremony'})`; continue; }
+      mis = m0; shot = s0;
+    }
+    if (!mis) { righe.push(`  ${fid}/${E.id}: NON GIUDICATO dopo ${tentativi} tentativi — ${perche}`); nonGiudicatiA++; continue; }
+    if (tentativi > 1) righe.push(`  ${fid}/${E.id}: misura coerente al tentativo ${tentativi} (prima: ${perche})`);
     if (FOTO) { fs.mkdirSync(FOTO, { recursive: true }); fs.writeFileSync(`${FOTO}/${ROSSO ? 'prima' : 'dopo'}-${fid}-${E.id}.png`, shot); }
     const px = await page.evaluate(async ({ b64, testi }) => {
       const img = new Image(); img.src = 'data:image/png;base64,' + b64; await img.decode();

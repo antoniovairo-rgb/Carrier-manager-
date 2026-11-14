@@ -7,31 +7,9 @@
    "nome": "u18-inizio",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Primavera 2 · 1ª giornata PROSSIMA PARTITA Calen",
-     "h": 229,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 1 · SETTIMANA 1 DI 38 0 Partite 0 Gol 0",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CIO FC CIOCIARO PRIMAVERA Primavera 2 · St. 1 · ",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -39,31 +17,81 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 185,
+     "i": 1,
+     "titolo": "CORSA ALLA PRIMA SQUADRA Ti giudicano dalla 6ª p",
+     "h": 200,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · PRIMAVERA 2 · 1ª GIORNATA SETT. 1 · T",
+     "h": 398,
+     "raggio": "20px",
+     "fondo": "rgb(97, 66, 17)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 1 · SETTIMANA 1 DI 38 0 PARTITE 0 GOL 0",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "66 ATT Probe Home Italia · Attaccante · 17 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 6,
-     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 1 ",
-     "h": 171,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
+     "h": 192,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 7,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 1 ",
+     "h": 180,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 81,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 86,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -76,31 +104,9 @@
    "nome": "pro-inizio",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Liga Ibérica · 2ª giornata PROSSIMA PARTITA Cale",
-     "h": 212,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 4 · SETTIMANA 2 DI 38 1 Partite 0 Gol 0",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 2/38 ",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -108,41 +114,91 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "La tua storia › ⚔️ Il rivale in casa Il club ha ",
-     "h": 184,
+     "i": 1,
+     "titolo": "⏩ Vai al prossimo momento",
+     "h": 92,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · LIGA IBÉRICA · 2ª GIORNATA SETT. 2 · ",
+     "h": 399,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 2 DI 38 1 PARTITE 0 GOL 0",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 6,
-     "titolo": "Il progetto del club › 🏛️ Progetto solido Nessu",
-     "h": 168,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua storia › ⚔️ Il rivale in casa Il club ha ",
+     "h": 194,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 7,
-     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il progetto del club › 🏛️ Progetto solido Nessu",
+     "h": 196,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 8,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -150,43 +206,43 @@
      "fisarmonica": true
     },
     {
-     "i": 9,
+     "i": 10,
      "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 356,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 376,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
-     "i": 10,
+     "i": 11,
      "titolo": "🏷️ Mercato Estivo aperto 4 settimane rimanenti",
-     "h": 53,
-     "raggio": "12px",
-     "fondo": "rgb(239, 246, 255)",
+     "h": 56,
+     "raggio": "16px",
+     "fondo": "rgb(22, 35, 59)",
      "viol": [
-      "F1 fondo non neutro rgb(239, 246, 255)"
+      "F1 fondo non neutro rgb(22, 35, 59)"
      ],
      "figurine": 0,
      "fisarmonica": false
     },
     {
-     "i": 11,
+     "i": 12,
      "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 172,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 182,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
-     "i": 12,
+     "i": 13,
      "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
-     "h": 128,
+     "h": 141,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -194,31 +250,31 @@
      "fisarmonica": true
     },
     {
-     "i": 13,
-     "titolo": "Voci di mercato › VOCI DI MERCATO — W.2 🛡️ AT M",
-     "h": 212,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 14,
-     "titolo": "Classifica › CLASSIFICA · W.2/38 1 ATM ATM 3 1gj",
-     "h": 241,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.2 🛡️ AT M",
+     "h": 227,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 15,
+     "titolo": "Classifica › CLASSIFICA · W.2/38 1 ATM ATM 3 1gj",
+     "h": 249,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 117,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 126,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -231,31 +287,9 @@
    "nome": "pro-meta",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Coppa Nazionale · Finale PROSSIMA PARTITA Calend",
-     "h": 196,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 4 · SETTIMANA 19 DI 38 18 Partite 9 Gol",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 19/38",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -263,51 +297,101 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "MERCATO INVERNALE APERTO — FINO ALLA SETTIMANA 2",
-     "h": 148,
+     "i": 1,
+     "titolo": "⏩ Vai al prossimo momento",
+     "h": 92,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · COPPA NAZIONALE · FINALE SETT. 19 · C",
+     "h": 367,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 19 DI 38 18 PARTITE 9 GOL",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": false
     },
     {
      "i": 6,
-     "titolo": "La tua storia › 🌙 La vigilia della finale La ci",
-     "h": 184,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "MERCATO INVERNALE APERTO — FINO ALLA SETTIMANA 2",
+     "h": 155,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
     },
     {
      "i": 7,
-     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
-     "h": 168,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua storia › 🌙 La vigilia della finale La ci",
+     "h": 194,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 8,
-     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
+     "h": 176,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 9,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -315,83 +399,83 @@
      "fisarmonica": true
     },
     {
-     "i": 10,
-     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
-     "h": 219,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 11,
-     "titolo": "Il mondo fuori › 👀 C'era il CT, in tribuna Lo s",
-     "h": 197,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 252,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 12,
-     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
-     "h": 244,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il mondo fuori › 👀 C'era il CT, in tribuna Lo s",
+     "h": 228,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 13,
-     "titolo": "La tua settimana › 🏆 La settimana della FINALE ",
-     "h": 422,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
+     "h": 279,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 14,
-     "titolo": "Duello capocannoniere › #17 Luca Moreau GIR 10 #",
-     "h": 133,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua settimana › 🏆 La settimana della FINALE ",
+     "h": 465,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 15,
-     "titolo": "📢 Sei in lista cessioni 5 settimane rimanenti R",
-     "h": 76,
-     "raggio": "12px",
-     "fondo": "rgb(254, 243, 199)",
-     "viol": [
-      "F1 fondo non neutro rgb(254, 243, 199)"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 16,
-     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 172,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Duello capocannoniere › #17 Luca Moreau GIR 10 #",
+     "h": 140,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
+     "i": 16,
+     "titolo": "📢 Sei in lista cessioni 5 settimane rimanenti R",
+     "h": 76,
+     "raggio": "16px",
+     "fondo": "rgb(42, 31, 12)",
+     "viol": [
+      "F1 fondo non neutro rgb(42, 31, 12)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 17,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 182,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
      "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
-     "h": 128,
+     "h": 141,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -399,21 +483,21 @@
      "fisarmonica": true
     },
     {
-     "i": 18,
+     "i": 19,
      "titolo": "Voci di mercato › VOCI DI MERCATO — W.19 📋 Sei ",
-     "h": 121,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 130,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
-     "i": 19,
+     "i": 20,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 81,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 86,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -426,31 +510,9 @@
    "nome": "pro-fine",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Liga Ibérica · 32ª giornata PROSSIMA PARTITA Cal",
-     "h": 212,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 4 · SETTIMANA 36 DI 38 33 Partite 17 Go",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 36/38",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -458,21 +520,61 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "La tua storia › 🔥 La volata scudetto Primo post",
-     "h": 184,
+     "i": 1,
+     "titolo": "⏩ Vai al prossimo momento",
+     "h": 92,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · LIGA IBÉRICA · 32ª GIORNATA SETT. 36 ",
+     "h": 399,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 36 DI 38 33 PARTITE 17 GO",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 6,
      "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
-     "h": 168,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 176,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -480,9 +582,9 @@
     {
      "i": 7,
      "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -490,9 +592,9 @@
     {
      "i": 8,
      "titolo": "❤️ Vita privata › Qualcuno in tribuna Sofia era ",
-     "h": 187,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 196,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -500,9 +602,9 @@
     {
      "i": 9,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -512,9 +614,9 @@
     {
      "i": 10,
      "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
-     "h": 219,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 252,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -522,9 +624,9 @@
     {
      "i": 11,
      "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
-     "h": 197,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 228,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -532,9 +634,9 @@
     {
      "i": 12,
      "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 441,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 468,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -542,9 +644,9 @@
     {
      "i": 13,
      "titolo": "Duello capocannoniere › #17 Luca Gomez MAD 19 #1",
-     "h": 133,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 140,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -552,9 +654,9 @@
     {
      "i": 14,
      "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 173,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 185,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -562,9 +664,9 @@
     {
      "i": 15,
      "titolo": "OBIETTIVI PERSONALI › ✅ La prima stagione da pro",
-     "h": 129,
+     "h": 143,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -573,10 +675,10 @@
     },
     {
      "i": 16,
-     "titolo": "Notizie della settimana › 📊 CF Madrid in vetta ",
-     "h": 164,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Notizie della settimana › 📊 CF Madrid al 2° pos",
+     "h": 171,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -584,19 +686,19 @@
     {
      "i": 17,
      "titolo": "Voci di mercato › VOCI DI MERCATO — W.36 🔥 I bo",
-     "h": 212,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 227,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 18,
-     "titolo": "Classifica › CLASSIFICA · W.36/38 1 CFM ★ CFM 73",
-     "h": 241,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Classifica › CLASSIFICA · W.36/38 1 CAT CAT 77 3",
+     "h": 249,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -604,9 +706,9 @@
     {
      "i": 19,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 271,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 318,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -619,31 +721,9 @@
    "nome": "pro-infortunato",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Liga Ibérica · 11ª giornata PROSSIMA PARTITA Cal",
-     "h": 212,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 4 · SETTIMANA 12 DI 38 18 Partite 9 Gol",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 12/38",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -651,41 +731,91 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
-     "h": 168,
+     "i": 1,
+     "titolo": "⏩ Vai al prossimo momento",
+     "h": 92,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · LIGA IBÉRICA · 11ª GIORNATA SETT. 12 ",
+     "h": 399,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 12 DI 38 18 PARTITE 9 GOL",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 6,
-     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
+     "h": 176,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 7,
-     "titolo": "❤️ Vita privata › Qualcuno in tribuna Sofia era ",
-     "h": 187,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 8,
+     "titolo": "❤️ Vita privata › Qualcuno in tribuna Sofia era ",
+     "h": 196,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -693,73 +823,73 @@
      "fisarmonica": true
     },
     {
-     "i": 9,
-     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
-     "h": 219,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 10,
-     "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
-     "h": 197,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 252,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 11,
-     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 441,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
+     "h": 228,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 12,
-     "titolo": "Duello capocannoniere › 🔥 SORPASSO #1 Diego Nie",
-     "h": 153,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
+     "h": 468,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 13,
-     "titolo": "🟠 Stiramento muscolare 🟠 Medio ⏳ 3 settimane r",
-     "h": 167,
-     "raggio": "12px",
-     "fondo": "rgb(255, 241, 242)",
-     "viol": [
-      "F1 fondo non neutro rgb(255, 241, 242)"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 14,
-     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 172,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Duello capocannoniere › 🔥 SORPASSO #1 Diego Nie",
+     "h": 160,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
+     "i": 14,
+     "titolo": "🟠 Stiramento muscolare 🟠 Medio ⏳ 3 settimane r",
+     "h": 173,
+     "raggio": "16px",
+     "fondo": "rgb(44, 21, 24)",
+     "viol": [
+      "F1 fondo non neutro rgb(44, 21, 24)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 15,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 182,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
      "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
-     "h": 128,
+     "h": 141,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -767,41 +897,41 @@
      "fisarmonica": true
     },
     {
-     "i": 16,
-     "titolo": "Notizie della settimana › 📉 Momento nero per FC",
-     "h": 164,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 17,
-     "titolo": "Voci di mercato › VOCI DI MERCATO — W.12 💼 FC I",
-     "h": 212,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Notizie della settimana › 📉 Momento nero per FC",
+     "h": 171,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 18,
-     "titolo": "Classifica › CLASSIFICA · W.12/38 1 ATM ATM 27 1",
-     "h": 241,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.12 💼 FC G",
+     "h": 227,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 19,
+     "titolo": "Classifica › CLASSIFICA · W.12/38 1 CAT CAT 25 1",
+     "h": 249,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 20,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 159,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 190,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -818,37 +948,15 @@
      "titolo": "⛔ Sei svincolato: senza contratto non giochi. Ri",
      "h": 58,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": false
     },
     {
-     "i": 3,
-     "titolo": "Liga Ibérica · 21ª giornata PROSSIMA PARTITA Cal",
-     "h": 212,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "STAGIONE 4 · SETTIMANA 23 DI 38 18 Partite 9 Gol",
-     "h": 118,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 5,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 1,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 23/38",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -856,31 +964,81 @@
      "fisarmonica": false
     },
     {
-     "i": 6,
-     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
-     "h": 168,
+     "i": 2,
+     "titolo": "⏩ Vai al prossimo momento prima trova una squadr",
+     "h": 112,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "PROSSIMA · LIGA IBÉRICA · 21ª GIORNATA SETT. 23 ",
+     "h": 399,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "STAGIONE 4 · SETTIMANA 23 DI 38 18 PARTITE 9 GOL",
+     "h": 133,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 6,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 7,
-     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
+     "h": 176,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 8,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -888,95 +1046,95 @@
      "fisarmonica": true
     },
     {
-     "i": 9,
-     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
-     "h": 219,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 10,
-     "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
-     "h": 197,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 252,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 11,
-     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
-     "h": 244,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
+     "h": 207,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 12,
-     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 441,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
+     "h": 279,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 13,
-     "titolo": "Duello capocannoniere › #17 Luca Gomez MAD 12 #1",
-     "h": 133,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "La tua settimana › 📅 Settimana di campionato Si",
+     "h": 468,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 14,
-     "titolo": "📋 Contratto scaduto — sei svincolato Rinnova co",
-     "h": 161,
-     "raggio": "12px",
-     "fondo": "rgb(254, 243, 199)",
-     "viol": [
-      "F1 fondo non neutro rgb(254, 243, 199)"
-     ],
+     "titolo": "Duello capocannoniere › #17 Luca Gomez MAD 12 #1",
+     "h": 140,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
      "figurine": 0,
-     "fisarmonica": false
+     "fisarmonica": true
     },
     {
      "i": 15,
-     "titolo": "🏷️ Mercato Invernale aperto 1 settimana rimanen",
-     "h": 53,
-     "raggio": "12px",
-     "fondo": "rgb(239, 246, 255)",
+     "titolo": "📋 Contratto scaduto — sei svincolato Rinnova co",
+     "h": 164,
+     "raggio": "16px",
+     "fondo": "rgb(42, 31, 12)",
      "viol": [
-      "F1 fondo non neutro rgb(239, 246, 255)"
+      "F1 fondo non neutro rgb(42, 31, 12)"
      ],
      "figurine": 0,
      "fisarmonica": false
     },
     {
      "i": 16,
+     "titolo": "🏷️ Mercato Invernale aperto 1 settimana rimanen",
+     "h": 56,
+     "raggio": "16px",
+     "fondo": "rgb(22, 35, 59)",
+     "viol": [
+      "F1 fondo non neutro rgb(22, 35, 59)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 17,
      "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 172,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 182,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
-     "i": 17,
+     "i": 18,
      "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
-     "h": 128,
+     "h": 141,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -984,41 +1142,41 @@
      "fisarmonica": true
     },
     {
-     "i": 18,
-     "titolo": "Notizie della settimana › ⚽ Miglior attacco dell",
-     "h": 164,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": true
-    },
-    {
      "i": 19,
-     "titolo": "Voci di mercato › VOCI DI MERCATO — W.23 🔥 I bo",
-     "h": 212,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Notizie della settimana › ⚽ Miglior attacco dell",
+     "h": 171,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 20,
-     "titolo": "Classifica › CLASSIFICA · W.23/38 1 CFM ★ CFM 51",
-     "h": 241,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.23 🔥 I bo",
+     "h": 227,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 21,
+     "titolo": "Classifica › CLASSIFICA · W.23/38 1 CAT CAT 51 2",
+     "h": 249,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 22,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 252,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 294,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1031,31 +1189,9 @@
    "nome": "pro-record",
    "riquadri": [
     {
-     "i": 2,
-     "titolo": "Liga Ibérica · 27ª giornata PROSSIMA PARTITA Cal",
-     "h": 244,
-     "raggio": "16px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [
-      "R1 card con raggio 16px invece di RAD.md"
-     ],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 3,
-     "titolo": "STAGIONE 4 · SETTIMANA 30 DI 38 26 Partite 34 Go",
-     "h": 190,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
-     "viol": [],
-     "figurine": 0,
-     "fisarmonica": false
-    },
-    {
-     "i": 4,
-     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
-     "h": 77,
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 30/38",
+     "h": 98,
      "raggio": "0px",
      "fondo": "rgba(0, 0, 0, 0)",
      "viol": [],
@@ -1063,21 +1199,61 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
-     "titolo": "La tua storia › 🔥 La volata scudetto Primo post",
-     "h": 184,
+     "i": 1,
+     "titolo": "⏩ Vai al prossimo momento",
+     "h": 92,
      "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
-     "fisarmonica": true
+     "fisarmonica": false
+    },
+    {
+     "i": 2,
+     "titolo": "PROSSIMA · LIGA IBÉRICA · 27ª GIORNATA SETT. 30 ",
+     "h": 446,
+     "raggio": "20px",
+     "fondo": "rgb(71, 73, 76)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 30 DI 38 26 PARTITE 34 GO",
+     "h": 208,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 79,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
     },
     {
      "i": 6,
      "titolo": "LO SPOGLIATOIO 🔥 L'asse con Sergio Blanco La sq",
-     "h": 171,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 178,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": false
@@ -1085,9 +1261,9 @@
     {
      "i": 7,
      "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
-     "h": 168,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 176,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1095,9 +1271,9 @@
     {
      "i": 8,
      "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
-     "h": 189,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 199,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1105,9 +1281,9 @@
     {
      "i": 9,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
-     "h": 206,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 256,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "P1 riquadro del procuratore senza la sua figurina"
      ],
@@ -1117,9 +1293,9 @@
     {
      "i": 10,
      "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
-     "h": 219,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 252,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1127,9 +1303,9 @@
     {
      "i": 11,
      "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
-     "h": 197,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 228,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1137,9 +1313,9 @@
     {
      "i": 12,
      "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
-     "h": 244,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 279,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1147,9 +1323,9 @@
     {
      "i": 13,
      "titolo": "La tua settimana › 📅 Settimana di campionato Si",
-     "h": 513,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 546,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1157,9 +1333,9 @@
     {
      "i": 14,
      "titolo": "Duello capocannoniere › #1 ★ Probe Home CFM 34 #",
-     "h": 133,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 140,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1167,9 +1343,9 @@
     {
      "i": 15,
      "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
-     "h": 173,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 185,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1177,9 +1353,9 @@
     {
      "i": 16,
      "titolo": "OBIETTIVI PERSONALI › ✅ La prima stagione da pro",
-     "h": 130,
+     "h": 145,
      "raggio": "6px",
-     "fondo": "rgb(255, 255, 255)",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [
       "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
      ],
@@ -1189,9 +1365,9 @@
     {
      "i": 17,
      "titolo": "Notizie della settimana › 📉 Momento nero per FC",
-     "h": 164,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 171,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1199,19 +1375,19 @@
     {
      "i": 18,
      "titolo": "Voci di mercato › VOCI DI MERCATO — W.30 💼 FC I",
-     "h": 212,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 227,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
     },
     {
      "i": 19,
-     "titolo": "Classifica › CLASSIFICA · W.30/38 1 CFM ★ CFM 63",
-     "h": 241,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "titolo": "Classifica › CLASSIFICA · W.30/38 1 CAT CAT 66 2",
+     "h": 249,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1219,9 +1395,9 @@
     {
      "i": 20,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 243,
-     "raggio": "12px",
-     "fondo": "rgb(255, 255, 255)",
+     "h": 286,
+     "raggio": "16px",
+     "fondo": "rgb(26, 30, 39)",
      "viol": [],
      "figurine": 0,
      "fisarmonica": true
@@ -1234,8 +1410,8 @@
  "errori": [],
  "esito": "ROSSO",
  "totali": {
-  "riquadri": 113,
-  "fuoriStandard": 24,
+  "riquadri": 132,
+  "fuoriStandard": 17,
   "scenari": 7,
   "sforamentoPagina": []
  }

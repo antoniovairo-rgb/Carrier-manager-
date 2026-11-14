@@ -12,13 +12,15 @@ export function save166(nome) {
 }
 
 /* Apre la carriera sul salvataggio sintetico e porta alla prima settimana con una giornata di lega. Ritorna {page, ctx, b, srv, W, errs}. */
-export async function apriCarriera166({ vp = { width: 412, height: 915 }, init = {}, nome, patch = null, mobile = false } = {}) {
+/* [giro 175] vel = velocita' della partita ('1' · '1.5' · '2') · glb = corpi 3D accesi · reseed = seme del flusso di prova di rng()/pick()
+   (in produzione e' Math.random: cambiarlo fra due giri prova che nessun sorteggio senza seme entra nella partita). */
+export async function apriCarriera166({ vp = { width: 412, height: 915 }, init = {}, nome, patch = null, mobile = false, vel = '1', glb = false, reseed = null } = {}) {
   const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
   const ctx = await b.newContext(mobile ? { viewport: vp, isMobile: true, hasTouch: true, deviceScaleFactor: 2 } : { viewport: vp, deviceScaleFactor: 1 });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(({ s, init }) => { window.__CPM_GLB = false; for (const k of Object.keys(init)) window[k] = init[k];
-    if (!sessionStorage.getItem('g166')) { sessionStorage.setItem('g166', '1'); localStorage.setItem('cpm-v3', JSON.stringify(s)); localStorage.setItem('cpm-match-speed', '1'); } }, { s: save166(nome), init });
+  await page.addInitScript(({ s, init, vel, glb, reseed }) => { window.__CPM_GLB = !!glb; if (reseed != null) window.__CPM_RESEED_PENDING = reseed; for (const k of Object.keys(init)) window[k] = init[k];
+    if (!sessionStorage.getItem('g166')) { sessionStorage.setItem('g166', '1'); localStorage.setItem('cpm-v3', JSON.stringify(s)); localStorage.setItem('cpm-match-speed', String(vel)); } }, { s: save166(nome), init, vel, glb, reseed });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
@@ -41,8 +43,12 @@ export async function apriPrompt166(page, tipo, stato) {
 
 /* Gioca la partita aperta dal prompt. modo: 'intera' = bottone «Gioca la partita» · 'solo' = bottone dei soli highlight.
    Ritorna tempi per fase (ms reali), libro mastro normalizzato, risultato, testo della schermata finale, voce di matchHistory. */
-export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto = null, fermaAlMinuto = 0 } = {}) {
+export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto = null, fermaAlMinuto = 0, pilota = null } = {}) {
   const out = { modo, finita: false, fasi: {}, ev: [], score: null, note: [], velo: false };
+  /* [giro 175] il libro mastro si azzera PRIMA di premere il bottone: azzerato dopo il montaggio, la prima voce della partita
+     (il turno del calcio d'inizio, minuto 0) cadeva prima o dopo l'azzeramento secondo l'orologio — era la «voce in piu' al minuto 0
+     in 2 giri su 6» del rapporto 166 §4.3: una differenza dello STRUMENTO, non del gioco. */
+  await page.evaluate(() => { if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); });
   const clic = await page.evaluate((modo) => { const B = [...document.querySelectorAll('[data-cpm="partita23"] button')];
     const b = modo === 'solo' ? document.querySelector('[data-cpm="solo-166"]') : B.find(x => /^Gioca la partita/.test((x.textContent || '').trim()));
     if (!b) return null; b.click(); return (b.textContent || '').trim(); }, modo);
@@ -58,8 +64,7 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   }
   out.tPre = Date.now() - t0;
   if (!montata) { out.note.push('la partita non si e\' montata'); return out; }
-  await page.evaluate(() => { if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); });
-  await page.evaluate((s) => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seme);
+  await page.evaluate(({ s, pilota }) => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300, ...(pilota ? { pilota } : {}) }), { s: seme, pilota });
   const tG = Date.now(); let ult = Date.now(), fase = null, minMax = 0, scene = 0, faseP = null; const fotoFatte = {};
   while (Date.now() - tG < tetto) {
     const s = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (e.length > 200 && window.__CPM_EV_RESET) { window.__CPM_EV_RESET(); } else e.length = 0;
@@ -90,8 +95,8 @@ export async function chiudi166(page, { tetto = 60000 } = {}) {
   while (Date.now() - t0 < tetto) {
     const s = await page.evaluate(() => { const t = document.body.innerText || ''; const iv = !!document.querySelector('[data-cpm="intervista231"]');
       const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {}; const live = typeof window.__CPM_PHASE === 'function' && !!document.querySelector('[data-cpm="fine-partita"],[data-cpm="ended"]');
-      return { iv, iv231: window.__CPM_IV231 | 0, n: (p.matchHistory || []).length, h: (p.matchHistory || []).slice(-1)[0] || null, live, bott: [...document.querySelectorAll('button')].map(x => (x.textContent || '').trim()).filter(Boolean).slice(-12) }; }).catch(() => null);
-    if (s) { if (s.iv) visti.intervista = true; visti.iv231 = s.iv231; if (s.n > 0) { visti.voce = s.h; break; } visti.ultimiBottoni = s.bott; }
+      return { iv, iv231: window.__CPM_IV231 | 0, iv183: window.__CPM_IV183 || null, n: (p.matchHistory || []).length, h: (p.matchHistory || []).slice(-1)[0] || null, live, bott: [...document.querySelectorAll('button')].map(x => (x.textContent || '').trim()).filter(Boolean).slice(-12) }; }).catch(() => null);
+    if (s) { if (s.iv) visti.intervista = true; visti.iv231 = s.iv231; visti.iv183 = s.iv183; if (s.n > 0) { visti.voce = s.h; break; } visti.ultimiBottoni = s.bott; }
     await page.evaluate(() => { const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null); const pri = B.filter(x => /Continua|Avanti|Torna|Prosegui|Vai|Chiudi|Fine|Rispondi|Salta/i.test((x.textContent || ''))); const b = pri[pri.length - 1]; if (b) b.click(); }).catch(() => {});
     await sleep(700);
   }

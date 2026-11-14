@@ -1,4 +1,5 @@
 """Visual-only fit gate for CC0 MakeHuman Bodyparts 05 on the CGTrader face."""
+# [13/11/2026] Gli originali CGTrader (CHARACTER.glb, BLENDER+RIG.blend) non sono più nel repository pubblico (decisione PO, licenza): per usare questo script mettere la copia locale dell acquisto nello stesso percorso, fuori da git.
 from pathlib import Path
 import bpy
 from mathutils import Vector

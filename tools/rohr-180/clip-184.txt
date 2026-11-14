@@ -1,0 +1,32 @@
+# [giro 184 — 180d] elenco DEFINITIVO di assets/cgtrader-clip-rohr.glb: una riga per clip, «<pack>/<FBX senza _ue5.fbx> <nome:opzioni>».
+# ik=0/1: correzione delle mani tenuta SOLO dove il massimo del cancello e' piu' basso (decisione madre 180c §6.1), misurato con due
+# passate intere CPM_IK=0 e CPM_IK=1 sullo stesso file (rapporto giro 184 §B.1). Cancello e soglie invariati (10° / 30°).
+# Uso: bash tools/rohr-180/rifai-184.sh <cartella con p05/ e p04/> <uscita.glb>   (zip del PO fuori dal repo, mai qui dentro)
+p05/08_Side_Foot_Kick rohr-side-foot-kick:ik=0
+p05/09_Power_Kick rohr-power-kick:a=2.6,ik=0
+p05/12_Goal_Celebration_01 rohr-goal-celebration-01:suolo,ik=0
+p05/13_Goal_Celebration_02 rohr-goal-celebration-02:ik=1
+p05/14_Goal_Celebration_03 rohr-goal-celebration-03:ik=0
+p05/18_Defending_01 rohr-defending-01:ik=0
+p05/15_Goalkeeper_Save_01 rohr-goalkeeper-save-01:ik=0
+p05/16_Goalkeeper_Save_02 rohr-goalkeeper-save-02:ik=0
+p05/17_Goalkeeper_Save_03 rohr-goalkeeper-save-03:ik=0
+p05/03_Dribble_03 rohr-dribble-03:ik=0
+p05/07_Throw_In rohr-throw-in:ik=0
+p05/20_Yellow_Card rohr-yellow-card:ik=0
+p05/21_Yellow_And_Red_Card rohr-yellow-red-card:ik=0
+p05/04_Juggling_01 rohr-juggling-01:ciclo=3-4,ik=0
+p05/05_Juggling_02 rohr-juggling-02:ciclo=3-4,ik=1
+p05/06_Juggling_03 rohr-juggling-03:ciclo=3-5,ik=0
+p04/03_Clapping_Hands_Up rohr-clapping-hands-up:ciclo=3-4,ik=1
+p04/05_Fist_Up_Cheering rohr-fist-up-cheering:ciclo=3-4,ik=0
+p04/17_Pointing_Up_Cheering rohr-pointing-up-cheering:ciclo=3-4,ik=0
+p04/01_Sitting_Clapping rohr-sitting-clapping:ciclo=3-4,ik=0
+p04/02_Standing_Clapping rohr-standing-clapping:ciclo=3-4,ik=0
+p04/04_Clapping_And_Agree rohr-clapping-and-agree:ciclo=3-4,ik=0
+p04/15_Clap_Twice_Hand_Up rohr-clap-twice-hand-up:ciclo=3-4,ik=0
+p04/06_Swaying_Arms rohr-swaying-arms:ciclo=3-4,mosso=10,ik=0
+p04/07_Hands_Up_Swaying rohr-hands-up-swaying:ciclo=3-4,ik=0
+p04/08_Hands_Up_Looking_Up rohr-hands-up-looking-up:ciclo=3-4,ik=1
+p04/12_Standing_Selfie rohr-standing-selfie:ciclo=3-4,ik=1
+p04/13_Sitting_Phone_Video rohr-sitting-phone-video:ciclo=3-4,ik=0

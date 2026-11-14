@@ -176,14 +176,14 @@ const CREDITI254=[
     /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). [giro 161b] il boato di terzi
        e' uscito dal repo (decisione PO 11/11): col rosso __CPM_NO_G149 l'audio torna sintetizzato e qui non resta nessuna voce. */
     ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[]:[
-    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto"+((typeof window!=='undefined'&&window.__CPM_NO_G172)?"":", grida dell'arena")/* [giro 172] */+". Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Beach Sports Theme (Loop)»",d:"Musica dei menu. Fonte: opengameart.org",aut:"Trex0n (Cal McEachern)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"},
     /* [giro 161] le tre sorgenti nuove: l'«ohh» dello stadio e i due brani delle cerimonie (voci assenti col rosso __CPM_NO_G161) */
     ...((typeof window!=='undefined'&&window.__CPM_NO_G161)?[]:[
-    {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:"«Ohh» del pubblico. Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:((typeof window!=='undefined'&&window.__CPM_NO_G172)?"«Ohh» del pubblico":"Brusio e «ohh» del pubblico")/* [giro 172] il letto della folla viene da questa registrazione */+". Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Triumphant»",d:"Musica delle premiazioni. Fonte: opengameart.org",aut:"Emma_MA",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}])]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
@@ -320,7 +320,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 <Figurina tipo="giocatore" chiave={s.name} larg={33}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
+                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:(_no182nomi()?<>{s.club} · S.{s.season} W.{s.week}/38</>:<span style={{display:"flex",minWidth:0}}>{/* [giro 182 PO-378] il nome del club nello slot passa dalla funzione unica (intero → dizionario → sigla), mai coi puntini; stagione e settimana restano intere */}<NomeSquadra182 as="span" cpm="slot-club-182" team={[...CLUBS,...U18_CLUBS,...U18_CLUBS_P2].find(c=>c.n===s.club)||{n:s.club}} style={{flex:"0 1 auto",minWidth:0}}/><span style={{flex:"0 0 auto"}}>{" · S."+s.season+" W."+s.week+"/38"}</span></span>)}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
                 </div>
                 <OvrRing value={s.ovr} size={40}/>
@@ -364,7 +364,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
-      {crediti238On()&&crediti254On()&&<div style={{marginTop:SP.sm}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}
+      {crediti238On()&&crediti254On()&&<div style={{marginTop:(typeof window!=='undefined'&&window.__CPM_NO_G174_SPAZIO)?SP.sm:0}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}{/* [giro 174 PO-371, spazio-296 rosso preesistente. Rosso __CPM_NO_G174_SPAZIO] MISURATO (telefono, menu e opzioni): fra «Crea il tuo calciatore» e «Crediti» 16,8 px — il margine sotto della carta (7) e quello sopra del pulsante (8) si sommavano. Ogni riquadro che lo precede (benvenuto, salvataggi, sovrascrittura, tasti) ha gia' il suo margine sotto: il pulsante non ne aggiunge un altro. */}
         <Btn data-cpm="crediti254-pulsante" onClick={()=>setCrediti238(true)} v="secondary" fw icon={<span data-cpm="crediti254-icona" aria-hidden="true">ℹ️</span>}>Crediti</Btn>
       </div>}
       {crediti238On()&&!crediti254On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
@@ -533,7 +533,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
                 return(
                 <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:RAD.sm,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
-                  <span style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
+                  <NomeSquadra182 as="span" team={c} style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text}}/>
                   <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
                 </button>
                 );
@@ -738,7 +738,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
         <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:_no115("24")?"#e8c98f":TINTE.oro}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><NomeSquadra182 as="div" team={opp} style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5}}/><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}
@@ -2790,6 +2790,9 @@ function migratePlayer(player){
     try{const _em=newP.euroMondiale;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAL35)&&_em&&_em.active&&!_em.done&&_em.phase&&_em.phase!=="qualificazioni"&&Array.isArray(newP.calendar)){
       const _cal=newP.calendar.filter(m=>!(m&&m.type==="national"&&!m.played&&(m.week||0)>=24));
       if(_cal.length!==newP.calendar.length){newP={...newP,calendar:_cal};changed=true;}}}catch(_e35){}
+  /* [giro 183 PO-375] memoria delle domande d'intervista della stagione {s,h}: campo additivo e idempotente (assente o malformato
+     -> vuoto; una memoria di una stagione passata resta e vale vuota). Nessun bump di SAVE_VERSION. */
+  if(!newP.ivMem183||typeof newP.ivMem183!=="object"||!Array.isArray(newP.ivMem183.h)){newP={...newP,ivMem183:{s:newP.season||1,h:[]}};changed=true;}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}

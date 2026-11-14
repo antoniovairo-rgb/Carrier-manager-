@@ -1,0 +1,239 @@
+{
+ "soglie": {
+  "dt": 2,
+  "d3": 20,
+  "dp": 15,
+  "cav": 20,
+  "scorre": 3,
+  "fermo": 15,
+  "saltoVia": 12,
+  "giroVia": 8,
+  "giro": 12,
+  "rossoDt": 6,
+  "rossoD": 60
+ },
+ "flags": {},
+ "verde": null,
+ "rosso": [
+  {
+   "gi": 13,
+   "k": 0,
+   "seme": 1,
+   "n": 319,
+   "scala": 1.05,
+   "partenza": 73,
+   "tScena": 4.0667,
+   "gesto": "kick",
+   "clip": "kick~m",
+   "pesoGesto": 1,
+   "piede": "dx",
+   "dtPiccoF": 19,
+   "dtPiccoMs": 317,
+   "dtAvantiF": -8,
+   "vAvantiMs": 3.4,
+   "dtVicinoF": -10,
+   "vPiedeMs": 6.9,
+   "vPallaMs": 20.1,
+   "dContattoCm": 81,
+   "dMinCm": 40.9,
+   "dMinAssolutoCm": 23.9,
+   "puntaQuotaCm": 76.5,
+   "pallaQuotaCm": 41.9,
+   "dPiantaCm": 65.8,
+   "appoggioQuotaCm": 27.3,
+   "appoggioScorreCmF": 8,
+   "appoggioScorreMaxCmF": 8,
+   "appoggioCavigliaSuCm": 26.3,
+   "palloneFermoCm": 39.1,
+   "giroMaxGradiF": 1.3,
+   "giroDopoGradiF": 5,
+   "saltoBacinoMaxCmF": 8.2,
+   "fotogrammi": 57,
+   "saltoViaCmF": 6.9,
+   "giroViaGradiF": 1.4,
+   "g177": null,
+   "errs": [],
+   "glb": true
+  },
+  {
+   "gi": 78,
+   "k": 0,
+   "seme": 1,
+   "n": 319,
+   "scala": 1.075,
+   "partenza": 73,
+   "tScena": 11.5667,
+   "gesto": "kick",
+   "clip": "kick~m",
+   "pesoGesto": 1,
+   "piede": "dx",
+   "dtPiccoF": 19,
+   "dtPiccoMs": 317,
+   "dtAvantiF": -8,
+   "vAvantiMs": 3.5,
+   "dtVicinoF": -11,
+   "vPiedeMs": 8.9,
+   "vPallaMs": 20.2,
+   "dContattoCm": 83,
+   "dMinCm": 41.9,
+   "dMinAssolutoCm": 24.2,
+   "puntaQuotaCm": 78.3,
+   "pallaQuotaCm": 39.7,
+   "dPiantaCm": 67.4,
+   "appoggioQuotaCm": 27.9,
+   "appoggioScorreCmF": 8.2,
+   "appoggioScorreMaxCmF": 8.2,
+   "appoggioCavigliaSuCm": 27.9,
+   "palloneFermoCm": 40.5,
+   "giroMaxGradiF": 2.3,
+   "giroDopoGradiF": 1.8,
+   "saltoBacinoMaxCmF": 8.4,
+   "fotogrammi": 57,
+   "saltoViaCmF": 7.1,
+   "giroViaGradiF": 2.2,
+   "g177": null,
+   "errs": [],
+   "glb": true
+  },
+  {
+   "gi": 13,
+   "k": 2,
+   "seme": 1,
+   "n": 319,
+   "scala": 1.056,
+   "partenza": 73,
+   "tScena": 19.0667,
+   "gesto": "kick",
+   "clip": "kick~m",
+   "pesoGesto": 1,
+   "piede": "dx",
+   "dtPiccoF": 19,
+   "dtPiccoMs": 317,
+   "dtAvantiF": -8,
+   "vAvantiMs": 3.7,
+   "dtVicinoF": 4,
+   "vPiedeMs": 9.8,
+   "vPallaMs": 16.7,
+   "dContattoCm": 82.9,
+   "dMinCm": 28.4,
+   "dMinAssolutoCm": 28.4,
+   "puntaQuotaCm": 76.8,
+   "pallaQuotaCm": 41,
+   "dPiantaCm": 68.1,
+   "appoggioQuotaCm": 27.3,
+   "appoggioScorreCmF": 8,
+   "appoggioScorreMaxCmF": 8.1,
+   "appoggioCavigliaSuCm": 21.9,
+   "palloneFermoCm": 39.3,
+   "giroMaxGradiF": 1.7,
+   "giroDopoGradiF": 1.4,
+   "saltoBacinoMaxCmF": 8.2,
+   "fotogrammi": 57,
+   "saltoViaCmF": 7,
+   "giroViaGradiF": 0.6,
+   "g177": null,
+   "errs": [],
+   "glb": true
+  }
+ ],
+ "riassunto": {
+  "verde": null,
+  "rosso": {
+   "esecuzioni": 3,
+   "valide": 3,
+   "clip": [
+    "kick~m"
+   ],
+   "dtPiccoF": {
+    "med": 19,
+    "min": 19,
+    "max": 19
+   },
+   "dtPiccoMs": {
+    "med": 317,
+    "min": 317,
+    "max": 317
+   },
+   "dtAvantiF": {
+    "med": -8,
+    "min": -8,
+    "max": -8
+   },
+   "vAvantiMs": {
+    "med": 3.5,
+    "min": 3.4,
+    "max": 3.7
+   },
+   "dtVicinoF": {
+    "med": -10,
+    "min": -11,
+    "max": 4
+   },
+   "dContattoCm": {
+    "med": 82.9,
+    "min": 81,
+    "max": 83
+   },
+   "dMinCm": {
+    "med": 40.9,
+    "min": 28.4,
+    "max": 41.9
+   },
+   "puntaQuotaCm": {
+    "med": 76.8,
+    "min": 76.5,
+    "max": 78.3
+   },
+   "dPiantaCm": {
+    "med": 67.4,
+    "min": 65.8,
+    "max": 68.1
+   },
+   "appoggioQuotaCm": {
+    "med": 27.3,
+    "min": 27.3,
+    "max": 27.9
+   },
+   "appoggioScorreCmF": {
+    "med": 8,
+    "min": 8,
+    "max": 8.2
+   },
+   "appoggioCavigliaSuCm": {
+    "med": 26.3,
+    "min": 21.9,
+    "max": 27.9
+   },
+   "palloneFermoCm": {
+    "med": 39.3,
+    "min": 39.1,
+    "max": 40.5
+   },
+   "giroMaxGradiF": {
+    "med": 1.7,
+    "min": 1.3,
+    "max": 2.3
+   },
+   "giroDopoGradiF": {
+    "med": 1.8,
+    "min": 1.4,
+    "max": 5
+   },
+   "saltoBacinoMaxCmF": {
+    "med": 8.2,
+    "min": 8.2,
+    "max": 8.4
+   },
+   "vPiedeMs": {
+    "med": 8.9,
+    "min": 6.9,
+    "max": 9.8
+   },
+   "vPallaMs": {
+    "med": 20.1,
+    "min": 16.7,
+    "max": 20.2
+   }
+  }
+ }
+}

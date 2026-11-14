@@ -14,92 +14,61 @@
 
    PROVA DEL ROSSO: CPM_ROSSO=1 accende __CPM_NO511 (motore vecchio: lerp 25% + banda morta, nessun
    attore) e il guardiano DEVE vedere il pallone rifermarsi sotto la soglia. */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+/* [giro 167 PO-362] LO STRUMENTO MISURAVA UN PALLONE CHE NESSUNO VEDE PIU'. MISURATO (sonda-cronaca-167, partita intera a motore acceso):
+   il pallone 3D di `__CPM_STATE().ball` in `playing` e' fermo per 57 s (0,0% di campioni in moto) mentre quello del motore si muove nel
+   62% dei campioni con striscia massima 2,3 s. Causa: dal 7.917 in gioco fluido il 3D e' SOSPESO e sopra c'e' il campo dall'alto
+   (Campo2D), che disegna il pallone del motore. I 10,8-14,5 s dei giri 151-162 erano il 3D congelato, non il gioco.
+   CRITERIO VECCHIO: striscia massima di fermo <= 2,0 s e % in moto >= 25 sul pallone 3D campionato a 120 ms per 4 minuti reali, grazia
+   dichiarata (fermo/out/piazzato 6 s, kickoff 10 s) da `__CPM_HOLD`; rosso `__CPM_NO511` (ritirato dal 7.532: non discriminava).
+   CRITERIO NUOVO: le STESSE soglie (2,0 s · 25%) e le STESSE grazie con gli stessi tetti, ma sul pallone che il giocatore VEDE
+   (testimone `__CPM_B2D167` nel Campo2D, un campione per FOTOGRAMMA disegnato, quindi non dipende dallo scheduler della sonda), con la
+   grazia letta dallo stato VERO del motore a ogni battito (fermo/rete 6 s, kickoff 10 s) e su DUE PARTITE INTERE fino al fischio invece
+   di 4 minuti. Perche' non e' piu' permissivo: soglie e tetti identici; la scena dichiarata dal motore NON e' graziata; il campione
+   copre 90' per due volte invece di ~140 s di gioco; la prova del rosso torna (il vecchio braccio era ritirato).
+   ROSSO (CPM_ROSSO=1): sabotaggio dal banco «pallone-visto-fermo» (lib/cronaca-motore.mjs) — la simulazione gira intatta, ma il pallone
+   che il motore consegna alla vista resta dove la squadra ha preso il possesso finche' il possesso non cambia lato. */
+import { startServer, launchBrowser } from './lib/harness.mjs';
+import { giocaPartita } from './lib/cronaca-motore.mjs';
 
 const ROSSO = !!process.env.CPM_ROSSO;
-const MIN = +(process.env.CPM_MINUTI || 4);
-const MOTO_MIN = +(process.env.CPM_MOTO_MIN || 25);      /* SOLO pavimento di sanita': la % e' cieca ai passi sotto-intero */
-const DIAG_RETE = !!process.env.CPM_DIAG_RETE;/* [7.580.0] diagnosi: scusa anche la finestra col pallone in rete, per vedere quanto fermo resta senza */
-const STILL_MAX = +(process.env.CPM_STILL_MAX || 2.0);   /* striscia massima di fermo, s (baseline 4,4) */
+const PARTITE = +(process.env.CPM_PARTITE || 2);
+const MOTO_MIN = +(process.env.CPM_MOTO_MIN || 25);      /* pavimento di sanita' (invariato) */
+const STILL_MAX = +(process.env.CPM_STILL_MAX || 2.0);   /* striscia massima di fermo, s (invariata) */
+const MIN_COPPIE = 300;                                  /* invariato */
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
-const page = await b.newPage({ viewport: { width: 412, height: 915 } });
-await installCdnRoutes(page);
-const BAND = process.env.CPM_BANDIERA || null;/* [7.579.0] una bandiera qualunque, per chiedere a questa sonda se un rimedio nuovo affama il movimento del pallone */
-await page.addInitScript(([r, b]) => { window.__CPM_GLB = false; if (b) window[b] = 1; if (r) { window.__CPM_NO511 = 1; window.__CPM_NO536 = 1; window.__CPM_NO537 = 1; window.__CPM_NO542 = 1; window.__CPM_NO544 = 1; } }, [ROSSO, BAND]);/* [7.532.0] il rosso isola il MOTORE 7.511: le recite (kickoff/piazzati/contropiedi/ponte) muovono la palla per conto loro e mascheravano il fermo storico (rosso instabile: 4,6s→1,0s fra giri identici) — spente nel braccio rosso, il fermo del motore vecchio torna visibile */
-await openMatch(page, port);
-await sleep(700);
-await page.evaluate(() => {
-  window.__R1S = [];
-  window.__CPM_AUTOPLAY(true, { seed: 424, policy: 'seeded', tickMs: 350 });
-  setInterval(() => { try {
-    const s = window.__CPM_STATE && window.__CPM_STATE();
-    const ph = window.__CPM_PHASE && window.__CPM_PHASE();
-    const ko = !!(window.__CPM_KO536 && window.__CPM_KO536());/* [7.532.0] finestra kickoff dichiarata */
-    const h = (window.__CPM_HOLD && window.__CPM_HOLD()) || null;/* [7.580.0] il gioco dichiara quando TRATTIENE il pallone */
-    const fermo = !!(h && (h.fermo || h.out || h.sp));
-    const rete = !!(h && h.kick);/* [7.580.0 SOLO DIAGNOSI] la finestra fra il gol e la ripresa dal centro: il pallone e' in rete e il gioco e' fermo. Non e' graziata per default — serve a capire se il fermo residuo E' questa finestra o qualcos'altro. */
-    if (s && s.ball) window.__R1S.push({ t: Date.now(), ph, lx: s.ball.x, ly: s.ball.y, ko, fermo, rete, hf: !!(h && h.fermo), ho: !!(h && h.out), hs: !!(h && h.sp) });
-  } catch (e) {} }, 120);
-});
-await sleep(MIN * 60000);
-const S = await page.evaluate(() => window.__R1S || []);
-const errs = await page.evaluate(() => window.__CPM_PAGEERR || null).catch(() => null);
+let coppie = 0, mossi = 0, maxStill = 0, graziaFTot = 0, graziaKTot = 0, peggiore = null, errs = [], minimi = [];
+for (let i = 0; i < PARTITE; i++) {
+  const r = await giocaPartita(b, port, { nome: 'Vivo' + i, seed: 424 + i * 41, sabotaggio: ROSSO ? 'pallone-visto-fermo' : null });
+  errs.push(...r.errs); minimi.push(`${r.minMax}' (${r.fine})`);
+  const B = r.b2d, T = r.ticks; let j = 0;
+  const statoA = (t) => { while (j + 1 < T.length && T[j + 1].t <= t) j++; return T[j] || {}; };
+  let still = 0, gF = 0, gK = 0, da = 0;
+  for (let k = 1; k < B.length; k++) {
+    const dt = B[k].t - B[k - 1].t; if (dt > 400) { still = 0; continue; }   /* fra due fotogrammi c'e' stato un highlight: il campo 2D non c'era */
+    coppie++; const s = statoA(B[k].t);
+    const hold = s.st === 'fermo' || s.st === 'rete', ko = s.st === 'kickoff';
+    if (hold && gF < 6000) { gF += dt; graziaFTot += dt; still = 0; continue; } if (!hold) gF = 0;
+    if (ko && gK < 10000) { gK += dt; graziaKTot += dt; still = 0; continue; } if (!ko) gK = 0;
+    const d = Math.hypot(B[k].x - B[k - 1].x, B[k].y - B[k - 1].y);
+    if (d > 0.05) { mossi++; still = 0; da = k; } else { still += dt; if (still > maxStill) { maxStill = still; peggiore = { p: r.nome, x: B[da].x, y: B[da].y, st: s.st, sc: s.sc }; } }
+  }
+}
 await b.close(); srv.close();
-
-const P = S.filter(s => s.ph === 'playing');
-let mossi = 0, coppie = 0, still = 0, maxStill = 0, grazia = 0, graziaTot = 0, graziaF = 0, graziaFTot = 0, graziaR = 0, strFrom = 0, peggiore = null;
-for (let i = 1; i < P.length; i++) {
-  const dt = P[i].t - P[i - 1].t; if (dt > 400) { still = 0; continue; }
-  coppie++;
-  const d = Math.hypot(P[i].lx - P[i - 1].lx, P[i].ly - P[i - 1].ly);
-  /* [7.532.0] LA GRAZIA DEL CALCIO D'INIZIO: al kickoff la palla e' ferma PER REGOLAMENTO (ripartenza
-     recitata 7.530/7.532) — la finestra dichiarata dal testimone __CPM_KO536 non conta come fermo,
-     con TETTO di 10s per finestra (misurato: dopo un GOL la finestra dura 8-9s perche' include la pausa d'enfasi di lettura 7.490 prima delle battute — esultanza compresa, e' calcio vero; una tenuta oltre 10s torna difetto). NEL ROSSO (NO511, motore
-     vecchio) la grazia e' SPENTA: la macchina kickoff resta viva li' e avrebbe nascosto il fermo che
-     il rosso deve dimostrare (misurato: rosso 1,9s con grazia attiva = prova rotta). */
-  /* [7.580.0] LA GRAZIA DELL'INTERRUZIONE, per la stessa ragione del calcio d'inizio. Dal 7.559 il gioco
-     ha rimesse, angoli, rinvii e punizioni: durante quelle il pallone STA FERMO, ed e' calcio, non un
-     difetto. Finora il guardiano non poteva distinguerle perche' non sapeva quando ce n'era una in corso;
-     ora il gioco lo DICHIARA (`__CPM_HOLD`). Con tetto di 6s: un fermo che dura piu' di cosi' non e' piu'
-     una rimessa, e' il pallone dimenticato — e torna a contare. Spenta nel rosso, come la grazia del
-     calcio d'inizio: li' la trattenuta nasconderebbe il fermo che il rosso deve dimostrare. */
-  if (!ROSSO && DIAG_RETE && P[i].rete) { graziaR += dt; still = 0; continue; }
-  if (!ROSSO && P[i].fermo && graziaF < 6000) { graziaF += dt; graziaFTot += dt; still = 0; continue; }
-  if (!P[i].fermo) graziaF = 0;
-  if (!ROSSO && P[i].ko && grazia < 10000) { grazia += dt; graziaTot += dt; still = 0; continue; }
-  if (!P[i].ko) grazia = 0;
-  if (d > 0.05) { mossi++; still = 0; strFrom = i; } else { still += dt; if (still > maxStill) { maxStill = still; peggiore = { da: strFrom, a: i }; } }
-}
 const pctMoto = 100 * mossi / Math.max(1, coppie);
-console.log(`campioni 'playing': ${P.length} · coppie valide ${coppie}`);
-/* [7.581.0] DOVE succede il fermo piu' lungo, non solo quanto dura. Un numero solo non dice se il pallone
-   e' dimenticato al centro, appoggiato a una bandierina o parcheggiato in rete: e sono tre difetti diversi. */
-if (peggiore) {
-  const a = P[peggiore.da], b = P[peggiore.a];
-  const stati = [];
-  for (let k = peggiore.da; k <= peggiore.a; k++) { const q = P[k];
-    const e = [q.ko && 'kickoff', q.hf && 'fermo', q.ho && 'out', q.hs && 'piazzato', q.rete && 'rete'].filter(Boolean).join('+');
-    if (!stati.includes(e || 'gioco aperto')) stati.push(e || 'gioco aperto'); }
-  console.log(`  il fermo piu' lungo: dal punto (${a.lx},${a.ly}) al punto (${b.lx},${b.ly}) · stato del gioco: ${stati.join(' , ')}`);
-}
-console.log(`palla in moto: ${pctMoto.toFixed(1)}% · striscia massima di fermo: ${(maxStill / 1000).toFixed(1)}s · graziato kickoff: ${(graziaTot / 1000).toFixed(1)}s · graziate interruzioni: ${(graziaFTot / 1000).toFixed(1)}s${DIAG_RETE ? ' · [DIAGNOSI] graziata anche la rete: ' + (graziaR / 1000).toFixed(1) + 's' : ''}`);
-
-if (coppie < 300) { console.log('❌ SONDA CIECA: coppie insufficienti — «vivo» su cosi\' poco non e\' un risultato'); process.exit(2); }
+console.log(`\n=== IL PALLONE VIVE IN GIOCO FLUIDO (campo 2D, motore acceso)${ROSSO ? ' · PROVA DEL ROSSO (pallone-visto-fermo)' : ''} ===`);
+console.log(`  partite ${PARTITE}: minuto finale ${minimi.join(' · ')} · coppie di fotogrammi ${coppie} (minimo ${MIN_COPPIE})`);
+if (peggiore) console.log(`  il fermo piu' lungo: ${peggiore.p} a (${peggiore.x},${peggiore.y}) · stato del motore ${peggiore.st}${peggiore.sc ? ' + scena' : ''}`);
+console.log(`  palla in moto: ${pctMoto.toFixed(1)}% · striscia massima di fermo: ${(maxStill / 1000).toFixed(2)}s · graziati kickoff ${(graziaKTot / 1000).toFixed(1)}s · interruzioni ${(graziaFTot / 1000).toFixed(1)}s`);
+for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
+if (coppie < MIN_COPPIE) { console.log('\n❌ SONDA CIECA: coppie insufficienti — «vivo» su cosi\' poco non e\' un risultato'); process.exit(2); }
+const ko = pctMoto < MOTO_MIN || maxStill / 1000 > STILL_MAX;
 if (ROSSO) {
-  /* [7.532.0] PROVA DEL ROSSO RITIRATA CON DICHIARAZIONE (precedente: finisher 7.527). Il rosso NO511
-     dimostrava il pallone che si riferma col motore pre-drift; oggi quella classe di fermo e' prevenuta
-     da PIU' strati indipendenti (gol costruito 7.528, densita' di fase 7.501/7.531, pesi di zona 7.525,
-     recite 7.530/7.532) e il fermo non riappare nemmeno spegnendo drift E recite insieme (misurato:
-     1,0s con NO511+NO536/537/542/544 — contro i 4,4s storici). Un rosso che non discrimina piu' e' un
-     rosso da ritirare, non da truccare: il guardiano resta come gate del VERDE (striscia <2s con grazia
-     dichiarata dei fermi recitati). */
-  console.log(`⚠️ prova del rosso RITIRATA (7.532): la classe di fermo e' prevenuta da piu' strati — striscia misurata ${(maxStill / 1000).toFixed(1)}s anche a motore e recite spenti`);
-  process.exit(0);
+  if (ko) { console.log(`\n✅ prova del rosso riuscita: col pallone visto fermo la striscia sale a ${(maxStill / 1000).toFixed(1)}s`); process.exit(0); }
+  console.log(`\n❌ PROVA DEL ROSSO FALLITA: striscia ${(maxStill / 1000).toFixed(1)}s anche col pallone visto fermo — lo strumento non vede`); process.exit(2);
 }
-let ko = false;
-if (pctMoto < MOTO_MIN) { console.log(`❌ il pallone si e' rifermato: ${pctMoto.toFixed(1)}% < ${MOTO_MIN}%`); ko = true; }
-if (maxStill / 1000 > STILL_MAX) { console.log(`❌ striscia di fermo ${(maxStill / 1000).toFixed(1)}s > ${STILL_MAX}s`); ko = true; }
-console.log(ko ? '' : '✅ il pallone vive: in moto e senza pause lunghe');
+if (pctMoto < MOTO_MIN) console.log(`❌ il pallone si e' rifermato: ${pctMoto.toFixed(1)}% < ${MOTO_MIN}%`);
+if (maxStill / 1000 > STILL_MAX) console.log(`❌ striscia di fermo ${(maxStill / 1000).toFixed(1)}s > ${STILL_MAX}s`);
+console.log(ko ? '' : '\n✅ il pallone vive: in moto e senza pause lunghe');
 process.exit(ko ? 2 : 0);

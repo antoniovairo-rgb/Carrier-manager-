@@ -15,7 +15,14 @@
       9. la partita arriva al fischio (>= 90') con almeno una scena giocata (zero scene = NON GIUDICATO = rosso);
      10. LIBRO MASTRO identico alla partita INTERA, voce per voce (senza ts/t/npd, come il giro 161), e risultato identico;
      11. tabellino, pagella e statistiche identici: testo della schermata finale e voce di matchHistory uguali alla partita intera;
-     12. l'intervista post-partita e' chiesta (testimone __CPM_IV231) come nella partita intera;
+     12. le interviste post-partita sono UGUALI a quelle della partita intera giocata con lo stesso seme: quante (testimone
+         __CPM_IV231) e quale decisione (testimone __CPM_IV183: si/no, motivo, domanda). [giro 187] Il criterio vecchio era
+         «chiesta (>= 1) e quante quante nella intera»: dal giro 183 (PO-375 «Meno e piu' varie») dopo una partita senza posta
+         l'intervista non c'e' piu' salvo la sorpresa seedata (1 su 8), e la modalita' esiste SOLO per partite senza posta —
+         quindi il «>= 1» chiedeva al gioco di disobbedire al PO. Il senso (la modalita' si comporta come la partita intera)
+         resta, e perche' il controllo resti giudicante si gioca un SECONDO paio di partite con un nome la cui sorpresa esce:
+         12b pretende l'intervista chiesta in ENTRAMBE e la stessa decisione. Non e' piu' permissivo: in piu' del conto si
+         confronta la domanda, e il «>= 1» resta, sul caso dove il gioco deve davvero chiederla.
      13. durata reale: la partita a soli highlight dura meno della meta' di quella intera (la misura e' stampata).
    Bracci: VERDE deve passare. ROSSO (`__CPM_NO_G166`): il bottone sparisce (3) e, forzando la modalita' dal gancio di sonda
    (__CPM_SOLO166), la partita resta intera (7, 8 cadono; la partita rossa si ferma al 20' di gioco: basta a misurare il passo).
@@ -29,6 +36,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const ROOT = path.resolve(QUI, '../..');
 const NOME = process.env.CPM_G166_NOME || 'Collaudo Salienti', SEME = +(process.env.CPM_G166_SEME || 7300);
+const NOME_SORPRESA = process.env.CPM_G166_NOME_SORPRESA || 'Collaudo Sorpresa 7';/* [giro 187] nome la cui intervista a sorpresa (giro 183) esce: scelto con sonda-iv187 */
 
 /* ---------------- A. statico ---------------- */
 const st = []; const ok = (nome, cond, info) => st.push({ nome, ok: !!cond, info: info || '' });
@@ -68,8 +76,8 @@ async function prompt(rosso) {
 }
 
 /* ---------------- C. partita ---------------- */
-async function partita(modo, init, opz) {
-  const A = await apriCarriera166({ init: init || {}, nome: NOME }); let r = { modo, finita: false, fasi: {}, ev: [], note: ['non aperta'] }, c = {}, lm = null, velo = false;
+async function partita(modo, init, opz, nome) {
+  const A = await apriCarriera166({ init: init || {}, nome: nome || NOME }); let r = { modo, finita: false, fasi: {}, ev: [], note: ['non aperta'] }, c = {}, lm = null, velo = false;
   try {
     if (!A.W) throw new Error('nessuna settimana con giornata di lega');
     await apriPrompt166(A.page);
@@ -89,7 +97,13 @@ const intera = await partita('intera', {});
 const solo = await partita('solo', {});
 /* rosso: il bottone non esiste, quindi la modalita' si forza dal gancio di sonda e si preme «Gioca»; ci si ferma al 20' */
 const rosso = await partita('intera', { __CPM_NO_G166: true, __CPM_SOLO166: true }, { fermaAlMinuto: 20 });
-if (process.env.CPM_G166_DUMP) fs.writeFileSync(process.env.CPM_G166_DUMP, JSON.stringify({ intera, solo, rosso }));
+/* [giro 187] il caso con l'intervista: stessa settimana e stesso seme, il nome fa uscire la sorpresa del giro 183 */
+const interaS = await partita('intera', {}, null, NOME_SORPRESA);
+const soloS = await partita('solo', {}, null, NOME_SORPRESA);
+if (process.env.CPM_G166_DUMP) fs.writeFileSync(process.env.CPM_G166_DUMP, JSON.stringify({ intera, solo, rosso, interaS, soloS }));
+const ivDi = P => (P.c && P.c.iv183) ? { si: !!P.c.iv183.si, motivo: P.c.iv183.motivo, q: P.c.iv183.q } : null;
+const ivUguali = (X, Y) => !!X.c.voce && !!Y.c.voce && !!ivDi(X) && !!ivDi(Y) && (X.c.iv231 | 0) === (Y.c.iv231 | 0) && JSON.stringify(ivDi(X)) === JSON.stringify(ivDi(Y));
+const ivInfo = (X, Y) => `chieste: soli highlight ${Y.c.iv231 | 0} · intera ${X.c.iv231 | 0} · decisione soli ${JSON.stringify(ivDi(Y)).slice(0, 140)} · intera ${JSON.stringify(ivDi(X)).slice(0, 140)}${X.c.voce && Y.c.voce ? '' : ' · NON GIUDICATO (partita non chiusa)'}`;
 
 let div = -1; for (let i = 0; i < Math.max(intera.seq.length, solo.seq.length); i++) if (JSON.stringify(intera.seq[i]) !== JSON.stringify(solo.seq[i])) { div = i; break; }
 let uguali = 0; for (let i = 0; i < Math.min(intera.seq.length, solo.seq.length); i++) if (JSON.stringify(intera.seq[i]) === JSON.stringify(solo.seq[i])) uguali++;
@@ -106,7 +120,8 @@ const passiC = (P, eRosso) => {
         info: `voci uguali ${uguali}/${intera.seq.length} (soli highlight ${P.seq.length}) · risultato ${JSON.stringify(intera.score)} vs ${JSON.stringify(P.score)} · ${JSON.stringify(tipi)}${div >= 0 ? ' · prima differenza alla voce ' + div + ': ' + JSON.stringify(intera.seq[div]).slice(0, 140) + ' ≠ ' + JSON.stringify(P.seq[div]).slice(0, 140) : ''}${giudicabile ? '' : ' · NON GIUDICATO'}` },
       { nome: '11 tabellino, pagella e statistiche identici (schermata finale e voce di carriera)', ok: giudicabile && (intera.finale || '').length > 400 && intera.finale === P.finale && !!intera.c.voce && JSON.stringify(intera.c.voce) === JSON.stringify(P.c.voce),
         info: `schermata finale ${(intera.finale || '').length} vs ${(P.finale || '').length} car., uguale ${intera.finale === P.finale} · voce ${JSON.stringify(P.c.voce || null).slice(0, 200)}` },
-      { nome: '12 intervista post-partita chiesta, come nella partita intera', ok: (P.c.iv231 | 0) >= 1 && (intera.c.iv231 | 0) === (P.c.iv231 | 0), info: `interviste chieste: soli highlight ${P.c.iv231 | 0} · intera ${intera.c.iv231 | 0}` },
+      { nome: '12 interviste uguali a quelle della partita intera, con lo stesso seme', ok: giudicabile && ivUguali(intera, P), info: ivInfo(intera, P) },
+      { nome: `12b caso con intervista (sorpresa seedata, «${NOME_SORPRESA}»): chiesta in entrambe e uguale`, ok: interaS.finita && soloS.finita && (interaS.c.iv231 | 0) >= 1 && (soloS.c.iv231 | 0) >= 1 && ivUguali(interaS, soloS) && ivDi(interaS).si === true && (interaS.errs || []).length === 0 && (soloS.errs || []).length === 0, info: ivInfo(interaS, soloS) + ` · finite ${interaS.finita}/${soloS.finita} · minuto ${interaS.minMax}/${soloS.minMax}` },
       { nome: '13 dura meno della meta\' della partita intera', ok: giudicabile && P.tPartita > 0 && P.tPartita < intera.tPartita * 0.5, info: `soli highlight: ${tempi(P)} || intera: ${tempi(intera)}` }]),
     { nome: '  errori di pagina (partita)', ok: (P.errs || []).length === 0, info: JSON.stringify(P.errs || []) }];
 };

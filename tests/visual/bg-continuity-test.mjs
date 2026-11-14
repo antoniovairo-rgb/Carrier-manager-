@@ -22,80 +22,46 @@
    di salti oltre mezzo campo deve risalire.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node bg-continuity-test.mjs [CPM_ROSSO=1]                */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
+/* [giro 167 PO-362] RISCRITTO PER LA PARTITA VERA. Era CIECO (0 righe confrontabili, minimo 12, anche sulla base del giro 151): leggeva il
+   bersaglio dichiarato `__CPM_BGSYNC.bp`, che a motore acceso e' nullo per costruzione (la riga non comanda il pallone, `_bt498=null`).
+   Il freno del 7.498 che sorvegliava vive solo nella cronaca pescata. Il «teletrasporto» che la direttiva teme, a motore acceso, e' la
+   riga che manda il racconto dall'altra parte del campo rispetto a dove il pallone sta.
+   CRITERIO VECCHIO: salto fra dove sta il pallone all'uscita della riga e dove la riga lo manda (`bp`), quota oltre mezzo campo
+   (50 unita') <= 5%, gol esclusi, minimo 12 righe; rosso `__CPM_NO498`.
+   CRITERIO NUOVO: salto fra il pallone del MOTORE all'uscita della riga e il punto che la riga dichiara (il `to` del fatto, che e' il
+   `bpos` della riga del narratore; testimone `__CPM_NAR167`), stesse unita' (0-100), stessa soglia (oltre 50 unita' <= 5%), gol
+   esclusi, minimo 40 righe, partite intere a motore acceso. Perche' non e' piu' permissivo: soglia e unita' identiche, campione minimo
+   da 12 a 40, regime della partita vera.
+   ROSSO (CPM_ROSSO=1): `__CPM_NO_G151C` — la riga torna a raccontare tiri e cross gia' chiusi, cioe' a mandare il racconto in porta
+   mentre il pallone e' altrove. */
+import { startServer, launchBrowser } from './lib/harness.mjs';
+import { giocaPartita } from './lib/cronaca-motore.mjs';
 
 const ROSSO = !!process.env.CPM_ROSSO;
-const PARTITE = +(process.env.CPM_PARTITE || 3);
-const TETTO_MS = +(process.env.CPM_TETTO || 240000);
-/* ⚠️ LA SOGLIA E' SCELTA PER SEPARARE, e la prima non separava. Era a 12% perche' la baseline grezza
-   diceva 12,2% — ma quella contava anche le righe di gol; tolte quelle, la baseline scende a 10,3% e una
-   soglia al 12% lasciava passare pure il braccio rosso (prova del rosso fallita a 10,3% < 12%). Col
-   freno acceso la quota misurata e' 0,0%: 5% sta in mezzo con margine da entrambe le parti.
-   ⚠️ E VA DETTO CHE SOPRA IL TETTO LA MISURA E' LIMITATA PER COSTRUZIONE: col freno a 45 unita', «quante
-   righe superano le 50» non puo' che essere zero. Quindi il verde da solo dimostra poco — cio' che da'
-   valore a questo guardiano e' la PROVA DEL ROSSO, che senza freno risale a 10,3% con punte di 71,9. */
-const SOGLIA_QUOTA = +(process.env.CPM_SOGLIA || 5);    /* % massima di righe che spostano oltre mezzo campo */
-const MEZZO_CAMPO = 50;
-const MIN_RIGHE = 12;
-
-const srv = await startServer(); const port = srv.address().port;
-const b = await launchBrowser();
-const errs = [];
-
-async function partita(i) {
-  const page = await b.newPage({ viewport: { width: 412, height: 915 } });
-  await installCdnRoutes(page);
-  page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_BGSYNC = null; if (r) window.__CPM_NO498 = 1; }, ROSSO);
-  try {
-    await openMatch(page, port, { skipLoadAll: true, name: 'Cont' + i });
-    await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 350 }), 300 + i * 53);
-    const t0 = Date.now();
-    while (Date.now() - t0 < TETTO_MS) {
-      await sleep(500);
-      const ph = await matchPhase(page);
-      if (ph === 'ended' || ph === 'ceremony') break;
-    }
-    return await page.evaluate(() => window.__CPM_BGSYNC || []);
-  } catch (e) { return []; }
-  finally { await page.close().catch(() => {}); }
+const SOGLIA_QUOTA = 5, MEZZO_CAMPO = 50, MIN_RIGHE = 40, MAX_PARTITE = +(process.env.CPM_PARTITE || 6), MIN_PARTITE = 3;
+const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
+const salti = [], errs = [], fini = []; let nGol = 0;
+for (let i = 0; i < MAX_PARTITE && (i < MIN_PARTITE || salti.length < MIN_RIGHE); i++) {
+  const r = await giocaPartita(b, port, { nome: 'Cont' + i, seed: 300 + i * 53, flags: ROSSO ? ['__CPM_NO_G151C'] : [] });
+  errs.push(...r.errs); fini.push(`${r.minMax}' (${r.fine})`);
+  for (const x of r.nar) { if (!x.to || !x.palla) continue; if (x.ef || x.k === 'gol') { nGol++; continue; }
+    salti.push({ d: Math.hypot(x.to.x - x.palla.x, x.to.y - x.palla.y), min: x.min, txt: x.txt, k: x.k }); }
 }
-
-const righe = [];
-for (let i = 0; i < PARTITE; i++) righe.push(...(await partita(i)));
 await b.close(); srv.close();
-
-/* ⚠️ I GOL SONO ESENTI, E VA SCRITTO. Un gol subito porta il pallone nella PROPRIA rete e uno segnato in
-   quella avversaria: il «salto» li' e' il gioco, non un difetto. La prima misura contava 5 righe oltre
-   mezzo campo e DUE erano `opp_goal` — misurare senza escluderle avrebbe accusato l'unico evento che ha
-   tutto il diritto di spostare il pallone da una parte all'altra del campo. */
-const eGol = r => r.pd === 'opp_goal' || r.pd === 'attack_goal' || /gol/i.test(r.txt || '');
-const salti = righe.filter(r => r && r.bp && r.da && !eGol(r)).map(r => ({
-  d: Math.hypot(r.bp.x - r.da.x, r.bp.y - r.da.y), min: r.min, txt: r.txt, pd: r.pd
-}));
-const nGol = righe.filter(r => r && r.bp && r.da && eGol(r)).length;
-salti.sort((a, b2) => a.d - b2.d);
-
-console.log(`\n=== IL PALLONE NON SI TELETRASPORTA FRA DUE RIGHE${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO498)' : ''} ===`);
-if (salti.length < MIN_RIGHE) {
-  console.log(`  ⚠ solo ${salti.length} righe confrontabili (minimo ${MIN_RIGHE})`);
-  console.log('\n❌ CIECO: non abbastanza righe per misurare'); process.exit(2);
-}
-const q = f => salti[Math.min(salti.length - 1, Math.floor(salti.length * f))].d;
-const oltre = salti.filter(s => s.d > MEZZO_CAMPO);
-const quota = 100 * oltre.length / salti.length;
-console.log(`  righe misurate        ${salti.length}  (${nGol} righe di gol escluse: li' il pallone si sposta davvero)`);
-console.log(`  salto dichiarato      mediana ${q(0.5).toFixed(1)} · p90 ${q(0.9).toFixed(1)} · max ${salti[salti.length - 1].d.toFixed(1)} unita'`);
-console.log(`  oltre mezzo campo     ${oltre.length}/${salti.length} = ${quota.toFixed(1)}%   (soglia ${SOGLIA_QUOTA}%)`);
-if (oltre.length) {
-  console.log('\n  le righe che spostano di piu\':');
-  for (const s of oltre.slice(-5).reverse()) console.log(`    ${s.d.toFixed(1).padStart(5)}u  ${String(s.min).padStart(2)}'  ${(s.pd || '—').padEnd(12)} ${s.txt}`);
-}
+salti.sort((a, c) => a.d - c.d);
+console.log(`\n=== IL RACCONTO NON SI TELETRASPORTA (motore acceso)${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO_G151C)' : ''} ===`);
+console.log(`  partite: ${fini.join(' · ')}`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
-
+if (salti.length < MIN_RIGHE) { console.log(`  ⚠ solo ${salti.length} righe confrontabili (minimo ${MIN_RIGHE})\n\n❌ CIECO: non abbastanza righe per misurare`); process.exit(2); }
+const qq = f => salti[Math.min(salti.length - 1, Math.floor(salti.length * f))].d;
+const oltre = salti.filter(s => s.d > MEZZO_CAMPO), quota = 100 * oltre.length / salti.length;
+console.log(`  righe misurate        ${salti.length}  (${nGol} righe di gol escluse)`);
+console.log(`  salto dichiarato      mediana ${qq(0.5).toFixed(1)} · p90 ${qq(0.9).toFixed(1)} · max ${salti[salti.length - 1].d.toFixed(1)} unita'`);
+console.log(`  oltre mezzo campo     ${oltre.length}/${salti.length} = ${quota.toFixed(1)}%   (soglia ${SOGLIA_QUOTA}%)`);
+for (const s of oltre.slice(-4).reverse()) console.log(`    ${s.d.toFixed(1).padStart(5)}u  ${String(s.min).padStart(2)}'  ${s.k.padEnd(10)} ${s.txt}`);
 if (ROSSO) {
-  if (quota > SOGLIA_QUOTA) { console.log(`\n✅ prova del rosso riuscita: senza il freno la quota risale a ${quota.toFixed(1)}%`); process.exit(0); }
-  console.log(`\n❌ PROVA DEL ROSSO FALLITA: quota ${quota.toFixed(1)}% anche col freno spento — il rimedio non stava frenando nulla`); process.exit(2);
+  if (quota > SOGLIA_QUOTA) { console.log(`\n✅ prova del rosso riuscita: senza la regola la quota risale a ${quota.toFixed(1)}%`); process.exit(0); }
+  console.log(`\n❌ PROVA DEL ROSSO FALLITA: quota ${quota.toFixed(1)}% anche senza la regola`); process.exit(2);
 }
-if (quota > SOGLIA_QUOTA) { console.log(`\n❌ ${quota.toFixed(1)}% delle righe sposta il gioco oltre mezzo campo`); process.exit(2); }
-console.log('\n✅ la cronaca sposta il gioco per continuita\', non per salto');
+if (quota > SOGLIA_QUOTA) { console.log(`\n❌ ${quota.toFixed(1)}% delle righe manda il racconto oltre mezzo campo dal pallone`); process.exit(2); }
+console.log('\n✅ la cronaca racconta il gioco dove si gioca, non per salti');

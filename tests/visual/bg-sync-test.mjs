@@ -38,74 +38,47 @@
    «sotto un terzo» fu tarato sul lerp 0,25/tick, e dal 7.511 il passo e' 0,65/tick — una riga a un tick mostra gia' il 65%.
    Col lerp d'origine (`CPM_LERP25=1`, diagnosi) il rosso cade ma cade anche il verde (75%): le righe forzate venute dopo il
    7.485 scavalcano il pavimento. Criterio e soglie NON toccati: decisione aperta nel rapporto. */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
+/* [giro 167 PO-362] RISCRITTO PER LA PARTITA VERA. Il giro 162 l'aveva rimesso a giudicare nel regime `__CPM_NO870`, ma li' il rosso
+   `__CPM_NO485` non cade piu' (il passo 0,65 del 7.511 ha sostituito il pavimento) e la partita vera — motore del possesso acceso —
+   restava senza sorveglianza: a motore acceso la riga NON comanda il pallone (`_bt498=null`), lo descrive. Il difetto che la direttiva
+   PO teme («la cronaca deve essere sincronizzata con i movimenti sul campo») oggi ha un'altra forma, misurata nel giro 151 (PO-354):
+   la riga che racconta al presente un fatto che il campo ha gia' chiuso («conclude di prima!» col pallone a centrocampo).
+   CRITERIO VECCHIO: frazione del tragitto dichiarato (`bp`) percorsa prima della riga dopo — mediana >= 50%, coppie sotto un terzo
+   <= 15%, minimo 12 coppie — nel regime `__CPM_NO870`; rosso `__CPM_NO485`.
+   CRITERIO NUOVO: per OGNI riga del narratore che porta il luogo del fatto (tratto from→to dichiarato dal motore: tiri, cross,
+   passaggi, ricezioni, conduzioni, battute, …) la distanza in metri fra il pallone del MOTORE nell'istante in cui la riga esce e quel
+   tratto (testimone `__CPM_NAR167`); «fuori sincrono» oltre 15 m (la distanza del 151). Giudizio: quota fuori sincrono <= 10%, su
+   almeno 40 righe, nella partita VERA (motore acceso), partite intere fino al fischio. Perche' non e' piu' permissivo: la tolleranza
+   scende da 15% a 10%, il campione minimo sale da 12 a 40, si giudica il regime in cui il PO gioca invece di uno spento, e il criterio
+   copre tutte le righe con un luogo (partita2d-151 giudica solo tiri e cross).
+   ROSSO (CPM_ROSSO=1): `__CPM_NO_G151C` — toglie la regola che fa scendere in coda il tiro/cross gia' chiuso dal campo. */
+import { startServer, launchBrowser } from './lib/harness.mjs';
+import { giocaPartita, distM } from './lib/cronaca-motore.mjs';
 
-const MIN_COPPIE = +(process.env.CPM_MIN_COPPIE || 12);   /* campione minimo dichiarato (la misura del 7.485 ne aveva 12) */
-const TETTO = +(process.env.CPM_TETTO || 1800000);         /* solo sicurezza: si chiude prima sull'evento */
 const ROSSO = !!process.env.CPM_ROSSO;
-const MIN_MEDIANA = 50;   /* nuovo 68% · vecchio 64% con la coda rotta: si giudica la CODA, non la mediana */
-const MAX_SCARSE = 15;    /* % di coppie sotto un terzo: misurato 0-5% col pavimento, 42% senza */
-
-const srv = await startServer(); const port = srv.address().port;
-const b = await launchBrowser();
-const errs = [];
-const MOTORE = !!process.env.CPM_MOTORE;   /* solo diagnosi: lascia acceso il motore del possesso (il regime in cui lo strumento e' cieco) */
-const LERP25 = !!process.env.CPM_LERP25;   /* solo diagnosi: rimette il lerp 0,25/tick d'origine (__CPM_NO511), il regime per cui il pavimento fu tarato */
-const MAX_PARTITE = +(process.env.CPM_PARTITE || 6);
-/* ogni partita si gioca fino al FISCHIO (evento) su una pagina nuova e con un nome diverso (il seme di partita nasce anche dal
-   nome, 7.496): le coppie non si formano mai a cavallo di due partite. Si gioca un'altra partita finche' il campione non c'e'. */
-const t0 = Date.now(); let g = [], fine = 'tetto', coppieTot = [], scartiTot = { senzaBp: 0, vicino: 0, gol: 0, lontane: 0 }, righeTot = 0, partite = 0;
-for (let n = 0; n < MAX_PARTITE && coppieTot.length < MIN_COPPIE && Date.now() - t0 < TETTO; n++) {
-  const page = await b.newPage({ viewport: { width: 900, height: 900 } });
-  await installCdnRoutes(page); page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(([r, mot, pas]) => { window.__CPM_GLB = false; window.__CPM_BGSYNC = null; if (!mot) window.__CPM_NO870 = 1; if (pas) window.__CPM_NO511 = 1; if (r) window.__CPM_NO485 = 1; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, [ROSSO, MOTORE, LERP25]);
-  await openMatch(page, port, { skipLoadAll: true, name: 'Sync' + n });
-  await page.evaluate((sd) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: sd, policy: 'seeded', tickMs: 350 }), 485 + n * 31);
-  fine = 'tetto'; g = [];
-  while (Date.now() - t0 < TETTO) {
-    await sleep(1000);
-    g = await page.evaluate(() => window.__CPM_BGSYNC || []).catch(() => g);
-    const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') { fine = 'fischio'; break; }
-  }
-  await page.close().catch(() => {});
-  const m = misura(g); partite++; righeTot += g.length; coppieTot.push(...m.coppie); for (const k in scartiTot) scartiTot[k] += m.scarti[k];
-  console.log(`  partita ${n + 1}: chiusa su ${fine} · righe ${g.length} · coppie ${m.coppie.length}`);
+const MIN_RIGHE = 40, SOGLIA = 10, DIST = 15, MAX_PARTITE = +(process.env.CPM_PARTITE || 6), MIN_PARTITE = 2;
+const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
+const righe = [], errs = [], fini = [];
+for (let n = 0; n < MAX_PARTITE && (n < MIN_PARTITE || righe.length < MIN_RIGHE); n++) {
+  const r = await giocaPartita(b, port, { nome: 'Sync' + n, seed: 485 + n * 31, flags: ROSSO ? ['__CPM_NO_G151C'] : [] });
+  errs.push(...r.errs); fini.push(`${r.minMax}' (${r.fine})`);
+  for (const x of r.nar) if (x.from && x.palla && !x.ef) righe.push({ d: distM(x.palla, x.from, x.to), k: x.k, min: x.min, txt: x.txt });
 }
-const FIN = Date.now() - t0;
 await b.close(); srv.close();
-
-function misura(g) {
-const conBp = g.filter(x => x.bp);
-const coppie = [], scarti = { senzaBp: g.length - conBp.length, vicino: 0, gol: 0, lontane: 0 };
-for (let i = 0; i < conBp.length - 1; i++) {
-  const a = conBp[i], c = conBp[i + 1];
-  const dTot = Math.hypot(a.bp.x - a.da.x, a.bp.y - a.da.y);
-  if (dTot < 3) { scarti.vicino++; continue; }              /* bersaglio gia' addosso: nulla da percorrere */
-  if (/gol|gol avversario/i.test(a.txt) || /gol/i.test(c.txt)) { scarti.gol++; continue; }   /* il gol e' esente per progetto */
-  if (c.t - a.t > 6000) { scarti.lontane++; continue; }     /* coppia a cavallo di un highlight */
-  coppie.push({ q: 100 * Math.min(1, Math.hypot(c.da.x - a.da.x, c.da.y - a.da.y) / dTot), dt: c.t - a.t, txt: a.txt });
-}
-return { coppie, scarti };
-}
-const coppie = coppieTot, scarti = scartiTot;
-coppie.sort((x, y) => x.q - y.q);
-const med = coppie.length ? coppie[Math.floor(coppie.length / 2)].q : null;
-const scarse = coppie.filter(x => x.q < 33).length;
-const pctScarse = coppie.length ? 100 * scarse / coppie.length : 0;
-
-console.log(`\n=== CRONACA ⟺ MOVIMENTO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO485)' : ''} ===`);
-console.log(`  righe di cronaca in ${partite} partite (${(FIN / 1000).toFixed(0)} s): ${righeTot}   ·   coppie giudicabili: ${coppie.length} (minimo ${MIN_COPPIE})`);
-console.log(`  scarti: senza bersaglio ${scarti.senzaBp} · bersaglio addosso ${scarti.vicino} · gol ${scarti.gol} · oltre 6 s ${scarti.lontane}`);
-if (coppie.length < MIN_COPPIE) { console.log(`\n❌ CIECO: ${coppie.length} coppie giudicabili, minimo ${MIN_COPPIE}${scarti.senzaBp === righeTot && righeTot ? ' — nessuna riga dichiara il bersaglio: il motore del possesso e\' acceso?' : ''}`); process.exit(2); }
-console.log(`  tragitto annunciato percorso prima della riga dopo: mediana ${med.toFixed(0)}% (minimo ${coppie[0].q.toFixed(0)}%)`);
-console.log(`  coppie sotto un terzo del tragitto: ${scarse}/${coppie.length} = ${pctScarse.toFixed(0)}%`);
-for (const x of coppie.slice(0, 3)) console.log(`    ${x.q.toFixed(0).padStart(3)}% in ${String(x.dt).padStart(5)} ms · «${x.txt}»`);
+righe.sort((a, c) => a.d - c.d);
+const fuori = righe.filter(x => x.d > DIST), q = righe.length ? 100 * fuori.length / righe.length : 0;
+console.log(`\n=== LA CRONACA RACCONTA IL PALLONE DI ADESSO (motore acceso)${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO_G151C)' : ''} ===`);
+console.log(`  partite: ${fini.join(' · ')} · righe con il luogo del fatto: ${righe.length} (minimo ${MIN_RIGHE})`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
-
-const ko = (med < MIN_MEDIANA) || (pctScarse > MAX_SCARSE);
+if (righe.length < MIN_RIGHE) { console.log(`\n❌ CIECO: ${righe.length} righe giudicabili, minimo ${MIN_RIGHE}`); process.exit(2); }
+console.log(`  distanza pallone↔fatto: mediana ${righe[righe.length >> 1].d.toFixed(1)} m · p90 ${righe[Math.floor(righe.length * 0.9)].d.toFixed(1)} m`);
+console.log(`  righe fuori sincrono (> ${DIST} m): ${fuori.length}/${righe.length} = ${q.toFixed(1)}%   (soglia ${SOGLIA}%)`);
+const pk = {}; for (const x of fuori) pk[x.k] = (pk[x.k] | 0) + 1; if (fuori.length) console.log('  per fatto: ' + JSON.stringify(pk));
+for (const x of fuori.slice(-3).reverse()) console.log(`    ${x.d.toFixed(1).padStart(5)} m  ${x.min}'  «${x.txt}»`);
+const ko = q > SOGLIA;
 if (ROSSO) {
-  if (ko) { console.log('\n✅ prova del rosso riuscita: senza il pavimento la cronaca smentisce i propri movimenti'); process.exit(0); }
-  console.log('\n❌ PROVA DEL ROSSO FALLITA: il guardiano resta verde anche senza il pavimento'); process.exit(2);
+  if (ko) { console.log('\n✅ prova del rosso riuscita: senza la regola del 151 la cronaca racconta azioni gia\' chiuse'); process.exit(0); }
+  console.log('\n❌ PROVA DEL ROSSO FALLITA: il guardiano resta verde anche senza la regola'); process.exit(2);
 }
-if (ko) { console.log(`\n❌ la cronaca annuncia movimenti che il campo non fa in tempo a mostrare`); process.exit(2); }
-console.log('\n✅ ogni riga di cronaca ha il tempo di essere mostrata prima della successiva');
+if (ko) { console.log('\n❌ la cronaca racconta azioni che il campo non mostra piu\''); process.exit(2); }
+console.log('\n✅ ogni riga racconta un fatto dove il pallone e\' adesso');

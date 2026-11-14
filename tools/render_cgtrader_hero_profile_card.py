@@ -1,4 +1,5 @@
 """Texture-faithful close profile review for the purchased CGTrader player."""
+# [13/11/2026] Gli originali CGTrader (CHARACTER.glb, BLENDER+RIG.blend) non sono più nel repository pubblico (decisione PO, licenza): per usare questo script mettere la copia locale dell acquisto nello stesso percorso, fuori da git.
 import bpy
 from pathlib import Path
 from mathutils import Vector

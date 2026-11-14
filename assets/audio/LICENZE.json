@@ -1774,6 +1774,435 @@
     "letta": "2026-11-11",
     "sha256": "a446cbf5ce5d58acf593719d36cdee535a5e3e05e43016309329ef911eb70efd"
    }
+  },
+  "sfx/crowd/letto-1": {
+   "evento": "crowd.bed",
+   "g": 0.5,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 20.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -3.9,
+   "rms_dbfs": -17.6,
+   "loop": true,
+   "byte": {
+    "ogg": 55817,
+    "mp3": 100532
+   },
+   "sorgente": {
+    "id": "commons-ohh-france-usa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg",
+    "file": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/17/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg.mp3",
+    "membro": null,
+    "tagli": [
+     [
+      0.6,
+      22.0
+     ]
+    ],
+    "filtro": "highpass=f=110,lowpass=f=7000",
+    "autore": "Romainbehar (Wikimedia Commons, «Own work», 9 June 2018)",
+    "licenza": "CC0 1.0 (letta sulla pagina del file: «I, the copyright holder of this work, hereby publish it under the following license: This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication»). Scaricata la TRASCODIFICA MP3 che Wikimedia pubblica per lo stesso file: l'originale .ogg su upload.wikimedia.org risponde 429 (giro 161, tre tentativi)",
+    "letta": "2026-11-11",
+    "sha256": "b633231a2ff9d15a5c15f0369bfa4691c67a2182d8e037c50dc3c2b1d8aa5dae"
+   }
+  },
+  "sfx/crowd/letto-2": {
+   "evento": "crowd.bed",
+   "g": 0.5,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 11.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -3.3,
+   "rms_dbfs": -17.4,
+   "loop": true,
+   "byte": {
+    "ogg": 32147,
+    "mp3": 55532
+   },
+   "sorgente": {
+    "id": "commons-ohh-france-usa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg",
+    "file": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/17/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg.mp3",
+    "membro": null,
+    "tagli": [
+     [
+      22.6,
+      8.0
+     ],
+     [
+      43.6,
+      6.0
+     ]
+    ],
+    "filtro": "highpass=f=110,lowpass=f=7000",
+    "autore": "Romainbehar (Wikimedia Commons, «Own work», 9 June 2018)",
+    "licenza": "CC0 1.0 (letta sulla pagina del file: «I, the copyright holder of this work, hereby publish it under the following license: This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication»). Scaricata la TRASCODIFICA MP3 che Wikimedia pubblica per lo stesso file: l'originale .ogg su upload.wikimedia.org risponde 429 (giro 161, tre tentativi)",
+    "letta": "2026-11-11",
+    "sha256": "b633231a2ff9d15a5c15f0369bfa4691c67a2182d8e037c50dc3c2b1d8aa5dae"
+   }
+  },
+  "sfx/crowd/caldo-1": {
+   "evento": "crowd.swell",
+   "g": 0.5,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 6.4,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -6.2,
+   "rms_dbfs": -18.0,
+   "loop": false,
+   "byte": {
+    "ogg": 18220,
+    "mp3": 32492
+   },
+   "sorgente": {
+    "id": "commons-ohh-france-usa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg",
+    "file": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/17/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg.mp3",
+    "membro": null,
+    "tagli": [
+     [
+      35.2,
+      6.4
+     ]
+    ],
+    "filtro": "highpass=f=110,lowpass=f=7000",
+    "autore": "Romainbehar (Wikimedia Commons, «Own work», 9 June 2018)",
+    "licenza": "CC0 1.0 (letta sulla pagina del file: «I, the copyright holder of this work, hereby publish it under the following license: This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication»). Scaricata la TRASCODIFICA MP3 che Wikimedia pubblica per lo stesso file: l'originale .ogg su upload.wikimedia.org risponde 429 (giro 161, tre tentativi)",
+    "letta": "2026-11-11",
+    "sha256": "b633231a2ff9d15a5c15f0369bfa4691c67a2182d8e037c50dc3c2b1d8aa5dae"
+   }
+  },
+  "sfx/crowd/caldo-2": {
+   "evento": "crowd.swell",
+   "g": 0.5,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 6.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -5.1,
+   "rms_dbfs": -19.7,
+   "loop": false,
+   "byte": {
+    "ogg": 17489,
+    "mp3": 30452
+   },
+   "sorgente": {
+    "id": "tdc-amb-arena",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Ambiences",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Ambiences/AMBIENCES%2FSPORT%2FAMBSprt-CU_Prize%20Fight%20At%20Large%20Arena%2C%20Buzzers%2C%20Bell%20Rings%2C%20Crowd%20Cheers_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      68.0,
+      6.0
+     ]
+    ],
+    "filtro": "highpass=f=110,lowpass=f=7000",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto archive.org: https://creativecommons.org/publicdomain/zero/1.0/; oggetto caricato dall'autore, creator «Nicholas A. Judy»). md5 del file = md5 pubblicato nei metadati (98ad62649a7c44c000d56575aea6dffe)",
+    "letta": "2026-11-11",
+    "sha256": "a1dc9747f368f8d3c5b768962945250e4b00411f607ed0f3dd879fc7e0e68509"
+   }
+  },
+  "sfx/crowd/esulta-2": {
+   "evento": "crowd.cheer",
+   "g": 0.7,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 2.2,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -6.1,
+   "rms_dbfs": -19.6,
+   "loop": false,
+   "byte": {
+    "ogg": 13019,
+    "mp3": 18068
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      116.0,
+      2.2
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/fischi-2": {
+   "evento": "crowd.boo",
+   "g": 0.3,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.15,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -15.3,
+   "rms_dbfs": -21.8,
+   "loop": false,
+   "byte": {
+    "ogg": 7445,
+    "mp3": 9620
+   },
+   "sorgente": {
+    "id": "tdc-whistles-crowd",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/HUMAN/WHSTHmn-Blue%20Snowball%20Microphone%2C%20CU_Crowd%20Element_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0.0,
+      1.15
+     ]
+    ],
+    "filtro": "highpass=f=400",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "aa592af5f69c834d9c64856a77148b2a7b7e34c65ed7c680f1e1e649ec2fd4fe"
+   }
+  },
+  "sfx/crowd/ohh-2": {
+   "evento": "crowd.ohh",
+   "g": 0.7,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 4.301,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -5.4,
+   "rms_dbfs": -17.9,
+   "loop": false,
+   "byte": {
+    "ogg": 12653,
+    "mp3": 22052
+   },
+   "sorgente": {
+    "id": "commons-ohh-france-usa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg",
+    "file": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/17/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg.mp3",
+    "membro": null,
+    "tagli": [
+     [
+      31.0,
+      4.0
+     ]
+    ],
+    "filtro": "highpass=f=45,asetrate=48000*0.93,aresample=48000",
+    "autore": "Romainbehar (Wikimedia Commons, «Own work», 9 June 2018)",
+    "licenza": "CC0 1.0 (letta sulla pagina del file: «I, the copyright holder of this work, hereby publish it under the following license: This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication»). Scaricata la TRASCODIFICA MP3 che Wikimedia pubblica per lo stesso file: l'originale .ogg su upload.wikimedia.org risponde 429 (giro 161, tre tentativi)",
+    "letta": "2026-11-11",
+    "sha256": "b633231a2ff9d15a5c15f0369bfa4691c67a2182d8e037c50dc3c2b1d8aa5dae"
+   }
+  },
+  "sfx/ui/conferma-morbida": {
+   "evento": "ui.confirm172",
+   "g": 0.2,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.12,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -18.3,
+   "loop": false,
+   "byte": {
+    "ogg": 1116,
+    "mp3": 1364
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/bong_001.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/apri-morbida": {
+   "evento": "ui.popup172",
+   "g": 0.16,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.136,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -16.4,
+   "loop": false,
+   "byte": {
+    "ogg": 1003,
+    "mp3": 1556
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/toggle_001.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/positiva-morbida": {
+   "evento": "notify.pos172",
+   "g": 0.18,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.132,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -22.3,
+   "loop": false,
+   "byte": {
+    "ogg": 720,
+    "mp3": 1556
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/glass_005.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/negativa-morbida": {
+   "evento": "notify.neg172",
+   "g": 0.18,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.094,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -19.9,
+   "loop": false,
+   "byte": {
+    "ogg": 1396,
+    "mp3": 1172
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/back_004.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/info-morbida": {
+   "evento": "notify.info172",
+   "g": 0.14,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.121,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -18.3,
+   "loop": false,
+   "byte": {
+    "ogg": 873,
+    "mp3": 1556
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/glass_003.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/settimana-morbida": {
+   "evento": "week.advance172",
+   "g": 0.16,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.136,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -14.0,
+   "loop": false,
+   "byte": {
+    "ogg": 1020,
+    "mp3": 1556
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/toggle_002.ogg",
+    "tagli": null,
+    "filtro": "lowpass=f=4500",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
   }
  },
  "altri": {

@@ -37,95 +37,53 @@
    di fine (fischio), non per 240 s fissi: si abbandona solo per STALLO (fase e minuto fermi per CPM_STALLO ms). Soglie e
    campione minimo invariati. CPM_MOTORE=1 (solo diagnosi) lascia acceso il motore. Stampa i motivi di scarto delle righe.
    ⚠️ Ne segue che, a motore acceso, il peso di famiglia NON e' sorvegliato da nessuno: lo dice il rapporto 162. */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
+/* [giro 167 PO-362] RISCRITTO PER LA PARTITA VERA. A motore acceso il criterio di prima e' VERO PER COSTRUZIONE: il narratore non porta
+   una famiglia sua e la riga riceve `pd=_dec499` (src/15, `if(ev.pd==null)ev.pd=_dec499`) — misurato 159/159 righe con pd==dec. E il
+   peso di famiglia del 7.499 vive solo nella cronaca pescata. Il principio («la simulazione decide l'evento, la cronaca lo descrive»)
+   a motore acceso si verifica direttamente: ogni riga deve raccontare un FATTO che il motore ha davvero prodotto, con l'uomo giusto.
+   CRITERIO VECCHIO: accordo esatto fra famiglia decisa e famiglia della riga >= 60%, varieta' (righe distinte) >= 55%, minimo 15 righe,
+   campione 40, nel regime `__CPM_NO870`; rosso `__CPM_NO499`.
+   CRITERIO NUOVO: FEDELTA' — quota di righe del narratore il cui fatto (tipo) compare fra i fatti restituiti dal motore nei 3 s prima
+   dell'uscita, e il cui uomo nominato e' quello del fatto (registro dei fatti: si avvolge `tick`, lib/cronaca-motore.mjs; righe dal
+   testimone `__CPM_NAR167`). Soglia 90% (misurata 98,5% su 131 righe); varieta' >= 55% invariata; minimo 15 righe, campione 40
+   invariati; partite intere a motore acceso. Perche' non e' piu' permissivo: la soglia sale da 60% a 90% e il giudizio non puo' essere
+   vero per costruzione (un fatto inventato non sta nel registro del motore).
+   ROSSO (CPM_ROSSO=1): sabotaggio dal banco «fatto-inventato» — a un battito di minuto su tre il motore consegna al narratore un tiro
+   mai avvenuto (non registrato fra i fatti veri). */
+import { startServer, launchBrowser } from './lib/harness.mjs';
+import { giocaPartita } from './lib/cronaca-motore.mjs';
 
-const ROSSO = !!process.env.CPM_ROSSO, MOTORE = !!process.env.CPM_MOTORE;
-const PARTITE = +(process.env.CPM_PARTITE || 3);
-const TETTO_MS = +(process.env.CPM_TETTO || 3600000);     /* solo sicurezza: si chiude sul fischio */
-const STALLO = +(process.env.CPM_STALLO || 240000);
-const MIN_RIGHE = 15;
-/* SOGLIE SCELTE PER SEPARARE, sui due bracci misurati: col peso di famiglia l'accordo esatto e' 69,0%,
-   senza (prova del rosso) 51,6%. 60% sta in mezzo con ~9 punti di margine da entrambe le parti.
-   La varieta' misurata e' 63,8% col peso e 60,9% senza — il rimedio NON ha affamato il repertorio, ed e'
-   proprio cio' che questa seconda soglia serve a impedire in futuro: un accordo alto comprato ripetendo
-   tre frasi non e' un miglioramento. */
-const SOGLIA_ESATTO = +(process.env.CPM_SOGLIA || 60);   /* % minima di accordo esatto */
-const SOGLIA_VARIETA = +(process.env.CPM_VAR || 55);     /* % minima di righe distinte */
-
-const VIC = { defend_goal: ['retreat'], retreat: ['defend_goal', 'midfield'], midfield: ['retreat', 'attack', 'wide_right'],
-  attack: ['midfield', 'wide_right', 'attack_goal'], wide_right: ['attack', 'midfield'], attack_goal: ['attack', 'wide_right'], opp_goal: ['defend_goal'] };
-
-const srv = await startServer(); const port = srv.address().port;
-const b = await launchBrowser();
-const errs = [];
-
-async function partita(i) {
-  const page = await b.newPage({ viewport: { width: 412, height: 915 } });
-  await installCdnRoutes(page);
-  page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(([r, mot]) => { window.__CPM_GLB = false; if (!mot) window.__CPM_NO870 = 1; if (r) window.__CPM_NO499 = 1; }, [ROSSO, MOTORE]);
-  try {
-    await openMatch(page, port, { skipLoadAll: true, name: 'Dec' + i });
-    await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 350 }), 700 + i * 61);
-    const t0 = Date.now(); let prog = '', tProg = t0, fine = 'tetto', acc = [], ultimo = -1;
-    while (Date.now() - t0 < TETTO_MS) {
-      await sleep(500);
-      const ph = await matchPhase(page);
-      /* il registro e' un anello da 400 voci: si raccoglie a mano a mano (per timestamp), o una partita lunga perde l'inizio */
-      const nuove = await page.evaluate((u) => (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle' && e.ts > u), ultimo).catch(() => []);
-      for (const e of nuove) { acc.push(e); ultimo = Math.max(ultimo, e.ts); }
-      if (ph === 'ended' || ph === 'ceremony') { fine = 'fischio'; break; }
-      const m = await page.evaluate(() => window.__CPM_CLOCK ? window.__CPM_CLOCK() : null).catch(() => null);
-      const k = ph + '|' + m; if (k !== prog) { prog = k; tProg = Date.now(); } else if (Date.now() - tProg > STALLO) { fine = 'stallo'; break; }
-    }
-    console.log(`  partita ${i + 1}: chiusa su ${fine} dopo ${Math.round((Date.now() - t0) / 1000)} s · righe di cronaca ${acc.length} · utili ${acc.filter(r => r.dec && r.pd && !r.ef && !r.rec).length}${fine === 'stallo' ? ' · fase ' + prog : ''}`);
-    return acc;
-  } catch (e) { return []; }
-  finally { await page.close().catch(() => {}); }
+const ROSSO = !!process.env.CPM_ROSSO;
+const MIN_RIGHE = 15, CAMPIONE = 40, SOGLIA_FEDE = 90, SOGLIA_VARIETA = 55, MAX_PARTITE = +(process.env.CPM_PARTITE || 6), MIN_PARTITE = 2, FINESTRA = 3000;
+const CLUB = /calcio d'inizio|dal centro|rimessa laterale per|angolo per|calcio d'angolo per|rinvio dal fondo per|punizione per/i;
+const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
+const val = [], errs = [], fini = [];
+for (let i = 0; i < MAX_PARTITE && (i < MIN_PARTITE || val.length < CAMPIONE); i++) {
+  const r = await giocaPartita(b, port, { nome: 'Dec' + i, seed: 700 + i * 61, sabotaggio: ROSSO ? 'fatto-inventato' : null });
+  errs.push(...r.errs); fini.push(`${r.minMax}' (${r.fine})`);
+  const eroe = r.nome.toLowerCase();
+  for (const x of r.nar) {
+    const tl = x.txt.toLowerCase();
+    const W = r.fatti.filter(f => f.t <= x.t && f.t > x.t - FINESTRA && f.k === x.k);
+    const ok = W.some(f => !f.n.length || f.n.some(nm => nm === '{P}' ? tl.includes(eroe) : tl.includes(nm.toLowerCase())) || CLUB.test(x.txt));
+    val.push({ ok, k: x.k, min: x.min, txt: x.txt, vuota: !W.length });
+  }
 }
-
-/* [giro 162] il campione e' un EVENTO, non un numero di partite: le partite del provino finiscono al 50' e in ognuna ~3/4 delle
-   righe sono recite (escluse per progetto), quindi tre partite davano 10 righe utili su 15. Si giocano almeno PARTITE partite e
-   poi altre, intere, finche' le righe utili non arrivano al minimo (tetto dichiarato CPM_MAX_PARTITE).
-   ⚠️ E il minimo NON basta a separare: col campione di 15 righe il rosso e' atterrato a 60,0% esatti contro la soglia 60
-   (granularita' 6,7 punti), verde 100%. Il bersaglio di raccolta e' quindi CAMPIONE=40 righe utili (granularita' 2,5); il
-   minimo per giudicare resta 15, invariato. */
-const MAX_PARTITE = +(process.env.CPM_MAX_PARTITE || 30), CAMPIONE = +(process.env.CPM_CAMPIONE || 40);
-const utili = (L) => L.filter(r => r.dec && r.pd && !r.ef && !r.rec).length;
-const righe = [];
-for (let i = 0; i < MAX_PARTITE && (i < PARTITE || utili(righe) < Math.max(MIN_RIGHE, CAMPIONE)); i++) righe.push(...(await partita(i)));
 await b.close(); srv.close();
-
-const recite = righe.filter(r => r.rec).length;
-const val = righe.filter(r => r.dec && r.pd && !r.ef && !r.rec);/* [7.532.0] le righe di RECITA (kickoff/piazzati/contropiedi/ponte) sono teatro deterministico con pd=dec PER COSTRUZIONE e pool finiti: dentro le metriche gonfiavano l'accordo e affamavano la varieta' del repertorio PESCATO — si misurano a parte (contatore) e si escludono da accordo+varieta'. */
-console.log(`\n=== LA CRONACA RACCONTA L'EVENTO DECISO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO499)' : ''}${MOTORE ? ' · MOTORE ACCESO (diagnosi)' : ''} ===`);
-console.log(`  righe ${righe.length} · scarti: senza dec ${righe.filter(r => !r.dec).length} · senza pd ${righe.filter(r => !r.pd).length} · con esito ef ${righe.filter(r => r.ef).length} · recite ${recite} · dal narratore del motore (mk) ${righe.filter(r => r.mk).length}`);
-if (val.length < MIN_RIGHE) { console.log(`  ⚠ solo ${val.length} righe utili (minimo ${MIN_RIGHE})\n❌ CIECO: non abbastanza righe`); process.exit(2); }
-
-const esatto = val.filter(r => r.pd === r.dec).length;
-const largo = val.filter(r => r.pd === r.dec || (VIC[r.dec] || []).indexOf(r.pd) >= 0).length;
-const pEs = 100 * esatto / val.length, pLa = 100 * largo / val.length;
-
-console.log(`  righe misurate        ${val.length}  (gol esclusi · ${recite} righe di recita escluse)`);
-console.log(`  accordo ESATTO        ${esatto}/${val.length} = ${pEs.toFixed(1)}%   (soglia ${SOGLIA_ESATTO}%)`);
-console.log(`  accordo LARGO         ${largo}/${val.length} = ${pLa.toFixed(1)}%   (decisa o confinante)`);
-
-/* varieta': un accordo alto ottenuto ripetendo tre frasi non e' un miglioramento */
-const distinte = new Set(val.map(r => `${r.pd}|${r.bx}|${r.by}`)).size;
-const pVar = 100 * distinte / val.length;
-console.log(`  varieta'              ${distinte}/${val.length} = ${pVar.toFixed(1)}% righe distinte   (soglia ${SOGLIA_VARIETA}%)`);
-
-const perDec = {};
-for (const r of val) { const k = r.dec; (perDec[k] = perDec[k] || { n: 0, ok: 0 }); perDec[k].n++; if (r.pd === r.dec) perDec[k].ok++; }
-console.log('\n  per famiglia decisa:');
-for (const [k, v] of Object.entries(perDec).sort((a, b2) => b2[1].n - a[1].n))
-  console.log(`    ${k.padEnd(13)} ${String(v.ok).padStart(3)}/${String(v.n).padEnd(3)} = ${(100 * v.ok / v.n).toFixed(0)}%`);
+console.log(`\n=== LA CRONACA RACCONTA I FATTI DEL MOTORE (motore acceso)${ROSSO ? ' · PROVA DEL ROSSO (fatto-inventato)' : ''} ===`);
+console.log(`  partite: ${fini.join(' · ')} · righe del narratore ${val.length} (minimo ${MIN_RIGHE}, campione ${CAMPIONE})`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
-
+if (val.length < MIN_RIGHE) { console.log(`\n❌ CIECO: ${val.length} righe, minimo ${MIN_RIGHE}`); process.exit(2); }
+const fede = 100 * val.filter(v => v.ok).length / val.length;
+const pVar = 100 * new Set(val.map(v => v.txt)).size / val.length;
+console.log(`  fedelta' (fatto e uomo nel registro del motore) ${val.filter(v => v.ok).length}/${val.length} = ${fede.toFixed(1)}%   (soglia ${SOGLIA_FEDE}%)`);
+console.log(`  varieta' (righe distinte)                       ${pVar.toFixed(1)}%   (soglia ${SOGLIA_VARIETA}%)`);
+const bad = val.filter(v => !v.ok); const pk = {}; for (const v of bad) pk[v.k] = (pk[v.k] | 0) + 1; if (bad.length) console.log('  senza fatto, per tipo: ' + JSON.stringify(pk) + ` · di cui con finestra vuota ${bad.filter(v => v.vuota).length}`);
+for (const v of bad.slice(0, 3)) console.log(`    ${v.min}'  ${v.k}  «${v.txt}»`);
 if (ROSSO) {
-  if (pEs < SOGLIA_ESATTO) { console.log(`\n✅ prova del rosso riuscita: senza il peso di famiglia l'accordo scende a ${pEs.toFixed(1)}%`); process.exit(0); }
-  console.log(`\n❌ PROVA DEL ROSSO FALLITA: accordo ${pEs.toFixed(1)}% anche senza il peso — non stava pesando nulla`); process.exit(2);
+  if (fede < SOGLIA_FEDE) { console.log(`\n✅ prova del rosso riuscita: coi fatti inventati la fedelta' scende a ${fede.toFixed(1)}%`); process.exit(0); }
+  console.log(`\n❌ PROVA DEL ROSSO FALLITA: fedelta' ${fede.toFixed(1)}% anche coi fatti inventati`); process.exit(2);
 }
-if (pVar < SOGLIA_VARIETA) { console.log(`\n❌ REPERTORIO AFFAMATO: solo ${pVar.toFixed(1)}% di righe distinte — l'accordo e' stato comprato con le ripetizioni`); process.exit(2); }
-if (pEs < SOGLIA_ESATTO) { console.log(`\n❌ accordo esatto ${pEs.toFixed(1)}% sotto la soglia`); process.exit(2); }
-console.log('\n✅ la riga di cronaca descrive l\'evento deciso, senza affamare il repertorio');
+if (pVar < SOGLIA_VARIETA) { console.log(`\n❌ REPERTORIO AFFAMATO: solo ${pVar.toFixed(1)}% di righe distinte`); process.exit(2); }
+if (fede < SOGLIA_FEDE) { console.log(`\n❌ fedelta' ${fede.toFixed(1)}% sotto la soglia: la cronaca racconta fatti che il motore non ha prodotto`); process.exit(2); }
+console.log('\n✅ ogni riga racconta un fatto che la simulazione ha deciso, con l\'uomo giusto');

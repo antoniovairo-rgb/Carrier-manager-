@@ -1,0 +1,209 @@
+{
+ "_nota": "registrazioni del master dal gioco vero (dist-web), volumi di default: picco/RMS dBFS, LUFS integrati, loudness momentanea mediana",
+ "eventi": [
+  {
+   "id": "letto",
+   "nome": "Letto della folla, 20 s senza azioni",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -17.5,
+    "rms_db": -32,
+    "lufs": -28.9,
+    "m_mediana": -29.1
+   },
+   "dopo": {
+    "picco_db": -24.6,
+    "rms_db": -39.4,
+    "lufs": -36.7,
+    "m_mediana": -37
+   }
+  },
+  {
+   "id": "occasione",
+   "nome": "Letto + occasione: tiro, la curva si scalda, tiro fuori («ohh»)",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -8.5,
+    "rms_db": -28.4,
+    "lufs": -25.2,
+    "m_mediana": -27.4
+   },
+   "dopo": {
+    "picco_db": -8.1,
+    "rms_db": -29.7,
+    "lufs": -25.3,
+    "m_mediana": -35.4
+   }
+  },
+  {
+   "id": "gol",
+   "nome": "Gol: rete + boato, poi lo stadio si calma da solo",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -7.8,
+    "rms_db": -27,
+    "lufs": -22.7,
+    "m_mediana": -28.5
+   },
+   "dopo": {
+    "picco_db": -8,
+    "rms_db": -27.8,
+    "lufs": -21,
+    "m_mediana": -33.4
+   }
+  },
+  {
+   "id": "gol-subito",
+   "nome": "Gol subito: fischi della curva",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -13.6,
+    "rms_db": -31.8,
+    "lufs": -27.5,
+    "m_mediana": -29.2
+   },
+   "dopo": {
+    "picco_db": -20,
+    "rms_db": -35.9,
+    "lufs": -30.1,
+    "m_mediana": -37.1
+   }
+  },
+  {
+   "id": "fallo",
+   "nome": "Fallo: fischietto + fischi",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -11.6,
+    "rms_db": -29.6,
+    "lufs": -24.4,
+    "m_mediana": -28.5
+   },
+   "dopo": {
+    "picco_db": -12.6,
+    "rms_db": -32.1,
+    "lufs": -22.8,
+    "m_mediana": -36.7
+   }
+  },
+  {
+   "id": "ohh-x3",
+   "nome": "Tre tiri fuori di fila: le varianti dell'«ohh»",
+   "gruppo": "Pubblico",
+   "prima": {
+    "picco_db": -11.7,
+    "rms_db": -25.7,
+    "lufs": -22.6,
+    "m_mediana": -22.9
+   },
+   "dopo": {
+    "picco_db": -11.9,
+    "rms_db": -26.4,
+    "lufs": -22.5,
+    "m_mediana": -23.5
+   }
+  },
+  {
+   "id": "tocchi",
+   "nome": "Menu: 10 tocchi di navigazione",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -17.6,
+    "rms_db": -46,
+    "lufs": -40.5,
+    "m_mediana": -39.6
+   },
+   "dopo": {
+    "picco_db": -20.4,
+    "rms_db": -48.4,
+    "lufs": -36.8,
+    "m_mediana": -35.9
+   }
+  },
+  {
+   "id": "conferma",
+   "nome": "Menu: conferma importante",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -13.9,
+    "rms_db": -30.9,
+    "lufs": -25.1,
+    "m_mediana": -26.2
+   },
+   "dopo": {
+    "picco_db": -20.1,
+    "rms_db": -45.6,
+    "lufs": -38.6,
+    "m_mediana": -38.6
+   }
+  },
+  {
+   "id": "finestra",
+   "nome": "Menu: apertura di una finestra principale",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -15.2,
+    "rms_db": -33.7,
+    "lufs": -27.9,
+    "m_mediana": -26.6
+   },
+   "dopo": {
+    "picco_db": -21.2,
+    "rms_db": -45.1,
+    "lufs": -36.7,
+    "m_mediana": -35.2
+   }
+  },
+  {
+   "id": "notifica-pos",
+   "nome": "Notifica positiva",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -13.7,
+    "rms_db": -32.3,
+    "lufs": -24.2,
+    "m_mediana": -26
+   },
+   "dopo": {
+    "picco_db": -22.5,
+    "rms_db": -51.1,
+    "lufs": -39.7,
+    "m_mediana": -39.7
+   }
+  },
+  {
+   "id": "notifica-neg",
+   "nome": "Notifica negativa",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -14.5,
+    "rms_db": -35.8,
+    "lufs": -28.6,
+    "m_mediana": -28.4
+   },
+   "dopo": {
+    "picco_db": -21,
+    "rms_db": -49.7,
+    "lufs": -43.1,
+    "m_mediana": -41.7
+   }
+  },
+  {
+   "id": "notifica-info",
+   "nome": "Notifica informativa",
+   "gruppo": "Menu",
+   "prima": {
+    "picco_db": -15,
+    "rms_db": -30.7,
+    "lufs": -21.3,
+    "m_mediana": -23.1
+   },
+   "dopo": {
+    "picco_db": -23.7,
+    "rms_db": -49.6,
+    "lufs": -38.9,
+    "m_mediana": -38.8
+   }
+  }
+ ]
+}

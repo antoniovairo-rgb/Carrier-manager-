@@ -1213,10 +1213,12 @@ const getThisWeekMatchday=()=>{
          il requisito c'e', con la stessa regola delle domande settimanali: la condizione della domanda (cond). Rosso __CPM_NO_DERBY192. */
       const _no192=(typeof window!=='undefined'&&window.__CPM_NO_DERBY192);
       const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})()));
-      if(_pool.length){
-        const _pq=_pool[Math.floor(Math.random()*_pool.length)];
+      const _pool183=_g183()?_pool.filter(q=>!memSetIv183(player).has(hIv183(q))):_pool;/* [giro 183] mai la stessa domanda nella stagione */
+      if(_pool183.length){
+        const _pq=_pool183[Math.floor(Math.random()*_pool183.length)];
         const _paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
         pendingMisterDiscorsoRef.current=_disc; // mister talk deferred until conference closes
+        if(_g183())setPlayer(p=>memIv183(p,_pq));
         setInterviewModal({q:_pq,paper:_paper,opponent:opp.n,matchCtx:"prematch"});
         _pressShown=true;
       }
@@ -1492,6 +1494,12 @@ const getThisWeekMatchday=()=>{
      bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
      Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
   const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  /* [giro 182 punto C · PO «anche videogioco, docufilm, biografia fermano il tasto come gli sponsor»] le offerte ECONOMICHE della
+     categoria «opportunità» sono «offerta»: le tre nominate dal PO (il docufilm senza cachet, ma nominato) e le altre con un cachet
+     positivo in una scelta (ef.bank>0, misurato sul catalogo: esports 18.000, bonus gol social 8.000, scuola calcio 6.000 contro
+     un investimento di 30.000). Gli sponsor (wi_sponsor*) restano alla regola del giro 173. Motivi ed esclusi nel
+     RAPPORTO-giro182 §C. Rosso __CPM_NO_G182_OFFERTE = routine come prima. */
+  const OFFERTE182=["wi_videogioco","wi_docufilm","wi_biografia","wi_esports","wi_bonus_gol_social","wi_scuola_calcio"];
   const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
@@ -1502,6 +1510,7 @@ const getThisWeekMatchday=()=>{
     if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
     if(/procurator/i.test(id+" "+tx))return "procuratore";
     if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G182_OFFERTE)&&OFFERTE182.indexOf(id)>=0)return "offerta";/* [giro 182 punto C] */
     if(_g173()){/* [giro 173 punti 4-5] sponsor = offerta; mister = elenco esplicito (motivi nel RAPPORTO-giro173 §2) */
       if(/^wi_sponsor/.test(id))return "offerta";
       if(MISTER173.indexOf(id||String((wl&&wl.smId)||""))>=0)return "mister";}
@@ -1659,6 +1668,7 @@ const getThisWeekMatchday=()=>{
         const pp=Math.max(0,fs.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club&&player.club.n)));
         setSeasonEndData({season:player.season,club:player.club,finalStandings:fs,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion:fs[0]||null,playerPos:pp,isChampion:pp===0,awards:(player.lastAwards&&player.lastAwards.aw)||null,seasonObjectives:player.seasonObjectives||[],rival:null,euro:player.euro||null,leagueOverrides:player.leagueOverrides||{}});
         setScreen("seasonEnd");return true;}catch(e){return "error:"+(e&&e.message);}},
+      forceIv183:(i,ctx,part)=>{try{const q=IV_FATTI183[i|0];if(!q)return "nessuna";setInterviewModal({q,paper:NEWSPAPERS[(i|0)%NEWSPAPERS.length],opponent:"FC Test",matchCtx:ctx||"win",partita24:part||{hs:2,as:1,casa:true,voto:7.9,gol:2}});return q.q;}catch(e){return "error:"+(e&&e.message);}},/* [giro 183] foto delle domande nuove sui fatti (solo sonde) */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
       apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
@@ -3743,6 +3753,7 @@ const getThisWeekMatchday=()=>{
        giornata di campionato. (I percorsi di uscita che lasciavano il riferimento carico sono chiusi
        alla fonte, vedi startMatch e onQuit: questa e' la rete che copre anche le uscite non previste.) */
     const _ctxClub448=(()=>{const c=result&&result.context;return !c||c==="career"||c==="cup"||c==="euro_group"||c==="euro_ko";})();
+    const _md183=_playingMdRef.current;/* [giro 183] la giornata appena giocata, per la regola della posta dell'intervista (il riferimento si consuma qui sotto) */
     if(_ctxClub448||(typeof window!=="undefined"&&window.__CPM_NO_P0_3))try{const _pm=_playingMdRef.current;if(_pm&&_pm.matchday!=null){_committedMdRef.current.add(_pm.season+"|"+_pm.matchday);if(_pm.season===(player.season||1)){_endedMdNum91=_pm.matchday;if(!_pm.type){_endedLeague705=true;_endedOppId705=_pm.oppId;_endedOppName705=_pm.oppName;_endedIsHome705=!!_pm.isHome;}}}_playingMdRef.current=null;}catch(_e){}
     setLastMatch(result);
     // [6.61.0 collaudo PO «titolone sulla vittoria della UCL»] rileva se QUESTA partita VINCE una competizione
@@ -3822,9 +3833,15 @@ const getThisWeekMatchday=()=>{
        non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
        dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
     const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
-    if(_sempre231||Math.random()<_interviewChance){
+    /* [giro 183 · PO-375 «Meno e più varie»] l'intervista esce solo dopo una partita con posta (posta165), dopo una tripletta o
+       a sorpresa una volta su otto (seedata); la domanda parla dei fatti della partita e non si ripete nella stagione
+       (intervista183 in src/07). Rosso __CPM_NO_G183 = sempre, come dal giro PO-231. */
+    const _d183=(_g183()&&_sempre231)/* il rosso di PO-231 (__CPM_NO_IV231) resta il sorteggio di prima */?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
+    try{if(typeof window!=='undefined')window.__CPM_IV183={si:_d183?!!_d183.si:true,motivo:_d183?_d183.motivo:"rosso 183",q:_d183&&_d183.q?_d183.q.q:null,week:player.week||1};}catch(_e183){}
+    if(_d183?_d183.si:(_sempre231||Math.random()<_interviewChance)){
       if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
-      const iw=pickInterviewByCtx(player,result);
+      const iw=_d183?{q:_d183.q,paper:_d183.paper}:pickInterviewByCtx(player,result);
+      if(_d183)setPlayer(p=>memIv183(p,_d183.q));
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
@@ -4548,10 +4565,10 @@ const getThisWeekMatchday=()=>{
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         const _resolvedEvTxt=resolveEvText(ev.txt,{...p,...extras});
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[_resolvedEvTxt,...(p.log||[])].slice(0,60)};
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        const _iw183=doInterview?(_g183()?intervistaSett183(p):pickInterviewByCtx(p)):null;/* [giro 183] mai la stessa domanda nella stagione: memoria nel salvataggio */if(_iw183&&_g183())upd={...upd,ivMem183:memIv183(p,_iw183.q).ivMem183};if(_iw183){const iw=_iw183;const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_resolvedEvTxt},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
       }else{
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        const _iw183=doInterview?(_g183()?intervistaSett183(p):pickInterviewByCtx(p)):null;/* [giro 183] mai la stessa domanda nella stagione: memoria nel salvataggio */if(_iw183&&_g183())upd={...upd,ivMem183:memIv183(p,_iw183.q).ivMem183};if(_iw183){const iw=_iw183;const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{},coachMsg:_liveCoachMsg}),50);
       }
       return{...p,...upd};
@@ -9269,7 +9286,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:(_imp||_h2h.length>0)?8:0}}>
               <TeamBadge team={_opp} size={36}/>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
+                <NomeSquadra182 as="div" team={_opp} fb={_nmd.opponentName} style={{fontSize:FS.body,fontWeight:800,color:TH.text}}/>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
                   {_oPos>=0&&<span style={{fontSize:FS.caption,color:TH.muted}}>{_oPos+1}° classifica</span>}
                   <span style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_pColor)}}>Force {_opp.p||60}</span>
@@ -9546,7 +9563,7 @@ const getThisWeekMatchday=()=>{
                       return(
                         <div key={ri} style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",background:row.isPlayer?"rgba(59,130,246,0.08)":"transparent",borderRadius:RAD.xs,alignItems:"center"}}>
                           <div style={{fontSize:FS.caption,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
-                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
+                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,display:"flex",minWidth:0,whiteSpace:"nowrap"}}><NomeSquadra182 as="span" team={row} style={{minWidth:0,flex:"0 1 auto"}}/>{row.isPlayer?<span style={{flex:"0 0 auto"}}>{" ⭐"}</span>:null}</div>
                           {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
                             <div key={vi} style={{fontSize:FS.caption,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
                           ))}
@@ -11661,7 +11678,7 @@ const getThisWeekMatchday=()=>{
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
-                              <span style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <NomeSquadra182 as="span" team={r.club} style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600}}/>
                               <TaccheV2 n={/Trattativa|Forte/.test(r.int)?3:/moderato/.test(r.int)?2:1} col={/Trattativa|Forte/.test(r.int)?TINTE.verde:/moderato/.test(r.int)?TINTE.giallo:TINTE.sec} label={"Interesse: "+r.int.replace(/^\S+\s/,"")}/>{/* [PO-302 tappa 2 · V2Agente] indicatore d'interesse a 3 tacche, la parola resta */}
                               <span style={{fontSize:FS.caption,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>
