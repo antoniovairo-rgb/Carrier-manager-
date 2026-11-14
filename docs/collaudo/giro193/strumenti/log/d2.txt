@@ -1,0 +1,225 @@
+«Qualif. Mondiale» → 🌍 Qualif. Mondiale — vs InghilterraQualificazione 1/2 · 0pt → 🌍 QUALIF. MONDIALE · Qualificazioni · Gara 1 · ESP · Spagna · La tua squadra · Casa · VS · ENG · Inghilterra 
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/32-prepartita-mondiale-tel.png
+«Vedi le formazioni» → Vedi le formazioni → FORMAZIONI · QUALIF. MONDIALE · Qualificazioni · Gara 1 · ESP · Spagna · VS · Inghilterra · ENG · Spagna · 5-3
+  t+0s TASTI ["Salta l'ingresso","Ingresso in campo"]
+     TESTO FORMAZIONI · QUALIF. MONDIALE · Qualificazioni · Gara 1 · ESP · Spagna · VS · Inghilterra · ENG · Spagna · 5-3-2 · 11 · 11 · CAZARES · 8 · 8 · VAIRO · 7 · 7 · HIDALGO · 9 · 9 · PUYAL · 10 · 10 · MOLINA · 2 · 2 · JUÁREZ · 3 · 3 · CASTAÑO · 4 · 4 · NÚÑEZ · 5 · 5 · CASTILLO · 6 · 6 · LOZANO · 1 · 1 · DOMÍNGUEZ · Inghilterra · 4-2-3-1 · 11 · 11 · CARTER · 8 · 8 · PIERCE · 9 · 9 · LAWSON · 10 · 10 · WALSH · 6 · 6 · HUGHES
+     ► Salta l'ingresso
+  t+14s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 0' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · – · – · TIRI · 0 · 0 · IN PORTA · 0 · 0 · XG · 0,00 · 0,00 · STATISTICHE · PAGELLE · › · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.8 · 📍 Bordo area
+  t+16s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 1' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · – · – · TIRI · 0 · 0 · IN PORTA · 0 · 0 · XG · 0,00 · 0,00 · STATISTICHE · PAGELLE · › · ↔️ Walsh (ENG) cambia gioco: la palla vola dall'altra parte per Carter (ENG). · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.8 · 📍 Trequarti
+  t+21s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 💥 PALLA BUONA AL LIMITE DELL'AREA! · WEST prova a chiudere. · Scegli prima che il marcatore arrivi · Pressione
+  t+23s TASTI ["⏸","🔊","2×","⚠️","🎯Conclusione precisaTECNICA · 89","🎯Cerca l'angoloTECNICA · 89","🌀Roulette e tiroDRIBBLING · 87"]
+     TESTO ESP · ESP · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 💥 PALLA BUONA AL LIMITE DELL'AREA! · WEST prova a chiudere. · Scegli prima che il marcatore arrivi · Pressione · 🎯 · Conclusione precisa · TECNICA · 89 · 🎯 · Cerca l'angolo · TECNICA · 89 · 🌀 · Roulette e tiro · DRIBBLING · 87
+     ► 🎯Cerca l'angoloTECNICA · 89
+  t+25s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🦵 · LA GIOCATA · Tiro a giro
+  t+35s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 4' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🎯 PALO! · Palo! · 🦵 Tiro a giro · 😤 Palo! Fortuna avversaria. · voto 5.9 · CONTINUA
+     ► Continua
+  t+38s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 5' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · – · – · TIRI · 2 · 0 · IN PORTA · 0 · 0 · XG · 0,05 · 0,00 · STATISTICHE · PAGELLE · › · 😤 Palo! Fortuna avversaria. · ⚽ 0 · 🎯 0 · ⚡ 87% · ⭐ 5.9 · 📍 Area avversaria
+  t+55s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 23' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧣 · ¡CAMPEONES! ⚡ · ⚽ · 🧠 Fra le linee, HUGHES esce in ritardo! · NÚÑEZ apre per MOLINA, che ti serve. Nessun taglio in profondità: valuta il tiro o il dai e vai. · ⚔️ ATTACCO · Tocca per iniziare
+  t+56s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","Scegli"]
+     TESTO ESP · ESP · 0–0 · 23' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧠 Fra le linee, HUGHES esce in ritardo! · 📍 Bordo area · 1 · mossa · Sposta l'eroe con le frecce, poi scegli la giocata. Il marcatore sta arrivando. · Scegli
+     ► Scegli
+  t+59s TASTI ["⏸","🔊","2×","⚠️","🌀Finta e cambio di passoDRIBBLING · 87","💥Tiro da fuoriTIRO · 89","🔁Uno-due con MOLINAPASSAGGIO · 89"]
+     TESTO ESP · ESP · 0–0 · 23' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 🧠 FRA LE LINEE, HUGHES ESCE IN RITARDO! · NÚÑEZ apre per MOLINA, che ti serve. Nessun taglio in profondità: valuta il tiro o il dai e vai. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Finta e cambio di passo · DRIBBLING · 87 · 💥 · Tiro da fuori · TIRO · 89 · 🔁 · Uno-due con MOLINA · PASSAGGIO · 89
+     ► 💥Tiro da fuoriTIRO · 89
+  t+62s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 23' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 💥 · LA GIOCATA · Tiro da fuori
+  t+69s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 23' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧱 MURATO DALLA DIFESA · Murato dalla difesa · 💥 Tiro da fuori · ❌ Murato dalla difesa. · voto 6.2 · CONTINUA
+     ► Continua
+  t+72s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 24' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 37% · 63% · TIRI · 6 · 1 · IN PORTA · 0 · 0 · XG · 0,47 · 0,04 · STATISTICHE · PAGELLE · › · Bruno Cascioli · commento tecnico · «Bella l'ampiezza, la squadra si allarga bene.» · ⚽ 0 · 🎯 0 · ⚡ 73% · ⭐ 6.2 · 📍 Bordo area
+  t+73s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 25' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ⚽ · 📐 Punizione dal limite, 22 metri: tocca a te! · Posizione ideale per calciare in porta. · ⚔️ ATTACCO · Tocca per iniziare
+  t+76s TASTI ["⏸","🔊","2×","⚠️","Scegli"]
+     TESTO ESP · ESP · 0–0 · 25' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 📐 Punizione dal limite, 22 metri: tocca a te! · 📍 Bordo area · Scegli la giocata. Il marcatore sta arrivando. · Scegli
+     ► Scegli
+  t+78s TASTI ["⏸","🔊","2×","⚠️","🌀Giro sopra la barrieraA scavalcare il muro, verso l'angolo alto: la ","💥Bordata potenteDritta e fortissima, anche attraverso la barriera: il","⚡Rasoterra sotto la barrieraIl colpo furbo: se il muro salta, passa so","↗️↗️ Palla in areaLa mira è sul compagno, non sulla porta."]
+     TESTO ESP · ESP · 0–0 · 25' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 📐 PUNIZIONE DAL LIMITE, 22 METRI: TOCCA A TE! · Posizione ideale per calciare in porta. · 🌀 · Giro sopra la barriera · A SCAVALCARE IL MURO, VERSO L'ANGOLO ALTO: LA CLASSICA DELLO SPECIALISTA. · 💥 · Bordata potente · DRITTA E FORTISSIMA, ANCHE ATTRAVERSO LA BARRIERA: IL PORTIERE PUÒ SOLO RESPINGERE. · ⚡ · Rasoterra sotto la 
+     ► ↗️↗️ Palla in areaLa mira è sul compagno, non sulla porta.
+  t+79s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 25' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ↗️ · LA GIOCATA · Palla in area
+  t+111s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 25' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🅰️ ASSIST PERFETTO — PARA IL PORTIERE SU IL COMPAGNO · Assist perfetto — para il portiere su il compagno · ↗️ Palla in area · 🅰️ Il passaggio è d'oro: il compagno calcia, para il portiere. · voto 6.2 · CONTINUA
+     ► Continua
+  t+113s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 26' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 37% · 63% · TIRI · 7 · 1 · IN PORTA · 1 · 0 · XG · 0,49 · 0,04 · STATISTICHE · PAGELLE · › · ⛈️ L'erba bagnata rallenta le combinazioni. · ⚽ 0 · 🎯 0 · ⚡ 65% · ⭐ 6.2 · 📍 Bordo area
+  t+118s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 32' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ⚽ · 🚩 Calcio d'angolo di HIDALGO: attacca il pallone! · HARRIS ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare
+  t+122s TASTI ["⏸","🔊","2×","⚠️","🎯Conclusione precisaFISICO · 89","💥Conclusione potenteFISICO · 89","⚽Volée di collo potenteTIRO · 89"]
+     TESTO ESP · ESP · 0–0 · 32' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 🚩 CALCIO D'ANGOLO DI HIDALGO: ATTACCA IL PALLONE! · HARRIS ti marca stretto. · Scegli prima che il marcatore arrivi · Pressione · 🎯 · Conclusione precisa · FISICO · 89 · 💥 · Conclusione potente · FISICO · 89 · ⚽ · Volée di collo potente · TIRO · 89
+     ► 🎯Conclusione precisaFISICO · 89
+  t+124s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 32' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🎯 · LA GIOCATA · Testa piazzata all'angolo
+  t+136s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 32' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 💨 TIRO FUORI DI POCO · Tiro fuori di poco · 🎯 Testa piazzata all'angolo · 💨 Sopra la traversa — che rimpianto! · voto 6.1 · CONTINUA
+     ► Continua
+  t+137s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 33' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 35% · 65% · TIRI · 9 · 1 · IN PORTA · 1 · 0 · XG · 0,58 · 0,04 · STATISTICHE · PAGELLE · › · 💨 Sopra la traversa — che rimpianto! · ⚽ 0 · 🎯 0 · ⚡ 52% · ⭐ 6.1 · 📍 Bordo area
+  t+140s TASTI ["1Giochiamo come se fossimo in undiciPremio: restiamo pericolosi: più t","2Teniamo palla e facciamoli correrePremio: loro tirano di menoRischio:","3Corro per due, datela a mePremio: la prossima palla buona arriva a te"]
+     TESTO ESP · ESP · 0–0 · 36' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 37% · 63% · TIRI · 9 · 1 · IN PORTA · 1 · 0 · XG · 0,58 · 0,04 · STATISTICHE · PAGELLE · › · 🟥 Siamo rimasti in dieci al 36': il mister richiama tutti con le mani. · 📣 IL MISTER · CT Nieto · 36' · Siamo rimasti in dieci al 36': il mister richiama tutti con le mani. · 1Giochiamo come se fossimo in undici · Premio: restia
+     ► 3Corro per due, datela a mePremio: la prossima palla buona a
+  t+143s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 38' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ⚽ · 🌀 Tentativo di dribbling · HUGHES prova a chiudere. · ⚔️ ATTACCO · Tocca per iniziare
+  t+146s TASTI ["⏸","🔊","2×","⚠️","🌀Roulette e tiroDRIBBLING · 87","🌀Finta e tiroDRIBBLING · 87","🎯Cerca l'angoloTECNICA · 89"]
+     TESTO ESP · ESP · 0–0 · 38' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · 🌀 TENTATIVO DI DRIBBLING · HUGHES prova a chiudere. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Roulette e tiro · DRIBBLING · 87 · 🌀 · Finta e tiro · DRIBBLING · 87 · 🎯 · Cerca l'angolo · TECNICA · 89
+     ► 🌀Roulette e tiroDRIBBLING · 87
+  t+148s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 38' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🌀 · LA GIOCATA · Roulette e tiro
+  t+160s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 38' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧱 CONCLUSIONE MURATA · Conclusione murata · 🌀 Roulette e tiro · ❌ Murato dalla difesa. · voto 6.1 · CONTINUA
+     ► Continua
+  t+161s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 39' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 38% · 62% · TIRI · 10 · 1 · IN PORTA · 1 · 0 · XG · 0,60 · 0,04 · STATISTICHE · PAGELLE · › · ❌ Murato dalla difesa. · ⚽ 0 · 🎯 0 · ⚡ 36% · ⭐ 6.1 · 📍 Bordo area
+  t+162s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 40' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧣 · ¡CAMPEONES! ⚡ · ⚽ · ✈️ Tentativo di inserimento in area · HUGHES ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare
+  t+166s TASTI ["⏸","🔊","2×","⚠️","🎯Controllo e tiro fermoTECNICA · 89","💥Conclusione potenteFISICO · 89","✈️Attacca il palloneFISICO · 89"]
+     TESTO ESP · ESP · 0–0 · 40' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · ✈️ TENTATIVO DI INSERIMENTO IN AREA · HUGHES ti marca stretto. · Scegli prima che il marcatore arrivi · Pressione · 🎯 · Controllo e tiro fermo · TECNICA · 89 · 💥 · Conclusione potente · FISICO · 89 · ✈️ · Attacca il pallone · FISICO · 89
+     ► ✈️Attacca il palloneFISICO · 89
+  t+168s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 40' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ✈️ · LA GIOCATA · Stacco in corsa potente
+  t+178s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 40' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧤 IL GOL SEMBRAVA FATTO · Il gol sembrava fatto · ✈️ Stacco in corsa potente · 😔 Para il portiere. · 🏃 Difensore addosso −3% · voto 6.1 · CONTINUA
+     ► Continua
+  t+180s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 41' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 37% · 63% · TIRI · 11 · 1 · IN PORTA · 2 · 0 · XG · 0,62 · 0,04 · STATISTICHE · PAGELLE · › · ⭐ «Corro per due, datela a me»: la palla buona è arrivata a Vairo al 36'. · ⚽ 0 · 🎯 0 · ⚡ 20% · ⭐ 6.1 · 📍 Bordo area
+  t+193s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 54' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧣 · ¡FUERZA SPAGNA! 🔥 · ⚽ · ✈️ Tentativo di inserimento in area · HARRIS ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare
+  t+195s TASTI ["⏸","🔊","2×","⚠️","💥Conclusione potenteTIRO · 89","🎯Conclusione precisaFISICO · 89","✈️Attacca il palloneFISICO · 89"]
+     TESTO ESP · ESP · 0–0 · 54' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · LA TUA GIOCATA · ✈️ TENTATIVO DI INSERIMENTO IN AREA · HARRIS ti marca stretto. · Scegli prima che il marcatore arrivi · Pressione · 💥 · Conclusione potente · TIRO · 89 · 🎯 · Conclusione precisa · FISICO · 89 · ✈️ · Attacca il pallone · FISICO · 89
+     ► 🎯Conclusione precisaFISICO · 89
+  t+197s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO ESP · ESP · 0–0 · 54' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🎯 · LA GIOCATA · Testa piazzata all'angolo
+  t+206s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO ESP · ESP · 0–0 · 54' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · 🧤 IL GOL SEMBRAVA FATTO · Il gol sembrava fatto · 🎯 Testa piazzata all'angolo · ❌ Tiro debole, para comodo. · voto 6.2 · CONTINUA
+     ► Continua
+  t+208s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–0 · 55' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 40% · 60% · TIRI · 15 · 2 · IN PORTA · 4 · 0 · XG · 0,83 · 0,10 · STATISTICHE · PAGELLE · › · ❌ Tiro debole, para comodo. · ⚽ 0 · 🎯 0 · ⚡ 7% · ⭐ 6.2 · 📍 Area avversaria
+  t+229s TASTI ["1Tutti avanti, pressing altoPremio: tanti tiri per il pareggioRischio:","2Costruiamo col pallone, senza frettaPremio: loro tirano di meno, la p","3Palla a me, la risolvo ioPremio: la prossima occasione arriva a te, p"]
+     TESTO ESP · ESP · 0–1 · 79' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 36% · 64% · TIRI · 17 · 5 · IN PORTA · 5 · 1 · XG · 0,91 · 0,61 · STATISTICHE · PAGELLE · › · 📢 Sotto di un gol al 79': il mister batte le mani, serve il pareggio. · 📣 IL MISTER · CT Nieto · 79' · Sotto di un gol al 79': il mister batte le mani, serve il pareggio. · 1Tutti avanti, pressing alto · Premio: tanti tiri per 
+     ► 1Tutti avanti, pressing altoPremio: tanti tiri per il paregg
+  t+231s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO ESP · ESP · 0–1 · 81' · 🌈 · ⏸ · 🔊 · 2× · ⚠️ · 🌍 MONDIALE · ENG · ENG · ESP · ENG · POSSESSO · 36% · 64% · TIRI · 17 · 5 · IN PORTA · 5 · 1 · XG · 0,91 · 0,61 · STATISTICHE · PAGELLE · › · Bruno Cascioli · commento tecnico · «In area serve freddezza, non forza.» · ⚽ 0 · 🎯 0 · ⚡ 15% · ⭐ 5.9 · 📍 Bordo area
+  STOP: trovato «FISCHIO.FINALE»
+  fine osservazione dopo 242 s
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/34-dopo-mondiale-tel.png
+TASTI: ["Il tuo tabellino›","Tabellino della gara›"] 
+TESTO: 📰 Cronaca di Sport
+Stag. 16 · Sett. 21
+KO AMARO
+QUALIF. MONDIALE · QUALIFICAZIONI · GARA 1
+FISCHIO FINALE
+SPAGNA
+0–1
+INGHILTERRA
+SCONFITTA
+🧠 La tua scelta al 36': «Corro per due, datela a me» → ci hanno puniti: gol subito fino al 79'
+🧠 La tua scelta al 79': «Tutti avanti, pressing alto» → 4 palloni recuperati fino al fischio
+IL TUO TABELLINO
+›
+TABELLINO DELLA GARA
+›
+Spagna
+—
+Inghilterra
+0
+Gol
+1
+38%
+Possesso
+62%
+18
+Tiri
+6
+5
+Tiri in porta
+2
+0.96
+Gol attesi (xG)
+0.69
+19
+Azioni dalle fasce
+12
+14
+Cross
+11
+60%
+Dribbling riusciti
+14%
+270
+Passaggi
+435
+92%
+Precisione passaggi
+94%
+29
+Recuperi
+20
+1
+Parate
+5
+5
+Calci d'angolo
+2
+11
+Falli
+13
+3
+Ammonizioni
+4
+1
+Espulsioni
+0
+9
+Rimesse laterali
+4
+IL TUO TABELLINO IN NUMERI
+›
+👟
+77
+Palloni ricevuti
+🎯
+60/66
+Passaggi riusciti
+⚽
+2/6
+Tiri in porta
+🛡️
+4
+Recuperi
+PAGELLA
+5.8
+Da migliorare
+4.0
+10.0
+CT NIETO · DOPO LA PARTITA
+Prestazione sotto le aspettative. Torna al club e lavora: ti seguiamo.
+MOMENTI CHIAVE
+78'
+😨 Gol di Carter
+L'ANALISI
+L'Inghilterra ha sfruttato le transizioni rapide. La Spagna ha sofferto in fase difensiva.
+DALLE ALTRE TESTATE
+CRONACA DI SPORT
+Sotto analisi: Samuelito Vairo al minimo (5.8/10), la Spagna deve reagire
+ZONA MISTA
+ALLARME ROSSO! La Spagna cade 0-1 — serve una scossa
+SPORT IN RETE
+Studio: lacune difensive della Spagna sfruttate dall'Inghilterra, 0-1
+LE PAROLE DEL PROTAGONISTA
+«Abbiamo deluso i tifosi. Ce lo meritiamo. Torneremo più cattivi.»
+MIGLIORE IN CAMPO
+Puyal
+LA CURVA
+«Fischi a fine partita — i tifosi chiedono di più.»
+📖 Veterano — 16ª stagione
+#SpagnaRiparti
+🏟️ TORNA ALLA HOME
+«Torna alla home» → 🏟️ Torna alla Home → MER · FC MERSEYSIDE · Premier Division · St. 16 · Sett. 21/38 · 5° posto · salvato 11:52 · v 7.999.193 · ⏩ Vai
+STATO {"n":"Samuelito Vairo","club":"FC Merseyside","lg":"Premier Division","s":16,"w":21,"lived":true,"pro":"pro","ovr":92,"g":12,"a":5,"m":25,"tg":514,"age":32,"trust":85,"mor":100,"pop":97.4,"bank":170011963,"fase":null}

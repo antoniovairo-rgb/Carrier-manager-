@@ -1,0 +1,327 @@
+«^Carriera$» → Carriera → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · v 7.999.193 · 👤 
+«^MILESTONE» → Milestone› → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · v 7.999.193 · 👤 
+«LA CITTÀ TI RICORDA» → La Città ti Ricorda› → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · v 7.999.193 · 👤 
+«STATISTICHE CARRIERA» → Statistiche Carriera› → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · v 7.999.193 · 👤 
+«RECORD PERSONALI» → Record personali4› → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · 👤 · Profilo · 🌍
+«MODALITÀ SFIDA» → Modalità Sfida› → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · 👤 · Profilo · 🌍
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/28-carriera-aperta-s15-tel.png
+TASTI: ["Achievement (18/34)›","Modalità Sfida›","Home","Stagione","Club","Carriera","Agente","Ufficio"] 
+TESTO: MER
+FC MERSEYSIDE
+Premier Division · St. 15 · Fine stagione · 4° posto
+salvato 11:44
+👤
+Profilo
+🌍
+Nazionale
+RECORD DI CARRIERA
+›
+93
+ATT
+SPA
+VAIRO
+88
+TIR
+88
+PAS
+87
+DRI
+86
+VEL
+92
+FIS
+89
+TEC
+SAMUELITO VAIRO
+31 anni · FC Merseyside · in rotazione
+635
+PRESENZE
+502
+GOL
+229
+ASSIST
+21
+TROFEI
+GOL PER STAGIONE
+Record: 49 (St. 12)
+St. 1
+St. 15 · in corso
+In Rotazione
+Prossimo gradino — Titolare: OVR ≥78 (ora 93) · fiducia del mister ≥72 (ora 100) · voto medio ≥6,8 (ora 7,2)
+STATISTICHE
+6
+›
+Gol stagione
+21
+Assist stagione
+16
+Presenze stag.
+43
+Gol carriera
+502
+Assist carriera
+229
+Valore
+€56 mln
+Stagioni da professionista completate: 14
+BIOGRAFIA
+›
+STATISTICHE CARRIERA
+›
+⚽ Gol
+21
+🎯 Assist
+16
+📊 OVR
+93
+RECORD PERSONALI
+4
+›
+⚽
+Record: gol in una stagione
+49
+S.12 · FC Merseyside
+🎯
+Record: assist in una stagione
+31
+S.11 · FC Merseyside
+📊
+OVR massimo raggiunto
+94
+👕
+Record: presenze in una stagione
+48
+S.5 · FC Rotterdam
+📈
+Proiezione (Sett. 39/38)
+~20
+gol a fine stagione
+BACHECA TROFEI
+21
+›
+STORICO ALLENATORI
+5
+›
+RIVALE: BRUNO ASANTE
+›
+CLUB DEI SOGNI: FC CATALUNYA
+›
+LA STAMPA
+3
+›
+LA CITTÀ TI RICORDA
+›
+👋
+Commando Sempre
+FC Salento · 2 stagioni
+Rispettato
+🏆
+Fronte Nord
+FC Rotterdam · 4 stagioni
+Leggenda
+👋
+Guardiani Est
+FC Partenope · 1 stagione
+Rispettato
+👋
+Commando Sempre
+FC Merseyside · 7 stagioni
+Rispettato
+PREMI PERSONALI
+›
+CORSA AI PREMI
+›
+MVP DEL MESE
+28
+›
+MEMORIA DELLA CARRIERA
+35
+›
+DIARIO DI CARRIERA
+158
+›
+CONTRATTO
+›
+ATTRIBUTI
+8
+›
+TIMELINE STAGIONI
+14
+›
+MILESTONE
+›
+👕 PRESENZE
+👟
+10 partite
+✓
+🎯
+25 partite
+✓
+⚡
+50 partite
+✓
+💎
+100 partite
+✓
+🏛️
+200 partite
+✓
+⚽ GOL
+⚽
+10 gol
+✓
+🔥
+20 gol
+✓
+💥
+50 gol
+✓
+👑
+100 gol
+✓
+🔱
+150 gol
+✓
+🅰️ ASSIST
+🎯
+10 assist
+✓
+🎨
+25 assist
+✓
+🖌️
+50 assist
+✓
+👑
+100 assist
+✓
+📈 CRESCITA
+⭐
+OVR 70
+✓
+🌟
+OVR 80
+✓
+✨
+OVR 90
+✓
+🚀
+OVR 95
+🏆 CARRIERA
+🎽
+Pro
+✓
+🏆
+1 Trofeo
+✓
+🥇
+3 Trofei
+✓
+🏅
+5 Trofei
+✓
+🌍 NAZIONALE
+🌍
+Esordio
+✓
+🎌
+10 Presenze
+✓
+⭐
+25 Presenze
+✓
+🎖️
+Gol Azzurro
+✓
+ACHIEVEMENT (18/34)
+›
+MODALITÀ SFIDA
+›
+🎂
+Sempreverde
+Gioca ancora a 34 anni o oltre.
+🎯
+Progresso
+31/34 anni
+HOME
+STAGIONE
+CLUB
+CARRIERA
+AGENTE
+UFFICIO
+«Nazionale» → 🌍Nazionale → MER · FC MERSEYSIDE · Premier Division · St. 15 · Fine stagione · 4° posto · salvato 11:44 · 👤 · Profilo · 🌍
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/29-nazionale-s15-tel.png
+TASTI: ["Salva carriera, ultimo salvataggio 11:44","Opzioni","👤Profilo","🌍Nazionale","La maglia numero 9 — La lista del CT›","Prossimi tornei della Nazionale› [coperto]","☕ Sostieni il progetto","💡 Idee e feedback","Home","Stagione","Club","Carriera","Agente","Ufficio"] 
+TESTO: MER
+FC MERSEYSIDE
+Premier Division · St. 15 · Fine stagione · 4° posto
+salvato 11:44
+👤
+Profilo
+🌍
+Nazionale
+🇪🇸
+NAZIONALE
+Spagna
+Prestigio mondiale: 90/100
+Commissario tecnico: Nieto · Possesso Palla · in carica dalla stagione 13
+🌍
+26
+Presenze
+⚽
+27
+Gol in Naz.
+📊
+1
+Gol a partita
+🏅
+Titolare
+Status
+LA MAGLIA NUMERO 9 — LA LISTA DEL CT
+›
+Ordine del CT: livello, gol e ruolo nel club. Accanto, le presenze in Nazionale.
+1º
+Samuelito Vairo (tu)
+26 presenze
+2º
+Joan Castro
+33 presenze
+3º
+Juanmi Montero
+36 presenze
+4º
+Álvaro Báez
+35 presenze
+Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco.
+🤝 Rapporto col CT: 75/100 — Il CT ti considera un punto fermo. Finestre internazionali della stagione concluse.
+PROSSIMI TORNEI DELLA NAZIONALE
+›
+🌍
+Mondiale
+Stagione 16 · Settimana 20
+🌐
+Coppa delle Nazioni
+Stagione 18 · Settimana 20
+🏆
+Europeo
+Stagione 20 · Settimana 20
+🌐
+Coppa delle Nazioni
+Stagione 22 · Settimana 20
+Gli avversari si definiscono all'inizio di ogni torneo.
+COPPA DELLE NAZIONI S.14
+›
+Eliminati (fase a gironi)
+Punti: 10/9
+PARTITE IN NAZIONALE
+›
+MOMENTI IN NAZIONALE
+›
+☕ Sostieni il progetto
+💡 Idee e feedback
+HOME
+STAGIONE
+CLUB
+CARRIERA
+AGENTE
+UFFICIO
