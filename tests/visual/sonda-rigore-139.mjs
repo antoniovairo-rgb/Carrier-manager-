@@ -20,6 +20,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const N = +(process.env.CPM_N || 6), PAR = Math.max(1, +(process.env.CPM_PAR || 2)), TAG = process.env.CPM_TAG || 'g139';
 const K = process.env.CPM_K != null && process.env.CPM_K !== '' ? +process.env.CPM_K : null;
+const SOLO = !!process.env.CPM_SOLO; /* [giro 187] CPM_SOLO=1: soli highlight forzati dal gancio __CPM_SOLO166 (solo per CERCARE candidati in fretta: il guardiano gioca la partita intera) */
 const SPEED = process.env.CPM_SPEED || '2', ROSSO = !!process.env.CPM_ROSSO, CAP = +(process.env.CPM_CAP || 420000);
 const NOMI = process.env.CPM_NOMI ? process.env.CPM_NOMI.split(',') : Array.from({ length: N }, (_, i) => `${TAG}-${i}`);
 const SEMI = process.env.CPM_SEMI ? process.env.CPM_SEMI.split(',').map(Number) : null; /* seme dell'autoplay per partita (default: indice+1) */
@@ -29,9 +30,9 @@ async function partita(nome, idx) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + nome;
-  await page.addInitScript(([s, k, sp, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
-    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; window.__CPM_NO_G154 = 1;/* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
-    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO]);
+  await page.addInitScript(([s, k, sp, r, so]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
+    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; if (so) window.__CPM_SOLO166 = 1; window.__CPM_NO_G154 = 1;/* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
+    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO, SOLO]);
   const t0 = Date.now();
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 90000 });
