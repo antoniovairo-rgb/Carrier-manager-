@@ -1,0 +1,55 @@
+
+== 360x640
+  mossa  titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 alto 41 tagliato no
+  scelte scheda 326-639 (VH 640) · riquadro 180/180 non scorre · tempo 6s · armate true
+         titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 tagliato no
+         449-505 (56x318) dentro «💪 Contrasto pulito senza fallo FISICO · 69»
+         511-567 (56x318) dentro «🤼 Raddoppio coordinato col compagno TECNICA · 74»
+         573-629 (56x318) dentro «🧠 Anticipa sul primo controllo MENTALITÀ · 82»
+  scelte scheda 311-639 (VH 640) · riquadro 180/180 non scorre · tempo 9s · armate true
+         titolo «🧠 Fra le linee, NITZSCHE esce in ritardo!» righe 2 tagliato no
+         449-505 (56x318) dentro «🔁 Uno-due con EBERT PASSAGGIO · 69»
+         511-567 (56x318) dentro «🎯 Filtrante per EBERT PASSAGGIO · 69»
+         573-629 (56x318) dentro «💥 Tiro da fuori TIRO · 68»
+
+== 375x667
+  mossa  titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 alto 41 tagliato no
+  scelte scheda 353-666 (VH 667) · riquadro 180/180 non scorre · tempo 6s · armate true
+         titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 tagliato no
+         476-532 (56x333) dentro «💪 Contrasto pulito senza fallo FISICO · 69»
+         538-594 (56x333) dentro «🤼 Raddoppio coordinato col compagno TECNICA · 74»
+         600-656 (56x333) dentro «🧠 Anticipa sul primo controllo MENTALITÀ · 82»
+  scelte scheda 359-666 (VH 667) · riquadro 180/180 non scorre · tempo 9s · armate true
+         titolo «🧠 Fra le linee, NITZSCHE esce in ritardo!» righe 1 tagliato no
+         476-532 (56x333) dentro «🔁 Uno-due con EBERT PASSAGGIO · 69»
+         538-594 (56x333) dentro «🎯 Filtrante per EBERT PASSAGGIO · 69»
+         600-656 (56x333) dentro «💥 Tiro da fuori TIRO · 68»
+
+== 390x844
+  mossa  titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 alto 41 tagliato no
+  scelte scheda 530-843 (VH 844) · riquadro 180/180 non scorre · tempo 6s · armate true
+         titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 tagliato no
+         653-709 (56x360) dentro «💪 Contrasto pulito senza fallo FISICO · 69»
+         715-771 (56x360) dentro «🤼 Raddoppio coordinato col compagno TECNICA · 74»
+         777-833 (56x360) dentro «🧠 Anticipa sul primo controllo MENTALITÀ · 82»
+  scelte scheda 536-843 (VH 844) · riquadro 180/180 non scorre · tempo 9s · armate true
+         titolo «🧠 Fra le linee, NITZSCHE esce in ritardo!» righe 1 tagliato no
+         653-709 (56x360) dentro «🔁 Uno-due con EBERT PASSAGGIO · 69»
+         715-771 (56x360) dentro «🎯 Filtrante per EBERT PASSAGGIO · 69»
+         777-833 (56x360) dentro «💥 Tiro da fuori TIRO · 68»
+
+== 412x915
+  mossa  titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 2 alto 41 tagliato no
+  scelte scheda 622-914 (VH 915) · riquadro 180/180 non scorre · tempo 6s · armate true
+         titolo «🛡️ NITZSCHE ti punta a centrocampo: fermalo!» righe 1 tagliato no
+         724-780 (56x382) dentro «💪 Contrasto pulito senza fallo FISICO · 69»
+         786-842 (56x382) dentro «🤼 Raddoppio coordinato col compagno TECNICA · 74»
+         848-904 (56x382) dentro «🧠 Anticipa sul primo controllo MENTALITÀ · 82»
+  scelte scheda 622-914 (VH 915) · riquadro 180/180 non scorre · tempo 9s · armate true
+         titolo «🧠 Fra le linee, NITZSCHE esce in ritardo!» righe 1 tagliato no
+         724-780 (56x382) dentro «🔁 Uno-due con EBERT PASSAGGIO · 69»
+         786-842 (56x382) dentro «🎯 Filtrante per EBERT PASSAGGIO · 69»
+         848-904 (56x382) dentro «💥 Tiro da fuori TIRO · 68»
+
+braccio verde · difetti 0
+ESITO: VERDE
