@@ -1,0 +1,116 @@
+{
+ "nome": "settimana",
+ "W": 375,
+ "H": 667,
+ "save": "save-c177-s5w20.json",
+ "tocchi": 5,
+ "diario": [
+  {
+   "passo": "VIVI LA SETTIMANA",
+   "esito": {
+    "w": 151,
+    "h": 88,
+    "y": 289
+   },
+   "foto": "02-VIVI_LA_SETTIMANA.png"
+  },
+  {
+   "passo": "@auto:6:GIOCA VS",
+   "esito": [
+    "🔥 Cavalco l'onda — oggi è un gran giorno [328x72]"
+   ],
+   "foto": "04-_auto_6_GIOCA_VS.png"
+  },
+  {
+   "passo": "GIOCA VS",
+   "esito": {
+    "w": 205,
+    "h": 72,
+    "y": 297
+   },
+   "foto": "05-GIOCA_VS.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 5 <48:1 <44:0 <32:0 vicini 0 tagliati 0 schermi 1 sfum 0 senzaNome 0 nonSem 1 titoli 0 dialog 0 live 0",
+   "foto": "06-_misura.png"
+  },
+  {
+   "passo": "Gioca la partita",
+   "esito": {
+    "w": 328,
+    "h": 54,
+    "y": 363
+   },
+   "foto": "07-Gioca_la_partita.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 4 <48:3 <44:0 <32:0 vicini 0 tagliati 0 schermi 1 sfum 0 senzaNome 0 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "08-_misura.png"
+  },
+  {
+   "passo": "Salta e gioca",
+   "esito": {
+    "w": 178,
+    "h": 44,
+    "y": 544
+   },
+   "foto": "09-Salta_e_gioca.png"
+  },
+  {
+   "passo": "@js:(async()=>{const t=Date.now();while(Date.now()-t<40000){if(window.__CPM_PHASE&&window.__CPM_PHASE()===\"playing\")return \"ok \"+(Date.now()-t);await new Promise(r=>setTimeout(r,200));}return \"scaduto \"+(window.__CPM_PHASE&&window.__CPM_PHASE());})()",
+   "esito": "ok 0",
+   "foto": "10-_js_async_const_t_Date_now_whi.png"
+  },
+  {
+   "passo": "@attendi:2500",
+   "esito": "ok",
+   "foto": "11-_attendi_2500.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 9 <48:4 <44:0 <32:0 vicini 7 tagliati 3 schermi 1 sfum 0 senzaNome 0 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "12-_misura.png"
+  },
+  {
+   "passo": "@js:(async()=>{const t=Date.now();while(Date.now()-t<150000){if(window.__CPM_PHASE&&window.__CPM_PHASE()===\"hl_choose\")return \"ok \"+(Date.now()-t);await new Promise(r=>setTimeout(r,200));}return \"scaduto \"+(window.__CPM_PHASE&&window.__CPM_PHASE());})()",
+   "esito": "ok 0",
+   "foto": "13-_js_async_const_t_Date_now_whi.png"
+  },
+  {
+   "passo": "@attendi:1200",
+   "esito": "ok",
+   "foto": "14-_attendi_1200.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 7 <48:0 <44:0 <32:0 vicini 5 tagliati 2 schermi 1 sfum 0 senzaNome 0 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "15-_misura.png"
+  },
+  {
+   "passo": "@js:localStorage.setItem('cpm-match-speed','2')",
+   "foto": "16-_js_localStorage_setItem_cpm_m.png"
+  },
+  {
+   "passo": "@js:window.__CPM_AUTOPLAY&&window.__CPM_AUTOPLAY(true,{seed:5,policy:'seeded',tickMs:200})",
+   "esito": true,
+   "foto": "17-_js_window_CPM_AUTOPLAY_window.png"
+  },
+  {
+   "passo": "@js:(async()=>{const t=Date.now();while(Date.now()-t<300000){if(window.__CPM_PHASE&&window.__CPM_PHASE()===\"ended\")return \"ok \"+(Date.now()-t);await new Promise(r=>setTimeout(r,200));}return \"scaduto \"+(window.__CPM_PHASE&&window.__CPM_PHASE());})()",
+   "esito": "ok 120730",
+   "foto": "18-_js_async_const_t_Date_now_whi.png"
+  },
+  {
+   "passo": "@attendi:2500",
+   "esito": "ok",
+   "foto": "19-_attendi_2500.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 5 <48:0 <44:0 <32:0 vicini 0 tagliati 0 schermi 3.21 sfum 0 senzaNome 0 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "20-_misura.png"
+  }
+ ]
+}

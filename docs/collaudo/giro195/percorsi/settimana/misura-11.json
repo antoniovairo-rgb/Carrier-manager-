@@ -1,0 +1,138 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "body",
+ "T": {
+  "n": 9,
+  "sotto48": 4,
+  "sotto44": 0,
+  "sotto32": 0,
+  "elenco": [
+   {
+    "tag": "button",
+    "w": 44,
+    "h": 44,
+    "nome": "▲"
+   },
+   {
+    "tag": "button",
+    "w": 44,
+    "h": 44,
+    "nome": "◀"
+   },
+   {
+    "tag": "button",
+    "w": 44,
+    "h": 44,
+    "nome": "▶"
+   },
+   {
+    "tag": "button",
+    "w": 44,
+    "h": 44,
+    "nome": "▼"
+   }
+  ]
+ },
+ "V": {
+  "n": 7,
+  "elenco": [
+   {
+    "a": "Pausa (P)",
+    "b": "Audio della partita",
+    "d": 0
+   },
+   {
+    "a": "Audio della partita",
+    "b": "Velocità della partita: 2×. ",
+    "d": 0
+   },
+   {
+    "a": "Velocità della partita: 2×. ",
+    "b": "Segna un'azione sbagliata (m",
+    "d": 0
+   },
+   {
+    "a": "▲",
+    "b": "◀",
+    "d": 5.7
+   },
+   {
+    "a": "▲",
+    "b": "▶",
+    "d": 5.7
+   },
+   {
+    "a": "◀",
+    "b": "▼",
+    "d": 5.7
+   },
+   {
+    "a": "▶",
+    "b": "▼",
+    "d": 5.7
+   }
+  ]
+ },
+ "C": {
+  "n": 3,
+  "elenco": [
+   {
+    "tipo": "largo",
+    "tag": "div[data-cpm=barra-nome-182]",
+    "testo": "FFT",
+    "mancano": 4
+   },
+   {
+    "tipo": "largo",
+    "tag": "div[data-cpm=barra-nome-182]",
+    "testo": "WOL",
+    "mancano": 5
+   },
+   {
+    "tipo": "largo",
+    "tag": "div",
+    "testo": "🛡️ NITZSCHE ti punta a centrocampo: fermalo!",
+    "mancano": 136
+   }
+  ]
+ },
+ "F": {
+  "alto": 0,
+  "basso": 0,
+  "libero": 667,
+  "quotaLibera": 100,
+  "fissi": []
+ },
+ "S": {
+  "altezza": 667,
+  "schermi": 1
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 9,
+  "senzaNome": 0,
+  "senzaNomeElenco": [],
+  "conAria": 6,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 7,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 10,
+  "13": 2,
+  "15": 3,
+  "17": 1,
+  "24": 3,
+  "27": 2
+ },
+ "nTesto": 21
+}

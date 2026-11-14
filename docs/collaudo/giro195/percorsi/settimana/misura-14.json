@@ -1,0 +1,97 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "body",
+ "T": {
+  "n": 7,
+  "sotto48": 0,
+  "sotto44": 0,
+  "sotto32": 0,
+  "elenco": []
+ },
+ "V": {
+  "n": 5,
+  "elenco": [
+   {
+    "a": "Pausa (P)",
+    "b": "Audio della partita",
+    "d": 0
+   },
+   {
+    "a": "Audio della partita",
+    "b": "Velocità della partita: 2×. ",
+    "d": 0
+   },
+   {
+    "a": "Velocità della partita: 2×. ",
+    "b": "Segna un'azione sbagliata (m",
+    "d": 0
+   },
+   {
+    "a": "💪 Contrasto pulito senza fa",
+    "b": "🤼 Raddoppio coordinato col ",
+    "d": 6
+   },
+   {
+    "a": "🤼 Raddoppio coordinato col ",
+    "b": "🧠 Anticipa sul primo contro",
+    "d": 6
+   }
+  ]
+ },
+ "C": {
+  "n": 2,
+  "elenco": [
+   {
+    "tipo": "largo",
+    "tag": "div[data-cpm=barra-nome-182]",
+    "testo": "FFT",
+    "mancano": 4
+   },
+   {
+    "tipo": "largo",
+    "tag": "div[data-cpm=barra-nome-182]",
+    "testo": "WOL",
+    "mancano": 5
+   }
+  ]
+ },
+ "F": {
+  "alto": 0,
+  "basso": 0,
+  "libero": 667,
+  "quotaLibera": 100,
+  "fissi": []
+ },
+ "S": {
+  "altezza": 667,
+  "schermi": 1
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 7,
+  "senzaNome": 0,
+  "senzaNomeElenco": [],
+  "conAria": 2,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 2,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 13,
+  "13": 2,
+  "15": 7,
+  "20": 1,
+  "24": 3,
+  "27": 2
+ },
+ "nTesto": 28
+}

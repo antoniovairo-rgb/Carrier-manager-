@@ -1,0 +1,75 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "body",
+ "T": {
+  "n": 4,
+  "sotto48": 3,
+  "sotto44": 0,
+  "sotto32": 0,
+  "elenco": [
+   {
+    "tag": "button",
+    "w": 178,
+    "h": 44,
+    "nome": "Analisi dell'avversario"
+   },
+   {
+    "tag": "button",
+    "w": 178,
+    "h": 44,
+    "nome": "Salta e gioca"
+   },
+   {
+    "tag": "button",
+    "w": 363,
+    "h": 44,
+    "nome": "Torna alla home"
+   }
+  ]
+ },
+ "V": {
+  "n": 0,
+  "elenco": []
+ },
+ "C": {
+  "n": 0,
+  "elenco": []
+ },
+ "F": {
+  "alto": 0,
+  "basso": 0,
+  "libero": 667,
+  "quotaLibera": 100,
+  "fissi": []
+ },
+ "S": {
+  "altezza": 667,
+  "schermi": 1
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 4,
+  "senzaNome": 0,
+  "senzaNomeElenco": [],
+  "conAria": 0,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 2,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 19,
+  "13": 5,
+  "15": 2,
+  "27": 2
+ },
+ "nTesto": 28
+}

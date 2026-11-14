@@ -1,0 +1,61 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "body",
+ "T": {
+  "n": 5,
+  "sotto48": 0,
+  "sotto44": 0,
+  "sotto32": 0,
+  "elenco": []
+ },
+ "V": {
+  "n": 0,
+  "elenco": []
+ },
+ "C": {
+  "n": 0,
+  "elenco": []
+ },
+ "F": {
+  "alto": 0,
+  "basso": 0,
+  "libero": 667,
+  "quotaLibera": 100,
+  "fissi": []
+ },
+ "S": {
+  "altezza": 2142,
+  "schermi": 3.21
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 5,
+  "senzaNome": 0,
+  "senzaNomeElenco": [],
+  "conAria": 0,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 0,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 110,
+  "13": 18,
+  "15": 3,
+  "17": 1,
+  "20": 4,
+  "24": 1,
+  "32": 1,
+  "46": 1,
+  "64": 1
+ },
+ "nTesto": 140
+}
