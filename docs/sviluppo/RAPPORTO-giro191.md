@@ -102,13 +102,13 @@ lo sovrascrive** fino alla rincorsa, non che il bersaglio sia quello giusto per 
 (32,8; 1,1) a (34,6; 0)) il corpo si gira verso la corsa: lì l'angolo sale a 8-10° (visto sul primo fotogramma dopo il nero quando la
 finestra ferma salta). Non è nel mandato e non l'ho toccato.
 
-## 3. Controlli (uno alla volta, `CPM_CI_PAR=0` non serviva: lanciati a mano in sequenza, `free -m` e `df -h` prima)
+## 3. Controlli (uno alla volta, lanciati a mano in sequenza, `free -m` e `df -h` prima; build finale `161c775`, salvo dove indicato)
 `node tools/build-src.mjs` + `node tools/check-src.mjs` dopo ogni modifica a src/ (identico).
 
 | controllo | esito |
 |---|---|
-| `rigore-191` (nuovo) | ✅ verde produzione + verde banco, rosso visto |
-| `lotteria-191` (nuovo) | ✅ verde telefono e PC, tre rossi visti (corsa finale) — due corse precedenti rosse, cause sopra §2 |
+| `rigore-191` (nuovo) | ✅ verde produzione + verde banco, rosso visto (prima e dopo la v2) |
+| `lotteria-191` (nuovo) | ✅ verde telefono e PC, tre rossi visti — due corse finali verdi (prima e dopo la v2 di src/15); tre corse precedenti rosse per «non giudicato», cause e rimedi in §2 |
 | `rigore-79` | ✅ |
 | `rigore-139` | ✅ verde giudicato, rosso visto — **il rosso ora spegne anche `__CPM_NO_G191A`** (con il solo `__CPM_NO_G139` il doppio non si vede più: `90' battuta* tiro* · 91' scena_negata191`, la nuova difesa lo ferma) |
 | `rigori-190` | ✅ verde 0,11 · rosso 0,53 |
@@ -116,8 +116,8 @@ finestra ferma salta). Non è nel mandato e non l'ho toccato.
 | `riproduci-175` | ✅ verde passa, rosso cade |
 | `riproduci-187` | ✅ verde passa, rosso cade |
 | `partita-vera` | ✅ 12/12 bande, 2/2 partite |
-| `validate-situations` | vedi §5 |
-| `highlight-95` | vedi §5 |
+| `validate-situations` | ✅ PASS, fingerprint 00001505, 0 failure |
+| `highlight-95` | ✅ verde (98 highlight), rosso visto — una prima corsa **interrotta** (il mio processo d'attesa ha raggiunto il tetto di 30 minuti e ha chiuso il browser a metà del rosso): non valida, rifatta da capo staccata |
 | `test:logic` | ✅ 51 pass · 0 fail |
 | `save-compat` | ✅ 12 pass · 0 fail |
 
