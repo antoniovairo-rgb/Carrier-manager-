@@ -165,8 +165,12 @@ function FiguraV2({player,w=54,grande=false}){
   const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
   const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
   const naz=_abbr3V2(p.nation,"");
+  /* [giro 199 · PO-409, foto PO «box rosso con figurina piu' piccolo, c'e' tanto spazio vuoto»] la figurina grande non ha piu'
+     l'altezza fissa w*1,4: e' alta quanto il suo contenuto (riga OVR+volto, poi subito la fascia del nome), quindi niente fascia rossa
+     vuota fra volto e nome. Rosso __CPM_NO_G199 = altezza fissa e fascia spinta in fondo (marginTop auto). */
+  const _c199=!(typeof window!=='undefined'&&window.__CPM_NO_G199);
   return(
-    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+    <div data-cpm="figurina-v2-grande" data-g199={_c199?"compatta":"vecchia"} style={{width:w,height:_c199?"auto":h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
       <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
@@ -176,7 +180,7 @@ function FiguraV2({player,w=54,grande=false}){
           </div>
           <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
         </div>
-        <div style={{marginTop:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{marginTop:_c199?SP.md:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
           <span style={{...fsTV(fsC,FW.black),letterSpacing:"0.06em",textAlign:"center",whiteSpace:"nowrap"}}>{cogn}</span>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",rowGap:4,columnGap:6}}>
             {att.map(([k,a])=>(<span key={a} className="cpm-num" style={{display:"flex",justifyContent:"center",gap:5,...fsTV(FS.bodyLg,FW.bold)}}><span style={{fontWeight:FW.black}}>{Math.round(S[k]||0)}</span><span style={{fontWeight:FW.semibold,letterSpacing:"0.06em"}}>{a}</span></span>))}

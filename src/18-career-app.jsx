@@ -6584,6 +6584,91 @@ const getThisWeekMatchday=()=>{
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:_pctab292()?"L":"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
 
   /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
+  /* [giro 199 · PO-408, foto PO «questi box vanno su o devono comparire come pop up altrimenti me li perdo»; decisione PO: in cima
+     alla Home, con un segno «da decidere», nessuna finestra in piu'] i riquadri della Home che chiedono una SCELTA e non passano gia'
+     dalla finestra _pop224 (saga di mercato quando chiede la risposta o l'offerta, shooting, riconquista, campo d'allenamento, rinnovo)
+     si calcolano una volta qui e si disegnano nel blocco «Da decidere» fra «Sei svincolato» e il tasto del momento. Solo presentazione:
+     stessi riquadri, stessi pulsanti, stesso stato. Rosso __CPM_NO_G199 = tornano al posto di prima (sotto Fiducia e Popolarita'). */
+  const _g199=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G199);
+  const _sc199={};
+  _sc199.saga=(tab==="dashboard"&&player.transferSaga&&!player.transferSaga.delivered&&player.transferSaga.season===(player.season||1)&&(()=>{/* [7.109.0] delivered:true = offerta grande già consegnata come modale → nessuna card-saga */
+        const sg=player.transferSaga;const d=(player.week||1)-(sg.week||1);if(d<0)return null;
+        const _cl=sg.club||"Un club";
+        return(
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#08222e,#0a2e40)",TH.card),border:_n30("1px solid #155e75","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#67e8f9",semTesto945("#67e8f9")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Saga di mercato · episodio {Math.min(d+1,3)} di 3</div>
+          {d===0&&(<div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📡 L'indiscrezione</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>Radio mercato: <strong>{_cl}</strong> ha chiesto informazioni su di te. Il tuo agente conferma i contatti — «per ora solo sondaggi, ma la cosa è seria». La prossima settimana se ne saprà di più.</div>
+          </div>)}
+          {d===1&&!sg.tone&&(<div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}>I giornali titolano: «<strong>{_cl}</strong> fa sul serio». In zona mista ti chiedono del tuo futuro. Cosa rispondi?</div>
+            <div style={{display:"flex",flexDirection:"column",gap:6}}>
+              <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"blinda"},...ledgerPush(p,{t:"promessa",who:"lo spogliatoio",what:"«Sono concentrato solo sul mio club»"}),/* [7.26.0 S2] */coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🎙️ «Penso solo al mio club» — il mister apprezza (fiducia +2).`,...(p.log||[])].slice(0,60)}))}>🛡️ «Sono concentrato solo sul mio club»</Btn>
+              <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"apri"},popularity:clamp((p.popularity||20)+2,0,100),log:[`🎙️ «Nel calcio mai dire mai…» — i tifosi di ${_cl} sognano (popolarità +2).`,...(p.log||[])].slice(0,60)}))}>🚪 «Nel calcio mai dire mai…»</Btn>
+            </div>
+          </div>)}
+          {d===1&&sg.tone&&(<div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>{sg.tone==="blinda"?"Hai blindato la tua posizione davanti ai microfoni — ma l'agente avverte: l'offerta arriverà comunque sul tavolo.":"Hai lasciato la porta aperta: i giornali parlano di offerta imminente."}</div>
+          </div>)}
+          {d>=2&&(<div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📩 L'offerta ufficiale</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{_cl}</strong> ha presentato l'offerta: il tuo agente ti aspetta con le carte sul tavolo.</div>
+            <Btn v="outline" fw onClick={()=>{const _o=sg.offer;setPlayer(p=>({...p,transferSaga:null}));if(_o)setTimeout(()=>setTransferOffer(_o),150);}}>💼 Ascolta l'offerta →</Btn>
+          </div>)}
+        </Card>);})())||null;
+  _sc199.shooting=(tab==="dashboard"&&(()=>{
+        const sh=sponsorShoot(player);if(!sh)return null;
+        return(
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgBlue,TH.card),border:_n30(`1px solid ${TH.bdBlue}`,"1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#3b82f6",semTesto945("#3b82f6")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo shooting nella settimana sbagliata</div>
+          <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}><strong>{sh.sp.brand}</strong> ha fissato lo shooting proprio nella settimana del big match: mezza giornata sotto i riflettori, bonus da {sh.bonus.toLocaleString("it-IT")}€. Il mister non l'ha presa benissimo.</div>
+          <div style={{display:"flex",gap:8}}>
+            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsorEvS:p.season||1,bankBalance:Math.round((p.bankBalance||0)+sh.bonus),popularity:clamp((p.popularity||20)+2,0,100),fatigue:clamp((p.fatigue||0)+6,0,100),log:[`📸 Shooting con ${sh.sp.brand}: +${sh.bonus.toLocaleString("it-IT")}€, ma arrivi alla gara con qualche energia in meno.`,...(p.log||[])].slice(0,60)}))}>📸 Vai allo shooting</Btn>
+            <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,sponsorEvS:p.season||1,form:clamp((p.form||70)+2,30,95),sponsors:(p.sponsors||[]).map(s=>(s===sh.sp||(s&&sh.sp&&s.brand===sh.sp.brand))?{...s,weekly:Math.round((s.weekly||0)*0.9)}:s)/* [7.162.0 ECO-F10] match per brand: il riferimento oggetto poteva essere stantio → evento bruciato senza −10% */,log:[`🎯 Shooting rimandato: ${sh.sp.brand} si raffredda (−10% bonus), la testa resta sulla partita.`,...(p.log||[])].slice(0,60)}))}>🎯 Conta solo la partita</Btn>
+          </div>
+        </Card>);})())||null;
+  _sc199.riconquista=(tab==="dashboard"&&(()=>{
+        const bv=benchView(player);if(!bv)return null;
+        if(bv.st==="start")return(
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista</div>
+            <div style={{fontSize:FS.caption,color:TH.txAmber,lineHeight:1.5,marginBottom:8}}>Sei finito nelle retrovie e lo sai. Il mister è diretto: «Mi manca la tua {bv.weak} — fammi vedere qualcosa nelle prossime <strong>3 partite</strong> e il posto torna in discussione.»</div>
+            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,benchArc:{season:p.season||1,fromWeek:p.week||1,games:3},benchArcSeason:p.season||1,log:[`🪑 La riconquista comincia: 3 gare per riprendersi il posto.`,...(p.log||[])].slice(0,60)}))}>Fatti trovare pronto →</Btn>
+          </Card>);
+        const _won=bv.st==="won";
+        return(
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_won?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_won?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30(_won?"#6ee7b7":TH.txAmber,_won?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista — verdetto</div>
+            <div style={{fontSize:FS.caption,color:_n30(_won?"rgba(255,255,255,0.85)":TH.txAmber,_won?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_won?`Media ${bv.avg} nelle 3 gare della prova: il posto è riconquistato. Il campo ha parlato — e il mister ha ascoltato.`:`Media ${bv.avg}: non è bastato. Il procuratore, a mezza voce: «A gennaio un prestito ti farebbe giocare…». Tu decidi cosa rispondere al campo.`}</div>
+            <Btn v={_won?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,benchArc:null,coachTrust:clamp((p.coachTrust||60)+(_won?9:-2),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_won?"🪑":"🌫️",headline:_won?"Il posto è di nuovo tuo":"La riconquista è rimandata",body:_won?`Media ${bv.avg} nelle 3 gare della prova.`:`Media ${bv.avg}: serve di più.`,color:_n30(_won?TH.txGreen:"#b45309",_won?TH.txGreen:semTesto945("#b45309"))}]),log:[_won?`🪑 RICONQUISTA: media ${bv.avg} — il mister ti rimette al centro.`:`🌫️ Riconquista fallita (media ${bv.avg}).`,...(p.log||[])].slice(0,60)}))}>{_won?"Ora si gioca →":"Testa bassa →"}</Btn>
+          </Card>);
+      })())||null;
+  _sc199.allenamento=(tab==="dashboard"&&(()=>{
+        const tv=trainEvView(player);if(!tv)return null;
+        return(
+        <Card style={{marginBottom:8,padding:"9px 12px"}}>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{tv.e} Dal campo d'allenamento</div>
+          <div style={{fontSize:FS.small,fontWeight:900,color:TH.text,marginBottom:3}}>{tv.t}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>{tv.d}</div>
+          <div style={{display:"flex",gap:8}}>
+            {tv.choices.map((c,i)=>(
+              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),trainEv:{s:p.season||1,w:p.week||1},log:[`${tv.e} ${tv.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
+            ))}
+          </div>
+        </Card>);})())||null;
+  _sc199.rinnovo=(tab==="dashboard"&&!player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&(player.proStatus||"u18")==="pro"&&!player.loan&&(player.contract?.duration||2)<=1&&(player.renewalSeason||0)!==(player.season||1)&&(player.week||1)>=28&&(
+        <Card data-cpm="rinnovo94" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>{/* [giro 94 D3] l'avviso di scadenza prima della fine */}
+          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Il contratto scade a fine stagione</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Il club è pronto a parlare del rinnovo. Se non firmi, dalla prossima stagione sarai svincolato e non potrai giocare.</div>
+          <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
+        </Card>
+      ))||null;
+  const _sc199ok={saga:(()=>{const sg=player.transferSaga;if(!sg||sg.delivered||sg.season!==(player.season||1))return false;const d=(player.week||1)-(sg.week||1);return (d===1&&!sg.tone)||d>=2;})(),
+    shooting:true,riconquista:true,allenamento:true,rinnovo:true};
+  const _sc199N=Object.keys(_sc199ok).filter(k=>_sc199ok[k]&&_sc199[k]);
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
@@ -7917,6 +8002,15 @@ const getThisWeekMatchday=()=>{
           {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn data-cpm="svincolato198-home-agente" onClick={_vaiAgente198} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Agente)</Btn>}
         </Card>
       )}
+      {tab==="dashboard"&&_g199()&&_sc199N.length>0&&(
+        <section data-cpm="scelte199" aria-label="Da decidere" data-n={_sc199N.length} style={{marginBottom:_sb(9)}}>
+          <div data-cpm="scelta199-segno" style={{display:"flex",alignItems:"center",gap:SP.sm,marginBottom:SP.sm}}>
+            <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.12em",textTransform:"uppercase",color:TINTE.oro}}>⚡ Da decidere</span>
+            <span className="cpm-num" style={{...fsTV(FS.caption,FW.bold),minWidth:20,textAlign:"center",padding:"1px 6px",borderRadius:RAD.pill,background:TINTE.oro,color:TINTE.bg}}>{_sc199N.length}</span>
+          </div>
+          {_sc199N.map(k=>(<div key={k} data-cpm={"scelta199-"+k}>{_sc199[k]}</div>))}
+        </section>
+      )}
       {/* [giro 163 · PO-356 F + idea 3] CORSA ALLA PRIMA SQUADRA: la barra dell'Indice Primavera (5 tacche, mai il numero; rosso
           __CPM_NO_IP153 = barra assente) e il tasto «Vai al prossimo momento importante» (rosso __CPM_NO_SALTA153 = tasto assente).
           Solo in Primavera. Il tasto prima chiede (pannello), poi corre sui percorsi veri, poi dice dove si e' fermato e perche'. */}
@@ -8278,34 +8372,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.17.0 SAGA DEL MERCATO — backlog favola] la trattativa a puntate: episodio derivato da
           p.transferSaga e dalla distanza in settimane (d0 indiscrezione · d1 pressing con SCELTA di tono ·
           d≥2 offerta ufficiale che apre il modal VERO). Card-driven → funziona su ogni path settimanale. */}
-      {tab==="dashboard"&&player.transferSaga&&!player.transferSaga.delivered&&player.transferSaga.season===(player.season||1)&&(()=>{/* [7.109.0] delivered:true = offerta grande già consegnata come modale → nessuna card-saga */
-        const sg=player.transferSaga;const d=(player.week||1)-(sg.week||1);if(d<0)return null;
-        const _cl=sg.club||"Un club";
-        return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#08222e,#0a2e40)",TH.card),border:_n30("1px solid #155e75","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("#67e8f9",semTesto945("#67e8f9")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Saga di mercato · episodio {Math.min(d+1,3)} di 3</div>
-          {d===0&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📡 L'indiscrezione</div>
-            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>Radio mercato: <strong>{_cl}</strong> ha chiesto informazioni su di te. Il tuo agente conferma i contatti — «per ora solo sondaggi, ma la cosa è seria». La prossima settimana se ne saprà di più.</div>
-          </div>)}
-          {d===1&&!sg.tone&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
-            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}>I giornali titolano: «<strong>{_cl}</strong> fa sul serio». In zona mista ti chiedono del tuo futuro. Cosa rispondi?</div>
-            <div style={{display:"flex",flexDirection:"column",gap:6}}>
-              <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"blinda"},...ledgerPush(p,{t:"promessa",who:"lo spogliatoio",what:"«Sono concentrato solo sul mio club»"}),/* [7.26.0 S2] */coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🎙️ «Penso solo al mio club» — il mister apprezza (fiducia +2).`,...(p.log||[])].slice(0,60)}))}>🛡️ «Sono concentrato solo sul mio club»</Btn>
-              <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"apri"},popularity:clamp((p.popularity||20)+2,0,100),log:[`🎙️ «Nel calcio mai dire mai…» — i tifosi di ${_cl} sognano (popolarità +2).`,...(p.log||[])].slice(0,60)}))}>🚪 «Nel calcio mai dire mai…»</Btn>
-            </div>
-          </div>)}
-          {d===1&&sg.tone&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
-            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>{sg.tone==="blinda"?"Hai blindato la tua posizione davanti ai microfoni — ma l'agente avverte: l'offerta arriverà comunque sul tavolo.":"Hai lasciato la porta aperta: i giornali parlano di offerta imminente."}</div>
-          </div>)}
-          {d>=2&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📩 L'offerta ufficiale</div>
-            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{_cl}</strong> ha presentato l'offerta: il tuo agente ti aspetta con le carte sul tavolo.</div>
-            <Btn v="outline" fw onClick={()=>{const _o=sg.offer;setPlayer(p=>({...p,transferSaga:null}));if(_o)setTimeout(()=>setTransferOffer(_o),150);}}>💼 Ascolta l'offerta →</Btn>
-          </div>)}
-        </Card>);})()}
+      {(!_g199()||!_sc199ok.saga)&&_sc199.saga}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {/* [7.308.0] LE SAGHE A EPISODI — una card, tre archi (la fascia · il ragazzo · il contratto).
           L'episodio arriva quando il calendario lo matura; la scelta lo fa avanzare e ne scrive UNA riga
           nel diario e nelle Notizie, cosi' la serie resta leggibile anche a distanza di settimane. */}
@@ -8486,17 +8553,7 @@ const getThisWeekMatchday=()=>{
           </div>
         </Card>);})()}
       {/* [7.29.0 ONDA 4 — §S10] il bivio dello SHOOTING nella settimana calda */}
-      {tab==="dashboard"&&(()=>{
-        const sh=sponsorShoot(player);if(!sh)return null;
-        return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgBlue,TH.card),border:_n30(`1px solid ${TH.bdBlue}`,"1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("#3b82f6",semTesto945("#3b82f6")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo shooting nella settimana sbagliata</div>
-          <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}><strong>{sh.sp.brand}</strong> ha fissato lo shooting proprio nella settimana del big match: mezza giornata sotto i riflettori, bonus da {sh.bonus.toLocaleString("it-IT")}€. Il mister non l'ha presa benissimo.</div>
-          <div style={{display:"flex",gap:8}}>
-            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsorEvS:p.season||1,bankBalance:Math.round((p.bankBalance||0)+sh.bonus),popularity:clamp((p.popularity||20)+2,0,100),fatigue:clamp((p.fatigue||0)+6,0,100),log:[`📸 Shooting con ${sh.sp.brand}: +${sh.bonus.toLocaleString("it-IT")}€, ma arrivi alla gara con qualche energia in meno.`,...(p.log||[])].slice(0,60)}))}>📸 Vai allo shooting</Btn>
-            <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,sponsorEvS:p.season||1,form:clamp((p.form||70)+2,30,95),sponsors:(p.sponsors||[]).map(s=>(s===sh.sp||(s&&sh.sp&&s.brand===sh.sp.brand))?{...s,weekly:Math.round((s.weekly||0)*0.9)}:s)/* [7.162.0 ECO-F10] match per brand: il riferimento oggetto poteva essere stantio → evento bruciato senza −10% */,log:[`🎯 Shooting rimandato: ${sh.sp.brand} si raffredda (−10% bonus), la testa resta sulla partita.`,...(p.log||[])].slice(0,60)}))}>🎯 Conta solo la partita</Btn>
-          </div>
-        </Card>);})()}
+      {(!_g199()||!_sc199ok.shooting)&&_sc199.shooting}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {/* [7.29.0 ONDA 4 — §S14] VITA PRIVATA — l'arco lento (incontro → matrimonio → genitore) */}
       {tab==="dashboard"&&(()=>{
         const lv=lifeView(player);if(!lv)return null;
@@ -8843,36 +8900,9 @@ const getThisWeekMatchday=()=>{
           </div>
         </Card>);})()}
       {/* [7.30.0 ONDA 5 — §S8] PANCHINA COME GAMEPLAY — l'arco della riconquista */}
-      {tab==="dashboard"&&(()=>{
-        const bv=benchView(player);if(!bv)return null;
-        if(bv.st==="start")return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
-            <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista</div>
-            <div style={{fontSize:FS.caption,color:TH.txAmber,lineHeight:1.5,marginBottom:8}}>Sei finito nelle retrovie e lo sai. Il mister è diretto: «Mi manca la tua {bv.weak} — fammi vedere qualcosa nelle prossime <strong>3 partite</strong> e il posto torna in discussione.»</div>
-            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,benchArc:{season:p.season||1,fromWeek:p.week||1,games:3},benchArcSeason:p.season||1,log:[`🪑 La riconquista comincia: 3 gare per riprendersi il posto.`,...(p.log||[])].slice(0,60)}))}>Fatti trovare pronto →</Btn>
-          </Card>);
-        const _won=bv.st==="won";
-        return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_won?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_won?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
-            <div style={{fontSize:FS.caption,color:_n30(_won?"#6ee7b7":TH.txAmber,_won?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista — verdetto</div>
-            <div style={{fontSize:FS.caption,color:_n30(_won?"rgba(255,255,255,0.85)":TH.txAmber,_won?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_won?`Media ${bv.avg} nelle 3 gare della prova: il posto è riconquistato. Il campo ha parlato — e il mister ha ascoltato.`:`Media ${bv.avg}: non è bastato. Il procuratore, a mezza voce: «A gennaio un prestito ti farebbe giocare…». Tu decidi cosa rispondere al campo.`}</div>
-            <Btn v={_won?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,benchArc:null,coachTrust:clamp((p.coachTrust||60)+(_won?9:-2),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_won?"🪑":"🌫️",headline:_won?"Il posto è di nuovo tuo":"La riconquista è rimandata",body:_won?`Media ${bv.avg} nelle 3 gare della prova.`:`Media ${bv.avg}: serve di più.`,color:_n30(_won?TH.txGreen:"#b45309",_won?TH.txGreen:semTesto945("#b45309"))}]),log:[_won?`🪑 RICONQUISTA: media ${bv.avg} — il mister ti rimette al centro.`:`🌫️ Riconquista fallita (media ${bv.avg}).`,...(p.log||[])].slice(0,60)}))}>{_won?"Ora si gioca →":"Testa bassa →"}</Btn>
-          </Card>);
-      })()}
+      {(!_g199()||!_sc199ok.riconquista)&&_sc199.riconquista}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {/* [7.30.0 ONDA 5 — §S15] LA SETTIMANA-TIPO — le eccezioni dell'allenamento */}
-      {tab==="dashboard"&&(()=>{
-        const tv=trainEvView(player);if(!tv)return null;
-        return(
-        <Card style={{marginBottom:8,padding:"9px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{tv.e} Dal campo d'allenamento</div>
-          <div style={{fontSize:FS.small,fontWeight:900,color:TH.text,marginBottom:3}}>{tv.t}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>{tv.d}</div>
-          <div style={{display:"flex",gap:8}}>
-            {tv.choices.map((c,i)=>(
-              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),trainEv:{s:p.season||1,w:p.week||1},log:[`${tv.e} ${tv.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
-            ))}
-          </div>
-        </Card>);})()}
+      {(!_g199()||!_sc199ok.allenamento)&&_sc199.allenamento}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {/* [7.26.0 ONDA 1 — docs/WEEKLY_LIFE_DESIGN §S1+§S13] LA TUA SETTIMANA: cold-open dell'episodio (tema
           DERIVATO dal calendario/classifica reali, weekTheme) + Meteo Interiore (stato psicologico DERIVATO
           dai fatti, innerWeather). Display-only: nessun effetto, nessun random — «nulla si inventa». */}
@@ -9066,13 +9096,7 @@ const getThisWeekMatchday=()=>{
           </div>
         </FisHome66>);})()}
       {/* DASHBOARD */}
-      {tab==="dashboard"&&!player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&(player.proStatus||"u18")==="pro"&&!player.loan&&(player.contract?.duration||2)<=1&&(player.renewalSeason||0)!==(player.season||1)&&(player.week||1)>=28&&(
-        <Card data-cpm="rinnovo94" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>{/* [giro 94 D3] l'avviso di scadenza prima della fine */}
-          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Il contratto scade a fine stagione</div>
-          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Il club è pronto a parlare del rinnovo. Se non firmi, dalla prossima stagione sarai svincolato e non potrai giocare.</div>
-          <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
-        </Card>
-      )}
+      {(!_g199()||!_sc199ok.rinnovo)&&_sc199.rinnovo}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {tab==="dashboard"&&player.contractExpired&&!_g198()&&(/* [giro 198] da svincolato il riquadro sale in cima alla Home (svincolato198-home) */
         <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
@@ -10510,7 +10534,7 @@ const getThisWeekMatchday=()=>{
           {(()=>{/* [PO-302 · grafica V2, V2Carriera/V2CarrieraPC] la figurina grande con cornice (oro da OVR 85, argento sotto),
               i sei attributi sulla carta, i totali di carriera e i gol per stagione dallo storico vero (il record in oro). Solo lettura. */
             const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
-            const _w=Math.min(250,Math.round((typeof window!=="undefined"?window.innerWidth:400)*0.62));
+            const _w=(typeof window!=="undefined"&&window.__CPM_NO_G199)?Math.min(250,Math.round((typeof window!=="undefined"?window.innerWidth:400)*0.62)):Math.min(220,Math.round((typeof window!=="undefined"?window.innerWidth:400)*0.54));/* [giro 199 · PO-409] figurina piu' piccola (54% della larghezza, tetto 220 px); rosso __CPM_NO_G199 = 62%/250 */
             const _tot=[{v:player.totalMatches||0,l:"Presenze"},{v:player.totalGoals||0,l:"Gol"},{v:player.totalAssists||0,l:"Assist"},{v:(player.trophies||[]).length,l:"Trofei",oro:true}];
             const _per={};(player.history||[]).forEach(h=>{if(!h||h.season==null)return;_per[h.season]=(_per[h.season]||0)+(+h.goals||0);});
             const _sn=player.season||1;_per[_sn]=(_per[_sn]||0)+(+player.goals||0);
