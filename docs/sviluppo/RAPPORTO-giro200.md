@@ -87,16 +87,16 @@ Elenco preciso dal documento `docs/collaudo/GIRO193-IDEE.md` (ramo `origin/colla
 
 | Controllo | Esito |
 |---|---|
-| rassegna-200 | verde 14/14, rosso bocciato |
+| rassegna-200 | verde 14/14, rosso bocciato (rieseguito sul build finale, dopo la modifica della libreria) |
 | rifiniture-200 | verde 10/10, rosso bocciato 10/10 |
 | svincolato-198 | verde, rossi bocciati |
 | home-199 | verde |
 | momento-194 | verde, rossi bocciati |
 | gioca-188 | verde (6 ok, 0 ko) |
-| solo-highlight-166 | ESITO_166 |
-| career-critical | ESITO_CC |
-| test:logic | ESITO_TL |
-| save-compat | ESITO_SC |
+| solo-highlight-166 | prima corsa **rossa sul controllo 11**: la soglia «schermata finale > 400 caratteri» leggeva solo il testo visibile, cioè la scheda 1 (259). Strumento adeguato (`lib/partita-166.mjs` legge tutte e quattro le schede, soglia invariata) → **verde** (1793 contro 1793 caratteri, uguali), rosso bocciato su 3, 7, 8 |
+| career-critical | verde, in tre tranche (recovery-competition, save-monotonic, playing-mdref, double-tap, stale-matchday, playedmd-registry · career-invariants, pending-mr-durable, cup-final-replay · coppa-nazioni, coppa-intera). Una prima tranche era partita senza `CPM_CHROME` ed era caduta al lancio del browser (non giudicata): rifatta |
+| test:logic | 51 pass, 0 fail |
+| save-compat | 12 pass, 0 fail |
 
 `node tools/build-src.mjs` + `node tools/check-src.mjs`: **IDENTICO BYTE PER BYTE** dopo ogni modifica a `src/`.
 I guardiani dei giri precedenti rigenerano le loro foto: le ho riportate allo stato del repository (`git checkout`).
