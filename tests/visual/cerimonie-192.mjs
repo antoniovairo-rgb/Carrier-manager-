@@ -10,6 +10,7 @@
    C · PO-406 presentazione · D · PO-407 parata: vedi i blocchi sotto.
    Uso: node cerimonie-192.mjs  (CPM_SOLO=A,B per restringere). «Non giudicato» = rosso. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+import { apri as apriPres, posa as posaPres } from './misura-pres-192.mjs';
 const SOLO = (process.env.CPM_SOLO || 'A,B,C,D').split(',');
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const med = a => { const s = [...a].sort((x, y) => x - y); return s.length ? +s[Math.floor(s.length / 2)].toFixed(3) : null; };
@@ -102,7 +103,21 @@ if (SOLO.includes('D')) {
   if (!(r.punti >= 10 && r.sat < 0.85 * r.satRif)) guasti.push('D rosso: il pullman sbiadito non si vede ' + JSON.stringify(r));
   if (!(r.coppa >= 3 && (r.faccia > 0 || r.gomiti < 140))) guasti.push('D rosso: la coppa sul viso non si vede ' + JSON.stringify(r));
 }
-/* C: aggiunto sotto */
+/* C · PO-406 serata di presentazione (beat 3, chiamato + fila, testimone __CPM_PRES142 e __CPM_PRES192). Verde: tifosi dipinti negli
+   spalti ≥ 1000, pendenza collo→spalla mediana fra -26 e -18 gradi (riferimento: -21 della posa idle), gomito del braccio che non saluta
+   ≥ 155 gradi con la mano ≤ 0,15 davanti alla spalla. Rosso __CPM_NO_G192C: nessun tifoso dipinto, spalle ≤ -30 e gomiti ≤ 145
+   (misurato prima: -33/-37 · 116-140 · solo folla a istanze, che sul telefono del PO non si vedeva). */
+async function presentazione(flags) {
+  const p = await apriPres(b, port, flags); const S = (await posaPres(p, 3)).filter(Boolean); await p.close();
+  const ult = S[S.length - 1] || { men: [] }, M = ult.men.filter(Boolean);
+  return { uomini: M.length, dipinti: (ult.folla || {}).dipinti || 0, spalle: med(M.map(m => m.spalleSu)), gomiti: med(M.map(m => m.gomL)), manoAvanti: med(M.map(m => m.manoAvantiL)) };
+}
+if (SOLO.includes('C')) {
+  const v = await presentazione([]), r = await presentazione(['__CPM_NO_G192C']);
+  righe.push('C verde ' + JSON.stringify(v), 'C rosso ' + JSON.stringify(r));
+  if (!(v.uomini >= 5 && v.dipinti >= 1000 && v.spalle >= -26 && v.spalle <= -18 && v.gomiti >= 155 && v.manoAvanti <= 0.15)) guasti.push('C verde: ' + JSON.stringify(v));
+  if (!(r.uomini >= 5 && r.dipinti === 0 && r.spalle <= -30 && r.gomiti <= 145)) guasti.push('C rosso: il difetto non si vede ' + JSON.stringify(r));
+}
 await b.close(); srv.close();
 righe.forEach(x => console.log(x));
 if (guasti.length) { console.log('❌ cerimonie-192'); guasti.forEach(g => console.log('  · ' + g)); process.exit(1); }
