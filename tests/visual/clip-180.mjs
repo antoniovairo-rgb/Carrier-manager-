@@ -40,6 +40,10 @@ if (G) {
   G.b.length <= PESO_MAX ? ok(`peso ${(G.b.length / 1e6).toFixed(2)} MB <= ${PESO_MAX / 1e6} MB`) : ko(`peso ${G.b.length} > ${PESO_MAX}`);
   (j.buffers?.[0]?.byteLength ?? 0) <= nb ? ok('buffer dentro il blocco BIN') : ko('buffer oltre il blocco BIN');
   const fuori = (j.bufferViews || []).filter(v => (v.byteOffset || 0) + v.byteLength > nb).length;
+  // [giro 203 · PO-464] formato ammesso: ingressi float32; uscite float32 oppure (solo rotazioni) int16 normalizzato. Nient'altro.
+  const formatoKo = (j.animations || []).flatMap(a => a.channels.map(c => { const s = a.samplers[c.sampler]; const i = j.accessors[s.input], o = j.accessors[s.output];
+    return (i.componentType !== 5126) || !(o.componentType === 5126 || (c.target.path === 'rotation' && o.componentType === 5122 && o.normalized === true)) ? a.name : null; })).filter(Boolean);
+  formatoKo.length === 0 ? ok('formato chiavi: ingressi float32, rotazioni float32 o int16 normalizzato') : ko(`formato chiavi non ammesso in ${[...new Set(formatoKo)].join(',')}`);
   fuori === 0 ? ok('bufferView tutte nei limiti') : ko(`${fuori} bufferView fuori dai limiti`);
   const corpo = leggi('assets/cgtrader-review-lod1-kit-adapter.glb').j;
   const nomiC = corpo.skins[0].joints.map(i => corpo.nodes[i].name);
@@ -49,7 +53,10 @@ if (G) {
   const extra = ['meshes', 'materials', 'images', 'textures'].filter(k => (j[k] || []).length);
   extra.length === 0 ? ok('solo animazioni (nessuna mesh/materiale/immagine)') : ko(`contiene ${extra.join(', ')}`);
   const leggiF = acc => { const v = j.bufferViews[acc.bufferView]; const o = (v.byteOffset || 0) + (acc.byteOffset || 0);
-    const k = { SCALAR: 1, VEC3: 3, VEC4: 4 }[acc.type]; return Array.from(new Float32Array(G.bin.buffer.slice(G.bin.byteOffset + o, G.bin.byteOffset + o + acc.count * k * 4))); };
+    const k = { SCALAR: 1, VEC3: 3, VEC4: 4 }[acc.type];
+    // [giro 203 · PO-464] le rotazioni possono essere int16 normalizzati (glTF core): si leggono dequantizzate come fa three r128
+    if (acc.componentType === 5122 && acc.normalized) return Array.from(new Int16Array(G.bin.buffer.slice(G.bin.byteOffset + o, G.bin.byteOffset + o + acc.count * k * 2)), x => Math.max(x / 32767, -1));
+    return Array.from(new Float32Array(G.bin.buffer.slice(G.bin.byteOffset + o, G.bin.byteOffset + o + acc.count * k * 4))); };
   const giunti = new Set(j.skins?.[0]?.joints || []);
   const anim = j.animations || [];
   const nomiA = anim.map(a => a.name).sort(); const att = Object.keys(ATTESE).sort();
@@ -66,7 +73,7 @@ if (G) {
       for (const c of a.channels) {
         const out = j.accessors[a.samplers[c.sampler].output]; const v = leggiF(out); const k = c.target.path === 'rotation' ? 4 : 3;
         const n = out.count; const p0 = v.slice(0, k), p1 = v.slice((n - 1) * k, n * k);
-        if (k === 4) { const d = Math.abs(p0.reduce((s, x, i) => s + x * p1[i], 0)); rot = Math.max(rot, 2 * Math.acos(Math.min(1, d)) * 180 / Math.PI); }
+        if (k === 4) { const nn = q => Math.hypot(...q); /* [giro 203] quaternioni normalizzati prima del prodotto: con int16 la norma e' 1±1e-4 e acos vicino a 1 la scambierebbe per ~1° */ const d = Math.abs(p0.reduce((s, x, i) => s + x * p1[i], 0)) / (nn(p0) * nn(p1)); rot = Math.max(rot, 2 * Math.acos(Math.min(1, d)) * 180 / Math.PI); }
         else tr = Math.max(tr, Math.hypot(...p0.map((x, i) => x - p1[i])) * 1000);
       }
       rot < 0.5 && tr < 1 ? ok(`${a.name}: anello chiuso (giunzione ${rot.toFixed(2)}° · ${tr.toFixed(2)} mm)`) : ko(`${a.name}: anello APERTO (giunzione ${rot.toFixed(2)}° · ${tr.toFixed(2)} mm)`);
