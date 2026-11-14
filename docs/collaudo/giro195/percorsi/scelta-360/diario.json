@@ -1,0 +1,67 @@
+{
+ "nome": "scelta-360",
+ "W": 360,
+ "H": 640,
+ "save": "save-c177-s5w20.json",
+ "tocchi": 5,
+ "diario": [
+  {
+   "passo": "VIVI LA SETTIMANA",
+   "esito": {
+    "w": 136,
+    "h": 88,
+    "y": 276
+   },
+   "foto": "02-VIVI_LA_SETTIMANA.png"
+  },
+  {
+   "passo": "@auto:6:GIOCA VS",
+   "esito": [
+    "🔥 Cavalco l'onda — oggi è un gran giorno [313x72]"
+   ],
+   "foto": "04-_auto_6_GIOCA_VS.png"
+  },
+  {
+   "passo": "GIOCA VS",
+   "esito": {
+    "w": 190,
+    "h": 72,
+    "y": 284
+   },
+   "foto": "05-GIOCA_VS.png"
+  },
+  {
+   "passo": "Gioca la partita",
+   "esito": {
+    "w": 313,
+    "h": 54,
+    "y": 336
+   },
+   "foto": "06-Gioca_la_partita.png"
+  },
+  {
+   "passo": "Salta e gioca",
+   "esito": {
+    "w": 170,
+    "h": 44,
+    "y": 544
+   },
+   "foto": "07-Salta_e_gioca.png"
+  },
+  {
+   "passo": "@js:(async()=>{const t=Date.now();while(Date.now()-t<150000){if(window.__CPM_PHASE&&window.__CPM_PHASE()===\"hl_choose\")return \"ok\";await new Promise(r=>setTimeout(r,200));}return \"scaduto\";})()",
+   "esito": "ok",
+   "foto": "08-_js_async_const_t_Date_now_whi.png"
+  },
+  {
+   "passo": "@attendi:1500",
+   "esito": "ok",
+   "foto": "09-_attendi_1500.png"
+  },
+  {
+   "passo": "@js:(()=>{const VH=innerHeight;const b=[...document.querySelectorAll(\"button\")].filter(e=>e.getBoundingClientRect().width>250).map(e=>{const r=e.getBoundingClientRect();return [e.innerText.replace(/\\s+/g,\" \").slice(0,30),Math.round(r.top),Math.round(r.bottom)]});let sc=null;for(const e of document.querySelectorAll(\"div\")){const s=getComputedStyle(e);if((s.overflowY===\"auto\"||s.overflowY===\"scroll\")&&e.scrollHeight>e.clientHeight+4&&e.clientHeight>80)sc=[e.clientHeight,e.scrollHeight]}return JSON.stringify({VH,b,scorre:sc})})()",
+   "esito": "{\"VH\":640,\"b\":[[\"💪 Contrasto pulito senza fall\",500,552],[\"🤼 Raddoppio coordinato col co\",558,610],[\"🧠 Anticipa sul primo controll\",616,668]],\"scorre\":[129,168]}",
+   "foto": "10-_js_const_VH_innerHeight_const.png"
+  }
+ ]
+}
