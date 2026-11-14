@@ -1517,3 +1517,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~10:50 Roma — PO-406 serata di presentazione
 - Postura con spalle curve, braccio innaturale, spalti vuoti. Giro cerimonie della 194 con PO-402 (mister che vola) e PO-404 (coppa che vola): stessi corpi, stesse clip, stessi stadi.
+
+## 14/11 ~10:55 Roma — PO-407 parata sul pullman
+- Pullman sbiadito; coppa che taglia il viso, non fra le mani, braccia innaturali. Nel giro cerimonie della 194 (PO-402, 404, 406, 407): la presa della coppa è la stessa del podio, si corregge una volta per tutte le cerimonie.
