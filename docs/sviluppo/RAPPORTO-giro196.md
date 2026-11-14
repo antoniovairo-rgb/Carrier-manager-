@@ -48,7 +48,32 @@ Foto: `giro196/prima-campionato-notte-walkout.png`; foto del PO: `giro196/po-193
 
 ## 4. Dopo
 
-(vedi sezione esiti dei controlli)
+`tpose-196` (stessa rete lenta, telefono 412×915, CPU ×2):
+
+| scenario | ingresso (fotogrammi giudicati / sbagliati) | highlight | attesa dietro la schermata | 2D |
+|---|---|---|---|---|
+| campionato notte | ~320 / **0** | 25–32 / **0** | ~54–55 s | no |
+| campionato giorno | ~320 / **0** | 25–32 / **0** | ~54–55 s | no |
+| coppa notte | ~320 / **0** | 25–32 / **0** | ~54–55 s | no |
+| coppa giorno | ~320 / **0** | 25–32 / **0** | ~54–55 s | no |
+
+- Braccio rosso (`__CPM_NO_G196`, campionato notte): **102** fotogrammi sbagliati visti, cioè il guardiano è rosso col rosso.
+- 375×812 su coppa notte: verde.
+- Ramo 2D provato con `CPM_CAP196=5000`: l'attesa scade, la partita passa al 2D e l'highlight si gioca sul campo dall'alto
+  (foto `giro196/2d/`).
+- Foto: `giro196/dopo-*-walkout.png`, `giro196/dopo-*-attesa.png`, `giro196/rosso-campionato-notte-walkout.png`.
+
+## 5. Esiti dei controlli (uno alla volta, `CPM_CI_PAR=0`)
+
+| controllo | esito |
+|---|---|
+| tpose-196 | verde 4/4 scenari, rosso visto |
+| scene-178 | verde, rosso visto |
+| intro-292 | verde 6/6, rosso visto |
+| gesto-177 | verde |
+| licenze-184 | verde, rosso visto |
+| clip-180 | **rosso, preesistente**: `assets/cgtrader-clip-rohr.glb` pesa 3.298.744 byte contro un tetto di 3.000.000. Il file arriva dal giro 184 (commit 85cdd28) e questo giro non tocca asset. Soglia non abbassata. |
+| highlight-95 | verde (102 highlight, 0 difetti), rosso visto (171 difetti). Una prima corsa, interrotta dal tetto di 30 min del sottofondo, aveva segnato **1 difetto D3** nel braccio verde (s5/2021 «Uno-due con GÜNTHER»: il pallone non arriva al portiere entro 1,5 s dall'esito): da trattare come **instabile**, non riprodotto alla corsa completa. |
 
 ## Dubbi per il PO (non decisi)
 
