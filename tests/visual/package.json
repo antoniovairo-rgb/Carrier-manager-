@@ -641,6 +641,7 @@
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",
     "rassegna-202": "node rassegna-202.mjs",
+    "riserva2d-205": "node riserva2d-205.mjs",
     "misura-198": "node misura-198.mjs",
     "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
