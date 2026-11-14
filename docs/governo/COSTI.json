@@ -1608,5 +1608,47 @@
     "cache_read_tokens": 29198026,
     "worker_epoch": 2,
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYia8YvBACsZHVYtkDbLn",
+    "titolo": "giro 191 rigori: doppio calcio e lotteria (PO-399, PO-403)",
+    "creata": "2026-11-14T08:57:37Z",
+    "chiusa": "2026-11-14T13:49:11Z",
+    "cost_usd": 10.58938884,
+    "output_tokens": 88024,
+    "cache_read_tokens": 32921715,
+    "worker_epoch": 2,
+    "versione": "7.999.194",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaCC3veWn16QMmKVe82",
+    "titolo": "giro 192 cerimonie: mister, coppa, presentazione, parata (PO-402, 404, 406, 407)",
+    "creata": "2026-11-14T10:36:45Z",
+    "chiusa": "2026-11-14T14:21:46Z",
+    "cost_usd": 17.30958466,
+    "output_tokens": 135605,
+    "cache_read_tokens": 56890603,
+    "worker_epoch": 1,
+    "versione": "7.999.194",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaCk9Djh9YCDSWRs4cK",
+    "titolo": "giro 194 tasto momento e convocazione-235 (PO-405, 410, 411, 431)",
+    "creata": "2026-11-14T12:46:23Z",
+    "chiusa": "2026-11-14T13:57:49Z",
+    "cost_usd": 4.6679628,
+    "output_tokens": 42990,
+    "cache_read_tokens": 12164145,
+    "worker_epoch": 2,
+    "versione": "7.999.194",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]
