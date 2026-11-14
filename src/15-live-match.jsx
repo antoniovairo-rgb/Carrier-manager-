@@ -2541,7 +2541,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   /* [giro 191 PO-403 B — stacco «breve col tabellone» fra un rigore e l'altro. Rosso __CPM_NO_G191B] Al cambio di rigore (dal secondo in
      poi) lo schermo va al nero per STACCO191_MS col tabellino ✓ ✗ sopra; sotto il nero il 3D rifa' la scena (src/12, _sh191) e la
      rincorsa parte dopo lo stacco. Solo presentazione: la serie, gli esiti e i tempi del tabellino restano quelli di prima. */
-  const STACCO191_MS=600;const [st191,setSt191]=useState(null);
+  const STACCO191_MS=500,SPOSTA191_MS=600;/* il nero dura meno dello spostamento della rincorsa nel 3D (0,6 s, src/12 _sh191): finito il nero il rigorista si vede fermo e girato prima di partire (misurato: a nero = spostamento, una corsa su due del guardiano senza campioni utili) */const [st191,setSt191]=useState(null);
   useEffect(()=>{const k=soFx&&soFx.key;if(!(k>=1)||(typeof window!=='undefined'&&window.__CPM_NO_G191B))return;setSt191(k);const t=setTimeout(()=>setSt191(s=>s===k?null:s),STACCO191_MS);return()=>clearTimeout(t);},[soFx&&soFx.key]);// eslint-disable-line
   const soDoneRef=useRef(false);
   function _startShootout(){
@@ -2593,7 +2593,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     }
     const st=soState.step+1;
     const kickN=Math.floor(Math.max(0,st)/2);
-    const delay=soState.step<-1?1500:(soState.step<0?1500:(st%2===0?1250:1950+((kickN>=1&&!(typeof window!=='undefined'&&window.__CPM_NO_G191B))?STACCO191_MS:0)));/* [giro 191 B] dal secondo rigore l'esito arriva dopo lo stacco: il tiro e' spostato di tanto quanto */
+    const delay=soState.step<-1?1500:(soState.step<0?1500:(st%2===0?1250:1950+((kickN>=1&&!(typeof window!=='undefined'&&window.__CPM_NO_G191B))?SPOSTA191_MS:0)));/* [giro 191 B] dal secondo rigore l'esito arriva dopo lo stacco: il tiro e' spostato di tanto quanto */
     const t=setTimeout(()=>{
       if(st>=0&&kickN>=soState.seq.length){setSoState(s=>({...s,step:st,cur:null,done:true}));return;}
       if(st<0){setSoState(s=>({...s,step:st}));return;}
