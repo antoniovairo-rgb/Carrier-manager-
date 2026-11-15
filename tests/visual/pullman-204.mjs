@@ -29,21 +29,27 @@ async function maglie(flags, foto) {
   await p.evaluate(c => { document.body.innerHTML = '<div id="parata" style="position:fixed;inset:0"></div>';
     ReactDOM.createRoot(document.getElementById('parata')).render(React.createElement(window.__CPM_PARATA198_C, { club: c, euroWin: true, avatarId: 0, heroNum: 9 })); }, club);
   await p.waitForFunction(() => window.__CPM_PARATA && (window.__CPM_PARATA.cg23 || 0) >= 8 && window.__CPM_PARATA.men23, null, { timeout: 60000 }).catch(() => {});
-  const col = [];
+  const col = [], gambe = { pantaloncini: [], calzettoni: [] };
   for (let k = 0; k < 5; k++) { await sleep(1500);
     const pts = await p.evaluate(() => { const P = window.__CPM_PARATA, T = window.THREE; if (!P || !P.men23 || !P.cam) return null; const cam = P.cam, out = [];
-      for (const m of P.men23) { if (m._cg23 && m._cg23.eroe) continue; m.updateMatrixWorld(true); const bs = {}; m.traverse(o => { if (o.isBone && /^spine_0[23]$/.test(o.name)) bs[o.name] = o; });
-        const a = bs.spine_02, c = bs.spine_03; if (!a || !c) continue; const va = new T.Vector3(), vc = new T.Vector3(); a.getWorldPosition(va); c.getWorldPosition(vc);
-        const v = va.add(vc).multiplyScalar(0.5); const q = v.project(cam); if (Math.abs(q.x) < 0.95 && Math.abs(q.y) < 0.95 && q.z < 1) out.push([(q.x + 1) / 2 * innerWidth, (1 - q.y) / 2 * innerHeight]); }
+      const W = (o) => { const v = new T.Vector3(); o.getWorldPosition(v); return v; };
+      const put = (cl, v) => { const q = v.project(cam); if (Math.abs(q.x) < 0.95 && Math.abs(q.y) < 0.95 && q.z < 1) out.push([(q.x + 1) / 2 * innerWidth, (1 - q.y) / 2 * innerHeight, cl]); };
+      for (const m of P.men23) { if (m._cg23 && m._cg23.eroe) continue; m.updateMatrixWorld(true); const bs = {}; m.traverse(o => { if (o.isBone && /^(spine_0[23]|thigh_[lr]|calf_[lr]|foot_[lr])$/.test(o.name)) bs[o.name] = o; });
+        const a = bs.spine_02, c = bs.spine_03; if (!a || !c) continue;
+        put('maglia', W(a).add(W(c)).multiplyScalar(0.5));
+        /* [giro 208 PO-469] pantaloncini: un quarto della coscia sotto l'anca · calzettoni: meta' del polpaccio, per le due gambe */
+        for (const l of ['l', 'r']) { const t = bs['thigh_' + l], k = bs['calf_' + l], f = bs['foot_' + l]; if (!t || !k || !f) continue;
+          const vt = W(t), vk = W(k), vf = W(f); put('pantaloncini', vt.clone().lerp(vk, 0.25)); put('calzettoni', vk.clone().lerp(vf, 0.5)); } }
       return out; });
     const shot = PNG.sync.read(await p.screenshot());
     if (foto && k === 2) fs.writeFileSync(foto, PNG.sync.write(shot));
-    for (const [x, y] of pts || []) { const X = Math.round(x * shot.width / 375), Y = Math.round(y * shot.height / 812); if (X < 2 || Y < 2 || X >= shot.width - 2 || Y >= shot.height - 2) continue;
+    for (const [x, y, cl] of pts || []) { const X = Math.round(x * shot.width / 375), Y = Math.round(y * shot.height / 812); if (X < 2 || Y < 2 || X >= shot.width - 2 || Y >= shot.height - 2) continue;
       const R = [], G = [], B = []; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const i = ((Y + dy) * shot.width + X + dx) * 4; R.push(shot.data[i]); G.push(shot.data[i + 1]); B.push(shot.data[i + 2]); }
-      col.push(hsv(med(R), med(G), med(B))); } }
+      (cl === 'maglia' ? col : gambe[cl]).push(hsv(med(R), med(G), med(B))); } }
   await p.close();
   const ref = hsv(0xdc, 0x26, 0x26);
-  return { campioni: col.length, sat: med(col.map(c => c.s)), satRif: +ref.s.toFixed(3), tono: med(col.map(c => Math.min(Math.abs(c.h - ref.h), 360 - Math.abs(c.h - ref.h)))), lum: med(col.map(c => c.v)), lumRif: +ref.v.toFixed(3) };
+  const g = {}; for (const k of Object.keys(gambe)) g[k] = { campioni: gambe[k].length, sat: med(gambe[k].map(c => c.s)), lum: med(gambe[k].map(c => c.v)) };
+  return { campioni: col.length, sat: med(col.map(c => c.s)), satRif: +ref.s.toFixed(3), tono: med(col.map(c => Math.min(Math.abs(c.h - ref.h), 360 - Math.abs(c.h - ref.h)))), lum: med(col.map(c => c.v)), lumRif: +ref.v.toFixed(3), ...g };
 }
 async function piedistallo(flags, foto) {
   const p = await b.newPage({ viewport: { width: 375, height: 812 } }); await installCdnRoutes(p);
@@ -68,6 +74,16 @@ if (SOLO.includes('M')) {
   const dentro = x => x.campioni >= 12 && x.sat >= 0.85 * x.satRif && x.tono <= 12 && Math.abs(x.lum - x.lumRif) <= 0.15;
   if (!dentro(v)) guasti.push('M verde: maglie fuori dal colore del club ' + JSON.stringify(v));
   if (!(r.campioni >= 12 && !dentro(r))) guasti.push('M rosso: il difetto non si vede ' + JSON.stringify(r));
+  /* [giro 208 PO-469] la correzione vale SOLO per la maglia. Si confrontano tre bracci sullo stesso corpo e la stessa luce: verde, prima del
+     giro 204 (__CPM_NO_G204) e giro 204 (__CPM_NO_G208). SOGLIA DICHIARATA (verde): pantaloncini e calzettoni uguali a prima del giro 204
+     entro 0,05 in luminosita' e in saturazione (mediane, almeno 12 campioni ciascuno); maglia invariata rispetto al giro 204 entro 0,03 in
+     luminosita' e saturazione e 3° di tono (e sempre dentro la soglia del 204, sopra). ROSSO __CPM_NO_G208: pantaloncini lontani da prima
+     del giro 204 piu' di 0,05 in luminosita' (misurato 0,890 contro 0,984) — se il difetto non si vede, rosso. */
+  const r8 = await maglie([['__CPM_NO_G208', 1]], F && `${F}/prima-208-parata-maglie.png`); righe.push('M rosso208 ' + JSON.stringify(r8));
+  const vicino = (x, y, cl) => x[cl] && y[cl] && x[cl].campioni >= 12 && y[cl].campioni >= 12 && Math.abs(x[cl].lum - y[cl].lum) <= 0.05 && Math.abs(x[cl].sat - y[cl].sat) <= 0.05;
+  for (const cl of ['pantaloncini', 'calzettoni']) if (!vicino(v, r, cl)) guasti.push(`M verde: ${cl} diversi da prima del giro 204 ` + JSON.stringify({ verde: v[cl], prima204: r[cl] }));
+  if (!(r8.campioni >= 12 && Math.abs(v.lum - r8.lum) <= 0.03 && Math.abs(v.sat - r8.sat) <= 0.03 && Math.abs(v.tono - r8.tono) <= 3)) guasti.push('M verde: maglia cambiata rispetto al giro 204 ' + JSON.stringify({ verde: [v.lum, v.sat, v.tono], g204: [r8.lum, r8.sat, r8.tono] }));
+  if (!(r8.pantaloncini && r.pantaloncini && r8.pantaloncini.campioni >= 12 && r.pantaloncini.campioni >= 12 && Math.abs(r8.pantaloncini.lum - r.pantaloncini.lum) > 0.05)) guasti.push('M rosso208: i pantaloncini del giro 204 non si vedono ' + JSON.stringify({ g204: r8.pantaloncini, prima204: r.pantaloncini }));
   if (process.env.CPM_KITS) for (const k of process.env.CPM_KITS.split(',')) righe.push('M taratura k=' + k + ' ' + JSON.stringify(await maglie([['__CPM_KIT204', +k]])));
 }
 if (SOLO.includes('P')) {
