@@ -1847,5 +1847,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYia9x2X4xfLBYq8Qoinf",
+    "titolo": "giro 209 niente ripiego 2D: avviso connessione con Riprova e Simula (PO-470)",
+    "creata": "2026-11-15T07:37:48Z",
+    "chiusa": "2026-11-15T11:12:36Z",
+    "cost_usd": 7.4869526,
+    "output_tokens": 60695,
+    "cache_read_tokens": 21975512,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
