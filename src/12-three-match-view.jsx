@@ -212,6 +212,39 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
 /* [7.999.21 collaudo PO «ridurrei la grandezza generale, sembra troppo grande rispetto al campo/porta»] i giocatori CGTrader in campo
    erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
    scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
+/* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!»] MISURATORE DEI CORPI, per OGNI scena 3D (partita, ingresso, highlight,
+   festa e premiazione dentro ThreeMatchView; intervista, presentazione, parata, gala e schermata iniziale coi loro renderer). Solo lettura,
+   acceso solo quando la sonda arma window.__CPM_G212W (array). A ogni fotogramma disegnato, per ogni corpo con scheletro visibile:
+   - STATURA in unita' di mondo, indipendente dalla posa: l'estensione delle ossa lungo l'asse piede→testa della posa di legame del file (lo stesso metro
+     di _skeletonWorldHeight, con cui il gioco scala i corpi) riportata al mondo col rapporto fra il percorso d'ossa piede→testa ADESSO e
+     lo stesso percorso nella posa di legame. Metri = unita' x 7,32/6,70 (la porta: 7,32 m fra i pali, |z| <= 3,35 nel gioco);
+   - distanza dalla camera (bacino e osso piu' vicino), piano near, ossa dentro il near o dietro la camera;
+   - QUOTA dell'inquadratura: rettangolo delle ossa proiettate, ritagliato allo schermo, diviso per lo schermo;
+   - a chi appartiene (chi(o) della scena, altrimenti la catena dei genitori con le loro scale). */
+const _M212={v:null,rat:new WeakMap()};
+function misuraCorpi212(scena,scene,camera,chi){try{if(typeof window==='undefined'||typeof THREE==='undefined')return;const W=window.__CPM_G212W;if(!Array.isArray(W)||W.length>=(+window.__CPM_G212MAX||6000)||!scene||!camera)return;
+  const T=THREE;if(!_M212.v)_M212.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),m:new T.Matrix4(),iv:new T.Matrix4(),s:new T.Vector3()};const V=_M212.v;
+  const out={t:+(performance.now()/1000).toFixed(2),scena,near:+(camera.near||0).toFixed(3),fov:+(camera.fov||0).toFixed(1),w:(window.innerWidth|0)+'x'+(window.innerHeight|0),cam:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)],corpi:[]};
+  camera.updateMatrixWorld();V.iv.copy(camera.matrixWorldInverse);const cp=new T.Vector3();camera.getWorldPosition(cp);const sk=new Set();
+  const percorso=(bs,a,b)=>{const pa=[];for(let x=a;x;x=x.parent)pa.push(x);const sb=new Set(pa);const pb=[];let x=b;for(;x&&!sb.has(x);x=x.parent)pb.push(x);if(!x)return null;const lca=x;const r=pa.slice(0,pa.indexOf(lca)+1).concat(pb.reverse());return r.every(o=>bs.indexOf(o)>=0)?r:null;};
+  scene.traverseVisible(o=>{if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||bs.length<5||sk.has(bs[0]))return;sk.add(bs[0]);
+    let hd=null,ft=null;for(const b of bs){const n=String(b.name||'').replace(/^mixamorig[:_]?/i,'');if(!hd&&/^(head|bip0?1_?head)$/i.test(n.replace(/[ .]/g,'_')))hd=b;if(!ft&&/^(foot_l|leftfoot|l_?foot|bip0?1_?l_?foot)$/i.test(n.replace(/[ .]/g,'_')))ft=b;}
+    if(!hd||!ft)return;const via=percorso(bs,ft,hd);if(!via||via.length<3)return;
+    let R=_M212.rat.get(o.skeleton);
+    if(R==null){try{const bp=b=>{V.c.setFromMatrixPosition(V.m.copy(o.skeleton.boneInverses[bs.indexOf(b)]).invert());return V.c.clone();};
+      let L=0;for(let k=1;k<via.length;k++)L+=bp(via[k-1]).distanceTo(bp(via[k]));const ax=bp(hd).sub(bp(ft)).normalize();let lo=1e9,hi=-1e9;for(const b of bs){const q=bp(b).dot(ax);if(q<lo)lo=q;if(q>hi)hi=q;}/* estensione lungo l'asse piede→testa della posa di legame: vale per i file Y-su e Z-su (Rocketbox) */
+      R=L>0?(hi-lo)/L:0;}catch(_e){R=0;}_M212.rat.set(o.skeleton,R);}
+    let L=0;for(let k=1;k<via.length;k++){via[k-1].getWorldPosition(V.a);via[k].getWorldPosition(V.b);L+=V.a.distanceTo(V.b);}
+    let x0=9,x1=-9,y0=9,y1=-9,dentroNear=0,dietro=0,dmin=1e9,yMin=1e9;
+    for(const b of bs){b.getWorldPosition(V.a);if(V.a.y<yMin)yMin=V.a.y;const d=V.a.distanceTo(cp);if(d<dmin)dmin=d;V.b.copy(V.a).applyMatrix4(V.iv);const zc=-V.b.z;if(zc<=0){dietro++;continue;}if(zc<camera.near)dentroNear++;
+      V.a.project(camera);if(V.a.x<x0)x0=V.a.x;if(V.a.x>x1)x1=V.a.x;if(V.a.y<y0)y0=V.a.y;if(V.a.y>y1)y1=V.a.y;}
+    const cx0=Math.max(-1,x0),cx1=Math.min(1,x1),cy0=Math.max(-1,y0),cy1=Math.min(1,y1);const quota=(cx1>cx0&&cy1>cy0)?((cx1-cx0)*(cy1-cy0)/4):0;
+    const pel=via[Math.floor(via.length/2)]||bs[0];pel.getWorldPosition(V.a);o.getWorldScale(V.s);
+    let c=null;try{c=chi?chi(o):null;}catch(_e){}
+    const cat=[];for(let x=o.parent,k=0;x&&k<7;x=x.parent,k++)cat.push((x.name||x.type||'').slice(0,14)+(x.scale&&Math.abs(x.scale.y-1)>0.001?'*'+x.scale.y.toFixed(3):''));
+    out.corpi.push({ix:c&&c.ix!=null?c.ix:-1,ruolo:(c&&c.ruolo)||'sconosciuto',nome:(o.name||'').slice(0,20),cat:cat.join('<'),hU:+(L*R).toFixed(3),hM:+(L*R*7.32/6.70).toFixed(2),scala:+V.s.y.toFixed(4),
+      d:+V.a.distanceTo(cp).toFixed(2),dmin:+dmin.toFixed(2),pos:[+V.a.x.toFixed(1),+V.a.y.toFixed(1),+V.a.z.toFixed(1)],yMin:+yMin.toFixed(2),quota:+quota.toFixed(3),hScr:+((cy1-cy0)/2).toFixed(3),dentroNear,dietro,cg:!!(o.userData&&o.userData.cg196)});});
+  W.push(out);}catch(_e){}}
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
 /* [giro 146 PO-348 «occhio alla gestione delle spalle, braccia e mani: spalle larghe e proporzionate al corpo in tutte le scene e negli
    highlights»] LA REGOLA UNICA DELLE SPALLE. MISURATO (spalle-146-misura.mjs, GLB acceso, corpo CGTrader): il rapporto fra la distanza
@@ -1265,6 +1298,19 @@ function ThreeMatchView(props){
         const tp=n>0&&maxA<0.105;if(tp)out.tpose++;
         if((!cg||tp)&&out.chi.length<6)out.chi.push((cg?'cg':'nocg')+(tp?'-tpose':'')+':'+(_t196ruolo(o)||'giocatore')+':'+(o.name||'').slice(0,18));});
       W.push(out);}catch(_e){}};
+    /* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!»] TESTIMONE DEI CORPI (solo con window.__CPM_G212W, armato dalla
+       sonda gigante-212): a ogni fotogramma DISEGNATO, per ogni corpo con scheletro visibile in scena: ALTEZZA in piedi indipendente
+       dalla posa (somma dei segmenti piede-polpaccio-coscia-bacino-schiena-collo-testa nel mondo, per il rapporto altezza/segmenti
+       misurato una volta sulla posa di legame del file), distanza dalla camera, piano near, ossa dentro il near o dietro la camera,
+       QUOTA dell'inquadratura occupata (rettangolo delle ossa proiettate, ritagliato allo schermo) e a chi appartiene. */
+    const _g212chi=(o)=>{let av=null,ix=-1;if(glbAvatars)for(let i=0;i<glbAvatars.length&&!av;i++){const a=glbAvatars[i];if(!a||!a.root)continue;for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===a.root){av=a;ix=i;break;}}
+      let r=_t196ruolo(o);if(!r&&av){r=av._isRef?'arbitro':(ix===0?'eroe':(av._isGk?'portiere-':'')+(av._team==='home'?'casa':av._team==='away'?'ospiti':'?'));}
+      const _in=(L,nome)=>{if(r||!L)return;for(const a of L){const rt=a&&(a.root||a.visualRoot);if(!rt)continue;for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===rt){r=nome(a);return;}}};
+      _in(assistantRefGlbAvatars,()=>'guardalinee');_in(mascotGlbAvatars,()=>'bambino');_in(benchGlbAvatars,a=>a.isCoach?'mister':'panchina');
+      if(!r&&sr.current&&sr.current._cerCoachGrp){for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===sr.current._cerCoachGrp){r='mister-premiazione';break;}}
+      if(!r){for(let x=o,k=0;x&&k<12;x=x.parent,k++){if(x._mascot196){r='bambino';break;}if(x.name&&/coach|panch|bench|foto|tifos|comparsa|stamp/i.test(x.name)){r='comparsa:'+x.name.slice(0,16);break;}}}
+      return {ix,ruolo:r||'sconosciuto'};};
+    const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
     const _w232v=new THREE.Vector3();
@@ -1986,7 +2032,15 @@ function ThreeMatchView(props){
           marker.traverse(o=>{if(o.isMesh)o.visible=false;});
           const root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('hyper-assistant-'+index));
           root.add(visual);visual.updateMatrixWorld(true);
-          const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),_mh212=Math.max(0.1,raw.max.y-raw.min.y),_sk212=_skeletonWorldHeight(visual);
+          /* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!» — rosso __CPM_NO_G212] MISURATO (testimone __CPM_G212W, festa del
+             fischio finale e ogni altra scena della partita): i due guardalinee CGTrader avevano scala 17,2 contro 1,0 di tutti gli altri
+             corpi, statura 26,5 unita' = 29 m, in piedi sul bordo campo a z = ±36: e' il «gigante» oltre i cartelloni della foto del PO.
+             Causa: l'altezza si leggeva da Box3.setFromObject, che sul pacchetto CGTrader LOD legge la posa di legame delle SkinnedMesh in
+             centimetri e restituisce meno di 0,1 (lo stesso inganno gia' documentato il 23/09 per i LOD): il tetto Math.max(0.1, ...) la
+             portava a 0,1 e 1,72/0,1 = 17,2. Bambini e panchina leggevano gia' lo SCHELETRO (_skeletonWorldHeight) e avevano altezze
+             giuste: qui si fa lo stesso, con la stessa scala dei corpi in campo (_scalaCorpo21). */
+          const height=(!(typeof window!=='undefined'&&window.__CPM_NO_G212)&&_sk212.height>0.5)?_sk212.height:_mh212;visual.scale.setScalar(((typeof window!=='undefined'&&window.__CPM_NO_G212)?1:_scalaCorpo21())*1.72/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
           const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
@@ -12919,6 +12973,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
+      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
     };
     loop();
 

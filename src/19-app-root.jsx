@@ -658,7 +658,7 @@ function IntroCinematic({onDone,nome,riascolto}){
        camLook.x+=(lx-camLook.x)*_lk;camLook.y+=(ly-camLook.y)*_lk;camLook.z+=(lz-camLook.z)*_lk;}
       cam.lookAt(camLook);
       {const _w=W(),_h=H();if(stG._vw!==_w||stG._vh!==_h){stG._vw=_w;stG._vh=_h;cam.aspect=_w/_h;cam.fov=(_g178i&&cam.aspect<0.62)?Math.min(72,2*Math.atan(Math.tan(25*Math.PI/180)*0.62/cam.aspect)*180/Math.PI):50;cam.updateProjectionMatrix();renderer.setSize(_w,_h);}}/* [7.37.0 collaudo PO «va ancora a scatti»] setSize SOLO su resize: ogni frame riallocava il buffer di disegno */
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('avvio',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
       raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);

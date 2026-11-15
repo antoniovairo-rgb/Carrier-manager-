@@ -828,7 +828,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
       flashes.forEach(f=>{if(f.t<0&&rnd()<0.010)f.t=0;if(f.t>=0){f.t+=0.05;const o=Math.max(0,1-f.t*3.2);f.sp.material.opacity=o;if(o>0.6)flashLight.intensity=1.5;if(f.t>0.4)f.t=-1;}});
       flashLight.intensity*=0.86;
       cam.position.x=camVX+Math.sin(el*0.13)*0.10;cam.lookAt(0.08,0.62,0);
-      renderer.render(scene,cam);raf=requestAnimationFrame(tick);};
+      renderer.render(scene,cam);misuraCorpi212('intervista',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */raf=requestAnimationFrame(tick);};
     // ── camera TV busto-su (variazione seedata del taglio) ──
     const cam=new THREE.PerspectiveCamera(44,W()/H(),0.1,50);cam.position.set(camVX,camVY,4.7);cam.lookAt(0.08,0.62,0);
     raf=requestAnimationFrame(tick);
@@ -1593,7 +1593,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           _g.t=+(+(_mw._wvT||0)).toFixed(2);_g.n=(_g.n||0)+1;
         }
       }catch(_e479){}}
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('presentazione',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
     };
     cam.position.set(Math.sin(-0.5)*80,34,Math.cos(-0.5)*80);tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
@@ -2064,7 +2064,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       caim.set(A.a[0]+(B.a[0]-A.a[0])*ww,A.a[1]+(B.a[1]-A.a[1])*ww,A.a[2]+(B.a[2]-A.a[2])*ww);
       cam.position.copy(cpos);cam.lookAt(caim);
       if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARCAM192&&eroe23){try{const _e=new THREE.Vector3();eroe23.getWorldPosition(_e);cam.position.set(_e.x+1.2,_e.y+1.9,_e.z+3.4);cam.lookAt(_e.x,_e.y+1.9,_e.z);}catch(_e){}}/* [giro 192] solo collaudo: primo piano sull'eroe con la coppa */
-      renderer.render(scene,cam);};
+      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
     tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
     window.addEventListener('resize',onR);
@@ -2449,7 +2449,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       if(winB&&!_cued.win){_cued.win=true;_cue("winner_reveal");}
       confSys.forEach(ps=>{ps.material.opacity+=((winB?0.95:0)-ps.material.opacity)*0.05;
         if(ps.material.opacity>0.02){const a=ps.geometry.attributes.position.array,v=ps._vel;for(let i=0;i<v.length;i++){a[i*3+1]-=v[i]*0.033;a[i*3]+=Math.sin(t*2+i)*0.004;if(a[i*3+1]<0){a[i*3+1]=4.4;}}ps.geometry.attributes.position.needsUpdate=true;}});
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('gala',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
     };
     loop();
     const onRs=()=>{try{renderer.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();_fov137();}catch(_e){}};
