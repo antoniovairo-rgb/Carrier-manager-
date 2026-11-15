@@ -2456,7 +2456,7 @@ function ThreeMatchView(props){
         sx.font="900 38px Arial, sans-serif";
         sx.fillStyle="#9fb3d8";sx.fillText(hA,100,120);sx.fillText(aA,412,120);
         sx.fillStyle="#ffffff";sx.font="900 92px Arial, sans-serif";sx.fillText(h+" - "+a,256,124);
-        sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);};
+        try{if(typeof window!=="undefined"&&window.__CPM_SB204!==undefined)window.__CPM_SB204=clk;}catch(_e){}/* [giro 204] testimone armato dalla sonda: l'ultimo minuto disegnato sul maxischermo (-1 = nessuno) */if(clk>=0){sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);}};/* [giro 204 PO-450] clk<0 = nessun minuto (lotteria dei rigori) */
       _sbDraw(homeAbbr,awayAbbr,scoreHome,scoreAway,props.matchClock||0);_sbTex=new THREE.CanvasTexture(sc);}
     /* [7.455.0 collaudo PO «schermo sospeso in aria negli stadi piccoli!»] IL MAXISCHERMO SI APPOGGIA A
        CIO' CHE HA DIETRO. La quota era FISSA a 15.5 per qualunque impianto, e il pilone fu tolto su
@@ -9905,7 +9905,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _u=sr.current._grab192,_w=_u*_u*(3-2*_u);
             trophyGrp.position.set(_R.x+(_M.x-_R.x)*_w,_ry0+(_M.y-_ry0)*_w,_R.z+(_M.z-_R.z)*_w);
             sr.current._rest192=_w<1e-3;}catch(_e192){}}
-          else if(sr.current._ped192&&(!_team23||(_bk!=="present"&&_bk!=="captain")))sr.current._ped192.visible=(_g192b&&_team23&&(_bk==="pass"||_bk==="lift"||_bk==="fest"));/* il piedistallo resta in scena, vuoto, dopo la presa */
+          else if(sr.current._ped192&&(!_team23||(_bk!=="present"&&_bk!=="captain"))){const _vis192=(_g192b&&_team23&&(_bk==="pass"||_bk==="lift"||_bk==="fest"));/* il piedistallo resta in scena, vuoto, dopo la presa */
+            /* [giro 204 PO-451 — rosso __CPM_NO_G204] IL PIEDISTALLO NON RESTA VUOTO IN SCENA. Scelta: al primo beat dopo la presa (captain->pass,
+               o present->lift se il capitano e' l'eroe) la regia fa uno STACCO breve (0,3 s di nero, come fra un rigore e l'altro della
+               lotteria) e sotto lo stacco il piedistallo esce di scena — come in tv, dove il tavolo del trofeo lo portano via fuori
+               inquadratura. Senza stacco sparirebbe a vista. Se la presa non e' ancora completa al cambio di beat, resta (la coppa e' li'). */
+            if(_vis192&&!(typeof window!=='undefined'&&window.__CPM_NO_G204)&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>=1){if(sr.current._ped204k!==_SC){sr.current._ped204k=_SC;sr.current._cut204=now;}sr.current._ped192.visible=false;}
+            else sr.current._ped192.visible=_vis192;}
+          if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&(_bk==="present"||_bk==="captain"||_bk==="pass"||_bk==="lift"||_bk==="fest")){try{const W=(window.__CPM_PED204=window.__CPM_PED204||[]);if(W.length<3000)W.push({b:_bk,g:sr.current._grab192k===_SC&&(sr.current._grab192||0)>=1,v:!!(sr.current._ped192&&sr.current._ped192.visible),cut:(sr.current._cut204!=null&&now-sr.current._cut204<300)?Math.round(sr.current._cut204):0});}catch(_e){}}/* [giro 204] testimone del piedistallo */
           if(!(_g192b&&_team23&&trophyGrp.visible&&(_bk==="present"||_bk==="captain")))sr.current._rest192=false;
           if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 192] testimone: coppa e mani di eroe e capitano nello stesso fotogramma */
             const _W=window.__CPM_G192B||(window.__CPM_G192B={fr:[]});if(_W.fr.length<900){const _mm=(m)=>{const a=m&&(glbAvatars||[]).find(x=>x&&x.proc===m);if(!a||!a._handL||!a._handR)return null;const v1=new THREE.Vector3().setFromMatrixPosition(a._handL.matrixWorld),v2=new THREE.Vector3().setFromMatrixPosition(a._handR.matrixWorld);return [+((v1.x+v2.x)/2).toFixed(3),+((v1.y+v2.y)/2+0.10).toFixed(3),+((v1.z+v2.z)/2).toFixed(3)];};
@@ -10077,7 +10084,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_u<0.85){const _r=(_u-0.55)/0.30;_km.position.x=32.8+(34.6-32.8)*_r;_km.position.z=1.1*(1-_r);_km.position.y=0;}
             else{
               const _f=Math.min((_u-0.85)/0.5,1);
-              const _dir=_k.dir||0;const _zT=_k.wide?((_dir||1)*5.1):(_dir===0?0.35:_dir*2.65);
+              const _dir=_k.dir||0;const _zT=(_k.post&&!(typeof window!=='undefined'&&window.__CPM_NO_G204))?((_dir||1)*3.35):_k.wide?((_dir||1)*5.1):(_dir===0?0.35:_dir*2.65);/* [giro 204] il palo del motore (scena di sola visione): il pallone finisce sul palo, non largo */
               const _yT=_k.high?1.85:0.55;
               if(_bl){
                 if(_f<1||_k.scored===undefined){}
@@ -10088,6 +10095,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 }
                 if(_k.scored&&_f>=1){_bl.position.x=48.8;/* [7.168.0] il gol si assesta DENTRO la rete (oltre 48.6) */_bl.position.y=Math.max(0.45,_bl.position.y-aDt*2);_bl.position.z=clamp(_zT,-3.2,3.2);}
                 if(!_k.scored&&!_k.wide&&_f>=0.8){_bl.position.x=47.3;/* [7.168.0] la parata respinge davanti al GK sulla linea */_bl.position.z=_zT*0.86;_bl.position.y=Math.max(0.3,_bl.position.y-aDt*3.2);}
+                if(P.shootout.visione&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_VIS204_3D=window.__CPM_VIS204_3D||[]);if(W.length<600)W.push({key:_k.key,u:+_u.toFixed(2),f:+_f.toFixed(2),kicker:_km===hero?'eroe':'compagno',bx:+_bl.position.x.toFixed(2),by:+_bl.position.y.toFixed(2),bz:+_bl.position.z.toFixed(2)});}catch(_e){}}/* [giro 204] testimone della scena di sola visione: dove va il pallone (lo stato del fotogramma precedente) */
                 if(_k.wide&&_f>=1){_bl.position.x=Math.min(_bl.position.x+aDt*6,49.6);_bl.position.y=Math.max(0.3,_bl.position.y-aDt*2.4);}
               }
               if(_gkS&&_f>0.10){const _gu=Math.min((_f-0.10)/0.75,1);const _gs=_gu*_gu*(3-2*_gu);/* [7.33.1 collaudo PO «i portieri non si tuffano in maniera fluida»] smoothstep (via le rampe lineari) + finestra più ampia */
@@ -11707,6 +11715,10 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
+      /* [giro 204 PO-450] la scena di sola visione del rigore: la camera e' quella della lotteria (dietro il rigorista, 7.999.58), ferma e
+         presa di colpo al primo fotogramma — e' uno stacco di regia (il DOM lo copre col taglio). In gioco fluido le passate della regia
+         normale la porterebbero via: qui ha l'ultima parola. */
+      if(P.shootout&&P.shootout.visione&&!(typeof window!=='undefined'&&window.__CPM_NO_G204)){camera.position.set(23.5,3.8,2.4);camLook.x=46.5;camLook.y=1.0;camLook.z=-0.3;}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
       /* [PO-252 giro 42, testimone di sola prova] posizione resa della camera + mani del fotogramma (_tocc503) +
          tempo di scena: serve ad ATTRIBUIRE il salto isolato della camera (voce 9 del banco 248). Flag dedicato. */
@@ -11770,7 +11782,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       for(let i=0;i<LED_SEG;i++){const c=_ledCols[(i+_ledOff)%3],kbr=Math.min(0.42+_ledBoost+0.28*Math.sin(_ledPhase*3+i*0.5),0.82);// 3DV-2: cap 0.82, ridotti (era max 1.63 → saturazione)
         ledStrips[i].material.color.copy(c).multiplyScalar(kbr);ledStrips[i+LED_SEG].material.color.copy(c).multiplyScalar(kbr);}
       // item 1 (5.49.9): TABELLONE — ridisegna solo quando cambia punteggio o minuto (economico)
-      if(_sbDraw){const _h=P.scoreHome||0,_a=P.scoreAway||0,_c=(P.matchClock||0)|0;if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c);_sbTex.needsUpdate=true;}}
+      if(_sbDraw){const _h=P.scoreHome||0,_a=P.scoreAway||0,_c=(P.shootout&&!(typeof window!=="undefined"&&window.__CPM_NO_G204))?-1:((P.matchClock||0)|0);/* [giro 204 PO-450 — rosso __CPM_NO_G204] durante la lotteria dei rigori il maxischermo dietro la porta non mostra piu' il minuto: dalla camera del rigorista il «90'» cadeva proprio dietro il punteggio del tabellone «CALCI DI RIGORE» (misurato: sonda-90-204, foto giro204/prima) */if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c);_sbTex.needsUpdate=true;}}
       // 3DV-7: scorrimento banner competizione LED (UV offset su RepeatWrapping)
       {const _bs=now*0.000032;compBanner1.material.map.offset.x=_bs;compBanner2.material.map.offset.x=-_bs;}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
@@ -12902,7 +12914,8 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       __w266c('R');
-      if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
+      if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
+      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
