@@ -722,7 +722,7 @@ function Riserva2D205({fase,soState=null,soFx=null,ceremony=null,kitCasa="#8e1f3
       <div style={{position:"absolute",left:"50%",top:"72%",width:8,height:4,marginLeft:-4,borderRadius:"50%",background:"rgba(255,255,255,0.8)"}}/>
       <div data-cpm="rigori2d205-portiere" style={{position:"absolute",left:gx+"%",top:"41%",width:30,height:56,marginLeft:-15,transition:"left .45s ease-out, transform .45s ease-out",transform:`rotate(${tirato&&k?gDir*62:0}deg)`,transformOrigin:"50% 100%"}}>
         <div style={{width:20,height:20,margin:"0 auto",borderRadius:"50%",background:"#e8c7a0",border:"2px solid rgba(0,0,0,0.25)"}}/>
-        <div style={{width:30,height:34,marginTop:2,borderRadius:8,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
+        <div style={{width:30,height:34,marginTop:2,borderRadius:RAD.sm/* [giro 218] token (stesso valore 8) */,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
       </div>
       <div data-cpm="rigori2d205-palla" style={{position:"absolute",left:bx+"%",top:by+"%",width:tirato?14:18,height:tirato?14:18,marginLeft:tirato?-7:-9,marginTop:tirato?-7:-9,borderRadius:"50%",background:"radial-gradient(circle at 35% 35%,#fff 0 40%,#cbd5e1 70%,#64748b 100%)",boxShadow:"0 3px 6px rgba(0,0,0,0.45)",transition:"left .55s cubic-bezier(.2,.7,.3,1), top .55s cubic-bezier(.2,.7,.3,1), width .55s, height .55s"}}/>
       {k&&<div style={{position:"absolute",left:0,right:0,top:"78%",textAlign:"center",fontSize:FS.small,fontWeight:800,color:tiraCasa?"#fde68a":"#fff",textShadow:"0 2px 6px rgba(0,0,0,0.8)"}}>{(soState&&soState.seq&&soState.seq[key]&&soState.seq[key].kicker)||""}</div>}
