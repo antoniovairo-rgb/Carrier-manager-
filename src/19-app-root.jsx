@@ -1281,7 +1281,7 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
   document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
   /* azione in attesa: rotellina e guardia del doppio tocco */
   const attese=new Map();let oss=null;
-  const fine=(el)=>{const a=attese.get(el);if(!a)return;attese.delete(el);clearTimeout(a.tr);clearTimeout(a.tt);if(a.ov){a.ov.remove();}el.removeAttribute("data-rotella213");if(!attese.size&&oss){oss.disconnect();oss=null;}};
+  const fine=(el)=>{const a=attese.get(el);if(!a)return;if(window.__CPM_FOTO213&&/cpmtest=1/.test(location.search))return;/* solo foto di collaudo: la rotellina resta per la fotografia */attese.delete(el);clearTimeout(a.tr);clearTimeout(a.tt);if(a.ov){a.ov.remove();}el.removeAttribute("data-rotella213");if(!attese.size&&oss){oss.disconnect();oss=null;}};
   const rotella=(el)=>{const a=attese.get(el);if(!a||a.ov||!el.isConnected)return;const r=el.getBoundingClientRect();const d=document.createElement("span");d.className="cpm-rotella213";d.setAttribute("aria-hidden","true");
     const lato=Math.max(14,Math.min(20,Math.round(r.height*0.42)));d.style.width=d.style.height=lato+"px";d.style.color=getComputedStyle(el).color;
     d.style.left=Math.round(r.width>=90?r.right-lato-10:r.left+r.width/2-lato/2)+"px";d.style.top=Math.round(r.top+r.height/2-lato/2)+"px";
