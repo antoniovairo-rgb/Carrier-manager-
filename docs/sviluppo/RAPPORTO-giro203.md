@@ -178,11 +178,11 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
 7. Clip Rohr: il formato int16 è glTF di base; il gioco oggi **non carica** il file (resta fuori da `dist/`, decisione 180b).
    Quando lo collegherà, il caricatore è lo stesso già provato qui (three r128). `tools/rohr-180/rifai-184.sh` produce di nuovo
    il file in float32 (>3 MB): dopo un rifacimento va ripassato `quantizza-203.mjs`. Non ho cambiato `rifai-184.sh`.
+8. `clip-180-foto` scrive di serie in `docs/sviluppo/giro180/`: l'ho fatto scrivere in `giro203/` e ho rimesso com'erano le
+   foto del 180 che aveva sovrascritto.
 9. **Scala dei nomi senza un gradino**: per i club senza sigla societaria in testa (es. «Torino Athletic Primavera») la scala è
    intero → «Torino Athletic U19» → sigla, senza «Torino Athletic». `nomi-190` lo pretende quando quel nome entra; finora non
    entrava mai (58 px). Col layout a colonna senza la condizione touch entrava (100 px) e nomi-190 è andato rosso. Non ho
    cambiato la scala (la fissa il caso puro dello stesso nomi-190): da decidere se aggiungere il gradino.
 10. I numeri del braccio rosso variano un poco fra due esecuzioni (max fuori a 360: 11,9 / 12,0 px; casi in testa diversi a
    pari misura): l'esito (520/520 fuori a 360 e 375) è stabile.
-8. `clip-180-foto` scrive di serie in `docs/sviluppo/giro180/`: l'ho fatto scrivere in `giro203/` e ho rimesso com'erano le
-   foto del 180 che aveva sovrascritto.
