@@ -373,7 +373,7 @@ function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
   const letter=kind==="win"?"V":kind==="draw"?"N":"P"; // [7.999.49 parte A] vocabolario unico V/N/P (P = persa)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
-  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
+  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:(typeof window!=='undefined'&&window.__CPM_NO_G218)?"#fff":TH.bg/* [giro 218] bianco su verde/giallo/rosso chiari del tema notte era 1,7-2,8:1: inchiostro scuro */,flexShrink:0}}>{letter}</div>);
 }
 
 
