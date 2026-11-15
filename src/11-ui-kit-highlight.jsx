@@ -1568,6 +1568,15 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      (b) MODERNI — al posto delle quattro scatole isolate, una FASCIA LED CONTINUA lungo tutto il bordo
          del tetto, angoli compresi, in `InstancedMesh` (un solo draw call): e' la firma degli stadi
          nuovi, dove la luce e' una linea e non quattro torri. */
+  /* [giro 206 PO-373 «Atmosfera si', campo no» — rosso __CPM_NO_G206] RIFLETTORI VISIBILI DI NOTTE. Misurato (misura-notte-206): negli
+     stadi con le luci sul tetto e in quelli coi pali perimetrali la testata era una scatola bianca senza alone, di notte come di giorno.
+     Di notte (stadCfg.notte206) ogni testata ha il suo alone (sprite additivo, la stessa trama del giro 23: una texture sola, nessuna
+     luce nuova) e gli aloni delle torri moderne sono piu' larghi e pieni. Testimone __CPM_FARI206 (teste, aloni). */
+  const _N206=!!stadCfg.notte206;let _nAl206=0;
+  const _alone206=(ax,ay,az,aw,aop)=>{try{if(!buildStadium._alone23){const c=document.createElement('canvas');c.width=c.height=128;const g2=c.getContext('2d');const rg=g2.createRadialGradient(64,64,0,64,64,64);
+      rg.addColorStop(0,'rgba(255,248,225,0.95)');rg.addColorStop(0.25,'rgba(255,240,200,0.45)');rg.addColorStop(1,'rgba(255,240,200,0)');g2.fillStyle=rg;g2.fillRect(0,0,128,128);buildStadium._alone23=new THREE.CanvasTexture(c);}
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:buildStadium._alone23,color:lightColor,transparent:true,opacity:aop,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));
+    s.position.set(ax,ay,az);s.scale.set(aw,aw*0.78,1);s.userData.alone206=true;scene.add(s);_nAl206++;}catch(_e206){}};
   const _roofLit=_onRoof?[[-sideX*0.7,-endZ+3,1],[sideX*0.7,-endZ+3,1],[-sideX*0.7,endZ-3,1],[sideX*0.7,endZ-3,1],
                           [-sideX+4,-endZ+4,0],[sideX-4,-endZ+4,0],[-sideX+4,endZ-4,0],[sideX-4,endZ-4,0]]:_towPos;
   if(_onRoof){try{
@@ -1583,6 +1592,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     if(_onRoof){// bank luminosi sul bordo del tetto (stadi moderni): niente pali
       const head=new THREE.Mesh(new THREE.BoxGeometry(_dir?7:3.2,0.9,_dir?2.2:3.2),new THREE.MeshBasicMaterial({color:0xfffff0}));
       head.position.set(x,endH+4.2,z);scene.add(head);
+      if(_N206)_alone206(x,endH+4.4,z,_dir?19:10,_dir?0.85:0.6);
       if(_dir){const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);
         spot.position.set(x,endH+5,z);spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);}
       else{const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x,endH+4,z);scene.add(fl);}
@@ -1614,7 +1624,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
           rg.addColorStop(0,'rgba(255,248,225,0.95)');rg.addColorStop(0.25,'rgba(255,240,200,0.45)');rg.addColorStop(1,'rgba(255,240,200,0)');g2.fillStyle=rg;g2.fillRect(0,0,128,128);
           buildStadium._alone23=new THREE.CanvasTexture(c);}
         const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:buildStadium._alone23,color:lightColor,transparent:true,opacity:0.55,depthWrite:false,blending:THREE.AdditiveBlending}));
-        const _hp=new THREE.Vector3(0,0,0.6).applyQuaternion(_fq);halo.position.set(x+_hp.x,floodH2+_gh/2+_hp.y,z+_hp.z);halo.scale.set(_gw*2.6,_gw*2.0,1);scene.add(halo);}catch(_e){}
+        const _hp=new THREE.Vector3(0,0,0.6).applyQuaternion(_fq);halo.position.set(x+_hp.x,floodH2+_gh/2+_hp.y,z+_hp.z);halo.scale.set(_gw*2.6,_gw*2.0,1);if(_N206){halo.scale.multiplyScalar(1.55);halo.material.opacity=0.9;halo.material.fog=false;}halo.userData.alone206=true;_nAl206++;scene.add(halo);}catch(_e){}
     } else if(_latt){
       const _lw=_towerT==="angolari_alte"?1.7:1.2;/* semi-lato base */
       for(const [lx,lz] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
@@ -1641,6 +1651,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       scene.add(projs);
       const walkT=new THREE.Mesh(new THREE.BoxGeometry(_gw+1.2,0.18,1.1),stM);
       walkT.position.set(x,floodH2-0.35,z);walkT.lookAt(0,floodH2-0.35,0);scene.add(walkT);
+      if(_N206){const _hp206=new THREE.Vector3(0,0,0.8).applyQuaternion(_fq);_alone206(x+_hp206.x,floodH2+_gh/2+_hp206.y,z+_hp206.z,_gw*3.6,0.88);}
     } else {
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,floodH2,8),stM);
       pole.position.set(x,floodH2/2,z);pole.castShadow=true;scene.add(pole);
@@ -1648,6 +1659,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       arm.position.set(x+(x>0?-4:4),floodH2+2,z);scene.add(arm);
       for(let hp=0;hp<3;hp++){const head=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.8,2.5),new THREE.MeshBasicMaterial({color:0xfffff0}));
         head.position.set(x+(x>0?-4:4)+(hp-1)*1.7,floodH2+2.5,z);scene.add(head);}
+      if(_N206)_alone206(x+(x>0?-4:4),floodH2+2.5,z,13,0.85);
     }
     // SpotLight pointing down at pitch — focused beam, realistic TV look
     const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);// 3DV-10: 2.8→1.4 meno fluorescente
@@ -1656,6 +1668,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // Soft fill PointLight at lower intensity
     const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x+(x>0?-5:5),floodH2+4,z);scene.add(fl);// 3DV-10: 1.0→0.50
   });
+  try{if(typeof window!=='undefined')window.__CPM_FARI206={notte:_N206,tipo:_onRoof?'tetto':_towerT,teste:_roofLit.length,aloni:_nAl206};}catch(_e206w){}
 
   // Goal nets (wireframe-style transparent planes)
   // [7.9.2 collaudo PO «pali e traversa non ancora disegnati bene, risolvi definitivamente»] la "rete" era un
