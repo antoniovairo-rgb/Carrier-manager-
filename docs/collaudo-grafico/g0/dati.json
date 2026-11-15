@@ -2978,12 +2978,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 32,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 30,
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 6,
@@ -3068,7 +3068,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 30
+      "n": 29
      }
     ],
     "nFamiglie": 1,
@@ -3084,9 +3084,9 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 10,
+      "n": 9,
       "fs": 27,
-      "esempio": "ACR"
+      "esempio": "TAT"
      },
      {
       "c": "#0d0f14",
@@ -3098,14 +3098,14 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 19,
       "esempio": "3",
       "sel": "div.cpm-piena>div:nth-child(1)>p:nth-child(3)"
      },
      {
       "fs": 13,
       "n": 6,
-      "esempio": "AC Dorvelli Primavera",
+      "esempio": "Torino Athletic Primavera",
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
      },
      {
@@ -3121,9 +3121,8 @@
     "scorritore": "documento",
     "blocchi": [],
     "etichette": {
-     "Gol": 3,
-     "Assist": 1,
-     "Punti": 1
+     "Gol": 1,
+     "Assist": 1
     },
     "nEmojiChar": 0,
     "doveEmoji": [
@@ -3153,12 +3152,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 32,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 30,
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 6,
@@ -3243,7 +3242,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 30
+      "n": 29
      }
     ],
     "nFamiglie": 1,
@@ -3259,9 +3258,9 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 10,
+      "n": 9,
       "fs": 27,
-      "esempio": "ACR"
+      "esempio": "TAT"
      },
      {
       "c": "#0d0f14",
@@ -3273,14 +3272,14 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 19,
       "esempio": "3",
       "sel": "div.cpm-piena>div:nth-child(1)>p:nth-child(3)"
      },
      {
       "fs": 13,
       "n": 6,
-      "esempio": "AC Dorvelli Primavera",
+      "esempio": "Torino Athletic Primavera",
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
      },
      {
@@ -3296,9 +3295,8 @@
     "scorritore": "documento",
     "blocchi": [],
     "etichette": {
-     "Gol": 3,
-     "Assist": 1,
-     "Punti": 1
+     "Gol": 1,
+     "Assist": 1
     },
     "nEmojiChar": 0,
     "doveEmoji": [
@@ -3328,12 +3326,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 32,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 30,
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 6,
@@ -3418,7 +3416,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 30
+      "n": 29
      }
     ],
     "nFamiglie": 1,
@@ -3434,9 +3432,9 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 10,
+      "n": 9,
       "fs": 27,
-      "esempio": "ACR"
+      "esempio": "TAT"
      },
      {
       "c": "#0d0f14",
@@ -3448,14 +3446,14 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 19,
       "esempio": "3",
       "sel": "div.cpm-piena>div:nth-child(1)>p:nth-child(3)"
      },
      {
       "fs": 13,
       "n": 6,
-      "esempio": "AC Dorvelli Primavera",
+      "esempio": "Torino Athletic Primavera",
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
      },
      {
@@ -3471,9 +3469,8 @@
     "scorritore": "documento",
     "blocchi": [],
     "etichette": {
-     "Gol": 3,
-     "Assist": 1,
-     "Punti": 1
+     "Gol": 1,
+     "Assist": 1
     },
     "nEmojiChar": 0,
     "doveEmoji": [
@@ -3503,12 +3500,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 32,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 30,
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 6,
@@ -3593,7 +3590,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 30
+      "n": 29
      }
     ],
     "nFamiglie": 1,
@@ -3609,9 +3606,9 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 10,
+      "n": 9,
       "fs": 27,
-      "esempio": "ACR"
+      "esempio": "TAT"
      },
      {
       "c": "#0d0f14",
@@ -3623,14 +3620,14 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 19,
       "esempio": "3",
       "sel": "div.cpm-piena>div:nth-child(1)>p:nth-child(3)"
      },
      {
       "fs": 13,
       "n": 6,
-      "esempio": "AC Dorvelli Primavera",
+      "esempio": "Torino Athletic Primavera",
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
      },
      {
@@ -3646,9 +3643,8 @@
     "scorritore": "documento",
     "blocchi": [],
     "etichette": {
-     "Gol": 3,
-     "Assist": 1,
-     "Punti": 1
+     "Gol": 1,
+     "Assist": 1
     },
     "nEmojiChar": 0,
     "doveEmoji": [
@@ -3678,12 +3674,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 32,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 30,
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 6,
@@ -3768,7 +3764,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 30
+      "n": 29
      }
     ],
     "nFamiglie": 1,
@@ -3784,9 +3780,9 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 10,
+      "n": 9,
       "fs": 27,
-      "esempio": "ACR"
+      "esempio": "TAT"
      },
      {
       "c": "#0d0f14",
@@ -3798,14 +3794,14 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 19,
       "esempio": "3",
       "sel": "div.cpm-piena>div:nth-child(1)>p:nth-child(3)"
      },
      {
       "fs": 13,
       "n": 6,
-      "esempio": "AC Dorvelli Primavera",
+      "esempio": "Torino Athletic Primavera",
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
      },
      {
@@ -3821,9 +3817,8 @@
     "scorritore": "documento",
     "blocchi": [],
     "etichette": {
-     "Gol": 3,
-     "Assist": 1,
-     "Punti": 1
+     "Gol": 1,
+     "Assist": 1
     },
     "nEmojiChar": 0,
     "doveEmoji": [
@@ -11415,7 +11410,7 @@
       "n": 16,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Oggi il posto da centravan"
+      "esempio": "Oggi la maglia numero 9 è "
      },
      {
       "testo": "#9aa3b2",
@@ -11632,7 +11627,7 @@
       "n": 16,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Oggi il posto da centravan"
+      "esempio": "Oggi la maglia numero 9 è "
      },
      {
       "testo": "#9aa3b2",
@@ -11849,7 +11844,7 @@
       "n": 16,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Oggi il posto da centravan"
+      "esempio": "Oggi la maglia numero 9 è "
      },
      {
       "testo": "#9aa3b2",
@@ -12067,7 +12062,7 @@
       "n": 16,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Oggi il posto da centravan"
+      "esempio": "Oggi la maglia numero 9 è "
      },
      {
       "testo": "#9aa3b2",
@@ -12285,7 +12280,7 @@
       "n": 16,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Oggi il posto da centravan"
+      "esempio": "Oggi la maglia numero 9 è "
      },
      {
       "testo": "#9aa3b2",
