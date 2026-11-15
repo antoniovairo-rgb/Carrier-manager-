@@ -79,7 +79,7 @@ async function carriera(page, sv) {
 }
 async function guarda(page, nome, ms) { const t0 = Date.now(); while (Date.now() - t0 < ms) { await sleep(700); await svuota(page, nome); } }
 
-async function partita(nomeSc, casa, v, premiazione) {
+async function partita(nomeSc, casa, v) {
   const { ctx, page, errs } = await nuovaPagina(v);
   try {
     await carriera(page, salvataggio(casa));
@@ -99,10 +99,20 @@ async function partita(nomeSc, casa, v, premiazione) {
     log.push(quando(`${nomeSc}: ingresso/highlight finiti (fase ${fase}, highlight ${hl})`));
     await page.evaluate(c => { window.__CPM_G212W = []; window.__CPM_FORCE_CEREMONY({ name: 'Doppietta', kind: 'bigwin', light: true, festa: { titolo: 'Doppietta', punteggio: c ? '2 – 0' : '2 – 0', avversario: 'FC Islington', casa: c, facce: [{ eroe: true, id: 0 }], voci: [{ n: 2, et: 'gol', oro: true }, { n: '7,8', et: 'voto', oro: true }] } }); }, casa);
     for (let i = 0; i < 16 && (i < 6 || ((scene[`${nomeSc}:festa`] || {}).fotogrammi | 0) < 2 * MINF); i++) { await guarda(page, `${nomeSc}:festa`, 1500); if (i === 2) await foto(page, `${nomeSc}-festa`); }
-    if (premiazione) { await page.evaluate(() => { window.__CPM_G212W = []; window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' }); });
-      for (let i = 0; i < 16 && (i < 6 || ((scene[`${nomeSc}:premiazione`] || {}).fotogrammi | 0) < 2 * MINF); i++) { await guarda(page, `${nomeSc}:premiazione`, 1500); if (i === 4) await foto(page, `${nomeSc}-premiazione`); } }
+    /* la premiazione si misura su una pagina sua (premiazione()): forzata dopo la festa, il timer della festa la chiudeva dopo ~5 s (misurato) */
   } catch (e) { guasti.push(`${nomeSc}: ${String(e.message).slice(0, 160)}`); }
   if (errs.length) log.push(`${nomeSc}: errori di pagina ${errs.length} → ${errs[0]}`);
+  await ctx.close();
+}
+async function premiazione(nomeSc, v) {
+  const { ctx, page, errs } = await nuovaPagina(v);
+  try {
+    await openMatch(page, port, { skipLoadAll: true, name: 'Prem212' });
+    await page.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 90000 }).catch(() => {}); await sleep(2500);
+    await page.evaluate(() => { window.__CPM_G212W = []; window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' }); });
+    for (let i = 0; i < 16 && (i < 6 || ((scene[`${nomeSc}:premiazione`] || {}).fotogrammi | 0) < 2 * MINF); i++) { await guarda(page, `${nomeSc}:premiazione`, 1500); if (i === 4) await foto(page, `${nomeSc}-premiazione`); }
+  } catch (e) { guasti.push(`${nomeSc}:premiazione: ${String(e.message).slice(0, 160)}`); }
+  if (errs.length) log.push(`${nomeSc}:premiazione: errori di pagina ${errs.length} → ${errs[0]}`);
   await ctx.close();
 }
 async function festaVera(v) {
@@ -150,9 +160,9 @@ async function cerimonie(v) {
 for (const sc of SCENARI) {
   log.push(quando('scenario ' + sc));
   if (sc === 'trasferta-tel') await partita(sc, false, 'tel', false);
-  else if (sc === 'casa-pc') await partita(sc, true, 'pc', true);
+  else if (sc === 'casa-pc') { await partita(sc, true, 'pc', true); await premiazione(sc, 'pc'); }
   else if (sc === 'trasferta-pc') await partita(sc, false, 'pc', false);
-  else if (sc === 'casa-tel') await partita(sc, true, 'tel', true);
+  else if (sc === 'casa-tel') { await partita(sc, true, 'tel', true); await premiazione(sc, 'tel'); }
   else if (sc === 'festa-vera-tel') await festaVera('tel');
   else if (sc === 'cerimonie-tel') await cerimonie('tel');
   else if (sc === 'cerimonie-pc') await cerimonie('pc');
