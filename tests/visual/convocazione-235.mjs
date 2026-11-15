@@ -31,7 +31,16 @@ async function misura(larg, rosso, dati, nome) {
     return true;
   }, dati);
   await sleep(900);
-  const m = await page.evaluate(() => {
+  /* [giro 194 · PO-431] il raggio della Card del kit NON si scrive a mano: dal giro 110 (_g110(25)) la Card e' a RAD.lg=16 e il 12
+     scritto qui faceva contare 0 card in tutti e quattro i casi (difetto dello strumento, misurato). Si legge da una Card vera
+     montata dal gioco. Rosso dello strumento: CPM_NO_G194D=1 rimette il 12 fisso. */
+  const kitRad = process.env.CPM_NO_G194D ? 12 : await page.evaluate(async () => {
+    const d = document.createElement('div'); d.id = 'kit194'; d.style.cssText = 'position:fixed;left:-9999px;top:0;width:200px'; document.body.appendChild(d);
+    ReactDOM.createRoot(d).render(React.createElement(Card, null, 'x'));
+    for (let i = 0; i < 40 && !d.firstElementChild; i++) await new Promise(r => setTimeout(r, 25));
+    const v = d.firstElementChild ? parseFloat(getComputedStyle(d.firstElementChild).borderTopLeftRadius) : NaN; d.remove(); return v;
+  });
+  const m = await page.evaluate((kitRad) => {
     const host = document.getElementById('host235');
     const rgb = (s) => { const m = String(s).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(x => +x); return { r: p[0], g: p[1], b: p[2], a: p[3] == null ? 1 : p[3] }; };
     const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
@@ -48,16 +57,16 @@ async function misura(larg, rosso, dati, nome) {
       const k = contr(c, fondo(e)); if (k < soglia) bassi.push(t.slice(0, 30) + ' ' + k.toFixed(2)); }
     const bottoni = [...host.querySelectorAll('button')].map(x => { const c = rgb(getComputedStyle(x).backgroundColor); const rr = x.getBoundingClientRect();
       return { t: x.innerText.trim().slice(0, 30), h: Math.round(rr.height), primario: !!(c && prim && Math.abs(c.r - prim.r) + Math.abs(c.g - prim.g) + Math.abs(c.b - prim.b) < 6) }; });
-    const cards = all.filter(e => { const c = rgb(getComputedStyle(e).backgroundColor); return c && card && c.a > 0.9 && Math.abs(c.r - card.r) + Math.abs(c.g - card.g) + Math.abs(c.b - card.b) < 6 && parseFloat(getComputedStyle(e).borderTopLeftRadius) === 12; }).length;
+    const cards = all.filter(e => { const c = rgb(getComputedStyle(e).backgroundColor); return c && card && c.a > 0.9 && Math.abs(c.r - card.r) + Math.abs(c.g - card.g) + Math.abs(c.b - card.b) < 6 && parseFloat(getComputedStyle(e).borderTopLeftRadius) === kitRad; }).length;
     const scroll = Math.max(host.scrollWidth, document.documentElement.scrollWidth) > window.innerWidth + 1;
-    return { gradienti, bassi, bottoni, cards, scroll };
-  });
+    return { gradienti, bassi, bottoni, cards, scroll, kitRad };
+  }, kitRad);
   const foto = path.join(OUT, `${rosso ? 'prima' : 'dopo'}-${nome}-${larg}.png`);
   await page.locator('#host235').screenshot({ path: foto });
   await page.close();
   const gioca = m.bottoni.find(x => /gioca/i.test(x.t));
   const ok = !!gioca && gioca.primario && gioca.h >= 48 && m.cards >= 3 && m.gradienti === 0 && m.bassi.length === 0 && !m.scroll && !errs.length;
-  console.log(`${rosso ? 'rosso' : 'verde'} ${nome} ${larg}px: bottone ${gioca ? (gioca.primario ? 'primario' : 'NON primario') + ' h' + gioca.h : 'assente'} · card del kit ${m.cards} · gradienti ${m.gradienti} · testi sotto contrasto ${m.bassi.length}${m.bassi.length ? ' (' + m.bassi.slice(0, 3).join(' | ') + ')' : ''} · scorrimento ${m.scroll ? 'SI' : 'no'}${errs.length ? ' ERR ' + errs[0] : ''} → ${ok ? 'OK' : 'NO'} · ${path.relative(ROOT, foto)}`);
+  console.log(`${rosso ? 'rosso' : 'verde'} ${nome} ${larg}px: bottone ${gioca ? (gioca.primario ? 'primario' : 'NON primario') + ' h' + gioca.h : 'assente'} · card del kit ${m.cards} (raggio ${m.kitRad}) · gradienti ${m.gradienti} · testi sotto contrasto ${m.bassi.length}${m.bassi.length ? ' (' + m.bassi.slice(0, 3).join(' | ') + ')' : ''} · scorrimento ${m.scroll ? 'SI' : 'no'}${errs.length ? ' ERR ' + errs[0] : ''} → ${ok ? 'OK' : 'NO'} · ${path.relative(ROOT, foto)}`);
   return ok;
 }
 for (const larg of [360, 412]) for (const [i, d] of DATI.entries()) {

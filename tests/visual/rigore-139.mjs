@@ -32,7 +32,7 @@ const ft = path.join(dir, 'teste.json');
 const [V, T, R] = await Promise.all([
   corri({ CPM_NOMI: 'r187d-25,r187d-40,r187a-22', CPM_SEMI: '26,41,23', CPM_PAR: '3' }, fv),
   corri({ CPM_NOMI: TESTE, CPM_SEMI: SEME_TESTE, CPM_PAR: '1', CPM_PROVOCA: PROVOCA }, ft),
-  corri({ CPM_NOMI: TESTE, CPM_SEMI: SEME_TESTE, CPM_PAR: '1', CPM_ROSSO: '1', CPM_PROVOCA: PROVOCA }, fr)]);
+  corri({ CPM_NOMI: TESTE, CPM_SEMI: SEME_TESTE, CPM_PAR: '1', CPM_ROSSO: '1', CPM_ROSSO191: '1', CPM_PROVOCA: PROVOCA }, fr)]);/* [giro 191] il rosso spegne anche __CPM_NO_G191A: dal giro 191 la scena che arriva dopo il calcio del motore non si apre piu', quindi il doppio del 139 si vede solo con entrambe le difese spente (misurato: con il solo rosso 139, 90' battuta* tiro* · 91' scena_negata191) */
 const leggi = (f, r) => { try { return JSON.parse(fs.readFileSync(f)); } catch (e) { console.log(r.log.slice(-1500)); return null; } };
 const dv0 = leggi(fv, V), dt = leggi(ft, T), dr = leggi(fr, R);
 const dv = (dv0 && dt) ? { res: [...dt.res, ...dv0.res] } : null;

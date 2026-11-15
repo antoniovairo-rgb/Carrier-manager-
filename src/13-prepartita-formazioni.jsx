@@ -410,7 +410,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         </div>
         {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
         <div style={{padding:"12px 18px 16px"}}>
-          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
+          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||(_no190("A")?"Torna alla dashboard":"Torna alla Home")} →</button>
         </div>
       </div>
     </div>
@@ -735,7 +735,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         <Btn onClick={onSimulate} v="ghost" fw style={{marginTop:8,padding:"10px",fontSize:FS.small}}>⏩ Simula partita</Btn>
       )}
       {onBack&&(
-        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:RAD.sm,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>← Torna alla dashboard</button>
+        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:RAD.sm,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>{_no190("A")?"← Torna alla dashboard":"← Torna alla Home"}</button>
       )}
     </div>
   );

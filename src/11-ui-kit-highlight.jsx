@@ -192,7 +192,18 @@ function FiguraV2({player,w=54,grande=false}){
    il comportamento di prima (nome intero coi puntini). */
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
-function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const ab=abbreviaSquadra182(n);if(ab!==n)out.push(ab);const sg=team&&(team.a||team.abbr);if(sg&&out.indexOf(sg)<0)out.push(String(sg));return out;}
+/* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Valmora Primavera → FC Valmora U19) prima di ogni altra cosa;
+   (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
+       «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
+   Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
+const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+function _no190(k){return typeof window!=='undefined'&&!!window["__CPM_NO_G190"+k];}
+function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const add=(x)=>{x=String(x||"").trim();if(x&&out.indexOf(x)<0)out.push(x);};
+  const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
+  const ab=abbreviaSquadra182(u19);add(ab);
+  if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
@@ -219,6 +230,17 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
     style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
+/* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
+   Si mostrano le frasi del testo dalla prima in poi, quante ne stanno in `righe` righe: mai una frase a meta', mai i tre puntini.
+   Se nemmeno la prima frase ci sta, la prima frase va a capo per intero (il riquadro cresce, il testo resta leggibile). */
+function FraseIntera190({testo,righe=2,style={},cpm}){
+  const fr=String(testo||"").match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g)||[String(testo||"")];
+  const parti=fr.map(x=>x.trim()).filter(Boolean);const key=parti.join("|");
+  const[n,setN]=useState(parti.length);const ref=useRef(null);
+  useEffect(()=>{setN(parti.length);},[key]);// eslint-disable-line
+  (React.useLayoutEffect||useEffect)(()=>{const el=ref.current;if(!el)return;const lh=parseFloat(getComputedStyle(el).lineHeight)||16;
+    if(el.scrollHeight>lh*righe+2&&n>1)setN(n-1);});
+  return(<div ref={ref} data-cpm={cpm||"frase-intera-190"} data-frasi190={n+"/"+parti.length} style={{...style,whiteSpace:"normal",overflowWrap:"anywhere"}}>{parti.slice(0,Math.max(1,n)).join(" ")}</div>);}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
@@ -769,6 +791,7 @@ function makeCrowdTex(spec){
     texLow.needsUpdate=true;texUp.needsUpdate=true;texFull.needsUpdate=true;
   };
   redraw(0,0,0);// primo frame statico
+  try{if(spec.cnt192)spec.cnt192.n+=seats.filter(x=>!x.empty).length;}catch(_e){}/* [giro 192] testimone: tifosi DIPINTI nella tela (la presentazione li vuole qui) */
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
@@ -1164,11 +1187,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurva=_SF141.curvaCasa,_awBase=_SF141.away,_fillCurvaAw=_SF141.curvaOsp,_fillTrib=_SF141.tribuna;
   /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
      window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
-  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;if(stadCfg&&stadCfg.noFolla129)return null;/* [giro 192] la presentazione chiede la folla dipinta */
     let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
     return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
   const _f129Planes=[];
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -1907,6 +1930,12 @@ const _glbCache={};
        dopo (GLB asincroni) e per le luci animate.
    NON sceglie nessun colore: lo stesso esadecimale, deciso altrove (giri 168/171), appare uguale in tutte le scene.
    Rosso __CPM_NO_G178_COLORE: la funzione non fa nulla e ogni scena torna alla sua catena di prima. Guardiano npm run scene-178. */
+/* [giro 192 · PO-407 «la coppa taglia il viso, non e' tra le mani»] LA PRESA DELLA COPPA E' UNA SOLA, per podio e parata: le mani
+   stringono i manici (base = mani - presa) e il VOLTO (mento = sommita' - 0,30 .. sommita') non si copre mai: mani alte -> coppa sopra la
+   testa, mani basse -> coppa sotto il mento. Era la regola del podio (7.997, _ALZA24); la parata non l'aveva. Tutte le quote nello stesso
+   riferimento verticale; basso/alto = punto piu' basso/alto del trofeo rispetto alla sua base. */
+function presaCoppa192(o){let b=o.mani-o.presa;const mento=o.testa-0.30;
+  if(b+o.alto>mento&&b+o.basso<o.testa){if(o.mani>=o.testa-0.35)b=o.testa+0.03-o.basso;else b=mento-o.alto;}return b;}
 const SVIL178={expo:0.52};
 /* guadagno di luce per scena (vedi sopra): tarato MISURANDO la luminanza media prima/dopo (docs/sviluppo/RAPPORTO-giro178.md) */
 const LUCE178={intro:1,presentazione:2.3,parata:4.0,gala:2.2};/* regola: il guadagno piu' piccolo che lascia la luminanza media >= 90% di prima (misure cal1-cal3) */
@@ -1946,7 +1975,7 @@ function loadGLB(url){
   //   cache → il match ri-scarica da zero. I successi restano cachati (il prefetch continua a giovare).
   if(!_glbCache[url])_glbCache[url]=new Promise((res,rej)=>{
     if(typeof THREE.GLTFLoader==='undefined'){rej(new Error('no GLTFLoader'));return;}
-    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);res(g);},null,rej);
+    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
   }).catch(e=>{try{delete _glbCache[url];}catch(_){}throw e;});
   return _glbCache[url];
 }

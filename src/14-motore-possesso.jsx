@@ -666,7 +666,7 @@ function creaMotorePossesso(cfg){
     else if(out==="post"){ty=rnd()<0.5?GOAL_Y0+0.4:GOAL_Y1-0.4;}
     else if(out==="blocked"){const m=piuVicino(P.x+dirDi(l)*3,P.y,altro(l),{noGk:true});if(m&&m.d<7){tx=m.p.x;ty=m.p.y;}else{tx=clamp(P.x+dirDi(l)*6,2,98);}}
     S.conta.tiri++;
-    if(V2){S._ultTiroV2=S._ultTiroV2||{};S._ultTiroV2[l]=S.min;}ev("tiro",{chi:chi(P),zona,intent,xg:V2?+(S._xgV2||0).toFixed(3):undefined,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
+    if(V2){S._ultTiroV2=S._ultTiroV2||{};S._ultTiroV2[l]=S.min;}ev("tiro",{chi:chi(P),zona,intent,xg:V2?+(S._xgV2||0).toFixed(3):undefined,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});S._ultTiro191={min:S.min|0,tick:S.tick|0,lato:l,eroe:!!P.eroe,intent,esito:out};/* [giro 191] l'ultimo tiro, letto dal live (piazzatoStato191) */
     volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44*_v912(),esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
@@ -1184,7 +1184,7 @@ function creaMotorePossesso(cfg){
   const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||(!S.richieste.piazzati&&!(f&&f._o27&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G139)))||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
     if(!f._o27){f._o27=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const l=T.team;const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(T),zona:zonaDi(advDi(f.x,l),f.y),press:0,x:+f.x.toFixed(1),y:+f.y.toFixed(1),chiesto:null,attese:0,tipo:kind,origine:{kind,chi:chi(T),x:+f.x.toFixed(1),y:+f.y.toFixed(1)},finestra:false,liberi:0,cast:{ricevente:null,difensore:null,portiere:chi(K)}});return true;}
-    if(f._o27<40||(f._acc94&&f._o27<400&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2))){f._o27++;return true;}return false;};/* [giro 94 D2] _acc94: il live ha accettato la scena (inserita): il motore la aspetta, non calcia lui dopo 40 passi (tetto di sicurezza 400) */
+    if(f._o27<40||(f._acc94&&f._o27<400&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2))||(f._p191&&f._o27<f._p191&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G191A))){f._o27++;return true;}return false;};/* [giro 191 PO-399] _p191: il PONTE — il live ha fatto suo il piazzato come fatto corrente ma non ha potuto inserirlo subito (tetto): il motore aspetta ancora fino al passo _p191 perche' la scena si apra al battito dopo *//* [giro 94 D2] _acc94: il live ha accettato la scena (inserita): il motore la aspetta, non calcia lui dopo 40 passi (tetto di sicurezza 400) */
   /* [giro 139] UN RIGORE GIA' OFFERTO ALLA SCENA NON LO CALCIA IL MOTORE PERCHE' LA RICHIESTA SI E' SPENTA. MISURATO (sonda-rigore-139,
      partita «k1d-11» seme 12, 2 su 2 identiche): rigore all'88', occasione d'eroe all'89'; il live spegne i piazzati dell'eroe dal 90'
      (origini(...,nx<=89)) e al battito del 90' inserisce la scena: ma nello stesso battito _piaz27 trovava la richiesta spenta e restituiva
@@ -1500,6 +1500,14 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        Seconda misura (stessa partita): al momento della scena il fermo era GIA' vuoto; il secondo calcio nasceva da un piazzato nuovo chiesto
        dal ponte verso l'highlight programmato (stesso rigore, scena gia' giocata). Quindi: per 4 minuti dopo il piazzato giocato in scena
        il motore non fa calciare all'eroe un altro piazzato (ne' da fermo pendente ne' da ponte); il pallone va al portiere di chi difende. */
+    /* [giro 191 PO-399 — rosso __CPM_NO_G191A] IL PIAZZATO DELL'EROE CHE ARRIVA DALLA SCENA PROGRAMMATA. Misurato (sonda-rigore-139,
+       r187d-11 seme 12, salvataggio 190, RIG190_K=1): rigore offerto al 58', il live ne fa il fatto corrente al 59' ma non lo inserisce
+       (tetto delle scene) e nessuno chiama attendiPiazzato; il motore aspetta i suoi 40 passi e lo calcia fra il 59' e il 60'
+       (in produzione un compagno, dal giro 154); al 60' la scena programmata si apre col rigore dell'eroe: due calci dello stesso
+       rigore. ponte191(n): il live tiene il piazzato per n passi in piu' quando lo fa suo senza inserirlo; piazzatoStato191(): il live,
+       aprendo la scena, chiede se il piazzato e' ancora sul dischetto o gia' calciato (con chi e con che esito). */
+    ponte191(n){if(typeof window!=='undefined'&&window&&window.__CPM_NO_G191A)return false;const f=S.fermo;if(!f||!f._o27)return false;f._p191=Math.max(f._p191|0,(f._o27|0)+Math.max(1,n|0));S.conta.ponte191=(S.conta.ponte191|0)+1;return true;},
+    piazzatoStato191(){const f=S.fermo;return{attesa:!!(f&&f._o27),kind:f?f.kind:null,min:S.min|0,ult:S._ultTiro191?{...S._ultTiro191}:null};},
     attendiPiazzato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;const f=S.fermo;if(!f||!f._o27)return false;f._acc94=1;return true;},/* [giro 94 D2] misura 3 (sonda-rigore-94 k13): la scena del rigore inserita al 34' si apriva al 35', quando il motore aveva gia' finito i 40 passi d'attesa e calciato nei sotto-passi: il suo gol arrivava al 36' come secondo gol dell'eroe */
     piazzatoGiocato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;S.noPiaz94=(S.min|0)+4;const f=S.fermo;if(!f||!f._o27)return false;
       S.conta.piaz94=(S.conta.piaz94|0)+1;S.fermo=null;const K=portiereDi(altro(f.lato));if(K){S.palla.x=K.x;S.palla.y=K.y;tenuta(K,null);}return true;},

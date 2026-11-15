@@ -130,6 +130,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.195 | giro 200 rassegna a quattro schede e rifiniture degli anni lunghi (PO-385, 448) | sviluppo | claude-opus-5-5 | 1,7 | 15,75 $ | 124915 | 1 | completo (un solo avvio) |
 | 7.999.195 | giro 197 scelte dell'azione sempre in vista sui telefoni bassi (PO-452) | sviluppo | claude-opus-5-5 | 3,1 | 4,66 $ | 34159 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.195 | giro 201 provini stabili e spiegati, scelte che tornano dopo la chiusura dell'app (PO-418, 428) | sviluppo | claude-opus-5-5 | 1,0 | 6,47 $ | 55732 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 202 rassegna: tabellino nella scheda 1, tasti fissi in fondo (PO-461) | sviluppo | claude-opus-5-5 | 1,8 | 8,70 $ | 78667 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -145,4 +146,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | **TOTALE 7.999.192** (23 sessioni) |  |  |  | almeno 236,54 $ |  |  | 6 sessioni parziali: totale minimo |
 | 7.999.193 | **TOTALE 7.999.193** (1 sessioni) |  |  |  | 2,05 $ |  |  | tutte complete |
 | 7.999.194 | **TOTALE 7.999.194** (8 sessioni) |  |  |  | almeno 94,96 $ |  |  | 3 sessioni parziali: totale minimo |
-| 7.999.195 | **TOTALE 7.999.195** (5 sessioni) |  |  |  | almeno 39,37 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.195 | **TOTALE 7.999.195** (6 sessioni) |  |  |  | almeno 48,07 $ |  |  | 1 sessioni parziali: totale minimo |
