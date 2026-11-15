@@ -5,7 +5,7 @@
    Tre bracci:
      verde  — ingresso intero: durata dichiarata nella banda [CPM_DMIN,CPM_DMAX] (default 16..26 s), nessun velo prima della camminata
               (il caricamento avviene DURANTE l'ingresso), corpi caricati e compilati alla fine dell'ingresso (la partita non aspetta; la sola «clip» a peso basso non e' caricamento).
-     salta  — click sul pulsante «Salta ingresso» (data-cpm="salta-ingresso") dopo CPM_SALTA_MS (default 3000 ms): la fase lascia
+     salta  — click sul pulsante «Salta ingresso» (data-cpm="salta-ingresso-v2") dopo CPM_SALTA_MS (default 3000 ms): la fase lascia
               walkout entro 3 s (il 3D porta tutti al posto e chiude dal percorso naturale nello stesso fotogramma; la rete di 4 s scatterebbe dopo) e, coi corpi gia' caricati (CPM_RIT=0), nessuna attesa dei corpi dopo il salto (<= 1 s).
      salta-secco — __CPM_NO_ING277S: il pulsante taglia la fase a meta' → corpi in attesa senza clip, attesa PO-232 >= 3 s (rosso del salto).
      rosso  — __CPM_NO_ING277: durata di prima (~38 s), velo prima della camminata (>= 2 s con la rete lenta), nessun pulsante.
@@ -42,12 +42,12 @@ async function giro(braccio) {
     const S = []; const t0 = Date.now(); let cliccato = null, uscita = null, fotoSalta = false, fotoFila = false;
     while (Date.now() - t0 < +(process.env.CPM_TMAX || 320000)) {
       const s = await page.evaluate(() => { let c = null; try { c = window.__CPM_CORPI232 ? window.__CPM_CORPI232() : null; } catch (e) {}
-        const btn = document.querySelector('[data-cpm="salta-ingresso"]');
+        const btn = document.querySelector('[data-cpm="salta-ingresso-v2"]');
         return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), hold: !!window.__CPM_WALKHOLD74, ready: window.__CPM_GLB_READY === true, corpi: !!(c && (c.pronti || !/^(ch38|cgtrader|compila|testa)$/.test(c.motivo || ''))), mot: c && c.motivo,
           dur: window.__CPM_WALKDUR245 || null, btn: !!(btn && btn.offsetParent !== null), velo: !!document.querySelector('[data-cpm="walkhold74"]'), kick: !!document.querySelector('[data-cpm="attesa241"],[data-cpm="corpi232"]') || /Verso il fischio|Caricamento giocatori/i.test(document.body.innerText || '') }; }).catch(() => null);
       if (!s) break; s.t = Date.now() - t0; S.push(s);
       if (salta && !cliccato && s.ph === 'walkout' && s.t >= SALTA_MS && s.btn) { if (!fotoSalta) { await page.screenshot({ path: new URL('./out/ingresso-277-pulsante.png', import.meta.url).pathname }).catch(() => {}); fotoSalta = true; }
-        await page.click('[data-cpm="salta-ingresso"]').catch(() => {}); cliccato = Date.now() - t0; }
+        await page.click('[data-cpm="salta-ingresso-v2"]').catch(() => {}); cliccato = Date.now() - t0; }
       if (s.ph !== 'walkout' && uscita == null) uscita = s.t;
       if (uscita != null && (s.t - uscita > 12000 || (s.corpi && !s.kick && s.t - uscita > 1500))) break;
       if (!salta && !fotoFila && s.ph === 'walkout' && s.dur) { const ts = await page.evaluate(() => { const W = window.__CPM_WALK245 || []; return W.length ? W[W.length - 1].t : 0; }).catch(() => 0);

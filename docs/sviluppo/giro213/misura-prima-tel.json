@@ -1,0 +1,471 @@
+[
+ {
+  "dove": "tel",
+  "nome": "scheda Stagione",
+  "testo": "Stagione",
+  "w": 72,
+  "h": 58,
+  "riscontro": 137,
+  "effetto": 128,
+  "rotella": null,
+  "lavoro": 20,
+  "ingresso": 19,
+  "layoutMosso": true,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "click": 1,
+  "giu": 1,
+  "flag": "riscontro>50 · layout mosso"
+ },
+ {
+  "dove": "tel",
+  "nome": "scheda Home",
+  "testo": "Home",
+  "w": 51,
+  "h": 58,
+  "riscontro": 33,
+  "effetto": 117,
+  "rotella": null,
+  "lavoro": 9,
+  "ingresso": 18,
+  "layoutMosso": true,
+  "area": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso · area ristretta"
+ },
+ {
+  "dove": "tel",
+  "nome": "Vai al prossimo momento",
+  "testo": "⏩ Vai al prossimo momentofino alla parti",
+  "w": 324,
+  "h": 63,
+  "riscontro": 18,
+  "effetto": 101,
+  "rotella": null,
+  "lavoro": 3,
+  "ingresso": 4,
+  "layoutMosso": true,
+  "area": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso · area ristretta"
+ },
+ {
+  "dove": "tel",
+  "nome": "Simula (casa)",
+  "testo": "Simulaprima vivi la settimana",
+  "w": 161,
+  "h": 88,
+  "riscontro": null,
+  "effetto": null,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 5,
+  "layoutMosso": false,
+  "area": null,
+  "click": 0,
+  "giu": 0,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Vivi la Settimana",
+  "testo": "⚡ Vivi la Settimanaallenamento, eventi e",
+  "w": 151,
+  "h": 88,
+  "riscontro": null,
+  "effetto": null,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 4,
+  "layoutMosso": false,
+  "area": null,
+  "click": 0,
+  "giu": 0,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Simula (prompt)",
+  "testo": "Simula e avanza la settimana",
+  "w": 328,
+  "h": 54,
+  "riscontro": null,
+  "effetto": 256,
+  "rotella": null,
+  "lavoro": 136,
+  "ingresso": 21,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Gioca la partita",
+  "testo": "Gioca la partita",
+  "w": 328,
+  "h": 54,
+  "riscontro": null,
+  "effetto": 154,
+  "rotella": null,
+  "lavoro": 64,
+  "ingresso": 5,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "testo": "⏩ Vai al prossimo momentofino alla parti",
+  "w": 324,
+  "h": 63,
+  "riscontro": null,
+  "effetto": 24,
+  "rotella": null,
+  "lavoro": 3,
+  "ingresso": 20,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "testo": "Vai",
+  "w": 157,
+  "h": 54,
+  "riscontro": null,
+  "effetto": 25,
+  "rotella": null,
+  "lavoro": 3,
+  "ingresso": 20,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "assente": true,
+  "flag": "TASTO NON TROVATO"
+ },
+ {
+  "dove": "tel",
+  "nome": "Salta festeggiamenti",
+  "testo": "Salta premiazione →",
+  "w": 152,
+  "h": 37,
+  "riscontro": null,
+  "effetto": null,
+  "rotella": null,
+  "lavoro": 767,
+  "ingresso": 3149,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti (rassegna)",
+  "testo": "Avanti ›",
+  "w": 165,
+  "h": 54,
+  "riscontro": null,
+  "effetto": 130,
+  "rotella": null,
+  "lavoro": 4,
+  "ingresso": 20,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro"
+ },
+ {
+  "dove": "tel",
+  "nome": "Salta (rassegna)",
+  "testo": "Salta",
+  "w": 62,
+  "h": 54,
+  "riscontro": 8,
+  "effetto": 138,
+  "rotella": null,
+  "lavoro": 40,
+  "ingresso": 7,
+  "layoutMosso": true,
+  "area": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso · area ristretta"
+ },
+ {
+  "dove": "tel",
+  "nome": "offerta (scegli club)",
+  "testo": "Scegli →",
+  "w": 100,
+  "h": 45,
+  "riscontro": null,
+  "effetto": 279,
+  "rotella": null,
+  "lavoro": 89,
+  "ingresso": 107,
+  "layoutMosso": false,
+  "area": null,
+  "click": 1,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro"
+ }
+]

@@ -1,0 +1,582 @@
+[
+ {
+  "dove": "tel",
+  "nome": "scheda Stagione",
+  "testo": "Stagione",
+  "w": 72,
+  "h": 58,
+  "riscontro": 24,
+  "effetto": 141,
+  "rotella": null,
+  "lavoro": 29,
+  "ingresso": 19,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa9/lavoro0 touchstart+0:attesa9/lavoro0 pointerup+92:attesa17/lavoro0 touchend+92:attesa18/lavoro0 mousedown+92:attesa19/lavoro0 mouseup+92:attesa19/lavoro0 click+92:attesa19/lavoro29",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "a",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "scheda Home",
+  "testo": "Home",
+  "w": 51,
+  "h": 58,
+  "riscontro": 30,
+  "effetto": 129,
+  "rotella": null,
+  "lavoro": 10,
+  "ingresso": 19,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa14/lavoro0 touchstart+0:attesa15/lavoro0 pointerup+97:attesa17/lavoro0 touchend+97:attesa17/lavoro0 mousedown+97:attesa18/lavoro0 mouseup+97:attesa19/lavoro0 click+97:attesa19/lavoro10",
+  "layoutMosso": true,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "a",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso"
+ },
+ {
+  "dove": "tel",
+  "nome": "Simula (casa)",
+  "testo": "Simulaprima vivi la settimana",
+  "w": 161,
+  "h": 88,
+  "riscontro": 23,
+  "effetto": null,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 20,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa8/lavoro0 touchstart+0:attesa8/lavoro0 pointerup+90:attesa18/lavoro0 touchend+90:attesa18/lavoro0 mousedown+90:attesa20/lavoro0 mouseup+90:attesa20/lavoro0 click+90:attesa20/lavoro0",
+  "layoutMosso": true,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": null,
+   "punti": [
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 3,
+  "click": 0,
+  "giu": 1,
+  "flag": "layout mosso"
+ },
+ {
+  "dove": "tel",
+  "nome": "Vivi la Settimana",
+  "testo": "⚡ Vivi la Settimanaallenamento, eventi e",
+  "w": 151,
+  "h": 88,
+  "riscontro": 26,
+  "effetto": 126,
+  "rotella": null,
+  "lavoro": 6,
+  "ingresso": 19,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa11/lavoro0 touchstart+0:attesa11/lavoro0 pointerup+93:attesa17/lavoro0 touchend+93:attesa18/lavoro0 mousedown+93:attesa19/lavoro0 mouseup+93:attesa19/lavoro0 click+93:attesa19/lavoro6",
+  "layoutMosso": true,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 3,
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso"
+ },
+ {
+  "dove": "tel",
+  "nome": "Vai al prossimo momento",
+  "testo": "⏩ Vai al prossimo momentofino alla parti",
+  "w": 324,
+  "h": 63,
+  "riscontro": 31,
+  "effetto": 131,
+  "rotella": null,
+  "lavoro": 6,
+  "ingresso": 19,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa16/lavoro0 touchstart+0:attesa16/lavoro0 pointerup+98:attesa17/lavoro0 touchend+98:attesa18/lavoro0 mousedown+98:attesa19/lavoro0 mouseup+98:attesa19/lavoro0 click+98:attesa19/lavoro6",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Vai (conferma corsa)",
+  "testo": "Vai",
+  "w": 157,
+  "h": 54,
+  "riscontro": 29,
+  "effetto": 29,
+  "rotella": null,
+  "lavoro": 4,
+  "ingresso": 19,
+  "fotRisc": 2,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa13/lavoro0 touchstart+0:attesa14/lavoro0 pointerup+96:attesa17/lavoro0 touchend+96:attesa17/lavoro0 mousedown+96:attesa18/lavoro0 mouseup+96:attesa18/lavoro0 click+96:attesa19/lavoro4",
+  "layoutMosso": false,
+  "area": null,
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Simula (prompt)",
+  "testo": "Simula e avanza la settimana",
+  "w": 328,
+  "h": 54,
+  "riscontro": 19,
+  "effetto": 221,
+  "rotella": 119,
+  "lavoro": 1,
+  "ingresso": 20,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa3/lavoro0 touchstart+0:attesa4/lavoro0 pointerup+86:attesa17/lavoro0 touchend+86:attesa18/lavoro0 mousedown+86:attesa20/lavoro0 mouseup+86:attesa20/lavoro0 click+86:attesa20/lavoro1",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Simula doppio tocco",
+  "testo": "Simula e avanza la settimana",
+  "w": 328,
+  "h": 54,
+  "riscontro": 29,
+  "effetto": 253,
+  "rotella": 130,
+  "lavoro": 23,
+  "ingresso": 82,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa14/lavoro0 touchstart+0:attesa14/lavoro0 pointerup+67:attesa50/lavoro0 touchend+67:attesa50/lavoro0 mousedown+67:attesa52/lavoro0 mouseup+67:attesa52/lavoro0 click+67:attesa53/lavoro0 pointerdown+216:attesa66/lavoro0 touchstart+216:attesa66/lavoro0 pointerup+334:attesa81/lavoro0 touchend+334:attesa81/lavoro0 mousedown+334:attesa82/lavoro0 mouseup+334:attesa82/lavoro0 click+334:attesa82/lavoro23 dblclick+439:attesa0/lavoro0",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "",
+  "partite": 1,
+  "assorbiti": 0
+ },
+ {
+  "dove": "tel",
+  "nome": "Gioca la partita",
+  "testo": "Gioca la partita",
+  "w": 328,
+  "h": 54,
+  "riscontro": 19,
+  "effetto": 209,
+  "rotella": 135,
+  "lavoro": 1,
+  "ingresso": 37,
+  "fotRisc": 1,
+  "dopoGestore": 16,
+  "eventi": "pointerdown+0:attesa3/lavoro0 touchstart+0:attesa3/lavoro0 pointerup+85:attesa36/lavoro0 touchend+85:attesa36/lavoro0 mousedown+85:attesa37/lavoro0 mouseup+85:attesa37/lavoro0 click+85:attesa37/lavoro1",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (matchday)",
+  "testo": "Vedi le formazioni",
+  "w": 363,
+  "h": 48,
+  "riscontro": 20,
+  "effetto": 20,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 0,
+  "fotRisc": 2,
+  "dopoGestore": 15,
+  "eventi": "",
+  "layoutMosso": false,
+  "area": null,
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti pre-partita (formations)",
+  "testo": "Ingresso in campo",
+  "w": 228,
+  "h": 48,
+  "riscontro": 27,
+  "effetto": 27,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 0,
+  "fotRisc": 3,
+  "dopoGestore": 15,
+  "eventi": "",
+  "layoutMosso": false,
+  "area": null,
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Salta ingresso",
+  "testo": "Salta ingresso →",
+  "w": 131,
+  "h": 37,
+  "riscontro": 899,
+  "effetto": 1926,
+  "rotella": 1357,
+  "lavoro": 1686,
+  "ingresso": 553,
+  "fotRisc": 1,
+  "dopoGestore": 346,
+  "eventi": "pointerdown+-5618:attesa12/lavoro0 touchstart+-5618:attesa12/lavoro0 pointerup+-5524:attesa17/lavoro0 touchend+-5524:attesa17/lavoro0 mousedown+-5524:attesa18/lavoro0 mouseup+-5524:attesa18/lavoro0 click+-5524:attesa18/lavoro1686 pointerdown+0:attesa553/lavoro0 touchstart+0:attesa553/lavoro0 pointerup+635:attesa539/lavoro0 touchend+635:attesa539/lavoro0 mousedown+635:attesa540/lavoro0 mouseup+635:attesa541/lavoro0 click+635:attesa541/lavoro0",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "riscontro>50 · effetto>400 (rotellina)"
+ },
+ {
+  "dove": "tel",
+  "nome": "giocata highlight",
+  "testo": "🔁Uno-due con LEHMANNPASSAGGIO · 69",
+  "w": 333,
+  "h": 56,
+  "riscontro": 541,
+  "effetto": 894,
+  "rotella": null,
+  "lavoro": 15,
+  "ingresso": 360,
+  "fotRisc": 1,
+  "dopoGestore": 180,
+  "eventi": "pointerdown+0:attesa360/lavoro0 touchstart+0:attesa360/lavoro0 pointerup+446:attesa279/lavoro0 touchend+446:attesa279/lavoro0 mousedown+446:attesa286/lavoro0 mouseup+446:attesa286/lavoro0 click+446:attesa286/lavoro15",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "riscontro>50 · effetto>400 (rotellina)"
+ },
+ {
+  "dove": "tel",
+  "nome": "Salta festeggiamenti",
+  "testo": "Salta premiazione →",
+  "w": 152,
+  "h": 37,
+  "riscontro": 2688,
+  "effetto": null,
+  "rotella": null,
+  "lavoro": 0,
+  "ingresso": 2678,
+  "fotRisc": 1,
+  "dopoGestore": 10,
+  "eventi": "pointerdown+0:attesa2678/lavoro0 touchstart+0:attesa2678/lavoro0",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 0,
+  "giu": 1,
+  "flag": "riscontro>50"
+ },
+ {
+  "dove": "tel",
+  "nome": "Avanti (rassegna)",
+  "testo": "Avanti ›",
+  "w": 165,
+  "h": 54,
+  "riscontro": 17,
+  "effetto": 101,
+  "rotella": null,
+  "lavoro": 4,
+  "ingresso": 4,
+  "fotRisc": 1,
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa2/lavoro0 touchstart+0:attesa2/lavoro0 pointerup+84:attesa1/lavoro0 touchend+84:attesa2/lavoro0 mousedown+84:attesa4/lavoro0 mouseup+84:attesa4/lavoro0 click+84:attesa4/lavoro4",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ },
+ {
+  "dove": "tel",
+  "nome": "Salta (rassegna)",
+  "testo": "Salta",
+  "w": 62,
+  "h": 54,
+  "riscontro": 26,
+  "effetto": 123,
+  "rotella": null,
+  "lavoro": 28,
+  "ingresso": 10,
+  "fotRisc": 1,
+  "dopoGestore": 16,
+  "eventi": "pointerdown+0:attesa9/lavoro0 touchstart+0:attesa10/lavoro0 pointerup+91:attesa1/lavoro0 touchend+91:attesa2/lavoro0 mousedown+91:attesa2/lavoro0 mouseup+91:attesa3/lavoro0 click+91:attesa3/lavoro28",
+  "layoutMosso": true,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "layout mosso"
+ },
+ {
+  "dove": "tel",
+  "nome": "offerta (scegli club)",
+  "testo": "Scegli →",
+  "w": 100,
+  "h": 45,
+  "riscontro": 25,
+  "effetto": 242,
+  "rotella": 161,
+  "lavoro": 1,
+  "ingresso": 63,
+  "fotRisc": 1,
+  "dopoGestore": 12,
+  "eventi": "pointerdown+0:attesa13/lavoro1 touchstart+0:attesa13/lavoro0 pointerup+95:attesa60/lavoro0 touchend+95:attesa60/lavoro0 mousedown+95:attesa62/lavoro0 mouseup+95:attesa63/lavoro0 click+95:attesa63/lavoro1",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": ""
+ }
+]
