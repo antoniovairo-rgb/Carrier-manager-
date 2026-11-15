@@ -1,0 +1,1898 @@
+{
+ "scene": {
+  "trasferta-tel:ingresso": {
+   "fotogrammi": 209,
+   "corpi": 13167,
+   "hMax": 1.83,
+   "hMin": 1.23,
+   "qMax": 0.007,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 418,
+     "hM": 1.55,
+     "scala": 0.0099,
+     "dmin": 23.37,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "eroe#0": {
+     "n": 209,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 23.35,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "portiere-casa#1": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 12.08,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#2": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 18.62,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#3": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 11.43,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#4": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 10.24,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#5": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 10.69,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#6": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 15.02,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#7": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 14.83,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#8": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 15.34,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#9": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 15.9,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#10": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 19.69,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "portiere-ospiti#11": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 22.63,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#12": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 26.57,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#13": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 23.58,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#14": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 26.22,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#15": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 22.15,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#16": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 22.94,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#17": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 21.65,
+     "qMax": 0.004,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#18": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 22.81,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#19": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 22.6,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#20": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 23.22,
+     "qMax": 0.004,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#21": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 23.83,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "arbitro#22": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 24.99,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "bambino": {
+     "n": 4598,
+     "hM": 1.26,
+     "scala": 0.008,
+     "dmin": 10.41,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "panchina": {
+     "n": 3344,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 22.36,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.43
+    }
+   },
+   "cattivi": []
+  },
+  "trasferta-tel:gioco": {
+   "fotogrammi": 1,
+   "corpi": 63,
+   "hMax": 1.83,
+   "hMin": 1.23,
+   "qMax": 0.007,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 2,
+     "hM": 1.55,
+     "scala": 0.0099,
+     "dmin": 41.56,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "eroe#0": {
+     "n": 1,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 24.48,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "portiere-casa#1": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 13.32,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#2": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 31.34,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#3": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 20.27,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.01
+    },
+    "casa#4": {
+     "n": 1,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 17.1,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.03
+    },
+    "casa#5": {
+     "n": 1,
+     "hM": 1.59,
+     "scala": 0.0104,
+     "dmin": 10.66,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.04
+    },
+    "casa#6": {
+     "n": 1,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 25.52,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "casa#7": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 19.43,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#8": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 18.81,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#9": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 18.25,
+     "qMax": 0.004,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#10": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 23.13,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "portiere-ospiti#11": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 66.29,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#12": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 56.05,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#13": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 55.05,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "ospiti#14": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 47.85,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "ospiti#15": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 48.2,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0
+    },
+    "ospiti#16": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 50.04,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "ospiti#17": {
+     "n": 1,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 28.23,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": 0.01
+    },
+    "ospiti#18": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 26.37,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#19": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 25.84,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#20": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 25.59,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#21": {
+     "n": 1,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 25.47,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "arbitro#22": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 33.65,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "bambino": {
+     "n": 22,
+     "hM": 1.25,
+     "scala": 0.008,
+     "dmin": 10.39,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "panchina": {
+     "n": 16,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 48.64,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.43
+    }
+   },
+   "cattivi": []
+  },
+  "trasferta-tel:highlight": {
+   "fotogrammi": 52,
+   "corpi": 379,
+   "hMax": 1.74,
+   "hMin": 1.54,
+   "qMax": 0.05,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 104,
+     "hM": 1.56,
+     "scala": 0.0099,
+     "dmin": 26.74,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "eroe#0": {
+     "n": 52,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 15.35,
+     "qMax": 0.026,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#7": {
+     "n": 35,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 16.13,
+     "qMax": 0.021,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "portiere-ospiti#11": {
+     "n": 52,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 35.99,
+     "qMax": 0.01,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "ospiti#18": {
+     "n": 29,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 20.57,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#20": {
+     "n": 3,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 16.69,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#14": {
+     "n": 26,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 11.64,
+     "qMax": 0.05,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "ospiti#17": {
+     "n": 15,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 7.69,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "ospiti#13": {
+     "n": 43,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 20.08,
+     "qMax": 0.012,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#10": {
+     "n": 20,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 27.07,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": 0
+    }
+   },
+   "cattivi": []
+  },
+  "trasferta-tel:festa": {
+   "fotogrammi": 29,
+   "corpi": 285,
+   "hMax": 1.89,
+   "hMin": 1.54,
+   "qMax": 0.214,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 58,
+     "hM": 1.56,
+     "scala": 0.0099,
+     "dmin": 33.03,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "eroe#0": {
+     "n": 29,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 6.83,
+     "qMax": 0.133,
+     "near": 0,
+     "yMin": -0.08
+    },
+    "casa#7": {
+     "n": 1,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 15.63,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.04
+    },
+    "casa#10": {
+     "n": 27,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 3.24,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "portiere-ospiti#11": {
+     "n": 29,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 21,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.17
+    },
+    "ospiti#13": {
+     "n": 3,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 5.79,
+     "qMax": 0.163,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "ospiti#18": {
+     "n": 22,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 3.37,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#2": {
+     "n": 7,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 3.32,
+     "qMax": 0.214,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "casa#3": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 5.47,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "panchina": {
+     "n": 54,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 55.05,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.43
+    },
+    "mister-premiazione": {
+     "n": 27,
+     "hM": 1.89,
+     "scala": 1.1066,
+     "dmin": 8.14,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "ospiti#14": {
+     "n": 21,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 11.1,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#8": {
+     "n": 6,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 1.14,
+     "qMax": 0.058,
+     "near": 0,
+     "yMin": 0.02
+    }
+   },
+   "cattivi": []
+  },
+  "casa-pc:ingresso": {
+   "fotogrammi": 209,
+   "corpi": 13167,
+   "hMax": 1.83,
+   "hMin": 1.23,
+   "qMax": 0.009,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 418,
+     "hM": 1.55,
+     "scala": 0.0099,
+     "dmin": 25.12,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "eroe#0": {
+     "n": 209,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 27.2,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "portiere-casa#1": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 12.87,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#2": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 21.86,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#3": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 11.9,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#4": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 9.78,
+     "qMax": 0.009,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#5": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 11.05,
+     "qMax": 0.009,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#6": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 14.82,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#7": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 15.38,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#8": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 15.7,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#9": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 16.78,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#10": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 20.18,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "portiere-ospiti#11": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 26.3,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#12": {
+     "n": 209,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 26.91,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#13": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 30.54,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#14": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 24.68,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#15": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 23.52,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#16": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 23.61,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#17": {
+     "n": 209,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 21.61,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#18": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 22.26,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "ospiti#19": {
+     "n": 209,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 24.53,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#20": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 23.43,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#21": {
+     "n": 209,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 24.39,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "arbitro#22": {
+     "n": 209,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 26.53,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "bambino": {
+     "n": 4598,
+     "hM": 1.26,
+     "scala": 0.008,
+     "dmin": 10.04,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "panchina": {
+     "n": 3344,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 24.37,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.43
+    }
+   },
+   "cattivi": []
+  },
+  "casa-pc:gioco": {
+   "fotogrammi": 1,
+   "corpi": 63,
+   "hMax": 1.83,
+   "hMin": 1.23,
+   "qMax": 0.008,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 2,
+     "hM": 1.55,
+     "scala": 0.0099,
+     "dmin": 41.56,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "eroe#0": {
+     "n": 1,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 45.8,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "portiere-casa#1": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 14.19,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#2": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 30.98,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "casa#3": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 19.28,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "casa#4": {
+     "n": 1,
+     "hM": 1.58,
+     "scala": 0.0104,
+     "dmin": 14.57,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": 0.01
+    },
+    "casa#5": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 11.07,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": 0.04
+    },
+    "casa#6": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 23.98,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "casa#7": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 19.45,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#8": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 18.76,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#9": {
+     "n": 1,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 18.09,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "casa#10": {
+     "n": 1,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 23.14,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": 0
+    },
+    "portiere-ospiti#11": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 71.85,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#12": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 54.55,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0
+    },
+    "ospiti#13": {
+     "n": 1,
+     "hM": 1.59,
+     "scala": 0.0104,
+     "dmin": 47.69,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "ospiti#14": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 47.63,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.02
+    },
+    "ospiti#15": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 38.09,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0.04
+    },
+    "ospiti#16": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 30.71,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0
+    },
+    "ospiti#17": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 26.94,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "ospiti#18": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 26.12,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#19": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 26.76,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": 0.03
+    },
+    "ospiti#20": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 25.56,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#21": {
+     "n": 1,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 25.75,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "arbitro#22": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 33.66,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "bambino": {
+     "n": 22,
+     "hM": 1.25,
+     "scala": 0.008,
+     "dmin": 10.84,
+     "qMax": 0.004,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "panchina": {
+     "n": 16,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 48.66,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.43
+    }
+   },
+   "cattivi": []
+  },
+  "casa-pc:highlight": {
+   "fotogrammi": 33,
+   "corpi": 283,
+   "hMax": 1.75,
+   "hMin": 1.54,
+   "qMax": 0.007,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 66,
+     "hM": 1.56,
+     "scala": 0.0099,
+     "dmin": 29.78,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "eroe#0": {
+     "n": 33,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 19.02,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "portiere-casa#1": {
+     "n": 1,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 27.41,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#9": {
+     "n": 9,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 21.46,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "ospiti#16": {
+     "n": 13,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 14.47,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": 0
+    },
+    "ospiti#17": {
+     "n": 9,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 20.95,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "panchina": {
+     "n": 48,
+     "hM": 1.75,
+     "scala": 0.0104,
+     "dmin": 42.26,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.4
+    },
+    "casa#8": {
+     "n": 16,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 9.94,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "portiere-ospiti#11": {
+     "n": 32,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 43.39,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.07
+    },
+    "ospiti#20": {
+     "n": 4,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 18.34,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": 0
+    },
+    "ospiti#12": {
+     "n": 20,
+     "hM": 1.7,
+     "scala": 0.0104,
+     "dmin": 26.32,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": -0.16
+    },
+    "casa#10": {
+     "n": 16,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 14.65,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "ospiti#13": {
+     "n": 16,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 26.7,
+     "qMax": 0.002,
+     "near": 0,
+     "yMin": -0.02
+    }
+   },
+   "cattivi": []
+  },
+  "casa-pc:festa": {
+   "fotogrammi": 15,
+   "corpi": 119,
+   "hMax": 1.89,
+   "hMin": 1.54,
+   "qMax": 0.025,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 30,
+     "hM": 1.55,
+     "scala": 0.0099,
+     "dmin": 30.32,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "eroe#0": {
+     "n": 15,
+     "hM": 1.74,
+     "scala": 0.0111,
+     "dmin": 6.62,
+     "qMax": 0.025,
+     "near": 0,
+     "yMin": -0.1
+    },
+    "casa#2": {
+     "n": 7,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 8.77,
+     "qMax": 0.024,
+     "near": 0,
+     "yMin": 0.01
+    },
+    "portiere-ospiti#11": {
+     "n": 15,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 37.02,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#12": {
+     "n": 7,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 13.73,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "ospiti#13": {
+     "n": 13,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 14.91,
+     "qMax": 0.005,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "mister-premiazione": {
+     "n": 14,
+     "hM": 1.89,
+     "scala": 1.1066,
+     "dmin": 8.14,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "casa#8": {
+     "n": 8,
+     "hM": 1.66,
+     "scala": 0.0104,
+     "dmin": 8.91,
+     "qMax": 0.019,
+     "near": 0,
+     "yMin": 0.01
+    },
+    "casa#9": {
+     "n": 8,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 12.38,
+     "qMax": 0.01,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#7": {
+     "n": 2,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 7.11,
+     "qMax": 0,
+     "near": 0,
+     "yMin": 0.21
+    }
+   },
+   "cattivi": []
+  },
+  "casa-pc:premiazione": {
+   "fotogrammi": 19,
+   "corpi": 465,
+   "hMax": 1.89,
+   "hMin": 1.54,
+   "qMax": 0.027,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 38,
+     "hM": 1.56,
+     "scala": 0.0099,
+     "dmin": 25.85,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "eroe#0": {
+     "n": 19,
+     "hM": 1.66,
+     "scala": 0.0107,
+     "dmin": 8.74,
+     "qMax": 0.027,
+     "near": 0,
+     "yMin": -0.16
+    },
+    "portiere-casa#1": {
+     "n": 19,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 33.12,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#20": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 58.4,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "ospiti#21": {
+     "n": 1,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 45.96,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "arbitro#22": {
+     "n": 8,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 8.45,
+     "qMax": 0.017,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "panchina": {
+     "n": 200,
+     "hM": 1.83,
+     "scala": 0.0118,
+     "dmin": 42.98,
+     "qMax": 0.001,
+     "near": 0,
+     "yMin": -0.43
+    },
+    "casa#2": {
+     "n": 18,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 9.21,
+     "qMax": 0.021,
+     "near": 0,
+     "yMin": -0.04
+    },
+    "casa#3": {
+     "n": 18,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 14.59,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#4": {
+     "n": 18,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 15.63,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#5": {
+     "n": 18,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 14.38,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#6": {
+     "n": 18,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 15.67,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#7": {
+     "n": 18,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 14.41,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#8": {
+     "n": 18,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 15.5,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "casa#9": {
+     "n": 18,
+     "hM": 1.63,
+     "scala": 0.0104,
+     "dmin": 14.61,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#10": {
+     "n": 18,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 15.7,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": -0.03
+    },
+    "mister-premiazione": {
+     "n": 17,
+     "hM": 1.89,
+     "scala": 1.1066,
+     "dmin": 12.73,
+     "qMax": 0.012,
+     "near": 0,
+     "yMin": -0.04
+    }
+   },
+   "cattivi": []
+  },
+  "festa-vera-tel:festa": {
+   "fotogrammi": 77,
+   "corpi": 607,
+   "hMax": 1.89,
+   "hMin": 1.54,
+   "qMax": 0.1,
+   "near": 0,
+   "per": {
+    "guardalinee": {
+     "n": 154,
+     "hM": 1.57,
+     "scala": 0.0099,
+     "dmin": 25.5,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "eroe#0": {
+     "n": 77,
+     "hM": 1.66,
+     "scala": 0.0107,
+     "dmin": 7.39,
+     "qMax": 0.1,
+     "near": 0,
+     "yMin": -0.18
+    },
+    "casa#10": {
+     "n": 15,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 4.98,
+     "qMax": 0.08,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "portiere-ospiti#11": {
+     "n": 77,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 23.22,
+     "qMax": 0.009,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "ospiti#13": {
+     "n": 77,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 6.69,
+     "qMax": 0.013,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "ospiti#17": {
+     "n": 34,
+     "hM": 1.61,
+     "scala": 0.0104,
+     "dmin": 10.86,
+     "qMax": 0.042,
+     "near": 0,
+     "yMin": -0.05
+    },
+    "casa#5": {
+     "n": 7,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 9.61,
+     "qMax": 0.051,
+     "near": 0,
+     "yMin": 0.04
+    },
+    "casa#6": {
+     "n": 53,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 3.7,
+     "qMax": 0.074,
+     "near": 0,
+     "yMin": 0
+    },
+    "casa#2": {
+     "n": 5,
+     "hM": 1.62,
+     "scala": 0.0104,
+     "dmin": 20.61,
+     "qMax": 0.012,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "mister-premiazione": {
+     "n": 68,
+     "hM": 1.89,
+     "scala": 1.1066,
+     "dmin": 9.04,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.06
+    },
+    "casa#4": {
+     "n": 17,
+     "hM": 1.6,
+     "scala": 0.0104,
+     "dmin": 7.72,
+     "qMax": 0.059,
+     "near": 0,
+     "yMin": -0.02
+    },
+    "casa#7": {
+     "n": 23,
+     "hM": 1.64,
+     "scala": 0.0104,
+     "dmin": 3.53,
+     "qMax": 0.057,
+     "near": 0,
+     "yMin": -0.03
+    }
+   },
+   "cattivi": []
+  },
+  "cerimonie-tel:presentazione": {
+   "fotogrammi": 81,
+   "corpi": 567,
+   "hMax": 1.84,
+   "hMin": 1.78,
+   "qMax": 0.098,
+   "near": 0,
+   "per": {
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.153<Group<Scene": {
+     "n": 486,
+     "hM": 1.8,
+     "scala": 0.0115,
+     "dmin": 9.96,
+     "qMax": 0.098,
+     "near": 0,
+     "yMin": -0.01
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.192<Group<Scene": {
+     "n": 81,
+     "hM": 1.84,
+     "scala": 0.0119,
+     "dmin": 21.79,
+     "qMax": 0,
+     "near": 0,
+     "yMin": -0.01
+    }
+   },
+   "cattivi": []
+  },
+  "cerimonie-tel:gala": {
+   "fotogrammi": 143,
+   "corpi": 286,
+   "hMax": 1.71,
+   "hMin": 1.7,
+   "qMax": 0.018,
+   "near": 0,
+   "per": {
+    "sconosciuto@m003_hipoly_81<RootNode<Root_Scene*0.994<Scene": {
+     "n": 143,
+     "hM": 1.7,
+     "scala": 0.9935,
+     "dmin": 9.71,
+     "qMax": 0.014,
+     "near": 0,
+     "yMin": 0
+    },
+    "sconosciuto@f011_hipoly_81<RootNode<Root_Scene*1.046<Scene": {
+     "n": 143,
+     "hM": 1.71,
+     "scala": 1.046,
+     "dmin": 9.88,
+     "qMax": 0.018,
+     "near": 0,
+     "yMin": 0
+    }
+   },
+   "cattivi": []
+  },
+  "cerimonie-tel:parata": {
+   "fotogrammi": 66,
+   "corpi": 528,
+   "hMax": 1.87,
+   "hMin": 1.77,
+   "qMax": 0.015,
+   "near": 0,
+   "per": {
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.140<Group<Scene": {
+     "n": 66,
+     "hM": 1.77,
+     "scala": 0.0114,
+     "dmin": 20.23,
+     "qMax": 0.015,
+     "near": 0,
+     "yMin": -0.11
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.164<Group<Scene": {
+     "n": 66,
+     "hM": 1.81,
+     "scala": 0.0116,
+     "dmin": 15.03,
+     "qMax": 0.013,
+     "near": 0,
+     "yMin": 5.18
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.186<Group<Scene": {
+     "n": 66,
+     "hM": 1.84,
+     "scala": 0.0119,
+     "dmin": 17.97,
+     "qMax": 0.008,
+     "near": 0,
+     "yMin": 5.19
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.208<Group<Scene": {
+     "n": 66,
+     "hM": 1.87,
+     "scala": 0.0121,
+     "dmin": 18.64,
+     "qMax": 0.01,
+     "near": 0,
+     "yMin": 5.18
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.162<Group<Scene": {
+     "n": 66,
+     "hM": 1.8,
+     "scala": 0.0116,
+     "dmin": 21.5,
+     "qMax": 0.006,
+     "near": 0,
+     "yMin": 5.19
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.170<Group<Scene": {
+     "n": 66,
+     "hM": 1.81,
+     "scala": 0.0117,
+     "dmin": 22.37,
+     "qMax": 0.007,
+     "near": 0,
+     "yMin": 5.18
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.187<Group<Scene": {
+     "n": 66,
+     "hM": 1.84,
+     "scala": 0.0119,
+     "dmin": 25,
+     "qMax": 0.004,
+     "near": 0,
+     "yMin": 5.19
+    },
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.204<Group<Scene": {
+     "n": 66,
+     "hM": 1.87,
+     "scala": 0.012,
+     "dmin": 26.05,
+     "qMax": 0.003,
+     "near": 0,
+     "yMin": 5.18
+    }
+   },
+   "cattivi": []
+  },
+  "cerimonie-tel:avvio": {
+   "fotogrammi": 204,
+   "corpi": 408,
+   "hMax": 1.81,
+   "hMin": 1.81,
+   "qMax": 0.131,
+   "near": 0,
+   "per": {
+    "sconosciuto@CGTraderRetarg*0.010<Scene*1.166<Scene": {
+     "n": 408,
+     "hM": 1.81,
+     "scala": 0.0117,
+     "dmin": 3.93,
+     "qMax": 0.131,
+     "near": 0,
+     "yMin": -0.13
+    }
+   },
+   "cattivi": []
+  }
+ },
+ "log": [
+  "[10:36:57] scenario trasferta-tel",
+  "[10:37:11] trasferta-tel: playMatch → true",
+  "[10:40:24] trasferta-tel: ingresso/highlight finiti (fase hl_choose, highlight 2)",
+  "[10:40:37] scenario casa-pc",
+  "[10:40:53] casa-pc: playMatch → true",
+  "[10:44:52] casa-pc: ingresso/highlight finiti (fase hl_choose, highlight 2)",
+  "[10:46:10] scenario festa-vera-tel",
+  "[10:48:33] festa-vera-tel: fischio finale → ceremony dopo 124 s",
+  "[10:48:47] scenario cerimonie-tel"
+ ],
+ "guasti": []
+}
