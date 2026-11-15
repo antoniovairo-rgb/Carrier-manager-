@@ -172,7 +172,9 @@ Nulla è cambiato in `src/`: i controlli confermano che la sonda e i documenti n
 
 | controllo | esito |
 |---|---|
-| highlight-95 | _in corso_ |
-| solo-highlight-166 | _da fare_ |
-| test:logic | _da fare_ |
-| save-compat | _da fare_ |
+| highlight-95 | **verde per somma di tre parti** (`CPM_SALVA=s1`, `s5`, `s12`; registri in `giro207/controlli/h95-*.log`). La passata intera in un colpo solo è stata **fermata dal tetto di 60 minuti** di un comando in sottofondo, senza esito, e non vale. Somma del verde: 118 highlight, **0 difetti**, D4 0, 0 non giudicabili, passaggi 32 giudicati (pavimento 12) e 29 arrivati su 32 = 90,6% (pavimento 70%), finte 6 (pavimento 4). Rosso: D1-D4 visti in ciascuna parte. ⚠️ Ogni parte da sola esce `❌` **solo** per i pavimenti di copertura, pensati per la passata intera (s1: 2 finte; s5: 8 passaggi, 62,5% arrivati; s12: 11 passaggi, 0 finte). Lo dichiaro: il verde nasce dalla somma, non da un'uscita 0 del guardiano |
+| solo-highlight-166 | **verde passa**, rosso cade su 3, 7 e 8 come deve (`sh166.log`). Una prima corsa in primo piano è stata tagliata a 590 s e non vale |
+| test:logic | **51/51** (`tl.log`) |
+| save-compat | **12 pass · 0 fail** (`sc.log`) |
+
+`src/` non è cambiato: `git diff lavoro/195 -- src CARRIER-MANAGER-AV.html` è vuoto.
