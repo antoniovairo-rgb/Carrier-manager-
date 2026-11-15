@@ -97,10 +97,10 @@ mette `__CPM_RISERVA2D209=1` accanto a `__CPM_CAP196=1`; `tpose-196.mjs` lo mett
 | gioca-188 | verde 6 ok, 0 ko |
 | rassegna-200 | verde 14/14, rosso bocciato |
 | rassegna-202 | verde 9/9, rosso bocciato |
-| highlight-95 | _in corso_ |
-| career-critical | _da fare_ |
-| test:logic | _da fare_ |
-| save-compat | _da fare_ |
+| highlight-95 | **verde per somma di tre parti** (`CPM_SALVA=s1`, `s5`, `s12`; registri `giro209/h95-*.log`), come nel giro 207. Verde: 110 highlight, **0 difetti**, D4 0, 0 non giudicabili, passaggi 32 giudicati (pavimento 12) e 29 arrivati = 90,6% (pavimento 70%), finte 4 (pavimento 4). Rosso: difetti visti in ogni parte (74 · 48 · 71). ⚠️ Ogni parte da sola esce `❌` **solo** per i pavimenti di copertura pensati per la passata intera (s1: 2 finte; s5: 8 passaggi, 62,5% arrivati — identico al giro 207; s12: 11 passaggi, 0 finte): il verde nasce dalla somma, non da un'uscita 0. Rispetto al 207 la somma ha 110 highlight invece di 118 e 4 finte invece di 6; i registri per parte del 207 non sono nel repo, quindi non posso dire quale parte è cambiata |
+| career-critical | verde: 12 passi, 0 ❌ (una prima corsa fermata dal tetto di 10 minuti della chiamata non vale ed è stata rifatta da capo in sottofondo con attesa sul file) |
+| test:logic | 51/51 |
+| save-compat | 12 pass · 0 fail |
 
 Le sonde di altri giri riscrivono le loro foto (`giro196`, `giro200`, `giro202`): riportate come erano.
 
