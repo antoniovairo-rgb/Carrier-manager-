@@ -14876,7 +14876,7 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
    acceso solo quando la sonda arma window.__CPM_G212W (array). A ogni fotogramma disegnato, per ogni corpo con scheletro visibile:
    - STATURA in unita' di mondo, indipendente dalla posa: l'estensione delle ossa lungo l'asse piede→testa della posa di legame del file (lo stesso metro
      di _skeletonWorldHeight, con cui il gioco scala i corpi) riportata al mondo col rapporto fra il percorso d'ossa piede→testa ADESSO e
-     lo stesso percorso nella posa di legame. Metri = unita' x 7,32/6,70 (la porta: 7,32 m fra i pali, |z| <= 3,35 nel gioco);
+     lo stesso percorso nella posa di legame. In verticale 1 unita' = 1 metro (convenzione del gioco: la traversa sta a 2,44);
    - distanza dalla camera (bacino e osso piu' vicino), piano near, ossa dentro il near o dietro la camera;
    - QUOTA dell'inquadratura: rettangolo delle ossa proiettate, ritagliato allo schermo, diviso per lo schermo;
    - a chi appartiene (chi(o) della scena, altrimenti la catena dei genitori con le loro scale). */
@@ -14901,7 +14901,7 @@ function misuraCorpi212(scena,scene,camera,chi){try{if(typeof window==='undefine
     const pel=via[Math.floor(via.length/2)]||bs[0];pel.getWorldPosition(V.a);o.getWorldScale(V.s);
     let c=null;try{c=chi?chi(o):null;}catch(_e){}
     const cat=[];for(let x=o.parent,k=0;x&&k<7;x=x.parent,k++)cat.push((x.name||x.type||'').slice(0,14)+(x.scale&&Math.abs(x.scale.y-1)>0.001?'*'+x.scale.y.toFixed(3):''));
-    out.corpi.push({ix:c&&c.ix!=null?c.ix:-1,ruolo:(c&&c.ruolo)||'sconosciuto',nome:(o.name||'').slice(0,20),cat:cat.join('<'),hU:+(L*R).toFixed(3),hM:+(L*R*7.32/6.70).toFixed(2),scala:+V.s.y.toFixed(4),
+    out.corpi.push({ix:c&&c.ix!=null?c.ix:-1,ruolo:(c&&c.ruolo)||'sconosciuto',nome:(o.name||'').slice(0,20),cat:cat.join('<'),hU:+(L*R).toFixed(3),hM:+(L*R).toFixed(2),scala:+V.s.y.toFixed(4),
       d:+V.a.distanceTo(cp).toFixed(2),dmin:+dmin.toFixed(2),pos:[+V.a.x.toFixed(1),+V.a.y.toFixed(1),+V.a.z.toFixed(1)],yMin:+yMin.toFixed(2),quota:+quota.toFixed(3),hScr:+((cy1-cy0)/2).toFixed(3),dentroNear,dietro,cg:!!(o.userData&&o.userData.cg196)});});
   W.push(out);}catch(_e){}}
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}

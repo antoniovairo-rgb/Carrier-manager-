@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /* [giro 212 · PO-474 «Nelle scene 3d c'e' un gigante in campo!»] SONDA e GUARDIANO dei CORPI in tutte le scene 3D, col GLB ACCESO.
    Testimone __CPM_G212W (src/12 misuraCorpi212): a ogni fotogramma disegnato, per ogni corpo con scheletro visibile, statura in metri
-   (dallo scheletro, indipendente dalla posa; 1 u = 7,32/6,70 m, la porta), distanza dalla camera, ossa dentro il piano near e quota
+   (dallo scheletro, indipendente dalla posa; in verticale 1 u = 1 m, la traversa del gioco sta a 2,44), distanza dalla camera, ossa dentro il piano near e quota
    dell'inquadratura occupata, con il ruolo del corpo e la catena dei genitori (con le scale) per risalire al codice che lo mette in scena.
    Scenari (CPM_SCENARI, separati da virgola):
-     trasferta-tel  · salvataggio pro, partita in trasferta, 375x812: ingresso, highlight, festa del fischio finale «Doppietta» (forzata)
-     casa-pc        · stessa cosa in casa, 1280x720, piu' la premiazione di coppa
+     trasferta-tel  · salvataggio pro, partita di campionato in trasferta, 375x812: ingresso, highlight, festa del fischio finale «Doppietta» (forzata)
+     casa-pc        · partita di coppa in casa, 1280x720, piu' la premiazione di coppa (anche trasferta-pc, casa-tel)
      festa-vera-tel · partita del provino giocata fino al fischio (autoplay, 2 gol forzati): la festa che nasce dal fischio finale vero
      cerimonie-tel  · presentazione (beat 3), gala, parata col pullman, intro della schermata d'avvio
-   VERDE: ogni corpo misurato ha statura in [1,60 · 2,05] m (bambini dell'ingresso in [1,10 · 1,55] m), nessun corpo con ossa dentro
+   VERDE: ogni corpo misurato ha statura in [1,45 · 2,05] m (bambini dell'ingresso in [1,05 · 1,45] m; i corpi in campo sono disegnati a
+   0,9 della statura dichiarata per scelta del giro 21, _scalaCorpo21: un calciatore da 1,80 misura 1,62), nessun corpo con ossa dentro
    il near della camera mentre e' inquadrato, nessun corpo che occupa piu' del 60% dell'inquadratura; e ogni scena e' GIUDICATA (almeno
    CPM_MINF fotogrammi con corpi). «Non giudicato» = rosso.
    ROSSO (CPM_PROVA_ROSSO=1 → __CPM_NO_G212): il gigante della foto deve ricomparire (almeno un corpo sopra 2,05 m).
@@ -19,7 +20,7 @@ import { ROOT, startServer, launchBrowser, installCdnRoutes, openMatch, sleep } 
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = !!process.env.CPM_PROVA_ROSSO, MISURA = !!process.env.CPM_MISURA;
-const H_MIN = 1.60, H_MAX = 2.05, B_MIN = 1.10, B_MAX = 1.55, Q_MAX = 0.60, MINF = +(process.env.CPM_MINF || 8);
+const H_MIN = 1.45, H_MAX = 2.05, B_MIN = 1.05, B_MAX = 1.45, Q_MAX = 0.60, MINF = +(process.env.CPM_MINF || 8);
 const SCENARI = (process.env.CPM_SCENARI || 'trasferta-tel,casa-pc,festa-vera-tel,cerimonie-tel').split(',').filter(Boolean);
 const TAG = ROSSO ? 'rosso' : (process.env.CPM_PRIMA ? 'prima' : 'dopo');
 const FOTO = process.env.CPM_FOTO || path.join(ROOT, 'docs', 'sviluppo', 'giro212'); fs.mkdirSync(FOTO, { recursive: true });
@@ -31,7 +32,11 @@ const quando = (s) => `[${new Date().toISOString().slice(11, 19)}] ${s}`;
 
 function salvataggio(casa) {
   const sv = JSON.parse(JSON.stringify(SAVE)); const pl = sv.player || sv; const w = pl.week | 0;
-  const i = (pl.calendar || []).findIndex(m => !m.played && (m.week | 0) >= w); if (i >= 0) pl.calendar[i].isHome = !!casa;
+  /* la prossima partita del salvataggio e' in trasferta (FC Tyneside). Per la partita in casa si inserisce in testa una gara di coppa
+     in casa alla stessa settimana, come fa tpose-196: cambiare isHome a mano fa rispondere «nomatch» alla carriera (misurato). */
+  if (casa) { pl.cup = Object.assign({}, pl.cup || {}, { active: true, eliminated: false, champion: false, results: [], round: 0 });
+    const opp = (pl.calendar || []).find(m => m.opponentId);
+    pl.calendar = [{ matchday: 1300 + w, week: w, opponentName: opp ? opp.opponentName : 'FC Albion', opponentId: opp ? opp.opponentId : undefined, isHome: true, played: false, type: 'cup', cupRound: 0, cupRoundName: 'Ottavi' }].concat(pl.calendar || []); }
   return sv;
 }
 function raccogli(nome, frames) {
@@ -78,7 +83,7 @@ async function partita(nomeSc, casa, v, premiazione) {
   const { ctx, page, errs } = await nuovaPagina(v);
   try {
     await carriera(page, salvataggio(casa));
-    await page.evaluate(() => window.__CPM_CAREER.playMatch());
+    const pm = await page.evaluate(() => window.__CPM_CAREER.playMatch()).catch(e => 'errore ' + e.message); log.push(quando(`${nomeSc}: playMatch → ${JSON.stringify(pm)}`));
     const t0 = Date.now(); let fase = null, hl = 0, fotoW = 0, fotoH = 0, ultimaRich = -1;
     while (Date.now() - t0 < 240000 && hl < 2) {
       const s = await page.evaluate(() => ({ ph: window.__CPM_PHASE && window.__CPM_PHASE(), c: window.__CPM_CLOCK ? window.__CPM_CLOCK() : 0 })).catch(() => null); if (!s) break; fase = s.ph;
@@ -93,9 +98,9 @@ async function partita(nomeSc, casa, v, premiazione) {
     }
     log.push(quando(`${nomeSc}: ingresso/highlight finiti (fase ${fase}, highlight ${hl})`));
     await page.evaluate(c => { window.__CPM_G212W = []; window.__CPM_FORCE_CEREMONY({ name: 'Doppietta', kind: 'bigwin', light: true, festa: { titolo: 'Doppietta', punteggio: c ? '2 – 0' : '2 – 0', avversario: 'FC Islington', casa: c, facce: [{ eroe: true, id: 0 }], voci: [{ n: 2, et: 'gol', oro: true }, { n: '7,8', et: 'voto', oro: true }] } }); }, casa);
-    for (let i = 0; i < 6; i++) { await guarda(page, `${nomeSc}:festa`, 1500); if (i === 2) await foto(page, `${nomeSc}-festa`); }
+    for (let i = 0; i < 16 && (i < 6 || ((scene[`${nomeSc}:festa`] || {}).fotogrammi | 0) < 2 * MINF); i++) { await guarda(page, `${nomeSc}:festa`, 1500); if (i === 2) await foto(page, `${nomeSc}-festa`); }
     if (premiazione) { await page.evaluate(() => { window.__CPM_G212W = []; window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' }); });
-      for (let i = 0; i < 6; i++) { await guarda(page, `${nomeSc}:premiazione`, 1500); if (i === 4) await foto(page, `${nomeSc}-premiazione`); } }
+      for (let i = 0; i < 16 && (i < 6 || ((scene[`${nomeSc}:premiazione`] || {}).fotogrammi | 0) < 2 * MINF); i++) { await guarda(page, `${nomeSc}:premiazione`, 1500); if (i === 4) await foto(page, `${nomeSc}-premiazione`); } }
   } catch (e) { guasti.push(`${nomeSc}: ${String(e.message).slice(0, 160)}`); }
   if (errs.length) log.push(`${nomeSc}: errori di pagina ${errs.length} → ${errs[0]}`);
   await ctx.close();
