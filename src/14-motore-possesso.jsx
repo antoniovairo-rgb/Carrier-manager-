@@ -1842,8 +1842,8 @@ const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
     const re={};for(const k in risolviEroe)re[k]=typeof risolviEroe[k]==='function'?W('risolviEroe.'+k,risolviEroe[k]):risolviEroe[k];
-    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A}};}
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A}};
+    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};}
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};/* [giro 215 PO-478] _cfg: la partita vissuta che prosegue simulata (avviso 3D a meta' gara) passa il motore alla simulazione rapida */
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]

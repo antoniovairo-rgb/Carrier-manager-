@@ -31440,8 +31440,8 @@ const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
     const re={};for(const k in risolviEroe)re[k]=typeof risolviEroe[k]==='function'?W('risolviEroe.'+k,risolviEroe[k]):risolviEroe[k];
-    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A}};}
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A}};
+    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};}
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};/* [giro 215 PO-478] _cfg: la partita vissuta che prosegue simulata (avviso 3D a meta' gara) passa il motore alla simulazione rapida */
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]
@@ -33951,6 +33951,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       localStorage.setItem('cpm-pending-mr',JSON.stringify({v:1,n:player?.name||"",s:(player?.season||1),w:(player?.week||1),oid:(opponent&&opponent.id)||null,on:(opponent&&(opponent.n||opponent.name))||null,ih:(isMatchHome!==false),result:_r}));/* [7.326.0] chiavi RICCHE (id+nome+sede): il recovery ritrovava la voce SOLO per uguaglianza di nome alla settimana corrente — ogni mismatch cancellava l'unica prova della partita giocata */
       try{safeLS.set('cpm-match-resume','');}catch(_e){}/* [7.163.0 super-test LIVE-F5] mutua esclusione: col risultato già nel sidecar uno snapshot in-match stantio farebbe RIGIOCARE la partita mentre il recovery la committa (doppio conteggio) */
     }}catch(_e){}
+    if(fine215Ref.current){setPhase("ended");return;}/* [giro 215] partita proseguita simulata: niente scene 3D (rigori, feste), dritti al post-partita */
     try{/* [7.31.0] turno KO pareggiato → CALCI DI RIGORE 3D prima del post-partita (l'esito non si scopre più
         all'uscita). Solo presentazione: stesso seed/esito della risoluzione in onMatchEnd (6.48). */
       const _scS=(scoreRef&&scoreRef.current)?scoreRef.current:score;
@@ -34556,7 +34557,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _chk196=(fase)=>{try{if(avviso209Ref.current)return 'avviso';/* [giro 209] sotto l'avviso non si controlla piu': decide il giocatore */const r=window.__CPM_PRONTI196();const c=att196Ref.current;
     if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}
     if(!c.t)c.t=Date.now();
-    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
+    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return (avviso209Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_G215))?'avviso':'2d';}/* [giro 215, rosso __CPM_NO_G215] aperto l'avviso (non il 2D) si risponde 'avviso': rispondendo '2d' la trattenuta dei corpi si toglieva e a meta' gara il cronometro correva sotto l'avviso (misurato 20'→22' in 4 s) */
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
   useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
@@ -34583,10 +34584,64 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     att196Ref.current.t=0;att196Ref.current.k='';setGlbFail(null);
     try{cpmEv("riprova209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
     setGlbTry(t=>t+1);};
+  /* [giro 215 PO-478 — rosso __CPM_NO_G215] DECISIONE DEL PO (15/11): se il 3D cede A PARTITA INIZIATA, «Simula» CONTINUA la partita
+     col motore dal minuto e dal punteggio raggiunti, tenendo gol, cartellini, cambi, statistiche e presenze gia' accaduti. Fino al
+     giro 209 la partita si rigiocava da capo (onSimula209 → simulateAndAdvance): misurato, avviso al 20' sul 0-1 → registrato 1-2 di
+     una partita nuova (voto 7,1 contro 5,6 del parziale); dalla panchina la voce perdeva «bench» e i minuti.
+     Come: lo STESSO motore della partita (motoreRef) passa alla simulazione rapida (cfg.brainLive spento, occasioni dell'eroe risolte
+     dal motore come in simulaPartitaMotore: le scene non si possono giocare senza 3D) e gioca i minuti che mancano, 22 passi al
+     minuto, l'intervallo se non c'e' ancora stato (stessa ripresa dal centro del gioco), recupero fino al 93' come la simulazione
+     rapida. L'eroe in panchina entra al suo minuto (stesso chiedi.eroe del battito). Punteggio: per ciascuna squadra il piu' alto fra
+     tabellone e tabellino del motore al momento dell'avviso (un gol gia' deciso ma non ancora narrato non si perde, e non si conta
+     due volte), piu' i gol del motore nei minuti simulati; stessa regola per gol e assist dell'eroe (pagella del motore). Gialli e
+     rosso dell'eroe si sommano a quelli gia' presi. Poi il fischio passa da _goEndOrCeremony (sidecar, tabellino 228) ma va dritto
+     al post-partita: rigori e feste sono scene 3D; il pareggio di un turno KO si risolve in carriera con lo stesso seme (koShootoutWin).
+     Il risultato registrato e' quello del percorso normale (_buildEndResult → onMatchEnd): presenze e minuti come una partita vissuta.
+     Partita non ancora iniziata (avviso all'ingresso, minuto 0): resta il percorso del 209. */
+  const fine215Ref=useRef(false);const goEnd215Ref=useRef(null);goEnd215Ref.current=_goEndOrCeremony;/* il fischio della render corrente: legge le statistiche appena scritte */
+  if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_LM215=()=>({onBench:!!onBenchRef.current,benchStart:!!benchStart,benchMinute:benchMinute|0,subbedOff:!!subbedOffRef.current});}catch(_e){}}/* solo collaudo: la sonda simula-215 legge panchina e minuto d'ingresso */
+  const _continua215=()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO_G215)return false;
+    const M=motoreRef.current;const m0=clockRef.current|0;
+    if(!M||!M._cfg||m0<1||m0>=90||!/^(playing|hl_)/.test(phaseRef.current||''))return false;
+    const S=M._S;const T0=M.tabellino();const E0=(M.pagelle()||[]).find(x=>x&&x.eroe)||{gol:0,assist:0};
+    const sc0={home:(scoreRef.current.home|0),away:(scoreRef.current.away|0)};const ms0={goals:mStatsSnapRef.current.goals|0,assists:mStatsSnapRef.current.assists|0};
+    const yc0=heroYellowsRef.current|0,rc0=!!heroRedRef.current;
+    /* il motore smette di aspettare la scena e gioca da solo */
+    M._cfg.brainLive=false;M._cfg.occasioniV2=true;
+    if(S){if(S.scena){S.scena=false;S._scenaAuto138=null;}if(S.richieste){S.richieste.scenaEroe=false;S.richieste.scenaTipo=null;}}
+    const B=22;let yc=0,rc=false,tiriN=0,tiriL=0;const mom=[];/* i momenti chiave dei minuti simulati, con i testi del gioco fluido */const ing=onBenchRef.current&&!subbedOffRef.current?(benchMinute||60):null;let entrato=false;
+    const gioca=(m)=>{if(ing!=null&&!entrato&&m>=ing){entrato=true;try{M.chiedi.eroe(true);}catch(_e){}}
+      for(let b=0;b<B;b++){const ev=M.tick({min:Math.min(m,90),dt:1/B,dec:true})||[];
+        for(const e of ev){if(!e)continue;if(e.t==='tiro'){if((e.lato||(e.chi&&e.chi.team))==='home')tiriN++;else tiriL++;}
+          if(e.t==='gol'&&mom.length<12){const n0=String((e.chi&&e.chi.nome)||'').split(' ').slice(-1)[0];const n=n0?n0.charAt(0).toUpperCase()+n0.slice(1).toLowerCase():'';/* stesso aspetto dei cognomi del gioco fluido */mom.push({m:Math.min(m,90),k:(e.chi&&e.chi.eroe)?"player_goal":((e.lato||(e.chi&&e.chi.team))==='home'?"goal":"opp_goal"),n});}
+          if(e.chi&&e.chi.eroe){if(e.t==='ammonizione'){yc++;mom.push({m:Math.min(m,90),k:"yellow"});}if(e.t==='espulsione'){rc=true;mom.push({m:Math.min(m,90),k:"red"});}}}}};
+    if(!halfFiredRef.current){for(let m=m0+1;m<=45;m++)gioca(m);halfFiredRef.current=true;try{M.chiedi.riprendi({centro:true,lato:(isMatchHome?"away":"home")});}catch(_e){}}
+    for(let m=Math.max(m0+1,46);m<=93;m++)gioca(m);
+    const T1=M.tabellino();const E1=(M.pagelle()||[]).find(x=>x&&x.eroe)||{gol:0,assist:0};
+    const fin={home:Math.max(sc0.home,T0.home.gol|0)+Math.max(0,(T1.home.gol|0)-(T0.home.gol|0)),away:Math.max(sc0.away,T0.away.gol|0)+Math.max(0,(T1.away.gol|0)-(T0.away.gol|0))};
+    const gF=Math.max(ms0.goals,E0.gol|0)+Math.max(0,(E1.gol|0)-(E0.gol|0)),aF=Math.max(ms0.assists,E0.assist|0)+Math.max(0,(E1.assist|0)-(E0.assist|0));
+    /* gli eventi gia' decisi e in coda sono contati sopra: non si narrano piu' e il fischio non li toglie dal tabellino */
+    evAcc898Ref.current=(evAcc898Ref.current||[]).filter(e=>!(e&&e.t==='gol'));pendingGoalRef.current=null;golCoda645.current=[];
+    heroYellowsRef.current=yc0+yc;if(rc||(yc0+yc)>=2){heroRedRef.current=true;sentOffRef.current=true;}
+    if(entrato){onBenchRef.current=false;}
+    avviso209Ref.current=null;fine215Ref.current=true;
+    try{window.__CPM_AVV209=null;window.__CPM_ATT196=false;window.__CPM_S215={min0:m0,parziale:sc0,motore0:{home:T0.home.gol|0,away:T0.away.gol|0},motore1:{home:T1.home.gol|0,away:T1.away.gol|0},finale:fin,eroe:{gol0:ms0.goals,gol:gF,assist0:ms0.assists,assist:aF,gialli0:yc0,gialli:yc0+yc,rosso0:rc0,rosso:!!heroRedRef.current,ingresso:ing,entrato}};}catch(_e){}
+    try{cpmEv("simula215",{min:m0,parziale:sc0,finale:fin});}catch(_e){}
+    scoreRef.current={...scoreRef.current,home:fin.home,away:fin.away};
+    ReactDOM.flushSync(()=>{setAvviso209(null);setScore(sc=>({...sc,home:fin.home,away:fin.away}));setMStats(p=>({...p,goals:gF,assists:aF}));
+      setMxStats(p=>({...p,shots:(p.shots|0)+tiriN,oppShots:(p.oppShots|0)+tiriL}));if(entrato)setOnBench(false);setClock(c=>Math.max(c,90));
+      for(const q of mom){if(q.k==="player_goal")pushMatchEvent(q.m,"player_goal",em=>"⚽ Tuo gol al "+em+"'");else if(q.k==="goal")pushMatchEvent(q.m,"goal","⚽ Gol di "+(q.n||"un compagno"));else if(q.k==="opp_goal")pushMatchEvent(q.m,"opp_goal","😨 Gol di "+(q.n||"un avversario"));
+        else if(q.k==="yellow")pushMatchEvent(q.m,"yellow",em=>"🟨 Ammonizione al "+em+"'");else pushMatchEvent(q.m,"red",em=>"🟥 ESPULSO! al "+em+"'");}});
+    mStatsSnapRef.current={...mStatsSnapRef.current,goals:gF,assists:aF};clockRef.current=Math.max(clockRef.current|0,90);
+    try{addCom("⏩ La partita prosegue simulata dal "+m0+"': finisce "+fin.home+"-"+fin.away+".","#93c5fd",90);}catch(_e){}
+    if(goEnd215Ref.current)goEnd215Ref.current();else _goEndOrCeremony();
+    return true;}catch(_e){try{console.warn('[giro 215] prosecuzione simulata non riuscita',_e&&_e.message);}catch(_e2){}return false;}};
   const _simula209=()=>{if(sim209Ref.current)return;sim209Ref.current=true;
     try{window.__CPM_SIM209=(window.__CPM_SIM209|0)+1;window.__CPM_AVV209=null;window.__CPM_ATT196=false;}catch(_e){}
     try{safeLS.set("cpm-match-resume","");}catch(_e){}/* la gara lasciata a meta' non si riapre al prossimo avvio */
     try{cpmEv("simula209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
+    if(_continua215())return;/* [giro 215] partita gia' iniziata: si prosegue col motore dal minuto e dal punteggio raggiunti */
     if(typeof onSimula209==='function'){onSimula209();return;}
     let res=null;
     try{const _sd=hashStr("sim209|"+(player.name||"")+"|"+((opponent&&(opponent.n||opponent.name))||"")+"|"+(player.season||1)+"|"+(player.week||1))>>>0;
