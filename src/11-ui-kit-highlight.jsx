@@ -202,10 +202,18 @@ function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v
        «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
 function _no190(k){return typeof window!=='undefined'&&!!window["__CPM_NO_G190"+k];}
 function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const add=(x)=>{x=String(x||"").trim();if(x&&out.indexOf(x)<0)out.push(x);};
   const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
-  const ab=abbreviaSquadra182(u19);add(ab);
+  const ab=abbreviaSquadra182(u19);
+  /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
+     categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
+     nome corto c'e' gia' («Valmora»). Rosso __CPM_NO_G211 = scala di prima. */
+  const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
+  if(g211)add(senzaCat(u19));
+  add(ab);
+  if(g211)add(senzaCat(ab));
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}

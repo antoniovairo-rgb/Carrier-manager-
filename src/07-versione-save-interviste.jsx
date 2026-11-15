@@ -1364,7 +1364,7 @@ const IV_FATTI183=[
   {tone:"umile",txt:"Un punto sudato. Il derby è sempre una partita a sé, rispettiamo l'avversario.",ef:{m:2,p:2,t:6}},
 ]},
 /* --- la posta: rivale, ex club --- */
-{ctx:["f_rivale"],y:1,q:"Di fronte c'era il tuo rivale di sempre. Quanto conta vincere anche il duello personale?",a:[
+{ctx:["f_rivale"],y:1,r211:["win","draw"],q:"Di fronte c'era il tuo rivale di sempre. Quanto conta vincere anche il duello personale?",a:[
   {tone:"diplomatico",txt:"C'è rispetto. Lui spinge me e io spingo lui: è così che si cresce.",ef:{m:4,p:4,t:5}},
   {tone:"diretto",txt:"Conta, inutile negarlo. Oggi volevo dimostrare chi è il più forte.",ef:{m:8,p:7,t:-3}},
   {tone:"umile",txt:"Conta la squadra. I confronti personali li lascio ai giornali, con rispetto.",ef:{m:3,p:2,t:7}},
@@ -1374,7 +1374,7 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Mi brucia, sì. E la prossima volta voglio essere io a sorridere.",ef:{m:-2,p:5,t:-2}},
   {tone:"umile",txt:"Mi insegna qualcosa. Guardo cosa ha fatto meglio e lavoro su quello.",ef:{m:1,p:2,t:7}},
 ]},
-{ctx:["f_ex"],y:1,q:"Oggi hai ritrovato il tuo ex club. Che effetto fa giocare contro chi ti conosce così bene?",a:[
+{ctx:["f_ex"],y:1,r211:["win","draw"],q:"Oggi hai ritrovato il tuo ex club. Che effetto fa giocare contro chi ti conosce così bene?",a:[
   {tone:"diplomatico",txt:"Un effetto strano. Ho ancora tanti amici lì, ma in campo ognuno fa il suo.",ef:{m:4,p:5,t:5}},
   {tone:"diretto",txt:"Volevo far vedere cosa si sono persi. E credo di esserci riuscito.",ef:{m:7,p:8,t:-3}},
   {tone:"umile",txt:"Solo gratitudine. Una parte di quello che sono la devo a loro.",ef:{m:3,p:4,t:6}},
@@ -1442,17 +1442,17 @@ const IV_FATTI183=[
   {tone:"umile",txt:"Penso solo ad allenarmi bene. Il resto arriverà se lo merito.",ef:{m:2,p:2,t:8}},
 ]},
 /* --- la posta: coppe, Europa, Nazionale --- */
-{ctx:["f_coppa"],r:["win"],y:1,q:"Avanti in coppa. Quanto ci tenete ad arrivare fino in fondo?",a:[
+{ctx:["f_coppa"],r:["win"],r211:["win","draw"],e211:["passa"],y:1,q:"Avanti in coppa. Quanto ci tenete ad arrivare fino in fondo?",a:[
   {tone:"diplomatico",txt:"Tantissimo. La coppa è un'occasione per tutti, anche per chi gioca meno.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"Vogliamo alzarla. Non giochiamo le coppe per fare esperienza.",ef:{m:8,p:7,t:-2}},
   {tone:"umile",txt:"Un turno alla volta. In coppa basta una serata storta per salutare.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["f_coppa"],r:["loss","draw"],y:1,q:"La coppa si è fatta in salita stasera. Cosa non ha funzionato?",a:[
+{ctx:["f_coppa"],r:["loss","draw"],e211:["eliminato"],y:1,q:"La coppa si è fatta in salita stasera. Cosa non ha funzionato?",a:[
   {tone:"diplomatico",txt:"Ci è mancata lucidità nei momenti chiave. Gli avversari hanno meritato.",ef:{m:-1,p:3,t:5}},
   {tone:"diretto",txt:"L'atteggiamento. In coppa non puoi aspettare che le cose succedano.",ef:{m:-2,p:4,t:-3}},
   {tone:"umile",txt:"Parlo per me: potevo fare di più. Ripartiamo dal campionato.",ef:{m:-1,p:2,t:7}},
 ]},
-{ctx:["f_europa"],q:"Serata europea. Che sensazione dà giocare in questo palcoscenico?",a:[
+{ctx:["f_europa"],r211:["win","draw"],e211:["nessuno","passa","campione"],q:"Serata europea. Che sensazione dà giocare in questo palcoscenico?",a:[
   {tone:"diplomatico",txt:"Un onore per tutto il club. Queste notti ripagano i sacrifici di una stagione.",ef:{m:6,p:6,t:5}},
   {tone:"diretto",txt:"È qui che voglio stare. Sono le partite che fanno la differenza in una carriera.",ef:{m:9,p:8,t:-2}},
   {tone:"umile",txt:"Ti senti piccolo all'inizio, poi l'arbitro fischia ed è sempre calcio.",ef:{m:4,p:4,t:7}},
@@ -1462,18 +1462,89 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Mi esalta. Con questa maglia voglio essere decisivo ogni volta.",ef:{m:9,p:9,t:-2}},
   {tone:"umile",txt:"Cambia l'emozione dell'inno. Poi provo solo a fare quello che faccio nel club.",ef:{m:4,p:5,t:6}},
 ]},
-{ctx:["f_nazionale"],c:"f_gol",q:"Un gol con la Nazionale. Chi hai cercato con lo sguardo dopo aver segnato?",a:[
+{ctx:["f_nazionale"],c:"f_gol",r211:["win","draw"],e211:["nessuno","passa","campione"],q:"Un gol con la Nazionale. Chi hai cercato con lo sguardo dopo aver segnato?",a:[
   {tone:"diplomatico",txt:"I compagni, e poi la mia famiglia in tribuna. È un gol di tutti.",ef:{m:7,p:8,t:4}},
   {tone:"diretto",txt:"Nessuno: ho solo urlato. Lo sognavo da quando ero bambino.",ef:{m:9,p:9,t:-1}},
   {tone:"umile",txt:"Il ct, per ringraziarlo della fiducia. Senza la sua chiamata non sarei qui.",ef:{m:5,p:6,t:6}},
 ]},
+/* [giro 211 · PO-473] l'ESITO DEL TURNO: eliminazione, passaggio, rigori, finale vinta o persa (g211 = solo a gioco corretto) */
+{ctx:["f_europa"],g211:1,r:["loss"],e211:["nessuno"],q:"Serata europea amara. Cosa vi portate a casa da questa sconfitta?",a:[
+  {tone:"diplomatico",txt:"Che a questo livello ogni errore si paga. Il girone è ancora aperto, ripartiamo dalla prossima.",ef:{m:-1,p:3,t:5}},
+  {tone:"diretto",txt:"Rabbia. Abbiamo fatto la partita a metà e in Europa non basta.",ef:{m:-2,p:4,t:-2}},
+  {tone:"umile",txt:"Una lezione. Rivediamo gli errori e torniamo più pronti.",ef:{m:-1,p:2,t:7}},
+]},
+{ctx:["f_europa"],g211:1,e211:["eliminato"],q:"Fuori dall'Europa. Cosa è mancato per passare il turno?",a:[
+  {tone:"diplomatico",txt:"Precisione nei momenti decisivi. Fa male, ma l'avversario ha meritato.",ef:{m:-3,p:3,t:5}},
+  {tone:"diretto",txt:"La cattiveria. Un turno così non si può lasciare per strada.",ef:{m:-4,p:4,t:-3}},
+  {tone:"umile",txt:"Parlo per me: potevo dare di più. Questa delusione deve diventare esperienza.",ef:{m:-2,p:2,t:7}},
+]},
+{ctx:["f_europa"],g211:1,e211:["eliminato"],q:"L'avventura europea finisce qui. Quanto è grande la delusione?",a:[
+  {tone:"diplomatico",txt:"Grande, perché ci credevamo tutti. Chiediamo scusa ai tifosi che ci hanno seguito.",ef:{m:-3,p:4,t:5}},
+  {tone:"diretto",txt:"Enorme. Eravamo all'altezza e usciamo per colpa nostra.",ef:{m:-4,p:4,t:-2}},
+  {tone:"umile",txt:"Tanta. Adesso testa al campionato: è l'unico modo per rimediare.",ef:{m:-2,p:2,t:7}},
+]},
+{ctx:["f_europa"],g211:1,e211:["passa"],q:"Avanti in Europa. Fin dove può arrivare questa squadra?",a:[
+  {tone:"diplomatico",txt:"Un turno alla volta. Stasera abbiamo dimostrato di poter stare a questo livello.",ef:{m:6,p:5,t:6}},
+  {tone:"diretto",txt:"Fino in fondo. Non siamo qui per fare le comparse.",ef:{m:9,p:8,t:-2}},
+  {tone:"umile",txt:"Non facciamo voli. Godiamoci la serata e pensiamo al prossimo avversario.",ef:{m:4,p:3,t:8}},
+]},
+{ctx:["f_europa"],g211:1,e211:["campione"],q:"La coppa europea è vostra. Cosa provi in questo momento?",a:[
+  {tone:"diplomatico",txt:"Orgoglio per tutto il club. È la vittoria di chi ha lavorato per questa notte.",ef:{m:10,p:10,t:6}},
+  {tone:"diretto",txt:"Che ce la siamo presa. Nessuno ci credeva a inizio stagione.",ef:{m:12,p:11,t:-1}},
+  {tone:"umile",txt:"Non ho ancora capito bene. Lo realizzerò domani, con la medaglia al collo.",ef:{m:9,p:9,t:7}},
+]},
+{ctx:["f_europa"],g211:1,e211:["finale_persa"],q:"Finale europea persa. Cosa resta di questo percorso?",a:[
+  {tone:"diplomatico",txt:"Resta un cammino di cui andare fieri. Stasera fa male, domani ci darà forza.",ef:{m:-2,p:5,t:6}},
+  {tone:"diretto",txt:"Resta l'amaro. Le finali si vincono, il resto si dimentica.",ef:{m:-4,p:5,t:-2}},
+  {tone:"umile",txt:"Resta tanto da imparare. Ci torneremo, più pronti.",ef:{m:-2,p:3,t:7}},
+]},
+{ctx:["f_coppa"],g211:1,y:1,e211:["campione"],q:"La coppa è vostra. A chi dedichi questo trofeo?",a:[
+  {tone:"diplomatico",txt:"Ai tifosi e a tutto lo staff. Senza di loro non l'avremmo alzata.",ef:{m:9,p:8,t:6}},
+  {tone:"diretto",txt:"A chi non ci credeva. Questa coppa ce la siamo presa con merito.",ef:{m:11,p:9,t:-2}},
+  {tone:"umile",txt:"Alla mia famiglia. Ogni sacrificio stasera ha un senso.",ef:{m:8,p:7,t:7}},
+]},
+{ctx:["f_coppa"],g211:1,y:1,e211:["finale_persa"],q:"Finale di coppa persa. Cosa vi dite adesso nello spogliatoio?",a:[
+  {tone:"diplomatico",txt:"Che arrivare fin qui non era scontato. Stasera ci è mancato l'ultimo passo.",ef:{m:-2,p:4,t:6}},
+  {tone:"diretto",txt:"Poco. Una finale non si gioca così, e lo sappiamo tutti.",ef:{m:-4,p:4,t:-3}},
+  {tone:"umile",txt:"Che questa sconfitta deve restarci dentro, per la prossima volta.",ef:{m:-2,p:2,t:7}},
+]},
+{ctx:["f_coppa","f_europa","f_nazionale"],g211:1,y:1,r:["draw"],e211:["passa"],q:"Decisi i rigori. Come si vivono quei momenti dal campo?",a:[
+  {tone:"diplomatico",txt:"Con il cuore in gola. Bravi tutti, anche chi ha avuto il coraggio di presentarsi sul dischetto.",ef:{m:6,p:5,t:6}},
+  {tone:"diretto",txt:"Sono la parte più bella. Lì si vede chi ha i nervi saldi.",ef:{m:8,p:7,t:-1}},
+  {tone:"umile",txt:"Non riuscivo a guardare. È andata bene, ma dovevamo chiuderla prima.",ef:{m:4,p:3,t:7}},
+]},
+{ctx:["f_coppa","f_europa","f_nazionale"],g211:1,y:1,r:["draw"],e211:["eliminato","finale_persa"],q:"Fuori ai rigori. Cosa ti passa per la testa adesso?",a:[
+  {tone:"diplomatico",txt:"Che ai rigori può succedere. Abbiamo dato tutto, non abbiamo niente da rimproverarci.",ef:{m:-2,p:4,t:6}},
+  {tone:"diretto",txt:"Che dovevamo chiuderla prima. Ai rigori è una lotteria e stasera l'abbiamo persa.",ef:{m:-3,p:4,t:-2}},
+  {tone:"umile",txt:"Tanta delusione. Ma chi ha sbagliato va abbracciato, non giudicato.",ef:{m:-2,p:3,t:8}},
+]},
+{ctx:["f_nazionale"],g211:1,e211:["eliminato"],q:"La Nazionale esce dal torneo. Cosa è mancato?",a:[
+  {tone:"diplomatico",txt:"Qualcosa in ogni reparto. Chiediamo scusa a chi ci ha seguito da casa.",ef:{m:-3,p:4,t:5}},
+  {tone:"diretto",txt:"La concretezza. Abbiamo creato tanto e raccolto poco.",ef:{m:-3,p:4,t:-2}},
+  {tone:"umile",txt:"Parlo per me: dovevo incidere di più. Questa maglia merita di meglio.",ef:{m:-2,p:2,t:7}},
+]},
+{ctx:["f_nazionale"],g211:1,e211:["passa"],q:"La Nazionale passa il turno. Che aria si respira nel gruppo?",a:[
+  {tone:"diplomatico",txt:"Aria serena. Siamo un gruppo unito e si vede in campo.",ef:{m:6,p:6,t:5}},
+  {tone:"diretto",txt:"Aria di chi vuole arrivare in fondo. Non ci basta questo turno.",ef:{m:8,p:8,t:-2}},
+  {tone:"umile",txt:"Contenti, ma con i piedi per terra. Il prossimo avversario sarà più duro.",ef:{m:4,p:4,t:7}},
+]},
+{ctx:["f_nazionale"],g211:1,e211:["campione"],q:"Campioni con la Nazionale. Cosa significa per te?",a:[
+  {tone:"diplomatico",txt:"Significa aver reso felice un paese intero. Non c'è niente di più grande.",ef:{m:11,p:12,t:5}},
+  {tone:"diretto",txt:"Il sogno di quando ero bambino. E l'abbiamo vinto da protagonisti.",ef:{m:12,p:12,t:-1}},
+  {tone:"umile",txt:"Ancora non ci credo. Penso a chi mi ha portato fin qui.",ef:{m:9,p:10,t:7}},
+]},
+{ctx:["f_nazionale"],g211:1,e211:["finale_persa"],q:"Finale persa con la Nazionale. Come si riparte da una notte così?",a:[
+  {tone:"diplomatico",txt:"Con orgoglio per il cammino fatto. Stasera è dura, ma questa squadra ha un futuro.",ef:{m:-2,p:5,t:6}},
+  {tone:"diretto",txt:"Con la rabbia. Le finali non si giocano, si vincono, e noi l'abbiamo lasciata andare.",ef:{m:-4,p:5,t:-2}},
+  {tone:"umile",txt:"Dal lavoro. Ci vorrà tempo per smaltirla.",ef:{m:-2,p:3,t:7}},
+]},
 /* --- la tua partita: gol, assist, voto, rimonta, espulsione --- */
-{ctx:["f_tripletta"],y:1,q:"Tripletta! Il pallone te lo porti a casa: dove lo metterai?",a:[
+{ctx:["f_tripletta"],y:1,r211:["win","draw"],festa211:1,q:"Tripletta! Il pallone te lo porti a casa: dove lo metterai?",a:[
   {tone:"diplomatico",txt:"In bacheca, con le firme dei compagni. Senza di loro non sarebbero arrivati tre gol.",ef:{m:8,p:8,t:5}},
   {tone:"diretto",txt:"In salotto, ben in vista. Serate così vanno ricordate.",ef:{m:11,p:10,t:-3}},
   {tone:"umile",txt:"Lo regalo a mio padre. È lui che mi portava agli allenamenti da piccolo.",ef:{m:6,p:7,t:6}},
 ]},
-{ctx:["f_doppietta"],y:1,q:"Doppietta oggi. Quale dei due gol ti è piaciuto di più?",a:[
+{ctx:["f_doppietta"],y:1,r211:["win"],q:"Doppietta oggi. Quale dei due gol ti è piaciuto di più?",a:[
   {tone:"diplomatico",txt:"Il secondo, perché è nato da un'azione corale. Era il gol della squadra.",ef:{m:6,p:6,t:5}},
   {tone:"diretto",txt:"Il primo. Ho deciso io dove metterla e l'ho messa lì.",ef:{m:9,p:8,t:-3}},
   {tone:"umile",txt:"Tutti e due, ma ne ho sbagliato un terzo che mi fa ancora arrabbiare.",ef:{m:4,p:5,t:7}},
@@ -1508,7 +1579,7 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Attenzione dietro. Davanti abbiamo fatto il nostro, dietro abbiamo regalato.",ef:{m:2,p:4,t:-4}},
   {tone:"umile",txt:"È mancato qualcosa anche da me. Potevo inventare di più nel finale.",ef:{m:1,p:2,t:7}},
 ]},
-{ctx:["f_voto_alto"],y:1,q:"I giornali ti daranno un voto altissimo domani. Ti sei sentito il migliore in campo?",a:[
+{ctx:["f_voto_alto"],y:1,r211:["win"],q:"I giornali ti daranno un voto altissimo domani. Ti sei sentito il migliore in campo?",a:[
   {tone:"diplomatico",txt:"Il migliore è stato il gruppo. Io mi sono trovato nelle condizioni giuste.",ef:{m:6,p:5,t:6}},
   {tone:"diretto",txt:"Sì. Oggi mi riusciva tutto e l'ho sentito dal primo minuto.",ef:{m:9,p:8,t:-3}},
   {tone:"umile",txt:"I voti non li leggo. Domani in allenamento si riparte da zero.",ef:{m:4,p:3,t:7}},
@@ -1574,19 +1645,57 @@ function memIv183(p,q){const sn=(p&&p.season)||1;const m=p&&p.ivMem183;const h=(
   return{...p,ivMem183:{s:sn,h:h.indexOf(k)>=0?h:[...h,k].slice(-400)}};}
 const _okIv183=(q,p,v)=>{if((p.proStatus||"u18")!=="pro"&&q.y!==1)return false;if(!q.cond)return true;try{return !!q.cond(p,v);}catch(e){return false;}};
 function _pickSeed183(pool,seed){return pool.length?pool[hashStr(seed)%pool.length]:null;}
+/* [giro 211 · PO-473] il PO dal telefono, dopo una SCONFITTA con ELIMINAZIONE agli ottavi di coppa europea: «Serata europea.
+   Che sensazione dà giocare in questo palcoscenico?» con tre risposte celebrative. La domanda non guardava il risultato e
+   nessuna domanda conosceva l'ESITO DEL TURNO (un pareggio a eliminazione diretta si decide ai rigori). Ora:
+   - esitoTurno211: dal salvataggio e dal risultato, con gli STESSI semi dei rigori della risoluzione (euroko/cupko/natko/natcup,
+     come _koPen85 in src/18) → nessuno (partita senza eliminazione) · passa · eliminato · campione · finale_persa;
+   - coerente211: una domanda dichiara il risultato (r, e r211 a gioco corretto) e l'esito (e211) che presuppone; quelle che non lo
+     dichiarano non parlano di punti e classifica fuori dal campionato e, in un pareggio a eliminazione diretta, non presuppongono
+     il pareggio (il «punto» non esiste: decidono i rigori);
+   - fra i fatti della posta, prima le domande che parlano dell'esito del turno; ogni esito ha le sue domande.
+   Rosso __CPM_NO_G211 = la scelta di prima (niente esito, niente domande nuove). Guardiano tests/visual/interviste-211.mjs. */
+function _no211iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
+function esitoTurno211(p,r){try{
+  if(!p||!r)return null;const c=String(r.context||""),sn=(p.season||1);let seme=null,fin=false;
+  if(c==="euro_ko"){const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&m.type==="euro"&&!m.played);const ph=(md&&md.euroPhase)||(p.euro&&p.euro.phase)||"r16";seme="euroko|"+sn+"|"+ph;fin=ph==="final";}
+  else if(c==="cup"&&p.cup&&p.cup.active&&!p.cup.eliminated){const rd=p.cup.round||1;seme="cupko|"+sn+"|"+rd;fin=rd>=4;}
+  else if(c==="euroMondiale_ko"){const ph=(p.euroMondiale&&p.euroMondiale.koPhase)||"r16";seme="natko|"+sn+"|"+ph;fin=ph==="final";}
+  else if(c==="nationsCup"&&p.nationsCupQueue&&p.nationsCupQueue.isFinal&&(p.nationsCupQueue.matchIdx||0)>=((p.nationsCupQueue.opponents||[]).length-1)){seme="natcup|"+sn+"|final";fin=true;}
+  const lega=!c||c==="career"||c==="league";
+  if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
+  const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));
+  return{ko:true,turno:passa?(fin?"campione":"passa"):(fin?"finale_persa":"eliminato"),lega:false,rigori:!!r.drew};
+}catch(e){return null;}}
+const _LEGA211=/(?:tre punti|un punto|i punti|punti pesant|classifica|retroced|zona calda|zona europea|in campionato)/i;
+function coerente211(q,res,es){
+  const rr=q.r211||q.r;if(rr&&rr.indexOf(res)<0)return false;
+  if(!es)return true;
+  if(q.e211)return q.e211.indexOf(es.turno)>=0;
+  if(q.festa211&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;/* risposte di festa: mai dopo un'eliminazione */
+  if(!es.lega&&_LEGA211.test(String(q.q||"")+" "+(q.a||[]).map(x=>x&&x.txt).join(" ")))return false;
+  if(es.ko&&res==="draw"&&((q.ctx||[]).indexOf("draw")>=0||(q.r&&q.r.indexOf("draw")>=0)))return false;
+  return true;
+}
 /* la domanda post partita: fatti della posta → fatti della tua partita → risultato; mai una gia' fatta in stagione */
-function scegliPost183(p,r,posta){
+function poolPost183(p,r,posta){
   const mem=memSetIv183(p),F=fatti183(p,r,posta),res=r.won?"win":r.drew?"draw":"loss";
   const v={isHome:typeof r.isHome==="boolean"?r.isHome:null,matchResult:r};
-  const okF=q=>q.ctx.some(c=>F.has(c))&&(!q.r||q.r.indexOf(res)>=0)&&(!q.c||F.has(q.c))&&!mem.has(hIv183(q))&&_okIv183(q,p,v);
+  const g211=!_no211iv();const es=g211?esitoTurno211(p,r):null;
+  const okF=q=>q.ctx.some(c=>F.has(c))&&(g211/* il risultato lo giudica coerente211 (r211 prima di r) */||!q.r||q.r.indexOf(res)>=0)&&(!q.c||F.has(q.c))&&!mem.has(hIv183(q))&&_okIv183(q,p,v)&&(g211?coerente211(q,res,es):!q.g211);
   const tierA=IV_FATTI183.filter(q=>okF(q)&&q.ctx.some(c=>_POSTA183.indexOf(c)>=0));
   const tierB=IV_FATTI183.filter(q=>okF(q)&&!q.ctx.some(c=>_POSTA183.indexOf(c)>=0));
-  const tierC=INTERVIEW_QS.filter(q=>q.ctx.indexOf(res)>=0&&!mem.has(hIv183(q))&&_okIv183(q,p,v));
+  const tierC=INTERVIEW_QS.filter(q=>q.ctx.indexOf(res)>=0&&!mem.has(hIv183(q))&&_okIv183(q,p,v)&&(!g211||coerente211(q,res,es)));
   /* fra i fatti, prima quelli scritti con una condizione sulla partita (il tuo gol, il voto…), che sono i piu' specifici */
   const tierC1=tierC.filter(q=>q.cond&&/matchResult|isHome/.test(String(q.cond)));
+  /* [giro 211] a eliminazione diretta, fra i fatti della posta prima quelli che parlano dell'esito del turno */
+  const tierA0=(es&&es.ko)?tierA.filter(q=>!!q.e211&&q.e211.indexOf("nessuno")<0):[];
+  const pool=tierA0.length?tierA0:tierA.length?tierA:tierB.length?tierB:tierC1.length?tierC1:tierC;
+  return{pool,tierA,tierB,tierC,esito:es,res};
+}
+function scegliPost183(p,r,posta){
   const seed=(p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|post183";
-  const pool=tierA.length?tierA:tierB.length?tierB:tierC1.length?tierC1:tierC;
-  return _pickSeed183(pool,seed);
+  return _pickSeed183(poolPost183(p,r,posta).pool,seed);
 }
 /* LA DECISIONE: c'e' l'intervista dopo questa partita, e con quale domanda? Funzione pura (legge il salvataggio, la voce
    di calendario e il risultato registrato; nessun sorteggio libero). */
