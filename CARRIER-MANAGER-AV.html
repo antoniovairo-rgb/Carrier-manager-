@@ -34610,11 +34610,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     /* il motore smette di aspettare la scena e gioca da solo */
     M._cfg.brainLive=false;M._cfg.occasioniV2=true;
     if(S){if(S.scena){S.scena=false;S._scenaAuto138=null;}if(S.richieste){S.richieste.scenaEroe=false;S.richieste.scenaTipo=null;}}
-    const B=22;let yc=0,rc=false,tiriN=0,tiriL=0;const ing=onBenchRef.current&&!subbedOffRef.current?(benchMinute||60):null;let entrato=false;
+    const B=22;let yc=0,rc=false,tiriN=0,tiriL=0;const mom=[];/* i momenti chiave dei minuti simulati, con i testi del gioco fluido */const ing=onBenchRef.current&&!subbedOffRef.current?(benchMinute||60):null;let entrato=false;
     const gioca=(m)=>{if(ing!=null&&!entrato&&m>=ing){entrato=true;try{M.chiedi.eroe(true);}catch(_e){}}
       for(let b=0;b<B;b++){const ev=M.tick({min:Math.min(m,90),dt:1/B,dec:true})||[];
         for(const e of ev){if(!e)continue;if(e.t==='tiro'){if((e.lato||(e.chi&&e.chi.team))==='home')tiriN++;else tiriL++;}
-          if(e.chi&&e.chi.eroe){if(e.t==='ammonizione')yc++;if(e.t==='espulsione')rc=true;}}}};
+          if(e.t==='gol'&&mom.length<12){const n0=String((e.chi&&e.chi.nome)||'').split(' ').slice(-1)[0];const n=n0?n0.charAt(0).toUpperCase()+n0.slice(1).toLowerCase():'';/* stesso aspetto dei cognomi del gioco fluido */mom.push({m:Math.min(m,90),k:(e.chi&&e.chi.eroe)?"player_goal":((e.lato||(e.chi&&e.chi.team))==='home'?"goal":"opp_goal"),n});}
+          if(e.chi&&e.chi.eroe){if(e.t==='ammonizione'){yc++;mom.push({m:Math.min(m,90),k:"yellow"});}if(e.t==='espulsione'){rc=true;mom.push({m:Math.min(m,90),k:"red"});}}}}};
     if(!halfFiredRef.current){for(let m=m0+1;m<=45;m++)gioca(m);halfFiredRef.current=true;try{M.chiedi.riprendi({centro:true,lato:(isMatchHome?"away":"home")});}catch(_e){}}
     for(let m=Math.max(m0+1,46);m<=93;m++)gioca(m);
     const T1=M.tabellino();const E1=(M.pagelle()||[]).find(x=>x&&x.eroe)||{gol:0,assist:0};
@@ -34629,7 +34630,9 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     try{cpmEv("simula215",{min:m0,parziale:sc0,finale:fin});}catch(_e){}
     scoreRef.current={...scoreRef.current,home:fin.home,away:fin.away};
     ReactDOM.flushSync(()=>{setAvviso209(null);setScore(sc=>({...sc,home:fin.home,away:fin.away}));setMStats(p=>({...p,goals:gF,assists:aF}));
-      setMxStats(p=>({...p,shots:(p.shots|0)+tiriN,oppShots:(p.oppShots|0)+tiriL}));if(entrato)setOnBench(false);setClock(c=>Math.max(c,90));});
+      setMxStats(p=>({...p,shots:(p.shots|0)+tiriN,oppShots:(p.oppShots|0)+tiriL}));if(entrato)setOnBench(false);setClock(c=>Math.max(c,90));
+      for(const q of mom){if(q.k==="player_goal")pushMatchEvent(q.m,"player_goal",em=>"⚽ Tuo gol al "+em+"'");else if(q.k==="goal")pushMatchEvent(q.m,"goal","⚽ Gol di "+(q.n||"un compagno"));else if(q.k==="opp_goal")pushMatchEvent(q.m,"opp_goal","😨 Gol di "+(q.n||"un avversario"));
+        else if(q.k==="yellow")pushMatchEvent(q.m,"yellow",em=>"🟨 Ammonizione al "+em+"'");else pushMatchEvent(q.m,"red",em=>"🟥 ESPULSO! al "+em+"'");}});
     mStatsSnapRef.current={...mStatsSnapRef.current,goals:gF,assists:aF};clockRef.current=Math.max(clockRef.current|0,90);
     try{addCom("⏩ La partita prosegue simulata dal "+m0+"': finisce "+fin.home+"-"+fin.away+".","#93c5fd",90);}catch(_e){}
     if(goEnd215Ref.current)goEnd215Ref.current();else _goEndOrCeremony();
