@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+/* [giro 217] SONDA DI MISURA (non guardiano): ripete il braccio verde della lotteria di sonda-90-204 e, per ogni campione, registra istante,
+   stato della serie, stacco nero prima e dopo la foto, camera prima e dopo, ritaglio salvato. CPM_N corse, CPM_OUT cartella. */
+import fs from 'node:fs';
+import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+export async function misura217(browser, port, { DIR, rosso = false, rosso208 = false, foto = null, viewport = { width: 375, height: 812 } } = {}) {
+  const mkSave = () => ({ phase: 'career', player: { name: 'Lotteria Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 4, week: 12, weekLived: true, age: 24, ovr: 80, tutorialDone: true, campDone: true, jerseyNumSeason: 4, presidentModalSeason: 4, seasonPledge: { season: 4, tone: 'equilibrato' }, drawSeen: 4, coachPactSeason: 4, bondEv: { s: 4, w: 11 }, sponsorDecl: { tier: 'tecnico', season: 4 }, matches: 8, goals: 5,
+    cup: { active: true, round: 2, eliminated: false, champion: false, results: [{ round: 1, name: 'Sedicesimi', opponent: 'FC Rovigo', homeScore: 2, awayScore: 0, won: true }] },
+    calendar: [{ matchday: 992, week: 12, opponentId: 'inter', opponentName: 'FC Internazionale', isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: 2, cupRoundName: 'Ottavi' }],
+    club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 55, c: '#6c1f2e', c2: '#f5f5f5', nat: '🇮🇹', lg: 'Lega B' },
+    stats: { 'velocità': 80, tecnica: 79, fisico: 78, 'mentalità': 80, tiro: 82, passaggio: 79, dribbling: 81, posizionamento: 80 },
+    form: 70, fatigue: 10, morale: 68, contract: { duration: 3, wage: 12000, expiresAtSeason: 7 } } });
+  const pg = await browser.newPage({ viewport }); await installCdnRoutes(pg);
+  const errs = []; pg.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
+  await pg.addInitScript(([sv, r, r8]) => { if (r) window.__CPM_NO_G204 = 1; if (r8) window.__CPM_NO_G208 = 1; window.__CPM_SB204 = null; window.__CPM_SB208 = null; localStorage.setItem('cpm-v3', JSON.stringify(sv)); }, [mkSave(), rosso, rosso208]);
+  await pg.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+  await pg.waitForFunction(() => document.getElementById('root')?.children.length > 0, null, { timeout: 90000 }); await sleep(1500);
+  try { await pg.getByText('Continua', { exact: false }).first().click({ timeout: 6000 }); } catch (e) {}
+  await pg.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 });
+  for (let a = 0; a < 16; a++) { if (await pg.evaluate(() => typeof window.__CPM_PHASE === 'function')) break;
+    await pg.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); if (C.playMatch() === true) return; C.step(); }); await sleep(1500); }
+  await pg.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 8080, policy: 'seeded', tickMs: 300 }));
+  await pg.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
+  await pg.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(false));
+  await sleep(1500);
+  await pg.evaluate(() => window.__CPM_SO_FORCE && window.__CPM_SO_FORCE());
+  await pg.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'shootout', null, { timeout: 20000 }).catch(() => {});
+  const campioni = []; const T0 = Date.now(); fs.mkdirSync(DIR, { recursive: true });
+  for (let i = 0; i < 10; i++) {
+    await sleep(600);
+    const r = await pg.evaluate(() => {
+      const tab = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent));
+      if (!tab) return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), tab: false };
+      const b = tab.parentElement.getBoundingClientRect();
+      const so = window.__CPM_SO_STATE && window.__CPM_SO_STATE(); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), tab: true, sb: window.__CPM_SB204, sb8: window.__CPM_SB208, serie: so ? so.hs + ' - ' + so.as : null, box: { x: Math.round(b.left), y: Math.round(b.top), width: Math.round(b.width), height: Math.round(b.height) } };
+    });
+    if (r.tab && r.ph === 'shootout') {/* [giro 208] fotografato a ogni campione (prima uno su tre): piu' campioni, il giallo resta un massimo */
+      r.t = Date.now() - T0; r.stacco = await pg.evaluate(() => !!document.querySelector('[data-cpm="stacco191"]'));
+      r.st0 = await pg.evaluate(() => { const S = window.__CPM_STATE && window.__CPM_STATE(); const so = window.__CPM_SO_STATE && window.__CPM_SO_STATE(); return { cam: S && S.camera, look: S && S.camLook, step: so && so.step, len: so && so.len, serie: so ? so.hs + '-' + so.as : null }; });/* [giro 208] durante lo stacco nero fra due rigori il 3D e' coperto: il bianco non e' giudicabile */
+      /* misura sui pixel: tolto per un istante il tabellone DOM, quanti pixel del giallo del minuto (#ffd24a) stanno nel suo rettangolo */
+      await pg.evaluate(() => { const t = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent)); t.parentElement.style.visibility = 'hidden'; });
+      const tS = Date.now(); const png = await pg.screenshot({ clip: r.box }); r.tShot = Date.now() - tS; fs.writeFileSync(DIR + '/c' + i + '.png', png);
+      r.st1 = await pg.evaluate(() => { const S = window.__CPM_STATE && window.__CPM_STATE(); const so = window.__CPM_SO_STATE && window.__CPM_SO_STATE(); return { stacco: !!document.querySelector('[data-cpm="stacco191"]'), cam: S && S.camera, look: S && S.camLook, step: so && so.step, serie: so ? so.hs + '-' + so.as : null }; });
+      await pg.evaluate(() => { const t = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent)); if (t) t.parentElement.style.visibility = ''; });
+      r.giallo = await pg.evaluate(async (b64) => { const im = new Image(); im.src = 'data:image/png;base64,' + b64; await im.decode(); const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+        const x = c.getContext('2d'); x.drawImage(im, 0, 0); const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0, w = 0;
+        for (let k = 0; k < d.length; k += 4) { const X = (k / 4) % c.width, Y = Math.floor(k / 4 / c.width); if (X < 0.3 * c.width || X > 0.8 * c.width || Y < 0.2 * c.height || Y > 0.68 * c.height) continue; /* la fascia sotto il punteggio, sopra la folla */ const R = d[k], G = d[k + 1], B = d[k + 2]; if (R > 150 && G > 140 && R - B > 45 && G - B > 35 && R >= G) n++; if (R > 170 && G > 170 && B > 170 && Math.max(R, G, B) - Math.min(R, G, B) < 40) w++; } return [n, w]; }, png.toString('base64'));
+      r.bianco = r.giallo[1]; r.giallo = r.giallo[0];/* [giro 208] i pixel bianchi della scritta «RIGORI» nella stessa fascia */
+    }
+    campioni.push(r);
+    if (foto && i === 3) await pg.screenshot({ path: foto });
+  }
+  const raf = await pg.evaluate(() => new Promise(ok => { const d = []; let p = performance.now(); const f = (t) => { d.push(t - p); p = t; if (d.length < 120) requestAnimationFrame(f); else ok(d); }; requestAnimationFrame(f); }));
+  raf.sort((a, b) => a - b); console.log('rAF ms: mediana ' + raf[60].toFixed(0) + ' p95 ' + raf[114].toFixed(0) + ' max ' + raf[119].toFixed(0));
+  await pg.close();
+  return campioni.filter(c => c.tab && c.ph === 'shootout').map((c, i) => ({ i, t: c.t, tShot: c.tShot, stacco: c.stacco, bianco: c.bianco, giallo: c.giallo, sb8: c.sb8, st0: c.st0, st1: c.st1 }));
+}
+
+const N = +(process.env.CPM_N || 6); const OUT = process.env.CPM_OUT || '/tmp/s217';
+const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
+for (let k = 0; k < N; k++) { const r = await misura217(browser, port, { DIR: OUT + '/run' + k, rosso: false });
+  fs.writeFileSync(OUT + '/run' + k + '.json', JSON.stringify(r, null, 1));
+  console.log('corsa ' + k + ': ' + r.map(c => `${c.i}@${c.t}ms ${c.stacco ? 'S' : '-'}${c.st1 && c.st1.stacco ? 'S' : '-'} b${c.bianco} step${c.st0 && c.st0.step}->${c.st1 && c.st1.step}`).join(' | ')); }
+await browser.close(); srv.close();
