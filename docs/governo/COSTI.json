@@ -1959,5 +1959,33 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaCCC7PFPR7EyML6hHJ",
+    "titolo": "giro 217 guardiano piazzato-204 stabile (campionamento dello stacco nero)",
+    "creata": "2026-11-15T17:55:57Z",
+    "chiusa": "2026-11-15T19:11:52Z",
+    "cost_usd": 3.2178203,
+    "output_tokens": 25806,
+    "cache_read_tokens": 8031560,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaBMQic6VF29BtbCrYT",
+    "titolo": "giro 218 calendario della coppa leggibile (PO-483)",
+    "creata": "2026-11-15T18:50:33Z",
+    "chiusa": "2026-11-15T19:40:45Z",
+    "cost_usd": 4.88141562,
+    "output_tokens": 40535,
+    "cache_read_tokens": 13423961,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
