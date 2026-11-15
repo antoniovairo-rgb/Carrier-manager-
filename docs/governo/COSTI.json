@@ -1987,5 +1987,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaBYaRg2Q1e55EocHgY",
+    "titolo": "verifica 7.999.195 parte H: highlight-95",
+    "creata": "2026-11-15T20:46:18Z",
+    "chiusa": "2026-11-15T23:54:20Z",
+    "cost_usd": 2.7602225,
+    "output_tokens": 9010,
+    "cache_read_tokens": 5714135,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "verifica",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-16"
   }
 ]
