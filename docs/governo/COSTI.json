@@ -1791,5 +1791,19 @@
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15",
     "nota": "worker riavviato (epoch 2): il costo letto copre solo l'ultimo worker, il totale reale è più alto e non posso confermarlo"
+  },
+  {
+    "sessione": "session_01QEYiaA3Z925r1P2SabHZX5",
+    "titolo": "giro 204 piazzato di sola visione, lotteria senza 90', maglie e piedistallo del pullman (PO-450, 451)",
+    "creata": "2026-11-14T23:13:40Z",
+    "chiusa": "2026-11-15T03:26:56Z",
+    "cost_usd": 15.91219602,
+    "output_tokens": 106321,
+    "cache_read_tokens": 55564681,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
