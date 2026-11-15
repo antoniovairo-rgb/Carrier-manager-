@@ -444,6 +444,13 @@ function ThreeMatchView(props){
     let skyCol=pal.skyTop,fogCol=pal.fog,ambInt=pal.ambInt*1.46,sunInt=1.06,sunColor=pal.flood,hemiInt=0.56,fogNear=95,fogFar=260;/* [7.278.0 collaudo PO «live match leggermente piu luminoso, soprattutto di notte»] La notte e il ramo di DEFAULT: torri di luce (sunInt) +22%, ambiente +28% e cielo/prato (hemi) da 0.30 a 0.44 → i giocatori e le linee si leggono senza slavare il manto. */
     if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.66;sunInt=0.86;sunColor=0xfff6e8;hemiInt=0.46;fogNear=150;fogFar=360;}/* Sprint 3D-G1: intensità ridotte → niente erba slavata (renderer senza tonemapping) */
     else if(tod==="dusk"){skyCol=0x2a1530;fogCol=0x2c1622;ambInt=0.60;sunInt=0.82;sunColor=0xffb070;hemiInt=0.42;fogNear=110;fogFar=290;}
+    /* [giro 206 PO-373, decisione PO «Atmosfera si', campo no» — rosso __CPM_NO_G206] LA NOTTE SI VEDE INTORNO AL CAMPO, NON SUL CAMPO.
+       Misurato prima (misura-notte-206, tre stadi, tre camere fisse, PC e telefono): di notte gli spalti avevano la stessa luminosita'
+       del giorno (rapporto 0,99-1,03) e il prato era gia' pari al giorno (1,05-1,06): l'unica cosa che diceva «notte» era il cielo.
+       Le luci NON si toccano (prato e giocatori restano com'erano, vincolo 7.539): si scuriscono i MATERIALI dello stadio (vedi
+       _spalti206 dopo buildStadium), il cielo scende, i riflettori hanno l'alone (src/11). */
+    const _N206=(tod==="night")&&!(typeof window!=='undefined'&&window.__CPM_NO_G206);
+    if(_N206){skyCol=new THREE.Color(skyCol).multiplyScalar(0.5).getHex();}
     if(wfx==="fog"){fogNear=62;fogFar=190;ambInt*=0.9;}// FOG-1: era fogNear=18 → campo invisibile dalla cam larga (≥66u); ora 62→campo leggibile
     else if(wfx==="rain"){fogNear*=0.7;fogFar*=0.7;ambInt*=0.82;sunInt*=0.6;if(tod==="day")skyCol=0x5a6b78;}
     else if(wfx==="storm"){fogNear=Math.max(fogNear*0.65,60);fogFar*=0.62;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}// FOG-1: fogNear era *0.55 (→52) → campo invisibile; ora min 60
@@ -735,7 +742,7 @@ function ThreeMatchView(props){
        allo stadio: una sola fonte, cosi' il muretto non puo' dire una competizione diversa dal resto. */
     const _cmpLbl301=String(props.competitionLabel||club?.lg||"CAMPIONATO").toUpperCase();
     const _cmpCol301=props.competitionColor||(/coppa|cup|champions|europa|conference|continental/i.test(_cmpLbl301)?"#f5c542":/mondiale|europeo|nazional/i.test(_cmpLbl301)?"#34d399":"#d27f8c");
-    try{/* [7.732.0 — IL CAMBIO CAMPO SI VEDE: LO STADIO GIRA ALLA RIPRESA. Rosso __CPM_NO732] Collaudo PO 02/09 «non avviene il cambio campo», scelta A. Il frame di gioco e' eroe-centrico (l'eroe attacca sempre verso x 97, la camera sta sempre dietro la sua direzione d'attacco): con questa regia il cambio campo VISIBILE e' lo stadio che si scambia le curve dietro le porte — il 7.561 ruotava di 180 gradi solo la camera del flusso, e negli highlight l'eroe attaccava sempre la stessa curva. Ora TUTTO lo stadio (tribune, curve, striscioni, bandiere, tabelloni) vive in un gruppo-radice che alla ripresa ruota di 180 gradi intorno al centro: pallone, ventidue, eroe, archi e camere restano nel loro frame, la simulazione non e' toccata. */const _root732=(sr.current.stadiumRoot=sr.current.stadiumRoot||(function(){const g=new THREE.Group();g.name='stadiumRoot732';scene.add(g);return g;})());const _sc=buildStadium(_root732,sHome,sAway,{comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
+    try{/* [7.732.0 — IL CAMBIO CAMPO SI VEDE: LO STADIO GIRA ALLA RIPRESA. Rosso __CPM_NO732] Collaudo PO 02/09 «non avviene il cambio campo», scelta A. Il frame di gioco e' eroe-centrico (l'eroe attacca sempre verso x 97, la camera sta sempre dietro la sua direzione d'attacco): con questa regia il cambio campo VISIBILE e' lo stadio che si scambia le curve dietro le porte — il 7.561 ruotava di 180 gradi solo la camera del flusso, e negli highlight l'eroe attaccava sempre la stessa curva. Ora TUTTO lo stadio (tribune, curve, striscioni, bandiere, tabelloni) vive in un gruppo-radice che alla ripresa ruota di 180 gradi intorno al centro: pallone, ventidue, eroe, archi e camere restano nel loro frame, la simulazione non e' toccata. */const _root732=(sr.current.stadiumRoot=sr.current.stadiumRoot||(function(){const g=new THREE.Group();g.name='stadiumRoot732';scene.add(g);return g;})());const _sc=buildStadium(_root732,sHome,sAway,{notte206:_N206,comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
@@ -757,6 +764,20 @@ function ThreeMatchView(props){
        senza stadio è meglio di una schermata nera — ma smette di mentire. */
       try{if(typeof window!=='undefined'){window.__CPM_STADFAIL={msg:String((e&&e.message)||e),stack:String((e&&e.stack)||"").slice(0,600)};console.warn("[CPM-STADIO] costruzione interrotta:",(e&&e.message)||e);}}catch(_e535){}}
 
+    /* [giro 206 PO-373 — rosso __CPM_NO_G206] SPALTI PIU' BUI DI NOTTE. Tutto cio' che buildStadium ha costruito con un materiale
+       ILLUMINATO (gradinate, folla, strutture, tetto) viene scurito una volta, sul colore del materiale; i materiali che brillano di
+       luce propria (LED, testate dei fari, cartelloni, tabellone: MeshBasicMaterial) restano accesi, come in uno stadio vero di sera.
+       Un materiale usato da un oggetto DENTRO il rettangolo di gioco (porte, reti) non si tocca. Testimone __CPM_SPALTI206. */
+    try{const _rt206=sr.current.stadiumRoot;if(_N206&&_rt206){const _K206=(typeof window!=='undefined'&&+window.__CPM_K206>0)?+window.__CPM_K206:0.42;/* __CPM_K206: pomello di sola taratura (sonde) */
+      const _dentro=new Set(),_fuori=new Set(),_v206=new THREE.Vector3();_rt206.updateMatrixWorld(true);
+      _rt206.traverse(o=>{if(!o||!o.isMesh||!o.material)return;const ms=Array.isArray(o.material)?o.material:[o.material];
+        try{if(o.geometry&&!o.geometry.boundingBox)o.geometry.computeBoundingBox();if(o.geometry&&o.geometry.boundingBox)o.geometry.boundingBox.getCenter(_v206);else _v206.set(0,0,0);_v206.applyMatrix4(o.matrixWorld);}catch(_e){_v206.set(999,0,999);}
+        const _in=!o.isInstancedMesh&&Math.abs(_v206.x)<55&&Math.abs(_v206.z)<36.5;
+        for(const m of ms){if(!m||!m.color||m.isMeshBasicMaterial||m.isSpriteMaterial||m.isShaderMaterial)continue;(_in?_dentro:_fuori).add(m);}});
+      let _n206=0;_fuori.forEach(m=>{if(_dentro.has(m)||m.userData.g206)return;m.userData.g206=true;m.color.multiplyScalar(_K206);_n206++;});
+      try{if(typeof window!=='undefined')window.__CPM_SPALTI206={k:_K206,materiali:_n206,esclusi:_dentro.size};}catch(_e){}
+    }}catch(_e206){try{if(typeof window!=='undefined')window.__CPM_SPALTI206={errore:String(_e206&&_e206.message||_e206)};}catch(_e){}}
+
     /* [7.999.70 stadi fase 2 — galleria fase 1: «negli stadi piccoli meta' del quadro e' cielo nero». Rosso __CPM_NO_FONDALE70]
        IL MONDO OLTRE LO STADIO. Il cielo era solo scene.background, un colore piatto: sopra una tribuna bassa il telefono in
        verticale mostrava un rettangolo vuoto. Ora un FONDALE: cilindro aperto (lato interno, fuori dalla nebbia, un solo draw
@@ -776,6 +797,7 @@ function ThreeMatchView(props){
       const _g70=_x70.createLinearGradient(0,0,0,512);
       if(tod==="day"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.72,"#b9d3ea");_g70.addColorStop(1,"#dbe7f0");}
       else if(tod==="dusk"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.55,"#5a2a4a");_g70.addColorStop(0.8,"#c8643c");_g70.addColorStop(1,"#f0a060");}
+      else if(_N206){_g70.addColorStop(0,_top70);_g70.addColorStop(0.62,"#080e1d");_g70.addColorStop(0.85,"#111a2e");_g70.addColorStop(1,"#1f2233");}/* [giro 206] notte: orizzonte piu' scuro */
       else{_g70.addColorStop(0,_top70);_g70.addColorStop(0.62,"#0e1830");_g70.addColorStop(0.85,"#1f2c4a");_g70.addColorStop(1,"#3a3a4e");}
       _x70.fillStyle=_g70;_x70.fillRect(0,0,2048,512);
       if(_nt70){/* stelle rade nella parte alta (seminate: sempre le stesse) */

@@ -1,0 +1,398 @@
+[
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "day",
+  "cam": "tribuna",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1205,
+    "lum": 0.38,
+    "sat": 0.6484
+   },
+   "cielo": {
+    "n": 228,
+    "lum": 0.6945,
+    "sat": 0.2203
+   },
+   "spalti": {
+    "n": 1072,
+    "lum": 0.4821,
+    "sat": 0.1436
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 0
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "day",
+  "cam": "curva",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1099,
+    "lum": 0.383,
+    "sat": 0.6443
+   },
+   "cielo": {
+    "n": 773,
+    "lum": 0.8027,
+    "sat": 0.2315
+   },
+   "spalti": {
+    "n": 789,
+    "lum": 0.4339,
+    "sat": 0.1443
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 0
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "day",
+  "cam": "bordo",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1036,
+    "lum": 0.3758,
+    "sat": 0.6548
+   },
+   "cielo": {
+    "n": 749,
+    "lum": 0.8019,
+    "sat": 0.2463
+   },
+   "spalti": {
+    "n": 892,
+    "lum": 0.4235,
+    "sat": 0.1712
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 0
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "night",
+  "cam": "tribuna",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1205,
+    "lum": 0.4015,
+    "sat": 0.634
+   },
+   "cielo": {
+    "n": 228,
+    "lum": 0.168,
+    "sat": 0.2609
+   },
+   "spalti": {
+    "n": 1072,
+    "lum": 0.3369,
+    "sat": 0.1752
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 8
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "night",
+  "cam": "curva",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1099,
+    "lum": 0.4039,
+    "sat": 0.63
+   },
+   "cielo": {
+    "n": 773,
+    "lum": 0.0983,
+    "sat": 0.481
+   },
+   "spalti": {
+    "n": 789,
+    "lum": 0.288,
+    "sat": 0.1731
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 8
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "inglese",
+  "tod": "night",
+  "cam": "bordo",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1036,
+    "lum": 0.3974,
+    "sat": 0.6397
+   },
+   "cielo": {
+    "n": 749,
+    "lum": 0.1189,
+    "sat": 0.4344
+   },
+   "spalti": {
+    "n": 892,
+    "lum": 0.2947,
+    "sat": 0.1969
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "tetto",
+   "teste": 8,
+   "aloni": 8
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "day",
+  "cam": "tribuna",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 383,
+    "lum": 0.4458,
+    "sat": 0.4953
+   },
+   "cielo": {
+    "n": 444,
+    "lum": 0.7418,
+    "sat": 0.2294
+   },
+   "spalti": {
+    "n": 1668,
+    "lum": 0.5109,
+    "sat": 0.1551
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "day",
+  "cam": "curva",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1099,
+    "lum": 0.4143,
+    "sat": 0.6285
+   },
+   "cielo": {
+    "n": 908,
+    "lum": 0.7765,
+    "sat": 0.2344
+   },
+   "spalti": {
+    "n": 609,
+    "lum": 0.4271,
+    "sat": 0.1544
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "day",
+  "cam": "bordo",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1036,
+    "lum": 0.4062,
+    "sat": 0.6378
+   },
+   "cielo": {
+    "n": 922,
+    "lum": 0.8048,
+    "sat": 0.2425
+   },
+   "spalti": {
+    "n": 743,
+    "lum": 0.3951,
+    "sat": 0.1863
+   }
+  },
+  "fari": {
+   "notte": false,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "night",
+  "cam": "tribuna",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 383,
+    "lum": 0.4272,
+    "sat": 0.5197
+   },
+   "cielo": {
+    "n": 444,
+    "lum": 0.0973,
+    "sat": 0.4304
+   },
+   "spalti": {
+    "n": 1668,
+    "lum": 0.3494,
+    "sat": 0.1872
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "night",
+  "cam": "curva",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1099,
+    "lum": 0.4317,
+    "sat": 0.6174
+   },
+   "cielo": {
+    "n": 908,
+    "lum": 0.1022,
+    "sat": 0.4592
+   },
+   "spalti": {
+    "n": 609,
+    "lum": 0.2711,
+    "sat": 0.1929
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ },
+ {
+  "vista": "1280x720",
+  "tpl": "storico_it",
+  "tod": "night",
+  "cam": "bordo",
+  "fase": "playing",
+  "zone": {
+   "prato": {
+    "n": 1036,
+    "lum": 0.4246,
+    "sat": 0.6272
+   },
+   "cielo": {
+    "n": 922,
+    "lum": 0.1129,
+    "sat": 0.4528
+   },
+   "spalti": {
+    "n": 743,
+    "lum": 0.264,
+    "sat": 0.2149
+   }
+  },
+  "fari": {
+   "notte": true,
+   "tipo": "angolari_alte",
+   "teste": 4,
+   "aloni": 4
+  },
+  "W": 836,
+  "H": 575,
+  "errs": 0
+ }
+]
