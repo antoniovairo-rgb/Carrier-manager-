@@ -9662,12 +9662,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
   // Movement RAF — keyboard input with movesLeft check, 400ms cooldown per move
   const lastKbdMoveRef=useRef(0);
-  const accordo210Ref=useRef(0);/* [giro 210] istante (parete) in cui il passo da tastiera ha visto il primo asse premuto: finestra d'accordo */
+  const accordo210Ref=useRef(null);/* [giro 210] istante (parete) in cui il passo da tastiera ha visto il primo asse premuto: finestra d'accordo */
   /* [giro 210] dopo ogni passo (pad o tastiera): sul telefono il pad resta se restano mosse (PO-471); testimone di prova __CPM_PASSO210 */
-  const _dopoPasso210=(src,dx,dy,nm,gain)=>{
+  const _dopoPasso210=(src,dx,dy,nm,gain,mk)=>{
     if(!_no210){if(isNarrow&&nm>0)setPad210(true);else if(nm<=0)setPad210(false);}
-    try{if(typeof window!=='undefined'&&_CPM_TEST){(window.__CPM_PASSO210=window.__CPM_PASSO210||[]).push({src,dx:+dx.toFixed(4),dy:+dy.toFixed(4),len:+Math.hypot(dx,dy).toFixed(4),gain:gain==null?null:+(+gain).toFixed(3),mosse:nm,t:Date.now()});}}catch(_e){}
+    try{if(typeof window!=='undefined'&&_CPM_TEST){(window.__CPM_PASSO210=window.__CPM_PASSO210||[]).push({src,dx:+dx.toFixed(4),dy:+dy.toFixed(4),len:+Math.hypot(dx,dy).toFixed(4),gain:gain==null?null:+(+gain).toFixed(3),mosse:nm,t:Date.now(),mk:mk||null});}}catch(_e){}
   };
+  const _mk210=()=>{try{if(!_CPM_TEST)return null;const m=_marker317();return m?{x:+m.x.toFixed(3),y:+m.y.toFixed(3),hx:+pPos.x.toFixed(3),hy:+pPos.y.toFixed(3)}:null;}catch(_e){return null;}};/* testimone: il marcatore e il punto dell'eroe con cui _moveGain317 ha appena calcolato lo stacco */
   useEffect(()=>{
     if(phase!=="hl_move"&&phase!=="hl_choose"){if(moveRef.current)cancelAnimationFrame(moveRef.current);return;}
     const sit=situations[hlIdx];
@@ -9684,10 +9685,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          il passo partiva cardinale e il secondo cadeva nei 400 ms di pausa. Con un solo asse premuto il passo aspetta 70 ms (tempo di
          parete dal primo fotogramma che lo vede): se nel frattempo arriva il secondo tasto, il passo e' diagonale. Con due assi parte
          subito. Rosso __CPM_NO_G210 = 3,54u e nessuna attesa. */
+      /* La finestra raccoglie gli assi visti dal primo fotogramma con un tasto premuto: il passo parte quando ci sono due assi, quando
+         scadono i 70 ms o quando i tasti vengono rilasciati prima (un tocco breve di freccia non si perde, anche a pochi fotogrammi). */
+      const _raw210=!!(dx||dy);
       if(!_no210){
-        if(dx&&dy){dx=Math.sign(dx)*2.5/Math.SQRT2;dy=Math.sign(dy)*2.5/Math.SQRT2;accordo210Ref.current=0;}
-        else if(dx||dy){const _n210=Date.now();if(!accordo210Ref.current)accordo210Ref.current=_n210;if(_n210-accordo210Ref.current<70){dx=0;dy=0;}}
-        else accordo210Ref.current=0;
+        const _n210=Date.now();let _Q=accordo210Ref.current;
+        if(_raw210){if(!_Q)_Q=accordo210Ref.current={t0:_n210,dx,dy};else{if(dx)_Q.dx=dx;if(dy)_Q.dy=dy;}}
+        if(_Q&&((_Q.dx&&_Q.dy)||_n210-_Q.t0>=70||!_raw210)){dx=_Q.dx;dy=_Q.dy;}else{dx=0;dy=0;}
+        if(dx&&dy){dx=Math.sign(dx)*2.5/Math.SQRT2;dy=Math.sign(dy)*2.5/Math.SQRT2;}
       }
       /* [7.388.0 collaudo PO «troppi movimenti concessi all'eroe» · «sono riuscito a muovermi piu' volte
          del previsto»] IL BUDGET DI MOVIMENTO NON ERA UN BUDGET. Questo ramo — frecce e WASD da desktop —
@@ -9710,16 +9715,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          const _g210k=_moveGain317(dx,dy);
+          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();
           defDistRef.current=Math.min(100,defDistRef.current+_g210k);/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
           const nm=Math.max(0,movesLeftRef.current-1);
           movesLeftRef.current=nm;setMovesLeft(nm);
           if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
-          _dopoPasso210("tasti",dx,dy,nm,_g210k);accordo210Ref.current=0;
+          _dopoPasso210("tasti",dx,dy,nm,_g210k,_m210k);accordo210Ref.current=null;
         }
       }
+      if(!_raw210)accordo210Ref.current=null;/* tasti rilasciati: la finestra o e' appena partita qui sopra o non vale piu' (pausa dei 400 ms, mosse finite) */
       moveRef.current=requestAnimationFrame(loop);
     };
     moveRef.current=requestAnimationFrame(loop);
@@ -9773,14 +9779,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    const _g210p=_moveGain317(dx,dy);
+    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();
     defDistRef.current=Math.min(100,defDistRef.current+_g210p);/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
     const nm=Math.max(0,movesLeftRef.current-1);
     movesLeftRef.current=nm;setMovesLeft(nm);
     if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
-    _dopoPasso210("pad",dx,dy,nm,_g210p);
+    _dopoPasso210("pad",dx,dy,nm,_g210p,_m210p);
   };
 
   const handleAction=useCallback((action)=>{
@@ -10729,6 +10735,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const onD=e=>{
       if(_scrive386(e))return;/* [7.386.0] il fuoco e' in una casella di testo: la tastiera non e' del gioco */
       keysRef.current.add(e.key);
+      /* [giro 210] la finestra d'accordo nasce dall'EVENTO, non dal fotogramma: misurato sulla prima scena di una pagina appena aperta,
+         i fotogrammi erano cosi' radi che nessuno vedeva il tasto durante la pressione e il passo si perdeva (anche prima del giro 210). */
+      if(!_no210&&!e.repeat&&(phase==="hl_move"||phase==="hl_choose")){const _m210={ArrowUp:[1,0],w:[1,0],ArrowDown:[-1,0],s:[-1,0],ArrowRight:[0,1],d:[0,1],ArrowLeft:[0,-1],a:[0,-1]}[e.key];
+        if(_m210){let _Q=accordo210Ref.current;if(!_Q)_Q=accordo210Ref.current={t0:Date.now(),dx:0,dy:0};if(_m210[0])_Q.dx=_m210[0]*2.5;if(_m210[1])_Q.dy=_m210[1]*2.5;}}
       // Pause toggle: Escape or P during active match
       if((e.key==="Escape"||e.key==="p"||e.key==="P")&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
         e.preventDefault();e.stopImmediatePropagation();setPaused(v=>!v);return;
