@@ -50,7 +50,10 @@ Le sigle più larghe sono quelle con W/M (WLV, WRK, WSR, HMB, MRA, MRB) e SWA/TW
 3. **Ultima garanzia** (prop `adatta`, solo sulla barra): se anche la sigla non entrasse, il corpo del testo scende fino a
    **12 px**, il minimo della scala tipografica `FS` del gioco («floor 12px»), invece di essere ritagliato. Nelle misure di
    questo giro **non è mai scattata** (corpo ridotto 0 su tutte le viste): è una rete per larghezze o caratteri non misurati.
-4. Il PC (1366) non cambia: le regole valgono solo fino a 419 px.
+4. **Le regole 1 e 2 valgono solo col puntatore touch** (`pointer:coarse`). Col mouse il centro è largo ~126 px a 375 e le
+   sigle entrano già (misurato: max 0,8 px), quindi PC e finestre strette col mouse restano come prima. Prima stesura senza
+   questa condizione: `nomi-190` andava ROSSO a 375 px (vedi Dubbi, punto 9) — corretta restringendo al touch, nomi-190 di
+   nuovo VERDE 23/0.
 
 Rosso `window.__CPM_NO_G203`: toglie 1, 2 e 3 (barra come prima).
 Varco di prova `window.__CPM_BARRA203(casa, ospiti)` (+ `__CPM_SWAP203` per il campo invertito): **solo sotto `?cpmtest=1`**,
@@ -60,12 +63,12 @@ cambia soltanto le squadre mostrate sulla barra.
 
 | Vista | in sigla | fuori | sotto lo stemma | corpo ridotto |
 |---|---|---|---|---|
-| 360×640 touch | 362 | 0 (max 0,3 px) | 0 | 0 |
-| 375×667 touch | 251 | 0 (max 0,5 px) | 0 | 0 |
+| 360×640 touch | 356 | 0 (max 0,3 px) | 0 | 0 |
+| 375×667 touch | 255 | 0 (max 0,5 px) | 0 | 0 |
 | 390×844 touch | 456 | 0 | 0 | 0 |
 | 1366×768 PC | 0 | 0 | 0 | 0 |
 
-Effetto collaterale misurato: a 360 e 375 i nomi interi o abbreviati crescono (in sigla 520→362 e 520→251), perché il nome
+Effetto collaterale misurato: a 360 e 375 i nomi interi o abbreviati crescono (in sigla 520→356 e 520→255), perché il nome
 ha tutta la larghezza della striscia.
 
 Foto: `barra-<vista>-FFT-WOL-prima/dopo.png` (il caso del PO), `barra-<vista>-larghe-prima/dopo.png` (le due sigle più
@@ -142,8 +145,18 @@ Verde: `VERDE clip-180` (1,88 MB). Rosso: col file di prima (`CPM_CLIP180=<file 
 | clip-180 | VERDE; rosso col file di prima |
 | clip-180-foto | eseguito prima e dopo, misure identiche (sopra) |
 | licenze-184 | verde; prova del rosso «il guardiano vede (4 rossi)» |
-| tpose-196 | _vedi aggiornamento in fondo_ |
-| testi-190 · nomi-190 · griglia-mobile · highlight-95 · career-critical · test:logic · save-compat | _vedi aggiornamento in fondo_ |
+| tpose-196 | VERDE sui 4 scenari (0 T-pose, 0 corpi non CGTrader, 0 procedurali); rosso atteso visto. Eseguito scenario per scenario (uno da ~5-10 min) |
+| testi-190 | VERDE 14/0 (prima e dopo la restrizione al touch) |
+| nomi-190 | VERDE 23/0 dopo la restrizione al touch (prima stesura: ROSSO 21/2, vedi Dubbi 9) |
+| griglia-mobile | uscita 0, misura completa 14 schermate × 5 larghezze |
+| highlight-95 | «verde (e il rosso si vede)»: verde 108 highlight, D4 0, passaggi arrivati 89,3%, gol del compagno = assist 12/12 (≈ 85 min) |
+| career-critical | uscita 0, tutti PASS |
+| test:logic | 51 pass · 0 fail |
+| save-compat | 12 pass · 0 fail |
+
+Le sonde `clip-180-foto`, `tpose-196` e `griglia-mobile` riscrivono foto di altri giri (`giro180/`, `giro196/`,
+`collaudo-grafico/g0/`): le ho rimesse com'erano. La catena è stata spezzata in gruppi per il tetto di 10 minuti a chiamata;
+un riavvio del contenitore è avvenuto durante `tpose-196`, il cui registro era già completo (4 verdi + rosso).
 
 Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.mjs` → IDENTICO BYTE PER BYTE.
 
@@ -165,5 +178,11 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
 7. Clip Rohr: il formato int16 è glTF di base; il gioco oggi **non carica** il file (resta fuori da `dist/`, decisione 180b).
    Quando lo collegherà, il caricatore è lo stesso già provato qui (three r128). `tools/rohr-180/rifai-184.sh` produce di nuovo
    il file in float32 (>3 MB): dopo un rifacimento va ripassato `quantizza-203.mjs`. Non ho cambiato `rifai-184.sh`.
+9. **Scala dei nomi senza un gradino**: per i club senza sigla societaria in testa (es. «Torino Athletic Primavera») la scala è
+   intero → «Torino Athletic U19» → sigla, senza «Torino Athletic». `nomi-190` lo pretende quando quel nome entra; finora non
+   entrava mai (58 px). Col layout a colonna senza la condizione touch entrava (100 px) e nomi-190 è andato rosso. Non ho
+   cambiato la scala (la fissa il caso puro dello stesso nomi-190): da decidere se aggiungere il gradino.
+10. I numeri del braccio rosso variano un poco fra due esecuzioni (max fuori a 360: 11,9 / 12,0 px; casi in testa diversi a
+   pari misura): l'esito (520/520 fuori a 360 e 375) è stabile.
 8. `clip-180-foto` scrive di serie in `docs/sviluppo/giro180/`: l'ho fatto scrivere in `giro203/` e ho rimesso com'erano le
    foto del 180 che aveva sovrascritto.
