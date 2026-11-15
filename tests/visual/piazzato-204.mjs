@@ -67,12 +67,12 @@ if (!SOLO_LOT) {
      punteggio della partita dietro il tabellone. SOGLIA DICHIARATA (verde): almeno 10 campioni del testimone __CPM_SB208, tutti in modo
      «rigori», 0 in modo «partita», 0 punteggi disegnati che la serie non ha mai avuto, almeno 3 punteggi diversi disegnati (la serie
      avanza), l'ultimo disegnato uguale all'ultimo della serie, e almeno 300 pixel bianchi della scritta nella fascia dietro il tabellone
-     (misurato 1.168-1.170). ROSSO __CPM_NO_G208: 0 in modo «rigori», almeno 10 in modo «partita», meno di 100 pixel bianchi (misurato 0).
+     (misurato 1.168-1.170), giudicati solo i campioni fuori dallo stacco nero fra due rigori (lì il 3D è coperto), almeno 3. ROSSO __CPM_NO_G208: 0 in modo «rigori», almeno 10 in modo «partita», meno di 100 pixel bianchi (misurato 0).
      Meno campioni = non giudicato = rosso. */
   console.log('lotteria rosso208 ' + JSON.stringify(l8));
-  const sv = lv.serieGiudicati >= 10 && lv.maxischermoRigori === lv.serieGiudicati && lv.maxischermoPartita === 0 && lv.disegnatiFuoriSerie === 0 && lv.punteggiDisegnati.length >= 3 && lv.ultimoDisegnato === lv.ultimaSerie && lv.pixelGiudicati >= 3 && lv.pixelBianchiMin >= 300;
+  const sv = lv.serieGiudicati >= 10 && lv.maxischermoRigori === lv.serieGiudicati && lv.maxischermoPartita === 0 && lv.disegnatiFuoriSerie === 0 && lv.punteggiDisegnati.length >= 3 && lv.ultimoDisegnato === lv.ultimaSerie && lv.pixelBianchiGiudicati >= 3 && lv.pixelBianchiMin >= 300;
   const sr = l8.errs === 0 && l8.serieGiudicati >= 10 && l8.maxischermoRigori === 0 && l8.maxischermoPartita >= 10 && l8.pixelGiudicati >= 3 && l8.pixelBianchiMax < 100;
-  esiti.push(`${sv ? '✅' : '❌'} verde maxischermo: «RIGORI» ${lv.maxischermoRigori}/${lv.serieGiudicati} · punteggi della serie disegnati ${lv.punteggiDisegnati.join(' · ')} (ultimo ${lv.ultimoDisegnato} = serie ${lv.ultimaSerie}) · fuori serie ${lv.disegnatiFuoriSerie} · pixel bianchi ${lv.pixelBianchiMin}`);
+  esiti.push(`${sv ? '✅' : '❌'} verde maxischermo: «RIGORI» ${lv.maxischermoRigori}/${lv.serieGiudicati} · punteggi della serie disegnati ${lv.punteggiDisegnati.join(' · ')} (ultimo ${lv.ultimoDisegnato} = serie ${lv.ultimaSerie}) · fuori serie ${lv.disegnatiFuoriSerie} · pixel bianchi (minimo fuori dagli stacchi) ${lv.pixelBianchiMin} su ${lv.pixelBianchiGiudicati} campioni`);
   esiti.push(`${sr ? '✅' : '❌'} rosso maxischermo __CPM_NO_G208: punteggio della partita ${l8.maxischermoPartita}/${l8.serieGiudicati} (ultimo ${l8.ultimoDisegnato}) · «RIGORI» ${l8.maxischermoRigori} · pixel bianchi ${l8.pixelBianchiMax}`); ok = ok && sv && sr; }
 for (const e of esiti) console.log(e);
 console.log(ok ? '✅ piazzato-204 verde (e il rosso si vede)' : '❌ piazzato-204 rosso');

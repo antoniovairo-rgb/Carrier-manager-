@@ -34,7 +34,8 @@ export async function misura90(browser, port, { rosso = false, rosso208 = false,
       const b = tab.parentElement.getBoundingClientRect();
       const so = window.__CPM_SO_STATE && window.__CPM_SO_STATE(); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), tab: true, sb: window.__CPM_SB204, sb8: window.__CPM_SB208, serie: so ? so.hs + ' - ' + so.as : null, box: { x: Math.round(b.left), y: Math.round(b.top), width: Math.round(b.width), height: Math.round(b.height) } };
     });
-    if (r.tab && r.ph === 'shootout' && i % 3 === 1) {
+    if (r.tab && r.ph === 'shootout') {/* [giro 208] fotografato a ogni campione (prima uno su tre): piu' campioni, il giallo resta un massimo */
+      r.stacco = await pg.evaluate(() => !!document.querySelector('[data-cpm="stacco191"]'));/* [giro 208] durante lo stacco nero fra due rigori il 3D e' coperto: il bianco non e' giudicabile */
       /* misura sui pixel: tolto per un istante il tabellone DOM, quanti pixel del giallo del minuto (#ffd24a) stanno nel suo rettangolo */
       await pg.evaluate(() => { const t = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent)); t.parentElement.style.visibility = 'hidden'; });
       const png = await pg.screenshot({ clip: r.box }); if (process.env.CPM_CLIP) fs.writeFileSync(process.env.CPM_CLIP + i + '.png', png);
@@ -62,7 +63,7 @@ export async function misura90(browser, port, { rosso = false, rosso208 = false,
   const px = giud.filter(c => c.giallo != null);
   return { errs: errs.length, giudicati: giud.length, minutoDisegnato: giud.filter(c => c.sb != null && c.sb >= 0).length, senzaMinuto: giud.filter(c => c.sb === -1).length,
     pixelGiudicati: px.length, pixelGialliMax: px.length ? Math.max(...px.map(c => c.giallo)) : null,
-    pixelBianchiMin: px.length ? Math.min(...px.map(c => c.bianco)) : null, pixelBianchiMax: px.length ? Math.max(...px.map(c => c.bianco)) : null,
+    pixelBianchiGiudicati: px.filter(c => !c.stacco).length, pixelBianchiMin: px.filter(c => !c.stacco).length ? Math.min(...px.filter(c => !c.stacco).map(c => c.bianco)) : null, pixelBianchiMax: px.length ? Math.max(...px.map(c => c.bianco)) : null,
     serieGiudicati: conSb.length, maxischermoRigori: conSb.filter(c => c.sb8.modo === 'rigori').length, maxischermoPartita: conSb.filter(c => c.sb8.modo === 'partita').length,
     punteggiDisegnati: [...new Set(conSb.filter(c => c.sb8.modo === 'rigori').map(c => c.sb8.punteggio))], statiSerie: [...statiSerie],
     disegnatiFuoriSerie: conSb.filter(c => c.sb8.modo === 'rigori' && !statiSerie.has(c.sb8.punteggio)).length,
