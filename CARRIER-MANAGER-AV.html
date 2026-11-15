@@ -284,7 +284,16 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 @keyframes cpmRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes cpmSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes cpmShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}</style>
+@media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}
+/* [giro 213 PO-475] riscontro al tocco uniforme (strato tocco213 in src/19): schiacciato e illuminato dal fotogramma dopo il tocco */
+html.cpm-t213 .cpm-press:active,html.cpm-t213 .cpm-int:active{transform:none;}
+html.cpm-t213 [data-premuto213]{transition:scale 0s,filter 0s!important;filter:brightness(1.16) drop-shadow(0 0 6px rgba(255,236,205,.6))!important;}
+html.cpm-t213 [data-premuto213="b"],html.cpm-t213 [data-premuto213="a"]{scale:.96;}
+html.cpm-t213 [data-pos213]{position:relative;}
+html.cpm-t213 [data-premuto213="b"]::before,html.cpm-t213 [data-premuto213="a"]::after{content:"";position:absolute;inset:-2.5%;}
+@media(prefers-reduced-motion:reduce){html.cpm-t213 [data-premuto213]{scale:none!important;}}
+.cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
+@keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->
 </head>
 <body>
@@ -29026,8 +29035,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
       <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
       {_c24?(<div style={{display:"flex",gap:SP.sm}}>
-        <Btn onClick={onSkip} v="ghost" style={{flex:"0 0 auto"}}>Salta l'ingresso</Btn>
-        <Btn onClick={onContinue} v="primary" size="lg" style={{flex:1}}>Ingresso in campo</Btn></div>):(<>
+        <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onSkip} v="ghost" style={{flex:"0 0 auto"}}>Salta l'ingresso</Btn>
+        <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onContinue} v="primary" size="lg" style={{flex:1}}>Ingresso in campo</Btn></div>):(<>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         {/* [23/09 POC — collaudo PO «il modulo e' ridondante sotto»] il modulo e' gia' nella testata della formazione: qui resta il pressing */}
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
@@ -29038,8 +29047,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
             </div>
           </div>)}
       </Card>
-      <Btn onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
-      <Btn onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn></>)}
+      <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
+      <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn></>)}
     </div>);
   }
   return(
@@ -32170,7 +32179,7 @@ function Riserva2D205({fase,soState=null,soFx=null,ceremony=null,kitCasa="#8e1f3
       <div style={{position:"absolute",left:"50%",top:"72%",width:8,height:4,marginLeft:-4,borderRadius:"50%",background:"rgba(255,255,255,0.8)"}}/>
       <div data-cpm="rigori2d205-portiere" style={{position:"absolute",left:gx+"%",top:"41%",width:30,height:56,marginLeft:-15,transition:"left .45s ease-out, transform .45s ease-out",transform:`rotate(${tirato&&k?gDir*62:0}deg)`,transformOrigin:"50% 100%"}}>
         <div style={{width:20,height:20,margin:"0 auto",borderRadius:"50%",background:"#e8c7a0",border:"2px solid rgba(0,0,0,0.25)"}}/>
-        <div style={{width:30,height:34,marginTop:2,borderRadius:8,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
+        <div style={{width:30,height:34,marginTop:2,borderRadius:RAD.sm,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
       </div>
       <div data-cpm="rigori2d205-palla" style={{position:"absolute",left:bx+"%",top:by+"%",width:tirato?14:18,height:tirato?14:18,marginLeft:tirato?-7:-9,marginTop:tirato?-7:-9,borderRadius:"50%",background:"radial-gradient(circle at 35% 35%,#fff 0 40%,#cbd5e1 70%,#64748b 100%)",boxShadow:"0 3px 6px rgba(0,0,0,0.45)",transition:"left .55s cubic-bezier(.2,.7,.3,1), top .55s cubic-bezier(.2,.7,.3,1), width .55s, height .55s"}}/>
       {k&&<div style={{position:"absolute",left:0,right:0,top:"78%",textAlign:"center",fontSize:FS.small,fontWeight:800,color:tiraCasa?"#fde68a":"#fff",textShadow:"0 2px 6px rgba(0,0,0,0.8)"}}>{(soState&&soState.seq&&soState.seq[key]&&soState.seq[key].kicker)||""}</div>}
@@ -43343,7 +43352,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>)}
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" data-pesante213=""/* [giro 213] 767 ms di lavoro sincrono misurati */ className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
               {/* [giro 204 PO-450] la scena di sola visione del rigore gia' calciato dal motore: solo racconto, nessuna scelta */}
               {vis204&&phase==="playing"&&(<div data-cpm="visione204" style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))"}}>
@@ -43655,7 +43664,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {phase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_ING277)&&(/* [giro 54 PO-277 «l'ingresso deve essere saltabile» — rosso __CPM_NO_ING277] stesso stile di «Salta premiazione»; sopra il velo d'attesa (zIndex 41): saltando, il caricamento dei corpi prosegue e l'eventuale residuo lo copre l'attesa del fischio */
-                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" data-cpm="salta-ingresso-v2" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.md,border:"1px solid rgba(255,255,255,0.06)",background:"rgba(13,15,20,0.92)",color:TINTE.testo,fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
+                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso-v2" data-pesante213=""/* [giro 213] 1373 ms di lavoro sincrono misurati; un solo data-cpm: col doppio attributo valeva gia' il secondo (Babel tiene l'ultimo) e ingresso-277 cercava il primo */ style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.md,border:"1px solid rgba(255,255,255,0.06)",background:"rgba(13,15,20,0.92)",color:TINTE.testo,fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
@@ -48794,7 +48803,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
-                    <Btn onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
+                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
               </div>
@@ -58392,15 +58401,15 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
               {simula302&&<div data-cpm="simula-scelta" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Hai scelto <b style={{color:TH.text}}>Simula</b>: la decisione del mister resta quella qui sopra.</div>}
               {coachDecision?.status!=="not_called"&&!player.injured&&!player.isSuspended&&!simula302&&(
-                <Btn onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
+                <Btn data-pesante213=""/* [giro 213] lavoro sincrono misurato 108 ms: il tasto si disegna premuto con la rotellina prima di montare la partita */ onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
               {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&senzaPosta166(showMatchPrompt)&&(<>
-                <Btn data-cpm="solo-166" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
+                <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
                 <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.</div>
               </>)}
-              <Btn data-cpm="simula-conferma" onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
+              <Btn data-cpm="simula-conferma" data-pesante213=""/* [giro 213] 136 ms di lavoro sincrono misurati */ onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
                 {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
               </Btn>
               <Btn onClick={()=>setShowMatchPrompt(null)} v="ghost" fw>Non ora</Btn>
@@ -64866,7 +64875,7 @@ function App(){
         ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
         button:hover:not(:disabled){filter:brightness(0.96);}
-        button:active:not(:disabled){transform:scale(.97);}
+        ${(typeof window!=='undefined'&&!window.__CPM_NO_G213)?'':'button:active:not(:disabled){transform:scale(.97);}'}/* [giro 213] il riscontro al tocco e' lo strato tocco213 (scale + luce, area di tocco invariata): il vecchio :active sovrascriveva le transform di posizione e restringeva l'area */
         input,select{outline:none;}
         input:focus,select:focus{border-color:${TH.primary}!important;box-shadow:0 0 0 3px ${TH.primary}22!important;}
         :focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
@@ -65028,6 +65037,69 @@ class RootErrorBoundary extends React.Component{
     );
   }
 }
+/* [giro 213 · PO-475 «quando tocco un pulsante ci deve essere un'animazione tocco per fare capire che effettivamente l'hai premuto»;
+   decisione PO 15/11: il tasto SI SCHIACCIA e SI ILLUMINA SUBITO al tocco; se cio' che segue richiede tempo, una ROTELLINA sul tasto
+   finche' l'azione non parte; tutti i pulsanti, in modo uniforme, anche col mouse]. Strato unico, a livello di documento:
+   - pointerdown (cattura): il tasto riceve data-premuto213 NELLO STESSO evento → il fotogramma successivo lo disegna schiacciato
+     (scale .96, proprieta' `scale`: si compone con le transform gia' scritte, che il vecchio :active sovrascriveva) e illuminato
+     (filter). Il layout non si muove (scale non tocca il flusso). L'AREA DI TOCCO resta quella di riposo: un'estensione invisibile
+     (::before o ::after, quello libero) larga il 2,5% in piu' compensa la scala — misurato: con la sola scala un tocco a 3 px dal
+     bordo andava perso (0 clic su telefono e PC). Dove lo pseudo-elemento non si puo' usare (entrambi occupati, overflow tagliato,
+     figli assoluti che cambierebbero ancoraggio) il tasto si illumina soltanto (modo «n»).
+   - pointerup/cancel: rilascio dopo almeno TIENI213 ms dal tocco e mai prima di 80 ms dal sollevamento (il tocco su telefono
+     colpisce il bersaglio DOPO il touchend: l'estensione deve esserci ancora).
+   - click (cattura, solo eventi veri): se l'azione non e' «partita» (nessun cambiamento del documento fuori dallo strato) entro
+     ROTELLA213 ms, compare la rotellina sul tasto; i tasti con data-pesante213 (lavoro sincrono misurato) la mostrano SUBITO e il
+     loro gestore parte dopo che il fotogramma col tasto premuto e la rotellina e' stato disegnato (la rotellina gira sul compositore
+     anche mentre il lavoro tiene occupato il filo principale). Un secondo tocco sullo stesso tasto mentre l'azione del primo non e'
+     ancora partita viene assorbito (nessuna azione doppia).
+   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213. */
+const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
+(function tocco213(){
+  if(typeof window==="undefined"||typeof document==="undefined"||window.__CPM_NO_G213)return;
+  document.documentElement.classList.add("cpm-t213");
+  const SEL="button,[role=\"button\"],.cpm-press,[data-tocco213]";
+  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1};
+  const spento=el=>el.disabled||el.getAttribute("aria-disabled")==="true";
+  const modo=el=>{
+    const cs=getComputedStyle(el);if(cs.display==="inline"||cs.overflowX!=="visible"||cs.overflowY!=="visible")return "n";
+    let m=getComputedStyle(el,"::before").content==="none"?"b":getComputedStyle(el,"::after").content==="none"?"a":"n";
+    if(m!=="n"&&cs.position==="static"){const D=el.getElementsByTagName("*");for(let i=0;i<D.length&&i<80;i++){const p=getComputedStyle(D[i]).position;if(p==="absolute"||p==="fixed"){m="n";break;}}}
+    return m;
+  };
+  let prem=null,tGiu=0,tRil=null;
+  const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
+  document.addEventListener("pointerdown",e=>{
+    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
+    el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
+  },true);
+  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);tRil=setTimeout(()=>{tRil=null;if(prem===el)rilascia();},resto);};
+  document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
+  /* azione in attesa: rotellina e guardia del doppio tocco */
+  const attese=new Map();let oss=null;
+  const fine=(el)=>{const a=attese.get(el);if(!a)return;if(window.__CPM_FOTO213&&/cpmtest=1/.test(location.search))return;/* solo foto di collaudo: la rotellina resta per la fotografia */attese.delete(el);clearTimeout(a.tr);clearTimeout(a.tt);if(a.ov){a.ov.remove();}el.removeAttribute("data-rotella213");if(!attese.size&&oss){oss.disconnect();oss=null;}};
+  const rotella=(el)=>{const a=attese.get(el);if(!a||a.ov||!el.isConnected)return;const r=el.getBoundingClientRect();const d=document.createElement("span");d.className="cpm-rotella213";d.setAttribute("aria-hidden","true");
+    const lato=Math.max(14,Math.min(20,Math.round(r.height*0.42)));d.style.width=d.style.height=lato+"px";d.style.color=getComputedStyle(el).color;
+    d.style.left=Math.round(r.width>=90?r.right-lato-10:r.left+r.width/2-lato/2)+"px";d.style.top=Math.round(r.top+r.height/2-lato/2)+"px";
+    document.body.appendChild(d);a.ov=d;el.setAttribute("data-rotella213","");try{window.__CPM_ROT213=(window.__CPM_ROT213|0)+1;}catch(_e){}};
+  const guarda=()=>{if(oss)return;oss=new MutationObserver(L=>{for(const [el,a] of attese){if(!el.isConnected){fine(el);continue;}if(a.dif)continue;
+      for(const r of L){if(a.ov&&(r.target===a.ov||a.ov.contains(r.target)))continue;if(r.type==="attributes"&&NOSTRI[r.attributeName])continue;if(r.type==="childList"&&[...r.addedNodes,...r.removedNodes].every(n=>n.classList&&n.classList.contains("cpm-rotella213")))continue;a.fatto=true;break;}
+      if(a.fatto)fine(el);}});
+    oss.observe(document.documentElement,{subtree:true,childList:true,attributes:true,characterData:true});};
+  document.addEventListener("click",e=>{
+    if(!e.isTrusted)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    if(attese.has(el)){e.stopImmediatePropagation();e.preventDefault();try{window.__CPM_DOPPIO213=(window.__CPM_DOPPIO213|0)+1;}catch(_e){}return;}
+    const a={t:performance.now(),fatto:false,ov:null};attese.set(el,a);guarda();
+    a.tt=setTimeout(()=>fine(el),Math.max(TETTO213,GUARDIA213));
+    if(el.hasAttribute("data-pesante213")){
+      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);
+      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
+      return;
+    }
+    a.tr=setTimeout(()=>rotella(el),ROTELLA213);
+  },true);
+})();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));
 requestAnimationFrame(window._hide);
 </script>

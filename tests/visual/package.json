@@ -651,6 +651,8 @@
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",
     "rassegna-202": "node rassegna-202.mjs",
+    "tocco-213": "node tocco-213.mjs",
+    "misura-213": "node misura-213.mjs",
     "riserva2d-205": "node riserva2d-205.mjs",
     "notte-206": "node notte-206.mjs",
     "ingresso-206": "node ingresso-206.mjs",
