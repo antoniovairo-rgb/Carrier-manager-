@@ -1,0 +1,11 @@
+=== C4 · IL SISTEMA GRAFICO È RISPETTATO? ===
+  corpi tipografici:  2301 dal sistema · 49 scritti a mano  (97.9 % dal sistema)
+  raggi:              629 dal sistema · 25 scritti a mano  (96.2 % dal sistema)
+  colori:             3185 dal tema · 3220 esadecimali a mano  (49.7 % dal tema)
+
+✅ nessun corpo sotto il pavimento di 12 px
+
+❌ 1 raggi scritti a mano che HANNO GIÀ un token:
+   15-live-match.jsx:725 → borderRadius:8 (esiste RAD.sm)
+
+❌ SISTEMA GRAFICO: regole violate
