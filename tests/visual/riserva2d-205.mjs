@@ -100,5 +100,5 @@ for (const [ok, m] of rosso) console.log((ok ? '  ✓ ' : '  ✗ ') + m);
 const vOk = PARTE === 'rosso' || (verde.length > 0 && verde.every(x => x[0])), rOk = PARTE === 'verde' || (rosso.length > 0 && rosso.every(x => x[0]));
 if (PARTE !== 'rosso') console.log(`VERDE: ${verde.filter(x => x[0]).length}/${verde.length} ${vOk ? '✓' : '✗'}`);
 if (PARTE !== 'verde') console.log(`ROSSO __CPM_NO_G205 bocciato: ${rOk ? '✓' : '✗'}`);
-console.log(vOk && rOk ? `✅ riserva2d-205 verde (${PARTE})` : `❌ riserva2d-205 rosso (${PARTE})`);
+console.log(vOk && rOk ? `✅ riserva2d-205 superato (${PARTE}: verde col verde, rosso col rosso)` : `❌ riserva2d-205 rosso (${PARTE})`);
 process.exit(vOk && rOk ? 0 : 1);
