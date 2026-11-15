@@ -7968,7 +7968,7 @@ function calcMatchWeight(player,opponentId,standings,week){
    · coreo = curve con la coreografia a cartoncini (1 = casa, 2 = i due lati) · fumo/coriandoli = accesi o no (la dose la decide il
      dispositivo, in src/12). */
 const INGRESSO206={
-  finale:   {regia:"panoramica",scena:21,tunnel:3.2,orb:10.5,tagli:[10.5],        coreo:2,fumo:1,coriandoli:1,inno:7},
+  finale:   {regia:"panoramica",scena:23,tunnel:3.2,orb:12.5,tagli:[12.5],        coreo:2,fumo:1,coriandoli:1,inno:7},
   nazionale:{regia:"bandiere",  scena:19,tunnel:3.2,orb:8,   tagli:[8],           coreo:1,fumo:1,coriandoli:1,inno:7},
   derby:    {regia:"tunnel",    scena:19,tunnel:7,  orb:7,   tagli:[7],           coreo:1,fumo:1,coriandoli:1,inno:0},
   europea:  {regia:"standard",  scena:16,tunnel:3.2,orb:12,  tagli:[5,12,16.5],   coreo:1,fumo:1,coriandoli:1,inno:7},
@@ -16698,6 +16698,15 @@ function ThreeMatchView(props){
           root.add(visual);visual.updateMatrixWorld(true);
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
+          /* [giro 206 — rosso __CPM_NO_G206] GUARDALINEE GIGANTI. Misurato nell'ingresso (sonda del giro, corpi accesi, anche col rosso = prima del
+             giro): i due guardalinee CGTrader della modalita' predefinita (giro 196, pacchetto LOD leggero) erano alti 27,3 u contro 1,62-1,66
+             dei calciatori, e nel giro dello stadio la camera gli passava accanto (un busto giallo a tutto schermo). La taglia era presa dal
+             riquadro della GEOMETRIA (Box3.setFromObject), che su questo pacchetto non e' nella stessa unita' dello scheletro che la disegna.
+             Ora si controlla lo SCHELETRO: se l'altezza delle ossa non e' quella di un uomo si riscala su quella (1,62 u come i calciatori)
+             e si riappoggia a terra sull'osso piu' basso. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G206)){try{const _sk206=_skeletonWorldHeight(visual);if(_sk206.bones>4&&_sk206.height>0.05&&(_sk206.height>2.2||_sk206.height<1.1)){visual.scale.multiplyScalar(1.62/_sk206.height);visual.updateMatrixWorld(true);
+            let _lo206=Infinity;const _p206=new THREE.Vector3();visual.traverse(n=>{if(n.isBone){n.getWorldPosition(_p206);if(_p206.y<_lo206)_lo206=_p206.y;}});if(Number.isFinite(_lo206))visual.position.y-=(_lo206-0.06);visual.updateMatrixWorld(true);
+            try{window.__CPM_GUARDA206={prima:+_sk206.height.toFixed(2),dopo:+_skeletonWorldHeight(visual).height.toFixed(2)};}catch(_e){}}}catch(_e206g){}}
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
           const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
@@ -17626,10 +17635,10 @@ function ThreeMatchView(props){
       const _mkFumo=(home,c1,c2)=>{const n=isDesktop?14:8;
         if(!G._ftx){const cv=document.createElement('canvas');cv.width=cv.height=64;const x=cv.getContext('2d');const rg=x.createRadialGradient(32,32,0,32,32,32);
           rg.addColorStop(0,'rgba(255,255,255,0.9)');rg.addColorStop(0.5,'rgba(255,255,255,0.35)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,64,64);G._ftx=new THREE.CanvasTexture(cv);}
-        for(let i=0;i<n;i++){const col=new THREE.Color(_css((i%2)?c2:c1)).lerp(new THREE.Color(0xffffff),0.22);
+        for(let i=0;i<n;i++){const col=new THREE.Color(_css((i%2)?c2:c1)).lerp(new THREE.Color(0xffffff),0.4);
           const s=new THREE.Sprite(new THREE.SpriteMaterial({map:G._ftx,color:col,transparent:true,opacity:0,depthWrite:false}));
           const t=0.10+_r()*0.32;s.userData={fumo206:true,home:!!home,x0:_cxAt(t,home),y0:_cyAt(t,home)+1.6,z0:-22+44*((i+_r()*0.8)/n),ph:_r()*7,v:0.8+_r()*0.5};
-          s.visible=false;_rootG.add(s);G.fumo.push(s);}};
+          s.visible=false;s.renderOrder=7;/* sopra i cartoncini (6): il fumo sale davanti alla coreografia */_rootG.add(s);G.fumo.push(s);}};
       if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
       if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
       if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
@@ -17645,9 +17654,10 @@ function ThreeMatchView(props){
       if(!vivo){if(G.on){G.on=false;for(const m of G.coreo)m.visible=false;for(const s of G.fumo)s.visible=false;if(G.cori)G.cori.visible=false;G.nF=0;}try{if(typeof window!=='undefined'&&window.__CPM_INNO206ON)window.__CPM_INNO206ON=false;}catch(_e){}return;}
       G.on=true;
       const _in=clamp((t-0.6)/1.6,0,1),_out=clamp((TOT-t)/1.5,0,1),_a=Math.min(_in,_out);
-      for(const m of G.coreo){m.visible=_a>0.01;m.material.opacity=0.94*_a;}
+      const _t0c=(G.cfg.regia==="bandiere")?G.cfg.orb:0.6,_ac=Math.min(clamp((t-_t0c)/1.6,0,1),_out);/* Nazionale: prima le bandiere della curva, i cartoncini si alzano dopo */
+      for(const m of G.coreo){m.visible=_ac>0.01;m.material.opacity=0.94*_ac;}
       let nf=0;for(const s of G.fumo){const u=s.userData;s.visible=t>1.0&&_a>0.01;if(!s.visible)continue;nf++;const life=((t*u.v*0.16)+u.ph)%1;
-        s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.42*Math.sin(life*Math.PI)*_a;}
+        s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.6*Math.sin(life*Math.PI)*_a;}
       G.nF=nf;
       if(G.cori){const on=t>=WD-7.5;G.cori.visible=on&&_out>0.01;if(G.cori.visible){G.cori.material.opacity=0.95*Math.min(1,(t-(WD-7.5))/1.2)*_out;const P=G.cori.geometry.attributes.position.array,n=G.nC;
         for(let i=0;i<n;i++){let y=P[i*3+1]-G._cv[i*2]*dt;if(y<0.05)y=14+((i*7)%5);P[i*3+1]=y;P[i*3]+=Math.sin(G._cv[i*2+1]+t*2.1+i)*0.012;}
@@ -24966,14 +24976,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const prog=_c245?(walkT<_T46?-2:(_bn206&&walkT<_bn206)?-3:(_g206&&_g206.inno&&walkT>=_WD206)?-4:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=_WD206-_FIN245?0.85+0.15*Math.min(1,(walkT-(_WD206-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
         if(prog===-3){/* [giro 206] Nazionale: la curva di casa con le bandiere, panoramica lenta lungo la gradinata */
           const _k=clamp((walkT-_T46)/Math.max(0.5,_bn206-_T46),0,1);
-          tPx=_sideX-36;tPy=8.5+1.5*_k;tPz=-12+24*_k;tLx=_sideX-3;tLy=7.5;tLz=-5+10*_k;
+          tPx=_sideX-50;tPy=6.5+1.5*_k;tPz=-10+20*_k;tLx=_sideX-3;tLy=6.5;tLz=-4+8*_k;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-4){/* [giro 206] inno: squadre schierate coi bambini per mano, carrellata lenta e vicina lungo la fila */
           const _k=clamp((walkT-_WD206)/Math.max(0.5,_g206.inno),0,1);
           tPx=-27;tPy=3.1;tPz=-8.5+17*_k;tLx=-11;tLy=1.55;tLz=tPz*0.9;
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-2){
-          tPx=_tn46.x+8.5-((_g206&&_g206.regia==="tunnel")?3.2*Math.min(1,walkT/_T46):0);tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+          tPx=_tn46.x+8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0);/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
         } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */

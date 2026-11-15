@@ -339,7 +339,7 @@ function calcMatchWeight(player,opponentId,standings,week){
    · coreo = curve con la coreografia a cartoncini (1 = casa, 2 = i due lati) · fumo/coriandoli = accesi o no (la dose la decide il
      dispositivo, in src/12). */
 const INGRESSO206={
-  finale:   {regia:"panoramica",scena:21,tunnel:3.2,orb:10.5,tagli:[10.5],        coreo:2,fumo:1,coriandoli:1,inno:7},
+  finale:   {regia:"panoramica",scena:23,tunnel:3.2,orb:12.5,tagli:[12.5],        coreo:2,fumo:1,coriandoli:1,inno:7},
   nazionale:{regia:"bandiere",  scena:19,tunnel:3.2,orb:8,   tagli:[8],           coreo:1,fumo:1,coriandoli:1,inno:7},
   derby:    {regia:"tunnel",    scena:19,tunnel:7,  orb:7,   tagli:[7],           coreo:1,fumo:1,coriandoli:1,inno:0},
   europea:  {regia:"standard",  scena:16,tunnel:3.2,orb:12,  tagli:[5,12,16.5],   coreo:1,fumo:1,coriandoli:1,inno:7},
