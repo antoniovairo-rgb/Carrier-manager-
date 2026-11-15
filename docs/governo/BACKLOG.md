@@ -110,6 +110,8 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-465 | 14/11 22:45 | PO, questionario: partita in 2D di riserva (giro 196, PO-449): provare e correggere lotteria dei rigori dopo il pareggio e cerimonie (premiazione, festa) in modalità 2D forzata (__CPM_CAP196 basso o caricamento fallito) | difetto (partita 2D, cerimonie) | DA FARE — 195 | 7.999.195 |
 | PO-466 | 14/11 22:45 | PO, questionario: terza strada dello svincolato «fermati un anno» (proposta G193-01, non fatta nel giro 198): un anno senza squadra, poi si riparte con offerte più basse; regola nuova | nuova funzione (contratti) | DA FARE — 199 | 7.999.199 |
 | PO-467 | 14/11 23:15 | Dal giro 201 (madre): parti (c) e (d) di G189-06 non fatte con PO-418 — cosa promette ogni offerta dei provini (ruolo, mister, stadio, crescita) e titoli dopo ogni provino con la stessa misura delle offerte («Prestazione da predestinato!» dipende ancora dal voto del singolo provino) | miglioramento (provini, coerenza) | DA FARE — 197 | 7.999.197 |
+| PO-468 | 15/11 06:35 | PO, questionario sui dubbi del giro 204: durante la lotteria dei rigori il maxischermo mostra «RIGORI» e il punteggio della serie al posto del punteggio della partita (oggi «0 - 0» leggibile in trasparenza dietro il tabellone) | difetto (lotteria) | DA FARE — 195 | 7.999.195 |
+| PO-469 | 15/11 06:35 | PO, questionario sui dubbi del giro 204: la correzione del colore sul tetto del pullman vale solo per la maglia; pantaloncini e calzettoni tornano come prima (oggi i bianchi risultano grigio chiaro) | difetto (cerimonie) | DA FARE — 195 | 7.999.195 |
 
 ## Storico — voci chiuse (377)
 
