@@ -1819,5 +1819,33 @@
     "tipo": "misura",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYia8ZfptPYBZP4fXjgma",
+    "titolo": "giro 206 scene 3D: notte e ingresso in campo scenico (PO-373, 412, 367)",
+    "creata": "2026-11-15T02:19:34Z",
+    "chiusa": "2026-11-15T09:10:19Z",
+    "cost_usd": 27.18910414,
+    "output_tokens": 169921,
+    "cache_read_tokens": 62324336,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-fable-5-2",
+    "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaAf9nsPP6EddeLGY23",
+    "titolo": "giro 208 maxischermo RIGORI nella lotteria, colore solo sulla maglia (PO-468, 469)",
+    "creata": "2026-11-15T07:11:31Z",
+    "chiusa": "2026-11-15T09:15:30Z",
+    "cost_usd": 4.49927138,
+    "output_tokens": 39589,
+    "cache_read_tokens": 11295834,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
