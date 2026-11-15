@@ -10,6 +10,8 @@
      - tabellone opaco: nel rettangolo del tabellone, foto con la tela 3D e senza (tabellone congelato in una copia per la durata della
        coppia di foto), 0 pixel che cambiano in TUTTI i campioni giudicati (nessuna scritta del maxischermo leggibile in trasparenza),
        almeno 3 campioni giudicati fuori dallo stacco nero;
+       un campione vale solo se a fine coppia di foto si e' ancora nella lotteria (misurato: la cerimonia partita fra le due foto
+       metteva «TITOLO VINTO!» in una sola delle due e la differenza era del DOM, non del 3D — 48.967 pixel su un campione, gli altri 0);
      - a serie finita la striscia torna normale: in cerimonia risultato della partita «1–1», nessun «RIGORI».
    ROSSO (C): striscia mai «RIGORI», minuto in tutti i campioni (almeno 5), e almeno 1.000 pixel del 3D che cambiano nel rettangolo del
    tabellone (misurato 35.882-96.301) su almeno 3 campioni fuori dallo stacco.

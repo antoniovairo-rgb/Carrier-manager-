@@ -62,6 +62,7 @@ export async function misura214(browser, port, { rosso = false, viewport = { wid
          congelata (cloneNode: stessi stili scritti, quindi stessa opacita'), cosi' fra le due foto cambia solo il 3D */
       await pg.evaluate(() => { const t = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent)); if (!t) return; const o = t.parentElement; const c = o.cloneNode(true); c.id = 'cpm-gelo214'; o.style.visibility = 'hidden'; o.setAttribute('data-gelo214', '1'); o.parentElement.insertBefore(c, o.nextSibling); });
       const con = await pg.screenshot({ clip: r.box }); await tela(false); const senza = await pg.screenshot({ clip: r.box }); await tela(true);
+      r.fermo = await pg.evaluate(() => (window.__CPM_PHASE && window.__CPM_PHASE()) === 'shootout' && !!document.querySelector('[data-gelo214]'));/* la coppia di foto vale solo se a fine coppia si e' ancora nella lotteria e il tabellone vero c'e' ancora (misurato: la cerimonia partita fra le due foto copriva il campione con «TITOLO VINTO!») */
       await pg.evaluate(() => { const c = document.getElementById('cpm-gelo214'); if (c) c.remove(); const o = document.querySelector('[data-gelo214]'); if (o) { o.style.visibility = ''; o.removeAttribute('data-gelo214'); } });
       await pg.evaluate(() => { const s = document.getElementById('cpm-anim-stop214'); if (s) s.remove(); });
       Object.assign(r, await confronta(con, senza)); if (process.env.CPM_CLIP) { fs.writeFileSync(`${process.env.CPM_CLIP}${i}-con.png`, con); fs.writeFileSync(`${process.env.CPM_CLIP}${i}-senza.png`, senza); }
@@ -77,12 +78,13 @@ export async function misura214(browser, port, { rosso = false, viewport = { wid
   await pg.close();
   const inSerie = campioni.filter(c => c.ph === 'shootout' && c.so);
   const atteso = (c) => trasferta ? `${c.so.as}–${c.so.hs}` : `${c.so.hs}–${c.so.as}`;/* la striscia ha la squadra di casa a sinistra: in casa l'eroe e' a sinistra, in trasferta a destra (hs = la serie dell'eroe) */
-  const pix = inSerie.filter(c => c.diff != null), pixLuce = pix.filter(c => !c.stacco);
+  const pix = inSerie.filter(c => c.diff != null && c.fermo), pixLuce = pix.filter(c => !c.stacco);
   return { errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
     strisciaRigori: inSerie.filter(c => /RIGORI/i.test(c.min || '')).length, strisciaMinuto: inSerie.filter(c => /\d+\s*'/.test(c.min || '')).length,
     strisciaSerie: inSerie.filter(c => c.ris === atteso(c)).length, strisciaPartita: inSerie.filter(c => c.ris === '1–1' && atteso(c) !== '1–1').length, strisciaCapovolta: inSerie.filter(c => trasferta ? c.ris === `${c.so.hs}–${c.so.as}` && c.so.hs !== c.so.as : c.ris === `${c.so.as}–${c.so.hs}` && c.so.hs !== c.so.as).length,
+    perCampione: inSerie.map(c => [c.so && `${c.so.hs}-${c.so.as}`, c.stacco ? 'stacco' : '', c.fermo ? '' : 'fase cambiata', c.diff, c.box && `${c.box.x},${c.box.y},${c.box.width}x${c.box.height}`]),
     letture: [...new Set(inSerie.map(c => `${c.min}|${c.ris}|serie ${atteso(c)}`))],
-    pixelGiudicati: pix.length, pixelLuceGiudicati: pixLuce.length, diffMax: pix.length ? Math.max(...pix.map(c => c.diff)) : null, diffMaxLuce: pixLuce.length ? Math.max(...pixLuce.map(c => c.diff)) : null,
+    pixelGiudicati: pix.length, pixelScartatiFase: inSerie.filter(c => c.diff != null && !c.fermo).length, pixelLuceGiudicati: pixLuce.length, diffMax: pix.length ? Math.max(...pix.map(c => c.diff)) : null, diffMaxLuce: pixLuce.length ? Math.max(...pixLuce.map(c => c.diff)) : null,
     diffMinLuce: pixLuce.length ? Math.min(...pixLuce.map(c => c.diff)) : null, bianchiMaxLuce: pixLuce.length ? Math.max(...pixLuce.map(c => c.bianchi)) : null, bianchiMinLuce: pixLuce.length ? Math.min(...pixLuce.map(c => c.bianchi)) : null,
     ultimaSerie: inSerie.length ? atteso(inSerie[inSerie.length - 1]) : null, dopo: dopo ? { ph: dopo.ph, ris: dopo.ris, min: dopo.min } : null };
 }
