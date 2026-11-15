@@ -97,10 +97,10 @@ voci senza commenti), mappa di `src/15` e lenti; `node --check` ok.
 | simula-v2 | verde, rosso atteso visto |
 | gioca-188 | verde 6 ok, 0 ko (una prima chiamata senza `CPM_CHROME` non è partita: non è un esito) |
 | rassegna-202 | verde 9/9, rosso bocciato |
-| solo-highlight-166 | IN_CORSO_166 |
-| career-critical | IN_CORSO_CC |
-| test:logic | IN_CORSO_TL |
-| save-compat | IN_CORSO_SC |
+| solo-highlight-166 | verde: «VERDE: PASSA», rosso cade su 3, 7 e 8 (oltre i 10 minuti: rilanciata da capo in sottofondo con attesa sul registro; la prima corsa fermata dal tetto non vale) |
+| career-critical | verde: 14 passi, 0 ❌ (in sottofondo con attesa sul registro) |
+| test:logic | 51/51 |
+| save-compat | 12 pass · 0 fail |
 
 ## Dubbi per il PO (non decisi)
 
