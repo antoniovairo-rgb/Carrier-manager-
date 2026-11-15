@@ -1,0 +1,12 @@
+  ✓ fermata «partita chiave» raggiunta (W34 · 🏆 Sfida alla capolista)
+  ✓ il tasto «Simula e avanza la settimana» c'è
+  ✓ nessuna frase «Hai scelto Simula» alla fermata per partita chiave
+  ✓ il tasto Gioca c'è (Gioca la partita)
+  ✓ clic su Gioca → la partita parte (fase matchday)
+  ✓ nessun errore di pagina
+
+NOTE
+  · fermate prima della partita chiave: W28:scelta da fare | W32:momento importante | W33:mercato | W34:mercato
+  · riquadro: titolo «Partita chiave · 🏆 Sfida alla capolista» · tasti Gioca ["Gioca la partita"] · Simula true · frase «Hai scelto Simula» false
+
+gioca-188 [verde]: 6 ok, 0 ko

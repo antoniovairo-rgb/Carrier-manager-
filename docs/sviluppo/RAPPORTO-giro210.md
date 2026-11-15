@@ -117,7 +117,29 @@ diversa. **Non posso confermarlo senza dispositivo.**
 
 Registri in `docs/sviluppo/giro210/controlli/`. Il nome dello script di `moves-budget-test` in `package.json` è **`moves-budget`**.
 
-ESITI_CONTROLLI
+Tutti sul build finale del ramo (`CARRIER-MANAGER-AV.html` ricomposto dai frammenti, `check-src`: IDENTICO BYTE PER BYTE).
+
+| controllo | esito | note |
+|---|---|---|
+| diagonali-210 | **verde** (177 s) | verde 0 difetti · 0 non giudicati; rosso bocciato sui tre difetti (vedi §3) |
+| hud-c3 | **verde** (367 s) | la scheda delle giocate entrata direttamente in `hl_choose` (nessuna mossa fatta) resta senza pad, come vuole il punto 5 |
+| hl-94 | **verde** (56 s) | eroe 101-105 px sopra la scheda, mosse dentro il pad, barra «in corso» |
+| esiti-96 | **verde** (724 s) | verde D1…D15 ok, rosso cade su tutti |
+| design-system | **rosso, preesistente** | «1 raggio scritto a mano che ha già un token: `15-live-match.jsx:725` borderRadius:8 (esiste RAD.sm)». La riga viene dal commit 904b7544 (14/11), non da questo giro; **identico sul commit base 54e0a6f** (eseguito nella copia separata). Non corretto: fuori ambito |
+| griglia-mobile | **verde** (220 s) | 14 schermate × 5 larghezze |
+| moves-budget | **rosso, preesistente** | «gi4: concessi 0 passi, l'Eroe ne ha fatti 17,3 (spostamento 43,3 unità)». **Identico sul commit base** (stessi numeri). Misurato col testimone: su gi4, prima scena di una pagina appena aperta, la mesh dell'eroe va da (81,26) a (86,69) **senza nessun tasto premuto**; passi registrati 0, mosse 0, distanza dal marcatore ferma a 100. È la mesh che raggiunge il suo punto, letta dalla sonda come passi. Le altre 9 scene: nessun passo oltre il concesso. Non corretto (strumento, fuori ambito) |
+| test:logic | **verde** (2 s) | |
+| save-compat | **verde** (9 s) | 12 pass · 0 fail |
+| momento-194 | **verde** (185 s) | A, B, C verdi; rossi bocciati |
+| solo-highlight-166 | **verde** (658 s) | verde passa, rosso cade su 3, 7 e 8 |
+| gioca-188 | **verde** (36 s) | 6 ok, 0 ko |
+| career-critical | **verde** (654 s) | |
+| highlight-95 | **verde** (5293 s, passata intera in un colpo solo) | verde: 106 highlight, D4 senza esito 0, passaggi 30 (86,7% arrivati), finte 6; «✅ highlight-95 verde (e il rosso si vede)»: il rosso cade su D1/D3/D4 |
+
+⚠️ `griglia-mobile` e `momento-194` riscrivono foto tracciate (`docs/collaudo-grafico/g0/`, `docs/sviluppo/giro194/`): le ho rimesse com'erano (non fanno parte del giro).
+⚠️ Una sola eccezione all'«uno alla volta»: durante `diagonali-210` del primo giro di controlli ho scattato una foto del pad (30 s,
+un browser in più). Quel giro di controlli è stato poi **fermato e rifatto da capo** perché ho cambiato il disegno dei triangoli
+del PC: gli esiti in tabella sono tutti del secondo giro, senza sovrapposizioni.
 
 ## Dubbi per il PO
 
