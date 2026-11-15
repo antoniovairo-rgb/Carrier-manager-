@@ -1776,5 +1776,20 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaBWEn3qGAtPEF7Te8L",
+    "titolo": "giro 203 sigle intere nella barra, clip Rohr sotto 3 MB (PO-460, 464)",
+    "creata": "2026-11-14T23:13:40Z",
+    "chiusa": "2026-11-15T02:48:34Z",
+    "cost_usd": 2.22830772,
+    "output_tokens": 15304,
+    "cache_read_tokens": 8242511,
+    "worker_epoch": 2,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15",
+    "nota": "worker riavviato (epoch 2): il costo letto copre solo l'ultimo worker, il totale reale è più alto e non posso confermarlo"
   }
 ]
