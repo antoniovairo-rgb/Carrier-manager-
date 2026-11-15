@@ -2905,6 +2905,21 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
+     portava la fase a `hl_choose` e la scheda del telefono passava alle giocate: il pad spariva anche con mosse rimaste (sul PC no: li' pad
+     e giocate stanno insieme). La FASE resta quella del PC (stessi timer, stesso motore: `hl_choose` dopo la prima mossa); cambia solo che
+     cosa mostra la scheda: con `pad210` acceso resta la scheda del movimento (pad + «Scegli»), finche' ci sono mosse o finche' il
+     giocatore tocca «Scegli». Rosso __CPM_NO_G210. */
+  const _no210=typeof window!=='undefined'&&!!window.__CPM_NO_G210;
+  const [pad210,setPad210]=useState(false);
+  const _padVis210=!_no210&&isNarrow&&phase==="hl_choose"&&pad210&&movesLeft>0;
+  /* la barra del tempo della scheda: parte dall'ingresso in `hl_choose` (o dalla ripresa dopo la pausa), cosi' se la scheda delle giocate
+     compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
+  const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
+  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
+  useEffect(()=>{setPad210(false);},[hlIdx]);
+  useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
   /* [giro 172 PO-370] pannello audio in partita: si apre dall'altoparlante della barra, mette in pausa e alla chiusura riprende
      SOLO se prima la partita non era gia' in pausa. Rosso window.__CPM_NO_G172: niente icona. */
   const [audio172,setAudio172]=useState(false);const audioPausa172=useRef(false);
@@ -3918,11 +3933,11 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [sceltePronte,setSceltePronte]=useState(false);
   useEffect(()=>{
     if(typeof window!=='undefined'&&window.__CPM_NO926){setSceltePronte(true);return;}
-    if(phase!=="hl_choose"){setSceltePronte(false);return;}
+    if(phase!=="hl_choose"||_padVis210){setSceltePronte(false);return;}/* [giro 210] finche' sul telefono si vede il pad le giocate non sono a schermo: quando compaiono nascono disarmate come all'ingresso (7.926) */
     setSceltePronte(false);
     const h=setTimeout(()=>setSceltePronte(true),_ARMO956);
     return()=>clearTimeout(h);
-  },[phase,hlIdx]);
+  },[phase,hlIdx,_padVis210]);
   const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();
     /* ⚠️ [7.686.0 collaudo PO: «le interazioni in cronaca devono freezare piu' a lungo, a volte non ho
        il tempo nemmeno di leggere»] LA RIGA NUOVA ASPETTA, LA DOMANDA NO.
@@ -9680,6 +9695,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
   // Movement RAF — keyboard input with movesLeft check, 400ms cooldown per move
   const lastKbdMoveRef=useRef(0);
+  const accordo210Ref=useRef(null);/* [giro 210] istante (parete) in cui il passo da tastiera ha visto il primo asse premuto: finestra d'accordo */
+  /* [giro 210] dopo ogni passo (pad o tastiera): sul telefono il pad resta se restano mosse (PO-471); testimone di prova __CPM_PASSO210 */
+  const _dopoPasso210=(src,dx,dy,nm,gain,mk)=>{
+    if(!_no210){if(isNarrow&&nm>0)setPad210(true);else if(nm<=0)setPad210(false);}
+    try{if(typeof window!=='undefined'&&_CPM_TEST){(window.__CPM_PASSO210=window.__CPM_PASSO210||[]).push({src,dx:+dx.toFixed(4),dy:+dy.toFixed(4),len:+Math.hypot(dx,dy).toFixed(4),gain:gain==null?null:+(+gain).toFixed(3),mosse:nm,t:Date.now(),mk:mk||null});}}catch(_e){}
+  };
+  const _mk210=()=>{try{if(!_CPM_TEST)return null;const m=_marker317();return m?{x:+m.x.toFixed(3),y:+m.y.toFixed(3),hx:+pPos.x.toFixed(3),hy:+pPos.y.toFixed(3)}:null;}catch(_e){return null;}};/* testimone: il marcatore e il punto dell'eroe con cui _moveGain317 ha appena calcolato lo stacco */
   useEffect(()=>{
     if(phase!=="hl_move"&&phase!=="hl_choose"){if(moveRef.current)cancelAnimationFrame(moveRef.current);return;}
     const sit=situations[hlIdx];
@@ -9690,6 +9712,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(k.has("ArrowDown") ||k.has("s"))dx=-2.5;
       if(k.has("ArrowRight")||k.has("d"))dy=+2.5;
       if(k.has("ArrowLeft") ||k.has("a"))dy=-2.5;
+      /* [giro 210 PO-401, decisione PO 15/11 (A+E)] (1) IL PASSO DIAGONALE E' LUNGO QUANTO GLI ALTRI: due frecce davano 2,5+2,5 = 3,54u
+         (+41%, misurato al giro 207), ora 2,5u normalizzato come il tasto diagonale del pad. (2) FINESTRA D'ACCORDO: due frecce premute
+         quasi insieme devono dare SEMPRE la diagonale — al giro 207 circa 1 volta su 12 il primo tasto arrivava da solo in un fotogramma,
+         il passo partiva cardinale e il secondo cadeva nei 400 ms di pausa. Con un solo asse premuto il passo aspetta 70 ms (tempo di
+         parete dal primo fotogramma che lo vede): se nel frattempo arriva il secondo tasto, il passo e' diagonale. Con due assi parte
+         subito. Rosso __CPM_NO_G210 = 3,54u e nessuna attesa. */
+      /* La finestra raccoglie gli assi visti dal primo fotogramma con un tasto premuto: il passo parte quando ci sono due assi, quando
+         scadono i 70 ms o quando i tasti vengono rilasciati prima (un tocco breve di freccia non si perde, anche a pochi fotogrammi). */
+      const _raw210=!!(dx||dy);
+      if(!_no210){
+        const _n210=Date.now();let _Q=accordo210Ref.current;
+        if(_raw210){if(!_Q)_Q=accordo210Ref.current={t0:_n210,dx,dy};else{if(dx)_Q.dx=dx;if(dy)_Q.dy=dy;}}
+        if(_Q&&((_Q.dx&&_Q.dy)||_n210-_Q.t0>=70||!_raw210)){dx=_Q.dx;dy=_Q.dy;}else{dx=0;dy=0;}
+        if(dx&&dy){dx=Math.sign(dx)*2.5/Math.SQRT2;dy=Math.sign(dy)*2.5/Math.SQRT2;}
+      }
       /* [7.388.0 collaudo PO «troppi movimenti concessi all'eroe» · «sono riuscito a muovermi piu' volte
          del previsto»] IL BUDGET DI MOVIMENTO NON ERA UN BUDGET. Questo ramo — frecce e WASD da desktop —
          consumava la mossa con `Math.max(0,...)`, cioe' fermava il CONTATORE a zero ma faceva il passo lo
@@ -9711,14 +9748,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] stessa regola direzionale del pad */
+          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();
+          defDistRef.current=Math.min(100,defDistRef.current+_g210k);/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
           const nm=Math.max(0,movesLeftRef.current-1);
           movesLeftRef.current=nm;setMovesLeft(nm);
           if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
+          _dopoPasso210("tasti",dx,dy,nm,_g210k,_m210k);accordo210Ref.current=null;
         }
       }
+      if(!_raw210)accordo210Ref.current=null;/* tasti rilasciati: la finestra o e' appena partita qui sopra o non vale piu' (pausa dei 400 ms, mosse finite) */
       moveRef.current=requestAnimationFrame(loop);
     };
     moveRef.current=requestAnimationFrame(loop);
@@ -9772,12 +9812,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] il guadagno dipende dalla DIREZIONE */
+    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();
+    defDistRef.current=Math.min(100,defDistRef.current+_g210p);/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
     const nm=Math.max(0,movesLeftRef.current-1);
     movesLeftRef.current=nm;setMovesLeft(nm);
     if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
+    _dopoPasso210("pad",dx,dy,nm,_g210p,_m210p);
   };
 
   const handleAction=useCallback((action)=>{
@@ -10726,6 +10768,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const onD=e=>{
       if(_scrive386(e))return;/* [7.386.0] il fuoco e' in una casella di testo: la tastiera non e' del gioco */
       keysRef.current.add(e.key);
+      /* [giro 210] la finestra d'accordo nasce dall'EVENTO, non dal fotogramma: misurato sulla prima scena di una pagina appena aperta,
+         i fotogrammi erano cosi' radi che nessuno vedeva il tasto durante la pressione e il passo si perdeva (anche prima del giro 210). */
+      if(!_no210&&!e.repeat&&(phase==="hl_move"||phase==="hl_choose")){const _m210={ArrowUp:[1,0],w:[1,0],ArrowDown:[-1,0],s:[-1,0],ArrowRight:[0,1],d:[0,1],ArrowLeft:[0,-1],a:[0,-1]}[e.key];
+        if(_m210){let _Q=accordo210Ref.current;if(!_Q)_Q=accordo210Ref.current={t0:Date.now(),dx:0,dy:0};if(_m210[0])_Q.dx=_m210[0]*2.5;if(_m210[1])_Q.dy=_m210[1]*2.5;}}
       // Pause toggle: Escape or P during active match
       if((e.key==="Escape"||e.key==="p"||e.key==="P")&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
         e.preventDefault();e.stopImmediatePropagation();setPaused(v=>!v);return;
@@ -12296,7 +12342,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}
 
               {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
-              {isNarrow&&phase==="hl_move"&&curSit&&(
+              {isNarrow&&(phase==="hl_move"||_padVis210)&&curSit&&(/* [giro 210 PO-471] la scheda del movimento resta anche in hl_choose finche' ci sono mosse */
                 /* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»): «a cosa serve il doppio cursore?» e
                    «mentre mi muovo parte a volte l'azione da sola»] L'OVERLAY DEL PASSO DI MOVIMENTO, nello stesso vestito
                    della scheda delle scelte: titolo su una riga, riga di aiuto («Frecce: sposta l'eroe (N mosse) · scegli
@@ -12313,7 +12359,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:RAD.pill}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
-                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
+                    <button onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
                 ):_hl94?(
@@ -12329,12 +12375,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
                     {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=defDist>60?9000:defDist>35?6000:4000;return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                   :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
                     <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:10}}>
                       <div data-cpm="aiuto" style={{fontSize:FS.small,lineHeight:1.35,fontWeight:600,color:"#cbd5e1"}}>{movesLeft>0?<>Sposta l'eroe con le frecce, poi scegli la giocata. </>:<>Scegli la giocata. </>}<span style={{fontWeight:800,color:pressureBar>0.4?"#fbbf24":pressureBar>0.2?"#fb923c":"#f87171"}}>Il marcatore sta arrivando.</span></div>
-                      <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
                     </div>
                   </div>
                 </div>
@@ -12358,12 +12405,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
               )}
-              {isNarrow&&phase==="hl_choose"&&curSit&&(
+              {isNarrow&&phase==="hl_choose"&&!_padVis210&&curSit&&(
                 /* [7.901.0 — C3: L'INTERAZIONE DELL'EROE E' UNA SCHEDA CHE SALE DAL BASSO, MAX 44% DELLO
                    SCHERMO, CAMPO LIBERO SOPRA. Decisione del PO sulla tavola approvata (Interazione.dc.html):
                    titolo, sottotitolo, tre scelte a righe ≥52 px con icona e attributo («PASSAGGIO · 71»),
@@ -12454,7 +12501,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {_g197?<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec,lineHeight:1.3}}>Pressione<span data-cpm="aiuto" style={{fontWeight:600}}> · scegli prima che il marcatore arrivi</span></div>/* [giro 197] la riga di aiuto sale nella riga della barra: 22 px in piu' alle scelte, il tempo limite resta com'e' */
                        :<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>}
                       <div data-cpm="tempo-hl-v2" style={{position:"relative",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TINTE.oro}}>
-                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
+                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)))+"ms",animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
                     {/* [7.902.0] LA LISTA SCORRE, LE RIGHE NO: `flex:"1 1 auto"` + `minHeight:0` sono quello che permette
@@ -12568,6 +12615,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>}
                     <div style={{flex:1}}>
                       <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292)?" · WASD":""}</div>
+                      {!_no210&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
                       {curSit.maxMoves>0&&<div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -12604,6 +12652,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
+                        {!_no210&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
                         <div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
                       </div>
                     </div>

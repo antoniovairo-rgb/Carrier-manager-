@@ -1,0 +1,54 @@
+A) PO-405 · l'intervista settimanale non ferma la corsa
+    pro con storia umile: fermata «partita chiave» · risposte da sola 1 (umile/umile) · diario ["🎙️ [umile] \"Voglio diventare un giocatore su cui i compag…\"","🎙️ [umile] \"Diversi. Mi piace imparare dagli avversari fo…\""] · storico {"umile":3,"diplomatico":1,"diretto":0}
+  ✓ pro con storia umile: la corsa non si ferma sull'intervista (motivo «partita chiave»)
+  ✓ pro con storia umile: tono umile (umile)
+  ✓ pro con storia umile: effetti applicati come una scelta (diario «🎙️ [umile]» ×2)
+  ✓ pro con storia umile: lo storico del giocatore non cresce con le risposte automatiche
+  ✓ pro con storia umile: riepilogo «Scelte fatte da solo» la elenca
+  ✓ pro con storia umile: nessuna intervista lasciata aperta
+  ✓ pro con storia umile: nessun errore di pagina
+    pro senza storia: fermata «partita chiave» · risposte da sola 1 (diplomatico/diplomatico) · diario ["🎙️ [diplomatico] \"Poco: la strada è giusta, serve continuità.…\"","🎙️ [diplomatico] \"Diversi. Il livello della rosa è più alto di …\""] · storico null
+  ✓ pro senza storia: la corsa non si ferma sull'intervista (motivo «partita chiave»)
+  ✓ pro senza storia: tono diplomatico (diplomatico)
+  ✓ pro senza storia: effetti applicati come una scelta (diario «🎙️ [diplomatico]» ×2)
+  ✓ pro senza storia: lo storico del giocatore non cresce con le risposte automatiche
+  ✓ pro senza storia: riepilogo «Scelte fatte da solo» la elenca
+  ✓ pro senza storia: nessuna intervista lasciata aperta
+  ✓ pro senza storia: nessun errore di pagina
+    pro, storia solo nel diario (ambizioso): fermata «partita chiave» · risposte da sola 1 (diretto/diretto) · diario ["🎙️ [diretto] \"È un messaggio per tutti: noi ci siamo.…\"","🎙️ [diretto] \"Quanto sia diverso in realtà. Molti non reggo…\""] · storico null
+  ✓ pro, storia solo nel diario (ambizioso): la corsa non si ferma sull'intervista (motivo «partita chiave»)
+  ✓ pro, storia solo nel diario (ambizioso): tono diretto (diretto)
+  ✓ pro, storia solo nel diario (ambizioso): effetti applicati come una scelta (diario «🎙️ [diretto]» ×4)
+  ✓ pro, storia solo nel diario (ambizioso): lo storico del giocatore non cresce con le risposte automatiche
+  ✓ pro, storia solo nel diario (ambizioso): riepilogo «Scelte fatte da solo» la elenca
+  ✓ pro, storia solo nel diario (ambizioso): nessuna intervista lasciata aperta
+  ✓ pro, storia solo nel diario (ambizioso): nessun errore di pagina
+    Primavera senza storia: fermata «partita chiave» · risposte da sola 1 (diplomatico/diplomatico) · diario ["🎙️ [diplomatico] \"La continuità: ho fatto le cose semplici per …\"","🎙️ [diplomatico] \"Bene. Siamo uniti e lavoriamo con determinazi…\""] · storico null
+  ✓ Primavera senza storia: la corsa non si ferma sull'intervista (motivo «partita chiave»)
+  ✓ Primavera senza storia: tono diplomatico (diplomatico)
+  ✓ Primavera senza storia: effetti applicati come una scelta (diario «🎙️ [diplomatico]» ×2)
+  ✓ Primavera senza storia: lo storico del giocatore non cresce con le risposte automatiche
+  ✓ Primavera senza storia: riepilogo «Scelte fatte da solo» la elenca
+  ✓ Primavera senza storia: nessuna intervista lasciata aperta
+  ✓ Primavera senza storia: nessun errore di pagina
+    rosso __CPM_NO_G194A: fermata «intervista» · risposte da sola 0
+  ✓ rosso A bocciato: la corsa si ferma con motivo «intervista»
+B) PO-410 · il riepilogo senza «Ok» sparisce alla prossima azione
+    verde: corsa finita · riepilogo «⚽ Partita chiave · 🥀 Derby della Brughiera Rossa» presente true · Ok false · dopo 2,5 s true · azione «simulated» → presente false
+  ✓ verde B: riepilogo senza Ok, resta senza azioni, sparisce alla prossima azione
+    rosso: corsa finita · riepilogo «⚽ Partita chiave · 🥀 Derby della Brughiera Rossa» presente true · Ok true · dopo 2,5 s true · azione «simulated» → presente true
+  ✓ rosso B bocciato (Ok presente / riepilogo che resta)
+C) PO-411 · tasto pieno nel colore del club, contrasto misurato (375 px)
+    verde chiaro #f5f5f5: pieno true · titolo «⏩ VAI AL PROSSIMO MOMENTO» 17.58:1 peso 800 · riga «fino alla partita chiave · sett. 5» 17.58:1 12px · h63 · spento false · scorrimento false
+  ✓ verde C chiaro: pieno nel colore del club, grassetto, «fino a…», contrasto ≥ 4,5
+    rosso chiaro #f5f5f5: pieno false · titolo «⏩ Vai al prossimo momento» 12.55:1 peso 400 · riga assente · h54 · spento false · scorrimento false
+  ✓ rosso C chiaro bocciato
+    verde scuro #0f0f0f: pieno true · titolo «⏩ VAI AL PROSSIMO MOMENTO» 19.17:1 peso 800 · riga «fino alla partita chiave · sett. 6» 19.17:1 12px · h63 · spento false · scorrimento false
+  ✓ verde C scuro: pieno nel colore del club, grassetto, «fino a…», contrasto ≥ 4,5
+    rosso scuro #0f0f0f: pieno false · titolo «⏩ Vai al prossimo momento» 12.55:1 peso 400 · riga assente · h54 · spento false · scorrimento false
+  ✓ rosso C scuro bocciato
+    verde merseyside #dc2626: pieno true · titolo «⏩ VAI AL PROSSIMO MOMENTO» 4.83:1 peso 800 · riga «fino alla partita chiave · sett. 5» 4.83:1 12px · h63 · spento false · scorrimento false
+  ✓ verde C merseyside: pieno nel colore del club, grassetto, «fino a…», contrasto ≥ 4,5
+    rosso merseyside #dc2626: pieno false · titolo «⏩ Vai al prossimo momento» 12.55:1 peso 400 · riga assente · h54 · spento false · scorrimento false
+  ✓ rosso C merseyside bocciato
+✅ VERDE — momento-194 (A intervista da sola · B riepilogo senza Ok · C tasto del club), rossi bocciati

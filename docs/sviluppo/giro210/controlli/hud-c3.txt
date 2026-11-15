@@ -1,0 +1,45 @@
+hud-c3 · viewport 412×915 · budget 150s/braccio · GLB on · seed 4242
+
+#   |  misura                                                 |  banda PO                         |  rosso (__CPM_NO901)                    |  verde (nuovo)                        
+----|---------------------------------------------------------|-----------------------------------|-----------------------------------------|---------------------------------------
+1   |  barra: altezza (playing)                               |  ≤ 62 px                          |  109 px                                 |  60 px                                
+1   |  campo: testo nella zona (media)                        |  ≤ 25 %                           |  10.5%                                  |  9.8%                                 
+1   |  campo: testo nella zona (picco)                        |  (info)                           |  15.5%                                  |  13.0%                                
+2   |  scelte (reale, autoplay): altezza scheda               |  ≤ 44 % (403 px)                  |  21.7% (199 px)                         |  31.9% (292 px)                       
+2   |  scelte (reale): caratteri "%" nel testo                |  NESSUNO                          |  no                                     |  no                                   
+2   |  scelte (reale): righe e altezza min.                   |  PO: ≥52 px                       |  3 righe, min 40 px                     |  3 righe, min 56 px                   
+2b  |  scelte (7 opzioni sintetiche): altezza scheda          |  ≤ 44 % (403 px)                  |  38.0% (348 px)                         |  44.0% (403 px)                       
+2b  |  scelte (7 opz.): altezza min. riga (di 7)              |  PO: 52 px fissi                  |  7 righe, min 40 px                     |  7 righe, min 56 px                   
+2b  |  scelte (7 opz.): righe intere visibili senza scorrere  |  ≥ 3                              |  7                                      |  4                                    
+3   |  esito: altezza banda                                   |  ≤ 40 % (366 px)                  |  12.5% (115 px)                         |  19.7% (180 px)                       
+3   |  esito: tasti grandi (≥200px) / piccoli (<80px)         |  1 bottone: 1 grande / 0 piccoli  |  0 grandi / 0 piccoli (bottoni tot. 0)  |  1 grandi / 0 piccoli (bottoni tot. 1)
+4   |  hl_move (sit #8): altezza overlay                      |  ≤ 44 % (403 px)                  |  18.1% (166 px)                         |  22.3% (204 px)                       
+4   |  hl_move: barra pressione presente                      |  sì                               |  sì                                     |  sì                                   
+4   |  hl_move: altezza tasto D-pad                           |  44 px (tocco minimo)             |  40 px                                  |  44 px                                
+4   |  hl_move: tasto «Scegli» (altezza)                      |  ≥ 52 px                          |  36 px                                  |  52 px                                
+4   |  hl_move: riga di aiuto presente                        |  sì (verde)                       |  no                                     |  sì                                   
+5   |  hl_choose (stessa sit): D-pad presente                 |  rosso sì / verde NO              |  sì (40 px)                             |  no                                   
+5   |  hl_choose: barra pressione presente                    |  sì (verde)                       |  no                                     |  sì                                   
+5   |  hl_choose: riga di aiuto presente                      |  sì (verde)                       |  no                                     |  sì                                   
+5   |  hl_choose (stessa sit): altezza scheda, righe          |  ≤ 44 %, righe ≥52 px             |  18.4%, 3 righe min 40 px               |  29.9%, 3 righe min 56 px             
+5   |  hl_choose: caratteri "%" nella scheda                  |  NESSUNO                          |  no                                     |  no                                   
+
+errori pagina — rosso: 0, verde: 0
+
+forzate (fallback __CPM_FORCE_SIT — il caso "7 opzioni" è SEMPRE forzato, vedi sopra): rosso.choose=true rosso.result=false verde.choose=true verde.result=false
+
+foto salvate in /home/user/Carrier-manager-/tests/visual/out/hud-c3:
+ - verde-915-playing.png
+ - verde-915-hl_choose.png
+ - verde-915-hl_result.png
+ - verde-915-hl_choose_molte.png
+ - verde-915-hl_move.png
+ - verde-915-hl_choose_mosse.png
+ - rosso-915-playing.png
+ - rosso-915-hl_choose.png
+ - rosso-915-hl_result.png
+ - rosso-915-hl_choose_molte.png
+ - rosso-915-hl_move.png
+ - rosso-915-hl_choose_mosse.png
+
+riga di aiuto (verde, hl_move): "Sposta l'eroe con le frecce, poi scegli la giocata. Il marcatore sta arrivando." · hl_choose: " · scegli prima che il marcatore arrivi"

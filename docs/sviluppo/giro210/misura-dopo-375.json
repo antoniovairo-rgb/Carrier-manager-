@@ -1,0 +1,676 @@
+{
+ "etichetta": "dopo",
+ "foto": {
+  "375x667": {
+   "gi": 16,
+   "tasti": 8,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 8,
+    "scelte": false
+   }
+  }
+ },
+ "tocchi": {
+  "375x667": {
+   "sweep": {
+    "0": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "10": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "14": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "18": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "20": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "22": {
+     "giusto": 87.5,
+     "sbagliato": 0,
+     "vuoto": 12.5
+    },
+    "24": {
+     "giusto": 50,
+     "sbagliato": 0,
+     "vuoto": 50
+    },
+    "26": {
+     "giusto": 25,
+     "sbagliato": 6.3,
+     "vuoto": 68.8
+    },
+    "30": {
+     "giusto": 0,
+     "sbagliato": 37.5,
+     "vuoto": 62.5
+    }
+   },
+   "gauss": {
+    "4": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "◤": 0,
+      "▲": 0,
+      "◥": 0,
+      "◀": 0,
+      "▶": 0,
+      "◣": 0,
+      "▼": 0,
+      "◢": 0
+     }
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "◤": 0,
+      "▲": 0,
+      "◥": 0,
+      "◀": 0,
+      "▶": 0,
+      "◣": 0,
+      "▼": 0,
+      "◢": 0
+     }
+    },
+    "8": {
+     "giusto": 99.1,
+     "sbagliato": 0.2,
+     "vuoto": 0.7,
+     "sbagliatoPerTasto": {
+      "◤": 0.2,
+      "▲": 0.2,
+      "◥": 0.1,
+      "◀": 0.3,
+      "▶": 0.5,
+      "◣": 0.1,
+      "▼": 0.2,
+      "◢": 0.1
+     }
+    }
+   },
+   "verifica": [
+    {
+     "lab": "◥",
+     "r": 20,
+     "verso": "sinistra",
+     "atteso": "◥",
+     "partito": "avanti-destra"
+    },
+    {
+     "lab": "◥",
+     "r": 24,
+     "verso": "sinistra",
+     "atteso": null,
+     "partito": "avanti-destra"
+    },
+    {
+     "lab": "◥",
+     "r": 20,
+     "verso": "giu",
+     "atteso": "◥",
+     "partito": "avanti-destra"
+    },
+    {
+     "lab": "◥",
+     "r": 24,
+     "verso": "giu",
+     "atteso": null,
+     "partito": "-destra"
+    },
+    {
+     "lab": "▲",
+     "r": 20,
+     "verso": "destra",
+     "atteso": "▲",
+     "partito": "avanti"
+    },
+    {
+     "lab": "▲",
+     "r": 24,
+     "verso": "destra",
+     "atteso": null,
+     "partito": "avanti-destra"
+    },
+    {
+     "lab": "▶",
+     "r": 20,
+     "verso": "su",
+     "atteso": "▶",
+     "partito": "-destra"
+    },
+    {
+     "lab": "▶",
+     "r": 24,
+     "verso": "su",
+     "atteso": null,
+     "partito": "-destra"
+    }
+   ],
+   "linea": [
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 16,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 18,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 20,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 22,
+     "punto": null,
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 24,
+     "punto": null,
+     "partito": "▲"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 26,
+     "punto": "▲",
+     "partito": "▲"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 28,
+     "punto": "▲",
+     "partito": "▲"
+    },
+    {
+     "da": "◤",
+     "verso": "▲",
+     "d": 30,
+     "punto": "▲",
+     "partito": "▲"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 16,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 18,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 20,
+     "punto": "◤",
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 22,
+     "punto": null,
+     "partito": "◤"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 24,
+     "punto": null,
+     "partito": "◀"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 26,
+     "punto": "◀",
+     "partito": "◀"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 28,
+     "punto": "◀",
+     "partito": "◀"
+    },
+    {
+     "da": "◤",
+     "verso": "◀",
+     "d": 30,
+     "punto": "◀",
+     "partito": "◀"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 16,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 18,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 20,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 22,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 24,
+     "punto": null,
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 26,
+     "punto": null,
+     "partito": "▲"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 28,
+     "punto": "▲",
+     "partito": "▲"
+    },
+    {
+     "da": "◥",
+     "verso": "▲",
+     "d": 30,
+     "punto": "▲",
+     "partito": "▲"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 16,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 18,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 20,
+     "punto": "◥",
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 22,
+     "punto": null,
+     "partito": "◥"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 24,
+     "punto": null,
+     "partito": "▶"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 26,
+     "punto": "▶",
+     "partito": "▶"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 28,
+     "punto": "▶",
+     "partito": "▶"
+    },
+    {
+     "da": "◥",
+     "verso": "▶",
+     "d": 30,
+     "punto": "▶",
+     "partito": "▶"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 16,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 18,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 20,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 22,
+     "punto": null,
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 24,
+     "punto": null,
+     "partito": "▼"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 26,
+     "punto": "▼",
+     "partito": "▼"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 28,
+     "punto": "▼",
+     "partito": "▼"
+    },
+    {
+     "da": "◣",
+     "verso": "▼",
+     "d": 30,
+     "punto": "▼",
+     "partito": "▼"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 16,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 18,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 20,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 22,
+     "punto": "◣",
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 24,
+     "punto": null,
+     "partito": "◣"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 26,
+     "punto": null,
+     "partito": "◀"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 28,
+     "punto": "◀",
+     "partito": "◀"
+    },
+    {
+     "da": "◣",
+     "verso": "◀",
+     "d": 30,
+     "punto": "◀",
+     "partito": "◀"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 16,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 18,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 20,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 22,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 24,
+     "punto": null,
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 26,
+     "punto": null,
+     "partito": "▼"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 28,
+     "punto": "▼",
+     "partito": "▼"
+    },
+    {
+     "da": "◢",
+     "verso": "▼",
+     "d": 30,
+     "punto": "▼",
+     "partito": "▼"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 16,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 18,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 20,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 22,
+     "punto": "◢",
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 24,
+     "punto": null,
+     "partito": "◢"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 26,
+     "punto": null,
+     "partito": "▶"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 28,
+     "punto": "▶",
+     "partito": "▶"
+    },
+    {
+     "da": "◢",
+     "verso": "▶",
+     "d": 30,
+     "punto": "▶",
+     "partito": "▶"
+    }
+   ],
+   "lineaRiassunto": {
+    "16": {
+     "n": 8,
+     "diag": 8,
+     "card": 0,
+     "nulla": 0
+    },
+    "18": {
+     "n": 8,
+     "diag": 8,
+     "card": 0,
+     "nulla": 0
+    },
+    "20": {
+     "n": 8,
+     "diag": 8,
+     "card": 0,
+     "nulla": 0
+    },
+    "22": {
+     "n": 8,
+     "diag": 8,
+     "card": 0,
+     "nulla": 0
+    },
+    "24": {
+     "n": 8,
+     "diag": 4,
+     "card": 4,
+     "nulla": 0
+    },
+    "26": {
+     "n": 8,
+     "diag": 0,
+     "card": 8,
+     "nulla": 0
+    },
+    "28": {
+     "n": 8,
+     "diag": 0,
+     "card": 8,
+     "nulla": 0
+    },
+    "30": {
+     "n": 8,
+     "diag": 0,
+     "card": 8,
+     "nulla": 0
+    }
+   }
+  }
+ }
+}

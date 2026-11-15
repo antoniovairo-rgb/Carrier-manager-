@@ -32,9 +32,16 @@ function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
      c'e' il numero di mosse rimaste al posto del puntino. Senza v94 il pad e' quello di prima. Rosso __CPM_NO_HL94. */
   const [prem94,setPrem94]=React.useState(null);
   const _ch94=(r)=>(<svg width={Math.round(SZ*0.42)} height={Math.round(SZ*0.42)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{transform:"rotate("+r+"deg)"}}><path d="M6 15l6-6 6 6"></path></svg>);
-  const _ic94={"▲":0,"▶":90,"▼":180,"◀":270};
+  const _ic94={"▲":0,"▶":90,"▼":180,"◀":270,"◥":45,"◢":135,"◣":225,"◤":315};
+  /* [giro 210 PO-401, decisione PO 15/11 «alternativa A»] OTTO TASTI: le quattro celle d'angolo della griglia 3x3 (prima <div/> vuoti)
+     diventano i tasti diagonali, con lo stesso chevron ruotato di 45 gradi; il pad non cresce di un pixel. Il PASSO DIAGONALE e' lungo
+     quanto gli altri (2,5u, normalizzato: 2,5/√2 per asse), cosi' ogni mossa vale la stessa distanza in ogni direzione. Il vecchio
+     pad a quattro tasti resta solo nel rosso __CPM_NO_G210. */
+  const _no210=typeof window!=='undefined'&&!!window.__CPM_NO_G210;
+  const _D210=2.5/Math.SQRT2;
+  const _nome210={"▲":"Avanti","▼":"Indietro","◀":"Sinistra","▶":"Destra","◥":"Avanti a destra","◢":"Indietro a destra","◣":"Indietro a sinistra","◤":"Avanti a sinistra"};
   const btn=(lbl,dx,dy)=>v94?(
-    <button aria-label={lbl} onPointerDown={e=>{e.preventDefault();setPrem94(lbl);setTimeout(()=>setPrem94(p=>p===lbl?null:p),160);onMove(dx,dy);}}
+    <button aria-label={lbl} data-dir210={_no210?undefined:lbl} title={_no210?undefined:_nome210[lbl]} onPointerDown={e=>{e.preventDefault();setPrem94(lbl);setTimeout(()=>setPrem94(p=>p===lbl?null:p),160);onMove(dx,dy);}}
       style={{width:SZ,height:SZ,borderRadius:RAD.sm,background:prem94===lbl?"linear-gradient(180deg,rgba(167,139,250,0.55),rgba(124,58,237,0.45))":"linear-gradient(180deg,rgba(64,78,110,0.95),rgba(40,52,78,0.95))",
         border:"1px solid "+(prem94===lbl?"rgba(221,214,254,0.9)":"rgba(196,181,253,0.38)"),color:"#ede9fe",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
         userSelect:"none",WebkitUserSelect:"none",touchAction:"none",padding:0,transform:prem94===lbl?"scale(0.94)":"none",transition:"transform .08s, background .12s",
@@ -42,7 +49,7 @@ function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
       {_ch94(_ic94[lbl])}
     </button>
   ):(
-    <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
+    <button aria-label={lbl} data-dir210={_no210?undefined:lbl} title={_no210?undefined:_nome210[lbl]} onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
       style={{width:SZ,height:SZ,borderRadius:RAD.sm,
         background:dark?"linear-gradient(180deg,rgba(51,65,92,0.92),rgba(34,45,68,0.92))":"rgba(30,42,60,0.08)",/* [7.919 collaudo PO «renderei un po' piu' chiari gli sfondi delle statistiche, del dpad e delle azioni»] il tasto scuro era quasi nero (0,52 di nero su fondo scuro): si vedeva il bordo, non il tasto */
         border:dark?"1px solid rgba(203,213,225,0.30)":"1px solid "+TH.cardBorder,
@@ -51,14 +58,14 @@ function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
         userSelect:"none",WebkitUserSelect:"none",touchAction:"none",
         fontWeight:600,
         boxShadow:dark?"none":TH.shadow}}>
-      {lbl}
+      {_ic94[lbl]%90?<svg width={Math.round(SZ*0.46)} height={Math.round(SZ*0.46)} viewBox="0 0 24 24" style={{transform:"rotate("+(_ic94[lbl])+"deg)"}}><path d="M12 2.5l7 15.5H5z" fill="currentColor"></path></svg>:lbl}{/* [giro 210] diagonale: lo stesso triangolo, disegnato e ruotato di 45 gradi (niente testo «▲» doppio per chi cerca il tasto avanti) */}
     </button>
   );
   return(
     <div style={{display:"grid",gridTemplateColumns:`${SZ}px ${SZ}px ${SZ}px`,gridTemplateRows:`${SZ}px ${SZ}px ${SZ}px`,gap:4,userSelect:"none",flexShrink:0}}>
-      <div/>{btn("▲",+2.5,0)}<div/>
+      {_no210?<div/>:btn("◤",+_D210,-_D210)}{btn("▲",+2.5,0)}{_no210?<div/>:btn("◥",+_D210,+_D210)}
       {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>{v94&&mosse!=null?<div data-cpm="dpad-mosse" style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:"#ede9fe",fontVariantNumeric:"tabular-nums"}}>{mosse}</span><span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.3,color:"rgba(196,181,253,0.85)",marginTop:1}}>{mosse===1?"mossa":"mosse"}</span></div>:<div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.1)"}}/>}</div>{btn("▶",0,+2.5)}
-      <div/>{btn("▼",-2.5,0)}<div/>
+      {_no210?<div/>:btn("◣",-_D210,-_D210)}{btn("▼",-2.5,0)}{_no210?<div/>:btn("◢",-_D210,+_D210)}
     </div>
   );
 }
