@@ -1,0 +1,26 @@
+
+== MOTORE == scene che concedono mosse: 96 (misurate 40)
+
+direzione            | stacco medio (grezzo/norm.) | min..max | passo bloccato dalla zona | Δx G medio (tiri) 
+avanti               | 7.5 / 7.5                    | 4.0..20.0 | 0/40 | 0.37 pt · passo medio 2.5u
+avanti-destra        | 6.5 / 6.5                    | 4.0..20.0 | 0/40 | 0.49 pt · passo medio 3.5u
+destra               | 8.7 / 8.7                    | 4.0..17.6 | 0/40 | 0.09 pt · passo medio 2.5u
+indietro-destra      | 12.8 / 12.8                  | 4.2..19.7 | 0/40 | -0.25 pt · passo medio 3.5u
+indietro             | 16.5 / 16.5                  | 4.0..20.0 | 0/40 | -0.32 pt · passo medio 2.5u
+indietro-sinistra    | 17.5 / 17.5                  | 4.0..20.0 | 0/40 | -0.40 pt · passo medio 3.5u
+sinistra             | 15.3 / 15.3                  | 6.4..20.0 | 0/40 | -0.10 pt · passo medio 2.5u
+avanti-sinistra      | 11.2 / 11.2                  | 4.3..19.8 | 0/40 | 0.25 pt · passo medio 3.5u
+
+passi VERI da tastiera: diagonali 40 (di cui con x E y spostati e UNA mossa: 37) · cardinali 17
+  gi8 avanti-destra      logico Δ(0,2.5) mosse 1 stacco 0.4 mesh Δ(0,2.5) fase hl_choose
+  gi11 indietro-destra    logico Δ(-2.5,2.5) mosse 1 stacco 2.1 mesh Δ(-2.7,2.7) fase hl_choose
+  gi16 indietro-sinistra  logico Δ(-2.5,-2.5) mosse 1 stacco 1.8 mesh Δ(-2.6,-2.6) fase hl_choose
+  gi16 indietro           logico Δ(-2.5,0) mosse 1 stacco 0.7 mesh Δ(-2.4,0) fase hl_choose
+  gi18 avanti-sinistra    logico Δ(2.5,-2.5) mosse 1 stacco 1.1 mesh Δ(2.7,-2.7) fase hl_choose
+  gi21 avanti-destra      logico Δ(2.5,2.5) mosse 1 stacco 1.8 mesh Δ(2.8,2.8) fase hl_choose
+  gi23 indietro-destra    logico Δ(-2.5,2.5) mosse 1 stacco 1.4 mesh Δ(-2.7,2.7) fase hl_choose
+  gi23 destra             logico Δ(0,2.5) mosse 1 stacco 1.1 mesh Δ(0,2.4) fase hl_choose
+  gi25 indietro-sinistra  logico Δ(-2.5,-2.5) mosse 1 stacco 0.7 mesh Δ(-2.5,-2.5) fase hl_choose
+  gi25 indietro           logico Δ(-2.5,0) mosse 1 stacco 1.1 mesh Δ(-2.6,0) fase hl_choose
+  gi28 avanti-sinistra    logico Δ(2.5,-2.5) mosse 1 stacco 1.1 mesh Δ(2.7,-2.7) fase hl_choose
+  gi28 sinistra           logico Δ(0,-2.5) mosse 1 stacco 0.7 mesh Δ(0,-2.5) fase hl_choose
