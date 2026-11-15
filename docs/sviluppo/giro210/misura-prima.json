@@ -1,0 +1,382 @@
+{
+ "etichetta": "prima",
+ "foto": {
+  "360x640": {
+   "gi": 16,
+   "tasti": 4,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 0,
+    "scelte": true
+   }
+  },
+  "375x667": {
+   "gi": 16,
+   "tasti": 4,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 0,
+    "scelte": true
+   }
+  },
+  "390x844": {
+   "gi": 16,
+   "tasti": 4,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 0,
+    "scelte": true
+   }
+  },
+  "pc1366x768": {
+   "gi": 16,
+   "tasti": 4,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 4,
+    "scelte": false
+   }
+  }
+ },
+ "tocchi": {
+  "360x640": {
+   "sweep": {
+    "0": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "10": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "14": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "18": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "20": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "22": {
+     "giusto": 87.5,
+     "sbagliato": 0,
+     "vuoto": 12.5
+    },
+    "24": {
+     "giusto": 50,
+     "sbagliato": 0,
+     "vuoto": 50
+    },
+    "26": {
+     "giusto": 25,
+     "sbagliato": 0,
+     "vuoto": 75
+    },
+    "30": {
+     "giusto": 0,
+     "sbagliato": 0,
+     "vuoto": 100
+    }
+   },
+   "gauss": {
+    "4": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "8": {
+     "giusto": 99.1,
+     "sbagliato": 0,
+     "vuoto": 0.9,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    }
+   },
+   "verifica": [
+    {
+     "lab": "▲",
+     "r": 20,
+     "verso": "destra",
+     "atteso": "▲",
+     "partito": "mossa senza testimone"
+    },
+    {
+     "lab": "▲",
+     "r": 24,
+     "verso": "destra",
+     "atteso": null,
+     "partito": "mossa senza testimone"
+    }
+   ],
+   "linea": [],
+   "lineaRiassunto": {}
+  },
+  "375x667": {
+   "sweep": {
+    "0": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "10": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "14": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "18": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "20": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "22": {
+     "giusto": 87.5,
+     "sbagliato": 0,
+     "vuoto": 12.5
+    },
+    "24": {
+     "giusto": 50,
+     "sbagliato": 0,
+     "vuoto": 50
+    },
+    "26": {
+     "giusto": 25,
+     "sbagliato": 0,
+     "vuoto": 75
+    },
+    "30": {
+     "giusto": 0,
+     "sbagliato": 0,
+     "vuoto": 100
+    }
+   },
+   "gauss": {
+    "4": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "8": {
+     "giusto": 99.1,
+     "sbagliato": 0,
+     "vuoto": 0.9,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    }
+   },
+   "verifica": [
+    {
+     "lab": "▲",
+     "r": 20,
+     "verso": "destra",
+     "atteso": "▲",
+     "partito": "mossa senza testimone"
+    },
+    {
+     "lab": "▲",
+     "r": 24,
+     "verso": "destra",
+     "atteso": null,
+     "partito": "mossa senza testimone"
+    },
+    {
+     "lab": "▶",
+     "r": 20,
+     "verso": "su",
+     "atteso": "▶",
+     "partito": "mossa senza testimone"
+    }
+   ],
+   "linea": [],
+   "lineaRiassunto": {}
+  },
+  "390x844": {
+   "sweep": {
+    "0": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "10": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "14": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "18": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "20": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0
+    },
+    "22": {
+     "giusto": 87.5,
+     "sbagliato": 0,
+     "vuoto": 12.5
+    },
+    "24": {
+     "giusto": 50,
+     "sbagliato": 0,
+     "vuoto": 50
+    },
+    "26": {
+     "giusto": 25,
+     "sbagliato": 0,
+     "vuoto": 75
+    },
+    "30": {
+     "giusto": 0,
+     "sbagliato": 0,
+     "vuoto": 100
+    }
+   },
+   "gauss": {
+    "4": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "6": {
+     "giusto": 100,
+     "sbagliato": 0,
+     "vuoto": 0,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    },
+    "8": {
+     "giusto": 99.1,
+     "sbagliato": 0,
+     "vuoto": 0.9,
+     "sbagliatoPerTasto": {
+      "▲": 0,
+      "◀": 0,
+      "▶": 0,
+      "▼": 0
+     }
+    }
+   },
+   "verifica": [
+    {
+     "lab": "▲",
+     "r": 20,
+     "verso": "destra",
+     "atteso": "▲",
+     "partito": "mossa senza testimone"
+    },
+    {
+     "lab": "▲",
+     "r": 24,
+     "verso": "destra",
+     "atteso": null,
+     "partito": "mossa senza testimone"
+    },
+    {
+     "lab": "▶",
+     "r": 20,
+     "verso": "su",
+     "atteso": "▶",
+     "partito": "nessun passo"
+    }
+   ],
+   "linea": [],
+   "lineaRiassunto": {}
+  }
+ }
+}

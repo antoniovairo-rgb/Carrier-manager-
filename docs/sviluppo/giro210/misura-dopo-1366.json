@@ -1,0 +1,16 @@
+{
+ "etichetta": "dopo",
+ "foto": {
+  "pc1366x768": {
+   "gi": 16,
+   "tasti": 8,
+   "dopo": {
+    "ph": "hl_choose",
+    "moves": 1,
+    "pad": 8,
+    "scelte": false
+   }
+  }
+ },
+ "tocchi": {}
+}

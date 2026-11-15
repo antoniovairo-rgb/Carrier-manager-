@@ -27686,7 +27686,7 @@ function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
         userSelect:"none",WebkitUserSelect:"none",touchAction:"none",
         fontWeight:600,
         boxShadow:dark?"none":TH.shadow}}>
-      {_ic94[lbl]%90?<svg width={Math.round(SZ*0.34)} height={Math.round(SZ*0.34)} viewBox="0 0 24 24" style={{transform:"rotate("+(_ic94[lbl])+"deg)"}}><path d="M12 4l9 15H3z" fill="currentColor"></path></svg>:lbl}{/* [giro 210] diagonale: lo stesso triangolo, disegnato e ruotato di 45 gradi (niente testo «▲» doppio per chi cerca il tasto avanti) */}
+      {_ic94[lbl]%90?<svg width={Math.round(SZ*0.46)} height={Math.round(SZ*0.46)} viewBox="0 0 24 24" style={{transform:"rotate("+(_ic94[lbl])+"deg)"}}><path d="M12 2.5l7 15.5H5z" fill="currentColor"></path></svg>:lbl}{/* [giro 210] diagonale: lo stesso triangolo, disegnato e ruotato di 45 gradi (niente testo «▲» doppio per chi cerca il tasto avanti) */}
     </button>
   );
   return(
