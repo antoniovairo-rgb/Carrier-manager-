@@ -1892,8 +1892,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         /* [giro 204 PO-451 — rosso __CPM_NO_G204] LE MAGLIE SUL TETTO HANNO IL COLORE DEL CLUB. Le maglie dei corpi prendevano la stessa luce
            x4 della parata (LUCE178.parata) che il giro 192 ha corretto sulla livrea del pullman, e risultavano piu' chiare del colore del club
            (misura prima/dopo: pullman-204). Stesso rimedio della livrea: il colore del kit (maglia, pantaloncini, calzettoni) si scrive in
-           lineare e scalato per la luce che riceve (_KIT204, tarato con la sonda). */
-        const _KIT204=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_KIT204)?+window.__CPM_KIT204:0.3;
+           lineare e scalato per la luce che riceve (_KIT204, tarato con la sonda: 0,5, non lo 0,3 della livrea — la maglia e' in ombra piu' della fiancata). */
+        const _KIT204=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_KIT204)?+window.__CPM_KIT204:0.5;/* taratura misurata (pullman-204, FC Merseyside): k 0,3 -> luminosita' 0,57 (troppo scura), 0,5 -> 0,835 contro 0,863 del club, 0,6 -> 0,93, 0,7 -> 0,996 (bruciata) */
         const _kit204=(av)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G204)return;try{av.traverse(m=>{if(!m.isMesh||!m.material)return;const L=Array.isArray(m.material)?m.material:[m.material];
           for(const c of L){if(!c||!/^Hyper(Shirt|Shorts|Socks)$/.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
         for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);

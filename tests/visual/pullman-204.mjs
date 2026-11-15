@@ -45,16 +45,17 @@ async function maglie(flags, foto) {
   const ref = hsv(0xdc, 0x26, 0x26);
   return { campioni: col.length, sat: med(col.map(c => c.s)), satRif: +ref.s.toFixed(3), tono: med(col.map(c => Math.min(Math.abs(c.h - ref.h), 360 - Math.abs(c.h - ref.h)))), lum: med(col.map(c => c.v)), lumRif: +ref.v.toFixed(3) };
 }
-async function piedistallo(flags) {
+async function piedistallo(flags, foto) {
   const p = await b.newPage({ viewport: { width: 375, height: 812 } }); await installCdnRoutes(p);
-  await p.addInitScript(f => { window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_PRESENT = 1; for (const k of f) window[k] = 1; }, flags);
+  await p.addInitScript(f => { window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_PRESENT = 1; window.__CPM_CER_HOLD = 1;/* la premiazione resta aperta: in headless il tempo di scena va piu' piano dell'orologio che la chiude */ for (const k of f) window[k] = 1; }, flags);
   await openMatch(p, port, { skipLoadAll: true, name: 'Ped204' });
   await p.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 60000 }).catch(() => {}); await sleep(1500);
   await p.evaluate(() => { window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' }); });
   await p.waitForFunction(() => { const W = window.__CPM_PED204; return W && W.some(f => f.b === 'present'); }, null, { timeout: 60000 }).catch(() => {});
   await p.evaluate(() => { window.__CPM_PED204 = []; });
-  await p.waitForFunction(() => { const W = window.__CPM_PED204; return W && W.filter(f => f.b === 'fest').length > 10; }, null, { timeout: 120000 }).catch(() => {});
-  const W = await p.evaluate(() => window.__CPM_PED204 || []); await p.close();
+  await p.waitForFunction(() => { const W = window.__CPM_PED204; return W && W.filter(f => f.b === 'pass' || f.b === 'lift' || f.b === 'fest').length > 12; }, null, { timeout: 420000 }).catch(() => {});
+  if (foto) await p.screenshot({ path: foto });
+  const W = await p.evaluate(() => window.__CPM_PED204 || []); if (process.env.CPM_DEBUG) console.log('DEBUG', JSON.stringify(await p.evaluate(() => ({ cer: window.__CPM_CER425, ph: window.__CPM_PHASE && window.__CPM_PHASE(), g: ((window.__CPM_G192B || {}).fr || []).slice(-3).map(f => f.b) })))); await p.close();
   const prima = W.filter(f => (f.b === 'present' || f.b === 'captain') && !f.g && f.v).length;
   const presaB = (W.find(f => f.g) || {}).b || null; const ordine = ['present', 'captain', 'pass', 'lift', 'fest'];
   const dopo = W.filter(f => presaB && ordine.indexOf(f.b) > ordine.indexOf(presaB));
@@ -70,8 +71,9 @@ if (SOLO.includes('M')) {
   if (process.env.CPM_KITS) for (const k of process.env.CPM_KITS.split(',')) righe.push('M taratura k=' + k + ' ' + JSON.stringify(await maglie([['__CPM_KIT204', +k]])));
 }
 if (SOLO.includes('P')) {
-  for (const [nome, extra] of [['capitano compagno', []], ['eroe capitano', ['__CPM_EROE_CAPITANO192']]]) {
-    const v = await piedistallo(extra), r = await piedistallo(extra.concat(['__CPM_NO_G204']));
+  for (const [nome, extra] of [['capitano compagno', []], ['eroe capitano', ['__CPM_EROE_CAPITANO192']]].filter(c => !process.env.CPM_CASO || c[0] === process.env.CPM_CASO)) {
+    const F = process.env.CPM_FOTO, tag = nome.replace(/ /g, '-');
+    const v = await piedistallo(extra, F && `${F}/dopo-piedistallo-${tag}.png`), r = await piedistallo(extra.concat(['__CPM_NO_G204']), F && `${F}/prima-piedistallo-${tag}.png`);
     righe.push(`P ${nome} verde ` + JSON.stringify(v), `P ${nome} rosso ` + JSON.stringify(r));
     if (!(v.beatPresa && v.primaVisibile >= 1 && v.dopo >= 10 && v.vuotoDopo === 0 && v.stacchi >= 1)) guasti.push(`P ${nome} verde: ` + JSON.stringify(v));
     if (!(r.beatPresa && r.dopo >= 10 && r.vuotoDopo >= 10)) guasti.push(`P ${nome} rosso: il piedistallo vuoto non si vede ` + JSON.stringify(r));
