@@ -1,0 +1,48 @@
+=== notte-206 04:32:56 543815e 1b8032f1
+ESITO notte-206 0 04:37:45
+=== ingresso-206 04:37:45 543815e 1b8032f1
+ESITO ingresso-206 0 05:27:55
+=== tpose-196 05:27:55 543815e 1b8032f1
+ESITO tpose-196 0 05:54:07
+FINE notte-206 ingresso-206 tpose-196 05:54:07
+=== ingresso-285 05:54:16 5d5aa07 1b8032f1
+ESITO ingresso-285 0 06:00:46
+=== ingresso-277 06:00:46 5d5aa07 1b8032f1
+ESITO ingresso-277 1 06:13:03
+=== ingresso-camminata-245 06:13:03 5d5aa07 1b8032f1
+ESITO ingresso-camminata-245 0 06:17:26
+=== scene-178 06:17:26 5d5aa07 1b8032f1
+ESITO scene-178 0 06:26:03
+=== fps-249 06:26:03 5d5aa07 1b8032f1
+ESITO fps-249 0 06:26:52
+=== cerimonie 06:26:52 5d5aa07 1b8032f1
+ESITO cerimonie 0 06:27:42
+=== cerimonie-192 06:27:42 5d5aa07 1b8032f1
+ESITO cerimonie-192 0 06:37:40
+=== festa-3d 06:37:40 5d5aa07 1b8032f1
+ESITO festa-3d 0 06:39:47
+=== riserva2d-205 06:39:47 5d5aa07 1b8032f1
+ESITO riserva2d-205 0 06:48:34
+=== licenze-184 06:48:34 5d5aa07 1b8032f1
+ESITO licenze-184 0 06:51:33
+FINE ingresso-285 ingresso-277 ingresso-camminata-245 scene-178 fps-249 cerimonie cerimonie-192 festa-3d riserva2d-205 licenze-184 06:51:33
+=== career-critical 06:51:57 5d5aa07 1b8032f1
+ESITO career-critical 0 07:03:33
+=== test:logic 07:03:33 5d5aa07 1b8032f1
+ESITO test:logic 0 07:03:36
+=== save-compat 07:03:36 5d5aa07 1b8032f1
+ESITO save-compat 0 07:03:47
+FINE career-critical test:logic save-compat 07:03:47
+=== ingresso-277-su-prima 07:03:47
+ESITO ingresso-277-su-prima 1 07:15:41
+=== notte-206-forza-rosso 07:15:41
+ESITO notte-206-forza-rosso 1 07:19:23
+=== ingresso-206-forza-rosso 07:19:23
+ESITO ingresso-206-forza-rosso 1 07:26:14
+=== notte-206-ripetuto 07:26:14
+ESITO notte-206-ripetuto 0 07:30:59
+FINE-C 07:30:59
+=== highlight-95-verde 07:31:07 1b8032f1
+ESITO highlight-95-verde 0 08:20:37
+=== highlight-95-rosso 08:20:55 1b8032f1
+ESITO highlight-95-rosso 0 09:09:23

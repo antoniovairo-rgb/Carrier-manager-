@@ -154,7 +154,7 @@ Foto: `giro206/dopo-ingresso-<tipo>-<inquadratura>-375x667.jpg` (una per inquadr
 
 ## Controlli (uno alla volta, `CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno, `CPM_CHROME=/opt/pw-browsers/chromium`)
 
-Build giudicato: `CARRIER-MANAGER-AV.html` md5 `1b8032f1…` (lo stesso per tutti i controlli; dopo quel build nessuna modifica a `src/`).
+Build giudicato: `CARRIER-MANAGER-AV.html` md5 `1b8032f1…` (lo stesso per tutti i controlli; dopo quel build nessuna modifica a `src/`). Orari ed esiti di ogni passo: `giro206/controlli.txt`.
 
 | controllo | esito |
 |---|---|
@@ -170,7 +170,7 @@ Build giudicato: `CARRIER-MANAGER-AV.html` md5 `1b8032f1…` (lo stesso per tutt
 | cerimonie-192 | ✅ punti A, B, C, D, ogni rosso si vede |
 | festa-3d | ✅ |
 | riserva2d-205 | ✅ verde col verde, rosso col rosso |
-| highlight-95 | ESITO_HL95 |
+| highlight-95 | ✅ verde: 94 highlight, 0 difetti, 0 non giudicabili (49 min). ✅ il rosso si vede (49 min). I due bracci sono stati lanciati separati (`CPM_ARMI=verde`, poi `CPM_ARMI=rosso`) sullo stesso build, perché insieme superano le due ore di una corsa in sottofondo |
 | licenze-184 | ✅ verde; prova del rosso: 4 rossi su 4 misure |
 | career-critical | ✅ (26 passi verdi, 0 rossi) |
 | test:logic | ✅ 51/51 |
