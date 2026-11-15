@@ -1931,5 +1931,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaAtnad4zLbdXB3EGvB",
+    "titolo": "giro 216 lotteria: striscia con l'eroe a sinistra come il tabellone (PO-482)",
+    "creata": "2026-11-15T15:58:25Z",
+    "chiusa": "2026-11-15T17:49:42Z",
+    "cost_usd": 3.84723606,
+    "output_tokens": 33990,
+    "cache_read_tokens": 9910119,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
