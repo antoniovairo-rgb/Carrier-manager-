@@ -452,6 +452,8 @@
     "rigore-191": "node rigore-191.mjs",
     "lotteria-191": "node lotteria-191.mjs",
     "piazzato-204": "node piazzato-204.mjs",
+    "tabellone-214": "node tabellone-214.mjs",
+    "sonda-214": "node sonda-214.mjs",
     "pullman-204": "node pullman-204.mjs",
     "voto-79": "node voto-79.mjs",
     "livello-79": "node livello-79.mjs",
