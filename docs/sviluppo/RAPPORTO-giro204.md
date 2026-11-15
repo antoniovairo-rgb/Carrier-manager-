@@ -91,7 +91,32 @@ fotogrammi). Foto `prima/dopo-piedistallo-*.png`.
 - `sonda-rigore-139.mjs`: opzioni `CPM_PROVA204`, `CPM_ROSSO204`, e raccoglie testimoni e racconto della visione.
 
 ## 4. Controlli
-CONTROLLI_QUI
+Uno alla volta (`CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno, `CPM_CHROME=/opt/pw-browsers/chromium`), sul build finale
+(`CARRIER-MANAGER-AV.html` 7.446.701 byte; dopo ogni modifica a `src/` `node tools/build-src.mjs` + `node tools/check-src.mjs`:
+IDENTICO BYTE PER BYTE).
+
+| controllo | esito |
+|---|---|
+| piazzato-204 (nuovo) | ✅ verde ramo «già calciato» + rosso visto; lotteria verde 0 px, rosso 462 px |
+| pullman-204 (nuovo) | ✅ M verde lum 0,843 / sat 0,758 / tono 2,5° · rosso lum 1,0 / sat 0,459 / tono 20,5°; P verde 0/17 vuoti + 1 stacco in entrambi i casi · rosso 17/17 |
+| rigore-191 | ✅ (verde produzione e banco, rosso visto) |
+| lotteria-191 | ✅ (verde telefono e PC, tre rossi visti) |
+| cerimonie-192 | ✅ punti A,B,C,D, ogni rosso si vede |
+| premiazione-palco-191 | ✅ |
+| coppa-mani-191 | ✅ (verde e rosso) |
+| posa-sollevamento-191 | ✅ |
+| palco-corpi-191 | ✅ |
+| cerimonie | ✅ |
+| festa-3d | ✅ |
+| tpose-196 | ✅ (verde e rosso atteso) |
+| career-critical | ✅ |
+| test:logic | ✅ 51 pass · 0 fail |
+| save-compat | ✅ 12 pass · 0 fail |
+| highlight-95 | ESITO_H95 |
+
+Durante lo sviluppo `piazzato-204` è stato rosso una volta per il motivo giusto (testimone 3D vuoto: il 3D era sospeso sotto il campo
+dall'alto, vedi §1) e `pullman-204` due volte per «non giudicato» (la premiazione chiusa a orologio prima del beat dopo la presa; risolto
+con `__CPM_CER_HOLD`, nessuna soglia toccata).
 
 ## 5. Dubbi per il PO
 1. **Solo il rigore.** La scena di sola visione copre il rigore. La **punizione** già calciata dal motore resta negata come nel giro 191
@@ -109,7 +134,9 @@ CONTROLLI_QUI
    o il mister lo porta via (serve un'animazione di trasporto); (c) la coppa consegnata a mano da una figura (il mister che c'è già) senza
    piedistallo. Ho scelto lo stacco perché non mostra nulla di impossibile e costa poco; lo stacco è un nero di 0,3 s nel mezzo della
    premiazione, da vedere sul telefono se disturba.
-6. **«Come in campo»** per le maglie è misurato contro il **colore del club** (esadecimale), non contro un fotogramma della partita:
+6. **Pantaloncini e calzettoni** prendono la stessa correzione delle maglie: i pantaloncini bianchi del club ora sul tetto risultano grigio
+   chiaro (foto `dopo-parata-maglie.png`). Non li ho misurati con una soglia; se si preferisce, la correzione si limita alla sola maglia.
+7. **«Come in campo»** per le maglie è misurato contro il **colore del club** (esadecimale), non contro un fotogramma della partita:
    non ho misurato il colore reso delle maglie in partita.
-7. La scena di sola visione dura 4,2 s a orologio di parete; in headless il 3D arriva all'esito a 3,4-3,8 s (fotogrammi radi). Su un
+8. La scena di sola visione dura 4,2 s a orologio di parete; in headless il 3D arriva all'esito a 3,4-3,8 s (fotogrammi radi). Su un
    telefono molto lento il pallone potrebbe non arrivare in porta prima della chiusura: non misurato sul dispositivo.
