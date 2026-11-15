@@ -104,11 +104,58 @@ Criteri dichiarati: statura **[1,45 · 2,05] m** (bambini dell'ingresso **[1,05 
 dentro il near, nessun corpo oltre il **60%** dell'inquadratura; ogni scena deve avere almeno 8 fotogrammi con corpi
 («non giudicato» = rosso). Rosso: col `__CPM_NO_G212` almeno un corpo sopra 2,05 m.
 
-ESITI — vedi sezione 5.
+Esiti del guardiano (passata delle 10:36–10:58, build di questo ramo):
+
+| scena | fotogrammi con corpi | statura min–max | quota max | ossa nel near |
+|---|---|---|---|---|
+| trasferta-tel: ingresso | 209 | 1,23–1,83 m (1,23 = bambini) | 1% | 0 |
+| trasferta-tel: highlight | 52 | 1,54–1,74 m | 5% | 0 |
+| trasferta-tel: festa | 29 | 1,54–1,89 m | 21% | 0 |
+| casa-pc: ingresso | 209 | 1,23–1,83 m | 1% | 0 |
+| casa-pc: highlight | 33 | 1,54–1,75 m | 1% | 0 |
+| casa-pc: festa | 15 | 1,54–1,89 m | 3% | 0 |
+| casa-pc: premiazione | 19 | 1,54–1,89 m | 3% | 0 |
+| festa-vera-tel: festa (fischio vero dopo 124 s) | 77 | 1,54–1,89 m | 10% | 0 |
+| cerimonie-tel: presentazione | 81 | 1,78–1,84 m | 10% | 0 |
+| cerimonie-tel: gala | 143 | 1,70–1,71 m | 2% | 0 |
+| cerimonie-tel: parata | 66 | 1,77–1,87 m | 2% | 0 |
+| cerimonie-tel: avvio | 204 | 1,81 m | 13% | 0 |
+
+**Verde: 12 scene giudicate, nessun corpo fuori misura.** Rosso (`__CPM_NO_G212`, trasferta-tel): guardalinee a 26,9–27,1 m
+in ingresso, highlight e festa; nell'ingresso il gigante arrivava al **44%** dell'inquadratura. «Difetto riprodotto», uscita 0.
+
+Note di metodo:
+- la premiazione forzata *dopo* la festa sulla stessa pagina veniva chiusa dal timer della festa (fase `ended` dopo ~5 s,
+  misurato): artefatto della sonda, non del gioco; ora la premiazione si misura su una pagina sua;
+- con `isHome:true` scritto a mano sulla partita del salvataggio la carriera risponde `nomatch` (misurato): la partita in casa
+  è una gara di coppa inserita in testa al calendario, come in `tpose-196`;
+- l'ingresso dà 209 fotogrammi sia al telefono sia al PC: sembra una durata fissa del percorso di collaudo dell'ingresso, non
+  l'ho indagato.
 
 ## 5. Controlli
 
-ESITI_CONTROLLI
+Uno alla volta (`CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno, `CPM_CHROME=/opt/pw-browsers/chromium`), sul build di
+questo ramo, registri in `/tmp` della sessione:
+
+| controllo | esito | ora di fine |
+|---|---|---|
+| `gigante-212` (verde + rosso) | ✅ 12/12 scene, rosso riprodotto | 10:58 |
+| `tpose-196` | ✅ verde 0 T-pose / 0 non CGTrader / 0 procedurali, rosso atteso | 11:22 |
+| `festa-3d` | ✅ PASS | 11:24 |
+| `cerimonie` | ✅ PASS | 11:25 |
+| `cerimonie-192` | ✅ verde, ogni rosso si vede (A,B,C,D) | 11:35 |
+| `scene-178` | ✅ prova del rosso riuscita | 11:44 |
+| `gesto-177` | ✅ verde 6/6, rosso visto 3 | 11:52 |
+| `highlight-95` | ✅ verde e il rosso si vede — **passata intera** in 96 minuti | 13:28 |
+| `fps-249` | ✅ verde e il rosso si vede | 13:28 |
+| `licenze-184` | ✅ verde, prova del rosso 4/4 | 13:31 |
+| `career-critical` | ✅ PASS | 13:43 |
+| `test:logic` | ✅ 51 pass · 0 fail | 13:43 |
+| `save-compat` | ✅ 12 pass · 0 fail | 13:43 |
+
+`node tools/build-src.mjs` + `node tools/check-src.mjs`: **IDENTICO BYTE PER BYTE** dopo ogni modifica a `src/`.
+`ci-runner.mjs`: `node --check` verde; `gigante-212` presente una volta in `completa` e una in `carriera`, nessun doppione
+nelle catene. Non eseguite le catene intere (`completa`/`carriera`/`notte`): solo i controlli della consegna.
 
 ## Dubbi per il PO
 
