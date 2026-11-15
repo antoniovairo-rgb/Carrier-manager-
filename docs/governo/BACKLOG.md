@@ -124,6 +124,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-479 | 15/11 14:10 | Dal giro 211 + questionario PO: interviste del dopo-partita (seguito PO-473) — l'ultima partita del girone europeo/Europeo-Mondiale che elimina è trattata come «girone ancora aperto»; il «rilancio» (seconda domanda dopo la prima risposta) non guarda il risultato (es. classifica dopo un'eliminazione) | difetto (interviste) | DA FARE — 196 | 7.999.196 |
 | PO-480 | 15/11 14:10 | Dal giro 210 (trovato per strada) + questionario PO: la barra «Pressione» delle giocate negli highlight dell'eroe dura quanto il timer vero dell'anticipo del marcatore (16/12/9 s; oggi 9/6/4 s e si svuota prima). Pad che sparisce se il tempo scade senza mosse sul telefono: il PO lo lascia così | difetto (highlight eroe) | DA FARE — 196 | 7.999.196 |
 | PO-481 | 15/11 14:10 | Dal giro 212 + questionario PO: guardalinee sulla linea laterale davanti ai cartelloni (oggi |z| ≈ 35,5, dietro i cartelloni) e con la divisa dichiarata (maglia gialla, pantaloncini e calzettoni scuri; oggi sul pacchetto LOD restano azzurri) | difetto (scene 3D) | DA FARE — 196 | 7.999.196 |
+| PO-482 | 15/11 15:05 | Dal giro 214 + questionario PO: durante la lotteria dei rigori la STRISCIA in alto mette l'eroe a sinistra come il tabellone della lotteria (oggi in trasferta si legge «1 - 2» sopra e «2 — 1» sotto). Voce di carriera della partita simulata a metà (giro 215): va bene così | difetto (lotteria) | DA FARE — 195 (giro 216) | 7.999.195 |
 
 ## Storico — voci chiuse (377)
 
