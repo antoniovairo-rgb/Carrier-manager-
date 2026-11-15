@@ -1,4 +1,307 @@
 {
+ "normale": {
+  "nome": "normale",
+  "rosso": false,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "normale",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "fila",
+    "schierati"
+   ],
+   "durate": {
+    "tunnel": 3.3,
+    "fila": 0.05,
+    "schierati": 5.75
+   },
+   "coreoMax": [],
+   "fumoMax": 0,
+   "coriMax": 0,
+   "innoS": 0,
+   "tipo": "normale",
+   "regia": "breve",
+   "scenaAttesa": 9,
+   "t": 23.96,
+   "s": 9
+  },
+  "err": null,
+  "scenaDich": 9,
+  "coreografia": 23.96,
+  "stacchi": 1,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 8.9,
+  "realeS": 74.9,
+  "fps": 2.39,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 179,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "big": {
+  "nome": "big",
+  "rosso": false,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "big",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "panoramica",
+    "fila",
+    "schierati"
+   ],
+   "durate": {
+    "tunnel": 3.3,
+    "panoramica": 5.8,
+    "fila": 2.05,
+    "schierati": 4.95
+   },
+   "coreoMax": [
+    "casa"
+   ],
+   "fumoMax": 8,
+   "coriMax": 80,
+   "innoS": 0,
+   "tipo": "big",
+   "regia": "standard",
+   "scenaAttesa": 16,
+   "t": 23.96,
+   "s": 16
+  },
+  "err": null,
+  "scenaDich": 16,
+  "coreografia": 23.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 15.9,
+  "realeS": 129.2,
+  "fps": 2.47,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 319,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "derby": {
+  "nome": "derby",
+  "rosso": false,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "derby",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "fila",
+    "schierati"
+   ],
+   "durate": {
+    "tunnel": 7.1,
+    "fila": 5.95,
+    "schierati": 6.05
+   },
+   "coreoMax": [
+    "casa"
+   ],
+   "fumoMax": 8,
+   "coriMax": 80,
+   "innoS": 0,
+   "tipo": "derby",
+   "regia": "tunnel",
+   "scenaAttesa": 19,
+   "t": 23.96,
+   "s": 19
+  },
+  "err": null,
+  "scenaDich": 19,
+  "coreografia": 23.96,
+  "stacchi": 1,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 18.9,
+  "realeS": 170.5,
+  "fps": 2.22,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 379,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "europea": {
+  "nome": "europea",
+  "rosso": false,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "europea",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "panoramica",
+    "fila",
+    "schierati",
+    "inno"
+   ],
+   "durate": {
+    "tunnel": 3.3,
+    "panoramica": 5.8,
+    "fila": 2.05,
+    "schierati": 4.9,
+    "inno": 7.05
+   },
+   "coreoMax": [
+    "casa"
+   ],
+   "fumoMax": 8,
+   "coriMax": 80,
+   "innoS": 7.05,
+   "tipo": "europea",
+   "regia": "standard",
+   "scenaAttesa": 23,
+   "t": 30.96,
+   "s": 23
+  },
+  "err": null,
+  "scenaDich": 23,
+  "coreografia": 30.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 22.9,
+  "realeS": 189.3,
+  "fps": 2.43,
+  "innoDom": 23,
+  "resid": 0,
+  "frames": 459,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "nazionale": {
+  "nome": "nazionale",
+  "rosso": false,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "nazionale",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "bandiere",
+    "fila",
+    "schierati",
+    "inno"
+   ],
+   "durate": {
+    "tunnel": 3.3,
+    "bandiere": 4.8,
+    "fila": 4.95,
+    "schierati": 6,
+    "inno": 7.05
+   },
+   "coreoMax": [
+    "casa"
+   ],
+   "fumoMax": 8,
+   "coriMax": 80,
+   "innoS": 7.05,
+   "tipo": "nazionale",
+   "regia": "bandiere",
+   "scenaAttesa": 26,
+   "t": 30.96,
+   "s": 26
+  },
+  "err": null,
+  "scenaDich": 26,
+  "coreografia": 30.96,
+  "stacchi": 1,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 25.9,
+  "realeS": 204.8,
+  "fps": 2.53,
+  "innoDom": 23,
+  "resid": 0,
+  "frames": 519,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
  "finale": {
   "nome": "finale",
   "rosso": false,
@@ -50,11 +353,238 @@
    "away": true
   },
   "durataScena": 29.9,
-  "realeS": 316,
-  "fps": 1.9,
+  "realeS": 297.2,
+  "fps": 2.02,
   "innoDom": 23,
   "resid": 0,
   "frames": 599,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "finale-rosso": {
+  "nome": "finale-rosso",
+  "rosso": true,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": null,
+   "context": "cup",
+   "finale": true,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": null,
+  "err": null,
+  "scenaDich": 16,
+  "coreografia": 23.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 15.9,
+  "realeS": 164.5,
+  "fps": 1.94,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 319,
+  "altoMax": 27.29,
+  "corpi": 441,
+  "guarda": null,
+  "errori": []
+ },
+ "big-rosso": {
+  "nome": "big-rosso",
+  "rosso": true,
+  "vista": "375x667",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": null,
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": null,
+  "err": null,
+  "scenaDich": 16,
+  "coreografia": 23.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 15.9,
+  "realeS": 132.9,
+  "fps": 2.4,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 319,
+  "altoMax": 27.29,
+  "corpi": 441,
+  "guarda": null,
+  "errori": []
+ },
+ "big-pc": {
+  "nome": "big-pc",
+  "rosso": false,
+  "vista": "1280x720",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "big",
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "panoramica",
+    "fila",
+    "schierati"
+   ],
+   "durate": {
+    "tunnel": 3.259,
+    "panoramica": 5.8,
+    "fila": 2.05,
+    "schierati": 5
+   },
+   "coreoMax": [
+    "casa"
+   ],
+   "fumoMax": 14,
+   "coriMax": 180,
+   "innoS": 0,
+   "tipo": "big",
+   "regia": "standard",
+   "scenaAttesa": 16,
+   "t": 23.99,
+   "s": 16.03
+  },
+  "err": null,
+  "scenaDich": 16,
+  "coreografia": 23.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 15.93,
+  "realeS": 286.8,
+  "fps": 1.12,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 320,
+  "altoMax": 1.82,
+  "corpi": 441,
+  "guarda": {
+   "prima": 26.85,
+   "dopo": 1.62
+  },
+  "errori": []
+ },
+ "big-pc-rosso": {
+  "nome": "big-pc-rosso",
+  "rosso": true,
+  "vista": "1280x720",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": null,
+   "context": "career",
+   "finale": false,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": null,
+  "err": null,
+  "scenaDich": 16,
+  "coreografia": 23.96,
+  "stacchi": 3,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 15.93,
+  "realeS": 287.2,
+  "fps": 1.11,
+  "innoDom": 0,
+  "resid": 0,
+  "frames": 320,
+  "altoMax": 27.29,
+  "corpi": 441,
+  "guarda": null,
+  "errori": []
+ },
+ "finale-pc": {
+  "nome": "finale-pc",
+  "rosso": false,
+  "vista": "1280x720",
+  "walk": true,
+  "playMatch": true,
+  "tipoVero": {
+   "tipo": "finale",
+   "context": "cup",
+   "finale": true,
+   "derby": false,
+   "naz": false,
+   "mw": 7
+  },
+  "W": {
+   "regie": [
+    "tunnel",
+    "panoramica",
+    "fila",
+    "schierati",
+    "inno"
+   ],
+   "durate": {
+    "tunnel": 3.23,
+    "panoramica": 9.3,
+    "fila": 4.527,
+    "schierati": 5.976,
+    "inno": 7.05
+   },
+   "coreoMax": [
+    "casa",
+    "ospiti"
+   ],
+   "fumoMax": 28,
+   "coriMax": 180,
+   "innoS": 7.05,
+   "tipo": "finale",
+   "regia": "panoramica",
+   "scenaAttesa": 30,
+   "t": 30.96,
+   "s": 30
+  },
+  "err": null,
+  "scenaDich": 30,
+  "coreografia": 30.96,
+  "stacchi": 1,
+  "tifo": {
+   "home": true,
+   "away": true
+  },
+  "durataScena": 29.9,
+  "realeS": 586.8,
+  "fps": 1.02,
+  "innoDom": 24,
+  "resid": 0,
+  "frames": 601,
   "altoMax": 1.82,
   "corpi": 441,
   "guarda": {

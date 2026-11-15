@@ -17,7 +17,8 @@ import fs from 'node:fs'; import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, sleep, ROOT } from './lib/harness.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const FORZA = !!process.env.CPM_FORZA_ROSSO, FOTO = process.env.CPM_FOTO !== '0', TAG = process.env.CPM_TAG || (FORZA ? 'rosso' : 'dopo');
-const DIR = path.join(ROOT, 'docs', 'sviluppo', 'giro206'); fs.mkdirSync(DIR, { recursive: true });
+/* foto e misure: fuori dal repo (tests/visual/out e' ignorato da git) salvo CPM_FOTO_DIR, cosi' un giro del guardiano non sporca docs/ */
+const DIR = process.env.CPM_FOTO_DIR || path.join(ROOT, 'tests', 'visual', 'out', 'giro206'); fs.mkdirSync(DIR, { recursive: true });
 const ALTO = +(process.env.CPM_ALTO || 2.4), BREVE = +(process.env.CPM_BREVE || 10.5), INNO = +(process.env.CPM_INNO || 6), FPSK = +(process.env.CPM_FPSK || 0.85), SCH = 0.6;
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 function finaleDiCoppa() { const sv = JSON.parse(JSON.stringify(SAVE)); const pl = sv.player || sv; const w = pl.week | 0;

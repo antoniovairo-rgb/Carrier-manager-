@@ -14,7 +14,8 @@ import { CAMERE, misuraZone, apriPartita } from './lib/notte-206.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const FORZA = !!process.env.CPM_FORZA_ROSSO, TAG = process.env.CPM_TAG || (FORZA ? 'rosso' : 'dopo'), FOTO = process.env.CPM_FOTO !== '0';
 const PRATO_L = +(process.env.CPM_PRATO_L || 0.95), PRATO_S = +(process.env.CPM_PRATO_S || 0.93), SPALTI = +(process.env.CPM_SPALTI || 0.80), CIELO_A = +(process.env.CPM_CIELO_A || 0.20), CIELO_R = +(process.env.CPM_CIELO_R || 0.26);
-const DIR = path.join(ROOT, 'docs', 'sviluppo', 'giro206'); fs.mkdirSync(DIR, { recursive: true });
+/* foto e misure: fuori dal repo (tests/visual/out e' ignorato da git) salvo CPM_FOTO_DIR, cosi' un giro del guardiano non sporca docs/ */
+const DIR = process.env.CPM_FOTO_DIR || path.join(ROOT, 'tests', 'visual', 'out', 'giro206'); fs.mkdirSync(DIR, { recursive: true });
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function scatta(tpl, tod, vista, rosso) { const [vw, vh] = vista.split('x').map(Number);
   const { ctx, page, errs, fase } = await apriPartita(b, port, SAVE, { tod, tpl, vw, vh, init: (rosso || FORZA) ? { __CPM_NO_G206: 1 } : {}, installCdnRoutes, sleep });

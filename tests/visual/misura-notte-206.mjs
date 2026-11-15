@@ -8,7 +8,8 @@ const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.j
 const TAG = process.env.CPM_TAG || 'prima', ROSSO = !!process.env.CPM_ROSSO;
 const TPL = (process.env.CPM_TPL || 'inglese,storico_it,comunale').split(',');
 const VISTE = (process.env.CPM_VISTE || '1280x720,375x667').split(',');
-const FOTO = path.join(ROOT, 'docs', 'sviluppo', 'giro206'); fs.mkdirSync(FOTO, { recursive: true });
+/* foto e misure: fuori dal repo (tests/visual/out e' ignorato da git) salvo CPM_FOTO_DIR, cosi' un giro del guardiano non sporca docs/ */
+const FOTO = process.env.CPM_FOTO_DIR || path.join(ROOT, 'tests', 'visual', 'out', 'giro206'); fs.mkdirSync(FOTO, { recursive: true });
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const R = [];
 for (const vista of VISTE) { const [vw, vh] = vista.split('x').map(Number);
   for (const tpl of TPL) for (const tod of ['day', 'night']) {

@@ -4,7 +4,7 @@
 import fs from 'node:fs'; import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, sleep, ROOT } from './lib/harness.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const DIR = path.join(ROOT, 'docs', 'sviluppo', 'giro206'); const D = +(process.env.CPM_D || 9);
+const DIR = process.env.CPM_FOTO_DIR || path.join(ROOT, 'tests', 'visual', 'out', 'giro206'); const D = +(process.env.CPM_D || 9);
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 for (const rosso of (process.env.CPM_BRACCI || 'rosso,verde').split(',').map(x => x === 'rosso')) {
   const ctx = await b.newContext({ viewport: { width: 375, height: 667 }, serviceWorkers: 'block', isMobile: true, hasTouch: true, deviceScaleFactor: 1 }); await installCdnRoutes(ctx);
