@@ -1861,5 +1861,47 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYiaCyyRfuyxU5hXVTzR7",
+    "titolo": "giro 210 diagonali nel pad e pad che resta sul telefono (PO-401, 471)",
+    "creata": "2026-11-15T09:41:10Z",
+    "chiusa": "2026-11-15T13:35:29Z",
+    "cost_usd": 13.91686132,
+    "output_tokens": 119525,
+    "cache_read_tokens": 43044998,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYia9a4AjJB28A7YuKGkJ",
+    "titolo": "giro 211 gradino del nome corto, domande coerenti col risultato (PO-472, 473)",
+    "creata": "2026-11-15T11:50:56Z",
+    "chiusa": "2026-11-15T13:45:03Z",
+    "cost_usd": 8.30311782,
+    "output_tokens": 89699,
+    "cache_read_tokens": 21920202,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
+  },
+  {
+    "sessione": "session_01QEYia8wYUMJAqxNfGGxikG",
+    "titolo": "giro 212 gigante in campo: guardalinee alla statura giusta (PO-474)",
+    "creata": "2026-11-15T09:41:09Z",
+    "chiusa": "2026-11-15T13:44:32Z",
+    "cost_usd": 10.10204356,
+    "output_tokens": 80399,
+    "cache_read_tokens": 30811631,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
