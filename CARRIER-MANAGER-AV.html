@@ -11852,19 +11852,28 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
-function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
+/* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
+   ADATTA203_MIN px (il minimo della scala tipografica FS) invece di farsi tagliare. Usata solo dalla barra della partita.
+   Rosso __CPM_NO_G203 = come prima (sigla ritagliata). */
+const ADATTA203_MIN=12;
+function _no203(){return typeof window!=='undefined'&&!!window.__CPM_NO_G203;}
+function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
   const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
-  const rosso=_no182nomi();
-  useEffect(()=>{setLiv(0);},[key]);
+  const[fs203,setFs203]=useState(0);/* 0 = corpo dello stile; >0 = corpo ridotto in px (solo con `adatta`) */
+  const rosso=_no182nomi();const ad203=!!adatta&&!_no203();
+  useEffect(()=>{setLiv(0);setFs203(0);},[key]);
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
+    else if(ad203&&liv>=cand.length-1&&el.scrollWidth>el.clientWidth+0.5){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*el.clientWidth/el.scrollWidth*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);}}});
   /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
      si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
   useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    const azzera=()=>{dec.current=0;setLiv(0);setFs203(0);setGiro(g=>g+1);};
     let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
@@ -11874,7 +11883,8 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const L=Math.min(liv,cand.length-1);
   const T=as;
   return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
-    style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
+    data-corpo203={ad203&&fs203?fs203:undefined}
+    style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
 /* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
@@ -42105,6 +42115,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _effP207=(t)=>{try{if(!t)return t;const _sh=(player.clubPrestigeShifts||{})[t.id||t.n]||0;return _sh?{...t,p:clamp((t.p||60)+_sh,1,99)}:t;}catch(_e){return t;}};
   const homeTeamObj=_effP207(isNatCtx?{id:_myNatData.id,n:player.nation||"Italia",a:_myNatData.a,p:_myNatData.p,c:_myNatData.c,c2:_myNatData.c2,nat:_myNatData.nat,lg:"Nazionale"}:isMatchHome?(player.club||opponent):opponent);
   const awayTeamObj=_effP207(isNatCtx?opponent:isMatchHome?opponent:(player.club||opponent));
+  /* [giro 203 · PO-460] varco di PROVA (solo ?cpmtest=1): __CPM_BARRA203(casa,ospiti) mette sulla BARRA in alto due squadre
+     qualunque, per misurare sigle e nomi lunghi/corti sul DOM vero; null torna alle squadre della partita. Il resto della
+     partita (maglie, 3D, cronaca) non lo legge. */
+  const[_tb203,_setTb203]=useState(null);
+  useEffect(()=>{if(!_CPM_TEST)return;window.__CPM_BARRA203=(h,a)=>_setTb203(h?{h,a:a||h}:null);return()=>{try{delete window.__CPM_BARRA203;}catch(_e){}};},[]);
+  const _barraH203=_tb203?_tb203.h:homeTeamObj, _barraA203=_tb203?_tb203.a:awayTeamObj;
   /* [giro 171 PO-368 — I TIFOSI HANNO IL COLORE DEL CLUB, MAI LA MAGLIA DEL GIORNO. Rosso __CPM_NO_G171] Foto PO 191 (2D su PC,
      FC Cesenate Primavera in casa contro FC Leonessa Primavera in trasferta con la maglia viola): «i tifosi devono mantenere il colore
      originale del club, non prendere il colore della maglia da trasferta». MISURATO: gli spalti 2D ricevevano _mkits.awayShirt/awayAccent,
@@ -42269,7 +42285,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      Supera la direttiva 7.893 per l'intestazione; il tabellone 3D resta com'e'. Rosso __CPM_NO_FISSE297 = la barra che si specchia. */
   const _fisse297=!(typeof window!=='undefined'&&window.__CPM_NO_FISSE297);
   const _ripresa297=((clock|0)>45)&&phase!=="ceremony";
-  const _swap893=!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  const _swap893=(_CPM_TEST&&_tb203&&typeof window!=='undefined'&&window.__CPM_SWAP203!=null)?!!window.__CPM_SWAP203:/* [giro 203] varco di prova: campo invertito a comando, solo col varco della barra acceso */!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
      approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
      risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di
@@ -42425,11 +42441,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 arrivano; sotto il minuto compare per 3 s l'etichetta «cambio campo». Con prefers-reduced-motion lo
                 scorrimento sparisce (l'etichetta resta: e' informazione, non moto). Solo CSS, nessuno stato in piu'. */}
             <style>{"@keyframes cpmSwapCasa905{from{transform:translateX(-60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmSwapOsp905{from{transform:translateX(60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmCambio905{0%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}@keyframes cpmPress905{from{width:0%}to{width:100%}}@media (prefers-reduced-motion:reduce){[data-cpm=\"scudo-casa\"],[data-cpm=\"scudo-ospiti\"]{animation:none!important}}"}</style>
+            {/* [giro 203 · PO-460] sul telefono (puntatore touch, fino a 419 px) la striscia dello stemma si compatta: margine interno 8→4, spazio
+                6→4, stemma 26→22 px; sotto i 390 px lo stemma va SOPRA e il nome/sigla SOTTO, centrato (il nome ha tutta la larghezza della
+                striscia invece di dividerla con lo stemma: a 360 col touch la striscia e' larga ~47 px). Solo col touch: col mouse il centro e' largo
+                ~126 px a 375 e le sigle entrano gia' (misurato), quindi la barra del PC/finestra stretta resta com'era. Col puntatore touch il centro (tasti con area di tocco da 44 px) occupa ~211 px a 375 e le sigle
+                restavano tagliate di 4-5 px («FF» per FFT, «WO» contro lo stemma). Rosso __CPM_NO_G203. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_G203)&&<style>{'@media (max-width:419px) and (pointer:coarse){[data-cpm="barra"] [data-cpm="scudo-casa"],[data-cpm="barra"] [data-cpm="scudo-ospiti"]{padding:0 4px!important;gap:4px!important}[data-cpm="barra"] [data-cpm="scudo-casa"]>svg,[data-cpm="barra"] [data-cpm="scudo-ospiti"]>svg{width:22px;height:24.2px;flex:0 0 auto}}'
+              +'@media (max-width:389px) and (pointer:coarse){[data-cpm="barra"] [data-cpm="scudo-casa"],[data-cpm="barra"] [data-cpm="scudo-ospiti"]{flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:1px!important;padding:0 3px!important}[data-cpm="barra"] [data-cpm="scudo-casa"]>svg,[data-cpm="barra"] [data-cpm="scudo-ospiti"]>svg{width:19px;height:20.9px}[data-cpm="barra"] [data-cpm="barra-nome-182"]{align-self:stretch;text-align:center!important;line-height:1.15}}'}</style>}
             <div data-cpm="barra" data-v2={1} data-specchio={_swap893?1:0} style={{height:60,boxSizing:"border-box",display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"0 10px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:TINTE.bg,flex:"0 0 auto",gap:6}}>
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
-                <TeamBadge team={homeTeamObj} size={26}/>
-                <NomeSquadra182 as="div" cpm="barra-nome-182" team={homeTeamObj} fb="Squadra" testo={_no182nomi()?_nomeBarra108(homeTeamObj,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
+                <TeamBadge team={_barraH203} size={26}/>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" adatta team={_barraH203} fb="Squadra" testo={_no182nomi()?_nomeBarra108(_barraH203,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
               {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
@@ -42470,8 +42493,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
-                <TeamBadge team={awayTeamObj} size={26}/>
-                <NomeSquadra182 as="div" cpm="barra-nome-182" team={awayTeamObj} fb="Avversario" testo={_no182nomi()?_nomeBarra108(awayTeamObj,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
+                <TeamBadge team={_barraA203} size={26}/>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" adatta team={_barraA203} fb="Avversario" testo={_no182nomi()?_nomeBarra108(_barraA203,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}

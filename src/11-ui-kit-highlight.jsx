@@ -209,19 +209,28 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
-function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
+/* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
+   ADATTA203_MIN px (il minimo della scala tipografica FS) invece di farsi tagliare. Usata solo dalla barra della partita.
+   Rosso __CPM_NO_G203 = come prima (sigla ritagliata). */
+const ADATTA203_MIN=12;
+function _no203(){return typeof window!=='undefined'&&!!window.__CPM_NO_G203;}
+function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
   const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
-  const rosso=_no182nomi();
-  useEffect(()=>{setLiv(0);},[key]);
+  const[fs203,setFs203]=useState(0);/* 0 = corpo dello stile; >0 = corpo ridotto in px (solo con `adatta`) */
+  const rosso=_no182nomi();const ad203=!!adatta&&!_no203();
+  useEffect(()=>{setLiv(0);setFs203(0);},[key]);
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
+    else if(ad203&&liv>=cand.length-1&&el.scrollWidth>el.clientWidth+0.5){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*el.clientWidth/el.scrollWidth*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);}}});
   /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
      si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
   useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    const azzera=()=>{dec.current=0;setLiv(0);setFs203(0);setGiro(g=>g+1);};
     let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
@@ -231,7 +240,8 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const L=Math.min(liv,cand.length-1);
   const T=as;
   return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
-    style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
+    data-corpo203={ad203&&fs203?fs203:undefined}
+    style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
 /* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
