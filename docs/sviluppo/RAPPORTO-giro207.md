@@ -177,4 +177,4 @@ Nulla è cambiato in `src/`: i controlli confermano che la sonda e i documenti n
 | test:logic | **51/51** (`tl.log`) |
 | save-compat | **12 pass · 0 fail** (`sc.log`) |
 
-`src/` non è cambiato: `git diff lavoro/195 -- src CARRIER-MANAGER-AV.html` è vuoto.
+`src/` non è cambiato: `git diff 99db1c9 HEAD -- src CARRIER-MANAGER-AV.html` (99db1c9 = punta di `origin/lavoro/195`, base del giro) è vuoto. ⚠️ Il ramo **locale** `lavoro/195` del contenitore era un riferimento più vecchio: confrontare con quello dà migliaia di righe che non sono di questo giro.
