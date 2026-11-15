@@ -56,13 +56,24 @@ if (!SOLO_LOT) {
   if (!ok) for (const q of [v, r]) if (!q.J) console.log(`--- ${q.nome} (nessun json) ---\n${q.log.slice(-1500)}`);
 }
 { const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
-  const lv = await misura90(browser, port, {}), lr = await misura90(browser, port, { rosso: true });
+  const lv = await misura90(browser, port, {}), lr = await misura90(browser, port, { rosso: true }), l8 = await misura90(browser, port, { rosso208: true });
   await browser.close(); srv.close();
   console.log('lotteria verde ' + JSON.stringify(lv)); console.log('lotteria rosso ' + JSON.stringify(lr));
   const pv = lv.errs === 0 && lv.giudicati >= 3 && lv.pixelGiudicati >= 3 && lv.minutoDisegnato === 0 && lv.pixelGialliMax === 0;
   const pr = lr.giudicati >= 3 && lr.pixelGiudicati >= 3 && lr.minutoDisegnato >= 1 && lr.pixelGialliMax >= 100;
   esiti.push(`${pv ? '✅' : '❌'} verde lotteria: minuto disegnato ${lv.minutoDisegnato}/${lv.giudicati} · pixel gialli dietro il tabellone ${lv.pixelGialliMax}`);
-  esiti.push(`${pr ? '✅' : '❌'} rosso lotteria __CPM_NO_G204: minuto disegnato ${lr.minutoDisegnato}/${lr.giudicati} · pixel gialli ${lr.pixelGialliMax}`); ok = ok && pv && pr; }
+  esiti.push(`${pr ? '✅' : '❌'} rosso lotteria __CPM_NO_G204: minuto disegnato ${lr.minutoDisegnato}/${lr.giudicati} · pixel gialli ${lr.pixelGialliMax}`); ok = ok && pv && pr;
+  /* [giro 208 PO-468] il maxischermo durante la lotteria dice «RIGORI» e il punteggio della SERIE, aggiornato a ogni tiro; nessun
+     punteggio della partita dietro il tabellone. SOGLIA DICHIARATA (verde): almeno 10 campioni del testimone __CPM_SB208, tutti in modo
+     «rigori», 0 in modo «partita», 0 punteggi disegnati che la serie non ha mai avuto, almeno 3 punteggi diversi disegnati (la serie
+     avanza), l'ultimo disegnato uguale all'ultimo della serie, e almeno 300 pixel bianchi della scritta nella fascia dietro il tabellone
+     (misurato 1.168-1.170). ROSSO __CPM_NO_G208: 0 in modo «rigori», almeno 10 in modo «partita», meno di 100 pixel bianchi (misurato 0).
+     Meno campioni = non giudicato = rosso. */
+  console.log('lotteria rosso208 ' + JSON.stringify(l8));
+  const sv = lv.serieGiudicati >= 10 && lv.maxischermoRigori === lv.serieGiudicati && lv.maxischermoPartita === 0 && lv.disegnatiFuoriSerie === 0 && lv.punteggiDisegnati.length >= 3 && lv.ultimoDisegnato === lv.ultimaSerie && lv.pixelGiudicati >= 3 && lv.pixelBianchiMin >= 300;
+  const sr = l8.errs === 0 && l8.serieGiudicati >= 10 && l8.maxischermoRigori === 0 && l8.maxischermoPartita >= 10 && l8.pixelGiudicati >= 3 && l8.pixelBianchiMax < 100;
+  esiti.push(`${sv ? '✅' : '❌'} verde maxischermo: «RIGORI» ${lv.maxischermoRigori}/${lv.serieGiudicati} · punteggi della serie disegnati ${lv.punteggiDisegnati.join(' · ')} (ultimo ${lv.ultimoDisegnato} = serie ${lv.ultimaSerie}) · fuori serie ${lv.disegnatiFuoriSerie} · pixel bianchi ${lv.pixelBianchiMin}`);
+  esiti.push(`${sr ? '✅' : '❌'} rosso maxischermo __CPM_NO_G208: punteggio della partita ${l8.maxischermoPartita}/${l8.serieGiudicati} (ultimo ${l8.ultimoDisegnato}) · «RIGORI» ${l8.maxischermoRigori} · pixel bianchi ${l8.pixelBianchiMax}`); ok = ok && sv && sr; }
 for (const e of esiti) console.log(e);
 console.log(ok ? '✅ piazzato-204 verde (e il rosso si vede)' : '❌ piazzato-204 rosso');
 process.exit(ok ? 0 : 1);
