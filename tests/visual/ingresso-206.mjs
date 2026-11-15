@@ -29,7 +29,7 @@ async function ingresso({ nome, tipo, save, rosso, vw = 375, vh = 667, cpu = 2, 
   rosso = rosso || FORZA;
   const ctx = await b.newContext({ viewport: { width: vw, height: vh }, serviceWorkers: 'block', ...(vw < 600 ? { isMobile: true, hasTouch: true, deviceScaleFactor: 1 } : {}) }); await installCdnRoutes(ctx);
   const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; window.__CPM_GLB = true; window.__CPM_TOD = o.tod; if (o.tipo) window.__CPM_TIPO206 = o.tipo; if (o.r) window.__CPM_NO_G206 = true; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: save || SAVE, r: rosso, tipo, tod });
+  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; window.__CPM_GLB = true; window.__CPM_TOD = o.tod; if (o.tipo) window.__CPM_TIPO206 = o.tipo; if (o.r) { window.__CPM_NO_G206 = true; window.__CPM_NO_G212 = true; }/* [7.999.195 madre] il gigante dei guardalinee ha due correzioni (206 rete di sicurezza, 212 causa): il braccio rosso le spegne entrambe, altrimenti non puo' piu' vederlo */ localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: save || SAVE, r: rosso, tipo, tod });
   const out = { nome, rosso: !!rosso, vista: vw + 'x' + vh };
   try {
     if (cpu > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpu }); }
