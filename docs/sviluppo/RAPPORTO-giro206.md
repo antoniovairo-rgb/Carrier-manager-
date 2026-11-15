@@ -76,7 +76,7 @@ Guardiano `npm run notte-206`: prato di notte ≥ **95%** della luminosità del 
 |---|---|
 | tempi per tipo di partita | **uguali per tutte**: nel codice la regia dell'ingresso non dipendeva dal tipo. Misurati 15,9 s di scena sia nel big match di campionato sia nella finale di coppa (tunnel 3,2 s, giro, fila, carrellata; 3 stacchi) |
 | coreografia / fumogeni / inno | nessuno. Esistevano già: tifo a livelli (bandiere, sciarpe, telo), bambini per mano in ogni partita, tappeto a centrocampo |
-| fps telefono 375×667 (CPU ×2) | 2,3-2,5 nel big match · 1,7 nella finale (stadio neutro grande) |
+| fps telefono 375×667 (CPU ×2) | 2,3-2,5 nel big match · 1,7-1,9 nella finale (stadio neutro grande) |
 | fps PC 1280×720 | 1,1 |
 | difetto trovato misurando | **i due guardalinee erano alti 27,3 unità** (i calciatori 1,62-1,66): nel giro dello stadio la camera gli passava accanto (foto `prima-guardalinee-giganti-finale-1280x720.jpg`). C'era già prima di questo giro (stesso numero col rosso). Vedi sotto. |
 
@@ -154,12 +154,89 @@ Foto: `giro206/dopo-ingresso-<tipo>-<inquadratura>-375x667.jpg` (una per inquadr
 
 ## Controlli (uno alla volta, `CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno, `CPM_CHROME=/opt/pw-browsers/chromium`)
 
-TABELLA_CONTROLLI
+Build giudicato: `CARRIER-MANAGER-AV.html` md5 `1b8032f1…` (lo stesso per tutti i controlli; dopo quel build nessuna modifica a `src/`).
+
+| controllo | esito |
+|---|---|
+| notte-206 | ✅ verde, rosso visto. Prova del guardiano (`CPM_FORZA_ROSSO=1`): ❌ atteso (spalti 89-105% del giorno su ogni stadio, tetto e pali senza aloni) |
+| ingresso-206 | ✅ verde (13/13 in tabella, 8 ingressi verdi, rosso visto su finale e big match). Prova del guardiano (`CPM_FORZA_ROSSO=1`, normale + finale): ❌ atteso |
+| tpose-196 | ✅ 4/4 scenari: 0 T-pose, 0 corpi non CGTrader, 0 procedurali; rosso visto |
+| ingresso-285 | ✅ scena 15,92 s, 3 stacchi, passo massimo in quadro 2,2 u/s, squadra schierata; rosso visto (23,86 s, 0 stacchi) |
+| **ingresso-277** | ❌ **rosso, preesistente**: «verde: nessun pulsante "Salta ingresso"» e «salta: pulsante non trovato/cliccato». Il pulsante c'è (si vede nelle foto) ma nel sorgente ha due attributi `data-cpm` (`"salta-ingresso"` e `"salta-ingresso-v2"`, quest'ultimo aggiunto dalla grafica V2) e vale il secondo: il selettore della sonda non lo trova. **Rifatto sul commit di partenza `b78d05e` (lavoro/195, senza una riga di questo giro): stesso rosso, stessi due motivi.** Gli altri bracci (durata 23,96 s nella banda 16-26, velo, corpi alla fine, rosso) sono regolari. Non l'ho toccato: né il gioco né la sonda sono nel perimetro del giro |
+| ingresso-camminata-245 | ✅ verde, rosso visto |
+| scene-178 | ✅ verde e prova del rosso riuscita |
+| fps-249 | ✅ verde, rosso visto |
+| cerimonie | ✅ |
+| cerimonie-192 | ✅ punti A, B, C, D, ogni rosso si vede |
+| festa-3d | ✅ |
+| riserva2d-205 | ✅ verde col verde, rosso col rosso |
+| highlight-95 | ESITO_HL95 |
+| licenze-184 | ✅ verde; prova del rosso: 4 rossi su 4 misure |
+| career-critical | ✅ (26 passi verdi, 0 rossi) |
+| test:logic | ✅ 51/51 |
+| save-compat | ✅ 12 pass · 0 fail |
+
+`tpose-196` rigenera le sue foto in `docs/sviluppo/giro196`: riportate com'erano (giro senza modifiche a quei file).
 
 ## Peso
 
-`CARRIER-MANAGER-AV.html`: 7.378.371 → PESO_DOPO byte (codice e commenti). Nessun asset aggiunto.
+`CARRIER-MANAGER-AV.html`: 7.443.678 (commit di partenza `b78d05e`) → 7.464.853 byte (+21,2 KB, codice e commenti). Nessun asset aggiunto.
 
 ## Dubbi per il PO (non decisi)
 
-DUBBI
+**Notte (PO-373)**
+
+1. **Quanto buio intorno.** Gli spalti di notte sono al 62-70% del giorno (fattore 0,42 sul colore dei materiali: è un numero solo,
+   `__CPM_K206` lo fa provare senza ricompilare). Le soglie del guardiano (prato ≥ 95% di luminosità e ≥ 93% di saturazione, spalti
+   ≤ 80%, cielo ≤ 0,20 e ≤ 26% del giorno) le ho scelte io: vanno confermate o cambiate.
+2. **Il prato di notte è il 4-6% più luminoso del giorno.** Era già così prima del giro; non l'ho toccato (la consegna vieta solo di
+   scurirlo).
+3. **Bandiere, sciarpe, teli, cartelloni e tabellone restano accesi** (materiali che non dipendono dalle luci): sullo stadio più buio
+   risaltano più di prima. Non ho scurito il tifo: se va attenuato è una scelta di gusto.
+4. **Il tramonto** (`dusk`) non è stato toccato: la decisione parlava di notte.
+5. La resa è stata giudicata su foto headless (rendering software). **Sul telefono del PO non posso confermarla.**
+
+**Ingresso (PO-412)**
+
+6. **«Breve» = 9 secondi di scena** nelle partite normali (tunnel 3,2 s, uno stacco, squadre schierate 5,8 s). Il numero è mio. Le
+   partite normali perdono il giro dello stadio che avevano (16 s → 9 s).
+7. **Gli ingressi importanti sono più lunghi dei ~16 s decisi in PO-285**: finale 30 s (23 + 7 di inno), Nazionale 26 s, coppa europea
+   23 s, derby 19 s; il big match resta a 16 s. Restano tutti saltabili («Salta ingresso»). Se 16 s vale come tetto anche per questi,
+   servono altri stacchi: è una decisione del PO.
+8. **L'inno è senza musica.** Nel repo non c'è un brano di inno con licenza registrata. Ho fatto scena e scritta, non l'audio.
+   Alternative: (a) un brano nuovo con licenza da registrare (serve la scelta del PO); (b) riusare la fanfara dei trofei già in
+   licenza (CC0), che però oggi significa «trofeo vinto»; (c) solo il brusio dello stadio, com'è ora.
+9. **La coreografia è un telo a cartoncini a bande** nei due colori sociali, senza disegni né scritte; **i fumogeni sono una foschia
+   colorata morbida** (pochi sprite), non fumo denso. È quello che si può fare bene senza asset nuovi. Per una coreografia con stemma o
+   scritta, o per fumo più credibile, servirebbero texture nuove (con licenza) o un lavoro di disegno dedicato: fermato qui.
+10. **Chi è «importante».** Ordine: finale > Nazionale > derby > coppa europea > big match (peso ≥ 7, lo stesso di «big game» nel gioco)
+    > normale. Conseguenze da confermare: *ogni* partita della Nazionale (anche l'amichevole) ha bandiere e inno; un derby in coppa
+    europea è «derby» (niente inno); dalla 37ª giornata il peso sale di 3, quindi con una corsa al titolo o alla salvezza la partita diventa «big» (quella del salvataggio di prova pesa 7).
+11. **Provato dal vero solo per finale di coppa e big match.** Derby, coppa europea e Nazionale sono stati provocati dal banco di prova
+    sulla partita di campionato del salvataggio: la regia è verificata, **il riconoscimento del tipo sul percorso vero no** (è coperto
+    solo dalla tabella a 13 contesti). In particolare non ho visto dal vero una partita della Nazionale coi colori della nazione.
+12. **«Bambini per mano»**: sono quelli che c'erano già in ogni ingresso; durante l'inno restano al fianco dei giocatori. Non ho
+    aggiunto nulla (nessun corpo nuovo).
+13. **Coreografia solo a stadio caldo**: se la curva è sotto la soglia di riempimento della scenografia esistente, niente cartoncini
+    (anche in una partita importante). Mi è sembrato coerente; da confermare.
+
+**Trovato per strada**
+
+14. **Guardalinee giganti (27 unità) dal giro 196.** Corretti in questo giro, sotto lo stesso rosso. Li ho misurati solo nell'ingresso;
+    la correzione è alla costruzione del corpo, quindi vale per tutta la gara, ma **in partita non li ho rimisurati**. `tpose-196` non
+    poteva vederli (misura la posa, non la taglia). Se la 7.999.194 è già dal PO, il difetto è in produzione.
+15. **Rapporti 170 e 170b assenti dal ramo**: non ho potuto leggerli. Se esistono altrove, alcune scelte di questo giro potrebbero
+    ripetere o contraddire quell'analisi.
+
+**Metodo e limiti**
+
+16. Gli **fps** sono headless (1-2,5 fps con rendering software): dicono solo che il verde non è più lento del rosso. Gli fps del
+    telefono non li posso misurare da qui.
+17. `ingresso-206` dura **~50 minuti** (undici ingressi coi corpi 3D): l'ho messo fra i lenti. Si può accorciare togliendo i bracci PC.
+18. **Peso delle foto**: i primi tre commit del ramo contengono le foto in PNG (fino a 35 MB); le ho poi sostituite con JPEG (5 MB), ma i PNG
+    restano nella storia del ramo (riscrivere la storia è vietato). Chi unisce può schiacciare i commit.
+19. **Regola non rispettata da me**: in due attese ho usato `pgrep -f` dentro un ciclo (vietato dalle regole fisse). Nessun effetto sui
+    risultati; dopo ho atteso solo sul file degli esiti.
+20. Dopo il verde finale ho cambiato **solo la cartella di uscita** di foto e misure dei due guardiani (ora `tests/visual/out/giro206`,
+    fuori da git, salvo `CPM_FOTO_DIR`): dopo quella modifica `notte-206` è stato rifatto per intero (verde) e `ingresso-206` solo nella prova del rosso forzato (normale + finale); il giro verde completo di `ingresso-206` è quello di prima della modifica della cartella.
+21. Il giro non è promosso su `main`, non ha numero di versione e non aggiorna backlog e roadmap: spettano a chi rilascia.
