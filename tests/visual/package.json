@@ -653,6 +653,7 @@
     "notte-206": "node notte-206.mjs",
     "ingresso-206": "node ingresso-206.mjs",
     "avviso3d-209": "node avviso3d-209.mjs",
+    "simula-215": "node simula-215.mjs",
     "misura-198": "node misura-198.mjs",
     "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
