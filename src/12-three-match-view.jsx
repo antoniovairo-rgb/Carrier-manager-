@@ -408,7 +408,7 @@ function ThreeMatchView(props){
     stadiumHomeCol,stadiumAwayCol,stadiumAwayCol2=null,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
-    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
+    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;/* props.ingresso206 [giro 206]: tipo di ingresso in campo (INGRESSO206) */_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -2907,6 +2907,64 @@ function ThreeMatchView(props){
        della competizione resta comunque leggibile in tre punti gia' presenti: la fascia sui muretti delle
        tribune (7.301), il nastro a bordo campo e il tappeto cerimoniale all'ingresso delle squadre. */
     // item 9 (5.49.2): TAPPETO CERIMONIALE — grande logo competizione a centrocampo, visibile solo durante l'ingresso (walkout).
+    /* [giro 206 PO-412 «ingresso piu' scenico nelle partite importanti» — rosso __CPM_NO_G206] LA SCENA DELL'INGRESSO PER TIPO DI PARTITA.
+       Tutto procedurale, nessun asset nuovo: (1) COREOGRAFIA = un telo a cartoncini nei due colori sociali steso sulla pendenza della
+       curva (stessa superficie _cxAt/_cyAt di bandiere e sciarpe), casa sempre, ospiti nelle finali; (2) FUMOGENI = pochi sprite
+       morbidi coi colori del club che salgono dal basso della curva; CORIANDOLI = punti che cadono sulle squadre schierate.
+       DOSE: telefono 8 fumogeni per curva e 80 coriandoli, PC 14 e 180 (un solo materiale per tipo, nessuna luce). Niente a stadio
+       freddo (stessi cancelli _tifoHome/_tifoAway della scenografia). Si accende solo durante l'ingresso (_tick206). */
+    const _G206=(function(){try{
+      const _k=props.ingresso206;const _cfg=(_k&&typeof INGRESSO206!=='undefined')?INGRESSO206[_k]:null;
+      if(!_cfg||(typeof window!=='undefined'&&window.__CPM_NO_G206))return null;
+      const G={tipo:_k,cfg:_cfg,coreo:[],fumo:[],cori:null,on:false,nF:0,nC:0,_cv:null,_ftx:null};
+      const _rootG=(sr.current.stadiumRoot||scene);
+      const _css=(h)=>typeof h==='number'?('#'+(h>>>0).toString(16).padStart(6,'0').slice(-6)):String(h||'#888888');
+      let _sd=((_adSeed44^0x206206)>>>0)||7;const _r=()=>{_sd=(_sd*1664525+1013904223)>>>0;return _sd/4294967296;};
+      const _mkCoreo=(home,c1,c2)=>{
+        const cv=document.createElement('canvas');cv.width=256;cv.height=128;const x=cv.getContext('2d');
+        const NB=8;for(let i=0;i<NB;i++){x.fillStyle=(i%2)?c2:c1;x.fillRect(i*256/NB,0,256/NB+1,128);}
+        x.fillStyle=c2;x.fillRect(0,50,256,28);x.fillStyle=c1;x.fillRect(0,58,256,12);
+        for(let i=0;i<260;i++){x.fillStyle=(_r()<0.5?'rgba(255,255,255,':'rgba(0,0,0,')+(0.04+_r()*0.10).toFixed(2)+')';x.fillRect(((_r()*32)|0)*8,((_r()*16)|0)*8,8,8);}
+        x.strokeStyle='rgba(0,0,0,0.20)';x.lineWidth=1;for(let gx=0;gx<=256;gx+=8){x.beginPath();x.moveTo(gx+0.5,0);x.lineTo(gx+0.5,128);x.stroke();}
+        for(let gy=0;gy<=128;gy+=8){x.beginPath();x.moveTo(0,gy+0.5);x.lineTo(256,gy+0.5);x.stroke();}
+        const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;
+        const NT=6,NZ=8,ZW=25,T0=0.14,T1=0.86;const pos=[],uv=[],idx=[];
+        for(let it=0;it<=NT;it++){const t=T0+(T1-T0)*it/NT;const cx=_cxAt(t,home)+(home?-0.6:0.6),cy=_cyAt(t,home)+1.3;
+          for(let iz=0;iz<=NZ;iz++){pos.push(cx,cy,-ZW+2*ZW*iz/NZ);uv.push(iz/NZ,it/NT);}}
+        for(let it=0;it<NT;it++)for(let iz=0;iz<NZ;iz++){const a=it*(NZ+1)+iz,b=a+1,c=a+NZ+1,d=c+1;idx.push(a,b,c,b,d,c);}
+        const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);
+        const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+        m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';_rootG.add(m);G.coreo.push(m);};
+      const _mkFumo=(home,c1,c2)=>{const n=isDesktop?14:8;
+        if(!G._ftx){const cv=document.createElement('canvas');cv.width=cv.height=64;const x=cv.getContext('2d');const rg=x.createRadialGradient(32,32,0,32,32,32);
+          rg.addColorStop(0,'rgba(255,255,255,0.9)');rg.addColorStop(0.5,'rgba(255,255,255,0.35)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,64,64);G._ftx=new THREE.CanvasTexture(cv);}
+        for(let i=0;i<n;i++){const col=new THREE.Color(_css((i%2)?c2:c1)).lerp(new THREE.Color(0xffffff),0.22);
+          const s=new THREE.Sprite(new THREE.SpriteMaterial({map:G._ftx,color:col,transparent:true,opacity:0,depthWrite:false}));
+          const t=0.10+_r()*0.32;s.userData={fumo206:true,home:!!home,x0:_cxAt(t,home),y0:_cyAt(t,home)+1.6,z0:-22+44*((i+_r()*0.8)/n),ph:_r()*7,v:0.8+_r()*0.5};
+          s.visible=false;_rootG.add(s);G.fumo.push(s);}};
+      if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
+      if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
+      if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
+      if(_cfg.coriandoli){const n=isDesktop?180:80;const p=new Float32Array(n*3),c=new Float32Array(n*3);const cols=[new THREE.Color(_css(_tHCol)),new THREE.Color(_css(_hc2)),new THREE.Color(0xffffff)];
+        G._cv=new Float32Array(n*2);
+        for(let i=0;i<n;i++){p[i*3]=-32+_r()*42;p[i*3+1]=_r()*16;p[i*3+2]=-18+_r()*36;const k=cols[i%3];c[i*3]=k.r;c[i*3+1]=k.g;c[i*3+2]=k.b;G._cv[i*2]=1.6+_r()*1.8;G._cv[i*2+1]=_r()*6.28;}
+        const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));
+        const pts=new THREE.Points(g,new THREE.PointsMaterial({size:0.26,vertexColors:true,transparent:true,opacity:0,depthWrite:false,sizeAttenuation:true}));
+        pts.visible=false;pts.frustumCulled=false;scene.add(pts);G.cori=pts;G.nC=n;}
+      return G;}catch(_e206){try{if(typeof window!=='undefined')window.__CPM_ING206ERR=String(_e206&&_e206.message||_e206);}catch(_e){}return null;}})();
+    /* un passo per fotogramma dell'ingresso: t = tempo di coreografia, WD = fine della camminata (prima dell'inno), TOT = fine dell'ingresso */
+    const _tick206=(t,WD,TOT,dt,vivo)=>{const G=_G206;if(!G)return;
+      if(!vivo){if(G.on){G.on=false;for(const m of G.coreo)m.visible=false;for(const s of G.fumo)s.visible=false;if(G.cori)G.cori.visible=false;G.nF=0;}try{if(typeof window!=='undefined'&&window.__CPM_INNO206ON)window.__CPM_INNO206ON=false;}catch(_e){}return;}
+      G.on=true;
+      const _in=clamp((t-0.6)/1.6,0,1),_out=clamp((TOT-t)/1.5,0,1),_a=Math.min(_in,_out);
+      for(const m of G.coreo){m.visible=_a>0.01;m.material.opacity=0.94*_a;}
+      let nf=0;for(const s of G.fumo){const u=s.userData;s.visible=t>1.0&&_a>0.01;if(!s.visible)continue;nf++;const life=((t*u.v*0.16)+u.ph)%1;
+        s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.42*Math.sin(life*Math.PI)*_a;}
+      G.nF=nf;
+      if(G.cori){const on=t>=WD-7.5;G.cori.visible=on&&_out>0.01;if(G.cori.visible){G.cori.material.opacity=0.95*Math.min(1,(t-(WD-7.5))/1.2)*_out;const P=G.cori.geometry.attributes.position.array,n=G.nC;
+        for(let i=0;i<n;i++){let y=P[i*3+1]-G._cv[i*2]*dt;if(y<0.05)y=14+((i*7)%5);P[i*3+1]=y;P[i*3]+=Math.sin(G._cv[i*2+1]+t*2.1+i)*0.012;}
+        G.cori.geometry.attributes.position.needsUpdate=true;}}
+    };
     let _ceremonyCarpet=null;
     {const cc=document.createElement("canvas");cc.width=cc.height=1024;const c2=cc.getContext("2d");// 5.49.12: risoluzione 2× + ELEVORA grande/bold/contornato → leggibile a centrocampo
      const _lk2=/coppa|cup|champions|europa|conference|continental/i.test(_compLbl)?"cup":/mondiale|europeo|nazional/i.test(_compLbl)?"nation":"league";
@@ -6852,6 +6910,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            passo di camminata) + 2 s per fermarsi e girarsi verso la camera; mai sotto i 10,5 s storici. */
         WALK_DUR=10.5;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){let _u245=0;const _a245=(m)=>{if(!m||m._wStartX==null||m._wx==null)return;_u245=Math.max(_u245,(m._wDelay||0)+Math.hypot(m._wx-m._wStartX,m._wz-m._wStartZ)/WALK_V245);};
           sr.current.players.forEach(pp=>_a245(pp.mesh));_a245(hero);WALK_DUR=Math.max(10.5,_u245+2);}
+        sr.current._ing206=_G206?_G206.cfg:null;sr.current._br206=null;if(sr.current._ing206&&sr.current._ing206.inno)WALK_DUR+=sr.current._ing206.inno;/* [giro 206 PO-412] l'inno e' tempo in piu' a squadre schierate */
+        try{if(typeof window!=='undefined'){window.__CPM_ING206=null;window.__CPM_INNO206ON=false;}}catch(_e206){}
         try{if(typeof window!=='undefined')window.__CPM_WALKDUR245=+WALK_DUR.toFixed(2);}catch(_e245d){}
         /* [giro 80 PO-285 «l'ingresso in campo lo velocizzerei ulteriormente» — rosso __CPM_NO_ING285] decisione PO (questionario): scena di ~16 s
            (dopo il giro 54 erano ~24) ottenuta con TAGLI DI CAMERA, non correndo: il passo resta camminata (WALK_V245 2,2 u/s, tetto del guardiano 2,3:
@@ -6860,10 +6920,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            vede un montaggio, nessuno cammina piu' in fretta. Tre stacchi (5 s, 12 s, 16,5 s di coreografia) dividono il risparmio WALK_DUR-16 in
            3/8, 5/16, 5/16. WALK_DUR (e __CPM_WALKDUR245) resta la durata di COREOGRAFIA; la durata di scena dichiarata e' __CPM_WALKSCENE285. */
         sr.current._skip285=0;sr.current._cutF285=false;sr.current._cuts285=null;
-        if(!(typeof window!=='undefined'&&window.__CPM_NO_ING285)&&WALK_DUR>16.5){const _S285=WALK_DUR-16;sr.current._cuts285=[{t:5,s:_S285*0.375,d:false},{t:12,s:_S285*0.3125,d:false},{t:16.5,s:_S285*0.3125,d:false}];}
-        try{if(typeof window!=='undefined'){window.__CPM_WALKSCENE285=sr.current._cuts285?16:+WALK_DUR.toFixed(2);window.__CPM_CUT285=0;}}catch(_e285a){}
+        {const _g206=sr.current._ing206,_in206=_g206?(_g206.inno||0):0,_sc206=_g206?_g206.scena:16,_tg206=_g206?_g206.tagli:[5,12,16.5];/* [giro 206 PO-412] scena e stacchi per tipo di partita; senza tipo (rosso) i numeri del giro 80 */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_ING285)&&(WALK_DUR-_in206)>_sc206+0.5){const _S285=WALK_DUR-_in206-_sc206;const _q206=_tg206.length===3?[0.375,0.3125,0.3125]:_tg206.map(()=>1/_tg206.length);sr.current._cuts285=_tg206.map((t,i)=>({t,s:_S285*_q206[i],d:false}));}
+        sr.current._scena206=_sc206+_in206;}
+        try{if(typeof window!=='undefined'){window.__CPM_WALKSCENE285=sr.current._cuts285?(sr.current._scena206||16):+WALK_DUR.toFixed(2);window.__CPM_CUT285=0;}}catch(_e285a){}
       }
       _wasWalk=isWalk;
+      if(!isWalk&&_G206&&_G206.on)_tick206(0,0,0,0,false);/* [giro 206] fuori dall'ingresso coreografia, fumogeni e coriandoli si spengono */
       /* [7.999.59 collaudo PO «le scene 3D all'ingresso in campo sono molto scattose e pesanti»] MISURATO (long task + profilo CPU
          dell'ingresso): 13 blocchi del thread principale, 12,8 s in headless, quasi tutti compilazione degli shader e caricamento
          dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
@@ -6894,6 +6957,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
+        if(_G206)_tick206(walkT,WALK_DUR-((sr.current._ing206&&sr.current._ing206.inno)||0),WALK_DUR,dt,true);
         if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),s:+(walkT-(sr.current._skip285||0)).toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
         if(_ceremonyCarpet){const _was96=_ceremonyCarpet.visible;_ceremonyCarpet.visible=true;
@@ -10204,15 +10268,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            12 s (era ~9), poi la camera bassa accompagna la testa della fila (l'eroe esce per primo), negli ultimi 6 s la carrellata
            lungo la fila schierata di sempre. Le formule delle due inquadrature storiche sono le stesse. */
         const _c245=!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)&&WALK_DUR>16;
-        const _ORB245=12,_FIN245=6;
+        const _g206=sr.current._ing206||null,_WD206=WALK_DUR-(_g206?(_g206.inno||0):0);/* [giro 206 PO-412] regia per tipo: fine della camminata (prima dell'inno) e durata del giro */
+        const _ORB245=(_g206&&_g206.orb)||12,_FIN245=6;
         /* [giro 46 PO-071 — l'ingresso parte dal TUNNEL. Rosso __CPM_NO_STADI246] i primi 3,2 s la camera e' bassa a bordo campo e
            guarda la bocca del tunnel della tipologia (portale, pensilina, tubo di vetro) mentre escono i primi; poi l'orbita, che
            parte gia' da quel lato (angolo -90 gradi: x 0, z -27,6), quindi il raccordo e' un lerp breve. Orbita compressa nei
            secondi restanti, stessi 12 s complessivi. */
-        const _tn46=(_c245&&sr.current&&sr.current._tun46&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?sr.current._tun46:null,_T46=_tn46?3.2:0;
-        const prog=_c245?(walkT<_T46?-2:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=WALK_DUR-_FIN245?0.85+0.15*Math.min(1,(walkT-(WALK_DUR-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
-        if(prog===-2){
-          tPx=_tn46.x+8.5;tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+        const _tn46=(_c245&&sr.current&&sr.current._tun46&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?sr.current._tun46:null,_T46=_tn46?((_g206&&_g206.tunnel)||3.2):0;const _bn206=(_c245&&_g206&&_g206.regia==="bandiere")?_ORB245:0;
+        const prog=_c245?(walkT<_T46?-2:(_bn206&&walkT<_bn206)?-3:(_g206&&_g206.inno&&walkT>=_WD206)?-4:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=_WD206-_FIN245?0.85+0.15*Math.min(1,(walkT-(_WD206-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
+        if(prog===-3){/* [giro 206] Nazionale: la curva di casa con le bandiere, panoramica lenta lungo la gradinata */
+          const _k=clamp((walkT-_T46)/Math.max(0.5,_bn206-_T46),0,1);
+          tPx=_sideX-36;tPy=8.5+1.5*_k;tPz=-12+24*_k;tLx=_sideX-3;tLy=7.5;tLz=-5+10*_k;
+          kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
+        } else if(prog===-4){/* [giro 206] inno: squadre schierate coi bambini per mano, carrellata lenta e vicina lungo la fila */
+          const _k=clamp((walkT-_WD206)/Math.max(0.5,_g206.inno),0,1);
+          tPx=-27;tPy=3.1;tPz=-8.5+17*_k;tLx=-11;tLy=1.55;tLz=tPz*0.9;
+          kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
+        } else if(prog===-2){
+          tPx=_tn46.x+8.5-((_g206&&_g206.regia==="tunnel")?3.2*Math.min(1,walkT/_T46):0);tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
         } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
@@ -10225,7 +10298,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              sopra i terrapieni bassi del borgo a 26u si vedeva soprattutto prato e cielo, sotto la corona dell'arena il giro restava
              basso. La quota segue la tipologia (borgo 0,70 · catino 0,92 · arena 1,14); traiettoria e tempi invariati. */
           const _k46=((sr.current&&sr.current._stad455)||{}).kind,_hk46=_k46==="borgo"?0.70:_k46==="catino"?0.92:_k46==="arena"?1.14:1;
-          const _rad=46-6*prog,_hgt=(26-9*prog)*_hk46;// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
+          const _pan206=!!(_g206&&_g206.regia==="panoramica");/* [giro 206] finali: panoramica piu' alta, lo sguardo tiene anche le curve */
+          const _rad=46-6*prog,_hgt=(26-9*prog)*_hk46*(_pan206?1.18:1);// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:_k46||null,k:_hk46,y:+_hgt.toFixed(2)};}catch(_e){}
           tPx=Math.cos(_th)*_rad;tPy=_hgt;tPz=Math.sin(_th)*_rad*0.60;
           tLx=Math.cos(_th+Math.PI)*40;tLy=8-4*prog;tLz=Math.sin(_th+Math.PI)*26;// sguardo alla tribuna OPPOSTA: campo+anello in quadro
@@ -10236,12 +10310,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              la tribuna opposta resta in quadro. Baricentro senza allocazioni, solo corpi visibili. */
           if(!(typeof window!=='undefined'&&window.__CPM_NO_ING276)){let _sx=hero.position.x,_sz=hero.position.z,_sn=1;const _pl276=sr.current.players||[];
             for(let i=0;i<_pl276.length;i++){const _m=_pl276[i]&&_pl276[i].mesh;if(_m&&_m.visible!==false){_sx+=_m.position.x;_sz+=_m.position.z;_sn++;}}
-            const _cx=_sx/_sn,_cz=_sz/_sn;tLx=tLx*0.25+_cx*0.75;tLz=tLz*0.25+_cz*0.75;tLy=2.6;}
+            const _cx=_sx/_sn,_cz=_sz/_sn;if(_pan206){tLx=tLx*0.7+_cx*0.3;tLz=tLz*0.7+_cz*0.3;tLy=8.5;}else{tLx=tLx*0.25+_cx*0.75;tLz=tLz*0.25+_cz*0.75;tLy=2.6;}}
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
           const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
           const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=_o277?-33:-42;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
+        }
+        if(_g206){/* [giro 206] entrando e uscendo dalle inquadrature nuove (bandiere, inno) la camera STACCA, non attraversa il campo in volo */
+          const _rm206=prog===-2?"tunnel":prog===-3?"bandiere":prog===-4?"inno":prog===-1?"fila":prog<0.85?"panoramica":"schierati";
+          if(sr.current._br206!==_rm206){const _da=sr.current._br206;sr.current._br206=_rm206;if(_da&&(_da==="bandiere"||_da==="inno"||_rm206==="bandiere"||_rm206==="inno")){kp=1;kl=1;}}
+          try{if(typeof window!=='undefined'){window.__CPM_INNO206ON=(prog===-4)?((_G206&&_G206.tipo)||true):false;
+            if(_CPM_TEST){const W=(window.__CPM_ING206=window.__CPM_ING206||{regie:[],durate:{},coreoMax:[],fumoMax:0,coriMax:0,innoS:0});
+              W.tipo=_G206?_G206.tipo:null;W.regia=_g206.regia;W.scenaAttesa=sr.current._scena206||null;
+              if(W.regie[W.regie.length-1]!==_rm206)W.regie.push(_rm206);W.durate[_rm206]=+((W.durate[_rm206]||0)+dt).toFixed(3);
+              W.t=+walkT.toFixed(2);W.s=+(walkT-(sr.current._skip285||0)).toFixed(2);
+              const _cv=_G206?_G206.coreo.filter(m=>m.visible&&m.material.opacity>0.5).map(m=>m.userData.coreo206):[];if(_cv.length>W.coreoMax.length)W.coreoMax=_cv;
+              W.fumoMax=Math.max(W.fumoMax,_G206?_G206.nF:0);W.coriMax=Math.max(W.coriMax,(_G206&&_G206.cori&&_G206.cori.visible)?_G206.nC:0);if(prog===-4)W.innoS=+(W.innoS+dt).toFixed(3);}}}catch(_e206w){}
         }
       } else {
         // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
