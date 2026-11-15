@@ -112,7 +112,7 @@ IDENTICO BYTE PER BYTE).
 | career-critical | ✅ |
 | test:logic | ✅ 51 pass · 0 fail |
 | save-compat | ✅ 12 pass · 0 fail |
-| highlight-95 | ESITO_H95 |
+| highlight-95 | ✅ verde 99 highlight · 0 senza esito; rosso 110 highlight · 5 senza esito (il rosso si vede) — corsa unica, 1 h 31 min |
 
 Durante lo sviluppo `piazzato-204` è stato rosso una volta per il motivo giusto (testimone 3D vuoto: il 3D era sospeso sotto il campo
 dall'alto, vedi §1) e `pullman-204` due volte per «non giudicato» (la premiazione chiusa a orologio prima del beat dopo la presa; risolto
