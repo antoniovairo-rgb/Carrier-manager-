@@ -1,0 +1,12 @@
+
+== TOCCO ==
+360x640: gi8 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(21,487) · dentro lo schermo true · bordi sx 21 dx 199 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 1→0 · tasti a schermo: ⏸ 14x34@122,58 | Audio della partita 23x34@162,58 | Velocità della partita: 1× 22x20@214,65 | ⚠️ 23x34@260,58 | 💥Conclusione potenteTIRO  318x56@21,449 | 🎯Conclusione precisaTECNI 318x56@21,511 | 🏃Avanza in areaVELOCITÀ · 318x56@21,573
+375x667: gi8 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(21,514) · dentro lo schermo true · bordi sx 21 dx 214 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 1→0 · tasti a schermo: ⏸ 14x34@129,58 | Audio della partita 23x34@169,58 | Velocità della partita: 1× 22x20@221,65 | ⚠️ 23x34@267,58 | 💥Conclusione potenteTIRO  333x56@21,476 | 🎯Conclusione precisaTECNI 333x56@21,538 | 🏃Avanza in areaVELOCITÀ · 333x56@21,600
+390x844: gi8 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(15,691) · dentro lo schermo true · bordi sx 15 dx 235 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 1→0 · tasti a schermo: ⏸ 14x34@137,58 | Audio della partita 23x34@177,58 | Velocità della partita: 1× 22x20@229,65 | ⚠️ 23x34@275,58 | 💥Conclusione potenteTIRO  360x56@15,653 | 🎯Conclusione precisaTECNI 360x56@15,715 | 🏃Avanza in areaVELOCITÀ · 360x56@15,777
+pc1366x768: gi8 fase hl_move · tasto 42px · fra tasti 5.7px · pad 134x134 @(1007.2,129) · dentro lo schermo true · bordi sx 1007.2 dx 224.8 giu 505 · tasto d'azione piu' vicino 5px («✅ Pronto [0]») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 46.0 diagonali 65.1 · settore 45° a bordo pad 52.6px
+   dopo un tocco su ▲: fase hl_choose · mosse 1→0 · tasti a schermo: ⏸ 14x34@659,58 | Audio della partita 23x34@670,58 | Velocità della partita: 1× 22x20@693,65 | ⚠️ 23x34@715,58 | 1💥 Conclusione potente 359x45@1002,187 | 2🎯 Conclusione precisa 352x44@1005,236 | 3🏃 Avanza in area 352x44@1005,285
+
+FINE misura-207

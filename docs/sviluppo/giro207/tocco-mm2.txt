@@ -1,0 +1,12 @@
+
+== TOCCO ==
+360x640: gi16 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(21,487) · dentro lo schermo true · bordi sx 21 dx 199 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 2→1 · tasti a schermo: ⏸ 14x34@122,58 | Audio della partita 23x34@162,58 | Velocità della partita: 1× 22x20@214,65 | ⚠️ 23x34@260,58 | ↗️Cross tesoPASSAGGIO · 53 318x56@21,449 | ↗️Cross a rientrareTECNICA 318x56@21,511 | 🎯Cerca l'angoloTIRO · 61 318x56@21,573
+375x667: gi16 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(21,514) · dentro lo schermo true · bordi sx 21 dx 214 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 2→1 · tasti a schermo: ⏸ 14x34@129,58 | Audio della partita 23x34@169,58 | Velocità della partita: 1× 22x20@221,65 | ⚠️ 23x34@267,58 | ↗️Cross tesoPASSAGGIO · 53 333x56@21,476 | ↗️Cross a rientrareTECNICA 333x56@21,538 | 🎯Cerca l'angoloTIRO · 61 333x56@21,600
+390x844: gi16 fase hl_move · tasto 44px · fra tasti 5.7px · pad 140x140 @(15,691) · dentro lo schermo true · bordi sx 15 dx 235 giu 13 · tasto d'azione piu' vicino 14px («Scegli») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 48.0 diagonali 67.9 · settore 45° a bordo pad 55px
+   dopo un tocco su ▲: fase hl_choose · mosse 2→1 · tasti a schermo: ⏸ 14x34@137,58 | Audio della partita 23x34@177,58 | Velocità della partita: 1× 22x20@229,65 | ⚠️ 23x34@275,58 | ↗️Cross tesoPASSAGGIO · 53 360x56@15,653 | ↗️Cross a rientrareTECNICA 360x56@15,715 | 🎯Cerca l'angoloTIRO · 61 360x56@15,777
+pc1366x768: gi16 fase hl_move · tasto 42px · fra tasti 5.7px · pad 134x134 @(1007.2,129) · dentro lo schermo true · bordi sx 1007.2 dx 224.8 giu 505 · tasto d'azione piu' vicino 5px («✅ Pronto [0]») · sovrapposizioni 0 · cella d'angolo↔cardinale 4px · raggio cardinali 46.0 diagonali 65.1 · settore 45° a bordo pad 52.6px
+   dopo un tocco su ▲: fase hl_choose · mosse 2→1 · tasti a schermo: ⏸ 14x34@659,58 | Audio della partita 23x34@670,58 | Velocità della partita: 1× 22x20@693,65 | ⚠️ 23x34@715,58 | ▲ 42x42@1051,128 | ◀ 42x42@1005,174 | ▶ 42x42@1097,174 | ▼ 42x42@1051,220 | 1↗️ Cross teso 359x45@1002,326 | 2↗️ Cross a rientrare 352x44@1005,375 | 3🎯 Cerca l'angolo 352x44@1005,424
+
+FINE misura-207
