@@ -695,6 +695,54 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
 /* [giro 151 PO-353] vita della scia del pallone 2D in secondi di TEMPO DI SCENA (decisione PO: «sparisce in meno di mezzo secondo») */
 const SCIA151=0.35;
+/* [giro 205 PO-465 — rosso window.__CPM_NO_G205] LA PARTITA IN 2D HA ANCHE I SUOI RIGORI E LA SUA PREMIAZIONE.
+   MISURATO (sonda misura-205, 2D forzata con __CPM_CAP196=1, coppa finale, 375x667 e 1366x768): in modalita' 2D (giro 196) la
+   lotteria e la premiazione mostravano il campo dall'alto CONGELATO della partita (ventidue pallini fermi, pannello statistiche
+   coperto dalle scritte «CALCI DI RIGORE» / «TITOLO VINTO!»): nessun rigore e nessuna coppa si vedevano. La serie, la cerimonia,
+   la rassegna e il ritorno alla carriera funzionavano gia' (nessun blocco). Ora, solo in 2D e solo in queste due fasi, al posto del
+   campo congelato: la PORTA vista dal dischetto col tiro deciso dal motore della serie (direzione, alto/basso, fuori, parato), e un
+   quadro di PREMIAZIONE (coppa, titolo, punteggio) con la riga che dice che e' la versione 2D. Nessun asset: CSS ed emoji.
+   Gli esiti restano quelli di soState/soFx (nessuna decisione nuova). */
+function Riserva2D205({fase,soState=null,soFx=null,ceremony=null,kitCasa="#8e1f33",kitOspiti="#e2e8f0",golCasa=0,golOsp=0,siglaCasa="",siglaOsp="",squadra="",stretto=false}){
+  const [tirato,setTirato]=React.useState(false);
+  const k=fase==="shootout"&&soFx?soFx:null,key=k?k.key:null;
+  React.useEffect(()=>{setTirato(false);if(key==null)return;const t=setTimeout(()=>setTirato(true),(key>=1?650:150));return()=>clearTimeout(t);},[key]);// eslint-disable-line
+  try{if(typeof window!=='undefined')window.__CPM_R2D205={fase,key,tirato,esito:k?(k.scored?'gol':(k.wide?'fuori':'parato')):null};}catch(_e){}
+  const nota=<div data-cpm="riserva2d205-nota" style={{position:"absolute",left:0,right:0,bottom:stretto?58:16,textAlign:"center",fontSize:FS.caption,color:"rgba(255,255,255,0.62)",fontWeight:700,letterSpacing:.3,padding:"0 90px 0 12px"}}>Versione 2D · la scena 3D non era pronta</div>;
+  if(fase==="shootout"){
+    /* la porta dal dischetto: 7,32 x 2,44 → riquadro 76% x 30% del quadro. dir -1/0/1 = palo sinistro/centro/palo destro */
+    const tiraCasa=k?k.side==="H":true;const colPor=tiraCasa?kitOspiti:kitCasa;
+    const dx=k?k.dir:0,alto=!!(k&&k.high);
+    const bx=k&&tirato?(50+dx*(k.wide?44:27)):50,by=k&&tirato?(k.wide&&!k.scored&&alto?22:(alto?37:51)):72;
+    const gDir=k?(k.scored?(dx===0?1:-dx):dx):0;/* parato: il portiere va dove va il pallone; gol: dalla parte sbagliata (o fermo sul tiro centrale) */
+    const gx=tirato&&k?50+gDir*(k.scored&&dx===0?18:22):50;
+    return(<div data-cpm="rigori2d205" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden",background:"linear-gradient(180deg,#0b1424 0%,#13233a 40%,#1d5a2c 40%,#2f7d3c 100%)"}}>
+      <div style={{position:"absolute",left:"12%",right:"12%",top:"30%",height:"26%",border:"5px solid #f5f5f5",borderBottom:"none",borderRadius:"3px 3px 0 0",background:"repeating-linear-gradient(90deg,rgba(255,255,255,0.13) 0 2px,transparent 2px 14px),repeating-linear-gradient(0deg,rgba(255,255,255,0.13) 0 2px,transparent 2px 14px),rgba(5,12,24,0.35)"}}/>
+      <div style={{position:"absolute",left:"4%",right:"4%",top:"56%",height:2,background:"rgba(255,255,255,0.7)"}}/>
+      <div style={{position:"absolute",left:"50%",top:"72%",width:8,height:4,marginLeft:-4,borderRadius:"50%",background:"rgba(255,255,255,0.8)"}}/>
+      <div data-cpm="rigori2d205-portiere" style={{position:"absolute",left:gx+"%",top:"41%",width:30,height:56,marginLeft:-15,transition:"left .45s ease-out, transform .45s ease-out",transform:`rotate(${tirato&&k?gDir*62:0}deg)`,transformOrigin:"50% 100%"}}>
+        <div style={{width:20,height:20,margin:"0 auto",borderRadius:"50%",background:"#e8c7a0",border:"2px solid rgba(0,0,0,0.25)"}}/>
+        <div style={{width:30,height:34,marginTop:2,borderRadius:8,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
+      </div>
+      <div data-cpm="rigori2d205-palla" style={{position:"absolute",left:bx+"%",top:by+"%",width:tirato?14:18,height:tirato?14:18,marginLeft:tirato?-7:-9,marginTop:tirato?-7:-9,borderRadius:"50%",background:"radial-gradient(circle at 35% 35%,#fff 0 40%,#cbd5e1 70%,#64748b 100%)",boxShadow:"0 3px 6px rgba(0,0,0,0.45)",transition:"left .55s cubic-bezier(.2,.7,.3,1), top .55s cubic-bezier(.2,.7,.3,1), width .55s, height .55s"}}/>
+      {k&&<div style={{position:"absolute",left:0,right:0,top:"78%",textAlign:"center",fontSize:FS.small,fontWeight:800,color:tiraCasa?"#fde68a":"#fff",textShadow:"0 2px 6px rgba(0,0,0,0.8)"}}>{(soState&&soState.seq&&soState.seq[key]&&soState.seq[key].kicker)||""}</div>}
+      {nota}
+    </div>);
+  }
+  /* premiazione / festa leggera */
+  const leggera=!!(ceremony&&ceremony.light);
+  const conf=[];for(let i=0;i<18;i++)conf.push(<span key={i} style={{position:"absolute",top:0,left:((i*37)%100)+"%",width:7,height:11,borderRadius:2,background:[kitCasa,"#fbbf24","#fff","#4ade80"][i%4],animation:`confettiFall ${3.2+(i%5)*0.6}s linear ${(i%7)*0.45}s infinite`,opacity:.9}}/>);
+  return(<div data-cpm="cerimonia2d205" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden",background:`radial-gradient(circle at 50% 46%, ${kitCasa}cc 0%, #1a1020 58%, #0b0f1a 100%)`}}>
+    {conf}
+    <div style={{position:"absolute",left:0,right:0,top:stretto?"24%":"22%",display:"flex",flexDirection:"column",alignItems:"center",gap:8,padding:"0 16px",textAlign:"center"}}>
+      <div style={{fontSize:stretto?84:110,lineHeight:1,animation:"trophyRise 1.1s ease-out both, trophyGlow 2.4s ease-in-out 1.1s infinite"}}>{leggera?"🎉":"🏆"}</div>
+      <div style={{fontSize:stretto?20:26,fontWeight:FW.black,color:"#fff",letterSpacing:1,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{leggera?"Che vittoria!":(squadra||(ceremony&&ceremony.name)||"Titolo vinto")}</div>
+      <div className="cpm-num" style={{fontSize:stretto?22:28,fontWeight:FW.black,color:"#fde68a",fontVariantNumeric:"tabular-nums"}}>{siglaCasa} {golCasa} — {golOsp} {siglaOsp}</div>
+      {!leggera&&<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.8)",fontWeight:700}}>Il capitano alza la coppa sotto la curva</div>}
+    </div>
+    {nota}
+  </div>);
+}
 function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0,tempo=1}){
   const cRef=React.useRef(null);
   const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};
@@ -11474,6 +11522,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&(phase==="playing"||(modo2D196&&show3D))/* [giro 196] partita 2D: oltre il tetto d'attesa dei corpi anche le scene dell'eroe si giocano sul campo dall'alto */;
                 try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
                 if(!_c2d)return null;
+                if(modo2D196&&(phase==="shootout"||phase==="ceremony")&&!(typeof window!=='undefined'&&window.__CPM_NO_G205))return(<Riserva2D205 fase={phase} soState={soState} soFx={soFx} ceremony={ceremony} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home} siglaCasa={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"").toString().slice(0,3).toUpperCase()} siglaOsp={((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"").toString().slice(0,3).toUpperCase()} squadra={(_heroClubObj&&(_heroClubObj.n||_heroClubObj.name))||""} stretto={isNarrow}/>);/* [giro 205] in 2D rigori e premiazione hanno la loro vista, non il campo congelato */
                 return(<div data-cpm="vista2d" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden"}}>
                   {/* [7.918.0 — LA MAGLIA GIUSTA AL PALLINO GIUSTO] Nel motore «casa» non e' la squadra di casa
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
