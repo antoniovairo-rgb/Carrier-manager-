@@ -24,7 +24,7 @@ export const PREPARA = () => {
 
 /* arma la misura sul tasto trovato da `trova` (corpo di funzione che ritorna l'elemento) */
 export const ARMA = ({ trova, effetto, finestra }) => {
-  const T = window.__T213; const el = (new Function(trova))(); if (!el) return null;
+  const T = window.__T213; let el = (new Function(trova))(); if (!el) return null;
   const vis = () => { const c = getComputedStyle(el); return [c.transform, c.filter, c.boxShadow, c.backgroundColor, c.opacity, c.outlineStyle + c.outlineColor, c.scale || ''].join('|'); };
   const lay = () => [el.offsetWidth, el.offsetHeight, el.offsetLeft, el.offsetTop].join(',');
   const par = el.parentElement; const pr = () => { if (!par) return ''; const r = par.getBoundingClientRect(); return [r.width, r.height, r.left, r.top].map(Math.round).join(','); };
@@ -37,18 +37,20 @@ export const ARMA = ({ trova, effetto, finestra }) => {
   let areaSint = null; try { el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true, button: 0, isPrimary: true, pointerType: 'touch' }));
     areaSint = { premuto: el.getAttribute('data-premuto213'), punti: colpisce() }; el.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true }));
     el.removeAttribute('data-premuto213'); el.removeAttribute('data-pos213'); } catch (e) {}
-  Object.assign(T, { el, t0: null, tce: null, tg: null, fg: 0, fotRisc: null, dopoGestore: null, tc: null, giu: 0, click: 0, ev: [], riscontro: null, rotella: null, effetto: null, layoutMosso: false, rr: null, area: null, fot: 0,
+  Object.assign(T, { el, durFot: null, tFot: null, fotEff: null, traccia: [], sostituito: 0, t0: null, tce: null, tg: null, fg: 0, fotRisc: null, dopoGestore: null, tc: null, giu: 0, click: 0, ev: [], riscontro: null, rotella: null, effetto: null, layoutMosso: false, rr: null, area: null, fot: 0,
     riposo: riposo0, lay0: lay00, punti: P.length, areaSint, layPremuto: null, par0: pr(), rect0: { l: r0.left, t: r0.top, r: r0.right, b: r0.bottom, w: r0.width, h: r0.height }, fine: false, premuto: null, txt0: document.body.innerText });
   const eff = new Function('el', effetto || 'return false');
   const t1 = performance.now(); const gettone = T.gettone = (T.gettone || 0) + 1;/* un anello per misura: quello della misura precedente si ferma */
   const giro = () => {
     if (T.gettone !== gettone) return;
-    const t = performance.now(); T.fot++;
+    /* il tasto puo' essere sostituito da React dopo il tocco (stesso posto, nodo nuovo): si segue il tasto che sta al centro */
+    if (!el.isConnected) { const h = document.elementFromPoint((r0.left + r0.right) / 2, (r0.top + r0.bottom) / 2); const b = h && h.closest ? h.closest('button,[role="button"]') : null; if (b) { el = b; T.el = b; T.sostituito = (T.sostituito || 0) + 1; } }
+    const t = performance.now(); T.fot++; const tPrec = T.tFot; T.tFot = t;
     if (T.t0 != null) {
-      const v = vis();
-      if (T.riscontro == null && el.isConnected && v !== T.riposo) { T.riscontro = t - T.t0; T.premuto = v; T.fotRisc = T.fot - T.fg; T.dopoGestore = t - T.tg; }
+      const v = vis(); if ((T.traccia = T.traccia || []).length < 24) T.traccia.push([Math.round(t - T.t0), el.getAttribute('data-premuto213'), v === T.riposo ? '=' : 'D', el.isConnected ? 1 : 0]);
+      if (T.riscontro == null && el.isConnected && v !== T.riposo) { T.riscontro = t - T.t0; T.premuto = v; T.fotRisc = T.fot - T.fg; T.dopoGestore = t - T.tg; T.durFot = tPrec == null ? null : t - tPrec; }
       if (T.rotella == null && (el.hasAttribute('data-rotella213') || el.querySelector('[data-rotella213]'))) T.rotella = t - T.t0;
-      if (T.effetto == null) { let x = false; try { x = !!eff(el); } catch (e) {} if (x) T.effetto = t - T.t0; }
+      if (T.effetto == null) { let x = false; try { x = !!eff(el); } catch (e) {} if (x) { T.effetto = t - T.t0; T.fotEff = T.fot - T.fg; } }
       if (T.effetto == null && el.isConnected && v !== T.riposo && T.layPremuto == null) { T.layPremuto = lay(); if (T.layPremuto !== T.lay0) T.layoutMosso = true; }/* solo sul fotogramma premuto e prima dell'effetto: dopo, la schermata cambia di diritto */
       /* area di tocco sul fotogramma premuto, prima che l'azione cambi la schermata */
       if (T.area == null && T.effetto == null && el.isConnected && v !== T.riposo) T.area = colpisce();
@@ -62,7 +64,7 @@ export const ARMA = ({ trova, effetto, finestra }) => {
 export const LEGGI = () => { const T = window.__T213; const ev = (T.ev || []).filter(e => /pointerdown|pointerup|click|touchstart|touchend|mousedown|mouseup/.test(e.n));
   return { riscontro: T.riscontro, rotella: T.rotella, effetto: T.effetto, layoutMosso: T.layoutMosso, area: T.area, areaSint: T.areaSint, punti: T.punti, giu: T.giu, click: T.click, t0: T.t0, fot: T.fot,
     lavoro: ev.length ? Math.round(Math.max(...ev.map(e => e.pe - e.ps))) : 0, ritardoIngresso: ev.length ? Math.round(Math.max(...ev.map(e => e.ps - e.s))) : 0,
-    durata: ev.length ? Math.round(Math.max(...ev.map(e => e.d))) : 0, clickElab: (T.tce == null || T.t0 == null) ? null : Math.round(T.tce - T.t0), lay0: T.lay0, layPremuto: T.layPremuto, fotRisc: T.fotRisc, dopoGestore: T.dopoGestore == null ? null : Math.round(T.dopoGestore),
+    durata: ev.length ? Math.round(Math.max(...ev.map(e => e.d))) : 0, durFot: T.durFot == null ? null : Math.round(T.durFot), fotEff: T.fotEff, traccia: T.traccia, sostituito: T.sostituito, clickElab: (T.tce == null || T.t0 == null) ? null : Math.round(T.tce - T.t0), lay0: T.lay0, layPremuto: T.layPremuto, fotRisc: T.fotRisc, dopoGestore: T.dopoGestore == null ? null : Math.round(T.dopoGestore),
     eventi: ev.map(e => `${e.n}+${Math.round(e.s - (T.t0 || 0))}:attesa${Math.round(e.ps - e.s)}/lavoro${Math.round(e.pe - e.ps)}`).join(' '), riposo: T.riposo, premuto: T.premuto }; };
 
 /* un tocco (o due, con `doppio`: secondo tocco `pausa` ms dopo la fine del primo) al centro del tasto */

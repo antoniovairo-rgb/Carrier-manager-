@@ -1070,8 +1070,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
       <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
       {_c24?(<div style={{display:"flex",gap:SP.sm}}>
-        <Btn onClick={onSkip} v="ghost" style={{flex:"0 0 auto"}}>Salta l'ingresso</Btn>
-        <Btn onClick={onContinue} v="primary" size="lg" style={{flex:1}}>Ingresso in campo</Btn></div>):(<>
+        <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onSkip} v="ghost" style={{flex:"0 0 auto"}}>Salta l'ingresso</Btn>
+        <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onContinue} v="primary" size="lg" style={{flex:1}}>Ingresso in campo</Btn></div>):(<>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         {/* [23/09 POC — collaudo PO «il modulo e' ridondante sotto»] il modulo e' gia' nella testata della formazione: qui resta il pressing */}
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
@@ -1082,8 +1082,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
             </div>
           </div>)}
       </Card>
-      <Btn onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
-      <Btn onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn></>)}
+      <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
+      <Btn data-pesante213=""/* [giro 213] monta la scena 3D: 1,3 s di filo principale misurati dopo il clic */ onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn></>)}
     </div>);
   }
   return(

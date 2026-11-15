@@ -1,3 +1,4 @@
+/* [giro 213] prova minima (pagina sintetica): un tasto scalato a .9 al pointerdown perde il tocco a 3 px dal bordo; con un ::before esteso no. Uso: node prova-area-213.mjs */
 import { chromium } from 'playwright';
 const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
 for (const mobile of [true, false]) for (const modo of ['scale', 'scale+before']) {

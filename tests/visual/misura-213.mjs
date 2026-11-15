@@ -28,7 +28,7 @@ const fase = (p) => p.evaluate(() => { try { return window.__CPM_PHASE ? window.
 async function registra(dove, nome, page, cdp, mobile, o) {
   const r = await misura(page, cdp, mobile, o);
   const riga = r ? { dove, nome, testo: r.testo, w: r.w, h: r.h, riscontro: r.riscontro == null ? null : Math.round(r.riscontro), effetto: r.effetto == null ? null : Math.round(r.effetto),
-    rotella: r.rotella == null ? null : Math.round(r.rotella), lavoro: r.lavoro, ingresso: r.ritardoIngresso, clickElab: r.clickElab, lay0: r.lay0, layPremuto: r.layPremuto, fotRisc: r.fotRisc, dopoGestore: r.dopoGestore, eventi: r.eventi, layoutMosso: r.layoutMosso, area: r.area, areaSint: r.areaSint, punti: r.punti, click: r.click, giu: r.giu } : { dove, nome, assente: true };
+    rotella: r.rotella == null ? null : Math.round(r.rotella), lavoro: r.lavoro, ingresso: r.ritardoIngresso, durFot: r.durFot, fotEff: r.fotEff, premuto: r.premuto, traccia: r.traccia, sostituito: r.sostituito, clickElab: r.clickElab, lay0: r.lay0, layPremuto: r.layPremuto, fotRisc: r.fotRisc, dopoGestore: r.dopoGestore, eventi: r.eventi, layoutMosso: r.layoutMosso, area: r.area, areaSint: r.areaSint, punti: r.punti, click: r.click, giu: r.giu } : { dove, nome, assente: true };
   if (riga.assente) riga.flag = 'TASTO NON TROVATO';
   else { const f = []; const rit = riga.effetto == null ? 9999 : riga.effetto;
     if (riga.riscontro == null && rit > 100) f.push('ritardo>100 SENZA riscontro'); else if (riga.riscontro != null && riga.riscontro > 50) f.push('riscontro>50');
@@ -38,10 +38,11 @@ async function registra(dove, nome, page, cdp, mobile, o) {
 
 for (const dove of DOVE) {
   const mobile = dove === 'tel'; const vp = mobile ? { width: 375, height: 667 } : { width: 1366, height: 768 };
+  const RIDOTTO = process.env.CPM_RIDOTTO === '1';
   const init = ROSSO ? { __CPM_NO_G213: 1 } : {};
   console.log(`\n== ${dove} ${vp.width}x${vp.height} ${ROSSO ? '[ROSSO __CPM_NO_G213]' : ''}`);
   /* 1) casa: schede, Vai al prossimo momento, Vivi la settimana */
-  if (GR.includes('casa')) { const A = await apriCarriera166({ vp, mobile, init }); const p = A.page; const cdp = mobile ? await A.ctx.newCDPSession(p) : null;
+  if (GR.includes('casa')) { const A = await apriCarriera166({ vp, mobile, init }); const p = A.page; if (RIDOTTO) await p.emulateMedia({ reducedMotion: 'reduce' }); const cdp = mobile ? await A.ctx.newCDPSession(p) : null;
     try {
       await registra(dove, 'scheda Stagione', p, cdp, mobile, { trova: perTesto('^Stagione$'), effetto: TESTO });
       await registra(dove, 'scheda Home', p, cdp, mobile, { trova: perTesto('^Home$'), effetto: TESTO });
@@ -78,27 +79,30 @@ for (const dove of DOVE) {
         await sleep(500); }
       for (let i = 0; i < 40 && (await fase(p)) !== 'walkout'; i++) await sleep(250);
       if ((await fase(p)) === 'walkout') { await sleep(1500); await registra(dove, 'Salta ingresso', p, cdp, mobile, { trova: perSel('[data-cpm="salta-ingresso-v2"]'), effetto: FASE('walkout'), finestra: 5000 }); }
-      for (let i = 0; i < 250 && (await fase(p)) !== 'hl_choose'; i++) { if ((await fase(p)) === 'hl_intro') await p.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent && /Avanti|Continua|Vai/.test(x.textContent || '')); if (b) b.click(); }); await sleep(300); }
-      /* fino a 6 highlight: la prima giocata si misura; il pad si misura al primo highlight che lo mostra */
-      let padFatto = false, giocataFatta = false;
-      for (let h = 0; h < 6 && !(padFatto && giocataFatta); h++) {
-        for (let i = 0; i < 250 && (await fase(p)) !== 'hl_choose'; i++) { const f = await fase(p); if (f === 'ended' || f == null) break; await sleep(300); }
-        if ((await fase(p)) !== 'hl_choose') { console.log('  ! highlight non raggiunto: ' + (await fase(p))); break; }
-        await sleep(1200);
-        if (!padFatto && await p.evaluate(() => !!document.querySelector('[data-cpm="dpad"] button'))) { padFatto = true;
-          await registra(dove, 'pad (freccia)', p, cdp, mobile, { trova: perSel('[data-cpm="dpad"] button'), effetto: 'return false', finestra: 1500 }); }
-        if (!giocataFatta) { giocataFatta = true; await registra(dove, 'giocata highlight', p, cdp, mobile, { trova: `return [...document.querySelectorAll('[data-cpm="scelte-righe"] button')].filter(b=>!b.disabled&&b.offsetParent)[0]||null;`, effetto: FASE('hl_choose') }); }
-        else await p.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="scelte-righe"] button')].filter(b => !b.disabled && b.offsetParent)[0]; if (b) b.click(); });
-        for (let i = 0; i < 60 && (await fase(p)) === 'hl_choose'; i++) await sleep(250);
+      /* highlight: il pad si misura in hl_move (la prima volta che compare), la giocata in hl_choose (la prima volta); il resto si
+         lascia scorrere: in hl_move dopo la misura si preme il tasto che chiude il movimento, in hl_choose si sceglie la prima riga */
+      let padFatto = false, giocataFatta = false; const tH = Date.now();
+      while (Date.now() - tH < 150000 && !(padFatto && giocataFatta)) {
+        const f = await fase(p); if (f === 'ended' || f == null) break;
+        if (f === 'hl_move') { await sleep(700);
+          if (!padFatto && await p.evaluate(() => !!document.querySelector('[data-cpm="dpad"] button'))) { padFatto = true;
+            await registra(dove, 'pad (freccia)', p, cdp, mobile, { trova: perSel('[data-cpm="dpad"] button'), effetto: TESTO, finestra: 1500 }); }
+          else await p.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => x.offsetParent && !x.closest('[data-cpm="dpad"]')).find(x => /Conferma|Pronto|Scegli|Fatto|Avanti|Vai|Ok/i.test(x.textContent || '')); if (b) b.click(); });
+        } else if (f === 'hl_choose') { await sleep(1200);
+          if (!giocataFatta) { giocataFatta = true; await registra(dove, 'giocata highlight', p, cdp, mobile, { trova: `return [...document.querySelectorAll('[data-cpm="scelte-righe"] button')].filter(b=>!b.disabled&&b.offsetParent)[0]||null;`, effetto: FASE('hl_choose') }); }
+          else await p.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="scelte-righe"] button')].filter(b => !b.disabled && b.offsetParent)[0]; if (b) b.click(); });
+          for (let i = 0; i < 40 && (await fase(p)) === 'hl_choose'; i++) await sleep(250);
+        } else if (f === 'hl_intro') { await p.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent && /Avanti|Continua|Vai/.test(x.textContent || '')); if (b) b.click(); }); await sleep(300); }
+        else await sleep(300);
       }
-      if (!padFatto) console.log('  ! pad non comparso in 6 highlight');
+      if (!padFatto) console.log('  ! pad non comparso'); if (!giocataFatta) console.log('  ! giocata non comparsa');
     } catch (e) { console.log('  ! partita: ' + e.message); }
     await A.b.close(); A.srv.close(); }
   /* 3b) partita a soli highlight col pilota (come rassegna-202), poi festa forzata: Salta festeggiamenti e rassegna */
   if (GR.includes('rassegna')) { const A = await apriCarriera166({ vp, mobile, init }); const p = A.page; const cdp = mobile ? await A.ctx.newCDPSession(p) : null;
     try { await apriPrompt166(p); const g = await gioca166(p, 'solo', { seme: 7304 }); await sleep(1200); console.log('  partita finita ' + g.finita);
       await p.evaluate(() => window.__CPM_FORCE_CEREMONY && window.__CPM_FORCE_CEREMONY({ name: 'CAMPIONI!', kind: 'league' })); await sleep(1500);
-      await registra(dove, 'Salta festeggiamenti', p, cdp, mobile, { trova: perSel('[data-cpm="salta"]'), effetto: `return !el.isConnected;` });
+      await registra(dove, 'Salta festeggiamenti', p, cdp, mobile, { trova: perSel('[data-cpm="salta"]'), effetto: `try{return !el.isConnected||(window.__CPM_PHASE&&window.__CPM_PHASE()!=='ceremony');}catch(e){return !el.isConnected;}`, finestra: 6000 });
       await sleep(1200);
       await registra(dove, 'Avanti (rassegna)', p, cdp, mobile, { trova: perSel('[data-cpm="avanti200"]'), effetto: TESTO });
       await registra(dove, 'Salta (rassegna)', p, cdp, mobile, { trova: perSel('[data-cpm="salta200"]'), effetto: TESTO, finestra: 5000 });
