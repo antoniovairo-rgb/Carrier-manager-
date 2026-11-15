@@ -5,14 +5,101 @@
   "testo": "Stagione",
   "w": 72,
   "h": 58,
-  "riscontro": 24,
-  "effetto": 141,
+  "riscontro": 30,
+  "effetto": 138,
   "rotella": null,
-  "lavoro": 29,
+  "lavoro": 21,
   "ingresso": 19,
+  "durFot": 17,
+  "fotEff": 7,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgba(0, 0, 0, 0)|1|nonergb(143, 152, 168)|0.96",
+  "traccia": [
+   [
+    30,
+    "a",
+    "D",
+    1
+   ],
+   [
+    47,
+    "a",
+    "D",
+    1
+   ],
+   [
+    63,
+    "a",
+    "D",
+    1
+   ],
+   [
+    80,
+    "a",
+    "D",
+    1
+   ],
+   [
+    97,
+    "a",
+    "D",
+    1
+   ],
+   [
+    113,
+    "a",
+    "D",
+    1
+   ],
+   [
+    138,
+    "a",
+    "D",
+    1
+   ],
+   [
+    146,
+    "a",
+    "D",
+    1
+   ],
+   [
+    741,
+    null,
+    "D",
+    1
+   ],
+   [
+    746,
+    null,
+    "D",
+    1
+   ],
+   [
+    852,
+    null,
+    "D",
+    1
+   ],
+   [
+    863,
+    null,
+    "D",
+    1
+   ],
+   [
+    880,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 116,
+  "lay0": "64,52,48,34",
+  "layPremuto": "64,52,48,34",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa9/lavoro0 touchstart+0:attesa9/lavoro0 pointerup+92:attesa17/lavoro0 touchend+92:attesa18/lavoro0 mousedown+92:attesa19/lavoro0 mouseup+92:attesa19/lavoro0 click+92:attesa19/lavoro29",
+  "eventi": "pointerdown+0:attesa15/lavoro0 touchstart+0:attesa15/lavoro0 pointerup+97:attesa18/lavoro0 touchend+97:attesa18/lavoro0 mousedown+97:attesa19/lavoro0 mouseup+97:attesa19/lavoro0 click+97:attesa19/lavoro21",
   "layoutMosso": false,
   "area": [
    true,
@@ -40,15 +127,168 @@
   "testo": "Home",
   "w": 51,
   "h": 58,
-  "riscontro": 30,
-  "effetto": 129,
+  "riscontro": 17,
+  "effetto": 118,
   "rotella": null,
-  "lavoro": 10,
-  "ingresso": 19,
+  "lavoro": 14,
+  "ingresso": 20,
+  "durFot": 17,
+  "fotEff": 7,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgba(0, 0, 0, 0)|1|nonergb(143, 152, 168)|0.96",
+  "traccia": [
+   [
+    17,
+    "a",
+    "D",
+    1
+   ],
+   [
+    34,
+    "a",
+    "D",
+    1
+   ],
+   [
+    50,
+    "a",
+    "D",
+    1
+   ],
+   [
+    67,
+    "a",
+    "D",
+    1
+   ],
+   [
+    84,
+    "a",
+    "D",
+    1
+   ],
+   [
+    100,
+    "a",
+    "D",
+    1
+   ],
+   [
+    118,
+    "a",
+    "D",
+    1
+   ],
+   [
+    134,
+    "a",
+    "D",
+    1
+   ],
+   [
+    189,
+    null,
+    "D",
+    1
+   ],
+   [
+    201,
+    null,
+    "D",
+    1
+   ],
+   [
+    225,
+    null,
+    "D",
+    1
+   ],
+   [
+    234,
+    null,
+    "D",
+    1
+   ],
+   [
+    250,
+    null,
+    "D",
+    1
+   ],
+   [
+    267,
+    null,
+    "D",
+    1
+   ],
+   [
+    284,
+    null,
+    "D",
+    1
+   ],
+   [
+    300,
+    null,
+    "D",
+    1
+   ],
+   [
+    317,
+    null,
+    "D",
+    1
+   ],
+   [
+    334,
+    null,
+    "D",
+    1
+   ],
+   [
+    350,
+    null,
+    "D",
+    1
+   ],
+   [
+    367,
+    null,
+    "D",
+    1
+   ],
+   [
+    384,
+    null,
+    "D",
+    1
+   ],
+   [
+    400,
+    null,
+    "D",
+    1
+   ],
+   [
+    417,
+    null,
+    "D",
+    1
+   ],
+   [
+    434,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 103,
+  "lay0": "46,52,2,34",
+  "layPremuto": "46,52,2,34",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa14/lavoro0 touchstart+0:attesa15/lavoro0 pointerup+97:attesa17/lavoro0 touchend+97:attesa17/lavoro0 mousedown+97:attesa18/lavoro0 mouseup+97:attesa19/lavoro0 click+97:attesa19/lavoro10",
-  "layoutMosso": true,
+  "eventi": "pointerdown+0:attesa1/lavoro0 touchstart+0:attesa2/lavoro0 pointerup+84:attesa18/lavoro0 touchend+84:attesa18/lavoro0 mousedown+84:attesa19/lavoro0 mouseup+84:attesa20/lavoro0 click+84:attesa20/lavoro14",
+  "layoutMosso": false,
   "area": [
    true,
    true,
@@ -67,7 +307,7 @@
   "punti": 4,
   "click": 1,
   "giu": 1,
-  "flag": "layout mosso"
+  "flag": ""
  },
  {
   "dove": "tel",
@@ -75,21 +315,169 @@
   "testo": "Simulaprima vivi la settimana",
   "w": 161,
   "h": 88,
-  "riscontro": 23,
+  "riscontro": null,
   "effetto": null,
   "rotella": null,
   "lavoro": 0,
-  "ingresso": 20,
-  "fotRisc": 1,
-  "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa8/lavoro0 touchstart+0:attesa8/lavoro0 pointerup+90:attesa18/lavoro0 touchend+90:attesa18/lavoro0 mousedown+90:attesa20/lavoro0 mouseup+90:attesa20/lavoro0 click+90:attesa20/lavoro0",
-  "layoutMosso": true,
-  "area": [
-   true,
-   true,
-   true,
-   true
+  "ingresso": 5,
+  "durFot": null,
+  "fotEff": null,
+  "premuto": null,
+  "traccia": [
+   [
+    20,
+    null,
+    "=",
+    1
+   ],
+   [
+    37,
+    null,
+    "=",
+    1
+   ],
+   [
+    54,
+    null,
+    "=",
+    1
+   ],
+   [
+    70,
+    null,
+    "=",
+    1
+   ],
+   [
+    87,
+    null,
+    "=",
+    1
+   ],
+   [
+    104,
+    null,
+    "=",
+    1
+   ],
+   [
+    120,
+    null,
+    "=",
+    1
+   ],
+   [
+    137,
+    null,
+    "=",
+    1
+   ],
+   [
+    154,
+    null,
+    "=",
+    1
+   ],
+   [
+    170,
+    null,
+    "=",
+    1
+   ],
+   [
+    187,
+    null,
+    "=",
+    1
+   ],
+   [
+    204,
+    null,
+    "=",
+    1
+   ],
+   [
+    220,
+    null,
+    "=",
+    1
+   ],
+   [
+    237,
+    null,
+    "=",
+    1
+   ],
+   [
+    254,
+    null,
+    "=",
+    1
+   ],
+   [
+    271,
+    null,
+    "=",
+    1
+   ],
+   [
+    287,
+    null,
+    "=",
+    1
+   ],
+   [
+    304,
+    null,
+    "=",
+    1
+   ],
+   [
+    320,
+    null,
+    "=",
+    1
+   ],
+   [
+    337,
+    null,
+    "=",
+    1
+   ],
+   [
+    354,
+    null,
+    "=",
+    1
+   ],
+   [
+    370,
+    null,
+    "=",
+    1
+   ],
+   [
+    387,
+    null,
+    "=",
+    1
+   ],
+   [
+    404,
+    null,
+    "=",
+    1
+   ]
   ],
+  "sostituito": 0,
+  "clickElab": null,
+  "lay0": "144,78,161,208",
+  "layPremuto": null,
+  "fotRisc": null,
+  "dopoGestore": null,
+  "eventi": "pointerdown+0:attesa5/lavoro0 touchstart+0:attesa5/lavoro0 pointerup+87:attesa1/lavoro0 touchend+87:attesa1/lavoro0 mousedown+87:attesa3/lavoro0 mouseup+87:attesa3/lavoro0 click+87:attesa3/lavoro0",
+  "layoutMosso": false,
+  "area": null,
   "areaSint": {
    "premuto": null,
    "punti": [
@@ -101,7 +489,7 @@
   "punti": 3,
   "click": 0,
   "giu": 1,
-  "flag": "layout mosso"
+  "flag": "ritardo>100 SENZA riscontro"
  },
  {
   "dove": "tel",
@@ -109,17 +497,103 @@
   "testo": "⚡ Vivi la Settimanaallenamento, eventi e",
   "w": 151,
   "h": 88,
-  "riscontro": 26,
-  "effetto": 126,
+  "riscontro": 33,
+  "effetto": 132,
   "rotella": null,
-  "lavoro": 6,
-  "ingresso": 19,
+  "lavoro": 5,
+  "ingresso": 18,
+  "durFot": 17,
+  "fotEff": 7,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    33,
+    "b",
+    "D",
+    1
+   ],
+   [
+    49,
+    "b",
+    "D",
+    1
+   ],
+   [
+    81,
+    "b",
+    "D",
+    1
+   ],
+   [
+    95,
+    "b",
+    "D",
+    1
+   ],
+   [
+    99,
+    "b",
+    "D",
+    1
+   ],
+   [
+    115,
+    "b",
+    "D",
+    1
+   ],
+   [
+    132,
+    "b",
+    "D",
+    1
+   ],
+   [
+    150,
+    "b",
+    "D",
+    1
+   ],
+   [
+    165,
+    "b",
+    "D",
+    1
+   ],
+   [
+    777,
+    "b",
+    "D",
+    1
+   ],
+   [
+    785,
+    null,
+    "D",
+    1
+   ],
+   [
+    787,
+    null,
+    "D",
+    1
+   ],
+   [
+    799,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 118,
+  "lay0": "135,78,18,208",
+  "layPremuto": "135,78,18,208",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa11/lavoro0 touchstart+0:attesa11/lavoro0 pointerup+93:attesa17/lavoro0 touchend+93:attesa18/lavoro0 mousedown+93:attesa19/lavoro0 mouseup+93:attesa19/lavoro0 click+93:attesa19/lavoro6",
-  "layoutMosso": true,
+  "eventi": "pointerdown+0:attesa17/lavoro0 touchstart+0:attesa18/lavoro0 pointerup+101:attesa16/lavoro0 touchend+101:attesa16/lavoro0 mousedown+101:attesa17/lavoro0 mouseup+101:attesa17/lavoro0 click+101:attesa17/lavoro5",
+  "layoutMosso": false,
   "area": [
-   true,
    true,
    true,
    true
@@ -135,7 +609,7 @@
   "punti": 3,
   "click": 1,
   "giu": 1,
-  "flag": "layout mosso"
+  "flag": ""
  },
  {
   "dove": "tel",
@@ -143,21 +617,169 @@
   "testo": "⏩ Vai al prossimo momentofino alla parti",
   "w": 324,
   "h": 63,
-  "riscontro": 31,
-  "effetto": 131,
+  "riscontro": 50,
+  "effetto": 50,
   "rotella": null,
-  "lavoro": 6,
-  "ingresso": 19,
-  "fotRisc": 1,
-  "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa16/lavoro0 touchstart+0:attesa16/lavoro0 pointerup+98:attesa17/lavoro0 touchend+98:attesa18/lavoro0 mousedown+98:attesa19/lavoro0 mouseup+98:attesa19/lavoro0 click+98:attesa19/lavoro6",
-  "layoutMosso": false,
-  "area": [
-   true,
-   true,
-   true,
-   true
+  "lavoro": 4,
+  "ingresso": 32,
+  "durFot": 20,
+  "fotEff": 1,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(220, 38, 38)|1|nonergb(255, 255, 255)|0.96",
+  "traccia": [
+   [
+    50,
+    "b",
+    "D",
+    1
+   ],
+   [
+    59,
+    "b",
+    "D",
+    1
+   ],
+   [
+    130,
+    "b",
+    "D",
+    1
+   ],
+   [
+    142,
+    "b",
+    "D",
+    0
+   ],
+   [
+    159,
+    "b",
+    "D",
+    0
+   ],
+   [
+    244,
+    null,
+    "D",
+    0
+   ],
+   [
+    246,
+    null,
+    "D",
+    0
+   ],
+   [
+    259,
+    null,
+    "D",
+    0
+   ],
+   [
+    275,
+    null,
+    "D",
+    0
+   ],
+   [
+    292,
+    null,
+    "D",
+    0
+   ],
+   [
+    309,
+    null,
+    "D",
+    0
+   ],
+   [
+    325,
+    null,
+    "D",
+    0
+   ],
+   [
+    342,
+    null,
+    "D",
+    0
+   ],
+   [
+    359,
+    null,
+    "D",
+    0
+   ],
+   [
+    376,
+    null,
+    "D",
+    0
+   ],
+   [
+    392,
+    null,
+    "D",
+    0
+   ],
+   [
+    409,
+    null,
+    "D",
+    0
+   ],
+   [
+    425,
+    null,
+    "D",
+    0
+   ],
+   [
+    442,
+    null,
+    "D",
+    0
+   ],
+   [
+    459,
+    null,
+    "D",
+    0
+   ],
+   [
+    475,
+    null,
+    "D",
+    0
+   ],
+   [
+    492,
+    null,
+    "D",
+    0
+   ],
+   [
+    509,
+    null,
+    "D",
+    0
+   ],
+   [
+    525,
+    null,
+    "D",
+    0
+   ]
   ],
+  "sostituito": 0,
+  "clickElab": 135,
+  "lay0": "289,56,17,111",
+  "layPremuto": null,
+  "fotRisc": 1,
+  "dopoGestore": 18,
+  "eventi": "pointerdown+0:attesa32/lavoro0 touchstart+0:attesa32/lavoro0 pointerup+115:attesa18/lavoro0 touchend+115:attesa18/lavoro0 mousedown+115:attesa20/lavoro0 mouseup+115:attesa20/lavoro0 click+115:attesa20/lavoro4",
+  "layoutMosso": false,
+  "area": null,
   "areaSint": {
    "premuto": "b",
    "punti": [
@@ -178,16 +800,174 @@
   "testo": "Vai",
   "w": 157,
   "h": 54,
-  "riscontro": 29,
-  "effetto": 29,
+  "riscontro": 21,
+  "effetto": 121,
   "rotella": null,
   "lavoro": 4,
-  "ingresso": 19,
-  "fotRisc": 2,
+  "ingresso": 20,
+  "durFot": 17,
+  "fotEff": 6,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    21,
+    "b",
+    "D",
+    1
+   ],
+   [
+    38,
+    "b",
+    "D",
+    1
+   ],
+   [
+    80,
+    "b",
+    "D",
+    1
+   ],
+   [
+    88,
+    "b",
+    "D",
+    1
+   ],
+   [
+    105,
+    "b",
+    "D",
+    1
+   ],
+   [
+    121,
+    "b",
+    "D",
+    0
+   ],
+   [
+    138,
+    "b",
+    "D",
+    0
+   ],
+   [
+    167,
+    "b",
+    "D",
+    0
+   ],
+   [
+    171,
+    "b",
+    "D",
+    0
+   ],
+   [
+    188,
+    null,
+    "D",
+    0
+   ],
+   [
+    205,
+    null,
+    "D",
+    0
+   ],
+   [
+    221,
+    null,
+    "D",
+    0
+   ],
+   [
+    238,
+    null,
+    "D",
+    0
+   ],
+   [
+    255,
+    null,
+    "D",
+    0
+   ],
+   [
+    271,
+    null,
+    "D",
+    0
+   ],
+   [
+    288,
+    null,
+    "D",
+    0
+   ],
+   [
+    305,
+    null,
+    "D",
+    0
+   ],
+   [
+    321,
+    null,
+    "D",
+    0
+   ],
+   [
+    340,
+    null,
+    "D",
+    0
+   ],
+   [
+    355,
+    null,
+    "D",
+    0
+   ],
+   [
+    381,
+    null,
+    "D",
+    0
+   ],
+   [
+    388,
+    null,
+    "D",
+    0
+   ],
+   [
+    405,
+    null,
+    "D",
+    0
+   ],
+   [
+    421,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 108,
+  "lay0": "140,48,17,259",
+  "layPremuto": "140,48,17,259",
+  "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa13/lavoro0 touchstart+0:attesa14/lavoro0 pointerup+96:attesa17/lavoro0 touchend+96:attesa17/lavoro0 mousedown+96:attesa18/lavoro0 mouseup+96:attesa18/lavoro0 click+96:attesa19/lavoro4",
+  "eventi": "pointerdown+0:attesa6/lavoro0 touchstart+0:attesa6/lavoro0 pointerup+88:attesa18/lavoro0 touchend+88:attesa18/lavoro0 mousedown+88:attesa19/lavoro0 mouseup+88:attesa20/lavoro0 click+88:attesa20/lavoro4",
   "layoutMosso": false,
-  "area": null,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
   "areaSint": {
    "premuto": "b",
    "punti": [
@@ -208,14 +988,167 @@
   "testo": "Simula e avanza la settimana",
   "w": 328,
   "h": 54,
-  "riscontro": 19,
-  "effetto": 221,
-  "rotella": 119,
+  "riscontro": 21,
+  "effetto": 235,
+  "rotella": 104,
   "lavoro": 1,
-  "ingresso": 20,
+  "ingresso": 11,
+  "durFot": 17,
+  "fotEff": 5,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(38, 43, 55)|1|nonergb(244, 241, 234)|0.96",
+  "traccia": [
+   [
+    21,
+    "b",
+    "D",
+    1
+   ],
+   [
+    37,
+    "b",
+    "D",
+    1
+   ],
+   [
+    94,
+    "b",
+    "D",
+    1
+   ],
+   [
+    104,
+    "b",
+    "D",
+    1
+   ],
+   [
+    235,
+    null,
+    "D",
+    1
+   ],
+   [
+    243,
+    null,
+    "D",
+    1
+   ],
+   [
+    254,
+    null,
+    "D",
+    1
+   ],
+   [
+    305,
+    null,
+    "D",
+    1
+   ],
+   [
+    321,
+    null,
+    "D",
+    1
+   ],
+   [
+    467,
+    null,
+    "D",
+    1
+   ],
+   [
+    477,
+    null,
+    "D",
+    1
+   ],
+   [
+    487,
+    null,
+    "D",
+    1
+   ],
+   [
+    504,
+    null,
+    "D",
+    1
+   ],
+   [
+    521,
+    null,
+    "D",
+    1
+   ],
+   [
+    537,
+    null,
+    "D",
+    1
+   ],
+   [
+    554,
+    null,
+    "D",
+    1
+   ],
+   [
+    570,
+    null,
+    "D",
+    1
+   ],
+   [
+    587,
+    null,
+    "D",
+    1
+   ],
+   [
+    604,
+    null,
+    "D",
+    1
+   ],
+   [
+    620,
+    null,
+    "D",
+    1
+   ],
+   [
+    713,
+    null,
+    "D",
+    1
+   ],
+   [
+    720,
+    null,
+    "D",
+    1
+   ],
+   [
+    737,
+    null,
+    "D",
+    1
+   ],
+   [
+    754,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 1,
+  "clickElab": 105,
+  "lay0": "293,48,20,332",
+  "layPremuto": "293,48,20,332",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa3/lavoro0 touchstart+0:attesa4/lavoro0 pointerup+86:attesa17/lavoro0 touchend+86:attesa18/lavoro0 mousedown+86:attesa20/lavoro0 mouseup+86:attesa20/lavoro0 click+86:attesa20/lavoro1",
+  "eventi": "pointerdown+0:attesa5/lavoro0 touchstart+0:attesa5/lavoro0 pointerup+87:attesa9/lavoro0 touchend+87:attesa9/lavoro0 mousedown+87:attesa10/lavoro0 mouseup+87:attesa11/lavoro0 click+87:attesa11/lavoro1",
   "layoutMosso": false,
   "area": [
    true,
@@ -243,14 +1176,167 @@
   "testo": "Simula e avanza la settimana",
   "w": 328,
   "h": 54,
-  "riscontro": 29,
-  "effetto": 253,
-  "rotella": 130,
-  "lavoro": 23,
-  "ingresso": 82,
+  "riscontro": 27,
+  "effetto": 252,
+  "rotella": 111,
+  "lavoro": 17,
+  "ingresso": 263,
+  "durFot": 17,
+  "fotEff": 5,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(38, 43, 55)|1|nonergb(244, 241, 234)|0.96",
+  "traccia": [
+   [
+    27,
+    "b",
+    "D",
+    1
+   ],
+   [
+    44,
+    "b",
+    "D",
+    1
+   ],
+   [
+    99,
+    "b",
+    "D",
+    1
+   ],
+   [
+    111,
+    "b",
+    "D",
+    1
+   ],
+   [
+    252,
+    null,
+    "D",
+    1
+   ],
+   [
+    260,
+    null,
+    "D",
+    1
+   ],
+   [
+    264,
+    "b",
+    "D",
+    1
+   ],
+   [
+    306,
+    "b",
+    "D",
+    1
+   ],
+   [
+    311,
+    "b",
+    "D",
+    1
+   ],
+   [
+    561,
+    "b",
+    "D",
+    1
+   ],
+   [
+    577,
+    "b",
+    "D",
+    1
+   ],
+   [
+    612,
+    "b",
+    "D",
+    1
+   ],
+   [
+    750,
+    "b",
+    "D",
+    1
+   ],
+   [
+    980,
+    null,
+    "D",
+    1
+   ],
+   [
+    1015,
+    null,
+    "D",
+    1
+   ],
+   [
+    1038,
+    null,
+    "D",
+    1
+   ],
+   [
+    1046,
+    null,
+    "D",
+    1
+   ],
+   [
+    1060,
+    null,
+    "D",
+    1
+   ],
+   [
+    1077,
+    null,
+    "D",
+    1
+   ],
+   [
+    1094,
+    null,
+    "D",
+    1
+   ],
+   [
+    1111,
+    null,
+    "D",
+    1
+   ],
+   [
+    1127,
+    null,
+    "D",
+    1
+   ],
+   [
+    1144,
+    null,
+    "D",
+    1
+   ],
+   [
+    1161,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 1,
+  "clickElab": 112,
+  "lay0": "293,48,20,332",
+  "layPremuto": "293,48,20,332",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa14/lavoro0 touchstart+0:attesa14/lavoro0 pointerup+67:attesa50/lavoro0 touchend+67:attesa50/lavoro0 mousedown+67:attesa52/lavoro0 mouseup+67:attesa52/lavoro0 click+67:attesa53/lavoro0 pointerdown+216:attesa66/lavoro0 touchstart+216:attesa66/lavoro0 pointerup+334:attesa81/lavoro0 touchend+334:attesa81/lavoro0 mousedown+334:attesa82/lavoro0 mouseup+334:attesa82/lavoro0 click+334:attesa82/lavoro23 dblclick+439:attesa0/lavoro0",
+  "eventi": "pointerdown+0:attesa12/lavoro0 touchstart+0:attesa12/lavoro0 pointerup+63:attesa36/lavoro0 touchend+63:attesa37/lavoro0 mousedown+63:attesa38/lavoro0 mouseup+63:attesa38/lavoro0 click+63:attesa38/lavoro1 pointerdown+194:attesa70/lavoro0 touchstart+194:attesa70/lavoro0 pointerup+316:attesa262/lavoro0 touchend+316:attesa262/lavoro0 mousedown+316:attesa263/lavoro0 mouseup+316:attesa263/lavoro0 click+316:attesa263/lavoro17 dblclick+596:attesa0/lavoro0",
   "layoutMosso": false,
   "area": [
    true,
@@ -268,8 +1354,8 @@
    ]
   },
   "punti": 4,
-  "click": 1,
-  "giu": 1,
+  "click": 2,
+  "giu": 2,
   "flag": "",
   "partite": 1,
   "assorbiti": 0
@@ -280,14 +1366,167 @@
   "testo": "Gioca la partita",
   "w": 328,
   "h": 54,
-  "riscontro": 19,
-  "effetto": 209,
-  "rotella": 135,
-  "lavoro": 1,
+  "riscontro": 22,
+  "effetto": 204,
+  "rotella": 139,
+  "lavoro": 0,
   "ingresso": 37,
+  "durFot": 17,
+  "fotEff": 5,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    22,
+    "b",
+    "D",
+    1
+   ],
+   [
+    39,
+    "b",
+    "D",
+    1
+   ],
+   [
+    124,
+    "b",
+    "D",
+    1
+   ],
+   [
+    139,
+    "b",
+    "D",
+    1
+   ],
+   [
+    204,
+    "b",
+    "D",
+    0
+   ],
+   [
+    209,
+    "b",
+    "D",
+    0
+   ],
+   [
+    222,
+    null,
+    "D",
+    0
+   ],
+   [
+    304,
+    null,
+    "D",
+    0
+   ],
+   [
+    305,
+    null,
+    "D",
+    0
+   ],
+   [
+    323,
+    null,
+    "D",
+    0
+   ],
+   [
+    339,
+    null,
+    "D",
+    0
+   ],
+   [
+    355,
+    null,
+    "D",
+    0
+   ],
+   [
+    372,
+    null,
+    "D",
+    0
+   ],
+   [
+    389,
+    null,
+    "D",
+    0
+   ],
+   [
+    405,
+    null,
+    "D",
+    0
+   ],
+   [
+    422,
+    null,
+    "D",
+    0
+   ],
+   [
+    439,
+    null,
+    "D",
+    0
+   ],
+   [
+    455,
+    null,
+    "D",
+    0
+   ],
+   [
+    472,
+    null,
+    "D",
+    0
+   ],
+   [
+    489,
+    null,
+    "D",
+    0
+   ],
+   [
+    505,
+    null,
+    "D",
+    0
+   ],
+   [
+    522,
+    null,
+    "D",
+    0
+   ],
+   [
+    539,
+    null,
+    "D",
+    0
+   ],
+   [
+    555,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 140,
+  "lay0": "293,48,20,177",
+  "layPremuto": "293,48,20,177",
   "fotRisc": 1,
-  "dopoGestore": 16,
-  "eventi": "pointerdown+0:attesa3/lavoro0 touchstart+0:attesa3/lavoro0 pointerup+85:attesa36/lavoro0 touchend+85:attesa36/lavoro0 mousedown+85:attesa37/lavoro0 mouseup+85:attesa37/lavoro0 click+85:attesa37/lavoro1",
+  "dopoGestore": 14,
+  "eventi": "pointerdown+0:attesa8/lavoro0 touchstart+0:attesa8/lavoro0 pointerup+90:attesa36/lavoro0 touchend+90:attesa36/lavoro0 mousedown+90:attesa37/lavoro0 mouseup+90:attesa37/lavoro0 click+90:attesa37/lavoro0",
   "layoutMosso": false,
   "area": [
    true,
@@ -316,15 +1555,131 @@
   "w": 363,
   "h": 48,
   "riscontro": 20,
-  "effetto": 20,
+  "effetto": 118,
   "rotella": null,
-  "lavoro": 0,
-  "ingresso": 0,
-  "fotRisc": 2,
+  "lavoro": 29,
+  "ingresso": 5,
+  "durFot": 17,
+  "fotEff": 5,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    20,
+    "b",
+    "D",
+    1
+   ],
+   [
+    37,
+    "b",
+    "D",
+    1
+   ],
+   [
+    78,
+    "b",
+    "D",
+    1
+   ],
+   [
+    87,
+    "b",
+    "D",
+    1
+   ],
+   [
+    118,
+    "b",
+    "D",
+    0
+   ],
+   [
+    120,
+    "b",
+    "D",
+    0
+   ],
+   [
+    137,
+    "b",
+    "D",
+    0
+   ],
+   [
+    700,
+    null,
+    "D",
+    0
+   ],
+   [
+    704,
+    null,
+    "D",
+    0
+   ],
+   [
+    720,
+    null,
+    "D",
+    0
+   ],
+   [
+    737,
+    null,
+    "D",
+    0
+   ],
+   [
+    754,
+    null,
+    "D",
+    0
+   ],
+   [
+    770,
+    null,
+    "D",
+    0
+   ],
+   [
+    788,
+    null,
+    "D",
+    0
+   ],
+   [
+    804,
+    null,
+    "D",
+    0
+   ],
+   [
+    835,
+    null,
+    "D",
+    0
+   ],
+   [
+    837,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 88,
+  "lay0": "363,48,6,488",
+  "layPremuto": "363,48,6,488",
+  "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "",
+  "eventi": "pointerdown+0:attesa5/lavoro0 touchstart+0:attesa5/lavoro0 pointerup+87:attesa1/lavoro0 touchend+87:attesa1/lavoro0 mousedown+87:attesa2/lavoro0 mouseup+87:attesa2/lavoro0 click+87:attesa2/lavoro29",
   "layoutMosso": false,
-  "area": null,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
   "areaSint": {
    "premuto": "b",
    "punti": [
@@ -345,44 +1700,47 @@
   "testo": "Ingresso in campo",
   "w": 228,
   "h": 48,
-  "riscontro": 27,
-  "effetto": 27,
-  "rotella": null,
+  "riscontro": 77,
+  "effetto": 1131,
+  "rotella": 104,
   "lavoro": 0,
   "ingresso": 0,
-  "fotRisc": 3,
-  "dopoGestore": 15,
-  "eventi": "",
-  "layoutMosso": false,
-  "area": null,
-  "areaSint": {
-   "premuto": "b",
-   "punti": [
-    true,
-    true,
-    true,
-    true
+  "durFot": 74,
+  "fotEff": 4,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    77,
+    "b",
+    "D",
+    1
+   ],
+   [
+    87,
+    "b",
+    "D",
+    1
+   ],
+   [
+    104,
+    "b",
+    "D",
+    1
+   ],
+   [
+    1131,
+    "b",
+    "D",
+    0
    ]
-  },
-  "punti": 4,
-  "click": 1,
-  "giu": 1,
-  "flag": ""
- },
- {
-  "dove": "tel",
-  "nome": "Salta ingresso",
-  "testo": "Salta ingresso →",
-  "w": 131,
-  "h": 37,
-  "riscontro": 899,
-  "effetto": 1926,
-  "rotella": 1357,
-  "lavoro": 1686,
-  "ingresso": 553,
+  ],
+  "sostituito": 0,
+  "clickElab": 105,
+  "lay0": "228,48,141,601",
+  "layPremuto": "228,48,141,601",
   "fotRisc": 1,
-  "dopoGestore": 346,
-  "eventi": "pointerdown+-5618:attesa12/lavoro0 touchstart+-5618:attesa12/lavoro0 pointerup+-5524:attesa17/lavoro0 touchend+-5524:attesa17/lavoro0 mousedown+-5524:attesa18/lavoro0 mouseup+-5524:attesa18/lavoro0 click+-5524:attesa18/lavoro1686 pointerdown+0:attesa553/lavoro0 touchstart+0:attesa553/lavoro0 pointerup+635:attesa539/lavoro0 touchend+635:attesa539/lavoro0 mousedown+635:attesa540/lavoro0 mouseup+635:attesa541/lavoro0 click+635:attesa541/lavoro0",
+  "dopoGestore": 73,
+  "eventi": "",
   "layoutMosso": false,
   "area": [
    true,
@@ -406,18 +1764,350 @@
  },
  {
   "dove": "tel",
+  "nome": "Salta ingresso",
+  "testo": "Salta ingresso →",
+  "w": 131,
+  "h": 37,
+  "riscontro": 1135,
+  "effetto": 2046,
+  "rotella": 1559,
+  "lavoro": 0,
+  "ingresso": 809,
+  "durFot": 327,
+  "fotEff": 5,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgba(13, 15, 20, 0.92)|1|nonergb(244, 241, 234)|0.96",
+  "traccia": [
+   [
+    1135,
+    "b",
+    "D",
+    1
+   ],
+   [
+    1367,
+    "b",
+    "D",
+    1
+   ],
+   [
+    1559,
+    null,
+    "=",
+    1
+   ],
+   [
+    1849,
+    null,
+    "=",
+    1
+   ],
+   [
+    2046,
+    null,
+    "D",
+    0
+   ],
+   [
+    2332,
+    null,
+    "D",
+    0
+   ],
+   [
+    2522,
+    null,
+    "D",
+    0
+   ],
+   [
+    3248,
+    null,
+    "D",
+    0
+   ],
+   [
+    3254,
+    null,
+    "D",
+    0
+   ],
+   [
+    3262,
+    null,
+    "D",
+    0
+   ],
+   [
+    3299,
+    null,
+    "D",
+    0
+   ],
+   [
+    3336,
+    null,
+    "D",
+    0
+   ],
+   [
+    3364,
+    null,
+    "D",
+    0
+   ],
+   [
+    3397,
+    null,
+    "D",
+    0
+   ],
+   [
+    3429,
+    null,
+    "D",
+    0
+   ],
+   [
+    3460,
+    null,
+    "D",
+    0
+   ],
+   [
+    3491,
+    null,
+    "D",
+    0
+   ],
+   [
+    3520,
+    null,
+    "D",
+    0
+   ],
+   [
+    3551,
+    null,
+    "D",
+    0
+   ],
+   [
+    3579,
+    null,
+    "D",
+    0
+   ],
+   [
+    3605,
+    null,
+    "D",
+    0
+   ],
+   [
+    3632,
+    null,
+    "D",
+    0
+   ],
+   [
+    3661,
+    null,
+    "D",
+    0
+   ],
+   [
+    3691,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 1561,
+  "lay0": "131,37,216,511",
+  "layPremuto": "131,37,216,511",
+  "fotRisc": 1,
+  "dopoGestore": 326,
+  "eventi": "pointerdown+-4429:attesa4/lavoro0 touchstart+-4429:attesa4/lavoro0 pointerup+-4344:attesa2/lavoro0 touchend+-4344:attesa2/lavoro0 mousedown+-4344:attesa2/lavoro0 mouseup+-4344:attesa3/lavoro0 click+-4344:attesa3/lavoro0 pointerdown+0:attesa809/lavoro0 touchstart+0:attesa809/lavoro0 pointerup+891:attesa477/lavoro0 touchend+891:attesa477/lavoro0 mousedown+891:attesa478/lavoro0 mouseup+891:attesa478/lavoro0 click+891:attesa478/lavoro0",
+  "layoutMosso": false,
+  "area": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 1,
+  "giu": 1,
+  "flag": "riscontro>50 · effetto>400 (rotellina)"
+ },
+ {
+  "dove": "tel",
+  "nome": "pad (freccia)",
+  "testo": "",
+  "w": 44,
+  "h": 44,
+  "riscontro": null,
+  "effetto": 498,
+  "rotella": null,
+  "lavoro": 12,
+  "ingresso": 296,
+  "durFot": null,
+  "fotEff": 1,
+  "premuto": null,
+  "traccia": [
+   [
+    498,
+    "b",
+    "D",
+    0
+   ],
+   [
+    657,
+    "b",
+    "D",
+    0
+   ],
+   [
+    821,
+    null,
+    "D",
+    0
+   ],
+   [
+    987,
+    null,
+    "D",
+    0
+   ],
+   [
+    1149,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": null,
+  "lay0": "44,44,14,71",
+  "layPremuto": null,
+  "fotRisc": null,
+  "dopoGestore": null,
+  "eventi": "pointerdown+0:attesa283/lavoro12 touchstart+0:attesa296/lavoro0",
+  "layoutMosso": false,
+  "area": null,
+  "areaSint": {
+   "premuto": "b",
+   "punti": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "punti": 4,
+  "click": 0,
+  "giu": 1,
+  "flag": "ritardo>100 SENZA riscontro · effetto>400 (rotellina)"
+ },
+ {
+  "dove": "tel",
   "nome": "giocata highlight",
   "testo": "🔁Uno-due con LEHMANNPASSAGGIO · 69",
   "w": 333,
   "h": 56,
-  "riscontro": 541,
-  "effetto": 894,
+  "riscontro": 334,
+  "effetto": 956,
   "rotella": null,
-  "lavoro": 15,
-  "ingresso": 360,
+  "lavoro": 17,
+  "ingresso": 326,
+  "durFot": 187,
+  "fotEff": 4,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(26, 30, 39)|1|nonergb(244, 241, 234)|0.96",
+  "traccia": [
+   [
+    334,
+    "b",
+    "D",
+    1
+   ],
+   [
+    522,
+    "b",
+    "D",
+    1
+   ],
+   [
+    710,
+    "b",
+    "D",
+    1
+   ],
+   [
+    956,
+    null,
+    "D",
+    0
+   ],
+   [
+    1162,
+    null,
+    "D",
+    0
+   ],
+   [
+    1353,
+    null,
+    "D",
+    0
+   ],
+   [
+    1556,
+    null,
+    "D",
+    0
+   ],
+   [
+    1751,
+    null,
+    "D",
+    0
+   ],
+   [
+    1936,
+    null,
+    "D",
+    0
+   ],
+   [
+    2119,
+    null,
+    "D",
+    0
+   ],
+   [
+    2316,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 713,
+  "lay0": "333,56,14,116",
+  "layPremuto": "333,56,14,116",
   "fotRisc": 1,
-  "dopoGestore": 180,
-  "eventi": "pointerdown+0:attesa360/lavoro0 touchstart+0:attesa360/lavoro0 pointerup+446:attesa279/lavoro0 touchend+446:attesa279/lavoro0 mousedown+446:attesa286/lavoro0 mouseup+446:attesa286/lavoro0 click+446:attesa286/lavoro15",
+  "dopoGestore": 9,
+  "eventi": "pointerdown+0:attesa326/lavoro0 touchstart+0:attesa326/lavoro0 pointerup+410:attesa301/lavoro0 touchend+410:attesa302/lavoro0 mousedown+410:attesa303/lavoro0 mouseup+410:attesa303/lavoro0 click+410:attesa303/lavoro17",
   "layoutMosso": false,
   "area": [
    true,
@@ -445,14 +2135,167 @@
   "testo": "Salta premiazione →",
   "w": 152,
   "h": 37,
-  "riscontro": 2688,
-  "effetto": null,
-  "rotella": null,
-  "lavoro": 0,
-  "ingresso": 2678,
+  "riscontro": 2604,
+  "effetto": 4150,
+  "rotella": 3432,
+  "lavoro": 1,
+  "ingresso": 2596,
+  "durFot": 10,
+  "fotEff": 6,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgba(0, 0, 0, 0.45)|1|nonergb(255, 255, 255)|0.96",
+  "traccia": [
+   [
+    2604,
+    "b",
+    "D",
+    1
+   ],
+   [
+    2619,
+    "b",
+    "D",
+    1
+   ],
+   [
+    2754,
+    "b",
+    "D",
+    1
+   ],
+   [
+    3159,
+    "b",
+    "D",
+    1
+   ],
+   [
+    3432,
+    null,
+    "=",
+    1
+   ],
+   [
+    4150,
+    null,
+    "D",
+    0
+   ],
+   [
+    4186,
+    null,
+    "D",
+    0
+   ],
+   [
+    4282,
+    null,
+    "D",
+    0
+   ],
+   [
+    4297,
+    null,
+    "D",
+    0
+   ],
+   [
+    4313,
+    null,
+    "D",
+    0
+   ],
+   [
+    4336,
+    null,
+    "D",
+    0
+   ],
+   [
+    4347,
+    null,
+    "D",
+    0
+   ],
+   [
+    4363,
+    null,
+    "D",
+    0
+   ],
+   [
+    4380,
+    null,
+    "D",
+    0
+   ],
+   [
+    4397,
+    null,
+    "D",
+    0
+   ],
+   [
+    4413,
+    null,
+    "D",
+    0
+   ],
+   [
+    4430,
+    null,
+    "D",
+    0
+   ],
+   [
+    4446,
+    null,
+    "D",
+    0
+   ],
+   [
+    4463,
+    null,
+    "D",
+    0
+   ],
+   [
+    4480,
+    null,
+    "D",
+    0
+   ],
+   [
+    4497,
+    null,
+    "D",
+    0
+   ],
+   [
+    4513,
+    null,
+    "D",
+    0
+   ],
+   [
+    4530,
+    null,
+    "D",
+    0
+   ],
+   [
+    4547,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 3433,
+  "lay0": "152,37,195,511",
+  "layPremuto": "152,37,195,511",
   "fotRisc": 1,
-  "dopoGestore": 10,
-  "eventi": "pointerdown+0:attesa2678/lavoro0 touchstart+0:attesa2678/lavoro0",
+  "dopoGestore": 8,
+  "eventi": "pointerdown+0:attesa2596/lavoro0 touchstart+0:attesa2596/lavoro0 pointerup+2678:attesa469/lavoro0 touchend+2678:attesa469/lavoro0 mousedown+2678:attesa483/lavoro0 mouseup+2678:attesa483/lavoro0 click+2678:attesa483/lavoro1",
   "layoutMosso": false,
   "area": [
    true,
@@ -470,9 +2313,9 @@
    ]
   },
   "punti": 4,
-  "click": 0,
+  "click": 1,
   "giu": 1,
-  "flag": "riscontro>50"
+  "flag": "riscontro>50 · effetto>400 (rotellina)"
  },
  {
   "dove": "tel",
@@ -480,14 +2323,167 @@
   "testo": "Avanti ›",
   "w": 165,
   "h": 54,
-  "riscontro": 17,
-  "effetto": 101,
+  "riscontro": 18,
+  "effetto": 118,
   "rotella": null,
   "lavoro": 4,
-  "ingresso": 4,
+  "ingresso": 20,
+  "durFot": 17,
+  "fotEff": 7,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(244, 241, 234)|1|nonergb(13, 15, 20)|0.96",
+  "traccia": [
+   [
+    18,
+    "b",
+    "D",
+    1
+   ],
+   [
+    35,
+    "b",
+    "D",
+    1
+   ],
+   [
+    52,
+    "b",
+    "D",
+    1
+   ],
+   [
+    68,
+    "b",
+    "D",
+    1
+   ],
+   [
+    85,
+    "b",
+    "D",
+    1
+   ],
+   [
+    101,
+    "b",
+    "D",
+    1
+   ],
+   [
+    118,
+    "b",
+    "D",
+    1
+   ],
+   [
+    134,
+    "b",
+    "D",
+    1
+   ],
+   [
+    152,
+    "b",
+    "D",
+    1
+   ],
+   [
+    177,
+    "b",
+    "D",
+    1
+   ],
+   [
+    185,
+    null,
+    "D",
+    1
+   ],
+   [
+    201,
+    null,
+    "D",
+    1
+   ],
+   [
+    218,
+    null,
+    "D",
+    1
+   ],
+   [
+    235,
+    null,
+    "D",
+    1
+   ],
+   [
+    251,
+    null,
+    "D",
+    1
+   ],
+   [
+    268,
+    null,
+    "D",
+    1
+   ],
+   [
+    285,
+    null,
+    "D",
+    1
+   ],
+   [
+    301,
+    null,
+    "D",
+    1
+   ],
+   [
+    318,
+    null,
+    "D",
+    1
+   ],
+   [
+    335,
+    null,
+    "D",
+    1
+   ],
+   [
+    351,
+    null,
+    "D",
+    1
+   ],
+   [
+    368,
+    null,
+    "D",
+    1
+   ],
+   [
+    384,
+    null,
+    "D",
+    1
+   ],
+   [
+    401,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 105,
+  "lay0": "165,54,192,603",
+  "layPremuto": "165,54,192,603",
   "fotRisc": 1,
   "dopoGestore": 15,
-  "eventi": "pointerdown+0:attesa2/lavoro0 touchstart+0:attesa2/lavoro0 pointerup+84:attesa1/lavoro0 touchend+84:attesa2/lavoro0 mousedown+84:attesa4/lavoro0 mouseup+84:attesa4/lavoro0 click+84:attesa4/lavoro4",
+  "eventi": "pointerdown+0:attesa3/lavoro0 touchstart+0:attesa3/lavoro0 pointerup+85:attesa18/lavoro0 touchend+85:attesa18/lavoro0 mousedown+85:attesa20/lavoro0 mouseup+85:attesa20/lavoro0 click+85:attesa20/lavoro4",
   "layoutMosso": false,
   "area": [
    true,
@@ -515,15 +2511,168 @@
   "testo": "Salta",
   "w": 62,
   "h": 54,
-  "riscontro": 26,
-  "effetto": 123,
+  "riscontro": 24,
+  "effetto": 129,
   "rotella": null,
-  "lavoro": 28,
-  "ingresso": 10,
+  "lavoro": 36,
+  "ingresso": 8,
+  "durFot": 17,
+  "fotEff": 6,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgba(0, 0, 0, 0)|1|nonergb(143, 152, 168)|0.96",
+  "traccia": [
+   [
+    24,
+    "b",
+    "D",
+    1
+   ],
+   [
+    41,
+    "b",
+    "D",
+    1
+   ],
+   [
+    57,
+    "b",
+    "D",
+    1
+   ],
+   [
+    74,
+    "b",
+    "D",
+    1
+   ],
+   [
+    90,
+    "b",
+    "D",
+    1
+   ],
+   [
+    129,
+    null,
+    "D",
+    1
+   ],
+   [
+    131,
+    null,
+    "D",
+    1
+   ],
+   [
+    140,
+    null,
+    "D",
+    1
+   ],
+   [
+    209,
+    null,
+    "D",
+    1
+   ],
+   [
+    210,
+    null,
+    "D",
+    1
+   ],
+   [
+    227,
+    null,
+    "D",
+    1
+   ],
+   [
+    242,
+    null,
+    "D",
+    1
+   ],
+   [
+    258,
+    null,
+    "D",
+    1
+   ],
+   [
+    328,
+    null,
+    "D",
+    1
+   ],
+   [
+    329,
+    null,
+    "D",
+    1
+   ],
+   [
+    340,
+    null,
+    "D",
+    1
+   ],
+   [
+    357,
+    null,
+    "D",
+    1
+   ],
+   [
+    374,
+    null,
+    "D",
+    1
+   ],
+   [
+    391,
+    null,
+    "D",
+    1
+   ],
+   [
+    407,
+    null,
+    "D",
+    1
+   ],
+   [
+    424,
+    null,
+    "D",
+    1
+   ],
+   [
+    440,
+    null,
+    "D",
+    1
+   ],
+   [
+    457,
+    null,
+    "D",
+    1
+   ],
+   [
+    474,
+    null,
+    "D",
+    1
+   ]
+  ],
+  "sostituito": 1,
+  "clickElab": 93,
+  "lay0": "62,54,18,603",
+  "layPremuto": "62,54,18,603",
   "fotRisc": 1,
   "dopoGestore": 16,
-  "eventi": "pointerdown+0:attesa9/lavoro0 touchstart+0:attesa10/lavoro0 pointerup+91:attesa1/lavoro0 touchend+91:attesa2/lavoro0 mousedown+91:attesa2/lavoro0 mouseup+91:attesa3/lavoro0 click+91:attesa3/lavoro28",
-  "layoutMosso": true,
+  "eventi": "pointerdown+0:attesa8/lavoro0 touchstart+0:attesa8/lavoro0 pointerup+90:attesa1/lavoro0 touchend+90:attesa1/lavoro0 mousedown+90:attesa2/lavoro0 mouseup+90:attesa3/lavoro0 click+90:attesa3/lavoro36",
+  "layoutMosso": false,
   "area": [
    true,
    true,
@@ -542,7 +2691,7 @@
   "punti": 4,
   "click": 1,
   "giu": 1,
-  "flag": "layout mosso"
+  "flag": ""
  },
  {
   "dove": "tel",
@@ -550,14 +2699,161 @@
   "testo": "Scegli →",
   "w": 100,
   "h": 45,
-  "riscontro": 25,
-  "effetto": 242,
-  "rotella": 161,
+  "riscontro": 21,
+  "effetto": 199,
+  "rotella": 121,
   "lavoro": 1,
-  "ingresso": 63,
+  "ingresso": 19,
+  "durFot": 17,
+  "fotEff": 7,
+  "premuto": "none|brightness(1.16) drop-shadow(rgba(255, 236, 205, 0.6) 0px 0px 6px)|none|rgb(38, 43, 55)|1|nonergb(244, 241, 234)|0.96",
+  "traccia": [
+   [
+    21,
+    "b",
+    "D",
+    1
+   ],
+   [
+    38,
+    "b",
+    "D",
+    1
+   ],
+   [
+    84,
+    "b",
+    "D",
+    1
+   ],
+   [
+    88,
+    "b",
+    "D",
+    1
+   ],
+   [
+    104,
+    "b",
+    "D",
+    1
+   ],
+   [
+    121,
+    "b",
+    "D",
+    1
+   ],
+   [
+    199,
+    "b",
+    "D",
+    0
+   ],
+   [
+    202,
+    "b",
+    "D",
+    0
+   ],
+   [
+    222,
+    null,
+    "D",
+    0
+   ],
+   [
+    225,
+    null,
+    "D",
+    0
+   ],
+   [
+    614,
+    null,
+    "D",
+    0
+   ],
+   [
+    621,
+    null,
+    "D",
+    0
+   ],
+   [
+    784,
+    null,
+    "D",
+    0
+   ],
+   [
+    788,
+    null,
+    "D",
+    0
+   ],
+   [
+    804,
+    null,
+    "D",
+    0
+   ],
+   [
+    821,
+    null,
+    "D",
+    0
+   ],
+   [
+    842,
+    null,
+    "D",
+    0
+   ],
+   [
+    855,
+    null,
+    "D",
+    0
+   ],
+   [
+    890,
+    null,
+    "D",
+    0
+   ],
+   [
+    904,
+    null,
+    "D",
+    0
+   ],
+   [
+    921,
+    null,
+    "D",
+    0
+   ],
+   [
+    938,
+    null,
+    "D",
+    0
+   ],
+   [
+    954,
+    null,
+    "D",
+    0
+   ]
+  ],
+  "sostituito": 0,
+  "clickElab": 122,
+  "lay0": "90,40,223,487",
+  "layPremuto": "90,40,223,487",
   "fotRisc": 1,
-  "dopoGestore": 12,
-  "eventi": "pointerdown+0:attesa13/lavoro1 touchstart+0:attesa13/lavoro0 pointerup+95:attesa60/lavoro0 touchend+95:attesa60/lavoro0 mousedown+95:attesa62/lavoro0 mouseup+95:attesa63/lavoro0 click+95:attesa63/lavoro1",
+  "dopoGestore": 15,
+  "eventi": "pointerdown+0:attesa6/lavoro0 touchstart+0:attesa6/lavoro0 pointerup+88:attesa17/lavoro0 touchend+88:attesa17/lavoro0 mousedown+88:attesa18/lavoro0 mouseup+88:attesa19/lavoro0 click+88:attesa19/lavoro1",
   "layoutMosso": false,
   "area": [
    true,
