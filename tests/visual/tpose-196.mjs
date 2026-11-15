@@ -48,7 +48,7 @@ async function scenario(nome) {
     await sleep(fine - ora); try { await r.fallback(); } catch (e) {} });
   const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; window.__CPM_T196ON = 1; window.__CPM_T196W = []; window.__CPM_TOD = o.tod;
-    if (o.r) window.__CPM_NO_G196 = 1; if (o.cap) window.__CPM_CAP196 = o.cap; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); },
+    if (o.r) window.__CPM_NO_G196 = 1; if (o.cap) { window.__CPM_CAP196 = o.cap; window.__CPM_RISERVA2D209 = 1; }/* [giro 209] col tetto manuale si prova il ripiego 2D, ora acceso solo dal banco */ localStorage.setItem('cpm-v3', JSON.stringify(o.s)); },
     { s: salvataggio(coppa), r: ROSSO, tod, cap: process.env.CPM_CAP196 ? +process.env.CPM_CAP196 : 0 });
   const out = { nome, frames: { walkout: 0, hl: 0 }, cattivi: { walkout: 0, hl: 0 }, noCg: 0, tpose: 0, proc: 0, maxCg: 0, chi: {}, fasi: {}, partita2D: false, attesa: false, scene: 0 };
   const foto = {};

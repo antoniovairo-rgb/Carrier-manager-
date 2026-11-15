@@ -25,7 +25,7 @@ export async function apri(browser, port, schermo, { round = 4, seed = 8080, fla
      Col solo tetto, sul server locale il pacchetto puo' arrivare prima del primo controllo (misurato: PC 1366 restava in 3D). */
   if (!process.env.CPM_NOABORT) await pg.route('**/assets/cgtrader-*.glb', r => r.abort());
   const errs = []; pg.on('pageerror', e => errs.push(String(e.message).slice(0, 160))); pg.on('console', m => { if (m.type() === 'error' && !/\[BABEL\] Note|Failed to load resource|ERR_FAILED/.test(m.text())) errs.push('console: ' + m.text().slice(0, 160)); });
-  await pg.addInitScript(([sv, f]) => { window.__CPM_GLB = true; window.__CPM_T196ON = 1; window.__CPM_CAP196 = 1; for (const k of f) window[k] = 1;
+  await pg.addInitScript(([sv, f]) => { window.__CPM_GLB = true; window.__CPM_T196ON = 1; window.__CPM_CAP196 = 1; window.__CPM_RISERVA2D209 = 1;/* [giro 209] il ripiego 2D per il giocatore e' spento (avviso): la sonda lo accende dal banco */ for (const k of f) window[k] = 1;
     if (!sessionStorage.getItem('g205')) { sessionStorage.setItem('g205', '1'); localStorage.setItem('cpm-v3', JSON.stringify(sv)); } }, [mkSave(round, seed), flags]);
   await pg.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await pg.waitForFunction(() => document.getElementById('root')?.children.length > 0, null, { timeout: 90000 }); await sleep(1500);

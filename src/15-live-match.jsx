@@ -1832,7 +1832,7 @@ function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
   return [c1,c2];}
 try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
-function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false}){/* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
+function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false,onSimula209=null}){/* [giro 209 PO-470] onSimula209: «Simula» dall'avviso «3D non caricabile» (CareerApp: stesso percorso del tasto Simula) *//* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -3070,27 +3070,40 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      corpi PO-232 mollava dopo 8 s e il bottone «Gioca comunque senza modelli 3D» rimetteva i procedurali. Ora ingresso e scene dell'eroe
      ASPETTANO window.__CPM_PRONTI196 (src/12: tutti i corpi visibili CGTrader, con clip, nessun procedurale) dietro una schermata OPACA
      con barra; oltre il tetto (__CPM_CAP196, 120 s, decisione PO 14/11) o a caricamento fallito la partita passa alla vista 2D per il resto della gara. */
+  const [glbFail,setGlbFail]=useState(null);/* [giro 209] dichiarati qui (erano sotto): l'attesa 196 si riarma su glbTry (Riprova) */
+  const [glbTry,setGlbTry]=useState(0);
   const _g196On=()=>typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||!!window.__CPM_T196ON);
   const [att196,setAtt196]=useState(null);
   const att196Ref=useRef({t:0,k:''});
   const [modo2D196,setModo2D196]=useState(false);
   const modo2D196Ref=useRef(false);
-  const _att196=r=>{try{window.__CPM_ATT196=!!r;const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
-  const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
-  const _chk196=(fase)=>{try{const r=window.__CPM_PRONTI196();const c=att196Ref.current;
+  /* [giro 209 PO-470 — rosso __CPM_NO_G209] DECISIONE DEL PO (15/11): «Eviterei proprio il ripiego 2D, se non va il 3D avvisare il player
+     che non puo' procedere perche' ha la connessione lenta o non ne ha proprio». Oltre il tetto __CPM_CAP196 (120 s, invariato) o a
+     caricamento fallito (subito) NON si passa piu' al 2D: compare un AVVISO con due tasti, «Riprova» (rimonta la scena 3D da capo, con la
+     stessa attesa: chiave glbTry di ThreeMatchView) e «Simula» (la partita si gioca col motore senza scene, stesso percorso del tasto
+     Simula della carriera, onSimula209). Il ripiego 2D dei giri 196/205 resta nel codice ma si accende SOLO dal banco di prova:
+     ?cpmtest=1 + window.__CPM_RISERVA2D209 (o col rosso). Sotto l'avviso il 3D resta fermo e non si disegna (__CPM_ATT196). */
+  const [avviso209,setAvviso209]=useState(null);
+  const avviso209Ref=useRef(null);
+  const sim209Ref=useRef(false);
+  const _ris2D209=()=>typeof window!=='undefined'&&(!!window.__CPM_NO_G209||(_CPM_TEST&&!!window.__CPM_RISERVA2D209));
+  const _avv209=(motivo)=>{if(avviso209Ref.current)return;avviso209Ref.current={motivo};try{window.__CPM_AVV209=motivo;window.__CPM_AVV209N=(window.__CPM_AVV209N|0)+1;window.__CPM_ATT196=true;}catch(_e){}setAvviso209({motivo});try{cpmEv("avviso3d209",{motivo,fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}};
+  const _att196=r=>{try{window.__CPM_ATT196=!!r||!!avviso209Ref.current;const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
+  const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;if(!_ris2D209()){_att196(null);_avv209(motivo);return;}/* [giro 209] niente 2D per il giocatore: avviso */modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
+  const _chk196=(fase)=>{try{if(avviso209Ref.current)return 'avviso';/* [giro 209] sotto l'avviso non si controlla piu': decide il giocatore */const r=window.__CPM_PRONTI196();const c=att196Ref.current;
     if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}
     if(!c.t)c.t=Date.now();
     if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
-  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
+  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
     if(phase!=="walkout"||!_g196On()||modo2D196Ref.current)return;
     const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
     if(!_glbExp||typeof window.__CPM_PRONTI196!=='function')return;
-    att196Ref.current.t=0;_chk196('walkout');
-    const iv=setInterval(()=>{_chk196('walkout');},250);
+    att196Ref.current.t=0;if(_chk196('walkout')==='avviso')return;
+    const iv=setInterval(()=>{if(_chk196('walkout')==='avviso')clearInterval(iv);},250);
     return()=>{clearInterval(iv);_att196(null);};
-  },[phase]);
+  },[phase,glbTry]);/* [giro 209] glbTry: «Riprova» riarma l'attesa da capo */
   const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
   useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
@@ -3099,8 +3112,26 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      si giocava coi modelli procedurali; ora l'attesa diventa un AVVISO esplicito con «Riprova» (rimonta la
      scena 3D via glbTry, che e' la key di ThreeMatchView) e, come uscita dichiarata dall'utente, la scelta di
      giocare senza modelli 3D — che resta una SUA decisione, mai un ripiego silenzioso del gioco. */
-  const [glbFail,setGlbFail]=useState(null);
-  const [glbTry,setGlbTry]=useState(0);
+  /* [giro 209 PO-470] i due tasti dell'avviso «3D non caricabile». Riprova: la scena 3D si rimonta da capo (stessa chiave del
+     «Riprova» 7.264) e l'attesa riparte da zero, con lo stesso tetto. Simula: la partita si chiude senza scene e si gioca col
+     motore (CareerApp: lo stesso percorso del tasto Simula, una volta sola; provino: risultato del motore a onMatchEnd). */
+  const _riprova209=()=>{avviso209Ref.current=null;setAvviso209(null);
+    try{window.__CPM_AVV209=null;window.__CPM_RIPROVA209=(window.__CPM_RIPROVA209|0)+1;window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;window.__CPM_HYPER_COMPILED74=false;window.__CPM_ATT196=true;}catch(_e){}
+    att196Ref.current.t=0;att196Ref.current.k='';setGlbFail(null);
+    try{cpmEv("riprova209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
+    setGlbTry(t=>t+1);};
+  const _simula209=()=>{if(sim209Ref.current)return;sim209Ref.current=true;
+    try{window.__CPM_SIM209=(window.__CPM_SIM209|0)+1;window.__CPM_AVV209=null;window.__CPM_ATT196=false;}catch(_e){}
+    try{safeLS.set("cpm-match-resume","");}catch(_e){}/* la gara lasciata a meta' non si riapre al prossimo avvio */
+    try{cpmEv("simula209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
+    if(typeof onSimula209==='function'){onSimula209();return;}
+    let res=null;
+    try{const _sd=hashStr("sim209|"+(player.name||"")+"|"+((opponent&&(opponent.n||opponent.name))||"")+"|"+(player.season||1)+"|"+(player.week||1))>>>0;
+      const sim=simulateMatch(player.club||{p:60},opponent,player.ovr||65,isMatchHome!==false,_sd,{},{motore:true,giocatore:player});
+      const ps=_pSimStats(sim,player.ovr||65,(player.archetype&&player.archetype.id)||player.archetype||"",seededRng(hashStr("psim|209|"+_sd)>>>0));
+      const rt=votoSimEroe(sim,ps);
+      res={goals:ps.goals|0,assists:ps.assists|0,rating:rt!=null?rt:6.0,homeScore:sim.homeScore,awayScore:sim.awayScore,won:!!sim.won,drew:!!sim.drew};}catch(_e){res={goals:0,assists:0,rating:6.0,homeScore:0,awayScore:0,won:false,drew:true};}
+    onMatchEnd({...res,simulated:true,minutesPlayed:90,matchStatus:"starter",context,isHome:isMatchHome!==false,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c});};
   /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» + «alla partita
      successiva si vedono»] IL CONTESTO GRAFICO PUO' MORIRE, E NESSUNO LO SAPEVA. Il browser di un telefono
      revoca il contesto WebGL quando la memoria stringe (`webglcontextlost`): le mesh restano in scena ma le
@@ -3145,7 +3176,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       /* [7.264.0] niente piu' sblocco automatico a 30s (giocava coi burattini): dopo 12s, o subito su errore
          duro del caricamento, si passa all'AVVISO e la partita resta ferma finche' l'utente non decide. */
       const _f=(typeof window!=='undefined')?window.__CPM_GLB_FAIL:null;
-      if(_f==="error"||Date.now()-t0>12000)setGlbFail(_f==="error"?"error":"slow");
+      if(_f==="error"||Date.now()-t0>((_g196On()&&!_ris2D209())?(+window.__CPM_CAP196||120000):12000))setGlbFail(_f==="error"?"error":"slow");/* [giro 209] col nuovo avviso vale il tetto del PO (120 s), non i 12 s del 7.264 */
     },400);
     return ()=>clearInterval(iv);
   },[phase,glbTry]);
@@ -3157,7 +3188,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(_g196On()&&typeof window.__CPM_PRONTI196==='function'){/* [giro 196] stessa trattenuta del cronometro, ma sulla prontezza «nessun corpo sbagliato» e senza il tetto di 8 s: oltre il tetto lungo si gioca in 2D */
       if(modo2D196Ref.current){_set(false);return;}
       att196Ref.current.t=0;
-      const _c=()=>{const e=_chk196('playing');if(e==='attesa'){if(!corpiHold232Ref.current)_set(true);return false;}_set(false);return e==='2d';};
+      const _c=()=>{const e=_chk196('playing');if(e==='attesa'||e==='avviso'){if(!corpiHold232Ref.current)_set(true);return e==='avviso';}_set(false);return e==='2d';};/* [giro 209] sotto l'avviso la scena dell'eroe non parte */
       if(_c())return;
       const iv196=setInterval(()=>{if(_c())clearInterval(iv196);},250);
       return()=>{clearInterval(iv196);_att196(null);};}
@@ -12018,7 +12049,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.532.0 NO540 · 7.536.0] IL RIQUADRO PANCHINA vive ora nella colonna delle voci qui sopra:
                   restare qui, fuori dal flusso, era la causa dell'accavallamento segnalato dal PO. */}
               {/* [7.9.3] Kickoff hold — attesa elegante finché il CH38 non è agganciato (mai burattini in campo) */}
-              {kickoffHold&&!paused&&phase==="playing"&&glbFail&&(
+              {kickoffHold&&!paused&&phase==="playing"&&glbFail&&!(_g196On()&&!_ris2D209())&&(/* [giro 209] col nuovo avviso questo resta solo per il rosso e per il 3D spento dal banco */
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.94)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:41,padding:"0 26px",textAlign:"center"}}>
                   <div style={{fontSize:38,marginBottom:10}}>⚠️</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Modelli 3D non caricati</div>
@@ -12040,6 +12071,29 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{marginTop:8,fontSize:FS.caption,color:"rgba(255,255,255,0.6)",fontVariantNumeric:"tabular-nums"}}>{Math.round((att196.pct||0)*100)}%</div>
                 </div>)}
+              {(()=>{/* [giro 209 PO-470] AVVISO «la partita in 3D non si carica»: tetto superato, caricamento fallito o CH38 fermo. Opaco
+                  (dietro non si vede nessun corpo), tasti grandi, area sicura del telefono rispettata. */
+                const _ch209=kickoffHold&&phase==="playing"&&glbFail&&_g196On()&&!_ris2D209();
+                if(!avviso209&&!_ch209)return null;
+                const _fall=avviso209?avviso209.motivo==="fallito":glbFail==="error";
+                const _b209={width:"100%",minHeight:60,borderRadius:RAD.md,fontFamily:"inherit",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"10px 16px"};
+                return(<div data-cpm="avviso3d209" data-motivo={_fall?"fallito":"lento"} role="alertdialog" aria-modal="true" aria-labelledby="avviso3d209-tit" style={{position:"absolute",inset:0,background:"#050814",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:45,textAlign:"center",overflowY:"auto",
+                    paddingTop:"calc(16px + env(safe-area-inset-top,0px))",paddingBottom:"calc(16px + env(safe-area-inset-bottom,0px))",paddingLeft:"calc(20px + env(safe-area-inset-left,0px))",paddingRight:"calc(20px + env(safe-area-inset-right,0px))"}}>
+                  <div aria-hidden="true" style={{fontSize:44,marginBottom:8}}>📶</div>
+                  <div id="avviso3d209-tit" style={{fontSize:FS.title,fontWeight:FW.black,color:"#f59e0b",lineHeight:1.2,marginBottom:10,maxWidth:340}}>La partita in 3D non si carica</div>
+                  <div data-cpm="avviso3d209-testo" style={{fontSize:FS.bodyLg,color:"rgba(255,255,255,0.88)",lineHeight:1.5,maxWidth:340,marginBottom:6}}>{_fall?"Non riusciamo a scaricare i giocatori. Forse internet non c'è.":"Internet va troppo piano: i giocatori non sono arrivati in tempo."}</div>
+                  <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.72)",lineHeight:1.5,maxWidth:340,marginBottom:18}}>Puoi riprovare, oppure simulare la partita e vedere subito il risultato.</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:12,width:"min(340px,100%)"}}>
+                    <button type="button" data-cpm="avviso3d209-riprova" className="cpm-press" onClick={()=>{if(avviso209)_riprova209();else{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;window.__CPM_RIPROVA209=(window.__CPM_RIPROVA209|0)+1;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}}
+                      style={{..._b209,border:"none",background:"#f59e0b",color:"#1a1206"}}>
+                      <span style={{fontSize:FS.subhead,fontWeight:FW.black}}>↻ Riprova</span>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.semibold,opacity:0.85}}>Carica di nuovo la partita in 3D</span></button>
+                    <button type="button" data-cpm="avviso3d209-simula" className="cpm-press" onClick={_simula209}
+                      style={{..._b209,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(255,255,255,0.08)",color:"#fff"}}>
+                      <span style={{fontSize:FS.subhead,fontWeight:FW.black}}>Simula</span>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.semibold,opacity:0.8}}>La partita si gioca da sola: vedi subito il risultato</span></button>
+                  </div>
+                </div>);})()}
               {phase==="walkout"&&walkHold74&&(
                 <div data-cpm="walkhold74" style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>{/* [7.999.59] velo sull'attesa del 3D: la compilazione non si vede piu' come scatti dell'ingresso */}
                   <div style={{fontSize:34,marginBottom:8,filter:"drop-shadow(0 0 14px rgba(245,158,11,0.7))"}}>🏟️</div>
