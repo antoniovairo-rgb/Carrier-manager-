@@ -1762,5 +1762,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaABarGxXvXZ3WyTfHe",
+    "titolo": "giro 205 partita 2D di riserva: lotteria, premiazione, rassegna (PO-465)",
+    "creata": "2026-11-14T23:13:41Z",
+    "chiusa": "2026-11-15T01:17:03Z",
+    "cost_usd": 8.23376098,
+    "output_tokens": 58897,
+    "cache_read_tokens": 25999499,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-15"
   }
 ]
