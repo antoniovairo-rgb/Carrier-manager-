@@ -2128,5 +2128,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYia8nXEjsoRt4S4kUkNh",
+  "titolo": "giro 225 · serata di presentazione (PO-489)",
+  "creata": "2026-11-16T11:52:09Z",
+  "chiusa": "2026-11-16T14:57:32Z",
+  "cost_usd": 20.14618716,
+  "output_tokens": 158965,
+  "cache_read_tokens": 35793629,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-16"
  }
 ]
