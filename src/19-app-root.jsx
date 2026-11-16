@@ -1270,12 +1270,20 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     if(m!=="n"&&cs.position==="static"){const D=el.getElementsByTagName("*");for(let i=0;i<D.length&&i<80;i++){const p=getComputedStyle(D[i]).position;if(p==="absolute"||p==="fixed"){m="n";break;}}}
     return m;
   };
+  /* [giro 219 · PO-484] PRECEDENZA DEL TOCCO SUL DISEGNO 3D. Lo strato dichiara window.__CPM_TOCCO219={n,tieni,fino}: il ciclo della
+     partita 3D (src/12) cede il prossimo fotogramma (`n`) — e tutti quelli fino a `fino` mentre `tieni` e' vero (tasti a lavoro
+     misurato, finche' l'azione non e' partita) — cosi' il fotogramma dopo il tocco porta a schermo solo il tasto premuto, la
+     rotellina e poi la schermata nuova, senza aspettare un fotogramma della scena. Escluso il pad: li' la risposta al tocco E' la
+     scena. Tetto di tempo sempre dichiarato: un tasto che non fa nulla non puo' fermare la scena. Rosso __CPM_NO_G219. */
+  const prec219=(el,n,ms,tieni)=>{try{if(window.__CPM_NO_G219||(el&&el.closest&&el.closest('[data-cpm="dpad"]')))return;window.__CPM_TOCCO219={n:n|0,tieni:!!tieni,fino:performance.now()+ms,t:performance.now()};}catch(_e){}};
+  const molla219=()=>{try{const T=window.__CPM_TOCCO219;if(T&&T.tieni){T.tieni=false;T.n=0;}/* l'azione e' partita: la scena riprende subito (il salto dell'ingresso lo chiude proprio il ciclo 3D) */}catch(_e){}};
   let prem=null,tGiu=0,tRil=null;
   const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
   document.addEventListener("pointerdown",e=>{
     if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
     rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
     el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
+    prec219(el,1,450,false);
   },true);
   const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);tRil=setTimeout(()=>{tRil=null;if(prem===el)rilascia();},resto);};
   document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
@@ -1296,11 +1304,12 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     const a={t:performance.now(),fatto:false,ov:null};attese.set(el,a);guarda();
     a.tt=setTimeout(()=>fine(el),Math.max(TETTO213,GUARDIA213));
     if(el.hasAttribute("data-pesante213")){
-      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);
-      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
+      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);prec219(el,2,900,true);/* [giro 219] la scena 3D cede il passo finche' l'azione non e' partita */
+      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}molla219();a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
       return;
     }
     a.tr=setTimeout(()=>rotella(el),ROTELLA213);
+    if(e.isTrusted)prec219(el,1,300,false);/* [giro 219] anche la schermata che il clic apre passa prima del disegno 3D */
   },true);
 })();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));
