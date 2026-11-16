@@ -12,11 +12,17 @@
       dopo il pointerdown la scritta del motivo ha un'animazione (vibrazione orizzontale: keyframe con translate; col moto ridotto solo
       colore, nessun translate), nessuna azione (settimana, weekLived, partite salvate e scheda invariati, nessun click arrivato al
       tasto, nessuna rotellina, guardia del doppio tocco invariata).
+   C (giro 229 · PO-495, decisione PO 16/11) PAUSA durante la scelta: scena in hl_choose, ~5 s di scelta, pausa col tasto P, 3 s, ripresa.
+      timer riarmato alla ripresa = il tempo RIMASTO (durata − tempo di scelta prima della pausa, misurato dal testimone __CPM_P229 sul
+      Date.now del gioco) entro 300 ms; la barra alla ripresa riparte dallo stesso rimasto (non piena) e si svuota entro 300 ms dallo scatto.
+      ⚠️ in headless l'orologio delle animazioni CSS va piu' lento del tempo reale: la barra si giudica alla RIPRESA (rimonta col tempo vero).
+      Rosso proprio: __CPM_NO_G229 (timer e barra ripartono interi) DEVE essere bocciato su C.
    ROSSO window.__CPM_NO_G221 (barre 9/6/4 s, tasti spenti muti): DEVE essere bocciato su A in tutti e tre i livelli e su B.
    «Non giudicato» = rosso. Verde e rosso stampati per ultimi.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node barra-221.mjs   (CPM_PARTE=verde|rosso) */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import { apriCarriera166 } from './lib/partita-166.mjs';
+import { misuraPausa } from './misura-pausa-229.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 const PARTE = process.env.CPM_PARTE || 'tutto';
 const TOLL = 300;
@@ -143,10 +149,27 @@ async function provaSpento(rosso, mobile, ridotto) {
 async function braccio(rosso) {
   console.log(`\n== ${rosso ? 'ROSSO (__CPM_NO_G221)' : 'VERDE'} ==`);
   const R = [await parteA(rosso), await provaSpento(rosso, true, false), await provaSpento(rosso, false, false)];
-  if (!rosso) R.push(await provaSpento(rosso, true, true));
+  if (!rosso) { R.push(await provaSpento(rosso, true, true)); R.push(await parteC(false)); }
   const D = R.flatMap(r => r.D), NG = R.flatMap(r => r.NG), N = R.flatMap(r => r.N);
   for (const n of N) console.log('   ' + n); for (const n of NG) console.log('   ⚠️ non giudicato: ' + n); for (const d of D) console.log('   ❌ ' + d);
   return { D, NG };
+}
+/* C: pausa durante la scelta (giro 229) */
+async function parteC(rosso229) {
+  const D = [], NG = [], N = []; const r = await misuraPausa(rosso229);
+  const P = r.p229 || []; /* la pausa e' la prima chiave hl_choose|i|1; l'inizio della scelta e' l'ultima chiave, prima della pausa, uguale alla sua precedente
+     (|n = istanza della scena, giro 229, assente nel rosso; la scena forzata puo' cambiare istanza appena entrata in hl_choose) */
+  const iPa = P.findIndex(x => /^hl_choose\|\d+\|1(\|\d+)?$/.test(x.k)); const ePa = iPa >= 0 ? P[iPa] : null;
+  let eIn = null; if (ePa) for (let j = iPa - 1; j >= 0; j--) if (P[j].k === ePa.prev) { eIn = P[j]; break; }
+  const durI = r.barraIngresso && r.barraIngresso.dur;
+  if (r.err || !eIn || !ePa || !durI || !r.timer || !r.barraRipresa || r.barraRipresa.senza) { NG.push(`C pausa${rosso229 ? ' (rosso 229)' : ''}: misura incompleta (${r.err || ''} ingresso ${!!eIn} pausa ${!!ePa} barra ${!!durI} timer ${!!r.timer} ripresa ${!!r.barraRipresa})`); return { D, NG, N }; }
+  const scelto = ePa.t - eIn.t, atteso = durI - scelto, rT = r.timerRiarmo.d, rB = r.barraRipresa.resto;
+  N.push(`C pausa${rosso229 ? ' (rosso 229)' : ''}: scelta ${scelto} ms prima della pausa (Date.now del gioco) · barra ${Math.round(durI)} ms · atteso ${Math.round(atteso)} ms · timer riarmato ${rT} ms · barra alla ripresa ${Math.round(rB)} ms · la barra si svuota ${r.scarto} ms ${r.scarto < 0 ? 'prima' : 'dopo'} lo scatto`);
+  if (!(Math.abs(rT - atteso) <= TOLL)) D.push(`C pausa: il timer riparte con ${rT} ms invece del rimasto ${Math.round(atteso)} (scarto ${Math.round(rT - atteso)} > ${TOLL})`);
+  if (!(Math.abs(rB - atteso) <= TOLL)) D.push(`C pausa: la barra riparte con ${Math.round(rB)} ms invece del rimasto ${Math.round(atteso)}`);
+  if (!(Math.abs(r.scarto) <= TOLL)) D.push(`C pausa: barra e timer non finiscono insieme (scarto ${r.scarto} > ${TOLL})`);
+  if ((r.errs || []).length) D.push('C errori di pagina: ' + r.errs.join(' | '));
+  return { D, NG, N };
 }
 let V = null, Rr = null; const righe = [];
 if (PARTE !== 'rosso') { V = await braccio(false); righe.push(`VERDE: difetti ${V.D.length} · non giudicati ${V.NG.length} → ${V.D.length || V.NG.length ? '✗ bocciato' : '✓ promosso'}`); }
@@ -155,7 +178,12 @@ if (PARTE !== 'verde') { Rr = await braccio(true);
   const visteB = ['telefono', 'PC'].every(w => Rr.D.some(d => d.startsWith(`B ${w}: nessun segnale`)));
   righe.push(`ROSSO __CPM_NO_G221: barra corta vista nei tre livelli ${visteA} · tasto spento muto visto ${visteB} · non giudicati ${Rr.NG.length} → ${visteA && visteB && !Rr.NG.length ? '✓ bocciato come deve' : '✗ NON bocciato (o non giudicato)'}`);
   Rr.ok = visteA && visteB && !Rr.NG.length; }
+let R229 = null;
+if (PARTE !== 'verde') { console.log('\n== ROSSO (__CPM_NO_G229, parte C) =='); R229 = await parteC(true);
+  for (const n of R229.N) console.log('   ' + n); for (const n of R229.NG) console.log('   ⚠️ non giudicato: ' + n); for (const d of R229.D) console.log('   ❌ ' + d);
+  R229.ok = !R229.NG.length && R229.D.some(d => /^C pausa: il timer riparte/.test(d));
+  righe.push(`ROSSO __CPM_NO_G229: timer che riparte intero visto ${R229.D.some(d => /^C pausa: il timer riparte/.test(d))} · non giudicati ${R229.NG.length} → ${R229.ok ? '✓ bocciato come deve' : '✗ NON bocciato (o non giudicato)'}`); }
 console.log(''); for (const r of righe) console.log(r);
-const ok = (!V || (!V.D.length && !V.NG.length)) && (!Rr || Rr.ok);
+const ok = (!V || (!V.D.length && !V.NG.length)) && (!Rr || Rr.ok) && (!R229 || R229.ok);
 console.log(ok ? '✓ barra-221 VERDE' : '✗ barra-221 ROSSO');
 process.exit(ok ? 0 : 1);

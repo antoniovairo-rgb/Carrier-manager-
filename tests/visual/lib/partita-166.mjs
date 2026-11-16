@@ -43,15 +43,18 @@ export async function apriPrompt166(page, tipo, stato) {
 
 /* Gioca la partita aperta dal prompt. modo: 'intera' = bottone «Gioca la partita» · 'solo' = bottone dei soli highlight.
    Ritorna tempi per fase (ms reali), libro mastro normalizzato, risultato, testo della schermata finale, voce di matchHistory. */
-export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto = null, fermaAlMinuto = 0, pilota = null } = {}) {
+export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto = null, fermaAlMinuto = 0, pilota = null, forzaSolo = false, rigoriAllaScena = false } = {}) {
   const out = { modo, finita: false, fasi: {}, ev: [], score: null, note: [], velo: false };
   /* [giro 175] il libro mastro si azzera PRIMA di premere il bottone: azzerato dopo il montaggio, la prima voce della partita
      (il turno del calcio d'inizio, minuto 0) cadeva prima o dopo l'azzeramento secondo l'orologio — era la «voce in piu' al minuto 0
      in 2 giri su 6» del rapporto 166 §4.3: una differenza dello STRUMENTO, non del gioco. */
   await page.evaluate(() => { if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); });
+  if (forzaSolo) await page.evaluate(() => { window.__CPM_SOLO166 = true; });
   const clic = await page.evaluate((modo) => { const B = [...document.querySelectorAll('[data-cpm="partita23"] button')];
     const b = modo === 'solo' ? document.querySelector('[data-cpm="solo-166"]') : B.find(x => /^Gioca la partita/.test((x.textContent || '').trim()));
-    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, modo);
+    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, forzaSolo ? 'intera' : modo);
+  /* [giro 229] forzaSolo: la modalita' si accende dal gancio di sonda (__CPM_SOLO166) e si preme «Gioca» — serve a misurare la partita a soli
+     salienti dove il bottone ancora non c'e' (misura prima della correzione) e nel braccio rosso */
   out.bottone = clic; if (!clic) { out.note.push('bottone non trovato'); return out; }
   const t0 = Date.now();
   /* fra il prompt e il campo possono esserci finestre (presentazione al club, discorso): si chiudono dalla sonda */
@@ -59,18 +62,22 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   for (let i = 0; i < 60 && !montata; i++) {
     montata = await page.evaluate(() => typeof window.__CPM_PHASE === 'function' && !!window.__CPM_PHASE() && typeof window.__CPM_AUTOPLAY === 'function' && /matchday|formations|walkout|playing/.test(String(window.__CPM_PHASE()))).catch(() => false);
     if (montata) break;
-    await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => /^(Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim())); if (B.length) B[B.length - 1].click(); }).catch(() => {});
+    await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => /^(Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim()) || (!document.querySelector('[data-cpm="partita23"]') && /^Gioca la partita$/.test((x.textContent || '').trim()))/* [giro 229] la convocazione della Nazionale ha il suo «Gioca la partita» */); if (B.length) B[B.length - 1].click(); }).catch(() => {});
     await sleep(500);
   }
   out.tPre = Date.now() - t0;
   if (!montata) { out.note.push('la partita non si e\' montata'); return out; }
   await page.evaluate(({ s, pilota }) => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300, ...(pilota ? { pilota } : {}) }), { s: seme, pilota });
-  const tG = Date.now(); let ult = Date.now(), fase = null, minMax = 0, scene = 0, faseP = null; const fotoFatte = {};
+  const tG = Date.now(); let ult = Date.now(), fase = null, minMax = 0, scene = 0, faseP = null; const fotoFatte = {}; let rigoriFatti = false;
   while (Date.now() - tG < tetto) {
     const s = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (e.length > 200 && window.__CPM_EV_RESET) { window.__CPM_EV_RESET(); } else e.length = 0;
       return { f: window.__CPM_PHASE ? window.__CPM_PHASE() : null, e, v: !!document.querySelector('[data-cpm="solo-166-velo"]'), m: (window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null) }; }).catch(() => null);
     const ora = Date.now();
-    if (s) { if (fase) out.fasi[fase] = (out.fasi[fase] || 0) + (ora - ult); if (s.f !== faseP) { if (s.f === 'hl_intro') scene++; faseP = s.f; } fase = s.f; if (s.e.length) out.ev.push(...s.e); if (s.v) out.velo = true; if (s.m != null) minMax = Math.max(minMax, s.m);
+    if (s) { if (fase) out.fasi[fase] = (out.fasi[fase] || 0) + (ora - ult); if (s.f !== faseP) { if (s.f === 'hl_intro') scene++; faseP = s.f;
+        /* [giro 229] rigoriAllaScena = n: alla n-esima scena la partita si chiude 1-1 dal gancio di collaudo (__CPM_SO_FORCE, lo stesso del
+           giro 58/191): un pareggio a eliminazione diretta riproducibile nei due modi, allo stesso minuto della stessa scena */
+        if (rigoriAllaScena && !rigoriFatti && s.f === 'hl_intro' && scene >= rigoriAllaScena) { rigoriFatti = true; out.rigoriForzati = await page.evaluate(() => { const m = window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null; return window.__CPM_SO_FORCE ? { ok: window.__CPM_SO_FORCE(90), min: m } : null; }).catch(() => null); } }
+      if (s.f === 'shootout') out.rigori = true; fase = s.f; if (s.e.length) out.ev.push(...s.e); if (s.v) out.velo = true; if (s.m != null) minMax = Math.max(minMax, s.m);
       if (foto) for (const f of foto) { if (!fotoFatte[f.nome] && f.quando(s)) { fotoFatte[f.nome] = 1; await page.screenshot({ path: f.file }).catch(() => {}); } }
       if (s.f === 'ended') { out.finita = true; break; } if (fermaAlMinuto && minMax >= fermaAlMinuto) { out.note.push('fermata al ' + minMax + '\''); break; } }
     ult = ora; await sleep(60);
