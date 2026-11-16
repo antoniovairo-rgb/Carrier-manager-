@@ -160,6 +160,11 @@ Stesso strumento, stesso protocollo, stessa sessione: PRIMA = braccio rosso (`__
 | double_step · riuscito | 4 | 0.95 | 0.00 |
 | roulette · riuscito | 1 | 0.00 | 0.00 |
 
+Il **dribbling puro fallito non migliora nel punteggio** (1,87 → 1,86): il suo punteggio è fatto quasi tutto di eroe e pallone fuori
+quadro sull'intera scena *dopo* la palla persa (dubbio 2), che non ho toccato. Quello che è cambiato lì sta in un'altra riga: su gi30
+fallito l'eroe era fuori quadro nel 20% del gesto (braccio rosso del guardiano) ed è a 0 nel verde, perché il pallone non parte più
+prima del contrasto (sequenza `dopo-gi30k0-fail.jpg`).
+
 **Clip suonata nella finta, per variante** (prima = dopo: la correzione non cambia le clip):
 finta, rientro, sterzata e doppio passo suonano tutte la clip `change`; il dribbling puro `feint` (o `change`; `trip` quando l'esito è
 un fallo); la roulette `ruleta`. Vedi dubbio 1.
