@@ -2170,5 +2170,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYia99S5uo11A5kcipvKW",
+  "titolo": "giro 223 · portiere fuori tempo sui tiri falliti (PO-487)",
+  "creata": "2026-11-16T11:52:11Z",
+  "chiusa": "2026-11-16T19:25:33Z",
+  "cost_usd": 14.36776772,
+  "output_tokens": 127893,
+  "cache_read_tokens": 45497677,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]

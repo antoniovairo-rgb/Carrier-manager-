@@ -1724,3 +1724,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 16/11 19:35 — PO-503 rassegna: classifica e prossima partita della competizione
 - Foto PO (7.999.195, scheda 4 dopo una coppa con classifica del campionato). Questionario: «Tabellone del turno» per le eliminazioni dirette; «Nella 196, anche se slitta» → giro 232 (Opus, ~2 h). Uscita 196 stimata ora 01:00-01:30 (il PO ha accettato lo slittamento). Parte B della verifica dopo l'unione di 223, 226 e 232.
+
+## 16/11 20:40 — Unito in lavoro/196: giro 223 (d4a0d221, catene 558701d3)
+- 223 (PO-487): portiere coerente sui tiri falliti (23 gesti su 86 invece di 75 incoerenti; sui palloni fuori portata guarda uscire; il tiro fuori non passa mai dentro il portiere). Guardiano portiere-223 (14 tiri). Unione fatta nel worktree separato /home/user/m196 per non toccare i file sotto la verifica parte A (u192); build forzato solo lì (CPM_FORZA_BUILD=1, il blocco vedeva i rituali dell'altro worktree).
+- Il figlio dichiara di aver usato una volta un ciclo d'attesa con pgrep -f (vietato), fermato subito, nessun effetto sul repo: registrato.
+- Tecniche della madre: lato del tiro fuori che cambia rispetto al sorteggio accettato (la cronaca non dice il lato). Al PO al mattino: «guarda uscire» non passivo? gi55 «Stacco sul palo lontano» esito palo: ha senso?
+- Parte A della verifica fermata dal tetto di 2 h del sottofondo a 33/46 (tutti verdi), riavviata: riprende saltando i fatti.
