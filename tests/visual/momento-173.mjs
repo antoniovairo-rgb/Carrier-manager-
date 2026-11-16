@@ -39,11 +39,22 @@ function savePro(over = {}) {
     form: 70, morale: 72, fatigue: 10, coachTrust: 75, popularity: 40, contract: { duration: 3, wage: 6000, expiresAtSeason: 6 }, matchHistory: [], bankBalance: 80000, u18Seasons: 1, ...AP, ...over };
 }
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
+/* [giro 231] il motivo del tasto spento resta quello del 173 («Prima rispondi al rinnovo»); dal giro 198 (PO-446, «il tasto dice dove
+   andare») da professionista quella riga e' un collegamento alla scheda Agente: stesso testo + « → vai all'Agente», data-g198="vai". */
+const MOT173 = "Prima rispondi al rinnovo → vai all'Agente", VAI173 = true;
 const init173 = ROSSO ? { __CPM_NO_G173: true } : {};
 const ROSSO182 = process.env.CPM_ROSSO182OFF === '1';/* [giro 182 punto C] braccio rosso delle offerte: __CPM_NO_G182_OFFERTE → il guardiano DEVE uscire 1 */
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
+/* [giro 231] dal giro 198 (PO-432, deciso e unito il 14/11) a contratto all'ultimo anno, dalla sett. 19, il presidente richiama in una
+   finestra che copre la Home (dismissable=false). Il giocatore vero risponde prima di toccare altro: il banco tocca «Ci penso», il
+   pulsante vero, e annota se la finestra c'era. Senza questo passo il tasto del momento resta spento su «chiudi prima la finestra
+   aperta» e il guardiano misurava la finestra del 198, non la regola del rinnovo. */
+async function chiudiRichiamo198(page) {
+  for (let i = 0; i < 15; i++) { const b = await page.$('[data-cpm="richiamo198-dopo"]'); if (b) { await b.click(); await sleep(500); return true; } await sleep(200); }
+  return false;
+}
 async function apri(vp, player) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
@@ -64,7 +75,7 @@ async function apri(vp, player) {
 }
 const tasto = (page) => page.evaluate(() => { const t = document.querySelector('[data-cpm="salta163-tasto"]'); const m = document.querySelector('[data-cpm="salta163-motivo"]');
   const st = document.querySelector('[data-cpm="salta163"]');
-  return { c: !!t, spento: !!(t && (t.disabled || t.getAttribute('aria-disabled') === 'true')), motivo: m ? m.innerText.trim() : null, fase: st ? st.getAttribute('data-salta163') : null }; });
+  return { c: !!t, spento: !!(t && (t.disabled || t.getAttribute('aria-disabled') === 'true')), motivo: m ? m.innerText.trim() : null, vai: !!(m && m.getAttribute('data-g198') === 'vai'), fase: st ? st.getAttribute('data-salta163') : null }; });
 const negoAperta = (page) => page.evaluate(() => [...document.querySelectorAll('button')].some(b => /^(Chiedi \+15%|Chiedi \+30%|Ho capito|Accetta l'offerta del club)/.test((b.textContent || '').trim())));
 
 try {
@@ -106,9 +117,10 @@ try {
   for (const [vp, nomeF] of (fai(2) ? [[{ width: 375, height: 812 }, 'telefono'], ...(FOTO ? [[{ width: 1280, height: 800 }, 'pc']] : [])] : [])) {
     console.log(`2) rinnovo aperto (${vp.width} px)`);
     const W = await apri(vp, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }));
+    const ric = await chiudiRichiamo198(W.page); note.push(`rinnovo (${nomeF}): finestra del presidente (giro 198) ${ric ? 'aperta al caricamento, chiusa con «Ci penso»' : 'assente'}`);
     const a = await tasto(W.page); const card = await W.page.evaluate(() => !!document.querySelector('[data-cpm="rinnovo94"]'));
     if (FOTO) { const el = await W.page.$('[data-cpm="corsa163"]'); if (el) { await el.scrollIntoViewIfNeeded(); await sleep(300); await el.screenshot({ path: `${FOTO}/tasto-rinnovo-${nomeF}.png` }); } await W.page.screenshot({ path: `${FOTO}/tasto-rinnovo-${nomeF}-schermo.png` }); }
-    if (nomeF === 'telefono') ok(a.c && a.spento && a.motivo === 'Prima rispondi al rinnovo' && card, `tasto spento col motivo «${a.motivo}» (spento ${a.spento}, card del rinnovo ${card})`);
+    if (nomeF === 'telefono') ok(a.c && a.spento && a.motivo === MOT173 && a.vai === VAI173 && card, `tasto spento col motivo «${a.motivo}» (atteso «${MOT173}», collegamento all'Agente ${a.vai}, spento ${a.spento}, card del rinnovo ${card})`);
     await W.page.evaluate(() => { const t = document.querySelector('[data-cpm="salta163-tasto"]'); if (t) t.click(); }); await sleep(700);
     const n1 = await negoAperta(W.page); const b = await tasto(W.page); const L1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).length);
     if (FOTO && n1) await W.page.screenshot({ path: `${FOTO}/trattativa-dal-tasto-${nomeF}.png` });

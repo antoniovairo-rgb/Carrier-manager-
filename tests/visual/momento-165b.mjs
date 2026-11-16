@@ -47,6 +47,14 @@ function saveU18(over = {}) {
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
+/* [giro 231] dal giro 198 (PO-432, deciso e unito il 14/11) a contratto all'ultimo anno, dalla sett. 19, il presidente richiama in una
+   finestra che copre la Home (dismissable=false). Il giocatore vero risponde prima di toccare altro: il banco tocca «Ci penso», il
+   pulsante vero, e annota se la finestra c'era. Senza questo passo il tasto del momento resta spento su «chiudi prima la finestra
+   aperta» e il guardiano misurava la finestra del 198, non la regola del rinnovo. */
+async function chiudiRichiamo198(page) {
+  for (let i = 0; i < 15; i++) { const b = await page.$('[data-cpm="richiamo198-dopo"]'); if (b) { await b.click(); await sleep(500); return true; } await sleep(200); }
+  return false;
+}
 async function apri(vp, player, no173 = NO173) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
@@ -78,7 +86,10 @@ async function aspettaFine(page, maxMs = 240000) {
   return 'scaduto';
 }
 const ultima = (page) => page.evaluate(() => { const L = window.__CPM_SALTA153 || []; return L[L.length - 1] || null; });
-const chiudiRiepilogo = (page) => page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="salta163-riepilogo"] button')].pop(); if (b) b.click(); });
+/* [giro 231] dal giro 194 (PO-410) il riepilogo non ha piu' «Ok» e sparisce alla prossima azione; dal giro 198 (PO-446) sulla fermata
+   «rinnovo» il suo unico pulsante e' «📋 Vai al rinnovo →», che porta alla scheda Agente: toccarlo come «chiudi» lasciava la Home
+   (seconda corsa mai partita, card del rinnovo non piu' in vista). Si tocca solo un pulsante che non sia quel collegamento. */
+const chiudiRiepilogo = (page) => page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="salta163-riepilogo"] button')].filter(x => x.getAttribute('data-cpm') !== 'salta198-vai').pop(); if (b) b.click(); });
 async function corsa(page, maxMs) { if (!(await clicca(page, '[data-cpm="salta163-tasto"]'))) return { avviata: false }; await sleep(450); if (!(await clicca(page, '[data-cpm="salta163-vai"]'))) return { avviata: false };
   const e = await aspettaFine(page, maxMs); await sleep(500); return { avviata: true, esito: e, fine: await ultima(page) }; }
 const foto = async (page, nome) => { if (!FOTO) return; fs.mkdirSync(FOTO, { recursive: true }); const el = await page.$('[data-cpm="corsa163"]'); if (el) { await el.scrollIntoViewIfNeeded(); await sleep(250); await el.screenshot({ path: `${FOTO}/${nome}.png` }); } await page.screenshot({ path: `${FOTO}/${nome}-schermo.png` }); };
@@ -176,6 +187,7 @@ try {
   if (fai(3)) {
     console.log('3) rinnovo: ferma a ogni corsa finché non firmi o rifiuti');
     const W = await apri({ width: 412, height: 915 }, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }), true);
+    note.push(`rinnovo: finestra del presidente (giro 198) ${await chiudiRichiamo198(W.page) ? 'aperta al caricamento, chiusa con «Ci penso»' : 'assente'}`);
     const c1 = await corsa(W.page, 60000); await chiudiRiepilogo(W.page); await sleep(300);
     const c2 = await corsa(W.page, 60000);
     const card = await W.page.evaluate(() => !!document.querySelector('[data-cpm="rinnovo94"]'));
