@@ -10096,6 +10096,19 @@ function moduliTab112(){if(moduliTab112._t)return moduliTab112._t;
   return moduliTab112._t;}
 const MODULI_112_ELENCO=["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2"];
 function _no112(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G112;}catch(_e){return false;}}
+/* [giro 228 · PO-493] SIGLA DEL RUOLO MOSTRATA (decisione PO 16/11): tre lettere maiuscole al posto del ruolo per esteso nelle liste
+   di giocatori, perche' «CENTROCAMPISTA» + etichetta jolly/U21 tagliava il nome a 360 px. E' solo TESTO MOSTRATO: le regex che
+   classificano i ruoli (src/13, src/15) leggono ancora pl.role per esteso. Il ruolo intero resta in title/aria-label.
+   Rosso __CPM_NO_G228: si torna al ruolo per esteso. */
+function _no228(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G228;}catch(_e){return false;}}
+const _SIGLE228=[[/portiere/i,"POR"],[/terzino/i,"TER"],[/difensore|centrale|libero|stopper/i,"DIF"],[/mediano/i,"MED"],[/mezzala/i,"MEZ"],
+  [/trequartista/i,"TRQ"],[/centravanti/i,"CTR"],[/centrocampista|interno|regista/i,"CEN"],[/^ala\b|esterno|fascia/i,"ALA"],[/attaccante|punta|seconda punta/i,"ATT"],
+  [/jolly/i,"JOL"],[/under-?21/i,"U21"]];
+const _CODICI228={GK:"POR",DEF:"DIF",MID:"CEN",CC:"CEN",TC:"CEN",DM:"MED",AM:"TRQ",CF:"CTR",FWD:"ATT",FW:"ATT",ST:"ATT"};
+function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
+  if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
+  for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
+  return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
@@ -61569,7 +61582,7 @@ const getThisWeekMatchday=()=>{
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
                     <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
-                    <span style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{_cp49.r}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
+                    {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<span data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>
                 );

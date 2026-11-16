@@ -1191,6 +1191,19 @@ function moduliTab112(){if(moduliTab112._t)return moduliTab112._t;
   return moduliTab112._t;}
 const MODULI_112_ELENCO=["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2"];
 function _no112(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G112;}catch(_e){return false;}}
+/* [giro 228 · PO-493] SIGLA DEL RUOLO MOSTRATA (decisione PO 16/11): tre lettere maiuscole al posto del ruolo per esteso nelle liste
+   di giocatori, perche' «CENTROCAMPISTA» + etichetta jolly/U21 tagliava il nome a 360 px. E' solo TESTO MOSTRATO: le regex che
+   classificano i ruoli (src/13, src/15) leggono ancora pl.role per esteso. Il ruolo intero resta in title/aria-label.
+   Rosso __CPM_NO_G228: si torna al ruolo per esteso. */
+function _no228(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G228;}catch(_e){return false;}}
+const _SIGLE228=[[/portiere/i,"POR"],[/terzino/i,"TER"],[/difensore|centrale|libero|stopper/i,"DIF"],[/mediano/i,"MED"],[/mezzala/i,"MEZ"],
+  [/trequartista/i,"TRQ"],[/centravanti/i,"CTR"],[/centrocampista|interno|regista/i,"CEN"],[/^ala\b|esterno|fascia/i,"ALA"],[/attaccante|punta|seconda punta/i,"ATT"],
+  [/jolly/i,"JOL"],[/under-?21/i,"U21"]];
+const _CODICI228={GK:"POR",DEF:"DIF",MID:"CEN",CC:"CEN",TC:"CEN",DM:"MED",AM:"TRQ",CF:"CTR",FWD:"ATT",FW:"ATT",ST:"ATT"};
+function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
+  if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
+  for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
+  return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
