@@ -1,0 +1,132 @@
+### corsa219-1.stato
+== tocco3d-219 07:44:44 · mem libera 15509 MB · disco libero 29G
+   tocco3d-219 uscita 1 07:54:44
+== tocco-213 07:54:45 · mem libera 15495 MB · disco libero 29G
+   tocco-213 uscita 0 08:02:31
+== fps-249 08:02:31 · mem libera 15238 MB · disco libero 29G
+   fps-249 uscita 0 08:03:26
+== festa-3d 08:03:26 · mem libera 15449 MB · disco libero 29G
+   festa-3d uscita 0 08:05:35
+== cerimonie 08:05:35 · mem libera 15526 MB · disco libero 29G
+   cerimonie uscita 0 08:06:25
+== cerimonie-192 08:06:25 · mem libera 15496 MB · disco libero 29G
+   cerimonie-192 uscita 0 08:17:16
+FINE 08:17:16
+### corsa219.stato
+== tocco3d-219 08:17:29 · mem libera 15490 MB · disco libero 29G
+   tocco3d-219 uscita 0 08:27:12
+== ingresso-206 08:27:12 · mem libera 15517 MB · disco libero 29G
+   ingresso-206 uscita 124 09:17:12
+== notte-206 09:17:12 · mem libera 13618 MB · disco libero 29G
+   notte-206 uscita 0 09:22:04
+== gigante-212 09:22:04 · mem libera 15424 MB · disco libero 29G
+   gigante-212 uscita 0 09:40:07
+== tpose-196 09:40:07 · mem libera 15528 MB · disco libero 29G
+   tpose-196 uscita 0 10:07:45
+== highlight-95 10:07:45 · mem libera 15503 MB · disco libero 29G
+   highlight-95 uscita 124 10:57:45
+== career-critical 10:57:45 · mem libera 10738 MB · disco libero 29G
+   career-critical uscita 0 11:10:40
+== test:logic 11:10:40 · mem libera 15258 MB · disco libero 29G
+   test:logic uscita 0 11:10:43
+== save-compat 11:10:43 · mem libera 15299 MB · disco libero 29G
+   save-compat uscita 0 11:10:55
+FINE 11:10:55
+### corsa219b.stato
+== caselle-219 11:11:00 · mem libera 15236 MB · disco libero 29G
+   caselle-219 uscita 0 11:11:54
+== memoria-275 11:11:54 · mem libera 15509 MB · disco libero 29G
+   memoria-275 uscita 0 11:19:47
+== ingresso-206 11:19:47 · mem libera 15257 MB · disco libero 29G
+   ingresso-206 uscita 0 12:10:39
+== highlight-95 12:10:39 · mem libera 15506 MB · disco libero 29G
+   highlight-95 uscita 0 13:45:28
+FINE 13:45:28
+
+### tocco-213 (ultime righe)
+  ✗ pc Simula (prompt) (riscontro 17 · dopo il gestore 16 · fotogramma 19 ms · effetto 289 · rotella null) — R2 nessuna scala · R4 nessuna rotellina (lavoro sincrono misurato)
+VERDE: ✓ promosso
+ROSSO __CPM_NO_G213: ✓ bocciato come deve
+✓ tocco-213 VERDE
+
+### fps-249 (ultime righe)
+verde {"campioni":[{"chip":false,"testo":[],"misura":0,"fase":"hl_choose"},{"chip":false,"testo":[],"misura":7,"fase":"hl_move"},{"chip":false,"testo":[],"misura":10,"fase":"hl_move"}],"errori":0}
+rosso {"campioni":[{"chip":true,"testo":["6 fps"],"misura":7,"fase":"hl_choose"},{"chip":true,"testo":["9 fps"],"misura":10,"fase":"hl_move"},{"chip":true,"testo":["13 fps"],"misura":13,"fase":"hl_move"}],"errori":0}
+✅ fps-249 verde (nessuna scritta fps al giocatore, misura viva) e il rosso si vede
+
+### festa-3d (ultime righe)
+  fase ceremony · fascia: «FISCHIO FINALE · DOPPIETTA 2 – 1 in casa contro Polisportiva Centro 2gol 1assist 8,5voto» · riquadro vecchio no · testo premiazione no
+  coro: Festa3, il gol arriverà! · scudo di casa: {"x":11,"testo":"GRA SEL. GRANATA"}
+  tabellone {"home":2,"away":1} · dopo «Salta» ended · errori di pagina 0
+✅ PASS — la vittoria si festeggia in 3D coi numeri veri, e «Salta» porta alla card
+
+### cerimonie (ultime righe)
+promo: burst>hug>coach>curva>fest
+int: present>captain>pass>fest>lift
+bigwin: burst>hug>fest
+✅ PASS — ogni coppa ha la sua cerimonia, il mister c'e' sempre, la promozione festeggia a modo suo
+
+### cerimonie-192 (ultime righe)
+D rosso {"punti":78,"sat":0.573,"satRif":0.827,"tono":17.959,"lum":1,"coppa":6,"faccia":0.174,"sopra":0.17,"presa":0,"gomiti":169.5}
+C verde {"uomini":7,"dipinti":4681,"spalle":-22,"gomiti":166.5,"manoAvanti":0.105}
+C rosso {"uomini":7,"dipinti":0,"spalle":-34.4,"gomiti":129.7,"manoAvanti":0.148}
+✅ cerimonie-192 verde (e ogni rosso si vede) · punti A,B,C,D
+
+### ingresso-206 (ultime righe)
+{"nome":"big-pc","rosso":false,"vista":"1280x720","walk":true,"playMatch":true,"tipoVero":{"tipo":"big","context":"career","finale":false,"derby":false,"naz":false,"mw":7},"W":{"regie":["tunnel","panoramica","fila","schierati"],"durate":{"tunnel":3.235,"panoramica":5.85,"fila":2.05,"schierati":4.95},"coreoMax":["casa"],"fumoMax":14,"coriMax":180,"innoS":0,"tipo":"big","regia":"standard","scenaAtte
+{"nome":"big-pc-rosso","rosso":true,"vista":"1280x720","walk":true,"playMatch":true,"tipoVero":{"tipo":null,"context":"career","finale":false,"derby":false,"naz":false,"mw":7},"W":null,"err":null,"scenaDich":16,"coreografia":23.96,"stacchi":3,"tifo":{"home":true,"away":true},"durataScena":15.91,"realeS":287.3,"fps":1.12,"innoDom":0,"resid":0,"frames":321,"altoMax":27.29,"corpi":441,"guarda":null,"
+{"nome":"finale-pc","rosso":false,"vista":"1280x720","walk":true,"playMatch":true,"tipoVero":{"tipo":"finale","context":"cup","finale":true,"derby":false,"naz":false,"mw":7},"W":{"regie":["tunnel","panoramica","fila","schierati","inno"],"durate":{"tunnel":3.253,"panoramica":9.327,"fila":4.5,"schierati":6,"inno":7.029},"coreoMax":["casa","ospiti"],"fumoMax":28,"coriMax":180,"innoS":7.029,"tipo":"fi
+✅ ingresso-206 verde (regia per tipo, ingresso breve nelle normali, coreografia/fumogeni/coriandoli/inno solo dove previsti, squadra schierata, fps tenuti) e il rosso si vede
+
+### notte-206 (ultime righe)
+ROSSO storico_it 1280x720 · bordo · prato: giorno 0.4062/0.6378 → notte 0.4246/0.6272 (lum ×1.05, sat ×0.98)
+ROSSO storico_it 1280x720 · bordo · cielo: giorno 0.8048/0.2425 → notte 0.1644/0.4517 (lum ×0.20, sat ×1.86)
+ROSSO storico_it 1280x720 · bordo · spalti: giorno 0.3951/0.1863 → notte 0.3984/0.1874 (lum ×1.01, sat ×1.01)
+✅ notte-206 verde (prato come di giorno, spalti e cielo piu' scuri, un alone per testata) e il rosso si vede
+
+### gigante-212 (ultime righe)
+      · partita:match:festa 375x812 guardalinee scala 0.172 pos 6.7,18.7,36.2 → statura 26.84 m fuori da [1.45·2.05]
+      · partita:match:festa 375x812 guardalinee scala 0.172 pos 6.8,18.7,-36 → statura 26.67 m fuori da [1.45·2.05]
+      · partita:match:festa 375x812 guardalinee scala 0.172 pos 6.8,18.7,36.2 → statura 26.88 m fuori da [1.45·2.05]
+✅ difetto riprodotto — col rosso __CPM_NO_G212 tornano 3 corpi sopra 2.05 m (il gigante della foto)
+
+### tpose-196 (ultime righe)
+VERDE coppa-giorno: {"nome":"coppa-giorno","frames":{"walkout":320,"hl":29},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":597,"playing":60,"hl_intro":9,"hl_choose":2,"hl_result":9},"partita2D":false,"attesa":true,"scene":2,"pm":true,"motivi":{"regular":3,"cgtrader":27,"pronti":61},"durS":302,"ev":[{"ev":"a
+✅ tpose-196 VERDE: 0 T-pose, 0 corpi non CGTrader, 0 procedurali su ingresso e highlight
+ROSSO campionato-notte: {"nome":"campionato-notte","frames":{"walkout":368,"hl":29},"cattivi":{"walkout":114,"hl":0},"noCg":35,"tpose":2,"proc":114,"maxCg":54,"chi":{"proc:giocatore":256,"proc:panchina":2,"nocg:giocatore:Eyes":4,"proc:bambino":136},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":492,"playing":175,"hl_intro":8,"hl_choose":2,"hl_result":9},"partita2D":false,"attesa":fals
+✅ tpose-196 ROSSO ATTESO: con __CPM_NO_G196 i corpi sbagliati si vedono
+
+### highlight-95 (ultime righe)
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato raccontato perso «Ti portano via il pallone»
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con COSTA»: esito «Ti portano via il pallone» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.03,"sl":0.57,"bx":25.9,"ck":15.650000000000087},"rr":null}
+✅ highlight-95 verde (e il rosso si vede)
+
+### career-critical (ultime righe)
+  ✅ girone da 3 punti: niente finale   → gare 3 · idx 3 · pts 3 · finale no · chiusa SI
+  ✅ girone da 0 punti: niente finale   → gare 3 · idx 3 · pts 0 · finale no · chiusa SI
+  ✅ il trofeo si alza una volta sola, e nell'ultima gara → alzate 1
+✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.
+
+### test:logic (ultime righe)
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3121.67632
+
+### save-compat (ultime righe)
+  ℹ️  nota: 2ª migration changed=true senza nuovi campi — rigenerazione calendario/standings perché il club sintetico del test non è nel pool lega (benigno; i save reali con club valido convergono a changed=false).
+=== SAVE-COMPAT === 12 pass · 0 fail
+✅ PASS
+
+### caselle-219 (ultime righe)
+{"et":"ingresso","materiali":975,"texture":404,"fuoriCasella":{},"nonCaricate":0}
+{"et":"partita","materiali":975,"texture":404,"fuoriCasella":{},"nonCaricate":0}
+{"et":"premiazione","materiali":996,"texture":405,"fuoriCasella":{},"nonCaricate":0}
+✅ caselle-219: nessuna texture fuori dalle caselle lette dal caricatore, in ingresso, partita e premiazione
+
+### memoria-275 (ultime righe)
+{"nome":"avvio-2-senza-__CPM","pre":480,"post":368,"O3D":13731,"Mesh":2488,"Skin":976,"Tex":1041,"Geo":1662,"Mat":930,"Mix":109,"Rend":2,"Canvas":226,"Scene":1}
+pageerror 0 []
+RESIDUO dopo GC: avvio-1 420 MB → avvio-2 479 MB (Δ 59) · Object3D 13532→26770 · Texture 1036→2026 · Geo 1657→3129 · Renderer 2→3 · Mixer 109→240
+✅ PASS memoria-275: scene 1 · renderer 2→2 · corpi animati 962→976 · heap dopo GC 368 MB
