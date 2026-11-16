@@ -52,6 +52,9 @@ mentre il chiamato saluta). Due aggiunte:
 | serata, dopo (verde) | 13.433 | 0 | 0,338 (×1,06 della partita) |
 | serata, ripiego | 0 | 4.681 | — |
 
+Soglie del guardiano: almeno 5.000 sagome visibili con densità «vera», tempo dello shader che avanza, luminanza degli spalti entro
+±35% dalla partita di notte; nel ripiego almeno 1.000 tifosi dipinti, con corpi e luci ancora in scena.
+
 Attenzione: la partita di riferimento del salvataggio di prova è **in trasferta** (altro stadio, tifo di altri colori): il
 confronto di luminanza è fra due stadi diversi, per questo la tolleranza del guardiano è larga (±35%).
 Foto: `prima-tel-b1.jpg` / `dopo-tel-b1.jpg`, `prima-spalti.jpg` / `dopo-spalti.jpg` / `partita-spalti.jpg`, `ripiego-tel-b1.jpg`.
@@ -87,15 +90,17 @@ fotogramma, a chiamato fermo davanti alla camera; distanza CIE76):
 
 | chiamato | figurina (classe, capelli) | viso figurina | reso prima → distanza | reso dopo → distanza | capelli 3D prima → dopo |
 |---|---|---|---|---|---|
-| Dylan Gray | 706 (a, neri) | 231,160,112 | 221,169,145 → 16,7 | 232,174,126 → 7,3 | brown → black |
-| Rupert Hammond | 162 (c, rossi) | 198,142,119 | 216,164,138 → 8,1 | 214,152,123 → 5,9 | blond → auburn |
-| Max Stanley | 299 (o, neri) | 209,140,103 | 217,161,139 → 13,4 | 212,143,101 → 2,7 | brown → black |
-| Isaac Hughes | 993 (a, neri) | 197,125,87 | 221,167,144 → 20,0 | 213,135,90 → 6,2 | brown → black |
-| Gary Howard | 271 (c, neri) | 217,160,132 | 215,161,137 → 2,7 | 224,173,142 → 5,1 | auburn → black |
-| eroe (n. 77) | 9 (c, neri) | 225,172,141 | 215,160,139 → 6,4 | 223,178,145 → 3,8 | black → black |
+| Dylan Gray | 706 (a, neri) | 231,160,112 | 222,170,149 → 18,1 | 225,160,115 → 3,4 | brown → black |
+| Rupert Hammond | 162 (c, rossi) | 198,142,119 | 221,171,148 → 10,7 | 216,155,125 → 6,7 | blond → auburn |
+| Max Stanley | 299 (o, neri) | 209,140,103 | 217,152,130 → 10,0 | 215,146,104 → 3,2 | brown → black |
+| Isaac Hughes | 993 (a, neri) | 197,125,87 | 223,169,146 → 20,6 | 215,135,91 → 6,5 | brown → black |
+| Gary Howard | 271 (c, neri) | 217,160,132 | 220,169,144 → 4,5 | 221,168,138 → 3,2 | auburn → black |
+| eroe (n. 77) | 9 (c, neri) | 225,172,141 | 219,168,146 → 5,1 | 219,173,143 → 3,1 | black → black |
 
-Soglia del guardiano: viso reso entro **12** dal viso della figurina (dopo: massimo 7,3; prima: massimo 20,0) e **nessuno scarto**
-sulla classe dei capelli. Foto: `prima-tel-b2.jpg` / `dopo-tel-b2.jpg`, `prima-tel-b7.jpg` / `dopo-tel-b7.jpg`.
+Soglia del guardiano: viso reso entro **12** dal viso della figurina e **nessuno scarto** sulla classe dei capelli. Su quattro corse
+il massimo del «dopo» è stato 6,7–8,4 e il massimo del «prima» 20,0–20,6: il colore reso oscilla di qualche unità fra una corsa e
+l'altra (il riquadro del viso è di pochi pixel). I visi più chiari restano un po' più scuri della figurina nel 3D e quelli più
+scuri un po' più chiari: la compensazione delle luci è una sola per tutti. Foto: `prima-tel-b2.jpg` / `dopo-tel-b2.jpg`, `prima-tel-b7.jpg` / `dopo-tel-b7.jpg`.
 
 **Limiti dichiarati.** Il corpo CGTrader non ha teste rasate, barbe, capelli lunghi: una figurina rasata resta con la testa dai
 capelli corti del colore giusto. La correzione vale **solo per la serata**: in partita i corpi CGTrader hanno ancora tutti la
@@ -129,8 +134,9 @@ Soglie del guardiano: punta più bassa fra −3 e +5 cm per ogni corpo per tutta
 
 **Misura prima** (ossa in spazio mondo, tempo di scena):
 
-- il braccio **scatta**: velocità angolare massima 975 °/s l'omero e 1.060 °/s l'avambraccio (fra il fotogramma «a riposo» e il
-  primo del saluto il braccio salta di decine di gradi, e lo stesso alla fine);
+- il braccio **scatta**: velocità angolare massima, su una finestra di 0,10 s di scena, 540 °/s l'omero e 652 °/s l'avambraccio
+  (fra il fotogramma «a riposo» e il primo del saluto il braccio salta di decine di gradi, e lo stesso alla fine; fra due
+  fotogrammi consecutivi il salto vale 975 e 1.060 °/s);
 - il gomito ruota **fuori dalla sua cerniera** di 46–72° durante il saluto (l'asse della cerniera è misurato sulla clip `running`
   del pacchetto: un gomito piega intorno a un asse solo);
 - omero a 126° dalla verticale (36° sopra l'orizzontale), mano 41 cm sopra la spalla.
@@ -150,12 +156,16 @@ Tempi: su in 0,85 s, saluto, giù in 0,85 s, poi i passi indietro.
 |---|---|---|---|
 | gomito (angolo interno) | 111–167° | 84–175° | ≥ 40° |
 | omero dalla verticale | fino a 126° | fino a 97° | ≤ 150° |
-| gomito fuori dalla cerniera, a saluto in corso | **46–72°** | 0–7° | ≤ 25° |
+| gomito fuori dalla cerniera, a saluto in corso | **46–73°** | 0–8° | ≤ 25° |
 | polso | 10–15° | 7–14° | ≤ 70° |
 | mano dal piano mediano del corpo | 28–69 cm | 29–59 cm | ≥ 5 cm (mai oltre il centro) |
 | mano e gomito dall'asse del busto | ≥ 28 cm | ≥ 28 cm | ≥ 12 cm (mai dentro il corpo) |
-| velocità massima omero / avambraccio | **975 / 1.060 °/s** | 284 / 560 °/s | ≤ 750 °/s |
+| velocità massima omero / avambraccio (finestra 0,10 s) | **540 / 652 °/s** | 184 / 367 °/s | ≤ 350 / ≤ 530 °/s |
 | mano sopra la spalla (≥ 15 cm) | 2,7 s | 1,7 s | ≥ 1,5 s |
+
+La velocità si misura su una finestra di tempo di scena e non fra due fotogrammi: la prima stesura (fra due fotogrammi) dava sulla
+stessa build 560 e 765 °/s a seconda della corsa, e il guardiano è caduto una volta per questo. Su due corse la finestra dà
+184–215 / 367–427 (dopo) e 521–540 / 642–652 (prima).
 
 Il braccio non attraversava il corpo nemmeno prima (mano sempre dal suo lato): i difetti misurati erano lo scatto e la rotazione del
 gomito fuori asse. Foto: `prima/dopo-tel-b3-saluto.jpg`.
@@ -165,11 +175,11 @@ gomito fuori asse. Foto: `prima/dopo-tel-b3-saluto.jpg`.
 **Cos'è.** Al battito 0 la camera della panoramica sta a quota 40 e raggio 92, cioè **sopra e dietro la tribuna**: la parte bassa
 del quadro guarda il campo **attraverso il tetto della tribuna**, che è semitrasparente (opacità 0,8) — più le travi sotto. Non è
 un velo dell'interfaccia. Misura: raggi della camera che vanno al prato e incontrano prima una struttura in quota:
-**273 su 654 (telefono), 215 su 581 (PC)**, tutti sul materiale «trasparente 0,8, quota 25».
+**260 su 665 (telefono), 264 su 558 (PC)**, tutti sul materiale «trasparente 0,8, quota 25».
 
 **Correzione** (`src/16`). La panoramica gira a raggio 72 (il bordo basso del quadro cade sul prato, non sulla tribuna); in più,
 coperture e travi si nascondono finché stanno fra la camera e il prato (vale anche per stadi di altre dimensioni).
-**Dopo: 0 raggi coperti** su 913 (telefono) e 829 (PC). Foto: `prima/dopo-tel-b0.jpg`, `prima/dopo-pc-b0.jpg`.
+**Dopo: 0 raggi coperti** su 926 (telefono) e 823 (PC). Foto: `prima/dopo-tel-b0.jpg`, `prima/dopo-pc-b0.jpg`.
 
 ---
 
