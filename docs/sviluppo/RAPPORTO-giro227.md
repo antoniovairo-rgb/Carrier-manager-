@@ -58,7 +58,20 @@ Ogni premio (rigori, piazzati, maglia, vice, voce, fiducia) è promesso almeno u
 
 ## Controlli eseguiti (uno alla volta)
 
-RISULTATI_CONTROLLI
+Build: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BYTE PER BYTE** (7.544.194 byte, 21 frammenti).
+`node --check tests/visual/ci-runner.mjs` ok; `patto-227` compare una volta in `completa` e una in `carriera`.
+
+| Controllo | Esito |
+|---|---|
+| `patto-227` | ✅ verde (0/3000 incoerenti, 0 non dati, UI ok) · rosso `__CPM_NO_G227` bocciato |
+| `career-critical` | ✅ PASS, uscita 0 (prima corsa troncata dal mio tetto di 590 s, uscita 143: **non valida**, rifatta da capo intera) |
+| `rifiniture-200` | ✅ verde 10/10 · rosso `__CPM_NO_G200` 10/10 bocciato (foto di `docs/sviluppo/giro200/` rimesse con `git checkout`) |
+| `home-199` | ✅ verde · rosso bocciato (foto di `docs/sviluppo/giro199/` rimesse con `git checkout`) |
+| `save-compat` | ✅ 12 pass · 0 fail |
+| `test:logic` | ✅ 51 pass · 0 fail |
+
+Nota di metodo: per aspettare la prima corsa di `career-critical` avevo armato un ciclo d'attesa con `pgrep -f`, vietato dalle
+regole fisse; l'ho fermato subito (nessun effetto sui controlli) e le attese successive sono passate dall'avviso di fine.
 
 ## Dubbi per il PO
 
