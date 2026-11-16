@@ -88,6 +88,11 @@ async function blocco1(rosso) {
     const scelte = defs.filter((_, i) => i % Math.max(1, Math.floor(defs.length / 3)) === 0).slice(0, 3);
     for (const gi of scelte) {
       await page.evaluate(g => { window.__CPM_FORCE_SIT(g, true); }, gi);
+      /* [giro 220] si aspetta che la forzatura sia ARRIVATA (esito della scena precedente azzerato) prima di
+         cercare hl_result: misurato, dopo una scena lasciata in hl_result la sonda leggeva la fase e l'esito
+         VECCHI, poi trovava la scena nuova in hl_choose senza titolo («» su gi31, rosso 2 su 2) */
+      { const ta = Date.now(); let az = false; while (Date.now() - ta < 8000) { az = await page.evaluate(() => window.__CPM_OUTCOME == null).catch(() => false); if (az) break; await sleep(100); }
+        if (!az) { f.D2.push(`gi${gi}: la forzatura non e' arrivata in 8 s (esito precedente mai azzerato): non giudicata`); continue; } }
       const t0 = Date.now(); let o = null;
       while (Date.now() - t0 < 26000) { o = await page.evaluate(() => (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_result') ? window.__CPM_OUTCOME : null).catch(() => null); if (o) break; await sleep(250); }
       if (!o) { f.D2.push(`gi${gi}: l'esitazione non si e' risolta in 26 s`); continue; }

@@ -1,0 +1,54 @@
+
+=== braccio VERDE ===
+  D1   visti  39 · difetti   0  — tocchi su scelta visibile 39 · registrati giusti 39 · persi 0 · esito d'altra azione 0 · pannello ancora nascosto al primo tocco 32 (ritoccato appena visibile)
+  D2   visti   3 · difetti   0  — scene difensive lasciate scadere 3
+  D3   visti   1 · difetti   0  — {"galaPrima":10,"cruscottoPrima":10,"archivio":10,"galaDopo":10,"cruscottoDopo":10}
+  B15  visti   5 · difetti   0  — voci «Contrasto pulito senza fallo» 2 · esiti forzati falliti giocati 3
+  D6   visti  30 · difetti   0  — scene 30 · altezza mediana del riquadro 181 px
+  D7   visti  30 · difetti   0
+  D12  visti   6 · difetti   0  — scene giudicate 6 · non giudicate (esito non rivelato in tempo) 0
+  D15  visti   5 · difetti   0  — Salta ingresso → 61x44 · ⏸ 44x44 · 2× 44x44 · ⚠️ 44x44 · Salta festeggiamenti → 61x44
+  D14  visti   1 · difetti   0  — canvas 810 → 810 px
+
+=== braccio ROSSO ===
+  D1   visti  40 · difetti   8  — tocchi su scelta visibile 40 · registrati giusti 32 · persi 8 · esito d'altra azione 0 · pannello ancora nascosto al primo tocco 0 (ritoccato appena visibile)
+       ✗ gi3 tocco a 202 ms su «Dribbling portiere e tiro» (visibile, opacita' 0.45, disabilitato): nessun ActionResolved
+       ✗ gi23 tocco a 196 ms su «Filtrante per compagno» (visibile, opacita' 0.45, disabilitato): nessun ActionResolved
+       ✗ gi47 tocco a 194 ms su «Scatta e tira» (visibile, opacita' 0.45, disabilitato): nessun ActionResolved
+       ✗ gi71 tocco a 194 ms su «Scarica per il compagno» (visibile, opacita' 0.45, disabilitato): nessun ActionResolved
+  D2   visti   3 · difetti   6  — scene difensive lasciate scadere 3
+       ✗ gi31 difensiva: esito d'attacco «Troppo lento — il marcatore intercetta.» (intercept)
+       ✗ gi31: il titolo dell'esitazione porta un'azione non scelta («Fallito · ✋ Intercetta di piede»)
+       ✗ gi128 difensiva: esito d'attacco «Il pressing paga: il difensore chiude l'azione.» (intercept)
+       ✗ gi128: il titolo dell'esitazione porta un'azione non scelta («Fallito · 📣 Posizionamento strategico»)
+  D3   visti   1 · difetti   1  — {"galaPrima":10,"cruscottoPrima":10,"archivio":10,"galaDopo":8,"cruscottoDopo":8}
+       ✗ gala/cruscotto/albo diversi: {"galaPrima":10,"cruscottoPrima":10,"archivio":10,"galaDopo":8,"cruscottoDopo":8}
+  B15  visti   5 · difetti   3  — voci «Contrasto pulito senza fallo» 2 · esiti forzati falliti giocati 3
+       ✗ gi131 «Contrasto pulito senza fallo» fallito → foul «😤 Cartellino meritato — attento.»
+       ✗ gi131 «Contrasto pulito senza fallo» fallito → foul «😤 Cartellino meritato — attento.»
+       ✗ gi131 «Contrasto pulito senza fallo» fallito → foul «😤 Cartellino meritato — attento.»
+  D6   visti  30 · difetti   4  — scene 30 · altezza mediana del riquadro 181 px
+       ✗ gi108: sotto il riquadro piedi 6/8 · pallone 7/8
+       ✗ gi120: sotto il riquadro piedi 5/8 · pallone 0/8
+       ✗ gi133: sotto il riquadro piedi 2/8 · pallone 0/8
+       ✗ gi152: sotto il riquadro piedi 2/8 · pallone 6/8
+  D7   visti  30 · difetti   5
+       ✗ gi63: titolo troncato «Ci è andato vicinissimo · 🎯 Incrociato sul palo lontano»
+       ✗ gi82: titolo troncato «Il portiere esce e blocca il cross · 🎯 Cross a rientrare»
+       ✗ gi95: titolo troncato «Il difensore si oppone · 💨 Finta rapida e scatto e tiro»
+       ✗ gi159: titolo troncato «Il gol sembrava fatto · ⚽ Taglio preciso sul palo lontano»
+  D12  visti   6 · difetti   6  — scene giudicate 6 · non giudicate (esito non rivelato in tempo) 0
+       ✗ gi11: nessuna scheda d'esito nella colonna destra (striscia)
+       ✗ gi48: nessuna scheda d'esito nella colonna destra (striscia)
+       ✗ gi85: nessuna scheda d'esito nella colonna destra (striscia)
+       ✗ gi122: nessuna scheda d'esito nella colonna destra (striscia)
+  D15  visti   5 · difetti   5  — Salta ingresso → 61x36 · ⏸ 11x28 · 2× 22x20 · ⚠️ 24x34 · Salta festeggiamenti → 61x36
+       ✗ ingresso «Salta ingresso →»: tocco 61x36 (disegno 131x36)
+       ✗ barra «⏸»: tocco 11x28 (disegno 14x34)
+       ✗ barra «2×»: tocco 22x20 (disegno 22x20)
+       ✗ barra «⚠️»: tocco 24x34 (disegno 23x34)
+  D14  visti   1 · difetti   1  — canvas 810 → 849 px
+       ✗ la vista 3D cambia misura entrando in cerimonia: 810 → 849 px
+VERDE OK: D1, D2, D3, B15, D6, D7, D12, D15, D14
+ROSSO ATTESO OK: con __CPM_NO_G96B_* cadono D1, D2, D3, B15, D6, D7, D12, D15, D14
+✅ esiti-96 PASS
