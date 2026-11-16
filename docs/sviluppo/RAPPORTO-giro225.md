@@ -5,6 +5,8 @@ consegna parla di 7.999.196: segnalo la differenza, non la correggo).
 Rosso unico: `window.__CPM_NO_G225` (rimette la serata com'era nella 7.999.195, tutti e cinque i punti).
 Foto del PO: `docs/sviluppo/giro225/po-195-presentazione.jpg`. Foto prima/dopo: `docs/sviluppo/giro225/prima-*.jpg` e `dopo-*.jpg`
 (telefono 375×812 e PC 1280×720). Rapporti letti: giri 192, 196, 200, 206, 212.
+Le foto «dopo» sono della build del commit `e1e8467`; le due correzioni successive (ripiego dello stadio, oscillazione delle braccia
+interpolata) non cambiano ciò che le foto mostrano. I numeri delle tabelle sono dell'ultima corsa sulla build finale.
 
 **Tutte le misure sono headless (rendering software), sulla stessa macchina, verde contro rosso. Non sono misure del telefono del PO.**
 Il collaudo sul telefono resta da fare (vedi «Dubbi per il PO»).
@@ -194,7 +196,33 @@ soglia; il rosso `__CPM_NO_G192C` è invariato. Il ripiego «folla dipinta» è 
 
 ## Controlli (uno alla volta, `CPM_CI_PAR=0`)
 
-CONTROLLI_QUI
+Tutti sulla build finale (commit `974b911`; i commit successivi toccano solo documenti). Prima di ogni controllo: memoria libera
+15,1–15,5 GB, disco libero 28–29 GB. Registro: `docs/sviluppo/giro225/controlli.txt`; uscita completa del guardiano nuovo:
+`docs/sviluppo/giro225/controlli-presentazione-225.txt`.
+
+| controllo | esito | durata |
+|---|---|---|
+| `presentazione-225` | verde | 6 min 53 s |
+| `presentazione-200` | verde | 0 min 56 s |
+| `cerimonie` | verde | 0 min 44 s |
+| `cerimonie-192` | verde | 9 min 30 s |
+| `festa-3d` | verde | 2 min 07 s |
+| `licenze-184` | verde | 3 min 03 s |
+| `fps-249` | verde | 0 min 53 s |
+| `test:logic` | verde | 0 min 03 s |
+| `save-compat` | verde | 0 min 12 s |
+| `presentazione-142` | verde | 3 min 11 s |
+| `gigante-212` | verde | 17 min 08 s |
+| `career-critical` | verde | 11 min 28 s |
+| `tpose-196` | verde | 25 min 41 s |
+
+`presentazione-142` non era nell'elenco richiesto: l'ho aggiunto perché giudica passo e saluto della stessa scena.
+
+Corse non valide, dichiarate: (1) una prima serie di controlli è stata fermata a metà perché la build doveva ancora cambiare (il
+ripiego toglieva dalla scena anche corpi e luci: corretto, e ora il guardiano lo controlla); (2) nella seconda serie
+`presentazione-225` è caduto una volta sul limite di velocità dell'avambraccio (765 °/s): era lo strumento (misura fra due
+fotogrammi), riparato con la finestra di scena, non ripetuto. Le foto dei giri 196 e 212 rigenerate da `tpose-196` e `gigante-212`
+sono state rimesse con `git checkout --` e non sono nel commit.
 
 ## File toccati
 
