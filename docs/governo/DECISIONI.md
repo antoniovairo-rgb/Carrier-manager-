@@ -1672,3 +1672,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 16/11 08:10 — PO-494 «Gioca solo i momenti salienti» sempre disponibile
 - Foto PO (prepartita Korward Champions Cup, titolare): il tasto manca. Misura madre: per progetto (giro 166, PO-364 «B e C insieme» dell'11/11) compare solo nelle partite senza posta. Questionario: PO «Sempre disponibile» (scartati: tasto spento col motivo, sempre tranne finali, lascia com'è). Sostituisce la regola di posta del tasto (non quella del tasto facoltativo del giro 165). Resta solo da titolare (dalla panchina c'è già «salta»). Giro 229 (Opus): misura che il percorso soli-salienti regga coppe/Europa/nazionale (calendario, risultato, pagelle, cerimonie) prima di aprirlo.
+
+## 16/11 ~10:00 — Contenuto della 7.999.196
+- PO («quando esce la 196?», questionario): «Solo difetti, stasera». 7.999.196 = i difetti nuovi dei giri 219-229 (PO-479, 480, 481, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494). Uscita stimata stasera 21-23 Roma (stima dai tempi dei giri 213-221, non garantita). Il pacchetto Store e primo impatto (PO-322, 393, 430, 453, 455, 457, 458, 459) e PO-476 passano alla 7.999.197; poi test chiuso Google Play.
