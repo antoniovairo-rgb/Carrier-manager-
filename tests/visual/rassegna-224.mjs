@@ -67,10 +67,13 @@ async function leggi(page, k) {
       const ox = Math.min(a.right, b.right) - Math.max(a.left, b.left), oy = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
       if (ox > 1 && oy > 1) { n++; if (es.length < 3) es.push(T[i].t + '×' + T[j].t); } } return { n, es }; };
     const pr = piede.getBoundingClientRect();
-    const out = { k, H, schermi: +((sc.scrollHeight + pr.height) / H).toFixed(2), piena: +(sc.scrollHeight / (H - pr.height)).toFixed(2), piedeFondo: Math.round(pr.bottom),
+    const out = { k, H, schermi: +((sc.scrollHeight + pr.height) / H).toFixed(2), piedeFondo: Math.round(pr.bottom),
       puntini: document.querySelectorAll('[data-cpm="puntino200"]').length, avanti: !!document.querySelector('[data-cpm="avanti200"]'), salta: !!document.querySelector('[data-cpm="salta200"]'),
       titolo: (document.querySelector('[data-cpm="titolo200"]') || {}).innerText || null };
     const scheda = [...sc.querySelectorAll('[data-scheda200]')].filter(vis);
+    /* pienezza: fondo VERO del contenuto visibile (non scrollHeight, che non scende mai sotto l'altezza della colonna) */
+    sc.scrollTop = 0; const fondo = scheda.length ? Math.max(...scheda.map(e => e.getBoundingClientRect().bottom)) : 0;
+    out.piena = +((fondo - sc.getBoundingClientRect().top) / (H - pr.height)).toFixed(2);
     const Tall = scheda.flatMap(testi); out.sovrScheda = sovrapposti(Tall); out.fsMin = Tall.length ? Math.min(...Tall.map(x => x.fs)) : 0;
     const pag = [...sc.querySelectorAll('[data-scheda200]')].find(e => /PAGELLA/.test(e.textContent || '') && /MOMENTI CHIAVE|PAGELLA/.test(e.textContent || ''));
     out.pagellaScheda = pag ? pag.getAttribute('data-scheda200') : null;
