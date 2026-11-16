@@ -1480,6 +1480,92 @@ function _g224x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G224);}
    «Forma» dell'AVVERSARIO non compare piu': il gioco non salva la sequenza dei risultati delle altre squadre e _tvTeamStat ne
    inventava l'ordine; resta il bilancio vero della classifica. Rosso __CPM_NO_G230 = torna la striscia. */
 function _g230x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G230);}
+/* [giro 232 · PO-503, decisione PO 16/11 19:35 «La classifica e la prossima partita deve essere della competizione e non del
+   campionato!»] Scheda 4 della rassegna: classifica/tabellone e prossima partita DELLA COMPETIZIONE della partita appena giocata.
+   Funzione PURA, solo lettura del salvataggio + esito di oggi (esito: {mg,og,vinta,pari,rig,fase,avv}). Restituisce
+   {tipo:"campionato"|"girone"|"tabellone"|"nazionale", comp, tabella, io, percorso, prossima:{riga,sett,avv}|null, motivo}.
+   I turni dopo una gara a eliminazione il gioco li sorteggia solo al ritorno in carriera (pick non seedato): qui si dice
+   «sorteggio in attesa», mai un nome inventato. Le settimane sono le stesse formule della carriera (src/18, src/17).
+   Rosso window.__CPM_NO_G232 = la scheda del giro 224. */
+function _g232x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G232);}
+function rassegnaComp232(player,ctx,es){
+  const p=player||{};const wk=p.week||1;const e=es||{};const mg=e.mg|0,og=e.og|0;
+  const _e=(w,d,l)=>w?"V":d?"N":"P";
+  const _r=(t,avv,a,b,w,rig,oggi)=>({t,avv:avv||"",ris:(a|0)+"-"+(b|0),e:_e(w,(a|0)===(b|0),!w),rig:!!rig,oggi:!!oggi});
+  const _cal=(f)=>[...(p.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>wk&&f(m)).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+  const _dalCal=(m)=>m?{riga:(m.isHome!==false?"In casa":"In trasferta")+" contro "+(m.opponentName||"l'avversario")+(m.cupRoundName?(" · "+m.cupRoundName):""),sett:m.week|0,avv:m.opponentName||null}:null;
+  const out={tipo:"campionato",comp:"Campionato",tabella:null,io:-1,percorso:null,prossima:null,motivo:null};
+  if(ctx==="career"||!ctx){const m=_cal(x=>!x.type);out.prossima=_dalCal(m);if(!m)out.motivo="Campionato finito: non ci sono altre giornate in calendario.";return out;}
+  if(ctx==="cup"){
+    const CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","Finale"],CRW=[0,9,19,28,35];const c=p.cup||{};const rd=c.round||1;
+    out.tipo="tabellone";out.comp="Coppa Nazionale";
+    out.percorso=[...(c.results||[]).map(r=>_r(r.name||CRN[r.round]||("Turno "+r.round),r.opponent,r.homeScore,r.awayScore,r.won,r.penalties)),_r(CRN[rd]||("Turno "+rd),e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+(rd>=4?"in finale":("agli "+CRN[rd]).replace("agli Quarti","ai Quarti").replace("agli Semifinale","in semifinale"))+".";return out;}
+    if(rd>=4){out.motivo="Coppa vinta: la competizione e' finita.";return out;}
+    const m=_cal(x=>x.type==="cup");if(m){out.prossima=_dalCal(m);return out;}
+    const w=Math.max(CRW[rd+1],wk+1);out.prossima={riga:CRN[rd+1]+" · sorteggio in attesa",sett:w<=37?w:null,avv:null};return out;}
+  if(ctx==="euro_group"||ctx==="euro_ko"){
+    const eu=p.euro||{};const sig=(typeof euroSig==="function"?euroSig(eu.competition):eu.competition)||"Coppa europea";out.comp=sig;
+    const gr=eu.groupResults||[];
+    if(ctx==="euro_group"){out.tipo="girone";
+      const gr2=[...gr,{opp:e.avv,hs:mg,as:og,won:!!e.vinta,drew:mg===og}];
+      try{out.tabella=typeof euroGroupTable==="function"?euroGroupTable({...eu,groupResults:gr2},p.club||{}):null;}catch(_x){out.tabella=null;}
+      out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+      const tot=((eu.groupOpponents||[]).length*2)||6;
+      if(gr2.length<tot){const m=_cal(x=>x.type==="euro_group");out.prossima=m?_dalCal(m):{riga:"Fase a gironi · giornata "+(gr2.length+1)+" di "+tot,sett:null,avv:null};return out;}
+      if(out.io>=0&&out.io<=1){const w=Math.max(23,wk+2);out.prossima={riga:"Ottavi di Finale · sorteggio in attesa",sett:w<=37?w:null,avv:null};if(w>37)out.motivo="Qualificati agli ottavi, ma la stagione e' al termine.";return out;}
+      out.motivo="Eliminati alla fase a gironi"+(out.io>=0?(" ("+(out.io+1)+"° posto)."):".");return out;}
+    const KN={r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"},KX={r16:"quarti",quarti:"sf",sf:"final"},KW={quarti:24,sf:28,final:34};
+    const ph=e.fase||eu.phase||"r16";out.tipo="tabellone";
+    let gpos=null;try{if(gr.length&&typeof euroGroupTable==="function"){const t=euroGroupTable(eu,p.club||{});const i=t.findIndex(r=>r&&r.isPlayer);if(i>=0)gpos={pos:i+1,pts:t[i].pts|0};}}catch(_x){}
+    out.percorso=[...(gpos?[{t:"Fase a gironi",avv:"",ris:gpos.pos+"° posto · "+gpos.pts+" pt",e:gpos.pos<=2?"V":"P",rig:false,oggi:false,riep:true}]:[]),
+      ...(eu.koResults||[]).map(r=>_r(r.name||KN[r.phase]||r.phase,r.opp||r.opponent,r.homeScore,r.awayScore,r.won,r.penalties)),_r(KN[ph]||ph,e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+({r16:"agli ottavi",quarti:"ai quarti",sf:"in semifinale",final:"in finale"}[ph]||"")+".";return out;}
+    if(ph==="final"){out.motivo=sig+" vinta: la competizione e' finita.";return out;}
+    const m=_cal(x=>x.type==="euro");if(m){out.prossima=_dalCal(m);return out;}
+    const np=KX[ph];const w=KW[np]!=null?Math.min(37,Math.max(KW[np],wk+3)):null;out.prossima={riga:(KN[np]||np)+" · sorteggio in attesa",sett:w,avv:null};return out;}
+  const nat=p.nation||"Italia";const _ESC={r16:"agli ottavi",quarti:"ai quarti",semi:"in semifinale",final:"in finale"};
+  if(ctx==="nationsCup"){
+    const q=p.nationsCupQueue||{};const opp=q.opponents||[];out.comp="Coppa delle Nazioni";
+    const gN=q.isFinal?opp.length-1:opp.length;const ms=q.matches||[];
+    if(q.isFinal){out.tipo="tabellone";const pts=q.pts|0;
+      out.percorso=[{t:"Girone",avv:"",ris:pts+" pt",e:"V",rig:false,oggi:false,riep:true},_r("Finale",e.avv,mg,og,e.vinta,e.rig,true)];
+      out.motivo=e.vinta?"Coppa delle Nazioni vinta: la competizione e' finita.":"Sconfitti in finale: la competizione e' finita.";return out;}
+    out.tipo="girone";const ms2=[...ms,{opp:e.avv,won:!!e.vinta,drew:mg===og,homeScore:mg,awayScore:og}];
+    try{out.tabella=typeof natGroupTable==="function"?natGroupTable(nat,opp.slice(0,gN),ms2,"nations|"+(q.season||p.season||1)):null;}catch(_x){out.tabella=null;}
+    out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+    const idx=(q.matchIdx|0)+1;const pts=(q.pts|0)+(e.vinta?3:mg===og?1:0);
+    if(idx<gN){out.prossima={riga:"Contro "+opp[idx]+" · gara "+(idx+1)+" di "+gN+" del girone",sett:null,avv:opp[idx]};return out;}
+    if(pts>=4){out.prossima={riga:"Finale · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+    out.motivo="Eliminati: girone chiuso con "+pts+" pt (per la finale ne servivano 4).";return out;}
+  if(/^euroMondiale/.test(ctx)){
+    const em=p.euroMondiale||{};out.comp=em.type||"Europeo";
+    if(ctx==="euroMondiale_qualif"){out.tipo="nazionale";const qo=em.qualOpponents||[];const idx=(em.qualMatchIdx|0)+1;const pts=(em.qualPts|0)+(e.vinta?3:mg===og?1:0);
+      out.comp=(em.type||"Europeo")+" · qualificazioni";
+      out.percorso=[...((p.natHistory||[]).filter(r=>r&&(r.season|0)===(p.season||1)&&/^Qualif\. /.test(r.comp||"")).slice(idx>1?-(idx-1):999).map(r=>_r("Qualificazione",r.opp,r.hs,r.as,r.won,false))),_r("Qualificazione "+idx+" di "+qo.length,e.avv,mg,og,e.vinta,false,true)];
+      if(idx<qo.length){out.prossima={riga:"Contro "+qo[idx]+" · qualificazione "+(idx+1)+" di "+qo.length,sett:null,avv:qo[idx]};return out;}
+      if(pts>=3){const g0=(em.groupOpponents||[])[0];out.prossima={riga:"Fase a gironi"+(g0?(" · contro "+g0):""),sett:null,avv:g0||null};return out;}
+      out.motivo="Non qualificati: "+pts+" pt nelle qualificazioni (ne servivano 3).";return out;}
+    if(ctx==="euroMondiale_group"){out.tipo="girone";const go=em.groupOpponents||[];const gm2=[...(em.groupMatches||[]),{opp:e.avv,won:!!e.vinta,drew:mg===og,homeScore:mg,awayScore:og}];
+      try{out.tabella=typeof natGroupTable==="function"?natGroupTable(nat,go,gm2,(em.type||"Euro")+"|"+(em.season||p.season||1)):null;}catch(_x){out.tabella=null;}
+      out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+      const idx=(em.groupMatchIdx|0)+1;const pts=(em.groupPts|0)+(e.vinta?3:mg===og?1:0);
+      if(idx<go.length){out.prossima={riga:"Contro "+go[idx]+" · gara "+(idx+1)+" di "+go.length+" del girone",sett:null,avv:go[idx]};return out;}
+      if(pts>=4){out.prossima={riga:"Ottavi · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+      out.motivo="Eliminati alla fase a gironi con "+pts+" pt (ne servivano 4).";return out;}
+    out.tipo="tabellone";const ph=em.koPhase||"r16";const LB=(typeof EM_KO_LABEL!=="undefined"?EM_KO_LABEL:{});const OR=(typeof EM_KO_ORDER!=="undefined"?EM_KO_ORDER:["r16","quarti","semi","final"]);
+    out.percorso=[...((em.groupMatches||[]).length?[{t:"Fase a gironi",avv:"",ris:(em.groupPts|0)+" pt",e:"V",rig:false,oggi:false,riep:true}]:[]),
+      ...(em.koResults||[]).map(r=>_r(LB[r.phase]||r.phase,r.opp,r.homeScore,r.awayScore,r.won,r.penalties)),_r(LB[ph]||ph,e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+(_ESC[ph]||"")+".";return out;}
+    if(ph==="final"){out.motivo=(em.type||"Torneo")+" vinto: la competizione e' finita.";return out;}
+    const ci=OR.indexOf(ph);const np=ci>=0?OR[ci+1]:null;out.prossima={riga:(LB[np]||np||"Turno successivo")+" · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+  if(ctx==="national"||ctx==="nazionale"){out.tipo="nazionale";out.comp="Nazionale · amichevole";
+    const m=_cal(x=>x.type==="national");if(m){out.prossima=_dalCal(m);return out;}
+    const q=p.nationsCupQueue;if(q&&q.active&&!q.done&&(q.opponents||[])[q.matchIdx|0]){const o=q.opponents[q.matchIdx|0];out.prossima={riga:"Coppa delle Nazioni · contro "+o,sett:null,avv:o};return out;}
+    out.motivo="Nessun'altra gara della Nazionale in calendario questa stagione.";return out;}
+  return null;
+}
+if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){window.rassegnaComp232=rassegnaComp232;window.__CPM_CLUBS232=()=>CLUBS;window.__CPM_SIG232=(k)=>euroSig(k);}/* solo banco di prova */
 function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
@@ -13071,6 +13157,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               Solo lettura, nessun campo nuovo. Ogni riga compare solo se il suo dato c'e'. */
             const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));const _sn=player.season||1;
             const _isEG=context==="euro_group"&&player.euro&&typeof euroGroupTable==="function";
+            /* [giro 232 · PO-503] la competizione della partita appena giocata decide classifica/tabellone e prossima partita */
+            let _c232=null;if(_g232x()){try{_c232=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});}catch(_e){_c232=null;}}
+            const _k232=!!(_c232&&_c232.tipo!=="campionato");
             let _st=[],_io=-1,_zone=()=>null,_leg=[];
             if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
             else if(!_isNatCtx){_st=[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
@@ -13084,7 +13173,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(_io>=0){if(_isEG||N<=10){for(let i=0;i<N;i++)_set.add(i);}else{for(let i=0;i<Math.min(5,N);i++)_set.add(i);for(let i=_io-1;i<=_io+1;i++)if(i>=0&&i<N)_set.add(i);for(let i=Math.max(0,N-3);i<N;i++)_set.add(i);}}
             const _idx=[..._set].sort((a,b)=>a-b);
             const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;
-            const _wk=player.week||1;const _nx=[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+            const _wk=player.week||1;const _nx=_k232?null:[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk&&!(_c232&&m.type)).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
             const _tipo={cup:"Coppa",euro:"Coppa europea",nations:"Nazionale",national:"Nazionale",friendly:"Amichevole"};
             const _riga=(i,k)=>{const r=_st[i];const io=i===_io;const zc=_zone(i);const gap=k>0&&i-_idx[k-1]>1;
               return(<React.Fragment key={i}>{gap&&<div aria-hidden="true" style={{textAlign:"center",color:TH.faint,fontSize:FS.caption,lineHeight:1,padding:"1px 0"}}>⋯</div>}
@@ -13107,8 +13196,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               try{if(_av)_avS=_tvTeamStat(_av);}catch(_e){_avS=null;}
               try{if(_av&&!_nx.type&&_av.lg===_cl.lg&&typeof generateLeagueScorers==="function"){const _sc=generateLeagueScorers(player,{all:true,fullClub:true})||[];const _o=_sc.find(x=>x&&!x.isPlayer&&x.club===(_av.n||_av.a)&&(x.goals|0)>0);if(_o)_occ=_o;}}catch(_e){_occ=null;}}
             const _lab={fontSize:FS.caption,color:TH.muted,fontWeight:FW.bold};
-            return(<div data-cpm="classifica200">
-              {_io>=0&&<Sez210 id="post-classifica200" titolo={_isEG?"Classifica del girone":"Classifica"}>
+            const _E232={V:TH.success,N:TH.warning,P:TH.danger};
+            return(<div data-cpm="classifica200" data-comp232={_c232?_c232.tipo:undefined}>
+              {_k232&&_c232.tabella&&_c232.io>=0&&<Sez210 id="post-classifica200" titolo={"Classifica del girone · "+_c232.comp}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Con il risultato di oggi</div>
+                <div data-cpm="girone232" style={{display:"flex",flexDirection:"column",gap:1}}>{_c232.tabella.map((r,i)=>{const io=i===_c232.io;return(<div key={i} data-cpm={io?"classifica200-io":"girone232-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"1px 6px",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span className="cpm-num" style={{minWidth:26,color:TH.muted,paddingLeft:4}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.fullName||r.name||r.n||"?"}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto",color:TH.muted}}>{(r.w|0)+"V "+(r.d|0)+"N "+(r.l|0)+"P"}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto",minWidth:40,textAlign:"right"}}>{(r.pts|0)+" pt"}</span></div>);})}</div>
+              </Sez210>}
+              {_k232&&_c232.percorso&&_c232.percorso.length>0&&<Sez210 id="post-classifica200" titolo={"Tabellone del turno · "+_c232.comp}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Il tuo percorso</div>
+                <div data-cpm="tabellone232" style={{display:"flex",flexDirection:"column",gap:2}}>{_c232.percorso.map((r,i)=>(<div key={i} data-cpm={r.oggi?"tabellone232-oggi":"tabellone232-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"2px 6px",background:r.oggi?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:r.oggi?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span style={{flex:"0 0 auto",minWidth:0,color:TH.muted}}>{r.t}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.avv}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto"}}>{r.ris+(r.rig?" (rig.)":"")}</span>
+                  {!r.riep&&<span className="cpm-num" style={{flex:"0 0 auto",minWidth:20,textAlign:"center",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:_E232[r.e]||TH.muted}}>{r.e}</span>}</div>))}</div>
+              </Sez210>}
+              {!_k232&&_io>=0&&<Sez210 id="post-classifica200" titolo={_isEG?"Classifica del girone":"Classifica"}>
                 <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
                 <div data-cpm="classifica224" style={{display:"flex",flexDirection:"column",gap:1}}>{_idx.map(_riga)}</div>
                 {_leg.length>0&&<div data-cpm="zone224" style={{display:"flex",flexWrap:"wrap",columnGap:10,rowGap:0,marginTop:4,fontSize:FS.caption,color:TH.muted}}>{_leg.map(([c,l])=>(<span key={l} style={{display:"inline-flex",alignItems:"center",gap:4}}><span style={{width:8,height:8,borderRadius:2,background:c}}/>{l}</span>))}</div>}
@@ -13122,12 +13228,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <span style={{flex:1,minWidth:0}}>{(o.ok?"✅ ":"🎯 ")+o.l}</span><span className="cpm-num" style={{fontWeight:FW.bold,color:o.ok?TH.success:TH.text}}>{o.v}</span></div>))}
                 </div>
               </Sez210>}
-              <Sez210 id="post-prossima224" titolo="Prossima partita">
-                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):"Nessuna partita in calendario dopo questa."}</div>
+              {_k232&&<Sez210 id="post-prossima224" titolo={"Prossima partita · "+_c232.comp}>
+                <div data-cpm="prossima200" data-prossima232={_c232.prossima?"si":"no"} style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_c232.prossima?(<><b>{_c232.prossima.riga}</b>{_c232.prossima.sett?<span style={{color:TH.muted}}>{" · settimana "+_c232.prossima.sett}</span>:null}</>):(_c232.motivo||"Nessuna altra partita in questa competizione.")}</div>
+                {_c232.prossima&&_c232.motivo&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:4}}>{_c232.motivo}</div>}
+              </Sez210>}
+              {!_k232&&<Sez210 id="post-prossima224" titolo={_c232?"Prossima partita · Campionato":"Prossima partita"}>
+                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):((_c232&&_c232.motivo)||"Nessuna partita in calendario dopo questa.")}</div>
                 {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
                 {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
                 {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
-              </Sez210>
+              </Sez210>}
             </div>);})()}
           {_g200()&&!_g224()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
               (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
