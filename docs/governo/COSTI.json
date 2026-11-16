@@ -2184,5 +2184,33 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaBpPCLbncKZ1sbZnTZ",
+  "titolo": "giro 226 · dribbling (PO-491)",
+  "creata": "2026-11-16T11:52:12Z",
+  "chiusa": "2026-11-16T19:37:20Z",
+  "cost_usd": 25.31855634,
+  "output_tokens": 157851,
+  "cache_read_tokens": 55217252,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYia8xrM624uRdYT5RGf6",
+  "titolo": "giro 232 · rassegna della competizione giocata (PO-503)",
+  "creata": "2026-11-16T18:29:28Z",
+  "chiusa": "2026-11-16T19:42:21Z",
+  "cost_usd": 5.82258004,
+  "output_tokens": 56520,
+  "cache_read_tokens": 13699337,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]
