@@ -2142,5 +2142,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaD57jfJRD5h2SxpGbi",
+  "titolo": "giro 231 · riparazione guardiani del rinnovo (momento-165/165b/173)",
+  "creata": "2026-11-16T14:41:33Z",
+  "chiusa": "2026-11-16T15:55:54Z",
+  "cost_usd": 3.20664628,
+  "output_tokens": 25633,
+  "cache_read_tokens": 8296217,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "riparazione",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]
