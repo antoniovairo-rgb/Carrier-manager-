@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* GUARDIANO dribbling-226 — giro 226, PO-491 «Migliora anche i dribbling, alcuni sono davvero confusionari».
    Stesso strumento del banco che ha preso la decisione (lib/dribbling-226.mjs, testimone __CPM_G226W di src/12), GLB ACCESO, pagina
-   nuova ogni 4 esecuzioni. Provoca le azioni di dribbling dell'eroe di TUTTE le varianti del catalogo (dribbling puro, finta,
+   nuova ogni 2 esecuzioni. Provoca le azioni di dribbling dell'eroe di TUTTE le varianti del catalogo (dribbling puro, finta,
    rientro, sterzata, doppio passo, roulette; CPM_PER_VARIANTE azioni per variante, default 2) con esito riuscito e fallito e
    pretende, per ogni esecuzione:
      1. PALLONE AL PIEDE  quando e' «controllato» (conduzione dell'eroe, a terra, niente arco) non oltre 2,0u dal piede in piu' del 10% dei fotogrammi
@@ -23,7 +23,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, __dirname as L
 import { S, INIT, catalogo, esegui, rigaBreve, sleep } from './lib/dribbling-226.mjs';
 
 const OUT = path.join(LIBDIR, '..', 'out', 'dribbling-226'); fs.mkdirSync(OUT, { recursive: true });
-const PER_VAR = Math.max(1, +(process.env.CPM_PER_VARIANTE || 2)), PER_PAGINA = 4, ROSSO_MIN = +(process.env.CPM_ROSSO_MIN || 3);
+const PER_VAR = Math.max(1, +(process.env.CPM_PER_VARIANTE || 2)), PER_PAGINA = 2 /* una pagina per azione, prima il fallito poi il riuscito: dopo un gol la scena seguente parte coi difensori a centrocampo (strumento, 7.483) */, ROSSO_MIN = +(process.env.CPM_ROSSO_MIN || 3);
 const T0 = Date.now();
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 
@@ -69,7 +69,7 @@ async function braccio(rosso, azioni) {
   if (rosso) { await page.close().catch(() => {}); page = await nuovaPagina(true); }
   let usate = 0; const esiti = [];
   const una = async (a, out) => { if (usate >= PER_PAGINA) { await page.close().catch(() => {}); page = await nuovaPagina(rosso); usate = 0; } usate++; let r; try { r = await esegui(page, { ...a, out }, { totale: TOT }); } catch (e) { r = { ...a, out, errore: String(e.message || e).slice(0, 160) }; } return r; };
-  for (const a of azioni) for (const out of ['success', 'fail']) {
+  for (const a of azioni) for (const out of ['fail', 'success']) {
     let r = await una(a, out); let v = violazioni(r); let instabile = false;
     if (v.length && !rosso) { console.log(`  ↻ ${rigaBreve(r)}\n      prima passata rossa: ${v.join(' · ')} — si ripete una volta su pagina nuova`); usate = PER_PAGINA; const r2 = await una(a, out); const v2 = violazioni(r2); if (!v2.length) instabile = true; r = r2; v = v2; }
     esiti.push({ a, out, r, v, instabile });

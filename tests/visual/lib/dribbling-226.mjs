@@ -57,18 +57,18 @@ export const INIT = () => {
 };
 
 /* una esecuzione: scena-esca → scena → scelta → conclusione, osservata per SCENA_S secondi di scena */
-export async function esegui(page, ex, { SCENA_S = 5, foto = null, totale = 191 } = {}) {
+export async function esegui(page, ex, { SCENA_S = (ex.fam === 'drib+cross' ? 7 : 5) /* il cross dopo il dribbling ha un copione lungo (scambio, ritorno, cross): 5 s non arrivano all'esito */, foto = null, totale = 191 } = {}) {
   const { gi, k, out } = ex;
   const scena = () => page.evaluate(() => window.__CPM_SCENET || 0).catch(() => 0);
   const attendiScena = async (ds, capMs) => { const s0 = await scena(); const t0 = Date.now(); while (Date.now() - t0 < capMs) { if ((await scena()) - s0 >= ds) break; await sleep(80); } };
   await page.evaluate(() => { window.__CPM_FORCE_INTRO = 1; delete window.__CPM_FORCE_KIND; delete window.__CPM_FORCE_OUTCOME; window.__CPM_FROZEN = false; });
   const esca = (gi + 61) % totale;
   await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), esca).catch(() => false);
-  await attendiScena(0.6, 8000);
+  await attendiScena(1.0, 10000);
   await page.evaluate(() => { window.__CPM_G226W = []; });
   const ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi).catch(() => false);
   if (!ok) return { ...ex, nonGiud: 'forzatura fallita' };
-  await attendiScena(1.0, 12000);
+  await attendiScena(2.0, 16000); /* la camera deve aver finito l'apertura: su pagina nuova, a 1,0 s era ancora in viaggio dalla scena-esca e l'eroe risultava fuori quadro nel tratto di dribbling (misurato su gi30 fallito: 19-20% a pagina nuova, 0-3% a pagina calda) */
   const nPre = await page.evaluate(([o]) => { window.__CPM_FORCE_OUTCOME = o; return (window.__CPM_G226W || []).length; }, [out]);
   const okR = await page.evaluate(kk => window.__CPM_RESOLVE(kk), k).catch(() => false);
   if (!okR) return { ...ex, nonGiud: 'risoluzione fallita' };
@@ -110,8 +110,10 @@ export function analizza({ dati, nPre, ...ex }) {
   const palla = { nDrib: D.length, nCtrl: C.length, dMed: C.length ? +median(dP).toFixed(2) : null, dP95: C.length ? +quant(dP, 0.95).toFixed(2) : null, dMax: C.length ? +Math.max(...dP).toFixed(2) : null, qStacc: C.length ? +(stacc / C.length).toFixed(3) : null };
   /* ── il duello: a che distanza dall'avversario piu' vicino si gioca la finta (mediana sul tratto «feint» della timeline; sul
      dribbling puro riuscito, la distanza minima mentre il gesto e' in corso) ── */
-  const dn1 = f => f.n1 ? Math.hypot(f.n1[0] - f.h[0], f.n1[1] - f.h[1]) : 99;
-  const FE = F.filter(f => f.tl && f.tl[1] === 'feint' && !f.cut), PU = F.filter(f => f.at === 'dribble' && f.ok === true);
+  /* nelle azioni che promettono di saltare il PORTIERE («Dribbling portiere e tiro», «Scarta il portiere») l'uomo del duello e' lui */
+  const colPortiere = /portiere|\bgk\b/i.test(String(ex.label || ''));
+  const dn1 = f => Math.min(f.n1 ? Math.hypot(f.n1[0] - f.h[0], f.n1[1] - f.h[1]) : 99, (colPortiere && f.gk) ? Math.hypot(f.gk[0] - f.h[0], f.gk[1] - f.h[1]) : 99);
+  const FE = F.filter(f => f.tl && f.tl[1] === 'feint' && !f.cut && !f.hold) /* l'attesa dell'uomo (hold) non e' ancora la finta */, PU = F.filter(f => f.at === 'dribble' && !f.cut); /* dribbling puro, riuscito o perso: anche chi lo ferma deve essergli addosso */
   const dDuello = FE.length >= 3 ? +median(FE.map(dn1)).toFixed(2) : (PU.length >= 3 ? +Math.min(...PU.map(dn1)).toFixed(2) : null);
   /* ── passi consecutivi (tempo di scena dentro; stacchi neri scartati) ── */
   const passi = []; let tComp = 0, dMinDef = 9e9, pesoSalti = 0, clipSecche = 0, clipIndietro = 0;
@@ -163,7 +165,9 @@ export function analizza({ dati, nPre, ...ex }) {
   const U = F.slice(-Math.max(3, Math.floor(F.length * 0.08))); const uf = U[U.length - 1];
   const inRete = F.some(f => f.b[0] > GLX && Math.abs(f.b[2]) <= PALO && f.b[1] < 2.6);
   const dhF = median(U.map(hb)), dnF = median(U.map(f => f.n1 ? Math.hypot(f.b[0] - f.n1[0], f.b[2] - f.n1[1]) : 99));
-  const fineChi = inRete ? 'rete' : (dhF <= S.D_FINE && dhF <= dnF) ? 'eroe' : (dnF <= S.D_FINE) ? 'avversario' : 'nessuno';
+  /* un uomo a terra non ha il pallone: se a fine scena l'eroe e' caduto (clip trip/fallen), il pallone vicino a lui non e' «suo» */
+  const aTerra = U.every(f => f.g && /^(trip|fallen)$/.test(String(f.g[0])) && (f.g[1] || 0) > 0.5) || (F.some(f => f.g && f.g[0] === 'fallen' && (f.g[1] || 0) > 0.8) && !F.slice(-3).some(f => f.at));
+  const fineChi = inRete ? 'rete' : (dhF <= S.D_FINE && dhF <= dnF && !aTerra) ? 'eroe' : (dnF <= S.D_FINE) ? 'avversario' : 'nessuno';
   const n1Inizio = F[0].n1; const superato = n1Inizio ? (uf.h[0] > (uf.n1 && uf.n1[2] === n1Inizio[2] ? uf.n1[0] : n1Inizio[0]) + 0.5) : null;
   /* ── coerenza testo ↔ cio' che si vede. Si giudica cio' che il testo/motore DICHIARA: ok + chiave d'esito. ── */
   const key = String(base.outKey || ''), kd = String(base.outKind || (F.find(f => f.kd) || {}).kd || '');

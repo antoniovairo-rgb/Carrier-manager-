@@ -21,8 +21,8 @@ const NOME = process.env.CPM_NOME || 'misura';
 if (process.argv[2] === 'classifica') { classifica(process.argv.slice(3)); process.exit(0); }
 
 const T0 = Date.now();
-const PER_PAGINA = Math.max(1, +(process.env.CPM_PER_PAGINA || 4));
-const ESITI = (process.env.CPM_ESITI || 'success,fail').split(',');
+const PER_PAGINA = Math.max(1, +(process.env.CPM_PER_PAGINA || 2)); /* una pagina per azione: prima il FALLITO, poi il riuscito. Dopo un gol le squadre tornano a centrocampo e la scena seguente sulla stessa pagina partiva coi difensori a 14-22u (misurato su gi71: era lo strumento, 7.483) */
+const ESITI = (process.env.CPM_ESITI || 'fail,success').split(',');
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function nuovaPagina() {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
