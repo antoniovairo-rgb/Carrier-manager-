@@ -206,7 +206,31 @@ Durata: circa 18 minuti da solo. Nelle catene `completa` e `carriera` di `ci-run
 
 ## 6. Controlli
 
-<!-- CONTROLLI -->
+Eseguiti uno alla volta (`CPM_CI_PAR=0`), `CPM_CHROME=/opt/pw-browsers/chromium`, con `free -m` e `df -h` prima di ognuno (memoria
+libera 14,7-15,1 GB, disco libero 29 GB) e `mkdir -p tests/visual/out`. Tutti sul build committato (`node tools/check-src.mjs`:
+«allineato al file in git»). Log in `tests/visual/out/controlli-226/` (non versionati).
+
+| Controllo | Esito | Durata | Riga finale del log |
+|---|---|---|---|
+| `dribbling-226` (nuovo) | ✅ verde | 18 min | «VERDE: 22/22 … ROSSO: finta nel vuoto vista in 5/12 … verde col verde, rosso col rosso» |
+| `esiti-96` | ✅ verde | 12 min | «VERDE OK: D1, D2, D3, B15, D6, D7, D12, D15, D14 · ROSSO ATTESO OK · esiti-96 PASS» |
+| `scena3d-96` | ✅ verde | 28 min | «scene giudicate 31/31 · rossi per punto {} · errori di pagina 0 · scena3d-96 VERDE» |
+| `diagonali-210` | ✅ verde | 3 min | «diagonali-210 VERDE» (rosso visto su tutte e tre le voci, non giudicati 0) |
+| `solo-highlight-166` | ✅ verde | 11 min | «VERDE: PASSA · ROSSO: CADE (come deve) su 3, 7 e 8» |
+| `tpose-196` | ✅ verde | 25 min | «tpose-196 ROSSO ATTESO: con __CPM_NO_G196 i corpi sbagliati si vedono» (verde su tutti gli scenari) |
+| `gigante-212` | ✅ verde | 18 min | «PASS — 12 scene giudicate, nessun corpo fuori misura… · difetto riprodotto col rosso __CPM_NO_G212» |
+| `fps-249` | ✅ verde | 1 min | «fps-249 verde (nessuna scritta fps al giocatore, misura viva) e il rosso si vede» |
+| `career-critical` | ✅ verde | 11 min | catena intera con uscita 0; ultimo passo «PASS — una Coppa intera si chiude…» |
+| `test:logic` | ✅ verde | 10 s | «tests 51 · pass 51 · fail 0» (eseguito mentre girava il banco di misura, che non è un controllo) |
+| `save-compat` | ✅ verde | 11 s | «SAVE-COMPAT 12 pass · 0 fail · PASS» |
+| `highlight-95` | <!-- H95 --> | | |
+
+`tpose-196` e `gigante-212` rigenerano foto di altri giri in `docs/sviluppo/giro196/` e `giro212/` (26 file): rimesse con
+`git checkout --` e non committate.
+
+Non ho eseguito il gate completo `validate-situations` né le catene intere `completa`/`carriera`: non erano nell'elenco dei controlli
+di questo giro. La correzione sposta posizioni di difensori e pallone negli highlight di dribbling, quindi prima della promozione
+vanno fatte girare (vedi dubbio 11).
 
 ## 7. Dubbi per il PO
 
@@ -239,5 +263,11 @@ Durata: circa 18 minuti da solo. Nelle catene `completa` e `carriera` di `ci-run
 9. **Nel catalogo non ci sono tunnel, elastico, sombrero.** La richiesta li nominava come esempi: non esistono azioni con quelle
    etichette, quindi non c'è niente da misurare.
 10. **`GAME_VERSION` non toccata** (regola fissa della sessione), anche se il giro è indicato come 7.999.196.
-11. **Il guardiano dura circa 18 minuti** (34 esecuzioni col GLB acceso, una pagina per azione). Se è troppo per le catene, si può
+11. **Gate completo e catene intere non eseguiti in questo giro** (non richiesti). La correzione muove solo
+    posizioni fuori palla e pallone (non il bersaglio logico dell'eroe né la camera, che sono la firma golden), e `scena3d-96`,
+    `esiti-96` e `solo-highlight-166` sono verdi; ma non posso confermare che `validate-situations` e gli altri guardiani di `src/12`
+    della catena `mirata` lo siano, né quanta parte della correzione il gate eserciti: non li ho lanciati.
+12. **Nelle foto, dopo la fine della scena** (fase di gioco fluido, da ~3,5 s in poi) l'eroe compare a volte grandissimo in primo
+    piano (gi30 fallito, sia prima sia dopo). È la camera della cronaca dopo l'highlight, fuori dal dribbling: non l'ho misurata.
+13. **Il guardiano dura circa 18 minuti** (34 esecuzioni col GLB acceso, una pagina per azione). Se è troppo per le catene, si può
     scendere a una azione per variante (`CPM_PER_VARIANTE=1`, circa metà tempo): è una scelta di copertura.
