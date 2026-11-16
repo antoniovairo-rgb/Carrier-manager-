@@ -2044,5 +2044,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYia8oCv8QNnrMYDMSDZz",
+  "titolo": "giro 227 · patto col mister coerente (PO-492)",
+  "creata": "2026-11-16T10:11:45Z",
+  "chiusa": "2026-11-16T10:47:44Z",
+  "cost_usd": 4.88331362,
+  "output_tokens": 32555,
+  "cache_read_tokens": 12564019,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]
