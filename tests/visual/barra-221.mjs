@@ -157,8 +157,10 @@ async function braccio(rosso) {
 /* C: pausa durante la scelta (giro 229) */
 async function parteC(rosso229) {
   const D = [], NG = [], N = []; const r = await misuraPausa(rosso229);
-  const P = r.p229 || []; const iIn = P.findIndex(x => /^hl_choose\|\d+\|0$/.test(x.k)); const eIn = iIn >= 0 ? P[iIn] : null;
-  const ePa = eIn ? P.find((x, j) => j > iIn && x.k === eIn.k.replace(/\|0$/, '|1')) : null;
+  const P = r.p229 || []; /* la pausa e' la prima chiave hl_choose|i|1; l'inizio della scelta e' l'ultima chiave, prima della pausa, uguale alla sua precedente
+     (|n = istanza della scena, giro 229, assente nel rosso; la scena forzata puo' cambiare istanza appena entrata in hl_choose) */
+  const iPa = P.findIndex(x => /^hl_choose\|\d+\|1(\|\d+)?$/.test(x.k)); const ePa = iPa >= 0 ? P[iPa] : null;
+  let eIn = null; if (ePa) for (let j = iPa - 1; j >= 0; j--) if (P[j].k === ePa.prev) { eIn = P[j]; break; }
   const durI = r.barraIngresso && r.barraIngresso.dur;
   if (r.err || !eIn || !ePa || !durI || !r.timer || !r.barraRipresa || r.barraRipresa.senza) { NG.push(`C pausa${rosso229 ? ' (rosso 229)' : ''}: misura incompleta (${r.err || ''} ingresso ${!!eIn} pausa ${!!ePa} barra ${!!durI} timer ${!!r.timer} ripresa ${!!r.barraRipresa})`); return { D, NG, N }; }
   const scelto = ePa.t - eIn.t, atteso = durI - scelto, rT = r.timerRiarmo.d, rB = r.barraRipresa.resto;

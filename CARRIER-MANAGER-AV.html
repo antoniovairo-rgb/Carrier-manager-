@@ -34386,9 +34386,14 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      riparte da dove era e il timer dell'anticipo (effetto qui sotto) si riarma col tempo che resta. Rosso __CPM_NO_G229: entrambi
      ripartono interi, come prima. */
   const _no229=typeof window!=='undefined'&&!!window.__CPM_NO_G229;const trascorso229Ref=useRef({i:-1,el:0});
-  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){const _prev229=chiave210Ref.current;chiave210Ref.current=_k210;
-    if(phase==="hl_choose"&&!paused){if(!_no229&&_prev229===("hl_choose|"+hlIdx+"|1")&&trascorso229Ref.current.i===hlIdx)t0Scelta210Ref.current=Date.now()-trascorso229Ref.current.el;else t0Scelta210Ref.current=Date.now();trascorso229Ref.current={i:-1,el:0};}
-    else if(phase==="hl_choose"&&paused&&!_no229&&_prev229===("hl_choose|"+hlIdx+"|0"))trascorso229Ref.current={i:hlIdx,el:Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()))};
+  /* l'ISTANZA della scena: cambia quando cambia l'elenco delle scene (scena riaperta, catena). Senza, una scena riaperta con lo stesso indice
+     mentre si era gia' in hl_choose (misurato: la prima scena forzata dopo openMatch) teneva l'inizio della scelta vecchio — barra partita
+     «gia' avanti» (dubbio 2 del giro 221) e, col timer che riprende dal rimasto, timer accorciato. Entra nella chiave e nelle chiavi delle barre. */
+  const ist229Ref=useRef({a:null,n:0});if(ist229Ref.current.a!==situations){ist229Ref.current.a=situations;ist229Ref.current.n++;}
+  const _ist229=_no229?"":"|"+ist229Ref.current.n;
+  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0)+_ist229;if(chiave210Ref.current!==_k210){const _prev229=chiave210Ref.current;chiave210Ref.current=_k210;
+    if(phase==="hl_choose"&&!paused){if(!_no229&&_prev229===("hl_choose|"+hlIdx+"|1"+_ist229)&&trascorso229Ref.current.i===hlIdx)t0Scelta210Ref.current=Date.now()-trascorso229Ref.current.el;else t0Scelta210Ref.current=Date.now();trascorso229Ref.current={i:-1,el:0};}
+    else if(phase==="hl_choose"&&paused&&!_no229&&_prev229===("hl_choose|"+hlIdx+"|0"+_ist229))trascorso229Ref.current={i:hlIdx,el:Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()))};
     if(_CPM_TEST&&typeof window!=='undefined'){try{const W=(window.__CPM_P229=window.__CPM_P229||[]);W.push({k:_k210,prev:_prev229,t:Date.now(),t0:t0Scelta210Ref.current,el:trascorso229Ref.current.el});if(W.length>60)W.shift();}catch(_e){}}/* [giro 229] testimone di collaudo: ogni cambio di chiave con l'inizio della scelta */}}
   /* [giro 221 PO-480] UNA SOLA FORMULA per il tempo dell'esitazione: il timer dell'auto-anticipo (16/12/9 s, 7.916) e le due barre
      «Pressione» (scheda delle giocate 7.905, scheda del movimento in hl_choose del giro 210) leggono questo valore, fissato all'ingresso
@@ -34396,7 +34401,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      piu' la durata della barra mentre il timer resta quello armato. Rosso window.__CPM_NO_G221 = barre col vecchio 9/6/4 s. */
   const _no221=typeof window!=='undefined'&&!!window.__CPM_NO_G221;
   const durEsit221Ref=useRef({k:"",v:9000});
-  const _durEsit221=()=>{const m=durEsit221Ref.current;const k=phase+"|"+hlIdx+"|"+(paused?1:0);if(m.k!==k){m.k=k;m.v=durataEsitazione221(defDistRef.current);}return m.v;};
+  const _durEsit221=()=>{const m=durEsit221Ref.current;const k=phase+"|"+hlIdx+"|"+(paused?1:0)+_ist229/* [giro 229] scena riaperta = durata ricalcolata */;if(m.k!==k){m.k=k;m.v=durataEsitazione221(defDistRef.current);}return m.v;};
   const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
   useEffect(()=>{setPad210(false);},[hlIdx]);
   useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
@@ -43912,7 +43917,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
                     {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero */return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0)+_ist229;const _dl210=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero */return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
                    :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
@@ -44033,12 +44038,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     </div>
                     {!curSit.lockMovement&&!_g197&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
-                    {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
+                    {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)+_ist229} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
                       {_g197?<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec,lineHeight:1.3}}>Pressione<span data-cpm="aiuto" style={{fontWeight:600}}> · scegli prima che il marcatore arrivi</span></div>/* [giro 197] la riga di aiuto sale nella riga della barra: 22 px in piu' alle scelte, il tempo limite resta com'e' */
                        :<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>}
                       <div data-cpm="tempo-hl-v2" style={{position:"relative",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TINTE.oro}}>
-                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)))+"ms",animationPlayState:paused?"paused":"running"}}/>
+                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)+_ist229))+"ms",animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
                     {/* [7.902.0] LA LISTA SCORRE, LE RIGHE NO: `flex:"1 1 auto"` + `minHeight:0` sono quello che permette
