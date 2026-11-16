@@ -17,15 +17,16 @@ async function inietta(page, W, caso) {
   return page.evaluate(({ w, caso }) => {
     const C = window.__CPM_CAREER, p = C.snapshot();
     const opp = CLUBS.find(c => c.lg !== 'Deutsche Liga' && !c.isU18 && c.p >= 72 && c.p <= 80);
-    const tipo = caso === 'cup' ? 'cup' : caso === 'national' ? 'national' : caso === 'euro_group' ? 'euro_group' : 'euro';
+    const fin = /_final/.test(caso);/* finale (giro 229): coppa al turno 4, Europa in finale */
+    const tipo = /^cup/.test(caso) ? 'cup' : caso === 'national' ? 'national' : caso === 'euro_group' ? 'euro_group' : 'euro';
     const cupOpp = CLUBS.find(c => c.lg === (p.club && p.club.lg) && c.id !== (p.club && p.club.id) && !c.isU18);/* un club del campionato: con un id fuori lega il gioco sorteggia l'avversario (pick) e le due partite non sono la stessa */
-    const md = tipo === 'cup' ? { matchday: 991, week: w, opponentId: cupOpp.id, opponentName: cupOpp.n, isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: 2, cupRoundName: 'Ottavi di Finale' }
+    const md = tipo === 'cup' ? { matchday: 991, week: w, opponentId: cupOpp.id, opponentName: cupOpp.n, isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: fin ? 4 : 2, cupRoundName: fin ? 'Finale' : 'Ottavi di Finale' }
       : tipo === 'national' ? { matchday: 995, week: w, opponentId: 'es-nt', opponentName: 'Spagna', isHome: true, played: false, result: null, type: 'national' }
-      : { matchday: tipo === 'euro_group' ? 981 : 996, week: w, opponentId: opp.id, opponentName: opp.n, isHome: true, played: false, result: null, type: tipo, competition: 'UCL', ...(tipo === 'euro' ? { euroPhase: 'r16', cupRoundName: 'Ottavi di Finale' } : {}) };
+      : { matchday: tipo === 'euro_group' ? 981 : 996, week: w, opponentId: opp.id, opponentName: opp.n, isHome: true, played: false, result: null, type: tipo, competition: 'UCL', ...(tipo === 'euro' ? { euroPhase: fin ? 'final' : 'r16', cupRoundName: fin ? 'Finale' : 'Ottavi di Finale' } : {}) };
     const cal = (p.calendar || []).filter(m => m.week !== w);
     C.patch({ week: w, weekLived: false, calendar: [...cal, md],
-      cup: { active: true, round: 2, eliminated: false, champion: false, results: [{ round: 1, name: 'Sedicesimi', opponent: 'FC Rovigo', homeScore: 2, awayScore: 0, won: true }] },
-      euro: { active: true, competition: 'UCL', phase: tipo === 'euro' ? 'r16' : 'group', groupOpponents: [{ id: opp.id, n: opp.n }], pts: 0, groupResults: [], qualified: tipo === 'euro', champion: false, eliminated: false, koResults: [], koRound: 0 } });
+      cup: { active: true, round: fin ? 4 : 2, eliminated: false, champion: false, results: [{ round: 1, name: 'Sedicesimi', opponent: 'FC Rovigo', homeScore: 2, awayScore: 0, won: true }] },
+      euro: { active: true, competition: 'UCL', phase: tipo === 'euro' ? (fin ? 'final' : 'r16') : 'group', groupOpponents: [{ id: opp.id, n: opp.n }], pts: 0, groupResults: [], qualified: tipo === 'euro', champion: false, eliminated: false, koResults: [], koRound: 0 } });
     return { tipo, opp: md.opponentName };
   }, { w: W, caso });
 }
@@ -38,8 +39,8 @@ async function gioca(caso, modo) {
     out.md = await A.page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
     /* il prompt vero della settimana: apriPartita mette tipo e stato del mister */
     const pr = await apriPrompt166(A.page, inj.tipo); out.bottoni = pr.bottoni; out.tastoSolo = pr.solo; out.nota = pr.nota;
-    const r = await gioca166(A.page, modo === 'solo' && pr.solo ? 'solo' : 'intera', { seme: SEME, forzaSolo: modo === 'solo' && !pr.solo, rigoriAllaScena: caso === 'euro_ko_rigori' ? 1 : 0 });
-    Object.assign(out, { finita: r.finita, score: r.score, minMax: r.minMax, scene: r.scene, tPartita: r.tPartita, lm: r.lm, velo: r.velo, rigori: !!r.rigori, rigoriForzati: r.rigoriForzati || null, finale: r.finale, seq: seq166(r.ev || []), note: r.note });
+    const r = await gioca166(A.page, modo === 'solo' && pr.solo ? 'solo' : 'intera', { seme: SEME, forzaSolo: modo === 'solo' && !pr.solo, rigoriAllaScena: /rigori/.test(caso) ? 1 : 0 });
+    Object.assign(out, { fasi: r.fasi, finita: r.finita, score: r.score, minMax: r.minMax, scene: r.scene, tPartita: r.tPartita, lm: r.lm, velo: r.velo, rigori: !!r.rigori, rigoriForzati: r.rigoriForzati || null, finale: r.finale, seq: seq166(r.ev || []), note: r.note });
     if (r.finita) { out.c = await chiudi166(A.page); await sleep(1500); }
     out.stato = await A.page.evaluate(() => (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || null);
     out.errs = A.errs.slice(0, 4);
@@ -65,7 +66,7 @@ for (const caso of CASI) {
   let div = -1; for (let i = 0; i < Math.max(I.seq?.length || 0, S.seq?.length || 0); i++) if (JSON.stringify(I.seq[i]) !== JSON.stringify(S.seq[i])) { div = i; break; }
   const d = (I.stato && S.stato) ? diff(I.stato, S.stato) : [{ k: 'stato', intera: !!I.stato, solo: !!S.stato }];
   const r = { caso, tasto: { intera: I.tastoSolo, solo: S.tastoSolo, bottoni: I.bottoni }, modoSolo: S.lm, velo: S.velo,
-    finite: [I.finita, S.finita], minuti: [I.minMax, S.minMax], scene: [I.scene, S.scene], rigori: [I.rigori, S.rigori], rigoriForzati: [I.rigoriForzati, S.rigoriForzati],
+    finite: [I.finita, S.finita], cerimonia: [Math.round((I.fasi || {}).ceremony || 0), Math.round((S.fasi || {}).ceremony || 0)], trofei: [I.stato && I.stato.trophies, S.stato && S.stato.trophies], minuti: [I.minMax, S.minMax], scene: [I.scene, S.scene], rigori: [I.rigori, S.rigori], rigoriForzati: [I.rigoriForzati, S.rigoriForzati],
     score: [I.score, S.score], tempi: [I.tPartita, S.tPartita], ledger: { n: [I.seq?.length, S.seq?.length], primaDiff: div, voceI: div >= 0 ? JSON.stringify(I.seq[div]).slice(0, 200) : null, voceS: div >= 0 ? JSON.stringify(S.seq[div]).slice(0, 200) : null },
     finaleUguale: I.finale === S.finale, finaleLen: [I.finale?.length, S.finale?.length], iv: [I.c?.iv231 | 0, S.c?.iv231 | 0], iv183: [I.c?.iv183 || null, S.c?.iv183 || null],
     voce: [I.c?.voce || null, S.c?.voce || null], diffStato: d, errs: [I.errs, S.errs], err: [I.err || null, S.err || null], note: [I.note, S.note] };
@@ -74,6 +75,7 @@ for (const caso of CASI) {
   console.log(`  tasto soli salienti nel prompt: ${r.tasto.intera} · bottoni ${JSON.stringify(r.tasto.bottoni)}`);
   console.log(`  modalita' nella partita «solo»: ${JSON.stringify(r.modoSolo)} · velo ${r.velo}`);
   console.log(`  finite ${r.finite} · minuto ${r.minuti} · scene ${r.scene} · rigori ${r.rigori} (forzati ${JSON.stringify(r.rigoriForzati)}) · risultato ${JSON.stringify(r.score)} · tempo ${r.tempi.map(x => ((x || 0) / 1000).toFixed(1) + 's')}`);
+  console.log(`  cerimonia (ms) ${r.cerimonia} · trofei ${JSON.stringify(r.trofei).slice(0, 300)}`);
   console.log(`  libro mastro ${r.ledger.n} · prima differenza ${r.ledger.primaDiff}${r.ledger.primaDiff >= 0 ? ' ' + r.ledger.voceI + ' ≠ ' + r.ledger.voceS : ''}`);
   console.log(`  schermata finale uguale ${r.finaleUguale} (${r.finaleLen}) · interviste ${r.iv} · decisione ${JSON.stringify(r.iv183).slice(0, 200)}`);
   console.log(`  differenze nello stato salvato: ${d.length}`); for (const x of d.slice(0, 40)) console.log(`    ${x.k}: intera ${x.intera} · solo ${x.solo}`);
