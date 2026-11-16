@@ -1491,7 +1491,7 @@ function _g232x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G232);}
 function rassegnaComp232(player,ctx,es){
   const p=player||{};const wk=p.week||1;const e=es||{};const mg=e.mg|0,og=e.og|0;
   const _e=(w,d,l)=>w?"V":d?"N":"P";
-  const _r=(t,avv,a,b,w,rig,oggi)=>({t,avv:avv||"",ris:(a|0)+"-"+(b|0),e:_e(w,(a|0)===(b|0),!w),rig:!!rig,oggi:!!oggi});
+  const _r=(t,avv,a,b,w,rig,oggi)=>({t,avv:avv||"",ris:(a|0)+"-"+(b|0),e:rig?(w?"V":"P"):_e(w,(a|0)===(b|0),!w),/* ai rigori la casella dice chi e' passato */rig:!!rig,oggi:!!oggi});
   const _cal=(f)=>[...(p.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>wk&&f(m)).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
   const _dalCal=(m)=>m?{riga:(m.isHome!==false?"In casa":"In trasferta")+" contro "+(m.opponentName||"l'avversario")+(m.cupRoundName?(" · "+m.cupRoundName):""),sett:m.week|0,avv:m.opponentName||null}:null;
   const out={tipo:"campionato",comp:"Campionato",tabella:null,io:-1,percorso:null,prossima:null,motivo:null};

@@ -45,7 +45,7 @@ async function logica(page) {
       ['campionato', f(base, 'career', W), r => r.tipo === 'campionato' && r.prossima && r.prossima.sett === 12 && /FC Lega/.test(r.prossima.riga)],
       ['coppa ottavi vinti → quarti, sorteggio in attesa, settimana 19', f(cup(1), 'cup', W), r => r.tipo === 'tabellone' && r.comp === 'Coppa Nazionale' && r.percorso.length === 1 && r.percorso[0].oggi && r.percorso[0].ris === '2-0' && /Quarti di Finale · sorteggio in attesa/.test(r.prossima && r.prossima.riga) && r.prossima.sett === 19 && !/FC Lega/.test(JSON.stringify(r))],
       ['coppa quarti persi → eliminati, percorso con gli ottavi', f(cup(2, [{ round: 1, name: 'Ottavi di Finale', opponent: 'FC Primo', homeScore: 2, awayScore: 1, won: true }]), 'cup', L), r => r.tipo === 'tabellone' && !r.prossima && /^Eliminati ai Quarti/.test(r.motivo) && r.percorso.length === 2 && r.percorso[0].avv === 'FC Primo' && r.percorso[1].e === 'P'],
-      ['coppa finale vinta ai rigori → coppa vinta', f(cup(4), 'cup', { mg: 1, og: 1, vinta: true, rig: true, avv: 'Oggi FC' }), r => !r.prossima && /Coppa vinta/.test(r.motivo) && r.percorso[0].rig],
+      ['coppa finale vinta ai rigori → coppa vinta', f(cup(4), 'cup', { mg: 1, og: 1, vinta: true, rig: true, avv: 'Oggi FC' }), r => !r.prossima && /Coppa vinta/.test(r.motivo) && r.percorso[0].rig && r.percorso[0].e === 'V'],
       ['coppa con turno gia\' in calendario → avversario vero', f({ ...base, cup: { active: true, round: 1, results: [] } }, 'cup', W), r => r.prossima && /FC Coppa/.test(r.prossima.riga) && r.prossima.sett === 19],
       ['Europa girone 3a giornata → girone a 4 + prossima del girone (sett. 13)', f(euroG(2), 'euro_group', W), r => r.tipo === 'girone' && r.comp === (window.__CPM_SIG232 ? window.__CPM_SIG232('UCL') : '?') && r.tabella && r.tabella.length === 4 && r.io >= 0 && r.prossima && r.prossima.sett === 13 && !/FC Lega/.test(r.prossima.riga)],
       ['Europa girone ultima gara vinta (6/6) → ottavi o eliminati, mai il campionato', f({ ...euroG(5), calendar: base.calendar.filter(m => m.type !== 'euro_group') }, 'euro_group', W), r => r.tipo === 'girone' && ((r.prossima && /Ottavi di Finale · sorteggio in attesa/.test(r.prossima.riga)) || /Eliminati alla fase a gironi/.test(r.motivo || ''))],
@@ -124,7 +124,7 @@ function giudica(tipo, at, m, sc) {
     if (at.tipo === 'tabellone') { c.push(['oggi nel tabellone con l\'avversario e il risultato', pulito(m.oggi).includes(at.avv) && pulito(m.oggi).includes(h + '-' + a)]);
       if (at.prima) c.push(['turno precedente nel percorso', pulito(m.tab).includes(at.prima)]);
       if (h > a) c.push(['vinta → turno successivo', pr.includes(at.avanti)]); else if (h < a) c.push(['persa → eliminati', pr.includes(at.fuori)]);
-      else c.push(['pareggio → rigori dichiarati e turno coerente', pulito(m.oggi).includes('(rig.)') && (pr.includes(at.avanti) || pr.includes(at.fuori) || /Eliminati/.test(pr))]); }
+      else c.push(['pareggio → rigori dichiarati, esito della serie e turno coerenti', pulito(m.oggi).includes('(rig.)') && ((pr.includes(at.avanti) && / V$/.test(pulito(m.oggi))) || ((pr.includes(at.fuori) || /Eliminati/.test(pr)) && / P$/.test(pulito(m.oggi))))]); }
     if (tipo === 'euro_group') c.push(['prossima del girone (settimana ' + at.sett + ', ' + at.avvNx + ')', pr.includes('settimana ' + at.sett) && pr.includes(at.avvNx)]);
     if (tipo === 'nationsCup') c.push(['prossima della Coppa delle Nazioni (Germania)', pr.includes('Germania')]);
     if (tipo === 'cup' && h > a) c.push(['settimana del turno ' + at.sett, pr.includes('settimana ' + at.sett)]);
@@ -139,6 +139,7 @@ async function braccio(tipo, init) {
     if (tipo === 'career' || tipo === 'cup' || tipo === 'euro_group') { await apriPrompt166(A.page); g = await gioca166(A.page, 'solo', { seme: SEME }); g.score = g.score ? { h: g.score.h, a: g.score.a } : null; }
     else g = await giocaDiretto(A.page, tipo === 'nationsCup' ? 'apriNC243' : 'apriNaz55', SEME);
     await sleep(800); if (g && g.finita) m = await scheda4(A.page);
+    if (m && process.env.CPM_FOTO232) await A.page.screenshot({ path: process.env.CPM_FOTO232 + '/scheda4-' + tipo + (init.__CPM_NO_G232 ? '-rosso' : '') + '-375x667.png', fullPage: true }).catch(() => {});
   } catch (e) { console.log('    errore: ' + String(e.message).slice(0, 160)); }
   return { A, at, g, m };
 }
