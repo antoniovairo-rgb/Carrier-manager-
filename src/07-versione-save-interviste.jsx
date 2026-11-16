@@ -99,7 +99,7 @@ const RILANCIO24={
       {tone:"diretto",txt:"Me l'ha chiesto lui: vuole giocatori che ci mettono la faccia.",ef:{m:2,p:2,t:-1}},
       {tone:"diplomatico",txt:"Ne parliamo spesso. Il rapporto è sincero, in tutte e due le direzioni.",ef:{m:1,p:1,t:2}},
       {tone:"umile",txt:"Spero di sì. Se esagero, sarà lui il primo a dirmelo.",ef:{m:1,p:0,t:2}}]},
-    {q:"Detto così sembra una sfida ai prossimi avversari. È un messaggio per loro?",a:[
+    {fuori222:1,q:"Detto così sembra una sfida ai prossimi avversari. È un messaggio per loro?",a:[
       {tone:"diretto",txt:"È un messaggio per tutti: noi ci siamo.",ef:{m:2,p:3,t:-1}},
       {tone:"diplomatico",txt:"Nessun messaggio: rispetto per tutti, paura di nessuno.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"No, è un messaggio per me stesso. Devo alzare il livello.",ef:{m:1,p:1,t:1}}]},
@@ -158,7 +158,18 @@ const RILANCIO24={
       {tone:"diplomatico",txt:"Poco: la strada è giusta, serve continuità.",ef:{m:1,p:0,t:1}},
       {tone:"umile",txt:"Il mio contributo in fase di non possesso.",ef:{m:1,p:1,t:2}}]}]};
 function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h);}
-function rilancio24(tone,seed){const L=RILANCIO24[tone]||RILANCIO24.diplomatico;const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+/* [giro 222 · PO-479 — rosso __CPM_NO_G222] IL RILANCIO E' COERENTE COL RISULTATO. Misurato (interviste-211, casi del giro): dopo
+   un'eliminazione europea il giornalista poteva rilanciare «E la classifica? Ci pensi?», perche' il rilancio sceglieva solo per tono.
+   Ora, quando l'intervista porta l'esito del turno (esitoTurno211), il rilancio scarta le domande che non gli sono coerenti: fuori dal
+   campionato niente punti e classifica (la stessa regola _LEGA211 delle domande del dopo-partita, su domanda e risposte) e, dopo
+   un'eliminazione o una finale persa, niente domande che presuppongono un turno ancora da giocare (fuori222). Senza esito (intervista
+   della settimana, prepartita) il rilancio e' quello di prima; se il filtro svuotasse la lista, resta la lista intera. */
+function _no222iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G222;}
+function coerenteRil222(r,es){if(!es)return true;
+  if(!es.lega&&_LEGA211.test(String(r.q||"")+" "+(r.a||[]).map(x=>x&&x.txt).join(" ")))return false;
+  if(r.fuori222&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;
+  return true;}
+function rilancio24(tone,seed,es){let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
 const PRIMA24={
   win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
   loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
@@ -1663,6 +1674,23 @@ function esitoTurno211(p,r){try{
   else if(c==="euroMondiale_ko"){const ph=(p.euroMondiale&&p.euroMondiale.koPhase)||"r16";seme="natko|"+sn+"|"+ph;fin=ph==="final";}
   else if(c==="nationsCup"&&p.nationsCupQueue&&p.nationsCupQueue.isFinal&&(p.nationsCupQueue.matchIdx||0)>=((p.nationsCupQueue.opponents||[]).length-1)){seme="natcup|"+sn+"|final";fin=true;}
   const lega=!c||c==="career"||c==="league";
+  /* [giro 222 · PO-479 — rosso __CPM_NO_G222] L'ULTIMA GIORNATA DEL GIRONE CHE ELIMINA E' UN'ELIMINAZIONE. Prima l'esito usciva
+     «nessuno» (l'eliminazione nasce dalla classifica del girone, calcolata dopo l'intervista) e una sconfitta che chiudeva il girone
+     fuori riceveva «Serata europea amara… il girone è ancora aperto». Ora si calcola qui con la STESSA regola della risoluzione:
+     coppa europea → euroGroupKOPatch (src/17) sul salvataggio con questa partita aggiunta, come fa onMatchEnd; Europeo/Mondiale →
+     ultima partita del girone e meno di 4 punti, come _emGroupOut in src/18. Solo l'eliminazione cambia (decisione PO): chi si
+     qualifica resta «nessuno» come prima. */
+  if(!seme&&!_no222iv()){
+    if(c==="euro_group"&&p.euro&&p.euro.phase==="group"&&typeof euroGroupKOPatch==="function"){
+      const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
+      const gr=[...(p.euro.groupResults||[]),{opp:r.opponent,oppCol:r.oppCol,home:md?md.isHome:undefined,won:r.won,drew:r.drew,hs:r.homeScore,as:r.awayScore}];
+      const cal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true}:m);
+      const k=euroGroupKOPatch({...p,calendar:cal,euro:{...p.euro,groupResults:gr,pts:(p.euro.pts||0)+(r.won?3:r.drew?1:0)}});
+      if(k&&k.euro&&k.euro.eliminated)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+    }
+    if(c==="euroMondiale_group"&&p.euroMondiale){const em=p.euroMondiale,n=(em.groupOpponents||[]).length;
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};}
+  }
   if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
   const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));
   return{ko:true,turno:passa?(fin?"campione":"passa"):(fin?"finale_persa":"eliminato"),lega:false,rigori:!!r.drew};
@@ -1671,6 +1699,7 @@ const _LEGA211=/(?:tre punti|un punto|i punti|punti pesant|classifica|retroced|z
 function coerente211(q,res,es){
   const rr=q.r211||q.r;if(rr&&rr.indexOf(res)<0)return false;
   if(!es)return true;
+  if(!es.rigori&&es.girone&&!_no222iv()&&/rigori/i.test(String(q.q||"")))return false;/* [giro 222] un girone non va ai rigori: «Fuori ai rigori» dopo un pareggio che chiude il girone fuori sarebbe falso */
   if(q.e211)return q.e211.indexOf(es.turno)>=0;
   if(q.festa211&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;/* risposte di festa: mai dopo un'eliminazione */
   if(!es.lega&&_LEGA211.test(String(q.q||"")+" "+(q.a||[]).map(x=>x&&x.txt).join(" ")))return false;
@@ -1689,7 +1718,7 @@ function poolPost183(p,r,posta){
   /* fra i fatti, prima quelli scritti con una condizione sulla partita (il tuo gol, il voto…), che sono i piu' specifici */
   const tierC1=tierC.filter(q=>q.cond&&/matchResult|isHome/.test(String(q.cond)));
   /* [giro 211] a eliminazione diretta, fra i fatti della posta prima quelli che parlano dell'esito del turno */
-  const tierA0=(es&&es.ko)?tierA.filter(q=>!!q.e211&&q.e211.indexOf("nessuno")<0):[];
+  const tierA0=(es&&(es.ko||(es.girone&&!_no222iv())))?tierA.filter(q=>!!q.e211&&q.e211.indexOf("nessuno")<0):[];
   const pool=tierA0.length?tierA0:tierA.length?tierA:tierB.length?tierB:tierC1.length?tierC1:tierC;
   return{pool,tierA,tierB,tierC,esito:es,res};
 }

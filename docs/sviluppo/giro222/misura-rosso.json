@@ -1,0 +1,105 @@
+{
+ "scene": {
+  "festa-tel:festa": {
+   "fotogrammi": 68,
+   "zFuori": 136,
+   "zMin": 35.5,
+   "zMax": 35.5,
+   "inQ": 0,
+   "dietro": 0,
+   "copre": 0,
+   "coppie": 136,
+   "coppieDietro": 136,
+   "esempi": [
+    "match:festa guardalinee 0 a z -35.5",
+    "match:festa guardalinee 1 a z 35.5",
+    "match:festa guardalinee 0 a z -35.5",
+    "match:festa guardalinee 1 a z 35.5"
+   ]
+  }
+ },
+ "divise": {
+  "festa-tel": {
+   "0": {
+    "maglia": {
+     "n": 2193,
+     "rgb": [
+      227,
+      223,
+      178
+     ],
+     "tinta": 55,
+     "sat": 0.22,
+     "val": 0.89,
+     "lum": 221
+    },
+    "pantaloncini": {
+     "n": 2068,
+     "rgb": [
+      103,
+      126,
+      156
+     ],
+     "tinta": 214,
+     "sat": 0.34,
+     "val": 0.61,
+     "lum": 123
+    },
+    "gambe": {
+     "n": 1297,
+     "rgb": [
+      22,
+      32,
+      51
+     ],
+     "tinta": 219,
+     "sat": 0.57,
+     "val": 0.2,
+     "lum": 31
+    }
+   },
+   "1": {
+    "maglia": {
+     "n": 1943,
+     "rgb": [
+      225,
+      222,
+      176
+     ],
+     "tinta": 56,
+     "sat": 0.22,
+     "val": 0.88,
+     "lum": 219
+    },
+    "pantaloncini": {
+     "n": 1943,
+     "rgb": [
+      95,
+      119,
+      148
+     ],
+     "tinta": 213,
+     "sat": 0.36,
+     "val": 0.58,
+     "lum": 116
+    },
+    "gambe": {
+     "n": 741,
+     "rgb": [
+      20,
+      29,
+      46
+     ],
+     "tinta": 219,
+     "sat": 0.57,
+     "val": 0.18,
+     "lum": 28
+    }
+   }
+  }
+ },
+ "log": [
+  "[10:51:54] scenario festa-tel"
+ ],
+ "guasti": []
+}

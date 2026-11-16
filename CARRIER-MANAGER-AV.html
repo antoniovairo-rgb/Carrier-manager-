@@ -6152,7 +6152,7 @@ const RILANCIO24={
       {tone:"diretto",txt:"Me l'ha chiesto lui: vuole giocatori che ci mettono la faccia.",ef:{m:2,p:2,t:-1}},
       {tone:"diplomatico",txt:"Ne parliamo spesso. Il rapporto è sincero, in tutte e due le direzioni.",ef:{m:1,p:1,t:2}},
       {tone:"umile",txt:"Spero di sì. Se esagero, sarà lui il primo a dirmelo.",ef:{m:1,p:0,t:2}}]},
-    {q:"Detto così sembra una sfida ai prossimi avversari. È un messaggio per loro?",a:[
+    {fuori222:1,q:"Detto così sembra una sfida ai prossimi avversari. È un messaggio per loro?",a:[
       {tone:"diretto",txt:"È un messaggio per tutti: noi ci siamo.",ef:{m:2,p:3,t:-1}},
       {tone:"diplomatico",txt:"Nessun messaggio: rispetto per tutti, paura di nessuno.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"No, è un messaggio per me stesso. Devo alzare il livello.",ef:{m:1,p:1,t:1}}]},
@@ -6211,7 +6211,18 @@ const RILANCIO24={
       {tone:"diplomatico",txt:"Poco: la strada è giusta, serve continuità.",ef:{m:1,p:0,t:1}},
       {tone:"umile",txt:"Il mio contributo in fase di non possesso.",ef:{m:1,p:1,t:2}}]}]};
 function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h);}
-function rilancio24(tone,seed){const L=RILANCIO24[tone]||RILANCIO24.diplomatico;const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+/* [giro 222 · PO-479 — rosso __CPM_NO_G222] IL RILANCIO E' COERENTE COL RISULTATO. Misurato (interviste-211, casi del giro): dopo
+   un'eliminazione europea il giornalista poteva rilanciare «E la classifica? Ci pensi?», perche' il rilancio sceglieva solo per tono.
+   Ora, quando l'intervista porta l'esito del turno (esitoTurno211), il rilancio scarta le domande che non gli sono coerenti: fuori dal
+   campionato niente punti e classifica (la stessa regola _LEGA211 delle domande del dopo-partita, su domanda e risposte) e, dopo
+   un'eliminazione o una finale persa, niente domande che presuppongono un turno ancora da giocare (fuori222). Senza esito (intervista
+   della settimana, prepartita) il rilancio e' quello di prima; se il filtro svuotasse la lista, resta la lista intera. */
+function _no222iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G222;}
+function coerenteRil222(r,es){if(!es)return true;
+  if(!es.lega&&_LEGA211.test(String(r.q||"")+" "+(r.a||[]).map(x=>x&&x.txt).join(" ")))return false;
+  if(r.fuori222&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;
+  return true;}
+function rilancio24(tone,seed,es){let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
 const PRIMA24={
   win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
   loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
@@ -7716,6 +7727,23 @@ function esitoTurno211(p,r){try{
   else if(c==="euroMondiale_ko"){const ph=(p.euroMondiale&&p.euroMondiale.koPhase)||"r16";seme="natko|"+sn+"|"+ph;fin=ph==="final";}
   else if(c==="nationsCup"&&p.nationsCupQueue&&p.nationsCupQueue.isFinal&&(p.nationsCupQueue.matchIdx||0)>=((p.nationsCupQueue.opponents||[]).length-1)){seme="natcup|"+sn+"|final";fin=true;}
   const lega=!c||c==="career"||c==="league";
+  /* [giro 222 · PO-479 — rosso __CPM_NO_G222] L'ULTIMA GIORNATA DEL GIRONE CHE ELIMINA E' UN'ELIMINAZIONE. Prima l'esito usciva
+     «nessuno» (l'eliminazione nasce dalla classifica del girone, calcolata dopo l'intervista) e una sconfitta che chiudeva il girone
+     fuori riceveva «Serata europea amara… il girone è ancora aperto». Ora si calcola qui con la STESSA regola della risoluzione:
+     coppa europea → euroGroupKOPatch (src/17) sul salvataggio con questa partita aggiunta, come fa onMatchEnd; Europeo/Mondiale →
+     ultima partita del girone e meno di 4 punti, come _emGroupOut in src/18. Solo l'eliminazione cambia (decisione PO): chi si
+     qualifica resta «nessuno» come prima. */
+  if(!seme&&!_no222iv()){
+    if(c==="euro_group"&&p.euro&&p.euro.phase==="group"&&typeof euroGroupKOPatch==="function"){
+      const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
+      const gr=[...(p.euro.groupResults||[]),{opp:r.opponent,oppCol:r.oppCol,home:md?md.isHome:undefined,won:r.won,drew:r.drew,hs:r.homeScore,as:r.awayScore}];
+      const cal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true}:m);
+      const k=euroGroupKOPatch({...p,calendar:cal,euro:{...p.euro,groupResults:gr,pts:(p.euro.pts||0)+(r.won?3:r.drew?1:0)}});
+      if(k&&k.euro&&k.euro.eliminated)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+    }
+    if(c==="euroMondiale_group"&&p.euroMondiale){const em=p.euroMondiale,n=(em.groupOpponents||[]).length;
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};}
+  }
   if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
   const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));
   return{ko:true,turno:passa?(fin?"campione":"passa"):(fin?"finale_persa":"eliminato"),lega:false,rigori:!!r.drew};
@@ -7724,6 +7752,7 @@ const _LEGA211=/(?:tre punti|un punto|i punti|punti pesant|classifica|retroced|z
 function coerente211(q,res,es){
   const rr=q.r211||q.r;if(rr&&rr.indexOf(res)<0)return false;
   if(!es)return true;
+  if(!es.rigori&&es.girone&&!_no222iv()&&/rigori/i.test(String(q.q||"")))return false;/* [giro 222] un girone non va ai rigori: «Fuori ai rigori» dopo un pareggio che chiude il girone fuori sarebbe falso */
   if(q.e211)return q.e211.indexOf(es.turno)>=0;
   if(q.festa211&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;/* risposte di festa: mai dopo un'eliminazione */
   if(!es.lega&&_LEGA211.test(String(q.q||"")+" "+(q.a||[]).map(x=>x&&x.txt).join(" ")))return false;
@@ -7742,7 +7771,7 @@ function poolPost183(p,r,posta){
   /* fra i fatti, prima quelli scritti con una condizione sulla partita (il tuo gol, il voto…), che sono i piu' specifici */
   const tierC1=tierC.filter(q=>q.cond&&/matchResult|isHome/.test(String(q.cond)));
   /* [giro 211] a eliminazione diretta, fra i fatti della posta prima quelli che parlano dell'esito del turno */
-  const tierA0=(es&&es.ko)?tierA.filter(q=>!!q.e211&&q.e211.indexOf("nessuno")<0):[];
+  const tierA0=(es&&(es.ko||(es.girone&&!_no222iv())))?tierA.filter(q=>!!q.e211&&q.e211.indexOf("nessuno")<0):[];
   const pool=tierA0.length?tierA0:tierA.length?tierA:tierB.length?tierB:tierC1.length?tierC1:tierC;
   return{pool,tierA,tierB,tierC,esito:es,res};
 }
@@ -16174,6 +16203,25 @@ function ThreeMatchView(props){
       if(!r&&sr.current&&sr.current._cerCoachGrp){for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===sr.current._cerCoachGrp){r='mister-premiazione';break;}}
       if(!r){for(let x=o,k=0;x&&k<12;x=x.parent,k++){if(x._mascot196){r='bambino';break;}if(x.name&&/coach|panch|bench|foto|tifos|comparsa|stamp/i.test(x.name)){r='comparsa:'+x.name.slice(0,16);break;}}}
       return {ix,ruolo:r||'sconosciuto'};};
+    /* [giro 222 PO-481] TESTIMONE DEI GUARDALINEE (solo con window.__CPM_G222W, armato dalla sonda guardalinee-222). A ogni fotogramma DISEGNATO,
+       per ciascuno dei due: posizione (z del marker), se e' nell'inquadratura (petto proiettato dentro lo schermo), se un CARTELLONE sta fra la
+       camera e il petto e fra la camera e la testa (anche fuori inquadratura: e' la linea di vista) (raggio contro i soli cartelloni _cart222), e se COPRE il gioco: il punto dell'eroe o del
+       pallone proiettato cade dentro il suo rettangolo a schermo e lui e' piu' vicino alla camera di quel punto. */
+    const _V222={a:null};
+    const _w222=()=>{try{const W=window.__CPM_G222W;if(!Array.isArray(W)||W.length>=(+window.__CPM_G222MAX||4000))return;const T=THREE;
+      if(!_V222.a)_V222.a={p:new T.Vector3(),q:new T.Vector3(),d:new T.Vector3(),rc:new T.Raycaster()};const V=_V222.a;const P=propsRef.current||{};
+      const cp=camera.position;const scr=(x,y,z)=>{V.p.set(x,y,z).project(camera);return [V.p.x,V.p.y,V.p.z];};
+      const coperto=(x,y,z)=>{V.q.set(x,y,z);V.d.copy(V.q).sub(cp);const L=V.d.length();if(L<1e-3)return false;V.d.multiplyScalar(1/L);V.rc.set(cp,V.d);V.rc.far=L-0.05;const h=V.rc.intersectObjects(_cart222,false);return h.length>0;};
+      const pt=(o,y)=>{o.getWorldPosition(V.q);return [V.q.x,V.q.y+y,V.q.z];};
+      const bersagli=[];if(hero&&hero.visible!==false){const h=pt(hero,0.9);bersagli.push({k:'eroe',w:h});}if(ball){const b=pt(ball,0);bersagli.push({k:'palla',w:b});}
+      const lin=[linRef1,linRef2].map((m,i)=>{if(!m)return null;m.updateMatrixWorld(true);m.getWorldPosition(V.q);const X=V.q.x,Z=V.q.z;
+        const vis=(()=>{const av=(assistantRefGlbAvatars||[])[i];if(av&&av.root){let v=true;for(let x=av.root;x;x=x.parent)if(x.visible===false){v=false;break;}return v;}return m.visible!==false;})();
+        const pe=scr(X,1.2,Z),te=scr(X,1.6,Z);const inQ=vis&&Math.abs(pe[0])<=1&&Math.abs(pe[1])<=1&&pe[2]>-1&&pe[2]<1;
+        let x0=9,x1=-9,y0=9,y1=-9;for(const dx of [-.35,.35])for(const dz of [-.35,.35])for(const yy of [0,1.8]){const s=scr(X+dx,yy,Z+dz);if(s[2]>=1||s[2]<=-1)continue;x0=Math.min(x0,s[0]);x1=Math.max(x1,s[0]);y0=Math.min(y0,s[1]);y1=Math.max(y1,s[1]);}
+        const dL=Math.hypot(cp.x-X,cp.y-1.0,cp.z-Z);const copre=[];
+        if(vis)for(const b of bersagli){const s=scr(b.w[0],b.w[1],b.w[2]);if(Math.abs(s[0])>1||Math.abs(s[1])>1||s[2]<=-1||s[2]>=1)continue;const dB=Math.hypot(cp.x-b.w[0],cp.y-b.w[1],cp.z-b.w[2]);if(s[0]>=x0&&s[0]<=x1&&s[1]>=y0&&s[1]<=y1&&dL<dB)copre.push(b.k);}
+        return {i,x:+X.toFixed(2),z:+Z.toFixed(2),vis,inQ,cartPetto:vis?coperto(X,1.2,Z):null,cartTesta:vis?coperto(X,1.6,Z):null,copre};});
+      W.push({sc:String(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione'):''),cam:[+cp.x.toFixed(1),+cp.y.toFixed(1),+cp.z.toFixed(1)],lin});}catch(_e){}};
     const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
@@ -16916,7 +16964,15 @@ function ThreeMatchView(props){
             let _lo206=Infinity;const _p206=new THREE.Vector3();visual.traverse(n=>{if(n.isBone){n.getWorldPosition(_p206);if(_p206.y<_lo206)_lo206=_p206.y;}});if(Number.isFinite(_lo206))visual.position.y-=(_lo206-0.06);visual.updateMatrixWorld(true);
             try{window.__CPM_GUARDA206={prima:+_sk206.height.toFixed(2),dopo:+_skeletonWorldHeight(visual).height.toFixed(2)};}catch(_e){}}}catch(_e206g){}}
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
+          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);/* [giro 222 PO-481 — rosso __CPM_NO_G222] LA DIVISA DICHIARATA. Misurato (testimone __CPM_G222W, foto in docs/sviluppo/giro222): il
+             materiale dei pantaloncini aveva gia' #1b2638, ma a schermo erano azzurro-grigi e la maglia giallo pallido. Causa: maglia e
+             pantaloncini dei guardalinee non hanno numero ne' disegno, quindi _applyHyperKit scrive il colore DIRETTAMENTE nel materiale; il
+             renderer della partita esce in sRGB (7.529) e in r128 il colore del materiale e' lineare, cosi' l'esadecimale (gia' sRGB) viene
+             convertito due volte e schiarisce (la stessa causa del 7.547, li' risolta per le maglie con la texture). I calzettoni invece passano
+             dalla texture delle gambe, che ha la codifica sRGB del file, e venivano gia' scuri: il loro colore resta quello dichiarato. Qui
+             maglia e pantaloncini si portano in lineare una volta. */
+          const _lin222=h=>(typeof window!=='undefined'&&window.__CPM_NO_G222)?h:'#'+new THREE.Color(h).convertSRGBToLinear().getHexString();
+          _applyHyperKit(visual,{shirt:_lin222('#f4d43c'),shorts:_lin222('#1b2638'),socks:'#1b2638',shoes:_lin222('#111827')},appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
           const flag=new THREE.Group(),pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.52,5),new THREE.MeshLambertMaterial({color:0x303845}));
           pole.position.y=.26;flag.add(pole);const cloth=new THREE.Mesh(new THREE.PlaneGeometry(.28,.18),new THREE.MeshBasicMaterial({color:0xffb020,side:THREE.DoubleSide}));cloth.position.set(.14,.43,0);flag.add(cloth);flag.position.set(index?-.34:.34,1.02,.05);root.add(flag);
@@ -17322,7 +17378,8 @@ function ThreeMatchView(props){
        board erano larghi 13 ma distanziati solo 11-12 → si SOVRAPPONEVANO (testo tagliato ai bordi) e, essendo due
        piani trasparenti COMPLANARI sovrapposti, facevano Z-FIGHTING (il renderer alterna quale sta davanti a ogni
        frame = «lampeggio»). FIX: larghezza < passo (parametro w) → gap tra i board → niente overlap né z-fight. */
-    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
+    const _cart222=[];
+    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);_cart222.push(m);/* [giro 222] il testimone dei guardalinee li usa per sapere se coprono */};
     // [7.8.12/7.8.13 collaudo tester] i cartelloni erano a x=±49, IN FRONT della rete di fondo (49.4) → il piano
     //   TAGLIAVA la bocca della porta (comparivano davanti alla rete). Spostarli a ±51.2 (dietro TUTTA la porta,
     //   rete laterale ~51.15) li ha fatti SPARIRE dietro la curva/perimetro negli stadi piccoli. Posizione giusta:
@@ -17486,8 +17543,13 @@ function ThreeMatchView(props){
     // A) Arbitro principale — divisa nera, si muove con la palla
     const refMesh=mkFig(0x111111);scene.add(refMesh);
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
-    const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
-    const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
+    /* [giro 222 PO-481 — rosso __CPM_NO_G222] I GUARDALINEE STANNO SULLA LINEA LATERALE, DAVANTI AI CARTELLONI. Misurato: i marker erano a
+       |z| = 35,5, oltre la fila dei cartelloni (piani alti 1,7 a |z| 34,8-35,0) e oltre la linea laterale (_TLZ 33,2): dalla camera bassa della
+       festa il cartellone li copriva. Ora |z| = 34,0: 0,8 u fuori dalla linea (sul prato di rispetto, come un assistente vero) e 0,8 u davanti
+       al cartellone. La logica che li muove (x che segue l'azione) non cambia. */
+    const _z222=(typeof window!=='undefined'&&window.__CPM_NO_G222)?35.5:34.0;
+    const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-_z222);scene.add(linRef1);
+    const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,_z222);scene.add(linRef2);
     try{window.__CPM_HYPER_ASSISTANT_LIST=[linRef1,linRef2];if(window.__CPM_HYPER_ASSISTANT_BUILDER)window.__CPM_HYPER_ASSISTANT_BUILDER(window.__CPM_HYPER_ASSISTANT_LIST);}catch(_e){}
     // B) Panchine — 3DV-11: lato TRIBUNA (z=-38, nord) — struttura dugout realistica
     const _hColInt=new THREE.Color(_hCol).getHex(),_aColInt=new THREE.Color(_aCol).getHex();
@@ -27933,6 +27995,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
       if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
+      if(typeof window!=='undefined'&&window.__CPM_G222W)_w222();/* [giro 222 PO-481] testimone dei guardalinee */
     };
     loop();
 
@@ -51762,7 +51825,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
     if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
       const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
-      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:(_m.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214))?rilPres214(ans.tone,(player.club&&player.club.id)||"c"):rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)))/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:(_m.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214))?rilPres214(ans.tone,(player.club&&player.club.id)||"c"):rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)),_m.esito222)/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
       setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
     }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
@@ -55061,7 +55124,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",esito222:(()=>{try{return(typeof window!=='undefined'&&window.__CPM_NO_G222)?null:esitoTurno211(player,result);}catch(_e222){return null;}})()/* [giro 222 PO-479] l'esito del turno viaggia col pannello: il rilancio lo legge */,journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     };
     const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};

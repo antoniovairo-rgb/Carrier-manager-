@@ -1332,6 +1332,25 @@ function ThreeMatchView(props){
       if(!r&&sr.current&&sr.current._cerCoachGrp){for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===sr.current._cerCoachGrp){r='mister-premiazione';break;}}
       if(!r){for(let x=o,k=0;x&&k<12;x=x.parent,k++){if(x._mascot196){r='bambino';break;}if(x.name&&/coach|panch|bench|foto|tifos|comparsa|stamp/i.test(x.name)){r='comparsa:'+x.name.slice(0,16);break;}}}
       return {ix,ruolo:r||'sconosciuto'};};
+    /* [giro 222 PO-481] TESTIMONE DEI GUARDALINEE (solo con window.__CPM_G222W, armato dalla sonda guardalinee-222). A ogni fotogramma DISEGNATO,
+       per ciascuno dei due: posizione (z del marker), se e' nell'inquadratura (petto proiettato dentro lo schermo), se un CARTELLONE sta fra la
+       camera e il petto e fra la camera e la testa (anche fuori inquadratura: e' la linea di vista) (raggio contro i soli cartelloni _cart222), e se COPRE il gioco: il punto dell'eroe o del
+       pallone proiettato cade dentro il suo rettangolo a schermo e lui e' piu' vicino alla camera di quel punto. */
+    const _V222={a:null};
+    const _w222=()=>{try{const W=window.__CPM_G222W;if(!Array.isArray(W)||W.length>=(+window.__CPM_G222MAX||4000))return;const T=THREE;
+      if(!_V222.a)_V222.a={p:new T.Vector3(),q:new T.Vector3(),d:new T.Vector3(),rc:new T.Raycaster()};const V=_V222.a;const P=propsRef.current||{};
+      const cp=camera.position;const scr=(x,y,z)=>{V.p.set(x,y,z).project(camera);return [V.p.x,V.p.y,V.p.z];};
+      const coperto=(x,y,z)=>{V.q.set(x,y,z);V.d.copy(V.q).sub(cp);const L=V.d.length();if(L<1e-3)return false;V.d.multiplyScalar(1/L);V.rc.set(cp,V.d);V.rc.far=L-0.05;const h=V.rc.intersectObjects(_cart222,false);return h.length>0;};
+      const pt=(o,y)=>{o.getWorldPosition(V.q);return [V.q.x,V.q.y+y,V.q.z];};
+      const bersagli=[];if(hero&&hero.visible!==false){const h=pt(hero,0.9);bersagli.push({k:'eroe',w:h});}if(ball){const b=pt(ball,0);bersagli.push({k:'palla',w:b});}
+      const lin=[linRef1,linRef2].map((m,i)=>{if(!m)return null;m.updateMatrixWorld(true);m.getWorldPosition(V.q);const X=V.q.x,Z=V.q.z;
+        const vis=(()=>{const av=(assistantRefGlbAvatars||[])[i];if(av&&av.root){let v=true;for(let x=av.root;x;x=x.parent)if(x.visible===false){v=false;break;}return v;}return m.visible!==false;})();
+        const pe=scr(X,1.2,Z),te=scr(X,1.6,Z);const inQ=vis&&Math.abs(pe[0])<=1&&Math.abs(pe[1])<=1&&pe[2]>-1&&pe[2]<1;
+        let x0=9,x1=-9,y0=9,y1=-9;for(const dx of [-.35,.35])for(const dz of [-.35,.35])for(const yy of [0,1.8]){const s=scr(X+dx,yy,Z+dz);if(s[2]>=1||s[2]<=-1)continue;x0=Math.min(x0,s[0]);x1=Math.max(x1,s[0]);y0=Math.min(y0,s[1]);y1=Math.max(y1,s[1]);}
+        const dL=Math.hypot(cp.x-X,cp.y-1.0,cp.z-Z);const copre=[];
+        if(vis)for(const b of bersagli){const s=scr(b.w[0],b.w[1],b.w[2]);if(Math.abs(s[0])>1||Math.abs(s[1])>1||s[2]<=-1||s[2]>=1)continue;const dB=Math.hypot(cp.x-b.w[0],cp.y-b.w[1],cp.z-b.w[2]);if(s[0]>=x0&&s[0]<=x1&&s[1]>=y0&&s[1]<=y1&&dL<dB)copre.push(b.k);}
+        return {i,x:+X.toFixed(2),z:+Z.toFixed(2),vis,inQ,cartPetto:vis?coperto(X,1.2,Z):null,cartTesta:vis?coperto(X,1.6,Z):null,copre};});
+      W.push({sc:String(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione'):''),cam:[+cp.x.toFixed(1),+cp.y.toFixed(1),+cp.z.toFixed(1)],lin});}catch(_e){}};
     const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
@@ -2074,7 +2093,15 @@ function ThreeMatchView(props){
             let _lo206=Infinity;const _p206=new THREE.Vector3();visual.traverse(n=>{if(n.isBone){n.getWorldPosition(_p206);if(_p206.y<_lo206)_lo206=_p206.y;}});if(Number.isFinite(_lo206))visual.position.y-=(_lo206-0.06);visual.updateMatrixWorld(true);
             try{window.__CPM_GUARDA206={prima:+_sk206.height.toFixed(2),dopo:+_skeletonWorldHeight(visual).height.toFixed(2)};}catch(_e){}}}catch(_e206g){}}
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
+          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);/* [giro 222 PO-481 — rosso __CPM_NO_G222] LA DIVISA DICHIARATA. Misurato (testimone __CPM_G222W, foto in docs/sviluppo/giro222): il
+             materiale dei pantaloncini aveva gia' #1b2638, ma a schermo erano azzurro-grigi e la maglia giallo pallido. Causa: maglia e
+             pantaloncini dei guardalinee non hanno numero ne' disegno, quindi _applyHyperKit scrive il colore DIRETTAMENTE nel materiale; il
+             renderer della partita esce in sRGB (7.529) e in r128 il colore del materiale e' lineare, cosi' l'esadecimale (gia' sRGB) viene
+             convertito due volte e schiarisce (la stessa causa del 7.547, li' risolta per le maglie con la texture). I calzettoni invece passano
+             dalla texture delle gambe, che ha la codifica sRGB del file, e venivano gia' scuri: il loro colore resta quello dichiarato. Qui
+             maglia e pantaloncini si portano in lineare una volta. */
+          const _lin222=h=>(typeof window!=='undefined'&&window.__CPM_NO_G222)?h:'#'+new THREE.Color(h).convertSRGBToLinear().getHexString();
+          _applyHyperKit(visual,{shirt:_lin222('#f4d43c'),shorts:_lin222('#1b2638'),socks:'#1b2638',shoes:_lin222('#111827')},appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
           const flag=new THREE.Group(),pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.52,5),new THREE.MeshLambertMaterial({color:0x303845}));
           pole.position.y=.26;flag.add(pole);const cloth=new THREE.Mesh(new THREE.PlaneGeometry(.28,.18),new THREE.MeshBasicMaterial({color:0xffb020,side:THREE.DoubleSide}));cloth.position.set(.14,.43,0);flag.add(cloth);flag.position.set(index?-.34:.34,1.02,.05);root.add(flag);
@@ -2480,7 +2507,8 @@ function ThreeMatchView(props){
        board erano larghi 13 ma distanziati solo 11-12 → si SOVRAPPONEVANO (testo tagliato ai bordi) e, essendo due
        piani trasparenti COMPLANARI sovrapposti, facevano Z-FIGHTING (il renderer alterna quale sta davanti a ogni
        frame = «lampeggio»). FIX: larghezza < passo (parametro w) → gap tra i board → niente overlap né z-fight. */
-    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
+    const _cart222=[];
+    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);_cart222.push(m);/* [giro 222] il testimone dei guardalinee li usa per sapere se coprono */};
     // [7.8.12/7.8.13 collaudo tester] i cartelloni erano a x=±49, IN FRONT della rete di fondo (49.4) → il piano
     //   TAGLIAVA la bocca della porta (comparivano davanti alla rete). Spostarli a ±51.2 (dietro TUTTA la porta,
     //   rete laterale ~51.15) li ha fatti SPARIRE dietro la curva/perimetro negli stadi piccoli. Posizione giusta:
@@ -2644,8 +2672,13 @@ function ThreeMatchView(props){
     // A) Arbitro principale — divisa nera, si muove con la palla
     const refMesh=mkFig(0x111111);scene.add(refMesh);
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
-    const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
-    const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
+    /* [giro 222 PO-481 — rosso __CPM_NO_G222] I GUARDALINEE STANNO SULLA LINEA LATERALE, DAVANTI AI CARTELLONI. Misurato: i marker erano a
+       |z| = 35,5, oltre la fila dei cartelloni (piani alti 1,7 a |z| 34,8-35,0) e oltre la linea laterale (_TLZ 33,2): dalla camera bassa della
+       festa il cartellone li copriva. Ora |z| = 34,0: 0,8 u fuori dalla linea (sul prato di rispetto, come un assistente vero) e 0,8 u davanti
+       al cartellone. La logica che li muove (x che segue l'azione) non cambia. */
+    const _z222=(typeof window!=='undefined'&&window.__CPM_NO_G222)?35.5:34.0;
+    const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-_z222);scene.add(linRef1);
+    const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,_z222);scene.add(linRef2);
     try{window.__CPM_HYPER_ASSISTANT_LIST=[linRef1,linRef2];if(window.__CPM_HYPER_ASSISTANT_BUILDER)window.__CPM_HYPER_ASSISTANT_BUILDER(window.__CPM_HYPER_ASSISTANT_LIST);}catch(_e){}
     // B) Panchine — 3DV-11: lato TRIBUNA (z=-38, nord) — struttura dugout realistica
     const _hColInt=new THREE.Color(_hCol).getHex(),_aColInt=new THREE.Color(_aCol).getHex();
@@ -13091,6 +13124,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
       if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
+      if(typeof window!=='undefined'&&window.__CPM_G222W)_w222();/* [giro 222 PO-481] testimone dei guardalinee */
     };
     loop();
 
