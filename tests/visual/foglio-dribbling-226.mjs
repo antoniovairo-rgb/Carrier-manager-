@@ -1,0 +1,7 @@
+// GIRO 226 — foglio-provini di una sequenza del banco misura-dribbling-226 (CPM_FOTO=1): node foglio-dribbling-226.mjs <prefisso file foto> <uscita.png>
+import fs from 'node:fs'; import path from 'node:path'; import { launchBrowser } from './lib/harness.mjs';
+const [pre, dst, titolo] = process.argv.slice(2); const dir = path.dirname(pre), base = path.basename(pre);
+const files = fs.readdirSync(dir).filter(f => f.startsWith(base + '-') && f.endsWith('.png')).sort();
+const b = await launchBrowser(); const p = await b.newPage({ viewport: { width: 1480, height: 900 } });
+const html = `<body style="margin:0;background:#111;color:#eee;font:14px sans-serif"><div style="padding:6px 10px">${titolo || base} — un fotogramma ogni 0,35 s di scena</div><div style="display:flex;flex-wrap:wrap;gap:4px;padding:4px">${files.map((f, i) => `<div style="position:relative"><img src="data:image/png;base64,${fs.readFileSync(path.join(dir, f)).toString('base64')}" style="width:206px;display:block"><span style="position:absolute;left:4px;top:2px;background:#000a;padding:1px 4px">${(i * 0.35).toFixed(2)}s</span></div>`).join('')}</div></body>`;
+await p.setContent(html); await p.waitForTimeout(300); const h = await p.evaluate(() => document.body.scrollHeight); await p.setViewportSize({ width: 1480, height: h }); await p.screenshot(dst.endsWith('.jpg') ? { path: dst, type: 'jpeg', quality: 72 } : { path: dst }); await b.close(); console.log(dst, files.length);
