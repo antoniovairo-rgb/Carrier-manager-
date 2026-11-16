@@ -2058,5 +2058,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYia9GzzttEq3b5qmLdHy",
+  "titolo": "giro 228 · rosa: ruoli in sigla (PO-493)",
+  "creata": "2026-11-16T10:55:59Z",
+  "chiusa": "2026-11-16T11:36:58Z",
+  "cost_usd": 3.08211634,
+  "output_tokens": 22863,
+  "cache_read_tokens": 7461682,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]

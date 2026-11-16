@@ -1684,3 +1684,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 16/11 11:05 — Unito in lavoro/196: giro 227 (125df646, catene 36761ea8)
 - 227 (PO-492): promesse solo di ciò che non si ha; premio registrato (premiPatto227) e assegnato a patto riuscito. PO: collegamento dei premi al gioco nella 197 (PO-496); maglia «per il resto della stagione» va bene; ripiego «fiducia» va bene. Tecniche della madre: patti vecchi nei salvataggi senza rew restano col vecchio effetto (+8 fiducia, +5 morale), accettato; premi validi nel club in cui sono promessi → durata da decidere dentro PO-496.
 - Unione: dedup-ci ha rimesso barra-221 nelle catene completa e carriera (persa nella risoluzione automatica di ci-runner).
+
+## 16/11 12:45 — Unito in lavoro/196: giro 228 (175b8689, catene 935d7e43)
+- 228 (PO-493): ruoli della Rosa in sigla (siglaRuolo228), ruolo intero in title/aria-label; a 360 e 412 px 0 nomi tagliati su 1440 righe (60 club). Tecniche della madre: sigle fuori elenco accettate (JOL, U21, libero/stopper→DIF, fascia→ALA, codici inglesi mappati) — oggi nessuna arriva a schermo; lettera del reparto + sigla restano entrambe (consegna); mercato d'apertura resta per esteso (va a capo, non taglia). Al PO: ruolo intero al tocco sul telefono.
+- Unione: dedup-ci ha rimesso patto-227 nelle catene (stessa perdita del giro precedente: la risoluzione automatica di ci-runner tiene una sola parte della riga catena). Da correggere both.py per le righe delle catene → fatto a mano a ogni unione finché non è riparato.
