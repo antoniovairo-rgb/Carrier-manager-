@@ -656,6 +656,7 @@
     "rosa-228": "node rosa-228.mjs",
     "misura-228": "node misura-228.mjs",
     "rassegna-202": "node rassegna-202.mjs",
+    "rassegna-224": "node rassegna-224.mjs",
     "tocco-213": "node tocco-213.mjs",
     "barra-221": "node barra-221.mjs",
     "misura-213": "node misura-213.mjs",
