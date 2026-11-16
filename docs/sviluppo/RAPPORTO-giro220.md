@@ -85,7 +85,34 @@ gi12 «concessi 1, fatti 4,4 (11,0 u)», gi22 «concessi 3, fatti 4,0», gi118 �
 
 ## 5. Controlli (uno alla volta, `CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno)
 
-CONTROLLI_QUI
+Registri in `docs/sviluppo/giro220/controlli/`. Gioco identico byte per byte a `lavoro/196` (`git diff lavoro/196 -- src
+CARRIER-MANAGER-AV.html` vuoto): `build-src`/`check-src` non necessari.
+
+| controllo | esito | note |
+|---|---|---|
+| moves-budget ×5 | ✅ verde 5/5, rosso visto 5/5 | §4 |
+| test:logic | ✅ | 3 s |
+| save-compat | ✅ 12 pass · 0 fail | 11 s |
+| hl-94 | ✅ verde | 71 s |
+| diagonali-210 | ✅ verde, rosso bocciato su tutti e tre i difetti | 202 s |
+| esiti-96 | ❌ → ✅ | prima corsa interrotta dal mio tetto di 590 s (non vale, rifatta); poi **rosso 2 su 2 su D2** (preesistente, gioco identico alla .195); corretto lo strumento (§6); terza corsa **verde**, rosso cade su tutti i punti (740 s) |
+| solo-highlight-166 | ✅ verde, rosso cade su 3, 7 e 8 | 700 s |
+| career-critical | ✅ PASS | 804 s |
+| highlight-95 | ✅ verde (100 highlight, D4 senza esito 0) e il rosso si vede | 5730 s, in sottofondo con attesa in primo piano |
+
+Non eseguite le catene intere (`completa`/`carriera`/`notte`): solo i controlli della consegna. Nessuna foto tracciata di
+altri giri risulta modificata (`git status` pulito fuori da `giro220`).
+
+## 6. Secondo strumento con la stessa gara: `esiti-96` D2
+
+Sulla 7.999.195 `esiti-96` è uscito rosso due volte di fila, sempre «gi31: il titolo dell'esitazione porta un'azione non
+scelta («»)», titolo **vuoto**. Misurato con una sonda: gi31 da sola mostra il titolo giusto («Fallito · ⏱ Troppo tardi») per
+10 s; una scena forzata subito dopo un'altra rimasta in `hl_result` (gi128 → gi138) riproduce la firma: la sonda legge fase ed
+esito **della scena precedente** prima che la forzatura arrivi, aspetta 4,5 s, e trova la scena nuova in `hl_choose`, senza
+titolo. In `esiti-96` gi31 è la prima scena di D2, subito dopo le scene di D1 che finiscono in `hl_result`.
+Correzione (`tests/visual/esiti-96.mjs`, D2): dopo la forzatura si aspetta che l'esito della scena precedente sia azzerato
+(`__CPM_OUTCOME == null`, la forzatura fa `setOutcome(null)`; l'esposizione nel gioco gira a ogni render), tetto 8 s → «non
+giudicata» = difetto. Nessuna soglia cambiata; dopo la correzione il verde passa e il braccio rosso cade ancora su D2 (6 difetti).
 
 ## Dubbi per il PO
 
@@ -97,10 +124,13 @@ CONTROLLI_QUI
    difetto provocato.
 3. **Un fotogramma di moto prima dello stacco.** Al primo fotogramma con la scena nuova la mesh dell'eroe fa un passo
    normale (misurato 0,2 u) verso il punto nuovo e solo al fotogramma dopo scatta lo stacco (l'interruttore dello stacco viene
-   armato più in basso nello stesso giro di render). Nel gioco vero è coperto dall'intro e vale al massimo ~0,46 u (tetto di
-   velocità × passo massimo): non l'ho considerato un difetto e non l'ho toccato.
+   armato più in basso nello stesso giro di render). Nel gioco vero è coperto dall'intro e vale al massimo circa 0,46 unità di mondo
+   (tetto di velocità 9,2 u/s × passo massimo di 0,05 s): non l'ho considerato un difetto e non l'ho toccato.
 4. **Prima scena lenta su pagina appena aperta.** Lo stacco di gi4 arriva 4–5 s dopo la forzatura (nella sonda fitta fino a
    2,5–4 s; letture frequenti di `__CPM_STATE` la rallentano). È il banco headless con disegno in software; sul telefono non
    l'ho misurato. Altre sonde che leggono «a orologio» dopo la prima forzatura di una pagina possono avere la stessa gara.
-5. **Roadmap.** Non ho scritto una riga in `docs/governo/ROADMAP.md`: il giro non cambia `GAME_VERSION` né il gioco. Se il
+5. **`esiti-96` era fuori dal perimetro dichiarato** (la consegna chiedeva di sistemare `moves-budget`), ma era nella lista
+   dei controlli e il rosso era della stessa famiglia (lettura prima che la scena forzata arrivi). L'ho corretto nello
+   strumento, non nel gioco (§6). Se il PO preferiva lasciarlo rosso e aprirne una voce a parte, la modifica è un commit solo.
+6. **Roadmap.** Non ho scritto una riga in `docs/governo/ROADMAP.md`: il giro non cambia `GAME_VERSION` né il gioco. Se il
    giro va comunque registrato, va deciso dove.
