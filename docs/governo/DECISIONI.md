@@ -1668,3 +1668,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 16/11 07:45 — PO-493 rosa: ruoli che tagliano i nomi
 - Foto PO (Club › Rosa): «Ruoli abbreviati o scritti più piccoli». Misura madre: src/18 ~10471, ruolo già a FS.caption (la misura più piccola del sistema), `whiteSpace:nowrap` senza restringimento: il nome è l'unico elemento che cede (ellissi su «Caleb C…», «Alex Ma…»). Rimpicciolire ancora andrebbe sotto la soglia di leggibilità: la strada è l'abbreviazione. Forma dell'abbreviazione chiesta al PO. Giro 228 (piccolo, Opus), in coda dopo il 227.
+- 07:47 PO: «Sigle a 3 lettere» (POR, DIF, TER, MED, CEN, MEZ, TRQ, ALA, ATT, CTR; jolly/U21 restano etichetta). Giro 228 in coda dopo il 227.
