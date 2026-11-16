@@ -315,6 +315,11 @@ html.cpm-t213 [data-premuto213="b"],html.cpm-t213 [data-premuto213="a"]{scale:.9
 html.cpm-t213 [data-pos213]{position:relative;}
 html.cpm-t213 [data-premuto213="b"]::before,html.cpm-t213 [data-premuto213="a"]::after{content:"";position:absolute;inset:-2.5%;}
 @media(prefers-reduced-motion:reduce){html.cpm-t213 [data-premuto213]{scale:none!important;}}
+/* [giro 221 PO-486] tasto spento toccato: la scritta del motivo vibra di lato (translate, non transform: non tocca le transform di posizione); col moto ridotto solo un lampo di colore */
+html.cpm-t213 [data-scuoti221]{animation:cpmScuoti221 .32s ease-in-out 1;}
+@keyframes cpmScuoti221{0%,100%{translate:0}20%{translate:-4px}40%{translate:4px}60%{translate:-3px}80%{translate:2px}}
+@media(prefers-reduced-motion:reduce){html.cpm-t213 [data-scuoti221]{animation:cpmLampo221 .4s ease-out 1;}}
+@keyframes cpmLampo221{0%,45%{color:var(--lampo221,currentColor)}100%{}}
 .cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
 @keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->

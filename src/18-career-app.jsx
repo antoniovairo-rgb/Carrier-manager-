@@ -8224,12 +8224,12 @@ const getThisWeekMatchday=()=>{
                 <button data-cpm="avanza23" onClick={cs.disabled?undefined:()=>handleContinua()} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
                   style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:TINTE.testo,color:cs.disabled?TH.faint:TINTE.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
-                  {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                  {cs.sub&&<span data-motivo221={cs.disabled?"":undefined} style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
                 </button>
                 <button data-cpm="simula-v2" onClick={_mot?undefined:()=>handleContinua(true)} disabled={!!_mot} aria-disabled={!!_mot} className={_mot?"":"cpm-press"}
                   style={{flex:"0 1 auto",minWidth:96,minHeight:52,borderRadius:RAD.md,border:_mot?("1px dashed "+_v(0.5)):"none",background:_mot?"rgba(0,0,0,0.18)":TINTE.tasto,color:_mot?_ink:TINTE.testo,cursor:_mot?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 12px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.05}}>Simula</span>
-                  {_mot&&<span data-cpm="simula-motivo" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
+                  {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>

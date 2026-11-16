@@ -34,6 +34,8 @@ function _pctab292(){try{return typeof window!=='undefined'&&!window.__CPM_NO_PC
 function _vert292(){try{const w=window.innerWidth;return _largo292()&&w>=640&&w<900&&window.innerHeight>w;}catch(_e){return false;}}
 function _narrowLay292(){try{return window.innerWidth<640||_vert292();}catch(_e){return false;}}
 /* dito: puntatore grossolano su schermo >= 640 px (tablet). Sul telefono < 640 px non cambia mai niente. */
+/* [giro 221 PO-480] tempo dell'esitazione in hl_choose secondo la distanza del marcatore (valori del 7.916): lo usano il timer e le barre */
+function durataEsitazione221(dd){return dd>60?16000:dd>35?12000:9000;}
 function _tocco292(){try{return _pctab292()&&window.innerWidth>=640&&!!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 /* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
    Direttiva PO 29/08 («libreria ampia, mai ripetitiva») → docs/LIBRERIA-AZIONI-SALIENTI.md +
@@ -2903,7 +2905,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const matchMemRef=useRef({goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}});
   const [movesLeft,setMovesLeft]=useState(0);
   // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
-  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
+  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_DD221=(v)=>{defDistRef.current=v;setDefDist(v);};window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
@@ -2918,6 +2920,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
   const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
   {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  /* [giro 221 PO-480] UNA SOLA FORMULA per il tempo dell'esitazione: il timer dell'auto-anticipo (16/12/9 s, 7.916) e le due barre
+     «Pressione» (scheda delle giocate 7.905, scheda del movimento in hl_choose del giro 210) leggono questo valore, fissato all'ingresso
+     in hl_choose (e a ogni ripresa dalla pausa, come si riarma il timer) sul defDist di quell'istante: una mossa fatta dopo non cambia
+     piu' la durata della barra mentre il timer resta quello armato. Rosso window.__CPM_NO_G221 = barre col vecchio 9/6/4 s. */
+  const _no221=typeof window!=='undefined'&&!!window.__CPM_NO_G221;
+  const durEsit221Ref=useRef({k:"",v:9000});
+  const _durEsit221=()=>{const m=durEsit221Ref.current;const k=phase+"|"+hlIdx+"|"+(paused?1:0);if(m.k!==k){m.k=k;m.v=durataEsitazione221(defDistRef.current);}return m.v;};
   const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
   useEffect(()=>{setPad210(false);},[hlIdx]);
   useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
@@ -10987,7 +10996,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        righe da leggere e una scelta da fare col pollice, quattro secondi sono un'ansia, non una decisione — ed
        e' lo stesso difetto che la 7.682 aveva gia' corretto una volta («una domanda che scorre via mentre la
        leggi non e' una scelta»). Ora 16/12/9: il difensore arriva ancora, ma dopo che hai letto. */
-    const baseDelay=defDistRef.current>60?16000:defDistRef.current>35?12000:9000;
+    const baseDelay=_no221?(defDistRef.current>60?16000:defDistRef.current>35?12000:9000):_durEsit221();/* [giro 221] la stessa durata delle barre */
     const t=setTimeout(()=>{
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
@@ -12432,7 +12441,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
                     {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=defDist>60?9000:defDist>35?6000:4000;return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero */return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
                    :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
@@ -12520,7 +12529,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                      (il dito del D-pad che ricade non sceglie niente), e ogni tasto visibile registra il tocco.
                      Rosso __CPM_NO_G96B_D1 = righe visibili e morte. */
                   const _no96bD1=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D1;
-                  const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
+                  const _dl905=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero (16/12/9 s): prima restava 9/6/4 s e si svuotava prima del marcatore. [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:_g197?"max(44vh, 400px)":"44vh",/* [giro 197] sui telefoni bassi il 44vh (282 px a 640) non conteneva titolo + tre scelte: la scheda prende altezza alla scena fino a 400 px; da 909 px di altezza in su resta il 44vh di prima */boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>

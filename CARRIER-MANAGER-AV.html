@@ -292,6 +292,11 @@ html.cpm-t213 [data-premuto213="b"],html.cpm-t213 [data-premuto213="a"]{scale:.9
 html.cpm-t213 [data-pos213]{position:relative;}
 html.cpm-t213 [data-premuto213="b"]::before,html.cpm-t213 [data-premuto213="a"]::after{content:"";position:absolute;inset:-2.5%;}
 @media(prefers-reduced-motion:reduce){html.cpm-t213 [data-premuto213]{scale:none!important;}}
+/* [giro 221 PO-486] tasto spento toccato: la scritta del motivo vibra di lato (translate, non transform: non tocca le transform di posizione); col moto ridotto solo un lampo di colore */
+html.cpm-t213 [data-scuoti221]{animation:cpmScuoti221 .32s ease-in-out 1;}
+@keyframes cpmScuoti221{0%,100%{translate:0}20%{translate:-4px}40%{translate:4px}60%{translate:-3px}80%{translate:2px}}
+@media(prefers-reduced-motion:reduce){html.cpm-t213 [data-scuoti221]{animation:cpmLampo221 .4s ease-out 1;}}
+@keyframes cpmLampo221{0%,45%{color:var(--lampo221,currentColor)}100%{}}
 .cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
 @keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->
@@ -31491,6 +31496,8 @@ function _pctab292(){try{return typeof window!=='undefined'&&!window.__CPM_NO_PC
 function _vert292(){try{const w=window.innerWidth;return _largo292()&&w>=640&&w<900&&window.innerHeight>w;}catch(_e){return false;}}
 function _narrowLay292(){try{return window.innerWidth<640||_vert292();}catch(_e){return false;}}
 /* dito: puntatore grossolano su schermo >= 640 px (tablet). Sul telefono < 640 px non cambia mai niente. */
+/* [giro 221 PO-480] tempo dell'esitazione in hl_choose secondo la distanza del marcatore (valori del 7.916): lo usano il timer e le barre */
+function durataEsitazione221(dd){return dd>60?16000:dd>35?12000:9000;}
 function _tocco292(){try{return _pctab292()&&window.innerWidth>=640&&!!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 /* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
    Direttiva PO 29/08 («libreria ampia, mai ripetitiva») → docs/LIBRERIA-AZIONI-SALIENTI.md +
@@ -34360,7 +34367,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const matchMemRef=useRef({goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}});
   const [movesLeft,setMovesLeft]=useState(0);
   // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
-  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
+  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_DD221=(v)=>{defDistRef.current=v;setDefDist(v);};window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
@@ -34375,6 +34382,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
   const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
   {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  /* [giro 221 PO-480] UNA SOLA FORMULA per il tempo dell'esitazione: il timer dell'auto-anticipo (16/12/9 s, 7.916) e le due barre
+     «Pressione» (scheda delle giocate 7.905, scheda del movimento in hl_choose del giro 210) leggono questo valore, fissato all'ingresso
+     in hl_choose (e a ogni ripresa dalla pausa, come si riarma il timer) sul defDist di quell'istante: una mossa fatta dopo non cambia
+     piu' la durata della barra mentre il timer resta quello armato. Rosso window.__CPM_NO_G221 = barre col vecchio 9/6/4 s. */
+  const _no221=typeof window!=='undefined'&&!!window.__CPM_NO_G221;
+  const durEsit221Ref=useRef({k:"",v:9000});
+  const _durEsit221=()=>{const m=durEsit221Ref.current;const k=phase+"|"+hlIdx+"|"+(paused?1:0);if(m.k!==k){m.k=k;m.v=durataEsitazione221(defDistRef.current);}return m.v;};
   const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
   useEffect(()=>{setPad210(false);},[hlIdx]);
   useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
@@ -42444,7 +42458,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        righe da leggere e una scelta da fare col pollice, quattro secondi sono un'ansia, non una decisione — ed
        e' lo stesso difetto che la 7.682 aveva gia' corretto una volta («una domanda che scorre via mentre la
        leggi non e' una scelta»). Ora 16/12/9: il difensore arriva ancora, ma dopo che hai letto. */
-    const baseDelay=defDistRef.current>60?16000:defDistRef.current>35?12000:9000;
+    const baseDelay=_no221?(defDistRef.current>60?16000:defDistRef.current>35?12000:9000):_durEsit221();/* [giro 221] la stessa durata delle barre */
     const t=setTimeout(()=>{
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
@@ -43889,7 +43903,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
                     {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=defDist>60?9000:defDist>35?6000:4000;return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero */return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
                    :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
@@ -43977,7 +43991,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                      (il dito del D-pad che ricade non sceglie niente), e ogni tasto visibile registra il tocco.
                      Rosso __CPM_NO_G96B_D1 = righe visibili e morte. */
                   const _no96bD1=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D1;
-                  const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
+                  const _dl905=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero (16/12/9 s): prima restava 9/6/4 s e si svuotava prima del marcatore. [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:_g197?"max(44vh, 400px)":"44vh",/* [giro 197] sui telefoni bassi il 44vh (282 px a 640) non conteneva titolo + tre scelte: la scheda prende altezza alla scena fino a 400 px; da 909 px di altezza in su resta il 44vh di prima */boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
@@ -59271,12 +59285,12 @@ const getThisWeekMatchday=()=>{
                 <button data-cpm="avanza23" onClick={cs.disabled?undefined:()=>handleContinua()} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
                   style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:TINTE.testo,color:cs.disabled?TH.faint:TINTE.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
-                  {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                  {cs.sub&&<span data-motivo221={cs.disabled?"":undefined} style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
                 </button>
                 <button data-cpm="simula-v2" onClick={_mot?undefined:()=>handleContinua(true)} disabled={!!_mot} aria-disabled={!!_mot} className={_mot?"":"cpm-press"}
                   style={{flex:"0 1 auto",minWidth:96,minHeight:52,borderRadius:RAD.md,border:_mot?("1px dashed "+_v(0.5)):"none",background:_mot?"rgba(0,0,0,0.18)":TINTE.tasto,color:_mot?_ink:TINTE.testo,cursor:_mot?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 12px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.05}}>Simula</span>
-                  {_mot&&<span data-cpm="simula-motivo" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
+                  {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>
@@ -65083,13 +65097,14 @@ class RootErrorBoundary extends React.Component{
      loro gestore parte dopo che il fotogramma col tasto premuto e la rotellina e' stato disegnato (la rotellina gira sul compositore
      anche mentre il lavoro tiene occupato il filo principale). Un secondo tocco sullo stesso tasto mentre l'azione del primo non e'
      ancora partita viene assorbito (nessuna azione doppia).
-   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213. */
+   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213.
+   [giro 221 PO-486] tasti spenti: vibrazione della scritta del motivo (scuoti, qui sotto). Guardiano barra-221. */
 const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
 (function tocco213(){
   if(typeof window==="undefined"||typeof document==="undefined"||window.__CPM_NO_G213)return;
   document.documentElement.classList.add("cpm-t213");
   const SEL="button,[role=\"button\"],.cpm-press,[data-tocco213]";
-  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1};
+  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1,"data-scuoti221":1};
   const spento=el=>el.disabled||el.getAttribute("aria-disabled")==="true";
   const modo=el=>{
     const cs=getComputedStyle(el);if(cs.display==="inline"||cs.overflowX!=="visible"||cs.overflowY!=="visible")return "n";
@@ -65097,10 +65112,18 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     if(m!=="n"&&cs.position==="static"){const D=el.getElementsByTagName("*");for(let i=0;i<D.length&&i<80;i++){const p=getComputedStyle(D[i]).position;if(p==="absolute"||p==="fixed"){m="n";break;}}}
     return m;
   };
+  /* [giro 221 PO-486] un tasto SPENTO al tocco da' un segnale: la scritta che dice perche' e' spento (data-motivo221, se c'e'; se no
+     il tasto) fa una piccola vibrazione orizzontale (lampo di colore col moto ridotto, CSS in src/00). L'attributo si mette NELLO STESSO
+     pointerdown: il fotogramma dopo il tocco lo disegna. Nessuna azione (il click di un tasto spento non parte) e la guardia del doppio
+     tocco qui sotto resta com'e'. Rosso window.__CPM_NO_G221. */
+  const NO221=!!window.__CPM_NO_G221;
+  try{if(!NO221)document.documentElement.style.setProperty("--lampo221",TINTE.oro);}catch(_e){}
+  const scuoti=el=>{if(NO221)return;const t=el.querySelector("[data-motivo221]")||el;t.removeAttribute("data-scuoti221");void t.offsetWidth;t.setAttribute("data-scuoti221","");
+    try{window.__CPM_SPENTO221=(window.__CPM_SPENTO221|0)+1;}catch(_e){}clearTimeout(t._t221);t._t221=setTimeout(()=>t.removeAttribute("data-scuoti221"),420);};
   let prem=null,tGiu=0,tRil=null;
   const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
   document.addEventListener("pointerdown",e=>{
-    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el)return;if(spento(el)){scuoti(el);return;}
     rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
     el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
   },true);
