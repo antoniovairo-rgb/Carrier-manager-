@@ -110,12 +110,12 @@ if (SOLO.includes('D')) {
 async function presentazione(flags) {
   const p = await apriPres(b, port, flags); const S = (await posaPres(p, 3)).filter(Boolean); await p.close();
   const ult = S[S.length - 1] || { men: [] }, M = ult.men.filter(Boolean);
-  return { uomini: M.length, dipinti: (ult.folla || {}).dipinti || 0, spalle: med(M.map(m => m.spalleSu)), gomiti: med(M.map(m => m.gomL)), manoAvanti: med(M.map(m => m.manoAvantiL)) };
+  return { uomini: M.length, dipinti: (ult.folla || {}).dipinti || 0, tifosi: ((ult.folla || {}).dipinti || 0) + ((ult.folla || {}).f129 || 0),/* [giro 225 PO-489] la serata usa di nuovo la folla a sagome della partita (con la folla dipinta come ripiego provato da presentazione-225): i tifosi si contano su tutti e due gli strati, stessa soglia */ spalle: med(M.map(m => m.spalleSu)), gomiti: med(M.map(m => m.gomL)), manoAvanti: med(M.map(m => m.manoAvantiL)) };
 }
 if (SOLO.includes('C')) {
   const v = await presentazione([]), r = await presentazione(['__CPM_NO_G192C']);
   righe.push('C verde ' + JSON.stringify(v), 'C rosso ' + JSON.stringify(r));
-  if (!(v.uomini >= 5 && v.dipinti >= 1000 && v.spalle >= -26 && v.spalle <= -18 && v.gomiti >= 155 && v.manoAvanti <= 0.15)) guasti.push('C verde: ' + JSON.stringify(v));
+  if (!(v.uomini >= 5 && v.tifosi >= 1000 && v.spalle >= -26 && v.spalle <= -18 && v.gomiti >= 155 && v.manoAvanti <= 0.15)) guasti.push('C verde: ' + JSON.stringify(v));
   if (!(r.uomini >= 5 && r.dipinti === 0 && r.spalle <= -30 && r.gomiti <= 145)) guasti.push('C rosso: il difetto non si vede ' + JSON.stringify(r));
 }
 await b.close(); srv.close();

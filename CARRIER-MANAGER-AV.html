@@ -45806,7 +45806,7 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
 /* [giro 192 · PO-406] postura della fila: spalle e braccia a riposo, in spazio MONDO e in ASSOLUTO (si parte ogni volta dalla posa che la
    clip e la vita hanno appena scritto: niente accumulo). salutaR>0: il braccio destro e' del saluto e non si tocca. */
 const _P192={v:null};
-function _posa192(av,i,salutaR){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
+function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
   const V=_P192.v,B=av.userData._b192||(av.userData._b192=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|ball_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
   if(!B.pelvis||!B.neck_01||!B.clavicle_l||!B.upperarm_l||!B.lowerarm_l||!B.hand_l||!B.ball_l||!B.ball_r)return;
   av.updateMatrixWorld(true);
@@ -45825,9 +45825,10 @@ function _posa192(av,i,salutaR){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vecto
     if(s==='r'&&salutaR>0.01)continue;
     /* (2) braccio a riposo: lato = dal collo alla spalla, in orizzontale */
     B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);const lat=new T.Vector3(V.b.x-V.a.x,0,V.b.z-V.a.z).normalize();
-    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k).addScaledVector(fwd,0.05+0.04*k).normalize();
+    const o225=(s==='l'?1:-1)*(osc||0);/* [giro 225] camminando le braccia oscillano opposte alle gambe */
+    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k).addScaledVector(fwd,0.05+0.04*k+0.20*o225).normalize();
     punta(ua,la,dU);
-    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05).addScaledVector(fwd,0.24+0.06*k).normalize();
+    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05).addScaledVector(fwd,0.24+0.06*k+0.30*o225).normalize();
     punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
   const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr])$/.test(o.name))B[o.name]=o;});
@@ -45862,9 +45863,11 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
   const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
   const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
   const X=new T.Vector3(1,0,0),Y=new T.Vector3(0,1,0),Z=new T.Vector3(0,0,1),qq=new T.Quaternion(),qw=new T.Quaternion();
-  const giro=(b,asse,ang)=>{if(!b||!ang)return;b.parent.getWorldQuaternion(qa);qq.setFromAxisAngle(asse,ang);/* rotazione intorno a un asse del MONDO, riportata nello spazio del genitore */
+  const giro0=(b,asse,ang)=>{if(!b||!ang)return;b.parent.getWorldQuaternion(qa);qq.setFromAxisAngle(asse,ang);/* rotazione intorno a un asse del MONDO, riportata nello spazio del genitore */
     qw.copy(qa).multiply(b.quaternion);qw.premultiply(qq);b.quaternion.copy(qa.invert().multiply(qw));};
-  const vita=(el)=>{for(const n in base)B[n].quaternion.copy(base[n]);av.updateMatrixWorld(true);
+  const vita=(el,ww)=>{const kv=1-(ww>0?Math.min(1,ww):0);/* [giro 225] mentre cammina (ww) la posa e' della clip walk: la base rientra in dissolvenza */
+    if(kv<1){for(const n in base)B[n].quaternion.slerp(base[n],kv);}else{for(const n in base)B[n].quaternion.copy(base[n]);}av.updateMatrixWorld(true);if(kv<=0)return;
+    const giro=(b,asse,ang)=>giro0(b,asse,ang*kv);
     const res=Math.sin(el*Math.PI*2*P.fRes+P.pRes),peso=Math.sin(el*Math.PI*2*P.fPeso+P.pPeso),sg=Math.sin(el*Math.PI*2*P.fSg+P.pSg),br=Math.sin(el*Math.PI*2*P.fBr+P.pBr);
     if(B.spine_01){giro(B.spine_01,Z,peso*1.4*D);giro(B.spine_01,X,res*0.7*D);B.spine_01.updateMatrixWorld(true);}
     giro(B.spine_03,X,-res*1.2*D);B.spine_03.updateMatrixWorld(true);
@@ -45915,14 +45918,151 @@ function _saluto144(av){const T=THREE,B={};
       if(S.side.copy(nP).cross(fP).dot(ax)<0)ang=-ang;ang*=w;
       if(B.lowerarm_twist_01_r){S.q.setFromAxisAngle(ax,ang*0.5);ruota(B.lowerarm_twist_01_r,S.q);}
       S.q.setFromAxisAngle(ax,ang);ruota(B.hand_r,S.q);}};}
-function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false}){
+/* ════════════════════════════════════════════════════════════════════════
+   [giro 225 · PO-489 collaudo PO 7.999.195 «I tifosi non si vedono come nella partita 3D, i colori della pelle e dei capelli non sono
+   coerenti con le relative figurine. Quando ritornano in fila volano ed il movimento del braccio nel saluto non è naturale»]
+   Rosso unico window.__CPM_NO_G225 (la serata della 7.999.195). Misure in docs/sviluppo/RAPPORTO-giro225.md.
+   1) TIFO: la folla a sagome della partita (buildFolla129: stesse figure, densita', colori del club, stesso shader animato), con una
+      PROVA DI DISEGNO: se lo strato a istanze non lascia pixel (il telefono del giro 192) lo stadio si rifa' con la folla dipinta.
+   2) PELLE E CAPELLI: dal ritratto della figurina di OGNI chiamato (stessa funzione voltoId23 della targhetta): capelli dalla classe
+      dell'indice, pelle dal colore misurato sul ritratto (campo p dell'indice, tools/ritratti/pelle-225.py).
+   3) «VOLANO»: i piedi non si staccavano (2,6 cm fissi): il corpo SCIVOLAVA di 4,4 u a gambe ferme. Ora cammina con la clip walk del
+      pacchetto, fase legata alla distanza percorsa (un ciclo = due passi), anche all'indietro, e il corpo si appoggia a ogni fotogramma.
+   4) SALUTO: gomito a cerniera (asse misurato sulla clip), omero poco sopra l'orizzontale, avambraccio verticale che ondeggia per
+      rotazione dell'omero, partenza e ritorno dalla posa a riposo senza salti.
+   5) FASCIA: era il tetto semitrasparente della tribuna sotto la camera della panoramica: si nasconde finche' la camera ci guarda attraverso.
+   ════════════════════════════════════════════════════════════════════════ */
+const _g225=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G225);
+const K_FOLLA225=0.5;/* taratura misurata: vedi rapporto giro 225 */
+const _CAP225={neri:'#141210',castani:'#3a2410',biondi:'#dcb64c',rossi:'#b5491f'};/* un colore per classe: cgVarianteCapelli li porta a black/brown/blond/auburn */
+const _BASE225={'Material.001':[208,143,113],'Material.002':[203,133,109],HyperLegLeft:[187,130,102],HyperLegRight:[187,130,102]};/* pelle delle texture del corpo CGTrader (mediana dei pixel di pelle, misurata sul GLB) */
+function aspettoFigurina225(chiave){try{const I=VOLTI23.idx;if(!I||chiave==null||chiave==="")return null;const n=voltoId23('giocatore',chiave,0);if(n==null)return null;
+  const r=I.g.find(x=>x.n===n)||I.s.find(x=>x.n===n);return r?{n,k:r.k,h:r.h,p:r.p||null,hair:_CAP225[r.h]||null,file:I.base+r.f}:null;}catch(_e){return null;}}
+function voltiPronti225(ms){return new Promise(res=>{try{if(VOLTI23.idx||VOLTI23.stato==='assente'||VOLTI23.stato==='spento')return res();
+  let fatto=false;const f=()=>{if(fatto)return;fatto=true;try{VOLTI23.ascolta.delete(f);}catch(_e){}res();};VOLTI23.ascolta.add(f);_caricaVolti23();setTimeout(f,ms||4000);}catch(_e){res();}});}
+/* la pelle del corpo prende il colore del ritratto: solo i pixel di pelle (saturi e caldi) si moltiplicano, calzettoni, scarpe, occhi e denti restano */
+function _pelle225(av,hex,lineare){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255];
+  const f=lineare?(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}):(v=>v/255);let fatti=0;
+  av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
+    const nx=src.map(b=>{if(!b||!b.map||(b.userData&&b.userData.pelle225===hex))return b;const nome=(b.userData&&b.userData.base225)||(/^KorwardNativeHair_/.test(b.name)?'Material.002':b.name),bs=_BASE225[nome];if(!bs)return b;
+      if(lineare&&typeof _linMat178==='function'){try{_linMat178(b);}catch(_e){}}/* prima del proprio shader: sviluppoColore178 salta i materiali con onBeforeCompile */
+      const c=b.clone();c.userData=Object.assign({},b.userData||{},{base225:nome,pelle225:hex});
+      const u=new T.Vector3(f(tg[0])/f(bs[0]),f(tg[1])/f(bs[1]),f(tg[2])/f(bs[2]));c.userData.u225=u;
+      const s0=lineare?'0.35':'0.20',s1=lineare?'0.55':'0.34';
+      c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.fragmentShader='uniform vec3 uPelle225;\n'+sh.fragmentShader.replace('#include <map_fragment>',
+        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);diffuseColor.rgb*=mix(vec3(1.0),uPelle225,k225);}');};
+      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S');c.needsUpdate=true;fatti++;return c;});
+    m.material=Array.isArray(m.material)?nx:nx[0];});
+  av.userData.pelle225=hex;return fatti;}catch(_e){return 0;}}
+/* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
+   della traccia dell'avambraccio col massimo angolo fra loro; l'asse e' nello spazio dell'omero. Una volta per pacchetto. */
+const _GOM225=new WeakMap();
+function _gomito225(pkg){try{if(_GOM225.has(pkg))return _GOM225.get(pkg);const T=THREE;let out=null;
+  for(const nome of ['running','jog','walk']){const c=(pkg.animations||[]).find(x=>x&&x.name===nome);if(!c)continue;
+    const tr=c.tracks.find(t=>/(^|[./])lowerarm_r\.quaternion$/.test(t.name));if(!tr)continue;const v=tr.values,N=v.length/4;if(N<4)continue;
+    const q=k=>new T.Quaternion(v[k*4],v[k*4+1],v[k*4+2],v[k*4+3]).normalize();let bi=0,bj=1,ba=-1;
+    for(let i=0;i<N;i+=Math.max(1,(N/24)|0))for(let j=i+1;j<N;j+=Math.max(1,(N/24)|0)){const a=q(i).angleTo(q(j));if(a>ba){ba=a;bi=i;bj=j;}}
+    if(ba<0.08)continue;
+    /* verso: la rotazione POSITIVA intorno all'asse e' la flessione (il gomito piega da una parte sola); riferimento = il campione piu' disteso */
+    const oU=pkg.scene.getObjectByName('lowerarm_r'),oH=pkg.scene.getObjectByName('hand_r');if(!oU||!oH)continue;
+    const aU=oU.position.clone().normalize(),aF=oH.position.clone().normalize(),fl=k=>aU.angleTo(aF.clone().applyQuaternion(q(k)));
+    if(fl(bi)>fl(bj)){const x=bi;bi=bj;bj=x;}
+    const d=q(bj).multiply(q(bi).invert());if(d.w<0){d.x=-d.x;d.y=-d.y;d.z=-d.z;d.w=-d.w;}const s=Math.hypot(d.x,d.y,d.z)||1;
+    out={asse:new T.Vector3(d.x/s,d.y/s,d.z/s),ref:q(bi),clip:nome,escursione:+(ba*180/Math.PI).toFixed(1),flessRef:+(fl(bi)*180/Math.PI).toFixed(1)};break;}
+  _GOM225.set(pkg,out);return out;}catch(_e){return null;}}
+/* misura del braccio destro (sola lettura, la usano guardiano e sonda nei due bracci): gomito, elevazione dell'omero, residuo fuori dalla
+   cerniera, polso, mano rispetto al piano mediano e al busto. Angoli in gradi, distanze in unita' di mondo. */
+function misuraBraccio225(av,cal){try{const T=THREE,B=av.userData._bm225||(av.userData._bm225=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|spine_03|neck_01|upperarm_[lr]|lowerarm_r|hand_r|middle_01_r)$/.test(x.name))o[x.name]=x;});return o;})());
+  if(!B.upperarm_r||!B.upperarm_l||!B.lowerarm_r||!B.hand_r||!B.pelvis||!B.neck_01)return null;av.updateMatrixWorld(true);
+  const P=n=>B[n].getWorldPosition(new T.Vector3()),S=P('upperarm_r'),SL=P('upperarm_l'),E=P('lowerarm_r'),H=P('hand_r'),pe=P('pelvis'),ne=P('neck_01');
+  const side=S.clone().sub(SL);side.y=0;side.normalize();const up=new T.Vector3(0,1,0),fwd=up.clone().cross(side).normalize();
+  const dU=E.clone().sub(S).normalize(),dF=H.clone().sub(E).normalize(),G=180/Math.PI,cl=x=>Math.max(-1,Math.min(1,x));
+  const gomito=Math.acos(cl(-dU.dot(dF)))*G,elev=Math.acos(cl(-dU.y))*G;
+  let fuori=null;if(cal&&cal.asse){const rel=B.lowerarm_r.quaternion.clone().multiply(cal.ref.clone().invert());/* rotazione rispetto alla posa di riferimento, nello spazio dell'omero */
+    const a=cal.asse,pr=rel.x*a.x+rel.y*a.y+rel.z*a.z,tw=new T.Quaternion(a.x*pr,a.y*pr,a.z*pr,rel.w);if(tw.lengthSq()<1e-9)tw.set(0,0,0,1);tw.normalize();
+    const sw=rel.clone().multiply(tw.invert());fuori=2*Math.acos(cl(Math.abs(sw.w)))*G;}
+  let polso=null;if(B.middle_01_r){const dM=P('middle_01_r').sub(H).normalize();polso=Math.acos(cl(dM.dot(dF)))*G;}
+  const asse=ne.clone().sub(pe).normalize(),dist=p=>{const d=p.clone().sub(pe);return d.sub(asse.clone().multiplyScalar(d.dot(asse))).length();};
+  const mid=pe.clone().add(ne).multiplyScalar(0.5);
+  return{gomito:+gomito.toFixed(1),elev:+elev.toFixed(1),fuori:fuori==null?null:+fuori.toFixed(1),polso:polso==null?null:+polso.toFixed(1),
+    manoLato:+H.clone().sub(mid).dot(side).toFixed(3),manoAvanti:+H.clone().sub(mid).dot(fwd).toFixed(3),manoSu:+(H.y-S.y).toFixed(3),
+    busto:+Math.min(dist(H),dist(E)).toFixed(3),dU:[+dU.x.toFixed(4),+dU.y.toFixed(4),+dU.z.toFixed(4)],dF:[+dF.x.toFixed(4),+dF.y.toFixed(4),+dF.z.toFixed(4)]};}catch(_e){return null;}}
+/* IL SALUTO: parte dalla posa a riposo che _posa192 ha appena scritto (niente salti), omero di lato-avanti poco sopra l'orizzontale,
+   avambraccio verticale; l'ondeggio e' una rotazione dell'omero intorno al proprio asse (l'avambraccio resta nel piano della cerniera),
+   il palmo guarda la tribuna. w 0..1 (rampa morbida dal tick), t = tempo di scena del saluto. Nessun Math.random, nessun accumulo. */
+function _saluto225(av,cal){try{const T=THREE,B={};
+  av.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|lowerarm_r|lowerarm_twist_01_r|hand_r|middle_01_r|index_01_r|pinky_01_r)$/.test(o.name))B[o.name]=o;});
+  if(!cal||!B.upperarm_r||!B.upperarm_l||!B.lowerarm_r||!B.hand_r||!B.middle_01_r||!B.index_01_r||!B.pinky_01_r)return null;
+  const axU=B.lowerarm_r.position.clone().normalize(),axF=B.hand_r.position.clone().normalize();/* l'asse dell'osso = dove sta il figlio */
+  const aP=cal.asse.clone().addScaledVector(axU,-cal.asse.dot(axU)).normalize(),cL=new T.Vector3().crossVectors(axU,aP);
+  const mL=new T.Matrix4().makeBasis(axU,aP,cL),qL=new T.Quaternion().setFromRotationMatrix(mL).invert();
+  const S={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),side:new T.Vector3(),fwd:new T.Vector3(),up:new T.Vector3(0,1,0),dU:new T.Vector3(),dF:new T.Vector3(),h:new T.Vector3(),
+    m:new T.Matrix4(),q:new T.Quaternion(),qp:new T.Quaternion(),qw:new T.Quaternion(),q0:new T.Quaternion(),q1:new T.Quaternion()};
+  const ruota=(o,q)=>{o.parent.updateMatrixWorld(true);o.parent.getWorldQuaternion(S.qp);S.qw.copy(S.qp).multiply(o.quaternion).premultiply(q);o.quaternion.copy(S.qp.invert().multiply(S.qw));o.updateMatrixWorld(true);};
+  return function(w,t){if(!(w>0))return;av.updateMatrixWorld(true);
+    B.upperarm_r.getWorldPosition(S.a);B.upperarm_l.getWorldPosition(S.b);S.side.copy(S.a).sub(S.b);S.side.y=0;S.side.normalize();S.fwd.copy(S.up).cross(S.side).normalize();
+    const on=Math.sin((t||0)*Math.PI*2*1.25),th=0.36*on*w;
+    S.dU.copy(S.side).multiplyScalar(0.80).addScaledVector(S.fwd,0.44).addScaledVector(S.up,0.10).normalize();
+    S.dF.copy(S.up).multiplyScalar(Math.cos(th)).addScaledVector(S.side,Math.sin(th)+0.04).addScaledVector(S.fwd,0.16).normalize();
+    S.h.crossVectors(S.dU,S.dF).normalize();
+    /* (1) omero: asse dell'osso su dU, cerniera su h. Il verso della cerniera (quale segno flette) si prova una volta */
+    S.q0.copy(B.upperarm_r.quaternion);S.q1.copy(B.lowerarm_r.quaternion);
+    const metti=(sg)=>{S.c.copy(S.h).multiplyScalar(sg);S.d.crossVectors(S.dU,S.c);S.m.makeBasis(S.dU,S.c,S.d);S.qw.setFromRotationMatrix(S.m).multiply(qL);
+      B.upperarm_r.parent.getWorldQuaternion(S.qp);B.upperarm_r.quaternion.copy(S.qp.invert().multiply(S.qw));B.upperarm_r.updateMatrixWorld(true);
+      /* (2) avambraccio: dalla posa di riferimento, sola rotazione intorno alla cerniera fino a dF */
+      B.lowerarm_r.quaternion.copy(cal.ref);B.lowerarm_r.updateMatrixWorld(true);B.lowerarm_r.getWorldQuaternion(S.qw);S.a.copy(axF).applyQuaternion(S.qw);
+      S.b.copy(S.a).addScaledVector(S.c,-S.a.dot(S.c));S.d.copy(S.dF).addScaledVector(S.c,-S.dF.dot(S.c));
+      const ang=Math.atan2(S.c.dot(new T.Vector3().crossVectors(S.b,S.d)),S.b.dot(S.d));S.q.setFromAxisAngle(S.c,ang);ruota(B.lowerarm_r,S.q);return ang;};
+    metti(1);/* il verso della cerniera viene dalla clip (_gomito225: rotazione positiva = flessione) */
+    if(w<1){B.upperarm_r.quaternion.copy(S.qw.copy(S.q0).slerp(B.upperarm_r.quaternion,w));B.lowerarm_r.quaternion.copy(S.qw.copy(S.q1).slerp(B.lowerarm_r.quaternion,w));B.upperarm_r.updateMatrixWorld(true);}
+    /* (3) palmo verso la tribuna, intorno all'asse dell'avambraccio: meta' all'osso di torsione, tutto alla mano (come il giro 144) */
+    B.lowerarm_r.getWorldPosition(S.a);B.hand_r.getWorldPosition(S.b);const ax=S.c.copy(S.b).sub(S.a).normalize().clone();
+    B.middle_01_r.getWorldPosition(S.a);S.a.sub(S.b);B.index_01_r.getWorldPosition(S.d);B.pinky_01_r.getWorldPosition(S.b);S.b.sub(S.d);const nP=S.a.cross(S.b).normalize();
+    nP.addScaledVector(ax,-nP.dot(ax));const fP=S.d.copy(S.fwd).addScaledVector(ax,-S.fwd.dot(ax));
+    if(nP.lengthSq()>1e-6&&fP.lengthSq()>1e-6){nP.normalize();fP.normalize();let ang=Math.acos(Math.max(-1,Math.min(1,nP.dot(fP))));
+      if(S.h.copy(nP).cross(fP).dot(ax)<0)ang=-ang;ang*=w;
+      if(B.lowerarm_twist_01_r){S.q.setFromAxisAngle(ax,ang*0.5);ruota(B.lowerarm_twist_01_r,S.q);}
+      S.q.setFromAxisAngle(ax,ang);ruota(B.hand_r,S.q);}
+    /* (4) il polso segue l'ondeggio in ritardo (pochi gradi) */
+    S.q.setFromAxisAngle(S.fwd,-0.10*Math.sin((t||0)*Math.PI*2*1.25-0.9)*w);ruota(B.hand_r,S.q);};}catch(_e){return null;}}
+/* IL CAMMINO: la clip walk del pacchetto in pausa, il tempo lo decide la DISTANZA percorsa (un ciclo = passo misurato sulla clip: quanto
+   arretra il piede d'appoggio), avanti e indietro; peso della clip in dissolvenza alla partenza e all'arrivo; a ogni fotogramma il corpo
+   si appoggia (il punto piu' basso fra punte e caviglie alla sua quota di riposo). */
+function _cammino225(av,mx,idleAct,walkClip){try{const T=THREE;if(!av||!mx||!idleAct||!walkClip)return null;
+  const B={};av.traverse(o=>{if(o.isBone&&/^(foot_[lr]|ball_[lr])$/.test(o.name))B[o.name]=o;});if(!B.foot_l||!B.foot_r||!B.ball_l||!B.ball_r)return null;
+  const v=new T.Vector3(),wy=b=>b.getWorldPosition(v).y,wz=b=>b.getWorldPosition(v).z;
+  av.updateMatrixWorld(true);const y0=av.position.y,z0=av.position.z;
+  const rip={ball:Math.min(wy(B.ball_l),wy(B.ball_r)),foot:Math.min(wy(B.foot_l),wy(B.foot_r))};/* quote di contatto nella posa ferma */
+  const act=mx.clipAction(walkClip);act.play();act.paused=true;
+  const K=48,dur=walkClip.duration,tab=[];idleAct.setEffectiveWeight(0);act.setEffectiveWeight(1);
+  for(let k=0;k<K;k++){act.time=dur*k/K;mx.update(0);av.updateMatrixWorld(true);
+    tab.push({bl:wy(B.ball_l),br:wy(B.ball_r),zl:wz(B.ball_l)-z0,zr:wz(B.ball_r)-z0});}
+  let Dc=0,f0=0,dm=1e9,zmax=1e-6;
+  for(let k=0;k<K;k++){const a=tab[k],b=tab[(k+1)%K],sin=a.bl<=a.br;Dc+=Math.max(0,sin?(a.zl-b.zl):(a.zr-b.zr));
+    const d=Math.abs(a.zl-a.zr);if(d<dm){dm=d;f0=k/K;}zmax=Math.max(zmax,d);}
+  act.setEffectiveWeight(0);idleAct.setEffectiveWeight(1);act.time=dur*f0;mx.update(0);av.updateMatrixWorld(true);
+  if(!(Dc>0.4&&Dc<3.5))return null;
+  const st={Dc,f0,fase:f0,ww:0,v:0,osc:0,z:z0,rip,y0,act,idleAct,dur,
+    /* un passo del tick: porta z verso tz camminando. Va chiamato PRIMA del mixer. */
+    passo(tz,dt){const dz=tz-av.position.z,ad=Math.abs(dz),vmax=Dc/dur;
+      if(ad>0.004){const sg=dz>0?1:-1;st.v=Math.min(vmax,st.v+3.6*dt,Math.sqrt(2*2.4*ad)+0.12);const m=Math.min(ad,st.v*dt);av.position.z+=sg*m;st.fase=((st.fase+sg*m/Dc)%1+1)%1;}else{st.v=0;}
+      const vuole=ad>0.10?1:0;st.ww+=(vuole-st.ww)*Math.min(1,dt*(vuole?9:6));if(!vuole&&st.ww<0.004){st.ww=0;if(ad<=0.004)st.fase=f0;}
+      act.time=dur*st.fase;act.setEffectiveWeight(st.ww);idleAct.setEffectiveWeight(1-st.ww);
+      const q=tab[Math.min(K-1,Math.floor(st.fase*K))];st.osc=st.ww*(q.zr-q.zl)/zmax;return st.ww;},
+    /* appoggio: DOPO clip e pose */
+    terra(){if(!(st.ww>0)){if(av.position.y!==y0)av.position.y=y0;return;}av.updateMatrixWorld(true);
+      const low=Math.min(wy(B.ball_l)-rip.ball,wy(B.ball_r)-rip.ball,wy(B.foot_l)-rip.foot,wy(B.foot_r)-rip.foot);
+      av.position.y=y0+((av.position.y-low)-y0)*st.ww;}};
+  return st;}catch(_e){return null;}}
+function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false,nomi=null}){
   /* [7.947 v3 — direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e' nell'as is con
      sovrapposizione delle schermate 2D». Lo stadio non era il problema: lo erano i CH38. Con senzaCorpi
      la scena costruisce lo STADIO VERO e salta i corpi, e le facce arrivano dal 2D sopra. */
   const ref=React.useRef(null);const st=React.useRef({beat:0,total:6});
-  st.current.beat=beat|0;st.current.total=Math.max(1,total|0);
+  st.current.beat=beat|0;st.current.total=Math.max(1,total|0);st.current.nomi=nomi;
   React.useEffect(()=>{
     const host=ref.current;if(!host)return;
+    const t225={folla:null,modo:'',rifai:null,pres192:null,tetti:null,prova:null,fot:0};/* [giro 225] tifo, tetti e prova di disegno */
     const sr470={};/* [7.470.0] contenitore persistente degli oggetti di appoggio dell'orientamento del palmo: quaternioni e vettori si allocano UNA volta, non a ogni fotogramma */
     if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
     let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});}catch(_e){return;}
@@ -45974,9 +46114,22 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          nella tela (la via di prima del 129, la stessa che disegna le sedute): non dipende dallo strato che manca, e costa meno (niente
          13.000 istanze). Rosso __CPM_NO_G192C. */
       const _g192c=!(typeof window!=='undefined'&&window.__CPM_NO_G192C);const _cnt192={n:0};
-      _cfg={..._cfg,noFolla129:_g192c,cnt192:_cnt192};
-      buildStadium(scene,homeHex,awayHex,_cfg);
-      try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PRES192={dipinti:_cnt192.n,f129:_g192c?0:((window.__CPM_FOLLA129||{}).n||0)};}catch(_e){}}catch(_e){}
+      /* [giro 225 · PO-489 «I tifosi non si vedono come nella partita 3D»] la serata torna alla folla a sagome della PARTITA (stesso
+         costruttore, stessa densita', stessi colori, stesso shader animato dal tick). La folla dipinta del giro 192 resta come RIPIEGO:
+         dopo i primi fotogrammi una prova di disegno (lo strato da solo su una tela 64x64) conta i pixel lasciati dalle istanze; se sono
+         zero — il caso del telefono del giro 192, mai riprodotto qui — lo stadio si rifa' con la folla dipinta. Rosso __CPM_NO_G225. */
+      const _sag225=_g225();
+      _cfg={..._cfg,noFolla129:_g192c&&!_sag225,cnt192:_cnt192};
+      const _n0=scene.children.length;
+      let _stad=buildStadium(scene,homeHex,awayHex,_cfg);
+      t225.folla=(_stad&&_stad.folla129)||null;t225.modo=t225.folla?'sagome':'dipinti';
+      /* la serata moltiplica le luci (LUCE178.presentazione 2,3) e la partita di notte scurisce gli spalti (giro 206, 0,42): senza questo
+         fattore la folla esce bruciata (misurato: luminanza degli spalti 0,38-0,46 contro 0,30-0,32 della partita di notte). */
+      if(t225.folla&&t225.folla.mesh&&t225.folla.mesh.material&&t225.folla.mesh.material.color){const _k225=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&+window.__CPM_K225>0)?+window.__CPM_K225:K_FOLLA225;t225.folla.mesh.material.color.multiplyScalar(_k225);t225.kFolla=_k225;}
+      t225.rifai=()=>{try{const via=scene.children.slice(_n0);via.forEach(o=>{scene.remove(o);try{o.traverse(x=>{if(x.geometry)x.geometry.dispose();const mm=x.material?(Array.isArray(x.material)?x.material:[x.material]):[];mm.forEach(y=>{if(y.map)y.map.dispose();y.dispose&&y.dispose();});});}catch(_e){}});
+        _cnt192.n=0;_stad=buildStadium(scene,homeHex,awayHex,{..._cfg,noFolla129:true});t225.folla=null;t225.modo='dipinti';t225.tetti=null;}catch(_e){}};
+      t225.pres192=()=>{try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PRES192={dipinti:t225.modo==='dipinti'?_cnt192.n:0,f129:t225.folla?((t225.folla.info||{}).n||0):0};}catch(_e){}};
+      t225.pres192();}catch(_e){}
     /* notturna da presentazione. ⚠️ La prima versione aggiungeva QUATTRO PointLight da 0.9 sopra l'ambiente e il
        direzionale: il prato verde andava in saturazione e si leggeva CIANO (verificato a schermo). Qui si usa la
        taratura NOTTURNA del match (7.278.0). E soprattutto: `buildStadium` INSTALLA GIA' I FARI (4 SpotLight da 1.4
@@ -46016,8 +46169,10 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
        targhetta piccola in basso, come in televisione (PresentazioneScena2D). Rosso __CPM_NO_PRES200 (comportamento 7.999.123). */
     const _cg200=!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&typeof corpoCG23==="function"&&!window.__CPM_NO_PRES200;
     if(_cg200){
-      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
-        const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg)return;
+      Promise.all([loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb'),_g225()?voltiPronti225(4000):null]).then(([pkg])=>{/* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
+        const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg||!alive)return;
+        const walk0=_g225()?(pkg.animations||[]).find(c=>c&&c.name==='walk'):null,cal225=_g225()?_gomito225(pkg):null;
+        const _lin225=renderer.outputEncoding===THREE.sRGBEncoding;
         const _GKP=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
         const _gkCol=(function(){try{const cs=[new THREE.Color(homeHex),new THREE.Color(awayHex)];let best=_GKP[0],bd=-1;
           _GKP.forEach(c=>{const q=new THREE.Color(c);const d=Math.min.apply(null,cs.map(h=>Math.abs(q.r-h.r)+Math.abs(q.g-h.g)+Math.abs(q.b-h.b)));if(d>bd){bd=d;best=c;}});return best;}catch(_e){return '#16a34a';}})();
@@ -46030,12 +46185,17 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           const ap142=_g142?((isHero&&heroAppr)?heroAppr:((typeof appearanceFromSeed==="function")?appearanceFromSeed(hashStr(_key142+'_'+(i+1))):null)):null;
           const av=corpoCG23(pkg,{shirt:isGk?_gkCol:homeHex,shorts:isGk?_gkCol:awayHex,socks:isGk?_gkCol:homeHex,altezza:isHero&&heroAppr?Math.min(1.95,heroAppr.height||1.86):(_g142?1.8:1.78+R(40+i)*0.12)});
           if(!av)continue;av.position.set((i-(N-1)/2)*SP,0,LZ);av.rotation.y=0;line.add(av);men.push(av);
-          if(ap142){try{cgCorporatura(av,ap142);cgCapelli142(av,ap142);av.userData.aspetto142={girth:ap142.girth,hair:ap142.hair,variante:cgVarianteCapelli(ap142.hair)};}catch(_e){}}
+          /* [giro 225] capelli e pelle dalla figurina di chi sta in questo posto della fila (nomi[i]: i chiamati nell'ordine dei battiti, l'eroe per ultimo) */
+          const fg225=_g225()?aspettoFigurina225((st.current.nomi||[])[i]):null;av.userData.fig225=fg225;
+          const apC=(ap142&&fg225&&fg225.hair)?Object.assign({},ap142,{hair:fg225.hair}):ap142;
+          if(apC){try{cgCorporatura(av,apC);cgCapelli142(av,apC);av.userData.aspetto142={girth:apC.girth,hair:apC.hair,variante:cgVarianteCapelli(apC.hair)};}catch(_e){}}
+          if(fg225&&fg225.p){try{av.userData.lin225=_lin225;_pelle225(av,fg225.p,_lin225);}catch(_e){}}
           if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);
-            if(_g142&&_posa142(av,mx,a,idle0,hashStr(_key142+'|posa142|'+i))){mixers.push(mx);}
+            if(_g142&&_posa142(av,mx,a,idle0,hashStr(_key142+'|posa142|'+i))){mixers.push(mx);
+              if(_g225()){try{av.userData.cam225=_cammino225(av,mx,a,walk0);av.userData.sal225=_saluto225(av,cal225);}catch(_e){}}}
             else{a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}}
         try{if(typeof window!=='undefined')window.__CPM_PRES200={cg:men.length};}catch(_e){}
-        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 */
+        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO,cam,renderer,cal225,braccio:(i)=>misuraBraccio225(men[i],cal225||_gomito225(pkg))};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 · [giro 225] + camera, calibrazione del gomito e misura del braccio */
       }).catch(()=>{});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
@@ -46103,8 +46263,9 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     const tick=()=>{
       if(!alive)return;raf=requestAnimationFrame(tick);
       const now=performance.now(),el=(now-t0)/1000,dt=Math.min(0.06,(now-tPrev)/1000);tPrev=now;
-      if(mixers.length)mixers.forEach(m=>m.update(dt));
-      for(let i=0;i<men.length;i++){const _v=men[i].userData&&men[i].userData.vita142;if(_v)_v(el);}/* [giro 142] vita della fila, dopo il mixer */
+      const _t225=_g225();/* [giro 225] col cammino il mixer gira DOPO che il passo ha deciso tempo e peso della clip (piu' sotto) */
+      if(mixers.length&&!_t225)mixers.forEach(m=>m.update(dt));
+      if(!_t225)for(let i=0;i<men.length;i++){const _v=men[i].userData&&men[i].userData.vita142;if(_v)_v(el);}/* [giro 142] vita della fila, dopo il mixer */
       try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.el=el;}catch(_e){}
       const b=st.current.beat,tot=st.current.total;
       /* Beat 0 = lo stadio · beat 1 = la squadra · dal 2 in poi lo speaker chiama UN giocatore per volta (i beat
@@ -46120,7 +46281,31 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          fino a 3,6, mano giu' 3,6-4,1, poi torna in fila. */
       if(called){if(st.current._pi144!==pi){st.current._pi144=pi;st.current._t144=0;}st.current._t144+=dt;}else{st.current._pi144=-1;st.current._t144=0;}
       const _t144=st.current._t144||0,_sm=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
-      const _w144=_g144&&called?(_sm((_t144-0.9)/0.5)*(1-_sm((_t144-3.6)/0.5))):0,_rit144=_g144&&_t144>4.1;
+      let _w144=_g144&&called?(_sm((_t144-0.9)/0.5)*(1-_sm((_t144-3.6)/0.5))):0;const _rit144=_g144&&_t144>4.1;
+      /* [giro 225 · PO-489 «quando ritornano in fila volano ed il movimento del braccio nel saluto non è naturale»] Misurato: i piedi
+         stavano a 2,6 cm dal prato per tutta la scena, ma il corpo traslava di 4,4 u in 0,9 s (e 4,4 u indietro) a gambe ferme, e il
+         braccio saltava di 53 gradi in un fotogramma all'inizio e alla fine del saluto. Ora, per ogni uomo: due passi veri avanti (un ciclo
+         della clip walk, fase = distanza), il saluto da fermo (su 0,7 s · 2,4 s · giu' 0,7 s, dalla posa a riposo), due passi indietro
+         solo a braccio abbassato. Chi non e' piu' chiamato finisce di abbassare il braccio e torna camminando. */
+      if(_t225){const _no192c=!!(typeof window!=='undefined'&&window.__CPM_NO_G192C);
+        for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
+          const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
+          const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
+          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<2.4?1:0;if(S.ts>=2.4&&S.lin<=0.10)S.fatto=true;}}
+          else if(S.lin>0.10)tz=m.position.z;
+          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/0.7);S.w=_sm(S.lin);
+          if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
+        if(mixers.length)mixers.forEach(m=>m.update(dt));
+        for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}
+        if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
+        for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
+          if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
+          if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
+          if(cm)cm.terra();}
+        _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;
+        /* la pelle sulla testa: la mappa dei capelli puo' arrivare dopo e sostituire il materiale (cgCapelli142) */
+        if((t225.fot%20)===0)for(let i=0;i<men.length;i++){const u=men[i].userData;if(u.fig225&&u.fig225.p)_pelle225(men[i],u.fig225.p,!!u.lin225);}
+      } else {
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
       for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
         const _sl=men[i].userData&&men[i].userData.saluto144;if(_sl)_sl((called&&i===pi)?_w144:0,Math.sin(Math.max(0,_t144-1.1)*Math.PI*2*1.6));}
@@ -46132,6 +46317,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          spalla a -22 gradi, il braccio che NON saluta pende lungo il fianco (omero quasi verticale, gomito ~165, mano accanto alla coscia),
          con piccole differenze per uomo. Il braccio del saluto resta al giro 144. Rosso __CPM_NO_G192C. */
       if(!(typeof window!=='undefined'&&window.__CPM_NO_G192C))for(let i=0;i<men.length;i++){try{_posa192(men[i],i,(called&&i===pi)?_w144:0);}catch(_e){}}
+      }/* fine del ramo di prima (rosso __CPM_NO_G225) */
       try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142){window.__CPM_PRES142.pi144=called?pi:-1;window.__CPM_PRES142.t144=_t144;window.__CPM_PRES142.w144=_w144;}}catch(_e){}
       /* [7.419.0] IL CHIAMATO SALUTA I SUOI TIFOSI: braccio destro su con rampa morbida e un
          ondeggio di avambraccio — additivo DOPO il mixer (pattern 7.24.2/gk: il mixer riapplica la
@@ -46269,7 +46455,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           if(_aB)_aB.rotation.set(_aB._base419.x,_aB._base419.y,_aB._base419.z);
           if(_fB)_fB.rotation.set(_fB._base419.x,_fB._base419.y,_fB._base419.z);}}
       let cx,cy,cz,ax,ay,az;
-      if(b<=0){const a=-0.5+el*0.055;cx=Math.sin(a)*92;cz=Math.cos(a)*92;cy=40;ax=0;ay=9;az=0;}         /* la panoramica del catino */
+      if(b<=0){const a=-0.5+el*0.055,_R=_t225?72:92;cx=Math.sin(a)*_R;cz=Math.cos(a)*_R;cy=40;ax=0;ay=9;az=0;}         /* la panoramica del catino · [giro 225] a raggio 92 il bordo basso del quadro cadeva sulla tribuna sotto la camera (tetto e travi viste dall'alto): a 72 cade sul prato */
       else if(b===1){cx=-22;cy=9.0;cz=40;ax=0;ay=2.0;az=LZ;}                                             /* la squadra schierata */
       else{const d=(b>=tot-1)?11.4:9.6,_zc=(called?(_g144&&men[pi]?men[pi].position.z:STEP):LZ);cx=hx+d*0.38;cy=1.62;cz=_zc+d;ax=hx;ay=1.15;az=_zc;}/* [giro 144] la camera segue il chiamato anche quando torna in fila */
       const k=Math.min(1,dt*2.6);
@@ -46317,7 +46503,34 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           _g.t=+(+(_mw._wvT||0)).toFixed(2);_g.n=(_g.n||0)+1;
         }
       }catch(_e479){}}
+      if(_t225){
+        /* il tifo della partita: tempo, applauso mentre il chiamato saluta */
+        if(t225.folla&&t225.folla.U){const U=t225.folla.U;U.uT.value=el;U.uEx.value=0.3*_w144;U.uGs.value=0;}
+        /* [giro 225 · punto 5] LA FASCIA GRIGIA in basso alla panoramica era il tetto semitrasparente (opacita' 0,8) della tribuna sotto la
+           camera, che dall'alto guarda il campo ATTRAVERSO di lui. Un tetto si nasconde finche' sta fra la camera e il prato. */
+        if(!t225.tetti){t225.tetti=[];try{scene.traverse(o=>{const mt=o.isMesh&&o.material&&!Array.isArray(o.material)?o.material:null;if(mt&&!o.isInstancedMesh&&!o.isSkinnedMesh){const bb=new THREE.Box3().setFromObject(o);if(bb.min.y>10&&bb.max.y<60&&(Math.abs(bb.min.x)>40||Math.abs(bb.max.x)>40||Math.abs(bb.min.z)>34||Math.abs(bb.max.z)>34))t225.tetti.push({o,bb});}});}catch(_e){}/* coperture, travi e cio' che sta in quota fuori dal campo */
+          t225.ray=new THREE.Ray();t225.v=new THREE.Vector3();t225.pt=[[0,0],[-48,-30],[48,-30],[-48,30],[48,30],[0,-30],[0,30],[-24,0],[24,0],[-24,30],[24,30],[-24,-30],[24,-30]];}
+        for(const tt of t225.tetti){let via=false;if(cam.position.y>tt.bb.min.y){for(const q of t225.pt){t225.v.set(q[0],0,q[1]).sub(cam.position);const L=t225.v.length();t225.ray.origin.copy(cam.position);t225.ray.direction.copy(t225.v).multiplyScalar(1/L);
+            const hit=t225.ray.intersectBox(tt.bb,t225.v);if(hit&&hit.distanceTo(cam.position)<L){via=true;break;}}}
+          tt.o.visible=!via;}
+      }
       renderer.render(scene,cam);misuraCorpi212('presentazione',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
+      t225.fot++;
+      if(_t225&&t225.fot===3&&!t225.prova){
+        /* PROVA DI DISEGNO della folla a sagome: lo strato da solo, su una tela 64x64, da centrocampo verso la tribuna; zero pixel = lo strato non si disegna su questo dispositivo */
+        const fo=t225.folla;let px=-1;
+        if(fo&&fo.mesh){const im=fo.mesh,par=im.parent;try{const prova=!!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_G225_NODRAW),c0=im.count;if(prova)im.count=0;
+            const rt=new THREE.WebGLRenderTarget(64,64),tmp=new THREE.Scene(),pc=new THREE.PerspectiveCamera(90,1,1,600);tmp.add(new THREE.AmbientLight(0xffffff,1));tmp.add(im);
+            pc.position.set(0,18,0);pc.lookAt(0,14,-70);const oc=renderer.getClearColor(new THREE.Color()),oa=renderer.getClearAlpha();
+            renderer.setRenderTarget(rt);renderer.setClearColor(0x000000,0);renderer.clear();renderer.render(tmp,pc);
+            const buf=new Uint8Array(64*64*4);renderer.readRenderTargetPixels(rt,0,0,64,64,buf);renderer.setRenderTarget(null);renderer.setClearColor(oc,oa);rt.dispose();
+            px=0;for(let k=3;k<buf.length;k+=4)if(buf[k]>0)px++;if(prova)im.count=c0;}catch(_e){px=-1;try{renderer.setRenderTarget(null);}catch(_e2){}}
+          try{if(im.parent!==par&&par)par.add(im);}catch(_e){}}
+        t225.prova={px};if(px===0&&t225.rifai)t225.rifai();if(t225.pres192)t225.pres192();
+        try{if(typeof window!=='undefined')window.__CPM_PRES225={tifo:t225.modo,sagome:t225.folla?((t225.folla.info||{}).n||0):0,provaPx:px,tetti:(t225.tetti||[]).length};}catch(_e){}
+      }
+      try{if(_t225&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES225){const W=window.__CPM_PRES225;W.uT=t225.folla?t225.folla.U.uT.value:null;W.uEx=t225.folla?t225.folla.U.uEx.value:null;W.tettiNascosti=(t225.tetti||[]).filter(x=>!x.o.visible).length;
+        W.uomini=men.map(m=>{const u=m.userData,S=u.st225||{};return{fig:u.fig225||null,capelli:(u.cpmNativeHair||{}).variant||null,pelle:u.pelle225||null,ww:+(S.ww||0).toFixed(3),w:+(S.w||0).toFixed(3),ts:+(S.ts||0).toFixed(2),Dc:u.cam225?+u.cam225.Dc.toFixed(3):null};});}}catch(_e){}
     };
     cam.position.set(Math.sin(-0.5)*80,34,Math.cos(-0.5)*80);tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
@@ -57524,7 +57737,7 @@ const getThisWeekMatchday=()=>{
     const _cl=player.club||{};
     return(
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
-      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
+      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} nomi={[..._bs.slice(2,_n-1).map(b=>b&&b.n),null,player.name||"eroe"]/* [giro 225] chi sta in ogni posto della fila (stesse chiavi della targhetta): i chiamati nell'ordine dei battiti, poi il posto che nessun battito chiama, poi l'eroe */} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
       <PresentazioneScena2D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)} annunci={_bs.map((b,k)=>k===_n-1?{...b,eroe:true}:b)} heroChiave={player.name||"eroe"}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
