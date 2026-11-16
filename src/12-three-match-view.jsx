@@ -6268,28 +6268,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              sorgente→bersaglio + pancia perpendicolare min(2,6;corda·0,14)·sin(u·π) verso l'esterno della porta. Su un tiro obliquo la pancia
              e' quasi tutta lungo x: contarla solo di lato sbagliava il punto di passaggio di 4-5 u (misurato, tiro a giro da z 16). */
           const _curva223=(sx,sz,tx,tz,curl,f)=>{const cdx=tx-sx,cdz=tz-sz,cl=Math.hypot(cdx,cdz)||1,px=-cdz/cl,pz=cdx/cl,sg=(((sz+tz)*0.5)*pz>=0)?1:-1,A=curl?Math.min(2.6,cl*0.14)*sg:0;
-            for(let i=0;i<=48;i++){const u=i/48,a=A*Math.sin(u*Math.PI);if(f(sx+cdx*u+px*a,sz+cdz*u+pz*a,i))return;}};
+            const y0=(t==="header")?ball.position.y:Math.min(ball.position.y,1.0),ty=(ballArcTgtY!=null?ballArcTgtY:0.22),H=ballArcH||0;/* quota come la disegna il renderer (r. «LA PANCIA HA UN PROFILO»: 0,22 + pancia·H + corda contatto→arrivo); la quota di CONTATTO si cattura solo al calcio: qui sul tiro al piu' 1 u (misurato gi77: 1,82 all'armo, 0,65-0,93 al contatto), sul colpo di testa quella attuale */
+            for(let i=0;i<=48;i++){const u=i/48,a=A*Math.sin(u*Math.PI),y=0.22+Math.sin(u*Math.PI)*H+(y0-0.22)*(1-u)+(ty-0.22)*u;if(f(sx+cdx*u+px*a,sz+cdz*u+pz*a,i,y))return;}};
           const _curvaZ223=(sx,sz,tx,tz,curl,xq)=>{let x0=null,z0=null,r=null;_curva223(sx,sz,tx,tz,curl,(x1,z1)=>{if(x0!=null&&(x0-xq)*(x1-xq)<=0&&x1!==x0){r=z0+(z1-z0)*(xq-x0)/(x1-x0);return true;}x0=x1;z0=z1;return false;});return r;};
-          /* distanza minima IN PIANTA fra la traiettoria disegnata e un punto (il portiere): su un tiro obliquo il pallone gli taglia davanti
-             di lato, e la distanza sul suo piano non la vede (misurato: gi62 di prima, 2,6 u sul piano e 0,3 u in pianta) */
-          const _minD223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9;_curva223(sx,sz,tx,tz,curl,(x,z)=>{const d=Math.hypot(x-gx,z-gz);if(d<m)m=d;return false;});return m;};
+          /* distanza minima IN PIANTA fra la traiettoria disegnata e un punto (il portiere), contando solo il pallone sotto una quota data (2 u = il
+             corpo, per il tuffo; 3,2 u = la portata delle mani piu' il margine della stima, per scegliere il bersaglio): su un tiro obliquo il pallone gli taglia davanti di lato, e la distanza sul suo piano non la vede (misurato:
+             gi62 di prima, 2,6 u sul piano e 0,3 u in pianta); su traversa e pallonetto passa sopra la testa (gi70, gi3 traversa) */
+          const _minD223=(sx,sz,tx,tz,curl,gx,gz,ym)=>{let m=1e9;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(y>(ym||2.0))return false;const d=Math.hypot(x-gx,z-gz);if(d<m)m=d;return false;});return m;};
           /* A PORTATA = la definizione del 229 (gk-miss-229, PORTATA): nel punto di massimo avvicinamento il pallone gli passa entro 4,5 u di
-             lato e 5,5 u in pianta (portata del tuffo). Oltre, lo guarda uscire. */
-          const _portata223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9,lat=1e9;_curva223(sx,sz,tx,tz,curl,(x,z)=>{if(Math.hypot(x-sx,z-sz)<1.5)return false;const d=Math.hypot(x-gx,z-gz);if(d<m){m=d;lat=Math.abs(z-gz);}return false;});return lat<=4.5&&m<=5.5;};
+             lato, 5,5 u in pianta e sotto i 2,6 u di quota (portata del tuffo). Oltre, lo guarda uscire. */
+          const _portata223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9,lat=1e9,yy=0;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(Math.hypot(x-sx,z-sz)<1.5)return false;const d=Math.hypot(x-gx,z-gz);if(d<m){m=d;lat=Math.abs(z-gz);yy=y;}return false;});if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223P=window.__CPM_G223P||[]);if(W.length<60)W.push({d:+m.toFixed(2),lat:+lat.toFixed(2),y:+yy.toFixed(2),H:+(+ballArcH).toFixed(2),y0:+((t==="header")?ball.position.y:Math.min(ball.position.y,1.0)).toFixed(2),ty:+(+ballArcTgtY).toFixed(2),sx:+sx.toFixed(1),sz:+sz.toFixed(1),tx:+tx.toFixed(1),tz:+tz.toFixed(1),gx:+gx.toFixed(1),gz:+gz.toFixed(1)});}catch(_e){}}return lat<=4.5&&m<=5.5&&yy<=3.2;};/* 2,6 u di portata in quota + 0,6 di margine sulla stima (il profilo del volo si decide al calcio: misurato gi55 testa, stima 3,16 e pallone vero a 2,15) */
           if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="header")&&!_amico43&&awayGkMesh&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="post")&&!(typeof window!=='undefined'&&window.__CPM_NO_G223)){
             const _gx223=awayGkMesh.position.x,_gz223=awayGkMesh.position.z,_sx223=ball.position.x,_sz223=ball.position.z,_px223=ballArcTgtX,_pz223=ballArcTgtZ;
             const _post223=P.hlOutcomeKind==="post",_bar223=_post223&&((P.hlWood!=null)?(P.hlWood==="bar"):(ballArcTgtY!=null&&ballArcTgtY>=1.55));
             const _tx223=_post223?GOAL_LINE_X-0.3:AWAY_GOAL_X+2.5,_curl223=t==="shot"&&P.hlVariant==="shot_curled",_CL223=2.6;
             if(_tx223-_sx223>1){
               const _zAt223=(z,xp)=>{const _xq=xp!=null?xp:_gx223;if(_xq<=_sx223||_xq>=_tx223)return null;return _curvaZ223(_sx223,_sz223,_tx223,z,_curl223,_xq);};
-              const _ok223=(z)=>{if(_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223)<_CL223)return false;const zc=_zAt223(z);if(zc==null)return true;
+              const _ok223=(z)=>{if(_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223,3.2)<_CL223)return false;const zc=_zAt223(z);if(zc==null)return true;
                 const a=Math.abs(zc-_gz223);if(a<=1.3)return false;const ge=_gz223+Math.sign(zc-_gz223)*Math.min(4.5,a*0.8,a-1.3);/* e dove arriva col tuffo che sfiora */
-                return _minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,ge)>=_CL223-1.3;};
-              const _clr223=(z)=>{const d0=_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223),zc=_zAt223(z);if(zc==null)return d0;const a=Math.abs(zc-_gz223);
-                const ge=a>1.3?_gz223+Math.sign(zc-_gz223)*Math.min(4.5,a*0.8,a-1.3):_gz223;return Math.min(d0,_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,ge)+1.3);};/* margine: il palo con piu' spazio fra pallone e portiere */
+                return _minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,ge,3.2)>=_CL223-1.3;};
+              const _clr223=(z)=>{const d0=_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223,3.2),zc=_zAt223(z);if(zc==null)return d0;const a=Math.abs(zc-_gz223);
+                const ge=a>1.3?_gz223+Math.sign(zc-_gz223)*Math.min(4.5,a*0.8,a-1.3):_gz223;return Math.min(d0,_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,ge,3.2)+1.3);};/* margine: il palo con piu' spazio fra pallone e portiere */
               const _fuori223=(z)=>{const zl=_zAt223(z,GOAL_LINE_X-1.2);return _ok223(z)&&(zl==null||(Math.sign(zl)===Math.sign(z)&&Math.abs(zl)>=3.86));};/* fuori vero: lontano dal portiere e mai davanti allo specchio */
               let _z223=_pz223;
-              if(_bar223)_z223=clamp(_pz223,-3.2,3.2);
+              if(_bar223){_z223=clamp(_pz223,-3.2,3.2);if(!_ok223(_z223)){let _bc=_clr223(_z223);for(let zz=-3.2;zz<=3.21;zz+=0.4){const c=_clr223(zz);if(c>_bc+0.05){_bc=c;_z223=zz;}}}}/* traversa: z libera entro ±3,2, si sceglie quella con piu' margine dal corpo */
               else if(_post223){_z223=(_pz223>=0?1:-1)*3.66;if(!_ok223(_z223)&&(_ok223(-_z223)||_clr223(-_z223)>_clr223(_z223)))_z223=-_z223;}
               else{let _s=_pz223>=0?1:-1;if(Math.abs(_pz223)<0.3)_s=_gz223>=0?-1:1;
                 const _m0=Math.max(4.36,Math.abs(_pz223)),_cerca=(f,s,m)=>{for(let mm=m;mm<=Math.max(12,m);mm+=0.25)if(f(s*mm))return s*mm;return null;};
@@ -6562,6 +6564,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                      volta finche' fra corpo disteso e pallone resta la mano (1,3 u). */
                   const _cu=t==="shot"&&P.hlVariant==="shot_curled";let _ge=oppMesh._diveToZ;
                   for(let _k=0;_k<25&&Math.abs(_ge-_gz229)>0.05&&_minD223(_sx229,_sz229,ballArcTgtX,ballArcTgtZ,_cu,_gx229,_ge)<1.3;_k++)_ge-=Math.sign(_ge-_gz229)*Math.min(0.2,Math.abs(_ge-_gz229));
+                  if(Math.abs(_ge-_gz229)<0.3){oppActType="gk_block";_ge=_gz229+(_zp229>=_gz229?1:-1)*0.3;oppMesh._blk229=null;}/* nessun tuffo possibile senza tagliargli la strada: si oppone col corpo, un passo verso il pallone */
                   oppMesh._diveToZ=_ge;}}
               /* [giro 223] LA DISTESA E' COMPLETA QUANDO IL PALLONE PASSA SUL SUO PIANO: con l'arco che ora arriva sulla linea, legare la distesa
                  all'intero volo (7.465) la completerebbe dopo il passaggio. Frazione dell'arco al piano del portiere, letta dal driver del tuffo. */

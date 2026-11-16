@@ -31,12 +31,7 @@ const KINDS = (process.env.CPM_KINDS || 'wide,post').split(',');
 /* scene: gi:ai:famiglia (dal censimento delle scene: gi88 a0 e' proprio «Volée di collo potente» del taccuino;
    «girata» e' la scena del motore «Spalle alla porta», costruita in pagina con scenaDalMotoreSpalle come la costruisce il gioco) */
 const SCENE = (process.env.CPM_SCENE_FILE ? (await import('node:fs')).readFileSync(process.env.CPM_SCENE_FILE, 'utf8').trim() : (process.env.CPM_SCENE || 'P6C:prima:prima,1:0:volee,62:1:prima,165:0:potenza,17:2:giro,90:0:primo-palo,86:0:secondo-palo')).split(',').map(s => { const [gi, ai, fam, y] = s.split(':'); return { gi, ai, fam, y }; });
-/* BRACCIO «PALO, LATO E BASSO FPS» (giro 12). Il rosso della catena mirata (13/10, «alvolo gi6 post: gk_block dalla parte opposta») NON
-   dipende dal frame-rate: il passo di scena e' tappato a 0,05 s (src/12, _rdt) e la stessa scena a CPU x6 e' verde 3/3. Dipende dal
-   bersaglio dell'arco, che non e' seedato: quando muore davanti al portiere appena oltre lo zero, il post-arco del palo porta il
-   pallone dall'altra parte rispetto alla velocita' dell'arco. Qui la geometria si FORZA (__CPM_GK229GEO: bersaglio z -0,3, portiere
-   z 0,5, arco che muore 2,5u prima del suo piano), e la pagina gira a CPU rallentata (CPM_LENTO_GEO, default 4): il caso diventa
-   ripetibile. Verde col gioco; rosso con CPM_ROSSO=L (__CPM_NO_GK229L). CPM_GEO=0 lo spegne. */
+/* il braccio «palo, lato e basso fps» (giro 12) resta in gk-miss-229: qui CPM_GEO=<n> lo riaccende, spento di default */
 const GEO = +(process.env.CPM_GEO || 0); /* il braccio geometrico del palo appartiene a gk-miss-229 */
 const LENTO_GEO = +(process.env.CPM_LENTO_GEO || 4);
 const GEO_SC = { gi: '6', ai: '1', fam: 'palo-geo', geo: { tz: -0.3, gz: 0.5, dx: 2.5 } };
