@@ -110,7 +110,7 @@ async function giudica(page, w, h, braccio, foto) {
   const s1 = a.tabVisibile && a.voci > 0 && a.vociPerRiga === 1 && a.largMin >= 0.9 && a.gapMin != null && a.gapMin >= GAP && a.sovrTab.n === 0 && a.fsTab >= FMIN && a.schermi <= TETTO && a.pagellaScheda === '2';
   const nav = S.every((x, i) => x.puntini === 4 && Math.abs(x.piedeFondo - x.H) <= 2 && (i < 3 ? (x.avanti && x.salta) : true));
   const pulite = S.every(x => x.sovrScheda.n === 0 && x.fsMin >= FMIN);
-  const s4 = d.righe >= 8 && d.io && d.zone && d.colorate >= 3 && /Gol/.test(d.stagione) && /Assist/.test(d.stagione) && /Presenze/.test(d.stagione) && /Voto medio/.test(d.stagione) && d.prossima && d.pos && d.forma && d.schermi <= TETTO && (w !== 375 || d.piena >= PIENA);
+  const s4 = d.righe >= 8 && d.io && d.zone && d.colorate >= 3 && /Gol/.test(d.stagione) && /Assist/.test(d.stagione) && /Presenze/.test(d.stagione) && /Voto medio/.test(d.stagione) && d.prossima && d.pos && !d.forma/* [giro 230] decisione PO «Solo bilancio V/N/P»: la forma dell'avversario non c'e' piu' */ && d.schermi <= TETTO && (w !== 375 || d.piena >= PIENA);
   const passa = s1 && nav && pulite && s4;
   const msg = `${w}x${h} [${braccio}]: scheda1 ${a.schermi} schermi · tabellino ${a.voci} voci, voci per riga ${a.vociPerRiga}, larghezza min ${a.largMin}, spazio numero↔voce min ${a.gapMin} px, sovrapposti ${a.sovrTab.n}${a.sovrTab.es.length ? ' ' + a.sovrTab.es.join(',') : ''}, testo min ${a.fsTab} px · pagella nella scheda ${a.pagellaScheda} · ` +
     `scheda4 ${d.schermi} schermi, piena ${d.piena}, righe ${d.righe} (colorate ${d.colorate}, legenda ${d.zone}), stagione «${d.stagione.replace(/\s+/g, ' ').slice(0, 70)}», anteprima pos ${d.pos} forma ${d.forma} occhio «${d.occhio.replace(/\s+/g, ' ')}» · ` +

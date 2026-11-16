@@ -1476,6 +1476,10 @@ function _g200x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G200);}
    del piazzato (rigore/punizione) stava dopo un «Tuo» fisso. Ora il soggetto e' il gol: «Tuo gol su rigore», «Tuo gol su punizione».
    Rosso __CPM_NO_G224 = il testo di prima. */
 function _g224x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G224);}
+/* [giro 230 · PO-490, decisione PO 16/11 «Solo bilancio V/N/P»] nell'anteprima della prossima partita (rassegna, scheda 4) la striscia
+   «Forma» dell'AVVERSARIO non compare piu': il gioco non salva la sequenza dei risultati delle altre squadre e _tvTeamStat ne
+   inventava l'ordine; resta il bilancio vero della classifica. Rosso __CPM_NO_G230 = torna la striscia. */
+function _g230x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G230);}
 function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
@@ -13121,7 +13125,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <Sez210 id="post-prossima224" titolo="Prossima partita">
                 <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):"Nessuna partita in calendario dopo questa."}</div>
                 {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
-                {_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
                 {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
               </Sez210>
             </div>);})()}
