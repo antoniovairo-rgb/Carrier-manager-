@@ -2086,5 +2086,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaBcMdsJdk7aiqX9gCW",
+  "titolo": "giro 224 · rassegna: statistiche e scheda 4 (PO-488, 490)",
+  "creata": "2026-11-16T11:52:08Z",
+  "chiusa": "2026-11-16T13:34:49Z",
+  "cost_usd": 7.00031598,
+  "output_tokens": 64007,
+  "cache_read_tokens": 18588200,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]
