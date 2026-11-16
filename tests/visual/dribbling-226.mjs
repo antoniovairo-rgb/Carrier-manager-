@@ -27,7 +27,9 @@ const PER_VAR = Math.max(1, +(process.env.CPM_PER_VARIANTE || 2)), PER_PAGINA = 
 const T0 = Date.now();
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 
-async function nuovaPagina(rosso) {
+/* l'apertura della partita puo' sforare il suo tempo sotto carico (Babel in pagina): si riprova, fino a tre volte, su pagina nuova */
+async function nuovaPagina(...a) { let err; for (let i = 0; i < 3; i++) { try { return await nuovaPagina0(...a); } catch (e) { err = e; console.log('  (apertura pagina fallita: ' + String(e.message || e).split('\n')[0].slice(0, 90) + ' — riprovo)'); await sleep(2000); } } throw err; }
+async function nuovaPagina0(rosso) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page._errs = []; page.on('pageerror', e => page._errs.push(String(e.message).slice(0, 140)));

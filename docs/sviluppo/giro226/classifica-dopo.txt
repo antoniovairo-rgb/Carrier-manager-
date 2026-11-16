@@ -1,0 +1,174 @@
+CLASSIFICA DEI DRIBBLING PIU' CONFUSI — 116 esecuzioni giudicate su 116 (verde-0di3.json, verde-1di3.json, verde-2di3.json)
+
+  1. gi30 k0 fail    puro:dribble_feint     punti  3.82 · piede —/—u (0f) · duello 1.98u · comp 1.97u/0s · a 23 giri 0 · cam 0 fuori 36% · poss 0 fine nessuno · change→miss · intercept/dispossessed
+        · eroe fuori quadro nel 36% dei fotogrammi
+        · pallone fuori quadro nel 35% dei fotogrammi
+  2. gi40 k1 fail    dribble_feint          punti  3.38 · piede 0.4/0.95u (36f) · duello 2.02u · comp 1.51u/0s · a 37 giri 0 · cam 0 fuori 32% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · eroe fuori quadro nel 32% dei fotogrammi
+        · pallone fuori quadro nel 30% dei fotogrammi
+  3. gi71 k0 fail    dribble_feint          punti   3.2 · piede 0.4/0.95u (36f) · duello 5.76u · comp 2.35u/0s · a 47 giri 0 · cam 0 fuori 23% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.76u (soglia 3.5u)
+        · eroe fuori quadro nel 23% dei fotogrammi
+  4. gi102 k0 fail    dribble_feint          punti     3 · piede 0.52/0.95u (48f) · duello 2.38u · comp 0.65u/0s · a 28 giri 0 · cam 0 fuori 2% · poss 2 fine eroe · change→cross→miss · intercept/saved · ✗ il testo dichiara palla persa (saved) ma a fine scena il pallone e' ancora dell'eroe
+        · INCOERENZA: il testo dichiara palla persa (saved) ma a fine scena il pallone e' ancora dell'eroe
+  5. gi40 k0 fail    dribble_feint          punti  2.77 · piede 0.4/0.95u (38f) · duello 2.05u · comp 1.3u/0s · a 46 giri 0 · cam 0 fuori 23% · poss 0 fine nessuno · change→kick→miss · loose/saved
+        · eroe fuori quadro nel 23% dei fotogrammi
+        · pallone fuori quadro nel 31% dei fotogrammi
+  6. gi100 k0 success dribble_feint          punti  2.47 · piede 0.6/0.96u (45f) · duello 2.48u · comp 1.2u/0s · a 49 giri 0 · cam 0 fuori 17% · poss 0 fine nessuno · change→cross · chance/chance
+        · eroe fuori quadro nel 17% dei fotogrammi
+        · pallone fuori quadro nel 34% dei fotogrammi
+  7. gi150 k1 fail    puro:dribble_feint     punti  2.42 · piede —/—u (0f) · duello 0.37u · comp 0.37u/0.1s · a 16 giri 0 · cam 0 fuori 14% · poss 0 fine nessuno · change→miss · through/dispossessed
+        · pallone fuori quadro nel 61% dei fotogrammi
+  8. gi164 k0 fail    dribble_inside         punti  2.39 · piede 0.37/0.85u (37f) · duello 1.81u · comp 0.74u/0s · a 38 giri 0 · cam 0 fuori 20% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · eroe fuori quadro nel 20% dei fotogrammi
+        · pallone fuori quadro nel 26% dei fotogrammi
+  9. gi63 k1 fail    dribble_feint          punti  2.14 · piede 0.41/0.86u (36f) · duello 2.03u · comp 1.51u/0s · a 61 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · eroe fuori quadro nel 15% dei fotogrammi
+        · pallone fuori quadro nel 28% dei fotogrammi
+ 10. gi150 k0 fail    puro:dribble_feint     punti  1.85 · piede —/—u (0f) · duello 0.54u · comp 0.54u/0s · a 16 giri 0 · cam 0 fuori 10% · poss 0 fine nessuno · feint→miss · intercept/dispossessed
+        · pallone fuori quadro nel 46% dei fotogrammi
+ 11. gi75 k2 fail    dribble_feint          punti  1.77 · piede 0.4/0.87u (26f) · duello 2.04u · comp 0.97u/0s · a 40 giri 0 · cam 0 fuori 9% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · pallone fuori quadro nel 44% dei fotogrammi
+ 12. gi47 k2 success dribble_feint          punti   1.7 · piede 0.39/0.95u (38f) · duello 2.03u · comp 1.46u/0s · a 56 giri 0 · cam 0 fuori 13% · poss 0 fine nessuno · change→kick→miss · intercept/intercepted
+        · pallone fuori quadro nel 43% dei fotogrammi
+ 13. gi3 k1 fail    dribble_feint          punti  1.68 · piede 0.41/0.85u (29f) · duello 2.06u · comp 1.2u/0s · a 36 giri 0 · cam 0 fuori 25% · poss 0 fine nessuno · change→kick→miss · miss_easy/saved
+        · eroe fuori quadro nel 25% dei fotogrammi
+ 14. gi47 k2 fail    dribble_feint          punti  1.64 · piede 0.36/0.84u (37f) · duello 2.06u · comp 1.53u/0s · a 48 giri 0 · cam 0 fuori 8% · poss 0 fine nessuno · change→kick→miss · intercept/intercepted
+        · pallone fuori quadro nel 41% dei fotogrammi
+ 15. gi26 k2 fail    double_step            punti  1.62 · piede 0.41/0.95u (33f) · duello 2.04u · comp 1.56u/0s · a 42 giri 0 · cam 0 fuori 24% · poss 0 fine nessuno · change→kick→miss · nothing/saved
+        · eroe fuori quadro nel 24% dei fotogrammi
+ 16. gi165 k0 fail    dribble_inside         punti  1.54 · piede 0.4/0.87u (36f) · duello 2.06u · comp 1.07u/0s · a 53 giri 0 · cam 0 fuori 23% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · eroe fuori quadro nel 23% dei fotogrammi
+ 17. gi150 k1 success puro:dribble_feint     punti  1.47 · piede 0.5/0.59u (20f) · duello 0.35u · comp 0.26u/0.22s · a 40 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · trip→fallen · chance/win_freekick
+        · corpi compenetrati per 0.22s (distanza minima 0.26u)
+ 18. gi162 k2 fail    dribble_feint          punti  1.46 · piede 0/0u (20f) · duello 2.96u · comp 0.6u/0s · a 14 giri 0 · cam 0 fuori 0% · poss 2 fine nessuno · change→pass→miss · intercept/intercepted
+        · pallone fuori quadro nel 36% dei fotogrammi
+ 19. gi94 k1 fail    double_step            punti  1.44 · piede 0.58/0.95u (45f) · duello 2.43u · comp 0.95u/0s · a 39 giri 0 · cam 0 fuori 2% · poss 2 fine nessuno · change→cross→miss · intercept/out
+        · pallone fuori quadro nel 36% dei fotogrammi
+ 20. gi100 k1 fail    dribble_feint          punti  1.42 · piede 0/0u (11f) · duello 2.46u · comp 2.34u/0s · a 15 giri 0 · cam 0 fuori 12% · poss 0 fine nessuno · change→pass→miss · intercept/intercepted
+        · pallone fuori quadro nel 36% dei fotogrammi
+ 21. gi154 k0 fail    dribble_feint          punti   1.4 · piede 0.4/0.95u (37f) · duello 2.05u · comp 1.47u/0s · a 39 giri 0 · cam 0 fuori 21% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · eroe fuori quadro nel 21% dei fotogrammi
+ 22. gi176 k0 fail    dribble_outside        punti  1.38 · piede 0/0u (13f) · duello 2.08u · comp 1.16u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · intercept/intercepted
+        · pallone fuori quadro nel 35% dei fotogrammi
+ 23. gi164 k0 success dribble_inside         punti  1.29 · piede 0.41/0.85u (36f) · duello 1.94u · comp 1.2u/0s · a 39 giri 0 · cam 0 fuori 19% · poss 0 fine rete · change→kick · goal/—
+        · eroe fuori quadro nel 19% dei fotogrammi
+ 24. gi57 k1 fail    dribble_feint          punti  1.25 · piede 0/0u (21f) · duello 4.39u · comp 0.94u/0s · a 9 giri 0 · cam 0 fuori 7% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.39u (soglia 3.5u)
+ 25. gi174 k2 fail    puro:dribble_feint     punti  1.22 · piede —/—u (0f) · duello 1.32u · comp 0.89u/0s · a 32 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · feint→miss · intercept/dispossessed
+        · pallone fuori quadro nel 31% dei fotogrammi
+ 26. gi19 k0 fail    dribble_feint          punti  1.17 · piede 0/0u (19f) · duello 2.61u · comp 2.07u/0s · a 13 giri 0 · cam 0 fuori 12% · poss 0 fine nessuno · change→pass→miss · nothing/intercepted
+        · pallone fuori quadro nel 29% dei fotogrammi
+ 27. gi50 k2 fail    dribble_feint          punti  1.06 · piede 0.75/0.96u (27f) · duello 2.58u · comp 1.09u/0s · a 51 giri 0 · cam 0 fuori 16% · poss 0 fine nessuno · change→cross→miss · nothing/intercepted
+        · eroe fuori quadro nel 16% dei fotogrammi
+ 28. gi82 k2 success dribble_feint          punti  1.03 · piede 0.77/0.95u (27f) · duello 2.1u · comp 1.12u/0s · a 46 giri 0 · cam 0 fuori 8% · poss 0 fine nessuno · change→cross · chance/chance
+        · pallone fuori quadro nel 26% dei fotogrammi
+ 29. gi3 k1 success dribble_feint          punti     0 · piede 0.38/0.95u (24f) · duello 2.08u · comp 0.95u/0s · a 25 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 30. gi12 k1 fail    dribble_inside         punti     0 · piede 0.41/0.86u (30f) · duello 2.06u · comp 1.03u/0s · a 44 giri 0 · cam 0 fuori 10% · poss 0 fine nessuno · change→kick→miss · miss/wide
+ 31. gi12 k1 success dribble_inside         punti     0 · piede 0.41/0.95u (28f) · duello 2.05u · comp 0.95u/0s · a 39 giri 0 · cam 0 fuori 9% · poss 0 fine rete · change→kick→lift · goal/—
+ 32. gi19 k0 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.31u · comp 2.28u/0s · a 35 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 33. gi21 k0 fail    double_step            punti     0 · piede 0.4/0.92u (37f) · duello 1.4u · comp 0.8u/0s · a 62 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · intercept/blocked
+ 34. gi21 k0 success double_step            punti     0 · piede 0.41/0.95u (36f) · duello 2.08u · comp 1.21u/0s · a 39 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 35. gi23 k2 fail    dribble_feint          punti     0 · piede 0.39/0.95u (38f) · duello 1.97u · comp 1.34u/0s · a 33 giri 0 · cam 0 fuori 10% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+ 36. gi23 k2 success dribble_feint          punti     0 · piede 0.4/0.95u (36f) · duello 2.04u · comp 1.21u/0s · a 58 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 37. gi40 k0 success dribble_feint          punti     0 · piede 0.36/0.95u (37f) · duello 1.97u · comp 1.19u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 38. gi50 k2 success dribble_feint          punti     0 · piede 0.74/0.95u (27f) · duello 2.34u · comp 1.23u/0s · a 43 giri 0 · cam 0 fuori 7% · poss 1 fine nessuno · change→cross · chance/chance
+ 39. gi66 k2 fail    dribble_feint          punti     0 · piede 0/0u (12f) · duello 2.49u · comp 0.94u/0s · a 15 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · miss_easy/intercepted
+ 40. gi66 k2 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.59u · comp 0.96u/0s · a 14 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass · assist/—
+ 41. gi75 k2 success dribble_feint          punti     0 · piede 0.39/0.88u (27f) · duello 2.04u · comp 1.48u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 42. gi92 k1 fail    dribble_feint          punti     0 · piede 0.36/0.85u (37f) · duello 2.03u · comp 1.2u/0s · a 31 giri 0 · cam 0 fuori 6% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+ 43. gi92 k1 success dribble_feint          punti     0 · piede 0.4/0.95u (37f) · duello 2.03u · comp 0.95u/0s · a 26 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 44. gi94 k0 fail    double_step            punti     0 · piede 0.36/0.87u (37f) · duello 2.01u · comp 1.52u/0s · a 46 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+ 45. gi94 k0 success double_step            punti     0 · piede 0.4/0.95u (37f) · duello 1.5u · comp 1.23u/0s · a 29 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 46. gi95 k0 fail    dribble_feint          punti     0 · piede 0.4/0.91u (37f) · duello 1.69u · comp 1.22u/0s · a 46 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+ 47. gi95 k0 success dribble_feint          punti     0 · piede 0.4/0.95u (37f) · duello 2.03u · comp 1.3u/0s · a 31 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 48. gi97 k0 fail    dribble_feint          punti     0 · piede 0.45/0.95u (22f) · duello 2.07u · comp 0.95u/0s · a 24 giri 0 · cam 0 fuori 2% · poss 1 fine nessuno · change→kick→miss · miss_easy/post
+ 49. gi97 k0 success dribble_feint          punti     0 · piede 0.29/0.95u (32f) · duello 2.54u · comp 0.95u/0s · a 42 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 50. gi100 k1 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.39u · comp 2.34u/0s · a 11 giri 0 · cam 0 fuori 13% · poss 0 fine nessuno · change→pass · chance/chance
+ 51. gi112 k0 fail    dribble_feint          punti     0 · piede 0.4/0.95u (37f) · duello 2.07u · comp 0.71u/0s · a 53 giri 0 · cam 0 fuori 1% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+ 52. gi112 k0 success dribble_feint          punti     0 · piede 0.38/0.95u (38f) · duello 2.05u · comp 1.21u/0s · a 43 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 53. gi117 k1 fail    dribble_feint          punti     0 · piede 0.39/0.84u (36f) · duello 1.95u · comp 1.5u/0s · a 47 giri 0 · cam 0 fuori 14% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+ 54. gi117 k1 success dribble_feint          punti     0 · piede 0.39/0.95u (38f) · duello 2.06u · comp 1.21u/0s · a 32 giri 0 · cam 0 fuori 1% · poss 0 fine rete · change→kick→lift · goal/—
+ 55. gi150 k0 success puro:dribble_feint     punti     0 · piede 0.46/0.59u (21f) · duello 1.14u · comp 0.24u/0.04s · a 45 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · trip→fallen · chance/win_freekick
+ 56. gi162 k2 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.34u · comp 0.94u/0s · a 15 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 57. gi174 k2 success puro:dribble_feint     punti     0 · piede 0.52/1.17u (6f) · duello 1.5u · comp 1.42u/0s · a 47 giri 0 · cam 0 fuori 0% · poss 0 fine eroe · feint · recovery/—
+ 58. gi178 k0 fail    dribble_outside        punti     0 · piede 0/0u (15f) · duello 2.14u · comp 2.1u/0s · a 9 giri 0 · cam 0 fuori 1% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+ 59. gi178 k0 success dribble_outside        punti     0 · piede 0/0u (11f) · duello 2.32u · comp 2.28u/0s · a 9 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 60. gi10 k2 fail    dribble_feint          punti     0 · piede 0.21/0.95u (31f) · duello 2.34u · comp 1.2u/0s · a 33 giri 0 · cam 0 fuori 4% · poss 0 fine nessuno · change→kick→miss · miss_easy/saved
+ 61. gi10 k2 success dribble_feint          punti     0 · piede 0.55/0.95u (26f) · duello 1.74u · comp 0.95u/0s · a 41 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 62. gi18 k0 fail    dribble_feint          punti     0 · piede 0/0u (20f) · duello 2.3u · comp 1.45u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+ 63. gi18 k0 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.34u · comp 0.95u/0s · a 13 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass · chance/chance
+ 64. gi19 k1 fail    dribble_outside        punti     0 · piede 0/0u (21f) · duello 2.94u · comp 1.15u/0s · a 11 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass→miss · nothing/intercepted
+ 65. gi19 k1 success dribble_outside        punti     0 · piede 0/0u (11f) · duello 2.34u · comp 2.34u/0s · a 11 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 66. gi21 k1 fail    dribble_feint          punti     0 · piede 0.41/0.95u (36f) · duello 2.19u · comp 1.21u/0s · a 39 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss/post
+ 67. gi21 k1 success dribble_feint          punti     0 · piede 0.39/0.91u (37f) · duello 2.05u · comp 0.95u/0s · a 48 giri 0 · cam 0 fuori 1% · poss 0 fine rete · change→kick→lift · goal/—
+ 68. gi26 k2 success double_step            punti     0 · piede 0.39/0.95u (33f) · duello 1.3u · comp 1.2u/0s · a 45 giri 0 · cam 0 fuori 6% · poss 0 fine rete · change→kick→lift · goal/—
+ 69. gi40 k1 success dribble_feint          punti     0 · piede 0.38/0.93u (37f) · duello 2.06u · comp 1.21u/0s · a 46 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 70. gi57 k1 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.34u · comp 2.34u/0s · a 26 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 71. gi67 k1 fail    dribble_feint          punti     0 · piede 0.39/0.87u (36f) · duello 2.06u · comp 1.19u/0s · a 30 giri 0 · cam 0 fuori 1% · poss 0 fine nessuno · change→kick→miss · miss/saved
+ 72. gi67 k1 success dribble_feint          punti     0 · piede 0.41/0.95u (37f) · duello 2.06u · comp 1.55u/0s · a 32 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 73. gi82 k2 fail    dribble_feint          punti     0 · piede 0.8/0.95u (28f) · duello 2.43u · comp 0.72u/0s · a 56 giri 0 · cam 0 fuori 3% · poss 1 fine nessuno · change→cross→miss · nothing/out
+ 74. gi93 k0 fail    dribble_inside         punti     0 · piede 0.39/0.95u (37f) · duello 2.04u · comp 1.59u/0s · a 40 giri 0 · cam 0 fuori 0% · poss 2 fine nessuno · change→kick→miss · intercept/blocked
+ 75. gi93 k0 success dribble_inside         punti     0 · piede 0.36/0.84u (37f) · duello 2.06u · comp 0.95u/0s · a 49 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick · goal/—
+ 76. gi94 k1 success double_step            punti     0 · piede 0.54/0.95u (45f) · duello 2.47u · comp 2.4u/0s · a 38 giri 0 · cam 0 fuori 2% · poss 3 fine rete · change→cross→lift · assist/—
+ 77. gi95 k1 fail    dribble_feint          punti     0 · piede 0.43/0.95u (53f) · duello 2.49u · comp 0.89u/0s · a 51 giri 0 · cam 0 fuori 3% · poss 2 fine nessuno · change→cross→miss · intercept/saved
+ 78. gi95 k1 success dribble_feint          punti     0 · piede 0.6/0.95u (45f) · duello 2.35u · comp 1.2u/0s · a 47 giri 0 · cam 0 fuori 2% · poss 0 fine rete · change→cross→lift · assist/—
+ 79. gi98 k0 fail    dribble_feint          punti     0 · piede 0.41/0.84u (30f) · duello 2.04u · comp 1.51u/0s · a 42 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · loose/saved
+ 80. gi98 k0 success dribble_feint          punti     0 · piede 0.41/0.93u (30f) · duello 2.01u · comp 1.52u/0s · a 39 giri 0 · cam 0 fuori 14% · poss 0 fine rete · change→kick · goal/—
+ 81. gi102 k0 success dribble_feint          punti     0 · piede 0.68/0.96u (45f) · duello 2.34u · comp 0.68u/0s · a 39 giri 0 · cam 0 fuori 3% · poss 1 fine avversario · change→cross · chance/chance
+ 82. gi113 k2 fail    dribble_feint          punti     0 · piede 0/0u (12f) · duello 2.56u · comp 1.74u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · intercept/intercepted
+ 83. gi113 k2 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.37u · comp 1.29u/0s · a 33 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 84. gi120 k2 fail    puro:dribble_feint     punti     0 · piede —/—u (0f) · duello 0.37u · comp 0.18u/0.1s · a 25 giri 0 · cam 0 fuori 0% · poss 2 fine nessuno · trip→fallen · intercept/fouled
+ 85. gi120 k2 success puro:dribble_feint     punti     0 · piede 0.42/1.08u (6f) · duello 1.46u · comp 0.94u/0s · a 35 giri 0 · cam 0 fuori 0% · poss 2 fine eroe · change · recovery/—
+ 86. gi176 k0 success dribble_outside        punti     0 · piede 0/0u (11f) · duello 2.34u · comp 2.24u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 87. gi11 k2 fail    dribble_feint          punti     0 · piede 0.41/0.86u (30f) · duello 2.06u · comp 1.05u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/intercepted
+ 88. gi11 k2 success dribble_feint          punti     0 · piede 0.42/0.95u (30f) · duello 1.86u · comp 1.17u/0s · a 47 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 89. gi18 k1 fail    dribble_outside        punti     0 · piede 0/0u (22f) · duello 2.1u · comp 0.94u/0s · a 10 giri 0 · cam 0 fuori 10% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+ 90. gi18 k1 success dribble_outside        punti     0 · piede 0/0u (11f) · duello 2.34u · comp 1.42u/0s · a 28 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+ 91. gi20 k0 fail    dribble_feint          punti     0 · piede 0.37/0.85u (38f) · duello 1.52u · comp 0.62u/0s · a 55 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · nothing/blocked
+ 92. gi20 k0 success dribble_feint          punti     0 · piede 0.4/0.95u (37f) · duello 2.06u · comp 1.07u/0s · a 40 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 93. gi22 k2 fail    dribble_feint          punti     0 · piede 0.4/0.87u (37f) · duello 1.79u · comp 1.19u/0s · a 45 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss/saved
+ 94. gi22 k2 success dribble_feint          punti     0 · piede 0.4/0.95u (37f) · duello 2.06u · comp 1.04u/0s · a 52 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 95. gi30 k0 success puro:dribble_feint     punti     0 · piede 0.49/1.1u (6f) · duello 1.47u · comp 0.95u/0s · a 23 giri 0 · cam 0 fuori 0% · poss 0 fine eroe · change · recovery/—
+ 96. gi63 k1 success dribble_feint          punti     0 · piede 0.41/0.95u (36f) · duello 1.33u · comp 0.83u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 97. gi71 k0 success dribble_feint          punti     0 · piede 0.41/0.91u (36f) · duello 2.03u · comp 1.51u/0s · a 38 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 98. gi92 k0 fail    roulette               punti     0 · piede 0.23/0.86u (37f) · duello 2.06u · comp 1.49u/0s · a 40 giri 0 · cam 0 fuori 11% · poss 0 fine nessuno · ruleta→kick→miss · intercept/post
+ 99. gi92 k0 success roulette               punti     0 · piede 0.23/0.95u (36f) · duello 2.06u · comp 1.52u/0s · a 45 giri 0 · cam 0 fuori 0% · poss 0 fine rete · ruleta→kick→lift · goal/—
+100. gi93 k2 fail    dribble_feint          punti     0 · piede 0.62/0.95u (48f) · duello 2.72u · comp 0.94u/0s · a 40 giri 0 · cam 0 fuori 3% · poss 2 fine nessuno · change→cross→miss · intercept/blocked
+101. gi93 k2 success dribble_feint          punti     0 · piede 0.56/0.95u (46f) · duello 2.69u · comp 0.95u/0s · a 37 giri 0 · cam 0 fuori 9% · poss 0 fine rete · change→cross→lift · assist/—
+102. gi94 k2 fail    dribble_feint          punti     0 · piede 0.41/0.86u (36f) · duello 1.71u · comp 1.2u/0s · a 28 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss/saved
+103. gi94 k2 success dribble_feint          punti     0 · piede 0.4/0.95u (36f) · duello 1.89u · comp 1.26u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick · goal/—
+104. gi95 k2 fail    dribble_feint          punti     0 · piede 0/0u (20f) · duello 2.08u · comp 0.95u/0s · a 11 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · intercept/intercepted
+105. gi95 k2 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 2.42u · comp 0.95u/0s · a 13 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+106. gi100 k0 fail    dribble_feint          punti     0 · piede 0.55/0.95u (45f) · duello 2.09u · comp 1.2u/0s · a 60 giri 0 · cam 0 fuori 2% · poss 0 fine nessuno · change→cross→miss · intercept/saved
+107. gi104 k0 fail    dribble_feint          punti     0 · piede 0.4/0.91u (31f) · duello 2.07u · comp 0.95u/0s · a 45 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · intercept/blocked
+108. gi104 k0 success dribble_feint          punti     0 · piede 0.4/0.95u (32f) · duello 1.92u · comp 1.2u/0s · a 37 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+109. gi116 k0 fail    dribble_feint          punti     0 · piede 0.38/0.95u (37f) · duello 2.06u · comp 0.89u/0s · a 32 giri 0 · cam 0 fuori 12% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+110. gi116 k0 success dribble_feint          punti     0 · piede 0.41/0.9u (36f) · duello 2.03u · comp 1.51u/0s · a 58 giri 0 · cam 0 fuori 1% · poss 0 fine rete · change→kick→lift · goal/—
+111. gi143 k1 fail    dribble_feint          punti     0 · piede 0.38/0.85u (36f) · duello 1.53u · comp 1.18u/0s · a 26 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · miss/saved
+112. gi143 k1 success dribble_feint          punti     0 · piede 0.4/0.87u (36f) · duello 2.08u · comp 1.15u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+113. gi154 k0 success dribble_feint          punti     0 · piede 0.38/0.95u (37f) · duello 2.04u · comp 1.2u/0s · a 45 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+114. gi165 k0 success dribble_inside         punti     0 · piede 0.4/0.91u (36f) · duello 2.06u · comp 1.34u/0s · a 43 giri 0 · cam 0 fuori 14% · poss 0 fine rete · change→kick→lift · goal/—
+115. gi177 k0 fail    dribble_outside        punti     0 · piede 0/0u (17f) · duello 2.51u · comp 0.95u/0s · a 9 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass→miss · intercept/intercepted
+116. gi177 k0 success dribble_outside        punti     0 · piede 0/0u (11f) · duello 2.34u · comp 2.34u/0s · a 33 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+
+PER VARIANTE ED ESITO (n · punti medi · quota con almeno un difetto):
+  puro:dribble_feint · fail          n= 5 · 1.86 · 80%
+  dribble_inside · fail              n= 4 · 0.98 · 50%
+  double_step · fail                 n= 4 · 0.77 · 50%
+  dribble_feint · fail               n=39 · 0.70 · 36%
+  dribble_inside · success           n= 4 · 0.32 · 25%
+  puro:dribble_feint · success       n= 5 · 0.29 · 20%
+  dribble_outside · fail             n= 5 · 0.28 · 20%
+  dribble_feint · success            n=39 · 0.13 · 8%
+  double_step · success              n= 4 · 0.00 · 0%
+  dribble_outside · success          n= 5 · 0.00 · 0%
+  roulette · fail                    n= 1 · 0.00 · 0%
+  roulette · success                 n= 1 · 0.00 · 0%
+
+DIFETTI PER FREQUENZA:
+   18 × pallone fuori quadro nel #% dei fotogrammi
+   13 × eroe fuori quadro nel #% dei fotogrammi
+    2 × finta nel vuoto: l'avversario piu' vicino e' a #u (soglia #u
+    1 × INCOERENZA: il testo dichiara palla persa (saved) ma a fine 
+    1 × corpi compenetrati per #s (distanza minima #u)

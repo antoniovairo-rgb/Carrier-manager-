@@ -1,0 +1,271 @@
+CLASSIFICA DEI DRIBBLING PIU' CONFUSI — 116 esecuzioni giudicate su 116 (rosso-0di3.json, rosso-1di3.json, rosso-2di3.json)
+
+  1. gi113 k2 fail    dribble_feint          punti  7.85 · piede 0/0u (10f) · duello 9.29u · comp 0.29u/0.33s · a 11 giri 0 · cam 0 fuori 9% · poss 2 fine eroe · change→pass→miss · intercept/intercepted · ✗ il testo dichiara palla persa (intercepted) ma a fine scena il pallone e' ancora dell'eroe
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.29u (soglia 3.5u)
+        · corpi compenetrati per 0.33s (distanza minima 0.29u)
+        · INCOERENZA: il testo dichiara palla persa (intercepted) ma a fine scena il pallone e' ancora dell'eroe
+  2. gi18 k0 fail    dribble_feint          punti     6 · piede 0/0u (11f) · duello 13.93u · comp 0.45u/0.1s · a 12 giri 0 · cam 0 fuori 13% · poss 1 fine eroe · change→pass→miss · nothing/intercepted · ✗ il testo dichiara palla persa (intercepted) ma a fine scena il pallone e' ancora dell'eroe
+        · finta nel vuoto: l'avversario piu' vicino e' a 13.93u (soglia 3.5u)
+        · INCOERENZA: il testo dichiara palla persa (intercepted) ma a fine scena il pallone e' ancora dell'eroe
+  3. gi26 k2 fail    double_step            punti   5.7 · piede 0.4/0.89u (36f) · duello 3.72u · comp 0.17u/0.09s · a 40 giri 0 · cam 1 fuori 22% · poss 0 fine nessuno · change→kick→miss · nothing/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.72u (soglia 3.5u)
+        · 1 salti di camera fuori dagli stacchi
+        · eroe fuori quadro nel 22% dei fotogrammi
+        · pallone fuori quadro nel 30% dei fotogrammi
+  4. gi100 k1 fail    dribble_feint          punti  5.25 · piede 0/0u (11f) · duello 0.74u · comp 0.38u/0.2s · a 12 giri 0 · cam 0 fuori 26% · poss 0 fine nessuno · change→pass→miss · intercept/intercepted
+        · corpi compenetrati per 0.2s (distanza minima 0.38u)
+        · eroe fuori quadro nel 26% dei fotogrammi
+        · pallone fuori quadro nel 54% dei fotogrammi
+  5. gi95 k0 fail    dribble_feint          punti   4.9 · piede 0.39/0.85u (36f) · duello 10.55u · comp 1.35u/0s · a 53 giri 0 · cam 0 fuori 7% · poss 1 fine nessuno · change→kick→miss · intercept/blocked
+        · finta nel vuoto: l'avversario piu' vicino e' a 10.55u (soglia 3.5u)
+        · pallone fuori quadro nel 48% dei fotogrammi
+  6. gi100 k0 success dribble_feint          punti  4.87 · piede 0.58/0.95u (44f) · duello 9.55u · comp 2.29u/0s · a 43 giri 0 · cam 0 fuori 17% · poss 2 fine nessuno · change→cross · chance/chance
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.55u (soglia 3.5u)
+        · eroe fuori quadro nel 17% dei fotogrammi
+        · pallone fuori quadro nel 26% dei fotogrammi
+  7. gi22 k2 success dribble_feint          punti  4.79 · piede 0.41/0.95u (36f) · duello 6.98u · comp 0.12u/0.42s · a 46 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.98u (soglia 3.5u)
+        · corpi compenetrati per 0.42s (distanza minima 0.12u)
+  8. gi19 k0 fail    dribble_feint          punti  4.67 · piede 0/0u (10f) · duello 8.05u · comp 1.25u/0s · a 13 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.05u (soglia 3.5u)
+        · eroe fuori quadro nel 15% dei fotogrammi
+        · pallone fuori quadro nel 34% dei fotogrammi
+  9. gi23 k2 success dribble_feint          punti  4.54 · piede 0.41/0.95u (36f) · duello 7.72u · comp 0.13u/0.35s · a 40 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.72u (soglia 3.5u)
+        · corpi compenetrati per 0.35s (distanza minima 0.13u)
+ 10. gi30 k0 success puro:dribble_feint     punti  4.27 · piede 0.61/2.07u (6f) · duello 9.09u · comp 1.48u/0s · a 39 giri 0 · cam 0 fuori 0% · poss 2 fine eroe · change · recovery/—
+        · pallone staccato dal piede nel 17% dei fotogrammi controllati (max 2.07u, soglia 2u)
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.09u (soglia 3.5u)
+ 11. gi164 k0 fail    dribble_inside         punti  4.19 · piede 0.4/0.84u (37f) · duello 11.47u · comp 4.82u/0s · a 54 giri 0 · cam 0 fuori 18% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 11.47u (soglia 3.5u)
+        · eroe fuori quadro nel 18% dei fotogrammi
+ 12. gi40 k0 fail    dribble_feint          punti  4.05 · piede 0.41/0.83u (36f) · duello 4.73u · comp 1.28u/0s · a 40 giri 0 · cam 0 fuori 24% · poss 0 fine nessuno · change→kick→miss · loose/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.73u (soglia 3.5u)
+        · eroe fuori quadro nel 24% dei fotogrammi
+        · pallone fuori quadro nel 28% dei fotogrammi
+ 13. gi3 k1 success dribble_feint          punti  4.02 · piede 0.37/0.95u (24f) · duello 3.57u · comp 0.28u/0.61s · a 27 giri 0 · cam 0 fuori 0% · poss 1 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.57u (soglia 3.5u)
+        · corpi compenetrati per 0.61s (distanza minima 0.28u)
+ 14. gi47 k2 fail    dribble_feint          punti  4.02 · piede 0.39/0.84u (37f) · duello 7.08u · comp 1.5u/0s · a 45 giri 0 · cam 1 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.08u (soglia 3.5u)
+        · 1 salti di camera fuori dagli stacchi
+ 15. gi63 k1 fail    dribble_feint          punti  3.81 · piede 0.4/0.86u (36f) · duello 4.18u · comp 0.11u/0.1s · a 59 giri 0 · cam 0 fuori 22% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.18u (soglia 3.5u)
+        · eroe fuori quadro nel 22% dei fotogrammi
+        · pallone fuori quadro nel 29% dei fotogrammi
+ 16. gi50 k2 success dribble_feint          punti  3.76 · piede 0.83/0.95u (27f) · duello 9.58u · comp 1.31u/0s · a 46 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→cross · chance/chance
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.58u (soglia 3.5u)
+        · eroe fuori quadro nel 15% dei fotogrammi
+ 17. gi150 k0 fail    puro:dribble_feint     punti  3.68 · piede —/—u (0f) · duello 0.36u · comp 0.19u/0.2s · a 28 giri 0 · cam 0 fuori 9% · poss 0 fine nessuno · feint→miss · intercept/dispossessed
+        · corpi compenetrati per 0.2s (distanza minima 0.19u)
+        · pallone fuori quadro nel 59% dei fotogrammi
+ 18. gi82 k2 success dribble_feint          punti  3.65 · piede 0.75/0.95u (27f) · duello 4.44u · comp 2.16u/0s · a 43 giri 0 · cam 0 fuori 17% · poss 0 fine nessuno · change→cross · chance/chance
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.44u (soglia 3.5u)
+        · eroe fuori quadro nel 17% dei fotogrammi
+        · pallone fuori quadro nel 32% dei fotogrammi
+ 19. gi19 k1 fail    dribble_outside        punti  3.64 · piede 0/0u (10f) · duello 9.15u · comp 3.64u/0s · a 14 giri 0 · cam 0 fuori 5% · poss 0 fine nessuno · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.15u (soglia 3.5u)
+        · pallone fuori quadro nel 26% dei fotogrammi
+ 20. gi82 k2 fail    dribble_feint          punti  3.58 · piede 0.81/0.95u (28f) · duello 8.54u · comp 0.85u/0s · a 37 giri 0 · cam 0 fuori 17% · poss 0 fine nessuno · change→cross→miss · nothing/out
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.54u (soglia 3.5u)
+        · eroe fuori quadro nel 17% dei fotogrammi
+ 21. gi67 k1 fail    dribble_feint          punti  3.44 · piede 0.4/0.83u (36f) · duello 6.65u · comp 0.09u/0.08s · a 38 giri 0 · cam 0 fuori 23% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.65u (soglia 3.5u)
+        · eroe fuori quadro nel 23% dei fotogrammi
+ 22. gi94 k1 fail    double_step            punti   3.4 · piede 0.61/0.95u (46f) · duello 7.25u · comp 0.03u/0.2s · a 45 giri 0 · cam 0 fuori 2% · poss 0 fine nessuno · change→cross→miss · intercept/out
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.25u (soglia 3.5u)
+        · corpi compenetrati per 0.2s (distanza minima 0.03u)
+ 23. gi93 k2 fail    dribble_feint          punti  3.26 · piede 0.63/0.95u (45f) · duello 4.66u · comp 0.2u/0.29s · a 40 giri 0 · cam 0 fuori 2% · poss 3 fine nessuno · change→cross→miss · intercept/blocked
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.66u (soglia 3.5u)
+        · corpi compenetrati per 0.29s (distanza minima 0.2u)
+ 24. gi23 k2 fail    dribble_feint          punti  3.21 · piede 0.41/0.95u (36f) · duello 6.38u · comp 3.87u/0s · a 52 giri 0 · cam 0 fuori 14% · poss 0 fine nessuno · change→kick→miss · intercept/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.38u (soglia 3.5u)
+        · pallone fuori quadro nel 35% dei fotogrammi
+ 25. gi143 k1 fail    dribble_feint          punti  3.18 · piede 0.39/0.85u (37f) · duello 7.39u · comp 0.1u/0.16s · a 35 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.39u (soglia 3.5u)
+        · corpi compenetrati per 0.16s (distanza minima 0.1u)
+ 26. gi164 k0 success dribble_inside         punti  3.03 · piede 0.37/0.92u (37f) · duello 5.37u · comp 3.05u/0s · a 40 giri 0 · cam 0 fuori 23% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.37u (soglia 3.5u)
+        · eroe fuori quadro nel 23% dei fotogrammi
+ 27. gi57 k1 fail    dribble_feint          punti  3.01 · piede 0/0u (11f) · duello 4.71u · comp 0.08u/0.25s · a 12 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.71u (soglia 3.5u)
+        · corpi compenetrati per 0.25s (distanza minima 0.08u)
+ 28. gi97 k0 success dribble_feint          punti     3 · piede 0.63/0.95u (22f) · duello 11.73u · comp 2.34u/0s · a 25 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 11.73u (soglia 3.5u)
+ 29. gi162 k2 fail    dribble_feint          punti     3 · piede 0/0u (11f) · duello 12.41u · comp 4.55u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→pass→miss · intercept/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 12.41u (soglia 3.5u)
+ 30. gi93 k0 fail    dribble_inside         punti     3 · piede 0.4/0.95u (38f) · duello 11.13u · comp 0.26u/0.09s · a 40 giri 0 · cam 0 fuori 0% · poss 1 fine avversario · change→kick→miss · intercept/blocked
+        · finta nel vuoto: l'avversario piu' vicino e' a 11.13u (soglia 3.5u)
+ 31. gi95 k1 fail    dribble_feint          punti     3 · piede 0.63/0.95u (45f) · duello 12.66u · comp 0.11u/0.08s · a 33 giri 0 · cam 0 fuori 3% · poss 2 fine nessuno · change→cross→miss · intercept/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 12.66u (soglia 3.5u)
+ 32. gi71 k0 success dribble_feint          punti     3 · piede 0.38/0.95u (37f) · duello 15.78u · comp 0.27u/0.08s · a 36 giri 0 · cam 0 fuori 3% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 15.78u (soglia 3.5u)
+ 33. gi165 k0 success dribble_inside         punti     3 · piede 0.41/0.91u (36f) · duello 11.92u · comp 3.13u/0s · a 56 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 11.92u (soglia 3.5u)
+ 34. gi154 k0 fail    dribble_feint          punti  2.96 · piede 0.39/0.95u (37f) · duello 6.83u · comp 2.19u/0s · a 34 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.83u (soglia 3.5u)
+        · eroe fuori quadro nel 15% dei fotogrammi
+ 35. gi75 k2 fail    dribble_feint          punti  2.95 · piede 0.4/0.87u (25f) · duello 3.18u · comp 0.65u/0s · a 48 giri 0 · cam 0 fuori 26% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · eroe fuori quadro nel 26% dei fotogrammi
+        · pallone fuori quadro nel 30% dei fotogrammi
+ 36. gi18 k1 fail    dribble_outside        punti  2.93 · piede 0/0u (10f) · duello 10.24u · comp 1.4u/0s · a 10 giri 0 · cam 0 fuori 8% · poss 1 fine avversario · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 10.24u (soglia 3.5u)
+ 37. gi63 k1 success dribble_feint          punti  2.92 · piede 0.39/0.95u (37f) · duello 10.22u · comp 4.02u/0s · a 55 giri 0 · cam 0 fuori 6% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 10.22u (soglia 3.5u)
+ 38. gi100 k1 success dribble_feint          punti  2.73 · piede 0/0u (10f) · duello 9.54u · comp 2.57u/0s · a 14 giri 0 · cam 0 fuori 12% · poss 0 fine nessuno · change→pass · chance/chance
+        · finta nel vuoto: l'avversario piu' vicino e' a 9.54u (soglia 3.5u)
+ 39. gi94 k0 fail    double_step            punti  2.65 · piede 0.38/0.86u (36f) · duello 3.92u · comp 0.19u/0.23s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.92u (soglia 3.5u)
+        · corpi compenetrati per 0.23s (distanza minima 0.19u)
+ 40. gi71 k0 fail    dribble_feint          punti  2.62 · piede 0.4/0.92u (37f) · duello 4.45u · comp 0.6u/0s · a 37 giri 0 · cam 0 fuori 20% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.45u (soglia 3.5u)
+        · eroe fuori quadro nel 20% dei fotogrammi
+ 41. gi177 k0 fail    dribble_outside        punti  2.62 · piede 0/0u (11f) · duello 5.63u · comp 3.29u/0s · a 9 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→pass→miss · intercept/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.63u (soglia 3.5u)
+        · eroe fuori quadro nel 15% dei fotogrammi
+ 42. gi57 k1 success dribble_feint          punti  2.56 · piede 0/0u (11f) · duello 8.95u · comp 2.11u/0s · a 32 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.95u (soglia 3.5u)
+ 43. gi75 k2 success dribble_feint          punti  2.52 · piede 0.4/0.89u (26f) · duello 8.81u · comp 1.45u/0s · a 33 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.81u (soglia 3.5u)
+ 44. gi11 k2 fail    dribble_feint          punti  2.49 · piede 0.41/0.88u (36f) · duello 4.92u · comp 0.18u/0.1s · a 48 giri 0 · cam 0 fuori 16% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.92u (soglia 3.5u)
+        · eroe fuori quadro nel 16% dei fotogrammi
+ 45. gi30 k0 fail    puro:dribble_feint     punti  2.35 · piede —/—u (0f) · duello 1.7u · comp 1.65u/0s · a 31 giri 0 · cam 0 fuori 17% · poss 0 fine nessuno · change→miss · intercept/dispossessed
+        · eroe fuori quadro nel 17% dei fotogrammi
+        · pallone fuori quadro nel 30% dei fotogrammi
+ 46. gi20 k0 fail    dribble_feint          punti  2.33 · piede 0.4/0.9u (37f) · duello 3.38u · comp 0.04u/0.35s · a 47 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · nothing/blocked
+        · corpi compenetrati per 0.35s (distanza minima 0.04u)
+ 47. gi113 k2 success dribble_feint          punti   2.3 · piede 0/0u (10f) · duello 8.04u · comp 1.32u/0s · a 9 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.04u (soglia 3.5u)
+ 48. gi95 k2 fail    dribble_feint          punti   2.3 · piede 0/0u (10f) · duello 8.05u · comp 2.39u/0s · a 10 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass→miss · intercept/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 8.05u (soglia 3.5u)
+ 49. gi66 k2 success dribble_feint          punti  2.23 · piede 0/0u (11f) · duello 7.79u · comp 4.93u/0s · a 37 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.79u (soglia 3.5u)
+ 50. gi143 k1 success dribble_feint          punti  2.22 · piede 0.36/0.87u (37f) · duello 7.76u · comp 0.39u/0.05s · a 47 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.76u (soglia 3.5u)
+ 51. gi102 k0 fail    dribble_feint          punti  2.08 · piede 0.61/0.95u (44f) · duello 7.28u · comp 0.18u/0.1s · a 45 giri 0 · cam 0 fuori 1% · poss 1 fine avversario · change→cross→miss · intercept/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.28u (soglia 3.5u)
+ 52. gi177 k0 success dribble_outside        punti  2.07 · piede 0/0u (10f) · duello 7.26u · comp 0.2u/0.12s · a 33 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 7.26u (soglia 3.5u)
+ 53. gi150 k1 fail    puro:dribble_feint     punti  2.06 · piede —/—u (0f) · duello 0.71u · comp 0.71u/0s · a 26 giri 0 · cam 0 fuori 13% · poss 0 fine nessuno · change→miss · through/dispossessed
+        · pallone fuori quadro nel 51% dei fotogrammi
+ 54. gi40 k0 success dribble_feint          punti     2 · piede —/—u (0f) · duello —u · comp 0.13u/0.15s · a 25 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · pass→miss · intercept/intercepted
+        · nessun tratto di dribbling visibile (0 fotogrammi): l'azione promette «dribble_feint» e non la mostra
+ 55. gi92 k1 fail    dribble_feint          punti     2 · piede 0.38/0.88u (37f) · duello 2.62u · comp 1.01u/0s · a 58 giri 0 · cam 1 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · 1 salti di camera fuori dagli stacchi
+ 56. gi120 k2 success puro:dribble_feint     punti     2 · piede 1.34/2.16u (5f) · duello 1.37u · comp 1.12u/0s · a 21 giri 0 · cam 0 fuori 0% · poss 0 fine eroe · change · recovery/—
+        · pallone staccato dal piede nel 20% dei fotogrammi controllati (max 2.16u, soglia 2u)
+ 57. gi176 k0 fail    dribble_outside        punti  1.98 · piede 0/0u (10f) · duello 1.12u · comp 0.48u/0.05s · a 9 giri 0 · cam 0 fuori 13% · poss 0 fine nessuno · change→pass→miss · intercept/intercepted
+        · pallone fuori quadro nel 50% dei fotogrammi
+ 58. gi10 k2 fail    dribble_feint          punti  1.97 · piede 0.63/0.95u (22f) · duello 6.91u · comp 1.77u/0s · a 27 giri 0 · cam 0 fuori 1% · poss 0 fine nessuno · change→kick→miss · miss_easy/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.91u (soglia 3.5u)
+ 59. gi116 k0 fail    dribble_feint          punti  1.95 · piede 0.4/0.95u (37f) · duello 6.81u · comp 1.78u/0s · a 26 giri 0 · cam 0 fuori 9% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.81u (soglia 3.5u)
+ 60. gi92 k0 fail    roulette               punti  1.93 · piede 0.26/0.92u (36f) · duello 6.76u · comp 1.41u/0s · a 60 giri 0 · cam 0 fuori 1% · poss 0 fine nessuno · ruleta→kick→miss · intercept/post
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.76u (soglia 3.5u)
+ 61. gi178 k0 success dribble_outside        punti  1.92 · piede 0/0u (11f) · duello 6.71u · comp 1.02u/0s · a 32 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.71u (soglia 3.5u)
+ 62. gi98 k0 fail    dribble_feint          punti  1.89 · piede 0.4/0.93u (31f) · duello 2.39u · comp 0.42u/0.05s · a 43 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · loose/saved
+        · pallone fuori quadro nel 47% dei fotogrammi
+ 63. gi117 k1 fail    dribble_feint          punti  1.88 · piede 0.4/0.85u (36f) · duello 6.57u · comp 3.2u/0s · a 31 giri 0 · cam 0 fuori 14% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.57u (soglia 3.5u)
+ 64. gi21 k1 fail    dribble_feint          punti  1.84 · piede 0.4/0.92u (38f) · duello 6.43u · comp 3.53u/0s · a 62 giri 0 · cam 0 fuori 8% · poss 0 fine nessuno · change→kick→miss · miss/post
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.43u (soglia 3.5u)
+ 65. gi93 k2 success dribble_feint          punti  1.79 · piede 0.61/0.96u (45f) · duello 6.28u · comp 0.67u/0s · a 37 giri 0 · cam 0 fuori 2% · poss 3 fine rete · change→cross→lift · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.28u (soglia 3.5u)
+ 66. gi22 k2 fail    dribble_feint          punti  1.73 · piede 0.38/0.84u (37f) · duello 6.07u · comp 0.96u/0s · a 28 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 6.07u (soglia 3.5u)
+ 67. gi112 k0 fail    dribble_feint          punti  1.71 · piede 0.4/0.95u (36f) · duello 5.99u · comp 2.45u/0s · a 46 giri 0 · cam 0 fuori 3% · poss 0 fine nessuno · change→kick→miss · intercept/wide
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.99u (soglia 3.5u)
+ 68. gi3 k1 fail    dribble_feint          punti  1.59 · piede 0.42/0.86u (29f) · duello 2.49u · comp 0.43u/0.09s · a 46 giri 0 · cam 0 fuori 24% · poss 0 fine nessuno · change→kick→miss · miss_easy/saved
+        · eroe fuori quadro nel 24% dei fotogrammi
+ 69. gi94 k0 success double_step            punti  1.55 · piede 0.38/0.93u (37f) · duello 5.44u · comp 0.39u/0.05s · a 30 giri 0 · cam 0 fuori 11% · poss 0 fine rete · change→kick · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.44u (soglia 3.5u)
+ 70. gi67 k1 success dribble_feint          punti  1.49 · piede 0.4/0.93u (36f) · duello 5.21u · comp 0.83u/0s · a 37 giri 0 · cam 0 fuori 1% · poss 0 fine rete · change→kick · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.21u (soglia 3.5u)
+ 71. gi95 k2 success dribble_feint          punti  1.44 · piede 0/0u (11f) · duello 5.04u · comp 2.56u/0s · a 13 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 5.04u (soglia 3.5u)
+ 72. gi92 k1 success dribble_feint          punti  1.41 · piede 0.39/0.95u (38f) · duello 4.95u · comp 0.43u/0.09s · a 38 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.95u (soglia 3.5u)
+ 73. gi150 k0 success puro:dribble_feint     punti  1.33 · piede 1.15/1.75u (20f) · duello 0.27u · comp 0.15u/0.09s · a 58 giri 0 · cam 0 fuori 0% · poss 4 fine avversario · trip→fallen · chance/win_freekick
+        · 4 cambi di padrone del pallone (E@0.0 A@0.5 E@0.8 A@1.2 E@1.2)
+ 74. gi104 k0 success dribble_feint          punti  1.33 · piede 0.39/0.95u (36f) · duello 4.64u · comp 0.09u/0.15s · a 39 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.64u (soglia 3.5u)
+ 75. gi174 k2 fail    puro:dribble_feint     punti  1.27 · piede —/—u (0f) · duello 4.46u · comp 4.11u/0s · a 25 giri 0 · cam 0 fuori 11% · poss 0 fine nessuno · feint→miss · intercept/dispossessed
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.46u (soglia 3.5u)
+ 76. gi20 k0 success dribble_feint          punti  1.27 · piede 0.4/0.95u (37f) · duello 4.44u · comp 1.25u/0s · a 29 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.44u (soglia 3.5u)
+ 77. gi95 k0 success dribble_feint          punti  1.26 · piede 0.4/0.95u (36f) · duello 4.4u · comp 0.11u/0.05s · a 38 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.4u (soglia 3.5u)
+ 78. gi178 k0 fail    dribble_outside        punti  1.23 · piede 0/0u (10f) · duello 4.3u · comp 0.88u/0s · a 13 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass→miss · nothing/intercepted
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.3u (soglia 3.5u)
+ 79. gi94 k1 success double_step            punti  1.16 · piede 0.62/0.95u (44f) · duello 4.07u · comp 1.37u/0s · a 30 giri 0 · cam 0 fuori 3% · poss 0 fine rete · change→cross→lift · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 4.07u (soglia 3.5u)
+ 80. gi40 k1 fail    dribble_feint          punti  1.08 · piede 0.41/0.88u (36f) · duello 3.77u · comp 1.01u/0s · a 37 giri 0 · cam 0 fuori 12% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.77u (soglia 3.5u)
+ 81. gi21 k0 success double_step            punti  1.07 · piede 0.41/0.95u (36f) · duello 3.75u · comp 0.82u/0s · a 36 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.75u (soglia 3.5u)
+ 82. gi19 k1 success dribble_outside        punti  1.07 · piede 0/0u (10f) · duello 1.52u · comp 0.35u/0.16s · a 35 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+        · corpi compenetrati per 0.16s (distanza minima 0.35u)
+ 83. gi21 k0 fail    double_step            punti  1.03 · piede 0.41/0.88u (36f) · duello 3.61u · comp 0.65u/0s · a 41 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→kick→miss · intercept/blocked
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.61u (soglia 3.5u)
+ 84. gi66 k2 fail    dribble_feint          punti  1.03 · piede 0.82/0.95u (6f) · duello —u · comp 0.33u/0.15s · a 54 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · kick→miss · intercept/intercepted
+        · pallone fuori quadro nel 26% dei fotogrammi
+ 85. gi176 k0 success dribble_outside        punti  1.02 · piede 0/0u (11f) · duello 3.56u · comp 3.1u/0s · a 35 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+        · finta nel vuoto: l'avversario piu' vicino e' a 3.56u (soglia 3.5u)
+ 86. gi12 k1 fail    dribble_inside         punti     0 · piede 0.4/0.89u (31f) · duello 1.39u · comp 0.61u/0s · a 42 giri 0 · cam 0 fuori 10% · poss 0 fine nessuno · change→kick→miss · miss/wide
+ 87. gi12 k1 success dribble_inside         punti     0 · piede 0.41/0.95u (28f) · duello 1.57u · comp 0.59u/0s · a 50 giri 0 · cam 0 fuori 0% · poss 1 fine rete · change→kick→lift · goal/—
+ 88. gi19 k0 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 1.18u · comp 0.52u/0s · a 31 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→pass · assist/—
+ 89. gi50 k2 fail    dribble_feint          punti     0 · piede 0.76/0.95u (28f) · duello 3.32u · comp 1.45u/0s · a 49 giri 0 · cam 0 fuori 10% · poss 0 fine nessuno · change→cross→miss · nothing/intercepted
+ 90. gi97 k0 fail    dribble_feint          punti     0 · piede 0.52/0.95u (21f) · duello 1.71u · comp 0.32u/0.05s · a 25 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · miss_easy/post
+ 91. gi112 k0 success dribble_feint          punti     0 · piede 0.39/0.95u (36f) · duello 3.46u · comp 0.17u/0.1s · a 49 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 92. gi117 k1 success dribble_feint          punti     0 · piede 0.41/0.95u (39f) · duello 3.41u · comp 0.54u/0s · a 46 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 93. gi162 k2 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 1.9u · comp 1.66u/0s · a 26 giri 0 · cam 0 fuori 0% · poss 1 fine nessuno · change→pass · assist/—
+ 94. gi174 k2 success puro:dribble_feint     punti     0 · piede 0.81/1.71u (6f) · duello 3.38u · comp 0.29u/0.1s · a 22 giri 0 · cam 0 fuori 0% · poss 2 fine eroe · feint · recovery/—
+ 95. gi10 k2 success dribble_feint          punti     0 · piede 0.61/0.95u (22f) · duello 2.92u · comp 1.89u/0s · a 42 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 96. gi18 k0 success dribble_feint          punti     0 · piede 0/0u (11f) · duello 0.97u · comp 0.18u/0.1s · a 14 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · chance/chance
+ 97. gi21 k1 success dribble_feint          punti     0 · piede 0.41/0.95u (36f) · duello 2.21u · comp 0.96u/0s · a 48 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+ 98. gi26 k2 success double_step            punti     0 · piede 0.81/0.95u (7f) · duello —u · comp 0.47u/0.05s · a 50 giri 0 · cam 0 fuori 8% · poss 1 fine avversario · kick→miss · intercept/intercepted
+ 99. gi40 k1 success dribble_feint          punti     0 · piede 0.4/0.9u (36f) · duello 2.83u · comp 0.44u/0.04s · a 38 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+100. gi93 k0 success dribble_inside         punti     0 · piede 0.4/0.87u (38f) · duello 1.99u · comp 0.44u/0.1s · a 34 giri 0 · cam 0 fuori 1% · poss 2 fine rete · change→kick→lift · goal/—
+101. gi95 k1 success dribble_feint          punti     0 · piede 0.64/0.95u (44f) · duello 3.02u · comp 1.39u/0s · a 57 giri 0 · cam 0 fuori 4% · poss 0 fine rete · change→cross→lift · assist/—
+102. gi98 k0 success dribble_feint          punti     0 · piede 0.41/0.94u (32f) · duello 2.53u · comp 1.33u/0s · a 49 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+103. gi102 k0 success dribble_feint          punti     0 · piede 0.6/0.95u (44f) · duello 3.2u · comp 0.2u/0.1s · a 64 giri 0 · cam 0 fuori 6% · poss 3 fine avversario · change→cross · chance/chance
+104. gi120 k2 fail    puro:dribble_feint     punti     0 · piede —/—u (0f) · duello 1.11u · comp 1.11u/0s · a 26 giri 0 · cam 0 fuori 0% · poss 3 fine avversario · trip→fallen · intercept/fouled
+105. gi150 k1 success puro:dribble_feint     punti     0 · piede 1.13/1.47u (21f) · duello 0.31u · comp 0.31u/0.04s · a 21 giri 0 · cam 0 fuori 0% · poss 2 fine avversario · trip→fallen · chance/win_freekick
+106. gi11 k2 success dribble_feint          punti     0 · piede 0.41/0.86u (36f) · duello 2.89u · comp 1.31u/0s · a 55 giri 0 · cam 0 fuori 7% · poss 0 fine rete · change→kick→lift · goal/—
+107. gi18 k1 success dribble_outside        punti     0 · piede 0/0u (10f) · duello 1.23u · comp 0.01u/0.05s · a 9 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→pass · assist/—
+108. gi47 k2 success dribble_feint          punti     0 · piede 0.4/0.95u (38f) · duello 1.83u · comp 0.58u/0s · a 57 giri 0 · cam 0 fuori 0% · poss 2 fine rete · change→kick→lift · goal/—
+109. gi92 k0 success roulette               punti     0 · piede 0.28/0.95u (37f) · duello 3.07u · comp 1.57u/0s · a 38 giri 0 · cam 0 fuori 0% · poss 0 fine rete · ruleta→kick · goal/—
+110. gi94 k2 fail    dribble_feint          punti     0 · piede 0.37/0.95u (37f) · duello 3.48u · comp 0.18u/0.1s · a 24 giri 0 · cam 0 fuori 6% · poss 0 fine nessuno · change→kick→miss · miss/wide
+111. gi94 k2 success dribble_feint          punti     0 · piede 0.4/0.94u (36f) · duello 2.53u · comp 0.64u/0s · a 52 giri 0 · cam 0 fuori 0% · poss 0 fine rete · change→kick→lift · goal/—
+112. gi100 k0 fail    dribble_feint          punti     0 · piede 0.65/0.95u (44f) · duello 2.19u · comp 1.38u/0s · a 40 giri 0 · cam 0 fuori 15% · poss 0 fine nessuno · change→cross→miss · intercept/saved
+113. gi104 k0 fail    dribble_feint          punti     0 · piede 0.39/0.84u (36f) · duello 2.33u · comp 1.27u/0s · a 53 giri 0 · cam 0 fuori 0% · poss 0 fine nessuno · change→kick→miss · intercept/saved
+114. gi116 k0 success dribble_feint          punti     0 · piede 0.4/0.94u (36f) · duello 2.9u · comp 0.38u/0.1s · a 35 giri 0 · cam 0 fuori 4% · poss 0 fine rete · change→kick→lift · goal/—
+115. gi154 k0 success dribble_feint          punti     0 · piede 0.4/0.95u (36f) · duello 2.2u · comp 0.25u/0.1s · a 37 giri 0 · cam 0 fuori 8% · poss 0 fine rete · change→kick→lift · goal/—
+116. gi165 k0 fail    dribble_inside         punti     0 · piede 0.39/0.86u (36f) · duello 3.05u · comp 1.37u/0s · a 33 giri 0 · cam 0 fuori 9% · poss 0 fine nessuno · change→kick→miss · miss/saved
+
+PER VARIANTE ED ESITO (n · punti medi · quota con almeno un difetto):
+  double_step · fail                 n= 4 · 3.19 · 100%
+  dribble_feint · fail               n=39 · 2.63 · 87%
+  dribble_outside · fail             n= 5 · 2.48 · 100%
+  roulette · fail                    n= 1 · 1.93 · 100%
+  puro:dribble_feint · fail          n= 5 · 1.87 · 80%
+  dribble_inside · fail              n= 4 · 1.80 · 50%
+  dribble_feint · success            n=39 · 1.57 · 59%
+  puro:dribble_feint · success       n= 5 · 1.52 · 60%
+  dribble_inside · success           n= 4 · 1.51 · 50%
+  dribble_outside · success          n= 5 · 1.22 · 80%
+  double_step · success              n= 4 · 0.95 · 75%
+  roulette · success                 n= 1 · 0.00 · 0%
+
+DIFETTI PER FREQUENZA:
+   70 × finta nel vuoto: l'avversario piu' vicino e' a #u (soglia #u
+   19 × eroe fuori quadro nel #% dei fotogrammi
+   17 × pallone fuori quadro nel #% dei fotogrammi
+   13 × corpi compenetrati per #s (distanza minima #u)
+    3 × # salti di camera fuori dagli stacchi
+    2 × INCOERENZA: il testo dichiara palla persa (intercepted) ma a
+    2 × pallone staccato dal piede nel #% dei fotogrammi controllati
+    1 × nessun tratto di dribbling visibile (# fotogrammi): l'azione
+    1 × # cambi di padrone del pallone (E@# A@# E@# A@# E@#)
