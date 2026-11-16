@@ -1,0 +1,27 @@
+=== presentazione-225 · 13:34:55 · mem libera 15374 MB · disco libero 29G
+ESITO presentazione-225 exit=0 durata=413s · ✅ presentazione-225 verde (e il rosso si vede)
+=== presentazione-200 · 13:41:48 · mem libera 15315 MB · disco libero 29G
+ESITO presentazione-200 exit=0 durata=56s · ✅ presentazione-200 verde (e il rosso si vede)
+=== cerimonie · 13:42:44 · mem libera 15431 MB · disco libero 29G
+ESITO cerimonie exit=0 durata=44s · ✅ PASS — ogni coppa ha la sua cerimonia, il mister c'e' sempre, la promozione festeggia a modo suo
+=== cerimonie-192 · 13:43:28 · mem libera 15431 MB · disco libero 29G
+ESITO cerimonie-192 exit=0 durata=570s · ✅ cerimonie-192 verde (e ogni rosso si vede) · punti A,B,C,D
+=== festa-3d · 13:52:58 · mem libera 15273 MB · disco libero 29G
+ESITO festa-3d exit=0 durata=127s · ✅ PASS — la vittoria si festeggia in 3D coi numeri veri, e «Salta» porta alla card
+=== licenze-184 · 13:55:05 · mem libera 15531 MB · disco libero 29G
+ESITO licenze-184 exit=0 durata=183s · ✅ licenze-184 · prova del rosso: il guardiano vede (4 rossi, 4/4 misure accese)
+=== fps-249 · 13:58:08 · mem libera 15301 MB · disco libero 28G
+ESITO fps-249 exit=0 durata=53s · ✅ fps-249 verde (nessuna scritta fps al giocatore, misura viva) e il rosso si vede
+=== test:logic · 13:59:01 · mem libera 15425 MB · disco libero 28G
+ESITO test:logic exit=0 durata=3s · # duration_ms 3268.308833
+=== save-compat · 13:59:04 · mem libera 15249 MB · disco libero 28G
+ESITO save-compat exit=0 durata=12s · ✅ PASS
+=== presentazione-142 · 13:59:16 · mem libera 15163 MB · disco libero 28G
+ESITO presentazione-142 exit=0 durata=191s · ✅ presentazione-142 verde (e il rosso cade)
+=== gigante-212 · 14:02:27 · mem libera 15452 MB · disco libero 28G
+ESITO gigante-212 exit=0 durata=1028s · ✅ difetto riprodotto — col rosso __CPM_NO_G212 tornano 3 corpi sopra 2.05 m (il gigante della foto)
+=== career-critical · 14:19:35 · mem libera 15519 MB · disco libero 28G
+ESITO career-critical exit=0 durata=688s · 
+=== tpose-196 · 14:31:03 · mem libera 15257 MB · disco libero 28G
+ESITO tpose-196 exit=0 durata=1541s · ✅ tpose-196 ROSSO ATTESO: con __CPM_NO_G196 i corpi sbagliati si vedono
+FINE-GRUPPO presentazione-225 presentazione-200 cerimonie cerimonie-192 festa-3d licenze-184 fps-249 test:logic save-compat presentazione-142 gigante-212 career-critical tpose-196
