@@ -82,7 +82,16 @@ quelle voci non dicevano, e l'ho misurato fotogramma per fotogramma:
 4. **Finta da fermo al vento.** Nelle azioni «dribbling e assist / e cross» la finta è inserita a tempo zero con l'eroe fermo: se
    nessun avversario è vicino (gi100, gi19: 4-10u) non c'è duello.
 
-Foto prima: `giro226/prima-gi26k2-success.jpg`, `prima-gi20k0-fail.jpg`, `prima-gi30k0-success.jpg`, `prima-gi93k2-success.jpg`.
+Sequenze fotografiche (un fotogramma ogni 0,35 s di scena, `docs/sviluppo/giro226/`). Le «prima» sono della prima passata, sul
+codice senza alcuna correzione; le «dopo» sono rifatte sul build finale.
+
+| Azione | Prima | Dopo | Che cosa guardare |
+|---|---|---|---|
+| gi26 «Doppio passo e tiro», riuscito | `prima-gi26k2-success.jpg` | `dopo-gi26k2-success.jpg` | prima: eroe solo fino a 1,4 s, poi sovrapposto al difensore al tiro (2,10 s); dopo: difensore davanti da 0,35 s, saltato a 1,05 s |
+| gi20 «Dribbling netto e tiro», fallito | `prima-gi20k0-fail.jpg` | `dopo-gi20k0-fail.jpg` | prima: tre corpi ammucchiati a 1,4-1,75 s; dopo: un uomo davanti, poi la scivolata di chi mura |
+| gi30 «Dribbling centrale e conduci», riuscito | `prima-gi30k0-success.jpg` | `dopo-gi30k0-success.jpg` | prima: nessun avversario, pallone di fianco; dopo: avversario saltato a 0,35-0,70 s, pallone al piede |
+| gi30 «Dribbling centrale e conduci», fallito | `prima-gi30k0-fail.jpg` | `dopo-gi30k0-fail.jpg` | dopo: il pallone parte quando arriva la scivolata |
+| gi93 «Cross dopo dribbling», riuscito | `prima-gi93k2-success.jpg` | — | prima: mucchio di 4-5 corpi attorno all'eroe (non rifotografata dopo) |
 
 ## 3. Che cosa ho corretto (tutto dietro `window.__CPM_NO_G226`, tutto in `src/12-three-match-view.jsx`)
 
@@ -105,7 +114,74 @@ Nessun asset nuovo, nessuna clip nuova: si muovono solo difensori e pallone; ber
 
 Stesso strumento, stesso protocollo, stessa sessione: PRIMA = braccio rosso (`__CPM_NO_G226`), DOPO = braccio verde.
 
-<!-- TABELLA -->
+| Misura | PRIMA (rosso `__CPM_NO_G226`) | DOPO (verde) |
+|---|---|---|
+| esecuzioni giudicate | 116/116 | 116/116 |
+| senza alcun difetto | 31 | 88 |
+| punteggio di confusione medio | 1.99 | 0.46 |
+| punteggio massimo | 7.85 | 3.82 |
+| finta nel vuoto (avversario oltre 3.5u) | 70 | 2 |
+| distanza del duello: mediana / p90 / max (u) | 4.45 / 9.58 / 15.78 | 2.06 / 2.51 / 5.76 |
+| duello non misurabile (nessun tratto di finta) | 3 | 0 |
+| corpi compenetrati oltre 0.15s | 13 | 1 |
+| compenetrazione: tempo max (s) / distanza minima mediana (u) | 0.61 / 0.82 | 0.22 / 1.2 |
+| pallone staccato dal piede (oltre 2u in >10% dei fotogrammi controllati) | 2 | 0 |
+| pallone-piede in controllo: mediana / max (u) | 0.4 / 2.16 | 0.4 / 1.17 |
+| accelerazioni oltre 80 u/s² (esecuzioni) | 0 | 0 |
+| accelerazione massima eroe: mediana / max (u/s²) | 37 / 64 | 38 / 62 |
+| inversioni di marcia oltre 120° | 0 | 0 |
+| teletrasporti eroe / pallone in controllo | 0 / 0 | 0 / 0 |
+| salti di camera fuori dagli stacchi | 3 | 0 |
+| eroe fuori quadro nel tratto di dribbling oltre 15% | 1 | 0 |
+| eroe fuori quadro nell'intera scena oltre 15% | 19 | 13 |
+| pallone fuori quadro nell'intera scena oltre 25% | 17 | 18 |
+| cambi di padrone del pallone oltre 3 | 1 | 0 |
+| esito visivo incoerente col testo | 2 | 1 |
+| finta senza gesto montato oltre 40% | 0 | 0 |
+| clip ripartite a meta' | 0 | 0 |
+| cambi di clip a peso pieno (contati, non giudicati) | 44 | 43 |
+
+116 esecuzioni per braccio (58 azioni × fallito/riuscito), tutte giudicate.
+
+**Per variante ed esito** (punteggio di confusione medio):
+
+| Variante · esito | n | PRIMA | DOPO |
+|---|---|---|---|
+| double_step · fallito | 4 | 3.19 | 0.77 |
+| dribble_feint · fallito | 39 | 2.63 | 0.70 |
+| dribble_outside · fallito | 5 | 2.48 | 0.28 |
+| roulette · fallito | 1 | 1.93 | 0.00 |
+| puro dribble_feint · fallito | 5 | 1.87 | 1.86 |
+| dribble_inside · fallito | 4 | 1.80 | 0.98 |
+| dribble_feint · riuscito | 39 | 1.57 | 0.13 |
+| puro dribble_feint · riuscito | 5 | 1.52 | 0.29 |
+| dribble_inside · riuscito | 4 | 1.51 | 0.32 |
+| dribble_outside · riuscito | 5 | 1.22 | 0.00 |
+| double_step · riuscito | 4 | 0.95 | 0.00 |
+| roulette · riuscito | 1 | 0.00 | 0.00 |
+
+**Clip suonata nella finta, per variante** (prima = dopo: la correzione non cambia le clip):
+finta, rientro, sterzata e doppio passo suonano tutte la clip `change`; il dribbling puro `feint` (o `change`; `trip` quando l'esito è
+un fallo); la roulette `ruleta`. Vedi dubbio 1.
+
+Classifiche complete, esecuzione per esecuzione coi difetti: `docs/sviluppo/giro226/classifica-prima.txt` e `classifica-dopo.txt`.
+
+**I più confusi PRIMA** (prime voci della classifica): gi113 «Finta e serve dopo la finta» fallito (finta a 9,3u, compenetrazione
+0,33 s, esito incoerente) · gi18 «Dribbling netto e assist» fallito (finta a 13,9u) · gi26 «Doppio passo e tiro» fallito · gi100
+«Finta sulla fascia e assist» fallito · gi95 «Finta rapida e scatto e tiro» fallito (finta a 10,6u) · gi22 «Dribbling GK e tiro»
+riuscito (compenetrazione 0,42 s) · gi23 «Dribbling difensore e tiro» riuscito (0,35 s) · gi30 «Dribbling centrale e conduci» riuscito
+(nessuno entro 9,1u).
+
+**Che cosa resta sopra soglia DOPO** (28 esecuzioni su 116 hanno ancora almeno una voce):
+- **eroe o pallone fuori quadro sull'intera scena** (13 e 18 esecuzioni): quasi tutte azioni FALLITE, dopo la perdita del pallone o il
+  tiro sbagliato. Nel tratto di dribbling l'eroe è in quadro (0 esecuzioni oltre il 15%). Non l'ho toccato: vedi dubbio 2.
+- **finta nel vuoto, 2 esecuzioni**: gi71 «Finta e interno» fallito (5,76u) e gi57 «Dribbling di tecnica e assist» fallito (4,39u).
+  In tutte e due l'uomo esce a chiudere ma parte da troppo lontano per arrivare in tempo.
+- **esito incoerente, 1**: gi102 «Dribbling netto e cross» fallito — il riquadro dice «parata» ma nei 7 s osservati il cross non
+  lascia l'eroe. È il cross, non il dribbling: vedi dubbio 4.
+- **compenetrazione, 1**: gi150 «Scatto improvviso provocatorio» riuscito (0,22 s, minimo 0,26u). È il fallo cercato: chi commette
+  il fallo entra sull'eroe per costruzione (giro 41) e la guardia dei corpi lo esclude come contrasto vero.
+
 
 ## 5. Guardiano `dribbling-226`
 
@@ -115,7 +191,18 @@ Sette pretese per esecuzione: pallone al piede, corpi, moto, esito, camera, duel
 Ripetizione dichiarata: una esecuzione rossa nel braccio verde si rifà una volta su pagina nuova (verde alla ripetizione = «instabile»,
 contato e stampato). Il braccio rosso deve mostrare la finta nel vuoto in almeno 3 esecuzioni, senza ripetizioni.
 
-<!-- GUARDIANO -->
+Esito in questa sessione, sul build committato (`tests/visual/out/dribbling-226/guardiano-2.log`, 1088 s):
+
+- **Braccio verde: 22/22** esecuzioni senza violazioni, 0 instabili, 0 rosse. Distanza del duello fra 1,02u e 2,62u.
+- **Braccio rosso (`__CPM_NO_G226`): rosso.** Finta nel vuoto vista in **5 esecuzioni su 12** (4,97u · 5,47u · 5,53u · 6,30u · 8,45u;
+  minimo richiesto 3), 9 esecuzioni su 12 con almeno una violazione (3 compenetrazioni da 0,20-0,25 s, eroe fuori quadro nel 20% del
+  gesto sul dribbling puro perso).
+- Una corsa precedente dello stesso guardiano, a correzione non ancora completa, aveva dato braccio verde 20/22 (i due rossi erano il
+  dribbling puro perso: duello «non giudicato» dallo strumento ed eroe fuori quadro nel 20% del gesto). Lo strumento è stato esteso
+  al dribbling puro perso e il gioco corretto (correzione 5).
+
+Durata: circa 18 minuti da solo. Nelle catene `completa` e `carriera` di `ci-runner.mjs` compare una volta sola per catena
+(`node --check ci-runner.mjs` pulito).
 
 ## 6. Controlli
 
@@ -123,4 +210,34 @@ contato e stampato). Il braccio rosso deve mostrare la finta nel vuoto in almeno
 
 ## 7. Dubbi per il PO
 
-<!-- DUBBI -->
+1. **Le varianti si distinguono poco: finta, rientro, sterzata e doppio passo suonano la stessa clip (`change`).** Solo la roulette ha
+   la sua (`ruleta`). Il «doppio passo» non mostra un doppio passo. Non ho aggiunto clip (regola: nessun asset nuovo senza licenza).
+   Alternative, da decidere: (a) clip nuove con licenza registrata per doppio passo e sterzata; (b) usare per una variante la clip
+   `dribble` già in casa (il rapporto del giro 184 dice che `dribble-03` è rientrata nel pacchetto) — non l'ho provata; (c) lasciare
+   una clip sola e differenziare col movimento (lato dello scarto, ampiezza). Finché non c'è una decisione resta così.
+2. **Dopo un'azione FALLITA l'eroe esce spesso dal quadro** (13 esecuzioni su 116 oltre il 15% dei fotogrammi dell'intera scena; il
+   pallone 18 oltre il 25%). La camera segue il pallone perso o il tiro uscito. Nel tratto di dribbling l'eroe è in quadro. Non l'ho
+   toccato perché è regia delle conclusioni (tiro, cross, passaggio), non del dribbling, e cambiarla tocca le scelte del 7.482/7.505.
+   Va corretto? Se sì, è un giro a parte con il censimento del quadro.
+3. **La finta da fermo ora aspetta l'uomo fino a 0,45 s.** È un'attesa in più prima della finta nelle azioni «dribbling e assist / e
+   cross» quando il difensore parte lontano. Sul telefono si deve vedere l'eroe che tiene palla e l'uomo che arriva; se sembra un
+   tempo morto, il valore va accorciato.
+4. **gi102 «Dribbling netto e cross» fallito**: il riquadro dice «parata» (`saved`) ma nei 7 s di scena osservati il cross non
+   lascia l'eroe. Era già così nella prima passata, prima di ogni correzione (gi102 e gi94): è il cross dopo il dribbling, non il
+   dribbling. Nel braccio rosso finale le incoerenze sono 2 e sono altre (gi113 e gi18: passaggio «intercettato» col pallone rimasto
+   all'eroe), nel verde 1: non posso dire che la differenza sia merito della correzione, la voce oscilla da una corsa all'altra.
+   Non l'ho indagato oltre.
+5. **gi120 «Dribbling e conduci» fallito**: il testo dice «Il dribbling non riesce: palla agli avversari», il tipo d'esito scelto dal
+   gioco è `fouled` e in campo l'eroe inciampa e cade col pallone a un metro. Lo strumento non lo conta come incoerenza (un uomo a
+   terra non possiede il pallone), ma testo e scena non raccontano la stessa cosa. È materia di esiti (`esiti-96` / `esiti-241`).
+6. **Restano 2 finte nel vuoto su 116** (gi71 e gi57 falliti): l'uomo esce a chiudere ma parte da troppo lontano. Per chiuderle
+   servirebbe mettere il marcatore vicino già all'apertura della scena (prima della scelta), cioè toccare lo schieramento d'apertura.
+7. **I cambi di clip a peso pieno** (44 prima, 43 dopo, quasi tutti tiro → reazione al tiro sbagliato) sono contati ma non
+   giudicati: da questo testimone non posso confermare che siano scatti di posa visibili. Servirebbe un testimone sul peso della
+   clip uscente.
+8. **Tutto il giudizio è headless.** Tempi e fluidità non sono giudicabili qui; la leggibilità del duello va guardata sul telefono.
+9. **Nel catalogo non ci sono tunnel, elastico, sombrero.** La richiesta li nominava come esempi: non esistono azioni con quelle
+   etichette, quindi non c'è niente da misurare.
+10. **`GAME_VERSION` non toccata** (regola fissa della sessione), anche se il giro è indicato come 7.999.196.
+11. **Il guardiano dura circa 18 minuti** (34 esecuzioni col GLB acceso, una pagina per azione). Se è troppo per le catene, si può
+    scendere a una azione per variante (`CPM_PER_VARIANTE=1`, circa metà tempo): è una scelta di copertura.
