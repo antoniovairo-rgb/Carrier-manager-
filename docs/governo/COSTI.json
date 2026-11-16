@@ -2001,5 +2001,20 @@
     "tipo": "verifica",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-16"
+  },
+  {
+    "sessione": "session_01QEYiaCFHtKWJpfPHjXR8si",
+    "titolo": "verifica 7.999.195 parte S: scene 3D lente (interrotta)",
+    "creata": "2026-11-15T20:46:20Z",
+    "chiusa": "2026-11-16T00:45:26Z",
+    "cost_usd": 2.15559436,
+    "output_tokens": 11286,
+    "cache_read_tokens": 6024482,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "verifica",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-16",
+    "nota": "costo letto dopo l'interruzione: può essere parziale"
   }
 ]
