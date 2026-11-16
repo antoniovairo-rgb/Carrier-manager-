@@ -15456,6 +15456,7 @@ function ThreeMatchView(props){
     // [5.75.0 BUG-17] WebGL può NON essere disponibile (blacklist driver, memoria, WebView senza GL):
     //   il costruttore lancia e l'eccezione in un useEffect NON è catturata dagli error boundary → crash muto.
     //   Fallback: messaggio leggibile nel mount + abort pulito del setup 3D (la partita resta giocabile via UI).
+    try{if(typeof window!=='undefined'&&typeof window.__CPM_SMONTA219==='function')window.__CPM_SMONTA219();}catch(_e219){}/* [giro 219] lo smontaggio rimandato della partita PRECEDENTE si chiude prima di aprire un contesto nuovo */
     let renderer;
     try{renderer=new THREE.WebGLRenderer({antialias:isDesktop,powerPreference:'high-performance'});}
     catch(_eGL){
@@ -16259,6 +16260,13 @@ function ThreeMatchView(props){
     // [7.8.1 collaudo PO «mai burattini»] SOLO footballer.glb è obbligatorio; OGNI clip di animazione è opzionale
     //   (.catch→null) → una singola anim che tarda/fallisce NON abbatte più l'intero modello (prima Promise.all
     //   rigettava se una qualsiasi delle 12 falliva → soldatini). Il modello si costruisce appena il corpo è pronto.
+    const _SLOT219=['map','alphaMap','normalMap','emissiveMap','roughnessMap','metalnessMap','aoMap','bumpMap','specularMap','lightMap','envMap','gradientMap','displacementMap','matcap','clearcoatMap','clearcoatNormalMap','clearcoatRoughnessMap','transmissionMap'];/* [giro 219] le caselle di un materiale three r128 che possono contenere una texture */
+    /* [giro 219 · PO-484] IL MISTER DELLA CERIMONIA SI PREPARA PRIMA. MISURATO (profilo, telefono emulato CPU x4): all'avvio di festa e
+       premiazione actor-presenter.glb veniva scaricato, letto e compilato A SCENA APERTA — 250-650 ms di lettura e 0,5-1,8 s di
+       compilazione di due programmi che solo lui usa (colori per vertice), con «Salta» gia' a schermo. Ora parte coi corpi, al
+       montaggio: una copia NASCOSTA entra in scena e il fotogramma di prova la compila e ne carica le texture sotto il velo
+       dell'attesa; la cerimonia trova modello, programmi e texture pronti. Nulla di visibile cambia. Rosso __CPM_NO_G219. */
+    if(_useGLB&&typeof loadGLB==='function'&&!(typeof window!=='undefined'&&window.__CPM_NO_G219)&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){try{sr.current._misterP219=loadGLB('./assets/actor-presenter.glb').then(_g219=>{try{if(!_g219||!_g219.scene||!sr.current||sr.current._tex16Stop||sr.current._caldo219)return;const _w219=THREE.SkeletonUtils.clone(_g219.scene);_w219.name='caldo219';_w219.visible=false;_w219.traverse(m=>{if(m.isMesh)m.frustumCulled=false;});scene.add(_w219);sr.current._caldo219=_w219;try{window.__CPM_CALDO219=1;}catch(_e){}}catch(_e){}},()=>{});}catch(_e219){}}
     if(_useGLB&&typeof loadGLB==='function'){const _optGLB=u=>loadGLB(u).catch(()=>null);
       /* [PO-252/1 giro 22] la clip di CORSA vera (regular-anim-running, negli asset dal 7.9xx e mai caricata): l'eroe la usa sopra ~5 u/s,
          dove la «jog» (velocita' naturale 1,83 u/s, tetto di cadenza 2,5 = 4,6 u/s) non puo' tenere il piede fermo. Facoltativa:
@@ -16384,7 +16392,7 @@ function ThreeMatchView(props){
                accende tutto per un istante, si disegna su un bersaglio 4x4 con la mappa d'ombra da rifare, e si rimette com'era:
                nessun fotogramma arriva allo schermo, ombre e varianti sono pronte prima del fischio. */
             sr.current._prova16=()=>{if(typeof window!=='undefined'&&window.__CPM_NO_TEX16)return;const _hid=[];const _tp=performance.now();try{scene.traverse(o=>{if(!o.visible){_hid.push(o);o.visible=true;}});
-              const _rt=new THREE.WebGLRenderTarget(4,4),_prev=renderer.getRenderTarget();renderer.setRenderTarget(_rt);renderer.shadowMap.needsUpdate=true;renderer.render(scene,camera);renderer.setRenderTarget(_prev);_rt.dispose();
+              const _rt=new THREE.WebGLRenderTarget(4,4),_prev=renderer.getRenderTarget();if(!(typeof window!=='undefined'&&window.__CPM_NO_G219))_rt.texture.encoding=renderer.outputEncoding;/* [giro 219] MISURATO: il bersaglio di prova nasceva lineare (3000) e lo schermo e' sRGB (3001) → 28 programmi su 58 compilati con la codifica lineare, e quelli dello schermo compilati di nuovo; con la stessa codifica i programmi in scena scendono a 33 */renderer.setRenderTarget(_rt);renderer.shadowMap.needsUpdate=true;renderer.render(scene,camera);renderer.setRenderTarget(_prev);_rt.dispose();
               (renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e3){}});try{const _gl=renderer.getContext();const _px=new Uint8Array(4);_gl.readPixels(0,0,1,1,_gl.RGBA,_gl.UNSIGNED_BYTE,_px);}catch(_e5){}/* readPixels aspetta che la scheda grafica finisca: il costo resta QUI */}catch(_e4){}finally{_hid.forEach(o=>{o.visible=false;});}
               if(typeof window!=='undefined')(window.__CPM_PROVA16=window.__CPM_PROVA16||[]).push(+(performance.now()-_tp).toFixed(0));};
             sr.current._prova16();if(typeof window!=='undefined')window.__CPM_PRECOMP769={ms:+(performance.now()-_t0).toFixed(0),programs:renderer.info.programs?renderer.info.programs.length:null};}catch(_e){}
@@ -16402,8 +16410,15 @@ function ThreeMatchView(props){
              tutto sull'apertura della prima scena. Si ferma da solo quando il renderer muore. Rosso __CPM_NO_TEX16. */
           try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TEX16)&&sr.current&&!sr.current._tex16Iv){const _done16=new Set();
             sr.current._tex16Iv=setInterval(()=>{try{if(!sr.current||sr.current._tex16Stop||renderer.getContext().isContextLost()){clearInterval(sr.current&&sr.current._tex16Iv);return;}
-              sr.current._tex16N=(sr.current._tex16N|0)+1;if(sr.current._tex16N%20===0){const _pc=performance.now();const _np=renderer.info.programs?renderer.info.programs.length:0;try{renderer.compile(scene,camera);(renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e2){}});}catch(_e){}if(typeof window!=='undefined')window.__CPM_RECOMP16={n:(window.__CPM_RECOMP16?window.__CPM_RECOMP16.n:0)+1,nuovi:((renderer.info.programs?renderer.info.programs.length:0)-_np)+(window.__CPM_RECOMP16?window.__CPM_RECOMP16.nuovi:0),ms:+(performance.now()-_pc).toFixed(0)};}/* e ogni 5 s si ricompila: i materiali cambiati DOPO l'aggancio (alphaTest dei pacchetti CGTrader) trovano il programma pronto prima della scena */
-              const _tb=performance.now();let _stop=false;scene.traverse(o=>{if(_stop)return;const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms){for(const k in m){const t=m[k];if(t&&t.isTexture&&!_done16.has(t)){_done16.add(t);if(!(renderer.properties.get(t)||{}).__webglTexture&&t.image){renderer.initTexture(t);if(typeof window!=='undefined')window.__CPM_TEX16B=(window.__CPM_TEX16B|0)+1;if(performance.now()-_tb>12){_stop=true;break;}}}}if(_stop)break;}});}catch(_e){}},250);}}catch(_e16c){}
+              const _g219=!(typeof window!=='undefined'&&window.__CPM_NO_G219);
+              if(_g219){try{const _T219=window.__CPM_TOCCO219;if(_T219&&performance.now()<_T219.fino)return;}catch(_e219){}}/* [giro 219] un tocco in corso passa prima: il giro si rifa' fra 250 ms */
+              sr.current._tex16N=(sr.current._tex16N|0)+1;if(sr.current._tex16N%20===0&&!(_g219&&sr.current._sg219!=null&&sr.current._sg219===sr.current._sgComp219)/* [giro 219] MISURATO: la ricompilazione ogni 5 s costava 168 ms (CPU x4) e ~3,7 MB di chiavi anche quando NIENTE era cambiato. Ora parte solo se la firma dei materiali in scena (quanti, quali, a che versione) e' diversa dall'ultima compilata */){sr.current._sgComp219=sr.current._sg219;const _pc=performance.now();const _np=renderer.info.programs?renderer.info.programs.length:0;try{renderer.compile(scene,camera);(renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e2){}});}catch(_e){}if(typeof window!=='undefined')window.__CPM_RECOMP16={n:(window.__CPM_RECOMP16?window.__CPM_RECOMP16.n:0)+1,nuovi:((renderer.info.programs?renderer.info.programs.length:0)-_np)+(window.__CPM_RECOMP16?window.__CPM_RECOMP16.nuovi:0),ms:+(performance.now()-_pc).toFixed(0)};}/* e ogni 5 s si ricompila: i materiali cambiati DOPO l'aggancio (alphaTest dei pacchetti CGTrader) trovano il programma pronto prima della scena */
+              const _tb=performance.now();let _stop=false;
+              if(_g219){/* [giro 219] MISURATO (profilo delle allocazioni, dal clic su «Gioca» a fine ingresso): 417 MB allocati da questo giro — un vettore per oggetto e l'elenco di TUTTE le proprieta' di ogni materiale, quattro volte al secondo. Stesso lavoro senza allocare: si leggono solo le caselle che possono contenere una texture, e nello stesso passaggio si calcola la firma dei materiali */
+                let _sg=0;const _un=(m)=>{if(!m)return;_sg+=(m.id|0)*7+(m.version|0)+1;if(_stop)return;for(let i=0;i<_SLOT219.length;i++){const t=m[_SLOT219[i]];if(t&&t.isTexture&&!_done16.has(t)){_done16.add(t);if(!(renderer.properties.get(t)||{}).__webglTexture&&t.image){renderer.initTexture(t);if(typeof window!=='undefined')window.__CPM_TEX16B=(window.__CPM_TEX16B|0)+1;if(performance.now()-_tb>12){_stop=true;return;}}}}};
+                scene.traverse(o=>{const mm=o.material;if(!mm)return;if(Array.isArray(mm)){for(let i=0;i<mm.length;i++)_un(mm[i]);}else _un(mm);});sr.current._sg219=_sg;
+              }else
+              scene.traverse(o=>{if(_stop)return;const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms){for(const k in m){const t=m[k];if(t&&t.isTexture&&!_done16.has(t)){_done16.add(t);if(!(renderer.properties.get(t)||{}).__webglTexture&&t.image){renderer.initTexture(t);if(typeof window!=='undefined')window.__CPM_TEX16B=(window.__CPM_TEX16B|0)+1;if(performance.now()-_tb>12){_stop=true;break;}}}}if(_stop)break;}});}catch(_e){}},250);}}catch(_e16c){}
           if(typeof window!=='undefined')window.__CPM_PROGS16=()=>{try{return (renderer.info.programs||[]).map(p=>({n:p.name,k:String(p.cacheKey||'')}));}catch(_e){return null;}};
           if(typeof window!=='undefined')window.__CPM_TEXNEW16=()=>{const o16=[];try{scene.traverse(o=>{const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms)for(const k in m){const t=m[k];if(t&&t.isTexture&&!(renderer.properties.get(t)||{}).__webglTexture){let p=o,nm=[];while(p&&nm.length<4){nm.push(p.name||p.type);p=p.parent;}o16.push({k,w:t.image&&t.image.width,vis:o.visible,chi:nm.join('<')});}}});}catch(_e){}return o16;};try{window.__CPM_GLB_READY=true;}catch(_e2){}},0);}else if(_on769&&sr.current&&sr.current._precomp769&&window.__CPM_PRECOMP769){try{window.__CPM_GLB_READY=true;}catch(_e3){}}}catch(_e769){try{window.__CPM_GLB_READY=true;}catch(_e4){}}
         proc.visible=true;proc._procHidden95=false;// [6.95.0] il grace period nascondeva il ROOT: all'aggancio il root torna visibile (dentro c'è il GLB; i figli procedurali sotto restano spenti)
@@ -17034,7 +17049,8 @@ function ThreeMatchView(props){
           if(!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_G196)){try{const _ka=(_trioLod&&packages&&packages[2])||pkg;if(!_ka.animations||!_ka.animations.length)_ka.animations=pkg.animations;window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(_ka,list);const _ap=window.__CPM_HYPER_ASSISTANT_LIST;if(_ap)window.__CPM_HYPER_ASSISTANT_BUILDER(_ap);}catch(_e196a){try{console.warn('[CPM-196] guardalinee',_e196a&&_e196a.message);}catch(_e){}}}/* [giro 196 PO-449] guardalinee CGTrader (LOD leggero) anche fuori dalla modalita' «full». Rosso __CPM_NO_G196 */
           if(_hideBench293){try{const _kb=(_trioLod&&packages&&packages[2])||pkg;if(!_kb.animations||!_kb.animations.length)_kb.animations=pkg.animations;_replaceBenchWithCgtrader293(_kb);}catch(_e293){try{console.warn('[CPM-293] panchina fail',_e293&&_e293.message);}catch(_e){}try{benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
-          try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
+          try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)){const _vai74=()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}};/* [giro 219] il fotogramma di prova aspetta (al massimo 2,5 s) la copia nascosta del mister: MISURATO su PC che, arrivando dopo, i suoi due programmi si compilavano a ingresso gia' visibile (un compito da 983 ms) */
+            if(sr.current&&sr.current._misterP219&&!(typeof window!=='undefined'&&window.__CPM_NO_G219)){let _f219=false;const _una=()=>{if(_f219)return;_f219=true;_vai74();};sr.current._misterP219.then(_una,_una);setTimeout(_una,2500);}else setTimeout(_vai74,0);}}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}try{if(typeof benchFigs!=='undefined'&&benchFigs)benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}});
       }
@@ -18885,8 +18901,23 @@ function ThreeMatchView(props){
        build (7.342.0 aveva corretto solo il tasto e la card). Letto UNA volta qui: `devToolsOn()` legge
        localStorage e non puo' stare dentro un loop a 60 fps. */
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
+    /* [giro 219 · PO-484 «a volte l'evento post tocco e' un po' ritardato e sembra che non ho premuto»] IL TOCCO PASSA PRIMA DEL DISEGNO.
+       MISURATO (profilo-219, telefono emulato 375x667 CPU x4, corpi 3D accesi): in festa, premiazione e ingresso il tocco su «Salta»
+       aspettava 0,9-2,4 s prima di essere elaborato, perche' arrivava a meta' di un fotogramma 3D (ciclo + disegno) e il riscontro
+       del tasto (giro 213) doveva poi aspettare un altro fotogramma 3D intero. Due mani:
+       (1) lo strato del tocco (src/19) dichiara window.__CPM_TOCCO219 al pointerdown su un tasto: per il fotogramma seguente
+           — e, sui tasti che chiudono la scena, finche' l'azione non e' partita — il ciclo NON lavora e NON disegna: il fotogramma
+           porta a schermo solo il tasto premuto e la schermata nuova. La scena resta quella dell'ultimo fotogramma (nessun nero);
+       (2) se un tocco e' gia' in coda quando il ciclo parte, o subito prima del disegno (navigator.scheduling.isInputPending, dove
+           esiste), il fotogramma si cede: al massimo due di fila.
+       Il tempo di scena non salta: il passo e' gia' limitato a 0,05 s. Rosso __CPM_NO_G219. */
+    const _G219=!(typeof window!=='undefined'&&window.__CPM_NO_G219);
+    const _sched219=(typeof navigator!=='undefined'&&navigator.scheduling&&typeof navigator.scheduling.isInputPending==='function')?navigator.scheduling:null;
+    let _ipN219=0;
+    const _pend219=()=>{if(!_G219||!_sched219)return false;let p=false;try{p=_sched219.isInputPending();}catch(_e){}if(!p){_ipN219=0;return false;}if(_ipN219>=2)return false;_ipN219++;try{window.__CPM_IP219=(window.__CPM_IP219|0)+1;}catch(_e){}return true;};
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      if(_G219){try{const _t219=window.__CPM_TOCCO219;if(_t219&&(_t219.n>0||_t219.tieni)&&performance.now()<_t219.fino){if(_t219.n>0)_t219.n--;window.__CPM_SALTI219=(window.__CPM_SALTI219|0)+1;return;}}catch(_e219){}if(_pend219())return;}
       {const _K96=sr.current._k96;if(_K96&&_K96.on){try{camera.quaternion.copy(_K96.q);if(camera.fov!==_K96.fov){camera.fov=_K96.fov;camera.updateProjectionMatrix();}camera.updateMatrixWorld(true);}catch(_e){}_K96.on=0;}}/* [giro 96a] la regia riparte dalla SUA camera: la correzione del quadro (vedi «QUADRO DELL'EROE») vale solo per il fotogramma disegnato */
       const __w266c=(tg)=>{try{const W=sr.current._w266m;if(!W||typeof window==='undefined'||!window.__CPM_W266)return;const L=(window.__CPM_W266T=window.__CPM_W266T||[]);if(L.length>6000)return;for(const ii in W.ms){const mm=W.ms[ii];L.push([W.f,tg,+ii,+(mm.position.x+50).toFixed(1),+(mm.position.z/0.68+50).toFixed(1),(propsRef.current&&propsRef.current.matchPhase)||'']);}}catch(_e){}};/* [giro 43 PO-266] testimone solo sonde */
       if(sr.current._w266m){sr.current._w266m.f++;if(sr.current._w266m.f>400)sr.current._w266m=null;}__w266c('S');
@@ -21908,7 +21939,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            giro) che i corpi ancora in attesa al tunnel non hanno nessuna clip avviata e `playing` non gliene avvia una, cosi' l'attesa
            dei corpi (PO-232) scattava per tutto il tetto di 8 s (15 corpi «fermi» su 23). Il salto porta tutti al proprio posto e
            chiude l'ingresso nello STESSO fotogramma (walkT=WALK_DUR): la chiusura e' quella naturale (onWalkoutDone) e il riposo riparte (vedi l'idle della fila, ramo PO-206). Mezzo secondo di scena non bastava: sotto carico in headless durava piu' della rete di sicurezza. */
-        if(typeof window!=='undefined'&&window.__CPM_SKIPWALK277&&!walkDone&&!window.__CPM_NO_ING277){window.__CPM_SKIPWALK277=false;
+        if(typeof window!=='undefined'&&window.__CPM_SKIPWALK277&&!walkDone&&!window.__CPM_NO_ING277){window.__CPM_SKIPWALK277=false;if(_G219)sr.current._noDis219=1;/* [giro 219] il fotogramma che chiude l'ingresso non si disegna: la fase cambia subito, senza aspettare un disegno della scena che sta per sparire */
           const _sn277=(m)=>{if(!m||m._wx==null)return;m.position.x=m._wx;m.position.z=m._wz;m._px=m._wx;m._pz=m._wz;m._sp=0;};
           sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);if(!window.__CPM_NO_BIMBI294){for(const _m294 of _mascots){if(_m294){_m294._lp227=null;_m294._sp227=0;_m294._snap294=true;}}}/* [giro 88 PO-294] «Salta ingresso»: i bambini vanno al posto senza velocita' residua */
           }
@@ -27990,7 +28021,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       }catch(_e51){}
       __w266c('R');
       if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
-      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
+      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196)){if(sr.current._noDis219)sr.current._noDis219=0;else if(!_pend219())renderer.render(scene,camera);/* [giro 219] un tocco in coda passa prima del disegno */}/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
@@ -28011,6 +28042,13 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       window.removeEventListener('resize',onR);
       try{if(_ro)_ro.disconnect();}catch(_e){}
       cancelAnimationFrame(sr.current.raf);
+      /* [giro 219 · PO-484] LO SMONTAGGIO NON STA PIU' DENTRO IL TOCCO. MISURATO (profilo del salto, telefono emulato CPU x4): il
+         compito che chiude festa/premiazione durava 1,3-1,5 s, di cui 1,17-1,27 s in forceContextLoss e il resto nel rilascio di
+         geometrie/materiali/texture — tutto DENTRO il clic su «Salta», prima che la schermata di fine gara potesse comparire. Ora al
+         clic si fermano ciclo e caricatore e si stacca la tela; i tre lavori pesanti (rilascio della scena · rilascio dei modelli in
+         cache · perdita del contesto) partono dopo, uno per volta, e cedono il passo a un tocco in corso. Se una partita nuova si
+         monta prima, li chiude lei per prima cosa (__CPM_SMONTA219). Rosso __CPM_NO_G219: tutto subito come prima. */
+      const _p1_219=()=>{
       // [5.75.0 BUG-4] dispose PROFONDO a fine partita: texture canvas (folla 2048×512/tabellone/bandiere),
       //   materiali e geometrie procedurali venivano ricreati ad ogni match senza rilasciare i precedenti.
       //   Le geometrie dei GLB (skinned, condivise con la cache _glbCache) NON si toccano; le texture disposte
@@ -28029,6 +28067,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
          sono condivisi coi cloni in campo, e renderer.dispose() non toglie i propri ascoltatori dalle risorse che non ha liberato.
          Ora allo smontaggio si liberano anche geometrie, materiali e texture dei modelli in cache: il loro 'dispose' toglie gli
          ascoltatori; il contesto WebGL della partita dopo e' nuovo e li ricarica comunque. */
+      };const _p2_219=()=>{
       if(!(typeof window!=='undefined'&&window.__CPM_NO_MEM275)&&typeof _glbCache!=='undefined'){try{
         const _rel275=g=>{try{if(!g||!g.scene)return;g.scene.traverse(o=>{try{if(o.geometry)o.geometry.dispose();}catch(_e){}
           const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];
@@ -28038,7 +28077,19 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         if(typeof _kitTexCache!=='undefined')Object.values(_kitTexCache).forEach(t=>{try{if(t&&t.isTexture)t.dispose();}catch(_e){}});
       }catch(_e275){}}
 
+      };const _p3_219=()=>{
       try{renderer.forceContextLoss();}catch(e){}try{renderer.dispose();}catch(e){}// 5.69.3: rilascia il contesto WebGL della partita a fine match → non si accumula tra una partita e l'altra
+      };
+      if(typeof window!=='undefined'&&window.__CPM_NO_G219){_p1_219();_p2_219();_p3_219();}
+      else{try{if(sr.current){sr.current._tex16Stop=true;clearInterval(sr.current._tex16Iv);}}catch(_e){}
+        const _passi219=[_p1_219,_p2_219,_p3_219];let _tm219=0;
+        const _tutto219=()=>{clearTimeout(_tm219);while(_passi219.length){try{_passi219.shift()();}catch(_e){}}try{if(window.__CPM_SMONTA219===_tutto219)window.__CPM_SMONTA219=null;}catch(_e){}};
+        const _uno219=()=>{if(!_passi219.length)return;let _occ=false;try{const T=window.__CPM_TOCCO219;_occ=!!(T&&performance.now()<T.fino+300)||!!(_sched219&&_sched219.isInputPending());}catch(_e){}
+          if(_occ){_tm219=setTimeout(_uno219,150);return;}
+          try{_passi219.shift()();}catch(_e){}
+          if(_passi219.length)_tm219=setTimeout(_uno219,80);else{try{if(window.__CPM_SMONTA219===_tutto219)window.__CPM_SMONTA219=null;window.__CPM_SMONTATO219=(window.__CPM_SMONTATO219|0)+1;}catch(_e){}}};
+        try{window.__CPM_SMONTA219=_tutto219;}catch(_e){}
+        _tm219=setTimeout(_uno219,350);}
       if(typeof window!=='undefined')window.__CPM_MATCH_ACTIVE=false;// 5.69.3: fine partita → i ritratti possono di nuovo renderizzare
       if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
     };
@@ -65574,14 +65625,25 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
   try{if(!NO221)document.documentElement.style.setProperty("--lampo221",TINTE.oro);}catch(_e){}
   const scuoti=el=>{if(NO221)return;const t=el.querySelector("[data-motivo221]")||el;t.removeAttribute("data-scuoti221");void t.offsetWidth;t.setAttribute("data-scuoti221","");
     try{window.__CPM_SPENTO221=(window.__CPM_SPENTO221|0)+1;}catch(_e){}clearTimeout(t._t221);t._t221=setTimeout(()=>t.removeAttribute("data-scuoti221"),420);};
-  let prem=null,tGiu=0,tRil=null;
+  /* [giro 219 · PO-484] PRECEDENZA DEL TOCCO SUL DISEGNO 3D. Lo strato dichiara window.__CPM_TOCCO219={n,tieni,fino}: il ciclo della
+     partita 3D (src/12) cede il prossimo fotogramma (`n`) — e tutti quelli fino a `fino` mentre `tieni` e' vero (tasti a lavoro
+     misurato, finche' l'azione non e' partita) — cosi' il fotogramma dopo il tocco porta a schermo solo il tasto premuto, la
+     rotellina e poi la schermata nuova, senza aspettare un fotogramma della scena. Escluso il pad: li' la risposta al tocco E' la
+     scena. Il limite e' in FOTOGRAMMI (uno), non in tempo — MISURATO: con un limite di 450/900 ms il banco, dove un fotogramma dura piu' di un secondo, non cedeva mai il passo; il tetto di tempo (TETTO213, 4 s) resta solo come rete: un tasto che non fa nulla non puo' fermare la scena. Rosso __CPM_NO_G219. */
+  const prec219=(el,n,ms,tieni)=>{try{if(window.__CPM_NO_G219||(el&&el.closest&&el.closest('[data-cpm="dpad"]')))return;window.__CPM_TOCCO219={n:n|0,tieni:!!tieni,fino:performance.now()+ms,t:performance.now()};}catch(_e){}};
+  const molla219=()=>{try{const T=window.__CPM_TOCCO219;if(T&&T.tieni){T.tieni=false;T.n=0;}/* l'azione e' partita: la scena riprende subito (il salto dell'ingresso lo chiude proprio il ciclo 3D) */}catch(_e){}};
+  let prem=null,tGiu=0,tRil=null,visto219=true,daRil219=false,gen219=0;
   const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
   document.addEventListener("pointerdown",e=>{
     if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el)return;if(spento(el)){scuoti(el);return;}
     rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
     el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
+    /* [giro 219] il tasto non si rilascia prima di essere stato DISEGNATO premuto. MISURATO (premiazione, PC): con fotogrammi da 0,7 s
+       il rilascio a tempo (120 ms) arrivava prima del primo fotogramma, e il tasto non si vedeva mai premuto — solo la rotellina. */
+    visto219=!!window.__CPM_NO_G219;daRil219=false;const g219=++gen219;/* ogni pressione ha il suo numero: il fotogramma atteso da una pressione PRECEDENTE dello stesso tasto non rilascia questa (misurato: due pressioni dentro un fotogramma lento, la seconda non veniva mai disegnata) */if(!visto219)requestAnimationFrame(()=>{if(g219!==gen219)return;visto219=true;if(daRil219&&prem===el){daRil219=false;requestAnimationFrame(()=>{if(g219===gen219&&prem===el)rilascia();});}});
+    prec219(el,1,TETTO213,false);
   },true);
-  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);tRil=setTimeout(()=>{tRil=null;if(prem===el)rilascia();},resto);};
+  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);const g219=gen219;tRil=setTimeout(()=>{tRil=null;if(prem!==el||g219!==gen219)return;if(!visto219){daRil219=true;return;}rilascia();},resto);};
   document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
   /* azione in attesa: rotellina e guardia del doppio tocco */
   const attese=new Map();let oss=null;
@@ -65600,11 +65662,12 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     const a={t:performance.now(),fatto:false,ov:null};attese.set(el,a);guarda();
     a.tt=setTimeout(()=>fine(el),Math.max(TETTO213,GUARDIA213));
     if(el.hasAttribute("data-pesante213")){
-      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);
-      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
+      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);prec219(el,1,TETTO213,true);/* [giro 219] la scena 3D cede il passo finche' l'azione non e' partita */
+      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}molla219();a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
       return;
     }
     a.tr=setTimeout(()=>rotella(el),ROTELLA213);
+    if(e.isTrusted)prec219(el,1,TETTO213,false);/* [giro 219] anche la schermata che il clic apre passa prima del disegno 3D */
   },true);
 })();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));

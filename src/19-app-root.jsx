@@ -1279,14 +1279,25 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
   try{if(!NO221)document.documentElement.style.setProperty("--lampo221",TINTE.oro);}catch(_e){}
   const scuoti=el=>{if(NO221)return;const t=el.querySelector("[data-motivo221]")||el;t.removeAttribute("data-scuoti221");void t.offsetWidth;t.setAttribute("data-scuoti221","");
     try{window.__CPM_SPENTO221=(window.__CPM_SPENTO221|0)+1;}catch(_e){}clearTimeout(t._t221);t._t221=setTimeout(()=>t.removeAttribute("data-scuoti221"),420);};
-  let prem=null,tGiu=0,tRil=null;
+  /* [giro 219 · PO-484] PRECEDENZA DEL TOCCO SUL DISEGNO 3D. Lo strato dichiara window.__CPM_TOCCO219={n,tieni,fino}: il ciclo della
+     partita 3D (src/12) cede il prossimo fotogramma (`n`) — e tutti quelli fino a `fino` mentre `tieni` e' vero (tasti a lavoro
+     misurato, finche' l'azione non e' partita) — cosi' il fotogramma dopo il tocco porta a schermo solo il tasto premuto, la
+     rotellina e poi la schermata nuova, senza aspettare un fotogramma della scena. Escluso il pad: li' la risposta al tocco E' la
+     scena. Il limite e' in FOTOGRAMMI (uno), non in tempo — MISURATO: con un limite di 450/900 ms il banco, dove un fotogramma dura piu' di un secondo, non cedeva mai il passo; il tetto di tempo (TETTO213, 4 s) resta solo come rete: un tasto che non fa nulla non puo' fermare la scena. Rosso __CPM_NO_G219. */
+  const prec219=(el,n,ms,tieni)=>{try{if(window.__CPM_NO_G219||(el&&el.closest&&el.closest('[data-cpm="dpad"]')))return;window.__CPM_TOCCO219={n:n|0,tieni:!!tieni,fino:performance.now()+ms,t:performance.now()};}catch(_e){}};
+  const molla219=()=>{try{const T=window.__CPM_TOCCO219;if(T&&T.tieni){T.tieni=false;T.n=0;}/* l'azione e' partita: la scena riprende subito (il salto dell'ingresso lo chiude proprio il ciclo 3D) */}catch(_e){}};
+  let prem=null,tGiu=0,tRil=null,visto219=true,daRil219=false,gen219=0;
   const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
   document.addEventListener("pointerdown",e=>{
     if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el)return;if(spento(el)){scuoti(el);return;}
     rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
     el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
+    /* [giro 219] il tasto non si rilascia prima di essere stato DISEGNATO premuto. MISURATO (premiazione, PC): con fotogrammi da 0,7 s
+       il rilascio a tempo (120 ms) arrivava prima del primo fotogramma, e il tasto non si vedeva mai premuto — solo la rotellina. */
+    visto219=!!window.__CPM_NO_G219;daRil219=false;const g219=++gen219;/* ogni pressione ha il suo numero: il fotogramma atteso da una pressione PRECEDENTE dello stesso tasto non rilascia questa (misurato: due pressioni dentro un fotogramma lento, la seconda non veniva mai disegnata) */if(!visto219)requestAnimationFrame(()=>{if(g219!==gen219)return;visto219=true;if(daRil219&&prem===el){daRil219=false;requestAnimationFrame(()=>{if(g219===gen219&&prem===el)rilascia();});}});
+    prec219(el,1,TETTO213,false);
   },true);
-  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);tRil=setTimeout(()=>{tRil=null;if(prem===el)rilascia();},resto);};
+  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);const g219=gen219;tRil=setTimeout(()=>{tRil=null;if(prem!==el||g219!==gen219)return;if(!visto219){daRil219=true;return;}rilascia();},resto);};
   document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
   /* azione in attesa: rotellina e guardia del doppio tocco */
   const attese=new Map();let oss=null;
@@ -1305,11 +1316,12 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     const a={t:performance.now(),fatto:false,ov:null};attese.set(el,a);guarda();
     a.tt=setTimeout(()=>fine(el),Math.max(TETTO213,GUARDIA213));
     if(el.hasAttribute("data-pesante213")){
-      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);
-      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
+      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);prec219(el,1,TETTO213,true);/* [giro 219] la scena 3D cede il passo finche' l'azione non e' partita */
+      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}molla219();a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
       return;
     }
     a.tr=setTimeout(()=>rotella(el),ROTELLA213);
+    if(e.isTrusted)prec219(el,1,TETTO213,false);/* [giro 219] anche la schermata che il clic apre passa prima del disegno 3D */
   },true);
 })();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));
