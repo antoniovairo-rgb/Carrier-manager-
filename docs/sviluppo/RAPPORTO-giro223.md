@@ -84,7 +84,7 @@ Messo una sola volta nelle catene `completa` e `carriera` di `ci-runner.mjs`, ne
 | test:logic | ✅ 51/51 |
 | save-compat | ✅ 12 pass · 0 fail |
 | career-critical | ✅ FINE 0 |
-| highlight-95 | in corso (lanciato per ultimo in sottofondo, ~90 min): esito alla riga sotto |
+| highlight-95 | ✅ verde (e il rosso si vede), FINE 0 — lanciato per ultimo in sottofondo, atteso sulla riga FINE |
 
 ## Dubbi per il PO
 
