@@ -20318,8 +20318,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          if(_V&&_V.w&&aDt>0){const _v274=Math.hypot(ball.position.x-_px274,ball.position.z-_pz274)/aDt;if(_v274>_V.w.vmax)_V.w.vmax=+_v274.toFixed(1);}
          if(typeof window!=="undefined")window.__CPM_CGTRADER_KICK_TOUCH={u:+_u.toFixed(3),anchor:_anchor,arcT:+ballArcT.toFixed(3),targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:"kick",lod:_cgAvatar._cgLod||null};
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
-         const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
-         const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
+         let _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_fr6=1.35;
+         /* [giro 226 PO-491, rosso __CPM_NO_G226] il pallone stava a 1,35u nel verso in cui GUARDA il corpo: fermo l'eroe, restava di
+            fianco (misurato 1,4-2,05u dal piede su gi30). Ora sta a 0,85u nel verso della CORSA, e a eroe fermo davanti a lui. */
+         if(!(typeof window!=='undefined'&&window.__CPM_NO_G226)){const _v6=sr.current._g226v;_fr6=0.85;if(_v6&&Math.hypot(_v6[0],_v6[1])>1.5){const _l6=Math.hypot(_v6[0],_v6[1]);_fx=_v6[0]/_l6;_fz=_v6[1]/_l6;sr.current._g226d=[_fx,_fz];}else{const _d6=sr.current._g226d||[1,0];_fx=_d6[0];_fz=_d6[1];}}
+         const _cx=hero.position.x+_fx*_fr6,_cz=hero.position.z+_fz*_fr6,_ck=Math.min(aDt*7,1);
          ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
          ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}      else{const _aY=(!isResult&&!P.hlDef&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26))?null:aerialContactY(P,isHL,isResult,sr.current._preStrike);/* [7.999.26] mentre si sceglie il pallone e' sul piede del crossatore: niente quota di colpo */
         /* [7.389.0 collaudo PO #87 «il pallone deve essere a terra, tra i piedi dell'eroe, e non a mezza
@@ -21349,6 +21352,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let nearD=99,nearM=null;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<nearD){nearD=d;nearM=pp.mesh;}}});
             nearM=_castDif23(nearM,hero.position.x,hero.position.z,14);if(nearM){oppActType=t==="tackle"?"opp_stumble":"opp_spin";oppActT=0;oppMesh=nearM;oppMesh._divePz=nearM.position.z;}
+            /* [giro 226 PO-491 — UN DRIBBLING VINCENTE HA UN UOMO DA SALTARE. Rosso __CPM_NO_G226] MISURATO su gi30 «Dribbling centrale
+               e conduci» riuscito: l'avversario piu' vicino stava a 10,3u di lato per tutta la scena — «DRIBBLING VINCENTE!» su un prato
+               vuoto, col pallone spinto fino a 4,5u di fianco. Ora il difensore del duello viene messo davanti all'eroe (2,8u avanti,
+               1,4u di lato): durante lo stacco nero d'apertura ci arriva subito, altrimenti ci va di corsa; l'eroe gli passa accanto
+               mentre lui gira su se stesso, e la spinta del pallone e' corta e dal lato opposto all'uomo. */
+            if(t==="dribble"&&nearM&&P.hlSuccess===true&&!P.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_G226)){const _sd6=(nearM.position.z>=hero.position.z)?1:-1;
+              sr.current._du226={k:P.hlSitKey,m:nearM,sd:_sd6,puro:1,px:clamp(hero.position.x+2.8,-47,47),pz:clamp(hero.position.z+_sd6*1.4,-29,29),cx:nearM.position.x,cz:nearM.position.z,bx:null,by:0};
+              if(!(P.hlReward==="goal"&&P.hlOutcomeKind!=="chance")){ballArcTgtX=hero.position.x+3.0;ballArcTgtZ=hero.position.z-_sd6*0.9;}}
           } else if(t==="freekick"){// 3DV-4: barriera — i 3 avversari più vicini saltano
             const wallMs=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){wallMs.push({m:pp.mesh,d:Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z)});}});
             wallMs.sort((a,b)=>a.d-b.d);wallMs.slice(0,3).forEach(w=>{w.m._wallJumpT=0;});
@@ -23181,8 +23192,32 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                passo solo, e solo quando la timeline non gli aveva assegnato nessun movimento suo. Vive nel
                CONSUMO dell'executor, come il pavimento di velocita' del 7.236: la timeline pura, i suoi
                test node e la firma del backbone narrativo restano intatti per costruzione. */
+            /* [giro 226 PO-491 «Migliora anche i dribbling, alcuni sono davvero confusionari» — IL DUELLO SI VEDE. Rosso __CPM_NO_G226]
+               MISURATO col banco misura-dribbling-226 (116 esecuzioni, GLB acceso): la finta del build-up parte a tempo di copione, ma
+               l'eroe e' in ritardo sul copione (il modello di corsa ha un tetto) e il difensore del duello lo aspetta al SUO posto di
+               copione — la finta si gioca a 4,8-7,3u dall'uomo (gi26, gi20), cioe' nel vuoto, e mezzo secondo dopo l'eroe gli passa
+               ATTRAVERSO (0,6-0,8u, tre corpi diversi su gi20). Ora il difensore del duello si mette rispetto all'eroe VERO: finche'
+               la finta non e' finita gli sta davanti a 2,3u (temporeggia), poi ABBOCCA dal lato della finta e si sposta di ~3u fuori
+               dalla linea di corsa. Si muove solo il difensore (posizioni fuori palla: firma golden intatta), col suo modello di corsa. */
+            let _du226=null;
+            if(tlMap&&hero&&!P.hlDef&&(sg.fromId==='HERO'||sg.toId==='HERO')&&(sg.kind==='dribble'||sg.tag==='slow')&&!(typeof window!=='undefined'&&window.__CPM_NO_G226)){const S6=sr.current;
+              if(!S6._du226||S6._du226.k!==P.hlSitKey){let _bm=null,_bd=1e9;
+                ['DEF1','DEF2','DEF3'].forEach(_id=>{const _mm=tlMap[_id];if(!_mm||_mm===hero||_mm===awayGkMesh||!sg.before[_id])return;const _d=Math.hypot(_mm.position.x-hero.position.x-2,_mm.position.z-hero.position.z);if(_d<_bd){_bd=_d;_bm=_mm;}});
+                let _sd=0;try{const _fb=(tlSeg||[]).find(_s=>_s&&_s.tag==='feint'&&_s.before&&_s.before.HERO&&_s.after&&_s.after.HERO);const _lt=_fb?_fb.after.HERO[1]-_fb.before.HERO[1]:0;if(Math.abs(_lt)>0.5)_sd=_lt>0?1:-1;}catch(_e){}
+                if(!_sd)_sd=(_bm&&_bm.position.z<hero.position.z)?-1:1;
+                S6._du226={k:P.hlSitKey,m:_bm,sd:_sd,bx:null,by:0,bi:bi};
+                /* nello stacco nero d'apertura il difensore del duello e' gia' al suo posto (regia, come il pallone del 7.218): fuori dallo stacco ci va di corsa */
+                if(_bm&&(performance.now()-_CUT471.at)<Math.max(300,_CUT471.dur||0)){const _x6=clamp(hero.position.x+2.3,-47,47),_z6=clamp(hero.position.z+_sd*0.6*0.68,-29,29);_bm.position.x=_x6;_bm.position.z=_z6;_bm._px=_x6;_bm._pz=_z6;_bm._hvx=0;_bm._hvz=0;_bm._ctx=_x6;_bm._ctz=_z6;}}
+              /* un secondo tratto di dribbling nella stessa scena (il «beat» prima del cross) riapre il duello solo se l'uomo e' ancora li' */
+              if(S6._du226.m&&S6._du226.bi!==bi){S6._du226.bi=bi;if(sg.tag!=='burst'&&Math.hypot(S6._du226.m.position.x-hero.position.x-2.3,S6._du226.m.position.z-hero.position.z)<6)S6._du226.bx=null;}
+              if(S6._du226.m){_du226=S6._du226;const _hb=sg.before.HERO,_ha=sg.after.HERO;_du226.fermo=!(_hb&&_ha)||Math.hypot(_ha[0]-_hb[0],_ha[1]-_hb[1])<0.5;}}
             if(tlMap)Object.keys(sg.before).forEach(id=>{const m=tlMap[id];if(!m)return;const a=sg.before[id],b2=sg.after[id];
               let _ax390=a[0]+(b2[0]-a[0])*p,_ay390=a[1]+(b2[1]-a[1])*p;
+              if(_du226&&m===_du226.m&&id!=='HERO'){const _hx6=hero.position.x+50,_hy6=hero.position.z/0.68+50;
+                const _morde=(sg.tag==='burst')||(sg.tag==='feint'&&_du226.fermo&&p>=0.55)||(sg.tag!=='slow'&&sg.tag!=='feint'&&sg.tag!=='burst'&&p>=0.5);
+                if(!_morde&&_du226.bx==null){_ax390=clamp(_hx6+2.3,2,97);_ay390=clamp(_hy6+_du226.sd*0.6,3,97);}
+                else{if(_du226.bx==null){_du226.bx=clamp(m.position.x+50-0.3,2,97);_du226.by=clamp(_hy6+_du226.sd*4.6,3,97);}_ax390=_du226.bx;_ay390=_du226.by;}
+                m._ctx=G2X(_ax390);m._ctz=G2Z(_ay390);/* niente attesa di reazione: chi marca il portatore lo guarda gia' */}
               if(id==='HERO'&&(sg.kind==='pass'||sg.kind==='through')&&Math.hypot(b2[0]-a[0],b2[1]-a[1])<0.5&&sg.from){
                 /* [7.414.0 gi24/gi79, rosso del guardiano allargato: palla 27-31u, eroe 0,0u] CHI GIOCA IL
                    FILTRANTE SEGUE LA GIOCATA. Il passo del 7.390 copre chi RICEVE (viene incontro al pallone);
@@ -23193,7 +23228,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 const _vx390=(_fol414?sg.to[0]:sg.from[0])-a[0],_vy390=(_fol414?sg.to[1]:sg.from[1])-a[1],_vl390=Math.hypot(_vx390,_vy390);
                 if(_vl390>4){const _st390=(_fol414?4.2:2.6)*p;_ax390=a[0]+_vx390/_vl390*_st390;_ay390=a[1]+_vy390/_vl390*_st390;}}
               if(id==='HERO'&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))sr.current._tlHT410=[+_ax390.toFixed(1),+_ay390.toFixed(1)];/* [7.411.0 sonda] il bersaglio per-fotogramma che l'executor chiede all'eroe */
-              animOne(m,G2X(_ax390),G2Z(_ay390),aDt,ak,ball.position.x,ball.position.z);});
+              const _px6=m.position.x,_pz6=m.position.z;
+              animOne(m,G2X(_ax390),G2Z(_ay390),aDt,ak,ball.position.x,ball.position.z);
+              /* [giro 226] chi esce a chiudere sul portatore SCATTA: il suo passo di crociera (7-10 u/s, con attesa di reazione) lo lasciava a meta' strada; fino a 13 u/s finche' non gli e' davanti */
+              if(_du226&&m===_du226.m&&id!=='HERO'&&_du226.bx==null){const _tx6=G2X(_ax390),_tz6=G2Z(_ay390),_rm6=Math.hypot(_tx6-m.position.x,_tz6-m.position.z),_mv6=Math.hypot(m.position.x-_px6,m.position.z-_pz6),_ex6=Math.min(13*aDt-_mv6,_rm6-0.25);
+                if(_ex6>0&&_rm6>0.3){m.position.x+=(_tx6-m.position.x)/_rm6*_ex6;m.position.z+=(_tz6-m.position.z)/_rm6*_ex6;m._px=m.position.x;m._pz=m.position.z;}}});
             /* [7.227.0 #45 revisione PO «il pallone va prima a terra» + misura in condizioni wizard] l'override
                di conduzione (5.43.5) incollava la palla all'EROE per OGNI segmento carry — ma nel build-up di
                testa/cross il portatore è il COMPAGNO che poi crossa (HEADER_ATTACK: run di MATE1): misurati 2.6s
@@ -27481,6 +27520,61 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
         _g.fase=P.matchPhase||null;
         if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),h:+_h480.toFixed(3),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null,ar:ballArcActive?1:0,pa:hlPostArcType||null,ok:P.hlOutcomeKind||null,kp:(sr.current._keep61!=null)?1:0,pt:(hlPostArcT>=0)?+hlPostArcT.toFixed(2):null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
       }catch(_e480){}}
+      /* [giro 226 PO-491 «Migliora anche i dribbling, alcuni sono davvero confusionari» — TESTIMONE DI SOLA PROVA, acceso solo da
+         __CPM_REC226 sotto cpmtest] Un campione per FOTOGRAMMA negli highlight, tutto dalle MESH (stessa sorgente, 7.538) e col TEMPO DI
+         SCENA dentro (7.502): eroe, dita dei piedi dell'eroe (ossa del corpo disegnato), pallone e suo scrittore (_ws524), i due
+         avversari di movimento piu' vicini all'eroe, camera con eroe/pallone in ndc, gesto GLB montato (clip, peso, tempo), actType,
+         stacco nero vivo. Nessuna scrittura sullo stato del gioco. Lo legge il banco misura-dribbling-226 e il guardiano dribbling-226. */
+      /* [giro 226 PO-491 — NESSUN CORPO SULLA LINEA DI CORSA DI CHI DRIBBLA. Rosso __CPM_NO_G226] MISURATO: 11 esecuzioni su 116 con
+         i busti compenetrati oltre 0,15 s (fino a 0,85 s su gi26, 0,02u su gi20 con tre avversari diversi uno dopo l'altro). Nelle
+         scene di dribbling dell'eroe (chiave di scena del duello), un avversario di movimento che si trova davanti all'eroe in corsa
+         entro 2,6u e a meno di 1,2u dalla sua linea si sposta di lato; da fermo vale un raggio di 0,95u. Esclusi il portiere e chi
+         sta facendo un contrasto vero (scivolata, intercetto). Qui si tiene anche la velocita' dell'eroe che serve alla conduzione. */
+      if(hero&&isHL&&dt>0){const S6=sr.current;const _hp=S6._g226hp;
+        if(_hp&&_hp[2]===P.hlSitKey&&aDt>0){const _k=Math.min(aDt*10,1);const _v=S6._g226v||(S6._g226v=[0,0]);_v[0]+=((hero.position.x-_hp[0])/aDt-_v[0])*_k;_v[1]+=((hero.position.z-_hp[1])/aDt-_v[1])*_k;}else S6._g226v=[0,0];
+        S6._g226hp=[hero.position.x,hero.position.z,P.hlSitKey];
+        const D6=S6._du226;
+        if(isResult&&D6&&D6.k===P.hlSitKey&&!P.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_G226)){try{
+          if(D6.puro&&D6.m&&(actType==="dribble"||oppActType==="opp_spin")){const _live=(performance.now()-_CUT471.at)<Math.max(300,_CUT471.dur||0);
+            const _dx=D6.px-D6.cx,_dz=D6.pz-D6.cz,_dl=Math.hypot(_dx,_dz);const _st=_live?_dl:Math.min(_dl,11*aDt);if(_dl>1e-3){D6.cx+=_dx/_dl*_st;D6.cz+=_dz/_dl*_st;}
+            D6.m.position.x=D6.cx;D6.m.position.z=D6.cz;D6.m._px=D6.cx;D6.m._pz=D6.cz;D6.m._hvx=0;D6.m._hvz=0;D6.m._ctx=D6.cx;D6.m._ctz=D6.cz;}
+          const _v=S6._g226v,_sp=Math.hypot(_v[0],_v[1]);
+          for(let _i=0;_i<players.length;_i++){const _pp=players[_i];if(!_pp||_pp.team!=="away"||!_pp.mesh||_pp.mesh===awayGkMesh)continue;const _m=_pp.mesh;
+            if(oppActType&&_m===oppMesh&&oppActType!=="opp_spin"){
+              /* chi MURA il tiro scivola sul punto del muro, a un passo dal tiratore: il punto non puo' stare dentro di lui (misurato su gi20: 0,02-0,08u) */
+              if(P.hlOutcomeKind==="blocked"&&_m._slideToX!=null){const _wx=_m._slideToX-hero.position.x,_wz=_m._slideToZ-hero.position.z,_wd=Math.hypot(_wx,_wz);if(_wd<1.15){const _ux=_wd>0.05?_wx/_wd:1,_uz=_wd>0.05?_wz/_wd:0;_m._slideToX=hero.position.x+_ux*1.15;_m._slideToZ=hero.position.z+_uz*1.15;}}
+              continue;}
+            const _dx=_m.position.x-hero.position.x,_dz=_m.position.z-hero.position.z,_d=Math.hypot(_dx,_dz);if(_d>2.8)continue;
+            let _nx=0,_nz=0,_need=0;
+            if(_sp>2.5){const _ux=_v[0]/_sp,_uz=_v[1]/_sp;const _al=_dx*_ux+_dz*_uz,_la=-_dx*_uz+_dz*_ux;
+              if(_al>-0.6&&_al<2.6&&Math.abs(_la)<1.2){const _sg=(Math.abs(_la)>0.08)?(_la>0?1:-1):((D6.sd||1)*(_ux>=0?1:-1));_nx=-_uz*_sg;_nz=_ux*_sg;_need=1.2-Math.abs(_la);}}
+            else if(_d<0.95){if(_d>0.05){_nx=_dx/_d;_nz=_dz/_d;}else{_nx=0;_nz=(D6.sd||1);}_need=0.95-_d;}
+            if(_need>0){const _st=Math.min(_need,10*aDt);_m.position.x+=_nx*_st;_m.position.z+=_nz*_st;_m._px=_m.position.x;_m._pz=_m.position.z;if(_m._ctx!=null){_m._ctx+=_nx*_st;_m._ctz+=_nz*_st;}
+              if(D6.puro&&_m===D6.m){D6.cx=_m.position.x;D6.cz=_m.position.z;D6.px+=_nx*_st;D6.pz+=_nz*_st;}}}
+        }catch(_e226g){}}}
+      if(typeof window!=='undefined'&&window.__CPM_REC226&&(_CPM_TEST||_SIT_TEST)&&hero&&ball&&isHL){try{
+        const _W=(window.__CPM_G226W=window.__CPM_G226W||[]);
+        if(_W.length<9000){const S6=sr.current;S6._ck226=(S6._ck226||0)+aDt;
+          const _av=(glbAvatars||[]).find(x=>x&&x.proc===hero)||null;let _fl=null,_fr=null;
+          if(_av&&_av.root){if(!_av._b226)_av._b226={L:_findBone904(_av.root,/(LeftToeBase|^ball_l)$/i),R:_findBone904(_av.root,/(RightToeBase|^ball_r)$/i),v:new THREE.Vector3()};
+            const B6=_av._b226;if(B6.L){B6.v.setFromMatrixPosition(B6.L.matrixWorld);_fl=[+B6.v.x.toFixed(2),+B6.v.y.toFixed(2),+B6.v.z.toFixed(2)];}if(B6.R){B6.v.setFromMatrixPosition(B6.R.matrixWorld);_fr=[+B6.v.x.toFixed(2),+B6.v.y.toFixed(2),+B6.v.z.toFixed(2)];}}
+          let _n1=null,_n2=null,_d1=1e9,_d2=1e9;
+          for(let _i=0;_i<players.length;_i++){const _pp=players[_i];if(!_pp||_pp.team!=="away"||!_pp.mesh||_pp.mesh===awayGkMesh||_pp.mesh.visible===false)continue;const _d=Math.hypot(_pp.mesh.position.x-hero.position.x,_pp.mesh.position.z-hero.position.z);
+            if(_d<_d1){_n2=_n1;_d2=_d1;_n1=_pp.mesh;_d1=_d;S6._i226a=_i;}else if(_d<_d2){_n2=_pp.mesh;_d2=_d;}}
+          const _v6=(S6._v226||(S6._v226=new THREE.Vector3()));
+          _v6.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);const _hn=[+_v6.x.toFixed(3),+_v6.y.toFixed(3),_v6.z<1?1:0];
+          _v6.set(ball.position.x,ball.position.y,ball.position.z).project(camera);const _bn=[+_v6.x.toFixed(3),+_v6.y.toFixed(3),_v6.z<1?1:0];
+          let _cut=0;try{_cut=(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())?1:0;}catch(_e){}
+          let _gt=null;try{_gt=_av&&_av._gAct?+_av._gAct.time.toFixed(3):null;}catch(_e){}
+          _W.push({ck:+S6._ck226.toFixed(3),t:Math.round(performance.now()),ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,ht:P.hlType||null,hv:P.hlVariant||null,ok:P.hlSuccess==null?null:!!P.hlSuccess,kd:P.hlOutcomeKind||null,at:actType||null,aT:+(actT||0).toFixed(2),
+            h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2),+(hero.rotation?hero.rotation.y:0).toFixed(2)],fl:_fl,fr:_fr,
+            b:[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)],ws:S6._ws524|0,arc:ballArcActive?1:0,pa:hlPostArcType||null,
+            n1:_n1?[+_n1.position.x.toFixed(2),+_n1.position.z.toFixed(2),S6._i226a|0]:null,n2:_n2?[+_n2.position.x.toFixed(2),+_n2.position.z.toFixed(2)]:null,
+            c:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],hn:_hn,bn:_bn,cut:_cut,
+            g:_av?[_av._gName||null,_av._gw!=null?+(+_av._gw).toFixed(2):null,_gt]:null,
+            tl:(function(){try{const _b=S6._tlBi387;const _s=(tlOn&&tlSeg&&_b!=null)?tlSeg[_b]:null;return _s?[_b,_s.tag||null,_s.kind||null,_s.fromId||null,_s.toId||null]:null;}catch(_e){return null;}})(),
+            fn:(S6._fnt39&&S6._fnt39.k===P.hlSitKey)?[+(+S6._fnt39.t).toFixed(2),S6._fnt39.dur,S6._fnt39.r?1:0]:null});}
+      }catch(_e226){}}
       /* [7.561.0 missione — IL PALLONE ESCE DALL'INQUADRATURA, E IN CRONACA NESSUNO LO RIPORTA DENTRO]
          Collaudo PO del 24 agosto: «il pallone spesso esce fuori dalla scena, la telecamera non segue
          l'azione. Le giocate offensive avversarie sono nascoste dalla curva e tribuna». La rete che tiene

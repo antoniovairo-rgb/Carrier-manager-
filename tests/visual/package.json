@@ -642,6 +642,8 @@
     "convocazione-190": "node convocazione-190.mjs",
     "momento-194": "node momento-194.mjs",
     "diagonali-210": "node diagonali-210.mjs",
+    "dribbling-226": "node dribbling-226.mjs",
+    "misura-dribbling-226": "node misura-dribbling-226.mjs",
     "misura-210": "node misura-210.mjs",
     "agente-198": "node agente-198.mjs",
     "svincolato-198": "node svincolato-198.mjs",
