@@ -651,6 +651,8 @@
     "figurina-199": "node figurina-199.mjs",
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",
+    "rosa-228": "node rosa-228.mjs",
+    "misura-228": "node misura-228.mjs",
     "rassegna-202": "node rassegna-202.mjs",
     "tocco-213": "node tocco-213.mjs",
     "barra-221": "node barra-221.mjs",
