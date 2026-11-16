@@ -65,7 +65,7 @@ async function foto(page, nome) { await page.screenshot({ path: path.join(FOTO, 
 async function nuovaPagina(v, init) {
   const ctx = await b.newContext({ viewport: { width: VP[v].width, height: VP[v].height }, deviceScaleFactor: 1, isMobile: !!VP[v].isMobile, hasTouch: !!VP[v].hasTouch, serviceWorkers: 'block' });
   await installCdnRoutes(ctx); const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_G212W = []; window.__CPM_G212MAX = 3000; if (o.r) window.__CPM_NO_G212 = 1;
+  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_G212W = []; window.__CPM_G212MAX = 3000; if (o.r) { window.__CPM_NO_G212 = 1; window.__CPM_NO_G206 = 1; }/* [7.999.195 madre] dopo l'unione col giro 206 il gigante ha due correzioni (212 causa, 206 rete di sicurezza): il rosso le spegne entrambe */
     try { localStorage.setItem('cpm-intro-seen', '1'); if (o.ls) for (const k in o.ls) localStorage.setItem(k, o.ls[k]); } catch (e) {} }, { r: ROSSO, ls: init || null });
   return { ctx, page, errs };
 }
@@ -137,7 +137,7 @@ async function cerimonie(v) {
   const { apri } = await import('./misura-pres-192.mjs');
   for (const [k, fn] of [['presentazione', p => p.evaluate(() => window.__CPM_CAREER.apriPresentazione(3))], ['gala', p => p.evaluate(() => window.__CPM_CAREER.apriGala())]]) {
     let p = null; try {
-      p = await apri(b, port, ROSSO ? ['__CPM_NO_G212'] : []); await p.evaluate(() => { window.__CPM_G212W = []; window.__CPM_G212MAX = 3000; });
+      p = await apri(b, port, ROSSO ? ['__CPM_NO_G212', '__CPM_NO_G206'] : []); await p.evaluate(() => { window.__CPM_G212W = []; window.__CPM_G212MAX = 3000; });
       await fn(p); await sleep(3000); await p.evaluate(() => { window.__CPM_G212W = []; });
       for (let i = 0; i < 6; i++) { await guarda(p, `${nomeSc}:${k}`, 1500); if (i === 3) await foto(p, `${nomeSc}-${k}`); }
     } catch (e) { guasti.push(`${nomeSc}:${k}: ${String(e.message).slice(0, 160)}`); } if (p) await p.close().catch(() => {}); }
