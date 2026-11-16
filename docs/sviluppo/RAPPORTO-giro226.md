@@ -228,7 +228,7 @@ libera 14,7-15,1 GB, disco libero 29 GB) e `mkdir -p tests/visual/out`. Tutti su
 | `career-critical` | ✅ verde | 11 min | catena intera con uscita 0; ultimo passo «PASS — una Coppa intera si chiude…» |
 | `test:logic` | ✅ verde | 10 s | «tests 51 · pass 51 · fail 0» (eseguito mentre girava il banco di misura, che non è un controllo) |
 | `save-compat` | ✅ verde | 11 s | «SAVE-COMPAT 12 pass · 0 fail · PASS» |
-| `highlight-95` | <!-- H95 --> | | |
+| `highlight-95` (lanciato per ultimo, in sottofondo) | ✅ verde | 92 min | «VERDE highlight 100 · D4 senza esito 0 · passaggi 30 arrivati 90,0% … · difetti 0 · highlight-95 verde (e il rosso si vede)» |
 
 `tpose-196` e `gigante-212` rigenerano foto di altri giri in `docs/sviluppo/giro196/` e `giro212/` (26 file): rimesse con
 `git checkout --` e non committate.
