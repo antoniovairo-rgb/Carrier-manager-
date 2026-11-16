@@ -2919,7 +2919,15 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   /* la barra del tempo della scheda: parte dall'ingresso in `hl_choose` (o dalla ripresa dopo la pausa), cosi' se la scheda delle giocate
      compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
   const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
-  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  /* [giro 229 · PO-495, decisione PO 16/11] DOPO UNA PAUSA TIMER E BARRA RIPRENDONO DAL TEMPO RIMASTO. Alla pausa si annota quanto della
+     scelta e' gia' passato; alla ripresa della STESSA scena l'inizio si sposta indietro di quel tanto: la barra (che legge t0Scelta210Ref)
+     riparte da dove era e il timer dell'anticipo (effetto qui sotto) si riarma col tempo che resta. Rosso __CPM_NO_G229: entrambi
+     ripartono interi, come prima. */
+  const _no229=typeof window!=='undefined'&&!!window.__CPM_NO_G229;const trascorso229Ref=useRef({i:-1,el:0});
+  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){const _prev229=chiave210Ref.current;chiave210Ref.current=_k210;
+    if(phase==="hl_choose"&&!paused){if(!_no229&&_prev229===("hl_choose|"+hlIdx+"|1")&&trascorso229Ref.current.i===hlIdx)t0Scelta210Ref.current=Date.now()-trascorso229Ref.current.el;else t0Scelta210Ref.current=Date.now();trascorso229Ref.current={i:-1,el:0};}
+    else if(phase==="hl_choose"&&paused&&!_no229&&_prev229===("hl_choose|"+hlIdx+"|0"))trascorso229Ref.current={i:hlIdx,el:Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()))};
+    if(_CPM_TEST&&typeof window!=='undefined'){try{const W=(window.__CPM_P229=window.__CPM_P229||[]);W.push({k:_k210,prev:_prev229,t:Date.now(),t0:t0Scelta210Ref.current,el:trascorso229Ref.current.el});if(W.length>60)W.shift();}catch(_e){}}/* [giro 229] testimone di collaudo: ogni cambio di chiave con l'inizio della scelta */}}
   /* [giro 221 PO-480] UNA SOLA FORMULA per il tempo dell'esitazione: il timer dell'auto-anticipo (16/12/9 s, 7.916) e le due barre
      «Pressione» (scheda delle giocate 7.905, scheda del movimento in hl_choose del giro 210) leggono questo valore, fissato all'ingresso
      in hl_choose (e a ogni ripresa dalla pausa, come si riarma il timer) sul defDist di quell'istante: una mossa fatta dopo non cambia
@@ -10996,7 +11004,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        righe da leggere e una scelta da fare col pollice, quattro secondi sono un'ansia, non una decisione — ed
        e' lo stesso difetto che la 7.682 aveva gia' corretto una volta («una domanda che scorre via mentre la
        leggi non e' una scelta»). Ora 16/12/9: il difensore arriva ancora, ma dopo che hai letto. */
-    const baseDelay=_no221?(defDistRef.current>60?16000:defDistRef.current>35?12000:9000):_durEsit221();/* [giro 221] la stessa durata delle barre */
+    const baseDelay0=_no221?(defDistRef.current>60?16000:defDistRef.current>35?12000:9000):_durEsit221();/* [giro 221] la stessa durata delle barre */
+    const baseDelay=_no229?baseDelay0:Math.max(300,baseDelay0-Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now())));/* [giro 229] il tempo che RESTA della scelta (dopo una pausa); all'ingresso e' tutto */
     const t=setTimeout(()=>{
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];

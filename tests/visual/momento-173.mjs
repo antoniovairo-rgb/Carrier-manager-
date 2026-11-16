@@ -139,8 +139,8 @@ try {
 
   /* ---------- 3. bottone dei momenti salienti con la posta allargata ---------- */
   if (fai(3)) {
-    console.log('3) il bottone dei momenti salienti segue posta165');
-    const A = await apriCarriera166({ init: init173 });
+    console.log('3) il bottone dei momenti salienti segue posta165 (regola del rosso __CPM_NO_G229: dal giro 229 il tasto c\'e\' sempre, vedi salienti-229)');
+    const A = await apriCarriera166({ init: { ...init173, __CPM_NO_G229: true } });
     try {
       const p0 = A.W ? await apriPrompt166(A.page) : { solo: false, bottoni: [] };
       const k0 = await A.page.evaluate(() => window.__CPM_CAREER.posta165());

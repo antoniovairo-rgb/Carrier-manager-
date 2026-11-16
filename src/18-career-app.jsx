@@ -467,6 +467,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     /* [giro 94 D3/D10 collaudo 177-3 «Sei titolare — Titolare inamovibile» da svincolato, poi «Gioca» rifiutato] senza contratto il club
        non ti schiera: il prompt lo dice e resta solo Simula (che lascia la squadra giocare senza di te). Rosso __CPM_NO_C3D3. */
     if(player.contractExpired&&showMatchPrompt.type!=="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))cd={status:"not_called",reason:"Sei svincolato: senza contratto il club non può schierarti. Rinnova o firma con un'altra squadra (Procuratore)."};
+    try{if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CD229)cd={status:window.__CPM_CD229,reason:"Decisione forzata dal collaudo.",entryMinute:60};}catch(_e229){}/* [giro 229] solo collaudo: la decisione del mister la sceglie la sonda (panchina) */
     setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
@@ -516,6 +517,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(_g173())return !posta165(player,md);/* [giro 173 punto 1] la regola di posta e' quella allargata del tasto (giro 165): il bottone c'e' solo quando posta165 dice «niente posta» */
     if(md.type&&md.type!=="league")return false;
     return calcMatchWeight(player,md.opponentId,player.standings||[],player.week||1)<5;}catch(_e){return false;}};
+  /* [giro 229 · PO-494, decisione PO 16/11 «Sempre disponibile»] da titolare il tasto dei momenti salienti c'e' in OGNI partita della
+     carriera da professionista (campionato, coppa nazionale, Europa gironi ed eliminazione, Nazionale, finali): il risultato lo decide la
+     stessa partita (src/15, _lotto166 = lo stesso battito). Le condizioni del prompt restano (titolare, niente infortunio/squalifica/
+     Simula scelto). posta165 non cambia: governa ancora il tasto facoltativo del giro 165. Rosso __CPM_NO_G229 = la regola senzaPosta166. */
+  const _g229=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G229);
+  const salienti229=(md)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_G166)return false;
+    if(!_g229())return senzaPosta166(md);
+    return !!md&&player.proStatus==="pro";}catch(_e){return false;}};
   const matchResumeRef=useRef(null); // [7.150.0] snapshot per la ripresa DENTRO la partita dopo background
   const [pendingResume,setPendingResume]=useState(null); // [7.150.0] snapshot in attesa che il calendario sia pronto
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
@@ -5988,7 +5997,11 @@ const getThisWeekMatchday=()=>{
     else{notify("🎓 Sei diventato professionista!",TH.success);}
   },[]);// eslint-disable-line
 
+  /* [giro 229] chi apre una partita della Nazionale fuori da startMatch (lobby dei tornei, ripresa) dice da se' la modalita': la ripresa
+     rientra in quella in cui si giocava, la lobby consuma la scelta appena fatta. Senza, soloHL166Ref restava quello dell'ultima gara. */
+  const _modo229=(resumeSnap,daStart)=>{if(!_g229())return;if(resumeSnap&&resumeSnap.v){soloHL166Ref.current=!!resumeSnap.s166;}else if(!daStart){soloHL166Ref.current=!!soloChiesta166Ref.current;}soloChiesta166Ref.current=false;};
   const startNationalMatch=(resumeSnap=null)=>{
+    _modo229(resumeSnap,true);/* l'amichevole arriva da startMatch (che ha gia' fissato la modalita') o dalla ripresa */
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const callup=nationalCallupData;
     if(!callup)return;
@@ -6002,6 +6015,7 @@ const getThisWeekMatchday=()=>{
     setScreen("match");
   };
   const startNationsCupMatch=(resumeSnap=null)=>{
+    _modo229(resumeSnap,false);
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const q=player.nationsCupQueue;
     if(!q||!q.active||q.done)return;
@@ -6015,6 +6029,7 @@ const getThisWeekMatchday=()=>{
     setScreen("match");
   };
   const startEuroMondialeMatch=(resumeSnap=null)=>{ // Sprint 53
+    _modo229(resumeSnap,false);
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const em=player.euroMondiale;
     if(!em||!em.active||em.done)return;
@@ -6605,7 +6620,7 @@ const getThisWeekMatchday=()=>{
             contribuiva allo scrollHeight → nessuno scroll possibile e CTA irraggiungibile. La classe lo rende
             pilotabile: l'effect per-fase di LiveMatch lo apre (overflow visible + flex auto) nelle fasi DOM. */}
         <div className="cpm-match-wrap" style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
-          <MatchErrorBoundary key={`m|${matchContext||"career"}|${matchOpp?.id||matchOpp?.n||"x"}|${player.season||1}|${player.week||1}|${matchIsHome?"H":"A"}`}><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={(titleStakesRef.current=_titleStakes)} mdEuroPhase={_playingMdRef.current?.euroPhase||null} onQuit={()=>{try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;if(!(typeof window!=="undefined"&&window.__CPM_NO_P0_3))_playingMdRef.current=null;/* [P0 #3] tornare indietro dal pre-partita CHIUDE la gara: senza questo il riferimento restava carico e la prima partita di Nazionale successiva committava una giornata di campionato mai giocata */setScreen("dashboard");setTab("dashboard");}} onSimulateNat={()=>{const c=matchContext||"career";setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else if(c==="national")simulateAndAdvance();}catch(_e){}},80);}} onSimula209={()=>{/* [giro 209 PO-470] «Simula» dall'avviso «la partita in 3D non si carica»: si chiude la partita (nessun risultato dal vivo e' stato registrato: onMatchEnd non e' mai partito) e la si gioca col motore, con lo STESSO percorso e lo stesso avviso del risultato del tasto Simula. Una volta sola: la gara e' segnata giocata da quel percorso. */const c=matchContext||"career";try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;_playingMdRef.current=null;setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else simulateAndAdvance();}catch(_e){}},80);}} resumeState={matchResumeRef.current} soloHL={soloHL166Ref.current&&(matchContext||"career")==="career"&&!(typeof window!=='undefined'&&window.__CPM_NO_G166)}/* [7.150.0] ripresa dentro la partita · [7.14.0] onSimulateNat: Simula dal pre-partita di Nazionale */ /></MatchErrorBoundary>{/* [6.70.0] key per-partita: forza un remount PULITO di LiveMatch ad ogni cambio partita (contesto/avversario/settimana) → nessun carryover in memoria della partita precedente (collaudo PO «mantiene l'avversario precedente») */}
+          <MatchErrorBoundary key={`m|${matchContext||"career"}|${matchOpp?.id||matchOpp?.n||"x"}|${player.season||1}|${player.week||1}|${matchIsHome?"H":"A"}`}><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={(titleStakesRef.current=_titleStakes)} mdEuroPhase={_playingMdRef.current?.euroPhase||null} onQuit={()=>{try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;if(!(typeof window!=="undefined"&&window.__CPM_NO_P0_3))_playingMdRef.current=null;/* [P0 #3] tornare indietro dal pre-partita CHIUDE la gara: senza questo il riferimento restava carico e la prima partita di Nazionale successiva committava una giornata di campionato mai giocata */setScreen("dashboard");setTab("dashboard");}} onSimulateNat={()=>{const c=matchContext||"career";setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else if(c==="national")simulateAndAdvance();}catch(_e){}},80);}} onSimula209={()=>{/* [giro 209 PO-470] «Simula» dall'avviso «la partita in 3D non si carica»: si chiude la partita (nessun risultato dal vivo e' stato registrato: onMatchEnd non e' mai partito) e la si gioca col motore, con lo STESSO percorso e lo stesso avviso del risultato del tasto Simula. Una volta sola: la gara e' segnata giocata da quel percorso. */const c=matchContext||"career";try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;_playingMdRef.current=null;setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else simulateAndAdvance();}catch(_e){}},80);}} resumeState={matchResumeRef.current} soloHL={soloHL166Ref.current&&(_g229()||(matchContext||"career")==="career")/* [giro 229] in ogni competizione */&&!(typeof window!=='undefined'&&window.__CPM_NO_G166)}/* [7.150.0] ripresa dentro la partita · [7.14.0] onSimulateNat: Simula dal pre-partita di Nazionale */ /></MatchErrorBoundary>{/* [6.70.0] key per-partita: forza un remount PULITO di LiveMatch ad ogni cambio partita (contesto/avversario/settimana) → nessun carryover in memoria della partita precedente (collaudo PO «mantiene l'avversario precedente») */}
         </div>
         {misterDiscorsoModal&&(
           <Modal open dismissable={false} width={400}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
@@ -7394,9 +7409,9 @@ const getThisWeekMatchday=()=>{
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
-              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&senzaPosta166(showMatchPrompt)&&(<>
+              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&salienti229(showMatchPrompt)&&(<>
                 <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
-                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.</div>
+                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>
               </>)}
               <Btn data-cpm="simula-conferma" data-pesante213=""/* [giro 213] 136 ms di lavoro sincrono misurati */ onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
                 {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
@@ -12340,9 +12355,10 @@ const getThisWeekMatchday=()=>{
                   Prossimo: <strong>{natName} vs {(q.opponents||[])[q.matchIdx||0]||"?"}</strong>
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"stretch"}}>{/* [7.9.0 direttiva PO] anche la Coppa delle Nazioni è simulabile */}
-                  <Btn v="primary" fw onClick={startNationsCupMatch} style={{flex:1}}>⚽ Gioca Partita</Btn>
+                  <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
+                {_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
             {q&&q.done&&(
@@ -12440,13 +12456,14 @@ const getThisWeekMatchday=()=>{
                 )}
                 {!em.champion&&!em.eliminated&&!em.done&&(
                   <div style={{display:"flex",gap:8,alignItems:"stretch"}}>
-                    <Btn v="primary" fw onClick={startEuroMondialeMatch} style={{flex:1}}>
+                    <Btn v="primary" fw onClick={()=>startEuroMondialeMatch()} style={{flex:1}}>
                       ⚽ Gioca {em.phase==="qualificazioni"?`Qualificazione ${(em.qualMatchIdx||0)+1}/${(em.qualOpponents||[]).length||2}`:em.phase==="group"?`Girone · Giornata ${(em.groupMatchIdx||0)+1}/3`:(EM_KO_LABEL[em.koPhase]||"Fase KO")}
                     </Btn>
                     {/* [6.56.0 collaudo PO «le partite della nazionale perché non si possono simulare??»] */}
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
+                {!em.champion&&!em.eliminated&&!em.done&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
 
