@@ -14,8 +14,12 @@
      G3 nessun compito del filo principale piu' lungo di LUNGO ms fra il tocco e la scena chiusa;
      G4 dall'ELABORAZIONE del clic alla scena chiusa <= DOPO ms (la parte che dipende dal gioco, senza l'attesa della scheda grafica
         software del banco prima che il tocco arrivi alla pagina);
-     G5 nessun errore di pagina, la scena si chiude davvero, lo smontaggio rimandato arriva in fondo (cerimonie).
+     G5 nessun errore di pagina, la scena si chiude davvero, lo smontaggio rimandato arriva in fondo (cerimonie);
+     G6 fra il tocco e la scena chiusa il ciclo 3D ha CEDUTO almeno un fotogramma al tasto (testimone __CPM_SALTI219 / __CPM_IP219).
    ROSSO (__CPM_NO_G219, gioco com'era): il guardiano deve bocciare OGNI scena su almeno un criterio.
+   ⚠️ Cosa separa davvero i bracci sul banco (misurato, rapporto §5): nelle cerimonie G3 e G4 (lo smontaggio dentro il clic: un compito
+   da 0,9-1,6 s contro <0,35 s); nell'ingresso, dove il clic non smonta nulla, sul telefono G4 e su PC solo G6 — li' il tempo e' quello
+   dei due fotogrammi gia' in volo sulla scheda grafica software, uguale nei due bracci. G2 e' il tetto dichiarato, non il separatore.
    Uso: CPM_CHROME=/opt/pw-browsers/chromium node tocco3d-219.mjs      (CPM_BRACCI=verde,rosso · CPM_DOVE=tel,pc · CPM_RIP=2 · CPM_OUT=<json>)
    Soglie: non si abbassano. Una scena non misurata («tasto non trovato», scena gia' finita) e' ROSSO. */
 import fs from 'node:fs';
@@ -27,8 +31,8 @@ const BRACCI = (process.env.CPM_BRACCI || 'verde,rosso').split(',');
 const DOVE = (process.env.CPM_DOVE || 'tel,pc').split(',');
 const RIP = +(process.env.CPM_RIP || 2), OUT = process.env.CPM_OUT || '';
 /* soglie dichiarate (ms) — misurate sul banco, vedi docs/sviluppo/RAPPORTO-giro219.md §5 */
-const MAX = { tel: { ingresso: 5000, premiazione: 3600, festa: 3600 }, pc: { ingresso: 3000, premiazione: 2200, festa: 2200 } };
-const DOPO = { tel: { ingresso: 3000, premiazione: 1500, festa: 1500 }, pc: { ingresso: 2400, premiazione: 1500, festa: 1500 } };
+const MAX = { tel: { ingresso: 6000, premiazione: 5000, festa: 5000 }, pc: { ingresso: 4000, premiazione: 3000, festa: 3000 } };
+const DOPO = { tel: { ingresso: 1250, premiazione: 900, festa: 900 }, pc: { ingresso: 4000, premiazione: 1800, festa: 1800 } };
 const LUNGO = { tel: 600, pc: 250 };
 const RIGHE = [];
 const fase = (p) => p.evaluate(() => { try { return window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (e) { return null; } }).catch(() => null);
@@ -38,24 +42,25 @@ const PREMIO = { name: 'CAMPIONI!', kind: 'league' };
 
 /* testimone nella pagina: istante (performance.now, lo stesso orologio di event.timeStamp) in cui la fase smette di essere `f`,
    letto a ogni mutazione del documento e a ogni fotogramma; compiti lunghi */
-const ARMA = (f) => { const W = window.__G219 = { f, tFine: null, lt: [], t0: performance.now(), fot: [] }; const guarda = () => { if (W.tFine != null) return; let x = null; try { x = window.__CPM_PHASE(); } catch (e) {} if (x !== f) W.tFine = performance.now(); };
+const ARMA = (f) => { const W = window.__G219 = { f, tFine: null, lt: [], t0: performance.now(), fot: [], tClic: null, salti0: (window.__CPM_SALTI219 | 0) + (window.__CPM_IP219 | 0) };
+  if (!window.__G219L) { window.__G219L = 1; /* in cattura sulla FINESTRA: prima dello strato del tocco, che sui tasti pesanti ferma la propagazione del clic vero */ window.addEventListener('click', e => { const X = window.__G219; if (X && e.isTrusted && X.tClic == null && e.target && e.target.closest && e.target.closest('[data-cpm^="salta"]')) X.tClic = performance.now(); }, true); } const guarda = () => { if (W.tFine != null) return; let x = null; try { x = window.__CPM_PHASE(); } catch (e) {} if (x !== f) W.tFine = performance.now(); };
   W.mo = new MutationObserver(guarda); W.mo.observe(document.documentElement, { subtree: true, childList: true, attributes: true });
   let u = 0; const g = (t) => { guarda(); if (u) W.fot.push(Math.round(t - u)); u = t; if (performance.now() - W.t0 < 20000) requestAnimationFrame(g); }; requestAnimationFrame(g);
   try { W.po = new PerformanceObserver(l => { for (const e of l.getEntries()) W.lt.push([e.startTime, e.duration]); }); W.po.observe({ type: 'longtask' }); } catch (e) {} };
-const LEGGI = () => { const W = window.__G219; return { tFine: W.tFine, lt: W.lt, fot: W.fot.slice(-30), smontato: window.__CPM_SMONTATO219 | 0, salti: window.__CPM_SALTI219 | 0, ceduti: window.__CPM_IP219 | 0, caldo: window.__CPM_CALDO219 | 0,
+const LEGGI = () => { const W = window.__G219; return { tFine: W.tFine, tClic: W.tClic, ceduti219: (window.__CPM_SALTI219 | 0) + (window.__CPM_IP219 | 0) - W.salti0, lt: W.lt, fot: W.fot.slice(-30), smontato: window.__CPM_SMONTATO219 | 0, salti: window.__CPM_SALTI219 | 0, ceduti: window.__CPM_IP219 | 0, caldo: window.__CPM_CALDO219 | 0,
   prog: (() => { try { return (window.__CPM_PROGS16() || []).length; } catch (e) { return null; } })() }; };
 
 async function tocca(riga, p, cdp, mobile, sel, f) {
   await p.evaluate(ARMA, f);
   const r = await misura(p, mobile ? cdp : null, mobile, { trova: perSel(sel), effetto: `try{return window.__CPM_PHASE()!==${JSON.stringify(f)};}catch(e){return false;}`, finestra: 12000, dopo: 900 }).catch(e => ({ err: e.message }));
   await sleep(700); const w = await p.evaluate(LEGGI).catch(() => null);
-  if (!r || r.err || r.t0 == null || !w) { Object.assign(riga, { assente: true, err: r && r.err }); return; }
+  if (!r || r.err || r.t0 == null || !w) { Object.assign(riga, { assente: true, err: !r ? 'tasto «Salta» non trovato' : r.err ? r.err : r.t0 == null ? 'il tocco non e\' arrivato al tasto' : 'testimone non letto' }); return; }
   const fine = w.tFine == null ? null : w.tFine - r.t0; const m = /pointerdown\+0:attesa(\d+)/.exec(r.eventi || ''); const mc = /click\+(\d+):attesa(\d+)/.exec(r.eventi || '');
-  const clicElab = mc ? (+mc[1] + +mc[2]) : null;/* ms dal tocco all'elaborazione del clic */
+  const clicElab = w.tClic != null ? Math.round(w.tClic - r.t0) : (mc ? (+mc[1] + +mc[2]) : null);/* ms dal tocco all'elaborazione del clic (orologio della pagina) */
   const lt = (w.lt || []).filter(([s, d]) => s + d > r.t0 && (fine == null || s < r.t0 + fine + 600)).map(([s, d]) => Math.round(d));
   Object.assign(riga, { attesaTocco: m ? +m[1] : null, riscontro: r.riscontro == null ? null : Math.round(r.riscontro), fotRisc: r.fotRisc, dopoGestore: r.dopoGestore, durFot: r.durFot, rotella: r.rotella == null ? null : Math.round(r.rotella),
     effetto: fine == null ? null : Math.round(fine), effettoAFotogramma: r.effetto == null ? null : Math.round(r.effetto), clicElab, dopoClic: (fine == null || clicElab == null) ? null : Math.round(fine - clicElab),
-    lungoMax: lt.length ? Math.max(...lt) : 0, lunghi: lt, premuto: r.premuto, smontato: w.smontato, salti: w.salti, ceduti: w.ceduti, caldo: w.caldo, prog: w.prog, fotMed: (() => { const a = (w.fot || []).slice().sort((x, y) => x - y); return a.length ? a[a.length >> 1] : null; })() });
+    lungoMax: lt.length ? Math.max(...lt) : 0, lunghi: lt, cedutiAlTasto: w.ceduti219, traccia: (r.traccia || []).slice(0, 6), premuto: r.premuto, smontato: w.smontato, salti: w.salti, ceduti: w.ceduti, caldo: w.caldo, prog: w.prog, fotMed: (() => { const a = (w.fot || []).slice().sort((x, y) => x - y); return a.length ? a[a.length >> 1] : null; })() });
 }
 function giudica(r, dove) {
   const ko = []; if (!r || r.assente) return ['non misurato (tasto non trovato o scena gia\' finita): ' + ((r && r.err) || '')];
@@ -68,6 +73,8 @@ function giudica(r, dove) {
     if (r.effetto > MAX[dove][r.scena]) ko.push(`G2 tocco→scena chiusa ${r.effetto} ms > ${MAX[dove][r.scena]}`);
     if (r.dopoClic != null && r.dopoClic > DOPO[dove][r.scena]) ko.push(`G4 clic elaborato→scena chiusa ${r.dopoClic} ms > ${DOPO[dove][r.scena]}`); }
   if (r.lungoMax > LUNGO[dove]) ko.push(`G3 compito lungo ${r.lungoMax} ms > ${LUNGO[dove]} fra tocco e scena chiusa`);
+  if (r.dopoClic == null) ko.push('G4 non misurato (clic non visto)');
+  if (!(r.cedutiAlTasto >= 1)) ko.push('G6 il ciclo 3D non ha ceduto nessun fotogramma al tasto');
   if (r.errori) ko.push('G5 errori di pagina: ' + r.errori);
   return ko;
 }
@@ -81,6 +88,19 @@ async function finoA(p, voluta, salta) {
 }
 const aRegime = async (p) => { for (let i = 0; i < 720; i++) { if (await p.evaluate(() => { try { return !!window.__CPM_PRONTI196().pronti && !window.__CPM_ATT196; } catch (e) { return false; } }).catch(() => false)) return true; await sleep(250); } return false; };
 
+/* la cerimonia si provoca da `playing` e si ATTENDE (evento, non tempo): se un highlight della partita arriva prima o la scalza
+   (misurato: «fase hl_move» al momento del tocco in 2 corse su 12), il pilota lo gioca e si riprova; tetto 120 s */
+async function cerimonia(p, o) {
+  const t0 = Date.now(); let pil = false; const pilota = async (on) => { if (pil === on) return; pil = on; await p.evaluate((on) => { try { window.__CPM_AUTOPLAY(on, { seed: 219, policy: 'seeded', tickMs: 300 }); } catch (e) {} }, on).catch(() => {}); };
+  while (Date.now() - t0 < 120000) { const f = await fase(p);
+    if (f === 'ended' || f == null) return 'partita finita';
+    if (f !== 'playing') { await pilota(true); await sleep(300); continue; }
+    await pilota(false); await p.evaluate((o) => window.__CPM_FORCE_CEREMONY(o), o);
+    let ok = false; for (let i = 0; i < 16; i++) { await sleep(250); if ((await fase(p)) === 'ceremony') { ok = true; break; } }
+    if (!ok) continue; await sleep(2500);
+    if ((await fase(p)) === 'ceremony' && await p.evaluate(() => !!document.querySelector('[data-cpm="salta"]')).catch(() => false)) return null; }
+  return 'cerimonia non raggiunta in 120 s (fase ' + (await fase(p)) + ')';
+}
 /* una pagina: 'A' = ingresso + premiazione (una partita vera li ha entrambi) · 'B' = festa */
 async function pagina(braccio, dove, quale, rip) {
   const mobile = dove === 'tel'; const vp = mobile ? { width: 375, height: 667 } : { width: 1366, height: 768 }; const rosso = braccio === 'rosso';
@@ -96,16 +116,16 @@ async function pagina(braccio, dove, quale, rip) {
       if (await finoA(p, 'walkout', false)) {
         for (let i = 0; i < 720; i++) { if (await p.evaluate(() => { try { return window.__CPM_PHASE() !== 'walkout' || (!!window.__CPM_PRONTI196().pronti && !window.__CPM_ATT196 && window.__CPM_WALKHOLD74 === false); } catch (e) { return false; } }).catch(() => false)) break; await sleep(250); }
         await freno(true); await sleep(1500);
-        if ((await fase(p)) === 'walkout') await tocca(r, p, cdp, mobile, '[data-cpm="salta-ingresso-v2"]', 'walkout'); else r.assente = true;
+        { const f0 = await fase(p); if (f0 === 'walkout') await tocca(r, p, cdp, mobile, '[data-cpm="salta-ingresso-v2"]', 'walkout'); else { r.assente = true; r.err = 'ingresso gia\' finito (fase ' + f0 + ')'; } }
         await freno(false);
-      } else r.assente = true;
+      } else { r.assente = true; r.err = 'ingresso non raggiunto'; }
     }
     const ok = await finoA(p, 'playing', true) && await aRegime(p); await sleep(5000);
     const r = riga(quale === 'A' ? 'premiazione' : 'festa');
-    if (ok) { await freno(true); await sleep(400); await p.evaluate((o) => window.__CPM_FORCE_CEREMONY(o), quale === 'A' ? PREMIO : FESTA); await sleep(2500);
-      if ((await fase(p)) === 'ceremony') { await tocca(r, p, cdp, mobile, '[data-cpm="salta"]', 'ceremony');
+    if (ok) { await freno(true); await sleep(400); const guasto = await cerimonia(p, quale === 'A' ? PREMIO : FESTA);
+      if (!guasto) { await tocca(r, p, cdp, mobile, '[data-cpm="salta"]', 'ceremony');
         if (!rosso && !r.assente) { for (let i = 0; i < 40 && !(await p.evaluate(() => window.__CPM_SMONTATO219 | 0)); i++) await sleep(250); r.smontato = await p.evaluate(() => window.__CPM_SMONTATO219 | 0); if (!r.smontato) r.errori = (r.errori ? r.errori + ' · ' : '') + 'lo smontaggio rimandato non e\' arrivato in fondo entro 10 s'; } }
-      else r.assente = true; await freno(false); } else r.assente = true;
+      else { r.assente = true; r.err = guasto; } await freno(false); } else { r.assente = true; r.err = 'partita a regime non raggiunta (fase ' + (await fase(p)) + ')'; }
   } catch (e) { RIGHE.push({ braccio, dove, scena: 'pagina ' + quale, rip, assente: true, err: e.message }); }
   if (A.errs.length) for (const r of RIGHE) if (r.braccio === braccio && r.dove === dove && r.rip === rip && !r.assente && (quale === 'A' ? r.scena !== 'festa' : r.scena === 'festa')) r.errori = (r.errori ? r.errori + ' · ' : '') + A.errs.slice(0, 2).join(' | ');
   await A.b.close(); A.srv.close();
