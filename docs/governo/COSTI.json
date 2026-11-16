@@ -2100,5 +2100,33 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaAZj7Pzq2itwsyo6Qv",
+  "titolo": "giro 229 · salienti in ogni partita e pausa (PO-494, 495)",
+  "creata": "2026-11-16T11:41:25Z",
+  "chiusa": "2026-11-16T14:03:24Z",
+  "cost_usd": 9.68375494,
+  "output_tokens": 80558,
+  "cache_read_tokens": 28778662,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaAaeAyEtMx7TExm9PB",
+  "titolo": "giro 230 · anteprima solo bilancio (PO-490)",
+  "creata": "2026-11-16T14:02:48Z",
+  "chiusa": "2026-11-16T14:28:40Z",
+  "cost_usd": 2.2440236,
+  "output_tokens": 15793,
+  "cache_read_tokens": 5153558,
+  "worker_epoch": 1,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-16"
  }
 ]
