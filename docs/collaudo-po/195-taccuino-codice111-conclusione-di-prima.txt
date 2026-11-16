@@ -1,0 +1,8 @@
+[KE 7.999.195] S.16 W.1 · 74' · hl · vs FC Stamford (1-0)
+SIT [shot]: «💥 Palla buona al limite dell'area!»
+AZIONE: «⚡ Conclusione di prima» → esito miss (fallita)
+NOTA: Cosa ho visto (bozza automatica):
+· corpo↔porta al contatto: 1° (eroe a x 32.8, z -8.2, pallone a 0.7 u, porta a 15.8 u)
+
+Cosa non va secondo me:
+codice 111 — portiere fuori tempo su gli highlights
