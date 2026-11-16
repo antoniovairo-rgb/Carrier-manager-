@@ -1721,3 +1721,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO: mister scaricato all'inizio di ogni partita → «Va bene così»; versione web precompilata → nella 197 (PO-502). Tecniche della madre: fermo di un fotogramma a ogni tocco accettato (da guardare sul telefono); costruzione corpi sotto il velo in blocco unico → resta; altre scene 3D senza precedenza del tocco → nella 197 se il PO lo segnala; riga di invariante in CLAUDE.md accettata.
 - 18:00 dopo l'unione del 219 (conflitto src/19 a mano): tocco-213 verde + rosso bocciato; barra-221 verde, rossi 221 e 229 bocciati; tocco3d-219 verde 9/9, rosso bocciato 6/6. lavoro/196 spinto a 00b8fb8b.
 - 18:15 PO «quando esce la 196?» → stima aggiornata 23:30-00:30 (223 e 226 devono ancora fare highlight-95, ~90 min, poi unione + verifica 2,5-3 h). PO: «Aspetta tutti». Avviso al PO a pubblicazione fatta, nessuna domanda dopo le 23.
+
+## 16/11 19:35 — PO-503 rassegna: classifica e prossima partita della competizione
+- Foto PO (7.999.195, scheda 4 dopo una coppa con classifica del campionato). Questionario: «Tabellone del turno» per le eliminazioni dirette; «Nella 196, anche se slitta» → giro 232 (Opus, ~2 h). Uscita 196 stimata ora 01:00-01:30 (il PO ha accettato lo slittamento). Parte B della verifica dopo l'unione di 223, 226 e 232.
