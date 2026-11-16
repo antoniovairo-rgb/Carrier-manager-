@@ -15,11 +15,14 @@
      G4 dall'ELABORAZIONE del clic alla scena chiusa <= DOPO ms (la parte che dipende dal gioco, senza l'attesa della scheda grafica
         software del banco prima che il tocco arrivi alla pagina);
      G5 nessun errore di pagina, la scena si chiude davvero, lo smontaggio rimandato arriva in fondo (cerimonie);
-     G6 fra il tocco e la scena chiusa il ciclo 3D ha CEDUTO almeno un fotogramma al tasto (testimone __CPM_SALTI219 / __CPM_IP219).
+     G6 «i tasti passano prima del disegno»: fra il clic elaborato e la scena chiusa NESSUN disegno 3D (chiamate drawElements/drawArrays
+        contate sui prototipi WebGL: 0), e il ciclo 3D ha ceduto almeno un fotogramma al tasto (testimone __CPM_SALTI219 / __CPM_IP219).
    ROSSO (__CPM_NO_G219, gioco com'era): il guardiano deve bocciare OGNI scena su almeno un criterio.
    ⚠️ Cosa separa davvero i bracci sul banco (misurato, rapporto §5): nelle cerimonie G3 e G4 (lo smontaggio dentro il clic: un compito
-   da 0,9-1,6 s contro <0,35 s); nell'ingresso, dove il clic non smonta nulla, sul telefono G4 e su PC solo G6 — li' il tempo e' quello
-   dei due fotogrammi gia' in volo sulla scheda grafica software, uguale nei due bracci. G2 e' il tetto dichiarato, non il separatore.
+   da 0,7-2,9 s contro <0,35 s) piu' G6; nell'ingresso, dove il clic non smonta nulla, SOLO G6 — li' il tempo e' quello dei fotogrammi
+   gia' in volo sulla scheda grafica software: sul telefono dal clic 812-1484 ms nel verde (8 misure) contro 1513-1591 nel rosso (4),
+   troppo vicini per una soglia (una soglia a 1250 ha dato un falso rosso alla 7ª misura: tolta come separatore e DICHIARATA, il tetto
+   dell'ingresso e' quello largo). G2 e G4-ingresso sono tetti dichiarati, non separatori.
    Uso: CPM_CHROME=/opt/pw-browsers/chromium node tocco3d-219.mjs      (CPM_BRACCI=verde,rosso · CPM_DOVE=tel,pc · CPM_RIP=2 · CPM_OUT=<json>)
    Soglie: non si abbassano. Una scena non misurata («tasto non trovato», scena gia' finita) e' ROSSO. */
 import fs from 'node:fs';
@@ -32,7 +35,7 @@ const DOVE = (process.env.CPM_DOVE || 'tel,pc').split(',');
 const RIP = +(process.env.CPM_RIP || 2), OUT = process.env.CPM_OUT || '';
 /* soglie dichiarate (ms) — misurate sul banco, vedi docs/sviluppo/RAPPORTO-giro219.md §5 */
 const MAX = { tel: { ingresso: 6000, premiazione: 5000, festa: 5000 }, pc: { ingresso: 4000, premiazione: 3000, festa: 3000 } };
-const DOPO = { tel: { ingresso: 1250, premiazione: 900, festa: 900 }, pc: { ingresso: 4000, premiazione: 1800, festa: 1800 } };
+const DOPO = { tel: { ingresso: 3000, premiazione: 900, festa: 900 }, pc: { ingresso: 4000, premiazione: 1800, festa: 1800 } };
 const LUNGO = { tel: 600, pc: 250 };
 const RIGHE = [];
 const fase = (p) => p.evaluate(() => { try { return window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (e) { return null; } }).catch(() => null);
@@ -43,11 +46,11 @@ const PREMIO = { name: 'CAMPIONI!', kind: 'league' };
 /* testimone nella pagina: istante (performance.now, lo stesso orologio di event.timeStamp) in cui la fase smette di essere `f`,
    letto a ogni mutazione del documento e a ogni fotogramma; compiti lunghi */
 const ARMA = (f) => { const W = window.__G219 = { f, tFine: null, lt: [], t0: performance.now(), fot: [], tClic: null, salti0: (window.__CPM_SALTI219 | 0) + (window.__CPM_IP219 | 0) };
-  if (!window.__G219L) { window.__G219L = 1; /* in cattura sulla FINESTRA: prima dello strato del tocco, che sui tasti pesanti ferma la propagazione del clic vero */ window.addEventListener('click', e => { const X = window.__G219; if (X && e.isTrusted && X.tClic == null && e.target && e.target.closest && e.target.closest('[data-cpm^="salta"]')) X.tClic = performance.now(); }, true); } const guarda = () => { if (W.tFine != null) return; let x = null; try { x = window.__CPM_PHASE(); } catch (e) {} if (x !== f) W.tFine = performance.now(); };
+  if (!window.__G219L) { window.__G219L = 1; window.__G219D = 0; for (const P of [window.WebGLRenderingContext, window.WebGL2RenderingContext]) { if (!P) continue; for (const n of ['drawElements', 'drawArrays']) { const f = P.prototype[n]; if (!f) continue; P.prototype[n] = function () { window.__G219D++; return f.apply(this, arguments); }; } } /* in cattura sulla FINESTRA: prima dello strato del tocco, che sui tasti pesanti ferma la propagazione del clic vero */ window.addEventListener('click', e => { const X = window.__G219; if (X && e.isTrusted && X.tClic == null && e.target && e.target.closest && e.target.closest('[data-cpm^="salta"]')) { X.tClic = performance.now(); X.dClic = window.__G219D; } }, true); } const guarda = () => { if (W.tFine != null) return; let x = null; try { x = window.__CPM_PHASE(); } catch (e) {} if (x !== f) { W.tFine = performance.now(); W.dFine = window.__G219D; } };
   W.mo = new MutationObserver(guarda); W.mo.observe(document.documentElement, { subtree: true, childList: true, attributes: true });
   let u = 0; const g = (t) => { guarda(); if (u) W.fot.push(Math.round(t - u)); u = t; if (performance.now() - W.t0 < 20000) requestAnimationFrame(g); }; requestAnimationFrame(g);
   try { W.po = new PerformanceObserver(l => { for (const e of l.getEntries()) W.lt.push([e.startTime, e.duration]); }); W.po.observe({ type: 'longtask' }); } catch (e) {} };
-const LEGGI = () => { const W = window.__G219; return { tFine: W.tFine, tClic: W.tClic, ceduti219: (window.__CPM_SALTI219 | 0) + (window.__CPM_IP219 | 0) - W.salti0, lt: W.lt, fot: W.fot.slice(-30), smontato: window.__CPM_SMONTATO219 | 0, salti: window.__CPM_SALTI219 | 0, ceduti: window.__CPM_IP219 | 0, caldo: window.__CPM_CALDO219 | 0,
+const LEGGI = () => { const W = window.__G219; return { tFine: W.tFine, tClic: W.tClic, disegni: (W.dClic == null || W.dFine == null) ? null : W.dFine - W.dClic, ceduti219: (window.__CPM_SALTI219 | 0) + (window.__CPM_IP219 | 0) - W.salti0, lt: W.lt, fot: W.fot.slice(-30), smontato: window.__CPM_SMONTATO219 | 0, salti: window.__CPM_SALTI219 | 0, ceduti: window.__CPM_IP219 | 0, caldo: window.__CPM_CALDO219 | 0,
   prog: (() => { try { return (window.__CPM_PROGS16() || []).length; } catch (e) { return null; } })() }; };
 
 async function tocca(riga, p, cdp, mobile, sel, f) {
@@ -60,7 +63,7 @@ async function tocca(riga, p, cdp, mobile, sel, f) {
   const lt = (w.lt || []).filter(([s, d]) => s + d > r.t0 && (fine == null || s < r.t0 + fine + 600)).map(([s, d]) => Math.round(d));
   Object.assign(riga, { attesaTocco: m ? +m[1] : null, riscontro: r.riscontro == null ? null : Math.round(r.riscontro), fotRisc: r.fotRisc, dopoGestore: r.dopoGestore, durFot: r.durFot, rotella: r.rotella == null ? null : Math.round(r.rotella),
     effetto: fine == null ? null : Math.round(fine), effettoAFotogramma: r.effetto == null ? null : Math.round(r.effetto), clicElab, dopoClic: (fine == null || clicElab == null) ? null : Math.round(fine - clicElab),
-    lungoMax: lt.length ? Math.max(...lt) : 0, lunghi: lt, cedutiAlTasto: w.ceduti219, traccia: (r.traccia || []).slice(0, 6), premuto: r.premuto, smontato: w.smontato, salti: w.salti, ceduti: w.ceduti, caldo: w.caldo, prog: w.prog, fotMed: (() => { const a = (w.fot || []).slice().sort((x, y) => x - y); return a.length ? a[a.length >> 1] : null; })() });
+    lungoMax: lt.length ? Math.max(...lt) : 0, lunghi: lt, cedutiAlTasto: w.ceduti219, disegniDopoClic: w.disegni, traccia: (r.traccia || []).slice(0, 6), premuto: r.premuto, smontato: w.smontato, salti: w.salti, ceduti: w.ceduti, caldo: w.caldo, prog: w.prog, fotMed: (() => { const a = (w.fot || []).slice().sort((x, y) => x - y); return a.length ? a[a.length >> 1] : null; })() });
 }
 function giudica(r, dove) {
   const ko = []; if (!r || r.assente) return ['non misurato (tasto non trovato o scena gia\' finita): ' + ((r && r.err) || '')];
@@ -75,6 +78,7 @@ function giudica(r, dove) {
   if (r.lungoMax > LUNGO[dove]) ko.push(`G3 compito lungo ${r.lungoMax} ms > ${LUNGO[dove]} fra tocco e scena chiusa`);
   if (r.dopoClic == null) ko.push('G4 non misurato (clic non visto)');
   if (!(r.cedutiAlTasto >= 1)) ko.push('G6 il ciclo 3D non ha ceduto nessun fotogramma al tasto');
+  if (r.disegniDopoClic == null) ko.push('G6 disegni non contati'); else if (r.disegniDopoClic > 0) ko.push(`G6 ${r.disegniDopoClic} chiamate di disegno 3D fra il clic e la scena chiusa`);
   if (r.errori) ko.push('G5 errori di pagina: ' + r.errori);
   return ko;
 }
@@ -137,7 +141,7 @@ for (const braccio of BRACCI) for (const dove of DOVE) { const n = (braccio === 
 if (OUT) fs.writeFileSync(OUT, JSON.stringify(RIGHE.map(r => ({ ...r, stampata: undefined, premuto: undefined })), null, 1));
 
 console.log('\nRIEPILOGO (ms dal tocco) — soglie: MAX ' + JSON.stringify(MAX) + ' · DOPO ' + JSON.stringify(DOPO) + ' · LUNGO ' + JSON.stringify(LUNGO));
-for (const r of RIGHE) console.log(`  ${r.braccio.padEnd(5)} ${r.dove.padEnd(3)} ${String(r.scena).padEnd(11)} #${r.rip}  attesa ${String(r.attesaTocco).padStart(5)} · riscontro ${String(r.riscontro).padStart(5)} (fot ${r.fotRisc}) · rotellina ${String(r.rotella).padStart(5)} · scena chiusa ${String(r.effetto).padStart(5)} · dal clic ${String(r.dopoClic).padStart(5)} · lungo max ${String(r.lungoMax).padStart(5)}  ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}`);
+for (const r of RIGHE) console.log(`  ${r.braccio.padEnd(5)} ${r.dove.padEnd(3)} ${String(r.scena).padEnd(11)} #${r.rip}  attesa ${String(r.attesaTocco).padStart(5)} · riscontro ${String(r.riscontro).padStart(5)} (fot ${r.fotRisc}) · rotellina ${String(r.rotella).padStart(5)} · scena chiusa ${String(r.effetto).padStart(5)} · dal clic ${String(r.dopoClic).padStart(5)} · disegni ${String(r.disegniDopoClic).padStart(4)} · lungo max ${String(r.lungoMax).padStart(5)}  ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}`);
 const SCENE = ['ingresso', 'premiazione', 'festa']; const guai = [];
 if (BRACCI.includes('verde')) for (const dove of DOVE) for (const s of SCENE) { const L = RIGHE.filter(r => r.braccio === 'verde' && r.dove === dove && r.scena === s); const att = dove === 'tel' ? RIP : 1;
   if (L.length < att) guai.push(`verde ${dove} ${s}: ${L.length} misure su ${att} (non giudicato = rosso)`); for (const r of L) if (r.ko.length) guai.push(`verde ${dove} ${s} #${r.rip}: ${r.ko.join(' · ')}`); }
