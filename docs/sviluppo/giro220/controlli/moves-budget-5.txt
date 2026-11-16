@@ -1,0 +1,31 @@
+[verde] ✅ gi  4 · attesa scena 4268 ms · concessi 0 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 100→100 (+0) · budget residuo 0
+[verde] ✅ gi 12 · attesa scena 466 ms · concessi 1 · fatti 1.0 · mesh 2.5u · logico 2.5u · distanza dal marcatore 98.58787878787876→99.29393939393938 (+0.7) · budget residuo 0
+[verde] ✅ gi 22 · attesa scena 479 ms · concessi 3 · fatti 3.0 · mesh 7.5u · logico 7.5u · distanza dal marcatore 97.88181818181815→100 (+2.1) · budget residuo 0
+[verde] ✅ gi 40 · attesa scena 314 ms · concessi 0 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 100→100 (+0) · budget residuo 0
+[verde] ✅ gi 56 · attesa scena 306 ms · concessi 2 · fatti 2.0 · mesh 5.1u · logico 5.0u · distanza dal marcatore 98.94090909090907→100 (+1.1) · budget residuo 0
+[verde] ✅ gi 96 · attesa scena 492 ms · concessi 1 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 98.58787878787876→79.17121212121178 (-19.4) · budget residuo 0
+[verde] ✅ gi118 · attesa scena 400 ms · concessi 1 · fatti 1.0 · mesh 2.5u · logico 2.5u · distanza dal marcatore 78.81818181818147→91.60856558277946 (+12.8) · budget residuo 0
+[verde] ✅ gi141 · attesa scena 458 ms · concessi 1 · fatti 1.0 · mesh 2.5u · logico 2.5u · distanza dal marcatore 91.25553527974915→100 (+8.7) · budget residuo 0
+[verde] ✅ gi149 · attesa scena 309 ms · concessi 2 · fatti 1.6 · mesh 4.1u · logico 4.0u · distanza dal marcatore 99.64696969696969→100 (+0.4) · budget residuo 0
+[verde] ✅ gi150 · attesa scena 462 ms · concessi 1 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 99.64696969696969→99.64696969696969 (+0) · budget residuo 0
+
+[verde] scene misurate 10 · non giudicate 0 · passi in piu' del concesso, in totale 0.0 · crescita massima della distanza dal marcatore 12.8
+[rosso] ✅ gi  4 · attesa scena 4482 ms · concessi 0 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 100→100 (+0) · budget residuo 0
+[rosso] ❌ gi 12 · attesa scena 465 ms · concessi 1 · fatti 4.4 · mesh 11.1u · logico 11.0u · distanza dal marcatore 98.58787878787876→100 (+1.4) · budget residuo 0
+[rosso] ❌ gi 22 · attesa scena 314 ms · concessi 3 · fatti 4.0 · mesh 10.0u · logico 10.0u · distanza dal marcatore 98.94090909090907→100 (+1.1) · budget residuo 3
+[rosso] ✅ gi 40 · attesa scena 460 ms · concessi 0 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 100→100 (+0) · budget residuo 0
+[rosso] ❌ gi 56 · attesa scena 317 ms · concessi 2 · fatti 2.8 · mesh 7.1u · logico 7.0u · distanza dal marcatore 98.94090909090907→100 (+1.1) · budget residuo 2
+[rosso] ✅ gi 96 · attesa scena 469 ms · concessi 1 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 98.94090909090907→79.52424242424209 (-19.4) · budget residuo 0
+[rosso] ❌ gi118 · attesa scena 465 ms · concessi 1 · fatti 2.4 · mesh 6.1u · logico 6.0u · distanza dal marcatore 78.46515151515116→100 (+21.5) · budget residuo 1
+[rosso] ❌ gi141 · attesa scena 317 ms · concessi 1 · fatti 2.4 · mesh 6.1u · logico 6.0u · distanza dal marcatore 99.64696969696969→100 (+0.4) · budget residuo 0
+[rosso] ✅ gi149 · attesa scena 462 ms · concessi 2 · fatti 1.6 · mesh 4.0u · logico 4.0u · distanza dal marcatore 99.64696969696969→100 (+0.4) · budget residuo 1
+[rosso] ✅ gi150 · attesa scena 459 ms · concessi 1 · fatti 0.0 · mesh 0.0u · logico 0.0u · distanza dal marcatore 99.64696969696969→99.64696969696969 (+0) · budget residuo 0
+
+[rosso] scene misurate 10 · libere 5 (gi12 gi22 gi56 gi118 gi141) · non giudicate 0 · bocciate 5
+  · gi12: concessi 1 passi, l'Eroe ne ha fatti 4.4 (spostamento 11.1 unita')
+  · gi22: concessi 3 passi, l'Eroe ne ha fatti 4.0 (spostamento 10.0 unita')
+  · gi56: concessi 2 passi, l'Eroe ne ha fatti 2.8 (spostamento 7.1 unita')
+  · gi118: concessi 1 passi, l'Eroe ne ha fatti 2.4 (spostamento 6.1 unita')
+  · gi141: concessi 1 passi, l'Eroe ne ha fatti 2.4 (spostamento 6.1 unita')
+
+✅ PASS — il budget di movimento tiene: nessun passo regalato (e il rosso si vede)
