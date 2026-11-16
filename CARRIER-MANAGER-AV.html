@@ -46049,7 +46049,7 @@ function _cammino225(av,mx,idleAct,walkClip){try{const T=THREE;if(!av||!mx||!idl
       if(ad>0.004){const sg=dz>0?1:-1;st.v=Math.min(vmax,st.v+3.6*dt,Math.sqrt(2*2.4*ad)+0.12);const m=Math.min(ad,st.v*dt);av.position.z+=sg*m;st.fase=((st.fase+sg*m/Dc)%1+1)%1;}else{st.v=0;}
       const vuole=ad>0.10?1:0;st.ww+=(vuole-st.ww)*Math.min(1,dt*(vuole?9:6));if(!vuole&&st.ww<0.004){st.ww=0;if(ad<=0.004)st.fase=f0;}
       act.time=dur*st.fase;act.setEffectiveWeight(st.ww);idleAct.setEffectiveWeight(1-st.ww);
-      const q=tab[Math.min(K-1,Math.floor(st.fase*K))];st.osc=st.ww*(q.zr-q.zl)/zmax;return st.ww;},
+      const fk=st.fase*K,k0=Math.floor(fk)%K,k1=(k0+1)%K,fr=fk-Math.floor(fk),q0=tab[k0],q1=tab[k1];st.osc=st.ww*((q0.zr-q0.zl)*(1-fr)+(q1.zr-q1.zl)*fr)/zmax;return st.ww;},/* interpolata: niente gradini nell'oscillazione delle braccia */
     /* appoggio: DOPO clip e pose */
     terra(){if(!(st.ww>0)){if(av.position.y!==y0)av.position.y=y0;return;}av.updateMatrixWorld(true);
       const low=Math.min(wy(B.ball_l)-rip.ball,wy(B.ball_r)-rip.ball,wy(B.foot_l)-rip.foot,wy(B.foot_r)-rip.foot);

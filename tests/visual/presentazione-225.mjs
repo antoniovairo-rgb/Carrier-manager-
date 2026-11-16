@@ -21,7 +21,7 @@ import { misuraZone, apriPartita } from './lib/notte-206.mjs';
 import fs from 'node:fs';
 fs.mkdirSync('out/g225', { recursive: true });
 const TOL_RESA = 0.35, SAGOME_MIN = 5000, DE_PELLE = 12, PIEDE_MIN = -0.03, PIEDE_MAX = 0.05, SLITTA_MAX = 0.35, SALUTO_S = 1.5, SALUTO_MANO = 0.15;
-const LIM = { gomitoMin: 40, elevMax: 150, fuoriMax: 25, polsoMax: 70, latoMin: 0.05, bustoMin: 0.12, velMax: 750 };
+const LIM = { gomitoMin: 40, elevMax: 150, fuoriMax: 25, polsoMax: 70, latoMin: 0.05, bustoMin: 0.12, velOmeroMax: 350, velAvambraccioMax: 530 };/* velocita' su finestra di 0,10 s di scena: verde 215/427, rosso 521/642 */
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const SOLO = (process.env.CPM_SOLO || 'verde,rosso,ripiego').split(',');
 const FOTO = process.env.CPM_FOTO || '';/* prefisso (cartella/nome) per le foto prima/dopo */
@@ -86,7 +86,13 @@ function giudicaSerie(S) { const o = { campioni: S.length }; if (S.length < 40) 
     const sin = (a.bl + c.bl) <= (a.br + c.br); corpo += dz; piede += Math.abs(sin ? c.zl - a.zl : c.zr - a.zr); }
   o.percorso = +corpo.toFixed(2); o.slitta = corpo > 0 ? +(piede / corpo).toFixed(3) : null; o.avanti = +(zmax - 6).toFixed(2); o.inFila = +Math.abs(S[S.length - 1].men[chi].z - 6).toFixed(3);
   const B = S.filter(s => s.br), G = 180 / Math.PI, ang = (a, c) => Math.acos(Math.max(-1, Math.min(1, a[0] * c[0] + a[1] * c[1] + a[2] * c[2]))) * G; let vU = 0, vF = 0, sopra = 0;
-  for (let k = 1; k < B.length; k++) { const dt = (B[k].t || 0) - (B[k - 1].t || 0); if (!(dt > 0.004)) continue; vU = Math.max(vU, ang(B[k].br.dU, B[k - 1].br.dU) / dt); vF = Math.max(vF, ang(B[k].br.dF, B[k - 1].br.dF) / dt); if (B[k].br.manoSu >= 0.15) sopra += dt; }
+  /* velocita' angolare su una finestra di almeno FIN s di scena (non fra due fotogrammi: un fotogramma corto gonfia il rapporto — misurato:
+     stessa build 560 e 765 gradi/s sull'avambraccio a seconda della corsa) */
+  const FIN = 0.10; let j = 0;
+  for (let k = 1; k < B.length; k++) { const dt = (B[k].t || 0) - (B[k - 1].t || 0); if (dt > 0 && B[k].br.manoSu >= 0.15) sopra += dt;
+    while (j + 1 < k && (B[k].t || 0) - (B[j + 1].t || 0) >= FIN) j++; const dw = (B[k].t || 0) - (B[j].t || 0); if (!(dw >= FIN) || dw > 0.3) continue;
+    vU = Math.max(vU, ang(B[k].br.dU, B[j].br.dU) / dw); vF = Math.max(vF, ang(B[k].br.dF, B[j].br.dF) / dw); }
+  o.grezzo = B.map(s => [+(s.t || 0).toFixed(3), +s.w.toFixed(2), s.br.dU, s.br.dF]);
   const su = B.filter(s => s.br.manoSu >= 0), sal = B.filter(s => s.w >= 0.5),/* la cerniera si giudica a saluto in corso: a riposo la posa e' quella del giro 192 */ mm = (f, A) => A.length ? [+Math.min(...A.map(f)).toFixed(1), +Math.max(...A.map(f)).toFixed(1)] : null;
   o.braccio = { campioni: B.length, sopra: +sopra.toFixed(2), gomito: mm(s => s.br.gomito, B), elev: mm(s => s.br.elev, B), fuori: mm(s => s.br.fuori == null ? -1 : s.br.fuori, sal), fuoriRiposo: mm(s => s.br.fuori == null ? -1 : s.br.fuori, B.filter(s => s.w < 0.05)), polso: mm(s => s.br.polso, su), lato: mm(s => s.br.manoLato * 100, B), busto: mm(s => s.br.busto * 100, B), velOmero: +vU.toFixed(0), velAvambraccio: +vF.toFixed(0), manoSuMax: +Math.max(...B.map(s => s.br.manoSu)).toFixed(3), fineManoSu: B.length ? B[B.length - 1].br.manoSu : null };
   return o; }
@@ -126,7 +132,7 @@ function difetti(R, verde) { const d = [], T = R.tel || {}, add = x => d.push(x)
     if (!B.fuori || !(B.fuori[0] >= 0)) add('D: non giudicato (cerniera del gomito)'); else if (!(B.fuori[1] <= LIM.fuoriMax)) add(`D: il gomito ruota fuori dalla cerniera di ${B.fuori[1]} gradi > ${LIM.fuoriMax}`);
     if (!B.polso || !(B.polso[1] <= LIM.polsoMax)) add(`D: polso ${B.polso && B.polso[1]} > ${LIM.polsoMax}`);
     if (!(B.lato[0] >= LIM.latoMin * 100)) add(`D: la mano passa il piano mediano del corpo (${B.lato[0]} cm)`); if (!(B.busto[0] >= LIM.bustoMin * 100)) add(`D: braccio dentro il busto (${B.busto[0]} cm dall'asse)`);
-    if (!(B.velOmero <= LIM.velMax && B.velAvambraccio <= LIM.velMax)) add(`D: scatto del braccio — omero ${B.velOmero} gradi/s, avambraccio ${B.velAvambraccio} gradi/s > ${LIM.velMax}`);
+    if (!(B.velOmero <= LIM.velOmeroMax && B.velAvambraccio <= LIM.velAvambraccioMax)) add(`D: scatto del braccio — omero ${B.velOmero} gradi/s (limite ${LIM.velOmeroMax}), avambraccio ${B.velAvambraccio} gradi/s (limite ${LIM.velAvambraccioMax})`);
     if (!(B.fineManoSu <= -0.25)) add(`D: a fine scena la mano non e' tornata giu' (${B.fineManoSu})`); }
   return d; }
 if (SOLO.includes('verde')) { out.verde = await braccio([], 'dopo'); const d = difetti(out.verde, true); out.difettiVerde = d; d.forEach(x => g.push('verde · ' + x)); }
