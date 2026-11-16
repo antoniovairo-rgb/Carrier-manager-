@@ -1665,3 +1665,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 16/11 ~07:40 Roma · PO (foto): scheda 4 della rassegna semivuota → PO-490; questionario: classifica più lunga, numeri di stagione, anteprima della prossima partita. Madre: nello stesso giro 224 di PO-488 (rassegna intera).
 - 16/11 ~07:45 Roma · PO: «Migliora anche i dribbling, alcuni sono davvero confusionari» → PO-491 (196, giro 226 con Fable: prima misura di tutti i dribbling del catalogo e di quali risultano confusi, poi correzione dei peggiori; proposta al PO se servono clip nuove con licenza).
 - 16/11 ~07:50 Roma · PO (foto): patto col mister promette la fascia da vice-capitano al capitano → PO-492 (196, giro 227, piccolo, subito dopo il 222). Causa misurata: PACT_REW in src/18 non guarda lo stato del giocatore.
+
+## 16/11 07:45 — PO-493 rosa: ruoli che tagliano i nomi
+- Foto PO (Club › Rosa): «Ruoli abbreviati o scritti più piccoli». Misura madre: src/18 ~10471, ruolo già a FS.caption (la misura più piccola del sistema), `whiteSpace:nowrap` senza restringimento: il nome è l'unico elemento che cede (ellissi su «Caleb C…», «Alex Ma…»). Rimpicciolire ancora andrebbe sotto la soglia di leggibilità: la strada è l'abbreviazione. Forma dell'abbreviazione chiesta al PO. Giro 228 (piccolo, Opus), in coda dopo il 227.
