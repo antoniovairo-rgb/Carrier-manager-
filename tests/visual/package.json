@@ -655,6 +655,7 @@
     "tocco-213": "node tocco-213.mjs",
     "tocco3d-219": "node tocco3d-219.mjs",
     "profilo-219": "node profilo-219.mjs",
+    "caselle-219": "node caselle-219.mjs",
     "misura-213": "node misura-213.mjs",
     "riserva2d-205": "node riserva2d-205.mjs",
     "notte-206": "node notte-206.mjs",
