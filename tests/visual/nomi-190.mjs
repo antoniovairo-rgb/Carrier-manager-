@@ -42,7 +42,7 @@ try {
     const casi = [
       [{ n: 'FC Valmora Primavera', a: 'VAL' }, ['FC Valmora Primavera', 'FC Valmora U19', 'Valmora U19', 'Valmora', 'VAL']],
       [{ n: 'FC Valmora', a: 'VAL' }, ['FC Valmora', 'Valmora', 'VAL']],
-      [{ n: 'Torino Athletic Primavera', a: 'TAT' }, ['Torino Athletic Primavera', 'Torino Athletic U19', 'TAT']],
+      [{ n: 'Torino Athletic Primavera', a: 'TAT' }, ['Torino Athletic Primavera', 'Torino Athletic U19', 'Torino Athletic', 'TAT']],   /* [giro 211 · PO-472] il nome corto fra U19 e sigla */
       [{ n: 'Selezione Granata', a: 'GRA' }, ['Selezione Granata', 'Sel. Granata', 'GRA']],
       [{ n: 'AC Dorvelli', a: 'ACR' }, ['AC Dorvelli', 'Dorvelli', 'ACR']],
     ];

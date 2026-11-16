@@ -307,7 +307,16 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 @keyframes cpmRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes cpmSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes cpmShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}</style>
+@media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}
+/* [giro 213 PO-475] riscontro al tocco uniforme (strato tocco213 in src/19): schiacciato e illuminato dal fotogramma dopo il tocco */
+html.cpm-t213 .cpm-press:active,html.cpm-t213 .cpm-int:active{transform:none;}
+html.cpm-t213 [data-premuto213]{transition:scale 0s,filter 0s!important;filter:brightness(1.16) drop-shadow(0 0 6px rgba(255,236,205,.6))!important;}
+html.cpm-t213 [data-premuto213="b"],html.cpm-t213 [data-premuto213="a"]{scale:.96;}
+html.cpm-t213 [data-pos213]{position:relative;}
+html.cpm-t213 [data-premuto213="b"]::before,html.cpm-t213 [data-premuto213="a"]::after{content:"";position:absolute;inset:-2.5%;}
+@media(prefers-reduced-motion:reduce){html.cpm-t213 [data-premuto213]{scale:none!important;}}
+.cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
+@keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->
 </head>
 <body>

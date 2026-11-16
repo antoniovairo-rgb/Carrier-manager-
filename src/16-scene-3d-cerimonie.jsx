@@ -828,7 +828,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
       flashes.forEach(f=>{if(f.t<0&&rnd()<0.010)f.t=0;if(f.t>=0){f.t+=0.05;const o=Math.max(0,1-f.t*3.2);f.sp.material.opacity=o;if(o>0.6)flashLight.intensity=1.5;if(f.t>0.4)f.t=-1;}});
       flashLight.intensity*=0.86;
       cam.position.x=camVX+Math.sin(el*0.13)*0.10;cam.lookAt(0.08,0.62,0);
-      renderer.render(scene,cam);raf=requestAnimationFrame(tick);};
+      renderer.render(scene,cam);misuraCorpi212('intervista',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */raf=requestAnimationFrame(tick);};
     // ── camera TV busto-su (variazione seedata del taglio) ──
     const cam=new THREE.PerspectiveCamera(44,W()/H(),0.1,50);cam.position.set(camVX,camVY,4.7);cam.lookAt(0.08,0.62,0);
     raf=requestAnimationFrame(tick);
@@ -1593,7 +1593,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           _g.t=+(+(_mw._wvT||0)).toFixed(2);_g.n=(_g.n||0)+1;
         }
       }catch(_e479){}}
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('presentazione',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
     };
     cam.position.set(Math.sin(-0.5)*80,34,Math.cos(-0.5)*80);tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
@@ -1889,7 +1889,15 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         const clip=new THREE.AnimationClip('braccia23',clip0.duration,clip0.tracks.filter(t=>_BR.test(t.name)));
         const idle=new THREE.AnimationClip('gambe23',idle0.duration,idle0.tracks.filter(t=>!_BR.test(t.name)));
         let apice=clip0.duration*0.34;
-        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;
+        /* [giro 204 PO-451 — rosso __CPM_NO_G204] LE MAGLIE SUL TETTO HANNO IL COLORE DEL CLUB. Le maglie dei corpi prendevano la stessa luce
+           x4 della parata (LUCE178.parata) che il giro 192 ha corretto sulla livrea del pullman, e risultavano piu' chiare del colore del club
+           (misura prima/dopo: pullman-204). Stesso rimedio della livrea: il colore del kit (maglia, pantaloncini, calzettoni) si scrive in
+           lineare e scalato per la luce che riceve (_KIT204, tarato con la sonda: 0,5, non lo 0,3 della livrea — la maglia e' in ombra piu' della fiancata). */
+        const _KIT204=(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_KIT204)?+window.__CPM_KIT204:0.5;/* taratura misurata (pullman-204, FC Merseyside): k 0,3 -> luminosita' 0,57 (troppo scura), 0,5 -> 0,835 contro 0,863 del club, 0,6 -> 0,93, 0,7 -> 0,996 (bruciata) */
+        const _kit204=(av)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G204)return;try{av.traverse(m=>{if(!m.isMesh||!m.material)return;const L=Array.isArray(m.material)?m.material:[m.material];
+          const _re208=(typeof window!=='undefined'&&window.__CPM_NO_G208)?/^Hyper(Shirt|Shorts|Socks)$/:/^HyperShirt$/;/* [giro 208 PO-469 — rosso __CPM_NO_G208] decisione PO 15/11: la correzione del colore vale SOLO per la maglia; pantaloncini e calzettoni tornano come prima del giro 204 (misurato pullman-204: pantaloncini bianchi luminosita' 0,890 col 204 contro 0,984 prima) */
+          for(const c of L){if(!c||!_re208.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
+        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);
           const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
           av.position.set(sx,5.3,sz);av.rotation.y=eroe?0:(sx<0?-1:1)*Math.PI/2+(R(i*7)-0.5)*0.5;bus.add(av);
           const mx=new THREE.AnimationMixer(av),act=mx.clipAction(clip);act.play();act.paused=true;const ia=mx.clipAction(idle);ia.play();ia.paused=true;ia.time=0;/* in piedi, fermi: l'idle scorrendo alzava un ginocchio */
@@ -1905,7 +1913,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
           cped.visible=false;}
         cup.position.set(0,5.75,7.0);bus.add(cup);
-        try{if(window.__CPM_PARATA){window.__CPM_PARATA.glb=true;window.__CPM_PARATA.cg23=men.length;}}catch(_e){}
+        try{if(window.__CPM_PARATA){window.__CPM_PARATA.glb=true;window.__CPM_PARATA.cg23=men.length;if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PARATA.men23=men;}}catch(_e){}/* [giro 204] men23: i corpi del tetto, solo collaudo (la sonda pullman-204 misura il colore delle maglie) */
       }).catch(()=>{placeMen(mkFallback);});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
@@ -2057,7 +2065,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       caim.set(A.a[0]+(B.a[0]-A.a[0])*ww,A.a[1]+(B.a[1]-A.a[1])*ww,A.a[2]+(B.a[2]-A.a[2])*ww);
       cam.position.copy(cpos);cam.lookAt(caim);
       if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARCAM192&&eroe23){try{const _e=new THREE.Vector3();eroe23.getWorldPosition(_e);cam.position.set(_e.x+1.2,_e.y+1.9,_e.z+3.4);cam.lookAt(_e.x,_e.y+1.9,_e.z);}catch(_e){}}/* [giro 192] solo collaudo: primo piano sull'eroe con la coppa */
-      renderer.render(scene,cam);};
+      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
     tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
     window.addEventListener('resize',onR);
@@ -2442,7 +2450,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       if(winB&&!_cued.win){_cued.win=true;_cue("winner_reveal");}
       confSys.forEach(ps=>{ps.material.opacity+=((winB?0.95:0)-ps.material.opacity)*0.05;
         if(ps.material.opacity>0.02){const a=ps.geometry.attributes.position.array,v=ps._vel;for(let i=0;i<v.length;i++){a[i*3+1]-=v[i]*0.033;a[i*3]+=Math.sin(t*2+i)*0.004;if(a[i*3+1]<0){a[i*3+1]=4.4;}}ps.geometry.attributes.position.needsUpdate=true;}});
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('gala',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
     };
     loop();
     const onRs=()=>{try{renderer.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();_fov137();}catch(_e){}};
@@ -2974,8 +2982,13 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
     const _spec=_all.filter(d=>d.prestige);return _spec.length?_spec:_all;})();
   const _presLine100=(_presPool100.length>0?_presPool100:SEASON_END_PRESIDENT.filter(d=>_presRet445?d.retire:(d.result===_presResult100&&!d.retire)))[hashStr((player.name||"x")+"p"+String(season||1))%Math.max(1,(_presPool100.length||1))];
   const bestMatch=getBestSeasonMatch(player.matchHistory||[]);
-  const contractYearsLeft=(player.contract?.duration||0);
+  /* [giro 200 · PO-448 p.3] «Contratto attivo · 3 anni rimanenti» dopo una firma di 2 anni: la durata conta anche la stagione appena
+     finita. Gli anni che restano si leggono dalla scadenza vera (_contratto49, la stessa della scheda Agente); all'addio annunciato
+     la riga non parla di contratto. Rosso __CPM_NO_G200 = la durata come prima. */
+  const _c200=_g200x()?_contratto49(player):null;
+  const contractYearsLeft=_c200?(_c200.scaduto?0:_c200.left):(player.contract?.duration||0);
   const contractExpiredNow=contractYearsLeft<=0;
+  const _addio200=_g200x()&&player.retireAnnounced===(player.season||1);
 
   // sorted standings already from doAdvanceWeek
   const sorted=finalStandings||[];
@@ -3225,7 +3238,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {euroActive&&(
         <Fisarmonica id="fine-sezione" titolo={<>{euro.competition==="UCL"?"⭐ Korward Champions Cup":euro.competition==="UEL"?"🟡 Korward Europa Cup":"🟣 Korward Conference Cup"}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-            <span style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{euroPhaseLabel}</span>
+            <span style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{(()=>{/* [giro 200 · PO-448 p.2] «Eliminato · 12 pt nel girone» sopra
+                «Corsa finita agli ottavi»: l'intestazione dice DOVE si e' usciti (ultimo turno KO giocato). Rosso __CPM_NO_G200 = com'era. */
+              const _ko=(euro.koResults||[]),_l=_ko.length?String(_ko[_ko.length-1].phase||""):"";
+              const _D={r16:"agli ottavi",quarti:"ai quarti",sf:"in semifinale",final:"in finale"};
+              return (_g200x()&&euroElim&&_D[_l])?("Eliminato "+_D[_l]):euroPhaseLabel;})()}</span>
             <span style={{fontSize:FS.caption,color:TH.muted}}>{euro.pts||0} pt nel girone</span>
           </div>
           {(euro.groupResults||[]).length>0&&(
@@ -3389,7 +3406,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <span style={{fontSize:FS.bodyLg}}>{contractExpiredNow?"❌":contractYearsLeft===1?"⚠️":"📄"}</span>
         <div>
           <div style={{fontSize:FS.caption,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
-            {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
+            {_addio200?"Ultima stagione: hai annunciato il ritiro":(contractExpiredNow&&_c200&&!_c200.scaduto)?"Contratto in scadenza — tratta il rinnovo o trova una squadra":contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
           </div>
           {(player.contract?.wage||0)>0&&<div style={{fontSize:FS.caption,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
         </div>

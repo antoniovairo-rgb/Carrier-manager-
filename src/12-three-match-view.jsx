@@ -212,6 +212,39 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
 /* [7.999.21 collaudo PO «ridurrei la grandezza generale, sembra troppo grande rispetto al campo/porta»] i giocatori CGTrader in campo
    erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
    scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
+/* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!»] MISURATORE DEI CORPI, per OGNI scena 3D (partita, ingresso, highlight,
+   festa e premiazione dentro ThreeMatchView; intervista, presentazione, parata, gala e schermata iniziale coi loro renderer). Solo lettura,
+   acceso solo quando la sonda arma window.__CPM_G212W (array). A ogni fotogramma disegnato, per ogni corpo con scheletro visibile:
+   - STATURA in unita' di mondo, indipendente dalla posa: l'estensione delle ossa lungo l'asse piede→testa della posa di legame del file (lo stesso metro
+     di _skeletonWorldHeight, con cui il gioco scala i corpi) riportata al mondo col rapporto fra il percorso d'ossa piede→testa ADESSO e
+     lo stesso percorso nella posa di legame. In verticale 1 unita' = 1 metro (convenzione del gioco: la traversa sta a 2,44);
+   - distanza dalla camera (bacino e osso piu' vicino), piano near, ossa dentro il near o dietro la camera;
+   - QUOTA dell'inquadratura: rettangolo delle ossa proiettate, ritagliato allo schermo, diviso per lo schermo;
+   - a chi appartiene (chi(o) della scena, altrimenti la catena dei genitori con le loro scale). */
+const _M212={v:null,rat:new WeakMap()};
+function misuraCorpi212(scena,scene,camera,chi){try{if(typeof window==='undefined'||typeof THREE==='undefined')return;const W=window.__CPM_G212W;if(!Array.isArray(W)||W.length>=(+window.__CPM_G212MAX||6000)||!scene||!camera)return;
+  const T=THREE;if(!_M212.v)_M212.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),m:new T.Matrix4(),iv:new T.Matrix4(),s:new T.Vector3()};const V=_M212.v;
+  const out={t:+(performance.now()/1000).toFixed(2),scena,near:+(camera.near||0).toFixed(3),fov:+(camera.fov||0).toFixed(1),w:(window.innerWidth|0)+'x'+(window.innerHeight|0),cam:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)],corpi:[]};
+  camera.updateMatrixWorld();V.iv.copy(camera.matrixWorldInverse);const cp=new T.Vector3();camera.getWorldPosition(cp);const sk=new Set();
+  const percorso=(bs,a,b)=>{const pa=[];for(let x=a;x;x=x.parent)pa.push(x);const sb=new Set(pa);const pb=[];let x=b;for(;x&&!sb.has(x);x=x.parent)pb.push(x);if(!x)return null;const lca=x;const r=pa.slice(0,pa.indexOf(lca)+1).concat(pb.reverse());return r.every(o=>bs.indexOf(o)>=0)?r:null;};
+  scene.traverseVisible(o=>{if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||bs.length<5||sk.has(bs[0]))return;sk.add(bs[0]);
+    let hd=null,ft=null;for(const b of bs){const n=String(b.name||'').replace(/^mixamorig[:_]?/i,'');if(!hd&&/^(head|bip0?1_?head)$/i.test(n.replace(/[ .]/g,'_')))hd=b;if(!ft&&/^(foot_l|leftfoot|l_?foot|bip0?1_?l_?foot)$/i.test(n.replace(/[ .]/g,'_')))ft=b;}
+    if(!hd||!ft)return;const via=percorso(bs,ft,hd);if(!via||via.length<3)return;
+    let R=_M212.rat.get(o.skeleton);
+    if(R==null){try{const bp=b=>{V.c.setFromMatrixPosition(V.m.copy(o.skeleton.boneInverses[bs.indexOf(b)]).invert());return V.c.clone();};
+      let L=0;for(let k=1;k<via.length;k++)L+=bp(via[k-1]).distanceTo(bp(via[k]));const ax=bp(hd).sub(bp(ft)).normalize();let lo=1e9,hi=-1e9;for(const b of bs){const q=bp(b).dot(ax);if(q<lo)lo=q;if(q>hi)hi=q;}/* estensione lungo l'asse piede→testa della posa di legame: vale per i file Y-su e Z-su (Rocketbox) */
+      R=L>0?(hi-lo)/L:0;}catch(_e){R=0;}_M212.rat.set(o.skeleton,R);}
+    let L=0;for(let k=1;k<via.length;k++){via[k-1].getWorldPosition(V.a);via[k].getWorldPosition(V.b);L+=V.a.distanceTo(V.b);}
+    let x0=9,x1=-9,y0=9,y1=-9,dentroNear=0,dietro=0,dmin=1e9,yMin=1e9;
+    for(const b of bs){b.getWorldPosition(V.a);if(V.a.y<yMin)yMin=V.a.y;const d=V.a.distanceTo(cp);if(d<dmin)dmin=d;V.b.copy(V.a).applyMatrix4(V.iv);const zc=-V.b.z;if(zc<=0){dietro++;continue;}if(zc<camera.near)dentroNear++;
+      V.a.project(camera);if(V.a.x<x0)x0=V.a.x;if(V.a.x>x1)x1=V.a.x;if(V.a.y<y0)y0=V.a.y;if(V.a.y>y1)y1=V.a.y;}
+    const cx0=Math.max(-1,x0),cx1=Math.min(1,x1),cy0=Math.max(-1,y0),cy1=Math.min(1,y1);const quota=(cx1>cx0&&cy1>cy0)?((cx1-cx0)*(cy1-cy0)/4):0;
+    const pel=via[Math.floor(via.length/2)]||bs[0];pel.getWorldPosition(V.a);o.getWorldScale(V.s);
+    let c=null;try{c=chi?chi(o):null;}catch(_e){}
+    const cat=[];for(let x=o.parent,k=0;x&&k<7;x=x.parent,k++)cat.push((x.name||x.type||'').slice(0,14)+(x.scale&&Math.abs(x.scale.y-1)>0.001?'*'+x.scale.y.toFixed(3):''));
+    out.corpi.push({ix:c&&c.ix!=null?c.ix:-1,ruolo:(c&&c.ruolo)||'sconosciuto',nome:(o.name||'').slice(0,20),cat:cat.join('<'),hU:+(L*R).toFixed(3),hM:+(L*R).toFixed(2),scala:+V.s.y.toFixed(4),
+      d:+V.a.distanceTo(cp).toFixed(2),dmin:+dmin.toFixed(2),pos:[+V.a.x.toFixed(1),+V.a.y.toFixed(1),+V.a.z.toFixed(1)],yMin:+yMin.toFixed(2),quota:+quota.toFixed(3),hScr:+((cy1-cy0)/2).toFixed(3),dentroNear,dietro,cg:!!(o.userData&&o.userData.cg196)});});
+  W.push(out);}catch(_e){}}
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
 /* [giro 146 PO-348 «occhio alla gestione delle spalle, braccia e mani: spalle larghe e proporzionate al corpo in tutte le scene e negli
    highlights»] LA REGOLA UNICA DELLE SPALLE. MISURATO (spalle-146-misura.mjs, GLB acceso, corpo CGTrader): il rapporto fra la distanza
@@ -408,7 +441,7 @@ function ThreeMatchView(props){
     stadiumHomeCol,stadiumAwayCol,stadiumAwayCol2=null,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
-    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
+    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;/* props.ingresso206 [giro 206]: tipo di ingresso in campo (INGRESSO206) */_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -444,6 +477,13 @@ function ThreeMatchView(props){
     let skyCol=pal.skyTop,fogCol=pal.fog,ambInt=pal.ambInt*1.46,sunInt=1.06,sunColor=pal.flood,hemiInt=0.56,fogNear=95,fogFar=260;/* [7.278.0 collaudo PO «live match leggermente piu luminoso, soprattutto di notte»] La notte e il ramo di DEFAULT: torri di luce (sunInt) +22%, ambiente +28% e cielo/prato (hemi) da 0.30 a 0.44 → i giocatori e le linee si leggono senza slavare il manto. */
     if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.66;sunInt=0.86;sunColor=0xfff6e8;hemiInt=0.46;fogNear=150;fogFar=360;}/* Sprint 3D-G1: intensità ridotte → niente erba slavata (renderer senza tonemapping) */
     else if(tod==="dusk"){skyCol=0x2a1530;fogCol=0x2c1622;ambInt=0.60;sunInt=0.82;sunColor=0xffb070;hemiInt=0.42;fogNear=110;fogFar=290;}
+    /* [giro 206 PO-373, decisione PO «Atmosfera si', campo no» — rosso __CPM_NO_G206] LA NOTTE SI VEDE INTORNO AL CAMPO, NON SUL CAMPO.
+       Misurato prima (misura-notte-206, tre stadi, tre camere fisse, PC e telefono): di notte gli spalti avevano la stessa luminosita'
+       del giorno (rapporto 0,99-1,03) e il prato era gia' pari al giorno (1,05-1,06): l'unica cosa che diceva «notte» era il cielo.
+       Le luci NON si toccano (prato e giocatori restano com'erano, vincolo 7.539): si scuriscono i MATERIALI dello stadio (vedi
+       _spalti206 dopo buildStadium), il cielo scende, i riflettori hanno l'alone (src/11). */
+    const _N206=(tod==="night")&&!(typeof window!=='undefined'&&window.__CPM_NO_G206);
+    if(_N206){skyCol=new THREE.Color(skyCol).multiplyScalar(0.5).getHex();}
     if(wfx==="fog"){fogNear=62;fogFar=190;ambInt*=0.9;}// FOG-1: era fogNear=18 → campo invisibile dalla cam larga (≥66u); ora 62→campo leggibile
     else if(wfx==="rain"){fogNear*=0.7;fogFar*=0.7;ambInt*=0.82;sunInt*=0.6;if(tod==="day")skyCol=0x5a6b78;}
     else if(wfx==="storm"){fogNear=Math.max(fogNear*0.65,60);fogFar*=0.62;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}// FOG-1: fogNear era *0.55 (→52) → campo invisibile; ora min 60
@@ -735,7 +775,7 @@ function ThreeMatchView(props){
        allo stadio: una sola fonte, cosi' il muretto non puo' dire una competizione diversa dal resto. */
     const _cmpLbl301=String(props.competitionLabel||club?.lg||"CAMPIONATO").toUpperCase();
     const _cmpCol301=props.competitionColor||(/coppa|cup|champions|europa|conference|continental/i.test(_cmpLbl301)?"#f5c542":/mondiale|europeo|nazional/i.test(_cmpLbl301)?"#34d399":"#d27f8c");
-    try{/* [7.732.0 — IL CAMBIO CAMPO SI VEDE: LO STADIO GIRA ALLA RIPRESA. Rosso __CPM_NO732] Collaudo PO 02/09 «non avviene il cambio campo», scelta A. Il frame di gioco e' eroe-centrico (l'eroe attacca sempre verso x 97, la camera sta sempre dietro la sua direzione d'attacco): con questa regia il cambio campo VISIBILE e' lo stadio che si scambia le curve dietro le porte — il 7.561 ruotava di 180 gradi solo la camera del flusso, e negli highlight l'eroe attaccava sempre la stessa curva. Ora TUTTO lo stadio (tribune, curve, striscioni, bandiere, tabelloni) vive in un gruppo-radice che alla ripresa ruota di 180 gradi intorno al centro: pallone, ventidue, eroe, archi e camere restano nel loro frame, la simulazione non e' toccata. */const _root732=(sr.current.stadiumRoot=sr.current.stadiumRoot||(function(){const g=new THREE.Group();g.name='stadiumRoot732';scene.add(g);return g;})());const _sc=buildStadium(_root732,sHome,sAway,{comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
+    try{/* [7.732.0 — IL CAMBIO CAMPO SI VEDE: LO STADIO GIRA ALLA RIPRESA. Rosso __CPM_NO732] Collaudo PO 02/09 «non avviene il cambio campo», scelta A. Il frame di gioco e' eroe-centrico (l'eroe attacca sempre verso x 97, la camera sta sempre dietro la sua direzione d'attacco): con questa regia il cambio campo VISIBILE e' lo stadio che si scambia le curve dietro le porte — il 7.561 ruotava di 180 gradi solo la camera del flusso, e negli highlight l'eroe attaccava sempre la stessa curva. Ora TUTTO lo stadio (tribune, curve, striscioni, bandiere, tabelloni) vive in un gruppo-radice che alla ripresa ruota di 180 gradi intorno al centro: pallone, ventidue, eroe, archi e camere restano nel loro frame, la simulazione non e' toccata. */const _root732=(sr.current.stadiumRoot=sr.current.stadiumRoot||(function(){const g=new THREE.Group();g.name='stadiumRoot732';scene.add(g);return g;})());const _sc=buildStadium(_root732,sHome,sAway,{notte206:_N206,comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
@@ -757,6 +797,20 @@ function ThreeMatchView(props){
        senza stadio è meglio di una schermata nera — ma smette di mentire. */
       try{if(typeof window!=='undefined'){window.__CPM_STADFAIL={msg:String((e&&e.message)||e),stack:String((e&&e.stack)||"").slice(0,600)};console.warn("[CPM-STADIO] costruzione interrotta:",(e&&e.message)||e);}}catch(_e535){}}
 
+    /* [giro 206 PO-373 — rosso __CPM_NO_G206] SPALTI PIU' BUI DI NOTTE. Tutto cio' che buildStadium ha costruito con un materiale
+       ILLUMINATO (gradinate, folla, strutture, tetto) viene scurito una volta, sul colore del materiale; i materiali che brillano di
+       luce propria (LED, testate dei fari, cartelloni, tabellone: MeshBasicMaterial) restano accesi, come in uno stadio vero di sera.
+       Un materiale usato da un oggetto DENTRO il rettangolo di gioco (porte, reti) non si tocca. Testimone __CPM_SPALTI206. */
+    try{const _rt206=sr.current.stadiumRoot;if(_N206&&_rt206){const _K206=(typeof window!=='undefined'&&+window.__CPM_K206>0)?+window.__CPM_K206:0.42;/* __CPM_K206: pomello di sola taratura (sonde) */
+      const _dentro=new Set(),_fuori=new Set(),_v206=new THREE.Vector3();_rt206.updateMatrixWorld(true);
+      _rt206.traverse(o=>{if(!o||!o.isMesh||!o.material)return;const ms=Array.isArray(o.material)?o.material:[o.material];
+        try{if(o.geometry&&!o.geometry.boundingBox)o.geometry.computeBoundingBox();if(o.geometry&&o.geometry.boundingBox)o.geometry.boundingBox.getCenter(_v206);else _v206.set(0,0,0);_v206.applyMatrix4(o.matrixWorld);}catch(_e){_v206.set(999,0,999);}
+        const _in=!o.isInstancedMesh&&Math.abs(_v206.x)<55&&Math.abs(_v206.z)<36.5;
+        for(const m of ms){if(!m||!m.color||m.isMeshBasicMaterial||m.isSpriteMaterial||m.isShaderMaterial)continue;(_in?_dentro:_fuori).add(m);}});
+      let _n206=0;_fuori.forEach(m=>{if(_dentro.has(m)||m.userData.g206)return;m.userData.g206=true;m.color.multiplyScalar(_K206);_n206++;});
+      try{if(typeof window!=='undefined')window.__CPM_SPALTI206={k:_K206,materiali:_n206,esclusi:_dentro.size};}catch(_e){}
+    }}catch(_e206){try{if(typeof window!=='undefined')window.__CPM_SPALTI206={errore:String(_e206&&_e206.message||_e206)};}catch(_e){}}
+
     /* [7.999.70 stadi fase 2 — galleria fase 1: «negli stadi piccoli meta' del quadro e' cielo nero». Rosso __CPM_NO_FONDALE70]
        IL MONDO OLTRE LO STADIO. Il cielo era solo scene.background, un colore piatto: sopra una tribuna bassa il telefono in
        verticale mostrava un rettangolo vuoto. Ora un FONDALE: cilindro aperto (lato interno, fuori dalla nebbia, un solo draw
@@ -776,6 +830,7 @@ function ThreeMatchView(props){
       const _g70=_x70.createLinearGradient(0,0,0,512);
       if(tod==="day"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.72,"#b9d3ea");_g70.addColorStop(1,"#dbe7f0");}
       else if(tod==="dusk"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.55,"#5a2a4a");_g70.addColorStop(0.8,"#c8643c");_g70.addColorStop(1,"#f0a060");}
+      else if(_N206){_g70.addColorStop(0,_top70);_g70.addColorStop(0.62,"#080e1d");_g70.addColorStop(0.85,"#111a2e");_g70.addColorStop(1,"#1f2233");}/* [giro 206] notte: orizzonte piu' scuro */
       else{_g70.addColorStop(0,_top70);_g70.addColorStop(0.62,"#0e1830");_g70.addColorStop(0.85,"#1f2c4a");_g70.addColorStop(1,"#3a3a4e");}
       _x70.fillStyle=_g70;_x70.fillRect(0,0,2048,512);
       if(_nt70){/* stelle rade nella parte alta (seminate: sempre le stesse) */
@@ -1265,6 +1320,19 @@ function ThreeMatchView(props){
         const tp=n>0&&maxA<0.105;if(tp)out.tpose++;
         if((!cg||tp)&&out.chi.length<6)out.chi.push((cg?'cg':'nocg')+(tp?'-tpose':'')+':'+(_t196ruolo(o)||'giocatore')+':'+(o.name||'').slice(0,18));});
       W.push(out);}catch(_e){}};
+    /* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!»] TESTIMONE DEI CORPI (solo con window.__CPM_G212W, armato dalla
+       sonda gigante-212): a ogni fotogramma DISEGNATO, per ogni corpo con scheletro visibile in scena: ALTEZZA in piedi indipendente
+       dalla posa (somma dei segmenti piede-polpaccio-coscia-bacino-schiena-collo-testa nel mondo, per il rapporto altezza/segmenti
+       misurato una volta sulla posa di legame del file), distanza dalla camera, piano near, ossa dentro il near o dietro la camera,
+       QUOTA dell'inquadratura occupata (rettangolo delle ossa proiettate, ritagliato allo schermo) e a chi appartiene. */
+    const _g212chi=(o)=>{let av=null,ix=-1;if(glbAvatars)for(let i=0;i<glbAvatars.length&&!av;i++){const a=glbAvatars[i];if(!a||!a.root)continue;for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===a.root){av=a;ix=i;break;}}
+      let r=_t196ruolo(o);if(!r&&av){r=av._isRef?'arbitro':(ix===0?'eroe':(av._isGk?'portiere-':'')+(av._team==='home'?'casa':av._team==='away'?'ospiti':'?'));}
+      const _in=(L,nome)=>{if(r||!L)return;for(const a of L){const rt=a&&(a.root||a.visualRoot);if(!rt)continue;for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===rt){r=nome(a);return;}}};
+      _in(assistantRefGlbAvatars,()=>'guardalinee');_in(mascotGlbAvatars,()=>'bambino');_in(benchGlbAvatars,a=>a.isCoach?'mister':'panchina');
+      if(!r&&sr.current&&sr.current._cerCoachGrp){for(let x=o,k=0;x&&k<12;x=x.parent,k++)if(x===sr.current._cerCoachGrp){r='mister-premiazione';break;}}
+      if(!r){for(let x=o,k=0;x&&k<12;x=x.parent,k++){if(x._mascot196){r='bambino';break;}if(x.name&&/coach|panch|bench|foto|tifos|comparsa|stamp/i.test(x.name)){r='comparsa:'+x.name.slice(0,16);break;}}}
+      return {ix,ruolo:r||'sconosciuto'};};
+    const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
     const _w232v=new THREE.Vector3();
@@ -1986,8 +2054,25 @@ function ThreeMatchView(props){
           marker.traverse(o=>{if(o.isMesh)o.visible=false;});
           const root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('hyper-assistant-'+index));
           root.add(visual);visual.updateMatrixWorld(true);
-          const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),_mh212=Math.max(0.1,raw.max.y-raw.min.y),_sk212=_skeletonWorldHeight(visual);
+          /* [giro 212 PO-474 «Nelle scene 3d c'e' un gigante in campo!» — rosso __CPM_NO_G212] MISURATO (testimone __CPM_G212W, festa del
+             fischio finale e ogni altra scena della partita): i due guardalinee CGTrader avevano scala 17,2 contro 1,0 di tutti gli altri
+             corpi, statura 26,5 unita' = 29 m, in piedi sul bordo campo a z = ±36: e' il «gigante» oltre i cartelloni della foto del PO.
+             Causa: l'altezza si leggeva da Box3.setFromObject, che sul pacchetto CGTrader LOD legge la posa di legame delle SkinnedMesh in
+             centimetri e restituisce meno di 0,1 (lo stesso inganno gia' documentato il 23/09 per i LOD): il tetto Math.max(0.1, ...) la
+             portava a 0,1 e 1,72/0,1 = 17,2. Bambini e panchina leggevano gia' lo SCHELETRO (_skeletonWorldHeight) e avevano altezze
+             giuste: qui si fa lo stesso, con la stessa scala dei corpi in campo (_scalaCorpo21). */
+          const height=(!(typeof window!=='undefined'&&window.__CPM_NO_G212)&&_sk212.height>0.5)?_sk212.height:_mh212;visual.scale.setScalar(((typeof window!=='undefined'&&window.__CPM_NO_G212)?1:_scalaCorpo21())*1.72/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
+          /* [giro 206 — rosso __CPM_NO_G206] GUARDALINEE GIGANTI. Misurato nell'ingresso (sonda del giro, corpi accesi, anche col rosso = prima del
+             giro): i due guardalinee CGTrader della modalita' predefinita (giro 196, pacchetto LOD leggero) erano alti 27,3 u contro 1,62-1,66
+             dei calciatori, e nel giro dello stadio la camera gli passava accanto (un busto giallo a tutto schermo). La taglia era presa dal
+             riquadro della GEOMETRIA (Box3.setFromObject), che su questo pacchetto non e' nella stessa unita' dello scheletro che la disegna.
+             Ora si controlla lo SCHELETRO: se l'altezza delle ossa non e' quella di un uomo si riscala su quella (1,62 u come i calciatori)
+             e si riappoggia a terra sull'osso piu' basso. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G206)){try{const _sk206=_skeletonWorldHeight(visual);if(_sk206.bones>4&&_sk206.height>0.05&&(_sk206.height>2.2||_sk206.height<1.1)){visual.scale.multiplyScalar(1.62/_sk206.height);visual.updateMatrixWorld(true);
+            let _lo206=Infinity;const _p206=new THREE.Vector3();visual.traverse(n=>{if(n.isBone){n.getWorldPosition(_p206);if(_p206.y<_lo206)_lo206=_p206.y;}});if(Number.isFinite(_lo206))visual.position.y-=(_lo206-0.06);visual.updateMatrixWorld(true);
+            try{window.__CPM_GUARDA206={prima:+_sk206.height.toFixed(2),dopo:+_skeletonWorldHeight(visual).height.toFixed(2)};}catch(_e){}}}catch(_e206g){}}
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
           const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
@@ -2446,9 +2531,9 @@ function ThreeMatchView(props){
        già due volte e sempre clippanti; sono puramente decorativi (le file LATERALI + le porte coprono già
        l'anello pubblicitario) → rimozione definitiva = niente più cartelloni sul campo, per costruzione. */
     // item 1 (5.49.9): TABELLONE STADIO (jumbotron) — pannello elevato dietro la porta avversaria con abbreviazioni + punteggio + minuto. Si aggiorna a ogni cambio.
-    let _sbTex=null,_sbDraw=null,_sbLastH=-1,_sbLastA=-1,_sbLastC=-1;
+    let _sbTex=null,_sbDraw=null,_sbLastH=-1,_sbLastA=-1,_sbLastC=-1,_sbLastR208=false;
     {const sc=document.createElement("canvas");sc.width=1024;sc.height=464;const sx=sc.getContext("2d");/* [7.42.2] tabellone 2×: numeri e wordmark nitidi */
-      _sbDraw=(hA,aA,h,a,clk)=>{sx.setTransform(2,0,0,2,0,0);sx.fillStyle="#070b16";sx.fillRect(0,0,512,232);sx.strokeStyle="#2b3a5c";sx.lineWidth=5;sx.strokeRect(6,6,500,220);
+      _sbDraw=(hA,aA,h,a,clk,rig)=>{sx.setTransform(2,0,0,2,0,0);sx.fillStyle="#070b16";sx.fillRect(0,0,512,232);sx.strokeStyle="#2b3a5c";sx.lineWidth=5;sx.strokeRect(6,6,500,220);
         // 5.49.12: LOGO DEL GIOCO sullo schermo della curva
         _cvWordmark(sx,256,20,26,"#d27f8c",false);// [6.69.0] wordmark "Korward" + sottotitolo Elite (granata chiaro) sullo schermo della curva
         // [6.69.2] ⚠ _cvWordmark lascia textAlign=left/baseline=alphabetic → RIPRISTINA center/middle (altrimenti punteggio e sigle escono spostati a dx/in alto)
@@ -2456,7 +2541,7 @@ function ThreeMatchView(props){
         sx.font="900 38px Arial, sans-serif";
         sx.fillStyle="#9fb3d8";sx.fillText(hA,100,120);sx.fillText(aA,412,120);
         sx.fillStyle="#ffffff";sx.font="900 92px Arial, sans-serif";sx.fillText(h+" - "+a,256,124);
-        sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);};
+        try{if(typeof window!=="undefined"&&window.__CPM_SB204!==undefined)window.__CPM_SB204=clk;}catch(_e){}try{if(typeof window!=="undefined"&&window.__CPM_SB208!==undefined)window.__CPM_SB208={modo:rig?"rigori":"partita",punteggio:h+" - "+a,minuto:clk};}catch(_e){}/* [giro 208] testimone armato dalla sonda: cosa dice il maxischermo (rigori/partita) e quale punteggio */if(rig){sx.fillStyle="#ffffff";sx.font="900 38px Arial, sans-serif";sx.fillText("RIGORI",256,196);}/* [giro 208 PO-468] durante la lotteria: «RIGORI» sotto il punteggio della SERIE, in bianco (il giallo resta il colore del minuto, che nella lotteria non c'e' — giro 204) *//* [giro 204] testimone armato dalla sonda: l'ultimo minuto disegnato sul maxischermo (-1 = nessuno) */if(clk>=0){sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);}};/* [giro 204 PO-450] clk<0 = nessun minuto (lotteria dei rigori) */
       _sbDraw(homeAbbr,awayAbbr,scoreHome,scoreAway,props.matchClock||0);_sbTex=new THREE.CanvasTexture(sc);}
     /* [7.455.0 collaudo PO «schermo sospeso in aria negli stadi piccoli!»] IL MAXISCHERMO SI APPOGGIA A
        CIO' CHE HA DIETRO. La quota era FISSA a 15.5 per qualunque impianto, e il pilone fu tolto su
@@ -2885,6 +2970,65 @@ function ThreeMatchView(props){
        della competizione resta comunque leggibile in tre punti gia' presenti: la fascia sui muretti delle
        tribune (7.301), il nastro a bordo campo e il tappeto cerimoniale all'ingresso delle squadre. */
     // item 9 (5.49.2): TAPPETO CERIMONIALE — grande logo competizione a centrocampo, visibile solo durante l'ingresso (walkout).
+    /* [giro 206 PO-412 «ingresso piu' scenico nelle partite importanti» — rosso __CPM_NO_G206] LA SCENA DELL'INGRESSO PER TIPO DI PARTITA.
+       Tutto procedurale, nessun asset nuovo: (1) COREOGRAFIA = un telo a cartoncini nei due colori sociali steso sulla pendenza della
+       curva (stessa superficie _cxAt/_cyAt di bandiere e sciarpe), casa sempre, ospiti nelle finali; (2) FUMOGENI = pochi sprite
+       morbidi coi colori del club che salgono dal basso della curva; CORIANDOLI = punti che cadono sulle squadre schierate.
+       DOSE: telefono 8 fumogeni per curva e 80 coriandoli, PC 14 e 180 (un solo materiale per tipo, nessuna luce). Niente a stadio
+       freddo (stessi cancelli _tifoHome/_tifoAway della scenografia). Si accende solo durante l'ingresso (_tick206). */
+    const _G206=(function(){try{
+      const _k=props.ingresso206;const _cfg=(_k&&typeof INGRESSO206!=='undefined')?INGRESSO206[_k]:null;
+      if(!_cfg||(typeof window!=='undefined'&&window.__CPM_NO_G206))return null;
+      const G={tipo:_k,cfg:_cfg,coreo:[],fumo:[],cori:null,on:false,nF:0,nC:0,_cv:null,_ftx:null};
+      const _rootG=(sr.current.stadiumRoot||scene);
+      const _css=(h)=>typeof h==='number'?('#'+(h>>>0).toString(16).padStart(6,'0').slice(-6)):String(h||'#888888');
+      let _sd=((_adSeed44^0x206206)>>>0)||7;const _r=()=>{_sd=(_sd*1664525+1013904223)>>>0;return _sd/4294967296;};
+      const _mkCoreo=(home,c1,c2)=>{
+        const cv=document.createElement('canvas');cv.width=256;cv.height=128;const x=cv.getContext('2d');
+        const NB=8;for(let i=0;i<NB;i++){x.fillStyle=(i%2)?c2:c1;x.fillRect(i*256/NB,0,256/NB+1,128);}
+        x.fillStyle=c2;x.fillRect(0,50,256,28);x.fillStyle=c1;x.fillRect(0,58,256,12);
+        for(let i=0;i<260;i++){x.fillStyle=(_r()<0.5?'rgba(255,255,255,':'rgba(0,0,0,')+(0.04+_r()*0.10).toFixed(2)+')';x.fillRect(((_r()*32)|0)*8,((_r()*16)|0)*8,8,8);}
+        x.strokeStyle='rgba(0,0,0,0.20)';x.lineWidth=1;for(let gx=0;gx<=256;gx+=8){x.beginPath();x.moveTo(gx+0.5,0);x.lineTo(gx+0.5,128);x.stroke();}
+        for(let gy=0;gy<=128;gy+=8){x.beginPath();x.moveTo(0,gy+0.5);x.lineTo(256,gy+0.5);x.stroke();}
+        const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;
+        const NT=6,NZ=8,ZW=25,T0=0.14,T1=0.86;const pos=[],uv=[],idx=[];
+        for(let it=0;it<=NT;it++){const t=T0+(T1-T0)*it/NT;const cx=_cxAt(t,home)+(home?-0.6:0.6),cy=_cyAt(t,home)+1.3;
+          for(let iz=0;iz<=NZ;iz++){pos.push(cx,cy,-ZW+2*ZW*iz/NZ);uv.push(iz/NZ,it/NT);}}
+        for(let it=0;it<NT;it++)for(let iz=0;iz<NZ;iz++){const a=it*(NZ+1)+iz,b=a+1,c=a+NZ+1,d=c+1;idx.push(a,b,c,b,d,c);}
+        const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);
+        const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+        m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';_rootG.add(m);G.coreo.push(m);};
+      const _mkFumo=(home,c1,c2)=>{const n=isDesktop?14:8;
+        if(!G._ftx){const cv=document.createElement('canvas');cv.width=cv.height=64;const x=cv.getContext('2d');const rg=x.createRadialGradient(32,32,0,32,32,32);
+          rg.addColorStop(0,'rgba(255,255,255,0.9)');rg.addColorStop(0.5,'rgba(255,255,255,0.35)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,64,64);G._ftx=new THREE.CanvasTexture(cv);}
+        for(let i=0;i<n;i++){const col=new THREE.Color(_css((i%2)?c2:c1)).lerp(new THREE.Color(0xffffff),0.4);
+          const s=new THREE.Sprite(new THREE.SpriteMaterial({map:G._ftx,color:col,transparent:true,opacity:0,depthWrite:false}));
+          const t=0.10+_r()*0.32;s.userData={fumo206:true,home:!!home,x0:_cxAt(t,home),y0:_cyAt(t,home)+1.6,z0:-22+44*((i+_r()*0.8)/n),ph:_r()*7,v:0.8+_r()*0.5};
+          s.visible=false;s.renderOrder=7;/* sopra i cartoncini (6): il fumo sale davanti alla coreografia */_rootG.add(s);G.fumo.push(s);}};
+      if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
+      if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
+      if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
+      if(_cfg.coriandoli){const n=isDesktop?180:80;const p=new Float32Array(n*3),c=new Float32Array(n*3);const cols=[new THREE.Color(_css(_tHCol)),new THREE.Color(_css(_hc2)),new THREE.Color(0xffffff)];
+        G._cv=new Float32Array(n*2);
+        for(let i=0;i<n;i++){p[i*3]=-32+_r()*42;p[i*3+1]=_r()*16;p[i*3+2]=-18+_r()*36;const k=cols[i%3];c[i*3]=k.r;c[i*3+1]=k.g;c[i*3+2]=k.b;G._cv[i*2]=1.6+_r()*1.8;G._cv[i*2+1]=_r()*6.28;}
+        const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));
+        const pts=new THREE.Points(g,new THREE.PointsMaterial({size:0.26,vertexColors:true,transparent:true,opacity:0,depthWrite:false,sizeAttenuation:true}));
+        pts.visible=false;pts.frustumCulled=false;scene.add(pts);G.cori=pts;G.nC=n;}
+      return G;}catch(_e206){try{if(typeof window!=='undefined')window.__CPM_ING206ERR=String(_e206&&_e206.message||_e206);}catch(_e){}return null;}})();
+    /* un passo per fotogramma dell'ingresso: t = tempo di coreografia, WD = fine della camminata (prima dell'inno), TOT = fine dell'ingresso */
+    const _tick206=(t,WD,TOT,dt,vivo)=>{const G=_G206;if(!G)return;
+      if(!vivo){if(G.on){G.on=false;for(const m of G.coreo)m.visible=false;for(const s of G.fumo)s.visible=false;if(G.cori)G.cori.visible=false;G.nF=0;}try{if(typeof window!=='undefined'&&window.__CPM_INNO206ON)window.__CPM_INNO206ON=false;}catch(_e){}return;}
+      G.on=true;
+      const _in=clamp((t-0.6)/1.6,0,1),_out=clamp((TOT-t)/1.5,0,1),_a=Math.min(_in,_out);
+      const _t0c=(G.cfg.regia==="bandiere")?G.cfg.orb:0.6,_ac=Math.min(clamp((t-_t0c)/1.6,0,1),_out);/* Nazionale: prima le bandiere della curva, i cartoncini si alzano dopo */
+      for(const m of G.coreo){m.visible=_ac>0.01;m.material.opacity=0.94*_ac;}
+      let nf=0;for(const s of G.fumo){const u=s.userData;s.visible=t>1.0&&_a>0.01;if(!s.visible)continue;nf++;const life=((t*u.v*0.16)+u.ph)%1;
+        s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.6*Math.sin(life*Math.PI)*_a;}
+      G.nF=nf;
+      if(G.cori){const on=t>=WD-7.5;G.cori.visible=on&&_out>0.01;if(G.cori.visible){G.cori.material.opacity=0.95*Math.min(1,(t-(WD-7.5))/1.2)*_out;const P=G.cori.geometry.attributes.position.array,n=G.nC;
+        for(let i=0;i<n;i++){let y=P[i*3+1]-G._cv[i*2]*dt;if(y<0.05)y=14+((i*7)%5);P[i*3+1]=y;P[i*3]+=Math.sin(G._cv[i*2+1]+t*2.1+i)*0.012;}
+        G.cori.geometry.attributes.position.needsUpdate=true;}}
+    };
     let _ceremonyCarpet=null;
     {const cc=document.createElement("canvas");cc.width=cc.height=1024;const c2=cc.getContext("2d");// 5.49.12: risoluzione 2× + ELEVORA grande/bold/contornato → leggibile a centrocampo
      const _lk2=/coppa|cup|champions|europa|conference|continental/i.test(_compLbl)?"cup":/mondiale|europeo|nazional/i.test(_compLbl)?"nation":"league";
@@ -6830,6 +6974,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            passo di camminata) + 2 s per fermarsi e girarsi verso la camera; mai sotto i 10,5 s storici. */
         WALK_DUR=10.5;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){let _u245=0;const _a245=(m)=>{if(!m||m._wStartX==null||m._wx==null)return;_u245=Math.max(_u245,(m._wDelay||0)+Math.hypot(m._wx-m._wStartX,m._wz-m._wStartZ)/WALK_V245);};
           sr.current.players.forEach(pp=>_a245(pp.mesh));_a245(hero);WALK_DUR=Math.max(10.5,_u245+2);}
+        sr.current._ing206=_G206?_G206.cfg:null;sr.current._br206=null;if(sr.current._ing206&&sr.current._ing206.inno)WALK_DUR+=sr.current._ing206.inno;/* [giro 206 PO-412] l'inno e' tempo in piu' a squadre schierate */
+        try{if(typeof window!=='undefined'){window.__CPM_ING206=null;window.__CPM_INNO206ON=false;}}catch(_e206){}
         try{if(typeof window!=='undefined')window.__CPM_WALKDUR245=+WALK_DUR.toFixed(2);}catch(_e245d){}
         /* [giro 80 PO-285 «l'ingresso in campo lo velocizzerei ulteriormente» — rosso __CPM_NO_ING285] decisione PO (questionario): scena di ~16 s
            (dopo il giro 54 erano ~24) ottenuta con TAGLI DI CAMERA, non correndo: il passo resta camminata (WALK_V245 2,2 u/s, tetto del guardiano 2,3:
@@ -6838,10 +6984,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            vede un montaggio, nessuno cammina piu' in fretta. Tre stacchi (5 s, 12 s, 16,5 s di coreografia) dividono il risparmio WALK_DUR-16 in
            3/8, 5/16, 5/16. WALK_DUR (e __CPM_WALKDUR245) resta la durata di COREOGRAFIA; la durata di scena dichiarata e' __CPM_WALKSCENE285. */
         sr.current._skip285=0;sr.current._cutF285=false;sr.current._cuts285=null;
-        if(!(typeof window!=='undefined'&&window.__CPM_NO_ING285)&&WALK_DUR>16.5){const _S285=WALK_DUR-16;sr.current._cuts285=[{t:5,s:_S285*0.375,d:false},{t:12,s:_S285*0.3125,d:false},{t:16.5,s:_S285*0.3125,d:false}];}
-        try{if(typeof window!=='undefined'){window.__CPM_WALKSCENE285=sr.current._cuts285?16:+WALK_DUR.toFixed(2);window.__CPM_CUT285=0;}}catch(_e285a){}
+        {const _g206=sr.current._ing206,_in206=_g206?(_g206.inno||0):0,_sc206=_g206?_g206.scena:16,_tg206=_g206?_g206.tagli:[5,12,16.5];/* [giro 206 PO-412] scena e stacchi per tipo di partita; senza tipo (rosso) i numeri del giro 80 */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_ING285)&&(WALK_DUR-_in206)>_sc206+0.5){const _S285=WALK_DUR-_in206-_sc206;const _q206=_tg206.length===3?[0.375,0.3125,0.3125]:_tg206.map(()=>1/_tg206.length);sr.current._cuts285=_tg206.map((t,i)=>({t,s:_S285*_q206[i],d:false}));}
+        sr.current._scena206=_sc206+_in206;}
+        try{if(typeof window!=='undefined'){window.__CPM_WALKSCENE285=sr.current._cuts285?(sr.current._scena206||16):+WALK_DUR.toFixed(2);window.__CPM_CUT285=0;}}catch(_e285a){}
       }
       _wasWalk=isWalk;
+      if(!isWalk&&_G206&&_G206.on)_tick206(0,0,0,0,false);/* [giro 206] fuori dall'ingresso coreografia, fumogeni e coriandoli si spengono */
       /* [7.999.59 collaudo PO «le scene 3D all'ingresso in campo sono molto scattose e pesanti»] MISURATO (long task + profilo CPU
          dell'ingresso): 13 blocchi del thread principale, 12,8 s in headless, quasi tutti compilazione degli shader e caricamento
          dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
@@ -6872,6 +7021,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
+        if(_G206)_tick206(walkT,WALK_DUR-((sr.current._ing206&&sr.current._ing206.inno)||0),WALK_DUR,dt,true);
         if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),s:+(walkT-(sr.current._skip285||0)).toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
         if(_ceremonyCarpet){const _was96=_ceremonyCarpet.visible;_ceremonyCarpet.visible=true;
@@ -9905,7 +10055,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _u=sr.current._grab192,_w=_u*_u*(3-2*_u);
             trophyGrp.position.set(_R.x+(_M.x-_R.x)*_w,_ry0+(_M.y-_ry0)*_w,_R.z+(_M.z-_R.z)*_w);
             sr.current._rest192=_w<1e-3;}catch(_e192){}}
-          else if(sr.current._ped192&&(!_team23||(_bk!=="present"&&_bk!=="captain")))sr.current._ped192.visible=(_g192b&&_team23&&(_bk==="pass"||_bk==="lift"||_bk==="fest"));/* il piedistallo resta in scena, vuoto, dopo la presa */
+          else if(sr.current._ped192&&(!_team23||(_bk!=="present"&&_bk!=="captain"))){const _vis192=(_g192b&&_team23&&(_bk==="pass"||_bk==="lift"||_bk==="fest"));/* il piedistallo resta in scena, vuoto, dopo la presa */
+            /* [giro 204 PO-451 — rosso __CPM_NO_G204] IL PIEDISTALLO NON RESTA VUOTO IN SCENA. Scelta: al primo beat dopo la presa (captain->pass,
+               o present->lift se il capitano e' l'eroe) la regia fa uno STACCO breve (0,3 s di nero, come fra un rigore e l'altro della
+               lotteria) e sotto lo stacco il piedistallo esce di scena — come in tv, dove il tavolo del trofeo lo portano via fuori
+               inquadratura. Senza stacco sparirebbe a vista. Se la presa non e' ancora completa al cambio di beat, resta (la coppa e' li'). */
+            if(_vis192&&!(typeof window!=='undefined'&&window.__CPM_NO_G204)&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>=1){if(sr.current._ped204k!==_SC){sr.current._ped204k=_SC;sr.current._cut204=now;}sr.current._ped192.visible=false;}
+            else sr.current._ped192.visible=_vis192;}
+          if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&(_bk==="present"||_bk==="captain"||_bk==="pass"||_bk==="lift"||_bk==="fest")){try{const W=(window.__CPM_PED204=window.__CPM_PED204||[]);if(W.length<3000)W.push({b:_bk,g:sr.current._grab192k===_SC&&(sr.current._grab192||0)>=1,v:!!(sr.current._ped192&&sr.current._ped192.visible),cut:(sr.current._cut204!=null&&now-sr.current._cut204<300)?Math.round(sr.current._cut204):0});}catch(_e){}}/* [giro 204] testimone del piedistallo */
           if(!(_g192b&&_team23&&trophyGrp.visible&&(_bk==="present"||_bk==="captain")))sr.current._rest192=false;
           if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 192] testimone: coppa e mani di eroe e capitano nello stesso fotogramma */
             const _W=window.__CPM_G192B||(window.__CPM_G192B={fr:[]});if(_W.fr.length<900){const _mm=(m)=>{const a=m&&(glbAvatars||[]).find(x=>x&&x.proc===m);if(!a||!a._handL||!a._handR)return null;const v1=new THREE.Vector3().setFromMatrixPosition(a._handL.matrixWorld),v2=new THREE.Vector3().setFromMatrixPosition(a._handR.matrixWorld);return [+((v1.x+v2.x)/2).toFixed(3),+((v1.y+v2.y)/2+0.10).toFixed(3),+((v1.z+v2.z)/2).toFixed(3)];};
@@ -10077,7 +10234,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_u<0.85){const _r=(_u-0.55)/0.30;_km.position.x=32.8+(34.6-32.8)*_r;_km.position.z=1.1*(1-_r);_km.position.y=0;}
             else{
               const _f=Math.min((_u-0.85)/0.5,1);
-              const _dir=_k.dir||0;const _zT=_k.wide?((_dir||1)*5.1):(_dir===0?0.35:_dir*2.65);
+              const _dir=_k.dir||0;const _zT=(_k.post&&!(typeof window!=='undefined'&&window.__CPM_NO_G204))?((_dir||1)*3.35):_k.wide?((_dir||1)*5.1):(_dir===0?0.35:_dir*2.65);/* [giro 204] il palo del motore (scena di sola visione): il pallone finisce sul palo, non largo */
               const _yT=_k.high?1.85:0.55;
               if(_bl){
                 if(_f<1||_k.scored===undefined){}
@@ -10088,6 +10245,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 }
                 if(_k.scored&&_f>=1){_bl.position.x=48.8;/* [7.168.0] il gol si assesta DENTRO la rete (oltre 48.6) */_bl.position.y=Math.max(0.45,_bl.position.y-aDt*2);_bl.position.z=clamp(_zT,-3.2,3.2);}
                 if(!_k.scored&&!_k.wide&&_f>=0.8){_bl.position.x=47.3;/* [7.168.0] la parata respinge davanti al GK sulla linea */_bl.position.z=_zT*0.86;_bl.position.y=Math.max(0.3,_bl.position.y-aDt*3.2);}
+                if(P.shootout.visione&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_VIS204_3D=window.__CPM_VIS204_3D||[]);if(W.length<600)W.push({key:_k.key,u:+_u.toFixed(2),f:+_f.toFixed(2),kicker:_km===hero?'eroe':'compagno',bx:+_bl.position.x.toFixed(2),by:+_bl.position.y.toFixed(2),bz:+_bl.position.z.toFixed(2)});}catch(_e){}}/* [giro 204] testimone della scena di sola visione: dove va il pallone (lo stato del fotogramma precedente) */
                 if(_k.wide&&_f>=1){_bl.position.x=Math.min(_bl.position.x+aDt*6,49.6);_bl.position.y=Math.max(0.3,_bl.position.y-aDt*2.4);}
               }
               if(_gkS&&_f>0.10){const _gu=Math.min((_f-0.10)/0.75,1);const _gs=_gu*_gu*(3-2*_gu);/* [7.33.1 collaudo PO «i portieri non si tuffano in maniera fluida»] smoothstep (via le rampe lineari) + finestra più ampia */
@@ -10182,15 +10340,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            12 s (era ~9), poi la camera bassa accompagna la testa della fila (l'eroe esce per primo), negli ultimi 6 s la carrellata
            lungo la fila schierata di sempre. Le formule delle due inquadrature storiche sono le stesse. */
         const _c245=!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)&&WALK_DUR>16;
-        const _ORB245=12,_FIN245=6;
+        const _g206=sr.current._ing206||null,_WD206=WALK_DUR-(_g206?(_g206.inno||0):0);/* [giro 206 PO-412] regia per tipo: fine della camminata (prima dell'inno) e durata del giro */
+        const _ORB245=(_g206&&_g206.orb)||12,_FIN245=6;
         /* [giro 46 PO-071 — l'ingresso parte dal TUNNEL. Rosso __CPM_NO_STADI246] i primi 3,2 s la camera e' bassa a bordo campo e
            guarda la bocca del tunnel della tipologia (portale, pensilina, tubo di vetro) mentre escono i primi; poi l'orbita, che
            parte gia' da quel lato (angolo -90 gradi: x 0, z -27,6), quindi il raccordo e' un lerp breve. Orbita compressa nei
            secondi restanti, stessi 12 s complessivi. */
-        const _tn46=(_c245&&sr.current&&sr.current._tun46&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?sr.current._tun46:null,_T46=_tn46?3.2:0;
-        const prog=_c245?(walkT<_T46?-2:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=WALK_DUR-_FIN245?0.85+0.15*Math.min(1,(walkT-(WALK_DUR-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
-        if(prog===-2){
-          tPx=_tn46.x+8.5;tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+        const _tn46=(_c245&&sr.current&&sr.current._tun46&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?sr.current._tun46:null,_T46=_tn46?((_g206&&_g206.tunnel)||3.2):0;const _bn206=(_c245&&_g206&&_g206.regia==="bandiere")?_ORB245:0;
+        const prog=_c245?(walkT<_T46?-2:(_bn206&&walkT<_bn206)?-3:(_g206&&_g206.inno&&walkT>=_WD206)?-4:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=_WD206-_FIN245?0.85+0.15*Math.min(1,(walkT-(_WD206-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
+        if(prog===-3){/* [giro 206] Nazionale: la curva di casa con le bandiere, panoramica lenta lungo la gradinata */
+          const _k=clamp((walkT-_T46)/Math.max(0.5,_bn206-_T46),0,1);
+          tPx=_sideX-50;tPy=6.5+1.5*_k;tPz=-10+20*_k;tLx=_sideX-3;tLy=6.5;tLz=-4+8*_k;
+          kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
+        } else if(prog===-4){/* [giro 206] inno: squadre schierate coi bambini per mano, carrellata lenta e vicina lungo la fila */
+          const _k=clamp((walkT-_WD206)/Math.max(0.5,_g206.inno),0,1);
+          tPx=-27;tPy=3.1;tPz=-8.5+17*_k;tLx=-11;tLy=1.55;tLz=tPz*0.9;
+          kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
+        } else if(prog===-2){
+          tPx=_tn46.x+8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0);/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
         } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
@@ -10203,7 +10370,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              sopra i terrapieni bassi del borgo a 26u si vedeva soprattutto prato e cielo, sotto la corona dell'arena il giro restava
              basso. La quota segue la tipologia (borgo 0,70 · catino 0,92 · arena 1,14); traiettoria e tempi invariati. */
           const _k46=((sr.current&&sr.current._stad455)||{}).kind,_hk46=_k46==="borgo"?0.70:_k46==="catino"?0.92:_k46==="arena"?1.14:1;
-          const _rad=46-6*prog,_hgt=(26-9*prog)*_hk46;// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
+          const _pan206=!!(_g206&&_g206.regia==="panoramica");/* [giro 206] finali: panoramica piu' alta, lo sguardo tiene anche le curve */
+          const _rad=46-6*prog,_hgt=(26-9*prog)*_hk46*(_pan206?1.18:1);// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:_k46||null,k:_hk46,y:+_hgt.toFixed(2)};}catch(_e){}
           tPx=Math.cos(_th)*_rad;tPy=_hgt;tPz=Math.sin(_th)*_rad*0.60;
           tLx=Math.cos(_th+Math.PI)*40;tLy=8-4*prog;tLz=Math.sin(_th+Math.PI)*26;// sguardo alla tribuna OPPOSTA: campo+anello in quadro
@@ -10214,12 +10382,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              la tribuna opposta resta in quadro. Baricentro senza allocazioni, solo corpi visibili. */
           if(!(typeof window!=='undefined'&&window.__CPM_NO_ING276)){let _sx=hero.position.x,_sz=hero.position.z,_sn=1;const _pl276=sr.current.players||[];
             for(let i=0;i<_pl276.length;i++){const _m=_pl276[i]&&_pl276[i].mesh;if(_m&&_m.visible!==false){_sx+=_m.position.x;_sz+=_m.position.z;_sn++;}}
-            const _cx=_sx/_sn,_cz=_sz/_sn;tLx=tLx*0.25+_cx*0.75;tLz=tLz*0.25+_cz*0.75;tLy=2.6;}
+            const _cx=_sx/_sn,_cz=_sz/_sn;if(_pan206){tLx=tLx*0.7+_cx*0.3;tLz=tLz*0.7+_cz*0.3;tLy=8.5;}else{tLx=tLx*0.25+_cx*0.75;tLz=tLz*0.25+_cz*0.75;tLy=2.6;}}
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
           const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
           const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=_o277?-33:-42;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
+        }
+        if(_g206){/* [giro 206] entrando e uscendo dalle inquadrature nuove (bandiere, inno) la camera STACCA, non attraversa il campo in volo */
+          const _rm206=prog===-2?"tunnel":prog===-3?"bandiere":prog===-4?"inno":prog===-1?"fila":prog<0.85?"panoramica":"schierati";
+          if(sr.current._br206!==_rm206){const _da=sr.current._br206;sr.current._br206=_rm206;if(_da&&(_da==="bandiere"||_da==="inno"||_rm206==="bandiere"||_rm206==="inno")){kp=1;kl=1;}}
+          try{if(typeof window!=='undefined'){window.__CPM_INNO206ON=(prog===-4)?((_G206&&_G206.tipo)||true):false;
+            if(_CPM_TEST){const W=(window.__CPM_ING206=window.__CPM_ING206||{regie:[],durate:{},coreoMax:[],fumoMax:0,coriMax:0,innoS:0});
+              W.tipo=_G206?_G206.tipo:null;W.regia=_g206.regia;W.scenaAttesa=sr.current._scena206||null;
+              if(W.regie[W.regie.length-1]!==_rm206)W.regie.push(_rm206);W.durate[_rm206]=+((W.durate[_rm206]||0)+dt).toFixed(3);
+              W.t=+walkT.toFixed(2);W.s=+(walkT-(sr.current._skip285||0)).toFixed(2);
+              const _cv=_G206?_G206.coreo.filter(m=>m.visible&&m.material.opacity>0.5).map(m=>m.userData.coreo206):[];if(_cv.length>W.coreoMax.length)W.coreoMax=_cv;
+              W.fumoMax=Math.max(W.fumoMax,_G206?_G206.nF:0);W.coriMax=Math.max(W.coriMax,(_G206&&_G206.cori&&_G206.cori.visible)?_G206.nC:0);if(prog===-4)W.innoS=+(W.innoS+dt).toFixed(3);}}}catch(_e206w){}
         }
       } else {
         // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
@@ -11707,6 +11886,10 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
+      /* [giro 204 PO-450] la scena di sola visione del rigore: la camera e' quella della lotteria (dietro il rigorista, 7.999.58), ferma e
+         presa di colpo al primo fotogramma — e' uno stacco di regia (il DOM lo copre col taglio). In gioco fluido le passate della regia
+         normale la porterebbero via: qui ha l'ultima parola. */
+      if(P.shootout&&P.shootout.visione&&!(typeof window!=='undefined'&&window.__CPM_NO_G204)){camera.position.set(23.5,3.8,2.4);camLook.x=46.5;camLook.y=1.0;camLook.z=-0.3;}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
       /* [PO-252 giro 42, testimone di sola prova] posizione resa della camera + mani del fotogramma (_tocc503) +
          tempo di scena: serve ad ATTRIBUIRE il salto isolato della camera (voce 9 del banco 248). Flag dedicato. */
@@ -11770,7 +11953,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       for(let i=0;i<LED_SEG;i++){const c=_ledCols[(i+_ledOff)%3],kbr=Math.min(0.42+_ledBoost+0.28*Math.sin(_ledPhase*3+i*0.5),0.82);// 3DV-2: cap 0.82, ridotti (era max 1.63 → saturazione)
         ledStrips[i].material.color.copy(c).multiplyScalar(kbr);ledStrips[i+LED_SEG].material.color.copy(c).multiplyScalar(kbr);}
       // item 1 (5.49.9): TABELLONE — ridisegna solo quando cambia punteggio o minuto (economico)
-      if(_sbDraw){const _h=P.scoreHome||0,_a=P.scoreAway||0,_c=(P.matchClock||0)|0;if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c);_sbTex.needsUpdate=true;}}
+      if(_sbDraw){const _sr208=(P.shootout&&P.shootout.serie)||null;/* [giro 208 PO-468 — rosso __CPM_NO_G208] lotteria: il maxischermo mostra il punteggio della serie, non quello della partita */const _h=_sr208?(_sr208.h|0):(P.scoreHome||0),_a=_sr208?(_sr208.a|0):(P.scoreAway||0),_c=(P.shootout&&!(typeof window!=="undefined"&&window.__CPM_NO_G204))?-1:((P.matchClock||0)|0);/* [giro 204 PO-450 — rosso __CPM_NO_G204] durante la lotteria dei rigori il maxischermo dietro la porta non mostra piu' il minuto: dalla camera del rigorista il «90'» cadeva proprio dietro il punteggio del tabellone «CALCI DI RIGORE» (misurato: sonda-90-204, foto giro204/prima) */const _r208=!!_sr208;if(_h!==_sbLastH||_a!==_sbLastA||_c!==_sbLastC||_r208!==_sbLastR208){_sbLastH=_h;_sbLastA=_a;_sbLastC=_c;_sbLastR208=_r208;_sbDraw(homeAbbr,awayAbbr,_h,_a,_c,_r208);_sbTex.needsUpdate=true;}}
       // 3DV-7: scorrimento banner competizione LED (UV offset su RepeatWrapping)
       {const _bs=now*0.000032;compBanner1.material.map.offset.x=_bs;compBanner2.material.map.offset.x=-_bs;}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
@@ -12902,10 +13085,12 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       __w266c('R');
-      if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
+      if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
+      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196))renderer.render(scene,camera);/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
+      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
     };
     loop();
 

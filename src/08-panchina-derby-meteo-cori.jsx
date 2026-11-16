@@ -327,6 +327,32 @@ function calcMatchWeight(player,opponentId,standings,week){
   if(player.rival&&(player.rival.club?.id===opponentId||player.rival.club?.n===opponentId))w+=2;
   return Math.min(10,w);
 }
+/* [giro 206 PO-412 «ingresso in campo piu' scenico nelle partite importanti», questionario PO: tutte e quattro — rosso __CPM_NO_G206]
+   IL TIPO DI INGRESSO E' UNA TABELLA SOLA. Misurato prima (ingresso-206, braccio rosso): l'ingresso era identico per ogni partita —
+   stessa regia (tunnel 3,2 s, giro, fila, carrellata), stessa scena di ~16 s, dall'amichevole alla finale.
+   Chi decide: finale > Nazionale > derby > coppa europea > big match (peso >= 7) > normale.
+   · regia: «panoramica» = giro completo dello stadio (finali) · «tunnel» = camera sulla bocca del tunnel per 7 s (derby) ·
+     «bandiere» = la curva con le bandiere prima della fila (Nazionale) · «standard» = quella di oggi · «breve» = tunnel, uno stacco,
+     squadre schierate (partite normali).
+   · scena = secondi di SCENA della camminata (gli stacchi tagliano il resto, il passo non cambia: PO-245/PO-285); inno = secondi in piu'
+     a squadre schierate coi bambini per mano (finali, coppe europee, Nazionale).
+   · coreo = curve con la coreografia a cartoncini (1 = casa, 2 = i due lati) · fumo/coriandoli = accesi o no (la dose la decide il
+     dispositivo, in src/12). */
+const INGRESSO206={
+  finale:   {regia:"panoramica",scena:23,tunnel:3.2,orb:12.5,tagli:[12.5],        coreo:2,fumo:1,coriandoli:1,inno:7},
+  nazionale:{regia:"bandiere",  scena:19,tunnel:3.2,orb:8,   tagli:[8],           coreo:1,fumo:1,coriandoli:1,inno:7},
+  derby:    {regia:"tunnel",    scena:19,tunnel:7,  orb:7,   tagli:[7],           coreo:1,fumo:1,coriandoli:1,inno:0},
+  europea:  {regia:"standard",  scena:16,tunnel:3.2,orb:12,  tagli:[5,12,16.5],   coreo:1,fumo:1,coriandoli:1,inno:7},
+  big:      {regia:"standard",  scena:16,tunnel:3.2,orb:12,  tagli:[5,12,16.5],   coreo:1,fumo:1,coriandoli:1,inno:0},
+  normale:  {regia:"breve",     scena:9, tunnel:3.2,orb:3.2, tagli:[3.2],         coreo:0,fumo:0,coriandoli:0,inno:0}};
+function tipoIngresso206(o){o=o||{};
+  if(o.isFinal)return "finale";
+  if(o.isNat)return "nazionale";
+  if(o.isDerby)return "derby";
+  if(/^euro_/.test(String(o.context||"")))return "europea";
+  if((+o.mw||0)>=7)return "big";
+  return "normale";}
+try{if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_TIPOING206=tipoIngresso206;window.__CPM_INGRESSO206=INGRESSO206;}}catch(_e206){}
 
 // Sprint D1 — Gerarchia di Squadra
 const SQUAD_ROLES=['primavera','riserva','rotazione','titolare','leader'];

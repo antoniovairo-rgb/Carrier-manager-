@@ -1,0 +1,15 @@
+# misura PRIMA — build di lavoro/195 (3247f9e), sonda avviso3d-209 con CPM_MISURA=1 CPM_PARTE=verde
+  ✗ telefono · fallito: avviso no (motivo null) dopo 10.3 s in fase playing · 2D true · campo dall'alto true
+  ✗ telefono · fallito: tasti Riprova null · Simula null su 375x667
+  ✗ telefono · simula: non giudicato (nessun avviso)
+  ✓ telefono · fallito: errori 0
+  ✗ telefono · lento: avviso no (motivo null) dopo 12.2 s in fase playing · 2D true · campo dall'alto true
+  ✗ telefono · riprova: non giudicato (nessun avviso)
+  ✓ telefono · lento: errori 0
+  ✗ pc · fallito: avviso no (motivo null) dopo 13.0 s in fase playing · 2D true · campo dall'alto true
+  ✗ pc · simula: non giudicato (nessun avviso)
+  ✓ pc · fallito: errori 0
+  ✗ pc · lento: avviso no (motivo null) dopo 17.5 s in fase playing · 2D true · campo dall'alto true
+  ✗ pc · riprova: non giudicato (nessun avviso)
+  ✓ pc · lento: errori 0
+VERDE: 4/20 ✗  (le righe «tasti»/«testo» vuote omesse: nessun avviso)

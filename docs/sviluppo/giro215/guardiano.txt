@@ -1,0 +1,31 @@
+… verde titolare
+… verde panchina
+… rosso titolare (__CPM_NO_G215)
+INFO {"caso":"titolare","seed":2153,"prima":{"min":20,"sc":{"home":0,"away":1},"scene":2,"er":{"g":0,"a":0,"h":0,"aw":1,"min":90,"st":"starter","yc":0,"rc":false,"r":5.6},"lm":{"onBench":false,"benchStart":false,"benchMinute":0,"subbedOff":false},"ph":"playing"},"sottoAvviso":[20,20,20,20,20,20,20,20],"avviso":{"min":20,"sc":{"home":0,"away":1},"er":{"g":0,"a":0,"h":0,"aw":1,"min":90,"st":"starter","yc":0,"rc":false,"r":5.6},"lm":{"onBench":false,"benchStart":false,"benchMinute":0,"subbedOff":false},"mot":"fallito","rich":0,"t":4299},"parziale":{"h":0,"a":1,"g":0,"as":0,"yc":0,"rc":false,"onBench":false,"benchMin":0,"benchStart":false},"dopo":{"s215":{"min0":20,"parziale":{"home":0,"away":1},"motore0":{"home":0,"away":1},"motore1":{"home":1,"away":2},"finale":{"home":1,"away":2},"eroe":{"gol0":0,"gol":0,"assist0":0,"assist":1,"gialli0":0,"gialli":0,"rosso0":false,"rosso":false,"ingresso":null,"entrato":false}},"last":{"goals":0,"assists":1,"rating":6.5,"minutesPlayed":90,"matchStatus":"starter","score":"1-2"},"cup":{"round":2,"name":"Quarti di Finale","opponent":"FC Valmora","homeScore":1,"awayScore":2,"won":false,"penalties":false},"md":{"homeScore":1,"awayScore":2,"won":false,"drew":false},"toast":"","passi":["avanti","avanti","avanti","torna"],"mh":"0→1","cupN":"1→2","goals":"5→5","tg":"0→0","matches":"8→9","tm":"0→1","week":"12→13"}}
+INFO {"caso":"panchina","seed":2152,"prima":{"min":30,"sc":{"home":0,"away":2},"scene":0,"er":{"g":0,"a":0,"h":0,"aw":2,"min":35,"st":"bench","yc":0,"rc":false,"r":5.5},"lm":{"onBench":true,"benchStart":true,"benchMinute":55,"subbedOff":false},"ph":"playing"},"sottoAvviso":[30,30,30,30,30,30,30,30],"avviso":{"min":30,"sc":{"home":0,"away":2},"er":{"g":0,"a":0,"h":0,"aw":2,"min":35,"st":"bench","yc":0,"rc":false,"r":5.5},"lm":{"onBench":true,"benchStart":true,"benchMinute":55,"subbedOff":false},"mot":"fallito","rich":0,"t":4296},"parziale":{"h":0,"a":2,"g":0,"as":0,"yc":0,"rc":false,"onBench":true,"benchMin":55,"benchStart":true},"dopo":{"s215":{"min0":30,"parziale":{"home":0,"away":2},"motore0":{"home":0,"away":2},"motore1":{"home":0,"away":2},"finale":{"home":0,"away":2},"eroe":{"gol0":0,"gol":0,"assist0":0,"assist":0,"gialli0":0,"gialli":0,"rosso0":false,"rosso":false,"ingresso":55,"entrato":true}},"last":{"goals":0,"assists":0,"rating":5.9,"minutesPlayed":35,"matchStatus":"bench","score":"0-2"},"cup":{"round":2,"name":"Quarti di Finale","opponent":"FC Valmora","homeScore":0,"awayScore":2,"won":false,"penalties":false},"md":{"homeScore":0,"awayScore":2,"won":false,"drew":false},"toast":"","passi":["avanti","avanti","avanti","torna"],"mh":"0→1","cupN":"1→2","goals":"5→5","tg":"0→0","matches":"8→9","tm":"0→1","week":"12→13"}}
+INFO {"rosso":true,"caso":"titolare","seed":2153,"prima":{"min":20,"sc":{"home":0,"away":1},"scene":2,"er":{"g":0,"a":0,"h":0,"aw":1,"min":90,"st":"starter","yc":0,"rc":false,"r":5.6},"lm":{"onBench":false,"benchStart":false,"benchMinute":0,"subbedOff":false},"ph":"playing"},"sottoAvviso":[20,20,20,21,21,21,21,22],"avviso":{"min":22,"sc":{"home":0,"away":1},"er":{"g":0,"a":0,"h":0,"aw":1,"min":90,"st":"starter","yc":0,"rc":false,"r":5.6},"lm":{"onBench":false,"benchStart":false,"benchMinute":0,"subbedOff":false},"mot":"fallito","rich":0,"t":4296},"parziale":{"h":0,"a":1,"g":0,"as":0,"yc":0,"rc":false,"onBench":false,"benchMin":0,"benchStart":false},"dopo":{"s215":null,"last":{"goals":1,"assists":0,"rating":7.1,"score":"1-2","simulated":true},"cup":{"round":2,"name":"Quarti di Finale","opponent":"FC Valmora","homeScore":1,"awayScore":2,"won":false,"penalties":false},"md":{"homeScore":1,"awayScore":2,"won":false,"drew":false},"toast":" Quarti di Finale (sim): 1–2 vs FC Valmora — ❌ ELIMINATO ","passi":null,"mh":"0→1","cupN":"1→2","goals":"5→6","tg":"0→1","matches":"8→9","tm":"0→1","week":"12→13"}}
+  ✓ titolare: sotto l'avviso il cronometro resta fermo (20,20,20,20,20,20,20,20 → 20)
+  ✓ titolare: avviso a meta' gara si (motivo fallito) al 20' sul 0-1 · scene dell'eroe giocate 2 · richieste CGTrader dopo la caduta 0
+  ✓ titolare: Simula premuto una volta (1), partita chiusa, carriera a schermo (true)
+  ✓ titolare: punteggio finale 1-2 >= parziale 0-1 per ciascuna squadra
+  ✓ titolare: la partita prosegue dal 20' sul 0-1 (avviso al 20' sul 0-1) e la voce registrata e' il suo finale 1-2 (voce 1-2, gol eroe 0/0)
+  ✓ titolare: eventi dell'eroe conservati (gol 0→0, assist 0→1, gialli 0→undefined)
+  ✓ titolare: conta una volta (matchHistory 0→1, Coppa 1→2, gara giocata true, gol carriera 0→0 con 0 nella gara, presenze 0→1)
+  ✓ titolare: nessuna ripresa della partita lasciata a meta' («»)
+  ✓ titolare: dopo il ricaricamento stesso salvataggio (matchHistory 1, Coppa 2, gol 0, presenze 1) e nessuna partita riaperta (fase null)
+  ✓ titolare: errori 0 
+  ✓ panchina: sotto l'avviso il cronometro resta fermo (30,30,30,30,30,30,30,30 → 30)
+  ✓ panchina: avviso a meta' gara si (motivo fallito) al 30' sul 0-2 · scene dell'eroe giocate 0 · richieste CGTrader dopo la caduta 0
+  ✓ panchina: Simula premuto una volta (1), partita chiusa, carriera a schermo (true)
+  ✓ panchina: punteggio finale 0-2 >= parziale 0-2 per ciascuna squadra
+  ✓ panchina: la partita prosegue dal 30' sul 0-2 (avviso al 30' sul 0-2) e la voce registrata e' il suo finale 0-2 (voce 0-2, gol eroe 0/0)
+  ✓ panchina: eventi dell'eroe conservati (gol 0→0, assist 0→0, gialli 0→undefined)
+  ✓ panchina: conta una volta (matchHistory 0→1, Coppa 1→2, gara giocata true, gol carriera 0→0 con 0 nella gara, presenze 0→1)
+  ✓ panchina: partita dalla panchina (benchStart true, in panchina all'avviso true), voce «bench» con 35' (atteso 90-55 = 35)
+  ✓ panchina: nessuna ripresa della partita lasciata a meta' («»)
+  ✓ panchina: dopo il ricaricamento stesso salvataggio (matchHistory 1, Coppa 2, gol 0, presenze 1) e nessuna partita riaperta (fase null)
+  ✓ panchina: errori 0 
+  ✓ rosso: titolare: sotto l'avviso il cronometro resta fermo (20,20,20,21,21,21,21,22 → 22) | titolare: la partita prosegue dal —' sul — (avviso al 22' sul 0-1) e la voce registrata e' il suo finale — (voce 1-2, gol eroe —/1) → bocciato
+VERDE: 21/21 ✓
+ROSSO __CPM_NO_G215 bocciato: ✓
+✅ simula-215 superato (tutto: verde col verde, rosso col rosso)

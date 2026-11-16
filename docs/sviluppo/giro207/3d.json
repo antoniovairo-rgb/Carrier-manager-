@@ -1,0 +1,479 @@
+{
+ "R": [
+  {
+   "gi": 16,
+   "nm": "avanti-destra",
+   "percorso": 3.4,
+   "dMesh": {
+    "x": 2.6,
+    "y": 0
+   },
+   "campioniInMoto": 15,
+   "canaliStimati": {
+    "strL": 11,
+    "strR": 4
+   },
+   "cambiCanale518": {
+    "back": 2,
+    "strL": 1,
+    "run": 8
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 37,
+    "inMoto": 26,
+    "can": {
+     "strR": 3,
+     "strL": 6,
+     "run": 11,
+     "back": 6
+    },
+    "angMedio": 39
+   }
+  },
+  {
+   "gi": 16,
+   "nm": "avanti",
+   "percorso": 2,
+   "dMesh": {
+    "x": 2,
+    "y": 0
+   },
+   "campioniInMoto": 6,
+   "canaliStimati": {
+    "strL": 6
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "back": 1,
+    "run": 2
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 41,
+    "inMoto": 12,
+    "can": {
+     "back": 6,
+     "run": 6
+    },
+    "angMedio": 36
+   }
+  },
+  {
+   "gi": 25,
+   "nm": "indietro-destra",
+   "percorso": 2.78,
+   "dMesh": {
+    "x": -2.3,
+    "y": 2.3
+   },
+   "campioniInMoto": 7,
+   "canaliStimati": {
+    "strR": 7
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "back": 1,
+    "strL": 1,
+    "run": 3
+   },
+   "relMedioGradi": 56,
+   "eroe": {
+    "fot": 47,
+    "inMoto": 13,
+    "can": {
+     "strR": 6,
+     "run": 7
+    },
+    "angMedio": 15
+   }
+  },
+  {
+   "gi": 25,
+   "nm": "destra",
+   "percorso": 1.36,
+   "dMesh": {
+    "x": 0,
+    "y": 2
+   },
+   "campioniInMoto": 5,
+   "canaliStimati": {
+    "run": 5
+   },
+   "cambiCanale518": {
+    "strL": 2,
+    "run": 2
+   },
+   "relMedioGradi": 0,
+   "eroe": {
+    "fot": 42,
+    "inMoto": 11,
+    "can": {
+     "strL": 6,
+     "run": 5
+    },
+    "angMedio": 13
+   }
+  },
+  {
+   "gi": 46,
+   "nm": "indietro-sinistra",
+   "percorso": 2.1,
+   "dMesh": {
+    "x": -2.1,
+    "y": 0
+   },
+   "campioniInMoto": 6,
+   "canaliStimati": {
+    "strR": 6
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "back": 4,
+    "strL": 1,
+    "run": 6
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 46,
+    "inMoto": 12,
+    "can": {
+     "run": 12
+    },
+    "angMedio": 1
+   }
+  },
+  {
+   "gi": 46,
+   "nm": "indietro",
+   "percorso": 3.1,
+   "dMesh": {
+    "x": -2.1,
+    "y": 0
+   },
+   "campioniInMoto": 12,
+   "canaliStimati": {
+    "strR": 7,
+    "strL": 5
+   },
+   "cambiCanale518": {
+    "back": 1,
+    "run": 1
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 50,
+    "inMoto": 27,
+    "can": {
+     "run": 21,
+     "back": 6
+    },
+    "angMedio": 25
+   }
+  },
+  {
+   "gi": 59,
+   "nm": "avanti-sinistra",
+   "percorso": 3.63,
+   "dMesh": {
+    "x": 2.2,
+    "y": -2.2
+   },
+   "campioniInMoto": 12,
+   "canaliStimati": {
+    "strL": 8,
+    "strR": 4
+   },
+   "cambiCanale518": {
+    "back": 4,
+    "strL": 3,
+    "run": 8
+   },
+   "relMedioGradi": 101,
+   "eroe": {
+    "fot": 39,
+    "inMoto": 28,
+    "can": {
+     "strL": 6,
+     "run": 16,
+     "back": 6
+    },
+    "angMedio": 30
+   }
+  },
+  {
+   "gi": 59,
+   "nm": "sinistra",
+   "percorso": 1.5,
+   "dMesh": {
+    "x": 0,
+    "y": -2.2
+   },
+   "campioniInMoto": 7,
+   "canaliStimati": {
+    "back": 7
+   },
+   "cambiCanale518": {
+    "strR": 2,
+    "back": 2,
+    "strL": 1,
+    "run": 4
+   },
+   "relMedioGradi": 180,
+   "eroe": {
+    "fot": 37,
+    "inMoto": 11,
+    "can": {
+     "strR": 6,
+     "run": 5
+    },
+    "angMedio": 31
+   }
+  },
+  {
+   "gi": 99,
+   "nm": "avanti-destra",
+   "percorso": 3.63,
+   "dMesh": {
+    "x": 2.2,
+    "y": 2.2
+   },
+   "campioniInMoto": 13,
+   "canaliStimati": {
+    "strL": 9,
+    "strR": 4
+   },
+   "cambiCanale518": {
+    "strR": 2,
+    "back": 5,
+    "strL": 2,
+    "run": 10
+   },
+   "relMedioGradi": 77,
+   "eroe": {
+    "fot": 43,
+    "inMoto": 28,
+    "can": {
+     "back": 7,
+     "strL": 6,
+     "run": 15
+    },
+    "angMedio": 36
+   }
+  },
+  {
+   "gi": 99,
+   "nm": "avanti",
+   "percorso": 3,
+   "dMesh": {
+    "x": 2,
+    "y": 0
+   },
+   "campioniInMoto": 13,
+   "canaliStimati": {
+    "strL": 8,
+    "strR": 5
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "back": 6,
+    "strL": 1,
+    "run": 5
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 45,
+    "inMoto": 27,
+    "can": {
+     "back": 12,
+     "run": 15
+    },
+    "angMedio": 39
+   }
+  },
+  {
+   "gi": 113,
+   "nm": "indietro-destra",
+   "percorso": 3.63,
+   "dMesh": {
+    "x": -2.2,
+    "y": 2.2
+   },
+   "campioniInMoto": 12,
+   "canaliStimati": {
+    "strR": 8,
+    "strL": 4
+   },
+   "cambiCanale518": {
+    "strR": 7,
+    "back": 4,
+    "strL": 1,
+    "run": 10
+   },
+   "relMedioGradi": 79,
+   "eroe": {
+    "fot": 43,
+    "inMoto": 28,
+    "can": {
+     "run": 22,
+     "back": 6
+    },
+    "angMedio": 27
+   }
+  },
+  {
+   "gi": 113,
+   "nm": "destra",
+   "percorso": 1.5,
+   "dMesh": {
+    "x": 0,
+    "y": 2.2
+   },
+   "campioniInMoto": 6,
+   "canaliStimati": {
+    "run": 6
+   },
+   "cambiCanale518": {
+    "strR": 2,
+    "back": 1,
+    "strL": 1,
+    "run": 5
+   },
+   "relMedioGradi": 0,
+   "eroe": {
+    "fot": 43,
+    "inMoto": 12,
+    "can": {
+     "strR": 6,
+     "run": 6
+    },
+    "angMedio": 30
+   }
+  },
+  {
+   "gi": 125,
+   "nm": "indietro-sinistra",
+   "percorso": 3.63,
+   "dMesh": {
+    "x": -2.2,
+    "y": -2.2
+   },
+   "campioniInMoto": 11,
+   "canaliStimati": {
+    "strR": 7,
+    "strL": 4
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "back": 2,
+    "strL": 1,
+    "run": 4
+   },
+   "relMedioGradi": 99,
+   "eroe": {
+    "fot": 46,
+    "inMoto": 28,
+    "can": {
+     "strR": 2,
+     "run": 20,
+     "back": 6
+    },
+    "angMedio": 30
+   }
+  },
+  {
+   "gi": 125,
+   "nm": "indietro",
+   "percorso": 2,
+   "dMesh": {
+    "x": -2,
+    "y": 0
+   },
+   "campioniInMoto": 6,
+   "canaliStimati": {
+    "strR": 6
+   },
+   "cambiCanale518": {
+    "strR": 2,
+    "back": 3,
+    "strL": 1,
+    "run": 4
+   },
+   "relMedioGradi": 90,
+   "eroe": {
+    "fot": 43,
+    "inMoto": 12,
+    "can": {
+     "back": 6,
+     "run": 6
+    },
+    "angMedio": 30
+   }
+  },
+  {
+   "gi": 149,
+   "nm": "avanti-sinistra",
+   "percorso": 3.63,
+   "dMesh": {
+    "x": 2.2,
+    "y": -2.2
+   },
+   "campioniInMoto": 11,
+   "canaliStimati": {
+    "strL": 7,
+    "strR": 4
+   },
+   "cambiCanale518": {
+    "strR": 6,
+    "back": 7,
+    "strL": 3,
+    "run": 16
+   },
+   "relMedioGradi": 99,
+   "eroe": {
+    "fot": 46,
+    "inMoto": 28,
+    "can": {
+     "strR": 3,
+     "run": 19,
+     "back": 6
+    },
+    "angMedio": 32
+   }
+  },
+  {
+   "gi": 149,
+   "nm": "sinistra",
+   "percorso": 1.36,
+   "dMesh": {
+    "x": 0,
+    "y": -2
+   },
+   "campioniInMoto": 5,
+   "canaliStimati": {
+    "back": 5
+   },
+   "cambiCanale518": {
+    "strR": 1,
+    "strL": 1,
+    "run": 2
+   },
+   "relMedioGradi": 180,
+   "eroe": {
+    "fot": 41,
+    "inMoto": 11,
+    "can": {
+     "strR": 6,
+     "run": 5
+    },
+    "angMedio": 26
+   }
+  }
+ ],
+ "totLoco": {
+  "strR": 54,
+  "back": 59,
+  "strL": 33,
+  "run": 112
+ }
+}

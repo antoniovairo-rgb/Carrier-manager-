@@ -1,0 +1,6 @@
+❌ gi  4 · concessi 0 · fatti 17.3 · spostamento 43.3u · distanza dal marcatore 100→100 (+0) · budget residuo 0
+
+scene misurate 10 · passi in piu' del concesso, in totale 17.4 · crescita massima della distanza dal marcatore 13.6
+
+❌ FAIL — 1
+  · gi4: concessi 0 passi, l'Eroe ne ha fatti 17.3 (spostamento 43.3 unita') · la scena non concede nessun passo e l'Eroe si e' spostato di 43.3 unita'

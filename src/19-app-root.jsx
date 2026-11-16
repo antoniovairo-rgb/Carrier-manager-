@@ -658,7 +658,7 @@ function IntroCinematic({onDone,nome,riascolto}){
        camLook.x+=(lx-camLook.x)*_lk;camLook.y+=(ly-camLook.y)*_lk;camLook.z+=(lz-camLook.z)*_lk;}
       cam.lookAt(camLook);
       {const _w=W(),_h=H();if(stG._vw!==_w||stG._vh!==_h){stG._vw=_w;stG._vh=_h;cam.aspect=_w/_h;cam.fov=(_g178i&&cam.aspect<0.62)?Math.min(72,2*Math.atan(Math.tan(25*Math.PI/180)*0.62/cam.aspect)*180/Math.PI):50;cam.updateProjectionMatrix();renderer.setSize(_w,_h);}}/* [7.37.0 collaudo PO «va ancora a scatti»] setSize SOLO su resize: ogni frame riallocava il buffer di disegno */
-      renderer.render(scene,cam);
+      renderer.render(scene,cam);misuraCorpi212('avvio',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
       raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);
@@ -1078,7 +1078,7 @@ function App(){
         ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
         button:hover:not(:disabled){filter:brightness(0.96);}
-        button:active:not(:disabled){transform:scale(.97);}
+        ${(typeof window!=='undefined'&&!window.__CPM_NO_G213)?'':'button:active:not(:disabled){transform:scale(.97);}'}/* [giro 213] il riscontro al tocco e' lo strato tocco213 (scale + luce, area di tocco invariata): il vecchio :active sovrascriveva le transform di posizione e restringeva l'area */
         input,select{outline:none;}
         input:focus,select:focus{border-color:${TH.primary}!important;box-shadow:0 0 0 3px ${TH.primary}22!important;}
         :focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
@@ -1240,5 +1240,68 @@ class RootErrorBoundary extends React.Component{
     );
   }
 }
+/* [giro 213 · PO-475 «quando tocco un pulsante ci deve essere un'animazione tocco per fare capire che effettivamente l'hai premuto»;
+   decisione PO 15/11: il tasto SI SCHIACCIA e SI ILLUMINA SUBITO al tocco; se cio' che segue richiede tempo, una ROTELLINA sul tasto
+   finche' l'azione non parte; tutti i pulsanti, in modo uniforme, anche col mouse]. Strato unico, a livello di documento:
+   - pointerdown (cattura): il tasto riceve data-premuto213 NELLO STESSO evento → il fotogramma successivo lo disegna schiacciato
+     (scale .96, proprieta' `scale`: si compone con le transform gia' scritte, che il vecchio :active sovrascriveva) e illuminato
+     (filter). Il layout non si muove (scale non tocca il flusso). L'AREA DI TOCCO resta quella di riposo: un'estensione invisibile
+     (::before o ::after, quello libero) larga il 2,5% in piu' compensa la scala — misurato: con la sola scala un tocco a 3 px dal
+     bordo andava perso (0 clic su telefono e PC). Dove lo pseudo-elemento non si puo' usare (entrambi occupati, overflow tagliato,
+     figli assoluti che cambierebbero ancoraggio) il tasto si illumina soltanto (modo «n»).
+   - pointerup/cancel: rilascio dopo almeno TIENI213 ms dal tocco e mai prima di 80 ms dal sollevamento (il tocco su telefono
+     colpisce il bersaglio DOPO il touchend: l'estensione deve esserci ancora).
+   - click (cattura, solo eventi veri): se l'azione non e' «partita» (nessun cambiamento del documento fuori dallo strato) entro
+     ROTELLA213 ms, compare la rotellina sul tasto; i tasti con data-pesante213 (lavoro sincrono misurato) la mostrano SUBITO e il
+     loro gestore parte dopo che il fotogramma col tasto premuto e la rotellina e' stato disegnato (la rotellina gira sul compositore
+     anche mentre il lavoro tiene occupato il filo principale). Un secondo tocco sullo stesso tasto mentre l'azione del primo non e'
+     ancora partita viene assorbito (nessuna azione doppia).
+   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213. */
+const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
+(function tocco213(){
+  if(typeof window==="undefined"||typeof document==="undefined"||window.__CPM_NO_G213)return;
+  document.documentElement.classList.add("cpm-t213");
+  const SEL="button,[role=\"button\"],.cpm-press,[data-tocco213]";
+  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1};
+  const spento=el=>el.disabled||el.getAttribute("aria-disabled")==="true";
+  const modo=el=>{
+    const cs=getComputedStyle(el);if(cs.display==="inline"||cs.overflowX!=="visible"||cs.overflowY!=="visible")return "n";
+    let m=getComputedStyle(el,"::before").content==="none"?"b":getComputedStyle(el,"::after").content==="none"?"a":"n";
+    if(m!=="n"&&cs.position==="static"){const D=el.getElementsByTagName("*");for(let i=0;i<D.length&&i<80;i++){const p=getComputedStyle(D[i]).position;if(p==="absolute"||p==="fixed"){m="n";break;}}}
+    return m;
+  };
+  let prem=null,tGiu=0,tRil=null;
+  const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
+  document.addEventListener("pointerdown",e=>{
+    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
+    el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
+  },true);
+  const su=()=>{if(!prem)return;const el=prem;const resto=Math.max(80,TIENI213-(performance.now()-tGiu));if(tRil)clearTimeout(tRil);tRil=setTimeout(()=>{tRil=null;if(prem===el)rilascia();},resto);};
+  document.addEventListener("pointerup",su,true);document.addEventListener("pointercancel",su,true);
+  /* azione in attesa: rotellina e guardia del doppio tocco */
+  const attese=new Map();let oss=null;
+  const fine=(el)=>{const a=attese.get(el);if(!a)return;if(window.__CPM_FOTO213&&/cpmtest=1/.test(location.search))return;/* solo foto di collaudo: la rotellina resta per la fotografia */attese.delete(el);clearTimeout(a.tr);clearTimeout(a.tt);if(a.ov){a.ov.remove();}el.removeAttribute("data-rotella213");if(!attese.size&&oss){oss.disconnect();oss=null;}};
+  const rotella=(el)=>{const a=attese.get(el);if(!a||a.ov||!el.isConnected)return;const r=el.getBoundingClientRect();const d=document.createElement("span");d.className="cpm-rotella213";d.setAttribute("aria-hidden","true");
+    const lato=Math.max(14,Math.min(20,Math.round(r.height*0.42)));d.style.width=d.style.height=lato+"px";d.style.color=getComputedStyle(el).color;
+    d.style.left=Math.round(r.width>=90?r.right-lato-10:r.left+r.width/2-lato/2)+"px";d.style.top=Math.round(r.top+r.height/2-lato/2)+"px";
+    document.body.appendChild(d);a.ov=d;el.setAttribute("data-rotella213","");try{window.__CPM_ROT213=(window.__CPM_ROT213|0)+1;}catch(_e){}};
+  const guarda=()=>{if(oss)return;oss=new MutationObserver(L=>{for(const [el,a] of attese){if(!el.isConnected){fine(el);continue;}if(a.dif)continue;
+      for(const r of L){if(a.ov&&(r.target===a.ov||a.ov.contains(r.target)))continue;if(r.type==="attributes"&&NOSTRI[r.attributeName])continue;if(r.type==="childList"&&[...r.addedNodes,...r.removedNodes].every(n=>n.classList&&n.classList.contains("cpm-rotella213")))continue;a.fatto=true;break;}
+      if(a.fatto)fine(el);}});
+    oss.observe(document.documentElement,{subtree:true,childList:true,attributes:true,characterData:true});};
+  document.addEventListener("click",e=>{
+    if(!e.isTrusted)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    if(attese.has(el)){e.stopImmediatePropagation();e.preventDefault();try{window.__CPM_DOPPIO213=(window.__CPM_DOPPIO213|0)+1;}catch(_e){}return;}
+    const a={t:performance.now(),fatto:false,ov:null};attese.set(el,a);guarda();
+    a.tt=setTimeout(()=>fine(el),Math.max(TETTO213,GUARDIA213));
+    if(el.hasAttribute("data-pesante213")){
+      a.dif=true;e.stopImmediatePropagation();e.preventDefault();rotella(el);
+      requestAnimationFrame(()=>setTimeout(()=>{try{el.click();}catch(_e){}a.dif=false;/* il click di ritorno non e' «vero»: questo strato lo lascia passare */setTimeout(()=>fine(el),0);},0));
+      return;
+    }
+    a.tr=setTimeout(()=>rotella(el),ROTELLA213);
+  },true);
+})();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));
 requestAnimationFrame(window._hide);

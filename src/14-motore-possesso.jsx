@@ -666,7 +666,7 @@ function creaMotorePossesso(cfg){
     else if(out==="post"){ty=rnd()<0.5?GOAL_Y0+0.4:GOAL_Y1-0.4;}
     else if(out==="blocked"){const m=piuVicino(P.x+dirDi(l)*3,P.y,altro(l),{noGk:true});if(m&&m.d<7){tx=m.p.x;ty=m.p.y;}else{tx=clamp(P.x+dirDi(l)*6,2,98);}}
     S.conta.tiri++;
-    if(V2){S._ultTiroV2=S._ultTiroV2||{};S._ultTiroV2[l]=S.min;}ev("tiro",{chi:chi(P),zona,intent,xg:V2?+(S._xgV2||0).toFixed(3):undefined,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});S._ultTiro191={min:S.min|0,tick:S.tick|0,lato:l,eroe:!!P.eroe,intent,esito:out};/* [giro 191] l'ultimo tiro, letto dal live (piazzatoStato191) */
+    if(V2){S._ultTiroV2=S._ultTiroV2||{};S._ultTiroV2[l]=S.min;}ev("tiro",{chi:chi(P),zona,intent,xg:V2?+(S._xgV2||0).toFixed(3):undefined,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});S._ultTiro191={min:S.min|0,tick:S.tick|0,lato:l,eroe:!!P.eroe,intent,esito:out,nome:nome(P),to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}};/* [giro 204] anche chi ha calciato e dove: la scena di sola visione rifa' QUEL calcio *//* [giro 191] l'ultimo tiro, letto dal live (piazzatoStato191) */
     volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44*_v912(),esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
@@ -1506,7 +1506,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        (in produzione un compagno, dal giro 154); al 60' la scena programmata si apre col rigore dell'eroe: due calci dello stesso
        rigore. ponte191(n): il live tiene il piazzato per n passi in piu' quando lo fa suo senza inserirlo; piazzatoStato191(): il live,
        aprendo la scena, chiede se il piazzato e' ancora sul dischetto o gia' calciato (con chi e con che esito). */
-    ponte191(n){if(typeof window!=='undefined'&&window&&window.__CPM_NO_G191A)return false;const f=S.fermo;if(!f||!f._o27)return false;f._p191=Math.max(f._p191|0,(f._o27|0)+Math.max(1,n|0));S.conta.ponte191=(S.conta.ponte191|0)+1;return true;},
+    ponte191(n){if(typeof window!=='undefined'&&window&&(window.__CPM_NO_G191A||window.__CPM_PROVA_GIACALCIATO204))return false;/* [giro 204] __CPM_PROVA_GIACALCIATO204: SOLO STRUMENTO DI PROVA — niente ponte, il motore calcia prima che la scena si apra: provoca il ramo «gia' calciato» (src/15) che il ponte nel gioco previene */const f=S.fermo;if(!f||!f._o27)return false;f._p191=Math.max(f._p191|0,(f._o27|0)+Math.max(1,n|0));S.conta.ponte191=(S.conta.ponte191|0)+1;return true;},
     piazzatoStato191(){const f=S.fermo;return{attesa:!!(f&&f._o27),kind:f?f.kind:null,min:S.min|0,ult:S._ultTiro191?{...S._ultTiro191}:null};},
     attendiPiazzato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;const f=S.fermo;if(!f||!f._o27)return false;f._acc94=1;return true;},/* [giro 94 D2] misura 3 (sonda-rigore-94 k13): la scena del rigore inserita al 34' si apriva al 35', quando il motore aveva gia' finito i 40 passi d'attesa e calciato nei sotto-passi: il suo gol arrivava al 36' come secondo gol dell'eroe */
     piazzatoGiocato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;S.noPiaz94=(S.min|0)+4;const f=S.fermo;if(!f||!f._o27)return false;
@@ -1842,8 +1842,8 @@ const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
     const re={};for(const k in risolviEroe)re[k]=typeof risolviEroe[k]==='function'?W('risolviEroe.'+k,risolviEroe[k]):risolviEroe[k];
-    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A}};}
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A}};
+    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};}
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A},_cfg:cfg};/* [giro 215 PO-478] _cfg: la partita vissuta che prosegue simulata (avviso 3D a meta' gara) passa il motore alla simulazione rapida */
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]

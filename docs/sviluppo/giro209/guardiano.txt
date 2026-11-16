@@ -1,0 +1,47 @@
+… verde telefono: caricamento fallito → Simula
+… verde telefono: caricamento lento → Riprova
+… verde pc: caricamento fallito → Simula
+… verde pc: caricamento lento → Riprova
+… rosso telefono (__CPM_NO_G209): caricamento fallito
+… rosso telefono (__CPM_NO_G209): caricamento lento
+  ✓ telefono · fallito: avviso si (motivo fallito) dopo 11.4 s in fase playing · 2D false · campo dall'alto false
+  ✓ telefono · fallito: tasti Riprova {"w":321,"h":60,"x":27,"y":382,"b":442,"rr":348} · Simula {"w":321,"h":60,"x":27,"y":454,"b":514,"rr":348} su 375x667
+  ✓ telefono · fallito: testo «📶 La partita in 3D non si carica Non riusciamo a scaricare i giocatori. Forse internet non c'è. Puoi riprovare, oppure simulare la partita »
+  ✓ telefono · fallito: Riprova (1) richiede di nuovo i file CGTrader (6 richieste) e l'avviso torna dopo 0.8 s (subito dopo il tocco: avviso true) · 2D mai
+  ✓ telefono · simula: tasto premuto una volta (1), partita chiusa, carriera a schermo (true)
+  ✓ telefono · simula: avviso del risultato « Quarti di Finale (sim): 1–2 vs FC Valmora — ❌ ELIMINATO »
+  ✓ telefono · simula: conta una volta (matchHistory 0→1, Coppa 1→2, gara giocata true, settimana 12→13) dopo 8 s
+  ✓ telefono · simula: nessuna ripresa della partita lasciata a meta' (cpm-match-resume «»)
+  ✓ telefono · simula: dopo il ricaricamento stesso salvataggio (matchHistory 1, Coppa 2) e nessuna partita riaperta (fase null)
+  ✓ telefono · fallito: errori 0 
+  ✓ telefono · lento: avviso si (motivo lento) dopo 11.7 s in fase playing · 2D false · campo dall'alto false
+  ✓ telefono · lento: tasti Riprova {"w":321,"h":60,"x":27,"y":382,"b":442,"rr":348} · Simula {"w":321,"h":60,"x":27,"y":454,"b":514,"rr":348} su 375x667
+  ✓ telefono · lento: testo «📶 La partita in 3D non si carica Internet va troppo piano: i giocatori non sono arrivati in tempo. Puoi riprovare, oppure simulare la parti»
+  ✓ telefono · lento: l'avviso resta e il 3D resta fermo (avviso true, 2D false, 3D sospeso true)
+  ✓ telefono · riprova: tasto premuto una volta (contatore 1)
+  ✓ telefono · riprova: la scena 3D si rimonta da capo (tela 3D nuova: true)
+  ✓ telefono · riprova: corpi pronti in 3.2 s, avviso via, partita in 3D (fasi dopo: hl_choose) · 2D mai
+  ✓ telefono · lento: errori 0 
+  ✓ pc · fallito: avviso si (motivo fallito) dopo 13.5 s in fase playing · 2D false · campo dall'alto false
+  ✓ pc · fallito: tasti Riprova {"w":340,"h":60,"x":329,"y":430,"b":490,"rr":669} · Simula {"w":340,"h":60,"x":329,"y":502,"b":562,"rr":669} su 1366x768
+  ✓ pc · fallito: testo «📶 La partita in 3D non si carica Non riusciamo a scaricare i giocatori. Forse internet non c'è. Puoi riprovare, oppure simulare la partita »
+  ✓ pc · fallito: Riprova (1) richiede di nuovo i file CGTrader (6 richieste) e l'avviso torna dopo 0.8 s (subito dopo il tocco: avviso true) · 2D mai
+  ✓ pc · simula: tasto premuto una volta (1), partita chiusa, carriera a schermo (true)
+  ✓ pc · simula: avviso del risultato « Quarti di Finale (sim): 1–2 vs FC Valmora — ❌ ELIMINATO »
+  ✓ pc · simula: conta una volta (matchHistory 0→1, Coppa 1→2, gara giocata true, settimana 12→13) dopo 8 s
+  ✓ pc · simula: nessuna ripresa della partita lasciata a meta' (cpm-match-resume «»)
+  ✓ pc · simula: dopo il ricaricamento stesso salvataggio (matchHistory 1, Coppa 2) e nessuna partita riaperta (fase null)
+  ✓ pc · fallito: errori 0 
+  ✓ pc · lento: avviso si (motivo lento) dopo 17.8 s in fase playing · 2D false · campo dall'alto false
+  ✓ pc · lento: tasti Riprova {"w":340,"h":60,"x":329,"y":430,"b":490,"rr":669} · Simula {"w":340,"h":60,"x":329,"y":502,"b":562,"rr":669} su 1366x768
+  ✓ pc · lento: testo «📶 La partita in 3D non si carica Internet va troppo piano: i giocatori non sono arrivati in tempo. Puoi riprovare, oppure simulare la parti»
+  ✓ pc · lento: l'avviso resta e il 3D resta fermo (avviso true, 2D false, 3D sospeso true)
+  ✓ pc · riprova: tasto premuto una volta (contatore 1)
+  ✓ pc · riprova: la scena 3D si rimonta da capo (tela 3D nuova: true)
+  ✓ pc · riprova: corpi pronti in 15.0 s, avviso via, partita in 3D (fasi dopo: hl_intro) · 2D mai
+  ✓ pc · lento: errori 0 
+  ✓ rosso telefono: fallito: avviso no (motivo null) dopo 9.6 s in fase playing · 2D true · campo dall'alto false → bocciato
+  ✓ rosso telefono: lento: avviso no (motivo null) dopo 12.7 s in fase playing · 2D true · campo dall'alto false → bocciato
+VERDE: 36/36 ✓
+ROSSO __CPM_NO_G209 bocciato: ✓
+✅ avviso3d-209 superato (tutto: verde col verde, rosso col rosso)

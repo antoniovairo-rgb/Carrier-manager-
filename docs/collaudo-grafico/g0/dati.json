@@ -3850,12 +3850,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 95,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 72,
     "nSotto": 0,
     "nGradiente": 2,
     "nEmoji": 22,
@@ -3923,7 +3923,7 @@
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 11,
+    "nColTesto": 12,
     "nFondi": 5,
     "nCorpi": 6,
     "nRaggi": 6,
@@ -3951,7 +3951,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 15
+      "n": 16
      }
     ],
     "nFamiglie": 2,
@@ -3961,7 +3961,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -3988,6 +3988,12 @@
       "n": 2,
       "fs": 20,
       "esempio": "⚡ Vivi la Settimana"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "⏩ Vai al prossimo momento"
      },
      {
       "c": "#86efac",
@@ -4029,7 +4035,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 42,
+      "n": 43,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -4041,13 +4047,13 @@
      },
      {
       "fs": 15,
-      "n": 4,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press.cpm-focus"
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
      },
      {
       "fs": 17,
-      "n": 2,
+      "n": 3,
       "esempio": "FC Salernum",
       "sel": "header:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
      },
@@ -4065,8 +4071,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1992,
-    "schermate": 2.18,
+    "altezzaPx": 2000,
+    "schermate": 2.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
@@ -4083,7 +4089,7 @@
      },
      {
       "px": 178,
-      "quota": 9,
+      "quota": 8.9,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
@@ -4095,9 +4101,15 @@
      },
      {
       "px": 111,
-      "quota": 5.6,
+      "quota": 5.5,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
+     },
+     {
+      "px": 101,
+      "quota": 5,
+      "txt": "⏩ Vai al prossimo momentofino alla partita",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 98,
@@ -4106,14 +4118,8 @@
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 92,
-      "quota": 4.6,
-      "txt": "⏩ Vai al prossimo momento",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
       "px": 79,
-      "quota": 4,
+      "quota": 3.9,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
@@ -4192,12 +4198,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 95,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 72,
     "nSotto": 0,
     "nGradiente": 2,
     "nEmoji": 22,
@@ -4265,7 +4271,7 @@
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 11,
+    "nColTesto": 12,
     "nFondi": 5,
     "nCorpi": 6,
     "nRaggi": 6,
@@ -4293,7 +4299,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 15
+      "n": 16
      }
     ],
     "nFamiglie": 2,
@@ -4303,7 +4309,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -4330,6 +4336,12 @@
       "n": 2,
       "fs": 20,
       "esempio": "⚡ Vivi la Settimana"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "⏩ Vai al prossimo momento"
      },
      {
       "c": "#86efac",
@@ -4371,7 +4383,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 42,
+      "n": 43,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -4383,13 +4395,13 @@
      },
      {
       "fs": 15,
-      "n": 4,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press.cpm-focus"
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
      },
      {
       "fs": 17,
-      "n": 2,
+      "n": 3,
       "esempio": "FC Salernum",
       "sel": "header:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
      },
@@ -4407,8 +4419,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1992,
-    "schermate": 2.18,
+    "altezzaPx": 2000,
+    "schermate": 2.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
@@ -4425,7 +4437,7 @@
      },
      {
       "px": 178,
-      "quota": 9,
+      "quota": 8.9,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
@@ -4437,9 +4449,15 @@
      },
      {
       "px": 111,
-      "quota": 5.6,
+      "quota": 5.5,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
+     },
+     {
+      "px": 101,
+      "quota": 5,
+      "txt": "⏩ Vai al prossimo momentofino alla partita",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 98,
@@ -4448,14 +4466,8 @@
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 92,
-      "quota": 4.6,
-      "txt": "⏩ Vai al prossimo momento",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
       "px": 79,
-      "quota": 4,
+      "quota": 3.9,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
@@ -4534,12 +4546,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 95,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 72,
     "nSotto": 0,
     "nGradiente": 2,
     "nEmoji": 22,
@@ -4607,7 +4619,7 @@
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 11,
+    "nColTesto": 12,
     "nFondi": 5,
     "nCorpi": 6,
     "nRaggi": 7,
@@ -4636,7 +4648,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 15
+      "n": 16
      }
     ],
     "nFamiglie": 2,
@@ -4646,7 +4658,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -4673,6 +4685,12 @@
       "n": 2,
       "fs": 20,
       "esempio": "⚡ Vivi la Settimana"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "⏩ Vai al prossimo momento"
      },
      {
       "c": "#86efac",
@@ -4714,7 +4732,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 42,
+      "n": 43,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -4726,13 +4744,13 @@
      },
      {
       "fs": 15,
-      "n": 4,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press.cpm-focus"
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
      },
      {
       "fs": 17,
-      "n": 2,
+      "n": 3,
       "esempio": "FC Salernum",
       "sel": "header:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
      },
@@ -4750,8 +4768,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1992,
-    "schermate": 2.18,
+    "altezzaPx": 2000,
+    "schermate": 2.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
@@ -4768,7 +4786,7 @@
      },
      {
       "px": 178,
-      "quota": 9,
+      "quota": 8.9,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
@@ -4785,20 +4803,20 @@
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
+      "px": 101,
+      "quota": 5,
+      "txt": "⏩ Vai al prossimo momentofino alla partita",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
       "px": 98,
       "quota": 4.9,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 92,
-      "quota": 4.6,
-      "txt": "⏩ Vai al prossimo momento",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
       "px": 79,
-      "quota": 4,
+      "quota": 3.9,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
@@ -4877,12 +4895,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 95,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 72,
     "nSotto": 0,
     "nGradiente": 2,
     "nEmoji": 22,
@@ -4950,7 +4968,7 @@
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 11,
+    "nColTesto": 12,
     "nFondi": 5,
     "nCorpi": 6,
     "nRaggi": 7,
@@ -4979,7 +4997,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 15
+      "n": 16
      }
     ],
     "nFamiglie": 2,
@@ -4989,7 +5007,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -5016,6 +5034,12 @@
       "n": 2,
       "fs": 20,
       "esempio": "⚡ Vivi la Settimana"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "⏩ Vai al prossimo momento"
      },
      {
       "c": "#86efac",
@@ -5057,7 +5081,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 42,
+      "n": 43,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -5069,13 +5093,13 @@
      },
      {
       "fs": 15,
-      "n": 4,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press.cpm-focus"
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
      },
      {
       "fs": 17,
-      "n": 2,
+      "n": 3,
       "esempio": "FC Salernum",
       "sel": "header:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
      },
@@ -5093,19 +5117,19 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1978,
-    "schermate": 2.16,
+    "altezzaPx": 1986,
+    "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 199,
-      "quota": 10.1,
+      "quota": 10,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(5)"
      },
      {
       "px": 185,
-      "quota": 9.4,
+      "quota": 9.3,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
@@ -5128,16 +5152,16 @@
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "⏩ Vai al prossimo momentofino alla partita",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
       "px": 98,
       "quota": 4.9,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
-     },
-     {
-      "px": 92,
-      "quota": 4.6,
-      "txt": "⏩ Vai al prossimo momento",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 79,
@@ -5165,7 +5189,7 @@
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.1,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
@@ -5220,12 +5244,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 95,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 72,
     "nSotto": 0,
     "nGradiente": 2,
     "nEmoji": 22,
@@ -5293,7 +5317,7 @@
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 11,
+    "nColTesto": 12,
     "nFondi": 5,
     "nCorpi": 6,
     "nRaggi": 7,
@@ -5322,7 +5346,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 15
+      "n": 16
      }
     ],
     "nFamiglie": 2,
@@ -5332,7 +5356,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -5359,6 +5383,12 @@
       "n": 2,
       "fs": 20,
       "esempio": "⚡ Vivi la Settimana"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "⏩ Vai al prossimo momento"
      },
      {
       "c": "#86efac",
@@ -5400,7 +5430,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 42,
+      "n": 43,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -5412,13 +5442,13 @@
      },
      {
       "fs": 15,
-      "n": 4,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press.cpm-focus"
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
      },
      {
       "fs": 17,
-      "n": 2,
+      "n": 3,
       "esempio": "FC Salernum",
       "sel": "header:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
      },
@@ -5436,19 +5466,19 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1978,
-    "schermate": 2.16,
+    "altezzaPx": 1986,
+    "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 199,
-      "quota": 10.1,
+      "quota": 10,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(5)"
      },
      {
       "px": 185,
-      "quota": 9.4,
+      "quota": 9.3,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
@@ -5471,16 +5501,16 @@
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "⏩ Vai al prossimo momentofino alla partita",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
       "px": 98,
       "quota": 4.9,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
-     },
-     {
-      "px": 92,
-      "quota": 4.6,
-      "txt": "⏩ Vai al prossimo momento",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 79,
@@ -5508,7 +5538,7 @@
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.1,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
@@ -10271,83 +10301,10 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1880,
-    "schermate": 2.05,
+    "altezzaPx": 1777,
+    "schermate": 1.94,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 735,
-      "quota": 39.1,
-      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
-      "px": 252,
-      "quota": 13.4,
-      "txt": "Statistiche6›Gol stagione14Assist stagione",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
-     },
-     {
-      "px": 133,
-      "quota": 7.1,
-      "txt": "TitolareProssimo gradino — Leader: la fasc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Biografia›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Record personali3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Bacheca trofei3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Storico allenatori4›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Rivale: Bruno Salvatori›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Club dei sogni: FC Catalunya›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "La Stampa3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Match del Cuore›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
-     },
-     {
-      "px": 40,
-      "quota": 2.1,
-      "txt": "Corsa ai Premi›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
@@ -10595,83 +10552,10 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1866,
-    "schermate": 2.04,
+    "altezzaPx": 1762,
+    "schermate": 1.93,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 735,
-      "quota": 39.4,
-      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
-      "px": 236,
-      "quota": 12.6,
-      "txt": "Statistiche6›Gol stagione14Assist stagione",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
-     },
-     {
-      "px": 133,
-      "quota": 7.1,
-      "txt": "TitolareProssimo gradino — Leader: la fasc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Biografia›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Record personali3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Bacheca trofei3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Storico allenatori4›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Rivale: Bruno Salvatori›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Club dei sogni: FC Catalunya›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "La Stampa3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Match del Cuore›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Corsa ai Premi›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
@@ -10919,83 +10803,10 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1851,
-    "schermate": 2.02,
+    "altezzaPx": 1748,
+    "schermate": 1.91,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 735,
-      "quota": 39.7,
-      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
-      "px": 220,
-      "quota": 11.9,
-      "txt": "Statistiche6›Gol stagione14Assist stagione",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
-     },
-     {
-      "px": 133,
-      "quota": 7.2,
-      "txt": "TitolareProssimo gradino — Leader: la fasc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Biografia›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Record personali3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Bacheca trofei3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Storico allenatori4›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Rivale: Bruno Salvatori›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Club dei sogni: FC Catalunya›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "La Stampa3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Match del Cuore›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Corsa ai Premi›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
@@ -11243,83 +11054,10 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1851,
-    "schermate": 2.02,
+    "altezzaPx": 1748,
+    "schermate": 1.91,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 735,
-      "quota": 39.7,
-      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
-      "px": 220,
-      "quota": 11.9,
-      "txt": "Statistiche6›Gol stagione14Assist stagione",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
-     },
-     {
-      "px": 133,
-      "quota": 7.2,
-      "txt": "TitolareProssimo gradino — Leader: la fasc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Biografia›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Record personali3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Bacheca trofei3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Storico allenatori4›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Rivale: Bruno Salvatori›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Club dei sogni: FC Catalunya›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "La Stampa3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Match del Cuore›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Corsa ai Premi›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
@@ -11567,83 +11305,10 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1833,
-    "schermate": 2,
+    "altezzaPx": 1730,
+    "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 735,
-      "quota": 40.1,
-      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
-      "px": 220,
-      "quota": 12,
-      "txt": "Statistiche6›Gol stagione14Assist stagione",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
-     },
-     {
-      "px": 113,
-      "quota": 6.1,
-      "txt": "TitolareProssimo gradino — Leader: la fasc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Biografia›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Record personali3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Bacheca trofei3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Storico allenatori4›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Rivale: Bruno Salvatori›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Club dei sogni: FC Catalunya›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "La Stampa3›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Match del Cuore›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
-     },
-     {
-      "px": 40,
-      "quota": 2.2,
-      "txt": "Corsa ai Premi›",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
@@ -12779,15 +12444,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 91,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 76,
+    "nMisurati": 74,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 19,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -12808,10 +12473,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "Procuratore"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Ancora da assegnare per qu"
      },
      {
       "testo": "#9aa3b2",
@@ -12832,10 +12497,10 @@
       "fw": 700,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 3,
+      "n": 4,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Rapporto con"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Da fare ora"
      },
      {
       "testo": "#9aa3b2",
@@ -12844,7 +12509,7 @@
       "fw": 400,
       "rap": 7.24,
       "soglia": 4.5,
-      "n": 16,
+      "n": 12,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
       "esempio": "🤵 Obiettivo della stagion"
@@ -12855,7 +12520,7 @@
     "nColTesto": 8,
     "nFondi": 5,
     "nCorpi": 5,
-    "nRaggi": 4,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
@@ -12868,12 +12533,13 @@
      6,
      8,
      12,
-     14
+     14,
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 68
+      "n": 66
      },
      {
       "f": "Barlow Condensed",
@@ -12892,7 +12558,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 40,
+      "n": 38,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -12942,15 +12608,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 64,
+      "n": 61,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 8,
-      "esempio": "Andrea Turati",
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+      "n": 9,
+      "esempio": "🤵 Compito della settimana",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
      },
      {
       "fs": 15,
@@ -12972,30 +12638,29 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1666,
-    "schermate": 1.82,
+    "altezzaPx": 1509,
+    "schermate": 1.65,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Stipendio": 2,
      "Valore": 1,
      "Contratto": 4,
-     "Fiducia": 1,
      "Stagione": 7,
-     "Settimana": 5
+     "Settimana": 3
     },
-    "nEmojiChar": 12,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "🤵 Compito della settimana",
+     "🔍",
+     "📋",
      "📣",
+     "🤐",
      "🤵 Obiettivo della stagione",
      "✂️ Licenzia il procuratore",
      "🔴 Chiuso",
-     "⚠️",
-     "⚠️ Contratto in scadenza: asse",
-     "🔍",
-     "📋",
-     "🤐"
+     "⚠️"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -13021,15 +12686,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 91,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 76,
+    "nMisurati": 74,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 19,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -13050,10 +12715,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "Procuratore"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Ancora da assegnare per qu"
      },
      {
       "testo": "#9aa3b2",
@@ -13074,10 +12739,10 @@
       "fw": 700,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 3,
+      "n": 4,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Rapporto con"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Da fare ora"
      },
      {
       "testo": "#9aa3b2",
@@ -13086,7 +12751,7 @@
       "fw": 400,
       "rap": 7.24,
       "soglia": 4.5,
-      "n": 16,
+      "n": 12,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
       "esempio": "🤵 Obiettivo della stagion"
@@ -13097,7 +12762,7 @@
     "nColTesto": 8,
     "nFondi": 5,
     "nCorpi": 5,
-    "nRaggi": 4,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
@@ -13110,12 +12775,13 @@
      6,
      8,
      12,
-     14
+     14,
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 68
+      "n": 66
      },
      {
       "f": "Barlow Condensed",
@@ -13134,7 +12800,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 40,
+      "n": 38,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -13184,15 +12850,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 64,
+      "n": 61,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 8,
-      "esempio": "Andrea Turati",
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+      "n": 9,
+      "esempio": "🤵 Compito della settimana",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
      },
      {
       "fs": 15,
@@ -13214,30 +12880,29 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1647,
-    "schermate": 1.8,
+    "altezzaPx": 1490,
+    "schermate": 1.63,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Stipendio": 2,
      "Valore": 1,
      "Contratto": 4,
-     "Fiducia": 1,
      "Stagione": 7,
-     "Settimana": 5
+     "Settimana": 3
     },
-    "nEmojiChar": 12,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "🤵 Compito della settimana",
+     "🔍",
+     "📋",
      "📣",
+     "🤐",
      "🤵 Obiettivo della stagione",
      "✂️ Licenzia il procuratore",
      "🔴 Chiuso",
-     "⚠️",
-     "⚠️ Contratto in scadenza: asse",
-     "🔍",
-     "📋",
-     "🤐"
+     "⚠️"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -13263,15 +12928,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 91,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 76,
+    "nMisurati": 74,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 19,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -13292,10 +12957,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "Procuratore"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Ancora da assegnare per qu"
      },
      {
       "testo": "#9aa3b2",
@@ -13316,10 +12981,10 @@
       "fw": 700,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 3,
+      "n": 4,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Rapporto con"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Da fare ora"
      },
      {
       "testo": "#9aa3b2",
@@ -13328,7 +12993,7 @@
       "fw": 400,
       "rap": 7.24,
       "soglia": 4.5,
-      "n": 16,
+      "n": 12,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
       "esempio": "🤵 Obiettivo della stagion"
@@ -13339,7 +13004,7 @@
     "nColTesto": 8,
     "nFondi": 5,
     "nCorpi": 5,
-    "nRaggi": 5,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      12,
@@ -13353,12 +13018,13 @@
      8,
      12,
      14,
+     16,
      20
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 68
+      "n": 66
      },
      {
       "f": "Barlow Condensed",
@@ -13377,7 +13043,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 40,
+      "n": 38,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -13427,15 +13093,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 64,
+      "n": 61,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 8,
-      "esempio": "Andrea Turati",
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+      "n": 9,
+      "esempio": "🤵 Compito della settimana",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
      },
      {
       "fs": 15,
@@ -13457,30 +13123,29 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1616,
-    "schermate": 1.77,
+    "altezzaPx": 1473,
+    "schermate": 1.61,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Stipendio": 2,
      "Valore": 1,
      "Contratto": 4,
-     "Fiducia": 1,
      "Stagione": 7,
-     "Settimana": 5
+     "Settimana": 3
     },
-    "nEmojiChar": 12,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "🤵 Compito della settimana",
+     "🔍",
+     "📋",
      "📣",
+     "🤐",
      "🤵 Obiettivo della stagione",
      "✂️ Licenzia il procuratore",
      "🔴 Chiuso",
-     "⚠️",
-     "⚠️ Contratto in scadenza: asse",
-     "🔍",
-     "📋",
-     "🤐"
+     "⚠️"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -13506,15 +13171,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 91,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 76,
+    "nMisurati": 74,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 19,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -13535,10 +13200,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "Procuratore"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Ancora da assegnare per qu"
      },
      {
       "testo": "#9aa3b2",
@@ -13559,10 +13224,10 @@
       "fw": 700,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 3,
+      "n": 4,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Rapporto con"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Da fare ora"
      },
      {
       "testo": "#9aa3b2",
@@ -13571,7 +13236,7 @@
       "fw": 400,
       "rap": 7.24,
       "soglia": 4.5,
-      "n": 16,
+      "n": 12,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
       "esempio": "🤵 Obiettivo della stagion"
@@ -13582,7 +13247,7 @@
     "nColTesto": 8,
     "nFondi": 5,
     "nCorpi": 5,
-    "nRaggi": 5,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      12,
@@ -13596,12 +13261,13 @@
      8,
      12,
      14,
+     16,
      20
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 68
+      "n": 66
      },
      {
       "f": "Barlow Condensed",
@@ -13620,7 +13286,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 40,
+      "n": 38,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -13670,15 +13336,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 64,
+      "n": 61,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 8,
-      "esempio": "Andrea Turati",
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+      "n": 9,
+      "esempio": "🤵 Compito della settimana",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
      },
      {
       "fs": 15,
@@ -13700,30 +13366,29 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1584,
-    "schermate": 1.73,
+    "altezzaPx": 1441,
+    "schermate": 1.57,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Stipendio": 2,
      "Valore": 1,
      "Contratto": 4,
-     "Fiducia": 1,
      "Stagione": 7,
-     "Settimana": 5
+     "Settimana": 3
     },
-    "nEmojiChar": 12,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "🤵 Compito della settimana",
+     "🔍",
+     "📋",
      "📣",
+     "🤐",
      "🤵 Obiettivo della stagione",
      "✂️ Licenzia il procuratore",
      "🔴 Chiuso",
-     "⚠️",
-     "⚠️ Contratto in scadenza: asse",
-     "🔍",
-     "📋",
-     "🤐"
+     "⚠️"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -13749,15 +13414,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 94,
+    "nTesto": 91,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 76,
+    "nMisurati": 74,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 19,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -13778,10 +13443,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "Procuratore"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Ancora da assegnare per qu"
      },
      {
       "testo": "#9aa3b2",
@@ -13802,10 +13467,10 @@
       "fw": 700,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 3,
+      "n": 4,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Rapporto con"
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Da fare ora"
      },
      {
       "testo": "#9aa3b2",
@@ -13814,7 +13479,7 @@
       "fw": 400,
       "rap": 7.24,
       "soglia": 4.5,
-      "n": 16,
+      "n": 12,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
       "esempio": "🤵 Obiettivo della stagion"
@@ -13825,7 +13490,7 @@
     "nColTesto": 8,
     "nFondi": 5,
     "nCorpi": 5,
-    "nRaggi": 5,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      12,
@@ -13839,12 +13504,13 @@
      8,
      12,
      14,
+     16,
      20
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 68
+      "n": 66
      },
      {
       "f": "Barlow Condensed",
@@ -13863,7 +13529,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 40,
+      "n": 38,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -13913,15 +13579,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 64,
+      "n": 61,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 8,
-      "esempio": "Andrea Turati",
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+      "n": 9,
+      "esempio": "🤵 Compito della settimana",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
      },
      {
       "fs": 15,
@@ -13943,30 +13609,29 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1565,
-    "schermate": 1.71,
+    "altezzaPx": 1422,
+    "schermate": 1.55,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Stipendio": 2,
      "Valore": 1,
      "Contratto": 4,
-     "Fiducia": 1,
      "Stagione": 7,
-     "Settimana": 5
+     "Settimana": 3
     },
-    "nEmojiChar": 12,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "🤵 Compito della settimana",
+     "🔍",
+     "📋",
      "📣",
+     "🤐",
      "🤵 Obiettivo della stagione",
      "✂️ Licenzia il procuratore",
      "🔴 Chiuso",
-     "⚠️",
-     "⚠️ Contratto in scadenza: asse",
-     "🔍",
-     "📋",
-     "🤐"
+     "⚠️"
     ],
     "hVoce": 58,
     "hSostieni": 27,

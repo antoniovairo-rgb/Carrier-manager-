@@ -695,6 +695,54 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
 /* [giro 151 PO-353] vita della scia del pallone 2D in secondi di TEMPO DI SCENA (decisione PO: «sparisce in meno di mezzo secondo») */
 const SCIA151=0.35;
+/* [giro 205 PO-465 — rosso window.__CPM_NO_G205] LA PARTITA IN 2D HA ANCHE I SUOI RIGORI E LA SUA PREMIAZIONE.
+   MISURATO (sonda misura-205, 2D forzata con __CPM_CAP196=1, coppa finale, 375x667 e 1366x768): in modalita' 2D (giro 196) la
+   lotteria e la premiazione mostravano il campo dall'alto CONGELATO della partita (ventidue pallini fermi, pannello statistiche
+   coperto dalle scritte «CALCI DI RIGORE» / «TITOLO VINTO!»): nessun rigore e nessuna coppa si vedevano. La serie, la cerimonia,
+   la rassegna e il ritorno alla carriera funzionavano gia' (nessun blocco). Ora, solo in 2D e solo in queste due fasi, al posto del
+   campo congelato: la PORTA vista dal dischetto col tiro deciso dal motore della serie (direzione, alto/basso, fuori, parato), e un
+   quadro di PREMIAZIONE (coppa, titolo, punteggio) con la riga che dice che e' la versione 2D. Nessun asset: CSS ed emoji.
+   Gli esiti restano quelli di soState/soFx (nessuna decisione nuova). */
+function Riserva2D205({fase,soState=null,soFx=null,ceremony=null,kitCasa="#8e1f33",kitOspiti="#e2e8f0",golCasa=0,golOsp=0,siglaCasa="",siglaOsp="",squadra="",stretto=false}){
+  const [tirato,setTirato]=React.useState(false);
+  const k=fase==="shootout"&&soFx?soFx:null,key=k?k.key:null;
+  React.useEffect(()=>{setTirato(false);if(key==null)return;const t=setTimeout(()=>setTirato(true),(key>=1?650:150));return()=>clearTimeout(t);},[key]);// eslint-disable-line
+  try{if(typeof window!=='undefined')window.__CPM_R2D205={fase,key,tirato,esito:k?(k.scored?'gol':(k.wide?'fuori':'parato')):null};}catch(_e){}
+  const nota=<div data-cpm="riserva2d205-nota" style={{position:"absolute",left:0,right:0,bottom:stretto?58:16,textAlign:"center",fontSize:FS.caption,color:"rgba(255,255,255,0.62)",fontWeight:700,letterSpacing:.3,padding:"0 90px 0 12px"}}>Versione 2D · la scena 3D non era pronta</div>;
+  if(fase==="shootout"){
+    /* la porta dal dischetto: 7,32 x 2,44 → riquadro 76% x 30% del quadro. dir -1/0/1 = palo sinistro/centro/palo destro */
+    const tiraCasa=k?k.side==="H":true;const colPor=tiraCasa?kitOspiti:kitCasa;
+    const dx=k?k.dir:0,alto=!!(k&&k.high);
+    const bx=k&&tirato?(50+dx*(k.wide?44:27)):50,by=k&&tirato?(k.wide&&!k.scored&&alto?22:(alto?37:51)):72;
+    const gDir=k?(k.scored?(dx===0?1:-dx):dx):0;/* parato: il portiere va dove va il pallone; gol: dalla parte sbagliata (o fermo sul tiro centrale) */
+    const gx=tirato&&k?50+gDir*(k.scored&&dx===0?18:22):50;
+    return(<div data-cpm="rigori2d205" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden",background:"linear-gradient(180deg,#0b1424 0%,#13233a 40%,#1d5a2c 40%,#2f7d3c 100%)"}}>
+      <div style={{position:"absolute",left:"12%",right:"12%",top:"30%",height:"26%",border:"5px solid #f5f5f5",borderBottom:"none",borderRadius:"3px 3px 0 0",background:"repeating-linear-gradient(90deg,rgba(255,255,255,0.13) 0 2px,transparent 2px 14px),repeating-linear-gradient(0deg,rgba(255,255,255,0.13) 0 2px,transparent 2px 14px),rgba(5,12,24,0.35)"}}/>
+      <div style={{position:"absolute",left:"4%",right:"4%",top:"56%",height:2,background:"rgba(255,255,255,0.7)"}}/>
+      <div style={{position:"absolute",left:"50%",top:"72%",width:8,height:4,marginLeft:-4,borderRadius:"50%",background:"rgba(255,255,255,0.8)"}}/>
+      <div data-cpm="rigori2d205-portiere" style={{position:"absolute",left:gx+"%",top:"41%",width:30,height:56,marginLeft:-15,transition:"left .45s ease-out, transform .45s ease-out",transform:`rotate(${tirato&&k?gDir*62:0}deg)`,transformOrigin:"50% 100%"}}>
+        <div style={{width:20,height:20,margin:"0 auto",borderRadius:"50%",background:"#e8c7a0",border:"2px solid rgba(0,0,0,0.25)"}}/>
+        <div style={{width:30,height:34,marginTop:2,borderRadius:RAD.sm,background:colPor,border:"2px solid rgba(255,255,255,0.55)"}}/>
+      </div>
+      <div data-cpm="rigori2d205-palla" style={{position:"absolute",left:bx+"%",top:by+"%",width:tirato?14:18,height:tirato?14:18,marginLeft:tirato?-7:-9,marginTop:tirato?-7:-9,borderRadius:"50%",background:"radial-gradient(circle at 35% 35%,#fff 0 40%,#cbd5e1 70%,#64748b 100%)",boxShadow:"0 3px 6px rgba(0,0,0,0.45)",transition:"left .55s cubic-bezier(.2,.7,.3,1), top .55s cubic-bezier(.2,.7,.3,1), width .55s, height .55s"}}/>
+      {k&&<div style={{position:"absolute",left:0,right:0,top:"78%",textAlign:"center",fontSize:FS.small,fontWeight:800,color:tiraCasa?"#fde68a":"#fff",textShadow:"0 2px 6px rgba(0,0,0,0.8)"}}>{(soState&&soState.seq&&soState.seq[key]&&soState.seq[key].kicker)||""}</div>}
+      {nota}
+    </div>);
+  }
+  /* premiazione / festa leggera */
+  const leggera=!!(ceremony&&ceremony.light);
+  const conf=[];for(let i=0;i<18;i++)conf.push(<span key={i} style={{position:"absolute",top:0,left:((i*37)%100)+"%",width:7,height:11,borderRadius:2,background:[kitCasa,"#fbbf24","#fff","#4ade80"][i%4],animation:`confettiFall ${3.2+(i%5)*0.6}s linear ${(i%7)*0.45}s infinite`,opacity:.9}}/>);
+  return(<div data-cpm="cerimonia2d205" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden",background:`radial-gradient(circle at 50% 46%, ${kitCasa}cc 0%, #1a1020 58%, #0b0f1a 100%)`}}>
+    {conf}
+    <div style={{position:"absolute",left:0,right:0,top:stretto?"24%":"22%",display:"flex",flexDirection:"column",alignItems:"center",gap:8,padding:"0 16px",textAlign:"center"}}>
+      <div style={{fontSize:stretto?84:110,lineHeight:1,animation:"trophyRise 1.1s ease-out both, trophyGlow 2.4s ease-in-out 1.1s infinite"}}>{leggera?"🎉":"🏆"}</div>
+      <div style={{fontSize:stretto?20:26,fontWeight:FW.black,color:"#fff",letterSpacing:1,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{leggera?"Che vittoria!":(squadra||(ceremony&&ceremony.name)||"Titolo vinto")}</div>
+      <div className="cpm-num" style={{fontSize:stretto?22:28,fontWeight:FW.black,color:"#fde68a",fontVariantNumeric:"tabular-nums"}}>{siglaCasa} {golCasa} — {golOsp} {siglaOsp}</div>
+      {!leggera&&<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.8)",fontWeight:700}}>Il capitano alza la coppa sotto la curva</div>}
+    </div>
+    {nota}
+  </div>);
+}
 function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0,tempo=1}){
   const cRef=React.useRef(null);
   const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};
@@ -1419,6 +1467,9 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
    e la ripresa dell'avversario dopo un tiro fuori/parato o un pallone perso (regola del calcio). Rosso __CPM_NO_BRAIN137 = 7.999.136. */
 /* [7.999.139 PO-210, decisione PO 05/10 «come le schede carriera»] le sezioni del resoconto post partita sono fisarmoniche della carriera
    (cappello standard + Card), aperte, con la scelta del giocatore ricordata. Rosso __CPM_NO_POST210 = titolo fatto a mano di prima. */
+/* [giro 200 · PO-448, G193-18 «rifiniture viste negli anni lunghi»] interruttore unico dei testi e numeri corretti in src/16-18.
+   Rosso __CPM_NO_G200 = i testi di prima (insieme alla rassegna in una pagina sola). */
+function _g200x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G200);}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
     <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>{(icona?icona+" ":"")+String(titolo).toUpperCase()}</div>{children}</>);
@@ -1781,7 +1832,7 @@ function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
   return [c1,c2];}
 try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
-function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false}){/* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
+function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false,onSimula209=null}){/* [giro 209 PO-470] onSimula209: «Simula» dall'avviso «3D non caricabile» (CareerApp: stesso percorso del tasto Simula) *//* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -2332,7 +2383,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
        è il colore finale del gradiente del pannello broadcast (#0d1528), nelle fasi 3D il nero-blu del canvas. */
     el.style.background=(phase==="matchday"||phase==="ended"||(phase==="formations"&&!window.__CPM_NO_FORMAZ23))?"":(phase==="formations"?"#0d1528":"#050810");/* [23/09 POC] formazioni nel kit chiaro: fondo della pagina *//* [7.184.2] fondo scuro: sotto le card broadcast si vedeva il chiaro della pagina («spazio bianco inutile») · [7.184.3] zoom 1 per TUTTA la partita: `zoom` NON propaga l'altezza al contenitore di scroll (proprietà non-standard) → lo scroller credeva che il contenuto stesse nello schermo, non scrollava, e il CTA in eccesso restava irraggiungibile (misurato: bottone a y=733 su viewport 620 con scrollHeight==clientHeight) */
     const wr=document.querySelector('.cpm-match-wrap');/* [7.184.3] la finestra ad altezza fissa del match (flex:1+overflow:hidden) va APERTA nelle fasi DOM, o il contenuto in eccesso non entra nemmeno nel calcolo dello scroll */
-    if(_zoomDom184){el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex=(phase==="matchday"&&_g114())?"1 0 auto":"0 0 auto";}}
+    if(_zoomDom184&&!(phase==="ended"&&_g202())){/* [giro 202] nella rassegna a schede scorre la sua colonna, il piede resta fermo in fondo */el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex=(phase==="matchday"&&_g114())?"1 0 auto":"0 0 auto";}}
     else{el.style.overflowY="hidden";el.style.paddingBottom="0px";if(wr){wr.style.overflow="hidden";wr.style.flex="1";}}
     return()=>{el.style.zoom="1.12";el.style.background="";el.style.overflowY="";el.style.paddingBottom="";if(wr){wr.style.overflow="";wr.style.flex="";}};},[phase,_zoomDom184]);
   const stagedRef45=useRef(false);/* [7.999.45 taccuino PO SIT #3 «001, eroe >= 43,3 u»] la scena ha messo in posizione l'eroe: finche' non si torna a 'playing' il motore non lo riscrive. Rosso __CPM_NO_STACCO45 */
@@ -2408,7 +2459,9 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      ingresso torna subito. Rosso appaiato __CPM_NO977 = il comportamento di prima. */
   const fine977Ref=useRef(false);
   const striscia96bRef=useRef(true);/* [giro 96b D14] la striscia sotto la vista 3D com'era prima della cerimonia */
-  useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
+  useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);
+  const [inno206,setInno206]=useState(false);/* [giro 206 PO-412] la scritta dell'inno segue la scena 3D (che alza __CPM_INNO206ON quando le squadre sono schierate) */
+  useEffect(()=>{if(phase!=="walkout"){setInno206(false);return;}const _id=setInterval(()=>{try{const v=(typeof window!=='undefined'&&window.__CPM_INNO206ON)||false;setInno206(p=>p===v?p:v);}catch(_e){}},300);return ()=>clearInterval(_id);},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
   function _goEndOrCeremony(){
     if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
     fine977Ref.current=true;
@@ -2450,6 +2503,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       localStorage.setItem('cpm-pending-mr',JSON.stringify({v:1,n:player?.name||"",s:(player?.season||1),w:(player?.week||1),oid:(opponent&&opponent.id)||null,on:(opponent&&(opponent.n||opponent.name))||null,ih:(isMatchHome!==false),result:_r}));/* [7.326.0] chiavi RICCHE (id+nome+sede): il recovery ritrovava la voce SOLO per uguaglianza di nome alla settimana corrente — ogni mismatch cancellava l'unica prova della partita giocata */
       try{safeLS.set('cpm-match-resume','');}catch(_e){}/* [7.163.0 super-test LIVE-F5] mutua esclusione: col risultato già nel sidecar uno snapshot in-match stantio farebbe RIGIOCARE la partita mentre il recovery la committa (doppio conteggio) */
     }}catch(_e){}
+    if(fine215Ref.current){setPhase("ended");return;}/* [giro 215] partita proseguita simulata: niente scene 3D (rigori, feste), dritti al post-partita */
     try{/* [7.31.0] turno KO pareggiato → CALCI DI RIGORE 3D prima del post-partita (l'esito non si scopre più
         all'uscita). Solo presentazione: stesso seed/esito della risoluzione in onMatchEnd (6.48). */
       const _scS=(scoreRef&&scoreRef.current)?scoreRef.current:score;
@@ -2538,6 +2592,21 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [soState,setSoState]=useState(null);
   const soStateRef=useRef(null);useEffect(()=>{soStateRef.current=soState;},[soState]);
   const [soFx,setSoFx]=useState(null);
+  /* [giro 204 PO-450 — rosso __CPM_NO_G204] LA SCENA «DI SOLA VISIONE» DEL PIAZZATO GIA' CALCIATO DAL MOTORE. Dal giro 191, se il motore ha
+     gia' battuto il rigore dell'eroe quando la scena si sta per aprire, la scena non si apre (niente doppio calcio) ma quel calcio non si
+     vedeva. Ora si vede: per ~4 s il cronometro si ferma, il 3D rifa' QUEL calcio con la resa gia' collaudata della lotteria (un solo
+     rigore: battitore, portiere sulla linea, tuffo, pallone) con la direzione e l'esito del motore, e sopra c'e' solo il racconto — nessuna
+     scelta, nessun gol in piu' (il gol, se c'e', il motore l'ha gia' contato). vis204 = {key,side,dir,high,scored,wide,post,nome,esito,min}. */
+  const [vis204,setVis204]=useState(null);const vis204Ref=useRef(null);useEffect(()=>{vis204Ref.current=vis204;},[vis204]);
+  const vis204N=useRef(0);
+  const VIS204_MS=4200,VIS204_ESITO_MS=2300;/* l'esito si legge dopo che il pallone e' arrivato (rincorsa 0,6+0,85 s, volo 0,5 s nel 3D) */
+  const [vis204Rev,setVis204Rev]=useState(false);
+  useEffect(()=>{if(!vis204){setVis204Rev(false);return;}setVis204Rev(false);
+    const t1=setTimeout(()=>setVis204Rev(true),VIS204_ESITO_MS);
+    const t2=setTimeout(()=>{try{setCutFx({key:Date.now(),dur:520});}catch(_e){}vis204Ref.current=null;setVis204(null);},VIS204_MS);
+    return()=>{clearTimeout(t1);clearTimeout(t2);};},[vis204]);// eslint-disable-line
+  useEffect(()=>{if(vis204&&phase!=="playing"){vis204Ref.current=null;setVis204(null);}},[phase]);// eslint-disable-line
+  useEffect(()=>{if(!_CPM_TEST||typeof window==='undefined')return;window.__CPM_VIS204_FORCE=(e)=>{try{const _e=e||'saved';const _v={key:1000+(vis204N.current++)*10,side:"H",dir:1,high:false,scored:_e==="goal",wide:_e==="wide"||_e==="post",post:_e==="post",nome:"PROVA",esito:_e,min:clockRef.current|0,eroe:false,t0:Date.now()};vis204Ref.current=_v;setVis204(_v);return true;}catch(_x){return false;}};},[]);// eslint-disable-line -- [giro 204] solo collaudo (?cpmtest=1): apre la scena di sola visione con un esito dato, per foto e sonde
   /* [giro 191 PO-403 B — stacco «breve col tabellone» fra un rigore e l'altro. Rosso __CPM_NO_G191B] Al cambio di rigore (dal secondo in
      poi) lo schermo va al nero per STACCO191_MS col tabellino ✓ ✗ sopra; sotto il nero il 3D rifa' la scena (src/12, _sh191) e la
      rincorsa parte dopo lo stacco. Solo presentazione: la serie, gli esiti e i tempi del tabellino restano quelli di prima. */
@@ -2837,6 +2906,21 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
+     portava la fase a `hl_choose` e la scheda del telefono passava alle giocate: il pad spariva anche con mosse rimaste (sul PC no: li' pad
+     e giocate stanno insieme). La FASE resta quella del PC (stessi timer, stesso motore: `hl_choose` dopo la prima mossa); cambia solo che
+     cosa mostra la scheda: con `pad210` acceso resta la scheda del movimento (pad + «Scegli»), finche' ci sono mosse o finche' il
+     giocatore tocca «Scegli». Rosso __CPM_NO_G210. */
+  const _no210=typeof window!=='undefined'&&!!window.__CPM_NO_G210;
+  const [pad210,setPad210]=useState(false);
+  const _padVis210=!_no210&&isNarrow&&phase==="hl_choose"&&pad210&&movesLeft>0;
+  /* la barra del tempo della scheda: parte dall'ingresso in `hl_choose` (o dalla ripresa dopo la pausa), cosi' se la scheda delle giocate
+     compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
+  const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
+  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
+  useEffect(()=>{setPad210(false);},[hlIdx]);
+  useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
   /* [giro 172 PO-370] pannello audio in partita: si apre dall'altoparlante della barra, mette in pausa e alla chiusura riprende
      SOLO se prima la partita non era gia' in pausa. Rosso window.__CPM_NO_G172: niente icona. */
   const [audio172,setAudio172]=useState(false);const audioPausa172=useRef(false);
@@ -3002,27 +3086,40 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      corpi PO-232 mollava dopo 8 s e il bottone «Gioca comunque senza modelli 3D» rimetteva i procedurali. Ora ingresso e scene dell'eroe
      ASPETTANO window.__CPM_PRONTI196 (src/12: tutti i corpi visibili CGTrader, con clip, nessun procedurale) dietro una schermata OPACA
      con barra; oltre il tetto (__CPM_CAP196, 120 s, decisione PO 14/11) o a caricamento fallito la partita passa alla vista 2D per il resto della gara. */
+  const [glbFail,setGlbFail]=useState(null);/* [giro 209] dichiarati qui (erano sotto): l'attesa 196 si riarma su glbTry (Riprova) */
+  const [glbTry,setGlbTry]=useState(0);
   const _g196On=()=>typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||!!window.__CPM_T196ON);
   const [att196,setAtt196]=useState(null);
   const att196Ref=useRef({t:0,k:''});
   const [modo2D196,setModo2D196]=useState(false);
   const modo2D196Ref=useRef(false);
-  const _att196=r=>{try{window.__CPM_ATT196=!!r;const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
-  const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
-  const _chk196=(fase)=>{try{const r=window.__CPM_PRONTI196();const c=att196Ref.current;
+  /* [giro 209 PO-470 — rosso __CPM_NO_G209] DECISIONE DEL PO (15/11): «Eviterei proprio il ripiego 2D, se non va il 3D avvisare il player
+     che non puo' procedere perche' ha la connessione lenta o non ne ha proprio». Oltre il tetto __CPM_CAP196 (120 s, invariato) o a
+     caricamento fallito (subito) NON si passa piu' al 2D: compare un AVVISO con due tasti, «Riprova» (rimonta la scena 3D da capo, con la
+     stessa attesa: chiave glbTry di ThreeMatchView) e «Simula» (la partita si gioca col motore senza scene, stesso percorso del tasto
+     Simula della carriera, onSimula209). Il ripiego 2D dei giri 196/205 resta nel codice ma si accende SOLO dal banco di prova:
+     ?cpmtest=1 + window.__CPM_RISERVA2D209 (o col rosso). Sotto l'avviso il 3D resta fermo e non si disegna (__CPM_ATT196). */
+  const [avviso209,setAvviso209]=useState(null);
+  const avviso209Ref=useRef(null);
+  const sim209Ref=useRef(false);
+  const _ris2D209=()=>typeof window!=='undefined'&&(!!window.__CPM_NO_G209||(_CPM_TEST&&!!window.__CPM_RISERVA2D209));
+  const _avv209=(motivo)=>{if(avviso209Ref.current)return;avviso209Ref.current={motivo};try{window.__CPM_AVV209=motivo;window.__CPM_AVV209N=(window.__CPM_AVV209N|0)+1;window.__CPM_ATT196=true;}catch(_e){}setAvviso209({motivo});try{cpmEv("avviso3d209",{motivo,fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}};
+  const _att196=r=>{try{window.__CPM_ATT196=!!r||!!avviso209Ref.current;const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
+  const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;if(!_ris2D209()){_att196(null);_avv209(motivo);return;}/* [giro 209] niente 2D per il giocatore: avviso */modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
+  const _chk196=(fase)=>{try{if(avviso209Ref.current)return 'avviso';/* [giro 209] sotto l'avviso non si controlla piu': decide il giocatore */const r=window.__CPM_PRONTI196();const c=att196Ref.current;
     if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}
     if(!c.t)c.t=Date.now();
-    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
+    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return (avviso209Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_G215))?'avviso':'2d';}/* [giro 215, rosso __CPM_NO_G215] aperto l'avviso (non il 2D) si risponde 'avviso': rispondendo '2d' la trattenuta dei corpi si toglieva e a meta' gara il cronometro correva sotto l'avviso (misurato 20'→22' in 4 s) */
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
-  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
+  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
     if(phase!=="walkout"||!_g196On()||modo2D196Ref.current)return;
     const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
     if(!_glbExp||typeof window.__CPM_PRONTI196!=='function')return;
-    att196Ref.current.t=0;_chk196('walkout');
-    const iv=setInterval(()=>{_chk196('walkout');},250);
+    att196Ref.current.t=0;if(_chk196('walkout')==='avviso')return;
+    const iv=setInterval(()=>{if(_chk196('walkout')==='avviso')clearInterval(iv);},250);
     return()=>{clearInterval(iv);_att196(null);};
-  },[phase]);
+  },[phase,glbTry]);/* [giro 209] glbTry: «Riprova» riarma l'attesa da capo */
   const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
   useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
@@ -3031,8 +3128,80 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      si giocava coi modelli procedurali; ora l'attesa diventa un AVVISO esplicito con «Riprova» (rimonta la
      scena 3D via glbTry, che e' la key di ThreeMatchView) e, come uscita dichiarata dall'utente, la scelta di
      giocare senza modelli 3D — che resta una SUA decisione, mai un ripiego silenzioso del gioco. */
-  const [glbFail,setGlbFail]=useState(null);
-  const [glbTry,setGlbTry]=useState(0);
+  /* [giro 209 PO-470] i due tasti dell'avviso «3D non caricabile». Riprova: la scena 3D si rimonta da capo (stessa chiave del
+     «Riprova» 7.264) e l'attesa riparte da zero, con lo stesso tetto. Simula: la partita si chiude senza scene e si gioca col
+     motore (CareerApp: lo stesso percorso del tasto Simula, una volta sola; provino: risultato del motore a onMatchEnd). */
+  const _riprova209=()=>{avviso209Ref.current=null;setAvviso209(null);
+    try{window.__CPM_AVV209=null;window.__CPM_RIPROVA209=(window.__CPM_RIPROVA209|0)+1;window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;window.__CPM_HYPER_COMPILED74=false;window.__CPM_ATT196=true;}catch(_e){}
+    att196Ref.current.t=0;att196Ref.current.k='';setGlbFail(null);
+    try{cpmEv("riprova209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
+    setGlbTry(t=>t+1);};
+  /* [giro 215 PO-478 — rosso __CPM_NO_G215] DECISIONE DEL PO (15/11): se il 3D cede A PARTITA INIZIATA, «Simula» CONTINUA la partita
+     col motore dal minuto e dal punteggio raggiunti, tenendo gol, cartellini, cambi, statistiche e presenze gia' accaduti. Fino al
+     giro 209 la partita si rigiocava da capo (onSimula209 → simulateAndAdvance): misurato, avviso al 20' sul 0-1 → registrato 1-2 di
+     una partita nuova (voto 7,1 contro 5,6 del parziale); dalla panchina la voce perdeva «bench» e i minuti.
+     Come: lo STESSO motore della partita (motoreRef) passa alla simulazione rapida (cfg.brainLive spento, occasioni dell'eroe risolte
+     dal motore come in simulaPartitaMotore: le scene non si possono giocare senza 3D) e gioca i minuti che mancano, 22 passi al
+     minuto, l'intervallo se non c'e' ancora stato (stessa ripresa dal centro del gioco), recupero fino al 93' come la simulazione
+     rapida. L'eroe in panchina entra al suo minuto (stesso chiedi.eroe del battito). Punteggio: per ciascuna squadra il piu' alto fra
+     tabellone e tabellino del motore al momento dell'avviso (un gol gia' deciso ma non ancora narrato non si perde, e non si conta
+     due volte), piu' i gol del motore nei minuti simulati; stessa regola per gol e assist dell'eroe (pagella del motore). Gialli e
+     rosso dell'eroe si sommano a quelli gia' presi. Poi il fischio passa da _goEndOrCeremony (sidecar, tabellino 228) ma va dritto
+     al post-partita: rigori e feste sono scene 3D; il pareggio di un turno KO si risolve in carriera con lo stesso seme (koShootoutWin).
+     Il risultato registrato e' quello del percorso normale (_buildEndResult → onMatchEnd): presenze e minuti come una partita vissuta.
+     Partita non ancora iniziata (avviso all'ingresso, minuto 0): resta il percorso del 209. */
+  const fine215Ref=useRef(false);const goEnd215Ref=useRef(null);goEnd215Ref.current=_goEndOrCeremony;/* il fischio della render corrente: legge le statistiche appena scritte */
+  if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_LM215=()=>({onBench:!!onBenchRef.current,benchStart:!!benchStart,benchMinute:benchMinute|0,subbedOff:!!subbedOffRef.current});}catch(_e){}}/* solo collaudo: la sonda simula-215 legge panchina e minuto d'ingresso */
+  const _continua215=()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO_G215)return false;
+    const M=motoreRef.current;const m0=clockRef.current|0;
+    if(!M||!M._cfg||m0<1||m0>=90||!/^(playing|hl_)/.test(phaseRef.current||''))return false;
+    const S=M._S;const T0=M.tabellino();const E0=(M.pagelle()||[]).find(x=>x&&x.eroe)||{gol:0,assist:0};
+    const sc0={home:(scoreRef.current.home|0),away:(scoreRef.current.away|0)};const ms0={goals:mStatsSnapRef.current.goals|0,assists:mStatsSnapRef.current.assists|0};
+    const yc0=heroYellowsRef.current|0,rc0=!!heroRedRef.current;
+    /* il motore smette di aspettare la scena e gioca da solo */
+    M._cfg.brainLive=false;M._cfg.occasioniV2=true;
+    if(S){if(S.scena){S.scena=false;S._scenaAuto138=null;}if(S.richieste){S.richieste.scenaEroe=false;S.richieste.scenaTipo=null;}}
+    const B=22;let yc=0,rc=false,tiriN=0,tiriL=0;const mom=[];/* i momenti chiave dei minuti simulati, con i testi del gioco fluido */const ing=onBenchRef.current&&!subbedOffRef.current?(benchMinute||60):null;let entrato=false;
+    const gioca=(m)=>{if(ing!=null&&!entrato&&m>=ing){entrato=true;try{M.chiedi.eroe(true);}catch(_e){}}
+      for(let b=0;b<B;b++){const ev=M.tick({min:Math.min(m,90),dt:1/B,dec:true})||[];
+        for(const e of ev){if(!e)continue;if(e.t==='tiro'){if((e.lato||(e.chi&&e.chi.team))==='home')tiriN++;else tiriL++;}
+          if(e.t==='gol'&&mom.length<12){const n0=String((e.chi&&e.chi.nome)||'').split(' ').slice(-1)[0];const n=n0?n0.charAt(0).toUpperCase()+n0.slice(1).toLowerCase():'';/* stesso aspetto dei cognomi del gioco fluido */mom.push({m:Math.min(m,90),k:(e.chi&&e.chi.eroe)?"player_goal":((e.lato||(e.chi&&e.chi.team))==='home'?"goal":"opp_goal"),n});}
+          if(e.chi&&e.chi.eroe){if(e.t==='ammonizione'){yc++;mom.push({m:Math.min(m,90),k:"yellow"});}if(e.t==='espulsione'){rc=true;mom.push({m:Math.min(m,90),k:"red"});}}}}};
+    if(!halfFiredRef.current){for(let m=m0+1;m<=45;m++)gioca(m);halfFiredRef.current=true;try{M.chiedi.riprendi({centro:true,lato:(isMatchHome?"away":"home")});}catch(_e){}}
+    for(let m=Math.max(m0+1,46);m<=93;m++)gioca(m);
+    const T1=M.tabellino();const E1=(M.pagelle()||[]).find(x=>x&&x.eroe)||{gol:0,assist:0};
+    const fin={home:Math.max(sc0.home,T0.home.gol|0)+Math.max(0,(T1.home.gol|0)-(T0.home.gol|0)),away:Math.max(sc0.away,T0.away.gol|0)+Math.max(0,(T1.away.gol|0)-(T0.away.gol|0))};
+    const gF=Math.max(ms0.goals,E0.gol|0)+Math.max(0,(E1.gol|0)-(E0.gol|0)),aF=Math.max(ms0.assists,E0.assist|0)+Math.max(0,(E1.assist|0)-(E0.assist|0));
+    /* gli eventi gia' decisi e in coda sono contati sopra: non si narrano piu' e il fischio non li toglie dal tabellino */
+    evAcc898Ref.current=(evAcc898Ref.current||[]).filter(e=>!(e&&e.t==='gol'));pendingGoalRef.current=null;golCoda645.current=[];
+    heroYellowsRef.current=yc0+yc;if(rc||(yc0+yc)>=2){heroRedRef.current=true;sentOffRef.current=true;}
+    if(entrato){onBenchRef.current=false;}
+    avviso209Ref.current=null;fine215Ref.current=true;
+    try{window.__CPM_AVV209=null;window.__CPM_ATT196=false;window.__CPM_S215={min0:m0,parziale:sc0,motore0:{home:T0.home.gol|0,away:T0.away.gol|0},motore1:{home:T1.home.gol|0,away:T1.away.gol|0},finale:fin,eroe:{gol0:ms0.goals,gol:gF,assist0:ms0.assists,assist:aF,gialli0:yc0,gialli:yc0+yc,rosso0:rc0,rosso:!!heroRedRef.current,ingresso:ing,entrato}};}catch(_e){}
+    try{cpmEv("simula215",{min:m0,parziale:sc0,finale:fin});}catch(_e){}
+    scoreRef.current={...scoreRef.current,home:fin.home,away:fin.away};
+    ReactDOM.flushSync(()=>{setAvviso209(null);setScore(sc=>({...sc,home:fin.home,away:fin.away}));setMStats(p=>({...p,goals:gF,assists:aF}));
+      setMxStats(p=>({...p,shots:(p.shots|0)+tiriN,oppShots:(p.oppShots|0)+tiriL}));if(entrato)setOnBench(false);setClock(c=>Math.max(c,90));
+      for(const q of mom){if(q.k==="player_goal")pushMatchEvent(q.m,"player_goal",em=>"⚽ Tuo gol al "+em+"'");else if(q.k==="goal")pushMatchEvent(q.m,"goal","⚽ Gol di "+(q.n||"un compagno"));else if(q.k==="opp_goal")pushMatchEvent(q.m,"opp_goal","😨 Gol di "+(q.n||"un avversario"));
+        else if(q.k==="yellow")pushMatchEvent(q.m,"yellow",em=>"🟨 Ammonizione al "+em+"'");else pushMatchEvent(q.m,"red",em=>"🟥 ESPULSO! al "+em+"'");}});
+    mStatsSnapRef.current={...mStatsSnapRef.current,goals:gF,assists:aF};clockRef.current=Math.max(clockRef.current|0,90);
+    try{addCom("⏩ La partita prosegue simulata dal "+m0+"': finisce "+fin.home+"-"+fin.away+".","#93c5fd",90);}catch(_e){}
+    if(goEnd215Ref.current)goEnd215Ref.current();else _goEndOrCeremony();
+    return true;}catch(_e){try{console.warn('[giro 215] prosecuzione simulata non riuscita',_e&&_e.message);}catch(_e2){}return false;}};
+  const _simula209=()=>{if(sim209Ref.current)return;sim209Ref.current=true;
+    try{window.__CPM_SIM209=(window.__CPM_SIM209|0)+1;window.__CPM_AVV209=null;window.__CPM_ATT196=false;}catch(_e){}
+    try{safeLS.set("cpm-match-resume","");}catch(_e){}/* la gara lasciata a meta' non si riapre al prossimo avvio */
+    try{cpmEv("simula209",{fase:phaseRef.current,min:clockRef.current|0});}catch(_e){}
+    if(_continua215())return;/* [giro 215] partita gia' iniziata: si prosegue col motore dal minuto e dal punteggio raggiunti */
+    if(typeof onSimula209==='function'){onSimula209();return;}
+    let res=null;
+    try{const _sd=hashStr("sim209|"+(player.name||"")+"|"+((opponent&&(opponent.n||opponent.name))||"")+"|"+(player.season||1)+"|"+(player.week||1))>>>0;
+      const sim=simulateMatch(player.club||{p:60},opponent,player.ovr||65,isMatchHome!==false,_sd,{},{motore:true,giocatore:player});
+      const ps=_pSimStats(sim,player.ovr||65,(player.archetype&&player.archetype.id)||player.archetype||"",seededRng(hashStr("psim|209|"+_sd)>>>0));
+      const rt=votoSimEroe(sim,ps);
+      res={goals:ps.goals|0,assists:ps.assists|0,rating:rt!=null?rt:6.0,homeScore:sim.homeScore,awayScore:sim.awayScore,won:!!sim.won,drew:!!sim.drew};}catch(_e){res={goals:0,assists:0,rating:6.0,homeScore:0,awayScore:0,won:false,drew:true};}
+    onMatchEnd({...res,simulated:true,minutesPlayed:90,matchStatus:"starter",context,isHome:isMatchHome!==false,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c});};
   /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» + «alla partita
      successiva si vedono»] IL CONTESTO GRAFICO PUO' MORIRE, E NESSUNO LO SAPEVA. Il browser di un telefono
      revoca il contesto WebGL quando la memoria stringe (`webglcontextlost`): le mesh restano in scena ma le
@@ -3077,7 +3246,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       /* [7.264.0] niente piu' sblocco automatico a 30s (giocava coi burattini): dopo 12s, o subito su errore
          duro del caricamento, si passa all'AVVISO e la partita resta ferma finche' l'utente non decide. */
       const _f=(typeof window!=='undefined')?window.__CPM_GLB_FAIL:null;
-      if(_f==="error"||Date.now()-t0>12000)setGlbFail(_f==="error"?"error":"slow");
+      if(_f==="error"||Date.now()-t0>((_g196On()&&!_ris2D209())?(+window.__CPM_CAP196||120000):12000))setGlbFail(_f==="error"?"error":"slow");/* [giro 209] col nuovo avviso vale il tetto del PO (120 s), non i 12 s del 7.264 */
     },400);
     return ()=>clearInterval(iv);
   },[phase,glbTry]);
@@ -3089,7 +3258,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(_g196On()&&typeof window.__CPM_PRONTI196==='function'){/* [giro 196] stessa trattenuta del cronometro, ma sulla prontezza «nessun corpo sbagliato» e senza il tetto di 8 s: oltre il tetto lungo si gioca in 2D */
       if(modo2D196Ref.current){_set(false);return;}
       att196Ref.current.t=0;
-      const _c=()=>{const e=_chk196('playing');if(e==='attesa'){if(!corpiHold232Ref.current)_set(true);return false;}_set(false);return e==='2d';};
+      const _c=()=>{const e=_chk196('playing');if(e==='attesa'||e==='avviso'){if(!corpiHold232Ref.current)_set(true);return e==='avviso';}_set(false);return e==='2d';};/* [giro 209] sotto l'avviso la scena dell'eroe non parte */
       if(_c())return;
       const iv196=setInterval(()=>{if(_c())clearInterval(iv196);},250);
       return()=>{clearInterval(iv196);_att196(null);};}
@@ -3189,6 +3358,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     window.__CPM_SET_NUMHL=(n)=>{try{const v=Math.max(1,Math.min(9,n|0));numHLRef.current=v;setNumHL(v);return v;}catch(e){return null;}};
     // [7.2.0] hook di collaudo della PREMIAZIONE 3D: salta direttamente alla fase ceremony (test-only). Il runner
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
+    window.__CPM_PUSH_MEV202=(min,type,txt)=>{try{pushMatchEvent(min|0,String(type||"sub"),String(txt||"Evento di prova"));return true;}catch(e){return false;}};/* [giro 202, SOLO COLLAUDO] la partita con MOLTI eventi (12 momenti chiave, il tetto della lista) che il pilota seedato non produce: la sonda la provoca */
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league",...((o&&o.light)?{light:true}:{}),...((o&&o.festa)?{festa:o.festa}:{})});setPhase("ceremony");return true;}catch(e){return false;}};/* [7.999.47] anche la cerimonia leggera con i numeri della festa */
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
     /* [7.911.1 — C11] LA CERIMONIA D'INGRESSO NON ERA RAGGIUNGIBILE DA UNA SONDA. Il percorso del provino entra
@@ -3818,11 +3988,11 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [sceltePronte,setSceltePronte]=useState(false);
   useEffect(()=>{
     if(typeof window!=='undefined'&&window.__CPM_NO926){setSceltePronte(true);return;}
-    if(phase!=="hl_choose"){setSceltePronte(false);return;}
+    if(phase!=="hl_choose"||_padVis210){setSceltePronte(false);return;}/* [giro 210] finche' sul telefono si vede il pad le giocate non sono a schermo: quando compaiono nascono disarmate come all'ingresso (7.926) */
     setSceltePronte(false);
     const h=setTimeout(()=>setSceltePronte(true),_ARMO956);
     return()=>clearTimeout(h);
-  },[phase,hlIdx]);
+  },[phase,hlIdx,_padVis210]);
   const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();
     /* ⚠️ [7.686.0 collaudo PO: «le interazioni in cronaca devono freezare piu' a lungo, a volte non ho
        il tempo nemmeno di leggere»] LA RIGA NUOVA ASPETTA, LA DOMANDA NO.
@@ -5059,6 +5229,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   // Clock — more commentary, possession updates
   useEffect(()=>{
     if(phase!=="playing"||paused||kickoffHold||corpiHold232)return;/* [7.9.3] kickoff trattenuto finché CH38 non è pronto · [7.999.162 PO-232] e finche' i corpi CGTrader non sono pronti */
+    if(vis204)return;/* [giro 204] durante la scena di sola visione il cronometro e' fermo, come in una scena */
     if(scFreeze681&&!(typeof window!=='undefined'&&window.__CPM_NO682F)
        &&!(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_SCFREEZE_TEST))return;/* [7.682.0] c'e' una scelta aperta: il tempo di gioco si ferma finche' non e' presa (o finche' non scadono i venti secondi) */
     /* [7.898.0 A2 v3 — IL MINUTO DEL MOTORE HA TRE FASI: UNA DECIDE, DUE MUOVONO. Rosso __CPM_NO898]
@@ -5519,7 +5690,15 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         let _gia191=false;if(_apre803&&!_blk7&&!(typeof window!=='undefined'&&window.__CPM_NO_G191A)){try{const _o191=occEroe879Ref.current,_M191=motoreRef.current;
           if(_o191&&_o191.origine&&(_o191.origine.kind==="rigore"||(_o191.origine.kind==="punizione"&&_o191.tipo==="punizione"))&&_M191&&_M191.chiedi&&_M191.chiedi.piazzatoStato191){const _s191=_M191.chiedi.piazzatoStato191();
             if(_s191.attesa){_M191.chiedi.attendiPiazzato&&_M191.chiedi.attendiPiazzato();try{cpmEv("piazzato191",{min:nx|0,stato:"attesa"});}catch(_e){}}
-            else if(_s191.ult&&_s191.ult.lato==="home"&&_s191.ult.intent===(_o191.origine.kind==="rigore"?"penalty":"freekick")&&(_s191.ult.min|0)>=((_o191.min|0)-2)){/* [giro 191 v2, misura r187d-25] calciato DAVVERO: l'ultimo tiro del motore e' quel piazzato, della nostra squadra, dopo l'occasione. Il solo fermo vuoto non basta: un'altra scena aperta nel frattempo lo svuota senza calcio, e negare la scena faceva sparire il rigore */_gia191=true;occEroe879Ref.current=null;try{cpmEv("piazzato191",{min:nx|0,stato:"calciato",ult:_s191.ult});if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:nx|0,t:'scena_negata191',ult:_s191.ult});}catch(_e){}}}}catch(_e191){}}
+            else if(_s191.ult&&_s191.ult.lato==="home"&&_s191.ult.intent===(_o191.origine.kind==="rigore"?"penalty":"freekick")&&(_s191.ult.min|0)>=((_o191.min|0)-2)){/* [giro 191 v2, misura r187d-25] calciato DAVVERO: l'ultimo tiro del motore e' quel piazzato, della nostra squadra, dopo l'occasione. Il solo fermo vuoto non basta: un'altra scena aperta nel frattempo lo svuota senza calcio, e negare la scena faceva sparire il rigore */_gia191=true;occEroe879Ref.current=null;
+              if(_o191.origine.kind==="rigore"&&!(typeof window!=='undefined'&&window.__CPM_NO_G204)&&!vis204Ref.current){try{const _u=_s191.ult,_e=String(_u.esito||""),_ty=(_u.to&&_u.to.y!=null)?+_u.to.y:50;
+                const _n204=(vis204N.current|0);vis204N.current=_n204+1;
+                const _v={key:1000+_n204*10+(_u.eroe?8:0),/* src/12 sceglie il battitore dall'indice: floor(key/2)%5===4 -> eroe, altrimenti un compagno */side:"H",dir:_ty<48.5?-1:(_ty>51.5?1:0),high:false,
+                  scored:_e==="goal",wide:_e==="wide"||_e==="post",post:_e==="post",nome:_u.nome||null,esito:_e,min:_u.min|0,eroe:!!_u.eroe,t0:Date.now()};
+                vis204Ref.current=_v;setVis204(_v);setCutFx({key:Date.now(),dur:520});
+                cpmEv("visione204",{min:nx|0,esito:_e,nome:_v.nome,eroe:_v.eroe});
+                if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_VIS204=window.__CPM_VIS204||[]).push({min:nx|0,clock:clockRef.current|0,ult:{..._u},kick:{dir:_v.dir,scored:_v.scored,wide:_v.wide,post:_v.post}});}catch(_e204){}}
+              try{cpmEv("piazzato191",{min:nx|0,stato:"calciato",ult:_s191.ult});if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:nx|0,t:'scena_negata191',ult:_s191.ult});}catch(_e){}}}}catch(_e191){}}
         if(!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803&&!_blk7&&!_gia191){
           _M803.ult=nx;
           if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] lo slot bruciato in panchina non e' un'occasione giocata */}else{
@@ -9322,7 +9501,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(_CPM_TEST&&typeof window!=='undefined'){try{const _w=(window.__CPM_G166=window.__CPM_G166||{battiti:0,lotti:0,ms:0});_w.battiti+=_n;_w.lotti++;_w.ms+=performance.now()-_t0;}catch(_e){}}};
     const iv=setInterval(_solo166?_lotto166:_batt166,_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>{_vivo166=false;clearInterval(iv);};
-  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166,_sh173]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
+  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166,_sh173,vis204]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
   // Ball attachment — la palla sta sull'eroe PRIMA dell'azione (intro/move/choose). FIX boomerang: NON
   //   durante hl_result — lì la palla vola verso l'esito (rete/compagno/fuori) e non va più richiamata sull'eroe.
@@ -9571,6 +9750,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
   // Movement RAF — keyboard input with movesLeft check, 400ms cooldown per move
   const lastKbdMoveRef=useRef(0);
+  const accordo210Ref=useRef(null);/* [giro 210] istante (parete) in cui il passo da tastiera ha visto il primo asse premuto: finestra d'accordo */
+  /* [giro 210] dopo ogni passo (pad o tastiera): sul telefono il pad resta se restano mosse (PO-471); testimone di prova __CPM_PASSO210 */
+  const _dopoPasso210=(src,dx,dy,nm,gain,mk)=>{
+    if(!_no210){if(isNarrow&&nm>0)setPad210(true);else if(nm<=0)setPad210(false);}
+    try{if(typeof window!=='undefined'&&_CPM_TEST){(window.__CPM_PASSO210=window.__CPM_PASSO210||[]).push({src,dx:+dx.toFixed(4),dy:+dy.toFixed(4),len:+Math.hypot(dx,dy).toFixed(4),gain:gain==null?null:+(+gain).toFixed(3),mosse:nm,t:Date.now(),mk:mk||null});}}catch(_e){}
+  };
+  const _mk210=()=>{try{if(!_CPM_TEST)return null;const m=_marker317();return m?{x:+m.x.toFixed(3),y:+m.y.toFixed(3),hx:+pPos.x.toFixed(3),hy:+pPos.y.toFixed(3)}:null;}catch(_e){return null;}};/* testimone: il marcatore e il punto dell'eroe con cui _moveGain317 ha appena calcolato lo stacco */
   useEffect(()=>{
     if(phase!=="hl_move"&&phase!=="hl_choose"){if(moveRef.current)cancelAnimationFrame(moveRef.current);return;}
     const sit=situations[hlIdx];
@@ -9581,6 +9767,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(k.has("ArrowDown") ||k.has("s"))dx=-2.5;
       if(k.has("ArrowRight")||k.has("d"))dy=+2.5;
       if(k.has("ArrowLeft") ||k.has("a"))dy=-2.5;
+      /* [giro 210 PO-401, decisione PO 15/11 (A+E)] (1) IL PASSO DIAGONALE E' LUNGO QUANTO GLI ALTRI: due frecce davano 2,5+2,5 = 3,54u
+         (+41%, misurato al giro 207), ora 2,5u normalizzato come il tasto diagonale del pad. (2) FINESTRA D'ACCORDO: due frecce premute
+         quasi insieme devono dare SEMPRE la diagonale — al giro 207 circa 1 volta su 12 il primo tasto arrivava da solo in un fotogramma,
+         il passo partiva cardinale e il secondo cadeva nei 400 ms di pausa. Con un solo asse premuto il passo aspetta 70 ms (tempo di
+         parete dal primo fotogramma che lo vede): se nel frattempo arriva il secondo tasto, il passo e' diagonale. Con due assi parte
+         subito. Rosso __CPM_NO_G210 = 3,54u e nessuna attesa. */
+      /* La finestra raccoglie gli assi visti dal primo fotogramma con un tasto premuto: il passo parte quando ci sono due assi, quando
+         scadono i 70 ms o quando i tasti vengono rilasciati prima (un tocco breve di freccia non si perde, anche a pochi fotogrammi). */
+      const _raw210=!!(dx||dy);
+      if(!_no210){
+        const _n210=Date.now();let _Q=accordo210Ref.current;
+        if(_raw210){if(!_Q)_Q=accordo210Ref.current={t0:_n210,dx,dy};else{if(dx)_Q.dx=dx;if(dy)_Q.dy=dy;}}
+        if(_Q&&((_Q.dx&&_Q.dy)||_n210-_Q.t0>=70||!_raw210)){dx=_Q.dx;dy=_Q.dy;}else{dx=0;dy=0;}
+        if(dx&&dy){dx=Math.sign(dx)*2.5/Math.SQRT2;dy=Math.sign(dy)*2.5/Math.SQRT2;}
+      }
       /* [7.388.0 collaudo PO «troppi movimenti concessi all'eroe» · «sono riuscito a muovermi piu' volte
          del previsto»] IL BUDGET DI MOVIMENTO NON ERA UN BUDGET. Questo ramo — frecce e WASD da desktop —
          consumava la mossa con `Math.max(0,...)`, cioe' fermava il CONTATORE a zero ma faceva il passo lo
@@ -9602,14 +9803,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] stessa regola direzionale del pad */
+          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();
+          defDistRef.current=Math.min(100,defDistRef.current+_g210k);/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
           const nm=Math.max(0,movesLeftRef.current-1);
           movesLeftRef.current=nm;setMovesLeft(nm);
           if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
+          _dopoPasso210("tasti",dx,dy,nm,_g210k,_m210k);accordo210Ref.current=null;
         }
       }
+      if(!_raw210)accordo210Ref.current=null;/* tasti rilasciati: la finestra o e' appena partita qui sopra o non vale piu' (pausa dei 400 ms, mosse finite) */
       moveRef.current=requestAnimationFrame(loop);
     };
     moveRef.current=requestAnimationFrame(loop);
@@ -9663,12 +9867,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] il guadagno dipende dalla DIREZIONE */
+    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();
+    defDistRef.current=Math.min(100,defDistRef.current+_g210p);/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
     const nm=Math.max(0,movesLeftRef.current-1);
     movesLeftRef.current=nm;setMovesLeft(nm);
     if(phase==="hl_move")fxTimeout(()=>setPhase("hl_choose"),200);
+    _dopoPasso210("pad",dx,dy,nm,_g210p,_m210p);
   };
 
   const handleAction=useCallback((action)=>{
@@ -10590,12 +10796,37 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _kbContinue=useRef(handleContinue);_kbContinue.current=handleContinue;
   const _kbSet=useRef(handleSetPiece);_kbSet.current=handleSetPiece;/* [giro 90 PO-292 D6] */
   const _kbEnd=useRef(handleEnd);_kbEnd.current=handleEnd;
+  /* [giro 200 · PO-385, decisione PO «Schede una dopo l'altra»] la rassegna di fine partita (fase ended) si legge a QUATTRO schede: 1 risultato
+     e voto, 2 le tue giocate, 3 i giornali, 4 classifica e prossima partita (col tabellino della gara: da solo e' alto quanto mezza
+     scheda). Avanti, Salta (= torna alla carriera, salva il risultato come il tasto di sempre) e puntini. Nessun blocco tolto: le schede
+     non visibili restano montate e nascoste (display:none), quindi il contenuto e i testimoni dei blocchi sono quelli di prima.
+     Il provino (trial) resta com'era. Rosso __CPM_NO_G200 = la pagina unica di prima. */
+  const [sk200,setSk200]=useState(0);const scroll200Ref=useRef(null);
+  useEffect(()=>{try{if(scroll200Ref.current)scroll200Ref.current.scrollTop=0;}catch(_e){}},[sk200]);
+  const _g200=()=>context!=="trial"&&!(typeof window!=='undefined'&&window.__CPM_NO_G200);
+  const _v200=(n)=>(!_g200()||sk200===n)?undefined:{display:"none"};
+  /* [giro 202 · PO-461, questionario PO 14/11] (2) il TABELLINO DELLA GARA passa dalla scheda 4 alla 1, accanto a risultato e voto,
+     ACCORCIATO: le stesse voci su due colonne (due voci per riga, righe compatte) invece di una voce per riga. Nessuna voce tolta.
+     (4) Avanti/Salta e i puntini FISSI IN FONDO allo schermo su ogni scheda: nella fase ended la pagina non scorre piu' fuori
+     (come nelle fasi col 3D), la rassegna riempie lo schermo, il contenuto scorre nella sua colonna SOPRA il piede (mai sotto) e il
+     piede tiene conto dell'area sicura del telefono. (1) e (3) restano come erano: dopo Simula nessuna rassegna; Salta salva e torna.
+     Rosso __CPM_NO_G202 = la rassegna del giro 200 (tabellino nella scheda 4, piede in fondo alla pagina). */
+  const _g202=()=>_g200()&&!(typeof window!=='undefined'&&window.__CPM_NO_G202);
+  const _T200=["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=["Risultato","Giocate","Giornali","Classifica"];
+  const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+    <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
+      style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
+    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C200[sk200]}</div></div>);
 
   useEffect(()=>{
     const sit=situations[hlIdx];
     const onD=e=>{
       if(_scrive386(e))return;/* [7.386.0] il fuoco e' in una casella di testo: la tastiera non e' del gioco */
       keysRef.current.add(e.key);
+      /* [giro 210] la finestra d'accordo nasce dall'EVENTO, non dal fotogramma: misurato sulla prima scena di una pagina appena aperta,
+         i fotogrammi erano cosi' radi che nessuno vedeva il tasto durante la pressione e il passo si perdeva (anche prima del giro 210). */
+      if(!_no210&&!e.repeat&&(phase==="hl_move"||phase==="hl_choose")){const _m210={ArrowUp:[1,0],w:[1,0],ArrowDown:[-1,0],s:[-1,0],ArrowRight:[0,1],d:[0,1],ArrowLeft:[0,-1],a:[0,-1]}[e.key];
+        if(_m210){let _Q=accordo210Ref.current;if(!_Q)_Q=accordo210Ref.current={t0:Date.now(),dx:0,dy:0};if(_m210[0])_Q.dx=_m210[0]*2.5;if(_m210[1])_Q.dy=_m210[1]*2.5;}}
       // Pause toggle: Escape or P during active match
       if((e.key==="Escape"||e.key==="p"||e.key==="P")&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
         e.preventDefault();e.stopImmediatePropagation();setPaused(v=>!v);return;
@@ -10942,6 +11173,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _effP207=(t)=>{try{if(!t)return t;const _sh=(player.clubPrestigeShifts||{})[t.id||t.n]||0;return _sh?{...t,p:clamp((t.p||60)+_sh,1,99)}:t;}catch(_e){return t;}};
   const homeTeamObj=_effP207(isNatCtx?{id:_myNatData.id,n:player.nation||"Italia",a:_myNatData.a,p:_myNatData.p,c:_myNatData.c,c2:_myNatData.c2,nat:_myNatData.nat,lg:"Nazionale"}:isMatchHome?(player.club||opponent):opponent);
   const awayTeamObj=_effP207(isNatCtx?opponent:isMatchHome?opponent:(player.club||opponent));
+  /* [giro 203 · PO-460] varco di PROVA (solo ?cpmtest=1): __CPM_BARRA203(casa,ospiti) mette sulla BARRA in alto due squadre
+     qualunque, per misurare sigle e nomi lunghi/corti sul DOM vero; null torna alle squadre della partita. Il resto della
+     partita (maglie, 3D, cronaca) non lo legge. */
+  const[_tb203,_setTb203]=useState(null);
+  useEffect(()=>{if(!_CPM_TEST)return;window.__CPM_BARRA203=(h,a)=>_setTb203(h?{h,a:a||h}:null);return()=>{try{delete window.__CPM_BARRA203;}catch(_e){}};},[]);
+  const _barraH203=_tb203?_tb203.h:homeTeamObj, _barraA203=_tb203?_tb203.a:awayTeamObj;
   /* [giro 171 PO-368 — I TIFOSI HANNO IL COLORE DEL CLUB, MAI LA MAGLIA DEL GIORNO. Rosso __CPM_NO_G171] Foto PO 191 (2D su PC,
      FC Cesenate Primavera in casa contro FC Leonessa Primavera in trasferta con la maglia viola): «i tifosi devono mantenere il colore
      originale del club, non prendere il colore della maglia da trasferta». MISURATO: gli spalti 2D ricevevano _mkits.awayShirt/awayAccent,
@@ -10958,6 +11195,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // Derby + big-game detection (used by WalkoutOverlay and MatchdayCard)
   const drby=isDerby(player.club?.id,opponent?.id);
   const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
+  /* [giro 206 PO-412 — rosso __CPM_NO_G206] il tipo di ingresso in campo (tabella INGRESSO206, src/08) nasce dagli stessi fatti che gia' decidono
+     tifo e tabellone: finale in campo neutro, Nazionale, derby, coppa europea, peso della gara. __CPM_TIPO206 (solo banco di prova) lo forza. */
+  const _ing206=(typeof window!=='undefined'&&window.__CPM_NO_G206)?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_TIPO206&&INGRESSO206[window.__CPM_TIPO206])?window.__CPM_TIPO206:tipoIngresso206({context,isFinal:_isNeutralFinal,isDerby:!!drby,isNat:isNatCtx,mw}));
+  try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_TIPOVERO206={tipo:_ing206,context,finale:!!_isNeutralFinal,derby:!!drby,naz:!!isNatCtx,mw};}catch(_e206){}
   // item 4 (5.49.2): grafica TV pre-partita — statistiche di classifica delle due squadre (posizione/punti/V-N-P/GF-GS + forma ultime 5).
   //   Forma deterministica dal record (seed club+stagione) → coerente per tutta la partita. Dashes se la squadra non è in classifica (provino/coppa/nazionale).
   const _tvTeamStat=(team)=>{
@@ -11106,7 +11347,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      Supera la direttiva 7.893 per l'intestazione; il tabellone 3D resta com'e'. Rosso __CPM_NO_FISSE297 = la barra che si specchia. */
   const _fisse297=!(typeof window!=='undefined'&&window.__CPM_NO_FISSE297);
   const _ripresa297=((clock|0)>45)&&phase!=="ceremony";
-  const _swap893=!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  const _so216=phase==="shootout"&&!!soState&&!isMatchHome&&!(typeof window!=='undefined'&&(window.__CPM_NO_G214||window.__CPM_NO_G216));/* [giro 216 PO-482 — rosso __CPM_NO_G216] decisione PO 15/11: durante la LOTTERIA, in trasferta, la striscia mette la serie con l'EROE A SINISTRA come il tabellone «CALCI DI RIGORE» (misurato col 214: striscia «1 - 2», tabellone «2 — 1»). Si specchia la barra intera (stemmi, nomi e numeri insieme, lo stesso specchio del 7.893): mai numeri girati sotto sigle non girate. Fuori dalla fase shootout torna casa a sinistra; in casa nulla cambia */
+  const _swap893=_so216?true:(_CPM_TEST&&_tb203&&typeof window!=='undefined'&&window.__CPM_SWAP203!=null)?!!window.__CPM_SWAP203:/* [giro 203] varco di prova: campo invertito a comando, solo col varco della barra acceso */!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
      approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
      risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di
@@ -11116,6 +11358,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      che il PO ha chiesto di togliere) ma diventano piccoli, incassati nella riga del minuto. Rosso
      __CPM_NO901 = la barra di prima (due righe, ~92 px, «PREMIER DIVISION»/poss./momentum per squadra). */
   const _no901=!!(typeof window!=='undefined'&&window.__CPM_NO901);
+  const _g197=!(typeof window!=='undefined'&&window.__CPM_NO_G197);/* [giro 197 · PO-452] scelte dell'eroe tutte a schermo sui telefoni bassi (360x640) e titolo dell'azione intero su <=2 righe. Rosso __CPM_NO_G197 = scheda tappata al 44vh con la lista che scorre e titolo della mossa su una riga coi puntini */
   const _hl94=!(typeof window!=='undefined'&&window.__CPM_NO_HL94);/* [7.999.83 #94] nuova veste degli highlight (scheda del movimento, D-pad, barra «in corso»). Rosso __CPM_NO_HL94 = la veste della 7.905 */
   const _compTag901=(()=>{
     if(phase==="walkout")return"Ingresso in campo";
@@ -11124,13 +11367,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _lbl=isNatCtx?((context||"").indexOf("euroMondiale")>=0?("🌍 "+((player.euroMondiale?.type)||"Mondiale")):"🌍 Nazionale"):(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ "+EURO_SIGLA.UCL,UEL:"🌍 "+EURO_SIGLA.UEL,UECL:"🌍 "+EURO_SIGLA.UECL}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":(((player.leagueOverrides||{})[player.club?.id])||player.club?.lg||homeTeamObj?.lg||"Campionato");
     return _lbl;
   })();/* stessa IIFE di prima (7.170.0), solo spostata qui per essere condivisa dai due markup della barra (vecchio e nuovo) */
-  const _hVal901=isMatchHome?score.home:score.away,_hCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9"):"#f1f5f9";/* [23/09 POC — collaudo PO «il risultato rosso e verde non mi piace»] punteggio neutro, come un tabellone tv. Rosso __CPM_NO_SCORE23 */
+  const _so214=phase==="shootout"&&!!soState&&!(typeof window!=='undefined'&&window.__CPM_NO_G214);/* [giro 214 PO-477 — rosso __CPM_NO_G214] decisione PO 15/11: durante la LOTTERIA la striscia in alto dice «RIGORI» al posto del minuto e il punteggio della SERIE al posto di quello della partita (lo stesso del tabellone «CALCI DI RIGORE», aggiornato a ogni tiro, la squadra dell'eroe dal suo lato come il resto della striscia). Finita la serie (cerimonia/fine) torna il risultato della partita. Misurato prima (sonda-214): «90'» e «1–1» in tutti i campioni della serie */
+  const _hVal901=_so214?(isMatchHome?soState.hs:soState.as):isMatchHome?score.home:score.away,_hCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9"):"#f1f5f9";/* [23/09 POC — collaudo PO «il risultato rosso e verde non mi piace»] punteggio neutro, come un tabellone tv. Rosso __CPM_NO_SCORE23 */
   /* [PO-302 · grafica V2 tappa 3 · V2Partita2D/V2Highlight] IL TABELLONE A STRISCE: le due squadre sono blocchi nel COLORE DEL CLUB
      (righe diagonali leggere, inchiostro scelto da inkSu945 per il contrasto), il risultato su piastrella chiara #f4f1ea, il minuto
      in oro, i comandi su tasto V2. Stesso markup della barra 7.901 (data-cpm, specchio, filo): cambiano solo i colori. Tema unico dalla tappa 4. */
   const _fx3=(t)=>{const c=(t&&(t.col||t.c))||"#2563eb";return{c,ink:inkSu945(c)};};const _fH3=_fx3(homeTeamObj),_fA3=_fx3(awayTeamObj);
   const _strisciaV2=(f,lato)=>({background:f.c,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 10px, rgba(255,255,255,0) 10px 20px)",alignSelf:"stretch",margin:"8px 0",padding:"0 8px",borderRadius:RAD.sm});
-  const _aVal901=isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
+  const _aVal901=_so214?(isMatchHome?soState.as:soState.hs):isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
     <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column"}/* [giro 114 G184-01] il pre-partita riempie l'area utile */:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
@@ -11183,7 +11427,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                 {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
                 <div style={{padding:"2px 10px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
-                  {phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}
+                  {_so214?"RIGORI":phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}
                 </div>
                 <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
@@ -11261,11 +11505,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 arrivano; sotto il minuto compare per 3 s l'etichetta «cambio campo». Con prefers-reduced-motion lo
                 scorrimento sparisce (l'etichetta resta: e' informazione, non moto). Solo CSS, nessuno stato in piu'. */}
             <style>{"@keyframes cpmSwapCasa905{from{transform:translateX(-60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmSwapOsp905{from{transform:translateX(60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmCambio905{0%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}@keyframes cpmPress905{from{width:0%}to{width:100%}}@media (prefers-reduced-motion:reduce){[data-cpm=\"scudo-casa\"],[data-cpm=\"scudo-ospiti\"]{animation:none!important}}"}</style>
+            {/* [giro 203 · PO-460] sul telefono (puntatore touch, fino a 419 px) la striscia dello stemma si compatta: margine interno 8→4, spazio
+                6→4, stemma 26→22 px; sotto i 390 px lo stemma va SOPRA e il nome/sigla SOTTO, centrato (il nome ha tutta la larghezza della
+                striscia invece di dividerla con lo stemma: a 360 col touch la striscia e' larga ~47 px). Solo col touch: col mouse il centro e' largo
+                ~126 px a 375 e le sigle entrano gia' (misurato), quindi la barra del PC/finestra stretta resta com'era. Col puntatore touch il centro (tasti con area di tocco da 44 px) occupa ~211 px a 375 e le sigle
+                restavano tagliate di 4-5 px («FF» per FFT, «WO» contro lo stemma). Rosso __CPM_NO_G203. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_G203)&&<style>{'@media (max-width:419px) and (pointer:coarse){[data-cpm="barra"] [data-cpm="scudo-casa"],[data-cpm="barra"] [data-cpm="scudo-ospiti"]{padding:0 4px!important;gap:4px!important}[data-cpm="barra"] [data-cpm="scudo-casa"]>svg,[data-cpm="barra"] [data-cpm="scudo-ospiti"]>svg{width:22px;height:24.2px;flex:0 0 auto}}'
+              +'@media (max-width:389px) and (pointer:coarse){[data-cpm="barra"] [data-cpm="scudo-casa"],[data-cpm="barra"] [data-cpm="scudo-ospiti"]{flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:1px!important;padding:0 3px!important}[data-cpm="barra"] [data-cpm="scudo-casa"]>svg,[data-cpm="barra"] [data-cpm="scudo-ospiti"]>svg{width:19px;height:20.9px}[data-cpm="barra"] [data-cpm="barra-nome-182"]{align-self:stretch;text-align:center!important;line-height:1.15}}'}</style>}
             <div data-cpm="barra" data-v2={1} data-specchio={_swap893?1:0} style={{height:60,boxSizing:"border-box",display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"0 10px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:TINTE.bg,flex:"0 0 auto",gap:6}}>
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
-                <TeamBadge team={homeTeamObj} size={26}/>
-                <NomeSquadra182 as="div" cpm="barra-nome-182" team={homeTeamObj} fb="Squadra" testo={_no182nomi()?_nomeBarra108(homeTeamObj,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
+                <TeamBadge team={_barraH203} size={26}/>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" adatta team={_barraH203} fb="Squadra" testo={_no182nomi()?_nomeBarra108(_barraH203,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
               {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
@@ -11278,7 +11529,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",gap:3,marginTop:2}}>
                   {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                   {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
-                  <div data-cpm="minuto-v2" style={{fontSize:FS.small,fontWeight:800,color:TINTE.oro,letterSpacing:.3,fontVariantNumeric:"tabular-nums",fontFamily:FONT_TV,fontSize:FS.bodyLg}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
+                  <div data-cpm="minuto-v2" style={{fontSize:FS.small,fontWeight:800,color:TINTE.oro,letterSpacing:.3,fontVariantNumeric:"tabular-nums",fontFamily:FONT_TV,fontSize:FS.bodyLg}}>{_so214?"RIGORI":phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
@@ -11306,8 +11557,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
-                <TeamBadge team={awayTeamObj} size={26}/>
-                <NomeSquadra182 as="div" cpm="barra-nome-182" team={awayTeamObj} fb="Avversario" testo={_no182nomi()?_nomeBarra108(awayTeamObj,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
+                <TeamBadge team={_barraA203} size={26}/>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" adatta team={_barraA203} fb="Avversario" testo={_no182nomi()?_nomeBarra108(_barraA203,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
@@ -11445,9 +11696,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   915) e sotto restava una grande area NERA: il riquadro del 3D, sospeso, non disegnava piu' nulla ma
                   continuava a occupare il suo flex. Ora e' una sovrapposizione (inset 0, zIndex 1): il campo prende
                   ESATTAMENTE lo spazio che era del 3D, e cronaca, sottopancia e cartelli (zIndex 2+) restano sopra. */}
-              {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&(phase==="playing"||(modo2D196&&show3D))/* [giro 196] partita 2D: oltre il tetto d'attesa dei corpi anche le scene dell'eroe si giocano sul campo dall'alto */;
+              {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&((phase==="playing"&&!vis204)||(modo2D196&&show3D))/* [giro 204] durante la scena di sola visione del rigore il campo dall'alto cede il posto al 3D, che rifa' il calcio *//* [giro 196] partita 2D: oltre il tetto d'attesa dei corpi anche le scene dell'eroe si giocano sul campo dall'alto */;
                 try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
                 if(!_c2d)return null;
+                if(modo2D196&&(phase==="shootout"||phase==="ceremony")&&!(typeof window!=='undefined'&&window.__CPM_NO_G205))return(<Riserva2D205 fase={phase} soState={soState} soFx={soFx} ceremony={ceremony} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home} siglaCasa={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"").toString().slice(0,3).toUpperCase()} siglaOsp={((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"").toString().slice(0,3).toUpperCase()} squadra={(_heroClubObj&&(_heroClubObj.n||_heroClubObj.name))||""} stretto={isNarrow}/>);/* [giro 205] in 2D rigori e premiazione hanno la loro vista, non il campo congelato */
                 return(<div data-cpm="vista2d" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden"}}>
                   {/* [7.918.0 — LA MAGLIA GIUSTA AL PALLINO GIUSTO] Nel motore «casa» non e' la squadra di casa
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
@@ -11466,8 +11718,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={_tempo143}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
-                waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} heroCaptain={!!(player&&player.isCaptain)}/* [giro 192 PO-404] se l'eroe e' il capitano la coppa resta a lui */ shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
+                waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7} ingresso206={_ing206}
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} heroCaptain={!!(player&&player.isCaptain)}/* [giro 192 PO-404] se l'eroe e' il capitano la coppa resta a lui */ shootout={phase==="shootout"?{kick:soFx,serie:(soState&&!(typeof window!=="undefined"&&window.__CPM_NO_G208))?{h:(isMatchHome?soState.hs:soState.as),a:(isMatchHome?soState.as:soState.hs)}:null/* [giro 208 PO-468 — rosso __CPM_NO_G208] il punteggio della SERIE al maxischermo, orientato come scoreHome/scoreAway (H = la squadra dell'eroe) */}:(vis204&&phase==="playing"?{kick:vis204,visione:true}:null)} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
                   if(mw>=7||_isNeutralFinal){const _bmPool=_isNeutralFinal
@@ -11643,8 +11895,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>)}
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" data-pesante213=""/* [giro 213] 767 ms di lavoro sincrono misurati */ className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
+              {/* [giro 204 PO-450] la scena di sola visione del rigore gia' calciato dal motore: solo racconto, nessuna scelta */}
+              {vis204&&phase==="playing"&&(<div data-cpm="visione204" style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))"}}>
+                <div style={{fontSize:FS.caption,letterSpacing:3,color:"#fbbf24",fontWeight:800}}>⚽ CALCIO DI RIGORE · {vis204.min|0}'</div>
+                {!vis204Rev
+                  ?<div style={{fontSize:FS.small,color:"#fde68a",fontWeight:800,marginTop:7}}>{vis204.eroe?"⭐ ":""}{vis204.nome||"Un compagno"} sul dischetto…</div>
+                  :<div data-cpm="visione204-esito" style={{fontSize:FS.body,fontWeight:900,marginTop:7,color:vis204.scored?"#4ade80":"#f87171"}}>{vis204.scored?"GOOOL!":vis204.post?"PALO!":vis204.wide?"FUORI!":"PARATO!"}</div>}
+              </div>)}
               {/* [7.31.0 direttiva PO] OVERLAY CALCI DI RIGORE — tabellino broadcast ✓/✗ kick-by-kick, suspense
                   sul kicker, banner finale (passi il turno / eliminati). Il 3D sotto anima i rigori veri. */}
               {phase==="shootout"&&soState&&(()=>{
@@ -11659,7 +11918,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 const _finTxt=soState.won?((context==="cup"&&(player.cup?.round||0)>=4)||((context==="euro_ko"&&player.euro?.phase==="final"))||((context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final"))||((context==="nationsCup"&&!!player.nationsCupQueue?.isFinal))?"🏆 DAL DISCHETTO ALLA GLORIA!":"✅ PASSI IL TURNO!"):"❌ ELIMINATI AI RIGORI";
                 return(<React.Fragment>
                 {st191!=null&&!soState.done&&<div data-cpm="stacco191" style={{position:"absolute",inset:0,zIndex:23,pointerEvents:"none",background:(typeof window!=="undefined"&&window.__CPM_NERO191)?"#050a16":"rgba(5,10,22,0.97)"}}/>}{/* [giro 191 B] il nero dello stacco: sopra resta il tabellino */}
-                <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))"}}>
+                <div data-cpm="tabellone214" style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:(typeof window!=="undefined"&&window.__CPM_NO_G214)?"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))":TINTE.bg,...((typeof window!=="undefined"&&window.__CPM_NO_G214)?{}:{borderBottom:"1px solid "+TINTE.bordo})}}>{/* [giro 214 PO-477 — rosso __CPM_NO_G214] decisione PO 15/11: il tabellone della lotteria e' OPACO — prima era una sfumatura trasparente e dietro il punteggio si leggeva la scritta «RIGORI» del maxischermo 3D (misurato sonda-214: 1.253-96.301 pixel del rettangolo cambiavano col 3D) */}
                   <div style={{fontSize:FS.caption,letterSpacing:3,color:"#fbbf24",fontWeight:800}}>⚽ CALCI DI RIGORE</div>
                   <div className="cpm-num" style={{fontSize:isNarrow?24:30,fontWeight:900,color:"#fff",marginTop:2,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{soState.hs} — {soState.as}</div>
                   <div style={{display:"flex",justifyContent:"center",gap:14,marginTop:6}}>
@@ -11694,6 +11953,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {_isHero&&<div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,color:"rgba(255,255,255,0.85)",marginTop:4,textShadow:"0 2px 8px rgba(0,0,0,0.8)"}}>🏟️ La serata di presentazione — la tua gente ti chiama</div>}
                   </div>
                 </div>);})()}
+              {phase==="walkout"&&inno206&&(
+                <div data-cpm="inno206" style={{position:"absolute",left:0,right:0,top:"11%",zIndex:14,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 10px",animation:"logoIn 0.6s ease-out"}}>
+                  <div style={{padding:"6px 16px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(24,35,56,0.62),rgba(24,35,56,0.5))",border:`1px solid ${_compCol}66`,color:TINTE.testo,fontFamily:FONT_TV,fontWeight:800,fontSize:FS.bodyLg,letterSpacing:2,textTransform:"uppercase",textShadow:"0 1px 3px rgba(0,0,0,0.6)"}}>🎵 {inno206==="nazionale"?"Inni nazionali":"Inno della competizione"}</div>
+                </div>)}
               {phase==="walkout"&&(
                 <div data-cpm="tv225" style={{position:"absolute",left:0,right:0,bottom:"6%",zIndex:14,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 10px",animation:(typeof window!=="undefined"&&window.__CPM_NO_TV225)?"logoIn 0.6s ease-out":"logoIn 0.6s ease-out, tvOut225 0.9s ease-in 4s forwards"}}>{/* [7.999.158 PO-225, foto PO 11/10 «dopo qualche secondo fai sparire con una transizione il tabellone»] la grafica TV pre-partita copriva l'ingresso in campo (10,5 s): resta 4 s e poi esce in dissolvenza. Rosso __CPM_NO_TV225 */}
                   <div style={{width:"100%",maxWidth:440,background:(typeof window!=="undefined"&&window.__CPM_NO_PRE188)?"linear-gradient(180deg,rgba(24,35,56,0.74),rgba(24,35,56,0.62))":"linear-gradient(180deg,rgba(24,35,56,0.45),rgba(24,35,56,0.34))"/* [7.999.111 PO-188, collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro» — seconda volta dopo la 7.937] vetro piu chiaro (0,45/0,34) e ombra sotto il testo bianco per la leggibilita sul prato. Rosso __CPM_NO_PRE188 *//* [7.937 collaudo PO: «il background delle statistiche PRE PARTITA e troppo scuro, deve essere semi trasparente»] Era rgba(8,12,24) — praticamente nero — a 0,92 di opacita: lo stadio dietro non si vedeva affatto, e la scheda sembrava incollata sopra a una fotografia invece che sospesa dentro la scena. Ora e lo STESSO vetro del pannello delle statistiche in partita (rgba(24,35,56) a 0,74), che il PO ha gia approvato alla 7.922: due schermate che mostrano la stessa cosa non possono avere due vetri diversi. Il velo sale da 6 a 10 px perche il testo resti leggibile sulle tribune chiare. */,border:"1px solid rgba(148,163,184,0.22)",borderRadius:RAD.md,overflow:"hidden",boxShadow:(typeof window!=="undefined"&&window.__CPM_NO_PRE188)?"0 12px 40px rgba(0,0,0,0.45)":"0 8px 28px rgba(0,0,0,0.28)",backdropFilter:(typeof window!=="undefined"&&window.__CPM_NO_PRE188)?"blur(10px)":"blur(6px)",textShadow:(typeof window!=="undefined"&&window.__CPM_NO_PRE188)?undefined:"0 1px 3px rgba(0,0,0,0.75)"}}>
@@ -11889,7 +12152,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.532.0 NO540 · 7.536.0] IL RIQUADRO PANCHINA vive ora nella colonna delle voci qui sopra:
                   restare qui, fuori dal flusso, era la causa dell'accavallamento segnalato dal PO. */}
               {/* [7.9.3] Kickoff hold — attesa elegante finché il CH38 non è agganciato (mai burattini in campo) */}
-              {kickoffHold&&!paused&&phase==="playing"&&glbFail&&(
+              {kickoffHold&&!paused&&phase==="playing"&&glbFail&&!(_g196On()&&!_ris2D209())&&(/* [giro 209] col nuovo avviso questo resta solo per il rosso e per il 3D spento dal banco */
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.94)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:41,padding:"0 26px",textAlign:"center"}}>
                   <div style={{fontSize:38,marginBottom:10}}>⚠️</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Modelli 3D non caricati</div>
@@ -11911,6 +12174,29 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{marginTop:8,fontSize:FS.caption,color:"rgba(255,255,255,0.6)",fontVariantNumeric:"tabular-nums"}}>{Math.round((att196.pct||0)*100)}%</div>
                 </div>)}
+              {(()=>{/* [giro 209 PO-470] AVVISO «la partita in 3D non si carica»: tetto superato, caricamento fallito o CH38 fermo. Opaco
+                  (dietro non si vede nessun corpo), tasti grandi, area sicura del telefono rispettata. */
+                const _ch209=kickoffHold&&phase==="playing"&&glbFail&&_g196On()&&!_ris2D209();
+                if(!avviso209&&!_ch209)return null;
+                const _fall=avviso209?avviso209.motivo==="fallito":glbFail==="error";
+                const _b209={width:"100%",minHeight:60,borderRadius:RAD.md,fontFamily:"inherit",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"10px 16px"};
+                return(<div data-cpm="avviso3d209" data-motivo={_fall?"fallito":"lento"} role="alertdialog" aria-modal="true" aria-labelledby="avviso3d209-tit" style={{position:"absolute",inset:0,background:"#050814",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:45,textAlign:"center",overflowY:"auto",
+                    paddingTop:"calc(16px + env(safe-area-inset-top,0px))",paddingBottom:"calc(16px + env(safe-area-inset-bottom,0px))",paddingLeft:"calc(20px + env(safe-area-inset-left,0px))",paddingRight:"calc(20px + env(safe-area-inset-right,0px))"}}>
+                  <div aria-hidden="true" style={{fontSize:44,marginBottom:8}}>📶</div>
+                  <div id="avviso3d209-tit" style={{fontSize:FS.title,fontWeight:FW.black,color:"#f59e0b",lineHeight:1.2,marginBottom:10,maxWidth:340}}>La partita in 3D non si carica</div>
+                  <div data-cpm="avviso3d209-testo" style={{fontSize:FS.bodyLg,color:"rgba(255,255,255,0.88)",lineHeight:1.5,maxWidth:340,marginBottom:6}}>{_fall?"Non riusciamo a scaricare i giocatori. Forse internet non c'è.":"Internet va troppo piano: i giocatori non sono arrivati in tempo."}</div>
+                  <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.72)",lineHeight:1.5,maxWidth:340,marginBottom:18}}>Puoi riprovare, oppure simulare la partita e vedere subito il risultato.</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:12,width:"min(340px,100%)"}}>
+                    <button type="button" data-cpm="avviso3d209-riprova" className="cpm-press" onClick={()=>{if(avviso209)_riprova209();else{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;window.__CPM_RIPROVA209=(window.__CPM_RIPROVA209|0)+1;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}}
+                      style={{..._b209,border:"none",background:"#f59e0b",color:"#1a1206"}}>
+                      <span style={{fontSize:FS.subhead,fontWeight:FW.black}}>↻ Riprova</span>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.semibold,opacity:0.85}}>Carica di nuovo la partita in 3D</span></button>
+                    <button type="button" data-cpm="avviso3d209-simula" className="cpm-press" onClick={_simula209}
+                      style={{..._b209,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(255,255,255,0.08)",color:"#fff"}}>
+                      <span style={{fontSize:FS.subhead,fontWeight:FW.black}}>Simula</span>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.semibold,opacity:0.8}}>La partita si gioca da sola: vedi subito il risultato</span></button>
+                  </div>
+                </div>);})()}
               {phase==="walkout"&&walkHold74&&(
                 <div data-cpm="walkhold74" style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>{/* [7.999.59] velo sull'attesa del 3D: la compilazione non si vede piu' come scatti dell'ingresso */}
                   <div style={{fontSize:34,marginBottom:8,filter:"drop-shadow(0 0 14px rgba(245,158,11,0.7))"}}>🏟️</div>
@@ -11921,7 +12207,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {phase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_ING277)&&(/* [giro 54 PO-277 «l'ingresso deve essere saltabile» — rosso __CPM_NO_ING277] stesso stile di «Salta premiazione»; sopra il velo d'attesa (zIndex 41): saltando, il caricamento dei corpi prosegue e l'eventuale residuo lo copre l'attesa del fischio */
-                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" data-cpm="salta-ingresso-v2" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.md,border:"1px solid rgba(255,255,255,0.06)",background:"rgba(13,15,20,0.92)",color:TINTE.testo,fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
+                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso-v2" data-pesante213=""/* [giro 213] 1373 ms di lavoro sincrono misurati; un solo data-cpm: col doppio attributo valeva gia' il secondo (Babel tiene l'ultimo) e ingresso-277 cercava il primo */ style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.md,border:"1px solid rgba(255,255,255,0.06)",background:"rgba(13,15,20,0.92)",color:TINTE.testo,fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
@@ -12113,7 +12399,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}
 
               {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
-              {isNarrow&&phase==="hl_move"&&curSit&&(
+              {isNarrow&&(phase==="hl_move"||_padVis210)&&curSit&&(/* [giro 210 PO-471] la scheda del movimento resta anche in hl_choose finche' ci sono mosse */
                 /* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»): «a cosa serve il doppio cursore?» e
                    «mentre mi muovo parte a volte l'azione da sola»] L'OVERLAY DEL PASSO DI MOVIMENTO, nello stesso vestito
                    della scheda delle scelte: titolo su una riga, riga di aiuto («Frecce: sposta l'eroe (N mosse) · scegli
@@ -12130,7 +12416,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:RAD.pill}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
-                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
+                    <button onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
                 ):_hl94?(
@@ -12143,15 +12429,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       l'etichetta sopra (il suo senso lo dice la riga di aiuto, che ne prende il colore), le mosse
                       rimaste DENTRO il D-pad al posto dei pallini, aiuto e «Scegli» impilati accanto al pad. */}
                   <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
-                    <div style={{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                    {ZONES[zone]?.label&&<span style={{flexShrink:0,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
+                    <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
+                    {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=defDist>60?9000:defDist>35?6000:4000;return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                   :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
                     <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:10}}>
                       <div data-cpm="aiuto" style={{fontSize:FS.small,lineHeight:1.35,fontWeight:600,color:"#cbd5e1"}}>{movesLeft>0?<>Sposta l'eroe con le frecce, poi scegli la giocata. </>:<>Scegli la giocata. </>}<span style={{fontWeight:800,color:pressureBar>0.4?"#fbbf24":pressureBar>0.2?"#fb923c":"#f87171"}}>Il marcatore sta arrivando.</span></div>
-                      <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
                     </div>
                   </div>
                 </div>
@@ -12175,12 +12462,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
               )}
-              {isNarrow&&phase==="hl_choose"&&curSit&&(
+              {isNarrow&&phase==="hl_choose"&&!_padVis210&&curSit&&(
                 /* [7.901.0 — C3: L'INTERAZIONE DELL'EROE E' UNA SCHEDA CHE SALE DAL BASSO, MAX 44% DELLO
                    SCHERMO, CAMPO LIBERO SOPRA. Decisione del PO sulla tavola approvata (Interazione.dc.html):
                    titolo, sottotitolo, tre scelte a righe ≥52 px con icona e attributo («PASSAGGIO · 71»),
@@ -12236,7 +12523,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
-                  <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
+                  <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:_g197?"max(44vh, 400px)":"44vh",/* [giro 197] sui telefoni bassi il 44vh (282 px a 640) non conteneva titolo + tre scelte: la scheda prende altezza alla scena fino a 400 px; da 909 px di altezza in su resta il 44vh di prima */boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
                     {/* [PO-302 tappa 3 · V2Highlight] l'occhiello «La tua giocata» in oro prende il posto della maniglia (stessa riga, +4 px) */}
                     <div data-cpm="occhiello-hl-v2" style={{fontSize:FS.caption,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:TINTE.oro,lineHeight:1.2,flexShrink:0}}>La tua giocata</div>
                     {/* [7.902.0 — C3 v2, nota PO 15/09: «la scheda non regge le situazioni con molte opzioni» — misurato: 7 opzioni schiacciate a 34 px] header e riga di stato SEMPRE alla loro dimensione (flexShrink:0): a schiacciarsi, se qualcosa deve, e' la lista sotto, mai queste due righe. */}
@@ -12265,12 +12552,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                            :<FraseIntera190 testo={_sub901} righe={2} style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec}}/>)}{/* [giro 190 PO-380a G181-01] il consiglio non si taglia coi puntini: frasi intere, al massimo due righe */}
                       </div>
                     </div>
-                    {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
+                    {!curSit.lockMovement&&!_g197&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
                     {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
-                      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>
+                      {_g197?<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec,lineHeight:1.3}}>Pressione<span data-cpm="aiuto" style={{fontWeight:600}}> · scegli prima che il marcatore arrivi</span></div>/* [giro 197] la riga di aiuto sale nella riga della barra: 22 px in piu' alle scelte, il tempo limite resta com'e' */
+                       :<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>}
                       <div data-cpm="tempo-hl-v2" style={{position:"relative",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TINTE.oro}}>
-                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
+                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)))+"ms",animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
                     {/* [7.902.0] LA LISTA SCORRE, LE RIGHE NO: `flex:"1 1 auto"` + `minHeight:0` sono quello che permette
@@ -12282,10 +12570,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.08)",background:TINTE.sup,color:TINTE.testo,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left",borderRadius:RAD.md}} data-cpm="scelta-v2">
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",...(_g197?{flex:"0 0 auto",minHeight:56}:{flex:"0 0 52px",height:52}),boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.08)",background:TINTE.sup,color:TINTE.testo,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left",borderRadius:RAD.md}} data-cpm="scelta-v2">
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
-                            <div style={{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
+                            <div style={_g197?{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere"}:{fontSize:FS.bodyLg,fontWeight:700,color:TINTE.testo,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>{/* [giro 197] riga alta almeno 56 px che cresce col testo: c'e' posto per le scelte piu' lunghe di PO-389 senza puntini */}
                             <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.sec,letterSpacing:".06em",fontFamily:FONT_TV,textTransform:"uppercase",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.attr}</div>
                           </div>
                         </button>
@@ -12384,6 +12672,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>}
                     <div style={{flex:1}}>
                       <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292)?" · WASD":""}</div>
+                      {!_no210&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
                       {curSit.maxMoves>0&&<div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -12420,6 +12709,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
+                        {!_no210&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
                         <div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
                       </div>
                     </div>
@@ -12602,12 +12892,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          risultato via handleEnd. Prima la card poteva traboccare oltre il viewport (wrapper overflow:hidden) →
          bottone irraggiungibile → l'utente usciva dal tasto Home in alto perdendo la partita. */}
       {phase==="ended"&&(
-        <div style={{display:"flex",flexDirection:"column",height:"100%",minHeight:0,width:"100%"}}>
-        <div style={{flex:1,minHeight:0,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:isNarrow?"0":"0 0 4px"}}>
+        <div data-cpm="rassegna200" style={{display:"flex",flexDirection:"column",height:"100%",minHeight:0,width:"100%"}}>
+        <div ref={scroll200Ref} style={{flex:1,minHeight:0,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:isNarrow?"0":"0 0 4px"}}>
         <Card style={{textAlign:"center",padding:"22px"}}>
           {/* [7.95.0 collaudo PO «schermata post-partita ridondante + il "giornale" non sembra un giornale: comprimile
               in un'unica schermata giornale»] la 2ª schermata post-partita (rassegna stampa) è RIMOSSA (onMatchEnd →
               dashboard): il riepilogo ended È ora il GIORNALE — testata serif + data + TITOLONE derivato dal risultato. */}
+          <div data-scheda200="3" style={_v200(2)}>
           {(()=>{const _pw=(player.name||"L'eroe").trim().split(/\s+/).filter(w=>!/^(jr|sr|ii|iii|iv)\.?$/i.test(w));const _hn=(_pw[_pw.length-1]||player.name||"L'EROE").toUpperCase();const _g=mStats.goals,_a=mStats.assists;
             /* [7.293.0 #120] su un turno KO deciso dal dischetto il titolo racconta il TURNO, non il punteggio */
             const _hl=_drawShootout?(_shootoutWon?`DAL DISCHETTO ALLA GLORIA: ${_hn} E COMPAGNI PASSANO`:`FUORI AI RIGORI: ${_hn} E COMPAGNI ELIMINATI`)
@@ -12621,15 +12912,27 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:FW.black,lineHeight:1.14,color:TH.text,letterSpacing:0,textTransform:"uppercase"}}>{_hl}</div>
             </div>);})()}
-          {ceremony&&!ceremony.light&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2Festa] fondo notte con la cornice in oro, titolo in carattere TV */}
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
+          {ceremony&&!ceremony.light&&_g202()&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 10px",padding:"8px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden",display:"flex",alignItems:"center",gap:12,textAlign:"left"}}>{/* [giro 202] la festa in una banda sola: trofeo accanto al titolo, stesse tre righe */}
+            <div style={{fontSize:34,lineHeight:1,flexShrink:0,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
+            <div style={{minWidth:0}}>
+              <div style={{fontSize:FS.h,color:TINTE.testo,letterSpacing:1,textShadow:"0 2px 8px rgba(0,0,0,0.4)",fontFamily:FONT_TV,fontWeight:800,lineHeight:1}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
+              <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.oro,marginTop:3,letterSpacing:"0.16em",textTransform:"uppercase"}}>{ceremony.name}</div>
+              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
+            </div>
+          </div>)}
+          {ceremony&&!ceremony.light&&!_g202()&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2Festa] fondo notte con la cornice in oro, titolo in carattere TV */}
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{fontSize:FS.display,fontWeight:900,color:TINTE.testo,letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)",fontFamily:FONT_TV,fontWeight:800,lineHeight:1}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.oro,marginTop:3,letterSpacing:"0.16em",textTransform:"uppercase"}}>{ceremony.name}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>{/* [7.686.0 collaudo PO con screenshot: sotto «Coppa delle Nazioni» c'era scritto «FC Merseyside»] CHI ALZA IL TROFEO. Il sottotitolo della premiazione mostrava SEMPRE il club, anche quando il trofeo e' della NAZIONALE: in una Coppa delle Nazioni vinta con la Spagna leggere il nome del club inglese e' una cosa che non sta ne' in cielo ne' in terra. Nei contesti di nazionale si scrive la NAZIONE. */}{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
           </div>)}
+          </div>
           {/* [6.88.0 collaudo PO «post-partita più moderno, in linea con prematch/rassegna»] HERO BROADCAST:
               banda scura con hairline nel colore della competizione, squadre con spina-colore, esito chiaro +
               CELEBRAZIONE scalata sull'importanza (coriandoli sui big win, curva citata; il titolo ha la sua cerimonia). */}
+          <div data-scheda200="1" style={_v200(0)}>
           {(()=>{
             const _hWon=winning||(_drawShootout&&_shootoutWon);
             const _hDrew=!winning&&!losing;
@@ -12638,36 +12941,42 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _c286h=(typeof window!=='undefined'&&window.__CPM_NO_COL286)?{}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},"#101a33");
             try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},testata:_c286h});}}catch(_e){}
             return(
-            <div data-cpm="post-v2" style={{margin:"0 -22px 16px",paddingBottom:14,background:TINTE.bg,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 18px, rgba(255,255,255,0) 18px 36px)",position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2PostPartita] fondo notte a righe diagonali, risultato grande in carattere TV, nomi in maiuscolo */}{/* [7.95.0] no top-margin: segue il masthead del giornale */}
+            <div data-cpm="post-v2" style={{margin:_g202()?"0 -22px 10px":"0 -22px 16px",paddingBottom:_g202()?10:14,/* [giro 202] testata del risultato piu' bassa: stesse righe, margini e cifre piu' piccoli */background:TINTE.bg,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 18px, rgba(255,255,255,0) 18px 36px)",position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2PostPartita] fondo notte a righe diagonali, risultato grande in carattere TV, nomi in maiuscolo */}{/* [7.95.0] no top-margin: segue il masthead del giornale */}
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
-              <div style={{padding:"12px 14px 0"}}>
+              <div style={{padding:_g202()?"8px 14px 0":"12px 14px 0"}}>
+                <div style={_g202()?{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"baseline",columnGap:12}:{display:"contents"}}>{/* [giro 202] competizione e «fischio finale» sulla stessa riga quando ci stanno (restano due righe di testo) */}
                 <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_no108("28")?_compCol:legCol944(_compCol,"#16171c")/* [giro 108 G180-28] il colore della lega come testo scendeva a 3,81:1 (Premier Division #e11d48): reso leggibile sul fondo del giornale. Rosso __CPM_NO_G108_28 */}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
-                <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:5,fontWeight:700}}>FISCHIO FINALE</div>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
+                <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:_g202()?0:5,fontWeight:700}}>FISCHIO FINALE</div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:_g202()?6:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
                     {/* [giro 115 G184-23] i nomi delle squadre vanno su due righe invece di troncarsi («SELEZIONE GRANA…» a 360). Rosso __CPM_NO_G115_23 */}<div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
                     <div data-cpm="barra286-sx" style={{height:3,borderRadius:RAD.pill,background:_c286h.sx||scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
-                  <div className="cpm-num" data-cpm="post-risultato-v2" style={{fontSize:FS.hero,fontWeight:800,lineHeight:1,color:TINTE.testo,flexShrink:0,fontFamily:FONT_TV}}>{isMatchHome?score.home:score.away}<span style={{color:TINTE.sec,fontSize:FS.display,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
+                  <div className="cpm-num" data-cpm="post-risultato-v2" style={{fontSize:_g202()?FS.displayLg:FS.hero,fontWeight:800,lineHeight:1,color:TINTE.testo,flexShrink:0,fontFamily:FONT_TV}}>{isMatchHome?score.home:score.away}<span style={{color:TINTE.sec,fontSize:FS.display,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
                     <div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
                     <div data-cpm="barra286-dx" style={{height:3,borderRadius:RAD.pill,background:_c286h.dx||scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
-                <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
+                <div style={{display:"inline-block",marginTop:_g202()?4:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
                 {(subbedOff||benchStart)&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{/* [7.38.0 Sezione 8] minuti giocati quando non è un 90' pieno */}
                   ⏱ {benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
                 </div>}
-                {_celebTier>=1&&<div style={{marginTop:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
+                {_celebTier>=1&&<div style={{marginTop:_g202()?4:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
               </div>
             </div>);
           })()}
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
           {_drawShootout&&(<div style={{margin:"0 0 16px",padding:"10px 14px",borderRadius:RAD.md,background:_shootoutWon?"rgba(22,163,74,0.12)":"rgba(220,38,38,0.10)",border:`1.5px solid ${_shootoutWon?TH.success:TH.danger}`,textAlign:"center"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>🎲 Si decide ai rigori</div>
             <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
+          </div>
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
+          <div data-scheda200="2" style={_v200(1)}>
           {(()=>{/* [PO-259] la riga della scelta: cosa hai deciso e cosa e' successo (dal racconto nato dai fatti del motore). Rosso __CPM_NO_SCHEDE259 */
             if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L0=((narrRef669.current||{}).r259list)||[];if(!_L0.length)return null;
             /* [PO-280 — rosso __CPM_NO_ESITO280] l'esito del riepilogo si ricalcola sui fatti dal minuto della scelta al fischio (INT259.finaleEsito): la riga
@@ -12684,6 +12993,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
                 <span style={{color:TH.muted}}>{" \u2192 "+(r.breve||"non c'è stato il tempo di vederne l'effetto")}</span></div>))}
             </div>);})()}
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           <Sez210 id="post-tabellino" titolo="Il tuo tabellino">
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},(()=>{/* [7.999.17 collaudo PO: «17 tiri» nel TUO tabellino contro «6/13 tiri in porta» poco sotto] quel 17 erano i tiri della SQUADRA (mxStats). Qui ora i tiri dell'EROE dalla pagella del motore, la stessa fonte del riquadro «in numeri». Rosso __CPM_NO_TIRI17 */let _q17=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRI17))_q17=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe)||null;}catch(_e){}return _q17?{l:"Tiri",v:_q17.tiri|0,e:"💥",c:TH.accent}:{l:"Tiri squadra",v:mxStats.shots,e:"💥",c:TH.accent};})(),{l:"Poss.",v:((()=>{/* [7.999.136 PO-209 collaudo PO «alcune statistiche sembrano al contrario»: possesso 37% qui e 49% nel tabellino sotto] qui si leggeva lo stato della cronaca (possession), che va per conto suo; il tabellino della gara lo prende dal motore. Ora la stessa fonte. Rosso __CPM_NO_POSS209 */
@@ -12695,6 +13006,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ))}
           </div>
           </Sez210>
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           {(()=>{/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] le connessioni della gara */
             const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
             if(!_gv.length&&!_rc.length)return null;
@@ -12708,6 +13021,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {_row("⚽","Gol su assist di",_rc,TH.warning)}
             </Sez210>);
           })()}
+          </div>
+          <div data-scheda200="4" style={_v200(3)}>
+          {_g200()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
+              (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
+            const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
+            const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            const _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
+            const _a0=Math.max(0,Math.min(_io-1,_st.length-3));const _idx=_io<0?[]:[_a0,_a0+1,_a0+2].filter(i=>i<_st.length);
+            const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;
+            const _wk=player.week||1;const _nx=[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+            const _tipo={cup:"Coppa",euro:"Coppa europea",nations:"Nazionale",national:"Nazionale",friendly:"Amichevole"};
+            return(<div data-cpm="classifica200">
+              <Sez210 id="post-classifica200" titolo={_io>=0?"Classifica e prossima partita":"Prossima partita"}>
+                {_io>=0&&<><div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
+                {_idx.map((i,k)=>{const r=_st[i];const io=i===_io;return(<div key={i} data-cpm={io?"classifica200-io":undefined} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 6px",borderTop:k?`1px solid ${TH.divider}`:"none",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text}}>
+                  <span className="cpm-num" style={{minWidth:24,color:TH.muted}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.n||r.name||r.id}</span>
+                  <span className="cpm-num">{(r.pts|0)+" pt"}</span></div>);})}</>}
+                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45,marginTop:_io>=0?SP.sm:0,paddingTop:_io>=0?SP.sm:0,borderTop:_io>=0?`1px solid ${TH.divider}`:"none"}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):"Nessuna partita in calendario dopo questa."}</div>
+              </Sez210>
+            </div>);})()}
+          </div>
           {/* [7.914.0 — IL TABELLINO DELLA GARA, richiesta del PO: «ci deve essere il tabellino delle statistiche
               completo altrimenti non riesco a capirne l'andamento»] Le quattro voci qui sotto sono le TUE
               (falli subiti, angoli guadagnati, tiri avversari): raccontano la tua partita, non la gara. Questo
@@ -12715,6 +13050,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               passano tutti gli eventi — non dalla cronaca e non dalle tue azioni, che erano due sorgenti
               diverse. Si mostrano solo le voci che il motore produce davvero: una riga vuota e' peggio di una
               riga assente. */}
+          <div data-scheda200={_g202()?"1":"4"} data-cpm="tabellino202" style={_v200(_g202()?0:3)}>
           {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
             if(!_T||!_T.home||!_T.away)return null;
             const _ord=ordineTabellino280(_T,isMatchHome);const _mine=_ord.sx,_loro=_ord.dx;/* [PO-280 bis] _mine/_loro qui = colonna sinistra/destra */
@@ -12742,13 +13078,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},tabellino:_c286,sfondo:TH.card});}}catch(_e){}
             return(<Sez210 id="post-gara" titolo="Tabellino della gara">
               <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
-                <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
+                <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_g202()?4:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
                   <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.sx}}>{_nSx}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
                   <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
-                {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
-                  return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
+                {_g202()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:4}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
+                  {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} data-cpm="tab202-voce" style={{flex:"1 0 auto",minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:5,fontVariantNumeric:"tabular-nums",lineHeight:1.15,whiteSpace:"nowrap"}}>
+                      <span className="cpm-num" style={{fontSize:FS.small,fontWeight:800,color:a>=b?TH.text:TH.muted}}>{r[1]}</span>
+                      <span style={{fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
+                      <span className="cpm-num" style={{fontSize:FS.small,fontWeight:800,color:b>=a?TH.text:TH.muted}}>{r[2]}</span>
+                    </div>
+                    <div style={{display:"flex",height:2,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:1}}>
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
+                    </div>
+                  </div>);})}</div>)}
+                {!_g202()&&_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:(_g200()?3:7)}}>{/* [giro 200] nelle schede le righe stanno piu' strette (stessa lista, stesse barre) */}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:FS.small,fontVariantNumeric:"tabular-nums"}}>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:a>=b?TH.text:TH.muted,minWidth:34,textAlign:"left"}}>{r[1]}</span>
                       <span style={{flex:"1 1 0",textAlign:"center",fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
@@ -12762,6 +13111,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </Sez210>);
           })()}
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           <Sez210 id="post-numeri" titolo="Il tuo tabellino in numeri">
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
             {/* [23/09 POC — collaudo PO «queste statistiche sono coerenti? vengono da brain?»] NO, venivano da contatori a parte
@@ -12777,39 +13128,43 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ))}
           </div>
           </Sez210>
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
           {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);let rating=Math.round(raw*10)/10;
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
-            try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
+            try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:_g202()?4:14}}>
             {/* [7.86.0 collaudo PO «standardizza UX/UI»] PAGELLA: voto + meter (voto/10) in un pannello del kit */}
-            <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>
-            <div style={{display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>
-              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
+            {!_g202()&&<div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>}
+            <div style={{display:"flex",alignItems:"center",gap:14,padding:_g202()?"8px 12px":"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>{/* [giro 202] pagella piu' bassa */}
+              <div className="cpm-num" style={{fontSize:_g202()?36:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
+                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:_g202()?4:6,..._g202()?{display:"flex",alignItems:"baseline",gap:8}:{}}}>{_g202()&&<span style={{color:TH.muted,letterSpacing:1}}>PAGELLA</span>}{/* [giro 202] l'etichetta entra nel riquadro */}<span>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</span></div>
                 <div style={{height:6,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${Math.round(rating*10)}%`,background:rc,borderRadius:RAD.pill,transition:"width .5s"}}/></div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.faint,marginTop:3}}><span>4.0</span><span>10.0</span></div>
               </div>
             </div>
             {/* Sprint 113 — Coach post-match evaluation */}
             {/* [23/09 POC — collaudo PO «migliora la grafica e metti le figurine dove necessario»] mister, protagonista e migliore in campo con la loro figurina; etichette tutte nello stile di sezione del kit */}
-            {context!=="trial"&&<div style={{marginTop:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
+            {context!=="trial"&&<div style={{marginTop:_g202()?8:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
               <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={(misterInPartita(player,context)||{}).name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{(misterInPartita(player,context)||{}).name||"Il mister"} · dopo la partita</div>
-                <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65,{elim:!!(losing&&(context==="cup"||context==="euro_ko"||context==="euroMondiale_ko")),nat:/^(national|nazionale|nationsCup|euroMondiale)/.test(String(context||''))})}</div>
+                <div style={{fontSize:FS.small,color:TH.text,lineHeight:_g202()?1.4:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65,{elim:!!(losing&&(context==="cup"||context==="euro_ko"||context==="euroMondiale_ko")),nat:/^(national|nazionale|nationsCup|euroMondiale)/.test(String(context||''))})}</div>
               </div>
             </div>}
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
-              <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
+              <div data-cpm="momenti202" style={_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
+                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:_g202()?"baseline":"center",..._g202()?{lineHeight:1.25,gap:4,breakInside:"avoid",marginBottom:3}:{},fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>
                 </div>)}
               </div>
             </div>}
           </div>);})()}
+          </div>
+          <div data-scheda200="3" style={_v200(2)}>
           {/* [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco: considerazioni reali del giornalista/mister/tifosi, eventi per importanza/prestigio, pagelle, commenti dell'eroe»] RASSEGNA STAMPA integrata nel riepilogo ended — tutto DERIVATO da generateLocalPressAnalysis (headline multi-testata, analisi tattica, MVP/flop, voci mister+eroe, curva) + occhiello per importanza/prestigio della gara. Solo carriera (i provini restano sobri). */}
           {context!=="trial"&&(()=>{
             const _rbP=Math.min(mStats.rb,30);let _ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
@@ -12872,13 +13227,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}
             </div>);
           })()}
+          </div>
         </Card>
         </div>
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
-        <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
+        <div data-cpm="piede202" style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",...(_g202()?{paddingBottom:isNarrow?"calc(10px + env(safe-area-inset-bottom,0px))":"calc(4px + env(safe-area-inset-bottom,0px))"}:{}),background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
+          {(_g200()&&sk200<3)?(<div data-cpm="nav200" style={{display:"flex",gap:SP.sm,alignItems:"center"}}>
+            <Btn onClick={handleEnd} v="ghost" data-cpm="salta200" style={{flex:"0 0 auto",minHeight:54,padding:"14px 14px",fontSize:FS.body,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Salta</Btn>
+            {_nav200()}
+            <Btn onClick={()=>setSk200(k=>Math.min(3,k+1))} v="primary" data-cpm="avanti200" style={{flex:"1 1 0",minWidth:0,padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Avanti ›</Btn>
+          </div>):(<div style={_g200()?{display:"flex",gap:SP.sm,alignItems:"center"}:undefined}>{_g200()&&_nav200()}
           <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}} data-cpm="post-continua-v2">
             {context==="trial"?"📋 Risultati provino":(_no190("A")?"🏟️ Torna alla dashboard":"🏟️ Torna alla Home")} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
-          </Btn>
+          </Btn></div>)}
         </div>
         </div>
       )}

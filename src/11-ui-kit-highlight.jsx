@@ -165,8 +165,12 @@ function FiguraV2({player,w=54,grande=false}){
   const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
   const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
   const naz=_abbr3V2(p.nation,"");
+  /* [giro 199 · PO-409, foto PO «box rosso con figurina piu' piccolo, c'e' tanto spazio vuoto»] la figurina grande non ha piu'
+     l'altezza fissa w*1,4: e' alta quanto il suo contenuto (riga OVR+volto, poi subito la fascia del nome), quindi niente fascia rossa
+     vuota fra volto e nome. Rosso __CPM_NO_G199 = altezza fissa e fascia spinta in fondo (marginTop auto). */
+  const _c199=!(typeof window!=='undefined'&&window.__CPM_NO_G199);
   return(
-    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+    <div data-cpm="figurina-v2-grande" data-g199={_c199?"compatta":"vecchia"} style={{width:w,height:_c199?"auto":h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
       <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
@@ -176,7 +180,7 @@ function FiguraV2({player,w=54,grande=false}){
           </div>
           <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
         </div>
-        <div style={{marginTop:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{marginTop:_c199?SP.md:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
           <span style={{...fsTV(fsC,FW.black),letterSpacing:"0.06em",textAlign:"center",whiteSpace:"nowrap"}}>{cogn}</span>
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",rowGap:4,columnGap:6}}>
             {att.map(([k,a])=>(<span key={a} className="cpm-num" style={{display:"flex",justifyContent:"center",gap:5,...fsTV(FS.bodyLg,FW.bold)}}><span style={{fontWeight:FW.black}}>{Math.round(S[k]||0)}</span><span style={{fontWeight:FW.semibold,letterSpacing:"0.06em"}}>{a}</span></span>))}
@@ -198,26 +202,43 @@ function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v
        «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
 function _no190(k){return typeof window!=='undefined'&&!!window["__CPM_NO_G190"+k];}
 function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const add=(x)=>{x=String(x||"").trim();if(x&&out.indexOf(x)<0)out.push(x);};
   const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
-  const ab=abbreviaSquadra182(u19);add(ab);
+  const ab=abbreviaSquadra182(u19);
+  /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
+     categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
+     nome corto c'e' gia' («Valmora»). Rosso __CPM_NO_G211 = scala di prima. */
+  const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
+  if(g211)add(senzaCat(u19));
+  add(ab);
+  if(g211)add(senzaCat(ab));
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
-function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
+/* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
+   ADATTA203_MIN px (il minimo della scala tipografica FS) invece di farsi tagliare. Usata solo dalla barra della partita.
+   Rosso __CPM_NO_G203 = come prima (sigla ritagliata). */
+const ADATTA203_MIN=12;
+function _no203(){return typeof window!=='undefined'&&!!window.__CPM_NO_G203;}
+function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
   const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
-  const rosso=_no182nomi();
-  useEffect(()=>{setLiv(0);},[key]);
+  const[fs203,setFs203]=useState(0);/* 0 = corpo dello stile; >0 = corpo ridotto in px (solo con `adatta`) */
+  const rosso=_no182nomi();const ad203=!!adatta&&!_no203();
+  useEffect(()=>{setLiv(0);setFs203(0);},[key]);
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
+    else if(ad203&&liv>=cand.length-1&&el.scrollWidth>el.clientWidth+0.5){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*el.clientWidth/el.scrollWidth*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);}}});
   /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
      si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
   useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    const azzera=()=>{dec.current=0;setLiv(0);setFs203(0);setGiro(g=>g+1);};
     let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
@@ -227,7 +248,8 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const L=Math.min(liv,cand.length-1);
   const T=as;
   return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
-    style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
+    data-corpo203={ad203&&fs203?fs203:undefined}
+    style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
 /* [giro 190 · PO-380a · G181-01 «consiglio tagliato coi puntini: Nessun taglio in profondita':…»] UN TESTO DI FRASI INTERE.
@@ -351,7 +373,7 @@ function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
   const letter=kind==="win"?"V":kind==="draw"?"N":"P"; // [7.999.49 parte A] vocabolario unico V/N/P (P = persa)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
-  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
+  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:(typeof window!=='undefined'&&window.__CPM_NO_G218)?"#fff":TH.bg/* [giro 218] bianco su verde/giallo/rosso chiari del tema notte era 1,7-2,8:1: inchiostro scuro */,flexShrink:0}}>{letter}</div>);
 }
 
 
@@ -1554,6 +1576,15 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      (b) MODERNI — al posto delle quattro scatole isolate, una FASCIA LED CONTINUA lungo tutto il bordo
          del tetto, angoli compresi, in `InstancedMesh` (un solo draw call): e' la firma degli stadi
          nuovi, dove la luce e' una linea e non quattro torri. */
+  /* [giro 206 PO-373 «Atmosfera si', campo no» — rosso __CPM_NO_G206] RIFLETTORI VISIBILI DI NOTTE. Misurato (misura-notte-206): negli
+     stadi con le luci sul tetto e in quelli coi pali perimetrali la testata era una scatola bianca senza alone, di notte come di giorno.
+     Di notte (stadCfg.notte206) ogni testata ha il suo alone (sprite additivo, la stessa trama del giro 23: una texture sola, nessuna
+     luce nuova) e gli aloni delle torri moderne sono piu' larghi e pieni. Testimone __CPM_FARI206 (teste, aloni). */
+  const _N206=!!stadCfg.notte206;let _nAl206=0;
+  const _alone206=(ax,ay,az,aw,aop)=>{try{if(!buildStadium._alone23){const c=document.createElement('canvas');c.width=c.height=128;const g2=c.getContext('2d');const rg=g2.createRadialGradient(64,64,0,64,64,64);
+      rg.addColorStop(0,'rgba(255,248,225,0.95)');rg.addColorStop(0.25,'rgba(255,240,200,0.45)');rg.addColorStop(1,'rgba(255,240,200,0)');g2.fillStyle=rg;g2.fillRect(0,0,128,128);buildStadium._alone23=new THREE.CanvasTexture(c);}
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:buildStadium._alone23,color:lightColor,transparent:true,opacity:aop,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));
+    s.position.set(ax,ay,az);s.scale.set(aw,aw*0.78,1);s.userData.alone206=true;scene.add(s);_nAl206++;}catch(_e206){}};
   const _roofLit=_onRoof?[[-sideX*0.7,-endZ+3,1],[sideX*0.7,-endZ+3,1],[-sideX*0.7,endZ-3,1],[sideX*0.7,endZ-3,1],
                           [-sideX+4,-endZ+4,0],[sideX-4,-endZ+4,0],[-sideX+4,endZ-4,0],[sideX-4,endZ-4,0]]:_towPos;
   if(_onRoof){try{
@@ -1569,6 +1600,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     if(_onRoof){// bank luminosi sul bordo del tetto (stadi moderni): niente pali
       const head=new THREE.Mesh(new THREE.BoxGeometry(_dir?7:3.2,0.9,_dir?2.2:3.2),new THREE.MeshBasicMaterial({color:0xfffff0}));
       head.position.set(x,endH+4.2,z);scene.add(head);
+      if(_N206)_alone206(x,endH+4.4,z,_dir?19:10,_dir?0.85:0.6);
       if(_dir){const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);
         spot.position.set(x,endH+5,z);spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);}
       else{const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x,endH+4,z);scene.add(fl);}
@@ -1600,7 +1632,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
           rg.addColorStop(0,'rgba(255,248,225,0.95)');rg.addColorStop(0.25,'rgba(255,240,200,0.45)');rg.addColorStop(1,'rgba(255,240,200,0)');g2.fillStyle=rg;g2.fillRect(0,0,128,128);
           buildStadium._alone23=new THREE.CanvasTexture(c);}
         const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:buildStadium._alone23,color:lightColor,transparent:true,opacity:0.55,depthWrite:false,blending:THREE.AdditiveBlending}));
-        const _hp=new THREE.Vector3(0,0,0.6).applyQuaternion(_fq);halo.position.set(x+_hp.x,floodH2+_gh/2+_hp.y,z+_hp.z);halo.scale.set(_gw*2.6,_gw*2.0,1);scene.add(halo);}catch(_e){}
+        const _hp=new THREE.Vector3(0,0,0.6).applyQuaternion(_fq);halo.position.set(x+_hp.x,floodH2+_gh/2+_hp.y,z+_hp.z);halo.scale.set(_gw*2.6,_gw*2.0,1);if(_N206){halo.scale.multiplyScalar(1.55);halo.material.opacity=0.9;halo.material.fog=false;}halo.userData.alone206=true;_nAl206++;scene.add(halo);}catch(_e){}
     } else if(_latt){
       const _lw=_towerT==="angolari_alte"?1.7:1.2;/* semi-lato base */
       for(const [lx,lz] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
@@ -1627,6 +1659,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       scene.add(projs);
       const walkT=new THREE.Mesh(new THREE.BoxGeometry(_gw+1.2,0.18,1.1),stM);
       walkT.position.set(x,floodH2-0.35,z);walkT.lookAt(0,floodH2-0.35,0);scene.add(walkT);
+      if(_N206){const _hp206=new THREE.Vector3(0,0,0.8).applyQuaternion(_fq);_alone206(x+_hp206.x,floodH2+_gh/2+_hp206.y,z+_hp206.z,_gw*3.6,0.88);}
     } else {
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,floodH2,8),stM);
       pole.position.set(x,floodH2/2,z);pole.castShadow=true;scene.add(pole);
@@ -1634,6 +1667,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       arm.position.set(x+(x>0?-4:4),floodH2+2,z);scene.add(arm);
       for(let hp=0;hp<3;hp++){const head=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.8,2.5),new THREE.MeshBasicMaterial({color:0xfffff0}));
         head.position.set(x+(x>0?-4:4)+(hp-1)*1.7,floodH2+2.5,z);scene.add(head);}
+      if(_N206)_alone206(x+(x>0?-4:4),floodH2+2.5,z,13,0.85);
     }
     // SpotLight pointing down at pitch — focused beam, realistic TV look
     const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);// 3DV-10: 2.8→1.4 meno fluorescente
@@ -1642,6 +1676,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // Soft fill PointLight at lower intensity
     const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x+(x>0?-5:5),floodH2+4,z);scene.add(fl);// 3DV-10: 1.0→0.50
   });
+  try{if(typeof window!=='undefined')window.__CPM_FARI206={notte:_N206,tipo:_onRoof?'tetto':_towerT,teste:_roofLit.length,aloni:_nAl206};}catch(_e206w){}
 
   // Goal nets (wireframe-style transparent planes)
   // [7.9.2 collaudo PO «pali e traversa non ancora disegnati bene, risolvi definitivamente»] la "rete" era un

@@ -1,0 +1,4 @@
+… rosso telefono (__CPM_NO_G205)
+  ✓ rosso telefono: serie serie in 2D: porta 0% dei 386 campioni, campo congelato 100% · premiazione in 2D: quadro 0% dei 114 campioni, campo congelato 100%, nota «versione 2D» 0% → bocciato
+ROSSO __CPM_NO_G205 bocciato: ✓
+✅ riserva2d-205 verde (rosso)

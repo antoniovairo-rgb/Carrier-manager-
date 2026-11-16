@@ -131,6 +131,24 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.195 | giro 197 scelte dell'azione sempre in vista sui telefoni bassi (PO-452) | sviluppo | claude-opus-5-5 | 3,1 | 4,66 $ | 34159 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.195 | giro 201 provini stabili e spiegati, scelte che tornano dopo la chiusura dell'app (PO-418, 428) | sviluppo | claude-opus-5-5 | 1,0 | 6,47 $ | 55732 | 1 | completo (un solo avvio) |
 | 7.999.195 | giro 202 rassegna: tabellino nella scheda 1, tasti fissi in fondo (PO-461) | sviluppo | claude-opus-5-5 | 1,8 | 8,70 $ | 78667 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 205 partita 2D di riserva: lotteria, premiazione, rassegna (PO-465) | sviluppo | claude-opus-5-5 | 2,1 | 8,23 $ | 58897 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 203 sigle intere nella barra, clip Rohr sotto 3 MB (PO-460, 464) | sviluppo | claude-opus-5-5 | 3,6 | 2,23 $ | 15304 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.195 | giro 204 piazzato di sola visione, lotteria senza 90', maglie e piedistallo del pullman (PO-450, 451) | sviluppo | claude-opus-5-5 | 4,2 | 15,91 $ | 106321 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 207 misura delle diagonali negli highlight dell'eroe e proposta (PO-401) | misura | claude-opus-5-5 | 3,5 | 6,99 $ | 56924 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 206 scene 3D: notte e ingresso in campo scenico (PO-373, 412, 367) | sviluppo | claude-fable-5-2 | 6,8 | 27,19 $ | 169921 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 208 maxischermo RIGORI nella lotteria, colore solo sulla maglia (PO-468, 469) | sviluppo | claude-opus-5-5 | 2,1 | 4,50 $ | 39589 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 209 niente ripiego 2D: avviso connessione con Riprova e Simula (PO-470) | sviluppo | claude-opus-5-5 | 3,6 | 7,49 $ | 60695 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 210 diagonali nel pad e pad che resta sul telefono (PO-401, 471) | sviluppo | claude-opus-5-5 | 3,9 | 13,92 $ | 119525 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 211 gradino del nome corto, domande coerenti col risultato (PO-472, 473) | sviluppo | claude-opus-5-5 | 1,9 | 8,30 $ | 89699 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 212 gigante in campo: guardalinee alla statura giusta (PO-474) | sviluppo | claude-opus-5-5 | 4,1 | 10,10 $ | 80399 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 214 lotteria: tabellone opaco e striscia con la serie (PO-477) | sviluppo | claude-opus-5-5 | 1,8 | 6,03 $ | 49200 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 215 Simula a partita iniziata tiene il parziale (PO-478) | sviluppo | claude-opus-5-5 | 1,4 | 7,93 $ | 64668 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 216 lotteria: striscia con l'eroe a sinistra come il tabellone (PO-482) | sviluppo | claude-opus-5-5 | 1,9 | 3,85 $ | 33990 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 213 riscontro al tocco su tutti i pulsanti, ingresso-277, design-system (PO-475) | sviluppo | claude-opus-5-5 | 4,0 | 14,34 $ | 133881 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 217 guardiano piazzato-204 stabile (campionamento dello stacco nero) | sviluppo | claude-opus-5-5 | 1,3 | 3,22 $ | 25806 | 1 | completo (un solo avvio) |
+| 7.999.195 | giro 218 calendario della coppa leggibile (PO-483) | sviluppo | claude-opus-5-5 | 0,8 | 4,88 $ | 40535 | 1 | completo (un solo avvio) |
+| 7.999.195 | verifica 7.999.195 parte H: highlight-95 | verifica | claude-opus-5-5 | 3,1 | 2,76 $ | 9010 | 1 | completo (un solo avvio) |
+| 7.999.195 | verifica 7.999.195 parte S: scene 3D lente (interrotta) | verifica | claude-opus-5-5 | 4,0 | 2,16 $ | 11286 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -146,4 +164,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | **TOTALE 7.999.192** (23 sessioni) |  |  |  | almeno 236,54 $ |  |  | 6 sessioni parziali: totale minimo |
 | 7.999.193 | **TOTALE 7.999.193** (1 sessioni) |  |  |  | 2,05 $ |  |  | tutte complete |
 | 7.999.194 | **TOTALE 7.999.194** (8 sessioni) |  |  |  | almeno 94,96 $ |  |  | 3 sessioni parziali: totale minimo |
-| 7.999.195 | **TOTALE 7.999.195** (6 sessioni) |  |  |  | almeno 48,07 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.195 | **TOTALE 7.999.195** (24 sessioni) |  |  |  | almeno 198,09 $ |  |  | 2 sessioni parziali: totale minimo |

@@ -1,0 +1,98 @@
+
+== VERDE ==
+-- telefono 360x640
+   G: tasti 8 · lato minimo 44.0 px · distanza minima fra tasti 4.0 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 8.413 (MOVEGAIN 8.42, regola 8.41, marcatore mosso 0.02u) · gi16
+   P ◥: passo (1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 16.808 (MOVEGAIN 16.82, regola 16.81, marcatore mosso 0.09u) · gi17
+   P ▶: passo (0,2.5) lungo 2.5u · eroe 2.50u · mosse 3→2 · stacco 6.329 (MOVEGAIN 6.28, regola 6.33, marcatore mosso 0.28u) · gi22
+   P ◢: passo (-1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 9.743 (MOVEGAIN 9.56, regola 9.74, marcatore mosso 0.34u) · gi23
+   P ▼: passo (-2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 19.95 (MOVEGAIN 19.84, regola 19.95, marcatore mosso 0.88u) · gi25
+   P ◣: passo (-1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 8.22 (MOVEGAIN 8.00, regola 8.22, marcatore mosso 1.25u) · gi28
+   P ◀: passo (0,-2.5) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 16.356 (MOVEGAIN 15.70, regola 16.36, marcatore mosso 1.00u) · gi37
+   P ◤: passo (1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 4.429 (MOVEGAIN 19.59, regola 4.43, marcatore mosso 29.01u) · gi43
+   T catena gi46 (2 mosse): 1 mosse/8 tasti/- · 0 mosse/0 tasti/giocate
+   T «Scegli»: mosse 2 → giocate true · tasti 0
+   pagine aperte: 1
+-- telefono 375x667
+   G: tasti 8 · lato minimo 44.0 px · distanza minima fra tasti 4.0 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.666 (MOVEGAIN 8.42, regola 17.67, marcatore mosso 24.34u) · gi16
+   P ◥: passo (1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 4.551 (MOVEGAIN 18.29, regola 4.55, marcatore mosso 77.09u) · gi17
+   P ▶: passo (0,2.5) lungo 2.5u · eroe 2.50u · mosse 3→2 · stacco 17.47 (MOVEGAIN 6.74, regola 17.47, marcatore mosso 36.30u) · gi22
+   P ◢: passo (-1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 12.478 (MOVEGAIN 11.71, regola 12.48, marcatore mosso 0.95u) · gi23
+   P ▼: passo (-2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 19.722 (MOVEGAIN 19.94, regola 19.72, marcatore mosso 0.95u) · gi25
+   P ◣: passo (-1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 15.097 (MOVEGAIN 15.48, regola 15.10, marcatore mosso 0.60u) · gi28
+   P ◀: passo (0,-2.5) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 13.728 (MOVEGAIN 13.75, regola 13.73, marcatore mosso 0.16u) · gi37
+   P ◤: passo (1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 9.545 (MOVEGAIN 19.19, regola 9.54, marcatore mosso 14.98u) · gi43
+   T catena gi46 (2 mosse): 1 mosse/8 tasti/- · 0 mosse/0 tasti/giocate
+   T «Scegli»: mosse 2 → giocate true · tasti 0
+   pagine aperte: 1
+-- telefono 390x844
+   G: tasti 8 · lato minimo 44.0 px · distanza minima fra tasti 4.0 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.641 (MOVEGAIN 17.65, regola 17.64, marcatore mosso 0.10u) · gi16
+   P ◥: passo (1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 4.611 (MOVEGAIN 18.29, regola 4.61, marcatore mosso 77.90u) · gi17
+   P ▶: passo (0,2.5) lungo 2.5u · eroe 2.50u · mosse 3→2 · stacco 18.529 (MOVEGAIN 7.04, regola 18.53, marcatore mosso 34.87u) · gi22
+   P ◢: passo (-1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 14.62 (MOVEGAIN 13.69, regola 14.62, marcatore mosso 1.02u) · gi23
+   P ▼: passo (-2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 19.449 (MOVEGAIN 19.61, regola 19.45, marcatore mosso 0.46u) · gi25
+   P ◣: passo (-1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 14.489 (MOVEGAIN 14.81, regola 14.49, marcatore mosso 0.51u) · gi28
+   P ◀: passo (0,-2.5) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 13.493 (MOVEGAIN 13.52, regola 13.49, marcatore mosso 0.25u) · gi37
+   P ◤: passo (1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 17.682 (MOVEGAIN 19.50, regola 17.68, marcatore mosso 10.57u) · gi43
+   T catena gi46 (2 mosse): 1 mosse/8 tasti/- · 0 mosse/0 tasti/giocate
+   T «Scegli»: mosse 2 → giocate true · tasti 0
+   pagine aperte: 1
+-- PC 1366x768
+   G: tasti 8 · lato minimo 42.0 px · distanza minima fra tasti 4.0 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.635 (MOVEGAIN 17.63, regola 17.63, marcatore mosso 0.00u) · gi16
+   P ◥: passo (1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 18.298 (MOVEGAIN 18.30, regola 18.30, marcatore mosso 0.00u) · gi17
+   P ▶: passo (0,2.5) lungo 2.5u · eroe 2.50u · mosse 3→2 · stacco 6.282 (MOVEGAIN 6.28, regola 6.28, marcatore mosso 0.00u) · gi22
+   P ◢: passo (-1.7678,1.7678) lungo 2.5u · eroe 2.55u · mosse 2→1 · stacco 11.955 (MOVEGAIN 11.96, regola 11.96, marcatore mosso 0.00u) · gi23
+   P ▼: passo (-2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 8.378 (MOVEGAIN 8.38, regola 8.38, marcatore mosso 0.00u) · gi25
+   P ◣: passo (-1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 11.12 (MOVEGAIN 11.12, regola 11.12, marcatore mosso 0.00u) · gi28
+   P ◀: passo (0,-2.5) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 15.697 (MOVEGAIN 15.70, regola 15.70, marcatore mosso 0.00u) · gi37
+   P ◤: passo (1.7678,-1.7678) lungo 2.5u · eroe 2.55u · mosse 3→2 · stacco 18.821 (MOVEGAIN 18.82, regola 18.82, marcatore mosso 0.00u) · gi43
+   PC dopo la prima mossa: fase hl_choose · mosse 1 · tasti 8 · aiuto diagonali true
+   K accordi: 12/12 diagonali da 2,5u in una mossa
+   K freccia sola: (2.5,0) 2.5u
+   pagine aperte: 1
+VERDE: difetti 0 · non giudicati 0
+
+== ROSSO (__CPM_NO_G210) ==
+-- telefono 360x640
+   G: tasti 4 · lato minimo 44.0 px · distanza minima fra tasti 5.7 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.841 (MOVEGAIN 8.48, regola 17.84, marcatore mosso 24.27u) · gi16
+   pagine aperte: 1
+   ❌ G: 4 tasti di direzione a schermo invece di 8 (▲◀▶▼)
+   ❌ T ▲: pad sparito dopo la prima mossa con 1 mosse rimaste
+   ❌ T ▲: scheda delle giocate a schermo col pad ancora utile
+   ❌ P ◥: tasto assente
+-- telefono 375x667
+   G: tasti 4 · lato minimo 44.0 px · distanza minima fra tasti 5.7 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.64 (MOVEGAIN 8.43, regola 17.64, marcatore mosso 24.19u) · gi16
+   pagine aperte: 1
+   ❌ G: 4 tasti di direzione a schermo invece di 8 (▲◀▶▼)
+   ❌ T ▲: pad sparito dopo la prima mossa con 1 mosse rimaste
+   ❌ T ▲: scheda delle giocate a schermo col pad ancora utile
+   ❌ P ◥: tasto assente
+-- telefono 390x844
+   G: tasti 4 · lato minimo 44.0 px · distanza minima fra tasti 5.7 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.634 (MOVEGAIN 8.43, regola 17.63, marcatore mosso 24.12u) · gi16
+   pagine aperte: 1
+   ❌ G: 4 tasti di direzione a schermo invece di 8 (▲◀▶▼)
+   ❌ T ▲: pad sparito dopo la prima mossa con 1 mosse rimaste
+   ❌ T ▲: scheda delle giocate a schermo col pad ancora utile
+   ❌ P ◥: tasto assente
+-- PC 1366x768
+   G: tasti 4 · lato minimo 42.0 px · distanza minima fra tasti 5.7 px · sovrapposizioni 0+0
+   P ▲: passo (2.5,0) lungo 2.5u · eroe 2.50u · mosse 2→1 · stacco 17.666 (MOVEGAIN 17.67, regola 17.67, marcatore mosso 0.00u) · gi16
+   PC dopo la prima mossa: fase hl_choose · mosse 2 · tasti 4 · aiuto diagonali false
+   K accordi: 0/4 diagonali da 2,5u in una mossa
+   K freccia sola: (2.5,0) 2.5u
+   pagine aperte: 1
+   ❌ G: 4 tasti di direzione a schermo invece di 8 (▲◀▶▼)
+   ❌ P ◥: tasto assente
+   ❌ K: riga «Diagonali: due frecce insieme» assente
+   ❌ K ArrowUp+ArrowRight a 0 ms: 1 passi, ultimo (2.5,2.5) 3.5355u, mosse 2→1 (fase hl_move→hl_choose, gi23, pagina 1, tasti visti dalla pagina [["ArrowUp",15473,"hl_move"],["ArrowRight",15474,"hl_move"]])
+   ❌ K ArrowDown+ArrowRight a 0 ms: 1 passi, ultimo (-2.5,2.5) 3.5355u, mosse 2→1 (fase hl_move→hl_choose, gi25, pagina 1, tasti visti dalla pagina [["ArrowUp",15473,"hl_move"],["ArrowRight",15474,"hl_move"],["ArrowDown",16314,"hl_move"],["ArrowRight",16315,"hl_move"]])
+   ❌ K ArrowDown+ArrowLeft a 0 ms: 1 passi, ultimo (-2.5,-2.5) 3.5355u, mosse 3→2 (fase hl_move→hl_choose, gi28, pagina 1, tasti visti dalla pagina [["ArrowDown",16314,"hl_move"],["ArrowRight",16315,"hl_move"],["ArrowDown",17311,"hl_move"],["ArrowLeft",17312,"hl_move"]])
+   ❌ K ArrowUp+ArrowLeft a 0 ms: 1 passi, ultimo (2.5,-2.5) 3.5355u, mosse 2→1 (fase hl_move→hl_choose, gi37, pagina 1, tasti visti dalla pagina [["ArrowDown",17311,"hl_move"],["ArrowLeft",17312,"hl_move"],["ArrowUp",18174,"hl_move"],["ArrowLeft",18175,"hl_move"]])
+ROSSO: tasti diagonali assenti visti true · pad sparito sul telefono visto true · diagonale 3,54u da tastiera vista true · non giudicati 0
+✅ diagonali-210 VERDE

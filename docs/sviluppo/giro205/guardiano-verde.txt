@@ -1,0 +1,45 @@
+… verde telefono: finale di coppa ai rigori
+… verde pc: finale di coppa ai rigori
+… verde telefono: cerimonia cup
+… verde telefono: cerimonia league
+… verde telefono: cerimonia festa
+… verde pc: cerimonia campionato
+  ✓ verde telefono · 2D attiva prima dei rigori (d2=true)
+  ✓ verde telefono · serie in 2D: porta 100% dei 384 campioni, campo congelato 0%
+  ✓ verde telefono · la serie finisce (5-4, 14 tiri, in 59.7 s)
+  ✓ verde telefono · ogni tiro mostrato ha un esito solo (14 tiri visti, 0 con esiti diversi)
+  ✓ verde telefono · gol mostrati 5-4 coerenti col motore 5-4
+  ✓ verde telefono · vinta ⟺ hs>as (won=true)
+  ✓ verde telefono · premiazione in 2D: quadro 99% dei 114 campioni, campo congelato 0%, nota «versione 2D» 99%
+  ✓ verde telefono · la premiazione finisce da sola (17.6 s)
+  ✓ verde telefono · rassegna con l'esito ai rigori (si)
+  ✓ verde telefono · rassegna → carriera: passi avanti,avanti,avanti,torna · matchHistory 0→1
+  ✓ verde telefono · voce di Coppa coerente: {"round":4,"name":"FINALE","opponent":"FC Valmora","homeScore":1,"awayScore":1,"won":true,"penalties":true} · champion true
+  ✓ verde telefono · errori 0 
+  ✓ verde pc · 2D attiva prima dei rigori (d2=true)
+  ✓ verde pc · serie in 2D: porta 100% dei 385 campioni, campo congelato 0%
+  ✓ verde pc · la serie finisce (5-4, 14 tiri, in 59.4 s)
+  ✓ verde pc · ogni tiro mostrato ha un esito solo (14 tiri visti, 0 con esiti diversi)
+  ✓ verde pc · gol mostrati 5-4 coerenti col motore 5-4
+  ✓ verde pc · vinta ⟺ hs>as (won=true)
+  ✓ verde pc · premiazione in 2D: quadro 100% dei 113 campioni, campo congelato 0%, nota «versione 2D» 100%
+  ✓ verde pc · la premiazione finisce da sola (17.6 s)
+  ✓ verde pc · rassegna con l'esito ai rigori (si)
+  ✓ verde pc · rassegna → carriera: passi avanti,avanti,avanti,torna · matchHistory 0→1
+  ✓ verde pc · voce di Coppa coerente: {"round":4,"name":"FINALE","opponent":"FC Valmora","homeScore":1,"awayScore":1,"won":true,"penalties":true} · champion true
+  ✓ verde pc · errori 0 
+  ✓ verde telefono · cup: 2D true · quadro 100% di 83 campioni · campo congelato 0%
+  ✓ verde telefono · cup: finisce in 17.6 s · rassegna true · carriera (matchHistory 0→1)
+  ✓ verde telefono · cup: errori 0 
+  ✓ verde telefono · league: 2D true · quadro 100% di 113 campioni · campo congelato 0%
+  ✓ verde telefono · league: finisce in 23.6 s · rassegna true · carriera (matchHistory 0→1)
+  ✓ verde telefono · league: errori 0 
+  ✓ verde telefono · festa: 2D true · quadro 100% di 44 campioni · campo congelato 0%
+  ✓ verde telefono · festa: finisce in 9.6 s · rassegna true · carriera (matchHistory 0→1)
+  ✓ verde telefono · festa: errori 0 
+  ✓ verde pc · league: 2D true · quadro 100% di 114 campioni · campo congelato 0%
+  ✓ verde pc · league: finisce in 23.7 s · rassegna true · carriera (matchHistory 0→1)
+  ✓ verde pc · league: errori 0 
+VERDE: 36/36 ✓
+✅ riserva2d-205 verde (verde)
+FINE 0
