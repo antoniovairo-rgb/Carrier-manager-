@@ -81,7 +81,26 @@ Esito sul build del commit (corsa unica, verde poi rosso):
 
 ## 4. Controlli (uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, `free -m` e `df -h` prima)
 
-CONTROLLI_QUI
+Tutti sul build del commit `af49187` (nessuna modifica a `src/` dopo). `node tools/build-src.mjs` + `node tools/check-src.mjs`:
+**IDENTICO BYTE PER BYTE** (7.541.974 byte, 21 frammenti).
+
+| controllo | esito | note |
+|---|---|---|
+| `barra-221` | ✅ verde promosso · rosso bocciato | tabella al §3 |
+| `tocco-213` | ✅ verde promosso · rosso `__CPM_NO_G213` bocciato | la guardia del doppio tocco (R5) resta verde |
+| `diagonali-210` | ✅ alla seconda corsa · ⚠️ **instabile** | 1ª corsa: verde con 1 difetto («T ◢: dopo la prima mossa fase hl_move invece di hl_choose», solo 375×667; stessa scena gi23 verde sugli altri tre schermi), rosso bocciato. 2ª corsa (198 s): verde 0 difetti, rosso bocciato. Vedi dubbi |
+| `highlight-95` | H95_QUI | |
+| `hud-c3` | ✅ uscita 0 (379 s) | |
+| `design-system` | ✅ SISTEMA GRAFICO OK | nessun colore o raggio scritto a mano aggiunto |
+| `griglia-mobile` | ✅ uscita 0 (246 s) · 14 schermate × 5 larghezze | le 57 foto rigenerate in `docs/collaudo-grafico/g0/` rimesse com'erano prima del commit |
+| `career-critical` | ✅ uscita 0 (792 s) | |
+| `test:logic` | ✅ uscita 0 | |
+| `save-compat` | ✅ PASS | nessun campo salvato nuovo |
+
+Nota sul banco: la prima sequenza è stata fermata dal tetto di 30 minuti delle chiamate in sottofondo mentre `highlight-95`
+girava ancora (processi del browser `defunct`, nessuna riga in uscita): quella corsa non vale. La seconda corsa di
+`highlight-95` è stata interrotta dal mio tetto di 3.500 s durante il braccio rosso (verde completo: 102 highlight, 0 difetti,
+0 non giudicabili) e non vale nemmeno lei; la terza è quella in tabella.
 
 ## Dubbi per il PO
 
@@ -99,4 +118,10 @@ CONTROLLI_QUI
 4. **Vibrazione del telefono** (`navigator.vibrate`): non aggiunta; la consegna parla di scuotimento della scritta.
 5. **Quali tasti spenti hanno una «scritta del motivo»**: l'ho marcata su Simula e sul tasto principale della settimana. Ogni
    altro tasto spento del gioco vibra per intero (ripiego). Se il PO vuole la regola solo dove c'è un motivo scritto, va detto.
-6. Roadmap: questo giro non è un rilascio e non ho scritto righe in `docs/governo/ROADMAP.md`.
+6. **`diagonali-210` instabile**: un rosso in una corsa e verde nella successiva, sullo stesso build. Il difetto («dopo la prima
+   mossa la fase è ancora hl_move» 700 ms dopo il tocco) riguarda il passaggio `hl_move → hl_choose`, che questo giro non tocca;
+   ma con due corse non posso escludere né confermare un legame. Per la regola «un guardiano instabile due volte si ripara» è
+   la prima volta che lo vedo: lo segnalo, non l'ho riparato.
+7. **Durata di `highlight-95`**: più di 58 minuti per i due bracci su questo banco; dentro una catena con tetto di 30 minuti per
+   chiamata in sottofondo non ci sta. Da tenere presente per le catene di rilascio.
+8. Roadmap: questo giro non è un rilascio e non ho scritto righe in `docs/governo/ROADMAP.md`.
