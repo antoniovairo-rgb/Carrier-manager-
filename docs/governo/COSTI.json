@@ -2156,5 +2156,19 @@
   "tipo": "riparazione",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaCEEtHNBjjncjhTRvt",
+  "titolo": "giro 219 · tocco lento nelle scene 3D (PO-484)",
+  "creata": "2026-11-16T06:09:43Z",
+  "chiusa": "2026-11-16T14:05:16Z",
+  "cost_usd": 24.49884454,
+  "output_tokens": 182960,
+  "cache_read_tokens": 46135524,
+  "worker_epoch": 3,
+  "versione": "7.999.196",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-16"
  }
 ]
