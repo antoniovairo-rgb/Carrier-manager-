@@ -133,6 +133,8 @@ if (SOLO.includes('verde')) { out.verde = await braccio([], 'dopo'); const d = d
 if (SOLO.includes('rosso')) { out.rosso = await braccio(['__CPM_NO_G225'], 'prima'); const d = difetti(out.rosso, false); out.difettiRosso = d;
   for (const [L, nome] of [['A', 'tifo'], ['B', 'pelle e capelli'], ['C', 'cammino'], ['D', 'saluto'], ['E', 'fascia']]) if (!d.some(x => new RegExp('(^|\\s)' + L + '[:/]').test(x) && !/non giudicato/.test(x))) g.push(`rosso · ${L} (${nome}): il difetto non si vede`); }
 if (SOLO.includes('ripiego')) { const { ctx, p } = await apri(['__CPM_G225_NODRAW'], { width: 375, height: 812 }); try { await beat(p, 1); await sleep(3000); const t = await tifo(p); out.ripiego = t;
+    const sc = await p.evaluate(() => { const P = window.__CPM_PRES142; let luci = 0; P.scene.traverse(o => { if (o.isLight) luci++; }); return { uomini: P.men.filter(m => { let a = m; while (a.parent) a = a.parent; return a === P.scene; }).length, luci }; }); t.uomini = sc.uomini; t.luci = sc.luci;
+    if (!(sc.uomini >= 5 && sc.luci >= 3)) g.push('ripiego · rifacendo lo stadio la scena ha perso corpi o luci: ' + JSON.stringify(sc));
     if (!(t.modo === 'dipinti' && t.provaPx === 0 && t.sagome === 0 && t.dipinti >= 1000)) g.push('ripiego · se lo strato a sagome non si disegna la folla dipinta non subentra: ' + JSON.stringify(t)); if (FOTO) await p.screenshot({ path: `${FOTO}-ripiego-tel-b1.png` }); } catch (e) { g.push('ripiego · non giudicato'); } await ctx.close(); }
 await b.close(); srv.close();
 fs.writeFileSync('out/g225/presentazione-225.json', JSON.stringify(out, null, 1));

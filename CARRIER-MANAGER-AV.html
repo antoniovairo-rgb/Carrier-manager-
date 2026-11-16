@@ -46127,7 +46127,8 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       /* la serata moltiplica le luci (LUCE178.presentazione 2,3) e la partita di notte scurisce gli spalti (giro 206, 0,42): senza questo
          fattore la folla esce bruciata (misurato: luminanza degli spalti 0,38-0,46 contro 0,30-0,32 della partita di notte). */
       if(t225.folla&&t225.folla.mesh&&t225.folla.mesh.material&&t225.folla.mesh.material.color){const _k225=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&+window.__CPM_K225>0)?+window.__CPM_K225:K_FOLLA225;t225.folla.mesh.material.color.multiplyScalar(_k225);t225.kFolla=_k225;}
-      t225.rifai=()=>{try{const via=scene.children.slice(_n0);via.forEach(o=>{scene.remove(o);try{o.traverse(x=>{if(x.geometry)x.geometry.dispose();const mm=x.material?(Array.isArray(x.material)?x.material:[x.material]):[];mm.forEach(y=>{if(y.map)y.map.dispose();y.dispose&&y.dispose();});});}catch(_e){}});
+      const _via225=scene.children.slice(_n0);/* SOLO cio' che ha aggiunto buildStadium: luci di riempimento, fila e fuochi arrivano dopo e restano */
+      t225.rifai=()=>{try{const via=_via225.slice();if(t225.folla&&t225.folla.mesh&&via.indexOf(t225.folla.mesh)<0)via.push(t225.folla.mesh);via.forEach(o=>{scene.remove(o);try{o.traverse(x=>{if(x.geometry)x.geometry.dispose();const mm=x.material?(Array.isArray(x.material)?x.material:[x.material]):[];mm.forEach(y=>{if(y.map)y.map.dispose();y.dispose&&y.dispose();});});}catch(_e){}});
         _cnt192.n=0;_stad=buildStadium(scene,homeHex,awayHex,{..._cfg,noFolla129:true});t225.folla=null;t225.modo='dipinti';t225.tetti=null;}catch(_e){}};
       t225.pres192=()=>{try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_PRES192={dipinti:t225.modo==='dipinti'?_cnt192.n:0,f129:t225.folla?((t225.folla.info||{}).n||0):0};}catch(_e){}};
       t225.pres192();}catch(_e){}
