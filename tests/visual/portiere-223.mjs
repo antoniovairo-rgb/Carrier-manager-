@@ -103,7 +103,7 @@ async function scena(sc, kind) {
     const T = await page.evaluate(() => (window.__CPM_GK799 || []).map(g => g.tag));
     const tardi = await page.evaluate(() => window.__CPM_GK229TARDI | 0);
     const fps = await page.evaluate(() => Math.round(window.__CPM_FPS708 || 0)).catch(() => 0);
-    const arm = await page.evaluate(() => ({ a: window.__CPM_GK229ARM || null, g: window.__CPM_G223ARC || null, gc: window.__CPM_GKACT || null })).catch(() => null);
+    const arm = await page.evaluate(() => ({ a: window.__CPM_GK229ARM || null, g: window.__CPM_G223ARC || null, p: window.__CPM_G223P || null, gc: window.__CPM_GKACT || null })).catch(() => null);
     /* 007 (solo annotazione, non giudicato): passi della camera oltre 2,5u fra due fotogrammi durante l'esito, con la velocita' in u/s di
        scena — al telefono (~30 fps) 2,6-5,6u in un fotogramma sono 80-170 u/s; un passo lungo in headless con dt grande non e' un salto */
     const cam = await page.evaluate(() => (window.__CPM_CAMSTEP93 || []).filter(e => e.ph === 'hl_result' && !e.cut && !e.snap && !e.sc && e.dt > 0).map(e => ({ st: e.st, v: Math.round(e.st / (e.dt / 1000)) })).filter(e => e.v >= 150));

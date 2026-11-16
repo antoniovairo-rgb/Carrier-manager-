@@ -21406,7 +21406,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                      volta finche' fra corpo disteso e pallone resta la mano (1,3 u). */
                   const _cu=t==="shot"&&P.hlVariant==="shot_curled";let _ge=oppMesh._diveToZ;
                   for(let _k=0;_k<25&&Math.abs(_ge-_gz229)>0.05&&_minD223(_sx229,_sz229,ballArcTgtX,ballArcTgtZ,_cu,_gx229,_ge)<1.3;_k++)_ge-=Math.sign(_ge-_gz229)*Math.min(0.2,Math.abs(_ge-_gz229));
-                  if(Math.abs(_ge-_gz229)<0.3){oppActType="gk_block";_ge=_gz229+(_zp229>=_gz229?1:-1)*0.3;oppMesh._blk229=null;}/* nessun tuffo possibile senza tagliargli la strada: si oppone col corpo, un passo verso il pallone */
+                  if(Math.abs(_ge-_gz229)<0.3){oppActType="gk_block";_ge=_gz229+(_zp229>=_gz229?1:-1)*0.3;oppMesh._blk229=null;
+                    oppMesh._blk223=(ballArcTgtX>_gx229&&_sx229<_gx229)?{k:sr.current._actSitKey403,tA:Math.max(0,clamp((_gx229-_sx229)/(ballArcTgtX-_sx229),0,1)*ballArcDur-0.19)}:null;}/* e lo scatto arriva col pallone: gli ultimi 0,19 s prima del suo piano (misurato gi75 palo: riflesso chiuso 0,41 s prima dell'arrivo) *//* nessun tuffo possibile senza tagliargli la strada: si oppone col corpo, un passo verso il pallone */
                   oppMesh._diveToZ=_ge;}}
               /* [giro 223] LA DISTESA E' COMPLETA QUANDO IL PALLONE PASSA SUL SUO PIANO: con l'arco che ora arriva sulla linea, legare la distesa
                  all'intero volo (7.465) la completerebbe dopo il passaggio. Frazione dell'arco al piano del portiere, letta dal driver del tuffo. */
@@ -23592,7 +23593,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 if(_vx>1e-3){const _zq=ball.position.z+_vz*(oppMesh.position.x-ball.position.x)/_vx;oppMesh._diveToZ=clamp(_zq,(oppMesh._divePz||0)-3,(oppMesh._divePz||0)+3);oppDiveDir=_zq>=(oppMesh._divePz||0)?1:-1;}}
               oppMesh._pb229={x:ball.position.x,z:ball.position.z};}
             const _bpz=(oppMesh._divePz||0),_btz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_bpz);
-            const _be=Math.min(((typeof window!=='undefined'&&window.__CPM_NO576)?(u/0.30):(_b229?(ballArcActive?Math.max(0,ballArcT)/0.19:1):(oppActT/0.19))),1),_bx=_be*_be*(3-2*_be);// scatto rapido, poi tiene la posa /* [7.552.0] LO SCATTO E' UN TEMPO, NON UNA FRAZIONE. Con la vita del gesto ora legata al volo del pallone, `u/0.30` avrebbe allungato anche lo SCATTO in proporzione all'arco: un riflesso che si apre in mezzo secondo non e' piu' un riflesso. Ancorato a 190ms assoluti (gli stessi 0,30x0,62 di prima), poi tiene la posa quanto serve. */
+            const _b223=!(typeof window!=='undefined'&&window.__CPM_NO_G223)&&oppMesh._blk223&&oppMesh._blk223.k===sr.current._actSitKey403;/* [giro 223] riflesso al posto del tuffo impossibile: scatto all'arrivo */
+            const _be=_b223?(ballArcActive?clamp((Math.max(0,ballArcT)-oppMesh._blk223.tA)/0.19,0,1):1):Math.min(((typeof window!=='undefined'&&window.__CPM_NO576)?(u/0.30):(_b229?(ballArcActive?Math.max(0,ballArcT)/0.19:1):(oppActT/0.19))),1),_bx=_be*_be*(3-2*_be);// scatto rapido, poi tiene la posa /* [7.552.0] LO SCATTO E' UN TEMPO, NON UNA FRAZIONE. Con la vita del gesto ora legata al volo del pallone, `u/0.30` avrebbe allungato anche lo SCATTO in proporzione all'arco: un riflesso che si apre in mezzo secondo non e' piu' un riflesso. Ancorato a 190ms assoluti (gli stessi 0,30x0,62 di prima), poi tiene la posa quanto serve. */
             oppMesh.position.z=_bpz+(_btz-_bpz)*_bx;
             if(!_glb674)oppMesh.position.y=Math.sin(_be*Math.PI)*0.28;// piccolo stacco sulle gambe, mai corpo a terra
             if(!_glb674)oppMesh.rotation.z=oppDiveDir*_bx*0.30;// solo un'inclinazione verso il lato del pallone
