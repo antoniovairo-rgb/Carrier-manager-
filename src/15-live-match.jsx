@@ -1472,6 +1472,11 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
 /* [giro 200 · PO-448, G193-18 «rifiniture viste negli anni lunghi»] interruttore unico dei testi e numeri corretti in src/16-18.
    Rosso __CPM_NO_G200 = i testi di prima (insieme alla rassegna in una pagina sola). */
 function _g200x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G200);}
+/* [giro 224 · PO-488 + rilievo sulla foto PO 195] il momento chiave del gol su palla ferma diceva «Tuo punizione al 18'»: la parola
+   del piazzato (rigore/punizione) stava dopo un «Tuo» fisso. Ora il soggetto e' il gol: «Tuo gol su rigore», «Tuo gol su punizione».
+   Rosso __CPM_NO_G224 = il testo di prima. */
+function _g224x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G224);}
+function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
     <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>{(icona?icona+" ":"")+String(titolo).toUpperCase()}</div>{children}</>);
@@ -10563,7 +10568,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.113.0 audit massivo · fix C1] il gol da set-piece incrementa il punteggio LOGICO (scoreRef) SUBITO, non solo col setScore differito a 1450ms: prima, se la punizione/rigore era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800-1450ms, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI o risultato registrato incoerente (goals:1 ma homeScore:0/pari). Il setScore resta a 1450 per la sincronia visiva col pallone in rete */
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1450);
       fxTimeout(()=>{try{AudioMgr.event({type:'GoalTeam'});}catch(_a){}/* [7.62.0 AUDIO] boato sul gol da rigore (non passa da fireGoalCeleb) */addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(sc=>({...sc,home:sc.home+1}));},1450);
-      pushMatchEvent(clockRef.current,"player_goal",em=>"⚽ Tuo "+_kickWordLow+" al "+em+"'");
+      pushMatchEvent(clockRef.current,"player_goal",em=>momentoPiazzato224(_kickWordLow,em));/* [giro 224] accordo: «Tuo gol su punizione» */
       if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:clockRef.current|0,t:'scena_gol',kind:_spKind373});}catch(_e94s){}}
       setMStats(st=>({...st,goals:st.goals+1,rb:st.rb+5}));
       try{const _mm=matchMemRef.current;if(_mm)_mm.goals=(_mm.goals||0)+1;}catch(_e){}
@@ -10821,7 +10826,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      piede tiene conto dell'area sicura del telefono. (1) e (3) restano come erano: dopo Simula nessuna rassegna; Salta salva e torna.
      Rosso __CPM_NO_G202 = la rassegna del giro 200 (tabellino nella scheda 4, piede in fondo alla pagina). */
   const _g202=()=>_g200()&&!(typeof window!=='undefined'&&window.__CPM_NO_G202);
-  const _T200=["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=["Risultato","Giocate","Giornali","Classifica"];
+  /* [giro 224 · PO-488, foto PO 195 «Statistiche non si vedono bene, hanno bisogno di più spazio! I box sotto mettili alla schermata
+     successiva»] il tabellino della gara resta nella scheda 1 ma UNA VOCE PER RIGA a tutta larghezza (numeri ai lati, voce al centro,
+     barra sotto): le due/tre voci per riga del giro 202 si leggevano come «29% Possesso 71% 14 Tiri 2». Pagella, commento del mister
+     e momenti chiave passano alla scheda 2 (le schede restano quattro). PO-490: la scheda 4 si riempie con classifica piu' lunga
+     (prime 5, la tua zona, ultime 3, zone colorate), i tuoi numeri di stagione e l'anteprima della prossima partita, tutto letto dal
+     salvataggio (se un dato manca la riga non compare). Rosso __CPM_NO_G224 = la rassegna del giro 202. */
+  const _g224=()=>_g202()&&_g224x();
+  const _T200=_g224()?["Risultato e statistiche","Voto e giocate","I giornali","Classifica e prossima partita"]:["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=_g224()?["Risultato","Voto e giocate","Giornali","Classifica"]:["Risultato","Giocate","Giornali","Classifica"];
   const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
     <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
       style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
@@ -13032,7 +13044,74 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           })()}
           </div>
           <div data-scheda200="4" style={_v200(3)}>
-          {_g200()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
+          {_g224()&&(()=>{/* [giro 224 · PO-490, questionario PO] scheda 4 piena: (a) classifica piu' lunga (prime 5, la tua zona, ultime 3) con le
+              zone colorate come nella scheda Classifiche (src/18: stesse regole per prima/seconda divisione e Primavera); nella fase a gironi
+              della coppa europea il girone (euroGroupTable, la stessa della scheda Europa); (b) i tuoi numeri di stagione dal salvataggio
+              (prima di questa partita, che si salva tornando alla carriera) con gli obiettivi misurati da objCurrent, lo stesso metro del
+              cruscotto; (c) la prossima partita del calendario con posizione, punti e forma dell'avversario (la stessa grafica della
+              pre-partita, _tvTeamStat) e il suo miglior marcatore di campionato (generateLeagueScorers, la lista dei Marcatori).
+              Solo lettura, nessun campo nuovo. Ogni riga compare solo se il suo dato c'e'. */
+            const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));const _sn=player.season||1;
+            const _isEG=context==="euro_group"&&player.euro&&typeof euroGroupTable==="function";
+            let _st=[],_io=-1,_zone=()=>null,_leg=[];
+            if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
+            else if(!_isNatCtx){_st=[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+              _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
+              const _lg=_cl.lg||"",N=_st.length,_ZC={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
+              const _sec=typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===_lg),_yo=/^Primavera/i.test(_lg),_noRel=typeof LEAGUE_PAIRS!=="undefined"&&!LEAGUE_PAIRS.some(([u])=>u===_lg);
+              const _z=_yo?(i)=>(i===0?"champ":null):_sec?(i)=>(i===0?"champ":i<3?"promo":(i>=N-3&&N>6&&!_noRel)?"rel":null):(i)=>(i===0?"champ":i<4?"cl":i<6?"el":i===6?"conf":(i>=N-3&&N>6&&!_noRel)?"rel":null);
+              _zone=(i)=>{const k=_z(i);return k?_ZC[k]:null;};
+              _leg=_yo?[[_ZC.champ,"Campione"]]:_sec?[[_ZC.champ,"Campione"],[_ZC.promo,"Promozione"],...(_noRel?[]:[[_ZC.rel,"Retrocessione"]])]:[[_ZC.champ,"Campione"],[_ZC.cl,"CL"],[_ZC.el,"EL"],[_ZC.conf,"Conf."],...(_noRel?[]:[[_ZC.rel,"Retrocessione"]])];}
+            const N=_st.length;const _set=new Set();
+            if(_io>=0){if(_isEG||N<=10){for(let i=0;i<N;i++)_set.add(i);}else{for(let i=0;i<Math.min(5,N);i++)_set.add(i);for(let i=_io-1;i<=_io+1;i++)if(i>=0&&i<N)_set.add(i);for(let i=Math.max(0,N-3);i<N;i++)_set.add(i);}}
+            const _idx=[..._set].sort((a,b)=>a-b);
+            const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;
+            const _wk=player.week||1;const _nx=[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+            const _tipo={cup:"Coppa",euro:"Coppa europea",nations:"Nazionale",national:"Nazionale",friendly:"Amichevole"};
+            const _riga=(i,k)=>{const r=_st[i];const io=i===_io;const zc=_zone(i);const gap=k>0&&i-_idx[k-1]>1;
+              return(<React.Fragment key={i}>{gap&&<div aria-hidden="true" style={{textAlign:"center",color:TH.faint,fontSize:FS.caption,lineHeight:1,padding:"1px 0"}}>⋯</div>}
+                <div data-cpm={io?"classifica200-io":"classifica224-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"1px 6px",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,boxShadow:zc?("inset 3px 0 0 "+zc):"none",fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span className="cpm-num" style={{minWidth:26,color:TH.muted,paddingLeft:4}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.fullName||r.n||r.name||r.id}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto"}}>{(r.pts|0)+" pt"}</span></div></React.Fragment>);};
+            /* (b) numeri di stagione */
+            const _rat=(player.matchHistory||[]).filter(m=>m&&(m.season||1)===_sn&&typeof m.rating==="number"&&isFinite(m.rating));
+            const _vm=_rat.length?(Math.round(10*_rat.reduce((s,m)=>s+m.rating,0)/_rat.length)/10):null;
+            const _num=[["Gol",player.goals],["Assist",player.assists],["Presenze",player.matches],["Voto medio",_vm!=null?_vm.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
+            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=[...(player.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+              const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
+              _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_sp,_pi+1);
+                return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
+            const _oggi=[mStats.goals>0?(mStats.goals+" gol"):null,mStats.assists>0?(mStats.assists+" assist"):null].filter(Boolean);
+            /* (c) anteprima della prossima */
+            let _av=null,_avS=null,_occ=null;
+            if(_nx){_av=(typeof CLUBS!=="undefined"?CLUBS.find(c=>c.id===_nx.opponentId):null)||null;
+              try{if(_av)_avS=_tvTeamStat(_av);}catch(_e){_avS=null;}
+              try{if(_av&&!_nx.type&&_av.lg===_cl.lg&&typeof generateLeagueScorers==="function"){const _sc=generateLeagueScorers(player,{all:true,fullClub:true})||[];const _o=_sc.find(x=>x&&!x.isPlayer&&x.club===(_av.n||_av.a)&&(x.goals|0)>0);if(_o)_occ=_o;}}catch(_e){_occ=null;}}
+            const _lab={fontSize:FS.caption,color:TH.muted,fontWeight:FW.bold};
+            return(<div data-cpm="classifica200">
+              {_io>=0&&<Sez210 id="post-classifica200" titolo={_isEG?"Classifica del girone":"Classifica"}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
+                <div data-cpm="classifica224" style={{display:"flex",flexDirection:"column",gap:1}}>{_idx.map(_riga)}</div>
+                {_leg.length>0&&<div data-cpm="zone224" style={{display:"flex",flexWrap:"wrap",columnGap:10,rowGap:0,marginTop:4,fontSize:FS.caption,color:TH.muted}}>{_leg.map(([c,l])=>(<span key={l} style={{display:"inline-flex",alignItems:"center",gap:4}}><span style={{width:8,height:8,borderRadius:2,background:c}}/>{l}</span>))}</div>}
+              </Sez210>}
+              {context!=="trial"&&_num.length>0&&<Sez210 id="post-stagione224" titolo="I tuoi numeri di stagione">
+                <div data-cpm="stagione224">
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima di questa partita"+(_oggi.length?(" · oggi: "+_oggi.join(" e ")):"")}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat("+_num.length+",1fr)",gap:6}}>{_num.map(([l,v])=>(<div key={l} style={{textAlign:"center",padding:"4px 2px",background:TH.surface2,borderRadius:RAD.sm}}>
+                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
+                  {_obj.map((o,k)=>(<div key={k} data-cpm="obiettivo224" style={{display:"flex",alignItems:"baseline",gap:8,marginTop:k?2:6,fontSize:FS.small,color:TH.text}}>
+                    <span style={{flex:1,minWidth:0}}>{(o.ok?"✅ ":"🎯 ")+o.l}</span><span className="cpm-num" style={{fontWeight:FW.bold,color:o.ok?TH.success:TH.text}}>{o.v}</span></div>))}
+                </div>
+              </Sez210>}
+              <Sez210 id="post-prossima224" titolo="Prossima partita">
+                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):"Nessuna partita in calendario dopo questa."}</div>
+                {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
+                {_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
+              </Sez210>
+            </div>);})()}
+          {_g200()&&!_g224()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
               (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
             const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
             const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
@@ -13086,13 +13165,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _t286={sx:_no286?(_ord.eroeSx?TH.primary:TH.muted):legCol944(_c286.sx,TH.card),dx:_no286?(_ord.eroeSx?TH.muted:TH.primary):legCol944(_c286.dx,TH.card)};
             try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},tabellino:_c286,sfondo:TH.card});}}catch(_e){}
             return(<Sez210 id="post-gara" titolo="Tabellino della gara">
-              <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
+              <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px",..._g224()?{maxWidth:560,margin:"0 auto"}:{}}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice · [giro 224] su PC le righe non superano 560 px: numero e voce restano vicini */}
                 <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_g202()?4:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
                   <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.sx}}>{_nSx}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
                   <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
-                {_g202()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:4}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
+                {_g224()&&(<div data-cpm="tab224" style={{display:"flex",flexDirection:"column",gap:2}}>{/* [giro 224] una voce per riga, a tutta larghezza */}
+                  {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} data-cpm="tab202-voce">
+                    <div style={{display:"flex",alignItems:"baseline",gap:10,fontVariantNumeric:"tabular-nums",lineHeight:1.1}}>
+                      <span className="cpm-num" style={{flex:"0 0 auto",minWidth:44,textAlign:"left",fontSize:FS.bodyLg,fontWeight:800,color:a>=b?TH.text:TH.muted}}>{r[1]}</span>
+                      <span style={{flex:"1 1 0",minWidth:0,textAlign:"center",fontSize:FS.body,color:TH.muted,fontWeight:700}}>{r[0]}</span>
+                      <span className="cpm-num" style={{flex:"0 0 auto",minWidth:44,textAlign:"right",fontSize:FS.bodyLg,fontWeight:800,color:b>=a?TH.text:TH.muted}}>{r[2]}</span>
+                    </div>
+                    <div style={{display:"flex",height:3,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:2}}>
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
+                    </div>
+                  </div>);})}</div>)}
+                {_g202()&&!_g224()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:4}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
                   {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} data-cpm="tab202-voce" style={{flex:"1 0 auto",minWidth:0}}>
                     <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:5,fontVariantNumeric:"tabular-nums",lineHeight:1.15,whiteSpace:"nowrap"}}>
@@ -13138,7 +13230,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>
           </Sez210>
           </div>
-          <div data-scheda200="1" style={_v200(0)}>
+          <div data-scheda200={_g224()?"2":"1"} style={_v200(_g224()?1:0)}>{/* [giro 224] pagella, mister e momenti chiave passano alla scheda 2 */}
           {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);let rating=Math.round(raw*10)/10;
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
             try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:_g202()?4:14}}>
@@ -13164,7 +13256,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
-              <div data-cpm="momenti202" style={_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
+              <div data-cpm="momenti202" style={_g224()?{display:"flex",flexDirection:"column",gap:4}:_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
                 {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:_g202()?"baseline":"center",..._g202()?{lineHeight:1.25,gap:4,breakInside:"avoid",marginBottom:3}:{},fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>

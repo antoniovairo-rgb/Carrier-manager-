@@ -13,6 +13,7 @@
    ROSSO window.__CPM_NO_G202 (dall'avvio, stessa partita e stessi eventi): tabellino nella scheda 4 e piede in fondo alla pagina →
    DEVE essere bocciato. «Non giudicato» (partita non finita, scheda o piede non trovati, meno di 3 momenti chiave) = rosso.
    Verde e rosso stampati per ultimi. Foto in docs/sviluppo/giro202/.
+   [giro 224] i momenti chiave si contano dovunque stiano: dal giro 224 sono nella scheda 2 (decisione PO sulla foto 195). Soglie invariate.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node rassegna-202.mjs */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -35,7 +36,7 @@ async function leggi(page) {
     const tab = document.querySelector('[data-cpm="tabellino202"]');
     const voci = tab ? tab.querySelectorAll('[data-cpm="tab202-voce"]').length : 0;
     const vociVecchie = tab ? tab.querySelectorAll('[data-cpm="barra286-a"]').length : 0;
-    const mk = [...document.querySelectorAll('[data-scheda200="1"] div')].find(d => d.textContent === 'MOMENTI CHIAVE');
+    const mk = [...document.querySelectorAll('[data-scheda200] div')].find(d => d.textContent === 'MOMENTI CHIAVE');
     const momenti = mk && mk.nextElementSibling ? mk.nextElementSibling.children.length : 0;
     sc.scrollTop = sc.scrollHeight; await new Promise(r => setTimeout(r, 150));
     const visibili = [...sc.querySelectorAll('*')].filter(e => e.offsetParent && e.children.length === 0 && (e.textContent || '').trim());
@@ -72,7 +73,7 @@ async function preparaPartita(pc, init, provoca = 0) {
   await apriPrompt166(A.page); const g = await gioca166(A.page, 'solo', { seme: SEME }); await sleep(1200);
   let provocati = 0;
   if (g.finita) {
-    const n0 = await A.page.evaluate(() => { const mk = [...document.querySelectorAll('[data-scheda200="1"] div')].find(d => d.textContent === 'MOMENTI CHIAVE'); return mk && mk.nextElementSibling ? mk.nextElementSibling.children.length : 0; });
+    const n0 = await A.page.evaluate(() => { const mk = [...document.querySelectorAll('[data-scheda200] div')].find(d => d.textContent === 'MOMENTI CHIAVE'); return mk && mk.nextElementSibling ? mk.nextElementSibling.children.length : 0; });
     /* testi nella forma di quelli veri (src/15, pushMatchEvent) */
     const EV = [['goal', '⚽ Gol di Rossi'], ['opp_yellow', '🟨 Ammonito Bianchi per il fallo su di te'], ['yellow', '🟨 Ammonizione'], ['sub', '🔁 Sostituzione: Collaudo Salienti esce — scelta tecnica.'], ['opp_goal', '😨 Gol di Verdi'], ['player_goal', '⚽ Tuo gol (assist di Neri)'], ['post', '🔩 Palo/traversa'], ['opp_red', '🟥 Espulso Gialli per il fallo su di te'], ['miss', '😱 Gol clamorosamente sprecato'], ['player_assist', '🎯 Assist per Rossi'], ['goal', '⚽ Gol di Marroni'], ['red', '🟥 Espulsione avversaria']];
     for (let i = 0; i < provoca; i++) { const r = await A.page.evaluate(({ i, e }) => window.__CPM_PUSH_MEV202 ? window.__CPM_PUSH_MEV202(20 + i * 5, e[0], e[1]) : false, { i, e: EV[i % EV.length] }); if (r) provocati++; }
