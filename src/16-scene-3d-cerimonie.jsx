@@ -1210,6 +1210,7 @@ function _saluto144(av){const T=THREE,B={};
    ════════════════════════════════════════════════════════════════════════ */
 const _g225=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G225);
 const K_FOLLA225=0.5;/* taratura misurata: vedi rapporto giro 225 */
+const RESA225=[0.90,0.68,0.58];/* le luci della serata (guadagno 2,3 + sviluppo del colore) schiariscono e sbiadiscono la pelle: senza questo fattore il viso RESO sta a 11-20 (CIE76) dal viso della figurina anche col colore di base identico. Misurato sul fotogramma, non sul materiale */
 const _CAP225={neri:'#141210',castani:'#3a2410',biondi:'#dcb64c',rossi:'#b5491f'};/* un colore per classe: cgVarianteCapelli li porta a black/brown/blond/auburn */
 const _BASE225={'Material.001':[208,143,113],'Material.002':[203,133,109],HyperLegLeft:[187,130,102],HyperLegRight:[187,130,102]};/* pelle delle texture del corpo CGTrader (mediana dei pixel di pelle, misurata sul GLB) */
 function aspettoFigurina225(chiave){try{const I=VOLTI23.idx;if(!I||chiave==null||chiave==="")return null;const n=voltoId23('giocatore',chiave,0);if(n==null)return null;
@@ -1223,7 +1224,7 @@ function _pelle225(av,hex,lineare){try{if(!av||!hex||typeof THREE==='undefined')
     const nx=src.map(b=>{if(!b||!b.map||(b.userData&&b.userData.pelle225===hex))return b;const nome=(b.userData&&b.userData.base225)||(/^KorwardNativeHair_/.test(b.name)?'Material.002':b.name),bs=_BASE225[nome];if(!bs)return b;
       if(lineare&&typeof _linMat178==='function'){try{_linMat178(b);}catch(_e){}}/* prima del proprio shader: sviluppoColore178 salta i materiali con onBeforeCompile */
       const c=b.clone();c.userData=Object.assign({},b.userData||{},{base225:nome,pelle225:hex});
-      const u=new T.Vector3(f(tg[0])/f(bs[0]),f(tg[1])/f(bs[1]),f(tg[2])/f(bs[2]));c.userData.u225=u;
+      const u=new T.Vector3(f(tg[0])/f(bs[0]),f(tg[1])/f(bs[1]),f(tg[2])/f(bs[2]));if(lineare){const q=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_RESA225)||RESA225;u.x*=q[0];u.y*=q[1];u.z*=q[2];}c.userData.u225=u;
       const s0=lineare?'0.35':'0.20',s1=lineare?'0.55':'0.34';
       c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.fragmentShader='uniform vec3 uPelle225;\n'+sh.fragmentShader.replace('#include <map_fragment>',
         '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);diffuseColor.rgb*=mix(vec3(1.0),uPelle225,k225);}');};
@@ -1561,15 +1562,15 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       /* [giro 225 · PO-489 «quando ritornano in fila volano ed il movimento del braccio nel saluto non è naturale»] Misurato: i piedi
          stavano a 2,6 cm dal prato per tutta la scena, ma il corpo traslava di 4,4 u in 0,9 s (e 4,4 u indietro) a gambe ferme, e il
          braccio saltava di 53 gradi in un fotogramma all'inizio e alla fine del saluto. Ora, per ogni uomo: due passi veri avanti (un ciclo
-         della clip walk, fase = distanza), il saluto da fermo (su 0,7 s · 2,4 s · giu' 0,7 s, dalla posa a riposo), due passi indietro
+         della clip walk, fase = distanza), il saluto da fermo (su in 0,85 s · fino a 2,05 s · giu' in 0,85 s, dalla posa a riposo), due passi indietro
          solo a braccio abbassato. Chi non e' piu' chiamato finisce di abbassare il braccio e torna camminando. */
       if(_t225){const _no192c=!!(typeof window!=='undefined'&&window.__CPM_NO_G192C);
         for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
           const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
           const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
-          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<2.4?1:0;if(S.ts>=2.4&&S.lin<=0.10)S.fatto=true;}}
+          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<2.05?1:0;if(S.ts>=2.05&&S.lin<=0.10)S.fatto=true;}}
           else if(S.lin>0.10)tz=m.position.z;
-          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/0.7);S.w=_sm(S.lin);
+          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/0.85);S.w=_sm(S.lin);
           if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
         if(mixers.length)mixers.forEach(m=>m.update(dt));
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}
