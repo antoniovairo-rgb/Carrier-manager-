@@ -1256,13 +1256,14 @@ class RootErrorBoundary extends React.Component{
      loro gestore parte dopo che il fotogramma col tasto premuto e la rotellina e' stato disegnato (la rotellina gira sul compositore
      anche mentre il lavoro tiene occupato il filo principale). Un secondo tocco sullo stesso tasto mentre l'azione del primo non e'
      ancora partita viene assorbito (nessuna azione doppia).
-   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213. */
+   Rosso window.__CPM_NO_G213: strato spento, tornano i vecchi :active. Guardiano tocco-213.
+   [giro 221 PO-486] tasti spenti: vibrazione della scritta del motivo (scuoti, qui sotto). Guardiano barra-221. */
 const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
 (function tocco213(){
   if(typeof window==="undefined"||typeof document==="undefined"||window.__CPM_NO_G213)return;
   document.documentElement.classList.add("cpm-t213");
   const SEL="button,[role=\"button\"],.cpm-press,[data-tocco213]";
-  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1};
+  const NOSTRI={"data-premuto213":1,"data-pos213":1,"data-rotella213":1,"data-scuoti221":1};
   const spento=el=>el.disabled||el.getAttribute("aria-disabled")==="true";
   const modo=el=>{
     const cs=getComputedStyle(el);if(cs.display==="inline"||cs.overflowX!=="visible"||cs.overflowY!=="visible")return "n";
@@ -1270,10 +1271,18 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     if(m!=="n"&&cs.position==="static"){const D=el.getElementsByTagName("*");for(let i=0;i<D.length&&i<80;i++){const p=getComputedStyle(D[i]).position;if(p==="absolute"||p==="fixed"){m="n";break;}}}
     return m;
   };
+  /* [giro 221 PO-486] un tasto SPENTO al tocco da' un segnale: la scritta che dice perche' e' spento (data-motivo221, se c'e'; se no
+     il tasto) fa una piccola vibrazione orizzontale (lampo di colore col moto ridotto, CSS in src/00). L'attributo si mette NELLO STESSO
+     pointerdown: il fotogramma dopo il tocco lo disegna. Nessuna azione (il click di un tasto spento non parte) e la guardia del doppio
+     tocco qui sotto resta com'e'. Rosso window.__CPM_NO_G221. */
+  const NO221=!!window.__CPM_NO_G221;
+  try{if(!NO221)document.documentElement.style.setProperty("--lampo221",TINTE.oro);}catch(_e){}
+  const scuoti=el=>{if(NO221)return;const t=el.querySelector("[data-motivo221]")||el;t.removeAttribute("data-scuoti221");void t.offsetWidth;t.setAttribute("data-scuoti221","");
+    try{window.__CPM_SPENTO221=(window.__CPM_SPENTO221|0)+1;}catch(_e){}clearTimeout(t._t221);t._t221=setTimeout(()=>t.removeAttribute("data-scuoti221"),420);};
   let prem=null,tGiu=0,tRil=null;
   const rilascia=()=>{if(tRil){clearTimeout(tRil);tRil=null;}if(!prem)return;const el=prem;prem=null;el.removeAttribute("data-premuto213");el.removeAttribute("data-pos213");};
   document.addEventListener("pointerdown",e=>{
-    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el||spento(el))return;
+    if(e.button>0)return;const el=e.target&&e.target.closest?e.target.closest(SEL):null;if(!el)return;if(spento(el)){scuoti(el);return;}
     rilascia();const m=modo(el);const st=getComputedStyle(el).position==="static";
     el.setAttribute("data-premuto213",m);if(m!=="n"&&st)el.setAttribute("data-pos213","");prem=el;tGiu=performance.now();
   },true);
