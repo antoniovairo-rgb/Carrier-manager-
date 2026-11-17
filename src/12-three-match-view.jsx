@@ -11770,11 +11770,12 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          in alto. Ci arriva lungo un ARCO attorno all'eroe (bersaglio a non piu' di 1,1 rad dalla camera vera, e solo se serve: a pallone vicino quasi ogni lato va bene), mai tagliando per il suo
          corpo. L'eroe ha la precedenza: lo sguardo non lo porta mai oltre 0,55 del semiquadro. A pallone vicino (prima del gesto) la
          regia resta quella del 7.482/7.505. La POSIZIONE si scrive qui, prima del lerp di posizione (scritta dopo, cambiava solo lo sguardo: misurato, la camera tagliava ancora per l'eroe a 4,3 u); lo SGUARDO piu' sotto, prima dell'arbitro d'inerzia (regola 7.521). Nessun sorteggio. */
-      {const S1=sr.current;S1._g241on=0;const _F1=S1._g241f||(S1._g241f={on:0,w:0,tv:0,th:0,v:1});_F1.on=0;/* oggetto riusato: nessuna allocazione per fotogramma */
+      {const S1=sr.current;S1._g241on=0;const _F1=S1._g241f||(S1._g241f={on:0,net:0,w:0,tv:0,th:0,v:1});_F1.on=0;_F1.net=0;/* oggetto riusato: nessuna allocazione per fotogramma */
        if(isResult&&hero&&hero.visible&&ball&&P.hlSuccess===false&&!P.hlDef&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
          const _hx1=hero.position.x,_hz1=hero.position.z,_dx1=ball.position.x-_hx1,_dz1=ball.position.z-_hz1,_d1=Math.hypot(_dx1,_dz1);
          const _st1=(S1._g241&&S1._g241.k===P.hlSitKey)?S1._g241:(S1._g241={k:P.hlSitKey,w:0,ax:0,az:0});
          if(_d1>3){const _k1=(_st1.ax||_st1.az)?Math.min(dt/0.25,1):1;_st1.ax+=(_dx1/_d1-_st1.ax)*_k1;_st1.az+=(_dz1/_d1-_st1.az)*_k1;}
+         _F1.net=1;_F1.tv=Math.atan(Math.tan(((camera&&camera.fov)||46)*Math.PI/360));_F1.th=Math.atan(Math.tan(_F1.tv)*((camera&&camera.aspect)||0.45));/* la rete finale vale per tutta la scena fallita, costruzione compresa */
          /* MAI ATTRAVERSO L'EROE (anche nella costruzione, prima del gesto). MISURATO col guardiano camera-241 su gi6 «Stacco di testa»
             (cross in arrivo): il bersaglio della regia segue il pallone che gli passa sopra e la camera, andandogli dietro in linea
             retta, sfila a 4-7 u dall'eroe: eroe fuori dal quadro della regia per 5-10 fotogrammi e alto fino a 0,39 del quadro (col
@@ -12294,11 +12295,12 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
-      /* [giro 241 PO-506] L'ULTIMA RETE: con la passata «eroe e pallone insieme» accesa, se nella vista RESA (dopo i lerp) il busto dell'eroe
+      /* [giro 241 PO-506] L'ULTIMA RETE, per tutta la scena di un'azione fallita dell'eroe (anche nella costruzione: misurato su gi6, mentre
+         l'eroe corre incontro al cross lo sguardo della regia gli restava dietro e lui usciva per 7-15 fotogrammi): se nella vista RESA (dopo i lerp) il busto dell'eroe
          sta oltre 0,66 del semiquadro (0,62 in verticale), lo sguardo ruota di quanto basta a riportarlo li' (azimut ed elevazione). Il bersaglio lo tiene
          gia' entro 0,55: rete e lerp spingono dalla stessa parte (lezione 7.507), nessun tiro alla fune. Solo camLook. */
       {const _f2=sr.current._g241f;
-       if(_f2&&_f2.on&&_f2.w>0.5&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+       if(_f2&&_f2.net&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
          const _cx2=camera.position.x,_cy2=camera.position.y,_cz2=camera.position.z,_gl2=Math.hypot(camLook.x-_cx2,camLook.z-_cz2)||1,_gh2=Math.hypot(hero.position.x-_cx2,hero.position.z-_cz2)||1;
          const _al2=Math.atan2(camLook.z-_cz2,camLook.x-_cx2),_el2=Math.atan2(camLook.y-_cy2,_gl2),_eh2=Math.atan2(hero.position.y+0.9-_cy2,_gh2);
          let _da2=Math.atan2(hero.position.z-_cz2,hero.position.x-_cx2)-_al2;while(_da2>Math.PI)_da2-=2*Math.PI;while(_da2<-Math.PI)_da2+=2*Math.PI;
