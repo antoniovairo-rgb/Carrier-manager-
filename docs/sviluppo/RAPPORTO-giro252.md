@@ -92,7 +92,7 @@ Uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, build finale (`check-src
 |---|---|
 | `coreografie-252` verde | ✅ 18/20 normali con taglia 1 (18/18 col tifo), taglie 1/2/3, 0 di fila, fps 2,66/1,87 |
 | `coreografie-252` rosso (`__CPM_NO_G252`) | ✅ 0 normali con coreografia su 6 |
-| `coreografie-244` (verde + rosso) | ESITO_244 |
+| `coreografie-244` (verde + rosso) | ✅ verde: 12 nomi distinti su 30, 0 di fila, 4 in movimento, riaperta uguale, fps 2,36/2,20 · rosso: 1 disegno, fermo |
 | `notte-206` | ✅ verde e rosso |
 | `fps-249` | ✅ verde e rosso |
 | `test:logic` | ✅ 51 pass · 0 fail |
