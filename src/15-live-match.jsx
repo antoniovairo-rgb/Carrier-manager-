@@ -10985,10 +10985,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      salvataggio (se un dato manca la riga non compare). Rosso __CPM_NO_G224 = la rassegna del giro 202. */
   const _g224=()=>_g202()&&_g224x();
   const _T200=_g224()?["Risultato e statistiche","Voto e giocate","I giornali","Classifica e prossima partita"]:["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=_g224()?["Risultato","Voto e giocate","Giornali","Classifica"]:["Risultato","Giocate","Giornali","Classifica"];
-  const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-    <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
+  /* [giro 239 · PO-507b, dal giro 232 dubbio 6 — rosso __CPM_NO_G239] dopo una gara a eliminazione diretta la scheda 4 mostra il
+     TABELLONE (rassegnaComp232 tipo "tabellone"), non una classifica: l'etichetta in basso lo dice («4/4 · Tabellone», e il puntino
+     «Tabellone e prossima partita»). Stessa chiamata pura della scheda 4, stessi argomenti. */
+  const _tab239=()=>{try{if((typeof window!=='undefined'&&window.__CPM_NO_G239)||!_g224()||!_g232x())return false;
+    const c=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});
+    return !!(c&&c.tipo==="tabellone");}catch(_e){return false;}};
+  const _nav200=()=>{const _t239=_tab239();const _T=_t239?[..._T200.slice(0,3),"Tabellone e prossima partita"]:_T200,_C=_t239?[..._C200.slice(0,3),"Tabellone"]:_C200;return(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+    <div style={{display:"flex",alignItems:"center"}}>{_T.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
       style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
-    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C200[sk200]}</div></div>);
+    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C[sk200]}</div></div>);};
 
   useEffect(()=>{
     const sit=situations[hlIdx];
