@@ -29,3 +29,9 @@ ROSSO (__CPM_NO_G146B) {"formato":"360x800","campioni":73,"eroe":{"highlight":{"
 ✅ pelle-240 verde (e il rosso si vede)
 === tpose-196 · inizio 18:36:40 · mem libera 13667 MB · disco libero 28G
 === tpose-196 (seconda corsa: la prima fermata dal tetto di 30 minuti del comando in sottofondo, non vale) · inizio 19:07:30 · mem libera 15167 MB · disco libero 28G
+=== tpose-196 · uscita 0 · fine 19:27:54
+VERDE coppa-giorno: {"nome":"coppa-giorno","frames":{"walkout":321,"hl":35},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":417,"playing":60,"hl_intro":12,"hl_choose":2,"hl_result":9},"partita2D":false,"attesa
+✅ tpose-196 VERDE: 0 T-pose, 0 corpi non CGTrader, 0 procedurali su ingresso e highlight
+ROSSO campionato-notte: {"nome":"campionato-notte","frames":{"walkout":324,"hl":38},"cattivi":{"walkout":71,"hl":0},"noCg":21,"tpose":1,"proc":71,"maxCg":56,"chi":{"proc:giocatore":144,"proc:panchina":19,"proc:bambino":28},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":341,"playing":174
+✅ tpose-196 ROSSO ATTESO: con __CPM_NO_G196 i corpi sbagliati si vedono
+TPOSE FINITO

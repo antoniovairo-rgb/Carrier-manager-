@@ -145,7 +145,7 @@ modifica a `src/`.
 | `pelle-240` | **verde**, e il rosso si vede | 7 min 37 s | |
 | `test:logic` | **verde** | 3 s | |
 | `save-compat` | **verde** (12 su 12) | 9 s | |
-| `tpose-196` | TPOSE_ESITO | TPOSE_DURATA | TPOSE_NOTA |
+| `tpose-196` | **verde**, e il rosso si vede | 20 min 24 s | supera i 20 minuti: è nell'elenco della consegna. Una prima corsa è stata fermata a metà dal tetto di 30 minuti del comando in sottofondo: non vale e l'ho rifatta da capo |
 | `presentazione-142` | **ROSSO** | 2 min 56 s | «fermo per 1,31 s di scena > 1». **Rosso anche su `lavoro/197` senza questo giro** («fermo per 1,01 s > 1», 2 min 45 s) |
 | `spalle-146` | **ROSSO** | 7 min 48 s | serata: «spalle arretrate dietro il torace» su 16 corpi e «testa davanti alle spalle (nuca 0,008 > 0,005)». **Rosso anche su `lavoro/197` senza questo giro**, con gli stessi due rilievi (18 corpi, nuca 0,009) più uno negli highlight |
 
