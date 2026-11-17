@@ -2234,5 +2234,16 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaCmg1AtDqSZmdDT8kD",
+  "titolo": "verifica 7.999.196 parte H (highlight-95)",
+  "cost_usd": 1.4267251,
+  "output_tokens": 2731,
+  "cache_read_tokens": 1030294,
+  "versione": "7.999.196",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
