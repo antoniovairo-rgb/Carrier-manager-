@@ -13,7 +13,7 @@
    Uso: CPM_CHROME=/opt/pw-browsers/chromium PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node attesa-241.mjs
         CPM_PARTITE241 (2) · CPM_MENU_MS (0) · CPM_RIT_MIN/CPM_RIT_MAX (2000/6000) · CPM_RIT_TESTA (20000) */
 import fs from 'fs'; import path from 'path';
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, clickByText } from './lib/harness.mjs';
 
 /* --guardiano (npm run attesa-241): 2 partite, 15 s di menu, teste allo stesso ritardo degli altri file, giudizio acceso */
 const GUARD = process.argv.includes('--guardiano');
@@ -30,17 +30,23 @@ async function partita(n) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' }); const page = await ctx.newPage();
   await installCdnRoutes(page);
   const richieste = []; let tMatch = 0;
-  await ctx.route(/\.glb(\?|$)|HEAD_hair_[a-z]+\.png/, async route => { const ms = ritardo(route.request().url()); richieste.push([tMatch ? Date.now() - tMatch : -1, route.request().url().split('/').pop()]); if (ms) await sleep(ms); try { await route.continue(); } catch (e) {} });
+  await ctx.route(/\.glb(\?|$)|HEAD_hair_[a-z]+\.(png|webp)/, async route => { const ms = ritardo(route.request().url()); richieste.push([tMatch ? Date.now() - tMatch : -1, route.request().url().split('/').pop()]); if (ms) await sleep(ms); try { await route.continue(); } catch (e) {} });
   const errs = []; page.on('pageerror', e => errs.push(e.message)); let menuPre = '-';
   await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) String(r).split(',').forEach(k => { window[k.trim()] = 1; }); }, ROSSO);
   if (MENU) { /* tempo sui menu prima del provino: la pagina si carica e resta sulla home */
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     /* il tempo sui menu si conta da quando il pre-caricamento e' partito: in headless Babel trascrive il gioco per ~10 s dopo il
        «load», tempo che sul telefono (build precompilata) non esiste */
+    /* [giro 233 PO-453] all'apertura del menu non si scarica piu' nulla: i corpi si chiedono dalla schermata di creazione. Il «tempo
+       sui menu» si passa li' (e' dove il giocatore sceglie nome e aspetto), poi il flusso del provino prosegue a mano */
+    await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
+    if (!await clickByText(page, 'Nuova carriera')) throw new Error('flusso: "Nuova carriera" non trovato');
     await page.waitForFunction(() => !!window.__CPM_PRE237, null, { timeout: 60000 }).catch(() => {}); await sleep(MENU);
     menuPre = await page.evaluate(() => window.__CPM_PRE237 ? window.__CPM_PRE237.fatti + '/' + window.__CPM_PRE237.tot : '-').catch(() => '-');
-    const orig = page.goto.bind(page); page.goto = async () => {}; /* openMatch non deve ricaricare: perderebbe il pre-caricamento */
-    await openMatch(page, port, { skipLoadAll: true, name: 'Attesa ' + n }); page.goto = orig;
+    await page.evaluate(nm => { const i = document.querySelector('input[type="text"],input:not([type])'); if (i) { const s = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; s.call(i, nm); i.dispatchEvent(new Event('input', { bubbles: true })); } }, 'Attesa ' + n);
+    if (!await clickByText(page, 'INIZIA I PROVINI')) throw new Error('flusso: "INIZIA I PROVINI" non trovato'); await sleep(400);
+    if (!await clickByText(page, 'Inizia il provino')) throw new Error('flusso: "Inizia il provino" non trovato');
+    await page.waitForFunction(() => typeof window.__CPM_FORCE_SIT === 'function' && typeof window.__CPM_STATE === 'function' && typeof window.__CPM_PROBE === 'function', null, { timeout: 30000 }); await sleep(300);
   } else await openMatch(page, port, { skipLoadAll: true, name: 'Attesa ' + n });
   tMatch = Date.now();
   const t0 = Date.now(); let foto = false, attesa = 0, prev = null, motivi = {}, testi = new Set(), vecchia = false, primaScena = null, inPlay = null;

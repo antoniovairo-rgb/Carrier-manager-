@@ -3235,7 +3235,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(!c.t)c.t=Date.now();
     if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return (avviso209Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_G215))?'avviso':'2d';}/* [giro 215, rosso __CPM_NO_G215] aperto l'avviso (non il 2D) si risponde 'avviso': rispondendo '2d' la trattenuta dei corpi si toglieva e a meta' gara il cronometro correva sotto l'avviso (misurato 20'→22' in 4 s) */
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
-  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
+  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);
+  useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[glbTry]);/* [giro 233 PO-453] i modelli della partita si chiedono all'apertura della partita (scheda del prepartita), non all'apertura del menu; «Riprova» li richiede *//* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
     if(phase!=="walkout"||!_g196On()||modo2D196Ref.current)return;
     const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
@@ -3373,6 +3374,20 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       if(_f==="error"||Date.now()-t0>((_g196On()&&!_ris2D209())?(+window.__CPM_CAP196||120000):12000))setGlbFail(_f==="error"?"error":"slow");/* [giro 209] col nuovo avviso vale il tetto del PO (120 s), non i 12 s del 7.264 */
     },400);
     return ()=>clearInterval(iv);
+  },[phase,glbTry]);
+  React.useLayoutEffect(()=>{/* [giro 233 PO-453] (effetto di layout: l'attesa compare nello STESSO fotogramma in cui il campo entra in vista, mai uno dopo)
+     senza precaricamento all'avvio i corpi possono mancare anche quando la partita entra in gioco
+     SENZA passare dall'ingresso in campo (ripresa dopo il background, banco di prova): durante la trattenuta del fischio d'inizio
+     la schermata d'attesa del giro 196 copre la scena finche' i corpi non sono pronti. MISURATO dal guardiano avvio-233: 1 campione
+     con il campo in vista e i corpi non pronti. Rosso __CPM_NO_G233. */
+    if(phase!=="playing"||!_g196On()||modo2D196Ref.current||typeof _g233!=='function'||!_g233())return;
+    const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp)return;
+    /* il testimone dei corpi nasce con la scena 3D: finche' non c'e', i corpi non sono pronti per definizione */
+    const _c=()=>{if(typeof window.__CPM_PRONTI196!=='function'){_att196({motivo:'regular',pct:0});return false;}const e=_chk196('playing');return e!=='attesa';};
+    if(_c())return;
+    const iv=setInterval(()=>{if(_c())clearInterval(iv);},250);
+    return()=>clearInterval(iv);
   },[phase,glbTry]);
   useEffect(()=>{/* [7.999.162 PO-232] attesa dei corpi prima di aprire una scena dell'eroe */
     const _set=v=>{corpiHold232Ref.current=v;setCorpiHold232(v);};

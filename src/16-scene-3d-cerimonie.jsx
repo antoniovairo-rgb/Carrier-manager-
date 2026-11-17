@@ -1447,7 +1447,8 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
        targhetta piccola in basso, come in televisione (PresentazioneScena2D). Rosso __CPM_NO_PRES200 (comportamento 7.999.123). */
     const _cg200=!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&typeof corpoCG23==="function"&&!window.__CPM_NO_PRES200;
     if(_cg200){
-      Promise.all([loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb'),_g225()?voltiPronti225(4000):null]).then(([pkg])=>{/* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
+      const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');if(typeof copri233==='function')copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'presentazione');/* [giro 233 PO-453] senza precaricamento all'avvio: attesa con avanzamento finche' i corpi non ci sono */
+      Promise.all([_pr233,_g225()?voltiPronti225(4000):null]).then(([pkg])=>{/* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
         const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg||!alive)return;
         const walk0=_g225()?(pkg.animations||[]).find(c=>c&&c.name==='walk'):null,cal225=_g225()?_gomito225(pkg):null;
         const _lin225=renderer.outputEncoding===THREE.sRGBEncoding;
@@ -2095,7 +2096,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       /* [giro 192 · PO-407] +cgtrader-clip-po: l'eroe sul tetto alza la coppa con la STESSA posa del podio (mx-victory al 45%, misurata nel
          giro 191: in piedi, braccia tese sopra la testa). La clip «throwin» all'apice e' la rimessa laterale: mani DIETRO la testa e gomiti
          piegati — la coppa finiva sul viso. Rosso __CPM_NO_G192D. */
-      Promise.all([loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb'),(!(typeof window!=='undefined'&&window.__CPM_NO_G192D))?loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null):Promise.resolve(null)]).then(([pkg,po192])=>{
+      const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');if(typeof copri233==='function')copri233(el,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'parata');/* [giro 233 PO-453] */
+      Promise.all([_pr233,(!(typeof window!=='undefined'&&window.__CPM_NO_G192D))?loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null):Promise.resolve(null)]).then(([pkg,po192])=>{
         const _A=n=>pkg&&(pkg.animations||[]).find(c=>c&&c.name===n);const clip0=_A('throwin'),idle0=_A('idle');
         if(!pkg||!clip0||!idle0){placeMen(mkFallback);return;}
         /* la POSA: gambe e busto dall'idle (in piedi, fermi), BRACCIA dal throwin (sopra la testa). Le due clip sono filtrate per
@@ -2546,7 +2548,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       if(typeof window!=='undefined'&&window.__CPM_GALA_EROE51&&!window.__CPM_NO_GALA51){
         /* misurato: le clip di korward-regular-anims tengono le braccia a T su questo corpo (mano a 1,51 m, 0,72 m di lato); il corpo
            della PARTITA (lod0) porta con se' idle/walk sane e la libreria PO ha mx-victory (mani a 1,85 m = trofeo sopra la testa). */
-        Promise.all([loadGLB('./assets/cgtrader-review-lod0-kit-adapter.glb'),loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null)])
+        Promise.all([loadGLB(typeof urlLod233==='function'?urlLod233('lod0'):'./assets/cgtrader-review-lod0-kit-adapter.glb'),loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null)])
           .then(([bg,po])=>{if(!bg||!bg.scene)return;const A=bg.animations||[];_bodyG=bg;_idleG={animations:[A.find(a=>a.name==='idle')].filter(Boolean)};_walkG={animations:[A.find(a=>a.name==='walk')].filter(Boolean)};
             _liftG=po?{animations:[(po.animations||[]).find(a=>a.name==='mx-victory')].filter(Boolean)}:null;_kw51=true;}).catch(()=>{});}
     }

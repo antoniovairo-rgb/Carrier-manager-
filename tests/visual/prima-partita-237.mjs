@@ -58,11 +58,14 @@ const t0 = Date.now();
    calciatore, legge la schermata del provino. La sonda la emula restando in home prima del flusso del provino; con 0 si misura
    l'ingresso immediato. Il pre-caricamento parte a 2,5 s e procede nei momenti d'ozio. */
 await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+/* [giro 233 PO-453] all'apertura del menu non si scarica piu' nulla: l'attesa si passa sulla schermata di creazione, dove ora
+   i corpi si chiedono (con la pillola d'avanzamento) */
+await page.waitForFunction(() => [...document.querySelectorAll('button')].some(b => /Nuova carriera/i.test(b.textContent || '')), null, { timeout: 90000 });
+await page.evaluate(() => { const el = [...document.querySelectorAll('button')].find(b => /Nuova carriera/i.test((b.textContent || '').trim())); if (el) el.click(); }); await sleep(700);
 await sleep(ATTESA);
 const pre = await page.evaluate(() => ({ pre: window.__CPM_PRE237 || null, teste: Object.keys(window.__CPM_TESTE237 || {}) }));
 /* flusso del provino SENZA ricaricare (openMatch fa page.goto: azzererebbe il pre-caricamento appena misurato) */
 const clickT = async (rx, ms = 15000) => { const end = Date.now() + ms; while (Date.now() < end) { const ok = await page.evaluate(s => { const r = new RegExp(s, 'i'); const el = [...document.querySelectorAll('button')].find(b => r.test((b.textContent || '').trim())); if (el) { el.click(); return true; } return false; }, rx); if (ok) return true; await sleep(250); } throw new Error('flusso: «' + rx + '» non trovato'); };
-await clickT('Nuova carriera'); await sleep(700);
 await page.evaluate(n => { const i = document.querySelector('input[type="text"],input:not([type])'); if (i) { const st = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; st.call(i, n); i.dispatchEvent(new Event('input', { bubbles: true })); } }, 'Prima237');
 await clickT('INIZIA I PROVINI'); await sleep(400); await clickT('Inizia il provino');
 await page.waitForFunction(() => typeof window.__CPM_AUTOPLAY === 'function' && typeof window.__CPM_PHASE === 'function', null, { timeout: 30000 });

@@ -2012,10 +2012,74 @@ function loadGLB(url){
   //   cache → il match ri-scarica da zero. I successi restano cachati (il prefetch continua a giovare).
   if(!_glbCache[url])_glbCache[url]=new Promise((res,rej)=>{
     if(typeof THREE.GLTFLoader==='undefined'){rej(new Error('no GLTFLoader'));return;}
-    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
+    new THREE.GLTFLoader().load(url,g=>{try{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;}catch(_e233){}_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
   }).catch(e=>{try{delete _glbCache[url];}catch(_){}throw e;});
   return _glbCache[url];
 }
+/* [giro 233 · PO-453 «primo avvio leggero»] MISURATO (tests/visual/misura-233.mjs, telefono 375x667, primo avvio): entro 2,5 s dal
+   menu partivano da sole 34 richieste per 49,5 MB (corpi CGTrader lod0+lod1+lod2 27,5 MB, capelli PNG 9,9 MB, corpo «regular» x3
+   6,3 MB, clip 5,8 MB) senza che il giocatore avesse fatto nulla. E in partita (146 campioni) il livello intermedio non e' mai
+   acceso: 1 corpo a lod0 (l'eroe), 22 a lod2, 0 a lod1; nel lod0 12,3 MB su 16,4 sono immagini 2048 px.
+   Ora: (1) all'apertura del menu NON si scarica nessun modello; i modelli si chiedono quando il giocatore entra in gioco
+   (schermata di creazione → corpo dell'intro e poi corpi del provino; ingresso nella carriera e apertura della partita → corpi
+   della partita; cerimonie → al montaggio), cosi' arrivano PRIMA della prima scena 3D (PO-237/PO-241: la prima partita non deve
+   pagare il caricamento), sempre
+   con un avanzamento VISIBILE (pillola in alto, o schermata d'attesa sopra la scena finche' i corpi non ci sono); (2) su un
+   dispositivo leggero (lato corto dello schermo ≤ 500 px, o ≤ 4 GB dichiarati, o «risparmio dati») il livello piu' pesante non si
+   scarica: l'eroe usa il lod1 (12.244 triangoli, immagini 1024 px); (3) i capelli sono WebP (9,9 → 0,85 MB, ritaglio alfa identico,
+   tools/capelli-233.py); (4) le due varianti di corporatura del corpo «regular» (4,2 MB) non si scaricano nel modo CGTrader, dove
+   quel corpo non si vede mai (giro 196). Rosso __CPM_NO_G233 = tutto come nella 7.999.196. Guardiano npm run avvio-233. */
+function _g233(){return !(typeof window!=='undefined'&&window.__CPM_NO_G233);}
+function leggero233(){try{if(typeof window==='undefined')return false;const f=window.__CPM_DETT233;if(f==='alto')return false;if(f==='leggero')return true;/* solo banco di prova */
+  if(!_g233())return false;const s=Math.min((window.screen&&screen.width)||9999,(window.screen&&screen.height)||9999);const c=navigator.connection||{};
+  return s<=500||(!!navigator.deviceMemory&&navigator.deviceMemory<=4)||!!c.saveData;}catch(_e){return false;}}
+function urlLod233(liv){return './assets/cgtrader-review-'+((liv==='lod0'&&leggero233())?'lod1':liv)+'-kit-adapter.glb';}
+function urlTesta233(k){return _g233()?'./assets/hair-colors/webp/HEAD_hair_'+k+'.webp':'./assets/hair-colors/source-textures/HEAD_hair_'+k+'.png';}
+/* avanzamento (0..1) di un elenco di file: byte arrivati su byte attesi (loadGLB li annota in __CPM_GLBP196); un file senza
+   dimensione dichiarata conta come la media degli altri */
+function avanz233(urls){try{const P=(typeof window!=='undefined'&&window.__CPM_GLBP196)||{},F=(typeof window!=='undefined'&&window.__CPM_FATTI233)||{};let a=0,t=0,n=0,ign=0,fat=0;
+  urls.forEach(u=>{const p=P[u];if(F[u]){fat++;if(p&&p[1]>0){a+=p[1];t+=p[1];n++;}else ign++;}else if(p&&p[1]>0){a+=Math.min(p[0],p[1]);t+=p[1];n++;}else ign++;});
+  if(!urls.length)return 1;if(!n)return fat/urls.length;const m=t/n;return Math.max(0,Math.min(1,(a+m*urls.filter(u=>F[u]&&!(P[u]&&P[u][1]>0)).length)/(t+m*ign)));}catch(_e){return 0;}}
+function _segna233(url,pr){try{pr.then(()=>{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;},()=>{});}catch(_e){}return pr;}
+/* pillola in alto «Scarico i giocatori 3D · NN%»: visibile finche' un gruppo e' in volo e nessuna schermata d'attesa la sostituisce */
+const _vol233={gruppi:[],iv:0};
+function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_vol233.gruppi.filter(g=>!g.fine);let el=document.getElementById('cpm-avanz233');
+  const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
+  if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
+  if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
+    /* striscia sottile in cima allo schermo (larga tutto, alta 18 px + area sicura): non copre titoli ne' tasti e non prende i tocchi */
+    el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:rgba(5,8,20,0.94);color:#fff;font:700 11px/18px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);white-space:nowrap;overflow:hidden;border-bottom:1px solid rgba(245,158,11,0.45);';
+    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';document.body.appendChild(el);}
+  const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
+  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(2,p)+'%';
+  try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
+  if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
+/* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
+function prepara233(gruppo){try{if(typeof window==='undefined'||window.__CPM_GLB===false||!_g233()||window.__CPM_NO_PRE237)return null;
+  {const es=_vol233.gruppi.find(g=>g.gruppo===gruppo&&(!g.fine||g.fatti===g.urls.length));if(es)return es;}/* gia' in volo o gia' arrivato: una volta sola */
+  if((function(){try{return localStorage.getItem('cpm-glb')==='0'||/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return false;}})())return null;
+  const cg=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';let L=[];
+  if(gruppo==='intro'){if(cg&&!window.__CPM_NO_CGINTRO)L=['./assets/cgtrader-review-lod1-kit-adapter.glb'];}
+  else if(gruppo==='partita'){L=['korward-regular-player'].concat(cg?[]:['korward-regular-player-slim','korward-regular-player-stocky']).concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance','walk'].map(n=>'korward-regular-anims/regular-anim-'+n)).map(n=>'./assets/'+n+'.glb');
+    if(cg){['lod0','lod1','lod2'].forEach(l=>{const u=urlLod233(l);if(L.indexOf(u)<0)L.push(u);});L=L.concat(['./assets/cgtrader-clip-mixamo.glb','./assets/cgtrader-clip-po.glb','./assets/cgtrader-clip-po2.glb']);
+      const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};['brown','black','blond','auburn'].forEach(k=>{try{if(T[k])return;const im=new Image();im.decoding='async';im.src=urlTesta233(k);const fatto=()=>{T[k]=im;};if(im.decode)im.decode().then(fatto).catch(()=>{});else im.onload=fatto;}catch(e){}});}}
+  if(!L.length)return null;const g={gruppo,urls:L,t0:Date.now(),fine:null,fatti:0};_vol233.gruppi.push(g);
+  try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.gruppi=w.gruppi||[]).push(g);}catch(_e){}
+  const agg237=()=>{try{const G=_vol233.gruppi;window.__CPM_PRE237={fatti:G.reduce((s,x)=>s+x.fatti,0),tot:G.reduce((s,x)=>s+x.urls.length,0),t0:G[0].t0,fine:G.every(x=>x.fine)?Date.now()-G[0].t0:null};}catch(_e){}};agg237();/* lo stesso testimone delle sonde di PO-237/PO-241 */
+  let prox=0,vivi=Math.min(window.__CPM_NO_ATTESA241?1:6,L.length);const n0=vivi;const pross=()=>{const i=prox++;if(i>=L.length){if(--vivi===0){g.fine=Date.now()-g.t0;agg237();_pillola233();}return;}_segna233(L[i],loadGLB(L[i])).then(()=>{g.fatti++;agg237();},()=>{}).then(pross);};
+  for(let k=0;k<n0;k++)pross();_pillola233();return g;}catch(_e){return null;}}
+/* schermata d'attesa SOPRA una scena 3D (intro, cerimonie) finche' i suoi corpi non ci sono: opaca, con barra e percentuale.
+   Compare solo se l'attesa supera 250 ms (file gia' in memoria = nessun lampo). Ritorna la funzione che la toglie. */
+function copri233(host,urls,pr,nome){try{if(!_g233()||!host||typeof document==='undefined')return ()=>{};let el=null,iv=0,finito=false;const t0=Date.now();
+  const reg={nome:nome||'?',t0,vista:false,ms:null,esito:null};try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.coperture=w.coperture||[]).push(reg);}catch(_e){}
+  urls.forEach(u=>{try{if(_glbCache[u])_segna233(u,_glbCache[u]);}catch(_e){}});
+  let mx=0;const agg=()=>{if(!el)return;const p=mx=Math.max(mx,Math.round(avanz233(urls)*100));el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
+  const tm=setTimeout(()=>{if(finito)return;el=document.createElement('div');el.setAttribute('data-cpm','attesa233');el.setAttribute('data-scena',nome||'');el.setAttribute('role','status');
+    el.style.cssText='position:absolute;inset:0;z-index:3;background:#050814;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;text-align:center;font-family:inherit;';
+    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div style="width:min(260px,70%);height:8px;background:rgba(255,255,255,0.14);border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:#f59e0b;border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
+    try{host.appendChild(el);reg.vista=true;}catch(_e){}agg();iv=setInterval(agg,250);_pillola233();},250);
+  const via=(esito)=>{if(finito)return;finito=true;clearTimeout(tm);if(iv)clearInterval(iv);reg.ms=Date.now()-t0;reg.esito=esito||'tolta';try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(_e){}el=null;_pillola233();};
+  Promise.resolve(pr).then(()=>via('pronti'),()=>via('fallito'));return via;}catch(_e){return ()=>{};}}
 // [6.95.0 collaudo PO «a volte il CH38 non viene caricato subito, iniziano la partita i soldatini»] PREFETCH
 //   al BOOT: i 12 GLB del CH38 partono in download appena il gioco carica (cache _glbCache condivisa col match)
 //   → quando arrivi all'ingresso in campo il modello è già pronto. Rispetta la preferenza ?glb=0 / 'cpm-glb'.
@@ -2043,6 +2107,7 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pre237on=(function(){try{return localStorage.getItem('cpm-glb')!=='0'&&!/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return true;}})();
   if(_pre237on)setTimeout(function(){try{
     if(window.__CPM_NO_PRE237)return;
+    if(_g233())return;/* [giro 233 PO-453] niente modelli scaricati all'apertura del menu: li chiede prepara233 quando una scena 3D sta per servire */
     const _cg237=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';
     const idle=f=>{try{if(typeof requestIdleCallback==='function')requestIdleCallback(f,{timeout:1500});else setTimeout(f,60);}catch(e){setTimeout(f,60);}};
     const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};

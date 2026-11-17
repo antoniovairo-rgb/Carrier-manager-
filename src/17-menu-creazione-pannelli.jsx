@@ -412,6 +412,7 @@ function LogoMark({size=32,shadow=true}){
 function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
 const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
+  React.useEffect(()=>{try{if(typeof prepara233!=='function')return;const visto=(()=>{try{return localStorage.getItem('cpm-intro-seen')==='1';}catch(_e){return true;}})();if(!visto&&!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST))prepara233('intro');prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] chi crea un calciatore sta per vedere il video iniziale e il provino: i loro corpi si chiedono qui, con la pillola d'avanzamento, mentre sceglie nome e aspetto */
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -641,6 +642,7 @@ const TRIAL_OPPONENTS=[
 /* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
 function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
+  React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi, se non sono gia' in volo (pillola d'avanzamento) */
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
   const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));
