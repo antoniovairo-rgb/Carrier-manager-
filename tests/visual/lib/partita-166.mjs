@@ -50,9 +50,14 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
      in 2 giri su 6» del rapporto 166 §4.3: una differenza dello STRUMENTO, non del gioco. */
   await page.evaluate(() => { if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); });
   if (forzaSolo) await page.evaluate(() => { window.__CPM_SOLO166 = true; });
+  /* [giro 246 · decisione PO 17/11] il tasto dei momenti salienti vive SOLO nella schermata pre-partita (data-cpm="solo-243"): se il prompt
+     non lo ha (build col giro 246), si preme «Gioca la partita» e alla pre-partita si sceglie. Perche' i due modi restino confrontabili
+     (il tasto apre formazioni e ingresso, che caricano la tattica avversaria), anche la partita intera passa da «Vedi le formazioni». */
+  const via243 = await page.evaluate(() => !!document.querySelector('[data-cpm="partita23"]') && !document.querySelector('[data-cpm="solo-166"]')).catch(() => false);
+  out.via243 = via243;
   const clic = await page.evaluate((modo) => { const B = [...document.querySelectorAll('[data-cpm="partita23"] button')];
     const b = modo === 'solo' ? document.querySelector('[data-cpm="solo-166"]') : B.find(x => /^Gioca la partita/.test((x.textContent || '').trim()));
-    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, forzaSolo ? 'intera' : modo);
+    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, (forzaSolo || via243) ? 'intera' : modo);
   /* [giro 229] forzaSolo: la modalita' si accende dal gancio di sonda (__CPM_SOLO166) e si preme «Gioca» — serve a misurare la partita a soli
      salienti dove il bottone ancora non c'e' (misura prima della correzione) e nel braccio rosso */
   out.bottone = clic; if (!clic) { out.note.push('bottone non trovato'); return out; }
@@ -60,8 +65,15 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   /* fra il prompt e il campo possono esserci finestre (presentazione al club, discorso): si chiudono dalla sonda */
   let montata = false;
   for (let i = 0; i < 60 && !montata; i++) {
-    montata = await page.evaluate(() => typeof window.__CPM_PHASE === 'function' && !!window.__CPM_PHASE() && typeof window.__CPM_AUTOPLAY === 'function' && /matchday|formations|walkout|playing/.test(String(window.__CPM_PHASE()))).catch(() => false);
+    montata = await page.evaluate((v) => typeof window.__CPM_PHASE === 'function' && !!window.__CPM_PHASE() && typeof window.__CPM_AUTOPLAY === 'function' && (v ? /formations|walkout|playing/ : /matchday|formations|walkout|playing/).test(String(window.__CPM_PHASE())), via243).catch(() => false);
     if (montata) break;
+    if (via243) {/* [giro 246] alla pre-partita: «Gioca solo i momenti salienti» (solo) o «Vedi le formazioni» (intera) */
+      const pp = await page.evaluate((solo) => { if (!(typeof window.__CPM_PHASE === 'function' && window.__CPM_PHASE() === 'matchday' && document.querySelector('[data-cpm="prepartita23"]'))) return 'no';
+        const b = solo ? document.querySelector('[data-cpm="solo-243"]') : [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim()));
+        if (!b) return 'manca'; b.click(); return 'ok'; }, modo === 'solo' && !forzaSolo).catch(() => 'no');
+      if (pp === 'manca') { out.note.push(modo === 'solo' && !forzaSolo ? 'bottone dei momenti salienti assente nella pre-partita' : 'pre-partita senza «Vedi le formazioni»'); out.bottone = null; return out; }
+      if (pp === 'ok') { if (modo === 'solo' && !forzaSolo) out.bottone = 'Gioca solo i momenti salienti'; await sleep(400); continue; }
+    }
     await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => /^(Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim()) || (!document.querySelector('[data-cpm="partita23"]') && /^Gioca la partita$/.test((x.textContent || '').trim()))/* [giro 229] la convocazione della Nazionale ha il suo «Gioca la partita» */); if (B.length) B[B.length - 1].click(); }).catch(() => {});
     await sleep(500);
   }

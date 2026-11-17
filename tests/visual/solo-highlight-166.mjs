@@ -52,7 +52,7 @@ ok('2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173
 
 /* ---------------- B. prompt ---------------- */
 async function prompt(rosso) {
-  const passi = []; const init = rosso ? { __CPM_NO_G166: true, __CPM_NO_G229: true } : { __CPM_NO_G229: true };
+  const passi = []; const init = rosso ? { __CPM_NO_G166: true, __CPM_NO_G229: true, __CPM_NO_G246: true } : { __CPM_NO_G229: true, __CPM_NO_G246: true };/* [giro 246] la regola del prompt vive nel rosso __CPM_NO_G246: dal 246 il tasto c'e' solo nella pre-partita (salienti-246); la parte C apre la modalita' da li' (gioca166) */
   const A = await apriCarriera166({ init, nome: NOME });
   try {
     const a = A.W ? await A.page.evaluate(() => window.__CPM_CAREER.avv166 ? window.__CPM_CAREER.avv166() : null) : null;
