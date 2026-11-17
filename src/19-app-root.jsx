@@ -406,7 +406,7 @@ function IntroCinematic({onDone,nome,riascolto}){
        risorsa dopo 5.5s senza GLB (mai scena vuota, mai burattini nell'uso normale — il prefetch li batte). */
     hero.visible=false;gk.visible=false;
     let _att233=false,_via233=null,_cap233=0;/* [giro 233 PO-453] l'intro aspetta il suo corpo (orologio di scena fermo, attesa con avanzamento): mai fantocci */
-    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;}},5500);
+    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;try{(window.__CPM_G233=window.__CPM_G233||{}).introFantocci=Date.now();}catch(_e){}}},5500);
     /* [7.32.1 collaudo PO] pallone più PICCOLO e MODERNO: texture canvas a pannelli scuri su bianco */
     const ballCv=document.createElement('canvas');ballCv.width=128;ballCv.height=64;const bg2=ballCv.getContext('2d');
     bg2.fillStyle="#fafafa";bg2.fillRect(0,0,128,64);
@@ -461,7 +461,7 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(heroActs.lift){heroActs.lift.setLoop(THREE.LoopOnce);heroActs.lift.clampWhenFinished=true;}
         if(gkActs.dive){gkActs.dive.setLoop(THREE.LoopOnce);gkActs.dive.clampWhenFinished=true;}
         try{heroAv.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!stG.fL&&/^(ball|foot)_l$/i.test(n))stG.fL=o;if(!stG.fR&&/^(ball|foot)_r$/i.test(n))stG.fR=o;if(!stG.hd&&/^head$/i.test(n))stG.hd=o;});}catch(_e){}
-        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}
+        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}if(_att233&&!riascolto){try{prepara233('partita');}catch(_e){}}/* dopo il video viene il provino: i suoi modelli si chiedono mentre il video scorre */
         try{if(!window.__CPM_STORE_BUILD){window.__CPM_INTRO_GLB=true;window.__CPM_INTRO_CG23=true;}}catch(_e){}
       }).catch(()=>{});
     }

@@ -642,6 +642,7 @@ const TRIAL_OPPONENTS=[
 /* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
 function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
+  React.useEffect(()=>{try{if(!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)&&typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi (pillola d'avanzamento) */
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
   const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));

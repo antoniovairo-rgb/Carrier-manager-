@@ -35216,6 +35216,20 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     },400);
     return ()=>clearInterval(iv);
   },[phase,glbTry]);
+  React.useLayoutEffect(()=>{/* [giro 233 PO-453] (effetto di layout: l'attesa compare nello STESSO fotogramma in cui il campo entra in vista, mai uno dopo)
+     senza precaricamento all'avvio i corpi possono mancare anche quando la partita entra in gioco
+     SENZA passare dall'ingresso in campo (ripresa dopo il background, banco di prova): durante la trattenuta del fischio d'inizio
+     la schermata d'attesa del giro 196 copre la scena finche' i corpi non sono pronti. MISURATO dal guardiano avvio-233: 1 campione
+     con il campo in vista e i corpi non pronti. Rosso __CPM_NO_G233. */
+    if(phase!=="playing"||!_g196On()||modo2D196Ref.current||typeof _g233!=='function'||!_g233())return;
+    const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp)return;
+    /* il testimone dei corpi nasce con la scena 3D: finche' non c'e', i corpi non sono pronti per definizione */
+    const _c=()=>{if(typeof window.__CPM_PRONTI196!=='function'){_att196({motivo:'regular',pct:0});return false;}const e=_chk196('playing');return e!=='attesa';};
+    if(_c())return;
+    const iv=setInterval(()=>{if(_c())clearInterval(iv);},250);
+    return()=>clearInterval(iv);
+  },[phase,glbTry]);
   useEffect(()=>{/* [7.999.162 PO-232] attesa dei corpi prima di aprire una scena dell'eroe */
     const _set=v=>{corpiHold232Ref.current=v;setCorpiHold232(v);};
     if(phase!=="playing"||kickoffHold){_set(false);return;}
@@ -49671,6 +49685,7 @@ const TRIAL_OPPONENTS=[
 /* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
 function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
+  React.useEffect(()=>{try{if(!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)&&typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi (pillola d'avanzamento) */
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
   const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));
@@ -65125,7 +65140,7 @@ function IntroCinematic({onDone,nome,riascolto}){
        risorsa dopo 5.5s senza GLB (mai scena vuota, mai burattini nell'uso normale — il prefetch li batte). */
     hero.visible=false;gk.visible=false;
     let _att233=false,_via233=null,_cap233=0;/* [giro 233 PO-453] l'intro aspetta il suo corpo (orologio di scena fermo, attesa con avanzamento): mai fantocci */
-    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;}},5500);
+    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;try{(window.__CPM_G233=window.__CPM_G233||{}).introFantocci=Date.now();}catch(_e){}}},5500);
     /* [7.32.1 collaudo PO] pallone più PICCOLO e MODERNO: texture canvas a pannelli scuri su bianco */
     const ballCv=document.createElement('canvas');ballCv.width=128;ballCv.height=64;const bg2=ballCv.getContext('2d');
     bg2.fillStyle="#fafafa";bg2.fillRect(0,0,128,64);
@@ -65180,7 +65195,7 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(heroActs.lift){heroActs.lift.setLoop(THREE.LoopOnce);heroActs.lift.clampWhenFinished=true;}
         if(gkActs.dive){gkActs.dive.setLoop(THREE.LoopOnce);gkActs.dive.clampWhenFinished=true;}
         try{heroAv.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!stG.fL&&/^(ball|foot)_l$/i.test(n))stG.fL=o;if(!stG.fR&&/^(ball|foot)_r$/i.test(n))stG.fR=o;if(!stG.hd&&/^head$/i.test(n))stG.hd=o;});}catch(_e){}
-        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}
+        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}if(_att233&&!riascolto){try{prepara233('partita');}catch(_e){}}/* dopo il video viene il provino: i suoi modelli si chiedono mentre il video scorre */
         try{if(!window.__CPM_STORE_BUILD){window.__CPM_INTRO_GLB=true;window.__CPM_INTRO_CG23=true;}}catch(_e){}
       }).catch(()=>{});
     }

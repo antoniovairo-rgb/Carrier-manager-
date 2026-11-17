@@ -3368,6 +3368,20 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     },400);
     return ()=>clearInterval(iv);
   },[phase,glbTry]);
+  React.useLayoutEffect(()=>{/* [giro 233 PO-453] (effetto di layout: l'attesa compare nello STESSO fotogramma in cui il campo entra in vista, mai uno dopo)
+     senza precaricamento all'avvio i corpi possono mancare anche quando la partita entra in gioco
+     SENZA passare dall'ingresso in campo (ripresa dopo il background, banco di prova): durante la trattenuta del fischio d'inizio
+     la schermata d'attesa del giro 196 copre la scena finche' i corpi non sono pronti. MISURATO dal guardiano avvio-233: 1 campione
+     con il campo in vista e i corpi non pronti. Rosso __CPM_NO_G233. */
+    if(phase!=="playing"||!_g196On()||modo2D196Ref.current||typeof _g233!=='function'||!_g233())return;
+    const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp)return;
+    /* il testimone dei corpi nasce con la scena 3D: finche' non c'e', i corpi non sono pronti per definizione */
+    const _c=()=>{if(typeof window.__CPM_PRONTI196!=='function'){_att196({motivo:'regular',pct:0});return false;}const e=_chk196('playing');return e!=='attesa';};
+    if(_c())return;
+    const iv=setInterval(()=>{if(_c())clearInterval(iv);},250);
+    return()=>clearInterval(iv);
+  },[phase,glbTry]);
   useEffect(()=>{/* [7.999.162 PO-232] attesa dei corpi prima di aprire una scena dell'eroe */
     const _set=v=>{corpiHold232Ref.current=v;setCorpiHold232(v);};
     if(phase!=="playing"||kickoffHold){_set(false);return;}
