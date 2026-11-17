@@ -1,0 +1,4848 @@
+{
+ "verde": {
+  "nome": "dopo",
+  "scene": {
+   "ingresso": {
+    "scena": "partita:walkout",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       222,
+       168,
+       141
+      ],
+      "px": 1902,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 2.4,
+      "dE1": 2.4,
+      "storia": [
+       "222,168,141"
+      ]
+     },
+     {
+      "nome": "Sebastian Maxwell",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       213,
+       147,
+       112
+      ],
+      "px": 1954,
+      "fig": {
+       "n": 93,
+       "k": "a",
+       "h": "neri",
+       "p": "d89470"
+      },
+      "viso": [
+       216,
+       148,
+       112
+      ],
+      "dE": 1.2,
+      "dE1": 1.2,
+      "storia": [
+       "213,147,112"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       196,
+       125,
+       88
+      ],
+      "px": 2011,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 0.8,
+      "dE1": 0.8,
+      "storia": [
+       "196,125,88"
+      ]
+     },
+     {
+      "nome": "Donald Wright",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       200,
+       133,
+       94
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 129,
+       "k": "a",
+       "h": "castani",
+       "p": "ca855e"
+      },
+      "viso": [
+       202,
+       133,
+       93
+      ],
+      "dE": 1.2,
+      "dE1": 1.2,
+      "storia": [
+       "200,133,94"
+      ]
+     },
+     {
+      "nome": "Dylan Gray",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       220,
+       154,
+       112
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 706,
+       "k": "a",
+       "h": "neri",
+       "p": "e7a070"
+      },
+      "viso": [
+       231,
+       160,
+       112
+      ],
+      "dE": 4.7,
+      "dE1": 4.7,
+      "storia": [
+       "220,154,112"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       211,
+       148,
+       119
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 4.1,
+      "dE1": 4.1,
+      "storia": [
+       "211,148,119"
+      ]
+     },
+     {
+      "nome": "Keith Thornton",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       226,
+       167,
+       141
+      ],
+      "px": 1966,
+      "fig": {
+       "n": 974,
+       "k": "c",
+       "h": "neri",
+       "p": "e9a88f"
+      },
+      "viso": [
+       233,
+       168,
+       143
+      ],
+      "dE": 2.7,
+      "dE1": 2.7,
+      "storia": [
+       "226,167,141"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       218,
+       157,
+       128
+      ],
+      "px": 1989,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 3,
+      "dE1": 3,
+      "storia": [
+       "218,157,128"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       218,
+       163,
+       136
+      ],
+      "px": 1975,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 1.5,
+      "dE1": 1.5,
+      "storia": [
+       "218,163,136"
+      ]
+     },
+     {
+      "nome": "Rupert Hammond",
+      "ruolo": "home",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       203,
+       145,
+       120
+      ],
+      "px": 2002,
+      "fig": {
+       "n": 162,
+       "k": "c",
+       "h": "rossi",
+       "p": "c68e77"
+      },
+      "viso": [
+       198,
+       142,
+       119
+      ],
+      "dE": 1.9,
+      "dE1": 1.9,
+      "storia": [
+       "203,145,120"
+      ]
+     },
+     {
+      "nome": "Carter Spencer",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       216,
+       156,
+       128
+      ],
+      "px": 1940,
+      "fig": {
+       "n": 858,
+       "k": "c",
+       "h": "neri",
+       "p": "ce9177"
+      },
+      "viso": [
+       206,
+       145,
+       119
+      ],
+      "dE": 4.1,
+      "dE1": 4.1,
+      "storia": [
+       "216,156,128"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       230,
+       178,
+       150
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 5,
+      "dE1": 5,
+      "storia": [
+       "230,178,150"
+      ]
+     },
+     {
+      "nome": "Stuart Ross",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       223,
+       163,
+       131
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 222,
+       "k": "c",
+       "h": "rossi",
+       "p": "db9877"
+      },
+      "viso": [
+       218,
+       152,
+       119
+      ],
+      "dE": 4.7,
+      "dE1": 4.7,
+      "storia": [
+       "223,163,131"
+      ]
+     },
+     {
+      "nome": "Reece Bailey",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       222,
+       165,
+       137
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 48,
+       "k": "c",
+       "h": "rossi",
+       "p": "dd9f83"
+      },
+      "viso": [
+       221,
+       159,
+       130
+      ],
+      "dE": 3,
+      "dE1": 3,
+      "storia": [
+       "222,165,137"
+      ]
+     },
+     {
+      "nome": "Noah Marshall",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       226,
+       164,
+       133
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 990,
+       "k": "a",
+       "h": "castani",
+       "p": "e49e7e"
+      },
+      "viso": [
+       228,
+       158,
+       126
+      ],
+      "dE": 4.1,
+      "dE1": 4.1,
+      "storia": [
+       "226,164,133"
+      ]
+     },
+     {
+      "nome": "Trevor Smith",
+      "ruolo": "away",
+      "capelli": "blond",
+      "tinti": 5,
+      "reso": [
+       226,
+       171,
+       149
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 697,
+       "k": "c",
+       "h": "biondi",
+       "p": "e5a893"
+      },
+      "viso": [
+       229,
+       168,
+       147
+      ],
+      "dE": 2.6,
+      "dE1": 2.6,
+      "storia": [
+       "226,171,149"
+      ]
+     },
+     {
+      "nome": "Connor Quinn",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       120,
+       69,
+       39
+      ],
+      "px": 1851,
+      "fig": {
+       "n": 84,
+       "k": "s",
+       "h": "castani",
+       "p": "854a2a"
+      },
+      "viso": [
+       133,
+       74,
+       42
+      ],
+      "dE": 5,
+      "dE1": 5,
+      "storia": [
+       "120,69,39"
+      ]
+     },
+     {
+      "nome": "Aaron Lane",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       207,
+       142,
+       103
+      ],
+      "px": 1984,
+      "fig": {
+       "n": 183,
+       "k": "o",
+       "h": "castani",
+       "p": "c3835d"
+      },
+      "viso": [
+       195,
+       131,
+       93
+      ],
+      "dE": 4.2,
+      "dE1": 4.2,
+      "storia": [
+       "207,142,103"
+      ]
+     },
+     {
+      "nome": "Jasper Mitchell",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       221,
+       170,
+       146
+      ],
+      "px": 2003,
+      "fig": {
+       "n": 519,
+       "k": "c",
+       "h": "rossi",
+       "p": "daa68e"
+      },
+      "viso": [
+       218,
+       166,
+       142
+      ],
+      "dE": 1.5,
+      "dE1": 1.5,
+      "storia": [
+       "221,170,146"
+      ]
+     },
+     {
+      "nome": "Oscar Hayes",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       174,
+       107,
+       69
+      ],
+      "px": 1953,
+      "fig": {
+       "n": 422,
+       "k": "s",
+       "h": "castani",
+       "p": "a46440"
+      },
+      "viso": [
+       164,
+       100,
+       64
+      ],
+      "dE": 3.4,
+      "dE1": 3.4,
+      "storia": [
+       "174,107,69"
+      ]
+     },
+     {
+      "nome": "Jackson Burke",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       213,
+       150,
+       114
+      ],
+      "px": 2021,
+      "fig": {
+       "n": 691,
+       "k": "a",
+       "h": "castani",
+       "p": "d18f6a"
+      },
+      "viso": [
+       209,
+       143,
+       106
+      ],
+      "dE": 3,
+      "dE1": 3,
+      "storia": [
+       "213,150,114"
+      ]
+     },
+     {
+      "nome": "Daniel Stanley",
+      "ruolo": "away",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       212,
+       137,
+       96
+      ],
+      "px": 1925,
+      "fig": {
+       "n": 172,
+       "k": "a",
+       "h": "neri",
+       "p": "d3875c"
+      },
+      "viso": [
+       211,
+       135,
+       92
+      ],
+      "dE": 1.5,
+      "dE1": 1.5,
+      "storia": [
+       "212,137,96"
+      ]
+     },
+     {
+      "nome": null,
+      "ruolo": "arbitro",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   },
+   "gioco": {
+    "scena": "partita:hl_intro",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       205,
+       141,
+       115
+      ],
+      "px": 2024,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 11.7,
+      "dE1": 11.7,
+      "storia": [
+       "205,141,115"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       219,
+       160,
+       131
+      ],
+      "px": 2017,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 4.3,
+      "dE1": 4.3,
+      "storia": [
+       "219,160,131"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       227,
+       173,
+       146
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 4.8,
+      "dE1": 4.8,
+      "storia": [
+       "227,173,146"
+      ]
+     },
+     {
+      "nome": "Jasper Mitchell",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       209,
+       149,
+       125
+      ],
+      "px": 1960,
+      "fig": {
+       "n": 519,
+       "k": "c",
+       "h": "rossi",
+       "p": "daa68e"
+      },
+      "viso": [
+       218,
+       166,
+       142
+      ],
+      "dE": 6.8,
+      "dE1": 6.8,
+      "storia": [
+       "209,149,125"
+      ]
+     },
+     {
+      "nome": "Jackson Burke",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       202,
+       129,
+       99
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 691,
+       "k": "a",
+       "h": "castani",
+       "p": "d18f6a"
+      },
+      "viso": [
+       209,
+       143,
+       106
+      ],
+      "dE": 6.2,
+      "dE1": 6.2,
+      "storia": [
+       "202,129,99"
+      ]
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   },
+   "festa": {
+    "scena": "partita:match:festa",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       213,
+       148,
+       121
+      ],
+      "px": 2005,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 9.5,
+      "dE1": 9.5,
+      "storia": [
+       "213,148,121"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       204,
+       134,
+       97
+      ],
+      "px": 2017,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 3.6,
+      "dE1": 3.6,
+      "storia": [
+       "204,134,97"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       215,
+       139,
+       109
+      ],
+      "px": 2017,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 7.9,
+      "dE1": 7.9,
+      "storia": [
+       "215,139,109"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       221,
+       156,
+       126
+      ],
+      "px": 1979,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 4,
+      "dE1": 4,
+      "storia": [
+       "221,156,126"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       227,
+       172,
+       141
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 3.4,
+      "dE1": 3.4,
+      "storia": [
+       "227,172,141"
+      ]
+     }
+    ],
+    "altri": 1,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   },
+   "premiazione": {
+    "scena": "partita:match:premiazione",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       220,
+       162,
+       138
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 5,
+      "dE1": 5,
+      "storia": [
+       "220,162,138"
+      ]
+     },
+     {
+      "nome": "Sebastian Maxwell",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       225,
+       161,
+       121
+      ],
+      "px": 1987,
+      "fig": {
+       "n": 93,
+       "k": "a",
+       "h": "neri",
+       "p": "d89470"
+      },
+      "viso": [
+       216,
+       148,
+       112
+      ],
+      "dE": 5,
+      "dE1": 5,
+      "storia": [
+       "225,161,121"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       203,
+       133,
+       95
+      ],
+      "px": 2018,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 3.1,
+      "dE1": 3.1,
+      "storia": [
+       "203,133,95"
+      ]
+     },
+     {
+      "nome": "Donald Wright",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       211,
+       145,
+       107
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 129,
+       "k": "a",
+       "h": "castani",
+       "p": "ca855e"
+      },
+      "viso": [
+       202,
+       133,
+       93
+      ],
+      "dE": 4.9,
+      "dE1": 4.9,
+      "storia": [
+       "211,145,107"
+      ]
+     },
+     {
+      "nome": "Dylan Gray",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       228,
+       166,
+       126
+      ],
+      "px": 2014,
+      "fig": {
+       "n": 706,
+       "k": "a",
+       "h": "neri",
+       "p": "e7a070"
+      },
+      "viso": [
+       231,
+       160,
+       112
+      ],
+      "dE": 6.7,
+      "dE1": 6.7,
+      "storia": [
+       "228,166,126"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       225,
+       167,
+       139
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 4.8,
+      "dE1": 4.8,
+      "storia": [
+       "225,167,139"
+      ]
+     },
+     {
+      "nome": "Keith Thornton",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       226,
+       169,
+       144
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 974,
+       "k": "c",
+       "h": "neri",
+       "p": "e9a88f"
+      },
+      "viso": [
+       233,
+       168,
+       143
+      ],
+      "dE": 3.4,
+      "dE1": 3.4,
+      "storia": [
+       "226,169,144"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       214,
+       151,
+       123
+      ],
+      "px": 1989,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 0.8,
+      "dE1": 0.8,
+      "storia": [
+       "214,151,123"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       216,
+       161,
+       134
+      ],
+      "px": 2012,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 1.1,
+      "dE1": 1.1,
+      "storia": [
+       "216,161,134"
+      ]
+     },
+     {
+      "nome": "Rupert Hammond",
+      "ruolo": "home",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       200,
+       143,
+       118
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 162,
+       "k": "c",
+       "h": "rossi",
+       "p": "c68e77"
+      },
+      "viso": [
+       198,
+       142,
+       119
+      ],
+      "dE": 1.3,
+      "dE1": 1.3,
+      "storia": [
+       "200,143,118"
+      ]
+     },
+     {
+      "nome": "Carter Spencer",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       209,
+       148,
+       120
+      ],
+      "px": 1937,
+      "fig": {
+       "n": 858,
+       "k": "c",
+       "h": "neri",
+       "p": "ce9177"
+      },
+      "viso": [
+       206,
+       145,
+       119
+      ],
+      "dE": 1.5,
+      "dE1": 1.5,
+      "storia": [
+       "209,148,120"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       238,
+       187,
+       154
+      ],
+      "px": 2019,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 5.4,
+      "dE1": 5.4,
+      "storia": [
+       "238,187,154"
+      ]
+     },
+     {
+      "nome": "Stuart Ross",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       235,
+       178,
+       141
+      ],
+      "px": 1998,
+      "fig": {
+       "n": 222,
+       "k": "c",
+       "h": "rossi",
+       "p": "db9877"
+      },
+      "viso": [
+       218,
+       152,
+       119
+      ],
+      "dE": 9.7,
+      "dE1": 9.7,
+      "storia": [
+       "235,178,141"
+      ]
+     },
+     {
+      "nome": "Reece Bailey",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       229,
+       173,
+       143
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 48,
+       "k": "c",
+       "h": "rossi",
+       "p": "dd9f83"
+      },
+      "viso": [
+       221,
+       159,
+       130
+      ],
+      "dE": 5.4,
+      "dE1": 5.4,
+      "storia": [
+       "229,173,143"
+      ]
+     },
+     {
+      "nome": "Noah Marshall",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       230,
+       169,
+       136
+      ],
+      "px": 1998,
+      "fig": {
+       "n": 990,
+       "k": "a",
+       "h": "castani",
+       "p": "e49e7e"
+      },
+      "viso": [
+       228,
+       158,
+       126
+      ],
+      "dE": 5.2,
+      "dE1": 5.2,
+      "storia": [
+       "230,169,136"
+      ]
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     }
+    ],
+    "altri": 1,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   },
+   "serata": {
+    "scena": "presentazione",
+    "corpi": [
+     {
+      "nome": "Dylan Gray",
+      "ruolo": "fila",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       227,
+       159,
+       121
+      ],
+      "px": 5159,
+      "fig": {
+       "n": 706,
+       "k": "a",
+       "h": "neri",
+       "p": "e7a070"
+      },
+      "viso": [
+       231,
+       160,
+       112
+      ],
+      "dE": 5.6,
+      "dE1": 13.2,
+      "storia": [
+       "213,128,94",
+       "227,159,121",
+       "186,92,69"
+      ]
+     },
+     {
+      "nome": "Rupert Hammond",
+      "ruolo": "fila",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       204,
+       142,
+       118
+      ],
+      "px": 5230,
+      "fig": {
+       "n": 162,
+       "k": "c",
+       "h": "rossi",
+       "p": "c68e77"
+      },
+      "viso": [
+       198,
+       142,
+       119
+      ],
+      "dE": 2.8,
+      "dE1": 2.8,
+      "storia": [
+       "204,142,118",
+       "203,140,116",
+       "184,106,91"
+      ]
+     },
+     {
+      "nome": "Max Stanley",
+      "ruolo": "fila",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       219,
+       145,
+       112
+      ],
+      "px": 4808,
+      "fig": {
+       "n": 299,
+       "k": "o",
+       "h": "neri",
+       "p": "d18c67"
+      },
+      "viso": [
+       209,
+       140,
+       103
+      ],
+      "dE": 3.6,
+      "dE1": 3.6,
+      "storia": [
+       "219,145,112",
+       "175,93,72",
+       "225,155,120"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "fila",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       199,
+       120,
+       88
+      ],
+      "px": 4796,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 4.1,
+      "dE1": 14.8,
+      "storia": [
+       "175,89,66",
+       "198,117,85",
+       "199,120,88"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "fila",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       216,
+       155,
+       127
+      ],
+      "px": 5318,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 2.4,
+      "dE1": 17.2,
+      "storia": [
+       "200,119,101",
+       "202,120,102",
+       "216,155,127"
+      ]
+     },
+     {
+      "nome": null,
+      "ruolo": "fila",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       225,
+       171,
+       143
+      ],
+      "px": 5297,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 1.6,
+      "dE1": 21.7,
+      "storia": [
+       "198,118,97",
+       "200,122,102",
+       "225,171,143"
+      ]
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   },
+   "parata": {
+    "scena": "parata",
+    "corpi": [
+     {
+      "nome": "eroe-0",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       218,
+       165,
+       138
+      ],
+      "px": 6082,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 3.2,
+      "dE1": 3.2,
+      "storia": [
+       "218,165,138"
+      ]
+     },
+     {
+      "nome": "parata-x-0",
+      "ruolo": "tetto-dx",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       210,
+       144,
+       106
+      ],
+      "px": 6290,
+      "fig": {
+       "n": 650,
+       "k": "a",
+       "h": "castani",
+       "p": "db9974"
+      },
+      "viso": [
+       218,
+       152,
+       116
+      ],
+      "dE": 3.3,
+      "dE1": 3.3,
+      "storia": [
+       "210,144,106"
+      ]
+     },
+     {
+      "nome": "parata-x-1",
+      "ruolo": "tetto-sx",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       149,
+       85,
+       51
+      ],
+      "px": 6169,
+      "fig": {
+       "n": 551,
+       "k": "s",
+       "h": "neri",
+       "p": "924c2d"
+      },
+      "viso": [
+       146,
+       76,
+       45
+      ],
+      "dE": 4.3,
+      "dE1": 4.3,
+      "storia": [
+       "149,85,51"
+      ]
+     },
+     {
+      "nome": "parata-x-2",
+      "ruolo": "tetto-dx",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       196,
+       128,
+       90
+      ],
+      "px": 6601,
+      "fig": {
+       "n": 848,
+       "k": "o",
+       "h": "neri",
+       "p": "c47f5a"
+      },
+      "viso": [
+       196,
+       128,
+       90
+      ],
+      "dE": 0,
+      "dE1": 0,
+      "storia": [
+       "196,128,90"
+      ]
+     },
+     {
+      "nome": "parata-x-3",
+      "ruolo": "tetto-sx",
+      "capelli": "black",
+      "tinti": 5,
+      "reso": [
+       161,
+       98,
+       62
+      ],
+      "px": 6091,
+      "fig": {
+       "n": 749,
+       "k": "s",
+       "h": "neri",
+       "p": "a45f3b"
+      },
+      "viso": [
+       164,
+       95,
+       59
+      ],
+      "dE": 3.1,
+      "dE1": 3.1,
+      "storia": [
+       "161,98,62"
+      ]
+     },
+     {
+      "nome": "parata-x-4",
+      "ruolo": "tetto-dx",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       183,
+       117,
+       77
+      ],
+      "px": 6194,
+      "fig": {
+       "n": 254,
+       "k": "s",
+       "h": "castani",
+       "p": "b36f44"
+      },
+      "viso": [
+       179,
+       111,
+       68
+      ],
+      "dE": 3.2,
+      "dE1": 3.2,
+      "storia": [
+       "183,117,77"
+      ]
+     },
+     {
+      "nome": "parata-x-5",
+      "ruolo": "tetto-sx",
+      "capelli": "auburn",
+      "tinti": 5,
+      "reso": [
+       208,
+       154,
+       129
+      ],
+      "px": 6651,
+      "fig": {
+       "n": 155,
+       "k": "c",
+       "h": "rossi",
+       "p": "da9c81"
+      },
+      "viso": [
+       219,
+       156,
+       129
+      ],
+      "dE": 4.4,
+      "dE1": 4.4,
+      "storia": [
+       "208,154,129"
+      ]
+     },
+     {
+      "nome": "parata-x-6",
+      "ruolo": "tetto-dx",
+      "capelli": "brown",
+      "tinti": 5,
+      "reso": [
+       184,
+       116,
+       77
+      ],
+      "px": 6181,
+      "fig": {
+       "n": 452,
+       "k": "a",
+       "h": "castani",
+       "p": "b97349"
+      },
+      "viso": [
+       185,
+       115,
+       73
+      ],
+      "dE": 2.1,
+      "dE1": 2.1,
+      "storia": [
+       "184,116,77"
+      ]
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 2,
+     "capelli": 0.0896
+    }
+   }
+  },
+  "errPartita": [],
+  "errSerata": [],
+  "errParata": [],
+  "giudizio": {
+   "ingresso": {
+    "corpi": 63,
+    "conNome": 22,
+    "conFigurina": 22,
+    "senzaNome": 41,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     2.4,
+     1.2,
+     0.8,
+     1.2,
+     4.7,
+     4.1,
+     2.7,
+     3,
+     1.5,
+     1.9,
+     4.1,
+     5,
+     4.7,
+     3,
+     4.1,
+     2.6,
+     5,
+     4.2,
+     1.5,
+     3.4,
+     3,
+     1.5
+    ],
+    "dE1": [
+     2.4,
+     1.2,
+     0.8,
+     1.2,
+     4.7,
+     4.1,
+     2.7,
+     3,
+     1.5,
+     1.9,
+     4.1,
+     5,
+     4.7,
+     3,
+     4.1,
+     2.6,
+     5,
+     4.2,
+     1.5,
+     3.4,
+     3,
+     1.5
+    ],
+    "scena": "partita:walkout",
+    "altri": 0,
+    "dEmed": 3,
+    "dEmax": 5,
+    "dE1med": 3,
+    "dE1max": 5,
+    "min": 22
+   },
+   "gioco": {
+    "corpi": 7,
+    "conNome": 5,
+    "conFigurina": 5,
+    "senzaNome": 2,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     11.7,
+     4.3,
+     4.8,
+     6.8,
+     6.2
+    ],
+    "dE1": [
+     11.7,
+     4.3,
+     4.8,
+     6.8,
+     6.2
+    ],
+    "scena": "partita:hl_intro",
+    "altri": 0,
+    "dEmed": 6.2,
+    "dEmax": 11.7,
+    "dE1med": 6.2,
+    "dE1max": 11.7,
+    "min": 3
+   },
+   "premiazione": {
+    "corpi": 33,
+    "conNome": 15,
+    "conFigurina": 15,
+    "senzaNome": 18,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     5,
+     5,
+     3.1,
+     4.9,
+     6.7,
+     4.8,
+     3.4,
+     0.8,
+     1.1,
+     1.3,
+     1.5,
+     5.4,
+     9.7,
+     5.4,
+     5.2
+    ],
+    "dE1": [
+     5,
+     5,
+     3.1,
+     4.9,
+     6.7,
+     4.8,
+     3.4,
+     0.8,
+     1.1,
+     1.3,
+     1.5,
+     5.4,
+     9.7,
+     5.4,
+     5.2
+    ],
+    "scena": "partita:match:premiazione",
+    "altri": 1,
+    "dEmed": 4.9,
+    "dEmax": 9.7,
+    "dE1med": 4.9,
+    "dE1max": 9.7,
+    "min": 8
+   },
+   "festa": {
+    "corpi": 7,
+    "conNome": 5,
+    "conFigurina": 5,
+    "senzaNome": 2,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     9.5,
+     3.6,
+     7.9,
+     4,
+     3.4
+    ],
+    "dE1": [
+     9.5,
+     3.6,
+     7.9,
+     4,
+     3.4
+    ],
+    "scena": "partita:match:festa",
+    "altri": 1,
+    "dEmed": 4,
+    "dEmax": 9.5,
+    "dE1med": 4,
+    "dE1max": 9.5,
+    "min": 3
+   },
+   "serata": {
+    "corpi": 7,
+    "conNome": 6,
+    "conFigurina": 6,
+    "senzaNome": 1,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     5.6,
+     2.8,
+     3.6,
+     4.1,
+     2.4,
+     1.6
+    ],
+    "dE1": [
+     13.2,
+     2.8,
+     3.6,
+     14.8,
+     17.2,
+     21.7
+    ],
+    "scena": "presentazione",
+    "altri": 0,
+    "dEmed": 3.6,
+    "dEmax": 5.6,
+    "dE1med": 14.8,
+    "dE1max": 21.7,
+    "min": 6
+   },
+   "parata": {
+    "corpi": 8,
+    "conNome": 8,
+    "conFigurina": 8,
+    "senzaNome": 0,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [
+     3.2,
+     3.3,
+     4.3,
+     0,
+     3.1,
+     3.2,
+     4.4,
+     2.1
+    ],
+    "dE1": [
+     3.2,
+     3.3,
+     4.3,
+     0,
+     3.1,
+     3.2,
+     4.4,
+     2.1
+    ],
+    "scena": "parata",
+    "altri": 0,
+    "dEmed": 3.2,
+    "dEmax": 4.4,
+    "dE1med": 3.2,
+    "dE1max": 4.4,
+    "min": 8
+   }
+  }
+ },
+ "rosso": {
+  "nome": "prima",
+  "scene": {
+   "ingresso": {
+    "scena": "partita:walkout",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       213,
+       188,
+       178
+      ],
+      "px": 1867,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 17.5,
+      "dE1": 17.5,
+      "storia": [
+       "213,188,178"
+      ]
+     },
+     {
+      "nome": "Sebastian Maxwell",
+      "ruolo": "home",
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": [
+       212,
+       192,
+       181
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 93,
+       "k": "a",
+       "h": "neri",
+       "p": "d89470"
+      },
+      "viso": [
+       216,
+       148,
+       112
+      ],
+      "dE": 29.3,
+      "dE1": 29.3,
+      "storia": [
+       "212,192,181"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": [
+       207,
+       188,
+       178
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 36.2,
+      "dE1": 36.2,
+      "storia": [
+       "207,188,178"
+      ]
+     },
+     {
+      "nome": "Donald Wright",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       209,
+       190,
+       179
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 129,
+       "k": "a",
+       "h": "castani",
+       "p": "ca855e"
+      },
+      "viso": [
+       202,
+       133,
+       93
+      ],
+      "dE": 34.1,
+      "dE1": 34.1,
+      "storia": [
+       "209,190,179"
+      ]
+     },
+     {
+      "nome": "Dylan Gray",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       209,
+       190,
+       178
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 706,
+       "k": "a",
+       "h": "neri",
+       "p": "e7a070"
+      },
+      "viso": [
+       231,
+       160,
+       112
+      ],
+      "dE": 32.3,
+      "dE1": 32.3,
+      "storia": [
+       "209,190,178"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       207,
+       188,
+       177
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 24.7,
+      "dE1": 24.7,
+      "storia": [
+       "207,188,177"
+      ]
+     },
+     {
+      "nome": "Keith Thornton",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       215,
+       195,
+       185
+      ],
+      "px": 2001,
+      "fig": {
+       "n": 974,
+       "k": "c",
+       "h": "neri",
+       "p": "e9a88f"
+      },
+      "viso": [
+       233,
+       168,
+       143
+      ],
+      "dE": 22.2,
+      "dE1": 22.2,
+      "storia": [
+       "215,195,185"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       218,
+       199,
+       188
+      ],
+      "px": 2004,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 27,
+      "dE1": 27,
+      "storia": [
+       "218,199,188"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       216,
+       197,
+       187
+      ],
+      "px": 2004,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 22.4,
+      "dE1": 22.4,
+      "storia": [
+       "216,197,187"
+      ]
+     },
+     {
+      "nome": "Rupert Hammond",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       214,
+       194,
+       184
+      ],
+      "px": 2008,
+      "fig": {
+       "n": 162,
+       "k": "c",
+       "h": "rossi",
+       "p": "c68e77"
+      },
+      "viso": [
+       198,
+       142,
+       119
+      ],
+      "dE": 24.3,
+      "dE1": 24.3,
+      "storia": [
+       "214,194,184"
+      ]
+     },
+     {
+      "nome": "Carter Spencer",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       219,
+       200,
+       189
+      ],
+      "px": 1997,
+      "fig": {
+       "n": 858,
+       "k": "c",
+       "h": "neri",
+       "p": "ce9177"
+      },
+      "viso": [
+       206,
+       145,
+       119
+      ],
+      "dE": 26.9,
+      "dE1": 26.9,
+      "storia": [
+       "219,200,189"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       218,
+       200,
+       190
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 23.3,
+      "dE1": 23.3,
+      "storia": [
+       "218,200,190"
+      ]
+     },
+     {
+      "nome": "Stuart Ross",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       218,
+       201,
+       191
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 222,
+       "k": "c",
+       "h": "rossi",
+       "p": "db9877"
+      },
+      "viso": [
+       218,
+       152,
+       119
+      ],
+      "dE": 29.4,
+      "dE1": 29.4,
+      "storia": [
+       "218,201,191"
+      ]
+     },
+     {
+      "nome": "Reece Bailey",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       217,
+       199,
+       189
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 48,
+       "k": "c",
+       "h": "rossi",
+       "p": "dd9f83"
+      },
+      "viso": [
+       221,
+       159,
+       130
+      ],
+      "dE": 25,
+      "dE1": 25,
+      "storia": [
+       "217,199,189"
+      ]
+     },
+     {
+      "nome": "Noah Marshall",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": [
+       218,
+       199,
+       189
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 990,
+       "k": "a",
+       "h": "castani",
+       "p": "e49e7e"
+      },
+      "viso": [
+       228,
+       158,
+       126
+      ],
+      "dE": 28.3,
+      "dE1": 28.3,
+      "storia": [
+       "218,199,189"
+      ]
+     },
+     {
+      "nome": "Trevor Smith",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       218,
+       199,
+       190
+      ],
+      "px": 2001,
+      "fig": {
+       "n": 697,
+       "k": "c",
+       "h": "biondi",
+       "p": "e5a893"
+      },
+      "viso": [
+       229,
+       168,
+       147
+      ],
+      "dE": 20.8,
+      "dE1": 20.8,
+      "storia": [
+       "218,199,190"
+      ]
+     },
+     {
+      "nome": "Connor Quinn",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       206,
+       185,
+       173
+      ],
+      "px": 2002,
+      "fig": {
+       "n": 84,
+       "k": "s",
+       "h": "castani",
+       "p": "854a2a"
+      },
+      "viso": [
+       133,
+       74,
+       42
+      ],
+      "dE": 46.9,
+      "dE1": 46.9,
+      "storia": [
+       "206,185,173"
+      ]
+     },
+     {
+      "nome": "Aaron Lane",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       218,
+       198,
+       188
+      ],
+      "px": 1999,
+      "fig": {
+       "n": 183,
+       "k": "o",
+       "h": "castani",
+       "p": "c3835d"
+      },
+      "viso": [
+       195,
+       131,
+       93
+      ],
+      "dE": 34.4,
+      "dE1": 34.4,
+      "storia": [
+       "218,198,188"
+      ]
+     },
+     {
+      "nome": "Jasper Mitchell",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       219,
+       200,
+       190
+      ],
+      "px": 1996,
+      "fig": {
+       "n": 519,
+       "k": "c",
+       "h": "rossi",
+       "p": "daa68e"
+      },
+      "viso": [
+       218,
+       166,
+       142
+      ],
+      "dE": 19.1,
+      "dE1": 19.1,
+      "storia": [
+       "219,200,190"
+      ]
+     },
+     {
+      "nome": "Oscar Hayes",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       214,
+       194,
+       184
+      ],
+      "px": 1995,
+      "fig": {
+       "n": 422,
+       "k": "s",
+       "h": "castani",
+       "p": "a46440"
+      },
+      "viso": [
+       164,
+       100,
+       64
+      ],
+      "dE": 42.5,
+      "dE1": 42.5,
+      "storia": [
+       "214,194,184"
+      ]
+     },
+     {
+      "nome": "Jackson Burke",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": [
+       214,
+       196,
+       186
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 691,
+       "k": "a",
+       "h": "castani",
+       "p": "d18f6a"
+      },
+      "viso": [
+       209,
+       143,
+       106
+      ],
+      "dE": 31.6,
+      "dE1": 31.6,
+      "storia": [
+       "214,196,186"
+      ]
+     },
+     {
+      "nome": "Daniel Stanley",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       195,
+       166,
+       155
+      ],
+      "px": 2023,
+      "fig": {
+       "n": 172,
+       "k": "a",
+       "h": "neri",
+       "p": "d3875c"
+      },
+      "viso": [
+       211,
+       135,
+       92
+      ],
+      "dE": 30.8,
+      "dE1": 30.8,
+      "storia": [
+       "195,166,155"
+      ]
+     },
+     {
+      "nome": null,
+      "ruolo": "arbitro",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 0,
+     "capelli": null
+    }
+   },
+   "gioco": {
+    "scena": "partita:hl_intro",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       200,
+       171,
+       160
+      ],
+      "px": 1909,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 15.5,
+      "dE1": 15.5,
+      "storia": [
+       "200,171,160"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       218,
+       201,
+       191
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 28.1,
+      "dE1": 28.1,
+      "storia": [
+       "218,201,191"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       215,
+       197,
+       188
+      ],
+      "px": 2024,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 23.4,
+      "dE1": 23.4,
+      "storia": [
+       "215,197,188"
+      ]
+     },
+     {
+      "nome": "Jasper Mitchell",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       204,
+       176,
+       170
+      ],
+      "px": 1906,
+      "fig": {
+       "n": 519,
+       "k": "c",
+       "h": "rossi",
+       "p": "daa68e"
+      },
+      "viso": [
+       218,
+       166,
+       142
+      ],
+      "dE": 14.8,
+      "dE1": 14.8,
+      "storia": [
+       "204,176,170"
+      ]
+     },
+     {
+      "nome": "Jackson Burke",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": [
+       206,
+       177,
+       171
+      ],
+      "px": 1909,
+      "fig": {
+       "n": 691,
+       "k": "a",
+       "h": "castani",
+       "p": "d18f6a"
+      },
+      "viso": [
+       209,
+       143,
+       106
+      ],
+      "dE": 27.2,
+      "dE1": 27.2,
+      "storia": [
+       "206,177,171"
+      ]
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 0,
+     "capelli": null
+    }
+   },
+   "festa": {
+    "scena": "partita:match:festa",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       206,
+       175,
+       167
+      ],
+      "px": 1981,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 16.1,
+      "dE1": 16.1,
+      "storia": [
+       "206,175,167"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": [
+       206,
+       179,
+       166
+      ],
+      "px": 1929,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 31.6,
+      "dE1": 31.6,
+      "storia": [
+       "206,179,166"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       219,
+       193,
+       180
+      ],
+      "px": 2015,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 22.8,
+      "dE1": 22.8,
+      "storia": [
+       "219,193,180"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       214,
+       181,
+       168
+      ],
+      "px": 2024,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 15.2,
+      "dE1": 15.2,
+      "storia": [
+       "214,181,168"
+      ]
+     },
+     {
+      "nome": "Keith Carr",
+      "ruolo": "away",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       215,
+       196,
+       184
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 822,
+       "k": "o",
+       "h": "castani",
+       "p": "edb08f"
+      },
+      "viso": [
+       237,
+       176,
+       143
+      ],
+      "dE": 22.1,
+      "dE1": 22.1,
+      "storia": [
+       "215,196,184"
+      ]
+     }
+    ],
+    "altri": 1,
+    "maschera": {
+     "stato": 0,
+     "capelli": null
+    }
+   },
+   "premiazione": {
+    "scena": "partita:match:premiazione",
+    "corpi": [
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": "Samuelito Vairo",
+      "ruolo": "eroe",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       215,
+       190,
+       183
+      ],
+      "px": 2011,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 18.8,
+      "dE1": 18.8,
+      "storia": [
+       "215,190,183"
+      ]
+     },
+     {
+      "nome": "Sebastian Maxwell",
+      "ruolo": "home",
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": [
+       219,
+       198,
+       186
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 93,
+       "k": "a",
+       "h": "neri",
+       "p": "d89470"
+      },
+      "viso": [
+       216,
+       148,
+       112
+      ],
+      "dE": 29.7,
+      "dE1": 29.7,
+      "storia": [
+       "219,198,186"
+      ]
+     },
+     {
+      "nome": "Isaac Hughes",
+      "ruolo": "home",
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": [
+       207,
+       189,
+       180
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 993,
+       "k": "a",
+       "h": "neri",
+       "p": "c57d57"
+      },
+      "viso": [
+       197,
+       125,
+       87
+      ],
+      "dE": 36.9,
+      "dE1": 36.9,
+      "storia": [
+       "207,189,180"
+      ]
+     },
+     {
+      "nome": "Donald Wright",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       212,
+       195,
+       187
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 129,
+       "k": "a",
+       "h": "castani",
+       "p": "ca855e"
+      },
+      "viso": [
+       202,
+       133,
+       93
+      ],
+      "dE": 36.4,
+      "dE1": 36.4,
+      "storia": [
+       "212,195,187"
+      ]
+     },
+     {
+      "nome": "Dylan Gray",
+      "ruolo": "home",
+      "capelli": "black",
+      "tinti": 0,
+      "reso": [
+       218,
+       199,
+       190
+      ],
+      "px": 2021,
+      "fig": {
+       "n": 706,
+       "k": "a",
+       "h": "neri",
+       "p": "e7a070"
+      },
+      "viso": [
+       231,
+       160,
+       112
+      ],
+      "dE": 34.2,
+      "dE1": 34.2,
+      "storia": [
+       "218,199,190"
+      ]
+     },
+     {
+      "nome": "Norman Bailey",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       214,
+       196,
+       187
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 43,
+       "k": "c",
+       "h": "rossi",
+       "p": "e09e80"
+      },
+      "viso": [
+       224,
+       158,
+       128
+      ],
+      "dE": 26.5,
+      "dE1": 26.5,
+      "storia": [
+       "214,196,187"
+      ]
+     },
+     {
+      "nome": "Keith Thornton",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       206,
+       187,
+       177
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 974,
+       "k": "c",
+       "h": "neri",
+       "p": "e9a88f"
+      },
+      "viso": [
+       233,
+       168,
+       143
+      ],
+      "dE": 21.8,
+      "dE1": 21.8,
+      "storia": [
+       "206,187,177"
+      ]
+     },
+     {
+      "nome": "Declan Russell",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       215,
+       196,
+       187
+      ],
+      "px": 1990,
+      "fig": {
+       "n": 826,
+       "k": "a",
+       "h": "castani",
+       "p": "d59579"
+      },
+      "viso": [
+       213,
+       149,
+       121
+      ],
+      "dE": 26.9,
+      "dE1": 26.9,
+      "storia": [
+       "215,196,187"
+      ]
+     },
+     {
+      "nome": "Gary Howard",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       212,
+       193,
+       184
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 271,
+       "k": "c",
+       "h": "neri",
+       "p": "d9a084"
+      },
+      "viso": [
+       217,
+       160,
+       132
+      ],
+      "dE": 22,
+      "dE1": 22,
+      "storia": [
+       "212,193,184"
+      ]
+     },
+     {
+      "nome": "Rupert Hammond",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       212,
+       193,
+       182
+      ],
+      "px": 2025,
+      "fig": {
+       "n": 162,
+       "k": "c",
+       "h": "rossi",
+       "p": "c68e77"
+      },
+      "viso": [
+       198,
+       142,
+       119
+      ],
+      "dE": 24.1,
+      "dE1": 24.1,
+      "storia": [
+       "212,193,182"
+      ]
+     },
+     {
+      "nome": "Carter Spencer",
+      "ruolo": "home",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       215,
+       195,
+       185
+      ],
+      "px": 2001,
+      "fig": {
+       "n": 858,
+       "k": "c",
+       "h": "neri",
+       "p": "ce9177"
+      },
+      "viso": [
+       206,
+       145,
+       119
+      ],
+      "dE": 25.8,
+      "dE1": 25.8,
+      "storia": [
+       "215,195,185"
+      ]
+     },
+     {
+      "nome": "Jackson Burke",
+      "ruolo": "away",
+      "capelli": "auburn",
+      "tinti": 0,
+      "reso": [
+       214,
+       195,
+       186
+      ],
+      "px": 2006,
+      "fig": {
+       "n": 691,
+       "k": "a",
+       "h": "castani",
+       "p": "d18f6a"
+      },
+      "viso": [
+       209,
+       143,
+       106
+      ],
+      "dE": 31.5,
+      "dE1": 31.5,
+      "storia": [
+       "214,195,186"
+      ]
+     },
+     {
+      "nome": "Daniel Stanley",
+      "ruolo": "away",
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": [
+       212,
+       191,
+       182
+      ],
+      "px": 1995,
+      "fig": {
+       "n": 172,
+       "k": "a",
+       "h": "neri",
+       "p": "d3875c"
+      },
+      "viso": [
+       211,
+       135,
+       92
+      ],
+      "dE": 37,
+      "dE1": 37,
+      "storia": [
+       "212,191,182"
+      ]
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "blond",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "black",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     },
+     {
+      "nome": null,
+      "ruolo": null,
+      "capelli": "brown",
+      "tinti": 0,
+      "reso": null,
+      "px": 0
+     }
+    ],
+    "altri": 1,
+    "maschera": {
+     "stato": 0,
+     "capelli": null
+    }
+   },
+   "parata": {
+    "scena": "parata",
+    "corpi": [
+     {
+      "nome": "eroe-0",
+      "ruolo": "eroe",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       243,
+       188,
+       159
+      ],
+      "px": 6764,
+      "fig": {
+       "n": 9,
+       "k": "c",
+       "h": "neri",
+       "p": "e1ad8d"
+      },
+      "viso": [
+       225,
+       172,
+       141
+      ],
+      "dE": 6.1,
+      "dE1": 6.1,
+      "storia": [
+       "243,188,159"
+      ]
+     },
+     {
+      "nome": "parata-x-0",
+      "ruolo": "tetto-dx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       251,
+       224,
+       205
+      ],
+      "px": 6609,
+      "fig": {
+       "n": 650,
+       "k": "a",
+       "h": "castani",
+       "p": "db9974"
+      },
+      "viso": [
+       218,
+       152,
+       116
+      ],
+      "dE": 31.1,
+      "dE1": 31.1,
+      "storia": [
+       "251,224,205"
+      ]
+     },
+     {
+      "nome": "parata-x-1",
+      "ruolo": "tetto-sx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       240,
+       184,
+       154
+      ],
+      "px": 6621,
+      "fig": {
+       "n": 551,
+       "k": "s",
+       "h": "neri",
+       "p": "924c2d"
+      },
+      "viso": [
+       146,
+       76,
+       45
+      ],
+      "dE": 41,
+      "dE1": 41,
+      "storia": [
+       "240,184,154"
+      ]
+     },
+     {
+      "nome": "parata-x-2",
+      "ruolo": "tetto-dx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       251,
+       225,
+       207
+      ],
+      "px": 6729,
+      "fig": {
+       "n": 848,
+       "k": "o",
+       "h": "neri",
+       "p": "c47f5a"
+      },
+      "viso": [
+       196,
+       128,
+       90
+      ],
+      "dE": 40.2,
+      "dE1": 40.2,
+      "storia": [
+       "251,225,207"
+      ]
+     },
+     {
+      "nome": "parata-x-3",
+      "ruolo": "tetto-sx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       236,
+       177,
+       147
+      ],
+      "px": 6591,
+      "fig": {
+       "n": 749,
+       "k": "s",
+       "h": "neri",
+       "p": "a45f3b"
+      },
+      "viso": [
+       164,
+       95,
+       59
+      ],
+      "dE": 31.5,
+      "dE1": 31.5,
+      "storia": [
+       "236,177,147"
+      ]
+     },
+     {
+      "nome": "parata-x-4",
+      "ruolo": "tetto-dx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       251,
+       225,
+       206
+      ],
+      "px": 6612,
+      "fig": {
+       "n": 254,
+       "k": "s",
+       "h": "castani",
+       "p": "b36f44"
+      },
+      "viso": [
+       179,
+       111,
+       68
+      ],
+      "dE": 47,
+      "dE1": 47,
+      "storia": [
+       "251,225,206"
+      ]
+     },
+     {
+      "nome": "parata-x-5",
+      "ruolo": "tetto-sx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       235,
+       176,
+       147
+      ],
+      "px": 6542,
+      "fig": {
+       "n": 155,
+       "k": "c",
+       "h": "rossi",
+       "p": "da9c81"
+      },
+      "viso": [
+       219,
+       156,
+       129
+      ],
+      "dE": 7.2,
+      "dE1": 7.2,
+      "storia": [
+       "235,176,147"
+      ]
+     },
+     {
+      "nome": "parata-x-6",
+      "ruolo": "tetto-dx",
+      "capelli": "originale",
+      "tinti": 0,
+      "reso": [
+       251,
+       223,
+       203
+      ],
+      "px": 6580,
+      "fig": {
+       "n": 452,
+       "k": "a",
+       "h": "castani",
+       "p": "b97349"
+      },
+      "viso": [
+       185,
+       115,
+       73
+      ],
+      "dE": 44.6,
+      "dE1": 44.6,
+      "storia": [
+       "251,223,203"
+      ]
+     }
+    ],
+    "altri": 0,
+    "maschera": {
+     "stato": 0,
+     "capelli": null
+    }
+   }
+  },
+  "premiazioneSuPartitaNuova": true,
+  "errPartita": [],
+  "errParata": [],
+  "giudizio": {
+   "ingresso": {
+    "corpi": 63,
+    "conNome": 22,
+    "conFigurina": 22,
+    "senzaNome": 41,
+    "capelliKo": [
+     "Sebastian Maxwell: figurina «neri», testa 3D «blond»",
+     "Isaac Hughes: figurina «neri», testa 3D «blond»",
+     "Norman Bailey: figurina «rossi», testa 3D «brown»",
+     "Keith Thornton: figurina «neri», testa 3D «brown»",
+     "Gary Howard: figurina «neri», testa 3D «brown»",
+     "Rupert Hammond: figurina «rossi», testa 3D «brown»",
+     "Carter Spencer: figurina «neri», testa 3D «brown»",
+     "Keith Carr: figurina «castani», testa 3D «black»",
+     "Stuart Ross: figurina «rossi», testa 3D «brown»",
+     "Reece Bailey: figurina «rossi», testa 3D «brown»",
+     "Noah Marshall: figurina «castani», testa 3D «auburn»",
+     "Trevor Smith: figurina «biondi», testa 3D «brown»",
+     "Jasper Mitchell: figurina «rossi», testa 3D «brown»",
+     "Jackson Burke: figurina «castani», testa 3D «auburn»",
+     "Daniel Stanley: figurina «neri», testa 3D «brown»"
+    ],
+    "pelleKo": [
+     "Samuelito Vairo: viso reso 213,188,178 contro figurina 225,172,141 → 17.5",
+     "Sebastian Maxwell: viso reso 212,192,181 contro figurina 216,148,112 → 29.3",
+     "Isaac Hughes: viso reso 207,188,178 contro figurina 197,125,87 → 36.2",
+     "Donald Wright: viso reso 209,190,179 contro figurina 202,133,93 → 34.1",
+     "Dylan Gray: viso reso 209,190,178 contro figurina 231,160,112 → 32.3",
+     "Norman Bailey: viso reso 207,188,177 contro figurina 224,158,128 → 24.7",
+     "Keith Thornton: viso reso 215,195,185 contro figurina 233,168,143 → 22.2",
+     "Declan Russell: viso reso 218,199,188 contro figurina 213,149,121 → 27",
+     "Gary Howard: viso reso 216,197,187 contro figurina 217,160,132 → 22.4",
+     "Rupert Hammond: viso reso 214,194,184 contro figurina 198,142,119 → 24.3",
+     "Carter Spencer: viso reso 219,200,189 contro figurina 206,145,119 → 26.9",
+     "Keith Carr: viso reso 218,200,190 contro figurina 237,176,143 → 23.3",
+     "Stuart Ross: viso reso 218,201,191 contro figurina 218,152,119 → 29.4",
+     "Reece Bailey: viso reso 217,199,189 contro figurina 221,159,130 → 25",
+     "Noah Marshall: viso reso 218,199,189 contro figurina 228,158,126 → 28.3",
+     "Trevor Smith: viso reso 218,199,190 contro figurina 229,168,147 → 20.8",
+     "Connor Quinn: viso reso 206,185,173 contro figurina 133,74,42 → 46.9",
+     "Aaron Lane: viso reso 218,198,188 contro figurina 195,131,93 → 34.4",
+     "Jasper Mitchell: viso reso 219,200,190 contro figurina 218,166,142 → 19.1",
+     "Oscar Hayes: viso reso 214,194,184 contro figurina 164,100,64 → 42.5",
+     "Jackson Burke: viso reso 214,196,186 contro figurina 209,143,106 → 31.6",
+     "Daniel Stanley: viso reso 195,166,155 contro figurina 211,135,92 → 30.8"
+    ],
+    "nonMisurati": [],
+    "dE": [
+     17.5,
+     29.3,
+     36.2,
+     34.1,
+     32.3,
+     24.7,
+     22.2,
+     27,
+     22.4,
+     24.3,
+     26.9,
+     23.3,
+     29.4,
+     25,
+     28.3,
+     20.8,
+     46.9,
+     34.4,
+     19.1,
+     42.5,
+     31.6,
+     30.8
+    ],
+    "dE1": [
+     17.5,
+     29.3,
+     36.2,
+     34.1,
+     32.3,
+     24.7,
+     22.2,
+     27,
+     22.4,
+     24.3,
+     26.9,
+     23.3,
+     29.4,
+     25,
+     28.3,
+     20.8,
+     46.9,
+     34.4,
+     19.1,
+     42.5,
+     31.6,
+     30.8
+    ],
+    "scena": "partita:walkout",
+    "altri": 0,
+    "dEmed": 28.3,
+    "dEmax": 46.9,
+    "dE1med": 28.3,
+    "dE1max": 46.9,
+    "min": 22
+   },
+   "gioco": {
+    "corpi": 7,
+    "conNome": 5,
+    "conFigurina": 5,
+    "senzaNome": 2,
+    "capelliKo": [
+     "Keith Carr: figurina «castani», testa 3D «black»",
+     "Jasper Mitchell: figurina «rossi», testa 3D «brown»",
+     "Jackson Burke: figurina «castani», testa 3D «auburn»"
+    ],
+    "pelleKo": [
+     "Samuelito Vairo: viso reso 200,171,160 contro figurina 225,172,141 → 15.5",
+     "Declan Russell: viso reso 218,201,191 contro figurina 213,149,121 → 28.1",
+     "Keith Carr: viso reso 215,197,188 contro figurina 237,176,143 → 23.4",
+     "Jasper Mitchell: viso reso 204,176,170 contro figurina 218,166,142 → 14.8",
+     "Jackson Burke: viso reso 206,177,171 contro figurina 209,143,106 → 27.2"
+    ],
+    "nonMisurati": [],
+    "dE": [
+     15.5,
+     28.1,
+     23.4,
+     14.8,
+     27.2
+    ],
+    "dE1": [
+     15.5,
+     28.1,
+     23.4,
+     14.8,
+     27.2
+    ],
+    "scena": "partita:hl_intro",
+    "altri": 0,
+    "dEmed": 23.4,
+    "dEmax": 28.1,
+    "dE1med": 23.4,
+    "dE1max": 28.1,
+    "min": 3
+   },
+   "premiazione": {
+    "corpi": 23,
+    "conNome": 13,
+    "conFigurina": 13,
+    "senzaNome": 10,
+    "capelliKo": [
+     "Sebastian Maxwell: figurina «neri», testa 3D «blond»",
+     "Isaac Hughes: figurina «neri», testa 3D «blond»",
+     "Norman Bailey: figurina «rossi», testa 3D «brown»",
+     "Keith Thornton: figurina «neri», testa 3D «brown»",
+     "Gary Howard: figurina «neri», testa 3D «brown»",
+     "Rupert Hammond: figurina «rossi», testa 3D «brown»",
+     "Carter Spencer: figurina «neri», testa 3D «brown»",
+     "Jackson Burke: figurina «castani», testa 3D «auburn»",
+     "Daniel Stanley: figurina «neri», testa 3D «brown»"
+    ],
+    "pelleKo": [
+     "Samuelito Vairo: viso reso 215,190,183 contro figurina 225,172,141 → 18.8",
+     "Sebastian Maxwell: viso reso 219,198,186 contro figurina 216,148,112 → 29.7",
+     "Isaac Hughes: viso reso 207,189,180 contro figurina 197,125,87 → 36.9",
+     "Donald Wright: viso reso 212,195,187 contro figurina 202,133,93 → 36.4",
+     "Dylan Gray: viso reso 218,199,190 contro figurina 231,160,112 → 34.2",
+     "Norman Bailey: viso reso 214,196,187 contro figurina 224,158,128 → 26.5",
+     "Keith Thornton: viso reso 206,187,177 contro figurina 233,168,143 → 21.8",
+     "Declan Russell: viso reso 215,196,187 contro figurina 213,149,121 → 26.9",
+     "Gary Howard: viso reso 212,193,184 contro figurina 217,160,132 → 22",
+     "Rupert Hammond: viso reso 212,193,182 contro figurina 198,142,119 → 24.1",
+     "Carter Spencer: viso reso 215,195,185 contro figurina 206,145,119 → 25.8",
+     "Jackson Burke: viso reso 214,195,186 contro figurina 209,143,106 → 31.5",
+     "Daniel Stanley: viso reso 212,191,182 contro figurina 211,135,92 → 37"
+    ],
+    "nonMisurati": [],
+    "dE": [
+     18.8,
+     29.7,
+     36.9,
+     36.4,
+     34.2,
+     26.5,
+     21.8,
+     26.9,
+     22,
+     24.1,
+     25.8,
+     31.5,
+     37
+    ],
+    "dE1": [
+     18.8,
+     29.7,
+     36.9,
+     36.4,
+     34.2,
+     26.5,
+     21.8,
+     26.9,
+     22,
+     24.1,
+     25.8,
+     31.5,
+     37
+    ],
+    "scena": "partita:match:premiazione",
+    "altri": 1,
+    "dEmed": 26.9,
+    "dEmax": 37,
+    "dE1med": 26.9,
+    "dE1max": 37,
+    "min": 8
+   },
+   "festa": {
+    "corpi": 7,
+    "conNome": 5,
+    "conFigurina": 5,
+    "senzaNome": 2,
+    "capelliKo": [
+     "Isaac Hughes: figurina «neri», testa 3D «blond»",
+     "Norman Bailey: figurina «rossi», testa 3D «brown»",
+     "Gary Howard: figurina «neri», testa 3D «brown»",
+     "Keith Carr: figurina «castani», testa 3D «black»"
+    ],
+    "pelleKo": [
+     "Samuelito Vairo: viso reso 206,175,167 contro figurina 225,172,141 → 16.1",
+     "Isaac Hughes: viso reso 206,179,166 contro figurina 197,125,87 → 31.6",
+     "Norman Bailey: viso reso 219,193,180 contro figurina 224,158,128 → 22.8",
+     "Gary Howard: viso reso 214,181,168 contro figurina 217,160,132 → 15.2",
+     "Keith Carr: viso reso 215,196,184 contro figurina 237,176,143 → 22.1"
+    ],
+    "nonMisurati": [],
+    "dE": [
+     16.1,
+     31.6,
+     22.8,
+     15.2,
+     22.1
+    ],
+    "dE1": [
+     16.1,
+     31.6,
+     22.8,
+     15.2,
+     22.1
+    ],
+    "scena": "partita:match:festa",
+    "altri": 1,
+    "dEmed": 22.1,
+    "dEmax": 31.6,
+    "dE1med": 22.1,
+    "dE1max": 31.6,
+    "min": 3
+   },
+   "serata": {
+    "corpi": 0,
+    "conNome": 0,
+    "conFigurina": 0,
+    "senzaNome": 0,
+    "capelliKo": [],
+    "pelleKo": [],
+    "nonMisurati": [],
+    "dE": [],
+    "dE1": [],
+    "errore": "nessuna misura"
+   },
+   "parata": {
+    "corpi": 8,
+    "conNome": 8,
+    "conFigurina": 8,
+    "senzaNome": 0,
+    "capelliKo": [
+     "eroe-0: figurina «neri», testa 3D «originale»",
+     "parata-x-0: figurina «castani», testa 3D «originale»",
+     "parata-x-1: figurina «neri», testa 3D «originale»",
+     "parata-x-2: figurina «neri», testa 3D «originale»",
+     "parata-x-3: figurina «neri», testa 3D «originale»",
+     "parata-x-4: figurina «castani», testa 3D «originale»",
+     "parata-x-5: figurina «rossi», testa 3D «originale»",
+     "parata-x-6: figurina «castani», testa 3D «originale»"
+    ],
+    "pelleKo": [
+     "parata-x-0: viso reso 251,224,205 contro figurina 218,152,116 → 31.1",
+     "parata-x-1: viso reso 240,184,154 contro figurina 146,76,45 → 41",
+     "parata-x-2: viso reso 251,225,207 contro figurina 196,128,90 → 40.2",
+     "parata-x-3: viso reso 236,177,147 contro figurina 164,95,59 → 31.5",
+     "parata-x-4: viso reso 251,225,206 contro figurina 179,111,68 → 47",
+     "parata-x-6: viso reso 251,223,203 contro figurina 185,115,73 → 44.6"
+    ],
+    "nonMisurati": [],
+    "dE": [
+     6.1,
+     31.1,
+     41,
+     40.2,
+     31.5,
+     47,
+     7.2,
+     44.6
+    ],
+    "dE1": [
+     6.1,
+     31.1,
+     41,
+     40.2,
+     31.5,
+     47,
+     7.2,
+     44.6
+    ],
+    "scena": "parata",
+    "altri": 0,
+    "dEmed": 40.2,
+    "dEmax": 47,
+    "dE1med": 40.2,
+    "dE1max": 47,
+    "min": 8
+   }
+  }
+ }
+}

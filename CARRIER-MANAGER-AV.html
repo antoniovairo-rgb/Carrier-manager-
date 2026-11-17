@@ -16022,12 +16022,12 @@ function ThreeMatchView(props){
       const mesh=mkP(col,false,i+1,_ri);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;if(pl.gk)mesh._isGk=true;/* [7.153.0] portiere → ready stance in animOne */
       let _num;if(pl.gk)_num=1;else if(isHome){if(_hN===_heroN)_hN++;_num=_hN++;}else _num=_aN++;// salta il numero dell'eroe tra i compagni
-      mesh._num=_num;mesh._name=pl.name||"";{const _bnp=_mkNumPlane(_num,mesh._name);_bnp.position.set(0,1.16,-0.2);_bnp.rotation.y=Math.PI;mesh.add(_bnp);}// [7.132.0] NUMERO sulla schiena (procedurale/gate; nascosto in GLB con la mesh proc)
+      mesh._num=_num;mesh._name=pl.name||"";mesh._nf=pl.nf||"";/* [giro 240 PO-500] nome intero: la chiave della figurina */{const _bnp=_mkNumPlane(_num,mesh._name);_bnp.position.set(0,1.16,-0.2);_bnp.rotation.y=Math.PI;mesh.add(_bnp);}// [7.132.0] NUMERO sulla schiena (procedurale/gate; nascosto in GLB con la mesh proc)
       scene.add(mesh);players.push({mesh,team:pl.team,gk:!!pl.gk,num:_num});
       if(pl.gk&&pl.team==='away')awayGkMesh=mesh; // CIN-2
     });
     // Protagonista (ring dorato)
-    const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);hero._isHero=true;// Step C: l'eroe mantiene risposta CRISP (controllo diretto), niente inerzia off-ball
+    const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);hero._isHero=true;hero._nf=(props&&props.heroName)||"eroe";/* [giro 240 PO-500] */// Step C: l'eroe mantiene risposta CRISP (controllo diretto), niente inerzia off-ball
     hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
     const _heroSurn=(((typeof _surnBG==="function"&&_surnBG(props.heroName||""))||(props.heroName||"").trim().split(/\s+/).pop())||"").toUpperCase();// [7.130.0] cognome dell'eroe · [7.304.0] particella inclusa («De Luca», non «Luca»)
     hero._num=_heroN;hero._name=_heroSurn;{const _hnp=_mkNumPlane(_heroN,_heroSurn);_hnp.position.set(0,1.16,-0.2);_hnp.rotation.y=Math.PI;hero.add(_hnp);}// [7.132.0] NUMERO dell'eroe sulla schiena
@@ -16841,7 +16841,16 @@ function ThreeMatchView(props){
          attesa: finche' non e' zero la scena dell'eroe non parte (LiveMatch, tetto 8 s). Rosso __CPM_NO_GLB232 = scambio immediato. */
       const _testePend232=new Map();
       const _flushTeste232=key=>{const L=_testePend232.get(key);if(!L)return;_testePend232.delete(key);try{if(sr.current)sr.current._testePend232=Math.max(0,(sr.current._testePend232|0)-L.length);}catch(_e){}L.forEach(([v,a])=>{try{_applyCgtraderNativeHair(v,a);}catch(_e){}});};
-      const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
+      /* [giro 240 · PO-500 decisione PO «Sì, nella 197»] PELLE E CAPELLI DALLA FIGURINA anche in partita (e quindi ingresso, highlight,
+         premiazione e festa, che usano questi stessi corpi). Chi ha un nome (i ventuno + l'eroe) prende i capelli dalla classe della
+         sua figurina e la pelle dal colore misurato sul ritratto, con lo stesso metodo della serata (giro 225: aspettoFigurina225,
+         _pelle225). Arbitro, panchine, mascotte e assistenti non hanno figurina: restano dal seme. Rosso __CPM_NO_G240. */
+      const _resaViva240=new THREE.Vector3(1,1,1);sr.current._resa240=()=>{try{const q=resa240('partita',tod);_resaViva240.set(q[0],q[1],q[2]);}catch(_e){}};sr.current._resa240();/* la compensazione delle luci di base dell'ora (giorno · tramonto · notte): un vettore condiviso da tutti i materiali di pelle */
+      const _aspetto240=(proc,appr)=>{try{if(!proc||proc._nf==null||proc._nf===''||typeof _g240!=='function'||!_g240()||typeof aspettoFigurina225!=='function')return appr;const fg=aspettoFigurina225(proc._nf);if(!fg)return appr;return Object.assign({},appr||{},fg.hair?{hair:fg.hair}:null,{_fig240:fg});}catch(_e){return appr;}};
+      const _chi240=(visual,proc,ruolo)=>{try{if(visual&&proc)visual.userData.chi240={nome:proc._nf||null,ruolo:ruolo||null};}catch(_e){}};
+      const _pelleFig240=(visual,appearance)=>{try{const fg=appearance&&appearance._fig240;if(!fg||!fg.p||typeof _pelle225!=='function')return;_pelle225(visual,fg.p,'auto',_resaViva240,renderer.outputEncoding===THREE.sRGBEncoding,ESP240);}catch(_e){}};
+      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}};/* la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
+      const _applyCgtraderNativeHair0=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
       /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
@@ -17009,7 +17018,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(_scalaCorpo21()*(targetHeight/rawHeight));visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          _applyHyperBuild(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)),old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
+          {const _ap240=_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -17036,7 +17045,7 @@ function ThreeMatchView(props){
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-            const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
+            const appearance=_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
@@ -17218,7 +17227,7 @@ function ThreeMatchView(props){
           const _hyperAssetUrls=_trioLod?[urlLod233('lod0')/* [giro 233 PO-453] dispositivo leggero: il posto del lod0 lo prende il file lod1 (16,4 MB in meno) */,'./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
         const _esu31=_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31);
-        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po2.glb']:[]).map(url=>loadGLB(url))).then(results=>{
+        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po2.glb']:[]).map(url=>loadGLB(url))).then(results=>((typeof _g240==='function'&&_g240()&&typeof voltiPronti225==='function')?voltiPronti225(4000):Promise.resolve()).then(()=>results)/* [giro 240 PO-500] l'indice dei volti (82 KB) prima dei corpi, come nella serata */).then(results=>{
           const _po2Res=_esu31?results.pop():null;const _esuRes=_esu31?results.pop():null;const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){const ok=riparaCadute7(_mxAnims23);try{window.__CPM_CADUTA8={riparate:ok};}catch(_e){}}if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRO34)){const ok34=_tiro34Prep(_mxAnims23);try{window.__CPM_TIRO34P={pronta:ok34};}catch(_e){}}}
           if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);if(!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31))for(const _n31 of ['pass','penalty']){const _c31=(_p0.animations||[]).find(c=>c&&c.name===_n31);const _m31=_c31&&_specchiaClip23(_c31,_p0.scene,_n31+'~m');if(_m31)_mxAnims23.push(_m31);}{const _s34=_mxAnims23.find(c=>c&&c.name==='mx-strike-foward-jog');if(_s34&&_s34._root34){const _m34=_specchiaClip23(_s34,_p0.scene,'mx-strike-foward-jog~m');if(_m34){_m34._root34=_s34._root34;_mxAnims23.push(_m34);}}}/* [7.999.34] il tiro in corsa anche col sinistro */}/* [7.999.31] le esultanze del PO (Mixamo sullo scheletro CGTrader): via le tracce del nodo `root`, che nell'export da FBX porta la scala dei centimetri (0,01) e farebbe sparire il corpo */if(_esuRes&&_esuRes.status==='fulfilled'&&_esuRes.value){for(const _c of (_esuRes.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));_mxAnims23.push(_c);}}if(_po2Res&&_po2Res.status==='fulfilled'&&_po2Res.value&&!(typeof window!=='undefined'&&window.__CPM_NO_CLIP145)){for(const _c of (_po2Res.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));if(_c.name==='mx-receive-thigh'){const _tp=_c.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));if(_tp){const v=_tp.values;const x0=v[0],z0=v[2];for(let k=0;k<v.length;k+=3){v[k]=x0;v[k+2]=z0;}}}_mxAnims23.push(_c);}}/* [7.999.144 PO-075, decisione PO 06/10 «testa + coscia»] secondo pacchetto del PO: stacco di testa da fermo e controllo di coscia (tratto 0,8-1,6 s, sul posto: tolto l'avanzamento del bacino) */try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value);if(_trioLod&&packages.length===3&&packages[0]===packages[1]){packages[0]=Object.assign({},packages[1]);try{window.__CPM_LEGGERO233=true;}catch(_e233){}}/* [giro 233] stesso file per i due posti: una copia dell'involucro, cosi' ciascun posto tiene la sua etichetta _cgLod */const pkg=packages[0];
@@ -28515,7 +28524,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
-      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
+      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();if(typeof window!=='undefined'&&window.__CPM_G240W){if(sr.current&&sr.current._resa240)sr.current._resa240();/* solo banco: rilegge la taratura di prova */const P240=propsRef.current||{};misuraPelle240('partita:'+(P240.matchPhase||'')+(P240.ceremony?(P240.ceremony.light?':festa':':premiazione'):''),renderer,scene,camera);}/* [giro 240 PO-500] testimone di pelle e capelli, solo con __CPM_G240W *//* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
       if(typeof window!=='undefined'&&window.__CPM_G222W)_w222();/* [giro 222 PO-481] testimone dei guardalinee */
       if(typeof window!=='undefined'&&window.__CPM_G245W)_w245();/* [giro 245 PO-510] testimone del tunnel */
     };
@@ -34456,7 +34465,9 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     //   squadre REALI home/away; l'eroe è sempre reso «home» nel 3D).
     try{const _heroRoster=isMatchHome?homeRoster:awayRoster,_oppRoster=isMatchHome?awayRoster:homeRoster;
       const _surn=(r,idx)=>{const nm=((r&&r[idx]&&r[idx].name)||"").trim();const pp=nm.split(/\s+/);return (pp[pp.length-1]||"").toUpperCase();};
-      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});}catch(_e){}
+      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});
+      /* [giro 240 PO-500] il NOME INTERO accanto al cognome: e' la chiave della figurina (pelle e capelli dei corpi 3D). Stessi indici dei cognomi. */
+      {const _nf240=(r,idx)=>String((r&&r[idx]&&r[idx].name)||"").trim();let _h2=0,_a2=0;_mp.forEach(e=>{e.nf=(e.team==="home")?_nf240(_heroRoster,_h2++):_nf240(_oppRoster,_a2++);});}}catch(_e){}
     /* [7.641.0 — F1a del piano B: I VENTUNO HANNO UN RUOLO] Decisione strategica (docs/SPRINT §B):
        l'analisi ha censito che i giocatori di sfondo non hanno campo ruolo — slot per indice e
        basta — e il motore del possesso non puo' scegliere un ricevente «da regista» o «da ala».
@@ -46807,20 +46818,52 @@ const _CAP225={neri:'#141210',castani:'#3a2410',biondi:'#dcb64c',rossi:'#b5491f'
 const _BASE225={'Material.001':[208,143,113],'Material.002':[203,133,109],HyperLegLeft:[187,130,102],HyperLegRight:[187,130,102]};/* pelle delle texture del corpo CGTrader (mediana dei pixel di pelle, misurata sul GLB) */
 function aspettoFigurina225(chiave){try{const I=VOLTI23.idx;if(!I||chiave==null||chiave==="")return null;const n=voltoId23('giocatore',chiave,0);if(n==null)return null;
   const r=I.g.find(x=>x.n===n)||I.s.find(x=>x.n===n);return r?{n,k:r.k,h:r.h,p:r.p||null,hair:_CAP225[r.h]||null,file:I.base+r.f}:null;}catch(_e){return null;}}
+try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_FIG240=(n)=>aspettoFigurina225(n);}catch(_e){}/* [giro 240] solo banco di prova: la figurina di un nome, per il guardiano pelle-240 */
 function voltiPronti225(ms){return new Promise(res=>{try{if(VOLTI23.idx||VOLTI23.stato==='assente'||VOLTI23.stato==='spento')return res();
   let fatto=false;const f=()=>{if(fatto)return;fatto=true;try{VOLTI23.ascolta.delete(f);}catch(_e){}res();};VOLTI23.ascolta.add(f);_caricaVolti23();setTimeout(f,ms||4000);}catch(_e){res();}});}
 /* la pelle del corpo prende il colore del ritratto: solo i pixel di pelle (saturi e caldi) si moltiplicano, calzettoni, scarpe, occhi e denti restano */
-function _pelle225(av,hex,lineare){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255];
-  const f=lineare?(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}):(v=>v/255);let fatti=0;
+let _UNO240=null;
+/* [giro 240 · PO-500] MASCHERA DEL VISO. La tinta della pelle sceglie i pixel «saturi e caldi»: sulla testa lo sono anche i capelli
+   castani e ramati (misurato nei primi piani: un castano tinto come pelle diventava rossiccio). Le quattro texture della testa
+   (HEAD_hair_black/brown/blond/auburn) sono IDENTICHE fuori dai capelli (misurato: 89,7% dei pixel uguali, 10,3% diversi): la differenza
+   fra due di loro E' la zona dei capelli (piu' qualche macchia sul viso, che si scarta: vedi sotto). Si calcola una volta, a 256x256, e lo
+   shader della testa tinge solo dove la maschera vale 1.
+   Finche' non e' pronta la maschera e' tutta bianca (= comportamento del giro 225). */
+const _MASC240={u:{value:null},stato:0,cap:null};
+function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.DataTexture(new Uint8Array([255,255,255,255]),1,1,T.RGBAFormat);t.needsUpdate=true;_MASC240.u.value=t;}
+  if(_MASC240.stato||typeof document==='undefined')return _MASC240.u;_MASC240.stato=1;
+  const fai=(a,b)=>{try{const N=256,mk=im=>{const c=document.createElement('canvas');c.width=N;c.height=N;const g=c.getContext('2d');g.drawImage(im,0,0,N,N);return g.getImageData(0,0,N,N).data;};
+      const A=mk(a),B=mk(b),cv=document.createElement('canvas');cv.width=N;cv.height=N;const g=cv.getContext('2d'),O=g.createImageData(N,N);let cap=0;
+      /* SOLO LA CALOTTA. Le texture differiscono anche in macchie piccole sul viso (sopracciglia, contorno degli occhi, narici, barba): lasciarle fuori dalla tinta
+         faceva chiazze chiare sulle carnagioni scure e, in partita, occhi e narici neri (misurato sui primi piani). Resta «capelli» solo cio' che sta in una zona
+         dove almeno il 60% dei pixel di una finestra 21x21 differisce (le due isole grandi della calotta), allargata di 6 pixel per tenere il bordo. */
+      const D=new Float32Array(N*N);for(let i=0,j=0;i<A.length;i+=4,j++)D[j]=(Math.abs(A[i]-B[i])+Math.abs(A[i+1]-B[i+1])+Math.abs(A[i+2]-B[i+2]))>10?1:0;
+      const boxa=(src,k)=>{const W1=N+1,I=new Float32Array(W1*W1),o=new Float32Array(N*N),n2=(2*k+1)*(2*k+1);for(let y=0;y<N;y++){let r=0;for(let x=0;x<N;x++){r+=src[y*N+x];I[(y+1)*W1+x+1]=I[y*W1+x+1]+r;}}
+        for(let y=0;y<N;y++){const y0=Math.max(0,y-k),y1=Math.min(N,y+k+1);for(let x=0;x<N;x++){const x0=Math.max(0,x-k),x1=Math.min(N,x+k+1);o[y*N+x]=(I[y1*W1+x1]-I[y0*W1+x1]-I[y1*W1+x0]+I[y0*W1+x0])/n2;}}return o;};
+      const Z=boxa(D,10);for(let j=0;j<Z.length;j++)Z[j]=Z[j]>=0.6?1:0;const Zd=boxa(Z,6);
+      for(let i=0,j=0;i<A.length;i+=4,j++){const v=(D[j]&&Zd[j]>0)?0:255;if(!v)cap++;O.data[i]=O.data[i+1]=O.data[i+2]=v;O.data[i+3]=255;}
+      g.putImageData(O,0,0);const t=new T.CanvasTexture(cv);t.flipY=false;t.needsUpdate=true;_MASC240.u.value=t;_MASC240.cap=+(cap/(N*N)).toFixed(4);_MASC240.stato=2;}catch(_e){_MASC240.stato=3;}};
+  const P=(typeof window!=='undefined'&&window.__CPM_TESTE237)||{},carica=v=>new Promise(res=>{const p=P[v];if(p&&p.complete&&p.naturalWidth>0)return res(p);const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src='./assets/hair-colors/source-textures/HEAD_hair_'+v+'.png';});
+  Promise.all([carica('black'),carica('blond')]).then(([a,b])=>{if(a&&b)fai(a,b);else _MASC240.stato=3;});
+  return _MASC240.u;}catch(_e){return _MASC240.u;}}
+function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255],auto240=lineare0==='auto';
+  const fL=(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}),fS=(v=>v/255);let fatti=0;if(!_UNO240)_UNO240=new T.Vector3(1,1,1);
   av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
     const nx=src.map(b=>{if(!b||!b.map||(b.userData&&b.userData.pelle225===hex))return b;const nome=(b.userData&&b.userData.base225)||(/^KorwardNativeHair_/.test(b.name)?'Material.002':b.name),bs=_BASE225[nome];if(!bs)return b;
-      if(lineare&&typeof _linMat178==='function'){try{_linMat178(b);}catch(_e){}}/* prima del proprio shader: sviluppoColore178 salta i materiali con onBeforeCompile */
+      const lineare=auto240?(b.map.encoding===T.sRGBEncoding):lineare0,f=lineare?fL:fS;/* [giro 240] 'auto' (partita): lo spazio lo dice la mappa del materiale, che non si tocca */
+      if(lineare&&!auto240&&typeof _linMat178==='function'){try{_linMat178(b);}catch(_e){}}/* prima del proprio shader: sviluppoColore178 salta i materiali con onBeforeCompile */
       const c=b.clone();c.userData=Object.assign({},b.userData||{},{base225:nome,pelle225:hex});
-      const u=new T.Vector3(f(tg[0])/f(bs[0]),f(tg[1])/f(bs[1]),f(tg[2])/f(bs[2]));if(lineare){const q=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_RESA225)||RESA225;u.x*=q[0];u.y*=q[1];u.z*=q[2];}c.userData.u225=u;
+      const fU=auto240?(uscitaLin?fL:fS):f;/* [giro 240] il bersaglio nello spazio d'USCITA del renderer, la base nello spazio in cui lo shader legge la mappa: in partita la mappa della testa non e' decodificata (resta sRGB) e l'uscita e' sRGB */
+      const u=new T.Vector3(fU(tg[0])/f(bs[0]),fU(tg[1])/f(bs[1]),fU(tg[2])/f(bs[2]));if(esp){u.x*=Math.pow(Math.max(1e-4,fL(tg[0])),-esp[0]);u.y*=Math.pow(Math.max(1e-4,fL(tg[1])),-esp[1]);u.z*=Math.pow(Math.max(1e-4,fL(tg[2])),-esp[2]);}/* [giro 240] lo sviluppo del colore non e' una moltiplicazione: schiaccia i toni scuri e sbiadisce i chiari. Misurato su 22 visi: il fattore che serve va come (bersaglio)^-a per canale */
+      const viva=!!(resa&&resa.isVector3);/* [giro 240] compensazione VIVA (partita: cambia con la fase — gioco, premiazione, festa): un vettore condiviso, letto dallo shader */
+      if(!viva&&(lineare||resa)){const q=resa||(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_RESA225)||RESA225;u.x*=q[0];u.y*=q[1];u.z*=q[2];}c.userData.u225=u;c.userData.lin240=lineare;
       const s0=lineare?'0.35':'0.20',s1=lineare?'0.55':'0.34';
-      c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.fragmentShader='uniform vec3 uPelle225;\n'+sh.fragmentShader.replace('#include <map_fragment>',
-        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);diffuseColor.rgb*=mix(vec3(1.0),uPelle225,k225);}');};
-      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S');c.needsUpdate=true;fatti++;return c;});
+      const masc=(nome==='Material.002'&&_g240())?_maschera240():null;c.userData.masc240=!!masc;
+      /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: i capelli — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
+      const dec=!!(masc&&auto240&&!lineare&&uscitaLin);
+      c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};if(masc)sh.uniforms.uMasc240=masc;sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+(masc?'uniform sampler2D uMasc240;\n':'')+sh.fragmentShader.replace('#include <map_fragment>',
+        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;k225*=m240;':'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
+      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
     m.material=Array.isArray(m.material)?nx:nx[0];});
   av.userData.pelle225=hex;return fatti;}catch(_e){return 0;}}
 /* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
@@ -46850,10 +46893,16 @@ function misuraBraccio225(av,cal){try{const T=THREE,B=av.userData._bm225||(av.us
   let fuori=null;if(cal&&cal.asse){const rel=B.lowerarm_r.quaternion.clone().multiply(cal.ref.clone().invert());/* rotazione rispetto alla posa di riferimento, nello spazio dell'omero */
     const a=cal.asse,pr=rel.x*a.x+rel.y*a.y+rel.z*a.z,tw=new T.Quaternion(a.x*pr,a.y*pr,a.z*pr,rel.w);if(tw.lengthSq()<1e-9)tw.set(0,0,0,1);tw.normalize();
     const sw=rel.clone().multiply(tw.invert());fuori=2*Math.acos(cl(Math.abs(sw.w)))*G;}
+  /* [giro 240] la stessa rotazione scomposta in tre: flessione (cerniera), PRONAZIONE (torsione lungo l'avambraccio, lecita: in una clip
+     di mocap sta sull'osso dell'avambraccio) e DEVIAZIONE (cio' che resta: il gomito che piega di lato, che un gomito non fa). */
+  let pron=null,devia=null;if(cal&&cal.asse&&B.hand_r){const axF=B.hand_r.position.clone().normalize(),R=cal.ref.clone().invert().multiply(B.lowerarm_r.quaternion);
+    const pt=R.x*axF.x+R.y*axF.y+R.z*axF.z,tp=new T.Quaternion(axF.x*pt,axF.y*pt,axF.z*pt,R.w);if(tp.lengthSq()<1e-9)tp.set(0,0,0,1);tp.normalize();pron=2*Math.acos(cl(Math.abs(tp.w)))*G;
+    const Sg=R.clone().multiply(tp.clone().invert()),a2=cal.asse.clone().applyQuaternion(cal.ref.clone().invert()),ph=Sg.x*a2.x+Sg.y*a2.y+Sg.z*a2.z,th=new T.Quaternion(a2.x*ph,a2.y*ph,a2.z*ph,Sg.w);if(th.lengthSq()<1e-9)th.set(0,0,0,1);th.normalize();
+    devia=2*Math.acos(cl(Math.abs(Sg.clone().multiply(th.invert()).w)))*G;}
   let polso=null;if(B.middle_01_r){const dM=P('middle_01_r').sub(H).normalize();polso=Math.acos(cl(dM.dot(dF)))*G;}
   const asse=ne.clone().sub(pe).normalize(),dist=p=>{const d=p.clone().sub(pe);return d.sub(asse.clone().multiplyScalar(d.dot(asse))).length();};
   const mid=pe.clone().add(ne).multiplyScalar(0.5);
-  return{gomito:+gomito.toFixed(1),elev:+elev.toFixed(1),fuori:fuori==null?null:+fuori.toFixed(1),polso:polso==null?null:+polso.toFixed(1),
+  return{gomito:+gomito.toFixed(1),elev:+elev.toFixed(1),fuori:fuori==null?null:+fuori.toFixed(1),pron:pron==null?null:+pron.toFixed(1),devia:devia==null?null:+devia.toFixed(1),polso:polso==null?null:+polso.toFixed(1),
     manoLato:+H.clone().sub(mid).dot(side).toFixed(3),manoAvanti:+H.clone().sub(mid).dot(fwd).toFixed(3),manoSu:+(H.y-S.y).toFixed(3),
     busto:+Math.min(dist(H),dist(E)).toFixed(3),dU:[+dU.x.toFixed(4),+dU.y.toFixed(4),+dU.z.toFixed(4)],dF:[+dF.x.toFixed(4),+dF.y.toFixed(4),+dF.z.toFixed(4)]};}catch(_e){return null;}}
 /* IL SALUTO: parte dalla posa a riposo che _posa192 ha appena scritto (niente salti), omero di lato-avanti poco sopra l'orizzontale,
@@ -46923,6 +46972,90 @@ function _cammino225(av,mx,idleAct,walkClip){try{const T=THREE;if(!av||!mx||!idl
       const low=Math.min(wy(B.ball_l)-rip.ball,wy(B.ball_r)-rip.ball,wy(B.foot_l)-rip.foot,wy(B.foot_r)-rip.foot);
       av.position.y=y0+((av.position.y-low)-y0)*st.ww;}};
   return st;}catch(_e){return null;}}
+/* ════════════════════════════════════════════════════════════════════════
+   [giro 240 · PO-499 decisione PO «Posa ora, clip nella 197»] IL SALUTO DELLA SERATA E' UNA CLIP VERA. La posa calcolata del giro 225
+   (_saluto225) lascia il posto a una clip di applauso/saluto di Anderson Rohr gia' nel repository con licenza registrata
+   (assets/cgtrader-clip-rohr.glb, docs/governo/CREDITI-fonti.md): «clapping hands up» (applauso alla tribuna a mani alte), ripiego «clap twice hand up». Della clip si
+   prendono SOLO le braccia (clavicole, omeri, avambracci, mani, dita): gambe e busto restano della posa della fila. La clip si campiona
+   al tempo di scena del saluto con un mixer suo (peso 1), poi si dissolve dalla posa a riposo (rampa del tick): nessun salto all'inizio
+   e alla fine. Dopo la clip passa di nuovo la regola delle spalle (_spalle146: mani ferme dove le mette la clip).
+   Rosso window.__CPM_NO_G240 (= saluto del giro 225). Misure in docs/sviluppo/RAPPORTO-giro240.md.
+   ════════════════════════════════════════════════════════════════════════ */
+const _g240=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G240);
+const _CLIP240=['rohr-clapping-hands-up','rohr-clap-twice-hand-up'];/* le due indicate dal PO. MISURATE sul corpo della serata (misura-240.mjs): «clapping hands up» sta dentro tutti i limiti del braccio del giro 225 (gomito fuori cerniera 9,7 gradi, polso 62,7, velocita' 236/452 gradi/s); «clap twice hand up» ne supera tre (cerniera 39,5 > 25, polso 71,9 > 70, velocita' 397/570 > 350/530): la prima e' la clip, la seconda il ripiego */
+const _OSSA240=/^(clavicle|upperarm|upperarm_twist_01|lowerarm|lowerarm_twist_01|hand|(index|middle|ring|pinky)_(metacarpal|0[123])|thumb_0[123])_[lr]$/;
+const RAMPA240=0.50;/* s di scena: entrata e uscita in dissolvenza dalla posa a riposo */
+function _salutoClip240(av,pkgR){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
+  const vuole=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CLIP240)||null;/* solo sonde: prova l'altra clip */
+  let c0=null;for(const n of (vuole?[vuole]:_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;
+  const tr=c0.tracks.filter(t=>{const m=/^(.*)\.quaternion$/.exec(t.name);return !!(m&&_OSSA240.test(m[1]));});if(tr.length<8)return null;
+  const clip=new T.AnimationClip('saluto240',c0.duration,tr),mx=new T.AnimationMixer(av),act=mx.clipAction(clip);
+  const ossa=[];av.traverse(o=>{if(o.isBone&&_OSSA240.test(o.name)&&tr.some(t=>t.name===o.name+'.quaternion'))ossa.push(o);});if(ossa.length<8)return null;
+  const q0=ossa.map(()=>new T.Quaternion()),qt=new T.Quaternion();let vivo=false;
+  return{dur:c0.duration,nome:c0.name,ossa:ossa.length,
+    /* w 0..1 dalla rampa del tick, t = tempo di scena del saluto. Va chiamato DOPO la posa a riposo (che e' il punto di partenza). */
+    applica(w,t){if(!(w>0)){if(vivo){act.stop();vivo=false;}return;}
+      for(let i=0;i<ossa.length;i++)q0[i].copy(ossa[i].quaternion);
+      if(!vivo){act.play();act.paused=true;vivo=true;}act.setEffectiveWeight(1);act.time=Math.max(0,Math.min(c0.duration-0.002,t||0));mx.update(0);
+      if(w<1)for(let i=0;i<ossa.length;i++){qt.copy(q0[i]).slerp(ossa[i].quaternion,w);ossa[i].quaternion.copy(qt);}}};}catch(_e){return null;}}
+/* ════════════════════════════════════════════════════════════════════════
+   [giro 240 · PO-500 decisione PO «Sì, nella 197»] PELLE E CAPELLI DALLA FIGURINA IN TUTTE LE SCENE. Lo stesso metodo della serata
+   (giro 225): capelli dalla classe h dell'indice dei volti, pelle dal colore p misurato sul ritratto, sui soli pixel di pelle dei
+   materiali del corpo. Ogni scena ha le sue luci: RESA240 e' la compensazione misurata scena per scena (sonda misura-pelle-240).
+   Chi non ha figurina (arbitro, panchine, mascotte, assistenti, presentatori) resta com'era. Rosso window.__CPM_NO_G240.
+   ════════════════════════════════════════════════════════════════════════ */
+const ESP240=[-0.10,0.27,0.28];/* esponente per canale, misurato su 22 visi della partita (notte −0,12/0,34/0,29 · giorno −0,10/0,23/0,27 · tramonto −0,08/0,25/0,28) */
+const RESA240={partita:{day:[1.21,0.706,0.567],dusk:[1.224,0.732,0.609],night:[1.13,0.62,0.535]},/* una per ora del giorno, tarata sulle luci di base (ingresso e gioco). Premiazione e festa aggiungono luci TRANSITORIE (fuochi, flash): tingono i visi per un istante come tingono tutto il resto, e non si compensano */
+  parata:{eroe:[0.362,0.267,0.255],'tetto-sx':[0.47,0.37,0.355],'tetto-dx':[0.179,0.111,0.090]},serata:[0.762,0.36,0.287]};/* parata: i corpi sul tetto guardano ai due lati del viale, e la luce (x4) li prende in modo diverso: una compensazione per lato */
+function resa240(scena,tod,fase){try{const t=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_RESA240)||null;if(t)return t;const r=RESA240[scena];if(Array.isArray(r))return r;if(scena!=='partita')return (r&&(r[fase]||r.eroe))||[1,1,1];return (r&&(r[tod]||r.night))||[1,1,1];}catch(_e){return [1,1,1];}}
+/* un corpo CGTrader delle cerimonie (corpoCG23) prende capelli e pelle della figurina di `chiave`; ritorna l'aspetto o null */
+function figurina240(av,chiave,scena,ruolo){try{if(!av)return null;av.userData.chi240={nome:chiave||null,ruolo:ruolo||null};if(!_g240()||!chiave)return null;const fg=aspettoFigurina225(chiave);if(!fg)return null;
+  av.userData.fig240=fg;av.userData.scena240=scena;if(fg.hair){try{cgCapelli142(av,{hair:fg.hair});}catch(_e){}}if(fg.p)_pelle225(av,fg.p,true,resa240(scena,null,ruolo),true,ESP240);return fg;/* come la serata: materiali in lineare (_linMat178) + compensazione delle luci della scena */}catch(_e){return null;}}
+/* la mappa dei capelli puo' arrivare dopo e sostituire il materiale della testa: si richiama ogni tanto (costa un confronto) */
+function rifaiPelle240(av){try{const u=av&&av.userData;if(u&&u.fig240&&u.fig240.p)_pelle225(av,u.fig240.p,true,resa240(u.scena240,null,u.chi240&&u.chi240.ruolo),true,ESP240);}catch(_e){}}
+/* TESTIMONE (solo con window.__CPM_G240W={chiedi:true}, armato dalla sonda/guardiano pelle-240): per ogni corpo CGTrader visibile della
+   scena, chi e' (userData.chi240 sul corpo o su un genitore), che testa ha (variante dei capelli) e il COLORE RESO del viso: primo piano
+   del viso con le luci e lo sviluppo della scena, mediana dei pixel di pelle al centro. Sola lettura: un fotogramma di prova per corpo. */
+function misuraPelle240(scena,renderer,scene,camera){try{if(typeof window==='undefined'||typeof THREE==='undefined')return;const W=window.__CPM_G240W;if(!W||!W.chiedi||!renderer||!scene)return;
+  if(W.scena&&String(scena).indexOf(W.scena)!==0)return;W.chiedi=false;const T=THREE,per=new Map();
+  scene.traverseVisible(o=>{if(!o.isSkinnedMesh||!o.skeleton||!o.skeleton.bones||!o.skeleton.bones.length)return;const k=o.skeleton.bones[0];let c=per.get(k);if(!c){c={ms:[],bs:o.skeleton.bones};per.set(k,c);}c.ms.push(o);});
+  const gl=renderer.getContext(),Wd=gl.drawingBufferWidth,Hd=gl.drawingBufferHeight,cam2=new T.PerspectiveCamera(30,Wd/Math.max(1,Hd),0.03,80),out={scena,t:+(performance.now()/1000).toFixed(2),corpi:[],altri:0};
+  const up=new T.Vector3(0,1,0),a=new T.Vector3(),b=new T.Vector3(),hp=new T.Vector3(),side=new T.Vector3(),fwd=new T.Vector3(),face=new T.Vector3(),su=new T.Vector3();
+  /* veli, fasci e anelli trasparenti (il segnale dell'eroe, gli stacchi) non fanno parte del viso: durante i primi piani si nascondono (misurato: il primo piano dell'eroe in gioco usciva scuro in tutti e due i bracci) */
+  const veli=[];scene.traverseVisible(o=>{if((o.isMesh&&!o.isSkinnedMesh&&!o.isInstancedMesh&&o.material&&!Array.isArray(o.material)&&o.material.transparent)||o.isSprite)veli.push(o);});for(const o of veli)o.visible=false;
+  /* oggetti piccoli (coppa, medaglie, pallone) vicini a un viso: nascosti per il solo primo piano di quel corpo (misurato: l'oro della coppa alzata dall'eroe passava per pelle) */
+  const ogg=[];scene.traverseVisible(o=>{if(!o.isMesh||o.isSkinnedMesh||o.isInstancedMesh||!o.geometry)return;if(!o.geometry.boundingSphere)o.geometry.computeBoundingSphere();const bs=o.geometry.boundingSphere;if(bs&&bs.radius*Math.max(o.matrixWorld.elements[0]||1,1e-3)<3){ogg.push(o);}});const vic=[],pw=new T.Vector3();
+  per.forEach(c=>{const B={};for(const x of c.bs){if(/^(head|neck_01|upperarm_l|upperarm_r|foot_l)$/.test(x.name)&&!B[x.name])B[x.name]=x;}
+    let testa=null,tinti=0;for(const m of c.ms){for(const mt of (Array.isArray(m.material)?m.material:[m.material])){if(!mt)continue;const nm=(mt.userData&&mt.userData.base225==='Material.002')?(/^KorwardNativeHair_/.test(mt.name)?mt.name:'Material.002'):mt.name;
+      if(nm==='Material.002'||/^KorwardNativeHair_/.test(nm))testa=/^KorwardNativeHair_/.test(nm)?nm.slice(18):'originale';if(mt.userData&&mt.userData.pelle225)tinti++;}}
+    if(!testa||!B.head||!B.upperarm_l||!B.upperarm_r){out.altri++;return;}
+    let chi=null;for(let x=c.ms[0],k=0;x&&k<14&&!chi;x=x.parent,k++)if(x.userData&&x.userData.chi240)chi=x.userData.chi240;
+    const r={nome:(chi&&chi.nome)||null,ruolo:(chi&&chi.ruolo)||null,capelli:testa,tinti,reso:null,px:0};if(W.dettagli){r.mats=[];for(const m of c.ms)for(const mt of (Array.isArray(m.material)?m.material:[m.material])){if(mt&&mt.map)r.mats.push({n:mt.name,b:(mt.userData&&mt.userData.base225)||null,enc:mt.map.encoding,col:mt.color?mt.color.getHexString():null,em:mt.emissive?mt.emissive.getHexString():null,u:(mt.userData&&mt.userData.u225)?[+mt.userData.u225.x.toFixed(3),+mt.userData.u225.y.toFixed(3),+mt.userData.u225.z.toFixed(3)]:null,lin:mt.userData&&mt.userData.lin240,tipo:mt.type,mesh:m.name});}}if(!r.nome&&!W.tutti){out.corpi.push(r);return;}/* i corpi senza nome si contano e basta: il primo piano costa un fotogramma */
+    try{B.head.getWorldPosition(hp);B.upperarm_r.getWorldPosition(a);B.upperarm_l.getWorldPosition(b);side.copy(a).sub(b);side.y=0;if(side.lengthSq()<1e-8)throw 0;side.normalize();fwd.copy(up).cross(side).normalize();
+      let k=1;if(B.foot_l){B.foot_l.getWorldPosition(a);const h=hp.y-a.y;if(h>0.6&&h<3)k=h/1.5;}
+      /* il viso segue il collo: in corsa la testa e' piegata in avanti e un primo piano «orizzontale» inquadrava i capelli (misurato sull'eroe in gioco) */
+      if(B.neck_01){B.neck_01.getWorldPosition(a);su.copy(hp).sub(a);if(su.lengthSq()>1e-6){su.normalize();fwd.addScaledVector(su,-fwd.dot(su));if(fwd.lengthSq()>1e-6)fwd.normalize();}else su.copy(up);}else su.copy(up);
+      face.copy(hp).addScaledVector(su,0.07*k).addScaledVector(fwd,0.09*k);cam2.up.copy(su);cam2.position.copy(face).addScaledVector(fwd,0.48*k);/* vicina: a 1,25 un compagno in fila finiva fra la camera e il viso (misurato: «viso» rosso maglia) */cam2.lookAt(face);cam2.updateMatrixWorld(true);
+      vic.length=0;for(const o of ogg){if(o.visible&&pw.setFromMatrixPosition(o.matrixWorld).distanceTo(hp)<2.2*k){o.visible=false;vic.push(o);}}
+      /* gli ALTRI corpi non fanno parte di questo viso: nella festa i compagni si abbracciano e una maglia finiva davanti al primo piano (misurato: «viso» 247,104,92 = rosso maglia) */
+      per.forEach(o2=>{if(o2!==c)for(const m of o2.ms){if(m.visible){m.visible=false;vic.push(m);}}});
+      renderer.render(scene,cam2);for(const o of vic)o.visible=true;const R=Math.max(4,Math.round(Hd*0.05)),n=2*R+1,px=new Uint8Array(n*n*4);gl.readPixels(Math.round(Wd/2)-R,Math.round(Hd/2)-R,n,n,gl.RGBA,gl.UNSIGNED_BYTE,px);
+      const q=[[],[],[]];for(let i=0;i<px.length;i+=4){if(px[i]>px[i+1]&&px[i+1]>px[i+2]&&px[i]>70){q[0].push(px[i]);q[1].push(px[i+1]);q[2].push(px[i+2]);}}
+      r.px=q[0].length;if(q[0].length>=30)r.reso=q.map(z=>{z.sort((x,y)=>x-y);return z[z.length>>1];});if(W.foto&&W.foto.length<(W.fotoMax||0)){try{const S=Math.min(Wd,Hd,360),fx=new Uint8Array(S*S*4);gl.readPixels(Math.round(Wd/2-S/2),Math.round(Hd/2-S/2),S,S,gl.RGBA,gl.UNSIGNED_BYTE,fx);const cv=document.createElement('canvas');cv.width=S;cv.height=S;const g2=cv.getContext('2d'),im=g2.createImageData(S,S);for(let y=0;y<S;y++)for(let x=0;x<S*4;x++){const v=fx[(S-1-y)*S*4+x];im.data[y*S*4+x]=(x%4===3)?255:v;}g2.putImageData(im,0,0);W.foto.push(cv.toDataURL('image/jpeg',0.85));}catch(_e){}}}catch(_e){}
+    out.corpi.push(r);});
+  for(const o of veli)o.visible=true;
+  out.maschera={stato:_MASC240.stato,capelli:_MASC240.cap};
+  if(camera)renderer.render(scene,camera);(W.esiti=W.esiti||[]).push(out);}catch(_e){try{if(window.__CPM_G240W)window.__CPM_G240W.errore=String(_e&&_e.message||_e);}catch(_e2){}}}
+/* misura delle DUE braccia (sola lettura, guardiano presentazione-225 e sonda misura-240): distanza fra le mani, mani e gomiti dall'asse
+   del busto e dalla testa, quota delle mani sulle spalle. Unita' di mondo. */
+function misuraSaluto240(av){try{const T=THREE,B=av.userData._bm240||(av.userData._bm240=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|head|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|middle_01_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
+  if(!B.pelvis||!B.neck_01||!B.head||!B.hand_l||!B.hand_r||!B.lowerarm_l||!B.lowerarm_r||!B.upperarm_l||!B.upperarm_r)return null;av.updateMatrixWorld(true);
+  const P=n=>B[n].getWorldPosition(new T.Vector3()),pe=P('pelvis'),ne=P('neck_01'),hd=P('head'),asse=ne.clone().sub(pe).normalize();
+  const dist=p=>{const d=p.clone().sub(pe);const k=Math.max(0,Math.min(ne.distanceTo(pe),d.dot(asse)));return d.sub(asse.clone().multiplyScalar(k)).length();};
+  const palmo=k=>{const h=P('hand_'+k);return B['middle_01_'+k]?h.clone().add(P('middle_01_'+k)).multiplyScalar(0.5):h;};
+  const o={mani:+palmo('l').distanceTo(palmo('r')).toFixed(3),polsi:+P('hand_l').distanceTo(P('hand_r')).toFixed(3)};
+  for(const k of ['l','r']){const H=P('hand_'+k),E=P('lowerarm_'+k),S=P('upperarm_'+k);o['busto_'+k]=+Math.min(dist(H),dist(E)).toFixed(3);o['testa_'+k]=+Math.min(H.distanceTo(hd),E.distanceTo(hd)).toFixed(3);o['su_'+k]=+(H.y-S.y).toFixed(3);}
+  return o;}catch(_e){return null;}}
 function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false,nomi=null}){
   /* [7.947 v3 — direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e' nell'as is con
      sovrapposizione delle schermate 2D». Lo stadio non era il problema: lo erano i CH38. Con senzaCorpi
@@ -47040,7 +47173,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     const _cg200=!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&typeof corpoCG23==="function"&&!window.__CPM_NO_PRES200;
     if(_cg200){
       const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');if(typeof copri233==='function')copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'presentazione');/* [giro 233 PO-453] senza precaricamento all'avvio: attesa con avanzamento finche' i corpi non ci sono */
-      Promise.all([_pr233,_g225()?voltiPronti225(4000):null]).then(([pkg])=>{/* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
+      Promise.all([_pr233,_g225()?voltiPronti225(4000):null,(_g225()&&_g240())?loadGLB('./assets/cgtrader-clip-rohr.glb').catch(()=>null):null]).then(([pkg,_v225,rohr240])=>{/* [giro 240 PO-499] + le clip Rohr per il saluto (se il file manca resta la posa del giro 225) *//* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
         const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg||!alive)return;
         const walk0=_g225()?(pkg.animations||[]).find(c=>c&&c.name==='walk'):null,cal225=_g225()?_gomito225(pkg):null;
         const _lin225=renderer.outputEncoding===THREE.sRGBEncoding;
@@ -47057,16 +47190,16 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           const av=corpoCG23(pkg,{shirt:isGk?_gkCol:homeHex,shorts:isGk?_gkCol:awayHex,socks:isGk?_gkCol:homeHex,altezza:isHero&&heroAppr?Math.min(1.95,heroAppr.height||1.86):(_g142?1.8:1.78+R(40+i)*0.12)});
           if(!av)continue;av.position.set((i-(N-1)/2)*SP,0,LZ);av.rotation.y=0;line.add(av);men.push(av);
           /* [giro 225] capelli e pelle dalla figurina di chi sta in questo posto della fila (nomi[i]: i chiamati nell'ordine dei battiti, l'eroe per ultimo) */
-          const fg225=_g225()?aspettoFigurina225((st.current.nomi||[])[i]):null;av.userData.fig225=fg225;
+          const fg225=_g225()?aspettoFigurina225((st.current.nomi||[])[i]):null;av.userData.fig225=fg225;av.userData.chi240={nome:(st.current.nomi||[])[i]||null,ruolo:isHero?'eroe':'fila'};/* [giro 240] per il testimone misuraPelle240 */
           const apC=(ap142&&fg225&&fg225.hair)?Object.assign({},ap142,{hair:fg225.hair}):ap142;
           if(apC){try{cgCorporatura(av,apC);cgCapelli142(av,apC);av.userData.aspetto142={girth:apC.girth,hair:apC.hair,variante:cgVarianteCapelli(apC.hair)};}catch(_e){}}
-          if(fg225&&fg225.p){try{av.userData.lin225=_lin225;_pelle225(av,fg225.p,_lin225);}catch(_e){}}
+          if(fg225&&fg225.p){try{av.userData.lin225=_lin225;if(_g240()&&_lin225)_pelle225(av,fg225.p,true,resa240('serata'),true,ESP240);else _pelle225(av,fg225.p,_lin225);}catch(_e){}}/* [giro 240] la serata con la stessa compensazione tarata delle altre scene (rosso __CPM_NO_G240: le costanti del giro 225) */
           if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);
             if(_g142&&_posa142(av,mx,a,idle0,hashStr(_key142+'|posa142|'+i))){mixers.push(mx);
-              if(_g225()){try{av.userData.cam225=_cammino225(av,mx,a,walk0);av.userData.sal225=_saluto225(av,cal225);}catch(_e){}}}
+              if(_g225()){try{av.userData.cam225=_cammino225(av,mx,a,walk0);av.userData.sal225=_saluto225(av,cal225);if(rohr240&&_g240())av.userData.sal240=_salutoClip240(av,rohr240);}catch(_e){}}}
             else{a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}}
         try{if(typeof window!=='undefined')window.__CPM_PRES200={cg:men.length};}catch(_e){}
-        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO,cam,renderer,cal225,braccio:(i)=>misuraBraccio225(men[i],cal225||_gomito225(pkg))};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 · [giro 225] + camera, calibrazione del gomito e misura del braccio */
+        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO,cam,renderer,cal225,braccio:(i)=>misuraBraccio225(men[i],cal225||_gomito225(pkg)),mani240:(i)=>misuraSaluto240(men[i]),clip240:()=>{const s=men[0]&&men[0].userData.sal240;return s?{nome:s.nome,dur:s.dur,ossa:s.ossa}:null;}};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 · [giro 225] + camera, calibrazione del gomito e misura del braccio */
       }).catch(()=>{});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
@@ -47162,20 +47295,22 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
           const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
           const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
-          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<2.05?1:0;if(S.ts>=2.05&&S.lin<=0.10)S.fatto=true;}}
+          const c240=m.userData.sal240||null,fin240=c240?Math.min(c240.dur-RAMPA240,2.90-RAMPA240):2.05;/* [giro 240] con la clip il braccio e' giu' a 2,90 s come nel giro 225 (2,05 + 0,85): il chiamato torna in fila entro i 6 s di scena che giudica presentazione-142. La clip e' un applauso continuo: se ne usa il primo tratto */
+          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<fin240?1:0;if(S.ts>=fin240&&S.lin<=0.10)S.fatto=true;}}
           else if(S.lin>0.10)tz=m.position.z;
-          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/0.85);S.w=_sm(S.lin);
+          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/(c240?RAMPA240:0.85));S.w=_sm(S.lin);
           if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
         if(mixers.length)mixers.forEach(m=>m.update(dt));
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}
         if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
           if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
-          if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
+          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalle146(_ossa23(m));}catch(_e){}}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
+          else if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
           if(cm)cm.terra();}
-        _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;
+        _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.ts240=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.ts:0;}catch(_e){}
         /* la pelle sulla testa: la mappa dei capelli puo' arrivare dopo e sostituire il materiale (cgCapelli142) */
-        if((t225.fot%20)===0)for(let i=0;i<men.length;i++){const u=men[i].userData;if(u.fig225&&u.fig225.p)_pelle225(men[i],u.fig225.p,!!u.lin225);}
+        if((t225.fot%20)===0||(_g240()&&t225.fot<90))for(let i=0;i<men.length;i++){const u=men[i].userData;if(u.fig225&&u.fig225.p){/* [giro 240] nei primi fotogrammi a ogni giro: la testa non resta senza tinta mentre arrivano le mappe dei capelli */if(_g240()&&u.lin225)_pelle225(men[i],u.fig225.p,true,resa240('serata'),true,ESP240);else _pelle225(men[i],u.fig225.p,!!u.lin225);}}
       } else {
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
       for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
@@ -47385,7 +47520,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
             const hit=t225.ray.intersectBox(tt.bb,t225.v);if(hit&&hit.distanceTo(cam.position)<L){via=true;break;}}}
           tt.o.visible=!via;}
       }
-      renderer.render(scene,cam);misuraCorpi212('presentazione',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
+      renderer.render(scene,cam);misuraCorpi212('presentazione',scene,cam);if(typeof window!=='undefined'&&window.__CPM_G240W)misuraPelle240('presentazione',renderer,scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
       t225.fot++;
       if(_t225&&t225.fot===3&&!t225.prova){
         /* PROVA DI DISEGNO della folla a sagome: lo strato da solo, su una tela 64x64, da centrocampo verso la tribuna; zero pixel = lo strato non si disegna su questo dispositivo */
@@ -47669,7 +47804,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
     _spin429.scale.setScalar(_TSC453);/* [7.453.0] proporzione umana: il trofeo torna sotto il mezzo busto */
     try{const _gl453=new THREE.PointLight(0xffd88a,1.15,14,2);_gl453.position.set(0,1.1,0.5);cup.add(_gl453);}catch(_e){}
     /* la SQUADRA sul tetto */
-    const men=[];const mixers=[];const NM=8;/* [7.429.0] otto uomini: sei lasciavano il tetto mezzo vuoto */
+    const men=[];const mixers=[];const st240={f:0};const NM=8;/* [7.429.0] otto uomini: sei lasciavano il tetto mezzo vuoto */
     const slots=[];for(let i=0;i<NM;i++){slots.push({x:(i%2===0?-1.7:1.7),z:6.0-i*1.9});}
     const mkFallback=(i)=>{const g=new THREE.Group();
       const torso=new THREE.Mesh(new THREE.BoxGeometry(0.85,1.15,0.5),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));torso.position.y=1.35;g.add(torso);
@@ -47707,6 +47842,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
           const _re208=(typeof window!=='undefined'&&window.__CPM_NO_G208)?/^Hyper(Shirt|Shorts|Socks)$/:/^HyperShirt$/;/* [giro 208 PO-469 — rosso __CPM_NO_G208] decisione PO 15/11: la correzione del colore vale SOLO per la maglia; pantaloncini e calzettoni tornano come prima del giro 204 (misurato pullman-204: pantaloncini bianchi luminosita' 0,890 col 204 contro 0,984 prima) */
           for(const c of L){if(!c||!_re208.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
         for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);
+          /* [giro 240 PO-500] pelle e capelli dalla figurina: l'eroe la sua; i compagni sul tetto hanno le chiavi della parata disegnata (ParataScena2D: «parata-<club>-<i>») */
+          figurina240(av,i===0?'eroe-'+(avatarId|0):'parata-'+((club&&club.id)||'x')+'-'+(i-1),'parata',i===0?'eroe':(slots[i].x<0?'tetto-sx':'tetto-dx'));
           const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
           av.position.set(sx,5.3,sz);av.rotation.y=eroe?0:(sx<0?-1:1)*Math.PI/2+(R(i*7)-0.5)*0.5;bus.add(av);
           const mx=new THREE.AnimationMixer(av),act=mx.clipAction(clip);act.play();act.paused=true;const ia=mx.clipAction(idle);ia.play();ia.paused=true;ia.time=0;/* in piedi, fermi: l'idle scorrendo alzava un ginocchio */
@@ -47874,7 +48011,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       caim.set(A.a[0]+(B.a[0]-A.a[0])*ww,A.a[1]+(B.a[1]-A.a[1])*ww,A.a[2]+(B.a[2]-A.a[2])*ww);
       cam.position.copy(cpos);cam.lookAt(caim);
       if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARCAM192&&eroe23){try{const _e=new THREE.Vector3();eroe23.getWorldPosition(_e);cam.position.set(_e.x+1.2,_e.y+1.9,_e.z+3.4);cam.lookAt(_e.x,_e.y+1.9,_e.z);}catch(_e){}}/* [giro 192] solo collaudo: primo piano sull'eroe con la coppa */
-      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
+      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);if(typeof window!=='undefined'&&window.__CPM_G240W)misuraPelle240('parata',renderer,scene,cam);if(((st240.f=(st240.f|0)+1)%20)===0||st240.f<90)for(const m240 of men)rifaiPelle240(m240);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
     tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
     window.addEventListener('resize',onR);
@@ -48259,7 +48396,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       if(winB&&!_cued.win){_cued.win=true;_cue("winner_reveal");}
       confSys.forEach(ps=>{ps.material.opacity+=((winB?0.95:0)-ps.material.opacity)*0.05;
         if(ps.material.opacity>0.02){const a=ps.geometry.attributes.position.array,v=ps._vel;for(let i=0;i<v.length;i++){a[i*3+1]-=v[i]*0.033;a[i*3]+=Math.sin(t*2+i)*0.004;if(a[i*3+1]<0){a[i*3+1]=4.4;}}ps.geometry.attributes.position.needsUpdate=true;}});
-      renderer.render(scene,cam);misuraCorpi212('gala',scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
+      renderer.render(scene,cam);misuraCorpi212('gala',scene,cam);if(typeof window!=='undefined'&&window.__CPM_G240W)misuraPelle240('gala',renderer,scene,cam);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */
     };
     loop();
     const onRs=()=>{try{renderer.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();_fov137();}catch(_e){}};
@@ -49459,7 +49596,8 @@ const CREDITI254=[
     {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:_c290?"Royalty Free (standard)":"Royalty Free (standard) — dichiarata dal PO"},
     {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
     {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"},
+    {n:"Animazioni Anderson Rohr",d:"Applauso dei giocatori nella serata di presentazione.",aut:"Anderson Rohr",lic:"«This pack can be used for free in both personal and commercial projects. Attribution is not required» (andersonrohr.gumroad.com)"}/* [giro 240 PO-499] le clip Rohr entrano nel gioco (saluto della serata): riga di cortesia preparata nel giro 180, decisione madre 180c */]},
   {sez:"Illustrazioni e immagini",voci:[
     {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza

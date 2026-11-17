@@ -2361,7 +2361,9 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     //   squadre REALI home/away; l'eroe è sempre reso «home» nel 3D).
     try{const _heroRoster=isMatchHome?homeRoster:awayRoster,_oppRoster=isMatchHome?awayRoster:homeRoster;
       const _surn=(r,idx)=>{const nm=((r&&r[idx]&&r[idx].name)||"").trim();const pp=nm.split(/\s+/);return (pp[pp.length-1]||"").toUpperCase();};
-      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});}catch(_e){}
+      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});
+      /* [giro 240 PO-500] il NOME INTERO accanto al cognome: e' la chiave della figurina (pelle e capelli dei corpi 3D). Stessi indici dei cognomi. */
+      {const _nf240=(r,idx)=>String((r&&r[idx]&&r[idx].name)||"").trim();let _h2=0,_a2=0;_mp.forEach(e=>{e.nf=(e.team==="home")?_nf240(_heroRoster,_h2++):_nf240(_oppRoster,_a2++);});}}catch(_e){}
     /* [7.641.0 — F1a del piano B: I VENTUNO HANNO UN RUOLO] Decisione strategica (docs/SPRINT §B):
        l'analisi ha censito che i giocatori di sfondo non hanno campo ruolo — slot per indice e
        basta — e il motore del possesso non puo' scegliere un ricevente «da regista» o «da ala».

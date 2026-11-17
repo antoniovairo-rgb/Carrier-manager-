@@ -1,0 +1,55 @@
+# Registro dei controlli del giro 240 — uno alla volta (CPM_CI_PAR=0), CPM_CHROME=/opt/pw-browsers/chromium
+# Build finale: commit c8b6bf4e (ultimo commit che tocca src/ e CARRIER-MANAGER-AV.html). Dopo di esso sono cambiati solo i guardiani pelle-240 e presentazione-225 e i documenti.
+# formato: controllo · esito · durata · memoria libera dopo · disco libero
+
+## Sulla build finale (c8b6bf4e)
+pelle-240 · ROSSO · 15 min 14 s · memoria 15471 MB · disco 28G
+presentazione-225 · ROSSO · 8 min 25 s · memoria 15235 MB · disco 28G
+presentazione-142 · verde · 3 min 16 s · memoria 15373 MB · disco 28G
+presentazione-200 · verde · 1 min 1 s · memoria 15424 MB · disco 28G
+cerimonie-192 · verde · 9 min 51 s · memoria 15137 MB · disco 28G
+festa-3d · verde · 2 min 10 s · memoria 15477 MB · disco 28G
+licenze-184 · verde · 3 min 1 s · memoria 15027 MB · disco 28G
+crediti-254 · verde · 0 min 29 s · memoria 15101 MB · disco 28G
+fps-249 · verde · 0 min 55 s · memoria 15354 MB · disco 28G
+clip-180 · verde · 0 min 0 s · memoria 15416 MB · disco 28G
+test-logic · verde · 0 min 4 s · memoria 15186 MB · disco 28G
+save-compat · verde · 0 min 14 s · memoria 15027 MB · disco 28G
+gigante-212 · verde · 18 min 6 s · memoria 15477 MB · disco 28G
+tpose-196 · verde · 28 min 8 s · memoria 15469 MB · disco 28G
+pullman-204 · verde · 4 min 44 s · memoria 15468 MB · disco 28G
+pelle-240 · verde · 8 min 8 s · memoria 15461 MB · disco 28G
+presentazione-225 · ROSSO · 14 min 21 s · memoria 15233 MB · disco 28G
+presentazione-225 · verde · 13 min 18 s · memoria 15209 MB · disco 28G
+pelle-240-bis · verde · 8 min 40 s · memoria 15472 MB · disco 28G
+
+## Storia: corse su build precedenti dello stesso giro (non valgono come esito finale; restano per trasparenza)
+### prima del ritocco alla durata del saluto (build del commit 8f5df3c6)
+test-logic · verde · 0 min 3 s · memoria 15211 MB · disco 28G
+save-compat · verde · 0 min 13 s · memoria 15073 MB · disco 28G
+clip-180 · verde · 0 min 1 s · memoria 15110 MB · disco 28G
+fps-249 · verde · 0 min 51 s · memoria 15384 MB · disco 28G
+festa-3d · verde · 2 min 8 s · memoria 15503 MB · disco 28G
+licenze-184 · verde · 2 min 56 s · memoria 15113 MB · disco 28G
+crediti-254 · verde · 0 min 28 s · memoria 15237 MB · disco 28G
+cerimonie-192 · verde · 9 min 32 s · memoria 15237 MB · disco 28G
+gigante-212 · verde · 17 min 25 s · memoria 15484 MB · disco 28G
+tpose-196 · verde · 27 min 56 s · memoria 15472 MB · disco 28G
+presentazione-200 · verde · 1 min 1 s · memoria 15449 MB · disco 28G
+presentazione-142 · ROSSO · 3 min 16 s · memoria 15405 MB · disco 28G
+pullman-204 · verde · 4 min 35 s · memoria 15446 MB · disco 28G
+presentazione-142 · verde · 3 min 17 s · memoria 15340 MB · disco 28G
+### dopo il ritocco al saluto, prima della maschera della sola calotta (commit d20c4efb)
+presentazione-225 · verde · 8 min 40 s · memoria 15249 MB · disco 28G
+cerimonie-192 · verde · 9 min 51 s · memoria 15120 MB · disco 28G
+pelle-240 · verde · 9 min 17 s · memoria 15483 MB · disco 28G
+test-logic · verde · 0 min 3 s · memoria 15198 MB · disco 28G
+save-compat · verde · 0 min 12 s · memoria 15115 MB · disco 28G
+clip-180 · verde · 0 min 1 s · memoria 15103 MB · disco 28G
+fps-249 · verde · 0 min 52 s · memoria 15385 MB · disco 28G
+festa-3d · verde · 2 min 7 s · memoria 15493 MB · disco 28G
+licenze-184 · verde · 2 min 58 s · memoria 15054 MB · disco 28G
+crediti-254 · verde · 0 min 27 s · memoria 15140 MB · disco 28G
+presentazione-200 · verde · 1 min 0 s · memoria 15430 MB · disco 28G
+### dopo la maschera della calotta, prima dell'ultimo ritocco al testimone (commit 9fcd57c2): sequenza interrotta dopo il primo controllo
+pelle-240 · ROSSO · 14 min 37 s · memoria 15471 MB · disco 28G
