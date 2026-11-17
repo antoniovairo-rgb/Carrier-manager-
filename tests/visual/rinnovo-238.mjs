@@ -56,10 +56,13 @@ async function stagione(rosso) {
     if (st.s !== 3 || st.w > 38 || st.screen !== 'dashboard') break;
     for (let k = 0; k < 4 && st.motivo && /finestra/.test(st.motivo); k++) {
       if (!(await richiamo(page, visti))) { await page.evaluate(() => { const el = document.querySelector('[data-cpm="intervista231"],[data-cpm="eroe-intervista23"]'); const b = el && [...el.querySelectorAll('button')].find(x => !x.disabled); if (b) b.click(); }); await sleep(300);
-        await page.evaluate(() => { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.chiudi163(); const v = document.querySelector('.cpm-velo150'); const b = v && [...v.querySelectorAll('button')].find(x => !x.disabled); if (b) b.click(); }); await sleep(500); }
+        /* prima si chiude, poi (dopo un respiro) si tocca il velo rimasto: nello stesso istante il tocco su «controproposta» di un'offerta
+           appena chiusa da dismiss() mandava in crash CareerApp (src/18 r. ~7572, aggiornamento con l'offerta gia' nulla) */
+        await page.evaluate(() => { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.chiudi163(); }); await sleep(600);
+        await page.evaluate(() => { const v = document.querySelector('.cpm-velo150'); const b = v && [...v.querySelectorAll('button')].find(x => !x.disabled); if (b) b.click(); }); await sleep(500); }
       st = await stato(page);
     }
-    let preso = false; for (let k = 0; k < 6 && !preso; k++) { preso = await clicca(page, '[data-cpm="salta163-tasto"]'); if (!preso) { await chiudiRiepilogo(page); await sleep(800); } }
+    let preso = false; for (let k = 0; k < 6 && !preso; k++) { preso = await clicca(page, '[data-cpm="salta163-tasto"]'); if (!preso) { await chiudiRiepilogo(page); await sleep(400); if (k >= 1) { /* una finestra col velo (es. «Il mister ti cerca») copre il tasto: si risponde come il giocatore, con la prima scelta */ if (await richiamo(page, visti)) continue; await page.evaluate(() => { const v = document.querySelector('.cpm-velo150'); const b = v && [...v.querySelectorAll('button')].find(x => !x.disabled); if (b) b.click(); }); } await sleep(600); } }
     if (!preso) { const dg = await page.evaluate(() => [...document.querySelectorAll('[data-cpm]')].filter(e => /modal|richiamo|velo|nego|offerta/i.test(e.getAttribute('data-cpm'))).map(e => e.getAttribute('data-cpm')).slice(0, 8).join(',') + ' | ' + (document.querySelector('[role=dialog]') ? document.querySelector('[role=dialog]').innerText.slice(0, 160) : '')); await page.screenshot({ path: 'out/rinnovo-238-blocco.png', fullPage: false }); fermate['testo'] = await page.evaluate(() => document.body.innerText.slice(0, 400)); fermate['diagnosi'] = dg + ' err=' + ultimoErr + ' tasto=' + st.tasto + ' spento=' + st.spento;
       fermate['tasto spento: ' + st.motivo] = (fermate['tasto spento: ' + st.motivo] || 0) + 1; break; }
     await sleep(400); if (!(await clicca(page, '[data-cpm="salta163-vai"]'))) break;
