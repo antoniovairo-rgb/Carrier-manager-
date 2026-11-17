@@ -2675,6 +2675,8 @@ function migratePlayer(player){
      const _clubChg=!!(newP.club&&_ncl!==newP.club.n);
      if(_clubChg||_chg(newP.standings,"n")||_chg(newP.calendar,"opponentName")||_chg(newP.matchHistory,"opponent")){
        newP={...newP,club:_clubChg?{...newP.club,n:_ncl}:newP.club,standings:newP.standings?_rnA(newP.standings,"n"):newP.standings,calendar:newP.calendar?_rnA(newP.calendar,"opponentName"):newP.calendar,matchHistory:newP.matchHistory?_rnA(newP.matchHistory,"opponent"):newP.matchHistory};changed=true;}}
+    // [giro 248 PO-511] nomi per citta' o quartiere: passata completa (testi, premi, sigle accanto ai nomi). Idempotente, senza bump SAVE.
+    {const _m248=_migraNomi248(newP);if(_m248!==newP){newP=_m248;changed=true;}}
     // Sprint 28 migrations
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     // Sprint 42 migrations

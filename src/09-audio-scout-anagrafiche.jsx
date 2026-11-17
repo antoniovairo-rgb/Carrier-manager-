@@ -866,7 +866,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
 
 // ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
 /* [giro 94 D6 collaudo 177-3 «Il Italia cede 1-2 a Argentina», «lacune difensive del Italia» — rosso __CPM_NO_C3D6] I TESTI DELLA STAMPA
-   SONO SCRITTI PER I CLUB («Il FC Rendalto», «del FC Rendalto», «a FC Marseille»): con le nazionali l'articolo va col genere e con
+   SONO SCRITTI PER I CLUB («Il FC Lisboa Norte», «del FC Lisboa Norte», «a FC Marseille»): con le nazionali l'articolo va col genere e con
    l'elisione del nome. Qui si corregge la frase finita, per ogni nazione nota: articolo (il/lo/la/l'), preposizioni articolate
    (del/al/dal/nel/sul) e la «a»/«da»/«di»/«in»/«su» semplice davanti al nome. Funzione pura (guardiano carriera3-94). */
 const NAZ_ART94={Italia:"l'",Spagna:"la ",Francia:"la ",Germania:"la ",Inghilterra:"l'",Portogallo:"il ",Brasile:"il ",Argentina:"l'",Olanda:"l'",Belgio:"il ",
@@ -1120,6 +1120,11 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   "Eindhoven","Sochaux","Bruges","Anderlecht","Brugge","Feyenoord","Ajax","Benfica","Sporting CP","Olympique",
   // [giro 6, decisione PO 11/10] nomi reali di club, soprannomi da colori e derby rinominati: se tornano, l'audit li segnala
   "Nerazzurri","Rossoneri","Partenope","Biancoceleste","Blucerchiati","Verdiblanco","FC Paris","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
+  /* [giro 248 PO-511, decisione della madre] i 16 nomi inventati del giro 6 e i loro stadi escono dal gioco: se tornano, l'audit li segnala.
+     Blocco esplicito anche sui nomi ufficiali interi «AC Milan»/«SSC Napoli» (confronto per sottostringa: mai «Milan» da solo,
+     sottostringa di «FC Milano Sempione»/«Stadio Milano Ovest»). */
+  "FC Valmora","AC Dorvelli","FC Vellamare","FC Alcavera","FC Lumeranza","FC Torvelle","FC Brenvar","FC Marnesi","FC Caldoran","FC Ventrana","FC Oriolan","FC Dalvora","FC Pelvanni","FC Valdenau","FC Ravelmund","FC Rendalto",
+  "Stadio Valmora","Stadio Alcavera","Stadio Vellamare","Stadio Torvelle","Estadio Ventrana","Estadio Oriolan","Estádio Rendalto","AC Milan","SSC Napoli",
   "Stadio Sabaudo","Stadio Meneghino","Stadio Capitolino","Stadio Vesuvio","Stade Phocéen","Estadi Blau","Stadion der Wand","Cannon Stadium","Bridge Stadium","Estádio Leonino","Kadıköy Stadyumu","Kartal Park","Stade Princier","Stadio Adriatico","Stade Gabriel Montpied","Arena Lviv","Estadio de la Cerámica Vieja","Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
 const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
@@ -1128,9 +1133,34 @@ const _CR_FULLNAMES=new Set(["thomas müller","timo werner","manuel neuer","marc
 // [giro 6, decisione PO 11/10] club con nomi reali rinominati: vecchio → nuovo. Serve alla migration di CareerApp
 // (il nome del club si salva in player.club.n, player.standings[].n, calendar[].opponentName, matchHistory[].opponent).
 // I derby NON si salvano (isDerby li ricalcola dagli id) → nessuna migration per loro.
-const CLUB_RENAME_6={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvelli","FC Partenope":"FC Vellamare","FC Biancoceleste":"FC Alcavera","FC Paris":"FC Lumeranza","FC Granata":"FC Torvelle","FC Viola":"FC Brenvar","FC Blucerchiati":"FC Marnesi","FC Neroverde":"FC Caldoran","FC Verdiblanco":"FC Ventrana","FC Celeste":"FC Oriolan","FC Leões":"FC Rendalto","FC Perico":"FC Pelvanni","FC Azulón":"FC Dalvora","FC München":"FC Valdenau","FC Köln":"FC Ravelmund"};
+const _CLUB_RENAME_6_OLD={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvelli","FC Partenope":"FC Vellamare","FC Biancoceleste":"FC Alcavera","FC Paris":"FC Lumeranza","FC Granata":"FC Torvelle","FC Viola":"FC Brenvar","FC Blucerchiati":"FC Marnesi","FC Neroverde":"FC Caldoran","FC Verdiblanco":"FC Ventrana","FC Celeste":"FC Oriolan","FC Leões":"FC Rendalto","FC Perico":"FC Pelvanni","FC Azulón":"FC Dalvora","FC München":"FC Valdenau","FC Köln":"FC Ravelmund"};
+/* [giro 248 PO-511] nomi per citta' o quartiere scelti dal PO il 17/11: [nome reale di prima del giro 6, nome del giro 6, nome nuovo, sigla nuova].
+   CLUB_RENAME_6 porta ENTRAMBI (reale e giro 6) al nome nuovo in un passo solo; nessun nome nuovo e' chiave (idempotente).
+   Rosso __CPM_NO_G248 = mappa del giro 6 com'era (reale → giro 6) e nessuna migrazione 248. */
+const _CLUB_248=[["FC Nerazzurri","FC Valmora","FC Milano Brera","MBR"],["AC Rossoneri","AC Dorvelli","FC Milano Sempione","MSE"],["FC Partenope","FC Vellamare","FC Napoli Fuorigrotta","NFG"],["FC Biancoceleste","FC Alcavera","FC Flaminio","FLM"],["FC Paris","FC Lumeranza","FC Parigi Ovest","PGO"],["FC Granata","FC Torvelle","FC Torino Santa Rita","TSR"],["FC Viola","FC Brenvar","FC Firenze","FRZ"],["FC Blucerchiati","FC Marnesi","FC Genova Ponente","GPO"],["FC Neroverde","FC Caldoran","FC Sassolese","SSL"],["FC Verdiblanco","FC Ventrana","FC Heliópolis","HEL"],["FC Celeste","FC Oriolan","FC Vigués","VGS"],["FC Azulón","FC Dalvora","FC Getafense","GTF"],["FC Perico","FC Pelvanni","FC Sarrià","SRR"],["FC München","FC Valdenau","FC Isar","ISR"],["FC Köln","FC Ravelmund","FC Domstadt","DMS"],["FC Leões","FC Rendalto","FC Lisboa Norte","LNO"]];
+const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries(_CLUB_248.flatMap(([r,g,n])=>[[r,n],[g,n]]));
+const _CLUB_ABBR_248=_NO_G248?{}:Object.fromEntries(_CLUB_248.map(([,,n,a])=>[n,a]));
+const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte"};
 // idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
 function _renameClub6(v){if(typeof v!=="string")return v;for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+/* [giro 248 PO-511] migrazione COMPLETA dei nomi salvati: i nomi del club non vivono solo in club/standings/calendar/matchHistory
+   (misurato sul salvataggio fixtures/save-c177-s5w20.json: anche lastAwards…club, standings[].a, matchHistory[].oppAbbr).
+   Una passata su tutto l'oggetto: (1) ogni stringa che CONTIENE un nome reale o del giro 6 (club o stadio, anche dentro un testo
+   o con suffisso U18/Primavera/U19) prende il nome nuovo; (2) la sigla accanto a un nome nuovo (a/abbr/oppAbbr) segue il nome.
+   Idempotente (nessun nome nuovo contiene una chiave) e restituisce lo STESSO oggetto se non cambia nulla. */
+const _RX248=(()=>{const ks=[...Object.keys(CLUB_RENAME_6),...Object.keys(_STADI_248)].sort((a,b)=>b.length-a.length);if(_NO_G248||!ks.length)return null;
+  return new RegExp("(^|[^\\p{L}])("+ks.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![\\p{L}])","gu");})();
+const _NAME_K248=["n","name","club","opponent","opponentName","team"],_ABBR_K248=["a","abbr","oppAbbr","clubAbbr"];
+function _migraNomi248(o){
+  if(!_RX248)return o;
+  if(typeof o==="string"){if(!_RX248.test(o)){_RX248.lastIndex=0;return o;}_RX248.lastIndex=0;return o.replace(_RX248,(m,pre,k)=>pre+(CLUB_RENAME_6[k]||_STADI_248[k]||k));}
+  if(Array.isArray(o)){let ch=false;const r=o.map(x=>{const y=_migraNomi248(x);if(y!==x)ch=true;return y;});return ch?r:o;}
+  if(o&&typeof o==="object"){let ch=false;const r={};for(const k in o){const y=_migraNomi248(o[k]);if(y!==o[k])ch=true;r[k]=y;}
+    for(const nk of _NAME_K248){const v=r[nk];if(typeof v!=="string")continue;const base=v.replace(/ (U18|U19|Primavera)$/,"");const ab=_CLUB_ABBR_248[base];if(!ab)continue;
+      for(const ak of _ABBR_K248){if(typeof r[ak]==="string"&&r[ak]!==ab){r[ak]=ab;ch=true;}}}
+    return ch?r:o;}
+  return o;}
+if(typeof window!=="undefined"&&/[?&]cpmtest=1/.test(window.location.search||""))window.__CPM_MIGRA248=_migraNomi248;
 function _auditCopyrightSafety(){
   const hits=[];
   const subScan=(label,arr)=>{(arr||[]).forEach(s=>{const t=typeof s==="string"?s:((s&&(s.n||s.name||s.club))||"");if(!t)return;_CR_BRANDS.forEach(b=>{if(t.indexOf(b)>=0)hits.push(label+": \""+t+"\" ~ "+b);});});};
