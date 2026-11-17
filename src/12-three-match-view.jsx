@@ -11775,6 +11775,17 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          const _hx1=hero.position.x,_hz1=hero.position.z,_dx1=ball.position.x-_hx1,_dz1=ball.position.z-_hz1,_d1=Math.hypot(_dx1,_dz1);
          const _st1=(S1._g241&&S1._g241.k===P.hlSitKey)?S1._g241:(S1._g241={k:P.hlSitKey,w:0,ax:0,az:0});
          if(_d1>3){const _k1=(_st1.ax||_st1.az)?Math.min(dt/0.25,1):1;_st1.ax+=(_dx1/_d1-_st1.ax)*_k1;_st1.az+=(_dz1/_d1-_st1.az)*_k1;}
+         /* MAI ATTRAVERSO L'EROE (anche nella costruzione, prima del gesto). MISURATO col guardiano camera-241 su gi6 «Stacco di testa»
+            (cross in arrivo): il bersaglio della regia segue il pallone che gli passa sopra e la camera, andandogli dietro in linea
+            retta, sfila a 4-7 u dall'eroe: eroe fuori dal quadro della regia per 5-10 fotogrammi e alto fino a 0,39 del quadro (col
+            rosso: 1,6 — e' l'«eroe enorme in primo piano»). La distanza che la regia vuole dall'eroe e' ~17 u (taglia 0,12): se il
+            tratto camera→bersaglio passa a meno di 9 u dall'eroe (in pianta), il bersaglio diventa un punto di passaggio a 10,8 u sul
+            fianco da cui il tratto gia' passa; se e' il bersaglio stesso a stargli addosso, lo si allontana a 9 u. */
+         {const _cx0=camera.position.x,_cz0=camera.position.z,_sx0=tPx-_cx0,_sz0=tPz-_cz0,_sl0=_sx0*_sx0+_sz0*_sz0;
+          const _t0=_sl0>1e-6?clamp(((_hx1-_cx0)*_sx0+(_hz1-_cz0)*_sz0)/_sl0,0,1):1;
+          let _nx0=_cx0+_sx0*_t0-_hx1,_nz0=_cz0+_sz0*_t0-_hz1,_nd0=Math.hypot(_nx0,_nz0);
+          if(_nd0<9){if(_nd0<0.05){_nx0=-_sz0;_nz0=_sx0;_nd0=Math.hypot(_nx0,_nz0)||1;}_nx0/=_nd0;_nz0/=_nd0;
+            const _r0=_t0>=0.999?9:10.8;tPx=_hx1+_nx0*_r0;tPz=_hz1+_nz0*_r0;if(tPy<4.2)tPy=4.2;S1._g241a=(S1._g241a|0)+1;}}
          /* DOPO l'azione: la passata si arma quando il pallone lascia l'eroe per il suo gesto (arco o post-arco). Nella costruzione (cross
             o passaggio che gli arriva) resta la regia sull'eroe: misurato su gi6, girare dietro a un pallone in arrivo lo buttava fuori. */
          if(ballArcActive||hlPostArcType)_st1.arm=1;
