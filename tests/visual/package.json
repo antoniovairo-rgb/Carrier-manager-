@@ -596,6 +596,7 @@
     "fps-249": "node fps-249.mjs",
     "tpose-196": "node tpose-196.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=campionato-notte node tpose-196.mjs",
     "gigante-212": "node gigante-212.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=trasferta-tel node gigante-212.mjs",
+    "tunnel-245": "node tunnel-245.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=comunale,borgo,arena node tunnel-245.mjs",
     "guardalinee-222": "node guardalinee-222.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=festa-tel node guardalinee-222.mjs",
     "banco-248:tiro": "node banco-highlight-248.mjs tiro",
     "banco-248:testa": "node banco-highlight-248.mjs testa",

@@ -1810,7 +1810,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
     const col=K46==="borgo"?_BORGO46[idx%4]:idx%3===0?_hC:idx%3===1?hLight:hDark;
     const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),stadCfg&&stadCfg.sponsor?_spMat(col,(idx>>1)%2?"k":"s"):(_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col})));
-    m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
+    m.position.set(ax,ah/2,az);m.rotation.y=rotY;m.userData.ost245='cartellone-stadio';/* [giro 245] etichetta inerte per il testimone tunnel-245 */scene.add(m);
     // Small text-like stripe on top
     const stripe=new THREE.Mesh(new THREE.BoxGeometry(aw,0.15,0.24),new THREE.MeshLambertMaterial({color:0x111111}));
     stripe.position.set(ax,ah+0.075,az);stripe.rotation.y=rotY;scene.add(stripe);
@@ -1821,7 +1821,16 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      d'angolo (stesse coordinate) → linea e bandierina risultavano «dentro» il cartellone. Ora stanno appena OLTRE
      il bordo del prato (z=±35.2, prato ±35.0): linee e bandierine restano sull'erba, i board le incorniciano. */
   const _tun46=!(typeof window!=='undefined'&&window.__CPM_NO_STADI246);/* [giro 46] il tunnel d'ingresso apre un varco nei cartelloni */
-  for(let i=-44;i<=44;i+=11){if(!(_tun46&&(i===-22||i===-33)))addAd(i,-35.2,9,1.3,0,idx);idx++;addAd(i,35.2,9,1.3,Math.PI,idx++);}
+  /* [giro 245 PO-510 «il cartellone pubblicitario all'uscita del tunnel e' di intralcio. Il tunnel dovrebbe essere proprio a
+     meta' campo tra le due panchine» — rosso __CPM_NO_G245: la disposizione di prima] LA BOCCA A META' CAMPO. Misurato prima
+     (tunnel-245, 17 stadi): bocca a x -22, cioe' all'estremita' della panchina di casa (x -20,5..-7,5), e in ogni stadio 120-135
+     fotogrammi dell'ingresso con un corpo dentro un oggetto — il cartellone LED di src/12 (x -19..-6), la striscia LED del
+     perimetro (continua, senza varco), la panca bassa di casa, le pareti del tunnel (i bambini, larghi 0,72 dal giocatore).
+     Ora la bocca e' a x 0, fra le due panchine (gia' simmetriche a ±14), larga 6 invece di 5,2; il varco nei cartelloni e'
+     quello davanti alla bocca (qui il pannello x -4,5..4,5; in src/12 il pannello LED centrale e i due segmenti centrali
+     della striscia). */
+  const _g245=!(typeof window!=='undefined'&&window.__CPM_NO_G245);
+  for(let i=-44;i<=44;i+=11){if(!(_tun46&&(_g245?(i===0):(i===-22||i===-33))))addAd(i,-35.2,9,1.3,0,idx);idx++;addAd(i,35.2,9,1.3,Math.PI,idx++);}
   for(let i=-28;i<=28;i+=12){addAd(53.2,i,9,1.3,Math.PI/2,idx++);addAd(-53.2,i,9,1.3,-Math.PI/2,idx++);}
 
   /* [7.184.2 collaudo PO «le linee del fallo laterale non sono allineate con le bandierine!»] RIMOSSE le bandierine
@@ -1835,8 +1844,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   {const _dgM=new THREE.MeshLambertMaterial({color:0x1c2430});
    const _dgGl=new THREE.MeshLambertMaterial({color:0x9fc2dd,transparent:true,opacity:0.4});
    [[-14,-1],[14,1]].forEach(([dx])=>{
-     const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);scene.add(b1);
-     const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;scene.add(r1);
+     const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);b1.userData.ost245='panca-stadio';scene.add(b1);
+     const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;r1.userData.ost245='pensilina-stadio';scene.add(r1);
    });}
   /* [giro 46 PO-071 — INGRESSO IN CAMPO. Rosso __CPM_NO_STADI246] LA BOCCA DEL TUNNEL. Le due squadre partono da (x -24..-16,
      z -36) — src/12 _placeRow — ma li' non c'era nulla: uscivano da un cartellone. Ora un portale nella base della Tribuna
@@ -1844,11 +1853,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      pensilina verde · arena: vetro e LED nel colore del club · gli altri: cemento con cornice del club). */
   let _tun46info=null;
   if(_tun46){try{
-    const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=-22,_w=5.2,_h=3.0;
+    const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=_g245?0:-22,_w=_g245?6.0:5.2,_h=3.0;/* [giro 245 PO-510] a meta' campo, 0,8 piu' larga: due file + bambini senza toccare pareti e pilastri */
     const _frM=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
     const _inM=new THREE.MeshBasicMaterial({color:0x07080c});
     const mouth=new THREE.Mesh(new THREE.PlaneGeometry(_w-0.6,_h-0.3),_inM);mouth.position.set(_tx,(_h-0.3)/2,_fz+0.12);/* davanti allo striscione della competizione (+0,06), che altrimenti tappa la bocca */scene.add(mouth);
-    [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);scene.add(pl);});
+    [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);pl.userData.ost245='tunnel-pilastro';scene.add(pl);});
     const lin=new THREE.Mesh(new THREE.BoxGeometry(_w+0.4,0.5,0.55),_frM);lin.position.set(_tx,_h+0.2,_fz+0.2);scene.add(lin);
     let _stile="cemento";
     if(K46==="borgo"){_stile="pensilina";
@@ -1856,7 +1865,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     else if(_L>0.6){
       const _isA=K46==="arena";_stile=_isA?"vetro":"telescopico";
       const wM=_isA?_plexiM:new THREE.MeshLambertMaterial({color:0x2a2f38});
-      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.BoxGeometry(0.16,_h,_L),wM);w.position.set(_tx+sd*_w/2,_h/2,_fz+_L/2);scene.add(w);});
+      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.BoxGeometry(0.16,_h,_L),wM);w.position.set(_tx+sd*_w/2,_h/2,_fz+_L/2);w.userData.ost245='tunnel-parete';scene.add(w);});
       const rf=new THREE.Mesh(new THREE.BoxGeometry(_w+0.5,0.3,_L),_isA?_roofDarkM:new THREE.MeshLambertMaterial({color:0x22262e}));rf.position.set(_tx,_h+0.15,_fz+_L/2);scene.add(rf);
       const band=new THREE.Mesh(new THREE.BoxGeometry(_w+0.6,0.32,0.3),_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.3)}):_frM);
       band.position.set(_tx,_h+0.05,_mz-0.1);scene.add(band);}
