@@ -59,7 +59,8 @@ export async function misuraB(browser, port, NO = []) {
   /* deriva nel tempo, per corpo: pro all'ultimo campione − pro al primo */
   const chi = [...new Set(ok.map(x => x.chi))], der = chi.map(c => { const L = ok.filter(x => x.chi === c); return L.length >= 2 ? +(L[L.length - 1].pro - L[0].pro).toFixed(4) : null; }).filter(x => x != null);
   return { no: NO, errori: S.filter(x => x.errore).map(x => x.errore), n: ok.length, proMin: ok.length ? Math.min(...ok.map(x => x.pro)) : null, proMax: ok.length ? Math.max(...ok.map(x => x.pro)) : null, sotto: ok.filter(x => !(x.pro >= 0.008)).length,
-    derivaMax: der.length ? Math.max(...der.map(Math.abs)) : null, nucaEroe: E, nucaMed: E.length ? E[Math.floor(E.length / 2)] : null, pro: ok.map(x => `${x.fase}/${x.chi} ${x.pro}`) };
+    derivaMax: der.length ? Math.max(...der.map(Math.abs)) : null, SjAj: ok.length ? [Math.min(...ok.map(x => x.SjAj)), Math.max(...ok.map(x => x.SjAj))] : null, SjAjEroe: ok.filter(x => x.chi === 'eroe').map(x => x.SjAj),
+    quota: ok.length ? [Math.min(...ok.map(x => +(x.qS * x.H / x.Aj).toFixed(3))), Math.max(...ok.map(x => +(x.qS * x.H / x.Aj).toFixed(3)))] : null, spiovV: ok.length ? [Math.min(...ok.map(x => x.spiovV)), Math.max(...ok.map(x => x.spiovV))] : null, nucaEroe: E, nucaMed: E.length ? E[Math.floor(E.length / 2)] : null, pro: ok.map(x => `${x.fase}/${x.chi} ${x.pro}`) };
 }
 
 /* C) il saluto al rallentatore */

@@ -46884,7 +46884,7 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
 /* [giro 192 · PO-406] postura della fila: spalle e braccia a riposo, in spazio MONDO e in ASSOLUTO (si parte ogni volta dalla posa che la
    clip e la vita hanno appena scritto: niente accumulo). salutaR>0: il braccio destro e' del saluto e non si tocca. */
 const _P192={v:null};
-function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
+function _posa192(av,i,salutaR,osc,parte){/* [giro 261] parte 1 = solo la spalla (clavicola), PRIMA della regola delle spalle; parte 2 = solo le braccia, dopo; senza = tutto, come prima */const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
   const V=_P192.v,B=av.userData._b192||(av.userData._b192=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|ball_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
   if(!B.pelvis||!B.neck_01||!B.clavicle_l||!B.upperarm_l||!B.lowerarm_l||!B.hand_l||!B.ball_l||!B.ball_r)return;
   av.updateMatrixWorld(true);
@@ -46897,10 +46897,10 @@ function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.V
   const k=(((i*2654435761)>>>0)%1000)/1000;
   for(const s of ['l','r']){const cl=B['clavicle_'+s],ua=B['upperarm_'+s],la=B['lowerarm_'+s],hd=B['hand_'+s];if(!cl||!ua||!la||!hd)continue;
     /* (1) spalla: pendenza collo->spalla a -22 gradi (due passi di Newton sull'angolo misurato) */
-    for(let it=0;it<2;it++){B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);V.d.copy(V.b).sub(V.a);const h=Math.hypot(V.d.x,V.d.z)||1e-6;
+    for(let it=0;it<2&&parte!==2;it++){B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);V.d.copy(V.b).sub(V.a);const h=Math.hypot(V.d.x,V.d.z)||1e-6;
       const ang=Math.atan2(V.d.y,h),err=(-22*Math.PI/180)-ang;if(Math.abs(err)<0.004)break;
       V.c.set(V.d.x/h,0,V.d.z/h);const asse=new T.Vector3().crossVectors(V.c,V.up).normalize();ruota(cl,asse,err);}
-    if(s==='r'&&salutaR>0.01)continue;
+    if(parte===1||(s==='r'&&salutaR>0.01))continue;
     /* (2) braccio a riposo: lato = dal collo alla spalla, in orizzontale */
     B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);const lat=new T.Vector3(V.b.x-V.a.x,0,V.b.z-V.a.z).normalize();
     const o225=(s==='l'?1:-1)*(osc||0);/* [giro 225] camminando le braccia oscillano opposte alle gambe */
@@ -47608,9 +47608,14 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
         if(mixers.length)mixers.forEach(m=>m.update(dt));
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}
+        /* [giro 261 · B] LA REGOLA DELLE SPALLE PASSA PER ULTIMA SULLA SPALLA. La pendenza della spalla del giro 192 (collo→spalla a −22 gradi) si scrive PRIMA
+           della regola, le braccia lungo i fianchi dopo: alzare la spalla ruotando la clavicola la allarga (misurato con la posa scritta dopo la regola: eroe a
+           2,447 spalle/anche contro 2,34 delle altre scene, coerenza 1,047 su 1,05), e la regola — che sposta solo di lato — la riporta nella fascia. */
+        const _g261=!(typeof window!=='undefined'&&window.__CPM_NO_G261);
+        if(_g261&&!_no192c)for(let i=0;i<men.length;i++){try{_posa192(men[i],i,0,0,1);}catch(_e){}}
         if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
-          if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
+          if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0,_g261?2:0);}catch(_e){}}
           if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalleRampa261(m,S.lin);}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
           else if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
           if(cm)cm.terra();}
