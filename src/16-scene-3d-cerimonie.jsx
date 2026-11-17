@@ -1220,6 +1220,21 @@ function voltiPronti225(ms){return new Promise(res=>{try{if(VOLTI23.idx||VOLTI23
   let fatto=false;const f=()=>{if(fatto)return;fatto=true;try{VOLTI23.ascolta.delete(f);}catch(_e){}res();};VOLTI23.ascolta.add(f);_caricaVolti23();setTimeout(f,ms||4000);}catch(_e){res();}});}
 /* la pelle del corpo prende il colore del ritratto: solo i pixel di pelle (saturi e caldi) si moltiplicano, calzettoni, scarpe, occhi e denti restano */
 let _UNO240=null;
+/* [giro 240 · PO-500] MASCHERA DEL VISO. La tinta della pelle sceglie i pixel «saturi e caldi»: sulla testa lo sono anche i capelli
+   castani e ramati (misurato nei primi piani: un castano tinto come pelle diventava rossiccio). Le quattro texture della testa
+   (HEAD_hair_black/brown/blond/auburn) sono IDENTICHE fuori dai capelli (misurato: 89,7% dei pixel uguali, 10,3% diversi): la differenza
+   fra due di loro E' la zona dei capelli. Si calcola una volta, a 256x256, e lo shader della testa tinge solo dove la maschera vale 1.
+   Finche' non e' pronta la maschera e' tutta bianca (= comportamento del giro 225). */
+const _MASC240={u:{value:null},stato:0,cap:null};
+function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.DataTexture(new Uint8Array([255,255,255,255]),1,1,T.RGBAFormat);t.needsUpdate=true;_MASC240.u.value=t;}
+  if(_MASC240.stato||typeof document==='undefined')return _MASC240.u;_MASC240.stato=1;
+  const fai=(a,b)=>{try{const N=256,mk=im=>{const c=document.createElement('canvas');c.width=N;c.height=N;const g=c.getContext('2d');g.drawImage(im,0,0,N,N);return g.getImageData(0,0,N,N).data;};
+      const A=mk(a),B=mk(b),cv=document.createElement('canvas');cv.width=N;cv.height=N;const g=cv.getContext('2d'),O=g.createImageData(N,N);let cap=0;
+      for(let i=0;i<A.length;i+=4){const d=Math.abs(A[i]-B[i])+Math.abs(A[i+1]-B[i+1])+Math.abs(A[i+2]-B[i+2]),v=d>10?0:255;if(!v)cap++;O.data[i]=O.data[i+1]=O.data[i+2]=v;O.data[i+3]=255;}
+      g.putImageData(O,0,0);const t=new T.CanvasTexture(cv);t.flipY=false;t.needsUpdate=true;_MASC240.u.value=t;_MASC240.cap=+(cap/(N*N)).toFixed(4);_MASC240.stato=2;}catch(_e){_MASC240.stato=3;}};
+  const P=(typeof window!=='undefined'&&window.__CPM_TESTE237)||{},carica=v=>new Promise(res=>{const p=P[v];if(p&&p.complete&&p.naturalWidth>0)return res(p);const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src='./assets/hair-colors/source-textures/HEAD_hair_'+v+'.png';});
+  Promise.all([carica('black'),carica('blond')]).then(([a,b])=>{if(a&&b)fai(a,b);else _MASC240.stato=3;});
+  return _MASC240.u;}catch(_e){return _MASC240.u;}}
 function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255],auto240=lineare0==='auto';
   const fL=(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}),fS=(v=>v/255);let fatti=0;if(!_UNO240)_UNO240=new T.Vector3(1,1,1);
   av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
@@ -1232,9 +1247,12 @@ function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof 
       const viva=!!(resa&&resa.isVector3);/* [giro 240] compensazione VIVA (partita: cambia con la fase — gioco, premiazione, festa): un vettore condiviso, letto dallo shader */
       if(!viva&&(lineare||resa)){const q=resa||(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_RESA225)||RESA225;u.x*=q[0];u.y*=q[1];u.z*=q[2];}c.userData.u225=u;c.userData.lin240=lineare;
       const s0=lineare?'0.35':'0.20',s1=lineare?'0.55':'0.34';
-      c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+sh.fragmentShader.replace('#include <map_fragment>',
-        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);}');};
-      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
+      const masc=(nome==='Material.002'&&_g240())?_maschera240():null;c.userData.masc240=!!masc;
+      /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: capelli, sopracciglia e barba — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
+      const dec=!!(masc&&auto240&&!lineare&&uscitaLin);
+      c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};if(masc)sh.uniforms.uMasc240=masc;sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+(masc?'uniform sampler2D uMasc240;\n':'')+sh.fragmentShader.replace('#include <map_fragment>',
+        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;k225*=m240;':'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
+      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
     m.material=Array.isArray(m.material)?nx:nx[0];});
   av.userData.pelle225=hex;return fatti;}catch(_e){return 0;}}
 /* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
@@ -1346,16 +1364,16 @@ function _cammino225(av,mx,idleAct,walkClip){try{const T=THREE;if(!av||!mx||!idl
 /* ════════════════════════════════════════════════════════════════════════
    [giro 240 · PO-499 decisione PO «Posa ora, clip nella 197»] IL SALUTO DELLA SERATA E' UNA CLIP VERA. La posa calcolata del giro 225
    (_saluto225) lascia il posto a una clip di applauso/saluto di Anderson Rohr gia' nel repository con licenza registrata
-   (assets/cgtrader-clip-rohr.glb, docs/governo/CREDITI-fonti.md): «clap twice hand up», ripiego «clapping hands up». Della clip si
+   (assets/cgtrader-clip-rohr.glb, docs/governo/CREDITI-fonti.md): «clapping hands up» (applauso alla tribuna a mani alte), ripiego «clap twice hand up». Della clip si
    prendono SOLO le braccia (clavicole, omeri, avambracci, mani, dita): gambe e busto restano della posa della fila. La clip si campiona
    al tempo di scena del saluto con un mixer suo (peso 1), poi si dissolve dalla posa a riposo (rampa del tick): nessun salto all'inizio
    e alla fine. Dopo la clip passa di nuovo la regola delle spalle (_spalle146: mani ferme dove le mette la clip).
    Rosso window.__CPM_NO_G240 (= saluto del giro 225). Misure in docs/sviluppo/RAPPORTO-giro240.md.
    ════════════════════════════════════════════════════════════════════════ */
 const _g240=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G240);
-const _CLIP240=['rohr-clap-twice-hand-up','rohr-clapping-hands-up'];
+const _CLIP240=['rohr-clapping-hands-up','rohr-clap-twice-hand-up'];/* le due indicate dal PO. MISURATE sul corpo della serata (misura-240.mjs): «clapping hands up» sta dentro tutti i limiti del braccio del giro 225 (gomito fuori cerniera 9,7 gradi, polso 62,7, velocita' 236/452 gradi/s); «clap twice hand up» ne supera tre (cerniera 39,5 > 25, polso 71,9 > 70, velocita' 397/570 > 350/530): la prima e' la clip, la seconda il ripiego */
 const _OSSA240=/^(clavicle|upperarm|upperarm_twist_01|lowerarm|lowerarm_twist_01|hand|(index|middle|ring|pinky)_(metacarpal|0[123])|thumb_0[123])_[lr]$/;
-const RAMPA240=0.40;/* s di scena: entrata e uscita in dissolvenza dalla posa a riposo */
+const RAMPA240=0.50;/* s di scena: entrata e uscita in dissolvenza dalla posa a riposo */
 function _salutoClip240(av,pkgR){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
   const vuole=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CLIP240)||null;/* solo sonde: prova l'altra clip */
   let c0=null;for(const n of (vuole?[vuole]:_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;
@@ -1376,9 +1394,9 @@ function _salutoClip240(av,pkgR){try{const T=THREE;if(!av||!pkgR||!pkgR.animatio
    Chi non ha figurina (arbitro, panchine, mascotte, assistenti, presentatori) resta com'era. Rosso window.__CPM_NO_G240.
    ════════════════════════════════════════════════════════════════════════ */
 const ESP240=[-0.10,0.27,0.28];/* esponente per canale, misurato su 22 visi della partita (notte −0,12/0,34/0,29 · giorno −0,10/0,23/0,27 · tramonto −0,08/0,25/0,28) */
-const RESA240={partita:{day:{gioco:[1.09,0.58,0.455],premiazione:[1.10,0.60,0.50],festa:[1.04,0.525,0.39]},dusk:{gioco:[1.10,0.60,0.49],premiazione:[1.15,0.70,0.60],festa:[0.95,0.475,0.365]},night:{gioco:[1.02,0.51,0.43],premiazione:[0.94,0.515,0.50],festa:[0.86,0.425,0.40]}},
-  parata:{eroe:[0.33,0.215,0.207],'tetto-sx':[0.37,0.22,0.214],'tetto-dx':[0.164,0.08,0.065]},serata:[0.777,0.377,0.267]};/* parata: i corpi sul tetto guardano ai due lati del viale, e la luce (x4) li prende in modo diverso: una compensazione per lato */
-function resa240(scena,tod,fase){try{const t=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_RESA240)||null;if(t)return t;const r=RESA240[scena];if(Array.isArray(r))return r;if(scena!=='partita')return (r&&(r[fase]||r.eroe))||[1,1,1];const q=r&&(r[tod]||r.night);return (q&&(q[fase]||q.gioco))||[1,1,1];}catch(_e){return [1,1,1];}}
+const RESA240={partita:{day:[1.21,0.706,0.567],dusk:[1.224,0.732,0.609],night:[1.13,0.62,0.535]},/* una per ora del giorno, tarata sulle luci di base (ingresso e gioco). Premiazione e festa aggiungono luci TRANSITORIE (fuochi, flash): tingono i visi per un istante come tingono tutto il resto, e non si compensano */
+  parata:{eroe:[0.362,0.267,0.255],'tetto-sx':[0.47,0.37,0.355],'tetto-dx':[0.179,0.111,0.090]},serata:[0.762,0.36,0.287]};/* parata: i corpi sul tetto guardano ai due lati del viale, e la luce (x4) li prende in modo diverso: una compensazione per lato */
+function resa240(scena,tod,fase){try{const t=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_RESA240)||null;if(t)return t;const r=RESA240[scena];if(Array.isArray(r))return r;if(scena!=='partita')return (r&&(r[fase]||r.eroe))||[1,1,1];return (r&&(r[tod]||r.night))||[1,1,1];}catch(_e){return [1,1,1];}}
 /* un corpo CGTrader delle cerimonie (corpoCG23) prende capelli e pelle della figurina di `chiave`; ritorna l'aspetto o null */
 function figurina240(av,chiave,scena,ruolo){try{if(!av)return null;av.userData.chi240={nome:chiave||null,ruolo:ruolo||null};if(!_g240()||!chiave)return null;const fg=aspettoFigurina225(chiave);if(!fg)return null;
   av.userData.fig240=fg;av.userData.scena240=scena;if(fg.hair){try{cgCapelli142(av,{hair:fg.hair});}catch(_e){}}if(fg.p)_pelle225(av,fg.p,true,resa240(scena,null,ruolo),true,ESP240);return fg;/* come la serata: materiali in lineare (_linMat178) + compensazione delle luci della scena */}catch(_e){return null;}}
@@ -1390,21 +1408,27 @@ function rifaiPelle240(av){try{const u=av&&av.userData;if(u&&u.fig240&&u.fig240.
 function misuraPelle240(scena,renderer,scene,camera){try{if(typeof window==='undefined'||typeof THREE==='undefined')return;const W=window.__CPM_G240W;if(!W||!W.chiedi||!renderer||!scene)return;
   if(W.scena&&String(scena).indexOf(W.scena)!==0)return;W.chiedi=false;const T=THREE,per=new Map();
   scene.traverseVisible(o=>{if(!o.isSkinnedMesh||!o.skeleton||!o.skeleton.bones||!o.skeleton.bones.length)return;const k=o.skeleton.bones[0];let c=per.get(k);if(!c){c={ms:[],bs:o.skeleton.bones};per.set(k,c);}c.ms.push(o);});
-  const gl=renderer.getContext(),Wd=gl.drawingBufferWidth,Hd=gl.drawingBufferHeight,cam2=new T.PerspectiveCamera(12,Wd/Math.max(1,Hd),0.05,80),out={scena,t:+(performance.now()/1000).toFixed(2),corpi:[],altri:0};
-  const up=new T.Vector3(0,1,0),a=new T.Vector3(),b=new T.Vector3(),hp=new T.Vector3(),side=new T.Vector3(),fwd=new T.Vector3(),face=new T.Vector3();
-  per.forEach(c=>{const B={};for(const x of c.bs){if(/^(head|upperarm_l|upperarm_r|foot_l)$/.test(x.name)&&!B[x.name])B[x.name]=x;}
+  const gl=renderer.getContext(),Wd=gl.drawingBufferWidth,Hd=gl.drawingBufferHeight,cam2=new T.PerspectiveCamera(30,Wd/Math.max(1,Hd),0.03,80),out={scena,t:+(performance.now()/1000).toFixed(2),corpi:[],altri:0};
+  const up=new T.Vector3(0,1,0),a=new T.Vector3(),b=new T.Vector3(),hp=new T.Vector3(),side=new T.Vector3(),fwd=new T.Vector3(),face=new T.Vector3(),su=new T.Vector3();
+  /* veli, fasci e anelli trasparenti (il segnale dell'eroe, gli stacchi) non fanno parte del viso: durante i primi piani si nascondono (misurato: il primo piano dell'eroe in gioco usciva scuro in tutti e due i bracci) */
+  const veli=[];scene.traverseVisible(o=>{if((o.isMesh&&!o.isSkinnedMesh&&!o.isInstancedMesh&&o.material&&!Array.isArray(o.material)&&o.material.transparent)||o.isSprite)veli.push(o);});for(const o of veli)o.visible=false;
+  per.forEach(c=>{const B={};for(const x of c.bs){if(/^(head|neck_01|upperarm_l|upperarm_r|foot_l)$/.test(x.name)&&!B[x.name])B[x.name]=x;}
     let testa=null,tinti=0;for(const m of c.ms){for(const mt of (Array.isArray(m.material)?m.material:[m.material])){if(!mt)continue;const nm=(mt.userData&&mt.userData.base225==='Material.002')?(/^KorwardNativeHair_/.test(mt.name)?mt.name:'Material.002'):mt.name;
       if(nm==='Material.002'||/^KorwardNativeHair_/.test(nm))testa=/^KorwardNativeHair_/.test(nm)?nm.slice(18):'originale';if(mt.userData&&mt.userData.pelle225)tinti++;}}
     if(!testa||!B.head||!B.upperarm_l||!B.upperarm_r){out.altri++;return;}
     let chi=null;for(let x=c.ms[0],k=0;x&&k<14&&!chi;x=x.parent,k++)if(x.userData&&x.userData.chi240)chi=x.userData.chi240;
-    const r={nome:(chi&&chi.nome)||null,ruolo:(chi&&chi.ruolo)||null,capelli:testa,tinti,reso:null,px:0};
+    const r={nome:(chi&&chi.nome)||null,ruolo:(chi&&chi.ruolo)||null,capelli:testa,tinti,reso:null,px:0};if(W.dettagli){r.mats=[];for(const m of c.ms)for(const mt of (Array.isArray(m.material)?m.material:[m.material])){if(mt&&mt.map)r.mats.push({n:mt.name,b:(mt.userData&&mt.userData.base225)||null,enc:mt.map.encoding,col:mt.color?mt.color.getHexString():null,em:mt.emissive?mt.emissive.getHexString():null,u:(mt.userData&&mt.userData.u225)?[+mt.userData.u225.x.toFixed(3),+mt.userData.u225.y.toFixed(3),+mt.userData.u225.z.toFixed(3)]:null,lin:mt.userData&&mt.userData.lin240,tipo:mt.type,mesh:m.name});}}if(!r.nome&&!W.tutti){out.corpi.push(r);return;}/* i corpi senza nome si contano e basta: il primo piano costa un fotogramma */
     try{B.head.getWorldPosition(hp);B.upperarm_r.getWorldPosition(a);B.upperarm_l.getWorldPosition(b);side.copy(a).sub(b);side.y=0;if(side.lengthSq()<1e-8)throw 0;side.normalize();fwd.copy(up).cross(side).normalize();
       let k=1;if(B.foot_l){B.foot_l.getWorldPosition(a);const h=hp.y-a.y;if(h>0.6&&h<3)k=h/1.5;}
-      face.copy(hp).addScaledVector(up,0.07*k).addScaledVector(fwd,0.09*k);cam2.position.copy(face).addScaledVector(fwd,1.25*k);cam2.lookAt(face);cam2.updateMatrixWorld(true);
+      /* il viso segue il collo: in corsa la testa e' piegata in avanti e un primo piano «orizzontale» inquadrava i capelli (misurato sull'eroe in gioco) */
+      if(B.neck_01){B.neck_01.getWorldPosition(a);su.copy(hp).sub(a);if(su.lengthSq()>1e-6){su.normalize();fwd.addScaledVector(su,-fwd.dot(su));if(fwd.lengthSq()>1e-6)fwd.normalize();}else su.copy(up);}else su.copy(up);
+      face.copy(hp).addScaledVector(su,0.07*k).addScaledVector(fwd,0.09*k);cam2.up.copy(su);cam2.position.copy(face).addScaledVector(fwd,0.48*k);/* vicina: a 1,25 un compagno in fila finiva fra la camera e il viso (misurato: «viso» rosso maglia) */cam2.lookAt(face);cam2.updateMatrixWorld(true);
       renderer.render(scene,cam2);const R=Math.max(4,Math.round(Hd*0.05)),n=2*R+1,px=new Uint8Array(n*n*4);gl.readPixels(Math.round(Wd/2)-R,Math.round(Hd/2)-R,n,n,gl.RGBA,gl.UNSIGNED_BYTE,px);
       const q=[[],[],[]];for(let i=0;i<px.length;i+=4){if(px[i]>px[i+1]&&px[i+1]>px[i+2]&&px[i]>70){q[0].push(px[i]);q[1].push(px[i+1]);q[2].push(px[i+2]);}}
-      r.px=q[0].length;if(q[0].length>=30)r.reso=q.map(z=>{z.sort((x,y)=>x-y);return z[z.length>>1];});if(W.foto&&!W.foto[out.corpi.length]&&out.corpi.length<(W.fotoMax||0)){try{const S=Math.min(Wd,Hd,360),fx=new Uint8Array(S*S*4);gl.readPixels(Math.round(Wd/2-S/2),Math.round(Hd/2-S/2),S,S,gl.RGBA,gl.UNSIGNED_BYTE,fx);const cv=document.createElement('canvas');cv.width=S;cv.height=S;const g2=cv.getContext('2d'),im=g2.createImageData(S,S);for(let y=0;y<S;y++)for(let x=0;x<S*4;x++){const v=fx[(S-1-y)*S*4+x];im.data[y*S*4+x]=(x%4===3)?255:v;}g2.putImageData(im,0,0);W.foto[out.corpi.length]=cv.toDataURL('image/jpeg',0.85);}catch(_e){}}}catch(_e){}
+      r.px=q[0].length;if(q[0].length>=30)r.reso=q.map(z=>{z.sort((x,y)=>x-y);return z[z.length>>1];});if(W.foto&&W.foto.length<(W.fotoMax||0)){try{const S=Math.min(Wd,Hd,360),fx=new Uint8Array(S*S*4);gl.readPixels(Math.round(Wd/2-S/2),Math.round(Hd/2-S/2),S,S,gl.RGBA,gl.UNSIGNED_BYTE,fx);const cv=document.createElement('canvas');cv.width=S;cv.height=S;const g2=cv.getContext('2d'),im=g2.createImageData(S,S);for(let y=0;y<S;y++)for(let x=0;x<S*4;x++){const v=fx[(S-1-y)*S*4+x];im.data[y*S*4+x]=(x%4===3)?255:v;}g2.putImageData(im,0,0);W.foto.push(cv.toDataURL('image/jpeg',0.85));}catch(_e){}}}catch(_e){}
     out.corpi.push(r);});
+  for(const o of veli)o.visible=true;
+  out.maschera={stato:_MASC240.stato,capelli:_MASC240.cap};
   if(camera)renderer.render(scene,camera);(W.esiti=W.esiti||[]).push(out);}catch(_e){try{if(window.__CPM_G240W)window.__CPM_G240W.errore=String(_e&&_e.message||_e);}catch(_e2){}}}
 /* misura delle DUE braccia (sola lettura, guardiano presentazione-225 e sonda misura-240): distanza fra le mani, mani e gomiti dall'asse
    del busto e dalla testa, quota delle mani sulle spalle. Unita' di mondo. */
@@ -1669,7 +1693,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           if(cm)cm.terra();}
         _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.ts240=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.ts:0;}catch(_e){}
         /* la pelle sulla testa: la mappa dei capelli puo' arrivare dopo e sostituire il materiale (cgCapelli142) */
-        if((t225.fot%20)===0)for(let i=0;i<men.length;i++){const u=men[i].userData;if(u.fig225&&u.fig225.p){if(_g240()&&u.lin225)_pelle225(men[i],u.fig225.p,true,resa240('serata'),true,ESP240);else _pelle225(men[i],u.fig225.p,!!u.lin225);}}
+        if((t225.fot%20)===0||(_g240()&&t225.fot<90))for(let i=0;i<men.length;i++){const u=men[i].userData;if(u.fig225&&u.fig225.p){/* [giro 240] nei primi fotogrammi a ogni giro: la testa non resta senza tinta mentre arrivano le mappe dei capelli */if(_g240()&&u.lin225)_pelle225(men[i],u.fig225.p,true,resa240('serata'),true,ESP240);else _pelle225(men[i],u.fig225.p,!!u.lin225);}}
       } else {
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
       for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
@@ -2369,7 +2393,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       caim.set(A.a[0]+(B.a[0]-A.a[0])*ww,A.a[1]+(B.a[1]-A.a[1])*ww,A.a[2]+(B.a[2]-A.a[2])*ww);
       cam.position.copy(cpos);cam.lookAt(caim);
       if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PARCAM192&&eroe23){try{const _e=new THREE.Vector3();eroe23.getWorldPosition(_e);cam.position.set(_e.x+1.2,_e.y+1.9,_e.z+3.4);cam.lookAt(_e.x,_e.y+1.9,_e.z);}catch(_e){}}/* [giro 192] solo collaudo: primo piano sull'eroe con la coppa */
-      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);if(typeof window!=='undefined'&&window.__CPM_G240W)misuraPelle240('parata',renderer,scene,cam);if(((st240.f=(st240.f|0)+1)%20)===0)for(const m240 of men)rifaiPelle240(m240);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
+      renderer.render(scene,cam);misuraCorpi212('parata',scene,cam);if(typeof window!=='undefined'&&window.__CPM_G240W)misuraPelle240('parata',renderer,scene,cam);if(((st240.f=(st240.f|0)+1)%20)===0||st240.f<90)for(const m240 of men)rifaiPelle240(m240);/* [giro 212] testimone dei corpi, solo con __CPM_G212W */};
     tick();
     const onR=()=>{try{cam.aspect=W()/H();cam.updateProjectionMatrix();renderer.setSize(W(),H());}catch(_e){}};
     window.addEventListener('resize',onR);

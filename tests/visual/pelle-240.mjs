@@ -47,21 +47,24 @@ async function misura(p, scena, fotoMax) {
             const x0 = Math.floor(cv.width * .40), y0 = Math.floor(cv.height * .36), w = Math.floor(cv.width * .60) - x0, h = Math.floor(cv.height * .50) - y0, d = g.getImageData(x0, y0, w, h).data;
             const med = k => { const a = []; for (let i = k; i < d.length; i += 4) a.push(d[i]); a.sort((x, y) => x - y); return a[a.length >> 1]; }; res([med(0), med(1), med(2)]); } catch (e) { res(null); } }; im.onerror = () => res(null); im.src = fg.file; setTimeout(() => res(null), 8000); }); }
       c.viso = cache[fg.file]; }
-    return { scena: E.scena, corpi: E.corpi, altri: E.altri, foto: W.foto || null }; });
+    return { scena: E.scena, corpi: E.corpi, altri: E.altri, maschera: E.maschera || null, foto: W.foto || null }; });
 }
 const salvaFoto = (r, nome) => { if (!FOTO || !r || !r.foto) return; r.foto.forEach((u, i) => { if (u) fs.writeFileSync(`${FOTO}-${nome}-viso${i}.jpg`, Buffer.from(u.split(',')[1], 'base64')); }); };
 /* RIPETIZIONE DICHIARATA: ogni scena si misura PASSATE volte a 0,7 s di distanza (le luci di una cerimonia cambiano: riflettori, fuochi,
    un viso coperto o in ombra in un fotogramma). Per ogni corpo vale la passata piu' vicina alla figurina; resta scritta anche la prima
-   (dE1), che il rapporto riporta. Verde = ogni corpo entro la soglia nella sua passata migliore; vale uguale nel braccio rosso. */
-const PASSATE = 4;
-async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null;
-  for (let g = 0; g < PASSATE; g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0); if (r.errore) { if (!base) base = r; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
+   (dE1), che il rapporto riporta. Verde = ogni corpo entro la soglia nella sua passata migliore; vale uguale nel braccio rosso.
+   Le passate si fermano prima se tutti i corpi con figurina sono gia' misurati e dentro la soglia, oppure se una testa ha i capelli
+   sbagliati (in tutti e due i casi il verdetto non cambierebbe). */
+const PASSATE = 3, PASSATE_CER = 6;/* scene in movimento (gioco, premiazione, festa, parata): i corpi girano rispetto alle luci, e fuochi d'artificio e flash tingono i visi per un istante; sei passate a 1,2 s */
+async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; const cer = etichetta === 'premiazione' || etichetta === 'festa' || etichetta === 'gioco' || etichetta === 'parata';
+  for (let g = 0; g < (cer ? PASSATE_CER : PASSATE); g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0); if (r.errore) { if (!base) base = r; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
     r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; } });
     if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
-    await sleep(700); }
+    if (base && !base.errore && base.corpi.filter(c => c.nome && c.viso).every(c => c.dE != null && c.dE <= DE_PELLE)) break;
+    if (base && !base.errore && base.corpi.some(c => c.nome && c.fig && VAR[c.fig.h] !== c.capelli)) break;/* una testa coi capelli sbagliati non cambia fra una passata e l'altra: la scena e' gia' rossa */ await sleep(cer ? 1200 : 700); }
   if (base) delete base.foto; return base; }
 async function braccio(flags, nome) { const R = { nome, scene: {} };
-  if (SCENE.includes('partita')) { const { ctx, p, err } = await pagina(flags, { width: 1280, height: 720 }); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.playMatch());
+  if (SCENE.includes('partita')) { const { ctx, p, err } = await pagina(flags, { width: 800, height: 450 }); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.playMatch());
       const ph = () => p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null); const pronto = () => p.evaluate(() => !!(window.__CPM3D && window.__CPM3D.renderer && window.__CPM_GLB_READY)).catch(() => false);
       const clic = (re) => p.evaluate((s) => { const bs = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null); const x = bs.find(q => new RegExp(s, 'i').test(q.textContent || '')); if (x) x.click(); return !!x; }, re).catch(() => false);
       /* INGRESSO: si arriva alla fase dell'ingresso in campo coi corpi pronti e si misura li', prima di saltare */
@@ -69,9 +72,9 @@ async function braccio(flags, nome) { const R = { nome, scene: {} };
       R.scene.ingresso = ing || { errore: 'fase di ingresso mai raggiunta coi corpi pronti' };
       if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-ingresso.png` });
       for (let k = 0; k < 80; k++) { if (await ph() === 'playing' && await pronto()) break; await clic('Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua|Salta'); await sleep(700); }
-      await sleep(2500); R.scene.gioco = await scena(p, 'gioco', 'partita:', 4, nome + '-gioco'); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-gioco.png` });
-      await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' })); await sleep(5000); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-premiazione.png` }); R.scene.premiazione = await scena(p, 'premiazione', 'partita:', 3, nome + '-premiazione');
+      await sleep(2500); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-gioco.png` }); R.scene.gioco = await scena(p, 'gioco', 'partita:', 4, nome + '-gioco');/* a gioco vivo: fra una passata e l'altra i corpi si muovono (gioco e highlight) */
       await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'FESTA', kind: 'league', light: true })); await sleep(4000); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-festa.png` }); R.scene.festa = await scena(p, 'festa', 'partita:', 3, nome + '-festa');
+      await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' })); await sleep(5000); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-premiazione.png` }); R.scene.premiazione = await scena(p, 'premiazione', 'partita:', 3, nome + '-premiazione');
     } catch (e) { R.scene.partitaErrore = String(e && e.message || e).slice(0, 200); } R.errPartita = err.slice(0, 3); await ctx.close(); }
   if (SCENE.includes('serata')) { const { ctx, p, err } = await pagina(flags); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.apriPresentazione(1));
       await p.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2, null, { timeout: 90000 }); await sleep(3500);
