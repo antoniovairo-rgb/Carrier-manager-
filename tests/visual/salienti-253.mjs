@@ -63,9 +63,17 @@ async function prepartita(A, panca) {
 }
 
 /* premuto il tasto: formazioni → ingresso → partita a soli salienti, guardando panchina, ingresso e scene */
-async function gioca(page) {
+async function gioca(page, forza) {
   const o = { visti: [], walkout: false, veloPanca: false, sceneInPanca: 0, sceneDopo: 0, entrataAl: null, minMax: 0, tPanca: 0, minPanca: null, tDopo: 0, mai: false, finita: false };
-  await page.evaluate(() => document.querySelector('[data-cpm="solo-243"]').click());
+  /* E si giudica DENTRO la pagina (regole 3-4 di PROCESSO.md): il minuto massimo letto mentre il giocatore e' ancora in panchina, dallo stesso
+     dato su cui si ferma la cronaca veloce (clockRef, __CPM_BALL3().c; onBenchRef, __CPM_LM215). Misurato alla prima stesura: letto da Node
+     ogni 120 ms dopo l'ingresso, il minuto era 35 o 37 secondo il caso — la cronaca veloce riparte a ~20 minuti per scatto (velocita' x
+     intervallo, la trappola del 7.360), non un difetto del gioco. */
+  await page.evaluate(() => { window.__P253 = { maxPanca: -1, entrata: null }; const iv = setInterval(() => { try { const lm = window.__CPM_LM215 ? window.__CPM_LM215() : null; const m = window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null;
+    if (!lm || m == null || !(window.__CPM_PHASE && window.__CPM_PHASE() === 'playing' || window.__P253.maxPanca >= 0)) return;
+    if (lm.onBench) window.__P253.maxPanca = Math.max(window.__P253.maxPanca, m); else if (window.__P253.maxPanca >= 0 && window.__P253.entrata == null) { window.__P253.entrata = m; clearInterval(iv); } } catch (e) {} }, 5); });
+  if (forza) await page.evaluate(() => [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim())).click());
+  else await page.evaluate(() => document.querySelector('[data-cpm="solo-243"]').click());
   const t0 = Date.now(); let auto = false, fP = null, ult = Date.now(), panca0 = null, dopo0 = null, minUlt = 0, bP = true;
   while (Date.now() - t0 < 480000) {
     const s = await page.evaluate(() => { const lm = window.__CPM_LM215 ? window.__CPM_LM215() : null;
@@ -90,7 +98,7 @@ async function gioca(page) {
     }
     ult = ora; await sleep(120);
   }
-  o.panca0 = panca0;
+  o.panca0 = panca0; o.p253 = await page.evaluate(() => window.__P253 || null).catch(() => null);
   o.passoPanca = (panca0 != null && o.minPanca != null && o.minPanca - panca0 >= 20) ? Math.round(o.tPanca / (o.minPanca - panca0)) : null;
   o.passoDopo = (dopo0 != null && o.minMax - dopo0 >= 20) ? Math.round(o.tDopo / (o.minMax - dopo0)) : null;
   return o;
@@ -111,18 +119,21 @@ async function filaTitolare(rosso) {
   try { r = await prepartita(A, false); } catch (e) { r = { nonGiudicato: String(e.message).slice(0, 120) }; }
   await A.b.close(); A.srv.close(); return r;
 }
-async function panchina(rosso, minIngresso, rif) {
+async function panchina(rosso, minIngresso, rif, forza) {
   /* B: il «mai entrato» il gioco non lo produce da solo (ingresso 46'-82', le scelte della panchina lo ANTICIPANO soltanto): si provoca dalla
      sonda (regola 7) con il minuto di collaudo oltre il 90' e spegnendo le due schede che riscrivono il minuto (INT226 «chiedo di entrare»
      e INT259) — misurato alla prima stesura: con le schede accese l'ingresso cadeva al 72' */
   const mai = minIngresso > 90 ? { __CPM_NO_INT226: true, __CPM_NO_SCHEDE259: true } : {};
-  const A = await apriCarriera166({ init: { ...(rosso ? { __CPM_NO_G253: true } : {}), __CPM_BENCH_MIN: minIngresso, ...mai }, nome: NOME, reseed: 4253 }); const out = {};
+  /* forza: la modalita' a soli salienti accesa dal gancio di collaudo (__CPM_SOLO166) senza il tasto — nel braccio rosso prova che il fermo
+     all'ingresso ha effetto: senza, il minuto supera il 35' col giocatore ancora in panchina */
+  const A = await apriCarriera166({ init: { ...(rosso ? { __CPM_NO_G253: true } : {}), __CPM_BENCH_MIN: minIngresso, ...mai, ...(forza ? { __CPM_SOLO166: true } : {}) }, nome: NOME, reseed: 4253 }); const out = {};
   try {
     const n0 = await A.page.evaluate(() => (window.__CPM_CAREER.snapshot().matchHistory || []).length);
     const r = await prepartita(A, true); out.r = r;
     out.pp = !!(r && r.pp && !r.fuoriPre && /panchina/.test(r.ingresso || ''));
     out.tasto = out.pp && r.solo && NOTA.test(r.nota) && J(r.bottoni) === J(rif && rif.bottoni ? rif.bottoni : FILA_TITOLARE) && rif && rif.pp;
-    if (out.tasto) { out.g = await gioca(A.page); if (out.g.finita) out.registrata = await registra(A.page, n0); }
+    if (forza && out.pp) { out.g = await gioca(A.page, true); }
+    else if (out.tasto) { out.g = await gioca(A.page); if (out.g.finita) out.registrata = await registra(A.page, n0); }
   } catch (e) { out.err = String(e.message).slice(0, 180); }
   out.errs = A.errs.slice(0, 3); await A.b.close(); A.srv.close(); return out;
 }
@@ -133,7 +144,8 @@ function giudicaA(o) {
     { k: 'T tasto dalla panchina, stessa nota e stessa fila', ok: !!o.tasto, info: ng || `prompt «${o.r.ingresso}» · fila ${J(o.r.bottoni)} · nota «${o.r.nota}»` },
     { k: 'I formazioni e ingresso prima del gioco', ok: !!o.tasto && g.walkout && g.visti.indexOf('walkout') >= 0 && g.visti.indexOf('walkout') < g.visti.indexOf('playing'), info: tq + `fasi ${J((g.visti || []).slice(0, 8))}` },
     { k: 'P in panchina cronaca veloce, velo, nessuna scena', ok: !!o.tasto && g.veloPanca && g.sceneInPanca === 0 && g.passoPanca != null && g.passoPanca <= 400, info: tq + `velo panchina ${g.veloPanca} · scene in panchina ${g.sceneInPanca} · ${g.passoPanca == null ? 'passo NON GIUDICATO' : g.passoPanca + ' ms/minuto'} (minuti ${g.panca0}→${g.minPanca})` },
-    { k: 'E la cronaca veloce si ferma all\'ingresso (35\')', ok: !!o.tasto && g.entrataAl != null && Math.abs(g.entrataAl - 35) <= 1, info: tq + `entrato al ${g.entrataAl}'` },
+    { k: 'E la cronaca veloce si ferma all\'ingresso (35\'): in panchina il minuto non supera mai il 35\', e il giocatore entra', ok: !!o.tasto && !!g.p253 && g.p253.maxPanca === 35 && g.p253.entrata != null && g.entrataAl != null,
+      info: tq + `minuto massimo in panchina ${g.p253 ? g.p253.maxPanca : '—'}' · primo minuto letto in campo ${g.p253 ? g.p253.entrata : '—'}' (dentro la pagina) · da Node ${g.entrataAl}'` },
     { k: 'H dopo l\'ingresso solo highlight, fischio, registrata', ok: !!o.tasto && g.sceneDopo >= 1 && g.passoDopo != null && g.passoDopo <= 400 && g.finita && !!o.registrata && !!o.g.solo && o.g.solo.attiva === true,
       info: tq + `scene dopo ${g.sceneDopo} · ${g.passoDopo == null ? 'passo NON GIUDICATO' : g.passoDopo + ' ms/minuto'} · finita ${g.finita} al ${g.minMax}' · registrata ${!!o.registrata} · testimone ${J(g.solo || null)}` },
     { k: 'errori di pagina', ok: !(o.errs || []).length && !o.err, info: J([o.errs, o.err || null]) }];
@@ -195,6 +207,11 @@ async function braccio(rosso) {
   if (!SOLO || SOLO === 'A' || SOLO === 'B') {
     const rif = await filaTitolare(rosso); console.log(`  [${tag}] fila di riferimento (titolare): ${J(rif.bottoni || rif)}`);
     if (!SOLO || SOLO === 'A') { const o = await panchina(rosso, 35, rif); const righe = giudicaA(o); ris.push({ nome: 'A panchina con ingresso al 35\'', righe, giudicato: !!o.pp }); console.log(`  [${tag}] A: ${righe.map(x => (x.ok ? '✓' : '✗') + x.k.split(' ')[0]).join(' ')}`); }
+    if (rosso && (!SOLO || SOLO === 'A')) { const o = await panchina(true, 35, rif, true); const g = o.g || {};
+      const r = { k: 'E senza il fermo (gancio __CPM_SOLO166, rosso 253): il minuto supera il 35\' col giocatore in panchina', ok: !!(o.pp && g.p253 && g.p253.maxPanca > 35), info: o.pp ? `minuto massimo in panchina ${g.p253 ? g.p253.maxPanca : '—'}' · testimone ${J(g.solo || null)}` : 'NON GIUDICATO: pre-partita non raggiunta' };
+      /* qui «ok» vuol dire che il difetto si VEDE: e' la riga che il rosso deve far cadere su E */
+      ris.push({ nome: 'A\' panchina, soli salienti dal gancio, senza fermo', righe: [{ ...r, ok: !r.ok, k: 'E il minuto non supera il 35\' in panchina' + (r.ok ? '' : ' (il difetto non si vede: ' + r.info + ')') }], giudicato: !!(o.pp && g.p253 && g.p253.maxPanca >= 0), info: r.info });
+      console.log(`  [rosso] A' (gancio): ${r.info}`); }
     if (!SOLO || SOLO === 'B') { const o = await panchina(rosso, 95, rif); const righe = giudicaB(o); ris.push({ nome: 'B panchina senza ingresso', righe, giudicato: !!o.pp }); console.log(`  [${tag}] B: ${righe.map(x => (x.ok ? '✓' : '✗') + x.k.split(' ')[0]).join(' ')}`); }
   }
   if (!SOLO || SOLO === 'D') for (const W of [360, 375, 412]) { const o = await provino(rosso, W); const righe = giudicaD(o); ris.push({ nome: `D provino ${W} px`, righe, giudicato: !o.err && !!(o.pre && o.pre.tasto) }); console.log(`  [${tag}] D ${W}: ${righe.map(x => (x.ok ? '✓' : '✗')).join(' ')}`); }

@@ -9,7 +9,8 @@
         amichevole della Nazionale (prompt → convocazione → «Gioca la partita»);
         Coppa delle Nazioni, Europeo qualificazioni, Mondiale gironi, Mondiale eliminazione diretta (TASTO PRINCIPALE della home,
         data-cpm="avanza23", il percorso della foto).
-      Negativo: da PANCHINA (decisione forzata __CPM_CD229) il tasto NON c'e'.
+      Panchina (decisione forzata __CPM_CD229): dal giro 253 (decisione PO 17/11 «Sì, anche dalla panchina») il tasto C'E' anche li'; nel
+      braccio rosso __CPM_NO_G243 il tasto non esiste e quindi non c'e' nemmeno dalla panchina.
    B. PARTITE: una del Mondiale (gironi) e una amichevole della Nazionale aperte dal tasto della schermata pre-partita e giocate fino al
       fischio: la modalita' e' attiva (testimone __CPM_LM166.attiva, velo «solo-166-velo»), la partita finisce e la carriera la registra
       (Mondiale: gara del girone avanzata; amichevole: presenza in Nazionale in piu').
@@ -99,7 +100,7 @@ async function percorsi(rosso) {
       const r = await daHome(A.page, W, patch); giudica(`A tasto principale della home → pre-partita · ${nome}: il tasto c'e'`, r, true); if (r && r.pp) await allaHome(A.page);
     }
     await A.page.evaluate((t) => { window.__CPM_CD229 = 'bench'; window.__CPM_CAREER.patch(t); }, torneiSpenti);
-    { const r = await daPrompt(A.page, W, null); const panca = !!(r && r.pp); giudica('A panchina → pre-partita · campionato: il tasto NON c\'e\'', (r && r.pp && !/panchina/.test(r.ingresso || '')) ? { nonGiudicato: 'il prompt non era da panchina: ' + r.ingresso } : r, false); if (panca) await allaHome(A.page); }
+    { const r = await daPrompt(A.page, W, null); const panca = !!(r && r.pp); giudica(rosso ? 'A panchina → pre-partita · campionato: il tasto NON c\'e\' (rosso 243: il tasto non esiste)' : 'A panchina → pre-partita · campionato: il tasto c\'e\' (giro 253, decisione PO 17/11)', (r && r.pp && !/panchina/.test(r.ingresso || '')) ? { nonGiudicato: 'il prompt non era da panchina: ' + r.ingresso } : r, !rosso); if (panca) await allaHome(A.page); }
     await A.page.evaluate(() => { window.__CPM_CD229 = null; });
     P.push({ nome: 'A errori di pagina', ok: A.errs.length === 0, info: J(A.errs.slice(0, 3)) });
   } catch (e) { P.push({ nome: 'A flusso dei percorsi', ok: false, info: String(e.message).slice(0, 160) }); }
