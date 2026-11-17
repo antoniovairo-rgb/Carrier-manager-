@@ -1223,14 +1223,22 @@ let _UNO240=null;
 /* [giro 240 · PO-500] MASCHERA DEL VISO. La tinta della pelle sceglie i pixel «saturi e caldi»: sulla testa lo sono anche i capelli
    castani e ramati (misurato nei primi piani: un castano tinto come pelle diventava rossiccio). Le quattro texture della testa
    (HEAD_hair_black/brown/blond/auburn) sono IDENTICHE fuori dai capelli (misurato: 89,7% dei pixel uguali, 10,3% diversi): la differenza
-   fra due di loro E' la zona dei capelli. Si calcola una volta, a 256x256, e lo shader della testa tinge solo dove la maschera vale 1.
+   fra due di loro E' la zona dei capelli (piu' qualche macchia sul viso, che si scarta: vedi sotto). Si calcola una volta, a 256x256, e lo
+   shader della testa tinge solo dove la maschera vale 1.
    Finche' non e' pronta la maschera e' tutta bianca (= comportamento del giro 225). */
 const _MASC240={u:{value:null},stato:0,cap:null};
 function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.DataTexture(new Uint8Array([255,255,255,255]),1,1,T.RGBAFormat);t.needsUpdate=true;_MASC240.u.value=t;}
   if(_MASC240.stato||typeof document==='undefined')return _MASC240.u;_MASC240.stato=1;
   const fai=(a,b)=>{try{const N=256,mk=im=>{const c=document.createElement('canvas');c.width=N;c.height=N;const g=c.getContext('2d');g.drawImage(im,0,0,N,N);return g.getImageData(0,0,N,N).data;};
       const A=mk(a),B=mk(b),cv=document.createElement('canvas');cv.width=N;cv.height=N;const g=cv.getContext('2d'),O=g.createImageData(N,N);let cap=0;
-      for(let i=0;i<A.length;i+=4){const d=Math.abs(A[i]-B[i])+Math.abs(A[i+1]-B[i+1])+Math.abs(A[i+2]-B[i+2]),v=d>10?0:255;if(!v)cap++;O.data[i]=O.data[i+1]=O.data[i+2]=v;O.data[i+3]=255;}
+      /* SOLO LA CALOTTA. Le texture differiscono anche in macchie piccole sul viso (sopracciglia, contorno degli occhi, narici, barba): lasciarle fuori dalla tinta
+         faceva chiazze chiare sulle carnagioni scure e, in partita, occhi e narici neri (misurato sui primi piani). Resta «capelli» solo cio' che sta in una zona
+         dove almeno il 60% dei pixel di una finestra 21x21 differisce (le due isole grandi della calotta), allargata di 6 pixel per tenere il bordo. */
+      const D=new Float32Array(N*N);for(let i=0,j=0;i<A.length;i+=4,j++)D[j]=(Math.abs(A[i]-B[i])+Math.abs(A[i+1]-B[i+1])+Math.abs(A[i+2]-B[i+2]))>10?1:0;
+      const boxa=(src,k)=>{const W1=N+1,I=new Float32Array(W1*W1),o=new Float32Array(N*N),n2=(2*k+1)*(2*k+1);for(let y=0;y<N;y++){let r=0;for(let x=0;x<N;x++){r+=src[y*N+x];I[(y+1)*W1+x+1]=I[y*W1+x+1]+r;}}
+        for(let y=0;y<N;y++){const y0=Math.max(0,y-k),y1=Math.min(N,y+k+1);for(let x=0;x<N;x++){const x0=Math.max(0,x-k),x1=Math.min(N,x+k+1);o[y*N+x]=(I[y1*W1+x1]-I[y0*W1+x1]-I[y1*W1+x0]+I[y0*W1+x0])/n2;}}return o;};
+      const Z=boxa(D,10);for(let j=0;j<Z.length;j++)Z[j]=Z[j]>=0.6?1:0;const Zd=boxa(Z,6);
+      for(let i=0,j=0;i<A.length;i+=4,j++){const v=(D[j]&&Zd[j]>0)?0:255;if(!v)cap++;O.data[i]=O.data[i+1]=O.data[i+2]=v;O.data[i+3]=255;}
       g.putImageData(O,0,0);const t=new T.CanvasTexture(cv);t.flipY=false;t.needsUpdate=true;_MASC240.u.value=t;_MASC240.cap=+(cap/(N*N)).toFixed(4);_MASC240.stato=2;}catch(_e){_MASC240.stato=3;}};
   const P=(typeof window!=='undefined'&&window.__CPM_TESTE237)||{},carica=v=>new Promise(res=>{const p=P[v];if(p&&p.complete&&p.naturalWidth>0)return res(p);const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src='./assets/hair-colors/source-textures/HEAD_hair_'+v+'.png';});
   Promise.all([carica('black'),carica('blond')]).then(([a,b])=>{if(a&&b)fai(a,b);else _MASC240.stato=3;});
@@ -1248,7 +1256,7 @@ function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof 
       if(!viva&&(lineare||resa)){const q=resa||(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_RESA225)||RESA225;u.x*=q[0];u.y*=q[1];u.z*=q[2];}c.userData.u225=u;c.userData.lin240=lineare;
       const s0=lineare?'0.35':'0.20',s1=lineare?'0.55':'0.34';
       const masc=(nome==='Material.002'&&_g240())?_maschera240():null;c.userData.masc240=!!masc;
-      /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: capelli, sopracciglia e barba — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
+      /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: i capelli — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
       const dec=!!(masc&&auto240&&!lineare&&uscitaLin);
       c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};if(masc)sh.uniforms.uMasc240=masc;sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+(masc?'uniform sampler2D uMasc240;\n':'')+sh.fragmentShader.replace('#include <map_fragment>',
         '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;k225*=m240;':'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};

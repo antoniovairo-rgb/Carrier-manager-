@@ -55,11 +55,11 @@ const salvaFoto = (r, nome) => { if (!FOTO || !r || !r.foto) return; r.foto.forE
    (dE1), che il rapporto riporta. Verde = ogni corpo entro la soglia nella sua passata migliore; vale uguale nel braccio rosso.
    Le passate si fermano prima se tutti i corpi con figurina sono gia' misurati e dentro la soglia, oppure se una testa ha i capelli
    sbagliati (in tutti e due i casi il verdetto non cambierebbe). */
-const PASSATE = 3, PASSATE_CER = 6;/* scene in movimento (gioco, premiazione, festa, parata): i corpi girano rispetto alle luci, e fuochi d'artificio e flash tingono i visi per un istante; sei passate a 1,2 s */
-async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; const cer = etichetta === 'premiazione' || etichetta === 'festa' || etichetta === 'gioco' || etichetta === 'parata';
+const PASSATE = 3, PASSATE_CER = 8;/* scene in movimento (gioco, premiazione, festa, parata, serata): i corpi girano rispetto alle luci, e fuochi d'artificio e flash tingono i visi per un istante (misurato nella serata: lo stesso viso 224,153,116 in una passata e 186,98,76 nella successiva); otto passate a 1,2 s */
+async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; const cer = etichetta !== 'ingresso';
   for (let g = 0; g < (cer ? PASSATE_CER : PASSATE); g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0, giri === 'breve' ? 20000 : 0); if (r.errore) { if (!base) base = r; if (giri === 'breve' && g === 0) break; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
-    r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; } });
-    if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
+    r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; c.storia = [c.reso.join(',')]; } });
+    if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso) (o.storia = o.storia || []).push(c.reso.join(',')); if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
     if (base && !base.errore && base.corpi.filter(c => c.nome && c.viso).every(c => c.dE != null && c.dE <= DE_PELLE)) break;
     if (base && !base.errore && base.corpi.some(c => c.nome && c.fig && VAR[c.fig.h] !== c.capelli)) break;/* una testa coi capelli sbagliati non cambia fra una passata e l'altra: la scena e' gia' rossa */ await sleep(cer ? 1200 : 700); }
   if (base) delete base.foto; return base; }
@@ -83,14 +83,17 @@ async function braccio(flags, nome) { const R = { nome, scene: {} };
             await q.p.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null); const x = bs.find(z => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua|Salta/i.test(z.textContent || '')); if (x) x.click(); }).catch(() => {}); await sleep(700); }
           await sleep(2500); R.scene.premiazione = await premia(q.p, false); R.premiazioneSuPartitaNuova = true; } finally { await q.ctx.close(); } }
     } catch (e) { R.scene.partitaErrore = String(e && e.message || e).slice(0, 200); } R.errPartita = err.slice(0, 3); await ctx.close(); }
-  if (SCENE.includes('serata')) { const { ctx, p, err } = await pagina(flags); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.apriPresentazione(1));
-      await p.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2, null, { timeout: 90000 }); await sleep(3500);
+  if (SCENE.includes('serata') && !flags.includes('__CPM_NO_G240')) {/* nel rosso la serata resta quella del giro 225: non si giudica (presentazione-225) e non si misura */ const { ctx, p, err } = await pagina(flags); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.apriPresentazione(1));
+      await p.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2, null, { timeout: 90000 });
+      /* si attende un EVENTO, non un tempo: le mappe dei capelli arrivano dopo i corpi e fino ad allora la testa e' quella del file (misurato: prima passata tutta fuori soglia) */
+      await p.waitForFunction(() => window.__CPM_PRES142.men.every(m => { const h = m.userData && m.userData.cpmNativeHair; return h && h.applied; }), null, { timeout: 60000 }).catch(() => {}); await sleep(2500);
       R.scene.serata = await scena(p, 'serata', 'presentazione', 3, nome + '-serata'); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-serata.png` }); } catch (e) { R.scene.serata = { errore: String(e && e.message || e).slice(0, 200) }; } R.errSerata = err.slice(0, 3); await ctx.close(); }
   if (SCENE.includes('parata')) { const { ctx, p, err } = await pagina(flags); try { await carriera(p);
       await p.waitForFunction(() => typeof window.__CPM_PARATA198_C === 'function', null, { timeout: 60000 });
       await p.evaluate(() => { const pl = JSON.parse(localStorage.getItem('cpm-v3')); const el = document.createElement('div'); el.id = 'parata240'; el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#000'; document.body.appendChild(el);
         ReactDOM.createRoot(el).render(React.createElement(window.__CPM_PARATA198_C, { club: pl.club, euroWin: true, avatarId: pl.avatarId || 0, heroNum: pl.jerseyNum || 9 })); });
-      await p.waitForFunction(() => window.__CPM_PARATA && (window.__CPM_PARATA.cg23 || 0) >= 8, null, { timeout: 90000 }); await sleep(4000);
+      await p.waitForFunction(() => window.__CPM_PARATA && (window.__CPM_PARATA.cg23 || 0) >= 8, null, { timeout: 90000 });
+      await p.waitForFunction(() => (window.__CPM_PARATA.men23 || []).length >= 8 && window.__CPM_PARATA.men23.every(m => { const h = m.userData && m.userData.cpmNativeHair; return h && h.applied; }), null, { timeout: 60000 }).catch(() => {}); await sleep(2500);
       R.scene.parata = await scena(p, 'parata', 'parata', 3, nome + '-parata'); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-parata.png` }); } catch (e) { R.scene.parata = { errore: String(e && e.message || e).slice(0, 200) }; } R.errParata = err.slice(0, 3); await ctx.close(); }
   return R; }
 /* giudizio di una scena: quanti corpi, quanti con nome/figurina, scarti di capelli, distanza del viso */
@@ -107,7 +110,7 @@ for (const [nome, flags] of [['verde', []], ['rosso', ['__CPM_NO_G240']]]) { if 
 await b.close(); srv.close();
 fs.writeFileSync(`out/g240/pelle-240${process.env.CPM_TOD ? '-' + TOD : ''}.json`, JSON.stringify(out, null, 1));
 for (const nome of ['verde', 'rosso']) { const R = out[nome]; if (!R) continue; console.log(`${nome.toUpperCase()} (ora ${TOD})`);
-  for (const [sc] of QUALI) { const G = R.giudizio[sc]; console.log(`  ${sc.padEnd(12)} ${G.errore ? 'NON GIUDICATO: ' + G.errore : `corpi ${G.corpi} · con nome ${G.conNome} · con figurina ${G.conFigurina} · senza nome ${G.senzaNome} · capelli sbagliati ${G.capelliKo.length} · viso: distanza mediana ${G.dEmed} massima ${G.dEmax} (oltre ${DE_PELLE}: ${G.pelleKo.length}) [prima passata: mediana ${G.dE1med} massima ${G.dE1max}] · non misurati ${G.nonMisurati.length}`}`);
+  for (const [sc, fam] of QUALI) { if (nome === 'rosso' && fam === 'serata') continue; const G = R.giudizio[sc]; console.log(`  ${sc.padEnd(12)} ${G.errore ? 'NON GIUDICATO: ' + G.errore : `corpi ${G.corpi} · con nome ${G.conNome} · con figurina ${G.conFigurina} · senza nome ${G.senzaNome} · capelli sbagliati ${G.capelliKo.length} · viso: distanza mediana ${G.dEmed} massima ${G.dEmax} (oltre ${DE_PELLE}: ${G.pelleKo.length}) [prima passata: mediana ${G.dE1med} massima ${G.dE1max}] · non misurati ${G.nonMisurati.length}`}`);
     if (MISURA && R.scene[sc] && R.scene[sc].corpi) R.scene[sc].corpi.filter(c => c.fig).forEach(c => console.log(`      ${String(c.nome).padEnd(22)} ${c.ruolo || ''} volto ${c.fig.n} (${c.fig.k}, ${c.fig.h}) viso ${c.viso} · testa ${c.capelli} · reso ${c.reso} (${c.px}px) dE ${c.dE} · tinti ${c.tinti}`)); } }
 if (MISURA) process.exit(0);
 if (out.verde) for (const [sc, fam] of QUALI) { const G = out.verde.giudizio[sc]; const add = x => g.push(`verde · ${sc}: ${x}`);
