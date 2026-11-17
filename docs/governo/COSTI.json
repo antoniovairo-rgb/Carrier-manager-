@@ -2212,5 +2212,27 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-16"
+ },
+ {
+  "sessione": "session_01QEYiaAbKr2nG86bu389hyT",
+  "titolo": "verifica 7.999.196 parte C",
+  "cost_usd": 1.29230996,
+  "output_tokens": 5757,
+  "cache_read_tokens": 2502551,
+  "versione": "7.999.196",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia8fHfQncs6p8xYtWYw",
+  "titolo": "verifica 7.999.196 parte S",
+  "cost_usd": 1.36648936,
+  "output_tokens": 4463,
+  "cache_read_tokens": 2023053,
+  "versione": "7.999.196",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
