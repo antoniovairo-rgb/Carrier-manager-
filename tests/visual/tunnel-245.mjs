@@ -22,7 +22,7 @@
      verticale e scorre lungo la fila), fissati dopo la misura a copertura piena; altezza apparente media dei corpi almeno 0,06;
    · PANCA BASSA: nessun oggetto «panca-stadio»/«pensilina-stadio» (resta la panchina vera, una per squadra ai lati del tunnel);
    · SOSTITUZIONI (scenari «sost-*», partita vera, ingresso e uscita dell'eroe forzati dal banco): zero fotogrammi con l'eroe
-     dentro un oggetto fermo; meno di 10 fotogrammi per verso = non giudicato = rosso.
+     dentro un oggetto fermo; meno di 10 fotogrammi per verso, o nessuna camminata che attraversi la fascia dei cartelloni = non giudicato = rosso.
    CPM_PROVA_ROSSO=255 → __CPM_NO_G255: il guardiano DEVE vedere schieramento fuori centro e panca bassa in ogni stadio e l'eroe
    dentro un oggetto nelle sostituzioni. CPM_TUTTO=1 = ingresso intero in ogni stadio (misure e foto).
    Uso: CPM_CHROME=/opt/pw-browsers/chromium PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tunnel-245.mjs */
@@ -114,13 +114,18 @@ async function sost(page, ph, out, c) {
   while (p === 'walkout' && Date.now() - t0 < 120000) { await page.evaluate(() => { window.__CPM_SKIPWALK277 = true; }); await sleep(600); p = await ph(); }
   out.fase = p; const conta = v => page.evaluate(v => (window.__CPM_G255W || []).filter(e => e.sub === v).length, v).catch(() => 0);
   const fine = async (v, n0) => { const t1 = Date.now(); let last = -1, fermo = 0; while (Date.now() - t1 < 150000) { const n = await conta(v); if (n > n0 && n === last) { if (++fermo >= 4) break; } else fermo = 0; last = n; await sleep(400); } };
-  for (const [verso, gancio, vars] of [['entra', '__CPM_FORCE_SUBENTRY', [0, 3]], ['esce', '__CPM_FORCE_SUBEXIT', [0, 3]]]) for (const v of vars) {
-    const n0 = await conta(verso); await page.evaluate(a => { window[a[0]] = a[1]; }, [gancio, v]); await fine(verso, n0);
-  }
+  /* cio' che il gioco non produce si provoca dalla sonda: due varianti per verso; se la partita interrompe la camminata prima che l'eroe
+     abbia attraversato la fascia dei cartelloni (z -35,8 in uscita, z -33,2 in entrata) si riprova, fino a 5 volte per verso. */
+  const zz = verso => page.evaluate(v => { const F = (window.__CPM_G255W || []).filter(e => e.sub === v && e.vis); return F.length ? [Math.min(...F.map(e => e.z)), Math.max(...F.map(e => e.z))] : null; }, verso).catch(() => null);
+  for (const [verso, gancio] of [['entra', '__CPM_FORCE_SUBENTRY'], ['esce', '__CPM_FORCE_SUBEXIT']]) { let buone = 0;
+    for (let k = 0; k < 5 && buone < 2; k++) { const n0 = await conta(verso); await page.evaluate(a => { window[a[0]] = a[1]; }, [gancio, k % 2 ? 3 : 0]); await fine(verso, n0);
+      const W1 = await page.evaluate(a => (window.__CPM_G255W || []).filter(e => e.sub === a[0] && e.vis).slice(a[1]).map(e => e.z), [verso, n0]).catch(() => []);
+      if (W1.length >= 10 && (verso === 'esce' ? Math.min(...W1) <= -35.8 : (Math.min(...W1) <= -34.3 && Math.max(...W1) >= -33.2))) buone++; }
+    out['buone_' + verso] = buone; }
   const W = await page.evaluate(() => (window.__CPM_G255W || []).filter(e => e.sub));
   out.S = await page.evaluate(() => window.__CPM_G245 || null).catch(() => null);
   out.sost = {}; for (const verso of ['entra', 'esce']) { const F = W.filter(e => e.sub === verso && e.vis), P = F.filter(e => e.pen.length); const tipi = {}; P.forEach(e => e.pen.forEach(k => { tipi[k] = (tipi[k] | 0) + 1; }));
-    out.sost[verso] = { frames: F.length, dentro: P.length, tipi, es: P.length ? [P[0].x, P[0].z, P[0].t] : null, da: F.length ? [F[0].x, F[0].z] : null, a: F.length ? [F[F.length - 1].x, F[F.length - 1].z] : null }; }
+    out.sost[verso] = { frames: F.length, dentro: P.length, tipi, es: P.length ? [P[0].x, P[0].z, P[0].t] : null, buone: out['buone_' + verso] | 0, da: F.length ? [F[0].x, F[0].z] : null, a: F.length ? [F[F.length - 1].x, F[F.length - 1].z] : null }; }
 }
 const R = {}; const guasti = []; const visti = { bocca: 0, pen: 0, sch: 0, panca: 0, sost: 0, nSch: 0, nSost: 0 };
 for (const c of PIANO) { if (SOLO && !SOLO.includes(c.nome)) continue;
@@ -129,6 +134,7 @@ for (const c of PIANO) { if (SOLO && !SOLO.includes(c.nome)) continue;
     if (o.errore) g.push('errore: ' + o.errore); if ((o.errori || []).length) g.push('errori di pagina: ' + o.errori[0]);
     let dentro = 0; for (const v of ['entra', 'esce']) { const e = E[v];
       if (!e || e.frames < 10) g.push(`non giudicato: ${e ? e.frames : 0} fotogrammi di sostituzione «${v}» (minimo 10)`);
+      else if (!e.buone) g.push(`non giudicato: nessuna sostituzione «${v}» ha attraversato la fascia dei cartelloni (5 tentativi)`);
       else if (e.dentro) { dentro += e.dentro; g.push(`sostituzione «${v}»: ${e.dentro} fotogrammi su ${e.frames} con l'eroe dentro un oggetto (${JSON.stringify(e.tipi)}, es. x/z/t ${JSON.stringify(e.es)})`); } }
     if (dentro) visti.sost++;
     console.log(`${g.length ? '✗' : '✓'} ${c.nome.padEnd(15)} sostituzioni · entra ${E.entra ? E.entra.dentro + '/' + E.entra.frames + ' da ' + JSON.stringify(E.entra.da) : '?'} · esce ${E.esce ? E.esce.dentro + '/' + E.esce.frames + ' fino a ' + JSON.stringify(E.esce.a) : '?'}`);
