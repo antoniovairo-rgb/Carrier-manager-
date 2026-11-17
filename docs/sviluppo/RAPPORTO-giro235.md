@@ -97,7 +97,28 @@ Popolare · Idolo).
 
 ## Esiti dei controlli (uno alla volta, CPM_CI_PAR=0)
 
-ESITI
+Tre build del ramo: **A** `5fe24f5e` (prima stesura, titolo nel contenuto), **B** `e8fb1646` (titolo nella testata), **C** `60fd4122`
+(finale: col testo grande l'ora del salvataggio va a capo invece di troncarsi). Da B a C cambia solo l'andare a capo di quella riga
+col testo grande; dichiaro su quale build ha girato ogni controllo.
+
+| Controllo | Build | Esito |
+|---|---|---|
+| `coerenza-235` (nuovo) | C (anche A e B) | ✓ verde: 5 tasti in regola a 375 e 1366, titolo nello stesso posto nelle 8 schede, testata 98 → 101 px e «Vivi la settimana» +3 px, menu uguale, 5 gruppi · 0 fisarmoniche · 19 sezioni, contratto solo in Agente, gradini in Home e Club, corpi 12 / 14 / 16 (vecchio «1» = 16). Rosso `__CPM_NO_G235` ✓ bocciato su T, H, M, P, C, F, G |
+| `accessibilita-234` (aggiornato) | C | ✓ verde (+15%: corpo 14, colonna Pt 19/19 a 360 e 375; +30%: corpo 16, 37/37 e 19/19); rosso `__CPM_NO_G234` bocciato (25 motivi); manifest bocciato sulla base prima del 234. Su B era rosso: «salvato 18:36» tagliato di 7 px a 360 col +30% → corretto in C |
+| `design-system` | C | ✓ sistema grafico OK (nessun raggio a mano, nessun corpo sotto 12) |
+| `tema-unico` | C | ✓ verde, rosso atteso col tema di prova |
+| `griglia-mobile` | B | ✓ 14 schermate × 5 larghezze, 70/70 senza scorrimento, testi fuori, corpi sotto pavimento né contrasti sotto soglia |
+| `home-199` | B | ✓ verde |
+| `agente-198` | B | ✓ verde, rossi bocciati |
+| `figurina-199` | B | ✓ verde, rosso bocciato |
+| `tocco-213` | B | ✓ verde, rosso bocciato. **Su A era rosso**: a 375×667 «Vivi la settimana» finiva sotto la barra (misura sopra) |
+| `barra-221` | A | ✓ verde, rossi bocciati (la parte toccata, «Scegli» in src/15, non è cambiata dopo A) |
+| `sigle-203` | C | ✓ verde a 360/375/390 (18 ok) e 1366 (8 ok); rosso con 5 ko |
+| `test:logic` | C | ✓ 51/51 |
+| `save-compat` | C | ✓ 12/12 |
+
+Non eseguiti (fuori dalla consegna e dalla mia parte): highlight-95, ingresso-206, career-critical, la completa. La riga di roadmap la
+scrive il rilascio (questo è un giro su ramo di sviluppo).
 
 ## Dubbi per il PO
 
