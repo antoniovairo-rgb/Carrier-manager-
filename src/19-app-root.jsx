@@ -405,7 +405,8 @@ function IntroCinematic({onDone,nome,riascolto}){
        i procedurali nascono INVISIBILI e restano tali finché il CH38 non aggancia; compaiono SOLO come ultima
        risorsa dopo 5.5s senza GLB (mai scena vuota, mai burattini nell'uso normale — il prefetch li batte). */
     hero.visible=false;gk.visible=false;
-    const _fbT=setTimeout(()=>{if(!glbOk){hero.visible=true;gk.visible=true;}},5500);
+    let _att233=false,_via233=null,_cap233=0;/* [giro 233 PO-453] l'intro aspetta il suo corpo (orologio di scena fermo, attesa con avanzamento): mai fantocci */
+    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;}},5500);
     /* [7.32.1 collaudo PO] pallone più PICCOLO e MODERNO: texture canvas a pannelli scuri su bianco */
     const ballCv=document.createElement('canvas');ballCv.width=128;ballCv.height=64;const bg2=ballCv.getContext('2d');
     bg2.fillStyle="#fafafa";bg2.fillRect(0,0,128,64);
@@ -445,7 +446,11 @@ function IntroCinematic({onDone,nome,riascolto}){
        a tinta unita. Senza il file, si ripiega sul CH38 di prima. */
     const _cgIntro23=typeof corpoCG23==='function'&&typeof _hyperQ23==='function'&&/cgtrader/.test(_hyperQ23())&&!window.__CPM_NO_CGINTRO;
     if(_cgIntro23&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
-      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+      const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');
+      if(typeof _g233==='function'&&_g233()){_att233=true;_via233=copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'intro');
+        const _esci233=(m)=>{if(disposed||glbOk||!_att233)return;try{(window.__CPM_G233=window.__CPM_G233||{}).introSaltata=m;}catch(_e){}try{onDone&&onDone();}catch(_e){}};/* corpo fallito o oltre il tetto (120 s come la partita): il video si chiude, si rivede dal menu */
+        _pr233.catch(()=>_esci233('fallito'));_cap233=setTimeout(()=>_esci233('tetto'),+window.__CPM_CAP196||120000);}
+      _pr233.then(pkg=>{
         if(!pkg||disposed)return;const A=n=>(pkg.animations||[]).find(c=>c&&c.name===n)||null;
         heroAv=corpoCG23(pkg,{shirt:_clb178.c,shorts:_clb178.c2,socks:_clb178.c,altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
         if(!heroAv||!gkAv)return;scene.add(heroAv);scene.add(gkAv);
@@ -456,7 +461,7 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(heroActs.lift){heroActs.lift.setLoop(THREE.LoopOnce);heroActs.lift.clampWhenFinished=true;}
         if(gkActs.dive){gkActs.dive.setLoop(THREE.LoopOnce);gkActs.dive.clampWhenFinished=true;}
         try{heroAv.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!stG.fL&&/^(ball|foot)_l$/i.test(n))stG.fL=o;if(!stG.fR&&/^(ball|foot)_r$/i.test(n))stG.fR=o;if(!stG.hd&&/^head$/i.test(n))stG.hd=o;});}catch(_e){}
-        hero.visible=false;gk.visible=false;glbOk=true;
+        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}
         try{if(!window.__CPM_STORE_BUILD){window.__CPM_INTRO_GLB=true;window.__CPM_INTRO_CG23=true;}}catch(_e){}
       }).catch(()=>{});
     }
@@ -503,6 +508,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     const camLook=new THREE.Vector3(0,1.4,-4);
     let raf=null;let netKick=0;let shakeIntro=0;
     const tick=()=>{
+      if(_att233&&!glbOk)stRef.current.t0=Date.now();/* [giro 233] finche' il corpo non c'e' la scena resta al secondo zero */
       const _raw115=(Date.now()-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
       // ---- coreografia eroe/palla [7.32.3 collaudo PO «palla ANCORA dietro · movimenti lenti e poco
       //      fluidi · post-gol troppo lungo»] traiettoria PURA posAt(t): la direzione della palla è la
@@ -662,7 +668,7 @@ function IntroCinematic({onDone,nome,riascolto}){
       raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);
-    return()=>{try{disposed=true;clearTimeout(_fbT);if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
+    return()=>{try{disposed=true;clearTimeout(_fbT);clearTimeout(_cap233);if(_via233)_via233('smontata');if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
   },[]);// eslint-disable-line
   const cap=CAPS[beat]||CAPS[0];
   const _n11=_no115("11"),_n12=_no115("12"),_n16=_no115("16");
