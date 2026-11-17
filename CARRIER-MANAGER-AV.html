@@ -46884,19 +46884,19 @@ function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof 
 /* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
    della traccia dell'avambraccio col massimo angolo fra loro; l'asse e' nello spazio dell'omero. Una volta per pacchetto. */
 const _GOM225=new WeakMap();
-function _gomito225(pkg){try{if(_GOM225.has(pkg))return _GOM225.get(pkg);const T=THREE;let out=null;
+function _gomito225(pkg,lato){try{const kk=lato==='l'?'l':'r';/* [giro 256] anche il gomito sinistro (stessa calibrazione, sulle tracce dell'altro lato) */let CC=_GOM225.get(pkg);if(!CC){CC={};_GOM225.set(pkg,CC);}if(kk in CC)return CC[kk];const T=THREE;let out=null;
   for(const nome of ['running','jog','walk']){const c=(pkg.animations||[]).find(x=>x&&x.name===nome);if(!c)continue;
-    const tr=c.tracks.find(t=>/(^|[./])lowerarm_r\.quaternion$/.test(t.name));if(!tr)continue;const v=tr.values,N=v.length/4;if(N<4)continue;
+    const tr=c.tracks.find(t=>new RegExp('(^|[./])lowerarm_'+kk+'\\.quaternion$').test(t.name));if(!tr)continue;const v=tr.values,N=v.length/4;if(N<4)continue;
     const q=k=>new T.Quaternion(v[k*4],v[k*4+1],v[k*4+2],v[k*4+3]).normalize();let bi=0,bj=1,ba=-1;
     for(let i=0;i<N;i+=Math.max(1,(N/24)|0))for(let j=i+1;j<N;j+=Math.max(1,(N/24)|0)){const a=q(i).angleTo(q(j));if(a>ba){ba=a;bi=i;bj=j;}}
     if(ba<0.08)continue;
     /* verso: la rotazione POSITIVA intorno all'asse e' la flessione (il gomito piega da una parte sola); riferimento = il campione piu' disteso */
-    const oU=pkg.scene.getObjectByName('lowerarm_r'),oH=pkg.scene.getObjectByName('hand_r');if(!oU||!oH)continue;
+    const oU=pkg.scene.getObjectByName('lowerarm_'+kk),oH=pkg.scene.getObjectByName('hand_'+kk);if(!oU||!oH)continue;
     const aU=oU.position.clone().normalize(),aF=oH.position.clone().normalize(),fl=k=>aU.angleTo(aF.clone().applyQuaternion(q(k)));
     if(fl(bi)>fl(bj)){const x=bi;bi=bj;bj=x;}
     const d=q(bj).multiply(q(bi).invert());if(d.w<0){d.x=-d.x;d.y=-d.y;d.z=-d.z;d.w=-d.w;}const s=Math.hypot(d.x,d.y,d.z)||1;
     out={asse:new T.Vector3(d.x/s,d.y/s,d.z/s),ref:q(bi),clip:nome,escursione:+(ba*180/Math.PI).toFixed(1),flessRef:+(fl(bi)*180/Math.PI).toFixed(1)};break;}
-  _GOM225.set(pkg,out);return out;}catch(_e){return null;}}
+  CC[kk]=out;return out;}catch(_e){return null;}}
 /* misura del braccio destro (sola lettura, la usano guardiano e sonda nei due bracci): gomito, elevazione dell'omero, residuo fuori dalla
    cerniera, polso, mano rispetto al piano mediano e al busto. Angoli in gradi, distanze in unita' di mondo. */
 function misuraBraccio225(av,cal){try{const T=THREE,B=av.userData._bm225||(av.userData._bm225=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|spine_03|neck_01|upperarm_[lr]|lowerarm_r|hand_r|middle_01_r)$/.test(x.name))o[x.name]=x;});return o;})());
@@ -47000,14 +47000,72 @@ const _g240=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G240);
 const _CLIP240=['rohr-clapping-hands-up','rohr-clap-twice-hand-up'];/* le due indicate dal PO. MISURATE sul corpo della serata (misura-240.mjs): «clapping hands up» sta dentro tutti i limiti del braccio del giro 225 (gomito fuori cerniera 9,7 gradi, polso 62,7, velocita' 236/452 gradi/s); «clap twice hand up» ne supera tre (cerniera 39,5 > 25, polso 71,9 > 70, velocita' 397/570 > 350/530): la prima e' la clip, la seconda il ripiego */
 const _OSSA240=/^(clavicle|upperarm|upperarm_twist_01|lowerarm|lowerarm_twist_01|hand|(index|middle|ring|pinky)_(metacarpal|0[123])|thumb_0[123])_[lr]$/;
 const RAMPA240=0.50;/* s di scena: entrata e uscita in dissolvenza dalla posa a riposo */
-function _salutoClip240(av,pkgR){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
+/* ════════════════════════════════════════════════════════════════════════
+   [giro 256 · seguito di PO-499, decisione PO 17/11 «Alternarle» — rosso window.__CPM_NO_G256 = sempre «clapping hands up», senza memoria e
+   senza risoluzione della cerniera] IL SALUTO DELLA SERATA ALTERNA LE DUE CLIP ROHR: una serata «clapping hands up», la successiva «clap
+   twice hand up» (due battiti e braccia in alto). Memoria sul dispositivo (chiave propria «cpm-saluto256», fuori dal salvataggio come la
+   rotazione delle coreografie del giro 244: nessun campo nel save), una voce per giocatore; riaprire la STESSA serata ridà la stessa clip.
+   Se la memoria non si legge, la scelta viene dalla chiave della serata (stabile, non casuale).
+   CERNIERA: misurato nella serata, in «clap twice hand up» l'avambraccio esce dal piano della cerniera del gomito fino a 38 gradi dal
+   riferimento (la clip di mocap mette sull'osso dell'avambraccio la rotazione che e' della spalla). _risolvi256 la rimette dove sta in un
+   braccio vero SENZA spostare nessuna articolazione: l'omero ruota intorno al proprio asse finche' il piano della cerniera contiene
+   l'avambraccio, l'avambraccio diventa flessione pura, mano e ossa di torsione tengono l'orientamento che la clip ha dato loro.
+   ════════════════════════════════════════════════════════════════════════ */
+const _g256=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G256);
+const _CER256={'rohr-clap-twice-hand-up':true};/* le clip a cui serve la risoluzione della cerniera (misurate: «clapping hands up» sta a 9,4 gradi e non si tocca) */
+function saluto256Scegli(chiave,chi){
+  const N=_CLIP240.length;if(!_g256())return{i:0,nome:_CLIP240[0],mem:false,rosso:true};
+  let M=null,mem=false;try{M=JSON.parse(localStorage.getItem("cpm-saluto256")||"null");mem=true;}catch(_e){M=null;}
+  if(!mem){const i=(Math.abs(hashStr(String(chiave)+"|s256"))>>>0)%N;return{i,nome:_CLIP240[i],mem:false};}
+  if(!M||typeof M!=="object"||Array.isArray(M))M={};
+  const k=String(chi||"?").slice(0,40),V=M[k],ok=V&&typeof V==="object"&&V.i>=0&&V.i<N;
+  if(ok&&V.k===chiave)return{i:V.i|0,nome:_CLIP240[V.i|0],mem,riaperta:true};
+  const i=ok?((V.i|0)+1)%N:0;
+  try{let n=0;for(const q in M)n=Math.max(n,(M[q]&&M[q].n)|0);M[k]={k:chiave,i,n:n+1};
+    const ks=Object.keys(M);if(ks.length>6){ks.sort((a,b)=>((M[a].n|0)-(M[b].n|0)));delete M[ks[0]];}
+    localStorage.setItem("cpm-saluto256",JSON.stringify(M));}catch(_e){mem=false;}
+  return{i,nome:_CLIP240[i],mem};}
+function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(upperarm|lowerarm|hand|upperarm_twist_01|lowerarm_twist_01)_[lr]$/.test(o.name))B[o.name]=o;});
+  const lati=[];for(const k of ['l','r']){const cal=_gomito225(pkg,k),U=B['upperarm_'+k],L=B['lowerarm_'+k],H=B['hand_'+k];if(!cal||!cal.asse||!U||!L||!H||!U.parent)continue;
+    const aF=H.position.clone().normalize(),rF=aF.clone().applyQuaternion(cal.ref),aU=L.position.clone().normalize();
+    const TU=B['upperarm_twist_01_'+k]||null,TL=B['lowerarm_twist_01_'+k]||null,oo=[U,L,H,TU,TL].filter(Boolean);
+    lati.push({cal,U,L,H,TU,TL,aF,rF,aU,s0:rF.dot(cal.asse),oo,pre:oo.map(()=>new T.Quaternion()),post:oo.map(()=>new T.Quaternion()),fatto:false});}
+  if(!lati.length)return null;
+  const Qp=new T.Quaternion(),Qu=new T.Quaternion(),Lw=new T.Quaternion(),Hw=new T.Quaternion(),TUw=new T.Quaternion(),TLw=new T.Quaternion(),Q1=new T.Quaternion(),Q2=new T.Quaternion(),Bw=new T.Quaternion(),Rt=new T.Quaternion(),
+    u=new T.Vector3(),dF=new T.Vector3(),aw=new T.Vector3(),ap=new T.Vector3(),fp=new T.Vector3(),cr=new T.Vector3(),a1=new T.Vector3(),r1=new T.Vector3(),rp=new T.Vector3(),dp=new T.Vector3();
+  const sm=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);},giro=x=>{while(x>Math.PI)x-=2*Math.PI;while(x<-Math.PI)x+=2*Math.PI;return x;};
+  /* w = peso del saluto (rampa). Da chiamare DOPO la clip e DOPO la regola delle spalle: non sposta spalla, gomito, polso ne' dita. */
+  /* MISURATO (omero che ruotava a 300-480 gradi/s a mani ferme): il mixer non riscrive un osso la cui traccia non e' cambiata dal fotogramma
+     prima, e la rotazione si sommava a quella gia' scritta. Ogni fotogramma riparte dalla posa NON risolta: un osso che nessuno ha riscritto
+     (porta ancora il valore scritto qui) torna a com'era prima della risoluzione. */
+  const _eq=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y)+Math.abs(a.z-b.z)+Math.abs(a.w-b.w)<1e-7;
+  const riparti=()=>{for(const A of lati){if(!A.fatto)continue;for(let i=0;i<A.oo.length;i++)if(_eq(A.oo[i].quaternion,A.post[i]))A.oo[i].quaternion.copy(A.pre[i]);A.fatto=false;}};
+  return function(w){riparti();if(!(w>0))return;const kw=sm(0,0.5,w);
+    for(const A of lati){A.U.parent.updateWorldMatrix(true,false);A.U.parent.getWorldQuaternion(Qp).normalize();/* la corporatura scala le ossa in modo non uniforme: il quaternione di mondo letto dalla matrice non e' unitario (misurato: norma 0,993 a sinistra) */Qu.copy(Qp).multiply(A.U.quaternion);Lw.copy(Qu).multiply(A.L.quaternion);Hw.copy(Lw).multiply(A.H.quaternion);
+      if(A.TU)TUw.copy(Qu).multiply(A.TU.quaternion);if(A.TL)TLw.copy(Lw).multiply(A.TL.quaternion);
+      u.copy(A.aU).applyQuaternion(Qu).normalize();dF.copy(A.aF).applyQuaternion(Lw).normalize();aw.copy(A.cal.asse).applyQuaternion(Qu).normalize();
+      const au=aw.dot(u),fu=dF.dot(u);ap.copy(aw).addScaledVector(u,-au);fp.copy(dF).addScaledVector(u,-fu);const la=ap.length(),lf=fp.length();if(la<1e-4||lf<1e-4)continue;
+      const k=kw*sm(8,18,Math.atan2(lf,fu)*180/Math.PI);/* a braccio quasi disteso il piano della cerniera non e' definito: la risoluzione entra fra 8 e 18 gradi di flessione */if(!(k>0))continue;
+      const c=(A.s0-au*fu)/(la*lf);if(!(Math.abs(c)<=1))continue;for(let i=0;i<A.oo.length;i++)A.pre[i].copy(A.oo[i].quaternion);const be=Math.acos(c),al=Math.atan2(u.dot(cr.crossVectors(ap,fp)),ap.dot(fp));
+      let th=0,best=null;for(const t of [giro(al-be),giro(al+be)]){Rt.setFromAxisAngle(u,t);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1);r1.copy(A.rF).applyQuaternion(Q1);
+        const pos=cr.crossVectors(a1,u).dot(dF)>0;/* la flessione e' la rotazione POSITIVA intorno all'asse, contata dal braccio DISTESO (non dal riferimento, che e' gia' un po' flesso): il gomito piega da una parte sola */
+        if(best===null||(pos&&!best.pos)||(pos===best.pos&&Math.abs(t)<Math.abs(best.t)))best={t,pos};}
+      th=best.t;Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
+      rp.copy(r1).addScaledVector(a1,-a1.dot(r1));dp.copy(dF).addScaledVector(a1,-a1.dot(dF));const ph=Math.atan2(a1.dot(cr.crossVectors(rp,dp)),rp.dot(dp));
+      Bw.setFromAxisAngle(a1,ph).multiply(Q1).multiply(A.cal.ref);/* avambraccio = riferimento + flessione pura, nel mondo */
+      Rt.setFromAxisAngle(u,th*k);Q2.copy(Rt).multiply(Qu);/* omero ruotato sul proprio asse (peso k) */
+      if(Lw.dot(Bw)<0)Bw.set(-Bw.x,-Bw.y,-Bw.z,-Bw.w);Q1.copy(Lw).slerp(Bw,k);/* le due orientazioni portano l'avambraccio nella stessa direzione: fra l'una e l'altra c'e' solo una rotazione intorno all'avambraccio */
+      A.U.quaternion.copy(Qp).invert().multiply(Q2).normalize();Rt.copy(Q2).invert();A.L.quaternion.copy(Rt).multiply(Q1).normalize();if(A.TU)A.TU.quaternion.copy(Rt).multiply(TUw).normalize();
+      Rt.copy(Q1).invert();A.H.quaternion.copy(Rt).multiply(Hw).normalize();if(A.TL)A.TL.quaternion.copy(Rt).multiply(TLw).normalize();
+      for(let i=0;i<A.oo.length;i++)A.post[i].copy(A.oo[i].quaternion);A.fatto=true;}};}catch(_e){return null;}}
+function _salutoClip240(av,pkgR,scelta){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
   const vuole=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CLIP240)||null;/* solo sonde: prova l'altra clip */
-  let c0=null;for(const n of (vuole?[vuole]:_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;
+  let c0=null;for(const n of (vuole?[vuole]:(scelta&&_CLIP240.includes(scelta))?[scelta].concat(_CLIP240.filter(x=>x!==scelta)):_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;/* [giro 256] la clip scelta per questa serata; l'altra resta il ripiego se la prima mancasse dal file */
   const tr=c0.tracks.filter(t=>{const m=/^(.*)\.quaternion$/.exec(t.name);return !!(m&&_OSSA240.test(m[1]));});if(tr.length<8)return null;
   const clip=new T.AnimationClip('saluto240',c0.duration,tr),mx=new T.AnimationMixer(av),act=mx.clipAction(clip);
   const ossa=[];av.traverse(o=>{if(o.isBone&&_OSSA240.test(o.name)&&tr.some(t=>t.name===o.name+'.quaternion'))ossa.push(o);});if(ossa.length<8)return null;
   const q0=ossa.map(()=>new T.Quaternion()),qt=new T.Quaternion();let vivo=false;
-  return{dur:c0.duration,nome:c0.name,ossa:ossa.length,
+  return{dur:c0.duration,nome:c0.name,ossa:ossa.length,cerniera:!!(_g256()&&_CER256[c0.name]),
     /* w 0..1 dalla rampa del tick, t = tempo di scena del saluto. Va chiamato DOPO la posa a riposo (che e' il punto di partenza). */
     applica(w,t){if(!(w>0)){if(vivo){act.stop();vivo=false;}return;}
       for(let i=0;i<ossa.length;i++)q0[i].copy(ossa[i].quaternion);
@@ -47063,6 +47121,14 @@ function misuraPelle240(scena,renderer,scene,camera){try{if(typeof window==='und
   if(camera)renderer.render(scene,camera);(W.esiti=W.esiti||[]).push(out);}catch(_e){try{if(window.__CPM_G240W)window.__CPM_G240W.errore=String(_e&&_e.message||_e);}catch(_e2){}}}
 /* misura delle DUE braccia (sola lettura, guardiano presentazione-225 e sonda misura-240): distanza fra le mani, mani e gomiti dall'asse
    del busto e dalla testa, quota delle mani sulle spalle. Unita' di mondo. */
+/* [giro 256] sola lettura per guardiano e sonda: orientazione nel mondo di omero e avambraccio (per gli scatti fra un fotogramma e l'altro) e
+   scarto GEOMETRICO dell'avambraccio dal piano della cerniera, per lato (gradi; 0 = nel piano del riferimento). */
+function orient256(av){try{const T=THREE,B=av.userData._bm256||(av.userData._bm256=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(upperarm|lowerarm|hand)_[lr]$/.test(x.name))o[x.name]=x;});return o;})());av.updateMatrixWorld(true);
+  const pk=av.userData.pkg256||null,o={},G=180/Math.PI;for(const k of ['l','r']){const U=B['upperarm_'+k],L=B['lowerarm_'+k],H=B['hand_'+k];if(!U||!L||!H)return null;
+    const qu=U.getWorldQuaternion(new T.Quaternion()).normalize(),ql=L.getWorldQuaternion(new T.Quaternion()).normalize();/* normalizzati: letti da una matrice con scala non uniforme non sono unitari, e l'angolo fra due fotogrammi risultava finto (19 gradi a braccio fermo) */o['u_'+k]=[qu.x,qu.y,qu.z,qu.w];o['f_'+k]=[ql.x,ql.y,ql.z,ql.w];
+    const cal=pk?_gomito225(pk,k):null;if(cal&&cal.asse){const aF=H.position.clone().normalize(),dF=aF.clone().applyQuaternion(ql),aw=cal.asse.clone().applyQuaternion(qu),s0=aF.clone().applyQuaternion(cal.ref).dot(cal.asse);
+      o['piano_'+k]=+((Math.asin(Math.max(-1,Math.min(1,dF.dot(aw))))-Math.asin(Math.max(-1,Math.min(1,s0))))*G).toFixed(1);}}
+  return o;}catch(_e){return null;}}
 function misuraSaluto240(av){try{const T=THREE,B=av.userData._bm240||(av.userData._bm240=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|head|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|middle_01_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
   if(!B.pelvis||!B.neck_01||!B.head||!B.hand_l||!B.hand_r||!B.lowerarm_l||!B.lowerarm_r||!B.upperarm_l||!B.upperarm_r)return null;av.updateMatrixWorld(true);
   const P=n=>B[n].getWorldPosition(new T.Vector3()),pe=P('pelvis'),ne=P('neck_01'),hd=P('head'),asse=ne.clone().sub(pe).normalize();
@@ -47191,6 +47257,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       Promise.all([_pr233,_g225()?voltiPronti225(4000):null,(_g225()&&_g240())?loadGLB('./assets/cgtrader-clip-rohr.glb').catch(()=>null):null]).then(([pkg,_v225,rohr240])=>{/* [giro 240 PO-499] + le clip Rohr per il saluto (se il file manca resta la posa del giro 225) *//* [giro 225] l'indice dei volti (82 KB) prima dei corpi: capelli e pelle vengono dalla figurina */
         const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg||!alive)return;
         const walk0=_g225()?(pkg.animations||[]).find(c=>c&&c.name==='walk'):null,cal225=_g225()?_gomito225(pkg):null;
+        const scelta256=(rohr240&&_g240())?saluto256Scegli(String((club&&club.id)||'x')+'|'+seed,(st.current.nomi||[]).slice(-1)[0]||'eroe'):{i:0,nome:_CLIP240[0],mem:false};/* [giro 256] una clip per serata, alternata (memoria sul dispositivo) */
         const _lin225=renderer.outputEncoding===THREE.sRGBEncoding;
         const _GKP=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
         const _gkCol=(function(){try{const cs=[new THREE.Color(homeHex),new THREE.Color(awayHex)];let best=_GKP[0],bd=-1;
@@ -47211,10 +47278,10 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           if(fg225&&fg225.p){try{av.userData.lin225=_lin225;if(_g240()&&_lin225)_pelle225(av,fg225.p,true,resa240('serata'),true,ESP240);else _pelle225(av,fg225.p,_lin225);}catch(_e){}}/* [giro 240] la serata con la stessa compensazione tarata delle altre scene (rosso __CPM_NO_G240: le costanti del giro 225) */
           if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);
             if(_g142&&_posa142(av,mx,a,idle0,hashStr(_key142+'|posa142|'+i))){mixers.push(mx);
-              if(_g225()){try{av.userData.cam225=_cammino225(av,mx,a,walk0);av.userData.sal225=_saluto225(av,cal225);if(rohr240&&_g240())av.userData.sal240=_salutoClip240(av,rohr240);}catch(_e){}}}
+              if(_g225()){try{av.userData.pkg256=pkg;av.userData.cam225=_cammino225(av,mx,a,walk0);av.userData.sal225=_saluto225(av,cal225);if(rohr240&&_g240()){av.userData.sal240=_salutoClip240(av,rohr240,scelta256.nome);if(av.userData.sal240&&av.userData.sal240.cerniera)av.userData.ris256=_risolvi256(av,pkg);}}catch(_e){}}}
             else{a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}}
         try{if(typeof window!=='undefined')window.__CPM_PRES200={cg:men.length};}catch(_e){}
-        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO,cam,renderer,cal225,braccio:(i)=>misuraBraccio225(men[i],cal225||_gomito225(pkg)),mani240:(i)=>misuraSaluto240(men[i]),clip240:()=>{const s=men[0]&&men[0].userData.sal240;return s?{nome:s.nome,dur:s.dur,ossa:s.ossa}:null;}};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 · [giro 225] + camera, calibrazione del gomito e misura del braccio */
+        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO,cam,renderer,cal225,braccio:(i)=>misuraBraccio225(men[i],cal225||_gomito225(pkg)),mani240:(i)=>misuraSaluto240(men[i]),clip240:()=>{const s=men[0]&&men[0].userData.sal240;return s?{nome:s.nome,dur:s.dur,ossa:s.ossa,cerniera:!!(s.cerniera&&men[0].userData.ris256),scelta:scelta256}:null;},orient256:(i)=>orient256(men[i])};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 · [giro 225] + camera, calibrazione del gomito e misura del braccio */
       }).catch(()=>{});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
@@ -47308,6 +47375,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          solo a braccio abbassato. Chi non e' piu' chiamato finisce di abbassare il braccio e torna camminando. */
       if(_t225){const _no192c=!!(typeof window!=='undefined'&&window.__CPM_NO_G192C);
         for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
+          if(m.userData.ris256){try{m.userData.ris256(0);}catch(_e){}}/* [giro 256] IN TESTA al fotogramma, prima di ogni altra posa (misurato: il primo passaggio della regola delle spalle lavorava sulla posa gia' risolta del fotogramma prima e l'omero oscillava di 20 gradi a fotogramma): via cio' che la risoluzione della cerniera ha scritto */
           const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
           const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
           const c240=m.userData.sal240||null,fin240=c240?Math.min(c240.dur-RAMPA240,2.90-RAMPA240):2.05;/* [giro 240] con la clip il braccio e' giu' a 2,90 s come nel giro 225 (2,05 + 0,85): il chiamato torna in fila entro i 6 s di scena che giudica presentazione-142. La clip e' un applauso continuo: se ne usa il primo tratto */
@@ -47320,7 +47388,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
           if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
-          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalle146(_ossa23(m));}catch(_e){}}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
+          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalle146(_ossa23(m));}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
           else if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
           if(cm)cm.terra();}
         _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.ts240=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.ts:0;}catch(_e){}
