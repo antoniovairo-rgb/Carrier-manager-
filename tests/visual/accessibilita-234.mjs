@@ -16,6 +16,7 @@
      P  in pausa, al tocco: «Tocca per riprendere» (niente «Premi P»).
      K  Club a 375: progetto/curva/staff in un blocco largo almeno l'85% della fascia (prima: colonna di ~150 px).
      E  Coppe: testi su sfumatura >= 4,5:1 nelle tre coppe europee (UCL/UEL/UECL) — gia' corretto dal giro 218, qui solo tenuto.
+     R  «Riduci animazioni» scelto (cpm-riduci-anim=1): la pagina porta la classe cpm-riduci234 e matchMedia risponde «reduce».
      M  manifest (statico): web e TWA con gli stessi colori del tema (#0d0f14) anche in theme-color, descrizione in italiano (lang it).
         Prova del rosso di M: lo stesso giudizio sui file di lavoro/197 (git) deve bocciare.
    Bracci: VERDE (gioco) deve passare tutto; ROSSO window.__CPM_NO_G234 deve essere bocciato. «Non giudicato» (misura mancante,
@@ -81,8 +82,10 @@ async function braccio(b, port, rosso) {
   } catch (e) { nonG(String(e.message).slice(0, 160)); } finally { await a.ctx.close(); }
   /* pagine 2-3: testo grande a 360 e 375 */
   for (const w of [360, 375]) {
-    const g = await apri(b, port, w, { flags, ls: { 'cpm-testo-grande': '1' } });
+    const g = await apri(b, port, w, { flags, ls: { 'cpm-testo-grande': '1', 'cpm-riduci-anim': '1' } });
     try {
+      const rm = await g.page.evaluate(() => ({ classe: document.documentElement.classList.contains('cpm-riduci234'), mm: window.matchMedia('(prefers-reduced-motion: reduce)').matches }));
+      if (!rm.classe || !rm.mm) ko.push(`R ${w}: «Riduci animazioni» scelto ma non applicato (classe ${rm.classe}, matchMedia ${rm.mm})`);
       await vai(g.page, 'standings'); const c = await classifica(g.page);
       num['tg' + w] = `pt ${c.ptCelle - c.ptFuori}/${c.ptCelle} · corpo ${c.corpoMin}`;
       if (c.corpoMin < 15.5) nonG(`G ${w}: testo grande non applicato (corpo minimo ${c.corpoMin})`);
