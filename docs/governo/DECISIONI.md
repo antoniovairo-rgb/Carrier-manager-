@@ -1745,3 +1745,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 226 varianti dribbling con la stessa clip: «Clip nuove con licenza» (PO-505, proposta al PO prima di inserirle). Eroe fuori quadro dopo un'azione fallita: «Sì, eroe sempre in quadro» (PO-506).
 - 228 ruolo intero al tocco e 232 etichetta «Tabellone»: «Sì, entrambi» (PO-507).
 - 223 gi55 «Stacco sul palo lontano» esito palo: decisione tecnica della madre → dentro PO-506/226-bis nella 197 si misura se il palo può essere evitato con un bersaglio seminato; se no l'esito «palo» su quella scena si sostituisce con «fuori» (nessun cambio di regole di gioco).
+
+## 17/11 07:25 — 7.999.197: perimetro e giri
+- PO: «Tutto nella 197» (store e primo impatto PO-322/393/430/453/455/457/458/459 + PO-476, 496, 497, 498, 499, 500, 501, 502, 504 B, 505, 506, 507) e «Subito, 4-5 giri insieme». lavoro/197 = 12d8f0d4 (7.999.196).
+- Giri: 233 avvio leggero PO-453 (Fable); 234 accessibilità PO-393/455/459; 237 web precompilata + controlli veloci PO-502/504B; 238 patto e rinnovo PO-496/501; 240 pelle/capelli e saluto con clip PO-500/499 (Fable) — lanciati 07:28. In coda: 235 profilo e grafica PO-457/458; 236 store PO-430/322; 239 interviste, forma vera, ritocchi PO-497/498/507; 241 eroe in quadro + gi55 PO-506 (Fable); 242 proposte clip dribbling e inno PO-505/476 (solo ricerca, scelta del PO).
+- Regola PO-504 A applicata ai prompt (asp197.txt): ogni giro fa i propri guardiani + la mappa mirata della sua parte; i lunghi li fa la verifica di rilascio divisa su più macchine.
