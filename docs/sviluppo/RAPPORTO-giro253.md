@@ -58,7 +58,7 @@ spia dentro la pagina).
    bracci nel giudizio (diverse = non giudicato). **Il meccanismo esatto per cui la vecchia passeggiata finiva su una giornata in più non
    l'ho dimostrato**: dopo la riparazione la giornata in più non è più ricomparsa (10 corse del 229 = 20 pagine con la classifica registrata:
    somma dei punti sempre 27, cioè una giornata, settimana 2 in entrambi i bracci). Ma **anche prima** della riparazione la sonda
-   `misura-253b` non l'aveva riprodotta in 16 corse giudicate: quindi la riparazione è coerente con la causa, non la dimostra. Vedi
+   `misura-253b` (stesso ottavo, a soli salienti, spia dentro la pagina) non l'aveva riprodotta in 25 corse con la classifica registrata: quindi la riparazione è coerente con la causa, non la dimostra. Vedi
    dubbio 3.
 2. **La partita «non arrivata al fischio» (non giudicata)**, catturata con la spia in 3 corse su 13: il gancio dei rigori
    (`__CPM_SO_FORCE`, chiude 1-1 alla prima scena) veniva chiamato da Node dopo aver letto `hl_intro`. Quando la pagina era occupata
