@@ -2,8 +2,25 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#8e1f33">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<!-- [giro 234 PO-455 · G195-04] ZOOM CON DUE DITA: libero nelle schede (prima maximum-scale=1, user-scalable=no ovunque); la partita lo
+     blocca da sola finche' e' montata (LiveMatch, src/15: un doppio tocco o due dita sulle frecce non devono ingrandire) con la classe
+     cpm-partita234 → touch-action:pan-x pan-y su tutta la pagina. Misurato col gesto a due dita vero (CDP): cambiare il meta viewport
+     a pagina aperta NON blocca piu' lo zoom in Chromium (scala 5 con user-scalable=no messo dopo), touch-action si' (scala 1). theme-color =
+     il fondo del tema (#0d0f14), lo stesso dei due manifest (PO-459). Rosso __CPM_NO_G234: zoom bloccato ovunque, come prima.
+     «Riduci animazioni» (PO-393): classe cpm-riduci234 dalla preferenza cpm-riduci-anim, e matchMedia risponde «reduce» come farebbe
+     la preferenza di sistema, cosi' valgono anche i punti che la leggono da script. -->
+<script>(function(){try{var w=window,d=document,h=d.documentElement,m=d.querySelector('meta[name=viewport]');
+var B='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+w.__CPM_VP234={libero:m.content,bloccato:B,blocca:function(on){try{if(!w.__CPM_NO_G234)h.classList.toggle('cpm-partita234',!!on);}catch(e){}}};
+if(w.__CPM_NO_G234){m.content=B;return;}
+h.classList.add('cpm-g234');
+var r=false;try{r=localStorage.getItem('cpm-riduci-anim')==='1';}catch(e){}
+if(r)h.classList.add('cpm-riduci234');
+var mm=w.matchMedia&&w.matchMedia.bind(w);
+if(mm)w.matchMedia=function(q){if(/prefers-reduced-motion\s*:\s*reduce/.test(String(q))&&h.classList.contains('cpm-riduci234'))return{matches:true,media:String(q),onchange:null,addListener:function(){},removeListener:function(){},addEventListener:function(){},removeEventListener:function(){},dispatchEvent:function(){return false;}};return mm(q);};
+}catch(e){}})();</script>
 <meta name="description" content="Korward Elite: Football Career Simulator — From prospect to legend">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -298,7 +315,15 @@ html.cpm-t213 [data-scuoti221]{animation:cpmScuoti221 .32s ease-in-out 1;}
 @media(prefers-reduced-motion:reduce){html.cpm-t213 [data-scuoti221]{animation:cpmLampo221 .4s ease-out 1;}}
 @keyframes cpmLampo221{0%,45%{color:var(--lampo221,currentColor)}100%{}}
 .cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
-@keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
+@keyframes cpmRot213{to{transform:rotate(360deg)}}
+/* [giro 234 PO-455 · G195-04] in partita niente zoom con due dita ne' doppio tocco (fuori dalla partita lo zoom e' libero) */
+html.cpm-partita234,html.cpm-partita234 body{touch-action:pan-x pan-y;}
+/* [giro 234 PO-455 · G195-07] cursori dell'audio (Opzioni e pannello in partita): area di tocco alta 44 px, il binario resta al centro */
+html.cpm-g234 input[type=range]{min-height:44px;margin:0;}
+/* [giro 234 PO-393] «Riduci animazioni» scelto a mano: lo stesso effetto della preferenza di sistema sulle animazioni dei menu */
+html.cpm-riduci234 *,html.cpm-riduci234 *::before,html.cpm-riduci234 *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+/* [giro 234 PO-459 · G195-06] testo solo per i lettori di schermo (titolo della scheda) */
+.cpm-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important;}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->
 </head>
 <body>
@@ -576,6 +601,20 @@ const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e nu
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
 const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 234 PO-393 · G181-22] TESTO GRANDE: interruttore delle Opzioni (localStorage «cpm-testo-grande», preferenza del browser, non del
+   salvataggio). Porta ogni corpo della scala ×1,3 (il minimo 12 diventa 16) PRIMA del primo disegno; dalle Opzioni si applica subito
+   (applicaTesto234 + evento cpm-testo234 che ridisegna l'app, src/19). Non e' un secondo tema: i colori e i token restano quelli.
+   _g234 = le correzioni del giro 234 (zoom, nomi per i lettori di schermo, classifica ed etichette pronte al testo grande, cursori da
+   44 px, versione in Opzioni); rosso __CPM_NO_G234. Il testo grande resta acceso anche col rosso: e' la condizione della prova. */
+const _g234=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G234);
+const _tastiera234=()=>{try{return !!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches);}catch(_e){return true;}};/* PC o tablet con mouse: il tasto P esiste */
+const FS_BASE234={...FS};
+function testoGrande234(){try{return localStorage.getItem('cpm-testo-grande')==='1';}catch(_e){return false;}}
+function applicaTesto234(on){const k=on?1.3:1;for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
+applicaTesto234(testoGrande234());
+/* [giro 234 PO-455 · G195-05] la colonna dei punti della classifica resta in vista: cella appiccicata al bordo destro dello scorrimento
+   orizzontale, con il fondo della sua riga sopra quello del riquadro (col testo grande la tabella e' piu' larga dello schermo) */
+const _pt234=(bg)=>_g234()?{position:"sticky",right:0,zIndex:1,background:bg?`linear-gradient(${bg},${bg}),${TH.card}`:TH.card}:{};
 /* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
    Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
    tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */
@@ -12276,10 +12315,11 @@ const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.
 const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
   useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
-  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
+  const g=_g234(),idT=React.useMemo(()=>"fin234-"+Math.random().toString(36).slice(2,8),[]);/* [giro 234 PO-459 · G195-06] ogni finestra del kit e' un dialog modale col suo titolo come nome (prima: 0 segnali di finestra aperta). Solo attributi. Rosso __CPM_NO_G234 */
+  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} {...(g?{role:"dialog","aria-modal":"true",...(title!=null?{"aria-labelledby":idT}:{"aria-label":"Finestra"})}:{})} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
+        <div data-cpm="finestra-titolo" id={g?idT:undefined} role={g?"heading":undefined} aria-level={g?2:undefined} style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
+        {dismissable&&onClose&&<button onClick={onClose} aria-label={g?"Chiudi":undefined} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
       </div>}
       <div data-cpm="finestra-corpo" style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div data-cpm="finestra-piede" style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
@@ -12351,9 +12391,10 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 function _mouse110(){try{return _g110(20)&&!!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches&&!window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
-  return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
+  const g=_g234();/* [giro 234 PO-455/459] la voce attiva si dichiara (aria-selected) e, col testo grande, l'icona va sopra la parola invece di tagliarla («📅Calendario −8»). Rosso __CPM_NO_G234 */
+  return(<div className="cpm-tabs40" role={g?"tablist":undefined} style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} {...(g?{role:"tab","aria-selected":act}:{})} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",...(g?{flexWrap:"wrap",rowGap:0,overflow:"visible",textOverflow:"clip"}:{})}}>{it.icon&&<span aria-hidden={g?"true":undefined}>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
@@ -33833,6 +33874,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
+  useEffect(()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(true);}catch(_z){}return()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(false);}catch(_z){}};},[]);/* [giro 234 PO-455] in partita lo zoom con due dita resta bloccato (classe cpm-partita234 → touch-action, src/00): fuori dalla partita e' libero */
   useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 175 · PO-372 — LA STESSA PARTITA CON LE STESSE SCELTE E' LA STESSA PARTITA. Rosso __CPM_NO_G175]
@@ -44217,7 +44259,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":"Premi P o tocca per riprendere"}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
@@ -59835,6 +59877,7 @@ const getThisWeekMatchday=()=>{
 
       {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
+      {_g234()&&<h1 className="cpm-sr" data-cpm="titolo234">{({dashboard:"Home",standings:"Stagione: classifica",calendar:"Stagione: calendario",coppe:"Stagione: coppe",club:"Club",profile:"Carriera: profilo",nazionale:"Carriera: nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</h1>}{/* [giro 234 PO-459 · G195-06] ogni scheda ha un titolo per i lettori di schermo (invisibile: la testata compatta resta com'e', decisione 02/11). Rosso __CPM_NO_G234 */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(()=>{/* [PO-302 tappa 2 · V2Stagione] titolo della scheda; sulla
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=[...(player.standings||[])].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
@@ -61764,7 +61807,7 @@ const getThisWeekMatchday=()=>{
           <Fisarmonica id="s24-classifica-s" titolo={<>Classifica {selLg}</>} aperta={true}>{/* [7.999.49 parte A] la data sta in testata */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
             <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
               <table className="cpm-num" style={{width:"100%",borderCollapse:"collapse",fontSize:FS.small}}>
-                <thead><tr>{["","#","Club","G","V","N","P","Gf","Gs","Diff","Pt"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
+                <thead><tr>{["","#","Club","G","V","N","P","Gf","Gs","Diff","Pt"].map(h=><th key={h} {...(h==="Pt"&&_g234()?{"aria-label":"Punti"}:{})} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap",...(h==="Pt"?_pt234(null):{})}}>{h}</th>)}</tr></thead>
                 <tbody>
                   {rows.map((t,i)=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
@@ -61783,7 +61826,7 @@ const getThisWeekMatchday=()=>{
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.gf}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.ga}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:t.gd>0?TH.winFg:t.gd<0?TH.lossFg:TH.muted}}>{t.gd>0?"+":""}{t.gd}</td>
-                      <td style={{textAlign:"center",padding:"6px 3px",fontWeight:FW.black,fontSize:FS.body,color:my?TH.brandText:TH.text}}>{t.pts}</td>
+                      <td style={{textAlign:"center",padding:"6px 3px",fontWeight:FW.black,fontSize:FS.body,color:my?TH.brandText:TH.text,..._pt234(my?veloClub168(player.club?.c||"#8e1f33",0.28):(i%2?TH.surface2:null))}}>{t.pts}</td>
                     </tr>;
                   })}
                 </tbody>
@@ -62118,25 +62161,31 @@ const getThisWeekMatchday=()=>{
                 prestigio in carattere TV; sotto, gli anelli di fiducia del mister e popolarita' (il gioco non ha un «amore dei tifosi»
                 su 100: la curva e' un giudizio a parole e resta scritta nella fascia). Stessi dati della card di prima, nessuno tolto. */
               const cc=club.c||"#8e1f33",ink=inkSu945(cc),pj=clubProject(player),cv=curvaView(player),sf=staffNames(player.club);
+              /* [giro 234 PO-459 · G195-15] a 375 px progetto, curva e staff stavano in una colonna di ~150 px fra lo stemma e il prestigio:
+                 ora vanno sotto, larghi quanto la fascia; in alto restano stemma, nome, lega e prestigio. Rosso __CPM_NO_G234 */
+              const _det234=(<>
+                {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
+                {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
+                {cv&&cv.contest&&<span style={{fontSize:FS.small,fontStyle:"italic"}}>📢 Sette gare senza gol: la Sud non canta più per te — un gol e tornerà a farlo.</span>}
+                {sf&&<span style={{fontSize:FS.small}}>🩺 Dr. {sf.med} (medico sociale) · 📋 {sf.ds} (DS)</span>}
+              </>);
               return(<>
               <section data-cpm="club-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:cc,color:ink}}>
                 <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
-                <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
+                <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px",...(_g234()?{flexWrap:"wrap",rowGap:10}:{})}}>
                   <div style={{width:64,height:64,borderRadius:RAD.lg,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
                     {(()=>{const _nm=club.n||club.name||"";const _lw=Math.max(0,...String(_nm).split(/\s+/).map(w=>w.length));/* [giro 108 G180-01] il nome del club nella scheda Club si spezzava dentro la parola a 360 px («WOLVERHAMP/TON»): a capo solo fra parole, e la parola piu' lunga decide il corpo (stessa regola della testata del giro 106). Rosso __CPM_NO_G108_01 */
                     return _no108("01")?<span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_nm}</span>
                     :<span style={{...fsTV(_lw>=13?FS.subhead:_lw>=11?FS.title:FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"normal",wordBreak:"normal",hyphens:"none"}}>{_nm}</span>;})()}
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>
-                    {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
-                    {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
-                    {cv&&cv.contest&&<span style={{fontSize:FS.small,fontStyle:"italic"}}>📢 Sette gare senza gol: la Sud non canta più per te — un gol e tornerà a farlo.</span>}
-                    {sf&&<span style={{fontSize:FS.small}}>🩺 Dr. {sf.med} (medico sociale) · 📋 {sf.ds} (DS)</span>}
+                    {!_g234()&&_det234}
                   </div>
                   <div style={{textAlign:"center",flexShrink:0}}>
                     <div className="cpm-num" style={fsTV(FS.display,FW.bold)}>{prestige}</div>
                     <div style={{fontSize:FS.caption,fontWeight:FW.bold,textTransform:"uppercase",letterSpacing:1}}>Prestigio<br/>/100</div>
                   </div>
+                  {_g234()&&(pj||cv||sf)&&<div data-cpm="club-dettagli234" style={{flexBasis:"100%",minWidth:0,display:"flex",flexDirection:"column",gap:3}}>{_det234}</div>}
                 </div>
               </section>
               <div data-cpm="club-anelli-v2" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:8}}>
@@ -64658,14 +64707,14 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:(typeof window!=="undefined"&&window.__CPM_NO_BARRA72)?"1 1 0":"1 1 auto"/* [giro 72 collaudo 172 B1 «a 360 px CARRIERA e AGENTE quasi attaccate» — rosso __CPM_NO_BARRA72] bottoni di larghezza UGUALE: lo spazio fra due etichette dipendeva dalla loro lunghezza (misurato a 360 px: 12,6 px fra Carriera e Agente contro 17-19 fra le altre). Base = contenuto, lo spazio libero si divide in parti uguali: stesso spazio fra tutte le voci */,minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
+        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} {...(_g234()?{"aria-current":_act?"page":undefined,"aria-label":t.l}:{})}/* [giro 234 PO-459] la voce attiva si dichiara */ style={{flex:(typeof window!=="undefined"&&window.__CPM_NO_BARRA72)?"1 1 0":"1 1 auto"/* [giro 72 collaudo 172 B1 «a 360 px CARRIERA e AGENTE quasi attaccate» — rosso __CPM_NO_BARRA72] bottoni di larghezza UGUALE: lo spazio fra due etichette dipendeva dalla loro lunghezza (misurato a 360 px: 12,6 px fra Carriera e Agente contro 17-19 fra le altre). Base = contenuto, lo spazio libero si divide in parti uguali: stesso spazio fra tutte le voci */,minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
         {/* [7.96.0 collaudo PO «elimina il pulsante IT (rimandiamo l'i18n) e metti Impostazioni SEMPRE visibile nel menu»]
             il vecchio bottone lingua 🌐 è sostituito da ⚙️ Opzioni, sempre presente nella barra di navigazione. */}
       </div>
@@ -65380,14 +65429,15 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
+    <div {...(_g234()?{role:"dialog","aria-modal":"true","aria-labelledby":"opzioni234"}:{})} style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
+        {_g234()?<h1 id="opzioni234" style={{margin:0,fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</h1>:<div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>}
         <button onClick={onClose} className="cpm-press" aria-label="Chiudi" style={{width:(_tocco292()||_g114())?44:34,height:(_tocco292()||_g114())?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
+        {_g234()&&<Lettura234/>}
         {strumenti&&(
           <Card style={{padding:'12px 14px'}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🧰 Strumenti</div>
@@ -65407,10 +65457,33 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
             :<a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>}
           </Card>)}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
+        {_g234()&&<div data-cpm="versione234" className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'0 0 10px'}}>Versione {GAME_VERSION}</div>}{/* [giro 234 PO-459 · G195-15] la versione si legge anche qui, dove la cerca chi deve segnalarla */}
       </div>
       {privacy134&&<Privacy134 onClose={()=>setPrivacy134(false)}/>}
     </div>
   );
+}
+/* [giro 234 PO-393 · G181-22 parte 1] OPZIONI DI LETTURA: «Testo grande» (i corpi del tema ×1,3, applicato subito: applicaTesto234 in
+   src/01 e un nuovo disegno di tutta l'app con l'evento cpm-testo234) e «Riduci animazioni» (lo stesso effetto della preferenza di
+   sistema, che il gioco rispetta gia' nei fogli di stile e nei punti che leggono matchMedia: classe cpm-riduci234, vedi src/00).
+   Le due scelte stanno nel browser (localStorage cpm-testo-grande / cpm-riduci-anim), non nel salvataggio: nessun SAVE bump. */
+const _nome234=(l)=>String(l||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
+function Lettura234(){
+  const[tg,setTg]=useState(()=>testoGrande234());
+  const[ra,setRa]=useState(()=>{try{return document.documentElement.classList.contains('cpm-riduci234');}catch(_e){return false;}});
+  const riga=(nome,nota,on,cambia)=>(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:10}}>
+      <span style={{display:'flex',flexDirection:'column',minWidth:0}}><span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{nome}</span><span style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.35}}>{nota}</span></span>
+      <button role="switch" aria-checked={!!on} aria-label={nome.replace(/^[^A-Za-zÀ-ÿ]+/,"").trim()} onClick={cambia} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+        <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
+      </button>
+    </div>);
+  return(
+    <Card data-cpm="lettura234" style={{padding:'12px 14px'}}>
+      <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>👓 Lettura</div>
+      {riga("🔠 Testo grande","Ingrandisce le scritte del 30%",tg,()=>{const v=!tg;try{localStorage.setItem('cpm-testo-grande',v?'1':'0');}catch(_e){}applicaTesto234(v);setTg(v);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}})}
+      {riga("🐢 Riduci animazioni","Meno movimento nei menu e nelle schermate",ra,()=>{const v=!ra;try{localStorage.setItem('cpm-riduci-anim',v?'1':'0');}catch(_e){}try{document.documentElement.classList.toggle('cpm-riduci234',v);}catch(_e){}setRa(v);})}
+    </Card>);
 }
 /* [7.62.0 AUDIO] Schermata IMPOSTAZIONI AUDIO — categorie INDIPENDENTI (ON/OFF + volume), mute totale,
    preview al cambio, persistenza automatica (safeLS via AudioMgr). + pannello DEBUG audio (catalogo suonabile). */
@@ -65426,8 +65499,11 @@ function AudioSettings(){
   const VOL=_g172s?[{k:'crowd',label:'📣 Pubblico'},{k:'match',label:'⚽ Effetti di partita'},{k:'music',label:'🎵 Musica'},{k:'referee',label:'🟨 Arbitro'},{k:'sfx',label:'✨ Suoni dei menu'}]
     :[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
-  const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+  /* [giro 234 PO-459] i 7 interruttori e i 5 cursori dicono a un lettore di schermo cosa regolano (prima: 12 comandi senza nome);
+     l'interruttore e' un «switch» con lo stato acceso/spento. Rosso __CPM_NO_G234: senza nome e senza ruolo, come prima. */
+  const _a234=_g234();
+  const Toggle=({on,onClick,dis,nome})=>(
+    <button onClick={dis?undefined:onClick} disabled={dis} {...(_a234?{role:"switch","aria-checked":!!on,"aria-label":nome}:{})} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
@@ -65439,7 +65515,7 @@ function AudioSettings(){
       {/* [7.999.49 parte A] «Muto totale» era un bottone che non diceva il suo stato: ora interruttore come gli altri */}
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔇 Silenzia tutto</span>
-        <Toggle on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
+        <Toggle nome="Silenzia tutto" on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -65450,12 +65526,12 @@ function AudioSettings(){
               <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}</span>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
-                {!r.master&&<Toggle on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
+                {!r.master&&<Toggle nome={_nome234(r.label)+" acceso"} on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
               </div>
             </div>
             {/* [7.96.1 collaudo PO «volume generale cosa guida?»] è il MASTER: scala TUTTI i suoni insieme (le voci qui sotto sono relative a questo). */}
             {r.master&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:-2,marginBottom:4,lineHeight:1.35}}>Regola tutti i suoni insieme — musica, partite, effetti, pubblico, arbitro (le voci sotto sono relative a questo).</div>}
-            <input type="range" min="0" max="100" value={vol} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
+            <input type="range" min="0" max="100" value={vol} {...(_a234?{"aria-label":"Volume "+_nome234(r.label).toLowerCase(),"aria-valuetext":vol+"%"}:{})} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
           </div>
         );
       })}
@@ -65463,7 +65539,7 @@ function AudioSettings(){
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
             <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
-            <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
+            <Toggle nome={_nome234(r.label)} on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
@@ -65521,6 +65597,8 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  const[,setTesto234]=useState(0);/* [giro 234 PO-393] «Testo grande» acceso/spento: un nuovo disegno di tutta l'app legge i corpi nuovi */
+  useEffect(()=>{const f=()=>setTesto234(n=>n+1);window.addEventListener('cpm-testo234',f);return()=>window.removeEventListener('cpm-testo234',f);},[]);
   /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» fisso in basso a destra (z 9999) copriva la barra di Home/carriera e i Crediti
      (sonda chip-269: 1.215 px² dentro il pannello a 360 px). Decisione PO 17/10: la versione va NELLA TESTATA (VersioneTestata269,
      src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */

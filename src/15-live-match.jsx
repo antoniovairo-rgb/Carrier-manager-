@@ -2047,6 +2047,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
+  useEffect(()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(true);}catch(_z){}return()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(false);}catch(_z){}};},[]);/* [giro 234 PO-455] in partita lo zoom con due dita resta bloccato (classe cpm-partita234 → touch-action, src/00): fuori dalla partita e' libero */
   useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 175 · PO-372 — LA STESSA PARTITA CON LE STESSE SCELTE E' LA STESSA PARTITA. Rosso __CPM_NO_G175]
@@ -12431,7 +12432,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":"Premi P o tocca per riprendere"}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}

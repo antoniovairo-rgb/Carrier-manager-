@@ -727,14 +727,15 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
+    <div {...(_g234()?{role:"dialog","aria-modal":"true","aria-labelledby":"opzioni234"}:{})} style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
+        {_g234()?<h1 id="opzioni234" style={{margin:0,fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</h1>:<div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>}
         <button onClick={onClose} className="cpm-press" aria-label="Chiudi" style={{width:(_tocco292()||_g114())?44:34,height:(_tocco292()||_g114())?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
+        {_g234()&&<Lettura234/>}
         {strumenti&&(
           <Card style={{padding:'12px 14px'}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🧰 Strumenti</div>
@@ -754,10 +755,33 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
             :<a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>}
           </Card>)}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
+        {_g234()&&<div data-cpm="versione234" className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'0 0 10px'}}>Versione {GAME_VERSION}</div>}{/* [giro 234 PO-459 · G195-15] la versione si legge anche qui, dove la cerca chi deve segnalarla */}
       </div>
       {privacy134&&<Privacy134 onClose={()=>setPrivacy134(false)}/>}
     </div>
   );
+}
+/* [giro 234 PO-393 · G181-22 parte 1] OPZIONI DI LETTURA: «Testo grande» (i corpi del tema ×1,3, applicato subito: applicaTesto234 in
+   src/01 e un nuovo disegno di tutta l'app con l'evento cpm-testo234) e «Riduci animazioni» (lo stesso effetto della preferenza di
+   sistema, che il gioco rispetta gia' nei fogli di stile e nei punti che leggono matchMedia: classe cpm-riduci234, vedi src/00).
+   Le due scelte stanno nel browser (localStorage cpm-testo-grande / cpm-riduci-anim), non nel salvataggio: nessun SAVE bump. */
+const _nome234=(l)=>String(l||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
+function Lettura234(){
+  const[tg,setTg]=useState(()=>testoGrande234());
+  const[ra,setRa]=useState(()=>{try{return document.documentElement.classList.contains('cpm-riduci234');}catch(_e){return false;}});
+  const riga=(nome,nota,on,cambia)=>(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:10}}>
+      <span style={{display:'flex',flexDirection:'column',minWidth:0}}><span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{nome}</span><span style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.35}}>{nota}</span></span>
+      <button role="switch" aria-checked={!!on} aria-label={nome.replace(/^[^A-Za-zÀ-ÿ]+/,"").trim()} onClick={cambia} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+        <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
+      </button>
+    </div>);
+  return(
+    <Card data-cpm="lettura234" style={{padding:'12px 14px'}}>
+      <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>👓 Lettura</div>
+      {riga("🔠 Testo grande","Ingrandisce le scritte del 30%",tg,()=>{const v=!tg;try{localStorage.setItem('cpm-testo-grande',v?'1':'0');}catch(_e){}applicaTesto234(v);setTg(v);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}})}
+      {riga("🐢 Riduci animazioni","Meno movimento nei menu e nelle schermate",ra,()=>{const v=!ra;try{localStorage.setItem('cpm-riduci-anim',v?'1':'0');}catch(_e){}try{document.documentElement.classList.toggle('cpm-riduci234',v);}catch(_e){}setRa(v);})}
+    </Card>);
 }
 /* [7.62.0 AUDIO] Schermata IMPOSTAZIONI AUDIO — categorie INDIPENDENTI (ON/OFF + volume), mute totale,
    preview al cambio, persistenza automatica (safeLS via AudioMgr). + pannello DEBUG audio (catalogo suonabile). */
@@ -773,8 +797,11 @@ function AudioSettings(){
   const VOL=_g172s?[{k:'crowd',label:'📣 Pubblico'},{k:'match',label:'⚽ Effetti di partita'},{k:'music',label:'🎵 Musica'},{k:'referee',label:'🟨 Arbitro'},{k:'sfx',label:'✨ Suoni dei menu'}]
     :[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
-  const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+  /* [giro 234 PO-459] i 7 interruttori e i 5 cursori dicono a un lettore di schermo cosa regolano (prima: 12 comandi senza nome);
+     l'interruttore e' un «switch» con lo stato acceso/spento. Rosso __CPM_NO_G234: senza nome e senza ruolo, come prima. */
+  const _a234=_g234();
+  const Toggle=({on,onClick,dis,nome})=>(
+    <button onClick={dis?undefined:onClick} disabled={dis} {...(_a234?{role:"switch","aria-checked":!!on,"aria-label":nome}:{})} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
@@ -786,7 +813,7 @@ function AudioSettings(){
       {/* [7.999.49 parte A] «Muto totale» era un bottone che non diceva il suo stato: ora interruttore come gli altri */}
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔇 Silenzia tutto</span>
-        <Toggle on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
+        <Toggle nome="Silenzia tutto" on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -797,12 +824,12 @@ function AudioSettings(){
               <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}</span>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
-                {!r.master&&<Toggle on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
+                {!r.master&&<Toggle nome={_nome234(r.label)+" acceso"} on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
               </div>
             </div>
             {/* [7.96.1 collaudo PO «volume generale cosa guida?»] è il MASTER: scala TUTTI i suoni insieme (le voci qui sotto sono relative a questo). */}
             {r.master&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:-2,marginBottom:4,lineHeight:1.35}}>Regola tutti i suoni insieme — musica, partite, effetti, pubblico, arbitro (le voci sotto sono relative a questo).</div>}
-            <input type="range" min="0" max="100" value={vol} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
+            <input type="range" min="0" max="100" value={vol} {...(_a234?{"aria-label":"Volume "+_nome234(r.label).toLowerCase(),"aria-valuetext":vol+"%"}:{})} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
           </div>
         );
       })}
@@ -810,7 +837,7 @@ function AudioSettings(){
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
             <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
-            <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
+            <Toggle nome={_nome234(r.label)} on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
@@ -868,6 +895,8 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  const[,setTesto234]=useState(0);/* [giro 234 PO-393] «Testo grande» acceso/spento: un nuovo disegno di tutta l'app legge i corpi nuovi */
+  useEffect(()=>{const f=()=>setTesto234(n=>n+1);window.addEventListener('cpm-testo234',f);return()=>window.removeEventListener('cpm-testo234',f);},[]);
   /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» fisso in basso a destra (z 9999) copriva la barra di Home/carriera e i Crediti
      (sonda chip-269: 1.215 px² dentro il pannello a 360 px). Decisione PO 17/10: la versione va NELLA TESTATA (VersioneTestata269,
      src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */

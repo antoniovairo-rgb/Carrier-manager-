@@ -1,14 +1,15 @@
 {
   "name": "Korward Elite: Football Career Simulator",
   "short_name": "Korward",
-  "description": "From prospect to legend — football career browser game",
+  "description": "Vivi la carriera di un calciatore: dalle giovanili ai grandi stadi. Decidi tu.",
+  "lang": "it",
   "id": "./",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#8e1f33",
-  "background_color": "#3d0f1b",
+  "theme_color": "#0d0f14",
+  "background_color": "#0d0f14",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
