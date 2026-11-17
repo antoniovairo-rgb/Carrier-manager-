@@ -615,6 +615,9 @@ const FS_BASE234={...FS};
    (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
    acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
 const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+/* [giro 260 · decisioni PO 17/11 B C D] interruttore del giro: rosso window.__CPM_NO_G260 = come prima (Sostieni anche nell'app, titolo
+   grande nel contenuto di Stagione/Agente/Ufficio, «Under 18»/«U18» a schermo). */
+const _g260=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G260);
 function livelloTesto235(){try{const v=localStorage.getItem('cpm-testo-grande');if(v==='15')return _g235()?15:30;if(v==='1'||v==='30')return 30;return 0;}catch(_e){return 0;}}
 function testoGrande234(){return livelloTesto235()>0;}
 function applicaTesto234(on){const k=on===true?1.3:(on===15?1.15:on===30?1.3:1);for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
@@ -2783,7 +2786,7 @@ const JOURNALIST_POOL=[
   {id:"j_ferretti",name:"Marco Ferretti",paper:"Sprint Sportivo",icon:"📰",color:"#ef4444",type:"critico",desc:"Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli."},
   {id:"j_esposito",name:"Sofia Esposito",f:true,paper:"Diretta TV",icon:"📺",color:"#3b82f6",type:"fan",desc:"Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti."},
   {id:"j_neri",name:"Giovanni Neri",paper:"Cronaca di Sport",icon:"🔍",color:"#7c3aed",type:"investigativa",desc:"Caccia gli scoop. Tratta ogni risposta come un indizio."},
-  {id:"j_lombardi",name:"Anna Lombardi",f:true,paper:"Zona Mista",icon:"🎙️",color:"#f59e0b",type:"fan",desc:"Ti segue dalla U18. Ha una vera stima nei tuoi confronti."},
+  {id:"j_lombardi",name:"Anna Lombardi",f:true,paper:"Zona Mista",icon:"🎙️",color:"#f59e0b",type:"fan",desc:(_g260()?"Ti segue dalla Primavera. Ha una vera stima nei tuoi confronti.":"Ti segue dalla U18. Ha una vera stima nei tuoi confronti.")/* [giro 260 · decisione PO D «Ovunque Primavera»] */},
   {id:"j_ricci",name:"Davide Ricci",paper:"Cifre del Calcio",icon:"📊",color:"#10b981",type:"critico",desc:"Statistiche e fredda razionalità. Non mente mai — e non è sempre bello."},
   {id:"j_greco",name:"Elena Greco",f:true,paper:"Sport in Rete",icon:"🌐",color:"#8b5cf6",type:"investigativa",desc:"Interesse politico e sportivo si mescolano. Attenzione a cosa riveli."},
 ];
@@ -6207,7 +6210,13 @@ const openPrivacy=()=>{try{window.open(PRIVACY_URL,"_blank","noopener,noreferrer
 /* [giro 134 PO-334 «Dentro l'app»] il testo dell'informativa per il pannello in Opzioni (Privacy134, src/19): NON si scrive a mano, si genera da privacy.html (fonte unica) con tools/privacy-testo.mjs; check-src.mjs blocca se diverge. La mail e' il segnaposto ["m"], ricomposto da _feedbackTo(). Rosso __CPM_NO_G134P: si torna al link fuori dall'app. */
 /*PRIVACY134-INIZIO: generato da tools/privacy-testo.mjs da privacy.html — NON modificare a mano*/const PRIVACY134=[["h1","Informativa sulla privacy"],["data","Ultimo aggiornamento: 9 novembre 2026"],["tldr",["Versione breve: l'app non raccoglie, non invia e non condivide alcun dato personale. Tutto resta sul tuo dispositivo."]],["p",["Korward Elite (\"l'app\", \"il gioco\") è un simulatore di carriera calcistica gratuito. Questa informativa spiega quali dati l'app tratta."]],["h2","1. Dati raccolti"],["p",[["b","Nessuno."]," Korward Elite non raccoglie dati personali, non richiede registrazione né account, non usa identificatori pubblicitari e non include SDK di analisi o tracciamento di terze parti."]],["h2","2. Salvataggi di gioco"],["p",["I progressi della tua carriera (giocatore, statistiche, calendario, classifiche, diario) sono salvati ",["b","esclusivamente in locale"]," sul tuo dispositivo (archiviazione del dispositivo / ",["c","localStorage"]," della WebView). Questi dati:"]],["ul",[["non lasciano mai il dispositivo;"],["non sono accessibili a noi né a terzi;"],["possono essere esportati e reimportati da te tramite la funzione \"Esporta salvataggio\" (un file JSON che gestisci tu);"],["vengono rimossi disinstallando l'app o cancellando i dati dell'app dalle impostazioni di sistema."]]],["h2","3. Permessi"],["p",["L'app non richiede permessi sensibili (niente posizione, contatti, fotocamera, microfono, archiviazione esterna). Non usa l'Advertising ID."]],["h2","4. Donazioni (facoltative)"],["p",["Se l'app mostra un pulsante \"Sostieni lo sviluppo\", questo si limita ad ",["b","aprire un link esterno"]," (es. Ko-fi / PayPal / Buy Me a Coffee) nel browser di sistema. L'eventuale donazione avviene interamente sulla piattaforma del provider esterno, secondo la sua privacy policy: ",["b","l'app non gestisce e non riceve alcun dato di pagamento"]," e non concede alcuno sblocco o vantaggio in cambio."]],["h2","5. Funzione AI (disattivata nella versione store)"],["p",["Il codice del gioco include una funzione opzionale di analisi tattica basata su AI. ",["b","Nella versione pubblicata sullo store questa funzione è disattivata"],": non viene effettuata alcuna chiamata di rete verso servizi esterni. (Nella versione web del gioco la funzione è attivabile solo dall'utente inserendo una propria chiave API; in quel caso il testo della richiesta viene inviato al fornitore AI scelto dall'utente. Questo non riguarda l'app dello store.)"]],["h2","6. Minori"],["p",["L'app è adatta a tutte le età, non raccoglie dati e non contiene pubblicità. Non vengono trattati dati di minori perché non viene trattato alcun dato personale."]],["h2","7. Modifiche"],["p",["Eventuali aggiornamenti a questa informativa saranno pubblicati a questo stesso indirizzo, con la data di aggiornamento in alto."]],["h2","8. Contatti"],["p",["Per domande sulla privacy: ",["m"]]],["piede","Korward Elite — tutti i nomi di club, leghe, competizioni e giocatori sono di fantasia."]];/*PRIVACY134-FINE*/
 const privacy134On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G134P);
-const openDonation=()=>{try{if(!DONATION_URL)return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
+/* [giro 260 · decisione PO 17/11 B «Toglierlo nell'app store»] il «Sostieni il progetto» NON compare dentro l'app (TWA com.korward.elite) e
+   resta sul sito. Criterio unico, quello del giro 120 in src/00-head.html: window.__CPM_APP_TWA, acceso se l'indirizzo porta ?app=twa
+   (start_url del manifest TWA e urlAvvio del progetto Android) oppure il referrer comincia con android-app://com.korward.elite; il segno
+   resta per la sessione della scheda (sessionStorage «cpm-app-twa»). display-mode standalone NON basta: e' vero anche per la PWA
+   installata dal sito, che non passa dallo store. Rosso: window.__CPM_NO_G260 (il pulsante torna anche nell'app). */
+const donazioneVisibile260=()=>!!DONATION_URL&&!(typeof window!=="undefined"&&window.__CPM_APP_TWA&&!window.__CPM_NO_G260);
+const openDonation=()=>{try{if(!donazioneVisibile260())return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
 // #6: indirizzo feedback OFFUSCATO (non in chiaro nel sorgente) — ricomposto a runtime dai char-code → niente scraping banale
 const _feedbackTo=()=>String.fromCharCode(107,111,114,119,97,114,100,46,100,101,118,116,101,97,109,64,103,109,97,105,108,46,99,111,109);/* [21/09 · direttiva PO: «la mail delle idee non deve essere inviata piu' alla mia mail, ma a korward.devteam@gmail.com»] La casella personale del PO esce dal gioco. Resta l'offuscamento in codici di carattere: e' li' perche' un indirizzo scritto in chiaro dentro una pagina pubblica viene raccolto dai raccoglitori di spam, e la casella nuova merita la stessa protezione della vecchia. */
 const openFeedback=()=>{try{const to=_feedbackTo();const s=encodeURIComponent("💡 Idee & Feedback — Korward Elite");
@@ -12362,7 +12371,7 @@ const NOMI235={"profilo-statistiche":"Questa stagione","s24-statistiche-carriera
   "profilo-corsa-premi":"Corsa ai premi della stagione","profilo-mvp-mese":"Migliore del mese","profilo-milestone":"Traguardi","profilo-achievement":"Imprese",
   "s24-modalita-sfida":"La tua sfida","profilo-biografia":"Biografia","profilo-timeline":"Stagione per stagione","profilo-diario":"Diario di carriera",
   "profilo-memoria":"Memoria della carriera","profilo-match-cuore":"Partita del cuore","s24-la-citta-ti-ricorda":"La città ti ricorda",
-  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":"Stato Under 18",
+  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":(_g260()?"Stato Primavera":"Stato Under 18")/* [giro 260 · decisione PO D] */,
   "profilo-contratto":"Contratto"};
 function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
   const figli=React.Children.toArray(children).filter(Boolean);
@@ -48739,7 +48748,12 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   /* [24/09 POC — commento PO sui premi «standardizza, rendila piu' bella»] IL PODIO: tre premiati sono un podio, non una lista.
      1° al centro e piu' alto, 2° a sinistra, 3° a destra; figurina sopra ogni gradino, valore sul gradino. Con meno di tre nomi
      (o col rosso __CPM_NO_PODIO23) restano le righe. */
-  const Podio23=({righe,label,extra,pari})=>{const R3=righe||[];
+  const Podio23=({righe,label,extra,pari,club260,dati260})=>{const R3=righe||[];
+    /* [giro 260 · decisione PO 17/11 E, dal dubbio 2 del giro 258] riga sotto la figurina: con i club piu' lunghi (FC Sampierdarena
+       Primavera, Catanzarese Primavera) la riga mista «9 assist · club» o «club · 🏆 2 · OVR 84» andava su 3 righe e il taglio a 2
+       ne mangiava un pezzo (misura a 375 px: colonne 103-119 px, 11 riquadri su 96 fuori regola). Ora il club ha le sue 2 righe e i
+       numeri una riga sua sotto, senza a capo. Guardiano podio-260, rosso __CPM_NO_G260 (la riga mista di prima). */
+    const _sep260=_g260()&&!!club260;
     if(R3.length<3||(typeof window!=='undefined'&&window.__CPM_NO_PODIO23))return <>{R3.map((c,i)=><ScoreRow key={i} rank={i} name={c.name} val={c.goals} label={label} isPlayer={!!c.isPlayer} extra={extra(c)}/>)}</>;
     const H=[64,48,38],MED=["#d4a017","#9aa4b2","#b87333"],ORD=[1,0,2];
     return(<div data-cpm="podio23" style={{display:"grid",gridTemplateColumns:"1fr 1.15fr 1fr",gap:SP.sm,alignItems:"end",margin:`${SP.sm}px 0 ${SP.xs}px`}}>
@@ -48747,7 +48761,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",minWidth:0}}>
           {(()=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||c.name):c.name} larg={i===0?58:46}/>;}catch(_e){return null;}})()}
           <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:me?TH.brandText:TH.text,marginTop:4,textAlign:"center",lineHeight:1.2,maxWidth:"100%",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{c.name}{me?" · tu":""}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{extra(c)||"\u00a0"}</div>{/* [7.999.49 parte A] a capo invece dei puntini */}
+          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(_sep260?club260(c):extra(c))||"\u00a0"}</div>{/* [7.999.49 parte A] a capo invece dei puntini */}
+          {_sep260&&dati260&&<div data-cpm="podio-dati260" className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,whiteSpace:"nowrap",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical"}}>{dati260(c)||"\u00a0"}</div>}
           <div style={{width:"100%",height:H[i],marginTop:4,borderRadius:`${RAD.sm}px ${RAD.sm}px 0 0`,background:TH.surface2,borderTop:"4px solid "+MED[i],
             outline:me?("2px solid "+(TH.primaryBorder||TH.primary)):"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
             <span className="cpm-num" style={{fontSize:i===0?FS.subhead:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{c.goals}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:2}}>{label}</span></span>
@@ -49018,7 +49033,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10,marginBottom:10}}>
           <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>🏅 MVP della stagione</div>
           <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>Miglior giocatore del campionato: contano gol, assist, OVR e titolo.</div>
-          <Podio23 righe={leagueMvp?.top3} label="gol" extra={c=>`${c.assists||0} assist · ${c.club||""}`}/>
+          <Podio23 righe={leagueMvp?.top3} label="gol" extra={c=>`${c.assists||0} assist · ${c.club||""}`} club260={c=>c.club||""} dati260={c=>`${c.assists||0} assist`}/>
           {leagueMvp?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.bgAmber,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txAmber}}>🏆 Miglior calciatore della {lg}!</div>}
         </div>
 
@@ -49061,7 +49076,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"rgba(245,158,11,0.13)":TH.card,border:palloneOro.playerWins?("1.5px solid "+"rgba(245,158,11,0.5)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
-        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
+        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")} club260={c=>c.league||c.club} dati260={c=>[c.trofei?`🏆 ${c.trofei}`:"",(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null)?`OVR ${c.ovr}`:""].filter(Boolean).join(" · ")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>
@@ -58606,7 +58621,7 @@ const getThisWeekMatchday=()=>{
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
         jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}; // Sprint 74-75: reset jersey+cards · Sprint C: ritiro · [7.114.0 fix PROG-2] reset training-settimana
       if(offer.isStayU18){
-        return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
+        return{...base,log:[(_g260()?`🔄 Resto in Primavera (S.${newSeason})`:`🔄 Resto in Under 18 (S.${newSeason})`)/* [giro 260 · decisione PO D] */,...(p.log||[])].slice(0,60)};
       }
       // [5.97.0 CP-4] la PRIMA stagione da professionista HA la Coppa Nazionale: prima cup/euro
       //   nascevano solo in doStartNewSeason → il primo anno pro era senza coppe (MIN-9 non risolto).
@@ -58637,7 +58652,7 @@ const getThisWeekMatchday=()=>{
       const _sp176=(_pro176&&offer.club&&typeof genClubSponsor==="function"&&!(p.clubSponsor&&p.clubSponsor.clubId===(offer.club.id||offer.club.n)))?{clubSponsor:genClubSponsor(offer.club,base.season||p.season||1,((p.clubPrestigeShifts||{})[offer.club.id||offer.club.n]||0)+(offer.club.p||60))}:{};
       return{...base,..._riv176,..._sp176,club:offer.club,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] l'anno del salto: gli impulsi del primo anno da pro leggono questo */teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
-    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
+    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify(_g260()?"🔄 Resti in Primavera!":"🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
     setScreen("clubPresentation");setTab("dashboard");
     if(offer.isNonConfirmed){notify("📋 Non confermato in prima squadra — hai trovato comunque una sistemazione.",TH.warning);}
@@ -60604,7 +60619,7 @@ const getThisWeekMatchday=()=>{
           dell'ultimo salvataggio resta nella riga sotto il club; la versione resta in testata. */
         const me=player.club||{};const st=player.standings||[];
         const _pos=(()=>{if(!st.length||!me.id)return -1;const so=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));return so.findIndex(x=>x.id===me.id);})();
-        const lg=me.lg?me.lg:player.proStatus==="u18"?"U18":"";
+        const lg=me.lg?me.lg:player.proStatus==="u18"?(_g260()?"Primavera":"U18"):"";/* [giro 260 · decisione PO D] */
         const _ora=lastSaved?new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):null;
         const ico={width:44,height:44,borderRadius:RAD.md,background:TINTE.sup,border:"1px solid "+TINTE.bordo,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0,flexShrink:0,color:TINTE.testo};
         return(/* [giro 106 A · PO-304, foto PO 179 a 360 px: «FC MERSEYSI / DE» e la riga di meta su 5 righe] la colonna del nome era
@@ -60679,6 +60694,10 @@ const getThisWeekMatchday=()=>{
         const mi=st.findIndex(x=>x.id===player.club?.id);
         const gap=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
+        if(_g260()&&_g235()){/* [giro 260 · decisione PO 17/11 C «Sì, solo in testata»] il nome della scheda sta SOLO nella testata compatta
+          del giro 235: niente titolo grande qui. Distanza dalla vetta e forma restano, in una riga sotto la testata (solo in Classifica). Rosso __CPM_NO_G260 */
+          return(tab==="standings"&&gap)?(<div data-cpm="vetta-riga260" style={{marginBottom:_sb(SP.md),display:"flex",justifyContent:"space-between",alignItems:"center",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
+            <span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
         return(<div style={{marginBottom:_sb(SP.md)}}><TitoloV2 cpm="stagione-v2" occhiello={(lg?lg+" \u00b7 ":"")+"St. "+(player.season||1)} titolo={tab==="standings"?"Classifica":tab==="calendar"?"Calendario":"Coppe"}
           destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
@@ -62888,7 +62907,7 @@ const getThisWeekMatchday=()=>{
         if(!club)return(
           <Card style={{padding:"20px 16px",textAlign:"center"}}>
             <div style={{fontSize:FS.display,marginBottom:8}}>🏟️</div>
-            <div style={{fontSize:FS.body,color:TH.muted}}>Nessun club — completa il periodo U18 per unirti a un club professionistico.</div>
+            <div style={{fontSize:FS.body,color:TH.muted}}>{_g260()?"Nessun club — completa il periodo in Primavera per unirti a un club professionistico.":"Nessun club — completa il periodo U18 per unirti a un club professionistico."}</div>
           </Card>
         );
         const stadName=getStadiumName(club);
@@ -64128,11 +64147,11 @@ const getThisWeekMatchday=()=>{
             </Fisarmonica>
           );})()}
           {/* U18 status banner */}
-          {(player.proStatus||"u18")==="u18"&&(<Fisarmonica id="profilo-status-u18" titolo="Status Under 18" aperta={true}>{/* [7.992.0 PO «mancano fisarmoniche»] */}
+          {(player.proStatus||"u18")==="u18"&&(<Fisarmonica id="profilo-status-u18" titolo={_g260()?"Stato Primavera":"Status Under 18"} aperta={true}>{/* [giro 260 · decisione PO D] */}{/* [7.992.0 PO «mancano fisarmoniche»] */}
             <Card bg={TH.bgBlue} border={TH.bdBlue} style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
                 <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"8px 10px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.faint}}>STAGIONI U18</div>
+                  <div style={{fontSize:FS.caption,color:TH.faint}}>{_g260()?"STAGIONI IN PRIMAVERA":"STAGIONI U18"}</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.brandText}}>{player.u18Seasons||0}<span style={{fontSize:FS.small,color:TH.faint}}>/2</span></div>
                 </div>
                 <div style={{background:(player.u18Seasons||0)>=1?TH.bgRed:TH.bgGreen,borderRadius:RAD.sm,padding:"8px 10px"}}>
@@ -64144,8 +64163,8 @@ const getThisWeekMatchday=()=>{
                 <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:RAD.pill}}/>
               </div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>
-                {(player.u18Seasons||0)===0&&"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro."}
-                {(player.u18Seasons||0)===1&&"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo."}
+                {(player.u18Seasons||0)===0&&(_g260()?"Prima stagione in Primavera. Ottieni risultati per attrarre offerte pro.":"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro.")}
+                {(player.u18Seasons||0)===1&&(_g260()?"⚠️ Ultima stagione possibile in Primavera. Al termine DEVI passare al professionismo.":"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo.")}
               </div>
             </Card></Fisarmonica>
           )}
@@ -64313,7 +64332,7 @@ const getThisWeekMatchday=()=>{
         var _assegna198=function(t){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Compito assegnato: "+t.l,TH.primary);};
         return(
           <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
-            {_uff13&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
+            {_uff13&&!(_g260()&&_g235())/* [giro 260 · decisione PO 17/11 C] titolo solo nella testata del 235; rosso __CPM_NO_G260 */&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
 />}{/* [PO-302 tappa 2 · V2Agente/V2Ufficio] */}
             {tab==="agente"&&!transferOffer&&_offAtt201(player)&&(()=>{const x=player.offerta201,o=x.o||{};return(/* [giro 201 · PO-428] l'offerta in sospeso resta qui fino alla scadenza */
               <Card data-cpm="offerta201-agente" style={{padding:"10px 12px",borderLeft:"3px solid "+TH.primary}}>
@@ -65174,12 +65193,12 @@ const getThisWeekMatchday=()=>{
             {/* Non pro */}
             {!_isPro&&(
               <AnteprimaSezione icona={natFlag} titolo="La Nazionale arriva da professionista"
-                sotto={"Finché giochi in Under 18 il CT non convoca. Col primo contratto pro qui troverai:"}
+                sotto={(_g260()?"Finché giochi in Primavera":"Finché giochi in Under 18")+" il CT non convoca. Col primo contratto pro qui troverai:"}
                 voci={[{e:"📋",t:"Convocazioni e amichevoli",d:"Le partite con la tua Nazionale, da giocare dal vivo o da simulare, con presenze, gol e assist che contano nella carriera."},
                   {e:"🏆",t:"Coppa delle Nazioni",d:"Nelle stagioni pari, dalla settimana 20, quando hai almeno 2 presenze in Nazionale."},
                   {e:"🌍",t:"Europeo e Mondiale",d:"L'Europeo ogni 4 stagioni, il Mondiale ogni 8, dalla settimana 20: servono almeno 3 presenze."},
                   {e:"📜",t:"Storico e momenti",d:"L'elenco delle partite giocate in Nazionale e i momenti che restano nella tua storia."}]}
-                nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>
+                nota={(_g260()?"Sei in Primavera · stagione ":"Sei in Under 18 · stagione ")+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>
             )}
 
             {/* [6.82.0] Storico partite in Nazionale (collaudo PO «non c'è lo storico/elenco delle partite giocate») */}
@@ -65511,10 +65530,10 @@ const getThisWeekMatchday=()=>{
                 (raggruppata per competizione, coi nomi veri) vive in Carriera → Profilo; qui mostrava
                 le etichette grezze («int», «cup») duplicando il dato. */}
             {!_isPro&&<AnteprimaSezione icona="🏆" titolo="Le coppe arrivano col primo contratto da professionista"
-              sotto="In Under 18 si gioca solo il campionato. Da pro qui troverai:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+              sotto={_g260()?"In Primavera si gioca solo il campionato. Da pro qui troverai:":"In Under 18 si gioca solo il campionato. Da pro qui troverai:"} voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
                 {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
                 {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}
-              nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
+              nota={(_g260()?"Sei in Primavera · stagione ":"Sei in Under 18 · stagione ")+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
             {/* [7.999.49 parte A] voci personalizzate: a settimana 9 passata non si dice piu' che la coppa «si apre» agli ottavi,
                 e una seconda divisione non da' accesso all'Europa (in classifica non ha zone europee, solo promozione) */}
             {_isPro&&!cup&&!eu?.active&&!em?.active&&<AnteprimaSezione icona="🏆" titolo="Nessuna coppa in corso adesso"
@@ -65538,10 +65557,10 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
+        {donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:donazioneVisibile260()?"1px solid "+TH.cardBorder:"none"/* [giro 260] da solo nella riga (app), niente filo a sinistra */,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
-      {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
+      {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>

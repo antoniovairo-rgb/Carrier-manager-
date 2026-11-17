@@ -1,6 +1,6 @@
 # Checklist Play Console — i passi che SOLO il PO può fare (test chiuso)
 
-> Giro 236 · PO-322 · 17/11/2026. Nessun passo qui sotto è stato fatto dalla sessione: niente account, niente accesso alla Console,
+> Giro 236 · PO-322 · 17/11/2026 (allineata alla TWA al giro 260). Nessun passo qui sotto è stato fatto dalla sessione: niente account, niente accesso alla Console,
 > niente credenziali, niente chiavi, niente invii a Google. L'ordine è una proposta; i tempi di Google non li garantisco.
 
 ## ⚠️ Prima di tutto
@@ -23,19 +23,19 @@
 
 ## Poi, in ordine
 
-2. **Scegliere il pacchetto**: Capacitor offline (gioco dentro l'app, ~105 MB al giro 116) oppure TWA (sito in un guscio, ~4 MB).
-   Stessa identità `com.korward.elite`: se ne carica uno solo, per sempre con quell'ID. Dettagli in `PACCHETTO.md`.
-3. **Decidere sul pulsante «Sostieni il progetto»** (donazione PayPal, link esterno) nella versione store: tenerlo o toglierlo. Le
-   regole Google sui pagamenti per questo caso **non le ho rilette oggi** (rischio segnalato al giro 184, §4.6).
+2. **Pacchetto: la TWA** (decisione PO del 17/11, «TWA, come PLINTO»): `twa/android/`, `com.korward.elite`, versione 7.999.197
+   (`versionCode` 2001 in locale). Il progetto Capacitor non si carica. Dettagli in `PACCHETTO.md`.
+3. **Pulsante «Sostieni il progetto»**: deciso dal PO il 17/11 («Toglierlo nell'app store») — dentro l'app non compare, sul sito resta
+   (giro 260, guardiano `store-236` controllo S9). Gli screenshot della scheda sono rifatti senza il pulsante.
 4. **Account sviluppatore Google Play**: crearlo o verificarlo con la propria identità; capire se è «personale» o «organizzazione».
    Se è personale e creato dopo il 13/11/2023, prima della produzione servono **almeno 12 tester per 14 giorni consecutivi** nel test
    chiuso (requisito letto il 07/11/2026, pagina answer/14151465, citato in `TESTER_ONBOARDING.md`; non riletto oggi).
 5. **Chiave di caricamento**: crearla sul proprio PC, custodirne una copia; **mai** nel repository (segnaposto in `PACCHETTO.md`).
-6. **Costruire e firmare l'AAB** (Android Studio o workflow GitHub con i 4 segreti `ANDROID_KEYSTORE_BASE64`, `…_PASSWORD`,
+6. **Costruire e firmare l'AAB della TWA** (`gradle -p twa/android bundleRelease` o workflow «Android AAB (TWA)» con i 4 segreti `ANDROID_KEYSTORE_BASE64`, `…_PASSWORD`,
    `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`). Controllare `targetSdk 36` (comando in `PACCHETTO.md`).
 7. **Creare l'app in Console**: nome «Korward Elite», lingua predefinita italiano, tipo **Gioco**, gratuita/a pagamento (decisione PO).
 8. **Primo caricamento** dell'AAB in un **test interno**, poi nel **test chiuso**; attivare **Play App Signing** al primo caricamento.
-   Solo TWA: leggere l'impronta SHA-256 della firma Google e pubblicare `assetlinks.json` (proposta in `USCITA-STORE-184.md` §10.5),
+   Poi leggere l'impronta SHA-256 della firma Google e pubblicare `assetlinks.json` (proposta in `USCITA-STORE-184.md` §10.5),
    altrimenti il gioco si apre con la barra dell'indirizzo.
 9. **Contenuti dell'app** in Console — bozze pronte in `SCHEDA-PLAY.md`:
    informativa privacy `https://antoniovairo-rgb.github.io/Carrier-manager-/privacy.html` · annunci: no · accesso all'app: nessun
@@ -54,5 +54,5 @@
 | Testi della scheda, categoria, bozze IARC / pubblico / sicurezza dati | `docs/store/SCHEDA-PLAY.md` | `store-236` S5 |
 | Elenco immagini + 5 screenshot 9:16 | `docs/store/IMMAGINI.md`, `docs/store/screenshots/` | `store-236` S3 |
 | Permessi e motivazione | `docs/store/PERMESSI.md` | lettura dei manifest |
-| Pacchetto e firma (segnaposto) | `docs/store/PACCHETTO.md` | `store-236` S1, S7 |
+| Pacchetto TWA e firma (segnaposto) | `docs/store/PACCHETTO.md`, `twa/` | `store-236` S1, S8 |
 | Informativa privacy raggiungibile | `privacy.html` (HTTP 200 il 17/11/2026), contatto `korward.devteam@gmail.com` | `store-236` S4 |

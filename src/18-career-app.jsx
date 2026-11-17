@@ -6000,7 +6000,7 @@ const getThisWeekMatchday=()=>{
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
         jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}; // Sprint 74-75: reset jersey+cards · Sprint C: ritiro · [7.114.0 fix PROG-2] reset training-settimana
       if(offer.isStayU18){
-        return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
+        return{...base,log:[(_g260()?`🔄 Resto in Primavera (S.${newSeason})`:`🔄 Resto in Under 18 (S.${newSeason})`)/* [giro 260 · decisione PO D] */,...(p.log||[])].slice(0,60)};
       }
       // [5.97.0 CP-4] la PRIMA stagione da professionista HA la Coppa Nazionale: prima cup/euro
       //   nascevano solo in doStartNewSeason → il primo anno pro era senza coppe (MIN-9 non risolto).
@@ -6031,7 +6031,7 @@ const getThisWeekMatchday=()=>{
       const _sp176=(_pro176&&offer.club&&typeof genClubSponsor==="function"&&!(p.clubSponsor&&p.clubSponsor.clubId===(offer.club.id||offer.club.n)))?{clubSponsor:genClubSponsor(offer.club,base.season||p.season||1,((p.clubPrestigeShifts||{})[offer.club.id||offer.club.n]||0)+(offer.club.p||60))}:{};
       return{...base,..._riv176,..._sp176,club:offer.club,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] l'anno del salto: gli impulsi del primo anno da pro leggono questo */teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
-    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
+    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify(_g260()?"🔄 Resti in Primavera!":"🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
     setScreen("clubPresentation");setTab("dashboard");
     if(offer.isNonConfirmed){notify("📋 Non confermato in prima squadra — hai trovato comunque una sistemazione.",TH.warning);}
@@ -7998,7 +7998,7 @@ const getThisWeekMatchday=()=>{
           dell'ultimo salvataggio resta nella riga sotto il club; la versione resta in testata. */
         const me=player.club||{};const st=player.standings||[];
         const _pos=(()=>{if(!st.length||!me.id)return -1;const so=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));return so.findIndex(x=>x.id===me.id);})();
-        const lg=me.lg?me.lg:player.proStatus==="u18"?"U18":"";
+        const lg=me.lg?me.lg:player.proStatus==="u18"?(_g260()?"Primavera":"U18"):"";/* [giro 260 · decisione PO D] */
         const _ora=lastSaved?new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):null;
         const ico={width:44,height:44,borderRadius:RAD.md,background:TINTE.sup,border:"1px solid "+TINTE.bordo,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0,flexShrink:0,color:TINTE.testo};
         return(/* [giro 106 A · PO-304, foto PO 179 a 360 px: «FC MERSEYSI / DE» e la riga di meta su 5 righe] la colonna del nome era
@@ -8073,6 +8073,10 @@ const getThisWeekMatchday=()=>{
         const mi=st.findIndex(x=>x.id===player.club?.id);
         const gap=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
+        if(_g260()&&_g235()){/* [giro 260 · decisione PO 17/11 C «Sì, solo in testata»] il nome della scheda sta SOLO nella testata compatta
+          del giro 235: niente titolo grande qui. Distanza dalla vetta e forma restano, in una riga sotto la testata (solo in Classifica). Rosso __CPM_NO_G260 */
+          return(tab==="standings"&&gap)?(<div data-cpm="vetta-riga260" style={{marginBottom:_sb(SP.md),display:"flex",justifyContent:"space-between",alignItems:"center",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
+            <span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
         return(<div style={{marginBottom:_sb(SP.md)}}><TitoloV2 cpm="stagione-v2" occhiello={(lg?lg+" \u00b7 ":"")+"St. "+(player.season||1)} titolo={tab==="standings"?"Classifica":tab==="calendar"?"Calendario":"Coppe"}
           destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
@@ -10282,7 +10286,7 @@ const getThisWeekMatchday=()=>{
         if(!club)return(
           <Card style={{padding:"20px 16px",textAlign:"center"}}>
             <div style={{fontSize:FS.display,marginBottom:8}}>🏟️</div>
-            <div style={{fontSize:FS.body,color:TH.muted}}>Nessun club — completa il periodo U18 per unirti a un club professionistico.</div>
+            <div style={{fontSize:FS.body,color:TH.muted}}>{_g260()?"Nessun club — completa il periodo in Primavera per unirti a un club professionistico.":"Nessun club — completa il periodo U18 per unirti a un club professionistico."}</div>
           </Card>
         );
         const stadName=getStadiumName(club);
@@ -11522,11 +11526,11 @@ const getThisWeekMatchday=()=>{
             </Fisarmonica>
           );})()}
           {/* U18 status banner */}
-          {(player.proStatus||"u18")==="u18"&&(<Fisarmonica id="profilo-status-u18" titolo="Status Under 18" aperta={true}>{/* [7.992.0 PO «mancano fisarmoniche»] */}
+          {(player.proStatus||"u18")==="u18"&&(<Fisarmonica id="profilo-status-u18" titolo={_g260()?"Stato Primavera":"Status Under 18"} aperta={true}>{/* [giro 260 · decisione PO D] */}{/* [7.992.0 PO «mancano fisarmoniche»] */}
             <Card bg={TH.bgBlue} border={TH.bdBlue} style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
                 <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"8px 10px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.faint}}>STAGIONI U18</div>
+                  <div style={{fontSize:FS.caption,color:TH.faint}}>{_g260()?"STAGIONI IN PRIMAVERA":"STAGIONI U18"}</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.brandText}}>{player.u18Seasons||0}<span style={{fontSize:FS.small,color:TH.faint}}>/2</span></div>
                 </div>
                 <div style={{background:(player.u18Seasons||0)>=1?TH.bgRed:TH.bgGreen,borderRadius:RAD.sm,padding:"8px 10px"}}>
@@ -11538,8 +11542,8 @@ const getThisWeekMatchday=()=>{
                 <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:RAD.pill}}/>
               </div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>
-                {(player.u18Seasons||0)===0&&"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro."}
-                {(player.u18Seasons||0)===1&&"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo."}
+                {(player.u18Seasons||0)===0&&(_g260()?"Prima stagione in Primavera. Ottieni risultati per attrarre offerte pro.":"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro.")}
+                {(player.u18Seasons||0)===1&&(_g260()?"⚠️ Ultima stagione possibile in Primavera. Al termine DEVI passare al professionismo.":"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo.")}
               </div>
             </Card></Fisarmonica>
           )}
@@ -11707,7 +11711,7 @@ const getThisWeekMatchday=()=>{
         var _assegna198=function(t){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Compito assegnato: "+t.l,TH.primary);};
         return(
           <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
-            {_uff13&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
+            {_uff13&&!(_g260()&&_g235())/* [giro 260 · decisione PO 17/11 C] titolo solo nella testata del 235; rosso __CPM_NO_G260 */&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
 />}{/* [PO-302 tappa 2 · V2Agente/V2Ufficio] */}
             {tab==="agente"&&!transferOffer&&_offAtt201(player)&&(()=>{const x=player.offerta201,o=x.o||{};return(/* [giro 201 · PO-428] l'offerta in sospeso resta qui fino alla scadenza */
               <Card data-cpm="offerta201-agente" style={{padding:"10px 12px",borderLeft:"3px solid "+TH.primary}}>
@@ -12568,12 +12572,12 @@ const getThisWeekMatchday=()=>{
             {/* Non pro */}
             {!_isPro&&(
               <AnteprimaSezione icona={natFlag} titolo="La Nazionale arriva da professionista"
-                sotto={"Finché giochi in Under 18 il CT non convoca. Col primo contratto pro qui troverai:"}
+                sotto={(_g260()?"Finché giochi in Primavera":"Finché giochi in Under 18")+" il CT non convoca. Col primo contratto pro qui troverai:"}
                 voci={[{e:"📋",t:"Convocazioni e amichevoli",d:"Le partite con la tua Nazionale, da giocare dal vivo o da simulare, con presenze, gol e assist che contano nella carriera."},
                   {e:"🏆",t:"Coppa delle Nazioni",d:"Nelle stagioni pari, dalla settimana 20, quando hai almeno 2 presenze in Nazionale."},
                   {e:"🌍",t:"Europeo e Mondiale",d:"L'Europeo ogni 4 stagioni, il Mondiale ogni 8, dalla settimana 20: servono almeno 3 presenze."},
                   {e:"📜",t:"Storico e momenti",d:"L'elenco delle partite giocate in Nazionale e i momenti che restano nella tua storia."}]}
-                nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>
+                nota={(_g260()?"Sei in Primavera · stagione ":"Sei in Under 18 · stagione ")+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>
             )}
 
             {/* [6.82.0] Storico partite in Nazionale (collaudo PO «non c'è lo storico/elenco delle partite giocate») */}
@@ -12905,10 +12909,10 @@ const getThisWeekMatchday=()=>{
                 (raggruppata per competizione, coi nomi veri) vive in Carriera → Profilo; qui mostrava
                 le etichette grezze («int», «cup») duplicando il dato. */}
             {!_isPro&&<AnteprimaSezione icona="🏆" titolo="Le coppe arrivano col primo contratto da professionista"
-              sotto="In Under 18 si gioca solo il campionato. Da pro qui troverai:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+              sotto={_g260()?"In Primavera si gioca solo il campionato. Da pro qui troverai:":"In Under 18 si gioca solo il campionato. Da pro qui troverai:"} voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
                 {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
                 {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}
-              nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
+              nota={(_g260()?"Sei in Primavera · stagione ":"Sei in Under 18 · stagione ")+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
             {/* [7.999.49 parte A] voci personalizzate: a settimana 9 passata non si dice piu' che la coppa «si apre» agli ottavi,
                 e una seconda divisione non da' accesso all'Europa (in classifica non ha zone europee, solo promozione) */}
             {_isPro&&!cup&&!eu?.active&&!em?.active&&<AnteprimaSezione icona="🏆" titolo="Nessuna coppa in corso adesso"
@@ -12932,10 +12936,10 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
+        {donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:donazioneVisibile260()?"1px solid "+TH.cardBorder:"none"/* [giro 260] da solo nella riga (app), niente filo a sinistra */,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
-      {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
+      {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>

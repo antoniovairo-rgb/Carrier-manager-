@@ -16,7 +16,11 @@
      F  FIDUCIA e POPOLARITA' con la stessa forma in Home e in Club, a gradini (PO-391).
      G  TESTO GRANDE a due gradini: in Opzioni › Lettura un gruppo «Testo grande» con tre scelte (Normale · +15% · +30%); corpo minimo
         della Classifica a 375: +15% fra 13,5 e il +30% (escluso), +30% >= 15,5; il vecchio valore «1» del giro 234 = +30%.
-   Bracci: VERDE (gioco) deve passare tutto; ROSSO window.__CPM_NO_G235 deve essere bocciato su T, H, M, P, C, F e G. «Non giudicato»
+   Bracci: VERDE (gioco) deve passare tutto; ROSSO window.__CPM_NO_G235 deve essere bocciato su T, H, M, P, C, F, G e U; [giro 260] il ROSSO
+   window.__CPM_NO_G260 (a 375) deve essere bocciato su U (titolo grande di nuovo nel contenuto).
+     U  [giro 260] titolo SOLO in testata: nessun titolo grande nel contenuto di Stagione/Agente/Ufficio; in Classifica vetta e forma
+        visibili sotto la testata, nel primo schermo.
+   «Non giudicato»
    (misura mancante, errori di pagina) = rosso. Verde e rosso stampati per ultimi.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node coerenza-235.mjs   (CPM_PARTE=verde|rosso) */
 import { startServer, launchBrowser } from './lib/harness.mjs';
@@ -25,10 +29,10 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 const PARTE = process.env.CPM_PARTE || 'tutto';
 const CREMA = '#f4f1ea';
 
-async function braccio(b, port, rosso) {
-  const flags = rosso ? ['__CPM_NO_G235'] : []; const ko = {}; const num = {};
+async function braccio(b, port, rosso, flags = rosso ? ['__CPM_NO_G235'] : [], larghezze = [375, 1366]) {
+  const ko = {}; const num = {};
   const no = (k, m) => (ko[k] = ko[k] || []).push(m);
-  for (const w of [375, 1366]) {
+  for (const w of larghezze) {
     let R; try { R = await misuraTutto(b, port, w, { flags }); } catch (e) { no('X', `${w}: non giudicato ${String(e.message).slice(0, 120)}`); continue; }
     if (R.errori && R.errori.length) no('X', `${w}: errori di pagina ${R.errori.join(' / ')}`);
     const club = R.club && R.club.c ? R.club.c.toLowerCase() : null; if (!club) no('T', `${w}: club non letto — non giudicato`);
@@ -48,6 +52,14 @@ async function braccio(b, port, rosso) {
     const alt = new Set(SCHEDE.map(t => R.schede[t] && R.schede[t].testata ? R.schede[t].testata.altTestata : 'x'));
     num['testata' + w] = `posti ${pos.size} · altezze ${[...alt].join('/')}`;
     if (pos.size !== 1) no('H', `${w}: il titolo della testata cambia posto o corpo fra le schede (${[...pos].join(' ')})`);
+    /* U [giro 260 · decisione PO 17/11 C] titolo SOLO nella testata: niente titolo grande nel contenuto di Stagione (Classifica,
+       Calendario, Coppe), Agente e Ufficio; in Classifica distanza dalla vetta e forma visibili sotto la testata, nel primo schermo */
+    for (const t of ['standings', 'calendar', 'coppe', 'agente', 'ufficio']) { const h = R.schede[t] && R.schede[t].testata;
+      if (!h || !h.doppi) { no('U', `${w}: ${t} non misurata — non giudicato`); continue; }
+      if (h.doppi.length) no('U', `${w}: ${t} ha ancora il titolo nel contenuto (${h.doppi.join(' · ')})`); }
+    { const h = R.schede.standings && R.schede.standings.testata; const v = h && h.vetta260, f = h && h.forma260;
+      num['vetta' + w] = v ? `«${v.testo}» y${v.top}` : 'assente'; num['forma' + w + 'V'] = f ? `y${f.top}` : 'assente';
+      for (const [n, x] of [['distanza dalla vetta', v], ['forma', f]]) if (!x) no('U', `${w}: ${n} assente in Classifica`); else if (!x.sotto || !x.primoSchermo) no('U', `${w}: ${n} non sotto la testata nel primo schermo (y ${x.top})`); }
     /* V: la testata non ingrossa (confronto col braccio rosso, sotto) */
     const vv = R.schede.dashboard.vivi; num['altTestata' + w] = R.schede.dashboard.testata.altTestata; num['viviTop' + w] = vv ? vv.top : null;
     /* M */
@@ -90,10 +102,11 @@ async function braccio(b, port, rosso) {
 }
 
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
-let v = null, r = null;
-try { if (PARTE !== 'rosso') v = await braccio(b, port, false); if (PARTE !== 'verde') r = await braccio(b, port, true); }
+let v = null, r = null, r260 = null;
+try { if (PARTE !== 'rosso') v = await braccio(b, port, false); if (PARTE !== 'verde') r = await braccio(b, port, true);
+  if (PARTE !== 'verde') r260 = await braccio(b, port, true, ['__CPM_NO_G260'], [375]); }
 finally { await b.close(); srv.close(); }
-const PARTI = ['T', 'H', 'M', 'P', 'C', 'F', 'G'];
+const PARTI = ['T', 'H', 'M', 'P', 'C', 'F', 'G', 'U'];
 let ok = true;
 if (v && r) for (const w of [375, 1366]) for (const k of ['altTestata', 'viviTop']) { const a = v.num[k + w], c = r.num[k + w];
   if (a == null || c == null) { (v.ko.V = v.ko.V || []).push(`${k}${w} non misurato — non giudicato`); continue; }
@@ -103,5 +116,8 @@ if (v) { const vk = Object.keys(v.ko); const vOk = vk.length === 0; ok = ok && v
 if (r) { const presi = PARTI.filter(k => r.ko[k] && !r.ko[k].every(m => /non giudicato/.test(m))); const mancano = PARTI.filter(k => !presi.includes(k)); const rOk = mancano.length === 0 && !r.ko.X; ok = ok && rOk;
   console.log(`ROSSO __CPM_NO_G235: ${rOk ? '✓ bocciato su ' + presi.join(',') : '✗ non bocciato su ' + mancano.join(',') + (r.ko.X ? ' · errori ' + r.ko.X.join(' | ') : '')} ${JSON.stringify(r.num)}`);
   for (const k of presi) console.log(`   ${k}: ${r.ko[k][0]}`); }
+if (r260) { const preso = !!(r260.ko.U && !r260.ko.U.every(m => /non giudicato/.test(m))); ok = ok && preso && !r260.ko.X;
+  console.log(`ROSSO __CPM_NO_G260: ${preso ? '✓ bocciato su U' : '✗ non bocciato su U'}${r260.ko.X ? ' · errori ' + r260.ko.X.join(' | ') : ''} ${JSON.stringify({ vetta375: r260.num.vetta375 })}`);
+  if (preso) console.log(`   U: ${r260.ko.U[0]}`); }
 console.log(ok ? '✓ coerenza-235 VERDE' : '✗ coerenza-235 ROSSO');
 process.exit(ok ? 0 : 1);

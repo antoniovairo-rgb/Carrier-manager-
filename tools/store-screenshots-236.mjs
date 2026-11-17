@@ -22,7 +22,10 @@ async function pagina(init) { const ctx = await browser.newContext(VP); const pa
   await installCdnRoutes(page);
   if (init) await page.addInitScript(init.fn, init.arg); return { ctx, page }; }
 const scatta = async (page, nome) => { const f = path.join(OUT, nome); await page.screenshot({ path: f }); fatti.push(nome); console.log('  ✔ ' + nome); };
-async function apri(page) { await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
+/* [giro 260 · decisione PO 17/11 B] le schermate fuori partita si scattano COME NELL'APP (?app=twa, criterio del giro 120): e' cio' che
+   vede chi scarica dallo store, quindi senza «Sostieni il progetto». Dentro l'app le sonde di collaudo sono spente: la partita (05), che
+   ha bisogno di una scena forzata, resta col banco ?cpmtest=1 (in partita il pulsante non c'e' comunque). */
+async function apri(page, q = '?app=twa') { await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${q}`, { waitUntil: 'load', timeout: 120000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); }
 
 try {
@@ -33,7 +36,15 @@ try {
   // 3 · plancia di carriera da professionista  4 · classifica
   { const { ctx, page } = await pagina({ fn: (s) => { localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: s })); }, arg: PRO });
     await apri(page); await sleep(1500); try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
-    await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }).catch(() => {}); await sleep(2500);
+    await page.waitForSelector('button[title="Invia idee e feedback allo sviluppatore"]', { state: 'attached', timeout: 30000 }).catch(() => {}); await sleep(2500);
+    /* fuori dal banco le finestre della settimana si aprono davvero (sotto ?cpmtest le chiude __CPM_CAREER.dismiss): si chiudono col
+       loro tasto, come farebbe chi gioca, prima di scattare */
+    for (let i = 0; i < 6; i++) { const chiuso = await page.evaluate(() => { const d = [...document.querySelectorAll('[role=dialog],[aria-modal=true]')].filter(x => x.getBoundingClientRect().height > 40).pop();
+      if (!d) return false; const b = [...d.querySelectorAll('button')].filter(x => x.getBoundingClientRect().height > 0).pop(); if (!b) return false; b.click(); return true; });
+      if (!chiuso) break; await sleep(900); }
+    await page.evaluate(() => scrollTo(0, 0)); await sleep(600);
+    const sost = await page.evaluate(() => document.querySelectorAll('button[title="Sostieni lo sviluppo di Korward Elite"]').length);
+    if (sost) throw new Error('«Sostieni il progetto» presente nella plancia scattata come app: screenshot non validi');
     await scatta(page, '03-carriera.png');
     if (await clickByText(page, '^Classifica', 5000)) { await sleep(1800); await scatta(page, '04-plancia-classifica.png'); }
     await ctx.close(); }
