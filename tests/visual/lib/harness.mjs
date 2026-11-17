@@ -4,6 +4,7 @@
    Usata dall'orchestratore validate-situations.mjs e dai check modulari.
    ============================================================================ */
 import { chromium } from 'playwright';
+import { paginaTradotta, babelNelBrowser, annotaPagina } from './precompila-237.mjs';
 import { PNG } from 'pngjs';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -103,6 +104,13 @@ export function startServer(root = ROOT) {
       if (p === '/') p = '/CARRIER-MANAGER-AV.html';
       const fp = path.join(root, p);
       if (!fp.startsWith(root)) { res.writeHead(403); return res.end(); }
+      /* [giro 237 PO-504 B] la pagina di gioco arriva GIA' TRADOTTA (come sul sito): niente Babel nel browser a ogni pagina.
+         CPM_BABEL_BROWSER=1 torna al sorgente tradotto nel browser (braccio «prima», prova del rosso di web-237). */
+      if (path.basename(fp) === 'CARRIER-MANAGER-AV.html') {
+        const _bb = babelNelBrowser(); annotaPagina(_bb ? 'babel-browser' : 'tradotta');
+        if (!_bb) { let d; try { d = paginaTradotta(fp); } catch (e) { console.error('[precompila-237] ' + e.message); res.writeHead(500); return res.end(String(e.message)); }
+          res.writeHead(200, { 'content-type': MIME['.html'] }); return res.end(d); }
+      }
       fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'content-type': MIME[path.extname(fp).toLowerCase()] || 'application/octet-stream' }); res.end(d); });
     });
     srv.listen(0, () => resolve(srv));
