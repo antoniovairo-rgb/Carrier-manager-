@@ -2462,7 +2462,7 @@ function ThreeMatchView(props){
     const _segW=100/LED_SEG;
     const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);m.userData.ost245='striscia-led';scene.add(m);ledStrips.push(m);}};
     _mkLed(-34.4);_mkLed(34.4);
-    if(!(typeof window!=='undefined'&&window.__CPM_NO_G245)&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)){ledStrips[10].visible=false;ledStrips[11].visible=false;}/* [giro 245 PO-510] la striscia LED del lato panchine era continua: le due file la attraversavano (misurato: ~300 corpi-fotogramma per ingresso). Varco davanti alla bocca del tunnel (x -4,3..4,3); i due segmenti restano nella lista, solo spenti */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G245)&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)){ledStrips[10].visible=false;ledStrips[11].visible=false;}/* [giro 245 PO-510] la striscia LED del lato panchine era continua: le due file la attraversavano (misurato: ~300 corpi-fotogramma per ingresso). Varco davanti alla bocca del tunnel (misurato: x -4,77..4,77); i due segmenti restano nella lista, solo spenti */
     // item 2 (5.49.12): CARTELLONI col LOGO DEL GIOCO — "ELEVORA" ben VISIBILE: DIETRO entrambe le porte (di fronte alla camera broadcast) + lungo le linee laterali. Look LED da bordo campo.
     /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL BUDGET DELLE
        TEXTURE] Censimento (hook __CPM_DECOR): 192 piani texturizzati per scena, **120 texture GPU distinte
