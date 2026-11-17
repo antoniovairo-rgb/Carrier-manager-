@@ -25,7 +25,7 @@ const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : ' 
 function savePlayer(over = {}) {
   const s = 68;
   return { name: 'Guardiano Salta', nation: 'Italia', avatarId: 0, proStatus: 'u18', season: 1, week: 1, age: 17, ovr: 68, tutorialDone: true, position: 'Attaccante',
-    club: { id: 'milan', n: 'AC Dorvelli Primavera', a: 'ACR', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
+    club: { id: 'milan', n: 'FC Milano Sempione Primavera', a: 'MSE', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
     stats: { 'velocità': s, tecnica: s, fisico: s, 'mentalità': s, tiro: s + 2, passaggio: s, dribbling: s, posizionamento: s },
     form: 72, morale: 72, fatigue: 10, coachTrust: 60, contract: { duration: 1, wage: 200 }, ...over };
 }
@@ -196,7 +196,7 @@ try {
   }
   console.log('6) solo Primavera (col giro 165 spento: da professionista il tasto e\' del guardiano momento-165)');
   {
-    const W = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', week: 4, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, club: { id: 'milan', n: 'AC Dorvelli', a: 'ACR', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }), true);
+    const W = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', week: 4, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, club: { id: 'milan', n: 'FC Milano Sempione', a: 'MSE', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }), true);
     const t = await W.page.evaluate(() => !!document.querySelector('[data-cpm="salta163-tasto"]'));
     ok(!t, 'professionista con __CPM_NO_G165: il tasto non c\'è');
     await W.page.close();

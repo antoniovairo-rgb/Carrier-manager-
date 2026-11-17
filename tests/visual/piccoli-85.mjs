@@ -53,8 +53,8 @@ async function giro(rosso) {
   const aw = { leagueYoung: { winner: { name: 'G. Giovane', club: 'FC Alfa', goals: 9, isYoungEligible: true }, isYoungEligible: true },
     leagueTopScorer: { top3: [{ name: 'A. Uno', club: 'FC Alfa', goals: 30 }, { name: 'B. Due', club: 'FC Beta', goals: 28 }, { name: 'C. Tre', club: 'FC Gamma', goals: 27 }] },
     leagueMvp: { top3: [{ name: 'A. Uno', club: 'FC Alfa', goals: 30 }, { name: 'B. Due', club: 'FC Beta', goals: 28 }, { name: 'C. Tre', club: 'FC Gamma', goals: 27 }] },
-    scarpaOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', goals: 36 }, { name: 'J. Leblanc', club: 'FC Valmora', league: 'Ligue', goals: 33 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', goals: 30 }] },
-    palloneOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', ovr: 91, goals: 29, assists: 8, trofei: 'campione' }, { name: 'J. Leblanc', club: 'FC Valmora', league: 'Ligue', ovr: 84, goals: 31, assists: 4 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', ovr: 83, goals: 29, assists: 6 }] },
+    scarpaOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', goals: 36 }, { name: 'J. Leblanc', club: 'FC Milano Brera', league: 'Ligue', goals: 33 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', goals: 30 }] },
+    palloneOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', ovr: 91, goals: 29, assists: 8, trofei: 'campione' }, { name: 'J. Leblanc', club: 'FC Milano Brera', league: 'Ligue', ovr: 84, goals: 31, assists: 4 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', ovr: 83, goals: 29, assists: 6 }] },
     seasonRecord: { beaten: false }, allTime: { beaten: false } };
   await page.evaluate((aw) => window.__CPM_CAREER.apriGala(aw), aw); await sleep(1500);
   const testo = () => page.evaluate(() => (document.querySelector('[data-cpm="gala51"]') || document.body).innerText);
