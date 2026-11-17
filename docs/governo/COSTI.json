@@ -2343,5 +2343,33 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaBjiuFP1RJfxL8bKPS",
+  "titolo": "giro 248 · 16 nomi dei club (PO-511)",
+  "creata": "2026-11-17T11:03:43Z",
+  "chiusa": "2026-11-17T13:24:13Z",
+  "cost_usd": 7.7656637,
+  "output_tokens": 65754,
+  "cache_read_tokens": 23247531,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaCvWKemHvJyTqLeTNp",
+  "titolo": "giro 246 · solo salienti in un unico punto (PO-508)",
+  "creata": "2026-11-17T10:51:45Z",
+  "chiusa": "2026-11-17T13:22:04Z",
+  "cost_usd": 8.67192174,
+  "output_tokens": 77818,
+  "cache_read_tokens": 25734024,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
