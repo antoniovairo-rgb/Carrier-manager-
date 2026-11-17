@@ -25,6 +25,7 @@ const SOLO = !!process.env.CPM_SOLO; /* [giro 187] CPM_SOLO=1: soli highlight fo
 const PROD = !!process.env.CPM_PROD, ROSSO191 = !!process.env.CPM_ROSSO191; /* [giro 191] */
 const PROVA204 = !!process.env.CPM_PROVA204, ROSSO204 = !!process.env.CPM_ROSSO204; /* [giro 204] */
 const SENZA_PREMIO = !!process.env.CPM_SENZA_PREMIO, ROSSO249 = !!process.env.CPM_ROSSO249; /* [giro 249] */
+const ROSSO257 = !!process.env.CPM_ROSSO257; /* [giro 257] braccio rosso del rigorista visibile / ponte */
 const SPEED = process.env.CPM_SPEED || '2', ROSSO = !!process.env.CPM_ROSSO, CAP = +(process.env.CPM_CAP || 420000);
 const NOMI = process.env.CPM_NOMI ? process.env.CPM_NOMI.split(',') : Array.from({ length: N }, (_, i) => `${TAG}-${i}`);
 const SEMI = process.env.CPM_SEMI ? process.env.CPM_SEMI.split(',').map(Number) : null; /* seme dell'autoplay per partita (default: indice+1) */
@@ -38,9 +39,9 @@ async function partita(nome, idx) {
      tu»: le guardie che giudicano la scena del rigore dell'eroe (rigore-139/191, piazzato-204) giocano col premio, nel club del
      salvataggio. CPM_SENZA_PREMIO=1: salvataggio com'e' (nessun premio: il rigore lo batte un compagno). */
   if (!SENZA_PREMIO && pl.club && pl.club.id) pl.premiPatto227 = { ...(pl.premiPatto227 || {}), rig: pl.club.id };
-  await page.addInitScript(([s, k, sp, r, so, pr, r191, p204, r204, r249]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
-    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; if (so) window.__CPM_SOLO166 = 1; if (!pr) window.__CPM_NO_G154 = 1; if (r191) window.__CPM_NO_G191A = 1; if (p204) window.__CPM_PROVA_GIACALCIATO204 = 1; if (r204) window.__CPM_NO_G204 = 1; if (r249) window.__CPM_NO_G249 = 1;/* [giro 204] CPM_PROVA204=1: strumento di prova, il motore calcia prima della scena (ramo «gia' calciato»); CPM_ROSSO204=1: braccio rosso del giro 204 *//* [giro 191] CPM_PROD=1: come in produzione (il rigore dell'eroe fuori scena lo batte un compagno); CPM_ROSSO191=1: braccio rosso del giro 191 *//* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
-    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO, SOLO, PROD, ROSSO191, PROVA204, ROSSO204, ROSSO249]);
+  await page.addInitScript(([s, k, sp, r, so, pr, r191, p204, r204, r249, r257]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
+    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; if (so) window.__CPM_SOLO166 = 1; if (!pr) window.__CPM_NO_G154 = 1; if (r191) window.__CPM_NO_G191A = 1; if (p204) window.__CPM_PROVA_GIACALCIATO204 = 1; if (r204) window.__CPM_NO_G204 = 1; if (r249) window.__CPM_NO_G249 = 1; if (r257) window.__CPM_NO_G257 = 1;/* [giro 204] CPM_PROVA204=1: strumento di prova, il motore calcia prima della scena (ramo «gia' calciato»); CPM_ROSSO204=1: braccio rosso del giro 204 *//* [giro 191] CPM_PROD=1: come in produzione (il rigore dell'eroe fuori scena lo batte un compagno); CPM_ROSSO191=1: braccio rosso del giro 191 *//* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
+    localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO, SOLO, PROD, ROSSO191, PROVA204, ROSSO204, ROSSO249, ROSSO257]);
   const t0 = Date.now();
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 90000 });
@@ -72,7 +73,7 @@ async function partita(nome, idx) {
     ph = s.ph || ''; if (ph !== last) { fasi.push((s.min == null ? '?' : s.min) + ':' + ph + (s.no94 != null ? '|g' + s.no94 : '')); last = ph; }
     if (ph === 'ended' || ph === 'ceremony') break; await sleep(400);
   }
-  const R = await page.evaluate(() => ({ rig249: window.__CPM_RIG249 || [], vis204: window.__CPM_VIS204 || [], vis3d: (window.__CPM_VIS204_3D || []).slice(-80), spia: window.__CPM_SPIA139 || null, pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
+  const R = await page.evaluate(() => ({ rig257: (() => { try { return window.__CPM_MOTORE_OBJ()._cfg.eroe.rig257 || null; } catch (e) { return null; } })()/* [giro 257] il rigorista passato al motore */, rig249: window.__CPM_RIG249 || [], vis204: window.__CPM_VIS204 || [], vis3d: (window.__CPM_VIS204_3D || []).slice(-80), spia: window.__CPM_SPIA139 || null, pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
     ev: (typeof window.__CPM_EV === 'function' ? window.__CPM_EV() : []).filter(e => e && /goal|scena|recita|fine|rigore|pen/i.test(JSON.stringify(e))).slice(0, 200).map(e => JSON.stringify(e).slice(0, 160)),
     conta: (() => { try { const S = window.__CPM_MOTORE_OBJ()._S; return { piaz94: S.conta.piaz94 | 0, piazNo94: S.conta.piazNo94 | 0, rigNo190: S.conta.rigNo190 | 0, g139: S.conta.g139 | 0 }; } catch (e) { return null; } })() })).catch(e => ({ err: String(e.message) }));
   await ctx.close();

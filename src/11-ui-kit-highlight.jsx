@@ -407,6 +407,8 @@ function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
         <GruppoCtx235.Provider value={true}>{figli}</GruppoCtx235.Provider></div>}
     </section>);
 }
+/* [giro 257 PO-496 seguito] il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
+function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const _gr235=React.useContext(GruppoCtx235)&&_g235();
   if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
