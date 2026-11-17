@@ -2455,5 +2455,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia9jr2hgV8CGmxYEnAx",
+  "titolo": "giro 253 · salienti dalla panchina, salienti-229 (PO-508)",
+  "creata": "2026-11-17T14:36:04Z",
+  "chiusa": "2026-11-17T18:31:37Z",
+  "cost_usd": 16.17705926,
+  "output_tokens": 124117,
+  "cache_read_tokens": 54554751,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
