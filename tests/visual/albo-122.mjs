@@ -12,10 +12,10 @@ const FORMATI = [{ k: 't360', w: 360, h: 800, touch: true }, { k: 't412', w: 412
 const FOTO = !!process.env.C122_FOTO; const DIR = new URL('../../docs/sviluppo/foto-giro122/', import.meta.url).pathname;
 /* archivio sintetico: [season, league, champion, playerClub, playerPos, cup, euro] */
 const ARCH = [
-  [1, 'Eredivisie', 'FC Rotterdam', 'FC Utrecht', 6], [2, 'Eredivisie', 'FC Rotterdam', 'FC Utrecht', 5], [3, 'Eredivisie', 'FC Rotterdam', 'FC Utrecht', 4],
+  [1, 'Eredivisie', 'FC Rotterdam', 'FC Oudegracht', 6], [2, 'Eredivisie', 'FC Rotterdam', 'FC Oudegracht', 5], [3, 'Eredivisie', 'FC Rotterdam', 'FC Oudegracht', 4],
   [4, 'Serie A', 'FC Nerazzurri', 'FC Verona', 2], [5, 'Serie A', 'FC Nerazzurri', 'FC Verona', 3],
-  [6, 'Lega B', 'FC Salernum', 'FC Salernum', 1], [7, 'Lega B', 'FC Salernum', 'FC Salernum', 1, 1, 0], [8, 'Lega B', 'FC Salernum', 'FC Salernum', 1, 0, 1],
-  [9, 'Lega B', 'FC Salernum', 'FC Salernum', 1], [10, 'Lega B', 'FC Brescia', 'FC Salernum', 4], [11, 'Lega B', 'FC Brescia', 'FC Salernum', 7]];
+  [6, 'Lega B', 'FC Salernum 1919', 'FC Salernum 1919', 1], [7, 'Lega B', 'FC Salernum 1919', 'FC Salernum 1919', 1, 1, 0], [8, 'Lega B', 'FC Salernum 1919', 'FC Salernum 1919', 1, 0, 1],
+  [9, 'Lega B', 'FC Salernum 1919', 'FC Salernum 1919', 1], [10, 'Lega B', 'FC Brescia', 'FC Salernum 1919', 4], [11, 'Lega B', 'FC Brescia', 'FC Salernum 1919', 7]];
 const PREP = `p.leagueArchive=${JSON.stringify(ARCH)}.map(a=>({season:a[0],league:a[1],champion:a[2],playerClub:a[3],playerPos:a[4],playerGoals:9,playerAssists:3,relegated:[],isPlayerCupChamp:!!a[5],isPlayerEuroChamp:!!a[6]}));`;
 const ATTESE = {}; for (const a of ARCH) { const k = a[1]; (ATTESE[k] = ATTESE[k] || {})[a[2]] = (ATTESE[k][a[2]] || 0) + 1; }
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -37,7 +37,7 @@ for (const rosso of [false, true]) for (const f of FORMATI) {
   if (rosso) { if (nRie === 0) D('riepilogo assente (albo di prima)'); const tx = await page.evaluate(() => document.body.innerText); if (/Hai vinto la lega/.test(tx)) D('«Hai vinto la lega!» ambiguo ancora presente'); await ctx.close(); continue; }
   if (nRie !== 1) { D('riepilogo: ' + nRie); await ctx.close(); continue; }
   const rt = (await rie.innerText()).replace(/\s+/g, ' ');
-  if (!/4 campionati vinti/.test(rt) || !/FC Salernum/.test(rt) || !/Lega B/.test(rt)) D('riepilogo senza «4 campionati vinti · FC Salernum, Lega B»: ' + rt);
+  if (!/4 campionati vinti/.test(rt) || !/FC Salernum 1919/.test(rt) || !/Lega B/.test(rt)) D('riepilogo senza «4 campionati vinti · FC Salernum 1919, Lega B»: ' + rt);
   if (!/1 Coppa vinta/.test(rt) || !/1 Coppa europea vinta/.test(rt)) D('Coppa/Euro non esatte: ' + rt);
   if (/Nerazzurri|Rotterdam|Brescia|Verona|Utrecht/.test(rt)) D('club estraneo nel riepilogo: ' + rt);
   if (/Hai vinto la lega/.test(await page.evaluate(() => document.body.innerText))) D('«Hai vinto la lega!» ancora presente');

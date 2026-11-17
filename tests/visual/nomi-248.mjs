@@ -9,7 +9,7 @@
        accanto ai club rinominati (standings[].a, matchHistory[].oppAbbr) e' quella nuova; la seconda applicazione non cambia niente.
        Piu' tre stringhe costruite: «AC Dorvelli Primavera», «FC Nerazzurri U18», «FC Valmora U19» → nome nuovo col suffisso.
    D · SCHERMO (carriera del salvataggio, Deutsche Liga): home, classifica, calendario, partita (anteprima della giornata contro il
-       club `bay` e barra/tabellone in `playing`): i nomi o le sigle nuove ci sono (FC Isar/ISR, FC Domstadt/DMS), quelli del giro 6 mai.
+       club `bay` e barra/tabellone in `playing`): i nomi o le sigle nuove ci sono (FC Munchen/MUC, FC Koln/KLN), quelli del giro 6 mai.
    E · FOTO (CPM_FOTO248=<cartella>): classifica di Lega A a 360 px (club dell'eroe `juve`, classifica di Lega A iniettata), e il testo
        della classifica deve contenere i nomi nuovi italiani (o la loro forma corta / sigla).
    ROSSO: CPM_ROSSO248=1 accende __CPM_NO_G248 (nomi, sigle e stadi del giro 6, nessuna migrazione 248): A, B, C e D devono VEDERE i
@@ -23,17 +23,20 @@ const ROSSO = process.env.CPM_ROSSO248 === '1';
 const FOTO = process.env.CPM_FOTO248 || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 const DUMP = JSON.parse(fs.readFileSync(new URL('./fixtures/save-c177-s5w20.json', import.meta.url)));
-const NUOVI = { inter: ['FC Milano Brera', 'MBR'], milan: ['FC Milano Sempione', 'MSE'], napoli: ['FC Napoli Fuorigrotta', 'NFG'], lazio: ['FC Flaminio', 'FLM'],
-  psg: ['FC Parigi Ovest', 'PGO'], tor: ['FC Torino Santa Rita', 'TSR'], fio: ['FC Firenze', 'FRZ'], sam: ['FC Genova Ponente', 'GPO'], sas: ['FC Sassolese', 'SSL'],
-  bet: ['FC Heliópolis', 'HEL'], cel: ['FC Vigués', 'VGS'], get: ['FC Getafense', 'GTF'], esp: ['FC Sarrià', 'SRR'], bay: ['FC Isar', 'ISR'], kol: ['FC Domstadt', 'DMS'], spo: ['FC Lisboa Norte', 'LNO'] };
+/* [giro 251 PO-512] i 16 club del giro 6 hanno ora il nome DEFINITIVO scelto dal PO (pagina «Nomi dei club 197», 17/11 14:33): la
+   tabella sta in CLUB_NOMI_251 (src/02); il guardiano dei nomi definitivi di tutti i club e' nomi-251. */
+const NUOVI = { inter: ['FC Nerazzurri', 'NRZ'], milan: ['FC Rossoneri', 'RSN'], napoli: ['FC Partenope', 'PRT'], lazio: ['FC Biancocelesti', 'BNC'],
+  psg: ['FC Paris Île-de-France', 'PIF'], tor: ['FC Granata', 'GRT'], fio: ['FC Firenze', 'FRZ'], sam: ['FC Sampierdarena', 'SPD'], sas: ['FC Sassolese', 'SSL'],
+  bet: ['FC Heliópolis', 'HEL'], cel: ['FC Ría de Vigo', 'RDV'], get: ['FC Getafense', 'GTF'], esp: ['FC Sarrià', 'SRR'], bay: ['FC Munchen', 'MUC'], kol: ['FC Koln', 'KLN'], spo: ['FC Lisboa Norte', 'LNO'] };
 const STADI = { inter: 'Stadio Milano Ovest', milan: 'Stadio Milano Ovest', napoli: 'Stadio di Fuorigrotta', lazio: 'Stadio del Foro', roma: 'Stadio del Foro',
   psg: 'Parc Royal', tor: 'Stadio Santa Rita', fio: 'Stadio Toscano', sam: 'Stadio Ligure', sas: 'Emilia Stadium', bet: 'Estadio de Heliópolis', cel: 'Estadio de la Ría',
   bay: 'München Arena', spo: 'Estádio Lisboa Norte' };
 const G6 = 'Valmora|Dorvelli|Vellamare|Alcavera|Lumeranza|Torvelle|Brenvar|Marnesi|Caldoran|Ventrana|Oriolan|Dalvora|Pelvanni|Valdenau|Ravelmund|Rendalto';
 /* a schermo, a 360 px, la classifica e la barra mostrano spesso la SOLA sigla: le sigle del giro 6 contano come i nomi (parole intere; «DAL» escluso: e' la preposizione maiuscola dei titoli, misurato in home) */
 const G6S = G6 + '|\\b(?:VAL|ACR|VEL|ALC|LUM|TRV|BRN|MAR|CAL|ORI|PEL|VLD|RVM|RDL)\\b';
-const NUOVI_RE = 'Milano Brera|MBR|Milano Sempione|MSE|Fuorigrotta|NFG|Flaminio|FLM|Parigi Ovest|PGO|Santa Rita|TSR|Firenze|FRZ|Genova Ponente|GPO|Sassolese|SSL|Heliópolis|HEL|Vigués|VGS|Getafense|GTF|Sarrià|SRR|\\bISR\\b|Isar|ISAR|Domstadt|DMS|Lisboa Norte|LNO';
-const REALI = 'FC Nerazzurri|AC Rossoneri|FC Partenope|FC Biancoceleste|FC Paris(?![a-zà-ÿ])|FC Granata|FC Viola|FC Blucerchiati|FC Neroverde|FC Verdiblanco|FC Celeste|FC Leões|FC Perico|FC Azulón|FC München|FC Köln';
+const NUOVI_RE = 'Nerazzurri|NRZ|Rossoneri|RSN|Partenope|PRT|Biancocelesti|BNC|Île-de-France|PIF|Granata|GRT|Firenze|FRZ|Sampierdarena|SPD|Sassolese|SSL|Heliópolis|HEL|Ría de Vigo|RDV|Getafense|GTF|Sarrià|SRR|\\bMUC\\b|Munchen|MUNCHEN|Koln|KOLN|KLN|Lisboa Norte|LNO';
+/* [giro 251] FC Nerazzurri, FC Partenope e FC Granata erano nomi reali di prima del giro 6 e ora sono le scelte del PO: escono da qui */
+const REALI = 'AC Rossoneri|FC Biancoceleste|FC Paris(?![a-zà-ÿ]| Île)|FC Viola|FC Blucerchiati|FC Neroverde|FC Verdiblanco|FC Celeste|FC Leões|FC Perico|FC Azulón|FC München|FC Köln';
 const fails = [], oks = [], note = [];
 const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
 /* giudizio per braccio: verde = cond, rosso = il difetto si vede (cond falsa) */
@@ -70,7 +73,7 @@ try {
       const m1 = un(M(JSON.parse(JSON.stringify(p0)))); const m2 = un(M(JSON.parse(JSON.stringify(m1))));
       const stringhe = o => { const out = []; const w = x => { if (typeof x === 'string') out.push(x); else if (x && typeof x === 'object') for (const k in x) w(x[k]); }; w(o); return out.join('\n'); };
       const sig = {}; for (const r of (m1.standings || [])) sig[r.id] = r.a;
-      const oa = (m1.matchHistory || []).filter(h => /Isar|Domstadt|Valdenau|Ravelmund/.test(h.opponent || '')).map(h => h.opponent + '/' + h.oppAbbr);
+      const oa = (m1.matchHistory || []).filter(h => /Munchen|Koln|Valdenau|Ravelmund/.test(h.opponent || '')).map(h => h.opponent + '/' + h.oppAbbr);
       const mh = JSON.parse(JSON.stringify(m1.matchHistory || [])); mh.push({ season: 1, week: 1, opponent: 'AC Dorvelli Primavera', oppAbbr: 'ACR' });
       const sint = un(M({ ...JSON.parse(JSON.stringify(m1)), matchHistory: mh, diary: [{ t: 'Gol contro FC Nerazzurri U18 e poi FC Valmora U19.' }] }));
       const ult = (sint.matchHistory || []).slice(-1)[0] || {};
@@ -80,10 +83,10 @@ try {
     ok(g6prima > 0, `C · il salvataggio di prova contiene nomi del giro 6 prima della migrazione: ${g6prima} (se 0 la prova non giudica)`);
     giudica(g6dopo === 0 && realiDopo === 0, `C · dopo la migrazione: nomi del giro 6 ${g6dopo}, nomi reali ${realiDopo}`, `C · dopo la migrazione restano ${g6dopo} nomi del giro 6`);
     ok(m.idem, `C · seconda applicazione della migrazione senza modifiche: ${m.idem}`);
-    giudica(m.sig.bay === 'ISR' && m.sig.kol === 'DMS' && m.oa.length > 0 && m.oa.every(x => /\/(ISR|DMS)$/.test(x)),
+    giudica(m.sig.bay === 'MUC' && m.sig.kol === 'KLN' && m.oa.length > 0 && m.oa.every(x => /\/(MUC|KLN)$/.test(x)),
       `C · le sigle seguono il nome: classifica bay=${m.sig.bay} kol=${m.sig.kol} · storico ${m.oa.join(', ')}`,
       `C · sigle del giro 6: classifica bay=${m.sig.bay} kol=${m.sig.kol} · storico ${m.oa.join(', ')}`);
-    giudica(m.sintClub === 'FC Milano Sempione Primavera/MSE' && m.sintDiario === 'Gol contro FC Milano Brera U18 e poi FC Milano Brera U19.',
+    giudica(m.sintClub === 'FC Rossoneri Primavera/RSN' && m.sintDiario === 'Gol contro FC Nerazzurri U18 e poi FC Nerazzurri U19.',
       `C · suffissi: «${m.sintClub}» · «${m.sintDiario}»`, `C · suffissi non migrati ai nomi nuovi: «${m.sintClub}» · «${m.sintDiario}»`);
     ok(errs.length === 0, `A-C · nessun errore di pagina${errs.length ? ' — ' + errs[0] : ''}`);
     await page.context().close();
@@ -137,7 +140,7 @@ try {
     if (ROSSO) ok(g6 >= 8, `[rosso] E · classifica di Lega A coi nomi/sigle del giro 6: ${g6} (≥ 8)`);
     else ok(g6 === 0 && nuovi >= 8, `E · classifica di Lega A: nomi/sigle nuovi ${nuovi} (≥ 8), nomi/sigle del giro 6 ${g6}`);
     /* nomi tagliati (dubbio per il PO): elementi col nome nuovo che non ci stanno */
-    const tagli = await page.evaluate(() => [...document.querySelectorAll('body *')].filter(e => e.childElementCount === 0 && /Milano|Napoli|Torino|Genova|Flaminio|Firenze|Sassolese/.test(e.textContent) && e.offsetParent && e.scrollWidth > e.clientWidth + 1).map(e => e.textContent.trim()).slice(0, 10));
+    const tagli = await page.evaluate(() => [...document.querySelectorAll('body *')].filter(e => e.childElementCount === 0 && /Nerazzurri|Rossoneri|Partenope|Biancocelesti|Granata|Zebre|Sampierdarena|Firenze|Sassolese/.test(e.textContent) && e.offsetParent && e.scrollWidth > e.clientWidth + 1).map(e => e.textContent.trim()).slice(0, 10));
     note.push(`Lega A 360: elementi col nome tagliato (ellissi): ${tagli.length ? tagli.join(' | ') : 'nessuno'}`);
     ok(errs.length === 0, `E · nessun errore di pagina${errs.length ? ' — ' + errs[0] : ''}`);
     await page.context().close();

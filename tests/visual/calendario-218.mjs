@@ -57,25 +57,25 @@ async function apri(v, tema) {
   await page.evaluate(() => {
     const C = window.__CPM_CAREER;
     const opp = [
-      { id: 'o1', n: 'FC Parigi Ovest', a: 'PGO', p: 80, c: '#1d4ed8', c2: '#fff', nat: '🇫🇷' },
+      { id: 'o1', n: 'FC Paris Île-de-France', a: 'PIF', p: 80, c: '#1d4ed8', c2: '#fff', nat: '🇫🇷' },
       { id: 'o2', n: 'FC Alkmaar', a: 'ALK', p: 78, c: '#dc2626', c2: '#fff', nat: '🇳🇱' },
       { id: 'o3', n: 'FC Bergamo', a: 'BER', p: 81, c: '#1e3a8a', c2: '#000', nat: '🇮🇹' }];
     const R = (won, drew, h, a) => ({ won, drew, homeScore: h, awayScore: a });
     const cal = [
-      { matchday: 1, week: 2, opponentId: 'x1', opponentName: 'FC Milano Brera', isHome: true, played: true, result: R(true, false, 2, 0) },
+      { matchday: 1, week: 2, opponentId: 'x1', opponentName: 'FC Nerazzurri', isHome: true, played: true, result: R(true, false, 2, 0) },
       { matchday: 2, week: 3, opponentId: 'x2', opponentName: 'FC Firenze', isHome: false, played: true, result: R(false, true, 1, 1) },
       { matchday: 3, week: 4, opponentId: 'x3', opponentName: 'FC Salento', isHome: true, played: true, result: R(false, false, 0, 1) },
-      { matchday: 101, week: 5, type: 'euro_group', opponentId: 'o1', opponentName: 'FC Parigi Ovest', isHome: true, played: true, result: R(true, false, 3, 0) },
+      { matchday: 101, week: 5, type: 'euro_group', opponentId: 'o1', opponentName: 'FC Paris Île-de-France', isHome: true, played: true, result: R(true, false, 3, 0) },
       { matchday: 102, week: 7, type: 'euro_group', opponentId: 'o2', opponentName: 'FC Alkmaar', isHome: false, played: true, result: R(false, false, 2, 1) },
       { matchday: 103, week: 10, type: 'euro_group', opponentId: 'o3', opponentName: 'FC Bergamo', isHome: true, played: true, result: R(true, false, 1, 0) },
-      { matchday: 104, week: 12, type: 'euro_group', opponentId: 'o1', opponentName: 'FC Parigi Ovest', isHome: false, played: true, result: R(false, true, 0, 0) },
+      { matchday: 104, week: 12, type: 'euro_group', opponentId: 'o1', opponentName: 'FC Paris Île-de-France', isHome: false, played: true, result: R(false, true, 0, 0) },
       { matchday: 105, week: 14, type: 'euro_group', opponentId: 'o2', opponentName: 'FC Alkmaar', isHome: true, played: true, result: R(true, false, 2, 0) },
       { matchday: 106, week: 16, type: 'euro_group', opponentId: 'o3', opponentName: 'FC Bergamo', isHome: false, played: false },
       { matchday: 107, week: 20, type: 'euro', euroPhase: 'r16', cupRoundName: 'Ottavi di Finale', opponentId: 'o4', opponentName: 'Sporting Valparaiso Atletico Primavera', isHome: true, played: true, result: R(true, false, 2, 1) },
       { matchday: 108, week: 26, type: 'euro', euroPhase: 'quarters', cupRoundName: 'Quarti di Finale', opponentId: 'o5', opponentName: 'FC Valdoria', isHome: false, played: false },
       { matchday: 4, week: 30, opponentId: 'x4', opponentName: 'FC Ostravia', isHome: true, played: false },
       { matchday: 201, week: 31, type: 'cup', cupRoundName: 'Semifinale', opponentId: 'x5', opponentName: 'FC Corvina', isHome: true, played: false }];
-    const euro = { active: true, competition: 'UCL', groupOpponents: opp, groupResults: [{ hs: 3, as: 0, opp: 'FC Parigi Ovest' }, { hs: 1, as: 2, opp: 'FC Alkmaar' }, { hs: 1, as: 0, opp: 'FC Bergamo' }, { hs: 0, as: 0, opp: 'FC Parigi Ovest' }, { hs: 2, as: 0, opp: 'FC Alkmaar' }],
+    const euro = { active: true, competition: 'UCL', groupOpponents: opp, groupResults: [{ hs: 3, as: 0, opp: 'FC Paris Île-de-France' }, { hs: 1, as: 2, opp: 'FC Alkmaar' }, { hs: 1, as: 0, opp: 'FC Bergamo' }, { hs: 0, as: 0, opp: 'FC Paris Île-de-France' }, { hs: 2, as: 0, opp: 'FC Alkmaar' }],
       koResults: [{ phase: 'r16', won: true, opponent: 'Sporting Valparaiso', homeScore: 2, awayScore: 1 }] };
     const pid = 'cal218';
     const cup = { round: 3, nextWeek: 31, eliminated: false, champion: false, club: pid,
