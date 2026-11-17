@@ -2525,5 +2525,33 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaBP89yG4qQSf1t86zC",
+  "titolo": "giro 257 · rigorista visibile (PO-496)",
+  "creata": "2026-11-17T17:11:15Z",
+  "chiusa": "2026-11-17T21:07:03Z",
+  "cost_usd": 10.36614462,
+  "output_tokens": 75444,
+  "cache_read_tokens": 32727216,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaCwUMhKc9cjJ9iQzEe",
+  "titolo": "giro 260 · TWA, titoli, Primavera (PO-322, 458)",
+  "creata": "2026-11-17T20:17:01Z",
+  "chiusa": "2026-11-17T21:15:34Z",
+  "cost_usd": 9.43446048,
+  "output_tokens": 70232,
+  "cache_read_tokens": 29186911,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
