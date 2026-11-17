@@ -46947,7 +46947,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
           const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
           const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
-          const c240=m.userData.sal240||null,fin240=c240?Math.max(1.2,c240.dur-RAMPA240):2.05;/* [giro 240] con la clip il saluto dura quanto la clip */
+          const c240=m.userData.sal240||null,fin240=c240?Math.min(c240.dur-RAMPA240,2.90-RAMPA240):2.05;/* [giro 240] con la clip il braccio e' giu' a 2,90 s come nel giro 225 (2,05 + 0,85): il chiamato torna in fila entro i 6 s di scena che giudica presentazione-142. La clip e' un applauso continuo: se ne usa il primo tratto */
           if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<fin240?1:0;if(S.ts>=fin240&&S.lin<=0.10)S.fatto=true;}}
           else if(S.lin>0.10)tz=m.position.z;
           S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/(c240?RAMPA240:0.85));S.w=_sm(S.lin);
