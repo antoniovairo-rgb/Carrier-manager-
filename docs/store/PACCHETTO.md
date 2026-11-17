@@ -1,56 +1,61 @@
-# Pacchetto Android (AAB/APK) — come si costruisce, firma esclusa
+# Pacchetto Android (AAB) per il test chiuso — la TWA, firma esclusa
 
-> Giro 236 · PO-322 · 17/11/2026. Nessuna chiave generata o committata, nessun account usato, nulla inviato a Google.
+> Giro 236 · PO-322 · 17/11/2026, allineato al giro 260 sulla **decisione PO del 17/11 (A) «TWA, come PLINTO»**.
+> Nessuna chiave generata o committata, nessun account usato, nulla inviato a Google.
 
-## Due pacchetti, stessa identità `com.korward.elite` — se ne carica UNO
+## Il pacchetto è la TWA (decisione PO 17/11)
 
-| | **Capacitor (offline)** | **TWA (come PLINTO)** |
-|---|---|---|
-| Dove sta il gioco | dentro l'app (`dist/`, JSX precompilato, nessun CDN) | sul sito GitHub Pages, aperto da Chrome a tutto schermo |
-| Rete | non serve per giocare | serve al primo avvio; poi regge senza rete (service worker, giro 120) |
-| Aggiornare il gioco | nuovo AAB caricato sullo store | si pubblica il sito; nuovo AAB solo se cambiano icona, nome, permessi |
-| Progetto | `android/` generato da `npx cap add android` (non versionato) | `twa/android/` (versionato, scritto a mano) |
-| Target API | 36 (Capacitor `^8.6.0`: default compileSdk/targetSdk 36, minSdk 24 — letto nei pacchetti npm al giro 116) | 36 esplicito in `twa/android/app/build.gradle` (minSdk 24) |
-| Ultima build misurata | giro 116 (07/11): `app-release.aab` **109.731.296 byte**, non firmato, manifest fuso targetSdk 36 | giro 120 (08/11): AAB **3.798.657 byte**, non firmato |
-| Workflow CI | `.github/workflows/android-build.yml` | `.github/workflows/twa-build.yml` |
+Si carica **un solo** pacchetto: la **Trusted Web Activity** in `twa/android/`, identità `com.korward.elite`, scritta a mano sullo
+stampo di PLINTO (decisione PO dell'08/11, giro 120). Il progetto Capacitor (`capacitor.config.json`, workflow `android-build.yml`)
+resta nel repository ma **non** è il pacchetto del test chiuso: non va caricato (stesso `applicationId`, Play ne accetta uno solo).
 
-Il mandato chiede il pacchetto **offline, API 36**: è il **Capacitor**. La scelta finale fra i due è del PO (vedi checklist).
+| | **TWA** |
+|---|---|
+| Dove sta il gioco | sul sito GitHub Pages, aperto da Chrome a tutto schermo con `?app=twa` |
+| Rete | serve al primo avvio; poi regge senza rete (service worker, giro 120) |
+| Aggiornare il gioco | si pubblica il sito; nuovo AAB solo se cambiano icona, nome, permessi o configurazione Android |
+| Progetto | `twa/android/` (versionato) · configurazione Bubblewrap equivalente in `twa/twa-manifest.json` |
+| Target API | 36 esplicito in `twa/android/app/build.gradle` (minSdk 24) |
+| Versione | `versionName '7.999.197'`, `versionCode 2001` (giro 260); stessi valori in `twa/twa-manifest.json` |
+| Ultima build misurata | giro 120 (08/11): AAB **3.798.657 byte**, non firmato, sulla 7.999.184 |
+| Workflow CI | `.github/workflows/twa-build.yml` (a mano o con un tag `twa-v*`) |
 
-## Cosa ho verificato in questo giro (17/11/2026)
+Dentro l'app il gioco si riconosce (`window.__CPM_APP_TWA`, `src/00-head.html`, giro 120): funzione AI spenta, sonde di collaudo
+spente e — dal giro 260, decisione PO (B) «Toglierlo nell'app store» — **nessun pulsante «Sostieni il progetto»**, che resta sul sito.
 
-- `node tools/build-dist.mjs` → `dist/` rifatta dal guardiano `store-236` (controllo S7: `dist/index.html` senza script da CDN).
-- Configurazioni: `capacitor.config.json` (`appId` `com.korward.elite`, `webDir` `dist`), `package.json` (`@capacitor/android ^8.6.0`),
-  `twa/android/app/build.gradle` (`applicationId 'com.korward.elite'`, `targetSdk 36`), `twa/twa-manifest.json` — controllo S1.
-- **Non** ho compilato l'AAB in questo giro: l'installazione dell'SDK Android in sessione (`sdkmanager`, `platforms;android-36`)
-  è stata **negata dal controllo dei permessi** della sessione e non l'ho aggirata. Le misure dell'AAB qui sopra sono quelle dei giri
-  116/120, su versioni precedenti del gioco (7.999.183/184): per la 7.999.197 **non posso confermarle**.
+## Cosa ho verificato (giro 260, 17/11/2026)
 
-## Costruire l'AAB Capacitor (sul PC del PO o in CI)
+- `twa/android/app/build.gradle`: `applicationId 'com.korward.elite'`, `targetSdk 36`, `versionName '7.999.197'`, `versionCode 2001`;
+  `twa/twa-manifest.json`: `packageId`, `appVersionName`, `appVersion` e `appVersionCode` uguali — guardiano `store-236`, controlli S1 e S8.
+- **Non** ho compilato l'AAB: l'installazione dell'SDK Android in sessione era stata negata al giro 236 e non l'ho riprovata. Per la
+  7.999.197 la dimensione dell'AAB **non posso confermarla**.
+- `GAME_VERSION` nel gioco è ancora `7.999.196` (regola del giro: non si tocca). Il workflow scrive `versionName` = `GAME_VERSION`:
+  finché il gioco non passa alla 7.999.197, un AAB costruito dalla CI porta `7.999.196`.
 
-Prerequisiti: Node ≥ 22, JDK 21, Android SDK con `platforms;android-36` e `build-tools;36.0.0` (Android Studio li installa).
+## Costruire l'AAB (sul PC del PO o in CI)
+
+Prerequisiti (gli stessi del workflow): JDK 21, Gradle 8.14.3, Android SDK con `platforms;android-36` (Android Studio li installa).
 
 ```bash
-npm install
-cd tests/visual && npm install && cd ../..      # la build web prende React/Three/Babel da qui
-npm run build:web && npm run validate:web       # atteso: «DIST OFFLINE FUNZIONANTE»
-npx cap add android                             # solo la prima volta
-npx cap sync android
-npm run android:apk                             # APK di prova  → android/app/build/outputs/apk/debug/app-debug.apk
-npm run android:aab                             # AAB di release → android/app/build/outputs/bundle/release/app-release.aab
+gradle -p twa/android --no-daemon bundleRelease
+ls -la twa/android/app/build/outputs/bundle/release/      # app-release.aab, NON firmato
 ```
 
-Controllo del livello API dopo la build (senza bundletool):
-`grep -o 'targetSdkVersion="[0-9]*"' android/app/build/intermediates/merged_manifest/release/*/AndroidManifest.xml` → atteso `36`.
+Oppure: GitHub › Actions › «Android AAB (TWA)» › *Run workflow*. Senza i segreti esce un AAB non firmato (artefatto
+`korward-elite-twa-aab`); con i segreti lo firma.
+
+Dopo il primo caricamento: leggere in Play Console l'impronta SHA-256 della firma dell'app e pubblicare `assetlinks.json`
+(proposta in `docs/governo/USCITA-STORE-184.md` §10.5), altrimenti il gioco si apre con la barra dell'indirizzo.
 
 ## Firma — SEGNAPOSTO (solo il PO)
 
 Nel repository **non c'è e non deve esserci** nessuna chiave. Il PO:
 
 1. crea la **chiave di caricamento** sul suo PC (Android Studio → *Build › Generate Signed Bundle* → *Create new…*, oppure `keytool`)
-   e ne tiene una copia fuori dal PC. Una sola chiave per `com.korward.elite`, qualunque pacchetto scelga;
+   e ne tiene una copia fuori dal PC. Una sola chiave per `com.korward.elite`;
 2. al primo caricamento attiva **Play App Signing** (Google custodisce la chiave dell'app; il PO solo quella di caricamento);
 3. per la CI mette i segreti nel repository GitHub (Settings › Secrets): `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
-   `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` (nomi letti in `.github/workflows/android-build.yml`, non modificato).
+   `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` (nomi letti in `.github/workflows/twa-build.yml`).
 
 ```
 # segnaposto — NON compilare qui, NON committare
@@ -62,7 +67,7 @@ keyPassword=<solo il PO>
 
 ## versionCode e versionName
 
-- `versionCode` deve crescere a ogni caricamento (anche le bozze cancellate «bruciano» il numero). TWA: 2000 in locale, la CI lo
-  calcola. Capacitor: 1 in locale, la CI lo sovrascrive.
-- `versionName` della TWA è fermo a `7.999.184` in `twa/android/app/build.gradle`: **non l'ho cambiato** (regola: non toccare
-  `GAME_VERSION` e le versioni). Da allineare alla versione che si carica.
+- `versionCode` deve crescere a ogni caricamento (anche le bozze cancellate «bruciano» il numero). In locale **2001** (giro 260,
+  era 2000); il workflow lo riscrive con **2000 + numero della corsa**. Le due serie possono incontrarsi (la corsa n. 1 stampa 2001):
+  se si carica a mano un AAB locale, il caricamento successivo dalla CI deve avere un numero più alto.
+- `versionName`: `7.999.197` in `build.gradle` e in `twa-manifest.json`; il workflow lo riscrive con `GAME_VERSION`.

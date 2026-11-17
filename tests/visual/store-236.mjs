@@ -18,7 +18,9 @@
      S4 privacy.html: contatto korward.devteam@gmail.com; nessun altro indirizzo email in privacy.html, PRIVACY_POLICY.md, docs/store/;
      S5 testi della scheda (docs/store/SCHEDA-PLAY.md): titolo <= 30, breve <= 80, completa <= 4000 caratteri, in italiano;
      S6 checklist (docs/store/CHECKLIST-PLAY-CONSOLE.md): il primo passo e' il parere legale sui nomi dei club;
-     S7 pacchetto costruibile: tools/build-dist.mjs rifatto qui, dist/index.html presente e senza richiami a CDN.
+     S7 pacchetto costruibile: tools/build-dist.mjs rifatto qui, dist/index.html presente e senza richiami a CDN;
+     S8 [giro 260] TWA alla versione che si carica (versionName = GAME_VERSION o la successiva, coerente con twa-manifest, versionCode > 2000);
+     S9 [giro 260] nessun «Sostieni il progetto» dentro l'app (?app=twa), che resta sul sito (rosso: window.__CPM_NO_G260).
    PROVA DEL ROSSO (CPM_PROVA_ROSSO=1): la parte G gira con window.__CPM_NO_G236 (+ __CPM_NO_G224 per G2, che e' del giro 224);
    la parte S gira su una COPIA guastata dei file (appId diverso, icona sbagliata, screenshot 1:1, email estranea, titolo lungo,
    checklist senza parere legale, dist vuota). Ogni controllo DEVE cadere; uscita 1 se un rosso non si vede.
@@ -92,6 +94,16 @@ function parteS(R, distDir) {
     const primo = (md.match(/^\s*1\.\s+(.+)$/m) || [])[1] || ''; const ok = /parere legale/i.test(primo) && /nomi/i.test(primo);
     metti('S6', ok, 'primo passo: «' + primo.slice(0, 90) + '»');
   } catch (e) { metti('S6', false, 'non giudicato: ' + e.message); }
+  // S8 [giro 260 · decisione PO 17/11 A «TWA, come PLINTO»] la TWA alla versione giusta: versionName di build.gradle uguale ad
+  //    appVersionName e appVersion di twa-manifest, e pari a GAME_VERSION o alla versione successiva (quella che si carica: il gioco
+  //    passa alla nuova al rilascio); versionCode uguale nei due file e oltre il 2000 del giro 120 (cresce a ogni caricamento).
+  try { const gr = fs.readFileSync(path.join(R, 'twa/android/app/build.gradle'), 'utf8'); const tm = JSON.parse(fs.readFileSync(path.join(R, 'twa/twa-manifest.json'), 'utf8'));
+    const src = fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.jsx'), 'utf8'); const gv = (src.match(/const GAME_VERSION="([0-9.]+)"/) || [])[1] || '';
+    const vn = (gr.match(/versionName\s+'([^']+)'/) || [])[1] || ''; const vc = +((gr.match(/versionCode\s+(\d+)/) || [])[1] || 0);
+    const num = v => v.split('.').map(Number); const succ = v => { const a = num(v); a[a.length - 1]++; return a.join('.'); };
+    const ok = gv && vn && (vn === gv || vn === succ(gv)) && tm.appVersionName === vn && tm.appVersion === vn && tm.appVersionCode === vc && vc > 2000;
+    metti('S8', ok, `TWA versionName ${vn} · twa-manifest ${tm.appVersionName}/${tm.appVersion} · versionCode ${vc}/${tm.appVersionCode} · GAME_VERSION ${gv} (ammesse ${gv} o ${gv ? succ(gv) : '?'})`);
+  } catch (e) { metti('S8', false, 'non giudicato: ' + e.message); }
   // S7
   try { const ix = path.join(distDir, 'index.html'); if (!fs.existsSync(ix)) throw new Error('dist/index.html assente');
     const h = fs.readFileSync(ix, 'utf8'); const cdn = (h.match(/<script[^>]+src=["']https?:\/\/[^"']+/g) || []).length;
@@ -115,6 +127,7 @@ function copiaGuastata() {
   fs.copyFileSync(path.join(ROOT, 'icon-512.png'), path.join(T, 'docs/store/screenshots/01-quadrato.png'));
   ed('privacy.html', s => s + '\n<!-- prova: mario.rossi@example.com -->');
   ed('docs/store/SCHEDA-PLAY.md', s => s.replace(/(## Nome dell'app[\s\S]*?```\n)([^\n]*)/, (m, a, b) => a + b + ' — nome troppo lungo per lo store'));
+  ed('twa/android/app/build.gradle', s => s.replace(/versionName '[^']*'/, "versionName '7.999.184'"));
   ed('docs/store/CHECKLIST-PLAY-CONSOLE.md', s => s.replace(/parere legale/gi, 'controllo'));
   const D = path.join(T, 'dist-vuota'); fs.mkdirSync(D);
   return { T, D };
@@ -206,10 +219,40 @@ async function parteG() {
   } finally { await browser.close(); srv.close(); }
 }
 
+/* ───────────────────── PARTE A (app): S9 — niente «Sostieni» dentro la TWA ───────────────────── */
+/* [giro 260 · decisione PO 17/11 B «Toglierlo nell'app store»] gioco vero SENZA ?cpmtest (dentro l'app le sonde sono spente: e' la
+   build store), salvataggio di carriera, CONTINUA, poi si cerca il tasto per titolo nel DOM. Sito (nessun parametro): il tasto c'e'.
+   App (?app=twa, il criterio del giro 120 in src/00-head.html): il tasto non c'e' e «Idee e feedback» si' (la riga e' disegnata, quindi
+   l'assenza e' giudicata). Rosso: app + window.__CPM_NO_G260 → il tasto torna e S9 deve cadere. */
+async function parteA() {
+  const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser(); const out = {};
+  try {
+    for (const [k, q] of [['sito', ''], ['app', '?app=twa']]) {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' }); const page = await ctx.newPage(); await installCdnRoutes(page);
+      const err = []; page.on('pageerror', e => err.push(String(e.message).slice(0, 140)));
+      await page.addInitScript(({ s, rosso }) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G260 = true; localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: s })); },
+        { s: { ...BASE, proStatus: 'pro', club: { ...CLUB, lg: 'Lega B', n: 'FC Cremona' }, week: 10, season: 2 }, rosso: ROSSO });
+      await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${q}`, { waitUntil: 'load', timeout: 120000 });
+      await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
+      await sleep(1500); try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
+      try { await page.waitForSelector('button[title="Invia idee e feedback allo sviluppatore"]', { state: 'attached', timeout: 30000 }); } catch (e) {}
+      out[k] = await page.evaluate(() => ({ app: !!window.__CPM_APP_TWA, sost: document.querySelectorAll('button[title="Sostieni lo sviluppo di Korward Elite"]').length,
+        idee: document.querySelectorAll('button[title="Invia idee e feedback allo sviluppatore"]').length, testo: /Sostieni il progetto|Sostieni lo sviluppo/.test(document.body.innerText) }));
+      out[k].err = err.length;
+      if (!ROSSO && k === 'app') { fs.mkdirSync(path.join(ROOT, 'tests/visual/out'), { recursive: true }); await page.screenshot({ path: path.join(ROOT, 'tests/visual/out/store-260-app-senza-sostieni.png') }); }
+      await ctx.close();
+    }
+  } finally { await browser.close(); srv.close(); }
+  const S = out.sito || {}, A = out.app || {};
+  const giudicato = S.idee > 0 && A.idee > 0 && A.app === true && S.app === false;
+  metti('S9', giudicato && S.sost > 0 && A.sost === 0 && !A.testo, `${giudicato ? '' : 'NON GIUDICATO · '}sito: app ${S.app} · «Sostieni» ${S.sost} · «Idee» ${S.idee} — app (?app=twa): app ${A.app} · «Sostieni» ${A.sost} (testo ${A.testo ? 'presente' : 'assente'}) · «Idee» ${A.idee}`);
+}
+
 /* ───────────────────────────── esecuzione ───────────────────────────── */
 let tmp = null;
 try {
   await parteG();
+  await parteA();
   if (!ROSSO) { try { execFileSync(process.execPath, [path.join(ROOT, 'tools', 'build-dist.mjs')], { cwd: ROOT, stdio: 'pipe' }); }
     catch (e) { console.log('  · build-dist fallita: ' + String(e.stderr || e.message).slice(0, 200)); }
     parteS(ROOT, path.join(ROOT, 'dist')); }
@@ -217,11 +260,11 @@ try {
 } catch (e) { console.log('  ✗ esecuzione interrotta: ' + String(e && e.message || e).slice(0, 300)); }
 finally { if (tmp) fs.rmSync(tmp.T, { recursive: true, force: true }); }
 
-const ATTESI = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+const ATTESI = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9'];
 const mancanti = ATTESI.filter(k => !esiti[k]);
 if (!ROSSO) { const ko = ATTESI.filter(k => !esiti[k] || !esiti[k].ok);
-  console.log(ko.length ? `STORE-236 ROSSO: ${ko.join(', ')}${mancanti.length ? ' (non giudicati: ' + mancanti.join(', ') + ')' : ''}` : 'STORE-236 VERDE: 13/13 (6 difetti G189-18 chiusi · 7 controlli store)');
+  console.log(ko.length ? `STORE-236 ROSSO: ${ko.join(', ')}${mancanti.length ? ' (non giudicati: ' + mancanti.join(', ') + ')' : ''}` : 'STORE-236 VERDE: 15/15 (6 difetti G189-18 chiusi · 9 controlli store)');
   process.exit(ko.length ? 1 : 0); }
 else { const ciechi = ATTESI.filter(k => !esiti[k] || esiti[k].ok);
-  console.log(ciechi.length ? `PROVA DEL ROSSO FALLITA: non cadono ${ciechi.join(', ')}` : 'PROVA DEL ROSSO OK: 13/13 controlli cadono');
+  console.log(ciechi.length ? `PROVA DEL ROSSO FALLITA: non cadono ${ciechi.join(', ')}` : 'PROVA DEL ROSSO OK: 15/15 controlli cadono');
   process.exit(ciechi.length ? 1 : 0); }
