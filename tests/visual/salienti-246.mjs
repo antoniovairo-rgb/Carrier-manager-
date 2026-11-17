@@ -8,7 +8,7 @@
         dei momenti salienti;
      3. INGRESSO: premuto il tasto si vedono formazioni e ingresso in campo (fase `walkout` raggiunta) PRIMA della prima scena;
      4. SOLI SALIENTI: la partita e' a soli salienti (testimone __CPM_LM166 attiva e scelta243, velo «solo-166-velo», gioco fluido
-        <= 400 ms reali per minuto di gioco fino alla prima scena — la partita intera sta a ~1600).
+        <= 400 ms reali per minuto di gioco su una finestra di almeno 20 minuti — la partita intera sta a ~1600).
    Tre partite (Mondiale gironi, Primavera, provino) si giocano fino al fischio e la carriera/il provino le registrano.
    Negativo: da PANCHINA il tasto non c'e'.
    Rosso window.__CPM_NO_G246 (comportamento del giro 243): il tasto torna nel prompt e nelle lobby, il tasto della pre-partita salta
@@ -28,6 +28,9 @@ async function inietta(page, W, tipo) {
     const C = window.__CPM_CAREER, p = C.snapshot();
     const opp = CLUBS.find(c => c.lg !== 'Deutsche Liga' && !c.isU18 && c.p >= 72 && c.p <= 80);
     const md = { matchday: 996, week: w, opponentId: opp.id, opponentName: opp.n, isHome: true, played: false, result: null, type: tipo, competition: 'UCL', euroPhase: tipo === 'euro' ? 'r16' : undefined, cupRoundName: 'Ottavi di Finale' };
+    if (!tipo) { delete md.type; delete md.competition; delete md.euroPhase; delete md.cupRoundName; md.opponentId = (p.calendar || []).find(m => m.week === w && !m.type)?.opponentId || md.opponentId;
+      md.opponentName = (CLUBS.find(c => c.id === md.opponentId) || {}).n || md.opponentName;
+      C.patch({ week: w, weekLived: false, nationsCupQueue: null, euroMondiale: null, calendar: [...(p.calendar || []).filter(m => m.week !== w), md] }); return md; }
     C.patch({ week: w, weekLived: false, nationsCupQueue: null, euroMondiale: null, calendar: [...(p.calendar || []).filter(m => m.week !== w), md],
       euro: { active: true, competition: 'UCL', phase: tipo === 'euro' ? 'r16' : 'group', groupOpponents: [{ id: opp.id, n: opp.n }], pts: 0, groupResults: [], qualified: true, champion: false, eliminated: false, koResults: [], koRound: 0 } });
     return md;
@@ -43,6 +46,7 @@ const fuoriDOM = page => page.evaluate((src) => { const rx = new RegExp(src, 'i'
 /* dal clic d'ingresso alla schermata pre-partita, guardando ogni schermata attraversata */
 async function alPrepartita(page, fuori) {
   for (let i = 0; i < 60; i++) {
+    if (process.env.CPM_TRACE) console.log('    traccia', i, JSON.stringify(await page.evaluate(() => ({ f: typeof window.__CPM_PHASE === 'function' ? window.__CPM_PHASE() : null, t: ((document.querySelector('[data-cpm="toast23"]') || {}).textContent || '').slice(0, 120), m: [...document.querySelectorAll('[data-cpm]')].filter(x => x.offsetParent !== null).map(x => x.getAttribute('data-cpm')).filter(x => !/^(nav|tab)/.test(x)).slice(0, 8), b: [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null).map(x => (x.textContent || '').trim().slice(0, 22)).slice(-6) })).catch(() => null)));
     for (const t of await fuoriDOM(page)) if (!fuori.includes(t)) fuori.push(t);
     const s = await page.evaluate(() => { const pp = document.querySelector('[data-cpm="prepartita23"]');
       return { pp: !!pp, f: typeof window.__CPM_PHASE === 'function' ? window.__CPM_PHASE() : null, solo: !!document.querySelector('[data-cpm="solo-243"]'),
@@ -50,16 +54,32 @@ async function alPrepartita(page, fuori) {
         bottoni: pp ? [...pp.querySelectorAll('button')].map(x => (x.textContent || '').trim()) : [] }; }).catch(() => null);
     if (s && s.pp && s.f === 'matchday') return s;
     if (s && s.f && s.f !== 'matchday') return { ...s, fuoriPre: true };
-    await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {}
+    await page.evaluate(() => {
+      /* la conferenza stampa pre-partita (sorteggiata) si chiude RISPONDENDO: chiusa d'ufficio (dismiss) la gara non parte piu' (src/18,
+         attesaConf194Ref) — era il «pre-partita mai raggiunta» saltuario della prima stesura (panchina, Primavera) */
+      const iv = document.querySelector('[data-cpm="intervista231"]');
+      if (iv) { const B = [...iv.querySelectorAll('button')].filter(x => x.offsetParent !== null && !x.disabled);
+        const b = B.find(x => /Rispondi|Continua|Avanti|Chiudi|Salta|Fine|Torna/i.test(x.textContent || '')) || B[0]; if (b) b.click(); return; }
+      try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {}
       const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null && /^(Gioca la partita|Gioca · parti dalla panchina|Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim()));
       const b = B[B.length - 1]; if (b) b.click(); }).catch(() => {});
     await sleep(500);
   }
-  return null;
+  const u = await page.evaluate(() => ({ f: typeof window.__CPM_PHASE === 'function' ? window.__CPM_PHASE() : null, iv: !!document.querySelector('[data-cpm="intervista231"]'), b: [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null).map(x => (x.textContent || '').trim().slice(0, 30)).slice(0, 12) })).catch(() => null);
+  return { nonGiudicato: 'schermata pre-partita mai raggiunta (ultima schermata: ' + JSON.stringify(u) + ')' };
 }
 async function daPrompt(page, W, tipo, fuori, CAL0) {
-  if (tipo) await inietta(page, W, tipo); else await page.evaluate(({ w, c }) => window.__CPM_CAREER.patch({ week: w, weekLived: false, calendar: c, nationsCupQueue: null, euroMondiale: null }), { w: W, c: CAL0 });
+  /* campionato: la giornata di lega della settimana W si rimette come gara NUOVA da giocare (stesso avversario, matchday 996). Misurato: ~1
+     volta su 6, nei due bracci, la giornata vera risultava gia' giocata appena aperto il salvataggio e una toppa a played:false non teneva
+     (causa non individuata, dubbio nel rapporto 246) → «Nessuna partita programmata questa settimana» */
+  await inietta(page, W, tipo);
   await sleep(500);
+  /* la gara della settimana deve esserci PRIMA di aprire il prompt: senza questa attesa, 1 volta su 5 (misurato, entrambi i bracci) il
+     «Gioca» trovava «Nessuna partita programmata questa settimana» — la toppa al salvataggio non era ancora arrivata allo stato */
+  let md = null;
+  for (let i = 0; i < 25 && !md; i++) { md = await page.evaluate((w) => { const C = window.__CPM_CAREER, t = C.thisWeekMd(); return (t && C.snapshot().week === w) ? t : null; }, W).catch(() => null); if (!md) await sleep(200); }
+  if (!md) return { nonGiudicato: 'nessuna gara nella settimana ' + W + ' dopo la toppa: ' + JSON.stringify(await page.evaluate((w) => { const C = window.__CPM_CAREER, p = C.snapshot(); return { week: p.week, lived: p.weekLived, md: C.thisWeekMd(), cal: (p.calendar || []).filter(m => m.week === w).map(m => ({ t: m.type, pl: m.played })), n: (p.calendar || []).length }; }, W).catch(e => String(e))) };
+  await sleep(300);
   await page.evaluate((t) => window.__CPM_CAREER.apriPartita('starter', t || undefined), tipo || null); await sleep(800);
   for (const t of await fuoriDOM(page)) fuori.push(t);
   const clic = await page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="partita23"] button')].find(x => /^Gioca( la partita| · parti dalla panchina)/.test((x.textContent || '').trim())); if (!b) return false; const t = (b.textContent || '').trim(); b.click(); return t; });
@@ -78,10 +98,10 @@ async function daHome(page, W, patch, fuori) {
 async function daLobby(page, W, patch, fuori) {
   await page.evaluate(({ w, p }) => window.__CPM_CAREER.patch({ week: w, weekLived: true, ...p }), { w: W, p: patch }); await sleep(600);
   await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} window.__CPM_CAREER.goTab('nazionale'); }); await sleep(1500);
-  const lobby = await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null).map(b => (b.textContent || '').trim()).filter(t => /Gioca Partita|Gioca la partita|Simula/.test(t)));
+  const lobby = await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null).map(b => (b.textContent || '').trim()).filter(t => /^⚽\s*Gioca|Simula/.test(t)));
   for (const t of await fuoriDOM(page)) fuori.push(t);
-  const clic = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent !== null && /Gioca Partita/.test(x.textContent || '')); if (!b) return false; b.click(); return true; });
-  if (!clic) return { nonGiudicato: 'lobby senza «Gioca Partita»: ' + J(lobby) };
+  const clic = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent !== null && /^⚽\s*Gioca/.test((x.textContent || '').trim())); if (!b) return false; b.click(); return true; });
+  if (!clic) return { nonGiudicato: 'lobby senza «⚽ Gioca…»: ' + J(lobby) };
   const r = await alPrepartita(page, fuori); return r ? { ...r, lobby } : { nonGiudicato: 'schermata pre-partita mai raggiunta' };
 }
 /* il provino dalla creazione vera */
@@ -118,12 +138,14 @@ async function gioca(page, { finoAlFischio, registrata }) {
       if (s.f === 'formations' && !auto) await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent !== null && /^Ingresso in campo/.test((x.textContent || '').trim())); if (b) b.click(); }).catch(() => {});
       /* il pilota parte dall'ingresso (o, se l'ingresso non arriva, dal campo): l'autoplay chiude l'ingresso come «Salta ingresso» */
       if (!auto && s.ap && (s.f === 'walkout' || s.f === 'playing')) { if (s.f === 'walkout') await sleep(1200); auto = true; await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7246, policy: 'seeded', tickMs: 300 })); }
-      if (o.walkoutPrimaScena === null && /^hl_/.test(String(s.f))) { o.walkoutPrimaScena = o.walkout; minScena = s.m || 0; playScena = tPlay; if (!finoAlFischio) break; }
+      if (o.walkoutPrimaScena === null && /^hl_/.test(String(s.f))) { o.walkoutPrimaScena = o.walkout; }
+      /* il passo del gioco fluido si misura su una finestra di almeno 20 minuti (la prima scena puo' cadere al 2'-5') */
+      if (minScena === null && min0 !== null && (s.m || 0) - min0 >= 20 && o.walkoutPrimaScena !== null) { minScena = s.m || 0; playScena = tPlay; if (!finoAlFischio) break; }
       if (s.f === 'ended' || s.f === 'ceremony' || s.f === 'shootout') { o.finita = true; break; }
     }
     ultT = ora; await sleep(120);
   }
-  o.passo = (minScena != null && min0 != null && minScena - min0 >= 5) ? Math.round(playScena / (minScena - min0)) : null;
+  o.passo = (minScena != null && min0 != null && minScena - min0 >= 20) ? Math.round(playScena / (minScena - min0)) : null;
   o.minScena = minScena; o.min0 = min0;
   /* fino al fischio: il passo si misura sull'intera partita (il provino ha la prima scena al 3': troppo presto per misurarlo li') */
   if (finoAlFischio && o.finita && min0 != null && o.minMax - min0 >= 30) o.passo = Math.round(tPlay / (o.minMax - min0));
@@ -216,19 +238,19 @@ async function braccio(rosso) {
   const ris = [];
   for (const P of PERCORSI) { if (SOLO && !P.nome.includes(SOLO)) continue;
     const o = await percorso(P, rosso); const righe = giudica(o, !rosso && !!P.fischio);
-    ris.push({ nome: P.nome, righe }); console.log(`  [${rosso ? 'rosso' : 'verde'}] ${P.nome}: ${righe.map(x => (x.ok ? '✓' : '✗') + x.k).join(' · ')}`); }
-  const pa = SOLO ? null : await panchina(rosso);
+    ris.push({ nome: P.nome, righe, pp: !!o.pp, provino: P.tipo === 'provino' }); console.log(`  [${rosso ? 'rosso' : 'verde'}] ${P.nome}: ${righe.map(x => (x.ok ? '✓' : '✗') + x.k).join(' · ')}`); }
+  const pa = (!SOLO || SOLO === 'panchina') ? await panchina(rosso) : null;
   return { ris, pa };
 }
 const stampa = (tit, B) => { console.log(tit); for (const p of B.ris) { console.log(`  ${p.nome}`); for (const x of p.righe) console.log(`    ${x.ok ? '✓' : '✗'} ${x.k} — ${x.info}`); }
   if (B.pa) console.log(`  ${B.pa.ok ? '✓' : '✗'} ${B.pa.nome} — ${B.pa.info}`); };
 
 let V = null, R = null, verde = null, rosso = null;
-if (PARTE !== 'rosso') { V = await braccio(false); verde = V.ris.length > 0 && V.ris.every(p => p.righe.every(x => x.ok)) && (!V.pa || V.pa.ok); }
+if (PARTE !== 'rosso') { V = await braccio(false); verde = (V.ris.length > 0 || !!V.pa) && V.ris.every(p => p.righe.every(x => x.ok)) && (!V.pa || V.pa.ok); }
 if (PARTE !== 'verde') { R = await braccio(true);
-  /* ogni percorso deve cadere su almeno uno dei quattro giudizi (tasto / unico punto / ingresso / soli salienti) per un motivo GIUDICATO;
-     la panchina resta senza tasto */
-  rosso = R.ris.length > 0 && R.ris.every(p => p.righe.slice(0, 4).some(x => !x.ok)) && (!R.pa || R.pa.ok); }
+  /* ogni percorso deve cadere su almeno uno dei quattro giudizi (tasto / unico punto / ingresso / soli salienti) con la pre-partita raggiunta
+     (giudicato); il provino invece cade perche' NON passa dalla pre-partita (giro 243); la panchina resta senza tasto */
+  rosso = (R.ris.length > 0 || !!R.pa) && R.ris.every(p => (p.provino ? !p.pp/* il provino non passa dalla pre-partita */ : p.pp/* giudicato */) && p.righe.slice(0, 4).some(x => !x.ok)) && (!R.pa || R.pa.ok); }
 if (V) stampa('braccio VERDE', V);
 if (R) stampa('braccio ROSSO (__CPM_NO_G246)', R);
 if (verde !== null) console.log(`VERDE: ${verde ? 'PASSA' : 'NON PASSA'}`);
