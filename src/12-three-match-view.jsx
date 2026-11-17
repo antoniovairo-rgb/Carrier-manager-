@@ -1400,6 +1400,28 @@ function ThreeMatchView(props){
       (typeof _mascots!=='undefined'?_mascots:[]).forEach((mm,i)=>{const g=mm&&mm.glb911&&mm.glb911.root;if(mm&&((g&&g.visible)||(mm.c&&mm.c.visible)))uno((g&&g.visible)?g:mm.c,'b'+i,false);});
       const tn=sr.current&&sr.current._tun46;if(tn){_o245.v.set(tn.x,1.5,tn.z1).project(camera);cam.push(+_o245.v.x.toFixed(3),+_o245.v.y.toFixed(3),+_o245.v.z.toFixed(4));}
       W.push({t:+walkT.toFixed(2),fuori,pen,fig,bocca:cam,cp:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]});}catch(_e){try{window.__CPM_G245ERR=String(_e&&_e.message);}catch(_ee){}}};
+    /* [giro 255, seguito di PO-510] testimone INERTE di tunnel-245/schieramento (solo con window.__CPM_G255W armato dalla sonda).
+       INGRESSO: il posto di schieramento delle due file (x medio dei posti, estremi in z), a ogni fotogramma quanti sono arrivati al
+       posto, la x media dei 23 corpi, quanti corpi sono nel quadro della camera e la loro altezza apparente media, le coppie di corpi
+       (calciatori usciti dal tunnel + bambini) a meno di 0,5 fra i centri. SOSTITUZIONE (ingresso o uscita dell'eroe): l'eroe contro
+       le scatole degli oggetti fermi etichettati (stesso cerchio di raggio 0,35 di tunnel-245). Nessuna scrittura sulla scena. */
+    const _o255={b:null,v:null,s:false};
+    const _w255=()=>{try{const W=window.__CPM_G255W;if(!Array.isArray(W)||W.length>=9000)return;const P=propsRef.current||{};const T=THREE;
+      const walk=P.matchPhase==='walkout';const sub=subEntryT>=0?'entra':(subExitT>=0?'esce':null);if(!walk&&!sub)return;
+      if(!_o255.v)_o255.v=new T.Vector3();
+      if(!walk){if(!_o255.b){const bb=new T.Box3(),L=[];scene.traverse(o=>{const k=o.userData&&o.userData.ost245;if(!k||!o.isMesh||o.visible===false)return;o.updateMatrixWorld(true);bb.setFromObject(o);L.push({k,x0:bb.min.x,x1:bb.max.x,y0:bb.min.y,y1:bb.max.y,z0:bb.min.z,z1:bb.max.z});});_o255.b=L;}
+        const x=hero.position.x,z=hero.position.z,R=0.35,pen=[];if(hero.visible!==false){for(const b of _o255.b){if(b.y0>1.7||b.y1<0.15)continue;const dx=Math.max(b.x0-x,0,x-b.x1),dz=Math.max(b.z0-z,0,z-b.z1);if(dx*dx+dz*dz<R*R)pen.push(b.k);}}
+        W.push({sub,t:+(sub==='entra'?subEntryT:subExitT).toFixed(2),x:+x.toFixed(2),z:+z.toFixed(2),vis:hero.visible!==false,pen});return;}
+      const L=[];(sr.current.players||[]).forEach(pp=>{if(pp&&pp.mesh)L.push([pp.team==='home'?0:1,pp.mesh]);});L.push([0,hero]);
+      if(!_o255.s){_o255.s=true;const q=[{n:0,x:0,z0:99,z1:-99},{n:0,x:0,z0:99,z1:-99}];L.forEach(e=>{const m=e[1];if(m._wx==null)return;const o=q[e[0]];o.n++;o.x+=m._wx;o.z0=Math.min(o.z0,m._wz);o.z1=Math.max(o.z1,m._wz);});q.forEach(o=>{if(o.n)o.x=+(o.x/o.n).toFixed(2);});
+        window.__CPM_G255={casa:q[0],ospiti:q[1],tappeto:(typeof _ceremonyCarpet!=='undefined'&&_ceremonyCarpet)?{x:_ceremonyCarpet.position.x,z:_ceremonyCarpet.position.z,r:11}:null};}
+      let arr=0,sx=0,nn=0,inq=0,alt=0;const B=[];const v=_o255.v;
+      for(const e of L){const m=e[1];nn++;sx+=m.position.x;if(m._wx!=null&&Math.hypot(m.position.x-m._wx,m.position.z-m._wz)<0.01)arr++;
+        if(m._wDelay!=null&&walkT>=m._wDelay+0.3)B.push(m.position);/* 0,3 s dopo l'uscita: prima il corpo e' ancora sul punto di partenza comune */
+        v.set(m.position.x,1.0,m.position.z).project(camera);if(Math.abs(v.x)<=0.95&&Math.abs(v.y)<=0.95&&v.z<1){inq++;const y1=v.set(m.position.x,1.8,m.position.z).project(camera).y,y0=v.set(m.position.x,0,m.position.z).project(camera).y;alt+=Math.abs(y1-y0)/2;}}
+      (typeof _mascots!=='undefined'?_mascots:[]).forEach(mm=>{const g=mm&&mm.glb911&&mm.glb911.root;if(mm&&mm.p&&mm.p._wDelay!=null&&walkT>=mm.p._wDelay+0.3&&((g&&g.visible)||(mm.c&&mm.c.visible)))B.push(((g&&g.visible)?g:mm.c).position);});
+      let cc=0,ce=null,dm=99;for(let i=0;i<B.length;i++)for(let j=i+1;j<B.length;j++){const d=Math.hypot(B[i].x-B[j].x,B[i].z-B[j].z);if(d<dm)dm=d;if(d<0.5){cc++;if(!ce)ce=[+B[i].x.toFixed(2),+B[i].z.toFixed(2),+B[j].x.toFixed(2),+B[j].z.toFixed(2)];}}
+      W.push({t:+walkT.toFixed(2),r:(sr.current&&sr.current._br206)||null,n:nn,arr,mx:+(sx/Math.max(1,nn)).toFixed(2),inq,alt:+(inq?alt/inq:0).toFixed(3),cc,ce,dm:+dm.toFixed(2),arb:(typeof refMesh!=='undefined'&&refMesh)?[+refMesh.position.x.toFixed(1),+refMesh.position.z.toFixed(1)]:null,cp:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]});}catch(_e){try{window.__CPM_G255ERR=String(_e&&_e.message);}catch(_ee){}}};
     const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
@@ -13500,6 +13522,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();if(typeof window!=='undefined'&&window.__CPM_G240W){if(sr.current&&sr.current._resa240)sr.current._resa240();/* solo banco: rilegge la taratura di prova */const P240=propsRef.current||{};misuraPelle240('partita:'+(P240.matchPhase||'')+(P240.ceremony?(P240.ceremony.light?':festa':':premiazione'):''),renderer,scene,camera);}/* [giro 240 PO-500] testimone di pelle e capelli, solo con __CPM_G240W *//* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
       if(typeof window!=='undefined'&&window.__CPM_G222W)_w222();/* [giro 222 PO-481] testimone dei guardalinee */
       if(typeof window!=='undefined'&&window.__CPM_G245W)_w245();/* [giro 245 PO-510] testimone del tunnel */
+      if(typeof window!=='undefined'&&window.__CPM_G255W)_w255();/* [giro 255] testimone dello schieramento e delle sostituzioni */
     };
     loop();
 
