@@ -1938,7 +1938,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // [5.88.0 S2] PANCHINE + AREA TECNICA (tutti i template): due dugout ai lati del tunnel, lato Ovest
   {const _dgM=new THREE.MeshLambertMaterial({color:0x1c2430});
    const _dgGl=new THREE.MeshLambertMaterial({color:0x9fc2dd,transparent:true,opacity:0.4});
-   [[-14,-1],[14,1]].forEach(([dx])=>{
+   /* [giro 255, dubbio 4 del giro 245 — decisione PO 17/11 «Sì, toglila». Rosso __CPM_NO_G255] la panca bassa con pensilina di vetro
+      (z -34,6, a cavallo dei cartelloni) non si costruisce piu': resta la panchina vera coi panchinari di src/12 (z -38,5), una per
+      squadra ai lati del tunnel, in tutte le tipologie. */
+   if(typeof window!=='undefined'&&window.__CPM_NO_G255)[[-14,-1],[14,1]].forEach(([dx])=>{
      const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);b1.userData.ost245='panca-stadio';scene.add(b1);
      const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;r1.userData.ost245='pensilina-stadio';scene.add(r1);
    });}
