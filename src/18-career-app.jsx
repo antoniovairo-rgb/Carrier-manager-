@@ -8023,8 +8023,18 @@ const getThisWeekMatchday=()=>{
           </div>
           <span data-cpm="testata-meta106" className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3}}>{_meta}</span>{/* riga 1: lega · stagione · settimana · posto, larga quanto la testata */}
           <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:8}}>
+            {_g235()?(<>{/* [giro 235 · PO-458 / G195-12] STESSA TESTATA IN OGNI SCHEDA, SENZA INGROSSARLA (decisione 02/11): il titolo della
+                scheda sta nella riga 2 della testata compatta, accanto all'ora del salvataggio, che resta in piccolo. La riga 1 (lega ·
+                stagione · settimana · posto) fa da occhiello. Nessuna riga in piu': un titolo aggiunto nel contenuto spingeva «Vivi la
+                settimana» sotto la barra a 375x667 (misurato: il tasto da 460-548 a 524-612 px, barra a 556; tocco-213 rosso). Per i lettori
+                di schermo il titolo c'e' gia' (h1 del giro 234): qui e' solo visivo. Rosso __CPM_NO_G235: solo l'ora del salvataggio. */}
+              <span style={{display:"flex",alignItems:"baseline",gap:8,minWidth:0}}>
+                <span data-cpm="titolo235" aria-hidden="true" style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.testo,whiteSpace:"nowrap",lineHeight:1.1}}>{({dashboard:"Home",standings:"Classifica",calendar:"Calendario",coppe:"Coppe",club:"Club",profile:"Profilo",nazionale:"Nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</span>
+                <span className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_ora?"salvato\u00a0"+_ora:""}</span>
+              </span>
+              <VersioneTestata269 col={TINTE.sec}/></>):(<>
             <span className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3}}>{_ora?"salvato\u00a0"+_ora:""}</span>{/* riga 2: l'ora del salvataggio e la versione */}
-            <VersioneTestata269 col={TINTE.sec}/>
+            <VersioneTestata269 col={TINTE.sec}/></>)}
           </div>
           {figAperta23&&<div data-cpm="figurina-completa" onClick={()=>setFigAperta23(false)} style={{position:"fixed",inset:0,zIndex:9000,background:"rgba(2,6,23,0.72)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14,padding:16}}>
             <Figurina tipo="giocatore" chiave={player.name} nome={player.name} ruolo={player.position||"Attaccante"} col={player.club&&player.club.c} col2={player.club&&player.club.c2} larg={Math.min(260,Math.round(window.innerWidth*0.64))}/>
@@ -8057,12 +8067,6 @@ const getThisWeekMatchday=()=>{
       {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
       {_g234()&&<h1 className="cpm-sr" data-cpm="titolo234">{({dashboard:"Home",standings:"Stagione: classifica",calendar:"Stagione: calendario",coppe:"Stagione: coppe",club:"Club",profile:"Carriera: profilo",nazionale:"Carriera: nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</h1>}{/* [giro 234 PO-459 · G195-06] ogni scheda ha un titolo per i lettori di schermo (invisibile: la testata compatta resta com'e', decisione 02/11). Rosso __CPM_NO_G234 */}
-      {_g235()&&(tab==="dashboard"||tab==="club"||tab==="profile"||tab==="nazionale"||((tab==="agente"||tab==="ufficio")&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13)))&&(/* [giro 235 · PO-458 / G195-12] STESSA TESTATA IN OGNI
-          SCHEDA: occhiello e titolo in cima, lo stesso TitoloV2 di Stagione, Agente e Ufficio (che lo avevano gia'); Home, Club e Carriera
-          non ne avevano. La testata compatta in alto (decisione 02/11) non cambia: il titolo sta nel contenuto. Rosso __CPM_NO_G235 */
-        <div style={{marginBottom:_sb(SP.md)}}><TitoloV2 cpm={(tab==="agente"||tab==="ufficio")?tab+"-v2":"testata235"}
-          occhiello={tab==="dashboard"?("St. "+(player.season||1)+" \u00b7 Settimana "+Math.min(38,player.week||1)):tab==="club"?((player.club&&player.club.n)||"Club"):tab==="agente"?"Mercato e contratto":tab==="ufficio"?"Patrimonio e staff":("Carriera \u00b7 "+(player.name||""))}
-          titolo={tab==="dashboard"?"Home":tab==="club"?"Club":tab==="profile"?"Profilo":tab==="agente"?"Agente":tab==="ufficio"?"Ufficio":"Nazionale"}/></div>)}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(()=>{/* [PO-302 tappa 2 · V2Stagione] titolo della scheda; sulla
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=[...(player.standings||[])].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
@@ -11699,7 +11703,7 @@ const getThisWeekMatchday=()=>{
         var _assegna198=function(t){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Compito assegnato: "+t.l,TH.primary);};
         return(
           <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
-            {_uff13&&!_g235()&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
+            {_uff13&&<TitoloV2 cpm={tab==="ufficio"?"ufficio-v2":"agente-v2"} occhiello={tab==="ufficio"?"Patrimonio e staff":"Mercato e contratto"} titolo={tab==="ufficio"?"Ufficio":"Agente"}
 />}{/* [PO-302 tappa 2 · V2Agente/V2Ufficio] */}
             {tab==="agente"&&!transferOffer&&_offAtt201(player)&&(()=>{const x=player.offerta201,o=x.o||{};return(/* [giro 201 · PO-428] l'offerta in sospeso resta qui fino alla scadenza */
               <Card data-cpm="offerta201-agente" style={{padding:"10px 12px",borderLeft:"3px solid "+TH.primary}}>

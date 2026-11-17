@@ -5,7 +5,9 @@
         traccia), fuori dalle barre di menu, dalle linguette e dalle fisarmoniche. Per ognuno la firma: fondo · inchiostro · carattere
         TV (Barlow) · maiuscolo · e se sta dentro un riquadro nel colore del club (data-club106). Si censiscono le 8 schede e le due
         finestre della settimana e della partita (apriSettimana / apriPartita).
-     H  testata: per ogni scheda il primo titolo (h1/h2/role heading) e la sua quota rispetto al primo riquadro del contenuto.
+     H  testata: il titolo della scheda nella testata compatta (data-cpm=titolo235: testo, quota, corpo) e l'altezza della testata;
+        in piu' il primo titolo del contenuto (h1/h2/role heading) e la sua quota rispetto al primo riquadro.
+     V  «Vivi la settimana» (data-cpm=avanza23) a 375x667: sopra la barra in basso, senza scorrere (decisione 6.5.4).
      P  Profilo: quante fisarmoniche (data-cpm-fis) e quanti gruppi (data-gruppo235) ci sono; i titoli; le parole inglesi nei titoli.
      C  contratto: in quali schede si legge il contratto per intero (Stipendio + Durata/Scadenza nello stesso riquadro) e in quali c'e'
         un rimando all'Agente (data-rimando235).
@@ -57,7 +59,10 @@ export function TESTATA() {
   const box = [...main.querySelectorAll('section,[data-cpm-fis],div[style*="border-radius"]')].filter(vis).filter(el => el.getBoundingClientRect().height > 40 && !(t && (el.contains(t) || t.contains(el))));
   const primo = box.sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
   const occ = t ? (t.parentElement && t.parentElement.querySelector('span') ? t.parentElement.querySelector('span').textContent.trim() : '') : '';
-  return { titolo: t ? t.textContent.trim().slice(0, 40) : null, occhiello: occ.slice(0, 40), cpm: t ? ((t.closest('[data-cpm]') || {}).getAttribute ? t.closest('[data-cpm]').getAttribute('data-cpm') : null) : null,
+  const tt = document.querySelector('header [data-cpm=titolo235]'); const ttr = tt ? tt.getBoundingClientRect() : null;
+  const hd = document.querySelector('header[data-cpm=testata-v2]'); const hr = hd ? hd.getBoundingClientRect() : null;
+  return { inTestata: tt && ttr.height > 4 ? { t: tt.textContent.trim(), y: Math.round(ttr.top), x: Math.round(ttr.left), corpo: parseFloat(getComputedStyle(tt).fontSize) } : null, altTestata: hr ? Math.round(hr.height) : null,
+    titolo: t ? t.textContent.trim().slice(0, 40) : null, occhiello: occ.slice(0, 40), cpm: t ? ((t.closest('[data-cpm]') || {}).getAttribute ? t.closest('[data-cpm]').getAttribute('data-cpm') : null) : null,
     y: tr ? Math.round(tr.top + scrollY) : null, yPrimo: primo ? Math.round(primo.getBoundingClientRect().top + scrollY) : null, sopra: !!(tr && primo && tr.top <= primo.getBoundingClientRect().top + 2) };
 }
 /* P: il Profilo */
@@ -113,6 +118,7 @@ export async function misuraTutto(b, port, w, { flags = [], foto = null, ls = {}
       if (t === 'profile') s.profilo = await a.page.evaluate(PROFILO);
       if (t === 'dashboard' || t === 'club') s.forma = await a.page.evaluate(FORMA);
       if (t === 'dashboard') s.menu = await a.page.evaluate(MENU);
+      if (t === 'dashboard') s.vivi = await a.page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm=avanza23]')].filter(x => x.offsetParent !== null)[0]; const nav = document.querySelector('.cpm-nav-bar'); if (!b || !nav) return null; const r = b.getBoundingClientRect(); const n = [...nav.querySelectorAll('*')].reduce((m, e) => Math.min(m, e.getBoundingClientRect().top || 1e9), nav.getBoundingClientRect().top); return { top: Math.round(r.top), bottom: Math.round(r.bottom), barra: Math.round(n), vh: innerHeight }; });
       R.schede[t] = s;
       if (foto) { await a.page.evaluate(() => scrollTo(0, 0)); await a.page.screenshot({ path: path.join(foto, `${w}-${t}.png`) }); }
     }

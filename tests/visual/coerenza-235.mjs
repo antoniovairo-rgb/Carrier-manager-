@@ -4,7 +4,10 @@
      T  UN SOLO STILE DEL TASTO PRINCIPALE: ogni tasto pieno e forte delle 8 schede e delle finestre della settimana e della partita
         (apriSettimana/apriPartita) e' in carattere TV maiuscolo e ha il fondo della regola unica — il colore del club, o il negativo crema
         quando sta sopra un riquadro gia' nel colore del club. Almeno 3 tasti censiti, se no la prova non vale.
-     H  STESSA TESTATA: ogni scheda ha un titolo visibile (h2 di TitoloV2) sopra il primo riquadro del contenuto.
+     H  STESSA TESTATA: ogni scheda ha il suo titolo nella testata compatta (decisione 02/11: senza ingrossarla), nello stesso posto e
+        con lo stesso corpo in tutte e otto.
+     V  la testata non ingrossa: altezza della testata e quota di «Vivi la settimana» in Home, a 375 e 1366, entro 4 px dal braccio
+        rosso (che non ha il titolo). Un titolo aggiunto nel contenuto spingeva il tasto sotto la barra a 375x667 (tocco-213 rosso).
      M  STESSO MENU fuori e dentro la carriera: voce di solo testo (una riga), stesso carattere, maiuscolo, corpo e altezza minima
         (l'altezza vera della barra di carriera cresce di qualche px quando una voce porta un segnale: si confronta la misura dichiarata).
      P  PROFILO in 4-5 gruppi (data-gruppo235), nessuna fisarmonica rimasta fuori dai gruppi, nessuna parola inglese nei titoli
@@ -38,8 +41,15 @@ async function braccio(b, port, rosso) {
     num['stili' + w] = stili.size;
     if (fuori.length) no('T', `${w}: ${fuori.length} tasti fuori regola (${fuori.slice(0, 4).map(x => `«${x.testo.slice(0, 24)}» ${x.fondo}${x.tv ? '' : ' non-TV'}${x.up ? '' : ' minusc.'} in ${x.dove}`).join(' · ')})`);
     /* H */
-    const senza = SCHEDE.filter(t => { const h = R.schede[t] && R.schede[t].testata; return !h || !h.titolo || !h.sopra || !/v2|235/.test(h.cpm || ''); });
-    if (senza.length) no('H', `${w}: schede senza testata visibile in cima: ${senza.join(',')}`);
+    const ATT = { dashboard: 'Home', standings: 'Classifica', calendar: 'Calendario', coppe: 'Coppe', club: 'Club', profile: 'Profilo', agente: 'Agente', ufficio: 'Ufficio' };
+    const senza = SCHEDE.filter(t => { const h = R.schede[t] && R.schede[t].testata; return !h || !h.inTestata || h.inTestata.t.toLowerCase() !== ATT[t].toLowerCase(); });
+    if (senza.length) no('H', `${w}: schede senza il loro titolo nella testata: ${senza.join(',')}`);
+    const pos = new Set(SCHEDE.map(t => { const h = R.schede[t] && R.schede[t].testata; return h && h.inTestata ? h.inTestata.y + '/' + h.inTestata.x + '/' + h.inTestata.corpo : 'x'; }));
+    const alt = new Set(SCHEDE.map(t => R.schede[t] && R.schede[t].testata ? R.schede[t].testata.altTestata : 'x'));
+    num['testata' + w] = `posti ${pos.size} · altezze ${[...alt].join('/')}`;
+    if (pos.size !== 1) no('H', `${w}: il titolo della testata cambia posto o corpo fra le schede (${[...pos].join(' ')})`);
+    /* V: la testata non ingrossa (confronto col braccio rosso, sotto) */
+    const vv = R.schede.dashboard.vivi; num['altTestata' + w] = R.schede.dashboard.testata.altTestata; num['viviTop' + w] = vv ? vv.top : null;
     /* M */
     const dentro = (R.schede.dashboard.menu || [])[0], fuoriM = (R.menuFuori || [])[0];
     if (!dentro || !fuoriM) no('M', `${w}: barra non trovata — non giudicato`);
@@ -85,6 +95,9 @@ try { if (PARTE !== 'rosso') v = await braccio(b, port, false); if (PARTE !== 'v
 finally { await b.close(); srv.close(); }
 const PARTI = ['T', 'H', 'M', 'P', 'C', 'F', 'G'];
 let ok = true;
+if (v && r) for (const w of [375, 1366]) for (const k of ['altTestata', 'viviTop']) { const a = v.num[k + w], c = r.num[k + w];
+  if (a == null || c == null) { (v.ko.V = v.ko.V || []).push(`${k}${w} non misurato — non giudicato`); continue; }
+  if (a - c > 4) (v.ko.V = v.ko.V || []).push(`${w}: ${k} ${a} contro ${c} senza il giro 235 (+${a - c} px)`); }
 if (v) { const vk = Object.keys(v.ko); const vOk = vk.length === 0; ok = ok && vOk;
   console.log(`VERDE: ${vOk ? '✓' : '✗'} ${JSON.stringify(v.num)}${vOk ? '' : '\n   ' + vk.map(k => k + ': ' + v.ko[k].join(' | ')).join('\n   ')}`); }
 if (r) { const presi = PARTI.filter(k => r.ko[k] && !r.ko[k].every(m => /non giudicato/.test(m))); const mancano = PARTI.filter(k => !presi.includes(k)); const rOk = mancano.length === 0 && !r.ko.X; ok = ok && rOk;
