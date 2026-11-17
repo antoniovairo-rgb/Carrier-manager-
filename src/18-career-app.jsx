@@ -222,6 +222,7 @@ function assegnaPremio227(p,id){if(no227()||!id)return {campi:{},riga:null};
   return {campi,riga:PATTO227_DATO[id]||null,id};}
 if(typeof window!=="undefined")window.__CPM_PATTO227={ha:haPremio227,scegli:scegliPremio227,assegna:assegnaPremio227,ID:PATTO227_ID};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
+  React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] entrando nella carriera (non all'apertura del menu) si chiedono i corpi della partita, con la pillola d'avanzamento: arrivano prima della prima scena 3D */
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
   const[player,setPlayer]=useState(init);

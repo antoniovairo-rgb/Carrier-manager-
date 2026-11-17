@@ -9,10 +9,11 @@
        la pillola d'avanzamento (data-cpm="avanzamento233"); nel video, finche' il corpo non c'e', la scena e' coperta dalla
        schermata d'attesa (data-cpm="attesa233", percentuale che sale); mai i fantocci di ripiego; poi i corpi veri.
    (3) PARTITA (salvataggio da professionista, ?cpmtest con GLB e attesa 196 accesi, rete dei modelli rallentata), telefono e PC:
-       · nessun modello richiesto prima dell'apertura della partita;
+       · nessun modello richiesto finche' si resta sul menu; entrando nella carriera i modelli si chiedono con la pillola
+         d'avanzamento in vista (percentuale che sale), cosi' arrivano prima della prima scena 3D;
        · dall'apertura in poi, a ogni campione con la scena 3D in vista (fase walkout/playing/hl_*, senza schermata d'attesa ne'
          avviso) i corpi sono PRONTI (__CPM_PRONTI196): nessuna scena 3D senza corpi;
-       · l'attesa si e' vista, con una percentuale che sale (avanzamento visibile), e finisce coi corpi pronti;
+       · se la partita si apre a scaricamento ancora in corso, la schermata d'attesa lo mostra e finisce coi corpi pronti;
        · 23 corpi CGTrader coi capelli applicati (le texture WebP), nessun PNG dei capelli, nessuna variante slim/stocky;
        · telefono: il file lod0 (16,4 MB) NON si scarica e i modelli della partita stanno sotto 26 MB (misurato 23,3; prima 53);
          PC: il lod0 si scarica (il livello pieno resta dove serve).
@@ -96,8 +97,11 @@ async function partita(nome, schermo, mobile) {
   await pg.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
   await pg.waitForFunction(() => document.getElementById('root')?.children.length > 0, null, { timeout: 90000 }); await lenta(mobile ? 2.5 : 4); await sleep(6000);/* ozio sul menu: il vecchio precaricamento parte a 2,5 s */
   rete.tappa = 'carriera'; try { await pg.getByText('Continua', { exact: false }).first().click({ timeout: 6000 }); } catch (e) {}
-  await pg.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(3000);
-  const prima = rete.L.filter(x => x.tappa !== 'partita').length; rete.tappa = 'partita';
+  await pg.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 });
+  const PC = []; for (let i = 0; i < 16; i++) { PC.push(await pg.evaluate(() => { const e = document.querySelector('[data-cpm="avanzamento233"]'); if (!e) return null; const b = e.getBoundingClientRect(); return { pct: +e.getAttribute('data-pct'), vis: getComputedStyle(e).display !== 'none' && b.width > 40 && b.top >= 0 && b.right <= innerWidth + 1, testo: e.innerText.trim() }; }).catch(() => null)); await sleep(250); }
+  if (FOTO) await pg.screenshot({ path: `${FOTO}/${ROSSO ? 'rosso' : 'verde'}-${nome}-carriera-pillola.png` });
+  const pilC = PC.filter(p => p && p.vis), pctC = [...new Set(pilC.map(p => p.pct))];
+  const prima = rete.L.filter(x => x.tappa === 'menu').length; rete.tappa = 'partita';
   for (let a = 0; a < 16; a++) { if (await pg.evaluate(() => typeof window.__CPM_PHASE === 'function')) break; await pg.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); if (C.playMatch() === true) return; C.step(); }); await sleep(1500); }
   await pg.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 9090, policy: 'seeded', tickMs: 300 }));
   const C = []; const t0 = Date.now(); let nPronti = 0, fotoA = false;
@@ -109,13 +113,14 @@ async function partita(nome, schermo, mobile) {
   await pg.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(false)).catch(() => {});
   const in3D = C.filter(c => /^(walkout|playing|hl_)/.test(c.ph || '') && !c.att && !c.avv); const nudi = in3D.filter(c => c.pr !== 'pronti');
   const pctA = [...new Set(C.filter(c => c.att && c.pct != null).map(c => c.pct))], pctP = [...new Set(C.filter(c => c.pilVis && c.pil != null).map(c => c.pil))]; const visto = C.filter(c => c.att || c.pilVis).length;
-  const Lp = rete.L.filter(x => x.tappa === 'partita'); const byte = Lp.reduce((s, x) => s + x.b, 0); const nomi = rete.L.map(x => x.u.split('/').pop());
+  const Lp = rete.L.filter(x => x.tappa !== 'menu'); const byte = Lp.reduce((s, x) => s + x.b, 0); const nomi = rete.L.map(x => x.u.split('/').pop());
   console.log(`  [${nome}] fasi: ${C.filter((c, i) => i === 0 || c.ph !== C[i - 1].ph || c.att !== C[i - 1].att || c.pr !== C[i - 1].pr).map(c => `${(c.t / 1000).toFixed(0)}s ${c.ph}${c.att ? ' ATTESA ' + c.pct + '%' : ''} ${c.pr || ''}`).join(' → ').slice(0, 600)}`);
-  g(3, prima === 0, `${nome}: modelli chiesti prima dell'apertura della partita: ${prima}${prima ? ' (' + rete.L.filter(x => x.tappa !== 'partita').slice(0, 3).map(x => x.u.split('/').pop()).join(', ') + '…)' : ''}`);
-  g(3, Lp.filter(x => /\.glb$/.test(x.u)).length >= 5, `${nome}: modelli chiesti all'apertura della partita: ${Lp.length} file, ${MB(byte)} MB`);
+  g(3, prima === 0, `${nome}: modelli chiesti restando sul menu: ${prima}${prima ? ' (' + rete.L.filter(x => x.tappa === 'menu').slice(0, 3).map(x => x.u.split('/').pop()).join(', ') + '…)' : ''}`);
+  g(3, Lp.filter(x => /\.glb$/.test(x.u)).length >= 5, `${nome}: modelli chiesti dall'ingresso in carriera in poi: ${Lp.length} file, ${MB(byte)} MB (${rete.L.filter(x => x.tappa === 'carriera').length} in carriera, ${rete.L.filter(x => x.tappa === 'partita').length} all'apertura della partita)`);
+  g(3, pilC.length >= 3 && pctC.length >= 2 && pctC[pctC.length - 1] > pctC[0] && /3D/.test(pilC[0].testo), `${nome}: in carriera la pillola d'avanzamento e' in vista ${pilC.length}/16 campioni, percentuale ${pctC.join('→') || '-'}${pilC[0] ? ' · «' + pilC[0].testo + '»' : ''}`);
   g(3, in3D.length >= 12 && nudi.length === 0, `${nome}: scena 3D in vista senza corpi pronti: ${nudi.length} campioni su ${in3D.length}${nudi[0] ? ' (primo: ' + nudi[0].ph + ' ' + nudi[0].pr + ')' : ''}`);
   g(3, !C.some(c => c.avv || c.d2), `${nome}: nessun avviso «3D non caricabile» ne' 2D`);
-  g(3, visto >= 3 && (pctA.length >= 2 || pctP.length >= 2), `${nome}: avanzamento visibile durante lo scaricamento — ${visto} campioni; pillola ${pctP.join('→') || '-'} · attesa ${pctA.join('→') || '-'}`);
+  g(3, visto >= 3 && pctA.length >= 2 && pctA[pctA.length - 1] > pctA[0], `${nome}: partita aperta a scaricamento in corso — schermata d'attesa in vista ${C.filter(c => c.att).length} campioni, percentuale ${pctA.join('→') || '-'}`);
   g(3, !!aud && aud.n === 23 && aud.capelli && aud.capelli.missing === 0, `${nome}: corpi CGTrader ${aud ? aud.n : '?'} · capelli ${aud ? JSON.stringify(aud.capelli) : '?'} · livelli ${aud ? JSON.stringify(aud.a) : '?'}`);
   g(3, !nomi.some(n => /HEAD_hair_.*\.png/.test(n)) && nomi.filter(n => /HEAD_hair_.*\.webp/.test(n)).length >= 1, `${nome}: capelli in WebP (${nomi.filter(n => /HEAD_hair_.*\.webp/.test(n)).length} file), PNG ${nomi.filter(n => /HEAD_hair_.*\.png/.test(n)).length}`);
   g(3, !nomi.some(n => /regular-player-(slim|stocky)/.test(n)), `${nome}: varianti slim/stocky del corpo «regular» non scaricate`);
@@ -131,5 +136,5 @@ await browser.close(); srv.close();
 const giud = n => esiti[n].length > 0, verde = n => giud(n) && esiti[n].every(Boolean);
 console.log(`  esito: (1) ${giud(1) ? (verde(1) ? 'verde' : 'ROSSO') : 'non giudicato'} · (2) ${giud(2) ? (verde(2) ? 'verde' : 'ROSSO') : 'non giudicato'} · (3) ${giud(3) ? (verde(3) ? 'verde' : 'ROSSO') : 'non giudicato'}`);
 if (PARTE) { console.log(`avvio-233 · solo la parte ${PARTE}: NON GIUDICATO (uscita 1)`); process.exit(1); }
-if (ROSSO) { const visto = giud(1) && !verde(1) && giud(3) && !verde(3) && giud(2); console.log(visto ? 'avvio-233 · braccio ROSSO: il guardiano boccia il comportamento della 7.999.196 (byte prima del menu e modelli prima della partita) — prova del rosso riuscita' : 'avvio-233 · braccio ROSSO: il guardiano NON ha bocciato — prova del rosso FALLITA'); process.exit(visto ? 0 : 1); }
+if (ROSSO) { const visto = giud(1) && !verde(1) && giud(3) && !verde(3) && giud(2); console.log(visto ? 'avvio-233 · braccio ROSSO: il guardiano boccia il comportamento della 7.999.196 (byte prima del menu e modelli scaricati restando sul menu) — prova del rosso riuscita' : 'avvio-233 · braccio ROSSO: il guardiano NON ha bocciato — prova del rosso FALLITA'); process.exit(visto ? 0 : 1); }
 const ok = verde(1) && verde(2) && verde(3); console.log(ok ? 'avvio-233 · VERDE' : 'avvio-233 · ROSSO'); process.exit(ok ? 0 : 1);

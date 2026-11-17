@@ -13852,8 +13852,10 @@ function loadGLB(url){
    menu partivano da sole 34 richieste per 49,5 MB (corpi CGTrader lod0+lod1+lod2 27,5 MB, capelli PNG 9,9 MB, corpo «regular» x3
    6,3 MB, clip 5,8 MB) senza che il giocatore avesse fatto nulla. E in partita (146 campioni) il livello intermedio non e' mai
    acceso: 1 corpo a lod0 (l'eroe), 22 a lod2, 0 a lod1; nel lod0 12,3 MB su 16,4 sono immagini 2048 px.
-   Ora: (1) all'apertura del menu NON si scarica nessun modello; i modelli si chiedono quando una scena 3D sta per servire
-   (schermata di creazione → corpo dell'intro; apertura della partita → corpi della partita; cerimonie → al montaggio), sempre
+   Ora: (1) all'apertura del menu NON si scarica nessun modello; i modelli si chiedono quando il giocatore entra in gioco
+   (schermata di creazione → corpo dell'intro e poi corpi del provino; ingresso nella carriera e apertura della partita → corpi
+   della partita; cerimonie → al montaggio), cosi' arrivano PRIMA della prima scena 3D (PO-237/PO-241: la prima partita non deve
+   pagare il caricamento), sempre
    con un avanzamento VISIBILE (pillola in alto, o schermata d'attesa sopra la scena finche' i corpi non ci sono); (2) su un
    dispositivo leggero (lato corto dello schermo ≤ 500 px, o ≤ 4 GB dichiarati, o «risparmio dati») il livello piu' pesante non si
    scarica: l'eroe usa il lod1 (12.244 triangoli, immagini 1024 px); (3) i capelli sono WebP (9,9 → 0,85 MB, ritaglio alfa identico,
@@ -13875,16 +13877,17 @@ function _segna233(url,pr){try{pr.then(()=>{(window.__CPM_FATTI233=window.__CPM_
 const _vol233={gruppi:[],iv:0};
 function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_vol233.gruppi.filter(g=>!g.fine);let el=document.getElementById('cpm-avanz233');
   const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
-  if(!vivi.length){if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
+  if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
   if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
     el.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(8px + env(safe-area-inset-top, 0px));z-index:9000;pointer-events:none;background:rgba(5,8,20,0.88);color:#fff;font:700 12px/1.2 system-ui,sans-serif;padding:7px 12px 9px;border-radius:999px;border:1px solid rgba(245,158,11,0.55);white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.35);';
     el.innerHTML='<span data-t></span><span style="display:block;height:3px;margin-top:5px;background:rgba(255,255,255,0.18);border-radius:3px;overflow:hidden"><span data-b style="display:block;height:100%;width:0;background:#f59e0b;transition:width .3s linear"></span></span>';document.body.appendChild(el);}
-  const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=Math.round(avanz233(U)*100);
+  const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
   el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';
   try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
   if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
 /* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
-function prepara233(gruppo){try{if(typeof window==='undefined'||window.__CPM_GLB===false||!_g233())return null;
+function prepara233(gruppo){try{if(typeof window==='undefined'||window.__CPM_GLB===false||!_g233()||window.__CPM_NO_PRE237)return null;
+  {const es=_vol233.gruppi.find(g=>g.gruppo===gruppo&&(!g.fine||g.fatti===g.urls.length));if(es)return es;}/* gia' in volo o gia' arrivato: una volta sola */
   if((function(){try{return localStorage.getItem('cpm-glb')==='0'||/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return false;}})())return null;
   const cg=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';let L=[];
   if(gruppo==='intro'){if(cg&&!window.__CPM_NO_CGINTRO)L=['./assets/cgtrader-review-lod1-kit-adapter.glb'];}
@@ -13893,14 +13896,15 @@ function prepara233(gruppo){try{if(typeof window==='undefined'||window.__CPM_GLB
       const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};['brown','black','blond','auburn'].forEach(k=>{try{if(T[k])return;const im=new Image();im.decoding='async';im.src=urlTesta233(k);const fatto=()=>{T[k]=im;};if(im.decode)im.decode().then(fatto).catch(()=>{});else im.onload=fatto;}catch(e){}});}}
   if(!L.length)return null;const g={gruppo,urls:L,t0:Date.now(),fine:null,fatti:0};_vol233.gruppi.push(g);
   try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.gruppi=w.gruppi||[]).push(g);}catch(_e){}
-  let prox=0,vivi=Math.min(6,L.length);const n0=vivi;const pross=()=>{const i=prox++;if(i>=L.length){if(--vivi===0){g.fine=Date.now()-g.t0;_pillola233();}return;}_segna233(L[i],loadGLB(L[i])).then(()=>{g.fatti++;},()=>{}).then(pross);};
+  const agg237=()=>{try{const G=_vol233.gruppi;window.__CPM_PRE237={fatti:G.reduce((s,x)=>s+x.fatti,0),tot:G.reduce((s,x)=>s+x.urls.length,0),t0:G[0].t0,fine:G.every(x=>x.fine)?Date.now()-G[0].t0:null};}catch(_e){}};agg237();/* lo stesso testimone delle sonde di PO-237/PO-241 */
+  let prox=0,vivi=Math.min(window.__CPM_NO_ATTESA241?1:6,L.length);const n0=vivi;const pross=()=>{const i=prox++;if(i>=L.length){if(--vivi===0){g.fine=Date.now()-g.t0;agg237();_pillola233();}return;}_segna233(L[i],loadGLB(L[i])).then(()=>{g.fatti++;agg237();},()=>{}).then(pross);};
   for(let k=0;k<n0;k++)pross();_pillola233();return g;}catch(_e){return null;}}
 /* schermata d'attesa SOPRA una scena 3D (intro, cerimonie) finche' i suoi corpi non ci sono: opaca, con barra e percentuale.
    Compare solo se l'attesa supera 250 ms (file gia' in memoria = nessun lampo). Ritorna la funzione che la toglie. */
 function copri233(host,urls,pr,nome){try{if(!_g233()||!host||typeof document==='undefined')return ()=>{};let el=null,iv=0,finito=false;const t0=Date.now();
   const reg={nome:nome||'?',t0,vista:false,ms:null,esito:null};try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.coperture=w.coperture||[]).push(reg);}catch(_e){}
   urls.forEach(u=>{try{if(_glbCache[u])_segna233(u,_glbCache[u]);}catch(_e){}});
-  const agg=()=>{if(!el)return;const p=Math.round(avanz233(urls)*100);el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
+  let mx=0;const agg=()=>{if(!el)return;const p=mx=Math.max(mx,Math.round(avanz233(urls)*100));el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
   const tm=setTimeout(()=>{if(finito)return;el=document.createElement('div');el.setAttribute('data-cpm','attesa233');el.setAttribute('data-scena',nome||'');el.setAttribute('role','status');
     el.style.cssText='position:absolute;inset:0;z-index:3;background:#050814;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;text-align:center;font-family:inherit;';
     el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div style="width:min(260px,70%);height:8px;background:rgba(255,255,255,0.14);border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:#f59e0b;border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
@@ -49455,7 +49459,7 @@ function LogoMark({size=32,shadow=true}){
 function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
 const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
-  React.useEffect(()=>{try{const visto=(()=>{try{return localStorage.getItem('cpm-intro-seen')==='1';}catch(_e){return true;}})();if(!visto&&!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)&&typeof prepara233==='function')prepara233('intro');}catch(_e){}},[]);/* [giro 233 PO-453] il corpo del video iniziale si chiede qui (7 MB, con la pillola d'avanzamento), mentre il giocatore sceglie nome e aspetto */
+  React.useEffect(()=>{try{if(typeof prepara233!=='function')return;const visto=(()=>{try{return localStorage.getItem('cpm-intro-seen')==='1';}catch(_e){return true;}})();if(!visto&&!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST))prepara233('intro');prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] chi crea un calciatore sta per vedere il video iniziale e il provino: i loro corpi si chiedono qui, con la pillola d'avanzamento, mentre sceglie nome e aspetto */
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -49685,7 +49689,7 @@ const TRIAL_OPPONENTS=[
 /* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
 function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
-  React.useEffect(()=>{try{if(!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)&&typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi (pillola d'avanzamento) */
+  React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi, se non sono gia' in volo (pillola d'avanzamento) */
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
   const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));
@@ -52123,6 +52127,7 @@ function assegnaPremio227(p,id){if(no227()||!id)return {campi:{},riga:null};
   return {campi,riga:PATTO227_DATO[id]||null,id};}
 if(typeof window!=="undefined")window.__CPM_PATTO227={ha:haPremio227,scegli:scegliPremio227,assegna:assegnaPremio227,ID:PATTO227_ID};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
+  React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] entrando nella carriera (non all'apertura del menu) si chiedono i corpi della partita, con la pillola d'avanzamento: arrivano prima della prima scena 3D */
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
   const[player,setPlayer]=useState(init);
