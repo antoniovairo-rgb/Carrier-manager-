@@ -12150,9 +12150,9 @@ function FiguraV2({player,w=54,grande=false}){
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
 /* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
-   (a) PO-396 «Primavera» si accorcia in «U19» (FC Milano Brera Primavera → FC Milano Brera U19) prima di ogni altra cosa;
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Nerazzurri Primavera → FC Nerazzurri U19) prima di ogni altra cosa;
    (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
-       «FC Milano Brera» → «Milano Brera», «FC Milano Brera U19» → «Milano Brera U19», poi «Milano Brera» da solo; la sigla del club resta l'ultimo gradino.
+       «FC Nerazzurri» → «Nerazzurri», «FC Nerazzurri U19» → «Nerazzurri U19», poi «Nerazzurri» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
 function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
@@ -12161,8 +12161,8 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
   const ab=abbreviaSquadra182(u19);
   /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
-     categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
-     nome corto c'e' gia' («Milano Brera»). Rosso __CPM_NO_G211 = scala di prima. */
+     categoria e la sigla: «Manchester Rovers U19» → «Manchester Rovers» → «MCR» (esempio aggiornato al giro 251: era «Torino Athletic»,
+     oggi «FC Zebre»). Coi club «FC …» il nome corto c'e' gia' («Nerazzurri»). Rosso __CPM_NO_G211 = scala di prima. */
   const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
   if(g211)add(senzaCat(u19));
   add(ab);
@@ -58339,7 +58339,7 @@ const getThisWeekMatchday=()=>{
   // accept transfer: update club, league, calendar, standings
   /* [7.307.0 collaudo PO «al rifiuto di un'offerta, soprattutto così importante, deve esserci una
      conseguenza, un attestato di stima per la fedeltà o roba simile»] «Rifiuta» faceva UNA cosa: chiudere
-     il modale. Dire di no al FC Isar — 99 di prestigio, stipendio triplicato — non lasciava traccia da
+     il modale. Dire di no al FC Munchen (giro 251; allora FC Isar) — 99 di prestigio, stipendio triplicato — non lasciava traccia da
      nessuna parte: né la piazza, né il mister, né la tua storia se ne accorgevano.
      Ora il rifiuto PESA, e pesa in proporzione a quanto era grossa l'offerta: il peso lo dice il salto di
      PRESTIGIO rispetto al tuo club e il salto di STIPENDIO rispetto al tuo contratto (nessun campo nuovo,
