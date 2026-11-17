@@ -1993,6 +1993,7 @@ const generateBio=(p)=>{
   const tags=[];
   if(isBandiera)tags.push(`bandiera del ${clubN}`);
   if(isCap)tags.push(`capitano del ${clubN}`);
+  if(!isCap&&typeof premio238==="function"&&premio238(p,"vice"))tags.push(`vice-capitano del ${clubN}`);/* [giro 238 PO-496] la fascia da vice del patto col mister */
   if(oneClub)tags.push(`fedele a un solo club in ${seasons} stagioni`);
   if(tags.length)lines.push(cap1(tags.join(" · "))+".");
   // trofei (numero REALE)

@@ -196,8 +196,9 @@ const chiudiInvestimenti281=(ret,prev)=>{
 const PATTO227_ID=["rig","piaz","maglia","vice","voce"];
 const PATTO227_TX={rig:"Se ci riesci, il rigorista sei tu.",piaz:"Se ci riesci, i piazzati da qui in avanti li batti tu.",maglia:"Se ci riesci, per il resto della stagione quella maglia non te la toglie nessuno.",vice:"Se ci riesci, la fascia da vice-capitano è tua.",voce:"Se ci riesci, in questo spogliatoio parli tu.",fiducia:"Se ci riesci, avrai tutta la mia fiducia: e la vedrai in campo."};
 const PATTO227_OLD=["Se ci riesci, il rigorista sei tu.","Se ci riesci, i piazzati da qui in avanti li batti tu.","Se ci riesci, quella maglia non te la toglie più nessuno.","Se ci riesci, la fascia da vice-capitano è tua.","Se ci riesci, in questo spogliatoio parli tu."];
-const PATTO227_DATO={rig:"🎯 Sei il rigorista della squadra.",piaz:"🎯 Punizioni e angoli adesso li batti tu.",maglia:"👕 Titolare fisso fino a fine stagione.",vice:"🎖️ Sei il vice-capitano.",voce:"🗣️ Nello spogliatoio adesso la tua voce conta.",fiducia:"🤝 Il mister ti dà tutta la sua fiducia."};
+const PATTO227_DATO={rig:"🎯 Sei il rigorista della squadra.",piaz:"🎯 Le punizioni vicino all'area adesso le batti tu.",maglia:"👕 Titolare fisso fino a fine stagione.",vice:"🎖️ Sei il vice-capitano.",voce:"🗣️ Nello spogliatoio adesso la tua voce conta.",fiducia:"🤝 Il mister ti dà tutta la sua fiducia."};
 const no227=()=>typeof window!=="undefined"&&!!window.__CPM_NO_G227;
+const no238=()=>typeof window!=="undefined"&&!!window.__CPM_NO_G238;/* [giro 238 · PO-496/PO-501] rosso del giro */
 const club227=(p)=>(p&&p.club&&p.club.id)||"";
 /* il giocatore ce l'ha gia'? (letto dai dati veri) */
 function haPremio227(p,id){try{const pr=(p&&p.premiPatto227)||{},cl=club227(p);
@@ -221,6 +222,25 @@ function assegnaPremio227(p,id){if(no227()||!id)return {campi:{},riga:null};
   else {pr[id]=cl;campi={premiPatto227:pr};}
   return {campi,riga:PATTO227_DATO[id]||null,id};}
 if(typeof window!=="undefined")window.__CPM_PATTO227={ha:haPremio227,scegli:scegliPremio227,assegna:assegnaPremio227,ID:PATTO227_ID};
+/* [giro 238 PO-496, decisione PO 16/11 «Collegarli nella 197»] I PREMI DEL PATTO SI USANO. Fino al giro 227 premiPatto227 era solo
+   registrato (e impediva di riprometterlo). Ora una sola lettura, premio238(p,id), dice se il premio vale ADESSO:
+   - durata: vale nel club in cui e' stato promesso (premiPatto227[id] = id del club) e si perde cambiando club — la voce di un club
+     lasciato viene tolta dal salvataggio (effetto in CareerApp), quindi tornando nello stesso club non si riaccende; la maglia vale
+     anche solo per la stagione in cui e' stata data (giro 227); la fascia da vice tace se il giocatore e' diventato capitano;
+   - nelle partite della Nazionale e nel provino i premi di club non valgono (contesti national*, nationsCup, euroMondiale*, trial).
+   Consumatori: motore della partita (src/14, cfg.eroe.premi: rigori/piazzati), profilo (fascia da vice, voce), settimana (voce →
+   chimica, weeklyStaffRel). Rosso window.__CPM_NO_G238: nessun premio vale (comportamento del giro 227). Guardiano patto-238. */
+function premio238(p,id){try{if(no238()||no227()||!p)return false;const pr=p.premiPatto227;if(!pr)return false;const cl=club227(p);if(!cl||pr[id]!==cl)return false;
+  if(id==="vice")return p.isCaptain!==true;
+  if(id==="maglia")return pr.magliaS===(p.season||1);
+  return true;}catch(_e){return false;}}
+function premiMotore238(p,context){if(/^(national|nationsCup|euroMondiale|trial)/.test(String(context||"")))return null;
+  const r=premio238(p,"rig"),z=premio238(p,"piaz");return (r||z)?{rig:r,piaz:z}:null;}
+/* la durata: tolte le voci promesse in un altro club (cambiando club il premio si perde) */
+function premiPulisci238(p){try{if(no238()||!p||!p.premiPatto227)return null;const cl=club227(p);if(!cl)return null;const pr=p.premiPatto227;let cambia=false;const o={};
+  for(const k of Object.keys(pr)){if(k==="magliaS")continue;if(pr[k]===cl)o[k]=pr[k];else cambia=true;}
+  if(o.maglia&&pr.magliaS!=null)o.magliaS=pr.magliaS;return cambia?o:null;}catch(_e){return null;}}
+if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:premiMotore238,pulisci:premiPulisci238};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] entrando nella carriera (non all'apertura del menu) si chiedono i corpi della partita, con la pillola d'avanzamento: arrivano prima della prima scena 3D */
   const L=LOCALE[lang]||LOCALE.IT;
@@ -421,6 +441,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      stagione: stato della sola finestra, la memoria «gia' visto» sta in player.richiamo198 (campo additivo, nessun bump SAVE). */
   const[richiamo198,setRichiamo198]=useState(null);
   const[svinc198,setSvinc198]=useState(null);
+  const rich238Ref=useRef(null);/* [giro 238 · PO-501] il richiamo arrivato durante la corsa, mostrato a corsa finita */
+  /* [giro 238 · PO-496] durata dei premi del patto: cambiando club si perdono (premiPulisci238 toglie le voci di un altro club) */
+  useEffect(()=>{try{if(!premiPulisci238(player))return;setPlayer(q=>{const o=premiPulisci238(q);return o?{...q,premiPatto227:o,log:["🔁 Nuovo club: i premi del patto col mister restano dove te li eri guadagnati.",...(q.log||[])].slice(0,60)}:q;});}catch(_e){}},[player.club&&player.club.id]);// eslint-disable-line
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   // Sprint 116/123 — calculate and lock coach decision when match prompt opens
@@ -447,7 +470,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const r=(p.richiamo198&&p.richiamo198.s===sn)?(p.richiamo198.n||0):0;const n=w>=33&&r<2?2:(w>=19&&r<1?1:0);
       if(n){setPlayer(q=>(q.richiamo198&&q.richiamo198.s===(q.season||1)&&(q.richiamo198.n||0)>=n)?q:{...q,richiamo198:{s:q.season||1,n},
           log:[`🎩 Il presidente ti richiama (${n===1?"metà stagione":"ultime settimane"}): il contratto con ${q.club?.n||"il club"} scade a fine stagione e il club vuole parlarne.`,...(q.log||[])].slice(0,60)});
-        setRichiamo198({n,club:p.club?.n||"il club",left:Math.max(0,38-w+1)});}}
+        {const _r238={n,club:p.club?.n||"il club",left:Math.max(0,38-w+1)};
+         /* [giro 238 · PO-501, decisione PO 16/11 «Richiamo sì, corsa no»] rinnovo gia' rifiutato in questa stagione (giro 165b) e corsa di
+            «Vai al prossimo momento» in volo: il richiamo ARRIVA subito (salvataggio + registro, sopra) ma la finestra aspetta la fine
+            della corsa invece di fermarla col motivo «rinnovo». Misurato (rinnovo-238): sett. 15→39 col solo tasto, 1 fermata «rinnovo»
+            alla sett. 33 su 22 corse. Rosso window.__CPM_NO_G238. */
+         if(!no238()&&salta163&&salta163.fase==="corsa"&&(p.rinnRif165b||0)===sn)rich238Ref.current=_r238;else setRichiamo198(_r238);}}}
   }catch(_e94){}},[player.season,player.week,player.contractExpired,player.renewalSeason]);// eslint-disable-line
   useEffect(()=>{
     if(!showMatchPrompt){setCoachDecision(null);coachDecisionRef.current=null;return;}
@@ -1594,6 +1622,8 @@ const getThisWeekMatchday=()=>{
      Gli impulsi di routine si scelgono da soli con un'estrazione seedata (§3 del progetto: hashStr, mai Math.random) fra le
      scelte che il conto permette, e il riepilogo finale li elenca. Rosso __CPM_NO_SALTA153 = tasto assente. */
   const[salta163,setSalta163]=useState(null);/* null | {fase:"conferma"} | {fase:"corsa",...} */
+  /* [giro 238 · PO-501] a corsa finita si apre la finestra del richiamo arrivato durante la corsa (dopo la dichiarazione di salta163) */  useEffect(()=>{if(salta163&&salta163.fase==="corsa")return;const r=rich238Ref.current;if(!r)return;rich238Ref.current=null;
+    if((player.season||1)===((player.richiamo198&&player.richiamo198.s)||0)&&(player.renewalSeason||0)!==(player.season||1)&&!player.contractExpired)setRichiamo198(r);},[salta163]);// eslint-disable-line
   const[saltaTick163,setSaltaTick163]=useState(0);
   const[saltaFine163,setSaltaFine163]=useState(null);
   const _salta163Ref=useRef({fermo:0,firma:"",passi:0});
@@ -3616,7 +3646,7 @@ const getThisWeekMatchday=()=>{
     const _mrev=(v)=>{const _M=60;if(v<=_M)return v;const d=(v-_M)*0.035+(v>90?(v-90)*0.09:0);return clamp(Math.round((v-d)*10)/10,_M,100);};
     const _bz=beniReazione281(p);/* [PO-281] i beni fanno parlare stampa/tifosi/compagni/mister nel tempo (≈1 settimana su 6) */
     return {fitnessCoachRel:clamp((p.fitnessCoachRel||50)+fd,0,100),assistantCoachRel:clamp((p.assistantCoachRel||50)+ad,0,100),
-      coachTrust:clamp(_mrev(trust)+(_bz?_bz.dTrust:0),0,100),teamChemistry:clamp(_mrev(p.teamChemistry!=null?p.teamChemistry:60)+(_bz?_bz.dChem:0),0,100),
+      coachTrust:clamp(_mrev(trust)+(_bz?_bz.dTrust:0),0,100),teamChemistry:clamp(_mrev(p.teamChemistry!=null?p.teamChemistry:60)+(_bz?_bz.dChem:0)+((premio238(p,"voce")&&(p.teamChemistry!=null?p.teamChemistry:60)<75)?1:0)/* [giro 238 PO-496] «in questo spogliatoio parli tu»: finche' la chimica e' sotto 75 la tua voce la alza di 1 a settimana (sopra resta la sola media, 7.8.22) */,0,100),
       ...(_bz?{...(_bz.dPop?{popularity:clamp((p.popularity||20)+_bz.dPop,0,100)}:{}),stampa281:[...(p.stampa281||[]),_bz.voce].slice(-40)}:{})};
   };
 
@@ -11006,6 +11036,13 @@ const getThisWeekMatchday=()=>{
               </div>
             </Card>
           )}
+          {/* [giro 238 PO-496] i premi del patto col mister che valgono adesso (premio238): fascia da vice, voce nello spogliatoio, rigori, piazzati */}
+          {(()=>{const _v=[premio238(player,"vice")&&["🎖️","Vice-capitano","vice"],premio238(player,"voce")&&["🗣️","La tua voce conta nello spogliatoio","voce"],premio238(player,"rig")&&["🎯","Rigorista della squadra","rig"],premio238(player,"piaz")&&["🎯","Batti le punizioni vicino all'area","piaz"]].filter(Boolean);
+            if(!_v.length)return null;return(
+            <Card data-cpm="premi238" style={{padding:"11px 14px"}}>
+              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>La parola del mister · {player.club?.n||""}</div>
+              {_v.map(x=>(<div key={x[2]} data-cpm={"premio238-"+x[2]} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 0"}}><span style={{fontSize:FS.h}}>{x[0]}</span><span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text}}>{x[1]}</span></div>))}
+            </Card>);})()}
           {/* Sprint 25B — La Città ti Ricorda */}
           {(player.fanLegend||[]).length>0&&(
             <Fisarmonica id="s24-la-citta-ti-ricorda" titolo="La Città ti Ricorda"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
