@@ -522,6 +522,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      stessa partita (src/15, _lotto166 = lo stesso battito). Le condizioni del prompt restano (titolare, niente infortunio/squalifica/
      Simula scelto). posta165 non cambia: governa ancora il tasto facoltativo del giro 165. Rosso __CPM_NO_G229 = la regola senzaPosta166. */
   const _g229=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G229);
+  /* [giro 246 · decisione PO 17/11] il tasto dei momenti salienti vive SOLO nella schermata pre-partita (src/15 → MatchdayCard): via dal prompt e
+     dalle lobby della Nazionale. Rosso __CPM_NO_G246 = i tasti del giro 229/243 tornano qui. */
+  const _g246=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G246);
   const salienti229=(md)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_G166)return false;
     if(!_g229())return senzaPosta166(md);
     return !!md&&player.proStatus==="pro";}catch(_e){return false;}};
@@ -7409,7 +7412,7 @@ const getThisWeekMatchday=()=>{
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
-              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&salienti229(showMatchPrompt)&&(<>
+              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&!_g246()&&salienti229(showMatchPrompt)&&(<>
                 <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
                 <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>
               </>)}
@@ -12365,7 +12368,7 @@ const getThisWeekMatchday=()=>{
                   <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
-                {_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
+                {!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
             {q&&q.done&&(
@@ -12470,7 +12473,7 @@ const getThisWeekMatchday=()=>{
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
-                {!em.champion&&!em.eliminated&&!em.done&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
+                {!em.champion&&!em.eliminated&&!em.done&&!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
 
