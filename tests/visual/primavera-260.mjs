@@ -9,7 +9,8 @@
    salvati (proStatus "u18", u18Seasons, isStayU18…) non sono testo a schermo e non si toccano. Deve comparire anche «Primavera»
    (se no la misura non ha visto la carriera giusta).
    Bracci: VERDE (gioco) nessuna scritta; ROSSO window.__CPM_NO_G260 (com'era prima del giro 260) almeno una. «Non giudicato»
-   (meno di 9 schede lette, scheda di fine Primavera non aperta, errori di pagina) = rosso. Verde e rosso stampati per ultimi.
+   (meno di 9 schede lette, scheda di fine Primavera non aperta, errori di pagina) = rosso. Verde e rosso stampati per ultimi. Foto del
+   Profilo (stagione 2, riquadro delle stagioni) in out/primavera-260-profilo-<braccio>.png.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node primavera-260.mjs   (CPM_PARTE=verde|rosso) */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
@@ -46,6 +47,8 @@ async function braccio(b, port, rosso) {
       if (!ok) { buchi.push(`s${u + 1} ${t}: scheda non aperta`); continue; }
       const tx = await leggi(page); if (tx.length < 200) { buchi.push(`s${u + 1} ${t}: testo vuoto`); continue; }
       schede++; if (/Primavera/.test(tx)) primavera = true; trova(tx, `s${u + 1}/${t}`, trovati);
+      if (t === 'profile' && u === 1) { const el = page.locator('text=/STAGIONI (IN PRIMAVERA|U18)/i').first(); try { await el.scrollIntoViewIfNeeded({ timeout: 3000 }); await sleep(300);
+        await page.screenshot({ path: `out/primavera-260-profilo-${rosso ? 'rosso' : 'verde'}.png` }); } catch (e) {} }
     }
     if (u === 1) { /* scheda di fine Primavera + «Resta →» */
       await page.evaluate(() => window.__CPM_CAREER.goScreen('proTransition')); await sleep(1500);
