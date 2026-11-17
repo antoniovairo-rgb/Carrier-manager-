@@ -44,6 +44,7 @@ const ATTESI = [
   // [giro 25b, decisione PO 15/10 «Rimettile con la loro fonte»]
   ['Microsoft Rocketbox', ['Microsoft Rocketbox', 'Giornalista e presentatori', 'MIT']],/* [PO-290] via i nomi di file */
   ['Animazioni Mixamo', ['Animazioni Mixamo', 'gesti tecnici', 'CH38', 'royalty free', 'mixamo-faq']],/* [PO-290] via i nomi di file */
+  ['Anderson Rohr', ['Animazioni Anderson Rohr', 'Applauso dei giocatori', 'Attribution is not required', 'andersonrohr.gumroad.com']],/* [giro 240 PO-499] le clip Rohr entrano nel gioco */
   ['GLTFLoader', ['GLTFLoader', 'SkeletonUtils', 'three@0.128.0', 'three.js authors']],
   ['Effetti sonori', ['Effetti sonori', 'Realizzati per Korward Elite']],/* [PO-290] via «Web Audio» */
   ['Icone', ["Icone dell'app", 'Realizzate per Korward Elite']],
