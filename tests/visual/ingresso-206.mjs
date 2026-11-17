@@ -124,7 +124,7 @@ function verde(nome, tipo) { const X = S[nome]; if (!X) return; const A = ATT[ti
   if (A.inno) { if (!(W.innoS >= INNO)) g.push(`${nome}: inno di ${W.innoS} s (minimo ${INNO})`); if (!X.innoDom) g.push(`${nome}: la scritta dell'inno non si e' vista`); }
   else { if (W.innoS > 0 || X.innoDom) g.push(`${nome}: inno dove non e' previsto (${W.innoS} s, scritta ${X.innoDom})`); }
   const dose = X.vista === '375x667' ? { f: 8, c: 80 } : { f: 14, c: 180 };
-  if (A.coreo === 0) { if (W.coreoMax.length || W.fumoMax || W.coriMax) g.push(`${nome}: coreografia/fumogeni/coriandoli in una partita normale ${JSON.stringify([W.coreoMax, W.fumoMax, W.coriMax])}`); }
+  if (A.coreo === 0) { if (W.coreoMax.includes('ospiti') || W.fumoMax || W.coriMax) g.push(`${nome}: coreografia ospite/fumogeni/coriandoli in una partita normale ${JSON.stringify([W.coreoMax, W.fumoMax, W.coriMax])}`); }/* [giro 252, decisione PO 17/11 «Sì, piccole»] la normale ha la coreografia piccola in curva di casa (la giudica coreografie-252): qui resta vietata solo quella ospite */
   else { if (!W.coreoMax.includes('casa')) g.push(`${nome}: nessuna coreografia sulla curva di casa`);
     if (A.coreo === 2 && !W.coreoMax.includes('ospiti')) g.push(`${nome}: nella finale manca la coreografia sul lato ospite`);
     if (A.coreo === 1 && W.coreoMax.includes('ospiti')) g.push(`${nome}: coreografia sui due lati fuori dalle finali`);

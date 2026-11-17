@@ -3156,18 +3156,22 @@ function ThreeMatchView(props){
         }else{const cv=_tela(256,128);(D[id]||D.croce)(cv.getContext('2d'),0,c1,c2);_mesh(_sup(6,8),_fin(cv));}
       };
       G.an244=[];
+      /* [giro 252, decisione PO 17/11 «Sì, piccole» — rosso __CPM_NO_G252] anche la partita NORMALE (tabella INGRESSO206: coreo 0) ha una
+         coreografia del catalogo, in TAGLIA 1, solo nella curva di casa e solo col tifo di casa (_tifoHome, stadio non vuoto/freddo);
+         stessa rotazione delle altre taglie (coreo244Scegli). La tabella non cambia: fumogeni, coriandoli e inno restano spenti. */
+      const _co252=(_k==="normale"&&!(typeof window!=='undefined'&&window.__CPM_NO_G252))?1:_cfg.coreo;
       if(_no244){
       if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
       if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
       try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:"oggi",anim:false,taglia:0,ospiti:null};}catch(_e){}
-      }else if(_cfg.coreo>=1&&(_tifoHome||(_cfg.coreo>=2&&_tifoAway))){
+      }else if(_co252>=1&&(_tifoHome||(_co252>=2&&_tifoAway))){
         const _sc=coreo244Scegli(String(props.partita244||("?|"+_adSeed44+"|"+_stadHId+"|"+_stadAId)),props.heroName);
-        const _tg=(_k==="finale"||_k==="derby"||_ctier>=3)?3:((_k==="europea"||_k==="nazionale"||_ctier>=2)?2:1);
+        const _tg=(_k==="normale")?1:(_k==="finale"||_k==="derby"||_ctier>=3)?3:((_k==="europea"||_k==="nazionale"||_ctier>=2)?2:1);
         const _corto=(n)=>{const t=String(n||"").replace(/^(FC|AC|AS|SC|CF|CD|US|SS|SV|RC)\s+/i,"").trim();return t.length<=13?t:"";};
         if(_tifoHome)_mk244(true,_sc.id,_tg,_css(_tHCol),_css(_hc2),String(props.stadiumHomeAbbr||(homeClub&&homeClub.a)||"").slice(0,4),_corto(_stadHN));
-        if(_cfg.coreo>=2&&_tifoAway)_mk244(false,_sc.osp,_tg,_css(_tACol),_css(_ac2),String(props.stadiumAwayAbbr||"").slice(0,4),_corto(_stadAN));
+        if(_co252>=2&&_tifoAway)_mk244(false,_sc.osp,_tg,_css(_tACol),_css(_ac2),String(props.stadiumAwayAbbr||"").slice(0,4),_corto(_stadAN));
         G.id244=_sc.id;
-        try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:_tifoHome?_sc.id:null,anim:!!(_tifoHome&&(COREO244.find(c=>c.id===_sc.id)||{}).anim),taglia:_tg,ospiti:(_cfg.coreo>=2&&_tifoAway)?_sc.osp:null,mem:!!_sc.mem,riaperta:!!_sc.riaperta,pezzi:G.coreo.length};}catch(_e){}
+        try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:_tifoHome?_sc.id:null,anim:!!(_tifoHome&&(COREO244.find(c=>c.id===_sc.id)||{}).anim),taglia:_tg,ospiti:(_co252>=2&&_tifoAway)?_sc.osp:null,mem:!!_sc.mem,riaperta:!!_sc.riaperta,pezzi:G.coreo.length};}catch(_e){}
       }
       if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
       if(_cfg.coriandoli){const n=isDesktop?180:80;const p=new Float32Array(n*3),c=new Float32Array(n*3);const cols=[new THREE.Color(_css(_tHCol)),new THREE.Color(_css(_hc2)),new THREE.Color(0xffffff)];
