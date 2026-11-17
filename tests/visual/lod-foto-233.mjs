@@ -3,7 +3,7 @@
    pilota seedato), telefono 375x667 a densita' 2 (750x1334 pixel veri): una volta col livello pieno forzato (__CPM_DETT233='alto':
    eroe sul file lod0, 34.995 triangoli, immagini 2048 px) e una col livello del dispositivo leggero ('leggero': eroe sul file lod1,
    12.244 triangoli, immagini 1024 px). Ferma il gioco sullo stesso fotogramma (primo highlight in fase di scelta), fotografa e misura:
-   differenza media per pixel fra le due foto, altezza apparente dell'eroe, triangoli disegnati e memoria JS.
+   altezza apparente dell'eroe e memoria JS (il confronto fra le foto si fa a occhio: vedi la nota di metodo in fondo).
    Solo misura (esce 0). Foto in CPM_FOTO (default docs/sviluppo/giro233). */
 import fs from 'node:fs';
 import { launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -31,8 +31,8 @@ for (const liv of ['alto', 'leggero']) {
   await ctx.close();
 }
 await browser.close(); srv.close();
-/* differenza fra le due foto (PNG decodificati con pngjs) */
-try { const { PNG } = await import('pngjs'); const A = PNG.sync.read(fs.readFileSync(`${FOTO}/lod-alto.png`)), B = PNG.sync.read(fs.readFileSync(`${FOTO}/lod-leggero.png`));
-  let s = 0, n = 0, diversi = 0; for (let i = 0; i < A.data.length; i += 4) { const d = (Math.abs(A.data[i] - B.data[i]) + Math.abs(A.data[i + 1] - B.data[i + 1]) + Math.abs(A.data[i + 2] - B.data[i + 2])) / 3; s += d; n++; if (d > 16) diversi++; }
-  console.log(`differenza media per pixel ${(s / n).toFixed(2)}/255 · pixel che cambiano di oltre 16/255: ${(diversi / n * 100).toFixed(2)}% (${A.width}x${A.height})`); } catch (e) { console.log('confronto non riuscito: ' + e.message); }
+/* NOTA DI METODO: le due foto NON sono lo stesso istante (regia e pubblico sono vivi): una differenza pixel per pixel fra le due
+   misura la regia, non il livello di dettaglio (provato: 14,6/255 di media, quasi tutto tribuna e inquadratura). Il confronto valido
+   e' a occhio sull'eroe, alla sua altezza apparente (frazione dell'altezza dell'immagine, testimone __CPM_FRAME480). */
+for (const k of Object.keys(out)) { const q = out[k].quadro || {}; console.log(`${k}: file dell'eroe ${out[k].leggero ? 'lod1 (12.244 triangoli, immagini 1024 px)' : 'lod0 (34.995 triangoli, immagini 2048 px)'} · altezza apparente dell'eroe ${q.min}–${q.max} dell'immagine (= ${Math.round((q.min || 0) * 1334)}–${Math.round((q.max || 0) * 1334)} pixel veri su 1334) · memoria JS ${out[k].heap} MB`); }
 process.exit(0);
