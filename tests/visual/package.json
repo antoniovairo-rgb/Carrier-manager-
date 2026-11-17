@@ -500,6 +500,8 @@
     "busta-199": "node busta-199.mjs",
     "presentazione-200": "node presentazione-200.mjs",
     "presentazione-225": "node presentazione-225.mjs",
+    "serata-261": "node serata-261.mjs",
+    "misura-261": "node misura-261.mjs",
     "pelle-240": "node pelle-240.mjs",
     "cerimonie-192": "node cerimonie-192.mjs",
     "scene-178": "node scene-178.mjs && CPM_ROSSO=1 node scene-178.mjs",
