@@ -13,7 +13,8 @@ import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from '
 import fs from 'fs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
-const ROSSO = process.env.CPM_ROSSO203 === '1';
+const ROSSO254 = process.env.CPM_ROSSO254 === '1';   /* [giro 254] __CPM_NO_G254: controllo d'eccesso intero di prima (FC Lyon 0,7 px fuori a 360) */
+const ROSSO = process.env.CPM_ROSSO203 === '1' || ROSSO254;
 const FOTO = process.env.CPM_FOTO203 || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 const VISTE = [{ width: 360, height: 640 }, { width: 375, height: 667 }, { width: 390, height: 844 }, { width: 1366, height: 768 }]
@@ -30,7 +31,7 @@ async function apri(vp, touch) {
   const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1, hasTouch: touch, isMobile: touch });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript((rosso) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G203 = 1; }, ROSSO);
+  await page.addInitScript((rosso) => { window.__CPM_GLB = false; if (rosso === 203) window.__CPM_NO_G203 = 1; if (rosso === 254) window.__CPM_NO_G254 = 1; }, ROSSO254 ? 254 : ROSSO ? 203 : 0);
   await openMatch(page, port, { skipLoadAll: true, name: 'Collaudo Sigle' });
   await page.waitForFunction(() => typeof window.__CPM_BARRA203 === 'function' && !!document.querySelector('[data-cpm="barra-nome-182"]'), null, { timeout: 60000 });
   await page.evaluate(() => { window.__CPM_FROZEN = true; });   // il 3D si ferma: si misura la barra, non la scena
@@ -78,7 +79,8 @@ try {
     }
     await page.evaluate(() => { window.__CPM_SWAP203 = false; window.__CPM_BARRA203(null); }); await sleep(150);
     const mis = tutti.filter(x => !x.vuoto);
-    const fuori = mis.filter(x => x.fuori > 0.5), sotto = mis.filter(x => x.sotto > 0.5), pezzi = mis.filter(x => !x.intero);
+    /* [giro 254] soglia stretta 0,5 → 0,05 px: a 0,5 «Monaco» passava con 0,45 px di testo tagliato */
+    const fuori = mis.filter(x => x.fuori > 0.05), sotto = mis.filter(x => x.sotto > 0.5), pezzi = mis.filter(x => !x.intero);
     const sig = mis.filter(x => x.testo === x.sigla);
     const peggio = [...fuori].sort((a, b) => b.fuori - a.fuori).slice(0, 4).map(x => `${x.club} «${x.testo}» ${x.fuori}px`).join('; ');
     const peggioS = [...sotto].sort((a, b) => b.sotto - a.sotto).slice(0, 4).map(x => `${x.club} «${x.testo}» ${x.sotto}px`).join('; ');
