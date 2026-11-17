@@ -173,11 +173,12 @@ venti volte oltre.
 
 `node tools/check-src.mjs`: IDENTICO BYTE PER BYTE dopo ogni build.
 
-**Non eseguiti.** La mappa mirata per i sei frammenti toccati (`src/11`, `12`, `15`, `16`, `17`, `19`) dà **246 passi**
+**Non eseguiti.** La mappa mirata per i sette frammenti toccati (`src/11`, `12`, `15`, `16`, `17`, `18`, `19`) dà **247 passi**
 (elenco in `tests/visual/out/mirata-233.txt`, non committato): `src/19` porta con sé l'intera catena completa. Ho eseguito
 i 9 della consegna, il nucleo rapido e i guardiani più vicini al cambio (tabella sopra); **gli altri, fra cui
 `career-critical`, `highlight-95`, `validate-situations`, `partita-vera`, non sono stati eseguiti** e restano alla verifica
-di rilascio. Non eseguiti nemmeno `tools/validate-dist.mjs`, `glb-pronti-232` e
+di rilascio. In `src/18` ho aggiunto una sola riga (la richiesta dei modelli all'ingresso in carriera): i guardiani di
+carriera (`career-invariants`, `career-sim-test`, ecc.) non li ho eseguiti. Non eseguiti nemmeno `tools/validate-dist.mjs`, `glb-pronti-232` e
 `tests/character-lab/cgtrader-mixed-lod-benchmark-smoke.mjs` (in questi ultimi due ho solo allargato a `.webp` il filtro
 dei capelli).
 
