@@ -132,13 +132,17 @@ Build: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BY
 | `agente-198` | ✅ verde · rossi bocciati | |
 | `rigore-191` | ✅ verde · rosso `__CPM_NO_G191A` bocciato | |
 | `piazzato-204` | ✅ verde · rosso bocciato | |
-| `gol-eroe-154` | ❌ 1ª prova · RIPROVA | 1ª prova: VERDE 9/10 partite valide, 0 gol e 0 assist dell'eroe in gioco fluido, 9 gol in scena; ROSSO `__CPM_NO_G154` 9/10 valide ma 0 gol fluidi → «il guardiano guarda a vuoto»; k6 non valida (cerimonia) in entrambi i bracci |
+| `gol-eroe-154` | ❌ rosso in 2 prove su 2, numeri identici | 1ª prova: VERDE 9/10 partite valide, 0 gol e 0 assist dell'eroe in gioco fluido, 9 gol in scena; ROSSO `__CPM_NO_G154` 9/10 valide ma 0 gol fluidi → «il guardiano guarda a vuoto»; k6 non valida (cerimonia) in entrambi i bracci |
 
 Su `gol-eroe-154`: nelle sue partite i premi sono spenti (i salvataggi di prova non hanno `premiPatto227`) e il motore senza premi
 si comporta come prima — la sonda dei piazzati lanciata **prima** di toccare src/14 e quella dopo danno gli stessi conteggi sui semi
 1-30 (4 rigori, 339 punizioni, 103 angoli). Il rosso che non si vede è il braccio `__CPM_NO_G154`, che ha bisogno di un gol dell'eroe
 in gioco fluido: lo stesso guardiano era rosso nella catena completa della 7.999.190 (`STABILITA.json`, 3 prove) e verde nella 191.
-Lo segnalo come guardiano instabile (vedi dubbi), non l'ho riparato: fuori dall'ambito del giro.
+La riprova (una sola, regola della mirata) ha dato **gli stessi numeri**: è un rosso stabile del braccio rosso, non un tremolio.
+**Non l'ho misurato sulla base `lavoro/197`** (circa 50 minuti a passata): l'affermazione «non dipende da questo giro» poggia
+sull'equivalenza per costruzione (in partita senza premi `_pr238` è falso, nessun sorteggio in più, src/15 passa `premi:null`; la
+correzione del rinnovo non tocca la partita) e sulla sonda prima/dopo, non su una corsa del guardiano sulla base. Non l'ho
+riparato: fuori dall'ambito del giro.
 
 Foto rigenerate da `svincolato-198`/`agente-198` in `docs/sviluppo/giro198/` rimesse con `git checkout --` e non committate.
 
@@ -178,6 +182,6 @@ dopo pochi secondi (nessun file cambiato, `STABILITA.json` intatto) e ho calcola
    nell'elenco di `_saltaMotivo163`). Il giocatore la vede e risponde; lo segnalo perché il motivo dice «nulla» mentre il tasto non
    si può toccare.
 9. **Mappa mirata da 164 passi** per i quattro file toccati: non eseguita per intero (vedi sopra).
-10. **`gol-eroe-154` instabile sul braccio rosso**: il verde è pulito, ma il rosso (`__CPM_NO_G154`) vede un difetto solo se
+10. **`gol-eroe-154` rosso sul braccio rosso (2 prove su 2)**: il verde è pulito, ma il rosso (`__CPM_NO_G154`) vede un difetto solo se
     l'eroe segna in gioco fluido, cosa che dal giro 13 (l'eroe tira solo nelle sue scene) succede di rado. Era già rosso nella
     completa della 7.999.190. Va riparato (regola «instabile due volte si ripara»), in un giro suo.
