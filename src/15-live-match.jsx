@@ -1566,6 +1566,18 @@ function rassegnaComp232(player,ctx,es){
   return null;
 }
 if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){window.rassegnaComp232=rassegnaComp232;window.__CPM_CLUBS232=()=>CLUBS;window.__CPM_SIG232=(k)=>euroSig(k);}/* solo banco di prova */
+/* [giro 236 · PO-430 G189-18 punto 5 — rosso __CPM_NO_G236] coro «FC CREMONA CAMPIONI! 🏆» sullo 0-0 alla 7a giornata con la squadra nona.
+   I cori che proclamano il titolo (in ogni lingua dei pool) escono solo se la squadra e' davvero PRIMA in classifica con almeno una giornata
+   giocata; altrimenti si tolgono dal sorteggio (se il pool restasse vuoto, si torna al pool intero). Funzione pura. */
+const CORO_TITOLO236=/campion|champion|meister|campe[oõ]|kampioen|top of the league|win the league|glory glory|tetracampe|şampiyon|sampiyon/i;
+function primaInClassifica236(player){try{const st=(player&&player.standings)||[];const id=player&&player.club&&player.club.id;if(!id||!st.length)return false;
+  const me=st.find(r=>r&&r.id===id);if(!me||!(me.played>0))return false;
+  return !st.some(r=>r&&r.id!==id&&((r.pts||0)>(me.pts||0)||((r.pts||0)===(me.pts||0)&&((r.gd||0)>(me.gd||0)||((r.gd||0)===(me.gd||0)&&(r.gf||0)>(me.gf||0))))));}catch(e){return false;}}
+function filtraCoriTitolo236(pool,player,context,alt){if(!Array.isArray(pool)||(typeof window!=="undefined"&&window.__CPM_NO_G236))return pool;
+  const club=!/^(national|nationsCup|euroMondiale)/.test(context||"");
+  if(club&&primaInClassifica236(player))return pool;
+  const no=(a)=>(Array.isArray(a)?a:[]).filter(t=>!CORO_TITOLO236.test(String(t)));
+  const f=no(pool);if(f.length)return f;const g=no(alt);return g.length?g:pool;}/* pool fatto solo di titoli (es. «CHAMPIONS!»): si canta il tifo di casa della stessa lingua */
 function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
@@ -4217,7 +4229,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
     const clubN=(typeof window!=="undefined"&&window.__CPM_NO_CORO23)?(_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra")):(_isNat?(player.nation||_natD?.n||_natD?.a||"Nazionale"):String(player.club?.n||player.club?.name||player.club?.a||"la squadra").replace(/\s+Primavera$/i,""));/* [23/09 POC — collaudo PO «nei cori non la sigla ma il nome per intero», «Primavera e' sottinteso nei cori»] rosso __CPM_NO_CORO23 */
     // [6.39.0] pool nella LINGUA giusta: per-lega/nazione → per-lingua (riempie i buchi) → base IT
-    const pool=chantPoolFor(_type,_isNat,player.nation,player.club?.lg);
+    const pool=filtraCoriTitolo236(chantPoolFor(_type,_isNat,player.nation,player.club?.lg),player,context,chantPoolFor("home",_isNat,player.nation,player.club?.lg));
     const t=pick(pool);
     const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
     /* [7.532.0 collaudo PO «i cori si accavallano con la cronaca» — rosso __CPM_NO541] I CORI AMBIENTALI

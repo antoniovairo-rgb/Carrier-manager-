@@ -458,6 +458,9 @@ function voltoUrl(tipo,chiave,voltoId){
    che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
    finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
    riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
+/* [giro 236 · PO-430 G189-18] rifiniture per Google Play viste giocando (sei piccoli difetti del primo impatto). Interruttore unico
+   del rosso: window.__CPM_NO_G236 rimette il comportamento di prima su tutti e sei i punti. Guardiano `npm run store-236`. */
+function _g236(){return !(typeof window!=='undefined'&&window.__CPM_NO_G236);}
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,voltoId,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
   const [,_rif23]=React.useReducer(x=>x+1,0);
@@ -605,8 +608,11 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
         {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}</div>}
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
+        {_g236()&&<div aria-hidden="true" className="fig236" data-iniziali={[D.nome,D.cognome].filter(Boolean).map(x=>String(x).trim().charAt(0).toUpperCase()).join("").slice(0,2)||"·"}
+          style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:FW.black,fontSize:Math.max(10,Math.round(lato*0.36)),color:TH.muted,background:"linear-gradient(160deg,"+TH.card+","+TH.track+")"}}/>}{/* [giro 236 punto 1] «figurina vuota nella scheda di fine Primavera»: il volto si carica pigro (loading=lazy) e, finche' non e' decodificato o se la rete non lo da', il riquadro era un rettangolo scuro vuoto. Ora sotto il volto ci sono le iniziali (disegnate dal CSS, fuori da innerText): a volto caricato non si vedono */}
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
-          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
+          onError={_g236()?(e=>{try{e.currentTarget.style.visibility="hidden";}catch(_e){}}):undefined}
+          style={{position:"relative",width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
       </div>
       {usate.length>0&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,height:hPan,
         background:TH.card,borderRadius:ragF,padding:`0 ${pad}px`,boxSizing:"border-box",

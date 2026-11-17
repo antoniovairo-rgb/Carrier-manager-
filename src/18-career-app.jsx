@@ -10922,7 +10922,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#e0e7ff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)"}}>{r.club?.n||"–"} · {r.club?.lg||"–"}</div>
-                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{relLabel} · {r.age||"?"} anni · OVR {r.ovr||"?"}</div>
+                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{(_g236()&&(r.relationship||"sconosciuto")==="sconosciuto")?"":relLabel+" · "}{r.age||"?"} anni · OVR {r.ovr||"?"}</div>{/* [giro 236 punto 4] niente «Sconosciuto» davanti all'eta' */}
                   </div>
                   {(r.trophies||0)>0&&<div style={{textAlign:"center",flexShrink:0}}>
                     <div style={{fontSize:FS.subhead}}>🏆</div>

@@ -45,7 +45,7 @@ async function giro(rosso) {
   o.B2 = await page.evaluate(async (B) => {
     const leggi = async (u) => { const d = document.createElement('div'); document.body.appendChild(d); const r = ReactDOM.createRoot(d);
       r.render(React.createElement(ProTransitionScreen, { player: { ...B, proStatus: 'u18', u18Seasons: u, season: u, club: { ...B.club, lg: 'Primavera 1' }, goals: 5, assists: 2, matches: 20 }, onChoose() {} }));
-      await new Promise(r2 => setTimeout(r2, 600)); const t = d.innerText; r.unmount(); d.remove(); return t; };
+      await new Promise(r2 => setTimeout(r2, 600)); const t = d.innerText.replace(/Stagioni in Primavera:/g, 'Stagioni Under 18:')/* [giro 236] la barra dice «Stagioni in Primavera» (PO-430 punto 6): stessa misura */; r.unmount(); d.remove(); return t; };
     const a = await leggi(1), b = await leggi(2);
     return { u1: (a.match(/Stagioni Under 18: \d di 2/) || [''])[0], u1Ultima: /ultima stagione/i.test(a) ? (a.match(/[^\n]*ultima stagione[^\n]*/i) || [''])[0] : '', u2: (b.match(/Stagioni Under 18: \d di 2/) || [''])[0], u2Limite: /Limite raggiunto/.test(b) };
   }, BASE);
