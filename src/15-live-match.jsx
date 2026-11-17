@@ -12623,7 +12623,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
                     <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:10}}>
                       <div data-cpm="aiuto" style={{fontSize:FS.small,lineHeight:1.35,fontWeight:600,color:"#cbd5e1"}}>{movesLeft>0?<>Sposta l'eroe con le frecce, poi scegli la giocata. </>:<>Scegli la giocata. </>}<span style={{fontWeight:800,color:pressureBar>0.4?"#fbbf24":pressureBar>0.2?"#fb923c":"#f87171"}}>Il marcatore sta arrivando.</span></div>
-                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",...(_g235()?{...stileTasto235(false),fontSize:Math.round(FS.bodyLg*1.15),borderRadius:RAD.md}:{})/* [giro 235 · PO-458] «Scegli» era il bordeaux: ora la regola unica del tasto principale (src/11) */,display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
                     </div>
                   </div>
                 </div>
@@ -12647,7 +12647,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",...(_g235()?{...stileTasto235(false),fontSize:Math.round(FS.bodyLg*1.15),borderRadius:RAD.md}:{})/* [giro 235 · PO-458] «Scegli» era il bordeaux: ora la regola unica del tasto principale (src/11) */,flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )

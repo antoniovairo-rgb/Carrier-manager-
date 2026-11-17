@@ -774,6 +774,20 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
 const _nome234=(l)=>String(l||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
 function Lettura234(){
   const[tg,setTg]=useState(()=>testoGrande234());
+  const[lv,setLv]=useState(()=>livelloTesto235());/* [giro 235] il gradino scelto: 0 · 15 · 30 */
+  const scegli235=(v)=>{try{localStorage.setItem('cpm-testo-grande',String(v));}catch(_e){}applicaTesto234(v);setLv(v);setTg(v>0);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}};
+  /* [giro 235 · decisione PO 17/11] «Testo grande» a DUE GRADINI: un gruppo di tre scelte (Normale · +15% · +30%), un pulsante-scelta
+     per gradino con aria-checked; stessa riga e stesso posto dell'interruttore di prima. Rosso __CPM_NO_G235 = l'interruttore unico ×1,3. */
+  const gradini235=()=>(
+    <div style={{marginBottom:10}}>
+      <span style={{display:'flex',flexDirection:'column',minWidth:0,marginBottom:6}}><span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔠 Testo grande</span><span style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.35}}>Ingrandisce le scritte: due gradini, +15% o +30%</span></span>
+      <div role="radiogroup" aria-label="Testo grande" data-cpm="gradini235" style={{display:'flex',gap:6}}>
+        {[[0,"Normale"],[15,"+15%"],[30,"+30%"]].map(([v,t])=>(
+          <button key={v} role="radio" aria-checked={lv===v} onClick={()=>scegli235(v)} className="cpm-press cpm-t40"
+            style={{flex:'1 1 0',minWidth:0,minHeight:40,borderRadius:RAD.md,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:FW.bold,
+              background:lv===v?TINTE.testo:TINTE.tasto,color:lv===v?TINTE.bg:TINTE.testo,border:'1px solid '+(lv===v?TINTE.testo:TINTE.bordo)}}>{t}</button>))}
+      </div>
+    </div>);
   const[ra,setRa]=useState(()=>{try{return document.documentElement.classList.contains('cpm-riduci234');}catch(_e){return false;}});
   const riga=(nome,nota,on,cambia)=>(
     <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:10}}>
@@ -785,7 +799,7 @@ function Lettura234(){
   return(
     <Card data-cpm="lettura234" style={{padding:'12px 14px'}}>
       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>👓 Lettura</div>
-      {riga("🔠 Testo grande","Ingrandisce le scritte del 30%",tg,()=>{const v=!tg;try{localStorage.setItem('cpm-testo-grande',v?'1':'0');}catch(_e){}applicaTesto234(v);setTg(v);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}})}
+      {_g235()?gradini235():riga("🔠 Testo grande","Ingrandisce le scritte del 30%",tg,()=>{const v=!tg;try{localStorage.setItem('cpm-testo-grande',v?'1':'0');}catch(_e){}applicaTesto234(v);setTg(v);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}})}
       {riga("🐢 Riduci animazioni","Meno movimento nei menu e nelle schermate",ra,()=>{const v=!ra;try{localStorage.setItem('cpm-riduci-anim',v?'1':'0');}catch(_e){}try{document.documentElement.classList.toggle('cpm-riduci234',v);}catch(_e){}setRa(v);})}
     </Card>);
 }
@@ -877,16 +891,27 @@ function SettingsQuickBtn({onOpen}){
    diversi (rivedi intro, ecc)»] barra di navigazione della HOME — STESSE classi/stile della nav bar della carriera
    (.cpm-nav-bar/.cpm-nav-tabs, bottom su mobile, sidebar su desktop) con azioni proprie della home: Home (attiva) ·
    Intro (rivedi) · Importa (salvataggio .json) · Opzioni (impostazioni). Sostituisce il FAB e i bottoni sparsi. */
+/* [giro 235] la misura delle voci della barra di carriera (_NAV954, src/18), per la barra della Home */
+const _NAV235=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,fontWeight:att?FW.bold:600,letterSpacing:"0.01em",textTransform:"uppercase",lineHeight:1.2,whiteSpace:"nowrap"});
 function HomeNavBar({onImport,onSettings}){
   const fileRef=React.useRef(null);
   const cellStyle=(border)=>({flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:border?`1px solid ${TH.cardBorder}`:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,borderTop:"2px solid transparent",transition:"all .15s"});
   return(
     <div className={"cpm-nav-bar"+" cpm-v2nav"} style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
+        {_g235()?(<>{/* [giro 235 · PO-458 / G195-12] LO STESSO MENU FUORI E DENTRO LA CARRIERA: voci di solo testo nel carattere e nella misura
+            della barra di carriera (_NAV954 in src/18: Barlow Condensed, maiuscolo, voce attiva col filo), stessa altezza, la voce attiva
+            dichiarata (aria-current). Le azioni restano quelle della Home. Rosso __CPM_NO_G235: icona sopra e parola sotto, come prima. */}
+          {[["Home","Home",null,true],["Rivedi l'intro","Rivedi intro",()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}},false],
+            ["Importa salvataggio (.json)","Importa",()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}},false],
+            ["Impostazioni","Opzioni",()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();},false]].map(([ti,l,fn,act])=>(
+            <button key={l} title={ti} aria-label={l} aria-current={act?"page":undefined} data-suono={l==="Opzioni"?"apri":undefined} className={act?"cpm-tab-act":""} onClick={fn||undefined}
+              style={{flex:"1 1 auto",minWidth:0,padding:"15px 1px 14px",border:"none",background:"transparent",cursor:act?"default":"pointer",fontFamily:"inherit",color:act?TH.brandText:TH.faint,borderTop:`2px solid ${act?TH.primary:"transparent"}`,transition:"all .15s"}}>
+              <div style={_NAV235(act)}>{l}</div></button>))}</>):(<>
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
         <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
-        <button title="Impostazioni" data-suono="apri" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
+        <button title="Impostazioni" data-suono="apri" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button></>)}
       </div>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0]&&onImport)onImport(e.target.files[0]);e.target.value="";}}/>
     </div>
@@ -894,6 +919,7 @@ function HomeNavBar({onImport,onSettings}){
 }
 function App(){
   const[phase,setPhase]=useState("loading");
+  if(phase!=="career")_TP235.c=null;/* [giro 235] fuori dalla carriera il tasto principale e' crema (src/11, tasto235) */
   // [7.32.0 collaudo PO «il video deve essere anche RIVEDIBILE»] replay on-demand da qualunque schermata:
   //   i bottoni «Rivedi l'intro» (Home + Profilo) emettono l'evento 'cpm-replay-intro' → overlay sopra la fase corrente.
   const[showIntro,setShowIntro]=useState(false);

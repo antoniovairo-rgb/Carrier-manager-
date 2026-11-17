@@ -4,7 +4,7 @@
    Giudica, per ogni braccio:
      Z  zoom con due dita (gesto a due dita vero, CDP): in carriera la scala sale (> 1,5); in partita (provino, fase di gioco) resta 1
         e la pagina dichiara touch-action pan-x pan-y.
-     G  testo grande (interruttore «Testo grande» acceso, cpm-testo-grande=1, corpi ×1,3) a 360 e 375: in Classifica la colonna dei
+     G  testo grande (giro 235: DUE gradini, cpm-testo-grande=15 → +15%, =1 → +30% come nel giro 234) a 360 e 375, in tutti e due i gradini: in Classifica la colonna dei
         punti (intestazione + 18 righe) dentro il bordo visibile, nessun testo tagliato, nessuna etichetta tagliata, nessuno
         scorrimento orizzontale della pagina; il corpo minimo e' davvero salito (>= 15,5 px, se no la prova non vale).
      C  i 5 cursori dell'audio in Opzioni hanno area di tocco >= 44 px sul lato minore.
@@ -37,7 +37,9 @@ function giudicaManifest(web, twa, tj, head) {
   return ko;
 }
 const leggi = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-const leggiGit = f => execSync(`git show lavoro/197:${f}`, { cwd: ROOT, encoding: 'utf8' });
+/* [giro 235] la base della prova del rosso di M e' il commit PRIMA del giro 234 (ea02adf0^): da quando il 234 e' unito, lavoro/197 ha gia'
+   i manifest corretti e la prova del rosso passava sempre (guardiano rosso per costruzione) */
+const leggiGit = f => execSync(`git show ea02adf0^:${f}`, { cwd: ROOT, encoding: 'utf8' });
 
 async function braccio(b, port, rosso) {
   const flags = rosso ? ['__CPM_NO_G234'] : []; const ko = []; const num = {};
@@ -72,7 +74,12 @@ async function braccio(b, port, rosso) {
       const conNome = audio.filter(c => c.nome).length; num.comandiAudio = `${conNome}/${audio.length}`;
       if (audio.length < 12 || conNome < 12) ko.push(`N comandi audio con nome ${conNome} su ${audio.length} (servono 12)`);
       if (!o.dialoghi.some(d => /Opzioni/.test(d))) ko.push('N Opzioni non e\' una finestra con nome');
-      if (!o.comandi.some(c => c.ruolo === 'switch' && /Testo grande/.test(c.nome))) ko.push('G interruttore «Testo grande» assente');
+      /* [giro 235 · decisione PO 17/11] «Testo grande» a due gradini: un gruppo di scelte (radiogroup) col nome «Testo grande» e le scelte
+         +15% e +30%; l'interruttore unico del giro 234 vale ancora come «c'e'», ma non come due gradini (giudicato sotto, G2) */
+      const tg = await a.page.evaluate(() => { const g = document.querySelector('[role=radiogroup][aria-label="Testo grande"]'); return g ? [...g.querySelectorAll('[role=radio]')].map(x => x.innerText.trim()) : null; });
+      num.gradiniOpzioni = tg ? tg.join('/') : 'nessuno';
+      if (!tg && !o.comandi.some(c => c.ruolo === 'switch' && /Testo grande/.test(c.nome))) ko.push('G comando «Testo grande» assente');
+      if (!tg || !tg.some(t => /15/.test(t)) || !tg.some(t => /30/.test(t))) ko.push(`G2 «Testo grande» senza i due gradini +15%/+30% (${num.gradiniOpzioni})`);
       if (o.versione !== VER) ko.push(`V versione in Opzioni «${o.versione}» (attesa ${VER})`);
       await chiudiOpzioni(a.page);
     }
@@ -80,20 +87,22 @@ async function braccio(b, port, rosso) {
     for (const k2 of ['apriSettimana', 'apriPartita']) { if (!f[k2] || f[k2].esito !== 'true') nonG(`N ${k2} non aperta (${f[k2] && f[k2].esito})`); else if (!f[k2].dialoghi.some(d => d.modale)) ko.push(`N ${k2}: nessuna finestra modale nell'albero`); }
     if (a.errs.length) nonG('errori di pagina: ' + a.errs.slice(0, 2).join(' / '));
   } catch (e) { nonG(String(e.message).slice(0, 160)); } finally { await a.ctx.close(); }
-  /* pagine 2-3: testo grande a 360 e 375 */
-  for (const w of [360, 375]) {
-    const g = await apri(b, port, w, { flags, ls: { 'cpm-testo-grande': '1', 'cpm-riduci-anim': '1' } });
+  /* pagine 2-5: testo grande a 360 e 375, nei DUE gradini (giro 235): «15» = +15% (corpo minimo >= 13,5) e «1» = +30% (>= 15,5; il valore
+     del giro 234, che resta +30%) */
+  for (const [val, cmin, et] of [['15', 13.5, '+15%'], ['1', 15.5, '+30%']]) for (const w of [360, 375]) {
+    const g = await apri(b, port, w, { flags, ls: { 'cpm-testo-grande': val, 'cpm-riduci-anim': '1' } });
     try {
       const rm = await g.page.evaluate(() => ({ classe: document.documentElement.classList.contains('cpm-riduci234'), mm: window.matchMedia('(prefers-reduced-motion: reduce)').matches }));
       if (!rm.classe || !rm.mm) ko.push(`R ${w}: «Riduci animazioni» scelto ma non applicato (classe ${rm.classe}, matchMedia ${rm.mm})`);
       await vai(g.page, 'standings'); const c = await classifica(g.page);
-      num['tg' + w] = `pt ${c.ptCelle - c.ptFuori}/${c.ptCelle} · corpo ${c.corpoMin}`;
-      if (c.corpoMin < 15.5) nonG(`G ${w}: testo grande non applicato (corpo minimo ${c.corpoMin})`);
+      num['tg' + w + et] = `pt ${c.ptCelle - c.ptFuori}/${c.ptCelle} · corpo ${c.corpoMin}`;
+      if (c.corpoMin < cmin) nonG(`G ${w} ${et}: testo grande non applicato (corpo minimo ${c.corpoMin}, atteso >= ${cmin})`);
+      if (val === '15' && c.corpoMin >= 15.5) ko.push(`G2 ${w}: il gradino +15% da' gli stessi corpi del +30% (${c.corpoMin})`);
       if (!c.pt || c.ptCelle < 10) nonG(`G ${w}: colonna Pt non trovata`);
-      if (c.ptFuori) ko.push(`G ${w}: ${c.ptFuori} celle Pt fuori dal bordo (${c.ptDettaglio.join(' ')})`);
-      if (c.tagliati) ko.push(`G ${w}: ${c.tagliati} testi tagliati (${c.tagliatiEs.join(' | ')})`);
+      if (c.ptFuori) ko.push(`G ${w} ${et}: ${c.ptFuori} celle Pt fuori dal bordo (${c.ptDettaglio.join(' ')})`);
+      if (c.tagliati) ko.push(`G ${w} ${et}: ${c.tagliati} testi tagliati (${c.tagliatiEs.join(' | ')})`);
       if (c.etTagliate.length) ko.push(`G ${w}: etichette tagliate ${c.etTagliate.join(',')}`);
-      if (c.overflow > 0) ko.push(`G ${w}: scorrimento orizzontale ${c.overflow} px`);
+      if (c.overflow > 0) ko.push(`G ${w} ${et}: scorrimento orizzontale ${c.overflow} px`);
       if (g.errs.length) nonG('errori di pagina: ' + g.errs.slice(0, 2).join(' / '));
     } catch (e) { nonG(String(e.message).slice(0, 160)); } finally { await g.ctx.close(); }
   }
@@ -119,7 +128,7 @@ let v, r;
 try { v = await braccio(b, port, false); r = await braccio(b, port, true); }
 finally { await b.close(); srv.close(); }
 const mOk = mOggi.length === 0, mRossoOk = !!(mBase && mBase.length);
-console.log(`M manifest oggi: ${mOk ? '✓' : '✗ ' + mOggi.join(' | ')} · sulla base lavoro/197: ${mBase == null ? '✗ non giudicato (git)' : mBase.length ? '✓ bocciata (' + mBase.length + ' motivi)' : '✗ passa'}`);
+console.log(`M manifest oggi: ${mOk ? '✓' : '✗ ' + mOggi.join(' | ')} · sulla base prima del giro 234 (ea02adf0^): ${mBase == null ? '✗ non giudicato (git)' : mBase.length ? '✓ bocciata (' + mBase.length + ' motivi)' : '✗ passa'}`);
 const ok = v.ok && mOk && !r.ok && mRossoOk;
 console.log(`VERDE: ${v.ok ? '✓' : '✗'} ${JSON.stringify(v.num)}${v.ko.length ? ' · ' + v.ko.join(' | ') : ''}`);
 console.log(`ROSSO __CPM_NO_G234: ${!r.ok ? '✓ bocciato' : '✗ passa'} (${r.ko.length} motivi) ${r.ko.join(' | ')}`);
