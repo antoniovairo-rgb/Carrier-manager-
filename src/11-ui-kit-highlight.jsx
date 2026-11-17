@@ -76,10 +76,28 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
       </button>)}
     {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{_senzaDoppione068(children,momento)}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
+/* [giro 235 · PO-458 / G195-11] UNA REGOLA SOLA PER IL TASTO PRINCIPALE, scritta partendo da PO-411 (il tasto del momento, giro 194):
+   PIENO NEL COLORE DEL CLUB, scritta in carattere TV maiuscolo e nero-grassetto, l'inchiostro scelto dal contrasto (inkSu945, quindi
+   i club chiari hanno il testo scuro). Due casi della stessa regola, non due stili:
+     · il colore del club si confonde col fondo scuro della pagina (contrasto < 3:1, es. i neri #0f0f0f): il fondo resta il colore del
+       club e un filo chiaro attorno ne disegna il bordo;
+     · il tasto sta SOPRA un riquadro che e' gia' nel colore del club (la «Prossima» della Home, data-club106): il negativo crema,
+       altrimenti il tasto sparirebbe nel suo riquadro.
+   Senza club (menu iniziale, creazione, provino prima della firma) il tasto e' crema: e' il colore di marca del tema unico.
+   _TP235.c lo scrive CareerApp a ogni disegno (il club del giocatore), App lo azzera fuori dalla carriera.
+   Rosso __CPM_NO_G235: i quattro stili di prima (crema · bordeaux · verde · contorno oro). */
+const _TP235={c:null};
+function tasto235(suClub){
+  const c=_TP235.c;
+  if(!c||suClub||typeof c!=="string"||c[0]!=="#")return{bg:TINTE.testo,ink:TINTE.bg,bordo:"none"};
+  const filo=_rap944(c,TINTE.bg)<3;
+  return{bg:c,ink:inkSu945(c),bordo:filo?"1px solid "+TINTE.sec:"none"};}
+const stileTasto235=(suClub)=>{const t=tasto235(suClub);return{background:t.bg,color:t.ink,border:t.bordo,fontFamily:FONT_TV,fontWeight:FW.black,textTransform:"uppercase",letterSpacing:"0.04em"};};
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
 const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
-const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
+const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",suClub=false,...rest})=>{
+  if(_g235()&&v==="green")v="primary";/* [giro 235] «Fai girare il nome» era il quarto stile del tasto principale: ora e' il tasto principale */
   const vs={
     primary:{background:TINTE.testo,color:TINTE.bg,fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
     green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
@@ -91,6 +109,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
     festa:{background:TH.festaGrad,color:TH.festaInk,fontWeight:FW.black,boxShadow:"0 8px 30px "+TH.festaGlow},/* [giro 23 PO-251 «Oro da festa»] SOLO momenti di trofeo (festa «CAMPIONI!», coppe): oro pieno, inchiostro scuro */
   };
+  if(_g235())vs.primary={...stileTasto235(suClub),fontSize:Math.round((_BTN_SIZE[size]||_BTN_SIZE.md).fontSize*1.15),borderRadius:RAD.md};/* [giro 235] la regola unica; il carattere TV e' stretto: corpo +15% per la stessa lettura */
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
   return<button data-suono={(v==="primary"||v==="green"||v==="gold"||v==="festa")?"conferma":undefined}/* [giro 172 PO-370] il tasto pieno della vista e' la conferma importante: l'unico che suona */ onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:_tocco292()?Math.max(sz.minHeight||0,40):sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
@@ -277,6 +296,20 @@ function TagV2({t,c,cpm}){return(<span data-cpm={cpm||"tag-v2"} style={{display:
 function TaccheV2({n,tot=3,col,label,w=14}){
   return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
     {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||TINTE.verde):TINTE.anello}}/>)}</span>);}
+/* [giro 235 · PO-458 / G195-13, dentro PO-391 «popolarita' e fiducia a gradini, non a barra»] LA STESSA GRANDEZZA HA SEMPRE LA STESSA
+   FORMA: fiducia del mister e popolarita' erano barre in Home e anelli in Club. Ora un solo disegno in tutte e due le schede: cinque
+   gradini (tacche), la parola del gradino e il numero piccolo. Le soglie della fiducia sono quelle del giudizio «Allenatore» del Club
+   (85/70/50/30: In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale), cosi' tacche e parole non si contraddicono; la
+   popolarita' sale per quinti (20/40/60/80). Rosso __CPM_NO_G235: barre in Home e anelli in Club. */
+const GRADINI235={fiducia:{s:[30,50,70,85],p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
+  popolarita:{s:[20,40,60,80],p:["Poco conosciuto","Conosciuto","Apprezzato","Popolare","Idolo"],col:TINTE.oro}};
+function GradiniV235({k,l,v}){
+  const g=GRADINI235[k]||GRADINI235.fiducia;const x=Math.round(+v||0);const n=1+g.s.filter(t=>x>=t).length;
+  return(<div data-gradini235={k} role="img" aria-label={l+": "+g.p[n-1]+", "+x+" su 100"} style={{background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:RAD.lg,padding:"10px 12px",display:"flex",flexDirection:"column",gap:6,minWidth:0}}>
+    <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>{l}</span>
+    <span style={{display:"flex",gap:4}}>{[1,2,3,4,5].map(i=><span key={i} style={{flex:"1 1 0",height:8,borderRadius:RAD.xs,background:i<=n?g.col:TINTE.anello}}/>)}</span>
+    <span style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:6}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TINTE.testo}}>{g.p[n-1]}</span><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TINTE.sec}}>{x}/100</span></span>
+  </div>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -327,7 +360,57 @@ function SectionHeader({children,icon,right,style={}}){
      · e' un <button> vero con aria-expanded: chi naviga da tastiera o con la voce lo trova;
      · corpo del cappello >= FS.caption (11 px, il pavimento dichiarato) e colori dai token,
        cosi' non apre un buco nel contrasto misurato dalla griglia. */
+/* [giro 235 · PO-457 / G195-09] IL PROFILO IN CINQUE GRUPPI. Venti fisarmoniche in fila, con nomi che si confondevano («Statistiche» e
+   «Statistiche carriera», «Record di carriera» e «Record personali», tre voci di premi) e due parole inglesi («Milestone», «Achievement»),
+   diventano cinque gruppi con nomi chiari: Numeri · Premi e traguardi · Storia · Persone · Contratto e attributi. Il GRUPPO e' la sola
+   cosa che si apre e si chiude (stesse regole della Fisarmonica: e' un <button> con aria-expanded, il cappello dice quante sezioni ha,
+   la scelta resta per id); dentro, ogni vecchia fisarmonica diventa una SEZIONE fissa col suo titolo (role heading, livello 3) e il
+   nome nuovo di NOMI235. Un gruppo senza sezioni (carriera giovane) non si disegna. Rosso __CPM_NO_G235: le venti fisarmoniche. */
+const GruppoCtx235=React.createContext(false);
+const NOMI235={"profilo-statistiche":"Questa stagione","s24-statistiche-carriera":"Andamento negli anni","profilo-record":"Massimi di carriera",
+  "s24-record-di-carriera":"Piazzamenti e titoli","profilo-trofei":"Bacheca dei trofei","s24-record-premi-personali":"Premi individuali",
+  "profilo-corsa-premi":"Corsa ai premi della stagione","profilo-mvp-mese":"Migliore del mese","profilo-milestone":"Traguardi","profilo-achievement":"Imprese",
+  "s24-modalita-sfida":"La tua sfida","profilo-biografia":"Biografia","profilo-timeline":"Stagione per stagione","profilo-diario":"Diario di carriera",
+  "profilo-memoria":"Memoria della carriera","profilo-match-cuore":"Partita del cuore","s24-la-citta-ti-ricorda":"La città ti ricorda",
+  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":"Stato Under 18",
+  "profilo-contratto":"Contratto"};
+function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
+  const figli=React.Children.toArray(children).filter(Boolean);
+  const _k="cpm-gr235-"+id;const _tutteAperte=(typeof window!=='undefined'&&window.__CPM_FIS_APERTE)||false;
+  const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
+  const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
+  if(!_g235())return <>{figli}</>;
+  if(!figli.length)return null;
+  return(
+    <section data-gruppo235={titolo} aria-label={titolo} style={{display:"flex",flexDirection:"column"}}>
+      <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
+        style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"10px 13px",minHeight:_tocco292()?48:(_mouse110()?40:undefined),cursor:"pointer",
+          background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:apr?(RAD.lg+"px "+RAD.lg+"px 0 0"):(RAD.lg+"px"),fontFamily:"inherit",textAlign:"left"}}>
+        <span style={{display:"flex",flexDirection:"column",gap:2,minWidth:0,flex:1}}>
+          <span role="heading" aria-level={2} style={{...fsTV(FS.subhead,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:TINTE.testo}}>{titolo}</span>
+          {nota&&<span style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3}}>{nota}</span>}
+        </span>
+        <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TINTE.sec,flexShrink:0}}>{figli.length===1?"1 sezione":figli.length+" sezioni"}</span>
+        <span aria-hidden style={{fontSize:FS.subhead,color:TINTE.sec,lineHeight:1,transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
+      </button>
+      {apr&&<div style={{display:"flex",flexDirection:"column",gap:_sb(9),padding:"10px 8px 8px",border:"1px solid "+TINTE.bordo,borderTop:"none",borderRadius:"0 0 "+RAD.lg+"px "+RAD.lg+"px"}}>
+        <GruppoCtx235.Provider value={true}>{figli}</GruppoCtx235.Provider></div>}
+    </section>);
+}
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
+  const _gr235=React.useContext(GruppoCtx235)&&_g235();
+  if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
+    const _suf=typeof titolo==="string"?((titolo.match(/\s\([^)]*\)$/)||[""])[0]):"";const t=NOMI235[id]?NOMI235[id]+_suf:titolo;/* «Achievement (4/34)» → «Imprese (4/34)» */
+    return(
+      <div data-sezione235={typeof t==="string"?t:id} style={{...style,marginBottom:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:RAD.xs+"px "+RAD.xs+"px 0 0"}}>
+          {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
+          <span role="heading" aria-level={3} style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{t}</span>
+          {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
+        </div>
+        <div>{children}</div>
+      </div>);
+  }
   const _k="cpm-fis-"+id;
   /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
      Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di

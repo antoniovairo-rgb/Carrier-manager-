@@ -261,9 +261,14 @@ const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display
 const _g234=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G234);
 const _tastiera234=()=>{try{return !!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches);}catch(_e){return true;}};/* PC o tablet con mouse: il tasto P esiste */
 const FS_BASE234={...FS};
-function testoGrande234(){try{return localStorage.getItem('cpm-testo-grande')==='1';}catch(_e){return false;}}
-function applicaTesto234(on){const k=on?1.3:1;for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
-applicaTesto234(testoGrande234());
+/* [giro 235 · decisione PO 17/11 sui dubbi del giro 234] DUE GRADINI: +15% e +30%. La scelta resta nella stessa chiave del browser
+   (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
+   acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
+const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+function livelloTesto235(){try{const v=localStorage.getItem('cpm-testo-grande');if(v==='15')return _g235()?15:30;if(v==='1'||v==='30')return 30;return 0;}catch(_e){return 0;}}
+function testoGrande234(){return livelloTesto235()>0;}
+function applicaTesto234(on){const k=on===true?1.3:(on===15?1.15:on===30?1.3:1);for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
+applicaTesto234(livelloTesto235());
 /* [giro 234 PO-455 · G195-05] la colonna dei punti della classifica resta in vista: cella appiccicata al bordo destro dello scorrimento
    orizzontale, con il fondo della sua riga sopra quello del riquadro (col testo grande la tabella e' piu' larga dello schermo) */
 const _pt234=(bg)=>_g234()?{position:"sticky",right:0,zIndex:1,background:bg?`linear-gradient(${bg},${bg}),${TH.card}`:TH.card}:{};
