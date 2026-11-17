@@ -15,7 +15,7 @@
    l'eroe tira solo nelle sue scene e i testimoni del rosso erano i rigori dell'eroe al 90' (k21/k22), che dal giro 249 senza premio
    non sono piu' suoi. Ora in OGNI partita, dal 90' del motore a gioco fluido, la sonda chiede al motore un rigore con l'eroe battitore
    (cio' che il gioco non produce si provoca dalla sonda). Verde: lo passa a un compagno il giro 154 (S.conta.g154 cresce) in ognuna
-   delle partite valide (minimo NMIN). Rosso: lo calcia l'eroe fuori scena (g154 fermo, minimo NMIN partite provocate) e la soglia
+   delle partite provocate (minimo PMIN = meta' del campione). Rosso: lo calcia l'eroe fuori scena (g154 fermo, minimo PMIN partite provocate) e la soglia
    di sempre — almeno un gol o assist dell'eroe in gioco fluido — resta quella. CPM_NOPROV=1: il guardiano com'era (solo misura).
    «Non giudicato» (campione sotto il minimo) = rosso. Verde e rosso stampati per ultimi.
    Uso: PAR=3 node gol-eroe-154.mjs (campione fisso 10+10 partite, ~35 min) · K=1,2,.. o N=12 K0=12 per altri semi   ·   SOLO=verde|rosso per un braccio solo (misura)   ·   OUT=file.jsonl per le righe. */
@@ -30,7 +30,8 @@ const PAR = Math.max(1, Math.min(3, +(process.env.PAR || 2)));
 const SOLO = process.env.SOLO || '';
 const BMIN = +(process.env.BMIN ?? 0.2), BMAX = +(process.env.BMAX ?? 1.2);/* fascia gol dell'eroe per partita: vedi rapporto giro 154 */
 const OUT = process.env.OUT || '';
-const NOPROV = !!process.env.CPM_NOPROV;/* [giro 249] solo misura: niente rigore provocato (il guardiano com'era) */
+const NOPROV = !!process.env.CPM_NOPROV;
+const PMIN = Math.max(3, Math.ceil(N / 2));/* [giro 249] pavimento di copertura delle provocazioni: meta' del campione, mai sotto tre (regola 7.495). Non tutte le partite si possono provocare: con l'eroe sostituito o in panchina al 90' il motore non accetta l'eroe battitore (eroeAttivo falso) *//* [giro 249] solo misura: niente rigore provocato (il guardiano com'era) */
 
 async function gioca(b, url, k, rosso) {
   const t0 = Date.now(); const key = (k % 2) ? 'c177' : 's12';
@@ -58,7 +59,7 @@ async function gioca(b, url, k, rosso) {
     let prov = null;
     while (Date.now() - tp < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break;
       if (!prov && !NOPROV && ph === 'playing') prov = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const S = M && M._S; if (!S || (S.min | 0) < 90 || S.scena || S.fermo || S.rete || (S.poss && S.poss.stato === 'kickoff')) { window.__G249W = { min: S ? S.min | 0 : null, scena: !!(S && S.scena), fermo: !!(S && S.fermo), rete: !!(S && S.rete), stato: S && S.poss ? S.poss.stato : null }; return null; }/* S.kickoff resta un oggetto anche dopo la battuta: lo stato vero e' S.poss.stato */
-          M.chiedi.piazzato({ lato: 'home', kind: 'pen', x: 89, y: 50, batt: M.HERO }); return { min: S.min | 0, eroeBatt: !!(S.fermo && S.fermo.kind === 'pen' && S.fermo.batt === M.HERO), g154: S.conta.g154 | 0 }; } catch (e) { return null; } });
+          M.chiedi.piazzato({ lato: 'home', kind: 'pen', x: 89, y: 50, batt: M.HERO }); const so = window.__CPM_SUBOFF ? window.__CPM_SUBOFF() : null; return { min: S.min | 0, eroeBatt: !!(S.fermo && S.fermo.kind === 'pen' && S.fermo.batt === M.HERO), g154: S.conta.g154 | 0, fuori: so ? !!(so.off || so.bench) : null }; } catch (e) { return null; } });
       if (prov && !prov.tiro) { const t = await page.evaluate((m0) => { try { const S = window.__CPM_MOTORE_OBJ()._S; const u = S._ultTiro191; return (u && u.intent === 'penalty' && (u.min | 0) >= m0) ? { min: u.min, eroe: u.eroe, esito: u.esito, fischio: S.fischio228 != null ? S.fischio228 : null } : null; } catch (e) { return null; } }, prov.min); if (t) prov.tiro = t; }
       await sleep(prov ? 500 : 250); }
     rec.prov = prov;
@@ -107,7 +108,7 @@ await Promise.all(browsers.map(async (b) => {
     let x = await gioca(b, url, k, r);
     if (x.err || !x.log || !x.registrato) { console.log(`  k${k} ${r ? 'rosso' : 'verde'}: ${x.err || 'misura incompleta'} — riprovo una volta`); x = await gioca(b, url, k, r); }
     ris.push(x); if (OUT) fs.appendFileSync(OUT, JSON.stringify(x) + '\n');
-    console.log(`k${k} ${x.save} ${r ? 'rosso' : 'verde'}: ${JSON.stringify(x.score)} · provocato ${x.prov ? x.prov.min + "'" + (x.prov.eroeBatt ? ' eroe' : ' NON eroe') + ' g154 ' + x.prov.g154 + '→' + x.g154 : '—'} · eroe fluido gol ${x.golFluido ? x.golFluido.length : '?'}${x.golFluido && x.golFluido.length ? ' ' + JSON.stringify(x.golFluido) : ''} · assist fluido ${x.assFluido ? x.assFluido.length : '?'} · scena gol ${x.golScena} ass ${x.assScena} · registrato ${JSON.stringify(x.registrato)} · pagella ${JSON.stringify(x.pagella)} · ${x.fine} ${x.sec}s${x.err ? ' ERR ' + x.err : ''}`);
+    console.log(`k${k} ${x.save} ${r ? 'rosso' : 'verde'}: ${JSON.stringify(x.score)} · provocato ${x.prov ? x.prov.min + "'" + (x.prov.eroeBatt ? ' eroe' : ' NON eroe' + (x.prov.fuori ? ' (eroe fuori dal campo)' : x.prov.fuori === false ? ' (eroe in campo)' : '')) + ' g154 ' + x.prov.g154 + '→' + x.g154 : '—'} · eroe fluido gol ${x.golFluido ? x.golFluido.length : '?'}${x.golFluido && x.golFluido.length ? ' ' + JSON.stringify(x.golFluido) : ''} · assist fluido ${x.assFluido ? x.assFluido.length : '?'} · scena gol ${x.golScena} ass ${x.assScena} · registrato ${JSON.stringify(x.registrato)} · pagella ${JSON.stringify(x.pagella)} · ${x.fine} ${x.sec}s${x.err ? ' ERR ' + x.err : ''}`);
     if (x.racconto && x.racconto.some(a => a.length)) console.log('    cronaca: ' + JSON.stringify(x.racconto));
   }
 }));
@@ -123,7 +124,7 @@ if (SOLO !== 'rosso') {
   const media = V.length ? sum(V, x => x.registrato.gol) / V.length : NaN;
   if (V.length < NMIN) err.push(`verde NON GIUDICATO: ${V.length} partite valide su ${N} (minimo ${NMIN})`);
   const pv = V.filter(x => x.prov && x.prov.eroeBatt);
-  if (!NOPROV && pv.length < NMIN) err.push(`verde NON GIUDICATO: rigore provocato con l'eroe battitore in ${pv.length} partite valide (minimo ${NMIN})`);
+  if (!NOPROV && pv.length < PMIN) err.push(`verde NON GIUDICATO: rigore provocato con l'eroe battitore in ${pv.length} partite valide (minimo ${PMIN})`);
   for (const x of pv) if (!((x.g154 | 0) > (x.prov.g154 | 0))) err.push(`k${x.k} verde: il rigore provocato al ${x.prov.min}' non e' passato a un compagno (g154 ${x.prov.g154}→${x.g154})`);
   if (gf > 0) err.push(`verde: ${gf} gol dell'eroe in gioco fluido`);
   if (af > 0) err.push(`verde: ${af} assist dell'eroe in gioco fluido`);
@@ -137,7 +138,7 @@ if (SOLO !== 'verde') {
   if (R.length < NMIN) err.push(`rosso NON GIUDICATO: ${R.length} partite valide su ${N} (minimo ${NMIN})`);
   if (!SOLO && gf + af === 0) err.push('rosso: nessun gol/assist dell\'eroe in gioco fluido — il guardiano guarda a vuoto');
   const pr = R.filter(x => x.prov && x.prov.eroeBatt);
-  if (!NOPROV && pr.length < NMIN) err.push(`rosso NON GIUDICATO: rigore provocato con l'eroe battitore in ${pr.length} partite valide (minimo ${NMIN})`);
+  if (!NOPROV && pr.length < PMIN) err.push(`rosso NON GIUDICATO: rigore provocato con l'eroe battitore in ${pr.length} partite valide (minimo ${PMIN})`);
   if (!NOPROV && pr.some(x => (x.g154 | 0) > (x.prov.g154 | 0))) err.push('rosso: il giro 154 ha passato il rigore provocato a un compagno anche col rosso acceso');
   righe.push(`ROSSO (__CPM_NO_G154): ${R.length}/${N} partite valide · rigori provocati con l'eroe battitore ${R.filter(x => x.prov && x.prov.eroeBatt).length} · gol eroe fluido ${gf} · assist eroe fluido ${af} · gol eroe registrati per partita ${R.length ? (sum(R, x => x.registrato.gol) / R.length).toFixed(2) : '—'}`);
 }
