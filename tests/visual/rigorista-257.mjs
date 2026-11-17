@@ -10,7 +10,8 @@
    A1 · ROSA (gioco vero, 360x800, fisarmoniche aperte): una «R» sola fra i titolari, sul nome che rigorista257 da' per l'undici del club;
         col premio sull'eroe; nessuna riga piu' larga delle altre e nessuno scorrimento orizzontale (la «R» non allarga le righe a 360 px).
         ROSSO: nessuna «R».
-   A2 · FORMAZIONI della partita vera (salvataggio S12): una «R» sul compagno designato. ROSSO: nessuna «R».
+   A2 · FORMAZIONI della partita vera (salvataggio S12): dal giro 262 nessuna «R» (decisione PO 17/11); con __CPM_NO_G262 una «R»
+        sul compagno designato. ROSSO: nessuna «R».
    A3 · MOTORE (creaMotorePossesso vero, 20 partite, K=1): col rigorista segnato su un CENTROCAMPISTA (indice 5) ogni rigore della
         squadra lo calcia lui. ROSSO: lo calcia l'attaccante della regola del 249.
    B1 · MOTORE, Nazionale/provino (rig257 {eroe:true}, senza premio): ogni rigore della squadra e' dell'eroe (occasione di scena o
@@ -74,9 +75,9 @@ try {
 } catch (e) { giudica(false, 'A1 errore: ' + e.message); }
 
 /* ---------- A2 · formazioni della partita vera ---------- */
-async function formazioni(rosso) {
+async function formazioni(rosso, vecchie262 = false) {
   const ctx = await b.newContext({ viewport: { width: 360, height: 740 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G257 = 1; localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [save190, rosso]);
+  await page.addInitScript(([s, r, v]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G257 = 1; if (v) window.__CPM_NO_G262 = 1; localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [save190, rosso, vecchie262]);
   try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
@@ -94,11 +95,14 @@ async function formazioni(rosso) {
   } finally { await ctx.close(); }
 }
 try {
-  const V = await formazioni(false), R = await formazioni(true);
-  console.log('A2 verde ' + JSON.stringify(V)); console.log('A2 rosso ' + JSON.stringify(R));
+  /* [giro 262 PO-513] decisione PO 17/11: nelle formazioni prima dell'ingresso il rigorista NON si segna. A2 giudica ora: gioco attuale
+     nessuna «R»; con __CPM_NO_G262 (formazioni come nel 257) la «R» sul designato, cioe' la designazione del 257 e' ancora quella; rosso 257 nessuna. */
+  const N = await formazioni(false), V = await formazioni(false, true), R = await formazioni(true, true);
+  console.log('A2 attuale ' + JSON.stringify(N)); console.log('A2 verde(NO_G262) ' + JSON.stringify(V)); console.log('A2 rosso ' + JSON.stringify(R));
   const cog = V.atteso ? V.atteso.trim().split(/\s+/).pop().toUpperCase() : '§';
-  giudica(V.ph === 'formations' && V.R.length === 1 && V.R[0].toUpperCase().indexOf(cog) >= 0, `A2 formazioni della partita: «R» su «${V.R.join(' | ') || 'nessuno'}» (designato ${V.atteso || '—'}, fase ${V.ph})`);
-  giudica(R.ph === 'formations' && R.R.length === 0, `A2 rosso __CPM_NO_G257: «R» nelle formazioni ${R.R.length} (fase ${R.ph})`);
+  giudica(N.ph === 'formations' && N.R.length === 0, `A2 formazioni della partita (giro 262): «R» ${N.R.length} (fase ${N.ph})`);
+  giudica(V.ph === 'formations' && V.R.length === 1 && V.R[0].toUpperCase().indexOf(cog) >= 0, `A2 formazioni con __CPM_NO_G262: «R» su «${V.R.join(' | ') || 'nessuno'}» (designato ${V.atteso || '—'}, fase ${V.ph})`);
+  giudica(R.ph === 'formations' && R.R.length === 0, `A2 rosso __CPM_NO_G257 (+NO_G262): «R» nelle formazioni ${R.R.length} (fase ${R.ph})`);
 } catch (e) { giudica(false, 'A2 errore: ' + e.message); }
 
 /* ---------- A3 · B1 · C1 · motore; B2 regola dei contesti; B3 provino vero ---------- */

@@ -1038,7 +1038,9 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
        nella larghezza del campetto (il riquadro dell'eroe compreso), mai sotto 58 px: il cognome va coi puntini, la linea resta una.
        Dove c'e' spazio resta 84 px. Rosso __CPM_NO_G112 (84 fissi). */
     const _lw112=(n)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G112)return 84;try{const w=(ref204.current&&ref204.current.getBoundingClientRect().width)||(window.innerWidth-32);return clamp(Math.floor((w-14-3*(n-1))/n),58,84);}catch(_e){return 64;}};
-    const _R257=(rr,pl)=>!!rig257&&!!pl&&pl.name===rig257&&rr===(rigLato257==="away"?_awayNums:_homeNums);/* [giro 257] la «R» sul rigorista, solo nella squadra dell'eroe */
+    /* [giro 262 PO-513 — rosso window.__CPM_NO_G262] decisione PO 17/11: «Il rigorista nelle formazioni prima dell'ingresso in campo non deve
+       essere specificato, al piu' il capitano». La «R» resta nella Rosa (src/18) e il motore continua a far calciare il designato (rig257 del live). */
+    const _R257=(rr,pl)=>!!(typeof window!=='undefined'&&window.__CPM_NO_G262)&&!!rig257&&!!pl&&pl.name===rig257&&rr===(rigLato257==="away"?_awayNums:_homeNums);/* [giro 257] la «R» sul rigorista, solo nella squadra dell'eroe */
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
