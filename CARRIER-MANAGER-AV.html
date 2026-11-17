@@ -1211,7 +1211,36 @@ const mkT=(id,n,a,p,c,c2,nat,lg)=>({id,n,a,p,c,c2,nat,lg});
    rosso __CPM_NO_G248 = nomi, sigle e stadi del giro 6. Migrazione dei salvataggi: CLUB_RENAME_6 in src/09. */
 const _NO_G248=typeof window!=="undefined"&&!!window.__CPM_NO_G248;
 const _g248=(nuovo,vecchio)=>_NO_G248?vecchio:nuovo;
-const CLUBS=[
+/* [giro 251 PO-512 — scelte definitive del PO, pagina «Nomi dei club 197», conferma 17/11 14:33]
+   TABELLA UNICA DEI NOMI: id → [nome, sigla]. E' l'unico posto dove si scrive il nome di un club rinominato: una
+   correzione futura e' UNA riga qui (le righe mkT qui sotto restano i nomi di prima, che servono alla migrazione dei
+   salvataggi in src/09). Valgono anche per le Primavera (ereditano il nome) e per record/albo (_nc251).
+   Rosso __CPM_NO_G251 = nomi di oggi (lavoro/197 col giro 248); __CPM_NO_G248 riporta tutto al giro 6. */
+const _NO_G251=typeof window!=="undefined"&&(!!window.__CPM_NO_G251||_NO_G248);
+const _g251=(nuovo,oggi)=>_NO_G251?oggi:nuovo;
+const CLUB_NOMI_251={
+  bur:["FC Burnley","BNL"],car:["FC Cardiff","CDF"],milw:["FC Bermondsey","BMD"],nor:["FC Norwich","NRW"],qpr:["FC Queensway","QUE"],shu:["FC Sheffield South","SHS"],
+  sto:["FC Stoke","SKE"],swn:["FC Swansea","SWS"],wat:["FC Hornets","HOR"],wba:["FC West Bromwich","WBR"],aug:["FC Augusta","AGS"],b04:["FC Werkstadt","WRK"],
+  bay:["FC Munchen","MUC"],ber:["FC Berlin Köpenick","BKP"],boc:["FC Bochum","BCH"],bvb:["FC Westfalen","WSF"],dsc:["FC Darmstadt","DMT"],kol:["FC Koln","KLN"],
+  wob:["FC Wolfstadt","WOL"],kaa:["FC Lautern","LTN"],mag:["FC Börde","BRD"],nub:["FC Norimberga","NRB"],s04:["FC Emscher 04","EMS"],sar:["FC Saarland","SRL"],
+  stp:["FC Hamburg Hafen","HHF"],bol:["FC Felsineo","FEL"],fio:["FC Firenze","FRZ"],inter:["FC Nerazzurri","NRZ"],juve:["FC Zebre","ZBR"],lazio:["FC Biancocelesti","BNC"],
+  milan:["FC Rossoneri","RSN"],mon2:["FC Brianzolo","BRI"],napoli:["FC Partenope","PRT"],sam:["FC Sampierdarena","SPD"],sas:["FC Sassolese","SSL"],tor:["FC Granata","GRT"],
+  ver:["FC Scaligero","SCA"],bar2:["FC Pugliese","PUG"],bres:["FC Leonessa","LNS"],cat:["FC Catanzarese","CTN"],cit:["FC Cittadino","CIT"],cos:["FC Bruzio","BRU"],
+  fro:["FC Ciociaro","CIO"],lec2:["FC Lariano","LAR"],pal:["FC Sicania","SIC"],sal:["FC Salernum 1919","SLR"],ven:["FC Laguna","LAG"],bas:["FC Istanbul Ovest","IOV"],
+  bes:["FC Boğaziçi","BGZ"],krc:["FC Brugse","BGS"],std:["FC Liegi","LGI"],stu2:["FC Sint-Truiden","SNT"],usj:["FC Bruxelles Sud","BXS"],alm:["FC Almería","FAL"],
+  bet:["FC Heliópolis","HEL"],cel:["FC Ría de Vigo","RDV"],esp:["FC Sarrià","SRR"],get:["FC Getafense","GTF"],rsoc:["FC Sociedad","SOC"],vill:["FC Submarino","SUB"],
+  cor2:["FC Cordobés","CDB"],lev:["FC València Nord","VNR"],ovi:["FC Ovetense","OVT"],vld:["FC Pucela","PUC"],zgz:["FC Maño","MAO"],aroca:["FC Arouquense","ARQ"],
+  bav:["FC Foz do Douro","FDD"],bra:["FC Bracarense","BRC"],fama:["FC Famalicense","FMC"],gviz:["FC Vicente","VIC"],por:["FC Portuense","PTN"],rioave:["FC Vila do Conde","VDC"],
+  scar:["FC Clara","CLR"],spo:["FC Lisboa Norte","LNO"],vize:["FC Vizelense","VZL"],emm:["FC Drenthe","DRT"],exc:["FC Rotterdam Kralingen","RKL"],gron:["FC Groninger","GNR"],
+  spa:["FC Rotterdam Spangen","RSP"],twe:["FC Enschede","ENS"],utr:["FC Oudegracht","ODG"],volen:["FC Waterland","WTL"],len:["FC Lensois","LSO"],mtp:["FC Montpellier","MPL"],
+  psg:["FC Paris Île-de-France","PIF"],rei:["FC Reims","RMS"],ann:["FC Annecien","ANC"],que:["FC Normandia","NMD"],val2:["FC Valenciennes","VNS"],avl:["FC Aston","AST"],
+  bre:["FC Griffin","GRI"],che:["FC Stamford","STA"],cry:["FC Croydon","CYD"],eve:["FC Goodison","GDS"],ful:["FC Craven","CRA"],lei:["FC Foxshire","FOX"],
+  mun:["Manchester Rovers","MCR"],whu:["FC Hammers","HAM"],alm2:["FC Murciano","MRC"],
+};
+const _NOMI_OGGI_251={};/* id → [nome, sigla] delle righe mkT (prima della tabella): la migrazione li porta al nome definitivo */
+const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];if(!t)return c;_NOMI_OGGI_251[c.id]=[c.n,c.a];return _NO_G251?c:{...c,n:t[0],a:t[1]};});
+const _nc251=(id,oggi)=>(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;
+const CLUBS=_nomi251([
   // -- ITALIA Lega A --
   mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
   mkT("inter",_g248("FC Milano Brera","FC Valmora"),_g248("MBR","VAL"),92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
@@ -1478,7 +1507,8 @@ const CLUBS=[
   mkT("alm2","FC Almeriense","ALE",50,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica 2"),
   mkT("cor2","FC Califal","CAL",41,"#f5f5f5","#15803d","🇪🇸","Liga Ibérica 2"),
   mkT("fer","FC Ferrolano","FER",38,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica 2"),
-];
+
+]);
 // (b04 prestige set inline above)
 
 // Primavera 1 — tutte le 18 squadre di Lega A
@@ -1517,7 +1547,7 @@ const LEAGUE_RECORDS={
   },
   "Liga Ibérica 2":{
     allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_g248("FC Sarrià","FC Pelvanni"),era:"1990–2006"},
-    seasonRecord:{name:"Iker Zubiaga",goals:30,club:_g248("FC Vigués","FC Oriolan"),season:"2012-13"},
+    seasonRecord:{name:"Iker Zubiaga",goals:30,club:_nc251("cel",_g248("FC Vigués","FC Oriolan")),season:"2012-13"},
     topScorers:[
       {name:"Andrés Cobeña",goals:208},{name:"Manolo Ledesmar",goals:182},
       {name:"PacoLedesma",goals:167},{name:"Xavi Morante",goals:150},{name:"Sergio Peñalver",goals:143},
@@ -1525,7 +1555,7 @@ const LEAGUE_RECORDS={
   },
   "Lega A":{
     allTimeScorer:{name:"Silvio Calabretti",goals:325,club:"FC Capitale",era:"1974–1994"},
-    seasonRecord:{name:"Roberto Macina",goals:38,club:_g248("FC Napoli Fuorigrotta","FC Vellamare"),season:"1987-88"},
+    seasonRecord:{name:"Roberto Macina",goals:38,club:_nc251("napoli",_g248("FC Napoli Fuorigrotta","FC Vellamare")),season:"1987-88"},
     topScorers:[
       {name:"Silvio Calabretti",goals:325},{name:"Franco Melotti",goals:281},
       {name:"Dario Ferrucci",goals:248},{name:"Lorenzo Bianchi",goals:204},{name:"Marco Sabetti",goals:179},
@@ -1548,15 +1578,15 @@ const LEAGUE_RECORDS={
     ]
   },
   "Deutsche Liga":{
-    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:_g248("FC Isar","FC Valdenau"),era:"1975–1995"},
-    seasonRecord:{name:"Dieter Krüger",goals:40,club:"FC Goldwald",season:"1999-00"},
+    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),era:"1975–1995"},
+    seasonRecord:{name:"Dieter Krüger",goals:40,club:_nc251("bvb","FC Goldwald"),season:"1999-00"},
     topScorers:[
       {name:"Klaus Schreiber",goals:307},{name:"Dieter Krüger",goals:268},
       {name:"Hans Mühlbauer",goals:231},{name:"Otto Bernhard",goals:195},{name:"Rudi Fassbender",goals:163},
     ]
   },
   "Ligue Nationale":{
-    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:_g248("FC Parigi Ovest","FC Lumeranza"),era:"1980–2002"},
+    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:_nc251("psg",_g248("FC Parigi Ovest","FC Lumeranza")),era:"1980–2002"},
     seasonRecord:{name:"Alain Mercier",goals:37,club:"FC Marseille",season:"1972-73"},
     topScorers:[
       {name:"Pierre Delacroix",goals:274},{name:"Jacques Fontaine",goals:238},
@@ -1565,7 +1595,7 @@ const LEAGUE_RECORDS={
   },
   "Liga Lusitana":{
     allTimeScorer:{name:"Rui Vilarinho",goals:289,club:"FC Lisboa",era:"1982–2003"},
-    seasonRecord:{name:"João Figueiredo",goals:37,club:"FC Portomar",season:"1985-86"},/* [6.74.0 QA-P0] il club era già de-brandizzato in DB (764) ma il record era sfuggito */
+    seasonRecord:{name:"João Figueiredo",goals:37,club:_nc251("por","FC Portomar"),season:"1985-86"},/* [6.74.0 QA-P0] il club era già de-brandizzato in DB (764) ma il record era sfuggito */
     topScorers:[
       {name:"Rui Vilarinho",goals:289},{name:"Pedro Carvalho",goals:251},
       {name:"Manuel Salgado",goals:214},{name:"Carlos Rebelo",goals:181},{name:"Nuno Faria",goals:149},
@@ -1604,7 +1634,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Championship":{
-    allTimeScorer:{name:"Dean Whitfield",goals:163,club:"FC Canaries",era:"1988–2006"},
+    allTimeScorer:{name:"Dean Whitfield",goals:163,club:_nc251("nor","FC Canaries"),era:"1988–2006"},
     seasonRecord:{name:"Billy Horton",goals:34,club:"FC Foxshire",season:"2013-14"},
     topScorers:[
       {name:"Dean Whitfield",goals:163},{name:"Gary Pemberton",goals:141},
@@ -1638,7 +1668,7 @@ const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2020,club:_g248("FC Isar","FC Valdenau"),nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2020,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[
@@ -5102,8 +5132,8 @@ const CLUB_STADIUMS={
   "rma":"Estadio Capital","bar":"Estadi del Mar","atm":"Estadio Coloso",
   "sev":"Estadio Hispalense","bet":_g248("Estadio de Heliópolis","Estadio Ventrana"),"val":"Estadio Naranja",
   "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":_g248("Estadio de la Ría","Estadio Oriolan"),
-  "bay":"München Arena","bvb":"Goldwald Stadion","rbl":"Leipzig Arena","b04":"Werkstadt Arena",
-  "fra":"Frankfurt Arena","s04":"Gelsenkirchen Arena","bsc":"Berlin Arena",
+  "bay":"München Arena","bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
+  "fra":"Frankfurt Arena","s04":_g251("Emscher Arena","Gelsenkirchen Arena")/* [giro 251 PO-512] stadio col nome tolto dal PO */,"bsc":"Berlin Arena",
   "psg":"Parc Royal","marse":"Stade du Littoral","lyon":"Lyon Stadium","lille":"Lille Stadium",
   "mon":"Stade de la Corniche","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",
   "ajax":"Grachten Arena","psv":"Brabantia Stadion","feye":"Rotterdam Stadion","az":"Alkmaar Stadion",/* [6.74.0 QA-P0] */
@@ -10097,10 +10127,15 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   // coi nomi fantasia attuali ("Porto" NON si può bloccare: substring di "FC Portomar")
   "Eindhoven","Sochaux","Bruges","Anderlecht","Brugge","Feyenoord","Ajax","Benfica","Sporting CP","Olympique",
   // [giro 6, decisione PO 11/10] nomi reali di club, soprannomi da colori e derby rinominati: se tornano, l'audit li segnala
-  "Nerazzurri","Rossoneri","Partenope","Biancoceleste","Blucerchiati","Verdiblanco","FC Paris","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
+  /* [giro 251 PO-512, decisione PO 17/11 14:50 «Tengo i miei nomi, rischio mio»] tolte «Nerazzurri», «Rossoneri», «Partenope» e
+     «FC Paris», che bloccavano FC Nerazzurri, FC Rossoneri, FC Partenope, FC Paris Île-de-France scelti dal PO: restano bloccati i
+     nomi ufficiali interi gia' in lista («AC Milan», «SSC Napoli», «Juventus», «Bayern»…). */
+  "Biancoceleste","Blucerchiati","Verdiblanco","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
   /* [giro 248 PO-511, decisione della madre] i 16 nomi inventati del giro 6 e i loro stadi escono dal gioco: se tornano, l'audit li segnala.
      Blocco esplicito anche sui nomi ufficiali interi «AC Milan»/«SSC Napoli» (confronto per sottostringa: mai «Milan» da solo,
      sottostringa di «FC Milano Sempione»/«Stadio Milano Ovest»). */
+  /* [giro 251 PO-512] i nomi del giro 248 che escono: se tornano, l'audit li segnala (gli stadi del 248 restano). */
+  "FC Milano Brera","FC Milano Sempione","FC Napoli Fuorigrotta","FC Flaminio","FC Parigi Ovest","FC Torino Santa Rita","FC Genova Ponente","FC Vigués","FC Isar","FC Domstadt",
   "FC Valmora","AC Dorvelli","FC Vellamare","FC Alcavera","FC Lumeranza","FC Torvelle","FC Brenvar","FC Marnesi","FC Caldoran","FC Ventrana","FC Oriolan","FC Dalvora","FC Pelvanni","FC Valdenau","FC Ravelmund","FC Rendalto",
   "Stadio Valmora","Stadio Alcavera","Stadio Vellamare","Stadio Torvelle","Estadio Ventrana","Estadio Oriolan","Estádio Rendalto","AC Milan","SSC Napoli",
   "Stadio Sabaudo","Stadio Meneghino","Stadio Capitolino","Stadio Vesuvio","Stade Phocéen","Estadi Blau","Stadion der Wand","Cannon Stadium","Bridge Stadium","Estádio Leonino","Kadıköy Stadyumu","Kartal Park","Stade Princier","Stadio Adriatico","Stade Gabriel Montpied","Arena Lviv","Estadio de la Cerámica Vieja","Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
@@ -10116,17 +10151,27 @@ const _CLUB_RENAME_6_OLD={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvel
    CLUB_RENAME_6 porta ENTRAMBI (reale e giro 6) al nome nuovo in un passo solo; nessun nome nuovo e' chiave (idempotente).
    Rosso __CPM_NO_G248 = mappa del giro 6 com'era (reale → giro 6) e nessuna migrazione 248. */
 const _CLUB_248=[["FC Nerazzurri","FC Valmora","FC Milano Brera","MBR"],["AC Rossoneri","AC Dorvelli","FC Milano Sempione","MSE"],["FC Partenope","FC Vellamare","FC Napoli Fuorigrotta","NFG"],["FC Biancoceleste","FC Alcavera","FC Flaminio","FLM"],["FC Paris","FC Lumeranza","FC Parigi Ovest","PGO"],["FC Granata","FC Torvelle","FC Torino Santa Rita","TSR"],["FC Viola","FC Brenvar","FC Firenze","FRZ"],["FC Blucerchiati","FC Marnesi","FC Genova Ponente","GPO"],["FC Neroverde","FC Caldoran","FC Sassolese","SSL"],["FC Verdiblanco","FC Ventrana","FC Heliópolis","HEL"],["FC Celeste","FC Oriolan","FC Vigués","VGS"],["FC Azulón","FC Dalvora","FC Getafense","GTF"],["FC Perico","FC Pelvanni","FC Sarrià","SRR"],["FC München","FC Valdenau","FC Isar","ISR"],["FC Köln","FC Ravelmund","FC Domstadt","DMS"],["FC Leões","FC Rendalto","FC Lisboa Norte","LNO"]];
-const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries(_CLUB_248.flatMap(([r,g,n])=>[[r,n],[g,n]]));
-const _CLUB_ABBR_248=_NO_G248?{}:Object.fromEntries(_CLUB_248.map(([,,n,a])=>[n,a]));
-const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte"};
+/* [giro 251 PO-512] nomi definitivi del PO (tabella unica CLUB_NOMI_251 in src/02): ogni nome di oggi (righe mkT, cioe' giro 248
+   compreso) e ogni nome reale o del giro 6 va al nome DEFINITIVO in un passo solo; identita' tolte (FC Nerazzurri, FC Partenope e
+   FC Granata erano nomi reali di prima del giro 6 e ora sono le scelte del PO). Rosso __CPM_NO_G251 = migrazione del giro 248. */
+const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id,[n]])=>CLUB_NOMI_251[id][0]!==n).map(([id,[n]])=>[n,CLUB_NOMI_251[id][0]]));
+const _def251=n=>_DEF251[n]||n;
+const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251)].filter(([k,v])=>k!==v));
+const _CLUB_ABBR_248=_NO_G248?{}:(()=>{const byN=Object.fromEntries(CLUBS.map(c=>[c.n,c.a]));const ns=new Set(_CLUB_248.map(([,,n])=>_def251(n)));
+  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
+const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte",
+  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"})};
+/* [giro 251] nomi definitivi che COMINCIANO con un nome da migrare («FC Paris Île-de-France» con «FC Paris», «FC Salernum 1919» con
+   «FC Salernum»): si proteggono, o una seconda passata li allungherebbe («FC Paris Île-de-France Île-de-France»). */
+const _LUNGHI251=CLUBS.map(c=>c.n).filter(n=>Object.keys(CLUB_RENAME_6).some(k=>n.startsWith(k+" ")));
 // idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
-function _renameClub6(v){if(typeof v!=="string")return v;for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
 /* [giro 248 PO-511] migrazione COMPLETA dei nomi salvati: i nomi del club non vivono solo in club/standings/calendar/matchHistory
    (misurato sul salvataggio fixtures/save-c177-s5w20.json: anche lastAwards…club, standings[].a, matchHistory[].oppAbbr).
    Una passata su tutto l'oggetto: (1) ogni stringa che CONTIENE un nome reale o del giro 6 (club o stadio, anche dentro un testo
    o con suffisso U18/Primavera/U19) prende il nome nuovo; (2) la sigla accanto a un nome nuovo (a/abbr/oppAbbr) segue il nome.
    Idempotente (nessun nome nuovo contiene una chiave) e restituisce lo STESSO oggetto se non cambia nulla. */
-const _RX248=(()=>{const ks=[...Object.keys(CLUB_RENAME_6),...Object.keys(_STADI_248)].sort((a,b)=>b.length-a.length);if(_NO_G248||!ks.length)return null;
+const _RX248=(()=>{const ks=[...Object.keys(CLUB_RENAME_6),...Object.keys(_STADI_248),..._LUNGHI251].sort((a,b)=>b.length-a.length);/* [giro 251] i _LUNGHI251 restano se stessi */if(_NO_G248||!ks.length)return null;
   return new RegExp("(^|[^\\p{L}])("+ks.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![\\p{L}])","gu");})();
 const _NAME_K248=["n","name","club","opponent","opponentName","team"],_ABBR_K248=["a","abbr","oppAbbr","clubAbbr"];
 function _migraNomi248(o){
@@ -17868,6 +17913,7 @@ function ThreeMatchView(props){
       /* IT — aggettivi maschili */ FELSINEO:"M",FRIULANO:"M",SARDO:"M",SCALIGERO:"M",BRIANZOLO:"M",CALABRO:"M",SPEZZINO:"M",PISANO:"M",CIOCIARO:"M",CITTADINO:"M",BRUZIO:"M",LARIANO:"M",
       /* IT — plurali */ NERAZZURRI:"N",ROSSONERI:"N",BLUCERCHIATI:"N",
       /* [giro 248 PO-511] nomi per citta' o quartiere: gli aggettivi e i luoghi con articolo (gli altri sono nomi propri, classe P) */ SASSOLESE:"E",GETAFENSE:"E","VIGUÉS":"M",ISAR:"E",DOMSTADT:"E",
+      /* [giro 251 PO-512] nomi definitivi del PO: plurali, aggettivi in -ese/-ense/-ois/-ien e regioni/fiumi con articolo (gli altri: nome proprio, P) */ BIANCOCELESTI:"N",ZEBRE:"N",EMSCHER:"E","BÖRDE":"E",SAARLAND:"E",CATANZARESE:"E",OVETENSE:"E",AROUQUENSE:"E",BRACARENSE:"E",FAMALICENSE:"E",PORTUENSE:"E",VIZELENSE:"E",BRUGSE:"E",GRONINGER:"E","CORDOBÉS":"M",LENSOIS:"M",ANNECIEN:"M",
       /* EN — nickname plurali */ HAMMERS:"N",SWANS:"N",STEELERS:"N",CLARETS:"N",CANARIES:"N",DOCKERS:"N",BLUEBIRDS:"N",HORNETS:"N",POTTERS:"N",
       /* ES */ HISPALENSE:"E",SOCIEDAD:"E",CELESTE:"E",BALEAR:"E",GRANOTA:"E",OSCENSE:"E",ALMERIENSE:"E",CALIFAL:"E",PUCELA:"E",
       SUBMARINO:"M",VERDIBLANCO:"M",VALENCIANO:"M",NAVARRO:"M","GIRONÍ":"M","AZULÓN":"M",CANARIO:"M","INDÁLICO":"M",PERICO:"M","CORUÑÉS":"M","CÁNTABRO":"M","TINERFEÑO":"M","BURGALÉS":"M","MAÑO":"M","MIRANDÉS":"M",MANCHEGO:"M",ILICITANO:"M",MALACITANO:"M","GIJONÉS":"M","CARBAYÓN":"M",GADITANO:"M",FERROLANO:"M",
