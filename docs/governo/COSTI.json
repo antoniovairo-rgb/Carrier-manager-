@@ -2329,5 +2329,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaCjHt8LUd3TewTxfn8",
+  "titolo": "giro 244 · coreografie sempre diverse (PO-509)",
+  "creata": "2026-11-17T09:11:09Z",
+  "chiusa": "2026-11-17T12:16:09Z",
+  "cost_usd": 8.86231888,
+  "output_tokens": 71281,
+  "cache_read_tokens": 12270913,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-17"
  }
 ]
