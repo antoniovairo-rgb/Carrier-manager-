@@ -114,7 +114,7 @@ function passiC(I, S) {
 console.log('A. STATICO'); for (const x of st) console.log(`  ${x.ok ? '✓' : '✗'} ${x.nome} — ${x.info}`);
 let verde = null, rosso = null;
 if (PARTE !== 'rosso') {
-  const B = await prompt(false); const I = await ottavo('intera'), S = await ottavo('solo'); const C = passiC(I, S);
+  const B = await prompt(false); const I = await ottavo('intera'), S = await ottavo('solo'); if (process.env.CPM_G229_DUMP) fs.writeFileSync(process.env.CPM_G229_DUMP, JSON.stringify({ I, S }));/* [giro 246] per confrontare le due schermate finali */ const C = passiC(I, S);
   console.log('B+C. braccio VERDE'); for (const x of [...B, ...C]) console.log(`  ${x.ok ? '✓' : '✗'} ${x.nome} — ${x.info}`);
   verde = st.every(x => x.ok) && [...B, ...C].every(x => x.ok);
 }
