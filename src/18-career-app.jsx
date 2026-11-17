@@ -8028,9 +8028,9 @@ const getThisWeekMatchday=()=>{
                 stagione · settimana · posto) fa da occhiello. Nessuna riga in piu': un titolo aggiunto nel contenuto spingeva «Vivi la
                 settimana» sotto la barra a 375x667 (misurato: il tasto da 460-548 a 524-612 px, barra a 556; tocco-213 rosso). Per i lettori
                 di schermo il titolo c'e' gia' (h1 del giro 234): qui e' solo visivo. Rosso __CPM_NO_G235: solo l'ora del salvataggio. */}
-              <span style={{display:"flex",alignItems:"baseline",gap:8,minWidth:0}}>
+              <span style={{display:"flex",alignItems:"baseline",flexWrap:"wrap",columnGap:8,minWidth:0}}>{/* col testo grande a 360 px l'ora va a capo: tagliarla la nascondeva (accessibilita-234) */}
                 <span data-cpm="titolo235" aria-hidden="true" style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.testo,whiteSpace:"nowrap",lineHeight:1.1}}>{({dashboard:"Home",standings:"Classifica",calendar:"Calendario",coppe:"Coppe",club:"Club",profile:"Profilo",nazionale:"Nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</span>
-                <span className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_ora?"salvato\u00a0"+_ora:""}</span>
+                <span className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3,whiteSpace:"nowrap"}}>{_ora?"salvato\u00a0"+_ora:""}</span>
               </span>
               <VersioneTestata269 col={TINTE.sec}/></>):(<>
             <span className="cpm-num" style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3}}>{_ora?"salvato\u00a0"+_ora:""}</span>{/* riga 2: l'ora del salvataggio e la versione */}
