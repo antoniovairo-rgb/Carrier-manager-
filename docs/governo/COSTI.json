@@ -2273,5 +2273,47 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaCm6GfAQbcnq8eT3nW",
+  "titolo": "giro 233 · primo avvio leggero (PO-453)",
+  "creata": "2026-11-17T06:28:03Z",
+  "chiusa": "2026-11-17T10:05:42Z",
+  "cost_usd": 17.71492094,
+  "output_tokens": 131845,
+  "cache_read_tokens": 31356476,
+  "worker_epoch": 2,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia9KhEAUUyhCXKjJjXq",
+  "titolo": "giro 238 · patto e rinnovo (PO-496, 501)",
+  "creata": "2026-11-17T06:28:07Z",
+  "chiusa": "2026-11-17T10:19:38Z",
+  "cost_usd": 18.63742174,
+  "output_tokens": 115385,
+  "cache_read_tokens": 66668253,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaA3NEKQLomMBTseeJx",
+  "titolo": "giro 247 · proposta nomi club (PO-511)",
+  "creata": "2026-11-17T10:17:02Z",
+  "chiusa": "2026-11-17T10:21:33Z",
+  "cost_usd": 1.78771804,
+  "output_tokens": 22786,
+  "cache_read_tokens": 1741726,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
