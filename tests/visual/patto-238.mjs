@@ -8,8 +8,9 @@
        angoli e numero di piazzati (rigori+punizioni+angoli) restano quelli senza premi entro il 15% (PO-065).
        ROSSO: con premi le punizioni dalla trequarti tornano ai compagni (eroe sotto la meta').
    B · PARTITA VERA dal salvataggio 190 (FC Merseyside) con premiPatto227 {rig,piaz}: il motore del live riceve premi {rig,piaz}
-       (cfg.eroe.premi) e almeno una punizione della squadra dalla trequarti, vista nel motore, ha l'eroe come battitore designato;
-       ROSSO: nessuna (con almeno una vista, altrimenti non giudicato = rosso).
+       (cfg.eroe.premi) e le punizioni della squadra dalla trequarti NON tirabili (le tirabili dal limite sono dell'eroe anche senza
+       premio, 7.999.27) viste nel motore hanno l'eroe come battitore designato (>= 90%); ROSSO: sotto la meta' (almeno una vista,
+       altrimenti non giudicato = rosso).
    C · CARRIERA (salvataggio 190): profilo con la card «La parola del mister» (vice, voce, rigori, piazzati); bio «vice-capitano»;
        la voce alza la chimica di 1 nella settimana (weeklyStaffRel, chokepoint dei tre percorsi); il premio non vale in Nazionale
        (premiMotore238 → null) ne' in un altro club; cambiando club le voci del club lasciato spariscono dal salvataggio.
@@ -63,7 +64,7 @@ async function partita(rosso) {
   const visti = {}; let premi = 'assente'; const t0 = Date.now();
   while (Date.now() - t0 < 300000) {
     const o = await page.evaluate(() => { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const ph = window.__CPM_PHASE && window.__CPM_PHASE();
-      if (!M) return { ph }; const f = M._S && M._S.fermo; return { ph, premi: JSON.stringify((M._cfg && M._cfg.eroe && M._cfg.eroe.premi) || null), f: f && f.lato === 'home' && f.kind === 'foul' && f.x >= 70 ? { k: f.kind + '@' + (M._S.min | 0) + ':' + Math.round(f.x) + ',' + Math.round(f.y), eroe: f.batt === M.HERO } : null }; });
+      if (!M) return { ph }; const f = M._S && M._S.fermo; return { ph, premi: JSON.stringify((M._cfg && M._cfg.eroe && M._cfg.eroe.premi) || null), f: f && f.lato === 'home' && f.kind === 'foul' && f.x >= 70 && !(f.x >= 78 && Math.abs(f.y - 50) <= 18) ? { k: f.kind + '@' + (M._S.min | 0) + ':' + Math.round(f.x) + ',' + Math.round(f.y), eroe: f.batt === M.HERO } : null }; });
     if (o.premi) premi = o.premi; if (o.f) visti[o.f.k] = o.f.eroe;
     if (o.ph === 'ended' || o.ph === 'ceremony') break; await sleep(250);
   }
@@ -107,9 +108,9 @@ try {
   if (SOLO.includes('B')) {
     const V = await partita(false); console.log('B verde', JSON.stringify(V));
     giudica(V.premi === '{"rig":true,"piaz":true}', `partita vera: il motore riceve i premi ${V.premi}`);
-    giudica(V.piazzati >= 1 && V.eroe >= 1, `partita vera: piazzati della squadra con l'eroe battitore ${V.eroe}/${V.piazzati} (non giudicato = rosso)`);
+    giudica(V.piazzati >= 1 && V.eroe >= V.piazzati * 0.9, `partita vera: punizioni dalla trequarti non tirabili con l'eroe battitore designato ${V.eroe}/${V.piazzati} (non giudicato = rosso)`);
     const R = await partita(true); console.log('B rosso', JSON.stringify(R));
-    giudica(R.piazzati >= 1 && R.eroe === 0, `rosso __CPM_NO_G238 partita vera: eroe battitore ${R.eroe}/${R.piazzati}${R.piazzati >= 1 && R.eroe === 0 ? '' : ' — rosso NON visto o non giudicato'}`);
+    { const vis = R.piazzati >= 1 && R.eroe < R.piazzati * 0.5; giudica(vis, `rosso __CPM_NO_G238 partita vera: eroe battitore ${R.eroe}/${R.piazzati} (le batte il compagno piu' vicino)${vis ? '' : ' — rosso NON visto o non giudicato'}`); }
   }
   if (SOLO.includes('C')) {
     const V = await carriera(false); console.log('C verde', JSON.stringify(V));
