@@ -10784,6 +10784,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   (ne' "ended" ne' ripresa dal centro ne' catene) — il prossimo stato arriva dal prossimo __CPM_FORCE_SIT.
     //   Prima l'auto-advance sul GOL faceva la ripresa (palla→50,50, phase→playing) MENTRE il poller final-state
     //   campionava ancora → sui run freddi il check leggeva la palla a centrocampo («goal ma palla @37»).
+    if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&window.__CPM_FINE241==null){try{window.__CPM_FINE241=(window.__CPM_G241W||[]).length;}catch(_e241){}}/* [giro 241, solo prova] la scena forzata non avanza: qui si segna il fotogramma in cui il gioco vero l'avrebbe chiusa */
     if(typeof window!=='undefined'&&window.__CPM_FORCED_MODE&&!(window.__CPM_REVIEW&&pendingChainSitRef.current))return;/* [7.227.0 #44] in REVISIONE la CATENA si gioca: con un secondo tempo pendente il wizard può avanzarci dentro (il ramo catena ritorna prima di ogni fine-partita; _goEndOrCeremony resta comunque guardato dal force-mode) */
     // [6.76.0 LMV-L7] guardia anti-rientro: auto-timer + Enter/tap nello stesso burst chiamavano handleContinue
     //   due volte — la 1ª consumava la CATENA (pendingChainSitRef→null), la 2ª cadeva nel ramo else e poteva
