@@ -2252,7 +2252,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       let _standPos=null,_standN=null,_formStreak=null,_raceBoost=null,_oppPres=null,_midweek=false,_badHour=false;
       try{ if(context==="career"&&hClub){
         const _st=player.standings||[];
-        if(_st.length){const _sorted=[..._st].sort((x,y)=>(y.pts||0)-(x.pts||0)||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+        if(_st.length){const _sorted=ordinaClassifica259(_st,(x,y)=>(y.pts||0)-(x.pts||0)||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
           const _i=_sorted.findIndex(s=>s.id===hClub.id);if(_i>=0){_standPos=_i+1;_standN=_sorted.length;
             if((player.week||1)>26){const _topGap=_standPos-1,_botGap=_standN-_standPos;if(_topGap<=3||_botGap<=3)_raceBoost=clamp(0.5+(3-Math.min(_topGap,_botGap))*0.17,0,1);}}}
         if(isMatchHome&&hClub.id===player.club?.id){const _mh=(player.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national).slice(-5);if(_mh.length)_formStreak=clamp(_mh.reduce((s,m)=>s+(m.won?1:m.drew?0:-1),0),-5,5);}/* [7.8.1] le entry di matchHistory hanno won/drew, non result → prima _formStreak era SEMPRE 0 (modificatore affluenza da forma mai applicato) */
@@ -11375,7 +11375,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // item 4 (5.49.2): grafica TV pre-partita — statistiche di classifica delle due squadre (posizione/punti/V-N-P/GF-GS + forma ultime 5).
   //   Forma deterministica dal record (seed club+stagione) → coerente per tutta la partita. Dashes se la squadra non è in classifica (provino/coppa/nazionale).
   const _tvTeamStat=(team)=>{
-    const _st=(player.standings||[]);const _sorted=[..._st].sort((a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
+    const _st=(player.standings||[]);const _sorted=ordinaClassifica259(_st,(a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
     const _idx=team?_sorted.findIndex(s=>s.id===team.id):-1;const e=_idx>=0?_sorted[_idx]:null;
     const _seed=hashStr((team?.id||team?.n||"x")+"_"+(player.season||1));const w=e?e.wins:0,d=e?e.draws:0,l=e?e.losses:0,tot=w+d+l;
     // [6.79.0 collaudo PO «all'esordio il cammino delle due squadre è completamente falso»] con 0 partite
@@ -13211,7 +13211,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _k232=!!(_c232&&_c232.tipo!=="campionato");
             let _st=[],_io=-1,_zone=()=>null,_leg=[];
             if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
-            else if(!_isNatCtx){_st=[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            else if(!_isNatCtx){_st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
               _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
               const _lg=_cl.lg||"",N=_st.length,_ZC={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
               const _sec=typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===_lg),_yo=/^Primavera/i.test(_lg),_noRel=typeof LEAGUE_PAIRS!=="undefined"&&!LEAGUE_PAIRS.some(([u])=>u===_lg);
@@ -13234,7 +13234,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _rat=(player.matchHistory||[]).filter(m=>m&&(m.season||1)===_sn&&typeof m.rating==="number"&&isFinite(m.rating));
             const _vm=_rat.length?(Math.round(10*_rat.reduce((s,m)=>s+m.rating,0)/_rat.length)/10):null;
             const _num=[["Gol",player.goals],["Assist",player.assists],["Presenze",player.matches],["Voto medio",_vm!=null?_vm.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
-            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=[...(player.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=ordinaClassifica259(player.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
               const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
               _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_sp,_pi+1);
                 return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
@@ -13291,7 +13291,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {_g200()&&!_g224()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
               (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
             const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
-            const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            const _st=_isNatCtx?[]:ordinaClassifica259(player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
             const _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
             const _a0=Math.max(0,Math.min(_io-1,_st.length-3));const _idx=_io<0?[]:[_a0,_a0+1,_a0+2].filter(i=>i<_st.length);
             const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;

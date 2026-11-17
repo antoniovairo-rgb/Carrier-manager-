@@ -1963,3 +1963,12 @@ function calcWorldStandings(lg,season,currentWeek,overrides){
   }
   return[...st].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 259 · dubbio 4 del giro 253] UN SOLO ORDINE DELLA CLASSIFICA: punti, differenza reti, gol fatti, poi l'ordine in cui la
+   classifica e' salvata (quello della tabella principale: sort stabile). Ogni schermata che dice una posizione passa da qui:
+   prima c'erano 36 ordinamenti con spareggi diversi (alcuni senza i gol fatti, alcuni solo i punti), e a pari punti e pari
+   differenza reti due schermate potevano dire due posizioni. Rosso __CPM_NO_G259 = ogni sito col suo ordinamento di prima
+   (passato come secondo argomento) e la tabella principale nell'ordine salvato. Guardiano classifica-259. */
+function _no259(){return typeof window!=="undefined"&&!!window.__CPM_NO_G259;}
+function ordinaClassifica259(st,vecchio){const a=(Array.isArray(st)?st:[]).filter(Boolean);
+  if(_no259())return vecchio?a.sort(vecchio):a;
+  return a.sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0)))||((y.gf||0)-(x.gf||0)));}

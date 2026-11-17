@@ -672,6 +672,8 @@
     "rassegna-224": "node rassegna-224.mjs",
     "anteprima-230": "node anteprima-230.mjs",
     "rassegna-232": "node rassegna-232.mjs",
+    "classifica-259": "node classifica-259.mjs",
+    "sonda-259a": "node sonda-259a.mjs",
     "tocco-213": "node tocco-213.mjs",
     "barra-221": "node barra-221.mjs",
     "salienti-229": "node salienti-229.mjs",
