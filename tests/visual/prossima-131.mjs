@@ -86,7 +86,8 @@ for (const braccio of BRACCI) {
     await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
     const dentro = await entraInCarriera(page, errs);
     const cal = dentro ? await preparaCalendario(page, SAVE) : { md: null };
-    const club = SAVE.player.club.n;
+    /* [giro 263] il nome del club si legge dal gioco: dal giro 251 (CLUB_NOMI_251 + migrazione) «FC Salernum» del salvataggio di prova e' «FC Salernum 1919» */
+    const club = (dentro ? await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().club.n; } catch (e) { return null; } }).catch(() => null) : null) || SAVE.player.club.n;
     for (const c of CASI) {
       let r = { nomi: null }, md = cal.md, motivo = [], am = null;
       if (dentro && md) {
