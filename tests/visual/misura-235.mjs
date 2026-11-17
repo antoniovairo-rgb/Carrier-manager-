@@ -61,7 +61,16 @@ export function TESTATA() {
   const occ = t ? (t.parentElement && t.parentElement.querySelector('span') ? t.parentElement.querySelector('span').textContent.trim() : '') : '';
   const tt = document.querySelector('header [data-cpm=titolo235]'); const ttr = tt ? tt.getBoundingClientRect() : null;
   const hd = document.querySelector('header[data-cpm=testata-v2]'); const hr = hd ? hd.getBoundingClientRect() : null;
-  return { inTestata: tt && ttr.height > 4 ? { t: tt.textContent.trim(), y: Math.round(ttr.top), x: Math.round(ttr.left), corpo: parseFloat(getComputedStyle(tt).fontSize) } : null, altTestata: hr ? Math.round(hr.height) : null,
+  /* [giro 260 · decisione PO C] titolo SOLO in testata: titoli grandi nel contenuto (i TitoloV2 di Stagione/Agente/Ufficio, o un h1/h2
+     visibile col nome della scheda) e, in Classifica, distanza dalla vetta e forma visibili sotto la testata nel primo schermo */
+  const nomeT = tt ? tt.textContent.trim().toLowerCase() : '';
+  const doppi = [...main.querySelectorAll('[data-cpm=stagione-v2],[data-cpm=agente-v2],[data-cpm=ufficio-v2],h1,h2')].filter(vis)
+    .filter(el => !el.closest('header,.cpm-nav-bar,[role=dialog],.cpm-sr') && !el.classList.contains('cpm-sr'))
+    .filter(el => el.matches('[data-cpm]') || (nomeT && el.textContent.trim().toLowerCase() === nomeT)).map(el => (el.getAttribute('data-cpm') || el.tagName) + ':' + el.textContent.trim().slice(0, 24));
+  const sottoT = sel => { const el = [...document.querySelectorAll(sel)].filter(vis).filter(x => !x.closest('header'))[0]; if (!el) return null; const r = el.getBoundingClientRect();
+    return { top: Math.round(r.top), sotto: !!(hr && r.top >= hr.bottom - 1), primoSchermo: r.bottom <= innerHeight, testo: el.textContent.trim().slice(0, 30) }; };
+  const vetta260 = sottoT('[data-cpm=vetta-v2]'), forma260 = sottoT('[data-cpm=forma-v2]');
+  return { doppi, vetta260, forma260, inTestata: tt && ttr.height > 4 ? { t: tt.textContent.trim(), y: Math.round(ttr.top), x: Math.round(ttr.left), corpo: parseFloat(getComputedStyle(tt).fontSize) } : null, altTestata: hr ? Math.round(hr.height) : null,
     titolo: t ? t.textContent.trim().slice(0, 40) : null, occhiello: occ.slice(0, 40), cpm: t ? ((t.closest('[data-cpm]') || {}).getAttribute ? t.closest('[data-cpm]').getAttribute('data-cpm') : null) : null,
     y: tr ? Math.round(tr.top + scrollY) : null, yPrimo: primo ? Math.round(primo.getBoundingClientRect().top + scrollY) : null, sopra: !!(tr && primo && tr.top <= primo.getBoundingClientRect().top + 2) };
 }

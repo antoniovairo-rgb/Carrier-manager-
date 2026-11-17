@@ -157,14 +157,14 @@ for (const f of SCELTI) {
   if (mc.n) { conMin = Math.min(conMin, mc.min); if (mc.peggiori.length) KO('CON', f, 'carriera: ' + mc.peggiori.slice(0, 4).join(' | ')); }
   /* SCH [tappa 2]: Stagione, Club, Agente, Ufficio */
   const SCHEDE = [
-    ['standings', '[data-cpm="stagione-v2"]', () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
-      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
+    ['standings', '[data-cpm="stagione-v2"],[data-cpm="vetta-riga260"]'/* [giro 260 · decisione PO C] titolo solo in testata: la riga vetta+forma resta */, () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
+      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"],[data-cpm="vetta-riga260"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
         !r ? 'manca la riga tua' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(r).backgroundColor) ? 'riga tua non nel colore del club' : null]; }],
     ['club', '[data-cpm="club-v2"],[data-cpm="club-anelli-v2"]', () => { const c = document.querySelector('[data-cpm="club-v2"]');
       return [!c ? 'manca la fascia del club' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(c).backgroundColor) ? 'fascia non nel colore del club' : null,
         document.querySelectorAll('[data-cpm="club-anelli-v2"] [data-cpm="anello-v2"]').length !== 2 ? 'anelli fiducia/popolarita\' mancanti' : null]; }],
-    ['agente', '[data-cpm="agente-v2"],[data-cpm="contratto-v2"]', () => [!document.querySelector('[data-cpm="agente-v2"]') ? 'manca il titolo Agente' : null, !document.querySelector('[data-cpm="contratto-v2"]') ? 'manca la barra del contratto' : null]],
-    ['ufficio', '[data-cpm="ufficio-v2"]', () => [!document.querySelector('[data-cpm="ufficio-v2"]') ? 'manca il titolo Ufficio' : null, document.querySelectorAll('[data-cpm="tacca-v2"]').length < 3 ? 'mancano le tacche dello staff' : null]],
+    ['agente', '[data-cpm="agente-v2"],[data-cpm="contratto-v2"]', () => [!(document.querySelector('[data-cpm="agente-v2"]') || /^agente$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')) ? 'manca il titolo Agente' : null, !document.querySelector('[data-cpm="contratto-v2"]') ? 'manca la barra del contratto' : null]],
+    ['ufficio', '[data-cpm="ufficio-v2"],[data-cpm="tacca-v2"]', () => [!(document.querySelector('[data-cpm="ufficio-v2"]') || /^ufficio$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')) ? 'manca il titolo Ufficio' : null, document.querySelectorAll('[data-cpm="tacca-v2"]').length < 3 ? 'mancano le tacche dello staff' : null]],
   ];
   for (const [tb, sel, giudica] of SCHEDE) {
     await page.evaluate(t => window.__CPM_CAREER.goTab(t), tb); await sleep(900); visti.SCH++;

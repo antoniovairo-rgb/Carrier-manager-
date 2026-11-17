@@ -382,7 +382,7 @@ const NOMI235={"profilo-statistiche":"Questa stagione","s24-statistiche-carriera
   "profilo-corsa-premi":"Corsa ai premi della stagione","profilo-mvp-mese":"Migliore del mese","profilo-milestone":"Traguardi","profilo-achievement":"Imprese",
   "s24-modalita-sfida":"La tua sfida","profilo-biografia":"Biografia","profilo-timeline":"Stagione per stagione","profilo-diario":"Diario di carriera",
   "profilo-memoria":"Memoria della carriera","profilo-match-cuore":"Partita del cuore","s24-la-citta-ti-ricorda":"La città ti ricorda",
-  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":"Stato Under 18",
+  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":(_g260()?"Stato Primavera":"Stato Under 18")/* [giro 260 · decisione PO D] */,
   "profilo-contratto":"Contratto"};
 function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
   const figli=React.Children.toArray(children).filter(Boolean);

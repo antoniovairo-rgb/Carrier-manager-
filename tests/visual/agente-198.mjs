@@ -88,7 +88,7 @@ try {
     /* niente in scadenza: contratto lungo, mercato chiuso, compito assegnato → nessun riquadro */
     const { page, errors } = await apri(salva({ week: 10, contract: { duration: 3, wage: 9000, expiresAtSeason: 5 }, agentTask: 'immagine' }), null);
     await page.evaluate(() => window.__CPM_CAREER.goTab('agente')); await sleep(900);
-    const vuoto = await page.evaluate(() => !document.querySelector('[data-cpm="agente198-ora"]') && !!document.querySelector('[data-cpm="agente-v2"]'));
+    const vuoto = await page.evaluate(() => !document.querySelector('[data-cpm="agente198-ora"]') && (!!document.querySelector('[data-cpm="agente-v2"]') || /^agente$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')));/* [giro 260] titolo solo nella testata */
     ok(vuoto && !errors.length, 'senza nulla in scadenza il riquadro non c\'e\' (scheda Agente aperta)');
     await page.close();
   }

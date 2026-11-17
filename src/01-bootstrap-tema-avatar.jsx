@@ -265,6 +265,9 @@ const FS_BASE234={...FS};
    (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
    acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
 const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+/* [giro 260 · decisioni PO 17/11 B C D] interruttore del giro: rosso window.__CPM_NO_G260 = come prima (Sostieni anche nell'app, titolo
+   grande nel contenuto di Stagione/Agente/Ufficio, «Under 18»/«U18» a schermo). */
+const _g260=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G260);
 function livelloTesto235(){try{const v=localStorage.getItem('cpm-testo-grande');if(v==='15')return _g235()?15:30;if(v==='1'||v==='30')return 30;return 0;}catch(_e){return 0;}}
 function testoGrande234(){return livelloTesto235()>0;}
 function applicaTesto234(on){const k=on===true?1.3:(on===15?1.15:on===30?1.3:1);for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
