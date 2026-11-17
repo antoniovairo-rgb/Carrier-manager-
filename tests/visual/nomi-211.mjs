@@ -75,6 +75,7 @@ const MISURA = () => {
 };
 const sintesi = {};
 let page = null, touchAperto = null;
+let note251 = '';
 try {
   console.log('1) scala dei nomi (funzione unica)');
   page = await apri(VISTE[0], VISTE[0].width < 1000); touchAperto = VISTE[0].width < 1000;
@@ -135,7 +136,11 @@ try {
   if (!process.env.CPM_VISTE || process.env.CPM_SCANSIONE === '1') {
     console.log('3) scansione delle larghezze col touch (club Primavera senza sigla societaria in testa)');
     if (!touchAperto) { await page.context().close(); page = await apri({ width: 360, height: 740 }, true); touchAperto = true; }
-    const pr = club.filter(c => /\sPrimavera$/.test(c.n) && !/^(?:FC|AC|CF|AT|SC|SS|US|AS)\s/.test(c.n));
+    let pr = club.filter(c => /\sPrimavera$/.test(c.n) && !/^(?:FC|AC|CF|AT|SC|SS|US|AS)\s/.test(c.n));
+    /* [giro 251 PO-512] l'unica Primavera senza sigla societaria in testa era «Torino Athletic Primavera», ora «FC Zebre Primavera»: il
+       gioco non produce piu' il caso, quindi la sonda lo provoca con un club INVENTATO (nome e sigla di prova, colori di una Primavera vera) */
+    if (!pr.length) { const base = club.find(c => /\sPrimavera$/.test(c.n)); if (base) pr = [{ ...base, id: 'prova251', n: 'Torino Athletic Primavera', a: 'TAT' }]; }
+    note251 = pr.length && pr[0].id === 'prova251' ? 'scansione su club di prova inventato «Torino Athletic Primavera» (nessuna Primavera del gioco senza FC in testa)' : '';
     let larghezze = 0, corti = 0, saltiS = [], sbagliS = [];
     for (let w = 360; w <= 640; w += 4) {
       await page.setViewportSize({ width: w, height: 740 }); await sleep(120);
@@ -161,6 +166,7 @@ try { await page.context().close(); } catch (e) {}
 await browser.close(); srv.close();
 ok(Object.keys(sintesi).filter(k => /^\d+$/.test(k)).length === VISTE.length && VISTE.length > 0, `viste giudicate ${Object.keys(sintesi).filter(k => /^\d+$/.test(k)).length} su ${VISTE.length}`);
 const telefoni = Object.entries(sintesi).filter(([w]) => +w < 1000);
+if (note251) console.log('    ' + note251);
 console.log(`    nome corto Primavera mostrato alle viste telefono: ${telefoni.map(([w, s]) => w + ':' + s.cortoMostrato).join(' · ')} (il caso si giudica nella scansione)`);
 console.log('sintesi ' + JSON.stringify(sintesi));
 console.log(`\n${ROSSO ? '[braccio ROSSO __CPM_NO_G211] ' : ''}nomi-211: ${fails.length ? 'ROSSO' : 'VERDE'} (${oks.length} ok · ${fails.length} ko)`);

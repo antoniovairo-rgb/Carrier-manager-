@@ -197,9 +197,9 @@ function FiguraV2({player,w=54,grande=false}){
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
 /* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
-   (a) PO-396 «Primavera» si accorcia in «U19» (FC Milano Brera Primavera → FC Milano Brera U19) prima di ogni altra cosa;
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Nerazzurri Primavera → FC Nerazzurri U19) prima di ogni altra cosa;
    (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
-       «FC Milano Brera» → «Milano Brera», «FC Milano Brera U19» → «Milano Brera U19», poi «Milano Brera» da solo; la sigla del club resta l'ultimo gradino.
+       «FC Nerazzurri» → «Nerazzurri», «FC Nerazzurri U19» → «Nerazzurri U19», poi «Nerazzurri» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
 function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
@@ -208,8 +208,8 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
   const ab=abbreviaSquadra182(u19);
   /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
-     categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
-     nome corto c'e' gia' («Milano Brera»). Rosso __CPM_NO_G211 = scala di prima. */
+     categoria e la sigla: «Manchester Rovers U19» → «Manchester Rovers» → «MCR» (esempio aggiornato al giro 251: era «Torino Athletic»,
+     oggi «FC Zebre»). Coi club «FC …» il nome corto c'e' gia' («Nerazzurri»). Rosso __CPM_NO_G211 = scala di prima. */
   const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
   if(g211)add(senzaCat(u19));
   add(ab);
@@ -222,6 +222,15 @@ function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182
    Rosso __CPM_NO_G203 = come prima (sigla ritagliata). */
 const ADATTA203_MIN=12;
 function _no203(){return typeof window!=='undefined'&&!!window.__CPM_NO_G203;}
+/* [giro 254 · rapporto 248 dubbio 6] «FC Lyon» usciva di 0,7 px dalla casella a 360 px: la casella e' larga 40,70 px, ma
+   clientWidth e scrollWidth sono INTERI e arrotondano entrambi a 41 → il controllo «scrollWidth>clientWidth+0.5» non vedeva il
+   taglio. Ora l'eccesso si misura sub-pixel: larghezza VERA del testo (Range) contro la casella vera (rettangolo meno padding e
+   bordi). Rosso __CPM_NO_G254 = il controllo intero di prima. */
+function _no254(){return typeof window!=='undefined'&&!!window.__CPM_NO_G254;}
+function _ecc254(el){if(_no254())return{fuori:el.scrollWidth>el.clientWidth+0.5,box:el.clientWidth,testo:el.scrollWidth};
+  try{const r=el.getBoundingClientRect();const cs=getComputedStyle(el);const pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0)+(parseFloat(cs.borderLeftWidth)||0)+(parseFloat(cs.borderRightWidth)||0);
+    const box=r.width-pad;const rg=document.createRange();rg.selectNodeContents(el);const testo=rg.getBoundingClientRect().width;
+    return{fuori:testo>box+0.05,box,testo};}catch(_e){return{fuori:el.scrollWidth>el.clientWidth+0.5,box:el.clientWidth,testo:el.scrollWidth};}}
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
@@ -231,9 +240,10 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   useEffect(()=>{setLiv(0);setFs203(0);},[key]);
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
-    else if(ad203&&liv>=cand.length-1&&el.scrollWidth>el.clientWidth+0.5){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
-      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*el.clientWidth/el.scrollWidth*10)/10);
+    const e254=_ecc254(el);
+    if(e254.fuori&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
+    else if(ad203&&liv>=cand.length-1&&e254.fuori){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
       if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);}}});
   /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
      si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
@@ -243,7 +253,7 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
       if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
-      if(el.scrollWidth>el.clientWidth+0.5)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+      if(_ecc254(el).fuori)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;

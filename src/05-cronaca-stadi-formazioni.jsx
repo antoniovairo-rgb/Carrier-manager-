@@ -506,8 +506,8 @@ const CLUB_STADIUMS={
   "rma":"Estadio Capital","bar":"Estadi del Mar","atm":"Estadio Coloso",
   "sev":"Estadio Hispalense","bet":_g248("Estadio de Heliópolis","Estadio Ventrana"),"val":"Estadio Naranja",
   "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":_g248("Estadio de la Ría","Estadio Oriolan"),
-  "bay":"München Arena","bvb":"Goldwald Stadion","rbl":"Leipzig Arena","b04":"Werkstadt Arena",
-  "fra":"Frankfurt Arena","s04":"Gelsenkirchen Arena","bsc":"Berlin Arena",
+  "bay":"München Arena","bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
+  "fra":"Frankfurt Arena","s04":_g251("Emscher Arena","Gelsenkirchen Arena")/* [giro 251 PO-512] stadio col nome tolto dal PO */,"bsc":"Berlin Arena",
   "psg":"Parc Royal","marse":"Stade du Littoral","lyon":"Lyon Stadium","lille":"Lille Stadium",
   "mon":"Stade de la Corniche","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",
   "ajax":"Grachten Arena","psv":"Brabantia Stadion","feye":"Rotterdam Stadion","az":"Alkmaar Stadion",/* [6.74.0 QA-P0] */
