@@ -69,11 +69,11 @@ Registrato nelle catene `completa` e `carriera`, nella mappa di `src/05|src/09` 
 | classifica-259 | ✅ verde: 3·3·3·3, sorprese 8, decisioni diverse 0 · rosso: 3·4·3·4, decisioni diverse 21 su 60 · statico pulito |
 | solo-highlight-166 (base `lavoro/197`) | 12b ✓ · **10 e 11 ✗** (preesistente) · rosso cade su 3, 7, 8 come deve |
 | solo-highlight-166 (giro 259, 1ª corsa) | 12b: intervista **chiesta in entrambe** («🎲 Sorpresa»), ma domande diverse perché la partita è diversa (10 e 11 ✗) |
-| solo-highlight-166 (giro 259, 2ª corsa) | _vedi sotto_ |
-| rassegna-232 | _vedi sotto_ |
-| stagione-pro-164 | _vedi sotto_ |
-| test:logic | _vedi sotto_ |
-| save-compat | _vedi sotto_ |
+| solo-highlight-166 (giro 259, 2ª corsa) | 12b: sorpresa chiesta in entrambe, domande diverse · 10 e 11 ✗ (divergenza al 21', punto diverso dalla 1ª) · rosso cade su 3, 7, 8. **Verde intero non raggiunto** (Dubbi, punto 1); non ripetuto oltre |
+| rassegna-232 | ✅ verde 27/27 · rosso `__CPM_NO_G232` bocciato |
+| stagione-pro-164 (`node stagione-pro-164.mjs`, non ha script npm) | ✅ uscita 0, 0 errori su tutti i profili (7 min 19 s) |
+| test:logic | ✅ 51/51 — la prima corsa era 50/51: il test di `partitaChiave163` estrae le funzioni da `src/08` e non aveva `ordinaClassifica259`; ora la estrae anche da `src/09` (sorgente vero, nessuna copia) |
+| save-compat | ✅ 12 pass · 0 fail |
 
 `career-critical` non eseguito (lo esegue la verifica di rilascio). La mappa mirata completa di `src/07/08/09/15/17/18` (decine di
 guardiani) non è stata eseguita: solo i controlli della consegna e il nuovo.
@@ -82,13 +82,15 @@ guardiani) non è stata eseguita: solo i controlli della consegna e il nuovo.
 
 1. **`solo-highlight-166` casi 10 e 11 instabili, preesistenti** (rossi anche sulla base `lavoro/197`; nel 253 erano verdi): la partita
    intera e quella a soli highlight a volte non sono la stessa partita. Misurato con `sonda-259b` (intera e soli highlight fermate al
-   12'): divergenza in **6 corse su 22** fra le build (`b00f40b`, `8664940`, `17bb5ff`, `4ee5070`, `f9cc31c`, giro 259), quindi non
+   12'): divergenza in **6 corse su 22** (20 della sonda fermate al 12' + 2 del guardiano intero) fra le build (`b00f40b`, `8664940`, `17bb5ff`, `4ee5070`, `f9cc31c`, giro 259), quindi non
    attribuibile a un'unione. Sempre la stessa scena (passaggio al 4'-5'): «assist» contro «chance» (tiro del compagno parato, deciso da
    `giocaScena` col flusso `rnd` del motore). Causa misurata col testimone `__CPM_RND14`: nelle corse divergenti la partita intera
    consuma **4 estrazioni in meno al 4' e 63 al 5'** prima della scena — il motore ha già cominciato il minuto 5 quando la scena gioca,
    cioè il battito della fisica (22 sotto-passi per minuto, `src/15` r.~5494 e ~5802) ha una precedenza a tempo reale con l'apertura
    della scena. Non corretto: è il cuore del motore (cantieri 7.962 · 202 · 966), fuori da un giro piccolo. Finché resta, anche il 12b
-   può cadere di conseguenza (stessa sorpresa, domanda diversa perché i fatti della partita sono diversi).
+   può cadere di conseguenza (stessa sorpresa, domanda diversa perché i fatti della partita sono diversi). Sull'intera partita la
+   divergenza capita quasi sempre (3 corse del guardiano su 3, in punti diversi: 5', 5', 21'): finché il battito non è riparato il 166
+   non può essere verde intero, e la sua mappa mirata lo vedrà rosso. Serve una decisione su chi ripara il battito e quando.
 2. **Semi sul nome** elencati in A: vanno portati sull'id? `selectContextualSituations` (le scene della partita) è il più esposto.
 3. **Ordine della classifica nelle decisioni**: alcuni siti cambiati non solo «mostrano» ma decidono (testi di zona europea, obiettivi);
    ora decidono con lo stesso spareggio che si vede. Se qualche regola dovesse usare uno spareggio diverso (es. scontri diretti), oggi
