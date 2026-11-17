@@ -13,7 +13,11 @@ assert.ok(i0 > 0 && i1 > i0 && i2 > i1, 'funzioni trovate nel sorgente');
 const CLUBS = [{ id: 'milan', p: 90 }, { id: 'milan', p: 78, isU18: true }];
 const DERBY = { 'milan-inter': { e: '🔥', name: 'Derby della Madonnina' } };
 const isDerby = (a, b) => DERBY[a + '-' + b] || DERBY[b + '-' + a] || null;
-const { indicePrimavera, partitaChiave163 } = new Function('CLUBS', 'isDerby', s.slice(i0, i2) + '\nreturn {indicePrimavera,partitaChiave163};')(CLUBS, isDerby);
+/* [giro 259] partitaChiave163 ordina la classifica con la funzione unica ordinaClassifica259 (src/09): si estrae anch'essa dal sorgente vero */
+const s9 = fs.readFileSync(path.resolve(path.dirname(SRC), '09-audio-scout-anagrafiche.jsx'), 'utf8');
+const j0 = s9.indexOf('function _no259('), j1 = s9.indexOf('\n', s9.indexOf('return a.sort((x,y)=>((y.pts', j0));
+assert.ok(j0 > 0 && j1 > j0, 'ordinaClassifica259 trovata nel sorgente');
+const { indicePrimavera, partitaChiave163 } = new Function('CLUBS', 'isDerby', s9.slice(j0, j1) + '\n' + s.slice(i0, i2) + '\nreturn {indicePrimavera,partitaChiave163};')(CLUBS, isDerby);
 const mk = (n, o = {}) => Array.from({ length: n }, (_, i) => ({ season: 1, week: i + 2, goals: 0, assists: 0, rating: 6.5, ...o }));
 const P = (o = {}) => ({ proStatus: 'u18', season: 1, position: 'Attaccante', form: 70, coachTrust: 60, ovr: 66, club: { id: 'milan', p: 78 }, matchHistory: mk(8), ...o });
 

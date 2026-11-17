@@ -326,7 +326,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Esatto. Chi ha parlato male di noi si ricreda. Il campo non mente mai.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"Non leggo le critiche. Mi concentro sul lavoro. Oggi è andato bene.",ef:{m:5,p:4,t:7}},
 ]},
-{ctx:["win"],cond:p=>{if(LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg))return false;/* [6.97.0] niente zona europea in 2ª divisione */try{const st=[...(p.standings||[])].sort((x,y)=>y.pts-x.pts||(y.gd||0)-(x.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&i<=8;}catch(e){return false;}}/* [7.161.0 M5] «vi porta in zona europea» solo se sei DAVVERO a ridosso (top 9 reale) */,q:"Vittoria che vi porta in zona europea. Ci credete davvero?",a:[
+{ctx:["win"],cond:p=>{if(LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg))return false;/* [6.97.0] niente zona europea in 2ª divisione */try{const st=ordinaClassifica259(p.standings||[],(x,y)=>y.pts-x.pts||(y.gd||0)-(x.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&i<=8;}catch(e){return false;}}/* [7.161.0 M5] «vi porta in zona europea» solo se sei DAVVERO a ridosso (top 9 reale) */,q:"Vittoria che vi porta in zona europea. Ci credete davvero?",a:[
   {tone:"diplomatico",txt:"Ci lavoriamo ogni giorno. Sarebbe un risultato enorme per tutto il club.",ef:{m:7,p:5,t:6}},
   {tone:"diretto",txt:"Non ci poniamo limiti. Siamo forti e possiamo arrivare in Europa.",ef:{m:11,p:8,t:-4}},
   {tone:"umile",txt:"È prematuro parlarne. Pensiamo partita per partita. Prima la prossima.",ef:{m:4,p:4,t:8}},
@@ -942,7 +942,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Una beffa enorme. Avevamo meritato almeno il pareggio. Non è giusto.",ef:{m:-2,p:0,t:-3}},
   {tone:"umile",txt:"Fa malissimo. Ma dobbiamo imparare a gestire meglio la pressione finale.",ef:{m:-3,p:1,t:6}},
 ]},
-{ctx:["loss"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;const st=[...(p.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&st.length>6&&i>=st.length-6;}catch(e){return false;}},/* [7.161.0 A1] solo se la classifica REALE è nella zona bassa (ultime 6) e la gara era di campionato */q:"La zona retrocessione si avvicina. Preoccupato?",a:[
+{ctx:["loss"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;const st=ordinaClassifica259(p.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&st.length>6&&i>=st.length-6;}catch(e){return false;}},/* [7.161.0 A1] solo se la classifica REALE è nella zona bassa (ultime 6) e la gara era di campionato */q:"La zona retrocessione si avvicina. Preoccupato?",a:[
   {tone:"diplomatico",txt:"Monitoriamo la classifica ma restiamo concentrati sul lavoro. Non siamo in panico.",ef:{m:-1,p:1,t:5}},
   {tone:"diretto",txt:"Non retrocederemo. Abbiamo la qualità per uscirne. Ho fiducia in questo gruppo.",ef:{m:3,p:2,t:-3}},
   {tone:"umile",txt:"È un campanello d'allarme. Dobbiamo prendere la situazione più seriamente.",ef:{m:-2,p:1,t:7}},
@@ -1788,7 +1788,11 @@ function intervista183(p,md,r){try{
   else if(/^euro/.test(c))posta="🌍 Coppa europea";
   else{try{posta=(typeof posta165==="function")?posta165(p,md||{type:c==="cup"?"cup":"league",opponentName:r.opponent}):null;}catch(e){posta=null;}}
   if(!posta&&(r.goals|0)>=3)posta="🎩 Tripletta";
-  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|sorpresa183")%8===0);
+  /* [giro 259] il seme della sorpresa usa l'ID del club avversario, stabile ai rinomini (col nome, il rinomino 248/251 di «kol»
+     accendeva e spegneva la sorpresa sulla stessa partita); fuori campionato (nessuna voce di calendario) resta il nome. Rosso
+     __CPM_NO_G259 = il nome, come prima. */
+  const _avv259=(!_no259()&&md&&md.opponentId)?md.opponentId:(r.opponent||"");
+  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+_avv259+"|sorpresa183")%8===0);
   if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
   const q=scegliPost183(p,r,posta);
   if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};

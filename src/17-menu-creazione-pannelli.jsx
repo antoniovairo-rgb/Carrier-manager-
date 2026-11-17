@@ -1714,7 +1714,7 @@ const generateLeagueNews=(player)=>{
   const league=player.club?.lg;
   if(!league||(player.proStatus||"u18")==="u18")return[];
   const wk=player.week||1;if(wk<=2)return[];
-  const sd=[...(player.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+  const sd=ordinaClassifica259(player.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
   if(sd.length<4||!((sd[0].played||0)>0))return[];
   const myId=player.club?.id||player.club?.n;
   const nm=t=>t.n||t.name||t.id||"—";
@@ -1790,7 +1790,7 @@ const generateMarketNews=(player)=>{
   const sg=player.transferSaga;
   if(sg&&sg.season===ss&&sg.club)out.push({txt:`🔭 ${sg.club} ha chiesto informazioni su di te: contatti confermati dal tuo agente.`,col:"#f59e0b",personal:true});
   else if(player.transferListed)out.push({txt:`📋 Sei ufficialmente sulla lista di mercato: il tuo agente sta raccogliendo le proposte.`,col:"#f59e0b",personal:true});
-  const sd=[...(player.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+  const sd=ordinaClassifica259(player.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
   if(sd.length>=6&&(sd[0].played||0)>0){
     const nm=t=>t.n||t.name||"—";
     const inWin=(wk>=1&&wk<=5)||(wk>=19&&wk<=23);
@@ -2852,7 +2852,7 @@ const DRIVER_MORALE={rivincita:-1,conferma:2,orgoglio:1,storia:2,futuro:-1,vetri
 function deriveStances(p){try{
   if(!p||(p.proStatus||"u18")!=="pro"||!p.club)return null;
   const cid=p.club.id||p.club.n;
-  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0));
+  const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0));
   const my=st.findIndex(r=>r&&r.id===cid);const pos=my>=0?my+1:null;
   const objPos=(p.seasonObjectives&&p.seasonObjectives.position)||Math.ceil((st.length||18)/2);
   let pres=null;if(pos!=null&&(p.week||1)>=6){const d=objPos-pos;pres=d>=3?"contento":d<=-4?"freddo":"neutro";}

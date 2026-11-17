@@ -1810,7 +1810,7 @@ const getThisWeekMatchday=()=>{
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
       natCupNext:(q,res,fo)=>{try{return natCupNext700(q,res,fo||null);}catch(e){return "error:"+(e&&e.message);}},/* [7.700.0] la regola di avanzamento della coppa, interrogabile: il banco fa girare un torneo intero senza toccare la UI */
-      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
+      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,oppId:m.opponentId||null/* [giro 259] la sonda-iv187 calcola il seme della sorpresa sull'id */,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
       milePool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.mile&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.435.0] la sonda delle pietre miliari (esordio/primo pro) */
@@ -1855,7 +1855,7 @@ const getThisWeekMatchday=()=>{
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto *//* [7.287.0] la probe euro-transfer deve poter eseguire il VERO acceptTransfer: si posa l'offerta… [giro 77: era una seconda chiave `setOffer` identica, tolta] */
       apriFine302:(tipo)=>{try{/* [PO-302 tappa 2b] solo sonde: apre fine stagione (dati dalla classifica corrente) o fine carriera (stesso doRetire del gioco) */
         if(tipo==="carriera"){doRetire();return true;}
-        const fs=[...(player.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));const ci=player.club&&player.club.id;
+        const fs=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));const ci=player.club&&player.club.id;
         const pp=Math.max(0,fs.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club&&player.club.n)));
         setSeasonEndData({season:player.season,club:player.club,finalStandings:fs,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion:fs[0]||null,playerPos:pp,isChampion:pp===0,awards:(player.lastAwards&&player.lastAwards.aw)||null,seasonObjectives:player.seasonObjectives||[],rival:null,euro:player.euro||null,leagueOverrides:player.leagueOverrides||{}});
         setScreen("seasonEnd");return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -2145,7 +2145,7 @@ const getThisWeekMatchday=()=>{
   const pledgeOutcome=(p)=>{
     const pl=p.seasonPledge;if(!pl||pl.season!==(p.season||1))return null;
     const objs=p.seasonObjectives||[];const g=p.goals||0,a=p.assists||0,m=p.matches||0;
-    const _sd=[...(p.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+    const _sd=ordinaClassifica259(p.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
     const _pid=p.club?.id||p.club?.n;
     const pos=Math.max(1,_sd.findIndex(t=>t.id===_pid||t.n===p.club?.n)+1);
     const _sp=_objSpent(p);
@@ -2256,7 +2256,7 @@ const getThisWeekMatchday=()=>{
     if(lg){
       const drb=(lg.opponentId&&p.club?.id)?isDerby(p.club.id,lg.opponentId):null;
       if(drb)return{k:"derby",e:drb.e||"🔥",t:drb.name||"La settimana del derby",d:"Una partita che vale una stagione: la città è spaccata in due."};
-      const _sd=[...(p.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0)));
+      const _sd=ordinaClassifica259(p.standings||[],(x,y)=>((y.pts||0)-(x.pts||0)));
       const _opIx=_sd.findIndex(t=>t.id===lg.opponentId||(t.n||t.name)===lg.opponentName);
       if(_opIx>-1&&_opIx<3&&wk>=6)return{k:"big",e:"⚡",t:"Big match",d:`${lg.opponentName||"L'avversaria"} è lassù in classifica: uno scontro che pesa.`};
     }
@@ -2307,7 +2307,7 @@ const getThisWeekMatchday=()=>{
   const clubVoices=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return[];
     const sn=p.season||1,wk=p.week||1;const out=[];
-    const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0));
+    const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0));
     const my=st.findIndex(r=>r&&r.id===(p.club&&p.club.id));const pos=my>=0?my+1:null;
     const objPos=(p.seasonObjectives&&p.seasonObjectives.position)||Math.ceil((st.length||18)/2);
     if(pos!=null&&wk>=6){const d=objPos-pos;
@@ -2707,7 +2707,7 @@ const getThisWeekMatchday=()=>{
     const lg=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.injured);
     const l7=lg.slice(-7);if(l7.length<7)return null;
     const losses=l7.filter(m=>!m.won&&!m.drew).length;if(losses<5)return null;
-    const sd=[...(p.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+    const sd=ordinaClassifica259(p.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
     if(sd.length<10)return null;
     const pid=p.club?.id||p.club?.n;
     const pos=sd.findIndex(t=>t.id===pid||(t.n||t.name)===p.club?.n)+1;
@@ -2732,7 +2732,7 @@ const getThisWeekMatchday=()=>{
     const cid=p.club.id||p.club.n;
     const evo=(p.clubEvo&&p.clubEvo.clubId===cid)?p.clubEvo:null;
     const shift=(p.clubPrestigeShifts||{})[cid]||0;
-    const sd=[...(p.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+    const sd=ordinaClassifica259(p.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
     const pos=sd.length?sd.findIndex(t=>t.id===cid||(t.n||t.name)===p.club.n)+1:0;
     const N=sd.length||18;const wk=p.week||1;const lg=p.club.lg||"";
     const _2a=(typeof LEAGUE_PAIRS!=="undefined")&&LEAGUE_PAIRS.some(pr=>pr[1]===lg);/* seconda divisione */
@@ -3154,7 +3154,7 @@ const getThisWeekMatchday=()=>{
     }
     /* — il club dove sei cresciuto vive la SUA stagione (classifica vera, se è nella tua lega) — */
     if(hs.length&&seen.indexOf("exClub")<0){
-      const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0));
+      const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0));
       for(const h of hs){const ix=st.findIndex(t=>t&&(t.id===h.clubId||(t.n||t.name)===h.club));
         if(ix>=0&&st.length>=6){const pos=ix+1;
           /* [7.314.0 collaudo PO «è il Cesenate Primavera, è sbagliato: è la PRIMA SQUADRA in sofferenza!»]
@@ -3485,7 +3485,7 @@ const getThisWeekMatchday=()=>{
          ma si RITORNA solo se nessun one-shot è pendente (deferita in coda alla catena). */
       let _volata164=null;
       if(wk>=30&&(p.standings||[]).length>2){
-        const _stS=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));
+        const _stS=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));
         const _meS=_stS.findIndex(t=>t.id===(p.club?.id)||(t.n||t.name)===(p.club?.n));
         if(_meS===0&&_stS[1]&&((_stS[0].pts||0)-(_stS[1].pts||0))<=3&&!seen[K("volata_w"+wk)])
           {const _tier2v=(typeof LEAGUE_PAIRS!=="undefined")&&LEAGUE_PAIRS.some(pr=>pr[1]===(p.club&&p.club.lg));/* [7.335.0 collaudo PO «non è una volata scudetto, sono in serie B spagnola»] in 2ª divisione la corsa è alla PROMOZIONE */
@@ -3589,7 +3589,7 @@ const getThisWeekMatchday=()=>{
           if(_myS+_rvS>=3)_ang.push(_myS>_rvS?`Quest'anno lo stai battendo dove conta: ${_myS} gol a ${_rvS}. Novanta minuti per ricordarglielo di persona.`
             :_myS<_rvS?`In questa stagione è lui a essere avanti (${_rvS} gol a ${_myS}), e ogni domenica te lo ricordano: oggi puoi rispondere.`
             :`Stagione in fotocopia: ${_myS} gol a testa. Qualcosa dovrà pur separarvi, e forse è questa gara.`);
-          const _stR=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+          const _stR=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
           const _iM=_stR.findIndex(t=>t&&(t.id===(p.club&&p.club.id)||(t.n||t.name)===(p.club&&p.club.n)));
           const _iR=_stR.findIndex(t=>t&&(t.id===_rvC.id||(t.n||t.name)===_rvC.n));
           if(_iM>=0&&_iR>=0){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
@@ -4900,7 +4900,7 @@ const getThisWeekMatchday=()=>{
       const _lg105=player.club?.lg||"Primavera 1";
       const hist={season:player.season||1,club:player.club?.name||player.club?.n,clubId:player.club?.id,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60,league:_lg105};
       // Award detection: Capocannoniere (≥8 gol, ratio ≥0.55) e Campione Primavera
-      const _srtd105=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
+      const _srtd105=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
       const _myPos105=_srtd105.findIndex(t=>t.id===player.club?.id||(t.n||t.name)===(player.club?.n||player.club?.name));
       const _isChamp105=_myPos105===0&&_srtd105.length>1;
       const _isCapo105=(player.goals||0)>=8&&(player.goals||0)/Math.max(1,player.matches||1)>=0.55;
@@ -4924,7 +4924,7 @@ const getThisWeekMatchday=()=>{
 
     // Pro season end → SeasonEndScreen
     if(!isInU18&&weekVal>38){
-      const finalStandings=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+      const finalStandings=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
       const clubId=player.club?.id||player.club?.n;
       const playerPos=finalStandings.findIndex(t=>t.id===clubId||(t.n||t.name)===(player.club?.n||player.club?.name));
       const champion=finalStandings[0]||null;
@@ -5520,7 +5520,7 @@ const getThisWeekMatchday=()=>{
     }
     const willContractExpire=(player.contract?.duration||1)<=1;
     // Evaluate season objectives pre-reset
-    const sortedSt=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+    const sortedSt=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
     const cId=player.club?.id||player.club?.n;
     const clubPos=sortedSt.findIndex(t=>t.id===cId||(t.n||t.name)===(player.club?.n||player.club?.name));
     let bonM=0,bonCT=0,bonPop=0,bonVal=0;
@@ -5540,7 +5540,7 @@ const getThisWeekMatchday=()=>{
     const isNewGoalRecord=(player.goals||0)>_rec.topSeasonGoals&&_rec.topSeasonGoals>0;
     const isNewAssistRecord=(player.assists||0)>_rec.topSeasonAssists&&_rec.topSeasonAssists>0;
     // Sprint 84: pre-compute promotion/relegation + euro qualification from current standings (needed outside setPlayer for notifications)
-    const _sfPre=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+    const _sfPre=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
     const _nTPre=_sfPre.length;
     const _myLgPre=player.club?.lg;
     const _myIdPre=player.club?.id||player.club?.n;
@@ -5694,7 +5694,7 @@ const getThisWeekMatchday=()=>{
       const newObjectives=generateSeasonObjectives({...p,ovr:newOvr});
       const prevHist={season:p.season,club:p.club?.n||p.club?.name,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(p):(p.goals||0))};/* [7.261.0 audit] +leagueGoals: le ASPETTATIVE confrontavano unità diverse — asticella dai gol di TUTTE le competizioni della scorsa stagione, rendimento misurato in soli gol di lega → il giocatore risultava strutturalmente indietro (ed è peggiorato ora che le coppe simulate segnano). Le stagioni vecchie non hanno il campo: fallback al totale */
       // S10.1: compute prestige shifts based on final standings
-      const sortedForShifts=[...(p.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+      const sortedForShifts=ordinaClassifica259(p.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
       const nT=sortedForShifts.length;
       const prevShifts=p.clubPrestigeShifts||{};
       const updatedShifts={...prevShifts};
@@ -5961,7 +5961,7 @@ const getThisWeekMatchday=()=>{
         coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,/* [7.114.0 audit carriera · fix PROG-2] reset dello stato training-settimana al rollover: se la stagione finiva con sessionsThisWeek=3 la W1 nuova restava con l'auto-training congelato (guardia <3 + allDone), stessa classe del fix live 7.8.28 */...(captainReset?{isCaptain:false}:{})}; return chiudiInvestimenti281(academySeason24(_ret24,p),p);/* [7.991.0 F3] e chiude l'investimento della stagione *//* [7.990.0 Patrimonio F2] il vivaio col tuo nome consegna il suo ragazzo */ // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
-    {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
+    {const _sd=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
     setSeasonEndData(null);
     setSeasonAwardsData(null); // Sprint 49
     setScreen("dashboard");
@@ -7997,7 +7997,7 @@ const getThisWeekMatchday=()=>{
           (apre la figurina completa) e Forma/Morale/FATICA stanno nella card dell'eroe della Home (tre anelli); l'ora
           dell'ultimo salvataggio resta nella riga sotto il club; la versione resta in testata. */
         const me=player.club||{};const st=player.standings||[];
-        const _pos=(()=>{if(!st.length||!me.id)return -1;const so=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));return so.findIndex(x=>x.id===me.id);})();
+        const _pos=(()=>{if(!st.length||!me.id)return -1;const so=ordinaClassifica259(st,(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));return so.findIndex(x=>x.id===me.id);})();
         const lg=me.lg?me.lg:player.proStatus==="u18"?(_g260()?"Primavera":"U18"):"";/* [giro 260 · decisione PO D] */
         const _ora=lastSaved?new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):null;
         const ico={width:44,height:44,borderRadius:RAD.md,background:TINTE.sup,border:"1px solid "+TINTE.bordo,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0,flexShrink:0,color:TINTE.testo};
@@ -8069,7 +8069,7 @@ const getThisWeekMatchday=()=>{
       {_g234()&&<h1 className="cpm-sr" data-cpm="titolo234">{({dashboard:"Home",standings:"Stagione: classifica",calendar:"Stagione: calendario",coppe:"Stagione: coppe",club:"Club",profile:"Carriera: profilo",nazionale:"Carriera: nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</h1>}{/* [giro 234 PO-459 · G195-06] ogni scheda ha un titolo per i lettori di schermo (invisibile: la testata compatta resta com'e', decisione 02/11). Rosso __CPM_NO_G234 */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(()=>{/* [PO-302 tappa 2 · V2Stagione] titolo della scheda; sulla
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
-        const st=[...(player.standings||[])].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
+        const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
         const mi=st.findIndex(x=>x.id===player.club?.id);
         const gap=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
@@ -8267,7 +8267,7 @@ const getThisWeekMatchday=()=>{
         const me=_naz35?{...(_ndt35(player.nation||"Italia")||{a:(player.nation||"ITA").slice(0,3).toUpperCase(),c:TH.primary,c2:"#ffffff"}),n:player.nation||"Italia"}:(player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"});
         const home=md.isHome!==false;
         const comp=_naz35?(md.competition||"Amichevole Internazionale"):md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
-        const st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+        const st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
         const myPos=_naz35?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
         const oppPos=_naz35?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
         const cs=getContinuaState();
@@ -9471,7 +9471,7 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi Stagione {season}</div>
           {(player.seasonObjectives||[]).map((obj,i)=>{
             let _pos=99;
-            if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));_pos=pi>=0?pi+1:99;}
+            if(obj.type==="standing"){const ss=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));_pos=pi>=0?pi+1:99;}
             const cur=objCurrent(obj,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_objSpent(player),_pos);/* [7.294.0] club-scoped dopo un trasferimento */
             const done=objDone(obj,cur);
             const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
@@ -9579,7 +9579,7 @@ const getThisWeekMatchday=()=>{
         if(!_nmd)return null;
         const _lc=getLeagueClubs(player);
         const _opp=_lc.find(c=>c.id===_nmd.opponentId)||_lc.find(c=>c.n===_nmd.opponentName)||{n:_nmd.opponentName||"?",a:"???",c:"#888",c2:"#fff",p:60};
-        const _sorted=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));
+        const _sorted=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));
         const _total=_sorted.length;
         const _pPos=_sorted.findIndex(t=>t.id===player.club?.id||(t.n||t.name)===(player.club?.n||player.club?.name));
         const _oPos=_sorted.findIndex(t=>t.id===_opp.id||(t.n||t.name)===_opp.n);
@@ -9665,7 +9665,7 @@ const getThisWeekMatchday=()=>{
       })()}
       {/* Sprint 64 — Mini Classifica nel Dashboard */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
-        const _st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+        const _st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
         if(!_st.some(t=>t.played>0)||_st.length<4)return null;
         const _myId=player.club?.id,_myN=player.club?.n||player.club?.name;
         const _myPos=_st.findIndex(t=>t.id===_myId||(t.n||t.name)===_myN);
@@ -9972,7 +9972,7 @@ const getThisWeekMatchday=()=>{
         const allLeagues=[...new Set([myLeague,...CLUBS.map(c=>c.lg).filter(Boolean)])];
         const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
-          if(lg===myLeague)return player.standings||[];
+          if(lg===myLeague)return ordinaClassifica259(player.standings||[],null);/* [giro 259] stesso ordine di ogni altra schermata (rosso: l'ordine salvato) */
           return calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{});/* [6.98.0] classifiche delle altre leghe override-aware */
         };
         const rows=getRows(selLg);
@@ -10110,7 +10110,7 @@ const getThisWeekMatchday=()=>{
            prima del tempo: non entra nel conteggio degli scudetti ne' nel «miglior piazzamento». */
         const _curArc=(()=>{try{
           if((player.proStatus||"u18")!=="pro"||!player.club||!player.club.lg)return null;
-          const st=[...(player.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+          const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
           if(!st.length||!(st[0].played>0))return null;/* prima giornata non ancora giocata: niente da mostrare */
           const pid=player.club.id||player.club.n;
           const pos=st.findIndex(t=>t&&(t.id===pid||(t.n||t.name)===player.club.n));
@@ -10320,7 +10320,7 @@ const getThisWeekMatchday=()=>{
         const euTrophies=clubTrophies.filter(t=>t.type==="euro");
         const objs=player.seasonObjectives||[];
         const currentStanding=(()=>{
-          const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+          const ss=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
           const ci=club.id||club.n;
           const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(club.n||club.name));
           return pi>=0?{pos:pi+1,total:ss.length,pts:(ss[pi]?.pts||0)}:null;
