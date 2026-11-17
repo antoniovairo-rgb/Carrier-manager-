@@ -1737,7 +1737,11 @@ function intervista183(p,md,r){try{
   else if(/^euro/.test(c))posta="🌍 Coppa europea";
   else{try{posta=(typeof posta165==="function")?posta165(p,md||{type:c==="cup"?"cup":"league",opponentName:r.opponent}):null;}catch(e){posta=null;}}
   if(!posta&&(r.goals|0)>=3)posta="🎩 Tripletta";
-  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|sorpresa183")%8===0);
+  /* [giro 259] il seme della sorpresa usa l'ID del club avversario, stabile ai rinomini (col nome, il rinomino 248/251 di «kol»
+     accendeva e spegneva la sorpresa sulla stessa partita); fuori campionato (nessuna voce di calendario) resta il nome. Rosso
+     __CPM_NO_G259 = il nome, come prima. */
+  const _avv259=(!_no259()&&md&&md.opponentId)?md.opponentId:(r.opponent||"");
+  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+_avv259+"|sorpresa183")%8===0);
   if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
   const q=scegliPost183(p,r,posta);
   if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};

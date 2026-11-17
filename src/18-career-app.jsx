@@ -1809,7 +1809,7 @@ const getThisWeekMatchday=()=>{
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
       natCupNext:(q,res,fo)=>{try{return natCupNext700(q,res,fo||null);}catch(e){return "error:"+(e&&e.message);}},/* [7.700.0] la regola di avanzamento della coppa, interrogabile: il banco fa girare un torneo intero senza toccare la UI */
-      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
+      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,oppId:m.opponentId||null/* [giro 259] la sonda-iv187 calcola il seme della sorpresa sull'id */,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
       milePool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.mile&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.435.0] la sonda delle pietre miliari (esordio/primo pro) */

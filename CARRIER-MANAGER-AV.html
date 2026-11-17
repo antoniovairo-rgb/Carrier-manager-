@@ -7864,7 +7864,11 @@ function intervista183(p,md,r){try{
   else if(/^euro/.test(c))posta="🌍 Coppa europea";
   else{try{posta=(typeof posta165==="function")?posta165(p,md||{type:c==="cup"?"cup":"league",opponentName:r.opponent}):null;}catch(e){posta=null;}}
   if(!posta&&(r.goals|0)>=3)posta="🎩 Tripletta";
-  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|sorpresa183")%8===0);
+  /* [giro 259] il seme della sorpresa usa l'ID del club avversario, stabile ai rinomini (col nome, il rinomino 248/251 di «kol»
+     accendeva e spegneva la sorpresa sulla stessa partita); fuori campionato (nessuna voce di calendario) resta il nome. Rosso
+     __CPM_NO_G259 = il nome, come prima. */
+  const _avv259=(!_no259()&&md&&md.opponentId)?md.opponentId:(r.opponent||"");
+  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+_avv259+"|sorpresa183")%8===0);
   if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
   const q=scegliPost183(p,r,posta);
   if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};
@@ -54197,7 +54201,7 @@ const getThisWeekMatchday=()=>{
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
       natCupNext:(q,res,fo)=>{try{return natCupNext700(q,res,fo||null);}catch(e){return "error:"+(e&&e.message);}},/* [7.700.0] la regola di avanzamento della coppa, interrogabile: il banco fa girare un torneo intero senza toccare la UI */
-      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
+      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,oppId:m.opponentId||null/* [giro 259] la sonda-iv187 calcola il seme della sorpresa sull'id */,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
       milePool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.mile&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.435.0] la sonda delle pietre miliari (esordio/primo pro) */

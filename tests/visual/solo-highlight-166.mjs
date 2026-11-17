@@ -36,7 +36,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const ROOT = path.resolve(QUI, '../..');
 const NOME = process.env.CPM_G166_NOME || 'Collaudo Salienti', SEME = +(process.env.CPM_G166_SEME || 7300);
-const NOME_SORPRESA = process.env.CPM_G166_NOME_SORPRESA || 'Collaudo Sorpresa 7';/* [giro 187] nome la cui intervista a sorpresa (giro 183) esce: scelto con sonda-iv187 */
+const NOME_SORPRESA = process.env.CPM_G166_NOME_SORPRESA || 'Collaudo Sorpresa 4';/* [giro 259] il seme della sorpresa usa l'id del club avversario («kol»): «Collaudo Sorpresa 7» ora da' resto 3, «4» da' 0 (sonda-iv187) *//* [giro 187] nome la cui intervista a sorpresa (giro 183) esce: scelto con sonda-iv187 */
 
 /* ---------------- A. statico ---------------- */
 const st = []; const ok = (nome, cond, info) => st.push({ nome, ok: !!cond, info: info || '' });
