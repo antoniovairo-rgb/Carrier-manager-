@@ -92,7 +92,17 @@ motore **un** rigore per la squadra dell'eroe con l'eroe battitore (`chiedi.piaz
 
 ### Esito
 
-RISULTATO_G154
+Una passata completa (campione fisso 10+10 partite, PAR=3, circa 40 minuti), **verde e rosso giudicati entrambi**:
+
+| Braccio | partite valide | rigori provocati con l'eroe battitore | passati al compagno | gol eroe fluido | assist eroe fluido | gol eroe per partita |
+|---|---|---|---|---|---|---|
+| verde | 10/10 | 7 | **7/7** | **0** | 0 | 0,80 (fascia 0,2-1,2) |
+| rosso `__CPM_NO_G154` | 10/10 | 7 | 0 | **5** (tutti rigori al 90'-91') | 0 | 1,20 |
+
+Nelle partite k7, k8, k22 l'eroe era fuori dal campo al 90' (`__CPM_SUBOFF`: sostituito o in panchina) in entrambi i bracci: lì il
+rigore non si provoca con l'eroe battitore. Due passate precedenti, scartate e non contate: la prima non provocava mai (errore del
+banco su `S.kickoff`), la seconda aveva un pavimento di copertura di 8 su 10 che le stesse tre partite rendevano irraggiungibile
+(7/7 e 5 gol fluidi anche lì); la terza, con il pavimento a metà campione, è quella valida.
 
 ---
 
@@ -124,7 +134,28 @@ caso, 4% a settimana), `motivo249()` legge il motivo del tasto.
 Build: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BYTE PER BYTE** dopo ogni modifica a src/.
 `node --check tests/visual/ci-runner.mjs` ok; i due guardiani nuovi una volta in `completa`, una in `carriera`, una per voce di mappa.
 
-CONTROLLI_TABELLA
+| Controllo | Esito | Numeri |
+|---|---|---|
+| `rigorista-249` (nuovo) | ✅ verde · rosso `__CPM_NO_G249` bocciato | vedi tabella A |
+| `offerta-249` (nuovo) | ✅ verde · rosso `__CPM_NO_G249` bocciato | vedi tabella C/D |
+| `gol-eroe-154` (riparato) | ✅ verde e rosso | vedi tabella B |
+| `patto-238` | ❌ **solo il rosso della partita vera** (vedi dubbio 8) | A verde 594/618 · rigori con premio 13/13 · B verde 2/2; rosso B «eroe battitore 1/1» non visto. **Stesso rosso sulla base `lavoro/197`** (2/2, misurato mettendo l'HTML della base, poi ripristinato) |
+| `patto-227` | ✅ verde · rosso `__CPM_NO_G227` bocciato | |
+| `momento-165` | ✅ | 33 verdi, 0 rossi |
+| `momento-165b` | ✅ | 22 verdi, 0 rossi |
+| `momento-173` | ✅ | 20 verdi, 0 rossi |
+| `salta-163` | ✅ | (src/18 `_saltaMotivo163`) |
+| `rigore-191` | ✅ verde-prod · verde-banco · rosso `__CPM_NO_G191A` visto | rigore al 59', un calcio, in scena |
+| `piazzato-204` | ✅ verde · rossi bocciati | ramo «già calciato» 60' HOWARD parato → scena «PARATO!», 3D compagno |
+| `rigore-139` | ✅ verde pulito, rosso visto | |
+| `rigore-79` | ✅ verde · rosso `__CPM_NO_RIG79` | |
+| `test:logic` | ✅ | 51 pass · 0 fail |
+| `save-compat` | ✅ | 12 pass · 0 fail |
+| `tripath-chokepoint` (statico) | ✅ | |
+
+Non eseguiti della mappa mirata (src/14, 15, 18: più di 180 passi): fra gli altri `highlight-95`, `ingresso-206`, `career-critical`,
+`validate-situations`, `partita-vera`, `carriera3-94`, le famiglie `schede-*`, `esiti-*`, `tabellino-*`, `assist-*`, e i guardiani
+di carriera di src/18 non legati a corsa, patto o rigori. Restano alla verifica di rilascio. Nessuna foto rigenerata in docs/.
 
 ---
 
@@ -150,3 +181,9 @@ CONTROLLI_TABELLA
    chiuso dall'eroe e l'assist dell'eroe in gioco fluido), che restano giudicati solo se il gioco li produce.
 7. **Mappa mirata non eseguita per intero** (vedi tabella): per src/14, 15 e 18 la mappa dà più di 180 passi, fra cui
    `highlight-95`, `validate-situations`, `partita-vera` e altri oltre i 20 minuti. Il resto resta alla verifica di rilascio.
+8. **`patto-238` ha un rosso instabile, già sulla base.** La parte B del rosso (`__CPM_NO_G238`, partita vera) chiede che le punizioni
+   dalla trequarti non tirabili vadano «al compagno più vicino» con l'eroe sotto metà; ma il compagno più vicino può essere l'eroe, e
+   il campione è di 1-2 punizioni. Tre prove: ramo prima della modifica del banco 1/2, ramo dopo 1/1, **base `lavoro/197` 2/2**. Non
+   dipende da questo giro (sulla base è rosso uguale). Ho solo fatto girare il suo braccio rosso col comportamento del giro 227 per
+   intero (`__CPM_NO_G249` insieme a `__CPM_NO_G238`), così il rigore del compagno non cambia quella partita. Va riparato in un giro
+   suo (più campioni o un criterio che non dipenda da chi è più vicino), secondo la regola «instabile due volte si ripara».
