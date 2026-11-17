@@ -8015,6 +8015,7 @@ const getThisWeekMatchday=()=>{
 
       {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
+      {_g234()&&<h1 className="cpm-sr" data-cpm="titolo234">{({dashboard:"Home",standings:"Stagione: classifica",calendar:"Stagione: calendario",coppe:"Stagione: coppe",club:"Club",profile:"Carriera: profilo",nazionale:"Carriera: nazionale",agente:"Agente",ufficio:"Ufficio"})[tab]||"Carriera"}</h1>}{/* [giro 234 PO-459 · G195-06] ogni scheda ha un titolo per i lettori di schermo (invisibile: la testata compatta resta com'e', decisione 02/11). Rosso __CPM_NO_G234 */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(()=>{/* [PO-302 tappa 2 · V2Stagione] titolo della scheda; sulla
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=[...(player.standings||[])].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
@@ -9944,7 +9945,7 @@ const getThisWeekMatchday=()=>{
           <Fisarmonica id="s24-classifica-s" titolo={<>Classifica {selLg}</>} aperta={true}>{/* [7.999.49 parte A] la data sta in testata */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
             <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
               <table className="cpm-num" style={{width:"100%",borderCollapse:"collapse",fontSize:FS.small}}>
-                <thead><tr>{["","#","Club","G","V","N","P","Gf","Gs","Diff","Pt"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
+                <thead><tr>{["","#","Club","G","V","N","P","Gf","Gs","Diff","Pt"].map(h=><th key={h} {...(h==="Pt"&&_g234()?{"aria-label":"Punti"}:{})} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap",...(h==="Pt"?_pt234(null):{})}}>{h}</th>)}</tr></thead>
                 <tbody>
                   {rows.map((t,i)=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
@@ -9963,7 +9964,7 @@ const getThisWeekMatchday=()=>{
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.gf}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.ga}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:t.gd>0?TH.winFg:t.gd<0?TH.lossFg:TH.muted}}>{t.gd>0?"+":""}{t.gd}</td>
-                      <td style={{textAlign:"center",padding:"6px 3px",fontWeight:FW.black,fontSize:FS.body,color:my?TH.brandText:TH.text}}>{t.pts}</td>
+                      <td style={{textAlign:"center",padding:"6px 3px",fontWeight:FW.black,fontSize:FS.body,color:my?TH.brandText:TH.text,..._pt234(my?veloClub168(player.club?.c||"#8e1f33",0.28):(i%2?TH.surface2:null))}}>{t.pts}</td>
                     </tr>;
                   })}
                 </tbody>
@@ -10298,25 +10299,31 @@ const getThisWeekMatchday=()=>{
                 prestigio in carattere TV; sotto, gli anelli di fiducia del mister e popolarita' (il gioco non ha un «amore dei tifosi»
                 su 100: la curva e' un giudizio a parole e resta scritta nella fascia). Stessi dati della card di prima, nessuno tolto. */
               const cc=club.c||"#8e1f33",ink=inkSu945(cc),pj=clubProject(player),cv=curvaView(player),sf=staffNames(player.club);
+              /* [giro 234 PO-459 · G195-15] a 375 px progetto, curva e staff stavano in una colonna di ~150 px fra lo stemma e il prestigio:
+                 ora vanno sotto, larghi quanto la fascia; in alto restano stemma, nome, lega e prestigio. Rosso __CPM_NO_G234 */
+              const _det234=(<>
+                {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
+                {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
+                {cv&&cv.contest&&<span style={{fontSize:FS.small,fontStyle:"italic"}}>📢 Sette gare senza gol: la Sud non canta più per te — un gol e tornerà a farlo.</span>}
+                {sf&&<span style={{fontSize:FS.small}}>🩺 Dr. {sf.med} (medico sociale) · 📋 {sf.ds} (DS)</span>}
+              </>);
               return(<>
               <section data-cpm="club-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:cc,color:ink}}>
                 <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
-                <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
+                <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px",...(_g234()?{flexWrap:"wrap",rowGap:10}:{})}}>
                   <div style={{width:64,height:64,borderRadius:RAD.lg,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
                     {(()=>{const _nm=club.n||club.name||"";const _lw=Math.max(0,...String(_nm).split(/\s+/).map(w=>w.length));/* [giro 108 G180-01] il nome del club nella scheda Club si spezzava dentro la parola a 360 px («WOLVERHAMP/TON»): a capo solo fra parole, e la parola piu' lunga decide il corpo (stessa regola della testata del giro 106). Rosso __CPM_NO_G108_01 */
                     return _no108("01")?<span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_nm}</span>
                     :<span style={{...fsTV(_lw>=13?FS.subhead:_lw>=11?FS.title:FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"normal",wordBreak:"normal",hyphens:"none"}}>{_nm}</span>;})()}
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>
-                    {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
-                    {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
-                    {cv&&cv.contest&&<span style={{fontSize:FS.small,fontStyle:"italic"}}>📢 Sette gare senza gol: la Sud non canta più per te — un gol e tornerà a farlo.</span>}
-                    {sf&&<span style={{fontSize:FS.small}}>🩺 Dr. {sf.med} (medico sociale) · 📋 {sf.ds} (DS)</span>}
+                    {!_g234()&&_det234}
                   </div>
                   <div style={{textAlign:"center",flexShrink:0}}>
                     <div className="cpm-num" style={fsTV(FS.display,FW.bold)}>{prestige}</div>
                     <div style={{fontSize:FS.caption,fontWeight:FW.bold,textTransform:"uppercase",letterSpacing:1}}>Prestigio<br/>/100</div>
                   </div>
+                  {_g234()&&(pj||cv||sf)&&<div data-cpm="club-dettagli234" style={{flexBasis:"100%",minWidth:0,display:"flex",flexDirection:"column",gap:3}}>{_det234}</div>}
                 </div>
               </section>
               <div data-cpm="club-anelli-v2" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:8}}>
@@ -12838,14 +12845,14 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:(typeof window!=="undefined"&&window.__CPM_NO_BARRA72)?"1 1 0":"1 1 auto"/* [giro 72 collaudo 172 B1 «a 360 px CARRIERA e AGENTE quasi attaccate» — rosso __CPM_NO_BARRA72] bottoni di larghezza UGUALE: lo spazio fra due etichette dipendeva dalla loro lunghezza (misurato a 360 px: 12,6 px fra Carriera e Agente contro 17-19 fra le altre). Base = contenuto, lo spazio libero si divide in parti uguali: stesso spazio fra tutte le voci */,minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
+        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} {...(_g234()?{"aria-current":_act?"page":undefined,"aria-label":t.l}:{})}/* [giro 234 PO-459] la voce attiva si dichiara */ style={{flex:(typeof window!=="undefined"&&window.__CPM_NO_BARRA72)?"1 1 0":"1 1 auto"/* [giro 72 collaudo 172 B1 «a 360 px CARRIERA e AGENTE quasi attaccate» — rosso __CPM_NO_BARRA72] bottoni di larghezza UGUALE: lo spazio fra due etichette dipendeva dalla loro lunghezza (misurato a 360 px: 12,6 px fra Carriera e Agente contro 17-19 fra le altre). Base = contenuto, lo spazio libero si divide in parti uguali: stesso spazio fra tutte le voci */,minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
         {/* [7.96.0 collaudo PO «elimina il pulsante IT (rimandiamo l'i18n) e metti Impostazioni SEMPRE visibile nel menu»]
             il vecchio bottone lingua 🌐 è sostituito da ⚙️ Opzioni, sempre presente nella barra di navigazione. */}
       </div>

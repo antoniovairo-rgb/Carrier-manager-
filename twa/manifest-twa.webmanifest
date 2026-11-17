@@ -1,7 +1,8 @@
 {
   "name": "Korward Elite",
   "short_name": "Korward Elite",
-  "description": "Football career simulator: from prospect to legend",
+  "description": "Vivi la carriera di un calciatore: dalle giovanili ai grandi stadi. Decidi tu.",
+  "lang": "it",
   "id": "/Carrier-manager-/?app=twa",
   "start_url": "/Carrier-manager-/?app=twa",
   "scope": "/Carrier-manager-/",

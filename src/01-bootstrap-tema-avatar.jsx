@@ -253,6 +253,20 @@ const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e nu
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
 const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 234 PO-393 · G181-22] TESTO GRANDE: interruttore delle Opzioni (localStorage «cpm-testo-grande», preferenza del browser, non del
+   salvataggio). Porta ogni corpo della scala ×1,3 (il minimo 12 diventa 16) PRIMA del primo disegno; dalle Opzioni si applica subito
+   (applicaTesto234 + evento cpm-testo234 che ridisegna l'app, src/19). Non e' un secondo tema: i colori e i token restano quelli.
+   _g234 = le correzioni del giro 234 (zoom, nomi per i lettori di schermo, classifica ed etichette pronte al testo grande, cursori da
+   44 px, versione in Opzioni); rosso __CPM_NO_G234. Il testo grande resta acceso anche col rosso: e' la condizione della prova. */
+const _g234=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G234);
+const _tastiera234=()=>{try{return !!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches);}catch(_e){return true;}};/* PC o tablet con mouse: il tasto P esiste */
+const FS_BASE234={...FS};
+function testoGrande234(){try{return localStorage.getItem('cpm-testo-grande')==='1';}catch(_e){return false;}}
+function applicaTesto234(on){const k=on?1.3:1;for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
+applicaTesto234(testoGrande234());
+/* [giro 234 PO-455 · G195-05] la colonna dei punti della classifica resta in vista: cella appiccicata al bordo destro dello scorrimento
+   orizzontale, con il fondo della sua riga sopra quello del riquadro (col testo grande la tabella e' piu' larga dello schermo) */
+const _pt234=(bg)=>_g234()?{position:"sticky",right:0,zIndex:1,background:bg?`linear-gradient(${bg},${bg}),${TH.card}`:TH.card}:{};
 /* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
    Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
    tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */

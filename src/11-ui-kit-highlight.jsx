@@ -442,10 +442,11 @@ const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.
 const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
   useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
-  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
+  const g=_g234(),idT=React.useMemo(()=>"fin234-"+Math.random().toString(36).slice(2,8),[]);/* [giro 234 PO-459 · G195-06] ogni finestra del kit e' un dialog modale col suo titolo come nome (prima: 0 segnali di finestra aperta). Solo attributi. Rosso __CPM_NO_G234 */
+  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} {...(g?{role:"dialog","aria-modal":"true",...(title!=null?{"aria-labelledby":idT}:{"aria-label":"Finestra"})}:{})} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
+        <div data-cpm="finestra-titolo" id={g?idT:undefined} role={g?"heading":undefined} aria-level={g?2:undefined} style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
+        {dismissable&&onClose&&<button onClick={onClose} aria-label={g?"Chiudi":undefined} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
       </div>}
       <div data-cpm="finestra-corpo" style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div data-cpm="finestra-piede" style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
@@ -517,9 +518,10 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 function _mouse110(){try{return _g110(20)&&!!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches&&!window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
-  return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
+  const g=_g234();/* [giro 234 PO-455/459] la voce attiva si dichiara (aria-selected) e, col testo grande, l'icona va sopra la parola invece di tagliarla («📅Calendario −8»). Rosso __CPM_NO_G234 */
+  return(<div className="cpm-tabs40" role={g?"tablist":undefined} style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} {...(g?{role:"tab","aria-selected":act}:{})} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",...(g?{flexWrap:"wrap",rowGap:0,overflow:"visible",textOverflow:"clip"}:{})}}>{it.icon&&<span aria-hidden={g?"true":undefined}>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
