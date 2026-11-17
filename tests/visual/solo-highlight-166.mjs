@@ -46,11 +46,13 @@ ok('1 un solo lotto, stesso battito in flushSync, nessun Math.random', (s15.matc
   `lotto ${lotto.length} car. · definizioni ${(s15.match(/const _lotto166=/g) || []).length}`);
 const sp = (s18.match(/const senzaPosta166=[\s\S]*?\n  const matchResumeRef/) || [''])[0];
 /* [giro 173 punto 1] la regola e' la posta allargata posta165 (giro 165); la vecchia (calcMatchWeight < 5, solo campionato) resta nel rosso __CPM_NO_G173 */
-ok('2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173: calcMatchWeight < 5), solo professionisti', /if\(_g173\(\)\)return !posta165\(player,md\)/.test(sp) && /calcMatchWeight\([^)]*\)<5/.test(sp) && /proStatus!=="pro"/.test(sp) && /md\.type!=="league"/.test(sp) && /senzaPosta166\(showMatchPrompt\)&&\(<>\s*<Btn data-cpm="solo-166"/.test(s18), `regola ${sp.length} car.`);
+ok('2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173: calcMatchWeight < 5), solo professionisti', /if\(_g173\(\)\)return !posta165\(player,md\)/.test(sp) && /calcMatchWeight\([^)]*\)<5/.test(sp) && /proStatus!=="pro"/.test(sp) && /md\.type!=="league"/.test(sp) && /salienti229\(showMatchPrompt\)&&\(<>\s*<Btn data-cpm="solo-166"/.test(s18) && /if\(!_g229\(\)\)return senzaPosta166\(md\)/.test(s18), `regola ${sp.length} car.`);
+/* [giro 229 · PO-494 «Sempre disponibile»] il tasto c'e' in ogni partita da titolare (guardiano salienti-229); la regola della posta di
+   questo giro (casi 3-6 del prompt) vive ora nel rosso __CPM_NO_G229, ed e' li' che la si giudica: il prompt dei due bracci gira con quel rosso. */
 
 /* ---------------- B. prompt ---------------- */
 async function prompt(rosso) {
-  const passi = []; const init = rosso ? { __CPM_NO_G166: true } : {};
+  const passi = []; const init = rosso ? { __CPM_NO_G166: true, __CPM_NO_G229: true } : { __CPM_NO_G229: true };
   const A = await apriCarriera166({ init, nome: NOME });
   try {
     const a = A.W ? await A.page.evaluate(() => window.__CPM_CAREER.avv166 ? window.__CPM_CAREER.avv166() : null) : null;

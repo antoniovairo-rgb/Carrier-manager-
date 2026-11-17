@@ -34,6 +34,8 @@ function _pctab292(){try{return typeof window!=='undefined'&&!window.__CPM_NO_PC
 function _vert292(){try{const w=window.innerWidth;return _largo292()&&w>=640&&w<900&&window.innerHeight>w;}catch(_e){return false;}}
 function _narrowLay292(){try{return window.innerWidth<640||_vert292();}catch(_e){return false;}}
 /* dito: puntatore grossolano su schermo >= 640 px (tablet). Sul telefono < 640 px non cambia mai niente. */
+/* [giro 221 PO-480] tempo dell'esitazione in hl_choose secondo la distanza del marcatore (valori del 7.916): lo usano il timer e le barre */
+function durataEsitazione221(dd){return dd>60?16000:dd>35?12000:9000;}
 function _tocco292(){try{return _pctab292()&&window.innerWidth>=640&&!!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 /* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
    Direttiva PO 29/08 («libreria ampia, mai ripetitiva») → docs/LIBRERIA-AZIONI-SALIENTI.md +
@@ -1470,6 +1472,101 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
 /* [giro 200 · PO-448, G193-18 «rifiniture viste negli anni lunghi»] interruttore unico dei testi e numeri corretti in src/16-18.
    Rosso __CPM_NO_G200 = i testi di prima (insieme alla rassegna in una pagina sola). */
 function _g200x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G200);}
+/* [giro 224 · PO-488 + rilievo sulla foto PO 195] il momento chiave del gol su palla ferma diceva «Tuo punizione al 18'»: la parola
+   del piazzato (rigore/punizione) stava dopo un «Tuo» fisso. Ora il soggetto e' il gol: «Tuo gol su rigore», «Tuo gol su punizione».
+   Rosso __CPM_NO_G224 = il testo di prima. */
+function _g224x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G224);}
+/* [giro 230 · PO-490, decisione PO 16/11 «Solo bilancio V/N/P»] nell'anteprima della prossima partita (rassegna, scheda 4) la striscia
+   «Forma» dell'AVVERSARIO non compare piu': il gioco non salva la sequenza dei risultati delle altre squadre e _tvTeamStat ne
+   inventava l'ordine; resta il bilancio vero della classifica. Rosso __CPM_NO_G230 = torna la striscia. */
+function _g230x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G230);}
+/* [giro 232 · PO-503, decisione PO 16/11 19:35 «La classifica e la prossima partita deve essere della competizione e non del
+   campionato!»] Scheda 4 della rassegna: classifica/tabellone e prossima partita DELLA COMPETIZIONE della partita appena giocata.
+   Funzione PURA, solo lettura del salvataggio + esito di oggi (esito: {mg,og,vinta,pari,rig,fase,avv}). Restituisce
+   {tipo:"campionato"|"girone"|"tabellone"|"nazionale", comp, tabella, io, percorso, prossima:{riga,sett,avv}|null, motivo}.
+   I turni dopo una gara a eliminazione il gioco li sorteggia solo al ritorno in carriera (pick non seedato): qui si dice
+   «sorteggio in attesa», mai un nome inventato. Le settimane sono le stesse formule della carriera (src/18, src/17).
+   Rosso window.__CPM_NO_G232 = la scheda del giro 224. */
+function _g232x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G232);}
+function rassegnaComp232(player,ctx,es){
+  const p=player||{};const wk=p.week||1;const e=es||{};const mg=e.mg|0,og=e.og|0;
+  const _e=(w,d,l)=>w?"V":d?"N":"P";
+  const _r=(t,avv,a,b,w,rig,oggi)=>({t,avv:avv||"",ris:(a|0)+"-"+(b|0),e:rig?(w?"V":"P"):_e(w,(a|0)===(b|0),!w),/* ai rigori la casella dice chi e' passato */rig:!!rig,oggi:!!oggi});
+  const _cal=(f)=>[...(p.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>wk&&f(m)).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+  const _dalCal=(m)=>m?{riga:(m.isHome!==false?"In casa":"In trasferta")+" contro "+(m.opponentName||"l'avversario")+(m.cupRoundName?(" · "+m.cupRoundName):""),sett:m.week|0,avv:m.opponentName||null}:null;
+  const out={tipo:"campionato",comp:"Campionato",tabella:null,io:-1,percorso:null,prossima:null,motivo:null};
+  if(ctx==="career"||!ctx){const m=_cal(x=>!x.type);out.prossima=_dalCal(m);if(!m)out.motivo="Campionato finito: non ci sono altre giornate in calendario.";return out;}
+  if(ctx==="cup"){
+    const CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","Finale"],CRW=[0,9,19,28,35];const c=p.cup||{};const rd=c.round||1;
+    out.tipo="tabellone";out.comp="Coppa Nazionale";
+    out.percorso=[...(c.results||[]).map(r=>_r(r.name||CRN[r.round]||("Turno "+r.round),r.opponent,r.homeScore,r.awayScore,r.won,r.penalties)),_r(CRN[rd]||("Turno "+rd),e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+(rd>=4?"in finale":("agli "+CRN[rd]).replace("agli Quarti","ai Quarti").replace("agli Semifinale","in semifinale"))+".";return out;}
+    if(rd>=4){out.motivo="Coppa vinta: la competizione e' finita.";return out;}
+    const m=_cal(x=>x.type==="cup");if(m){out.prossima=_dalCal(m);return out;}
+    const w=Math.max(CRW[rd+1],wk+1);out.prossima={riga:CRN[rd+1]+" · sorteggio in attesa",sett:w<=37?w:null,avv:null};return out;}
+  if(ctx==="euro_group"||ctx==="euro_ko"){
+    const eu=p.euro||{};const sig=(typeof euroSig==="function"?euroSig(eu.competition):eu.competition)||"Coppa europea";out.comp=sig;
+    const gr=eu.groupResults||[];
+    if(ctx==="euro_group"){out.tipo="girone";
+      const gr2=[...gr,{opp:e.avv,hs:mg,as:og,won:!!e.vinta,drew:mg===og}];
+      try{out.tabella=typeof euroGroupTable==="function"?euroGroupTable({...eu,groupResults:gr2},p.club||{}):null;}catch(_x){out.tabella=null;}
+      out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+      const tot=((eu.groupOpponents||[]).length*2)||6;
+      if(gr2.length<tot){const m=_cal(x=>x.type==="euro_group");out.prossima=m?_dalCal(m):{riga:"Fase a gironi · giornata "+(gr2.length+1)+" di "+tot,sett:null,avv:null};return out;}
+      if(out.io>=0&&out.io<=1){const w=Math.max(23,wk+2);out.prossima={riga:"Ottavi di Finale · sorteggio in attesa",sett:w<=37?w:null,avv:null};if(w>37)out.motivo="Qualificati agli ottavi, ma la stagione e' al termine.";return out;}
+      out.motivo="Eliminati alla fase a gironi"+(out.io>=0?(" ("+(out.io+1)+"° posto)."):".");return out;}
+    const KN={r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"},KX={r16:"quarti",quarti:"sf",sf:"final"},KW={quarti:24,sf:28,final:34};
+    const ph=e.fase||eu.phase||"r16";out.tipo="tabellone";
+    let gpos=null;try{if(gr.length&&typeof euroGroupTable==="function"){const t=euroGroupTable(eu,p.club||{});const i=t.findIndex(r=>r&&r.isPlayer);if(i>=0)gpos={pos:i+1,pts:t[i].pts|0};}}catch(_x){}
+    out.percorso=[...(gpos?[{t:"Fase a gironi",avv:"",ris:gpos.pos+"° posto · "+gpos.pts+" pt",e:gpos.pos<=2?"V":"P",rig:false,oggi:false,riep:true}]:[]),
+      ...(eu.koResults||[]).map(r=>_r(r.name||KN[r.phase]||r.phase,r.opp||r.opponent,r.homeScore,r.awayScore,r.won,r.penalties)),_r(KN[ph]||ph,e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+({r16:"agli ottavi",quarti:"ai quarti",sf:"in semifinale",final:"in finale"}[ph]||"")+".";return out;}
+    if(ph==="final"){out.motivo=sig+" vinta: la competizione e' finita.";return out;}
+    const m=_cal(x=>x.type==="euro");if(m){out.prossima=_dalCal(m);return out;}
+    const np=KX[ph];const w=KW[np]!=null?Math.min(37,Math.max(KW[np],wk+3)):null;out.prossima={riga:(KN[np]||np)+" · sorteggio in attesa",sett:w,avv:null};return out;}
+  const nat=p.nation||"Italia";const _ESC={r16:"agli ottavi",quarti:"ai quarti",semi:"in semifinale",final:"in finale"};
+  if(ctx==="nationsCup"){
+    const q=p.nationsCupQueue||{};const opp=q.opponents||[];out.comp="Coppa delle Nazioni";
+    const gN=q.isFinal?opp.length-1:opp.length;const ms=q.matches||[];
+    if(q.isFinal){out.tipo="tabellone";const pts=q.pts|0;
+      out.percorso=[{t:"Girone",avv:"",ris:pts+" pt",e:"V",rig:false,oggi:false,riep:true},_r("Finale",e.avv,mg,og,e.vinta,e.rig,true)];
+      out.motivo=e.vinta?"Coppa delle Nazioni vinta: la competizione e' finita.":"Sconfitti in finale: la competizione e' finita.";return out;}
+    out.tipo="girone";const ms2=[...ms,{opp:e.avv,won:!!e.vinta,drew:mg===og,homeScore:mg,awayScore:og}];
+    try{out.tabella=typeof natGroupTable==="function"?natGroupTable(nat,opp.slice(0,gN),ms2,"nations|"+(q.season||p.season||1)):null;}catch(_x){out.tabella=null;}
+    out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+    const idx=(q.matchIdx|0)+1;const pts=(q.pts|0)+(e.vinta?3:mg===og?1:0);
+    if(idx<gN){out.prossima={riga:"Contro "+opp[idx]+" · gara "+(idx+1)+" di "+gN+" del girone",sett:null,avv:opp[idx]};return out;}
+    if(pts>=4){out.prossima={riga:"Finale · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+    out.motivo="Eliminati: girone chiuso con "+pts+" pt (per la finale ne servivano 4).";return out;}
+  if(/^euroMondiale/.test(ctx)){
+    const em=p.euroMondiale||{};out.comp=em.type||"Europeo";
+    if(ctx==="euroMondiale_qualif"){out.tipo="nazionale";const qo=em.qualOpponents||[];const idx=(em.qualMatchIdx|0)+1;const pts=(em.qualPts|0)+(e.vinta?3:mg===og?1:0);
+      out.comp=(em.type||"Europeo")+" · qualificazioni";
+      out.percorso=[...((p.natHistory||[]).filter(r=>r&&(r.season|0)===(p.season||1)&&/^Qualif\. /.test(r.comp||"")).slice(idx>1?-(idx-1):999).map(r=>_r("Qualificazione",r.opp,r.hs,r.as,r.won,false))),_r("Qualificazione "+idx+" di "+qo.length,e.avv,mg,og,e.vinta,false,true)];
+      if(idx<qo.length){out.prossima={riga:"Contro "+qo[idx]+" · qualificazione "+(idx+1)+" di "+qo.length,sett:null,avv:qo[idx]};return out;}
+      if(pts>=3){const g0=(em.groupOpponents||[])[0];out.prossima={riga:"Fase a gironi"+(g0?(" · contro "+g0):""),sett:null,avv:g0||null};return out;}
+      out.motivo="Non qualificati: "+pts+" pt nelle qualificazioni (ne servivano 3).";return out;}
+    if(ctx==="euroMondiale_group"){out.tipo="girone";const go=em.groupOpponents||[];const gm2=[...(em.groupMatches||[]),{opp:e.avv,won:!!e.vinta,drew:mg===og,homeScore:mg,awayScore:og}];
+      try{out.tabella=typeof natGroupTable==="function"?natGroupTable(nat,go,gm2,(em.type||"Euro")+"|"+(em.season||p.season||1)):null;}catch(_x){out.tabella=null;}
+      out.io=out.tabella?out.tabella.findIndex(r=>r&&r.isPlayer):-1;
+      const idx=(em.groupMatchIdx|0)+1;const pts=(em.groupPts|0)+(e.vinta?3:mg===og?1:0);
+      if(idx<go.length){out.prossima={riga:"Contro "+go[idx]+" · gara "+(idx+1)+" di "+go.length+" del girone",sett:null,avv:go[idx]};return out;}
+      if(pts>=4){out.prossima={riga:"Ottavi · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+      out.motivo="Eliminati alla fase a gironi con "+pts+" pt (ne servivano 4).";return out;}
+    out.tipo="tabellone";const ph=em.koPhase||"r16";const LB=(typeof EM_KO_LABEL!=="undefined"?EM_KO_LABEL:{});const OR=(typeof EM_KO_ORDER!=="undefined"?EM_KO_ORDER:["r16","quarti","semi","final"]);
+    out.percorso=[...((em.groupMatches||[]).length?[{t:"Fase a gironi",avv:"",ris:(em.groupPts|0)+" pt",e:"V",rig:false,oggi:false,riep:true}]:[]),
+      ...(em.koResults||[]).map(r=>_r(LB[r.phase]||r.phase,r.opp,r.homeScore,r.awayScore,r.won,r.penalties)),_r(LB[ph]||ph,e.avv,mg,og,e.vinta,e.rig,true)];
+    if(!e.vinta){out.motivo="Eliminati "+(_ESC[ph]||"")+".";return out;}
+    if(ph==="final"){out.motivo=(em.type||"Torneo")+" vinto: la competizione e' finita.";return out;}
+    const ci=OR.indexOf(ph);const np=ci>=0?OR[ci+1]:null;out.prossima={riga:(LB[np]||np||"Turno successivo")+" · avversario annunciato al ritorno in carriera",sett:null,avv:null};return out;}
+  if(ctx==="national"||ctx==="nazionale"){out.tipo="nazionale";out.comp="Nazionale · amichevole";
+    const m=_cal(x=>x.type==="national");if(m){out.prossima=_dalCal(m);return out;}
+    const q=p.nationsCupQueue;if(q&&q.active&&!q.done&&(q.opponents||[])[q.matchIdx|0]){const o=q.opponents[q.matchIdx|0];out.prossima={riga:"Coppa delle Nazioni · contro "+o,sett:null,avv:o};return out;}
+    out.motivo="Nessun'altra gara della Nazionale in calendario questa stagione.";return out;}
+  return null;
+}
+if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){window.rassegnaComp232=rassegnaComp232;window.__CPM_CLUBS232=()=>CLUBS;window.__CPM_SIG232=(k)=>euroSig(k);}/* solo banco di prova */
+function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
     <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>{(icona?icona+" ":"")+String(titolo).toUpperCase()}</div>{children}</>);
@@ -2903,7 +3000,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const matchMemRef=useRef({goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}});
   const [movesLeft,setMovesLeft]=useState(0);
   // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
-  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
+  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_DD221=(v)=>{defDistRef.current=v;setDefDist(v);};window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
@@ -2917,7 +3014,27 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   /* la barra del tempo della scheda: parte dall'ingresso in `hl_choose` (o dalla ripresa dopo la pausa), cosi' se la scheda delle giocate
      compare dopo il pad la barra mostra il tempo che RESTA, non un conto nuovo */
   const t0Scelta210Ref=useRef(0);const chiave210Ref=useRef("");const ritardo210Ref=useRef({k:"",v:0});
-  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0);if(chiave210Ref.current!==_k210){chiave210Ref.current=_k210;if(phase==="hl_choose"&&!paused)t0Scelta210Ref.current=Date.now();}}
+  /* [giro 229 · PO-495, decisione PO 16/11] DOPO UNA PAUSA TIMER E BARRA RIPRENDONO DAL TEMPO RIMASTO. Alla pausa si annota quanto della
+     scelta e' gia' passato; alla ripresa della STESSA scena l'inizio si sposta indietro di quel tanto: la barra (che legge t0Scelta210Ref)
+     riparte da dove era e il timer dell'anticipo (effetto qui sotto) si riarma col tempo che resta. Rosso __CPM_NO_G229: entrambi
+     ripartono interi, come prima. */
+  const _no229=typeof window!=='undefined'&&!!window.__CPM_NO_G229;const trascorso229Ref=useRef({i:-1,el:0});
+  /* l'ISTANZA della scena: cambia quando cambia l'elenco delle scene (scena riaperta, catena). Senza, una scena riaperta con lo stesso indice
+     mentre si era gia' in hl_choose (misurato: la prima scena forzata dopo openMatch) teneva l'inizio della scelta vecchio — barra partita
+     «gia' avanti» (dubbio 2 del giro 221) e, col timer che riprende dal rimasto, timer accorciato. Entra nella chiave e nelle chiavi delle barre. */
+  const ist229Ref=useRef({a:null,n:0});if(ist229Ref.current.a!==situations){ist229Ref.current.a=situations;ist229Ref.current.n++;}
+  const _ist229=_no229?"":"|"+ist229Ref.current.n;
+  {const _k210=phase+"|"+hlIdx+"|"+(paused?1:0)+_ist229;if(chiave210Ref.current!==_k210){const _prev229=chiave210Ref.current;chiave210Ref.current=_k210;
+    if(phase==="hl_choose"&&!paused){if(!_no229&&_prev229===("hl_choose|"+hlIdx+"|1"+_ist229)&&trascorso229Ref.current.i===hlIdx)t0Scelta210Ref.current=Date.now()-trascorso229Ref.current.el;else t0Scelta210Ref.current=Date.now();trascorso229Ref.current={i:-1,el:0};}
+    else if(phase==="hl_choose"&&paused&&!_no229&&_prev229===("hl_choose|"+hlIdx+"|0"+_ist229))trascorso229Ref.current={i:hlIdx,el:Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()))};
+    if(_CPM_TEST&&typeof window!=='undefined'){try{const W=(window.__CPM_P229=window.__CPM_P229||[]);W.push({k:_k210,prev:_prev229,t:Date.now(),t0:t0Scelta210Ref.current,el:trascorso229Ref.current.el});if(W.length>60)W.shift();}catch(_e){}}/* [giro 229] testimone di collaudo: ogni cambio di chiave con l'inizio della scelta */}}
+  /* [giro 221 PO-480] UNA SOLA FORMULA per il tempo dell'esitazione: il timer dell'auto-anticipo (16/12/9 s, 7.916) e le due barre
+     «Pressione» (scheda delle giocate 7.905, scheda del movimento in hl_choose del giro 210) leggono questo valore, fissato all'ingresso
+     in hl_choose (e a ogni ripresa dalla pausa, come si riarma il timer) sul defDist di quell'istante: una mossa fatta dopo non cambia
+     piu' la durata della barra mentre il timer resta quello armato. Rosso window.__CPM_NO_G221 = barre col vecchio 9/6/4 s. */
+  const _no221=typeof window!=='undefined'&&!!window.__CPM_NO_G221;
+  const durEsit221Ref=useRef({k:"",v:9000});
+  const _durEsit221=()=>{const m=durEsit221Ref.current;const k=phase+"|"+hlIdx+"|"+(paused?1:0)+_ist229/* [giro 229] scena riaperta = durata ricalcolata */;if(m.k!==k){m.k=k;m.v=durataEsitazione221(defDistRef.current);}return m.v;};
   const _rit210=(k)=>{if(_no210)return 0;const m=ritardo210Ref.current;if(m.k!==k){m.k=k;m.v=Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now()));}return m.v;};
   useEffect(()=>{setPad210(false);},[hlIdx]);
   useEffect(()=>{if(phase!=="hl_move"&&phase!=="hl_choose")setPad210(false);},[phase]);
@@ -10554,7 +10671,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.113.0 audit massivo · fix C1] il gol da set-piece incrementa il punteggio LOGICO (scoreRef) SUBITO, non solo col setScore differito a 1450ms: prima, se la punizione/rigore era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800-1450ms, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI o risultato registrato incoerente (goals:1 ma homeScore:0/pari). Il setScore resta a 1450 per la sincronia visiva col pallone in rete */
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1450);
       fxTimeout(()=>{try{AudioMgr.event({type:'GoalTeam'});}catch(_a){}/* [7.62.0 AUDIO] boato sul gol da rigore (non passa da fireGoalCeleb) */addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(sc=>({...sc,home:sc.home+1}));},1450);
-      pushMatchEvent(clockRef.current,"player_goal",em=>"⚽ Tuo "+_kickWordLow+" al "+em+"'");
+      pushMatchEvent(clockRef.current,"player_goal",em=>momentoPiazzato224(_kickWordLow,em));/* [giro 224] accordo: «Tuo gol su punizione» */
       if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:clockRef.current|0,t:'scena_gol',kind:_spKind373});}catch(_e94s){}}
       setMStats(st=>({...st,goals:st.goals+1,rb:st.rb+5}));
       try{const _mm=matchMemRef.current;if(_mm)_mm.goals=(_mm.goals||0)+1;}catch(_e){}
@@ -10812,7 +10929,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      piede tiene conto dell'area sicura del telefono. (1) e (3) restano come erano: dopo Simula nessuna rassegna; Salta salva e torna.
      Rosso __CPM_NO_G202 = la rassegna del giro 200 (tabellino nella scheda 4, piede in fondo alla pagina). */
   const _g202=()=>_g200()&&!(typeof window!=='undefined'&&window.__CPM_NO_G202);
-  const _T200=["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=["Risultato","Giocate","Giornali","Classifica"];
+  /* [giro 224 · PO-488, foto PO 195 «Statistiche non si vedono bene, hanno bisogno di più spazio! I box sotto mettili alla schermata
+     successiva»] il tabellino della gara resta nella scheda 1 ma UNA VOCE PER RIGA a tutta larghezza (numeri ai lati, voce al centro,
+     barra sotto): le due/tre voci per riga del giro 202 si leggevano come «29% Possesso 71% 14 Tiri 2». Pagella, commento del mister
+     e momenti chiave passano alla scheda 2 (le schede restano quattro). PO-490: la scheda 4 si riempie con classifica piu' lunga
+     (prime 5, la tua zona, ultime 3, zone colorate), i tuoi numeri di stagione e l'anteprima della prossima partita, tutto letto dal
+     salvataggio (se un dato manca la riga non compare). Rosso __CPM_NO_G224 = la rassegna del giro 202. */
+  const _g224=()=>_g202()&&_g224x();
+  const _T200=_g224()?["Risultato e statistiche","Voto e giocate","I giornali","Classifica e prossima partita"]:["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=_g224()?["Risultato","Voto e giocate","Giornali","Classifica"]:["Risultato","Giocate","Giornali","Classifica"];
   const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
     <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
       style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
@@ -10987,7 +11111,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        righe da leggere e una scelta da fare col pollice, quattro secondi sono un'ansia, non una decisione — ed
        e' lo stesso difetto che la 7.682 aveva gia' corretto una volta («una domanda che scorre via mentre la
        leggi non e' una scelta»). Ora 16/12/9: il difensore arriva ancora, ma dopo che hai letto. */
-    const baseDelay=defDistRef.current>60?16000:defDistRef.current>35?12000:9000;
+    const baseDelay0=_no221?(defDistRef.current>60?16000:defDistRef.current>35?12000:9000):_durEsit221();/* [giro 221] la stessa durata delle barre */
+    const baseDelay=_no229?baseDelay0:Math.max(300,baseDelay0-Math.max(0,Date.now()-(t0Scelta210Ref.current||Date.now())));/* [giro 229] il tempo che RESTA della scelta (dopo una pausa); all'ingresso e' tutto */
     const t=setTimeout(()=>{
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
@@ -12432,7 +12557,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div data-cpm="titolo-mossa" style={_g197?{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.2,color:"#f1f5f9",whiteSpace:"normal",overflowWrap:"anywhere"}:{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>{/* [giro 197] il titolo va a capo intero (due righe con i titoli di oggi): «NITZSCHE ti punta a ce…» si leggeva a meta' a tutte le taglie */}
                     {ZONES[zone]?.label&&<span style={{flexShrink:0,alignSelf:_g197?"flex-start":undefined,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
                   </div>
-                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0);const _dl210=defDist>60?9000:defDist>35?6000:4000;return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
+                  {curSit.maxMoves>0&&(phase==="hl_choose"?(()=>{const _k210="press210-"+hlIdx+"-"+(paused?1:0)+_ist229;const _dl210=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero */return(<div data-cpm="pressione" aria-label="Pressione" key={_k210} style={{position:"relative",height:4,background:TINTE.oro,borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl210}ms linear forwards`,animationDelay:"-"+Math.min(_dl210,_rit210(_k210))+"ms",animationPlayState:paused?"paused":"running"}}/></div>);})()/* [giro 210] in hl_choose la scheda del movimento mostra lo stesso conto alla rovescia della scheda delle giocate */
                    :<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>)}
                   <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
@@ -12520,7 +12645,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                      (il dito del D-pad che ricade non sceglie niente), e ogni tasto visibile registra il tocco.
                      Rosso __CPM_NO_G96B_D1 = righe visibili e morte. */
                   const _no96bD1=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D1;
-                  const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
+                  const _dl905=_no221?(defDist>60?9000:defDist>35?6000:4000):_durEsit221();/* [giro 221 PO-480] la durata del timer vero (16/12/9 s): prima restava 9/6/4 s e si svuotava prima del marcatore. [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:_g197?"max(44vh, 400px)":"44vh",/* [giro 197] sui telefoni bassi il 44vh (282 px a 640) non conteneva titolo + tre scelte: la scheda prende altezza alla scena fino a 400 px; da 909 px di altezza in su resta il 44vh di prima */boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"rgba(13,15,20,0.97)",borderTop:"1px solid rgba(255,255,255,0.06)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
@@ -12553,12 +12678,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     </div>
                     {!curSit.lockMovement&&!_g197&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:TINTE.sec,flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
-                    {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
+                    {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)+_ist229} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
                       {_g197?<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec,lineHeight:1.3}}>Pressione<span data-cpm="aiuto" style={{fontWeight:600}}> · scegli prima che il marcatore arrivi</span></div>/* [giro 197] la riga di aiuto sale nella riga della barra: 22 px in piu' alle scelte, il tempo limite resta com'e' */
                        :<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:TINTE.sec}}>Pressione</div>}
                       <div data-cpm="tempo-hl-v2" style={{position:"relative",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TINTE.oro}}>
-                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)))+"ms",animationPlayState:paused?"paused":"running"}}/>
+                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:TINTE.tasto,animation:`cpmPress905 ${_dl905}ms linear forwards`,animationDelay:"-"+Math.min(_dl905,_rit210("press905-"+hlIdx+"-"+(paused?1:0)+_ist229))+"ms",animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
                     {/* [7.902.0] LA LISTA SCORRE, LE RIGHE NO: `flex:"1 1 auto"` + `minHeight:0` sono quello che permette
@@ -13023,7 +13148,98 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           })()}
           </div>
           <div data-scheda200="4" style={_v200(3)}>
-          {_g200()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
+          {_g224()&&(()=>{/* [giro 224 · PO-490, questionario PO] scheda 4 piena: (a) classifica piu' lunga (prime 5, la tua zona, ultime 3) con le
+              zone colorate come nella scheda Classifiche (src/18: stesse regole per prima/seconda divisione e Primavera); nella fase a gironi
+              della coppa europea il girone (euroGroupTable, la stessa della scheda Europa); (b) i tuoi numeri di stagione dal salvataggio
+              (prima di questa partita, che si salva tornando alla carriera) con gli obiettivi misurati da objCurrent, lo stesso metro del
+              cruscotto; (c) la prossima partita del calendario con posizione, punti e forma dell'avversario (la stessa grafica della
+              pre-partita, _tvTeamStat) e il suo miglior marcatore di campionato (generateLeagueScorers, la lista dei Marcatori).
+              Solo lettura, nessun campo nuovo. Ogni riga compare solo se il suo dato c'e'. */
+            const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));const _sn=player.season||1;
+            const _isEG=context==="euro_group"&&player.euro&&typeof euroGroupTable==="function";
+            /* [giro 232 · PO-503] la competizione della partita appena giocata decide classifica/tabellone e prossima partita */
+            let _c232=null;if(_g232x()){try{_c232=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});}catch(_e){_c232=null;}}
+            const _k232=!!(_c232&&_c232.tipo!=="campionato");
+            let _st=[],_io=-1,_zone=()=>null,_leg=[];
+            if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
+            else if(!_isNatCtx){_st=[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+              _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
+              const _lg=_cl.lg||"",N=_st.length,_ZC={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
+              const _sec=typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===_lg),_yo=/^Primavera/i.test(_lg),_noRel=typeof LEAGUE_PAIRS!=="undefined"&&!LEAGUE_PAIRS.some(([u])=>u===_lg);
+              const _z=_yo?(i)=>(i===0?"champ":null):_sec?(i)=>(i===0?"champ":i<3?"promo":(i>=N-3&&N>6&&!_noRel)?"rel":null):(i)=>(i===0?"champ":i<4?"cl":i<6?"el":i===6?"conf":(i>=N-3&&N>6&&!_noRel)?"rel":null);
+              _zone=(i)=>{const k=_z(i);return k?_ZC[k]:null;};
+              _leg=_yo?[[_ZC.champ,"Campione"]]:_sec?[[_ZC.champ,"Campione"],[_ZC.promo,"Promozione"],...(_noRel?[]:[[_ZC.rel,"Retrocessione"]])]:[[_ZC.champ,"Campione"],[_ZC.cl,"CL"],[_ZC.el,"EL"],[_ZC.conf,"Conf."],...(_noRel?[]:[[_ZC.rel,"Retrocessione"]])];}
+            const N=_st.length;const _set=new Set();
+            if(_io>=0){if(_isEG||N<=10){for(let i=0;i<N;i++)_set.add(i);}else{for(let i=0;i<Math.min(5,N);i++)_set.add(i);for(let i=_io-1;i<=_io+1;i++)if(i>=0&&i<N)_set.add(i);for(let i=Math.max(0,N-3);i<N;i++)_set.add(i);}}
+            const _idx=[..._set].sort((a,b)=>a-b);
+            const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;
+            const _wk=player.week||1;const _nx=_k232?null:[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk&&!(_c232&&m.type)).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+            const _tipo={cup:"Coppa",euro:"Coppa europea",nations:"Nazionale",national:"Nazionale",friendly:"Amichevole"};
+            const _riga=(i,k)=>{const r=_st[i];const io=i===_io;const zc=_zone(i);const gap=k>0&&i-_idx[k-1]>1;
+              return(<React.Fragment key={i}>{gap&&<div aria-hidden="true" style={{textAlign:"center",color:TH.faint,fontSize:FS.caption,lineHeight:1,padding:"1px 0"}}>⋯</div>}
+                <div data-cpm={io?"classifica200-io":"classifica224-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"1px 6px",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,boxShadow:zc?("inset 3px 0 0 "+zc):"none",fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span className="cpm-num" style={{minWidth:26,color:TH.muted,paddingLeft:4}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.fullName||r.n||r.name||r.id}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto"}}>{(r.pts|0)+" pt"}</span></div></React.Fragment>);};
+            /* (b) numeri di stagione */
+            const _rat=(player.matchHistory||[]).filter(m=>m&&(m.season||1)===_sn&&typeof m.rating==="number"&&isFinite(m.rating));
+            const _vm=_rat.length?(Math.round(10*_rat.reduce((s,m)=>s+m.rating,0)/_rat.length)/10):null;
+            const _num=[["Gol",player.goals],["Assist",player.assists],["Presenze",player.matches],["Voto medio",_vm!=null?_vm.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
+            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=[...(player.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+              const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
+              _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_sp,_pi+1);
+                return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
+            const _oggi=[mStats.goals>0?(mStats.goals+" gol"):null,mStats.assists>0?(mStats.assists+" assist"):null].filter(Boolean);
+            /* (c) anteprima della prossima */
+            let _av=null,_avS=null,_occ=null;
+            if(_nx){_av=(typeof CLUBS!=="undefined"?CLUBS.find(c=>c.id===_nx.opponentId):null)||null;
+              try{if(_av)_avS=_tvTeamStat(_av);}catch(_e){_avS=null;}
+              try{if(_av&&!_nx.type&&_av.lg===_cl.lg&&typeof generateLeagueScorers==="function"){const _sc=generateLeagueScorers(player,{all:true,fullClub:true})||[];const _o=_sc.find(x=>x&&!x.isPlayer&&x.club===(_av.n||_av.a)&&(x.goals|0)>0);if(_o)_occ=_o;}}catch(_e){_occ=null;}}
+            const _lab={fontSize:FS.caption,color:TH.muted,fontWeight:FW.bold};
+            const _E232={V:TH.success,N:TH.warning,P:TH.danger};
+            return(<div data-cpm="classifica200" data-comp232={_c232?_c232.tipo:undefined}>
+              {_k232&&_c232.tabella&&_c232.io>=0&&<Sez210 id="post-classifica200" titolo={"Classifica del girone · "+_c232.comp}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Con il risultato di oggi</div>
+                <div data-cpm="girone232" style={{display:"flex",flexDirection:"column",gap:1}}>{_c232.tabella.map((r,i)=>{const io=i===_c232.io;return(<div key={i} data-cpm={io?"classifica200-io":"girone232-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"1px 6px",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span className="cpm-num" style={{minWidth:26,color:TH.muted,paddingLeft:4}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.fullName||r.name||r.n||"?"}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto",color:TH.muted}}>{(r.w|0)+"V "+(r.d|0)+"N "+(r.l|0)+"P"}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto",minWidth:40,textAlign:"right"}}>{(r.pts|0)+" pt"}</span></div>);})}</div>
+              </Sez210>}
+              {_k232&&_c232.percorso&&_c232.percorso.length>0&&<Sez210 id="post-classifica200" titolo={"Tabellone del turno · "+_c232.comp}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Il tuo percorso</div>
+                <div data-cpm="tabellone232" style={{display:"flex",flexDirection:"column",gap:2}}>{_c232.percorso.map((r,i)=>(<div key={i} data-cpm={r.oggi?"tabellone232-oggi":"tabellone232-riga"} style={{display:"flex",alignItems:"center",gap:8,padding:"2px 6px",background:r.oggi?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:r.oggi?FW.bold:FW.semibold,color:TH.text,lineHeight:1.35}}>
+                  <span style={{flex:"0 0 auto",minWidth:0,color:TH.muted}}>{r.t}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.avv}</span>
+                  <span className="cpm-num" style={{flex:"0 0 auto"}}>{r.ris+(r.rig?" (rig.)":"")}</span>
+                  {!r.riep&&<span className="cpm-num" style={{flex:"0 0 auto",minWidth:20,textAlign:"center",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:_E232[r.e]||TH.muted}}>{r.e}</span>}</div>))}</div>
+              </Sez210>}
+              {!_k232&&_io>=0&&<Sez210 id="post-classifica200" titolo={_isEG?"Classifica del girone":"Classifica"}>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
+                <div data-cpm="classifica224" style={{display:"flex",flexDirection:"column",gap:1}}>{_idx.map(_riga)}</div>
+                {_leg.length>0&&<div data-cpm="zone224" style={{display:"flex",flexWrap:"wrap",columnGap:10,rowGap:0,marginTop:4,fontSize:FS.caption,color:TH.muted}}>{_leg.map(([c,l])=>(<span key={l} style={{display:"inline-flex",alignItems:"center",gap:4}}><span style={{width:8,height:8,borderRadius:2,background:c}}/>{l}</span>))}</div>}
+              </Sez210>}
+              {context!=="trial"&&_num.length>0&&<Sez210 id="post-stagione224" titolo="I tuoi numeri di stagione">
+                <div data-cpm="stagione224">
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima di questa partita"+(_oggi.length?(" · oggi: "+_oggi.join(" e ")):"")}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat("+_num.length+",1fr)",gap:6}}>{_num.map(([l,v])=>(<div key={l} style={{textAlign:"center",padding:"4px 2px",background:TH.surface2,borderRadius:RAD.sm}}>
+                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
+                  {_obj.map((o,k)=>(<div key={k} data-cpm="obiettivo224" style={{display:"flex",alignItems:"baseline",gap:8,marginTop:k?2:6,fontSize:FS.small,color:TH.text}}>
+                    <span style={{flex:1,minWidth:0}}>{(o.ok?"✅ ":"🎯 ")+o.l}</span><span className="cpm-num" style={{fontWeight:FW.bold,color:o.ok?TH.success:TH.text}}>{o.v}</span></div>))}
+                </div>
+              </Sez210>}
+              {_k232&&<Sez210 id="post-prossima224" titolo={"Prossima partita · "+_c232.comp}>
+                <div data-cpm="prossima200" data-prossima232={_c232.prossima?"si":"no"} style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_c232.prossima?(<><b>{_c232.prossima.riga}</b>{_c232.prossima.sett?<span style={{color:TH.muted}}>{" · settimana "+_c232.prossima.sett}</span>:null}</>):(_c232.motivo||"Nessuna altra partita in questa competizione.")}</div>
+                {_c232.prossima&&_c232.motivo&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:4}}>{_c232.motivo}</div>}
+              </Sez210>}
+              {!_k232&&<Sez210 id="post-prossima224" titolo={_c232?"Prossima partita · Campionato":"Prossima partita"}>
+                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):((_c232&&_c232.motivo)||"Nessuna partita in calendario dopo questa.")}</div>
+                {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
+                {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
+              </Sez210>}
+            </div>);})()}
+          {_g200()&&!_g224()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
               (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
             const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
             const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
@@ -13077,13 +13293,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _t286={sx:_no286?(_ord.eroeSx?TH.primary:TH.muted):legCol944(_c286.sx,TH.card),dx:_no286?(_ord.eroeSx?TH.muted:TH.primary):legCol944(_c286.dx,TH.card)};
             try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},tabellino:_c286,sfondo:TH.card});}}catch(_e){}
             return(<Sez210 id="post-gara" titolo="Tabellino della gara">
-              <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
+              <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px",..._g224()?{maxWidth:560,margin:"0 auto"}:{}}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice · [giro 224] su PC le righe non superano 560 px: numero e voce restano vicini */}
                 <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_g202()?4:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
                   <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.sx}}>{_nSx}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
                   <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
-                {_g202()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:4}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
+                {_g224()&&(<div data-cpm="tab224" style={{display:"flex",flexDirection:"column",gap:2}}>{/* [giro 224] una voce per riga, a tutta larghezza */}
+                  {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} data-cpm="tab202-voce">
+                    <div style={{display:"flex",alignItems:"baseline",gap:10,fontVariantNumeric:"tabular-nums",lineHeight:1.1}}>
+                      <span className="cpm-num" style={{flex:"0 0 auto",minWidth:44,textAlign:"left",fontSize:FS.bodyLg,fontWeight:800,color:a>=b?TH.text:TH.muted}}>{r[1]}</span>
+                      <span style={{flex:"1 1 0",minWidth:0,textAlign:"center",fontSize:FS.body,color:TH.muted,fontWeight:700}}>{r[0]}</span>
+                      <span className="cpm-num" style={{flex:"0 0 auto",minWidth:44,textAlign:"right",fontSize:FS.bodyLg,fontWeight:800,color:b>=a?TH.text:TH.muted}}>{r[2]}</span>
+                    </div>
+                    <div style={{display:"flex",height:3,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:2}}>
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
+                    </div>
+                  </div>);})}</div>)}
+                {_g202()&&!_g224()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:4}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
                   {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} data-cpm="tab202-voce" style={{flex:"1 0 auto",minWidth:0}}>
                     <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:5,fontVariantNumeric:"tabular-nums",lineHeight:1.15,whiteSpace:"nowrap"}}>
@@ -13129,7 +13358,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>
           </Sez210>
           </div>
-          <div data-scheda200="1" style={_v200(0)}>
+          <div data-scheda200={_g224()?"2":"1"} style={_v200(_g224()?1:0)}>{/* [giro 224] pagella, mister e momenti chiave passano alla scheda 2 */}
           {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);let rating=Math.round(raw*10)/10;
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
             try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:_g202()?4:14}}>
@@ -13155,7 +13384,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
-              <div data-cpm="momenti202" style={_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
+              <div data-cpm="momenti202" style={_g224()?{display:"flex",flexDirection:"column",gap:4}:_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
                 {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:_g202()?"baseline":"center",..._g202()?{lineHeight:1.25,gap:4,breakInside:"avoid",marginBottom:3}:{},fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>

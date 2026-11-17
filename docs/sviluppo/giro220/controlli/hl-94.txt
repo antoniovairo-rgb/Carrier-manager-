@@ -1,0 +1,3 @@
+{"ph":"hl_move","hy":612,"top":710,"h":204,"mosse":true,"pct":false,"corso":true,"gap":98,"gi":24}
+{"ph":"hl_move","hy":607,"top":710,"h":204,"mosse":true,"pct":false,"corso":true,"gap":103,"gi":18}
+VERDE: eroe libero sopra la scheda, mosse nel pad, barra in corso

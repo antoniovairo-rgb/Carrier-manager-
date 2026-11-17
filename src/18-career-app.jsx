@@ -185,6 +185,42 @@ const chiudiInvestimenti281=(ret,prev)=>{
     return {...ret,bankBalance:Math.round(bank),investmentPending:false,investimenti223:[],invest24:(iv&&iv.amt>0)?null:ret.invest24,
       investHist24:[...((prev.investHist24)||[]),...hist].slice(-12),stampa281:[...(ret.stampa281||[]),...news].slice(-40),log:[...log,...(ret.log||[])].slice(0,60)};
   }catch(_e){return investSeason24(ret,prev);}};
+/* [giro 227 PO-492, foto PO 7.999.195 «Ma sono il capitano!»] IL PREMIO DEL PATTO COL MISTER. Il premio era una di cinque frasi fisse
+   scelta col seme, senza guardare il giocatore (al capitano la «fascia da vice-capitano»), e a patto riuscito non veniva dato: solo
+   testo (il verdetto dava +8 fiducia e +5 morale qualunque cosa fosse stata promessa). Ora: (1) si promette solo cio' che il giocatore
+   NON ha gia' — fascia, rigori, piazzati, maglia da titolare, voce nello spogliatoio — letto dai dati (isCaptain, calcSquadRole/squadRole,
+   premiPatto227); se non resta nulla, la fiducia del mister (sempre disponibile); (2) il premio scelto viaggia nel patto (coachPact.rew,
+   campo pigro, nessun bump SAVE) e a patto riuscito viene DATO: premiPatto227[id]=id del club (vale nel club in cui e' stato promesso),
+   la maglia come ruoloPromesso94 «titolare» per la stagione, la fiducia come +5 in piu'. Rosso window.__CPM_NO_G227 (le cinque frasi a
+   seme, nessun premio dato). Guardiano patto-227. */
+const PATTO227_ID=["rig","piaz","maglia","vice","voce"];
+const PATTO227_TX={rig:"Se ci riesci, il rigorista sei tu.",piaz:"Se ci riesci, i piazzati da qui in avanti li batti tu.",maglia:"Se ci riesci, per il resto della stagione quella maglia non te la toglie nessuno.",vice:"Se ci riesci, la fascia da vice-capitano è tua.",voce:"Se ci riesci, in questo spogliatoio parli tu.",fiducia:"Se ci riesci, avrai tutta la mia fiducia: e la vedrai in campo."};
+const PATTO227_OLD=["Se ci riesci, il rigorista sei tu.","Se ci riesci, i piazzati da qui in avanti li batti tu.","Se ci riesci, quella maglia non te la toglie più nessuno.","Se ci riesci, la fascia da vice-capitano è tua.","Se ci riesci, in questo spogliatoio parli tu."];
+const PATTO227_DATO={rig:"🎯 Sei il rigorista della squadra.",piaz:"🎯 Punizioni e angoli adesso li batti tu.",maglia:"👕 Titolare fisso fino a fine stagione.",vice:"🎖️ Sei il vice-capitano.",voce:"🗣️ Nello spogliatoio adesso la tua voce conta.",fiducia:"🤝 Il mister ti dà tutta la sua fiducia."};
+const no227=()=>typeof window!=="undefined"&&!!window.__CPM_NO_G227;
+const club227=(p)=>(p&&p.club&&p.club.id)||"";
+/* il giocatore ce l'ha gia'? (letto dai dati veri) */
+function haPremio227(p,id){try{const pr=(p&&p.premiPatto227)||{},cl=club227(p);
+  const ruolo=(typeof calcSquadRole==="function")?calcSquadRole(p):(p.squadRole||"");const r2=p.squadRole||"";
+  if(id==="vice")return p.isCaptain===true||pr.vice===cl;
+  if(id==="voce")return p.isCaptain===true||ruolo==="leader"||r2==="leader"||pr.voce===cl;
+  if(id==="maglia")return ruolo==="titolare"||ruolo==="leader"||r2==="titolare"||r2==="leader"||(pr.maglia===cl&&pr.magliaS===(p.season||1));
+  if(id==="rig"||id==="piaz")return pr[id]===cl;
+  return false;}catch(_e){return false;}}
+/* il premio promesso: fra quelli che il giocatore non ha, col seme; se non resta nulla, la fiducia */
+function scegliPremio227(p,seed){const sd=Math.abs(seed|0);
+  if(no227())return {id:PATTO227_ID[(sd>>>5)%PATTO227_ID.length],tx:PATTO227_OLD[(sd>>>5)%PATTO227_OLD.length]};
+  const lib=PATTO227_ID.filter(id=>!haPremio227(p,id));const id=lib.length?lib[(sd>>>5)%lib.length]:"fiducia";
+  return {id,tx:PATTO227_TX[id]};}
+/* il premio dato a patto riuscito: restituisce i campi da scrivere nel giocatore (e la riga di diario) */
+function assegnaPremio227(p,id){if(no227()||!id)return {campi:{},riga:null};
+  const cl=club227(p),pr={...((p&&p.premiPatto227)||{})};let campi={};
+  if(id!=="fiducia"&&haPremio227(p,id))id="fiducia";/* nel frattempo e' arrivato da solo (es. la fascia): resta la parola del mister */
+  if(id==="fiducia")campi={coachTrust:clamp((p.coachTrust||60)+5,0,100)};
+  else if(id==="maglia"){pr.maglia=cl;pr.magliaS=p.season||1;const o=["primavera","riserva","rotazione","titolare","leader"];campi={premiPatto227:pr,ruoloPromesso94:{r:"titolare",s:p.season||1,min:0},squadRole:o.indexOf(p.squadRole||"")>=3?p.squadRole:"titolare"};}
+  else {pr[id]=cl;campi={premiPatto227:pr};}
+  return {campi,riga:PATTO227_DATO[id]||null,id};}
+if(typeof window!=="undefined")window.__CPM_PATTO227={ha:haPremio227,scegli:scegliPremio227,assegna:assegnaPremio227,ID:PATTO227_ID};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -431,6 +467,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     /* [giro 94 D3/D10 collaudo 177-3 «Sei titolare — Titolare inamovibile» da svincolato, poi «Gioca» rifiutato] senza contratto il club
        non ti schiera: il prompt lo dice e resta solo Simula (che lascia la squadra giocare senza di te). Rosso __CPM_NO_C3D3. */
     if(player.contractExpired&&showMatchPrompt.type!=="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))cd={status:"not_called",reason:"Sei svincolato: senza contratto il club non può schierarti. Rinnova o firma con un'altra squadra (Procuratore)."};
+    try{if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CD229)cd={status:window.__CPM_CD229,reason:"Decisione forzata dal collaudo.",entryMinute:60};}catch(_e229){}/* [giro 229] solo collaudo: la decisione del mister la sceglie la sonda (panchina) */
     setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
@@ -480,6 +517,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(_g173())return !posta165(player,md);/* [giro 173 punto 1] la regola di posta e' quella allargata del tasto (giro 165): il bottone c'e' solo quando posta165 dice «niente posta» */
     if(md.type&&md.type!=="league")return false;
     return calcMatchWeight(player,md.opponentId,player.standings||[],player.week||1)<5;}catch(_e){return false;}};
+  /* [giro 229 · PO-494, decisione PO 16/11 «Sempre disponibile»] da titolare il tasto dei momenti salienti c'e' in OGNI partita della
+     carriera da professionista (campionato, coppa nazionale, Europa gironi ed eliminazione, Nazionale, finali): il risultato lo decide la
+     stessa partita (src/15, _lotto166 = lo stesso battito). Le condizioni del prompt restano (titolare, niente infortunio/squalifica/
+     Simula scelto). posta165 non cambia: governa ancora il tasto facoltativo del giro 165. Rosso __CPM_NO_G229 = la regola senzaPosta166. */
+  const _g229=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G229);
+  const salienti229=(md)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_G166)return false;
+    if(!_g229())return senzaPosta166(md);
+    return !!md&&player.proStatus==="pro";}catch(_e){return false;}};
   const matchResumeRef=useRef(null); // [7.150.0] snapshot per la ripresa DENTRO la partita dopo background
   const [pendingResume,setPendingResume]=useState(null); // [7.150.0] snapshot in attesa che il calendario sia pronto
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
@@ -652,7 +697,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
     if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
       const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
-      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:(_m.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214))?rilPres214(ans.tone,(player.club&&player.club.id)||"c"):rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)))/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:(_m.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214))?rilPres214(ans.tone,(player.club&&player.club.id)||"c"):rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)),_m.esito222)/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
       setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
     }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
@@ -2371,7 +2416,7 @@ const getThisWeekMatchday=()=>{
     const fair=cand.filter(k=>T[k]<=RATE[k]*games*1.6);
     const pool=fair.length?fair:[cand.reduce((a,b)=>(T[a]/Math.max(0.05,RATE[a]*games)<=T[b]/Math.max(0.05,RATE[b]*games)?a:b))];
     const kind=pool[_sd%pool.length];
-    return{st:"offer",kind,kd:PACT_K[kind],target:T[kind],games,seed:_sd};
+    return{st:"offer",kind,kd:PACT_K[kind],target:T[kind],games,seed:_sd,rew:scegliPremio227(p,_sd)};/* [giro 227] premio scelto fra cio' che non hai */
   }catch(_e){return null;}};
   // [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: stati leggibili del legame + episodio derivato dai FATTI
   //   (i tuoi assist/gol/striscia reali), sul compagno vero di p.teammates (nomi dal roster stabile 7.8.16).
@@ -3951,7 +3996,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",esito222:(()=>{try{return(typeof window!=='undefined'&&window.__CPM_NO_G222)?null:esitoTurno211(player,result);}catch(_e222){return null;}})()/* [giro 222 PO-479] l'esito del turno viaggia col pannello: il rilancio lo legge */,journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     };
     const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};
@@ -5952,7 +5997,11 @@ const getThisWeekMatchday=()=>{
     else{notify("🎓 Sei diventato professionista!",TH.success);}
   },[]);// eslint-disable-line
 
+  /* [giro 229] chi apre una partita della Nazionale fuori da startMatch (lobby dei tornei, ripresa) dice da se' la modalita': la ripresa
+     rientra in quella in cui si giocava, la lobby consuma la scelta appena fatta. Senza, soloHL166Ref restava quello dell'ultima gara. */
+  const _modo229=(resumeSnap,daStart)=>{if(!_g229())return;if(resumeSnap&&resumeSnap.v){soloHL166Ref.current=!!resumeSnap.s166;}else if(!daStart){soloHL166Ref.current=!!soloChiesta166Ref.current;}soloChiesta166Ref.current=false;};
   const startNationalMatch=(resumeSnap=null)=>{
+    _modo229(resumeSnap,true);/* l'amichevole arriva da startMatch (che ha gia' fissato la modalita') o dalla ripresa */
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const callup=nationalCallupData;
     if(!callup)return;
@@ -5966,6 +6015,7 @@ const getThisWeekMatchday=()=>{
     setScreen("match");
   };
   const startNationsCupMatch=(resumeSnap=null)=>{
+    _modo229(resumeSnap,false);
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const q=player.nationsCupQueue;
     if(!q||!q.active||q.done)return;
@@ -5979,6 +6029,7 @@ const getThisWeekMatchday=()=>{
     setScreen("match");
   };
   const startEuroMondialeMatch=(resumeSnap=null)=>{ // Sprint 53
+    _modo229(resumeSnap,false);
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const em=player.euroMondiale;
     if(!em||!em.active||em.done)return;
@@ -6414,7 +6465,7 @@ const getThisWeekMatchday=()=>{
     const _cl=player.club||{};
     return(
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
-      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
+      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} nomi={[..._bs.slice(2,_n-1).map(b=>b&&b.n),null,player.name||"eroe"]/* [giro 225] chi sta in ogni posto della fila (stesse chiavi della targhetta): i chiamati nell'ordine dei battiti, poi il posto che nessun battito chiama, poi l'eroe */} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
       <PresentazioneScena2D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)} annunci={_bs.map((b,k)=>k===_n-1?{...b,eroe:true}:b)} heroChiave={player.name||"eroe"}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
@@ -6569,7 +6620,7 @@ const getThisWeekMatchday=()=>{
             contribuiva allo scrollHeight → nessuno scroll possibile e CTA irraggiungibile. La classe lo rende
             pilotabile: l'effect per-fase di LiveMatch lo apre (overflow visible + flex auto) nelle fasi DOM. */}
         <div className="cpm-match-wrap" style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
-          <MatchErrorBoundary key={`m|${matchContext||"career"}|${matchOpp?.id||matchOpp?.n||"x"}|${player.season||1}|${player.week||1}|${matchIsHome?"H":"A"}`}><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={(titleStakesRef.current=_titleStakes)} mdEuroPhase={_playingMdRef.current?.euroPhase||null} onQuit={()=>{try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;if(!(typeof window!=="undefined"&&window.__CPM_NO_P0_3))_playingMdRef.current=null;/* [P0 #3] tornare indietro dal pre-partita CHIUDE la gara: senza questo il riferimento restava carico e la prima partita di Nazionale successiva committava una giornata di campionato mai giocata */setScreen("dashboard");setTab("dashboard");}} onSimulateNat={()=>{const c=matchContext||"career";setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else if(c==="national")simulateAndAdvance();}catch(_e){}},80);}} onSimula209={()=>{/* [giro 209 PO-470] «Simula» dall'avviso «la partita in 3D non si carica»: si chiude la partita (nessun risultato dal vivo e' stato registrato: onMatchEnd non e' mai partito) e la si gioca col motore, con lo STESSO percorso e lo stesso avviso del risultato del tasto Simula. Una volta sola: la gara e' segnata giocata da quel percorso. */const c=matchContext||"career";try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;_playingMdRef.current=null;setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else simulateAndAdvance();}catch(_e){}},80);}} resumeState={matchResumeRef.current} soloHL={soloHL166Ref.current&&(matchContext||"career")==="career"&&!(typeof window!=='undefined'&&window.__CPM_NO_G166)}/* [7.150.0] ripresa dentro la partita · [7.14.0] onSimulateNat: Simula dal pre-partita di Nazionale */ /></MatchErrorBoundary>{/* [6.70.0] key per-partita: forza un remount PULITO di LiveMatch ad ogni cambio partita (contesto/avversario/settimana) → nessun carryover in memoria della partita precedente (collaudo PO «mantiene l'avversario precedente») */}
+          <MatchErrorBoundary key={`m|${matchContext||"career"}|${matchOpp?.id||matchOpp?.n||"x"}|${player.season||1}|${player.week||1}|${matchIsHome?"H":"A"}`}><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={(titleStakesRef.current=_titleStakes)} mdEuroPhase={_playingMdRef.current?.euroPhase||null} onQuit={()=>{try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;if(!(typeof window!=="undefined"&&window.__CPM_NO_P0_3))_playingMdRef.current=null;/* [P0 #3] tornare indietro dal pre-partita CHIUDE la gara: senza questo il riferimento restava carico e la prima partita di Nazionale successiva committava una giornata di campionato mai giocata */setScreen("dashboard");setTab("dashboard");}} onSimulateNat={()=>{const c=matchContext||"career";setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else if(c==="national")simulateAndAdvance();}catch(_e){}},80);}} onSimula209={()=>{/* [giro 209 PO-470] «Simula» dall'avviso «la partita in 3D non si carica»: si chiude la partita (nessun risultato dal vivo e' stato registrato: onMatchEnd non e' mai partito) e la si gioca col motore, con lo STESSO percorso e lo stesso avviso del risultato del tasto Simula. Una volta sola: la gara e' segnata giocata da quel percorso. */const c=matchContext||"career";try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;_playingMdRef.current=null;setScreen("dashboard");setTab("dashboard");setTimeout(()=>{try{if(c==="nationsCup")simulateNationsCupMatch();else if(c.indexOf("euroMondiale")===0)simulateEuroMondialeMatch();else simulateAndAdvance();}catch(_e){}},80);}} resumeState={matchResumeRef.current} soloHL={soloHL166Ref.current&&(_g229()||(matchContext||"career")==="career")/* [giro 229] in ogni competizione */&&!(typeof window!=='undefined'&&window.__CPM_NO_G166)}/* [7.150.0] ripresa dentro la partita · [7.14.0] onSimulateNat: Simula dal pre-partita di Nazionale */ /></MatchErrorBoundary>{/* [6.70.0] key per-partita: forza un remount PULITO di LiveMatch ad ogni cambio partita (contesto/avversario/settimana) → nessun carryover in memoria della partita precedente (collaudo PO «mantiene l'avversario precedente») */}
         </div>
         {misterDiscorsoModal&&(
           <Modal open dismissable={false} width={400}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
@@ -7358,9 +7409,9 @@ const getThisWeekMatchday=()=>{
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
-              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&senzaPosta166(showMatchPrompt)&&(<>
+              {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&salienti229(showMatchPrompt)&&(<>
                 <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
-                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.</div>
+                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>
               </>)}
               <Btn data-cpm="simula-conferma" data-pesante213=""/* [giro 213] 136 ms di lavoro sincrono misurati */ onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
                 {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
@@ -8224,12 +8275,12 @@ const getThisWeekMatchday=()=>{
                 <button data-cpm="avanza23" onClick={cs.disabled?undefined:()=>handleContinua()} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
                   style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:TINTE.testo,color:cs.disabled?TH.faint:TINTE.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
-                  {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                  {cs.sub&&<span data-motivo221={cs.disabled?"":undefined} style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
                 </button>
                 <button data-cpm="simula-v2" onClick={_mot?undefined:()=>handleContinua(true)} disabled={!!_mot} aria-disabled={!!_mot} className={_mot?"":"cpm-press"}
                   style={{flex:"0 1 auto",minWidth:96,minHeight:52,borderRadius:RAD.md,border:_mot?("1px dashed "+_v(0.5)):"none",background:_mot?"rgba(0,0,0,0.18)":TINTE.tasto,color:_mot?_ink:TINTE.testo,cursor:_mot?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 12px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.05}}>Simula</span>
-                  {_mot&&<span data-cpm="simula-motivo" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
+                  {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>
@@ -8488,9 +8539,9 @@ const getThisWeekMatchday=()=>{
         if(pv.st==="offer")return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#0d2418,#10301f)",TH.card),border:_n30("1px solid #1d6b45","1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30("#6ee7b7",semTesto945("#6ee7b7")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister</div>
-            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {pv.rew?pv.rew.tx:PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
             <div style={{display:"flex",gap:8}}>
-              <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coachPact:{season:p.season||1,fromWeek:p.week||1,target:pv.target,games:pv.games,kind:pv.kind,status:"active"},...ledgerPush(p,{t:"patto",who:"il mister",what:`${pv.target} ${pv.kd.u} in ${pv.games} gare di lega`}),coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🤝 Patto col mister: ${pv.target} ${pv.kd.u} nelle prossime ${pv.games} di lega.`,...(p.log||[])].slice(0,60)}))}>🤝 «Ci sto»</Btn>
+              <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coachPact:{season:p.season||1,fromWeek:p.week||1,target:pv.target,games:pv.games,kind:pv.kind,status:"active",...(pv.rew&&!no227()?{rew:pv.rew.id}:{})},...ledgerPush(p,{t:"patto",who:"il mister",what:`${pv.target} ${pv.kd.u} in ${pv.games} gare di lega`}),coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🤝 Patto col mister: ${pv.target} ${pv.kd.u} nelle prossime ${pv.games} di lega.`,...(p.log||[])].slice(0,60)}))}>🤝 «Ci sto»</Btn>
               <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,coachPactSeason:p.season||1,log:[`💬 Hai declinato il patto del mister: «Preferisco parlare sul campo».`,...(p.log||[])].slice(0,60)}))}>«Parlo sul campo»</Btn>
             </div>
           </Card>);
@@ -8511,12 +8562,12 @@ const getThisWeekMatchday=()=>{
         const _FAIL=[`«${pv.val} ${_u} su ${pv.pact.target} promessi. Non è bastato — la prossima volta parliamo dopo, non prima.» Il patto è andato a vuoto.`,
           `«Ti avevo dato ${pv.played} gare: ne sono usciti ${pv.val} ${_u} su ${pv.pact.target}. Il campo non fa sconti, nemmeno a me.»`,
           `«${pv.val} su ${pv.pact.target}. Non te ne faccio una colpa: ma il posto, adesso, te lo devi riprendere.»`];
-        const _vTx=_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length];
+        const _vTx=(_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length])+((_kept&&pv.pact.rew&&!no227())?" "+((r=>r==="fiducia"?"E la mia fiducia, adesso, ce l'hai tutta.":r==="rig"?"E come promesso: il rigorista sei tu.":r==="piaz"?"E come promesso: i piazzati li batti tu.":r==="maglia"?"E come promesso: fino a fine stagione quella maglia è tua.":r==="vice"?"E come promesso: la fascia da vice-capitano è tua.":"E come promesso: in questo spogliatoio adesso parli tu.")(haPremio227(player,pv.pact.rew)?"fiducia":pv.pact.rew)):"");/* [giro 227] il verdetto dice il premio dato (se nel frattempo lo hai gia', resta la fiducia) */
         return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"#6ee7b7":TH.txAmber,_kept?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister — verdetto</div>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"rgba(255,255,255,0.85)":TH.txAmber,_kept?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_vTx}</div>
-            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.val} ${_u} nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.val}/${pv.pact.target} ${_u}: il patto col mister non è stato onorato.`,color:_n30(_kept?TH.txGreen:"#b45309",_kept?TH.txGreen:semTesto945("#b45309"))}]),log:[_kept?`🤝 PATTO MANTENUTO (${pv.val}/${pv.pact.target} ${_u}) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.val}/${pv.pact.target} ${_u}): il mister incassa.`,...(p.log||[])].slice(0,60)}))}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
+            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{const _q227={...p,coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100)};const _a227=_kept?assegnaPremio227(_q227,p.coachPact&&p.coachPact.rew):{campi:{},riga:null};const _r=({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.val} ${_u} nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.val}/${pv.pact.target} ${_u}: il patto col mister non è stato onorato.`,color:_n30(_kept?TH.txGreen:"#b45309",_kept?TH.txGreen:semTesto945("#b45309"))}]),log:[_kept?`🤝 PATTO MANTENUTO (${pv.val}/${pv.pact.target} ${_u}) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.val}/${pv.pact.target} ${_u}): il mister incassa.`,...(p.log||[])].slice(0,60)});return _a227.riga?{..._r,..._a227.campi,log:[_a227.riga,...(_r.log||[])].slice(0,60),diary:capDiary([...(_r.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:"🎁",headline:"La parola del mister",body:_a227.riga,color:TH.txGreen}])}:_r;})}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
           </Card>);
       })()}
       {/* [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: episodio di legame derivato dai fatti (max 1 ogni ≥3 settimane) */}
@@ -10472,7 +10523,7 @@ const getThisWeekMatchday=()=>{
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
                     <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
-                    <span style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{_cp49.r}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
+                    {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<span data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>
                 );
@@ -12304,9 +12355,10 @@ const getThisWeekMatchday=()=>{
                   Prossimo: <strong>{natName} vs {(q.opponents||[])[q.matchIdx||0]||"?"}</strong>
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"stretch"}}>{/* [7.9.0 direttiva PO] anche la Coppa delle Nazioni è simulabile */}
-                  <Btn v="primary" fw onClick={startNationsCupMatch} style={{flex:1}}>⚽ Gioca Partita</Btn>
+                  <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
+                {_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
             {q&&q.done&&(
@@ -12404,13 +12456,14 @@ const getThisWeekMatchday=()=>{
                 )}
                 {!em.champion&&!em.eliminated&&!em.done&&(
                   <div style={{display:"flex",gap:8,alignItems:"stretch"}}>
-                    <Btn v="primary" fw onClick={startEuroMondialeMatch} style={{flex:1}}>
+                    <Btn v="primary" fw onClick={()=>startEuroMondialeMatch()} style={{flex:1}}>
                       ⚽ Gioca {em.phase==="qualificazioni"?`Qualificazione ${(em.qualMatchIdx||0)+1}/${(em.qualOpponents||[]).length||2}`:em.phase==="group"?`Girone · Giornata ${(em.groupMatchIdx||0)+1}/3`:(EM_KO_LABEL[em.koPhase]||"Fase KO")}
                     </Btn>
                     {/* [6.56.0 collaudo PO «le partite della nazionale perché non si possono simulare??»] */}
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
+                {!em.champion&&!em.eliminated&&!em.done&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
 

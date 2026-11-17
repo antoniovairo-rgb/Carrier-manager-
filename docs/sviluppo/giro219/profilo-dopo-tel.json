@@ -1,0 +1,1139 @@
+[
+ {
+  "dove": "tel",
+  "scena": "ingresso",
+  "rosso": false,
+  "glb": true,
+  "ms": 8135,
+  "fotogrammi": 7,
+  "fps": 0.9,
+  "fotMed": 717,
+  "fotP90": 2400,
+  "fotMax": 2400,
+  "lunghi": 9,
+  "lunghiMs": 1505,
+  "lunghiMax": 239,
+  "t0pag": 33616.29999999702,
+  "marca": 36592.89999999851,
+  "attesaFine": 2964,
+  "quotaBloccata": 13,
+  "elenco": [
+   [
+    2842,
+    120
+   ],
+   [
+    3003,
+    130
+   ],
+   [
+    3932,
+    134
+   ],
+   [
+    4651,
+    239
+   ],
+   [
+    5284,
+    234
+   ],
+   [
+    5537,
+    177
+   ],
+   [
+    6126,
+    107
+   ],
+   [
+    6789,
+    210
+   ],
+   [
+    7493,
+    154
+   ]
+  ],
+  "heapMB": [
+   436,
+   356
+  ],
+  "progNuovi": {
+   "prima": 33,
+   "dopo": 33,
+   "nuovi": []
+  },
+  "gl": {
+   "texImage2D": 3528,
+   "tex 1x1": 0,
+   "tex 128x128 CANVAS": 0,
+   "compileShader": 0,
+   "linkProgram": 0,
+   "getProgramParameter": 0,
+   "tex 4x4": 0,
+   "bufferData": 8,
+   "tex 512x512": 0,
+   "drawElements": 4165,
+   "tex 2048x512 CANVAS": 0,
+   "tex 32x32": 3528,
+   "tex 256x256 CANVAS": 0,
+   "tex 1024x512 CANVAS": 0,
+   "tex 1024x128 CANVAS": 0,
+   "tex 512x256 CANVAS": 0,
+   "tex 128x80 CANVAS": 0,
+   "tex 2048x128 CANVAS": 0,
+   "tex 1x1 dati": 0,
+   "tex 512x512 CANVAS": 0,
+   "tex 512x48 CANVAS": 0,
+   "tex 512x55 CANVAS": 0,
+   "tex 512x80 CANVAS": 0,
+   "tex 1024x24 CANVAS": 0,
+   "drawArrays": 8,
+   "tex 1024x1024 CANVAS": 0,
+   "tex 64x64 CANVAS": 0,
+   "readPixels": 0,
+   "tex 1024x464 CANVAS": 0,
+   "tex 1024x1024 dati": 0,
+   "tex 512x512 dati": 0,
+   "tex 2048x2048 dati": 0,
+   "tex 2048x2048 IMG": 0
+  },
+  "profilo": {
+   "totale": 7984,
+   "categorie": {
+    "programma (nativo: disegno/composizione/attesa GPU)": 2938,
+    "riposo": 2712,
+    "three: disegno (renderer)": 1119,
+    "gioco (ciclo, scene, logica)": 477,
+    "three: matrici e ossa": 391,
+    "GC": 232,
+    "three: animazione (mixer)": 89,
+    "React": 26
+   },
+   "inclusivo": {
+    "ciclo 3D (loop)": 1278,
+    "renderer.render": 818,
+    "mixer.update": 85,
+    "texImage/bufferData (caricamenti GPU)": 73,
+    "React (commit+render)": 33,
+    "compilazione shader": 0
+   },
+   "funzioni": {
+    "traverse · three.min.js": 294,
+    "(garbage collector) · gioco": 232,
+    "updateMatrixWorld · three.min.js": 215,
+    "multiplyMatrices · three.min.js": 170,
+    "traverseVisible · three.min.js": 164,
+    "_un · gioco": 146,
+    "At · three.min.js": 86,
+    "updateWorldMatrix · three.min.js": 77,
+    "M · three.min.js": 72,
+    "texImage2D · gioco": 68,
+    "getProgramCacheKey · three.min.js": 58,
+    "(anonima) · gioco": 57,
+    "update · three.min.js": 50,
+    "loop · gioco": 43
+   },
+   "percorsi": {
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 214,
+    "_chk196 > _pronti196 > … > traverseVisible³ > traverseVisible³": 174,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 123,
+    "traverse³ > traverse³ > … > traverse³ > _un": 98,
+    "loop > render³ > … > update³ > multiplyMatrices³": 82,
+    "loop > render³ > … > At³ > At³": 80,
+    "loop > render³ > … > M³ > M³": 72,
+    "loop > render³ > … > w > texImage2D": 68,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 66,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 61,
+    "compile³ > traverse³ > … > Pt³ > getProgramCacheKey³": 58,
+    "loop": 46,
+    "traverse³ > traverse³ > traverse³ > _un": 39,
+    "loop > render³ > … > At³ > update³": 37,
+    "loop > _updateAvatarMixerLod > _corrPostura23": 32,
+    "traverse³ > traverse³ > traverse³": 31,
+    "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 31,
+    "compile³ > traverse³ > … > traverse³ > Pt³": 31,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > multiplyMatrices³": 26,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > multiplyMatrices³": 25,
+    "loop > update³ > apply³": 24,
+    "loop > render³ > … > renderBufferDirect³ > It³": 22
+   },
+   "perLungo": [
+    {
+     "inizio": 4651,
+     "durata": 239,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 18,
+      "loop > _updateAvatarMixerLod > _corrPostura23": 14,
+      "loop > render³ > … > update³ > multiplyMatrices³": 14,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 13,
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 13,
+      "loop > _updateAvatarMixerLod > update³ > apply³": 12,
+      "loop > render³ > … > M³ > M³": 11
+     }
+    },
+    {
+     "inizio": 5284,
+     "durata": 234,
+     "cosa": {
+      "loop > render³ > … > update³ > multiplyMatrices³": 16,
+      "(program)": 15,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 15,
+      "loop > render³ > … > M³ > M³": 15,
+      "loop > render³ > … > w > texImage2D": 13,
+      "loop > render³ > … > At³ > At³": 13,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 13
+     }
+    },
+    {
+     "inizio": 5537,
+     "durata": 177,
+     "cosa": {
+      "compile³ > traverse³ > … > Pt³ > getProgramCacheKey³": 58,
+      "compile³ > traverse³ > … > traverse³ > Pt³": 31,
+      "compile³ > traverse³ > … > traverse³ > traverse³": 21,
+      "traverse³ > traverse³ > … > traverse³ > traverse³": 17,
+      "compile³ > traverseVisible³ > … > traverseVisible³ > traverseVisible³": 10,
+      "compile³ > traverse³ > traverse³ > traverse³": 5,
+      "compile³ > traverse³ > … > Pt³ > getParameters³": 5
+     }
+    },
+    {
+     "inizio": 6789,
+     "durata": 210,
+     "cosa": {
+      "loop > render³ > … > w > texImage2D": 22,
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 14,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 13,
+      "loop > render³ > … > update³ > multiplyMatrices³": 13,
+      "loop": 12,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 11,
+      "loop > render³ > … > At³ > update³": 10
+     }
+    },
+    {
+     "inizio": 7493,
+     "durata": 154,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 28,
+      "loop > render³ > … > At³ > At³": 14,
+      "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 12,
+      "loop > render³ > … > update³ > multiplyMatrices³": 10,
+      "loop > render³ > … > w > texImage2D": 9,
+      "loop > render³ > … > Cr.upload³ > Er.setValue³": 7,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 4
+     }
+    }
+   ]
+  },
+  "salto": {
+   "lunghi": [
+    [
+     1589,
+     111
+    ],
+    [
+     1769,
+     190
+    ],
+    [
+     2466,
+     156
+    ],
+    [
+     3289,
+     365
+    ],
+    [
+     4196,
+     177
+    ],
+    [
+     5007,
+     156
+    ],
+    [
+     5961,
+     60
+    ],
+    [
+     6028,
+     129
+    ],
+    [
+     6282,
+     219
+    ],
+    [
+     6850,
+     225
+    ]
+   ],
+   "perLungo": [
+    {
+     "inizio": 1769,
+     "durata": 190,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 21,
+      "loop > render³ > … > update³ > multiplyMatrices³": 12,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 10,
+      "loop > render³ > … > w > texImage2D": 10,
+      "loop > render³ > … > M³ > M³": 9,
+      "loop > render³ > … > It³ > Cr.upload³": 9,
+      "loop > render³ > … > At³ > At³": 9
+     }
+    },
+    {
+     "inizio": 2466,
+     "durata": 156,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 14,
+      "loop > render³ > … > At³ > At³": 13,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 9,
+      "loop > render³ > … > w > texImage2D": 9,
+      "(program)": 8,
+      "loop > render³ > … > At³ > update³": 7,
+      "loop > render³ > … > renderBufferDirect³ > setup³": 6
+     }
+    },
+    {
+     "inizio": 3289,
+     "durata": 365,
+     "cosa": {
+      "loop > render³ > … > w > texImage2D": 39,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 36,
+      "loop > render³ > … > At³ > At³": 24,
+      "loop > render³ > … > w > drawElements": 17,
+      "loop > render³ > … > Cr.setValue³ > Yi³": 13,
+      "loop > render³ > … > X³ > texParameteri": 11,
+      "loop > render³ > … > renderBufferDirect³ > It³": 11
+     }
+    },
+    {
+     "inizio": 4196,
+     "durata": 177,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 23,
+      "loop > render³ > … > At³ > At³": 14,
+      "loop > render³ > … > w > texImage2D": 13,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 11,
+      "loop > _updateAvatarMixerLod > update³ > apply³": 10,
+      "loop > render³ > … > M³ > M³": 7,
+      "loop > _updateAvatarMixerLod > … > _spalle146 > getWorldQuaternion³": 7
+     }
+    },
+    {
+     "inizio": 5007,
+     "durata": 156,
+     "cosa": {
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 17,
+      "(program)": 16,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 12,
+      "loop > render³ > … > w > texImage2D": 9,
+      "loop > render³ > … > At³ > At³": 8,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 7,
+      "loop > render³ > … > M³ > M³": 7
+     }
+    },
+    {
+     "inizio": 6282,
+     "durata": 219,
+     "cosa": {
+      "_batt166 > ok > Bc": 96,
+      "(program)": 57,
+      "_batt166 > ok > … > _specDeb175 > stato": 13,
+      "_batt166 > ok > … > tick > muoviTutti": 11,
+      "_batt166 > ok > Bc > _specDeb175": 10,
+      "_batt166 > ok > … > _objectSpread > _toPrimitive": 6,
+      "_batt166 > ok > Bc > tick": 5
+     }
+    },
+    {
+     "inizio": 6850,
+     "durata": 225,
+     "cosa": {
+      "disegna > _spalti141": 56,
+      "disegna": 45,
+      "(program)": 36,
+      "disegna > _spalti141 > fillRect": 17,
+      "disegna > _spalti141 > ev": 13,
+      "disegna > _spalti141 > _settore141": 10,
+      "disegna > drawImage": 8
+     }
+    }
+   ],
+   "percorsi": {
+    "_chk196 > _pronti196 > … > traverseVisible³ > traverseVisible³": 167,
+    "_c > _chk196 > … > traverseVisible³ > traverseVisible³": 155,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 120,
+    "U > S > … > mf > LiveMatch": 108,
+    "_batt166 > ok > Bc": 96,
+    "loop > render³ > … > w > texImage2D": 90,
+    "U > S > … > Id > get scrollWidth": 81,
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 74,
+    "loop > render³ > … > At³ > At³": 73,
+    "(solo anonime)": 64,
+    "disegna": 60,
+    "disegna > _spalti141": 56,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 54,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 48,
+    "loop > render³ > … > M³ > M³": 45,
+    "U > S > … > xk > yk": 43,
+    "loop > render³ > … > update³ > multiplyMatrices³": 42,
+    "giro > elementFromPoint": 39,
+    "evaluate": 35,
+    "loop > render³ > … > At³ > update³": 33,
+    "U > S > … > zf > mf": 32,
+    "U > S > … > LiveMatch > Z": 25
+   }
+  },
+  "tocco": {
+   "attesa": 1906,
+   "lavoro": 2,
+   "riscontro": 2524,
+   "rotella": 3261,
+   "effetto": 4385,
+   "durFot": 623,
+   "eventi": "pointerdown+0:attesa1905/lavoro1 touchstart+0:attesa1906/lavoro1 pointerup+1988:attesa705/lavoro0 touchend+1988:attesa708/lavoro0 mousedown+1988:attesa711/lavoro0 mouseup+1988:attesa713/lavoro0 click+1988:attesa713/lavoro2"
+  }
+ },
+ {
+  "dove": "tel",
+  "scena": "highlight",
+  "rosso": false,
+  "glb": true,
+  "ms": 7200,
+  "fotogrammi": 12,
+  "fps": 1.7,
+  "fotMed": 350,
+  "fotP90": 483,
+  "fotMax": 2900,
+  "lunghi": 14,
+  "lunghiMs": 1661,
+  "lunghiMax": 263,
+  "t0pag": 44221.29999999702,
+  "marca": 47342.29999999702,
+  "attesaFine": null,
+  "quotaBloccata": 13.3,
+  "elenco": [
+   [
+    2856,
+    263
+   ],
+   [
+    3164,
+    126
+   ],
+   [
+    3619,
+    83
+   ],
+   [
+    4066,
+    114
+   ],
+   [
+    4358,
+    142
+   ],
+   [
+    4500,
+    106
+   ],
+   [
+    4846,
+    183
+   ],
+   [
+    5163,
+    162
+   ],
+   [
+    5454,
+    92
+   ],
+   [
+    5786,
+    92
+   ],
+   [
+    6106,
+    87
+   ],
+   [
+    6396,
+    59
+   ],
+   [
+    6707,
+    80
+   ],
+   [
+    7043,
+    72
+   ]
+  ],
+  "heapMB": [
+   444,
+   355
+  ],
+  "progNuovi": {
+   "prima": 34,
+   "dopo": 34,
+   "nuovi": []
+  },
+  "gl": {
+   "texImage2D": 1029,
+   "tex 1x1": 0,
+   "tex 128x128 CANVAS": 0,
+   "compileShader": 0,
+   "linkProgram": 0,
+   "getProgramParameter": 0,
+   "tex 4x4": 0,
+   "bufferData": 4,
+   "tex 512x512": 0,
+   "drawElements": 3019,
+   "tex 2048x512 CANVAS": 0,
+   "tex 32x32": 1029,
+   "tex 256x256 CANVAS": 0,
+   "tex 1024x512 CANVAS": 0,
+   "tex 1024x128 CANVAS": 0,
+   "tex 512x256 CANVAS": 0,
+   "tex 128x80 CANVAS": 0,
+   "tex 2048x128 CANVAS": 0,
+   "tex 1x1 dati": 0,
+   "tex 512x512 CANVAS": 0,
+   "tex 1024x24 CANVAS": 0,
+   "tex 512x48 CANVAS": 0,
+   "tex 512x55 CANVAS": 0,
+   "tex 512x80 CANVAS": 0,
+   "drawArrays": 13,
+   "tex 1024x1024 CANVAS": 0,
+   "tex 64x64 CANVAS": 0,
+   "readPixels": 0,
+   "tex 1024x464 CANVAS": 0,
+   "tex 1024x1024 dati": 0,
+   "tex 512x512 dati": 0,
+   "tex 2048x2048 dati": 0,
+   "tex 2048x2048 IMG": 0,
+   "tex 256x48 CANVAS": 0
+  },
+  "profilo": {
+   "totale": 7136,
+   "categorie": {
+    "programma (nativo: disegno/composizione/attesa GPU)": 3026,
+    "riposo": 1628,
+    "three: disegno (renderer)": 835,
+    "gioco (ciclo, scene, logica)": 702,
+    "three: matrici e ossa": 447,
+    "React": 206,
+    "GC": 192,
+    "three: animazione (mixer)": 100
+   },
+   "inclusivo": {
+    "ciclo 3D (loop)": 1298,
+    "renderer.render": 796,
+    "React (commit+render)": 443,
+    "mixer.update": 127,
+    "texImage/bufferData (caricamenti GPU)": 27,
+    "compilazione shader": 0
+   },
+   "funzioni": {
+    "updateMatrixWorld · three.min.js": 262,
+    "traverse · three.min.js": 246,
+    "(garbage collector) · gioco": 192,
+    "multiplyMatrices · three.min.js": 151,
+    "_un · gioco": 120,
+    "(anonima) · gioco": 87,
+    "loop · gioco": 80,
+    "LiveMatch · gioco": 77,
+    "At · three.min.js": 66,
+    "getProgramCacheKey · three.min.js": 55,
+    "(anonima) · three.min.js": 39,
+    "It · three.min.js": 38,
+    "updateWorldMatrix · three.min.js": 33,
+    "get scrollWidth · gioco": 32
+   },
+   "percorsi": {
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 192,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 191,
+    "U > S > … > mf > LiveMatch": 93,
+    "loop": 85,
+    "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 80,
+    "traverse³ > traverse³ > … > traverse³ > _un": 72,
+    "loop > render³ > … > At³ > At³": 65,
+    "compile³ > traverse³ > … > Pt³ > getProgramCacheKey³": 55,
+    "traverse³ > traverse³ > traverse³ > _un": 41,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 38,
+    "loop > render³ > … > renderBufferDirect³ > It³": 38,
+    "U > S > … > Id > get scrollWidth": 32,
+    "loop > render³ > … > M³ > M³": 31,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > multiplyMatrices³": 29,
+    "traverse³ > traverse³ > traverse³": 29,
+    "loop > _updateAvatarMixerLod > … > _update³ > evaluate³": 28,
+    "traverse³ > traverse³ > traverse³ > traverse³": 27,
+    "loop > render³ > … > w > texImage2D": 27,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 26,
+    "U > S > … > Qi > xk": 26,
+    "loop > _updateAvatarMixerLod > update³ > apply³": 26,
+    "loop > render³ > … > Yi³ > uniformMatrix4fv": 25
+   },
+   "perLungo": [
+    {
+     "inizio": 2856,
+     "durata": 263,
+     "cosa": {
+      "(garbage collector)": 130,
+      "loop": 13,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 12,
+      "(program)": 11,
+      "loop > render³ > … > At³ > At³": 10,
+      "loop > render³ > … > It³ > refreshMaterialUniforms³": 7,
+      "loop > render³ > … > M³ > M³": 7
+     }
+    },
+    {
+     "inizio": 4846,
+     "durata": 183,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 17,
+      "loop > _passoNaturale7 > … > clone³ > copy³": 13,
+      "loop > _updateAvatarMixerLod > _corrPostura23": 12,
+      "loop > _passoNaturale7 > … > _removeInactiveBindingsForAction³ > _removeInactiveBinding³": 9,
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 8,
+      "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 8,
+      "(program)": 7
+     }
+    },
+    {
+     "inizio": 5163,
+     "durata": 162,
+     "cosa": {
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 17,
+      "loop > render³ > … > Yi³ > uniformMatrix4fv": 16,
+      "loop": 11,
+      "loop > _updateAvatarMixerLod > … > _update³ > evaluate³": 11,
+      "loop > render³ > … > At³ > At³": 8,
+      "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 7,
+      "loop > render³ > … > Wi³ > uniform3f": 6
+     }
+    }
+   ]
+  },
+  "fase": "hl_move"
+ },
+ {
+  "dove": "tel",
+  "scena": "festa",
+  "rosso": false,
+  "glb": true,
+  "ms": 7905,
+  "fotogrammi": 4,
+  "fps": 0.5,
+  "fotMed": 1950,
+  "fotP90": 2450,
+  "fotMax": 2450,
+  "lunghi": 5,
+  "lunghiMs": 815,
+  "lunghiMax": 366,
+  "t0pag": 37917.39999999851,
+  "marca": 40670.199999999255,
+  "attesaFine": null,
+  "quotaBloccata": 7.1,
+  "elenco": [
+   [
+    3422,
+    59
+   ],
+   [
+    4142,
+    366
+   ],
+   [
+    4925,
+    168
+   ],
+   [
+    5422,
+    118
+   ],
+   [
+    6879,
+    104
+   ]
+  ],
+  "heapMB": [
+   431,
+   356
+  ],
+  "progNuovi": {
+   "prima": 33,
+   "dopo": 33,
+   "nuovi": []
+  },
+  "gl": {
+   "texImage2D": 489,
+   "tex 1x1": 0,
+   "tex 128x128 CANVAS": 0,
+   "compileShader": 0,
+   "linkProgram": 0,
+   "getProgramParameter": 1,
+   "tex 4x4": 0,
+   "bufferData": 50,
+   "tex 512x512": 0,
+   "drawElements": 787,
+   "tex 2048x512 CANVAS": 0,
+   "tex 32x32": 489,
+   "tex 256x256 CANVAS": 0,
+   "tex 1024x512 CANVAS": 0,
+   "tex 1024x128 CANVAS": 0,
+   "tex 512x256 CANVAS": 0,
+   "tex 128x80 CANVAS": 0,
+   "tex 2048x128 CANVAS": 0,
+   "tex 1x1 dati": 0,
+   "tex 512x512 CANVAS": 0,
+   "tex 512x48 CANVAS": 0,
+   "tex 512x55 CANVAS": 0,
+   "tex 512x80 CANVAS": 0,
+   "tex 1024x24 CANVAS": 0,
+   "drawArrays": 3,
+   "tex 1024x1024 CANVAS": 0,
+   "tex 64x64 CANVAS": 0,
+   "readPixels": 0,
+   "tex 1024x464 CANVAS": 0,
+   "tex 1024x1024 dati": 0,
+   "tex 512x512 dati": 0,
+   "tex 2048x2048 dati": 0,
+   "tex 2048x2048 IMG": 0
+  },
+  "profilo": {
+   "totale": 7818,
+   "categorie": {
+    "riposo": 3012,
+    "programma (nativo: disegno/composizione/attesa GPU)": 2913,
+    "three: disegno (renderer)": 622,
+    "GC": 617,
+    "gioco (ciclo, scene, logica)": 468,
+    "three: matrici e ossa": 95,
+    "three: animazione (mixer)": 60,
+    "React": 30
+   },
+   "inclusivo": {
+    "ciclo 3D (loop)": 552,
+    "renderer.render": 221,
+    "React (commit+render)": 152,
+    "mixer.update": 68,
+    "texImage/bufferData (caricamenti GPU)": 12,
+    "compilazione shader": 0
+   },
+   "funzioni": {
+    "(garbage collector) · gioco": 617,
+    "traverse · three.min.js": 292,
+    "_un · gioco": 147,
+    "(anonima) · gioco": 64,
+    "updateMatrixWorld · three.min.js": 61,
+    "loop · gioco": 61,
+    "multiplyMatrices · three.min.js": 31,
+    "getProgramCacheKey · three.min.js": 31,
+    "get scrollWidth · gioco": 29,
+    "At · three.min.js": 27,
+    "_update · three.min.js": 21,
+    "evaluate · three.min.js": 21,
+    "_removeInactiveBinding · three.min.js": 21,
+    "updateWorldMatrix · three.min.js": 21
+   },
+   "percorsi": {
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 217,
+    "traverse³ > traverse³ > … > traverse³ > _un": 94,
+    "loop": 62,
+    "traverse³ > traverse³ > traverse³ > _un": 48,
+    "traverse³ > traverse³ > traverse³": 40,
+    "U > S > … > mf > LiveMatch": 31,
+    "compile³ > traverse³ > … > Pt³ > getProgramCacheKey³": 31,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 30,
+    "U > S > … > Id > get scrollWidth": 29,
+    "traverse³ > traverse³ > traverse³ > traverse³": 29,
+    "loop > _passoNaturale7 > … > _update³ > evaluate³": 18,
+    "compile³ > traverse³ > … > traverse³ > traverse³": 16,
+    "traverse³ > traverse³": 16,
+    "loop > _passoNaturale7 > … > _removeInactiveBindingsForAction³ > _removeInactiveBinding³": 14,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 14,
+    "loop > render³ > … > It³ > Cr.upload³": 14,
+    "loop > render³ > … > Ct³ > renderBufferDirect³": 13,
+    "loop > render³ > … > At³ > At³": 12,
+    "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 11,
+    "evaluate > __marca219": 11,
+    "loop > render³ > At³": 11,
+    "loop > _passoNaturale7 > … > update³ > _update³": 10
+   },
+   "perLungo": [
+    {
+     "inizio": 4142,
+     "durata": 366,
+     "cosa": {
+      "loop": 52,
+      "(program)": 23,
+      "(garbage collector)": 16,
+      "loop > _passoNaturale7 > … > _removeInactiveBindingsForAction³ > _removeInactiveBinding³": 13,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 11,
+      "loop > _passoNaturale7 > … > _update³ > evaluate³": 11,
+      "loop > _passoNaturale7 > … > update³ > _update³": 10
+     }
+    },
+    {
+     "inizio": 4925,
+     "durata": 168,
+     "cosa": {
+      "(garbage collector)": 24,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 13,
+      "(program)": 10,
+      "loop": 7,
+      "loop > render³ > … > At³ > At³": 7,
+      "loop > _passoNaturale7 > … > _update³ > evaluate³": 6,
+      "loop > _passoNaturale7 > clipAction³ > _bindAction³": 6
+     }
+    }
+   ]
+  },
+  "salto": {
+   "lunghi": [
+    [
+     1322,
+     84
+    ],
+    [
+     1441,
+     87
+    ],
+    [
+     1908,
+     132
+    ],
+    [
+     2340,
+     84
+    ],
+    [
+     2796,
+     85
+    ],
+    [
+     3234,
+     65
+    ],
+    [
+     3419,
+     140
+    ],
+    [
+     3918,
+     77
+    ]
+   ],
+   "perLungo": [],
+   "percorsi": {
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 102,
+    "(solo anonime)": 66,
+    "loop": 34,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 30,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 29,
+    "db > Li > … > mf > LiveMatch": 23,
+    "evaluate": 23,
+    "loop > render³ > … > update³ > multiplyMatrices³": 22,
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 22,
+    "loop > render³ > … > w > texImage2D": 20,
+    "loop > render³ > … > M³ > M³": 19,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > multiplyMatrices³": 19,
+    "loop > render³ > … > At³ > At³": 19,
+    "U > S > … > LiveMatch > _tocco292": 18,
+    "U > S > … > mf > LiveMatch": 17,
+    "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 16,
+    "evaluate > _jsonValueNoThrow > … > serialize > innerSerialize": 15,
+    "loop > render³": 15,
+    "loop > render³ > … > renderBufferDirect³ > setup³": 13,
+    "db > Li > … > xk > sg": 13,
+    "loop > _updateAvatarMixerLod > _corrPostura23 > _spalle146": 10,
+    "loop > stop³": 10
+   }
+  },
+  "tocco": {
+   "attesa": 766,
+   "lavoro": 3,
+   "riscontro": 768,
+   "rotella": 1897,
+   "effetto": 2318,
+   "durFot": 366,
+   "eventi": "pointerdown+0:attesa765/lavoro1 touchstart+0:attesa766/lavoro0 pointerup+848:attesa550/lavoro0 touchend+848:attesa552/lavoro0 mousedown+848:attesa698/lavoro1 mouseup+848:attesa700/lavoro0 click+848:attesa701/lavoro3"
+  }
+ },
+ {
+  "dove": "tel",
+  "scena": "premiazione",
+  "rosso": false,
+  "glb": true,
+  "ms": 8526,
+  "fotogrammi": 4,
+  "fps": 0.5,
+  "fotMed": 2217,
+  "fotP90": 2517,
+  "fotMax": 2517,
+  "lunghi": 4,
+  "lunghiMs": 821,
+  "lunghiMax": 340,
+  "t0pag": 37558.300000000745,
+  "marca": 40645.300000000745,
+  "attesaFine": null,
+  "quotaBloccata": 7.3,
+  "elenco": [
+   [
+    3516,
+    340
+   ],
+   [
+    4883,
+    161
+   ],
+   [
+    5695,
+    144
+   ],
+   [
+    7110,
+    176
+   ]
+  ],
+  "heapMB": [
+   459,
+   356
+  ],
+  "progNuovi": {
+   "prima": 33,
+   "dopo": 33,
+   "nuovi": []
+  },
+  "gl": {
+   "texImage2D": 633,
+   "tex 1x1": 0,
+   "tex 128x128 CANVAS": 0,
+   "compileShader": 0,
+   "linkProgram": 0,
+   "getProgramParameter": 2,
+   "tex 4x4": 0,
+   "bufferData": 163,
+   "tex 512x512": 0,
+   "drawElements": 1169,
+   "tex 2048x512 CANVAS": 0,
+   "tex 32x32": 632,
+   "tex 256x256 CANVAS": 0,
+   "tex 1024x512 CANVAS": 0,
+   "tex 1024x128 CANVAS": 0,
+   "tex 512x256 CANVAS": 0,
+   "tex 128x80 CANVAS": 0,
+   "tex 2048x128 CANVAS": 0,
+   "tex 1x1 dati": 0,
+   "tex 512x512 CANVAS": 0,
+   "tex 512x48 CANVAS": 0,
+   "tex 512x55 CANVAS": 0,
+   "tex 512x80 CANVAS": 0,
+   "tex 1024x24 CANVAS": 0,
+   "drawArrays": 20,
+   "tex 1024x1024 CANVAS": 0,
+   "tex 64x64 CANVAS": 0,
+   "readPixels": 0,
+   "tex 1024x464 CANVAS": 0,
+   "tex 512x512 dati": 0,
+   "tex 1024x1024 dati": 0,
+   "tex 2048x2048 dati": 0,
+   "tex 2048x2048 IMG": 0,
+   "tex 1024x448 CANVAS": 1
+  },
+  "profilo": {
+   "totale": 8138,
+   "categorie": {
+    "riposo": 3249,
+    "programma (nativo: disegno/composizione/attesa GPU)": 3210,
+    "three: disegno (renderer)": 727,
+    "gioco (ciclo, scene, logica)": 404,
+    "GC": 356,
+    "three: matrici e ossa": 132,
+    "React": 33,
+    "three: animazione (mixer)": 28
+   },
+   "inclusivo": {
+    "ciclo 3D (loop)": 620,
+    "renderer.render": 322,
+    "React (commit+render)": 81,
+    "mixer.update": 34,
+    "texImage/bufferData (caricamenti GPU)": 8,
+    "compilazione shader": 0
+   },
+   "funzioni": {
+    "(garbage collector) · gioco": 356,
+    "traverse · three.min.js": 291,
+    "_un · gioco": 143,
+    "toArray · three.min.js": 92,
+    "(anonima) · gioco": 89,
+    "updateMatrixWorld · three.min.js": 81,
+    "loop · gioco": 48,
+    "multiplyMatrices · three.min.js": 43,
+    "getProgramCacheKey · three.min.js": 40,
+    "Pt · three.min.js": 32,
+    "(anonima) · three.min.js": 27,
+    "At · three.min.js": 21,
+    "updateWorldMatrix · three.min.js": 19,
+    "update · three.min.js": 17
+   },
+   "percorsi": {
+    "traverse³ > traverse³ > … > traverse³ > traverse³": 221,
+    "traverse³ > traverse³ > … > traverse³ > _un": 105,
+    "loop > render³ > … > update³ > toArray³": 87,
+    "loop": 55,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 44,
+    "compile³ > traverse³ > … > Pt³ > getProgramCacheKey³": 40,
+    "traverse³ > traverse³ > traverse³": 39,
+    "traverse³ > traverse³ > traverse³ > _un": 33,
+    "traverse³ > traverse³ > traverse³ > traverse³": 33,
+    "compile³ > traverse³ > … > traverse³ > Pt³": 31,
+    "loop > render³ > … > At³ > At³": 21,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 20,
+    "loop > render³ > … > update³ > multiplyMatrices³": 20,
+    "compile³ > traverse³ > … > traverse³ > traverse³": 16,
+    "U > S > … > Id > get scrollWidth": 16,
+    "traverse³ > traverse³": 16,
+    "loop > render³ > … > renderBufferDirect³ > It³": 15,
+    "loop > render³ > … > M³ > M³": 15,
+    "loop > render³ > … > At³ > update³": 14,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 13,
+    "loop > _updateAvatarMixerLod > … > _update³ > accumulate³": 12,
+    "loop > Da³": 11
+   },
+   "perLungo": [
+    {
+     "inizio": 3516,
+     "durata": 340,
+     "cosa": {
+      "loop": 41,
+      "loop > render³ > … > update³ > toArray³": 30,
+      "(garbage collector)": 15,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 14,
+      "loop > Da³": 11,
+      "loop > render³ > … > update³ > multiplyMatrices³": 11,
+      "loop > render³ > … > renderBufferDirect³ > setup³": 11
+     }
+    },
+    {
+     "inizio": 4883,
+     "durata": 161,
+     "cosa": {
+      "loop > render³ > … > update³ > toArray³": 21,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 15,
+      "loop > render³ > … > M³ > M³": 13,
+      "(program)": 10,
+      "loop > render³ > … > At³ > At³": 9,
+      "loop": 9,
+      "(garbage collector)": 6
+     }
+    },
+    {
+     "inizio": 7110,
+     "durata": 176,
+     "cosa": {
+      "loop > render³ > … > update³ > toArray³": 37,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 15,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 13,
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 12,
+      "loop > render³ > … > At³ > update³": 7,
+      "loop > render³ > … > Ct³ > renderBufferDirect³": 6,
+      "loop": 6
+     }
+    }
+   ]
+  },
+  "salto": {
+   "lunghi": [
+    [
+     1415,
+     142
+    ],
+    [
+     1915,
+     172
+    ],
+    [
+     2399,
+     124
+    ],
+    [
+     2925,
+     114
+    ],
+    [
+     3498,
+     217
+    ]
+   ],
+   "perLungo": [
+    {
+     "inizio": 1915,
+     "durata": 172,
+     "cosa": {
+      "loop > render³ > … > update³ > toArray³": 37,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 19,
+      "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > multiplyMatrices³": 11,
+      "loop": 10,
+      "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 7,
+      "loop > _updateAvatarMixerLod > … > _setValue_fromArray_setMatrixWorldNeedsUpdate³ > fromArray³": 7,
+      "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 6
+     }
+    },
+    {
+     "inizio": 3498,
+     "durata": 217,
+     "cosa": {
+      "loop > render³ > … > update³ > toArray³": 47,
+      "loop": 17,
+      "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 15,
+      "loop > render³ > … > At³ > At³": 12,
+      "loop > render³ > … > It³ > Cr.upload³": 9,
+      "loop > render³ > … > w > drawElements": 8,
+      "loop > _updateAvatarMixerLod > _corrPostura23": 8
+     }
+    }
+   ],
+   "percorsi": {
+    "loop > render³ > … > update³ > toArray³": 167,
+    "loop > render³ > … > updateMatrixWorld³ > updateMatrixWorld³": 68,
+    "giro > elementFromPoint": 65,
+    "(solo anonime)": 59,
+    "loop": 44,
+    "loop > render³ > … > At³ > At³": 33,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > updateMatrixWorld³": 32,
+    "db > Li > … > mf > LiveMatch": 22,
+    "loop > render³ > … > updateMatrixWorld³ > multiplyMatrices³": 20,
+    "loop > _updateAvatarMixerLod > … > updateMatrixWorld³ > multiplyMatrices³": 19,
+    "loop > _updateAvatarMixerLod > … > updateWorldMatrix³ > updateWorldMatrix³": 19,
+    "loop > render³ > … > w > texImage2D": 17,
+    "loop > render³ > … > M³ > M³": 16,
+    "loop > render³ > … > It³ > Cr.upload³": 15,
+    "evaluate": 15,
+    "U > S > … > LiveMatch > _tocco292": 14,
+    "loop > _updateAvatarMixerLod > _corrPostura23": 13,
+    "loop > render³ > … > w > drawElements": 13,
+    "loop > render³ > … > update³ > multiplyMatrices³": 11,
+    "loop > render³ > … > At³ > update³": 10,
+    "loop > _updateAvatarMixerLod > … > _setValue_fromArray_setMatrixWorldNeedsUpdate³ > fromArray³": 10,
+    "loop > _updateAvatarMixerLod > update³ > _update³": 9
+   }
+  },
+  "tocco": {
+   "attesa": 981,
+   "lavoro": 3,
+   "riscontro": 1426,
+   "rotella": 1971,
+   "effetto": 2178,
+   "durFot": 451,
+   "eventi": "pointerdown+0:attesa979/lavoro2 touchstart+0:attesa981/lavoro1 pointerup+1064:attesa589/lavoro0 touchend+1064:attesa591/lavoro0 mousedown+1064:attesa596/lavoro0 mouseup+1064:attesa598/lavoro1 click+1064:attesa599/lavoro3"
+  }
+ }
+]

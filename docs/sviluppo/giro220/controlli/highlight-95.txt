@@ -1,0 +1,69 @@
+verde s1 seme 1234 pass fine ceremony highlight 5 tabellone {"home":5,"away":0}
+verde s1 seme 1234 drib fine ceremony highlight 5 tabellone {"home":5,"away":0}
+verde s1 seme 2021 pass fine ended highlight 6 tabellone {"home":1,"away":0}
+verde s1 seme 2021 drib fine ended highlight 7 tabellone {"home":0,"away":0}
+verde s1 seme 7 pass fine ceremony highlight 5 tabellone {"home":4,"away":0}
+verde s1 seme 7 drib fine ended highlight 9 tabellone {"home":2,"away":1}
+verde s5 seme 1234 pass fine ended highlight 3 tabellone {"home":3,"away":1}
+verde s5 seme 1234 drib fine ended highlight 1 tabellone {"home":2,"away":2}
+verde s5 seme 2021 pass fine hl_result highlight 5 tabellone {"home":1,"away":0}
+verde s5 seme 2021 drib fine hl_result highlight 5 tabellone {"home":1,"away":0}
+verde s5 seme 7 pass fine playing highlight 6 tabellone {"home":2,"away":2}
+verde s5 seme 7 drib fine hl_result highlight 6 tabellone {"home":2,"away":2}
+verde s12 seme 1234 pass fine ceremony highlight 4 tabellone {"home":1,"away":0}
+verde s12 seme 1234 drib fine ceremony highlight 4 tabellone {"home":1,"away":0}
+verde s12 seme 2021 pass fine hl_result highlight 5 tabellone {"home":1,"away":3}
+verde s12 seme 2021 drib fine ceremony highlight 7 tabellone {"home":1,"away":2}
+verde s12 seme 7 pass fine playing highlight 7 tabellone {"home":3,"away":0}
+verde s12 seme 7 drib fine ceremony highlight 6 tabellone {"home":1,"away":1}
+verde s12 seme 1234 pass (scena senza esito) fine ceremony highlight 4 tabellone {"home":1,"away":0}
+  verde rivelazioni lette da un'altra scena (abbinate per indice): 14
+    ~ s1/1234 hl3: letta hl2 via scena-tiro · giusta nessuna
+    ~ s1/1234 hl4: letta hl2 via scena-tiro · giusta nessuna
+    ~ s1/1234 hl3: letta hl2 via chiusura · giusta nessuna
+    ~ s1/1234 hl4: letta hl2 via chiusura · giusta nessuna
+    ~ s1/2021 hl4: letta hl3 via scena+occupata · giusta nessuna
+    ~ s1/7 hl2: letta hl1 via chiusura · giusta nessuna
+VERDE highlight 100 · D4 senza esito 0 · passaggi 27 arrivati 88.9% gol compagno 11 assist 11 esiti {"goal/assist":11,"saved/chance":9,"intercettato/intercept":3,"blocked/chance":4} · finte 4 riuscite 50.0% {"null/chance/chance":2,"null/intercept/dispossessed":2} · falli cercati 2 · parate giudicate 18 · non giudicabili (guardia di parete) 0 · difetti 0
+rosso s1 seme 1234 pass fine ended highlight 7 tabellone {"home":4,"away":0}
+rosso s1 seme 1234 drib fine ended highlight 7 tabellone {"home":4,"away":0}
+rosso s1 seme 2021 pass fine ended highlight 6 tabellone {"home":0,"away":2}
+rosso s1 seme 2021 drib fine ended highlight 5 tabellone {"home":1,"away":0}
+rosso s1 seme 7 pass fine ended highlight 7 tabellone {"home":1,"away":2}
+rosso s1 seme 7 drib fine ended highlight 7 tabellone {"home":1,"away":2}
+rosso s5 seme 1234 pass fine ended highlight 3 tabellone {"home":2,"away":2}
+rosso s5 seme 1234 drib fine ended highlight 1 tabellone {"home":3,"away":1}
+rosso s5 seme 2021 pass fine hl_result highlight 6 tabellone {"home":1,"away":1}
+rosso s5 seme 2021 drib fine hl_result highlight 5 tabellone {"home":1,"away":1}
+rosso s5 seme 7 pass fine hl_result highlight 5 tabellone {"home":2,"away":2}
+rosso s5 seme 7 drib fine hl_result highlight 6 tabellone {"home":2,"away":2}
+rosso s12 seme 1234 pass fine ceremony highlight 6 tabellone {"home":3,"away":1}
+rosso s12 seme 1234 drib fine ceremony highlight 6 tabellone {"home":5,"away":1}
+rosso s12 seme 2021 pass fine ceremony highlight 7 tabellone {"home":0,"away":0}
+rosso s12 seme 2021 drib fine ceremony highlight 7 tabellone {"home":1,"away":2}
+rosso s12 seme 7 pass fine ceremony highlight 4 tabellone {"home":1,"away":3}
+rosso s12 seme 7 drib fine ceremony highlight 5 tabellone {"home":0,"away":2}
+rosso s12 seme 1234 pass (scena senza esito) fine ceremony highlight 6 tabellone {"home":3,"away":1}
+  rosso rivelazioni lette da un'altra scena (abbinate per indice): 8
+    ~ s1/1234 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s1/1234 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s1/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s5/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s5/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s12/1234 hl3: letta hl2 via riserva+occupata · giusta nessuna
+ROSSO highlight 106 · D4 senza esito 5 · passaggi 31 arrivati 80.6% gol compagno 4 assist 3 esiti {"goal/assist":3,"blocked/intercept":7,"saved/intercept":10,"goal/chance":1,"wide/intercept":4,"intercettato/intercept":6} · finte 7 riuscite 14.3% {"null/intercept/overhit":1,"pass/intercept/intercepted":1,"null/assist/-":1,"null/intercept/intercepted":4} · falli cercati 2 · parate giudicate 6 · non giudicabili (guardia di parete) 0 · difetti 169
+  · D3 s1/1234 «🛡️ Scivolata netta»: esito «Muro invalicabile!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.24,"sl":0.46,"bx":9.6,"ck":7.611100000001471},"rr":null}
+  · D3 s1/1234 «↗️ Palla in area»: esito «Non trova lo specchio» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.08,"sl":0.51,"bx":32.1,"ck":11.411100000001518},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato raccontato perso «Ti portano via il pallone»
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con COSTA»: esito «Ti portano via il pallone» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.03,"sl":0.57,"bx":25.9,"ck":15.961100000001583},"rr":null}
+  · D3 s1/1234 «✈️ Stacco in corsa potente»: esito «Tiro fuori di poco» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.15,"sl":0.44,"bx":29.6,"ck":25.361100000001716},"rr":null}
+  · D3 s1/1234 «⚡ Conclusione di prima»: esito «Il gol sembrava fatto» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.05,"sl":0.53,"bx":26.7,"ck":30.66110000000179},"rr":null}
+  · D3 s1/1234 «🛡️ Scivolata netta»: esito «Muro invalicabile!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.21,"sl":0.48,"bx":9.4,"ck":7.516400000000354},"rr":null}
+  · D3 s1/1234 «↗️ Palla in area»: esito «Non trova lo specchio» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.13,"sl":0.46,"bx":32.1,"ck":11.216400000000398},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato raccontato perso «Ti portano via il pallone»
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con COSTA»: esito «Ti portano via il pallone» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.03,"sl":0.57,"bx":25.9,"ck":15.966400000000466},"rr":null}
+✅ highlight-95 verde (e il rosso si vede)
