@@ -1249,6 +1249,22 @@ function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
   if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
   for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
   return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
+/* [giro 239 · PO-507a, dal giro 228 dubbio 2 — rosso __CPM_NO_G239] IL RUOLO INTERO AL TOCCO. Sul telefono il title della sigla
+   (giro 228) non si vede: un tocco sulla sigla apre un fumetto col ruolo intero (e l'etichetta jolly/U21), sopra la sigla; si chiude
+   con un altro tocco ovunque, con lo scorrimento o da solo dopo 3 s. Il fumetto vive in un portale sul body: il testo della riga
+   (sigla + etichetta) resta quello di prima per chi lo legge. Rosso = la sigla torna un semplice testo, senza tocco. */
+function SiglaRuolo239({testo,children,...resto}){
+  const [ap,setAp]=React.useState(null);const ref=React.useRef(null);
+  const no=typeof window!=='undefined'&&!!window.__CPM_NO_G239;
+  React.useEffect(()=>{if(!ap)return;const chiudi=e=>{if(ref.current&&ref.current.contains(e.target))return;setAp(null);};const via=()=>setAp(null);
+    const t=setTimeout(via,3000);document.addEventListener('pointerdown',chiudi,true);window.addEventListener('scroll',via,true);
+    return()=>{clearTimeout(t);document.removeEventListener('pointerdown',chiudi,true);window.removeEventListener('scroll',via,true);};},[ap]);
+  if(no)return <span {...resto}>{children}</span>;
+  const tocca=e=>{try{e.stopPropagation();}catch(_e){}if(ap){setAp(null);return;}const r=ref.current?ref.current.getBoundingClientRect():null;if(r)setAp({x:r.left+r.width/2,y:r.top});};
+  const W=(typeof window!=='undefined'&&window.innerWidth)||360;
+  return <span ref={ref} role="button" tabIndex={0} aria-expanded={!!ap} onClick={tocca} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tocca(e);}}} {...resto} style={{...(resto.style||{}),cursor:"pointer"}}>{children}{ap&&typeof document!=='undefined'&&ReactDOM.createPortal(
+    <span data-cpm="fumetto239" role="tooltip" style={{position:"fixed",left:clamp(ap.x,96,W-96),top:ap.y-6,transform:"translate(-50%,-100%)",zIndex:1200,maxWidth:180,padding:"6px 10px",borderRadius:RAD.sm,background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.bordo,fontSize:FS.caption,fontWeight:FW.bold,textAlign:"center",whiteSpace:"normal",pointerEvents:"none"}}>{testo}</span>,document.body)}</span>;
+}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
