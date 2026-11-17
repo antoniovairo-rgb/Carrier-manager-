@@ -256,6 +256,18 @@ function creaMotorePossesso(cfg){
      chiude un compagno, e il gol di un compagno servito dall'eroe in gioco fluido resta del compagno, senza assist. La simulazione
      rapida (senza brainLive) e' fuori: li' le occasioni dell'eroe SONO gioco fluido (eseguiOccV2). Guardiano gol-eroe-154. */
   const _g154=()=>!!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G154);
+  /* [giro 238 PO-496, decisione PO «Collegarli nella 197»] I PREMI DEL PATTO COL MISTER NEL MOTORE. cfg.eroe.premi={rig,piaz} lo passa il
+     live (src/15, premiMotore238: solo partite del club in cui il premio e' stato promesso). rig: l'eroe e' il battitore designato dei
+     rigori qualunque sia il resto della squadra (misurato sonda-piazzati-238: lo era gia' per effetto del ruolo «AT» + 6, 4 rigori su 4
+     in 30 partite — ora e' una regola). piaz: l'eroe e' il battitore designato delle punizioni della sua squadra dalla trequarti
+     avversaria (avanzamento >= 70: limite e punizioni laterali vicino all'area; prima solo quelle tirabili, _H27). NON gli angoli e
+     non le punizioni lontane: MISURATO, con l'eroe battitore di angoli e di tutte le punizioni la squadra calava da 103 a 57 angoli
+     (30 partite), con le punizioni dalla meta' campo da 393 a 306 (120 partite): l'eroe era fuori dall'area. PO-065 vuole il numero
+     di piazzati invariato; con
+     la soglia 70 angoli 393 → 387 e piazzati 1826 → 1887. Si cambia SOLO chi batte: fermoSet non consuma sorteggi in piu'; scene,
+     tetti (4 piazzati, 1 punizione diretta) e ripiego del giro 154 restano.
+     Rosso window.__CPM_NO_G238. */
+  const _pr238=(k)=>!!(cfg.eroe&&cfg.eroe.premi&&cfg.eroe.premi[k])&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G238);
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
      (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
@@ -450,7 +462,8 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
+        if(kind==="foul"&&advDi(S.fermo.x,lato)>=70&&_pr238("piaz")&&mio(g[HERO],lato)&&eroeAttivo)B=g[HERO];}S.fermo.batt=B?B.i:null;/* [giro 238 PO-496] il battitore designato dal patto (nessun sorteggio in piu': il numero e il seme dei piazzati non cambiano) */
       /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
          un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si
          batte piu' tardi di una sulla trequarti, perche' qualcuno ci deve andare. */
