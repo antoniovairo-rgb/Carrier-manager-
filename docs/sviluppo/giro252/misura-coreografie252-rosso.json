@@ -1,0 +1,144 @@
+{
+ "R": {
+  "partite": 6,
+  "normali": 6,
+  "normaliConTifoCasa": 6,
+  "normaliConCoreografia": 0,
+  "tipi": [
+   "normale",
+   "normale",
+   "normale",
+   "normale",
+   "normale",
+   "normale"
+  ],
+  "nomi": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "taglie": [],
+  "tagliaPerTipo": [],
+  "fps": null
+ },
+ "S": [
+  {
+   "i": 0,
+   "forza": null,
+   "casa": true,
+   "stagione": 13,
+   "avv": "bre",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 1,
+   "forza": null,
+   "casa": false,
+   "stagione": 13,
+   "avv": "eve",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 2,
+   "forza": null,
+   "casa": true,
+   "stagione": 13,
+   "avv": "cry",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 3,
+   "forza": null,
+   "casa": true,
+   "stagione": 13,
+   "avv": "lei",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 4,
+   "forza": null,
+   "casa": false,
+   "stagione": 13,
+   "avv": "bha",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 5,
+   "forza": null,
+   "casa": true,
+   "stagione": 13,
+   "avv": "avl",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "tipo": "normale",
+   "accesa": false,
+   "W": null,
+   "err206": null,
+   "errori": []
+  }
+ ],
+ "F": null
+}

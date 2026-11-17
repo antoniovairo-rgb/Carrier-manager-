@@ -674,6 +674,7 @@
     "salienti-229": "node salienti-229.mjs",
     "salienti-243": "node salienti-243.mjs",
     "coreografie-244": "node coreografie-244.mjs && CPM_PROVA_ROSSO=1 node coreografie-244.mjs",
+    "coreografie-252": "node coreografie-252.mjs && CPM_PROVA_ROSSO=1 node coreografie-252.mjs",
     "salienti-246": "node salienti-246.mjs",
     "tocco3d-219": "node tocco3d-219.mjs",
     "profilo-219": "node profilo-219.mjs",
