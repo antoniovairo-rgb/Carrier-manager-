@@ -23,6 +23,8 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [giro 241] «Stacco sul palo lontano» (gi55): l'esito «palo» si mostra come «fuori» — misura e motivo dove viene usata (handleAction). Rosso __CPM_NO_G241. */
+function esitoPalo241(kind,label){return(kind==="post"&&/Stacco sul palo lontano/.test(String(label||""))&&!(typeof window!=='undefined'&&window.__CPM_NO_G241))?"wide":kind;}
 /* [giro 90 PO-292, collaudo PC/tablet 7.999.177 — decisione PO «Partita a tutto schermo»] ASSISTENTI DI IMPAGINAZIONE.
    Rosso __CPM_NO_LARGO292 = l'impaginazione della 177 (colonna da 1100 px, campo al 62%, tablet verticale a due colonne);
    rosso __CPM_NO_PCTAB292 = gli altri ritocchi (zone di tocco, suggerimenti da tastiera, tasti 1-3 nei rigori, Esc). Il telefono
@@ -10219,6 +10221,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.999.159 PO-218, rilievo Codex ×3 e collaudatrice] FUORIGIOCO CONTRO INTERCETTO: _outKind nasce da decideExecution e puo' dire «offside» mentre il motore, che legge la chiave, registra l'intercetto: riquadro e cronaca dicevano «bandierina alzata». Con la chiave intercept il racconto segue il motore. Rosso __CPM_NO_FG218. */
     if(key==='intercept'&&_outKind==='offside'&&!(typeof window!=='undefined'&&window.__CPM_NO_FG218))_outKind='intercepted';
     if(!ok&&_g137&&_g137.fam==='tiro'){const _m137={saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito];if(_m137){_outKind=_m137;if(_m137==='post'&&!_wood)_wood='post';}}/* [7.999.137] il tipo di errore e' quello deciso dal motore */
+    /* [giro 241, dubbio 3 del giro 223 — SU «STACCO SUL PALO LONTANO» IL PALO SI MOSTRA COME FUORI. Rosso __CPM_NO_G241, guardiano camera-241]
+       MISURATO (banco misura-241-gi55, 8 esecuzioni con esito palo, GLB acceso): il colpo di testa parte da (34,7 · -16,3), quasi dalla
+       linea di fondo, e taglia tutto lo specchio. Il bersaglio di partenza cade sempre dalla parte del palo lontano (z +6..+9: il segno
+       non e' sorteggiato), e la scelta del palo del giro 223 prende gia' quello libero quando c'e' (7 su 8: pallone a 1,4-1,9 u dal
+       portiere). Quando il portiere sta piu' avanti (45,9 · -1,7: 1 su 8) NESSUNO dei due pali e' libero (margini 1,07 e 2,25 u contro i
+       2,6 richiesti) e il pallone gli passa nel corpo (0,60 u): seminare il bersaglio non lo evita, perche' non dipende dal bersaglio.
+       Decisione tecnica della sessione madre: su questa scena l'esito «palo» si mostra come «fuori» (stesso premio, stessa chiave
+       d'esito «miss»: nessuna regola cambia; il tiro fuori cerca gia' da solo un bersaglio lontano dal portiere, giro 223).
+       Chokepoint M1: 3D, riquadro e cronaca leggono _outKind. */
+    if(!ok&&esitoPalo241(_outKind,action.label)!==_outKind){_outKind=esitoPalo241(_outKind,action.label);_wood=null;}
     /* [giro 93 PO-298, PO giocando: «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] L'ASSIST ERA GIUDICATO
        SUL GOL DEL COMPAGNO. giocaScena decide due fatti: il passaggio (intercettato o arrivato) e il tiro del compagno. Qui contava solo
        il secondo: passaggio arrivato e tiro parato/fuori diventavano la chiave di fallimento dell'assist, e riquadro, 3D e motore
@@ -10538,7 +10550,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.349.0] GANCIO DI MISURA: il tipo d'esito (chance/saved/blocked…) lo decide il motore dal contesto
        — fatica, pressione, qualita' — quindi una probe non puo' riprodurre a comando quello che il PO ha
        visto in partita. Senza, l'unica alternativa e' dedurre dal codice, cioe' indovinare. Test-only. */
-    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;}
+    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;if(esitoPalo241(_outKind,action.label)!==_outKind){key=_outKind=esitoPalo241(_outKind,action.label);_wood=null;}/* [giro 241] il palo chiesto dal collaudo passa dalla stessa regola del gioco */}
     setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,mate298:_sp298,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
@@ -11842,7 +11854,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  sul KIND: senza, il ramo «gol vero» dei piazzati non e' riproducibile — FORCE_OUTCOME forza
                  il successo ma il kind resta «chance», e il difetto del PO (SIT #51, gol dichiarato con la
                  palla ferma a 15,6u) vive proprio nel ramo che qui non si riesce a percorrere. */
-              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=window.__CPM_FORCE_KIND;}
+              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=esitoPalo241(window.__CPM_FORCE_KIND,outcome&&outcome.actionLabel);/* [giro 241] idem: il tipo forzato dal collaudo passa dalla regola di «Stacco sul palo lontano» */}
             }
           }
           /* [giro 90 PO-292, D4/D7/D11 — «Partita a tutto schermo»] con lo spazio largo (PC e tablet orizzontale) le statistiche e le pagelle della

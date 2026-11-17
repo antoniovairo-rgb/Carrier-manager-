@@ -21597,7 +21597,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;}
               const _c0=Math.hypot(_px223-_sx223,_pz223-_sz223)||1,_c1=Math.hypot(_tx223-_sx223,_z223-_sz223);
               ballArcTgtX=_tx223;ballArcTgtZ=_z223;ballArcDur=Math.min(1.6,ballArcDur*Math.max(1,_c1/_c0));
-              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
             }
           }
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
@@ -26846,7 +26846,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          in alto. Ci arriva lungo un ARCO attorno all'eroe (bersaglio a non piu' di 1,1 rad dalla camera vera, e solo se serve: a pallone vicino quasi ogni lato va bene), mai tagliando per il suo
          corpo. L'eroe ha la precedenza: lo sguardo non lo porta mai oltre 0,55 del semiquadro. A pallone vicino (prima del gesto) la
          regia resta quella del 7.482/7.505. La POSIZIONE si scrive qui, prima del lerp di posizione (scritta dopo, cambiava solo lo sguardo: misurato, la camera tagliava ancora per l'eroe a 4,3 u); lo SGUARDO piu' sotto, prima dell'arbitro d'inerzia (regola 7.521). Nessun sorteggio. */
-      {const S1=sr.current;S1._g241on=0;S1._g241f=null;
+      {const S1=sr.current;S1._g241on=0;const _F1=S1._g241f||(S1._g241f={on:0,w:0,tv:0,th:0,v:1});_F1.on=0;/* oggetto riusato: nessuna allocazione per fotogramma */
        if(isResult&&hero&&hero.visible&&ball&&P.hlSuccess===false&&!P.hlDef&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
          const _hx1=hero.position.x,_hz1=hero.position.z,_dx1=ball.position.x-_hx1,_dz1=ball.position.z-_hz1,_d1=Math.hypot(_dx1,_dz1);
          const _st1=(S1._g241&&S1._g241.k===P.hlSitKey)?S1._g241:(S1._g241={k:P.hlSitKey,w:0,ax:0,az:0});
@@ -26866,7 +26866,8 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            const _rot=Math.abs(_dA)<=_am1?0:_dA-Math.sign(_dA)*_am1,_st0=clamp(_rot,-1.1,1.1),_azT=_azC+_st0,_r1=14/Math.cos(_st0);/* il bersaglio sta sulla tangente: inseguendolo la camera resta a 14 u dall'eroe (a raggio fisso l'inseguimento stringeva l'orbita) */
            const _px1=clamp(_hx1+Math.cos(_azT)*_r1,-60,60),_pz1=clamp(_hz1+Math.sin(_azT)*_r1,-40,40),_py1=6.5,_w1=_st1.w;
            tPx+=(_px1-tPx)*_w1;tPy+=(_py1-tPy)*_w1;tPz+=(_pz1-tPz)*_w1;
-           S1._g241f={w:_w1,tv:_tv1,th:_th1,v:clamp(1-Math.abs(_rot)/0.7,0.3,1)};S1._g241on=_w1>0.5?1:0;S1._g241t=[+_px1.toFixed(1),+_pz1.toFixed(1),+_dA.toFixed(2),+_am1.toFixed(2),+_w1.toFixed(2)];}}
+           _F1.on=1;_F1.w=_w1;_F1.tv=_tv1;_F1.th=_th1;_F1.v=clamp(1-Math.abs(_rot)/0.7,0.3,1);S1._g241on=_w1>0.5?1:0;
+           if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST))S1._g241t=[+_px1.toFixed(1),+_pz1.toFixed(1),+_dA.toFixed(2),+_am1.toFixed(2),+_w1.toFixed(2)];/* solo prova */}}
        else if(S1._g241&&!isResult)S1._g241=null;}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('lerp:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
@@ -26934,7 +26935,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          eroe (busto) e pallone, in azimut e in elevazione, visti dalla camera VERA; l'eroe mai oltre 0,55 del semiquadro in orizzontale e
          0,50 in verticale (oltre 0,76 la correzione del fotogramma disegnato del giro 96a lo schiaccerebbe sul bordo). Prima dell'arbitro d'inerzia (regola 7.521). */
       {const _f1=sr.current._g241f;
-       if(_f1&&hero&&ball){const _px1=camera.position.x,_py1=camera.position.y,_pz1=camera.position.z,_hx1=hero.position.x,_hz1=hero.position.z;
+       if(_f1&&_f1.on&&hero&&ball){const _px1=camera.position.x,_py1=camera.position.y,_pz1=camera.position.z,_hx1=hero.position.x,_hz1=hero.position.z;
          const _gh1=Math.hypot(_hx1-_px1,_hz1-_pz1)||1,_gb1=Math.hypot(ball.position.x-_px1,ball.position.z-_pz1)||1;
          const _ah1=Math.atan2(_hz1-_pz1,_hx1-_px1),_eh1=Math.atan2(hero.position.y+0.9-_py1,_gh1);
          let _db1=Math.atan2(ball.position.z-_pz1,ball.position.x-_px1)-_ah1;while(_db1>Math.PI)_db1-=2*Math.PI;while(_db1<-Math.PI)_db1+=2*Math.PI;
@@ -27362,7 +27363,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          sta oltre 0,66 del semiquadro (0,62 in verticale), lo sguardo ruota di quanto basta a riportarlo li' (azimut ed elevazione). Il bersaglio lo tiene
          gia' entro 0,55: rete e lerp spingono dalla stessa parte (lezione 7.507), nessun tiro alla fune. Solo camLook. */
       {const _f2=sr.current._g241f;
-       if(_f2&&_f2.w>0.5&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+       if(_f2&&_f2.on&&_f2.w>0.5&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
          const _cx2=camera.position.x,_cy2=camera.position.y,_cz2=camera.position.z,_gl2=Math.hypot(camLook.x-_cx2,camLook.z-_cz2)||1,_gh2=Math.hypot(hero.position.x-_cx2,hero.position.z-_cz2)||1;
          const _al2=Math.atan2(camLook.z-_cz2,camLook.x-_cx2),_el2=Math.atan2(camLook.y-_cy2,_gl2),_eh2=Math.atan2(hero.position.y+0.9-_cy2,_gh2);
          let _da2=Math.atan2(hero.position.z-_cz2,hero.position.x-_cx2)-_al2;while(_da2>Math.PI)_da2-=2*Math.PI;while(_da2<-Math.PI)_da2+=2*Math.PI;
@@ -32269,6 +32270,8 @@ function simulaPartitaMotore(o){o=o||{};
   const t=M.tabellino();if(o.dettaglio)return{home:t.home.gol|0,away:t.away.gol|0,tab:t,pag:M.pagelle(),scelte:(M._S.conta&&M._S.conta.scelte67)||{}};/* [giro 67 PO-098] solo per le sonde */return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
 if(typeof window!=='undefined'){try{window.__CPM_SIM_MOTORE=simulaPartitaMotore;}catch(_e){}}
 /* CMAV-MOTORE-END */
+/* [giro 241] «Stacco sul palo lontano» (gi55): l'esito «palo» si mostra come «fuori» — misura e motivo dove viene usata (handleAction). Rosso __CPM_NO_G241. */
+function esitoPalo241(kind,label){return(kind==="post"&&/Stacco sul palo lontano/.test(String(label||""))&&!(typeof window!=='undefined'&&window.__CPM_NO_G241))?"wide":kind;}
 /* [giro 90 PO-292, collaudo PC/tablet 7.999.177 — decisione PO «Partita a tutto schermo»] ASSISTENTI DI IMPAGINAZIONE.
    Rosso __CPM_NO_LARGO292 = l'impaginazione della 177 (colonna da 1100 px, campo al 62%, tablet verticale a due colonne);
    rosso __CPM_NO_PCTAB292 = gli altri ritocchi (zone di tocco, suggerimenti da tastiera, tasti 1-3 nei rigori, Esc). Il telefono
@@ -42465,6 +42468,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.999.159 PO-218, rilievo Codex ×3 e collaudatrice] FUORIGIOCO CONTRO INTERCETTO: _outKind nasce da decideExecution e puo' dire «offside» mentre il motore, che legge la chiave, registra l'intercetto: riquadro e cronaca dicevano «bandierina alzata». Con la chiave intercept il racconto segue il motore. Rosso __CPM_NO_FG218. */
     if(key==='intercept'&&_outKind==='offside'&&!(typeof window!=='undefined'&&window.__CPM_NO_FG218))_outKind='intercepted';
     if(!ok&&_g137&&_g137.fam==='tiro'){const _m137={saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito];if(_m137){_outKind=_m137;if(_m137==='post'&&!_wood)_wood='post';}}/* [7.999.137] il tipo di errore e' quello deciso dal motore */
+    /* [giro 241, dubbio 3 del giro 223 — SU «STACCO SUL PALO LONTANO» IL PALO SI MOSTRA COME FUORI. Rosso __CPM_NO_G241, guardiano camera-241]
+       MISURATO (banco misura-241-gi55, 8 esecuzioni con esito palo, GLB acceso): il colpo di testa parte da (34,7 · -16,3), quasi dalla
+       linea di fondo, e taglia tutto lo specchio. Il bersaglio di partenza cade sempre dalla parte del palo lontano (z +6..+9: il segno
+       non e' sorteggiato), e la scelta del palo del giro 223 prende gia' quello libero quando c'e' (7 su 8: pallone a 1,4-1,9 u dal
+       portiere). Quando il portiere sta piu' avanti (45,9 · -1,7: 1 su 8) NESSUNO dei due pali e' libero (margini 1,07 e 2,25 u contro i
+       2,6 richiesti) e il pallone gli passa nel corpo (0,60 u): seminare il bersaglio non lo evita, perche' non dipende dal bersaglio.
+       Decisione tecnica della sessione madre: su questa scena l'esito «palo» si mostra come «fuori» (stesso premio, stessa chiave
+       d'esito «miss»: nessuna regola cambia; il tiro fuori cerca gia' da solo un bersaglio lontano dal portiere, giro 223).
+       Chokepoint M1: 3D, riquadro e cronaca leggono _outKind. */
+    if(!ok&&esitoPalo241(_outKind,action.label)!==_outKind){_outKind=esitoPalo241(_outKind,action.label);_wood=null;}
     /* [giro 93 PO-298, PO giocando: «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] L'ASSIST ERA GIUDICATO
        SUL GOL DEL COMPAGNO. giocaScena decide due fatti: il passaggio (intercettato o arrivato) e il tiro del compagno. Qui contava solo
        il secondo: passaggio arrivato e tiro parato/fuori diventavano la chiave di fallimento dell'assist, e riquadro, 3D e motore
@@ -42784,7 +42797,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.349.0] GANCIO DI MISURA: il tipo d'esito (chance/saved/blocked…) lo decide il motore dal contesto
        — fatica, pressione, qualita' — quindi una probe non puo' riprodurre a comando quello che il PO ha
        visto in partita. Senza, l'unica alternativa e' dedurre dal codice, cioe' indovinare. Test-only. */
-    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;}
+    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;if(esitoPalo241(_outKind,action.label)!==_outKind){key=_outKind=esitoPalo241(_outKind,action.label);_wood=null;}/* [giro 241] il palo chiesto dal collaudo passa dalla stessa regola del gioco */}
     setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,mate298:_sp298,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
@@ -44088,7 +44101,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  sul KIND: senza, il ramo «gol vero» dei piazzati non e' riproducibile — FORCE_OUTCOME forza
                  il successo ma il kind resta «chance», e il difetto del PO (SIT #51, gol dichiarato con la
                  palla ferma a 15,6u) vive proprio nel ramo che qui non si riesce a percorrere. */
-              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=window.__CPM_FORCE_KIND;}
+              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=esitoPalo241(window.__CPM_FORCE_KIND,outcome&&outcome.actionLabel);/* [giro 241] idem: il tipo forzato dal collaudo passa dalla regola di «Stacco sul palo lontano» */}
             }
           }
           /* [giro 90 PO-292, D4/D7/D11 — «Partita a tutto schermo»] con lo spazio largo (PC e tablet orizzontale) le statistiche e le pagelle della

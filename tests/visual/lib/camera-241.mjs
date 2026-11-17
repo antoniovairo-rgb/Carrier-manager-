@@ -10,10 +10,14 @@
    ma quando la regia lo ha perso resta SCHIACCIATO SUL BORDO (fra 0,76 e 0,90 del semiquadro) mentre la scena inquadra altro.
    Il banco 226 (le «13 esecuzioni su 116») misurava la camera della regia. Qui si giudicano tutte e due:
      «eroe in quadro (regia)»   = il CENTRO del corpo (0,9 u dai piedi) dentro il quadro della camera della regia (grandezza del 226);
-     «eroe in quadro (schermo)» = sul fotogramma disegnato piedi e testa dentro il quadro E non schiacciati sul bordo (|x| <= BORDO).
-   In piu' si scrivono, sul fotogramma disegnato: pallone dentro, eroe e pallone insieme, altezza apparente dell'eroe.            */
+     «eroe in quadro (schermo)» = sul fotogramma disegnato piedi E testa dentro il quadro (corpo intero);
+     «eroe enorme»              = altezza apparente dell'eroe oltre H_GIGANTE del quadro dentro la scena (dubbio 12 del giro 226).
+   Si scrivono senza giudicarle, sul fotogramma disegnato: la quota di fotogrammi con l'eroe SUL BORDO (piedi o testa oltre BORDO del
+   semiquadro: la correzione del 96a ce lo porta anche per far entrare il pallone, quindi non e' di per se' un difetto), il pallone
+   dentro, eroe e pallone insieme.                                                                                                */
 export const S = {
-  BORDO: 0.80,         // oltre 0,80 del semiquadro orizzontale (piedi o testa) l'eroe e' schiacciato sul bordo dalla correzione del 96a (rampa 0,76-0,90)
+  BORDO: 0.80,         // oltre 0,80 del semiquadro orizzontale (piedi o testa) l'eroe sta sul bordo (rampa della correzione 96a: 0,76-0,90; tetto 0,93 col pallone)
+  H_GIGANTE: 0.35,     // altezza apparente oltre il 35% del quadro dentro la scena = eroe «enorme» (la taglia della regia e' 0,12-0,19; primo piano americano 0,35-0,60)
   Q_DENTRO: 0.95,      // consegna: eroe in quadro in almeno il 95% dei fotogrammi della scena
   MIN_FOTOGRAMMI: 20,  // sotto, l'esecuzione e' «non giudicata» (= rosso)
   SCENA_MAX: 9,        // s di scena osservati al massimo (l'auto-avanzamento ha un tetto di 6 s, 7.461)
@@ -90,7 +94,7 @@ export function analizza({ dati, ...ex }) {
   if (ex.out === 'fail' && F[F.length - 1].ok !== false) return { ...base, nFot: F.length, nonGiud: 'l\'esito in scena non e\' fallito' };
   const durata = +(F[F.length - 1].ck - F[0].ck).toFixed(2);
   /* camera della REGIA (rn); fotogramma DISEGNATO: piedi e testa dentro e non sul bordo */
-  const okR = f => f.rn ? dentroN(f.rn) : dentroN(f.hn), okS = f => !!(f.fi && f.ti && f.ex <= S.BORDO);
+  const okR = f => f.rn ? dentroN(f.rn) : dentroN(f.hn), okS = f => !!(f.fi && f.ti);
   const fu = F.filter(f => !okR(f)), fuS = F.filter(f => !okS(f));
   let striscia = 0, sMax = 0, tPrimo = null; for (const f of F) { if (!okR(f)) { striscia++; if (tPrimo == null) tPrimo = +(f.ck - F[0].ck).toFixed(2); if (striscia > sMax) sMax = striscia; } else striscia = 0; }
   const fuB = F.filter(f => !f.bv || !dentroN(f.bn));
@@ -104,7 +108,7 @@ export function analizza({ dati, ...ex }) {
   /* anche l'ultimo tratto della scena (l'eroe puo' diventare enorme gia' in hl_result) */
   const enormeR = F.filter(f => f.hh > S.H_ENORME && f.hn[2]);
   return { ...base, giudicata: true, chiusa, nFot: F.length, nCut: R.length - F.length, durata, kd: F[F.length - 1].kd, pa: [...new Set(F.map(f => f.pa).filter(Boolean))].join('+') || null,
-    qDentro: +(1 - fu.length / F.length).toFixed(3), qSchermo: +(1 - fuS.length / F.length).toFixed(3), strisciaMax: sMax, tPrimoFuori: tPrimo, qPallaFuori: +(fuB.length / F.length).toFixed(3), qInsieme: +(tutti.length / F.length).toFixed(3),
+    qDentro: +(1 - fu.length / F.length).toFixed(3), qSchermo: +(1 - fuS.length / F.length).toFixed(3), qBordo: +(F.filter(f => f.ex > S.BORDO).length / F.length).toFixed(3), strisciaMax: sMax, tPrimoFuori: tPrimo, qPallaFuori: +(fuB.length / F.length).toFixed(3), qInsieme: +(tutti.length / F.length).toFixed(3),
     qPiediTesta: +(F.filter(f => f.fi && f.ti).length / F.length).toFixed(3), hhMed: +hh[hh.length >> 1].toFixed(3), hhMax: +hh[hh.length - 1].toFixed(3), nEnormeScena: enormeR.length,
     qSoggPalla: +(F.filter(f => f.sb).length / F.length).toFixed(3), qG241: +(F.filter(f => f.g241).length / F.length).toFixed(3), dBHmax: +Math.max(...F.map(f => Math.hypot(f.b[0] - f.h[0], f.b[2] - f.h[1]))).toFixed(1), dopo };
 }
@@ -113,7 +117,8 @@ export function violazioni(r) {
   if (!r.giudicata) return ['non giudicata: ' + (r.nonGiud || '?')];
   const v = [];
   if (r.qDentro < S.Q_DENTRO) v.push(`eroe in quadro (regia) nel ${(r.qDentro * 100).toFixed(1)}% dei fotogrammi (< 95%) — striscia piu' lunga ${r.strisciaMax}, primo fuori a ${r.tPrimoFuori} s`);
-  if (r.qSchermo < S.Q_DENTRO) v.push(`eroe in quadro (schermo, intero e non sul bordo) nel ${(r.qSchermo * 100).toFixed(1)}% dei fotogrammi (< 95%)`);
+  if (r.qSchermo < S.Q_DENTRO) v.push(`eroe intero in quadro sul fotogramma disegnato nel ${(r.qSchermo * 100).toFixed(1)}% dei fotogrammi (< 95%)`);
+  if (r.hhMax > S.H_GIGANTE) v.push(`eroe enorme: altezza apparente ${r.hhMax} del quadro (> ${S.H_GIGANTE})`);
   return v;
 }
-export const rigaBreve = r => `gi${r.gi}k${r.k} ${r.fam}/${r.tipo} «${String(r.label || '').slice(0, 34)}» ${r.out}${r.kd ? '/' + r.kd : ''}` + (r.giudicata ? ` · ${r.nFot} fot ${r.durata}s · eroe dentro: regia ${(r.qDentro * 100).toFixed(1)}% schermo ${(r.qSchermo * 100).toFixed(1)}% · insieme ${(r.qInsieme * 100).toFixed(0)}% · palla fuori ${(r.qPallaFuori * 100).toFixed(0)}% · taglia med ${r.hhMed} max ${r.hhMax}` + (r.dopo ? ` · dopo: taglia max ${r.dopo.hhMax} (enorme ${r.dopo.nEnorme}/${r.dopo.n})` : '') : ` · ${r.nonGiud || r.errore}`);
+export const rigaBreve = r => `gi${r.gi}k${r.k} ${r.fam}/${r.tipo} «${String(r.label || '').slice(0, 34)}» ${r.out}${r.kd ? '/' + r.kd : ''}` + (r.giudicata ? ` · ${r.nFot} fot ${r.durata}s · eroe dentro: regia ${(r.qDentro * 100).toFixed(1)}% schermo ${(r.qSchermo * 100).toFixed(1)}% · sul bordo ${((r.qBordo || 0) * 100).toFixed(0)}% · insieme ${(r.qInsieme * 100).toFixed(0)}% · palla fuori ${(r.qPallaFuori * 100).toFixed(0)}% · taglia med ${r.hhMed} max ${r.hhMax}` + (r.dopo ? ` · dopo: taglia max ${r.dopo.hhMax} (enorme ${r.dopo.nEnorme}/${r.dopo.n})` : '') : ` · ${r.nonGiud || r.errore}`);
