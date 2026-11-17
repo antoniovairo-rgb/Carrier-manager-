@@ -9,7 +9,13 @@ sul build unito; le corse fatte prima sono state buttate (patto-238 interrotto e
 
 Rosso del giro: `window.__CPM_NO_G257` (A, B, C tornano come oggi, cioè come nel giro 249).
 Guardiano nuovo: `rigorista-257` (catene `completa` e `carriera`, una volta ciascuna; mappa mirata per src/12-13, 14, 15, 18).
-Guardiano riparato: `patto-238` (parte B). Sonda adattata: `sonda-rigore-139.mjs` (`CPM_ROSSO257`, e scrive `rig257` passato al motore).
+Guardiano riparato: `patto-238` (parte B). Sonde adattate: `sonda-rigore-139.mjs` (`CPM_ROSSO257`, e scrive `rig257` passato al
+motore) e `gol-eroe-154.mjs` (vedi sotto). File di gioco toccati: src/11 (componente `SegnoR257`), src/13, src/14, src/15, src/18.
+
+**gol-eroe-154 e il ponte chiuso.** Il suo rosso provocava al 90' un rigore con `chiedi.piazzato(batt: HERO)` senza premio, cioè
+proprio la chiamata che C chiude: sul build del giro la prima corsa è uscita «non giudicato» (0 rigori con l'eroe battitore). Ora,
+dopo la stessa chiamata, la sonda **scrive** l'eroe nel fermo del motore (stato, come carriera3-94 D2; contatore `__G257SCRITTO`):
+è il caso di un rigore dell'eroe con premio o in Nazionale, e la partita resta quella senza premio.
 
 ---
 
@@ -75,7 +81,7 @@ quindi non l'eroe»: ma il compagno più vicino può essere l'eroe. Rosso instab
 
 ---
 
-## Misure e controlli (uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, build unito)
+## Misure e controlli (uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, build definitivo, catena unica 19:24-21:06)
 
 Build: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BYTE PER BYTE**. `node --check ci-runner.mjs` ok,
 nessun doppione nelle catene toccate.
@@ -98,14 +104,14 @@ nessun doppione nelle catene toccate.
 
 | Controllo | Esito | Numeri |
 |---|---|---|
-| `patto-238` (riparato) — 3 passate di fila | ESITI_PATTO | |
-| `rigorista-249` | ESITO_249 | |
-| `patto-227` | ESITO_227 | |
-| `momento-165` | ESITO_165 | |
-| `sigle-203` (360/375/390, 1366, rosso) | ESITO_203 | |
-| `test:logic` | ESITO_LOGIC | |
-| `save-compat` | ESITO_SAVE | |
-| `gol-eroe-154` | ESITO_154 | |
+| `patto-238` (riparato) — 3 passate di fila | ✅ 3/3 verde, rosso visto ogni volta | B verde 12/12 provocate con l'eroe battitore (0 scartate, 0 nulle; naturali 6/6·8/8·7/7) · B rosso 0/12 · A 594/618, rigori 13/13, angoli 388→387 · C verde/rosso. ~11,5 min a passata |
+| `rigorista-249` | ✅ verde · rosso `__CPM_NO_G249` bocciato | A senza premio 0/10 (Ricci 10), con premio 13/13 · B scena del compagno 59' SPENCER «GOOOL!» |
+| `patto-227` | ✅ verde · rosso `__CPM_NO_G227` bocciato | |
+| `momento-165` | ✅ | 33 verdi, 0 rossi |
+| `sigle-203` (360/375/390, 1366, rosso) | ✅ | verde 18/0 e 8/0 · rosso atteso e visto. Nota: sigle-203 misura la barra della partita; la larghezza delle righe della Rosa a 360 px con la «R» la misura `rigorista-257` A1 |
+| `test:logic` | ✅ | 51 pass · 0 fail (la prima stesura metteva il componente JSX della «R» in src/14, che il test carica come JS puro: 1 fail; spostato in src/11) |
+| `save-compat` | ✅ | 12 pass · 0 fail |
+| `gol-eroe-154` (sonda adattata) | ✅ verde e rosso | verde 10/10 valide, rigori provocati passati al compagno 7/7, gol fluidi 0 · rosso 7 rigori dell'eroe, 5 gol fluidi |
 
 Non eseguiti (verifica di rilascio): il resto della mappa mirata di src/13, 14, 15, 18 (fra gli altri `highlight-95`,
 `ingresso-206`, `career-critical`, `validate-situations`, `partita-vera`, `rosa-228`, `rigore-191`, `piazzato-204`, `rigore-139`,
@@ -133,3 +139,5 @@ Non eseguiti (verifica di rilascio): il resto della mappa mirata di src/13, 14, 
    batte (che è ciò che il premio decide). Le naturali restano stampate a titolo informativo. Le provocazioni cambiano la partita
    (più punizioni: le naturali viste salgono da 1-2 a 6-11).
 8. **Partenza dal commit sbagliato** (vedi in alto): corretto con un'unione, nessuna storia riscritta.
+9. **Mappa mirata di src/11**: lo spostamento del componente della «R» tocca src/11 (kit UI); dei guardiani della sua mappa ho eseguito
+   solo quelli di questa consegna. Il componente è nuovo e usato solo da Rosa e formazioni.
