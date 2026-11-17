@@ -945,7 +945,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null}){
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
   useEffect(()=>{
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -1038,6 +1038,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
        nella larghezza del campetto (il riquadro dell'eroe compreso), mai sotto 58 px: il cognome va coi puntini, la linea resta una.
        Dove c'e' spazio resta 84 px. Rosso __CPM_NO_G112 (84 fissi). */
     const _lw112=(n)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G112)return 84;try{const w=(ref204.current&&ref204.current.getBoundingClientRect().width)||(window.innerWidth-32);return clamp(Math.floor((w-14-3*(n-1))/n),58,84);}catch(_e){return 64;}};
+    const _R257=(rr,pl)=>!!rig257&&!!pl&&pl.name===rig257&&rr===(rigLato257==="away"?_awayNums:_homeNums);/* [giro 257] la «R» sul rigorista, solo nella squadra dell'eroe */
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
@@ -1047,9 +1048,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2,padding:gap204?`${Math.floor(gap204/2)}px 0 ${Math.ceil(gap204/2)}px`:0}}>
-            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/></div>
-            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;const _r=_R257(rr,pl);return isP?(
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1,position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/>{_r&&<SegnoR257 abs/>}</div>
+            ):_r?(<div key={pi} style={{position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/><SegnoR257 abs/></div>)
+            :(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
       </div>
     </Card>);

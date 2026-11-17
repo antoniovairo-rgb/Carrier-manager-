@@ -217,6 +217,25 @@ const INT259={
     return (esito.n|0)<2||String(esito.testo).indexOf(String(esito.n|0))>=0;}catch(_e){return false;}}
 };
 try{if(typeof globalThis!=='undefined')globalThis.INT259=INT259;}catch(_e){}
+/* [giro 257 PO-496 seguito, decisioni PO 17/11 — rosso window.__CPM_NO_G257]
+   (A) «Sì, segnato nella Rosa»: il rigorista scelto dal gioco si VEDE. Una sola regola, qui, per Rosa, formazioni e motore: fra i dieci
+   compagni titolari dell'undici del club (generateTeamRoster, gli stessi della partita: indice 0..9, l'eroe e' il 10) il rigorista e'
+   l'attaccante con l'attitudine al dischetto piu' alta, attitudine fissa ricavata dal nome (giro 249). Nessun campo nel salvataggio.
+   Con il premio del patto «il rigorista sei tu» (club in cui e' stato promesso) il rigorista e' l'eroe.
+   (B) «In Nazionale tira l'eroe»: in Nazionale e nel provino i premi del patto non valgono e i rigori li tira l'eroe, come prima della 197. */
+function no257(){return typeof window!=='undefined'&&!!window.__CPM_NO_G257;}
+function attitudine257(nome){const s=String(nome||"");let h=5381;for(let k=0;k<s.length;k++){h=(((h<<5)+h)^s.charCodeAt(k))>>>0;}return (h%1000)/250;}
+function rigoristaXI257(xi){let best=-1,bs=-1e9;(xi||[]).slice(0,10).forEach((p,i)=>{if(!p||!p.name)return;const r=String(p.role||"");if(/portiere|^(GK|POR)$/i.test(r))return;
+  const at=/trequartista|ala|centravanti|attaccante|punta|^ATT?$/i.test(r)?10:0;const sc=at+attitudine257(p.name);if(sc>bs){bs=sc;best=i;}});return best;}
+function rigoristaEroe257(context){return /^(national|nationsCup|euroMondiale|trial)/.test(String(context||""));}
+/* -> {eroe:true} oppure {eroe:false,i,nome} (nome intero della rosa) oppure null (rosso o dati mancanti) */
+function rigorista257(player,context,xi){if(no257()||!player)return null;
+  if(rigoristaEroe257(context))return {eroe:true,nome:player.name||""};
+  try{const pr=(typeof premiMotore238==="function")?premiMotore238(player,context):null;if(pr&&pr.rig)return {eroe:true,nome:player.name||""};}catch(_e){}
+  const k=rigoristaXI257(xi);return k>=0?{eroe:false,i:k,nome:String(xi[k].name||"")}:null;}
+/* il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
+function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
+if(typeof window!=='undefined')window.__CPM_RIG257={rigorista:rigorista257,xi:rigoristaXI257,att:attitudine257};
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -275,6 +294,12 @@ function creaMotorePossesso(cfg){
      sorteggio). L'eroe solo se nessun compagno puo' calciare. CON il premio tira l'eroe (+100, giro 238). Rosso window.__CPM_NO_G249. */
   const _g249=()=>!(typeof window!=='undefined'&&window&&window.__CPM_NO_G249);
   const _att249=(q)=>{const s=String(q.name||"");let h=5381;for(let k=0;k<s.length;k++){h=(((h<<5)+h)^s.charCodeAt(k))>>>0;}return (h%1000)/250;};/* attitudine 0..4 dal nome (stessa scala del vecchio sorteggio) */
+  /* [giro 257] il rigorista dal live (rigorista257): {eroe:true} in Nazionale, nel provino e col premio -> la regola di prima della 197
+     (l'eroe vince la scelta, ruolo «AT» + 6); {i,nome} -> quel compagno, se e' in campo con lo stesso nome (cambi ed espulsioni: torna la
+     regola del 249). Rosso window.__CPM_NO_G257. */
+  const _R257=(!no257()&&cfg.eroe&&cfg.eroe.rig257)?cfg.eroe.rig257:null;
+  const _senzaEroe257=(l)=>_g249()&&!_pr238("rig")&&!(_R257&&_R257.eroe)&&l===HOME;/* il rigore di questa squadra NON e' dell'eroe */
+  const _des257=(q)=>!!(_R257&&!_R257.eroe&&q.i===(_R257.i|0)&&String(q.name||"")===String(_R257.cog||""));
   const _pr238=(k)=>!!(cfg.eroe&&cfg.eroe.premi&&cfg.eroe.premi[k])&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G238);
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
@@ -470,7 +495,7 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;const _c249=_g249()&&!_pr238("rig")&&lato===HOME;/* solo la squadra dell'eroe: gli avversari scelgono come prima */for(const q of g){if(!mio(q,lato)||q.gk)continue;const _r=rnd()*4;/* [giro 249] il sorteggio si consuma comunque: stesso flusso di sorteggi in entrambi i bracci */const sc=_c249?((q.eroe?-1000:0)+(attivo(q)?0:-500)/* in campo: un espulso non calcia */+(q.rl==="AT"?10:0)+_att249(q)):(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+_r;if(sc>bs){bs=sc;B=q;}}if(_c249&&B&&!B.eroe)S.conta.rig249=(S.conta.rig249|0)+1;}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;const _c249=_senzaEroe257(lato);/* solo la squadra dell'eroe: gli avversari scelgono come prima */for(const q of g){if(!mio(q,lato)||q.gk)continue;const _r=rnd()*4;/* [giro 249] il sorteggio si consuma comunque: stesso flusso di sorteggi in entrambi i bracci */const sc=_c249?((q.eroe?-1000:0)+(attivo(q)?0:-500)/* in campo: un espulso non calcia */+(q.rl==="AT"?10:0)+_att249(q)+(_des257(q)?50:0)/* [giro 257] il rigorista segnato nella Rosa */):(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+_r;if(sc>bs){bs=sc;B=q;}}if(_c249&&B&&!B.eroe)S.conta.rig249=(S.conta.rig249|0)+1;}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
         if(kind==="foul"&&advDi(S.fermo.x,lato)>=70&&_pr238("piaz")&&mio(g[HERO],lato)&&eroeAttivo)B=g[HERO];}S.fermo.batt=B?B.i:null;/* [giro 238 PO-496] il battitore designato dal patto (nessun sorteggio in piu': il numero e il seme dei piazzati non cambiano) */
       /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
          un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si
@@ -1535,7 +1560,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     piazzato(o){o=o||{};if(S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)){S.conta.piazNo94=(S.conta.piazNo94|0)+1;return;}/* [giro 94 D2] il ponte non rifischia il piazzato appena giocato in scena */const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
       S.richieste.verso=null;fermoSet(kind,l,+o.x||50,+o.y||50,{scena:1});
       if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,o.hold?clamp(o.hold|0,1,12):6);
-        if(o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
+        /* [giro 257, dubbio 4 del 249 — rosso window.__CPM_NO_G257] IL PONTE NON NOMINA L'EROE SUL DISCHETTO SENZA PREMIO. Il ponte verso
+           una scena programmata a palla ferma (src/15) chiede il rigore con batt: HERO; senza premio (e fuori da Nazionale/provino) resta
+           il battitore scelto da fermoSet con la regola del 249: un compagno. */
+        const _pz257=kind==="pen"&&o.batt===HERO&&_senzaEroe257(l)&&!no257();if(_pz257)S.conta.ponte257=(S.conta.ponte257|0)+1;
+        if(!_pz257&&o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
   };
   function stato(){const p=S.poss;const pad=p.padrone!=null?g[p.padrone]:null;
     return{tick:S.tick,palla:{x:+S.palla.x.toFixed(2),y:+S.palla.y.toFixed(2)},

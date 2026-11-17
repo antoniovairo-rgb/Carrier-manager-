@@ -29536,7 +29536,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null}){
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
   useEffect(()=>{
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -29629,6 +29629,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
        nella larghezza del campetto (il riquadro dell'eroe compreso), mai sotto 58 px: il cognome va coi puntini, la linea resta una.
        Dove c'e' spazio resta 84 px. Rosso __CPM_NO_G112 (84 fissi). */
     const _lw112=(n)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G112)return 84;try{const w=(ref204.current&&ref204.current.getBoundingClientRect().width)||(window.innerWidth-32);return clamp(Math.floor((w-14-3*(n-1))/n),58,84);}catch(_e){return 64;}};
+    const _R257=(rr,pl)=>!!rig257&&!!pl&&pl.name===rig257&&rr===(rigLato257==="away"?_awayNums:_homeNums);/* [giro 257] la «R» sul rigorista, solo nella squadra dell'eroe */
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
@@ -29638,9 +29639,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2,padding:gap204?`${Math.floor(gap204/2)}px 0 ${Math.ceil(gap204/2)}px`:0}}>
-            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/></div>
-            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;const _r=_R257(rr,pl);return isP?(
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1,position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/>{_r&&<SegnoR257 abs/>}</div>
+            ):_r?(<div key={pi} style={{position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/><SegnoR257 abs/></div>)
+            :(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
       </div>
     </Card>);
@@ -30452,6 +30454,25 @@ const INT259={
     return (esito.n|0)<2||String(esito.testo).indexOf(String(esito.n|0))>=0;}catch(_e){return false;}}
 };
 try{if(typeof globalThis!=='undefined')globalThis.INT259=INT259;}catch(_e){}
+/* [giro 257 PO-496 seguito, decisioni PO 17/11 — rosso window.__CPM_NO_G257]
+   (A) «Sì, segnato nella Rosa»: il rigorista scelto dal gioco si VEDE. Una sola regola, qui, per Rosa, formazioni e motore: fra i dieci
+   compagni titolari dell'undici del club (generateTeamRoster, gli stessi della partita: indice 0..9, l'eroe e' il 10) il rigorista e'
+   l'attaccante con l'attitudine al dischetto piu' alta, attitudine fissa ricavata dal nome (giro 249). Nessun campo nel salvataggio.
+   Con il premio del patto «il rigorista sei tu» (club in cui e' stato promesso) il rigorista e' l'eroe.
+   (B) «In Nazionale tira l'eroe»: in Nazionale e nel provino i premi del patto non valgono e i rigori li tira l'eroe, come prima della 197. */
+function no257(){return typeof window!=='undefined'&&!!window.__CPM_NO_G257;}
+function attitudine257(nome){const s=String(nome||"");let h=5381;for(let k=0;k<s.length;k++){h=(((h<<5)+h)^s.charCodeAt(k))>>>0;}return (h%1000)/250;}
+function rigoristaXI257(xi){let best=-1,bs=-1e9;(xi||[]).slice(0,10).forEach((p,i)=>{if(!p||!p.name)return;const r=String(p.role||"");if(/portiere|^(GK|POR)$/i.test(r))return;
+  const at=/trequartista|ala|centravanti|attaccante|punta|^ATT?$/i.test(r)?10:0;const sc=at+attitudine257(p.name);if(sc>bs){bs=sc;best=i;}});return best;}
+function rigoristaEroe257(context){return /^(national|nationsCup|euroMondiale|trial)/.test(String(context||""));}
+/* -> {eroe:true} oppure {eroe:false,i,nome} (nome intero della rosa) oppure null (rosso o dati mancanti) */
+function rigorista257(player,context,xi){if(no257()||!player)return null;
+  if(rigoristaEroe257(context))return {eroe:true,nome:player.name||""};
+  try{const pr=(typeof premiMotore238==="function")?premiMotore238(player,context):null;if(pr&&pr.rig)return {eroe:true,nome:player.name||""};}catch(_e){}
+  const k=rigoristaXI257(xi);return k>=0?{eroe:false,i:k,nome:String(xi[k].name||"")}:null;}
+/* il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
+function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
+if(typeof window!=='undefined')window.__CPM_RIG257={rigorista:rigorista257,xi:rigoristaXI257,att:attitudine257};
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -30510,6 +30531,12 @@ function creaMotorePossesso(cfg){
      sorteggio). L'eroe solo se nessun compagno puo' calciare. CON il premio tira l'eroe (+100, giro 238). Rosso window.__CPM_NO_G249. */
   const _g249=()=>!(typeof window!=='undefined'&&window&&window.__CPM_NO_G249);
   const _att249=(q)=>{const s=String(q.name||"");let h=5381;for(let k=0;k<s.length;k++){h=(((h<<5)+h)^s.charCodeAt(k))>>>0;}return (h%1000)/250;};/* attitudine 0..4 dal nome (stessa scala del vecchio sorteggio) */
+  /* [giro 257] il rigorista dal live (rigorista257): {eroe:true} in Nazionale, nel provino e col premio -> la regola di prima della 197
+     (l'eroe vince la scelta, ruolo «AT» + 6); {i,nome} -> quel compagno, se e' in campo con lo stesso nome (cambi ed espulsioni: torna la
+     regola del 249). Rosso window.__CPM_NO_G257. */
+  const _R257=(!no257()&&cfg.eroe&&cfg.eroe.rig257)?cfg.eroe.rig257:null;
+  const _senzaEroe257=(l)=>_g249()&&!_pr238("rig")&&!(_R257&&_R257.eroe)&&l===HOME;/* il rigore di questa squadra NON e' dell'eroe */
+  const _des257=(q)=>!!(_R257&&!_R257.eroe&&q.i===(_R257.i|0)&&String(q.name||"")===String(_R257.cog||""));
   const _pr238=(k)=>!!(cfg.eroe&&cfg.eroe.premi&&cfg.eroe.premi[k])&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G238);
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
@@ -30705,7 +30732,7 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;const _c249=_g249()&&!_pr238("rig")&&lato===HOME;/* solo la squadra dell'eroe: gli avversari scelgono come prima */for(const q of g){if(!mio(q,lato)||q.gk)continue;const _r=rnd()*4;/* [giro 249] il sorteggio si consuma comunque: stesso flusso di sorteggi in entrambi i bracci */const sc=_c249?((q.eroe?-1000:0)+(attivo(q)?0:-500)/* in campo: un espulso non calcia */+(q.rl==="AT"?10:0)+_att249(q)):(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+_r;if(sc>bs){bs=sc;B=q;}}if(_c249&&B&&!B.eroe)S.conta.rig249=(S.conta.rig249|0)+1;}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;const _c249=_senzaEroe257(lato);/* solo la squadra dell'eroe: gli avversari scelgono come prima */for(const q of g){if(!mio(q,lato)||q.gk)continue;const _r=rnd()*4;/* [giro 249] il sorteggio si consuma comunque: stesso flusso di sorteggi in entrambi i bracci */const sc=_c249?((q.eroe?-1000:0)+(attivo(q)?0:-500)/* in campo: un espulso non calcia */+(q.rl==="AT"?10:0)+_att249(q)+(_des257(q)?50:0)/* [giro 257] il rigorista segnato nella Rosa */):(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+_r;if(sc>bs){bs=sc;B=q;}}if(_c249&&B&&!B.eroe)S.conta.rig249=(S.conta.rig249|0)+1;}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
         if(kind==="foul"&&advDi(S.fermo.x,lato)>=70&&_pr238("piaz")&&mio(g[HERO],lato)&&eroeAttivo)B=g[HERO];}S.fermo.batt=B?B.i:null;/* [giro 238 PO-496] il battitore designato dal patto (nessun sorteggio in piu': il numero e il seme dei piazzati non cambiano) */
       /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
          un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si
@@ -31770,7 +31797,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     piazzato(o){o=o||{};if(S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)){S.conta.piazNo94=(S.conta.piazNo94|0)+1;return;}/* [giro 94 D2] il ponte non rifischia il piazzato appena giocato in scena */const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
       S.richieste.verso=null;fermoSet(kind,l,+o.x||50,+o.y||50,{scena:1});
       if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,o.hold?clamp(o.hold|0,1,12):6);
-        if(o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
+        /* [giro 257, dubbio 4 del 249 — rosso window.__CPM_NO_G257] IL PONTE NON NOMINA L'EROE SUL DISCHETTO SENZA PREMIO. Il ponte verso
+           una scena programmata a palla ferma (src/15) chiede il rigore con batt: HERO; senza premio (e fuori da Nazionale/provino) resta
+           il battitore scelto da fermoSet con la regola del 249: un compagno. */
+        const _pz257=kind==="pen"&&o.batt===HERO&&_senzaEroe257(l)&&!no257();if(_pz257)S.conta.ponte257=(S.conta.ponte257|0)+1;
+        if(!_pz257&&o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
   };
   function stato(){const p=S.poss;const pad=p.padrone!=null?g[p.padrone]:null;
     return{tick:S.tick,palla:{x:+S.palla.x.toFixed(2),y:+S.palla.y.toFixed(2)},
@@ -34415,6 +34446,11 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _homeClubObj=isMatchHome?_heroSideClub:opponent;// vera squadra di casa (per sigla {H})
   const _awayClubObj=isMatchHome?opponent:_heroSideClub;// vera squadra ospite (per sigla {A})
   const _heroSideRoster=isMatchHome?homeRoster:awayRoster;// rosa del lato dell'eroe (già nazionale in nat-ctx)
+  /* [giro 257 PO-496 seguito — rosso window.__CPM_NO_G257] il rigorista della partita (rigorista257, src/14): lo stesso della Rosa, segnato
+     nelle formazioni; al motore va l'indice nei ventidue (i compagni 0..9 sono i titolari 0..9 della rosa) col cognome che porta in campo. */
+  const rig257=(typeof rigorista257==='function')?rigorista257(player,context,_heroSideRoster):null;
+  const rig257Motore=()=>{try{if(!rig257)return null;if(rig257.eroe)return {eroe:true};const mp=(matchPlayersRef.current||[]);const q=mp[rig257.i];
+    return (q&&q.team==="home")?{i:rig257.i,cog:String(q.name||"")}:null;}catch(_e){return null;}};
   /* [7.825.0 — L'ASSIST LO FA UNO CHE E' IN CAMPO. Rosso __CPM_NO825] Playtest n°6: «Moretti segna su assist di Landi! 1-0.» e al 28' «Moretti corre ad abbracciare Scotti: il gol e' di tutti e due». Landi non gioca: i compagni dell'assist venivano da `player.teammates` (la rosa di carriera), non dall'undici in campo. Ora dall'undici; l'archetipo della carriera si recupera per nome quando c'e'. */
   const _matePool=(_isNatCtx||!(typeof window!=='undefined'&&window.__CPM_NO825))?_heroSideRoster.filter(r=>r&&r.name&&r.name!==player.name&&!/^(POR|GK|Portiere)$/i.test(String(r.pos||r.role||""))).map(r=>{const _tm=(player.teammates||[]).find(q=>q&&q.name===r.name);return {name:r.name,archetype:(_tm&&_tm.archetype)||null};}):(player.teammates||[]);// compagni per assist-link: nazionali in nat-ctx, club altrimenti
   /* [giro 112b PO-314] I MODULI DELLA PARTITA, una volta: la squadra dell'eroe (club o nazionale) e l'avversario hanno il modulo
@@ -38734,7 +38770,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,..._eroeNasce175(),premi:(typeof premiMotore238==='function'?premiMotore238(player,context):null)/* [giro 238 PO-496] rigorista / piazzati dal patto col mister */,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,..._eroeNasce175(),premi:(typeof premiMotore238==='function'?premiMotore238(player,context):null)/* [giro 238 PO-496] rigorista / piazzati dal patto col mister */,rig257:rig257Motore(),/* [giro 257] il rigorista segnato nella Rosa / l'eroe in Nazionale e nel provino */attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             /* [giro 117 PO-324] RIPRESA: il motore nasce nuovo, ma i gol segnati prima del riavvio tornano nel suo tabellino, nel suo registro
                e nel registro MATCH_EV — stessi numeri del tabellone ripreso. Se l'istantanea e' di prima (senza g117) i gol si ricavano dal
                punteggio salvato, al minuto della ripresa. Nessun sorteggio: si scrivono solo contatori ed elenchi di lettura. Rosso __CPM_NO_G117B. */
@@ -43679,7 +43715,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&!benchStart&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
@@ -62873,6 +62909,7 @@ const getThisWeekMatchday=()=>{
               const _ord49={P:0,D:1,C:2,A:3};
               const titolari=roster.slice(0,11).sort((a,b)=>((_ord49[_roleCat(_campo49(a).r)[0]]??4)-(_ord49[_roleCat(_campo49(b).r)[0]]??4))||((a.jerseyNum||0)-(b.jerseyNum||0)));
               const panchina=roster.slice(11);
+              const _rig257=(typeof rigorista257==="function")?rigorista257(player,"career",roster.slice(0,11)):null;/* [giro 257 PO-496 seguito, decisione PO 17/11 «Sì, segnato nella Rosa» — rosso window.__CPM_NO_G257] il rigorista del club (o l'eroe col premio): stessa regola della partita */
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
                 const _cp49=_campo49(pl);const _rc=_roleCat(_cp49.r||"");
@@ -62886,7 +62923,7 @@ const getThisWeekMatchday=()=>{
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent"),borderLeft:"3px solid "+(isMe?TH.primary:"transparent")}}>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
-                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
+                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}
                     {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<span data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>

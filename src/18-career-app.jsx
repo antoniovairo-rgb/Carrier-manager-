@@ -10556,6 +10556,7 @@ const getThisWeekMatchday=()=>{
               const _ord49={P:0,D:1,C:2,A:3};
               const titolari=roster.slice(0,11).sort((a,b)=>((_ord49[_roleCat(_campo49(a).r)[0]]??4)-(_ord49[_roleCat(_campo49(b).r)[0]]??4))||((a.jerseyNum||0)-(b.jerseyNum||0)));
               const panchina=roster.slice(11);
+              const _rig257=(typeof rigorista257==="function")?rigorista257(player,"career",roster.slice(0,11)):null;/* [giro 257 PO-496 seguito, decisione PO 17/11 «Sì, segnato nella Rosa» — rosso window.__CPM_NO_G257] il rigorista del club (o l'eroe col premio): stessa regola della partita */
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
                 const _cp49=_campo49(pl);const _rc=_roleCat(_cp49.r||"");
@@ -10569,7 +10570,7 @@ const getThisWeekMatchday=()=>{
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent"),borderLeft:"3px solid "+(isMe?TH.primary:"transparent")}}>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
-                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
+                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}
                     {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<span data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>
