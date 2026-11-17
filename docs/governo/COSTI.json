@@ -2371,5 +2371,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia8NDW1T4e6ip1ebp5J",
+  "titolo": "giro 245 · tunnel a metà campo (PO-510)",
+  "creata": "2026-11-17T10:51:46Z",
+  "chiusa": "2026-11-17T14:34:40Z",
+  "cost_usd": 10.96669044,
+  "output_tokens": 76738,
+  "cache_read_tokens": 20811361,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-17"
  }
 ]
