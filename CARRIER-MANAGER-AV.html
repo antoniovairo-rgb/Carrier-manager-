@@ -45206,7 +45206,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{display:"inline-block",marginTop:_g202()?4:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
                 {(subbedOff||benchStart)&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{/* [7.38.0 Sezione 8] minuti giocati quando non è un 90' pieno */}
-                  ⏱ {benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
+                  ⏱ {(_g253&&benchStart&&onBench&&!subbedOff)?"Non entrato · 0' giocati"/* [giro 253] mai entrato dalla panchina: la riga non puo' dire «Entrato al 60'» */:benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
                 </div>}
                 {_celebTier>=1&&<div style={{marginTop:_g202()?4:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
               </div>

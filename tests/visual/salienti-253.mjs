@@ -9,8 +9,8 @@
          <= 400 ms reali per minuto di gioco (la partita intera sta a ~1600);
       E  la cronaca veloce si ferma al minuto d'ingresso: il giocatore entra al 35' (±1), non dopo;
       H  dopo l'ingresso solo gli highlight: almeno una scena, gioco fluido sempre <= 400 ms/minuto, fischio finale e gara registrata.
-   B. PANCHINA SENZA INGRESSO (__CPM_BENCH_MIN=95: il minuto non arriva mai): T, nessuna scena, cronaca veloce fino al fischio, messaggio
-      chiaro nella schermata finale (data-cpm="salienti-253-mai", «Non sei entrato in campo»), gara registrata.
+   B. PANCHINA SENZA INGRESSO (__CPM_BENCH_MIN=95 e schede che spostano l'ingresso spente: il minuto non arriva mai): T, nessuna scena, cronaca veloce fino al fischio, messaggio
+      chiaro nella schermata finale (data-cpm="salienti-253-mai", «Non sei entrato in campo», e nessun «Entrato al N'» sulla stessa schermata), gara registrata.
    D. PROVINO, IMPAGINAZIONE a 360 · 375 · 412 px: nella pre-partita tasto e nota a >= 16 px dai bordi; nelle formazioni «Ingresso in
       campo» e «Salta l'ingresso» interi (rettangolo non tagliato da nessun contenitore, portati in vista) e a >= 16 px dai bordi.
    Rosso window.__CPM_NO_G253 (comportamento di oggi): niente tasto dalla panchina, provino a margine 0 e tasti tagliati → DEVE cadere su
@@ -78,7 +78,7 @@ async function gioca(page) {
       if (s.f !== fP) { o.visti.push(s.f); if (/^hl_/.test(String(s.f)) && !/^hl_/.test(String(fP))) { if (panca) o.sceneInPanca++; else o.sceneDopo++; } fP = s.f; }
       if (s.f === 'walkout') o.walkout = true;
       if (s.solo) o.solo = s.solo;
-      if (s.f === 'playing' && panca && /Sei in panchina/.test(s.velo)) o.veloPanca = true;
+      if (s.f === 'playing' && panca && /Sei in panchina/.test(s.velo)) { if (!o.veloPanca && process.env.CPM_FOTO) await page.screenshot({ path: process.env.CPM_FOTO + '/velo-panchina-253-' + Date.now() + '.png' }).catch(() => {}); o.veloPanca = true; }
       if (s.f === 'playing' && panca0 === null) panca0 = s.m || 0;
       if (s.f === 'playing' && panca) o.minPanca = s.m || 0;
       if (bP && !panca && s.lm && panca0 !== null) { bP = false; o.entrataAl = s.m || 0; dopo0 = s.m || 0; }
@@ -86,7 +86,7 @@ async function gioca(page) {
       if (s.mai) o.mai = true;
       if (s.f === 'formations' && !auto) await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent !== null && /^Ingresso in campo/.test((x.textContent || '').trim())); if (b) b.click(); }).catch(() => {});
       if (!auto && s.ap && (s.f === 'walkout' || s.f === 'playing')) { if (s.f === 'walkout') await sleep(1200); auto = true; await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7253, policy: 'seeded', tickMs: 300 })); }
-      if (s.f === 'ended' || s.f === 'ceremony' || s.f === 'shootout') { o.finita = true; if (s.f === 'ended') { await sleep(1500); o.mai = await page.evaluate(() => !!document.querySelector('[data-cpm="salienti-253-mai"]') && /Non sei entrato in campo/.test(document.body.innerText || '')).catch(() => false); } break; }
+      if (s.f === 'ended' || s.f === 'ceremony' || s.f === 'shootout') { o.finita = true; if (s.f === 'ended') { await sleep(1500); o.mai = await page.evaluate(() => !!document.querySelector('[data-cpm="salienti-253-mai"]') && /Non sei entrato in campo/.test(document.body.innerText || '') && !/Entrato al \d/.test(document.body.innerText || '')).catch(() => false); if (o.mai && process.env.CPM_FOTO) await page.screenshot({ path: process.env.CPM_FOTO + '/mai-entrato-253.png' }).catch(() => {}); } break; }
     }
     ult = ora; await sleep(120);
   }
@@ -112,7 +112,11 @@ async function filaTitolare(rosso) {
   await A.b.close(); A.srv.close(); return r;
 }
 async function panchina(rosso, minIngresso, rif) {
-  const A = await apriCarriera166({ init: { ...(rosso ? { __CPM_NO_G253: true } : {}), __CPM_BENCH_MIN: minIngresso }, nome: NOME, reseed: 4253 }); const out = {};
+  /* B: il «mai entrato» il gioco non lo produce da solo (ingresso 46'-82', le scelte della panchina lo ANTICIPANO soltanto): si provoca dalla
+     sonda (regola 7) con il minuto di collaudo oltre il 90' e spegnendo le due schede che riscrivono il minuto (INT226 «chiedo di entrare»
+     e INT259) — misurato alla prima stesura: con le schede accese l'ingresso cadeva al 72' */
+  const mai = minIngresso > 90 ? { __CPM_NO_INT226: true, __CPM_NO_SCHEDE259: true } : {};
+  const A = await apriCarriera166({ init: { ...(rosso ? { __CPM_NO_G253: true } : {}), __CPM_BENCH_MIN: minIngresso, ...mai }, nome: NOME, reseed: 4253 }); const out = {};
   try {
     const n0 = await A.page.evaluate(() => (window.__CPM_CAREER.snapshot().matchHistory || []).length);
     const r = await prepartita(A, true); out.r = r;
