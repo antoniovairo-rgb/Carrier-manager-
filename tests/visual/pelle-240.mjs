@@ -38,9 +38,9 @@ async function carriera(p) {
   try { await p.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
 }
 /* arma il testimone e aspetta l'esito; poi completa ogni corpo con la figurina (indice + immagine) */
-async function misura(p, scena, fotoMax) {
+async function misura(p, scena, fotoMax, attesa) {
   await p.evaluate(([s, fm]) => { window.__CPM_G240W = { chiedi: true, scena: s || '', esiti: [], foto: fm ? [] : null, fotoMax: fm || 0 }; }, [scena || '', fotoMax || 0]);
-  await p.waitForFunction(() => { const W = window.__CPM_G240W; return W && (W.esiti.length > 0 || W.errore); }, null, { timeout: 60000 }).catch(() => {});
+  await p.waitForFunction(() => { const W = window.__CPM_G240W; return W && (W.esiti.length > 0 || W.errore); }, null, { timeout: attesa || 60000 }).catch(() => {});
   return p.evaluate(async () => { const W = window.__CPM_G240W; if (!W || !W.esiti.length) return { errore: (W && W.errore) || 'il testimone non ha risposto' }; const E = W.esiti[0]; const cache = window.__c240 || (window.__c240 = {});
     for (const c of E.corpi) { if (!c.nome) continue; const fg = window.__CPM_FIG240 ? window.__CPM_FIG240(c.nome) : null; if (!fg) continue; c.fig = { n: fg.n, k: fg.k, h: fg.h, p: fg.p };
       if (!cache[fg.file]) { cache[fg.file] = await new Promise(res => { const im = new Image(); im.onload = () => { try { const cv = document.createElement('canvas'); cv.width = im.naturalWidth; cv.height = im.naturalHeight; const g = cv.getContext('2d'); g.drawImage(im, 0, 0);
@@ -57,7 +57,7 @@ const salvaFoto = (r, nome) => { if (!FOTO || !r || !r.foto) return; r.foto.forE
    sbagliati (in tutti e due i casi il verdetto non cambierebbe). */
 const PASSATE = 3, PASSATE_CER = 6;/* scene in movimento (gioco, premiazione, festa, parata): i corpi girano rispetto alle luci, e fuochi d'artificio e flash tingono i visi per un istante; sei passate a 1,2 s */
 async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; const cer = etichetta === 'premiazione' || etichetta === 'festa' || etichetta === 'gioco' || etichetta === 'parata';
-  for (let g = 0; g < (cer ? PASSATE_CER : PASSATE); g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0); if (r.errore) { if (!base) base = r; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
+  for (let g = 0; g < (cer ? PASSATE_CER : PASSATE); g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0, giri === 'breve' ? 20000 : 0); if (r.errore) { if (!base) base = r; if (giri === 'breve' && g === 0) break; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
     r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; } });
     if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
     if (base && !base.errore && base.corpi.filter(c => c.nome && c.viso).every(c => c.dE != null && c.dE <= DE_PELLE)) break;
@@ -74,7 +74,14 @@ async function braccio(flags, nome) { const R = { nome, scene: {} };
       for (let k = 0; k < 80; k++) { if (await ph() === 'playing' && await pronto()) break; await clic('Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua|Salta'); await sleep(700); }
       await sleep(2500); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-gioco.png` }); R.scene.gioco = await scena(p, 'gioco', 'partita:', 4, nome + '-gioco');/* a gioco vivo: fra una passata e l'altra i corpi si muovono (gioco e highlight) */
       await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'FESTA', kind: 'league', light: true })); await sleep(4000); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-festa.png` }); R.scene.festa = await scena(p, 'festa', 'partita:', 3, nome + '-festa');
-      await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' })); await sleep(5000); if (FOTO) await p.screenshot({ path: `${FOTO}-${nome}-premiazione.png` }); R.scene.premiazione = await scena(p, 'premiazione', 'partita:', 3, nome + '-premiazione');
+      /* PREMIAZIONE: forzata dopo la festa parte solo se la festa non ha gia' chiuso la partita; se il testimone non risponde si apre una
+         partita nuova e la si forza dal gioco (stessa scena, stesso giudizio) */
+      const premia = async (pg, breve) => { await pg.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'COPPA NAZIONALE', kind: 'cup' })); await sleep(5000); if (FOTO) await pg.screenshot({ path: `${FOTO}-${nome}-premiazione.png` }); return scena(pg, 'premiazione', 'partita:', breve ? 'breve' : 3, nome + '-premiazione'); };
+      R.scene.premiazione = await premia(p, true);
+      if (!R.scene.premiazione || R.scene.premiazione.errore) { const q = await pagina(flags, { width: 800, height: 450 }); try { await carriera(q.p); await q.p.evaluate(() => window.__CPM_CAREER.playMatch());
+          for (let k = 0; k < 120; k++) { const f = await q.p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null); if (f === 'playing' && await q.p.evaluate(() => !!(window.__CPM3D && window.__CPM3D.renderer && window.__CPM_GLB_READY)).catch(() => false)) break;
+            await q.p.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null); const x = bs.find(z => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua|Salta/i.test(z.textContent || '')); if (x) x.click(); }).catch(() => {}); await sleep(700); }
+          await sleep(2500); R.scene.premiazione = await premia(q.p, false); R.premiazioneSuPartitaNuova = true; } finally { await q.ctx.close(); } }
     } catch (e) { R.scene.partitaErrore = String(e && e.message || e).slice(0, 200); } R.errPartita = err.slice(0, 3); await ctx.close(); }
   if (SCENE.includes('serata')) { const { ctx, p, err } = await pagina(flags); try { await carriera(p); await p.evaluate(() => window.__CPM_CAREER.apriPresentazione(1));
       await p.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2, null, { timeout: 90000 }); await sleep(3500);
