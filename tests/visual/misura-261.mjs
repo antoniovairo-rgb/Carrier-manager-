@@ -54,6 +54,38 @@ for (let g = 0; g < giri; g++) {
     } catch (e) { console.log('L errore ' + String(e.message || e).slice(0, 200)); }
     await page.close();
   }
+  if (/C/.test(cosa)) {/* il saluto al rallentatore (come misura-256 --lento, stesso salvataggio e stesso chiamato del battito 3): salti256 (peso > 0,02) e in piu'
+       l'INGRESSO, cioe' i passi dal fotogramma a peso 0 in poi, che salti256 non guarda. CPM_CLIP per la clip (default «clapping hands up»). */
+    const { salti256, provaSalti256 } = await import('./lib/saluto-256.mjs');
+    const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+    const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx); const p = await ctx.newPage();
+    await p.addInitScript(([o, c, x]) => { window.__CPM_LENTO256 = 0.125; for (const k of x) { const [a, v] = k.split('='); window[a] = v != null ? +v : 1; } window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (c) window.__CPM_CLIP240 = c; localStorage.setItem('cpm-v3', JSON.stringify(o)); localStorage.setItem('cpm-intro-seen', '1'); }, [SAVE, process.env.CPM_CLIP || 'rohr-clapping-hands-up', NO]);
+    try {
+      await p.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
+      await p.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); await sleep(1200);
+      try { await p.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
+      await p.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }); await sleep(1200);
+      try { await p.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+      const beat = async (n) => { await p.evaluate(x => window.__CPM_CAREER.apriPresentazione(x), n); await p.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2 && window.__CPM_PRES142.cam, null, { timeout: 90000 }); };
+      await beat(1); await sleep(2600); await beat(3);
+      const S = await p.evaluate(async () => { const P = window.__CPM_PRES142; const S = []; const t0 = performance.now(); let visto = false, fuori = false;
+        while (performance.now() - t0 < 150000) { await new Promise(r => requestAnimationFrame(r)); const i = P.pi144; if (i == null || i < 0) continue; const m = P.men[i];
+          S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, or: P.orient256 ? P.orient256(i) : null, r261: m.userData.r261v != null ? m.userData.r261v : null, m261: m.userData.m261 });
+          const z = m.position.z; if (z > 6.5) visto = true; if (visto && z < 6.02 && (P.t144 || 0) > 3) { if (fuori) break; fuori = true; } if ((P.t144 || 0) > 60) break; }
+        return S; });
+      const nrm = q => { const m = Math.hypot(...q); return q.map(x => x / m); }, aq = (a, c) => { a = nrm(a); c = nrm(c); return 2 * Math.acos(Math.min(1, Math.abs(a[0] * c[0] + a[1] * c[1] + a[2] * c[2] + a[3] * c[3]))) * 180 / Math.PI; };
+      const O = ['u_l', 'u_r', 'f_l', 'f_r'], A = S.filter(s => s.or); let k0 = -1; for (let k = 1; k < A.length; k++) if (A[k].w > 0 && A[k - 1].w === 0 && A[k].ts < 0.2) { k0 = k; break; }
+      /* ingresso: i passi dal fotogramma a peso 0 fino a ts 0,25 s; uscita: gli ultimi passi prima che il peso torni a 0 */
+      const passi = (a, b) => { const R = []; for (let k = Math.max(1, a); k <= b && k < A.length; k++) R.push([+A[k].ts.toFixed(3), +A[k].w.toFixed(3), ...O.map(o => +aq(A[k].or[o], A[k - 1].or[o]).toFixed(1)), A[k].r261 != null ? +A[k].r261.toFixed(2) : null, A[k].m261]); return R; };
+      let k1 = k0; while (k1 >= 0 && k1 < A.length && A[k1].ts < 0.25) k1++; let k9 = -1; for (let k = A.length - 1; k > 0; k--) if (A[k].w === 0 && A[k - 1].w > 0) { k9 = k; break; }
+      const ing = k0 >= 0 ? passi(k0 - 2, k1) : [], usc = k9 >= 0 ? passi(k9 - 30, k9 + 2) : [];
+      const mx = R => R.length ? Math.max(...R.map(r => Math.max(...r.slice(2, 6)))) : null;
+      /* eccesso sul vicinato anche nell'ingresso e nell'uscita (stessa regola di salti256, senza il filtro sul peso) */
+      const ecc = R => { let e = 0, dove = null; for (let c = 2; c < 6; c++) for (let k = 2; k + 2 < R.length; k++) { const vic = [R[k - 2][c], R[k - 1][c], R[k + 1][c], R[k + 2][c]].sort((a, b) => b - a), d = R[k][c] - vic[1]; if (d > e) { e = d; dove = [R[k][0], O[c - 2]]; } } return { ecc: +e.toFixed(2), dove }; };
+      console.log('C ' + JSON.stringify({ no: NO, campioni: S.length, salti: salti256(S), prova: (provaSalti256(S, 30) || {}).max, ingresso: { passoMax: mx(ing), ...ecc(ing) }, uscita: { passoMax: mx(usc), ...ecc(usc) }, primi: ing.slice(0, 40), tutti: process.env.CPM_TUTTI ? passi(1, A.length - 1) : undefined, ultimi: process.env.CPM_ULTIMI ? usc : undefined }));
+    } catch (e) { console.log('C errore ' + String(e.message || e).slice(0, 200)); }
+    await ctx.close();
+  }
   if (/B/.test(cosa)) {
     const M = await import('./spalle-146-scene.mjs');
     const S = await M.scenaPresentazione(browser, port, { width: 360, height: 800 }, NO[0] || false, 'misura261');

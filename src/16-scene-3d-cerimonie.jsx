@@ -1456,6 +1456,28 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
       A.U.quaternion.copy(Qp).invert().multiply(Q2).normalize();Rt.copy(Q2).invert();A.L.quaternion.copy(Rt).multiply(Q1).normalize();if(A.TU)A.TU.quaternion.copy(Rt).multiply(TUw).normalize();
       Rt.copy(Q1).invert();A.H.quaternion.copy(Rt).multiply(Hw).normalize();if(A.TL)A.TL.quaternion.copy(Rt).multiply(TLw).normalize();
       for(let i=0;i<A.oo.length;i++)A.post[i].copy(A.oo[i].quaternion);A.fatto=true;}};}catch(_e){return null;}}
+/* [giro 261 · C · dubbio 1 del giro 256] L'INGRESSO GRADUALE DELLA REGOLA DELLE SPALLE NEL SALUTO. Dopo la clip del saluto la regola
+   (_spalle146) passa una seconda volta, ma solo a saluto in corso: al primo fotogramma del saluto entrava tutta insieme, e all'ultimo usciva
+   tutta insieme. Qui entra ed esce in rampa: nei primi RAMPA261 della dissolvenza (0,2 s di scena su 0,5) le ossa che la regola tocca
+   (clavicole, omeri, avambracci, mani e l'attacco dell'omero) stanno fra la posa prima della regola e quella dopo. Oltre, la regola vale
+   intera come prima. La memoria della regola (uscita registrata) viene allineata alla posa mescolata, cosi' al fotogramma dopo riparte
+   dall'ingresso giusto e niente si accumula. Rosso __CPM_NO_G261 (e __CPM_NO_G261C per la sola rampa): la regola entra di colpo. */
+const RAMPA261=0.40;
+function _spalleRampa261(av,lin){const B=_ossa23(av);const no=(typeof window!=='undefined'&&(window.__CPM_NO_G261||window.__CPM_NO_G261C));
+  const R0=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_RAMPA261>0)?+window.__CPM_RAMPA261:RAMPA261;/* solo sonde: prova un'altra durata */let r=Math.max(0,Math.min(1,(lin||0)/R0));r=r*r*(3-2*r);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.r261v=no?1:r;
+  if(no||r>=1||!B||typeof THREE==='undefined'){const m0=_spalle146(B);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.m261=m0?1:0;return m0;}
+  const T=THREE,M=av.userData._r261||(av.userData._r261=(()=>{const o=[B.clavicle_l,B.clavicle_r,B.upperarm_l,B.upperarm_r,B.lowerarm_l,B.lowerarm_r,B.hand_l,B.hand_r].filter(Boolean),U=[B.upperarm_l,B.upperarm_r].filter(Boolean);
+    return{o,q:o.map(()=>new T.Quaternion()),U,p:U.map(()=>new T.Vector3()),tq:new T.Quaternion(),ta:new T.Quaternion(),tp:new T.Vector3()};})());
+  for(let i=0;i<M.o.length;i++)M.q[i].copy(M.o[i].quaternion);for(let i=0;i<M.U.length;i++)M.p[i].copy(M.U[i].position);
+  const mosso=_spalle146(B);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.m261=mosso?1:0;
+  for(let i=0;i<M.o.length;i++){const b=M.o[i],u=b.userData;M.tq.copy(b.quaternion);const n0=M.q[i].length(),n1=M.tq.length();if(!(n0>1e-6)||!(n1>1e-6))continue;
+    /* i quaternioni che la regola scrive vengono da orientazioni di mondo di ossa con scala non uniforme: NON sono unitari (lezione del giro 256). Si mescolano
+       la direzione (unitaria) e la norma separatamente, cosi' a r=1 la posa e' ESATTAMENTE quella della regola (misurato: senza, 3-4 gradi di gradino a fine rampa) */
+    const nn=n0+(n1-n0)*r;M.ta.copy(M.tq).normalize();b.quaternion.copy(M.q[i]).normalize().slerp(M.ta,r).normalize();b.quaternion.set(b.quaternion.x*nn,b.quaternion.y*nn,b.quaternion.z*nn,b.quaternion.w*nn);
+    if(u.q146bo&&u.q146bo.equals(M.tq))u.q146bo.copy(b.quaternion);}
+  for(let i=0;i<M.U.length;i++){const b=M.U[i],u=b.userData;M.tp.copy(b.position);b.position.copy(M.p[i]).lerp(M.tp,r);if(u.p146bo&&u.p146bo.equals(M.tp))u.p146bo.copy(b.position);if(u.p23o&&u.p23o.equals(M.tp))u.p23o.copy(b.position);}
+  for(let i=0;i<M.o.length;i++)M.o[i].updateMatrixWorld(true);
+  return mosso;}
 function _salutoClip240(av,pkgR,scelta){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
   const vuole=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CLIP240)||null;/* solo sonde: prova l'altra clip */
   let c0=null;for(const n of (vuole?[vuole]:(scelta&&_CLIP240.includes(scelta))?[scelta].concat(_CLIP240.filter(x=>x!==scelta)):_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;/* [giro 256] la clip scelta per questa serata; l'altra resta il ripiego se la prima mancasse dal file */
@@ -1787,7 +1809,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
           if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
-          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalle146(_ossa23(m));}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
+          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalleRampa261(m,S.lin);}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
           else if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
           if(cm)cm.terra();}
         _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.ts240=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.ts:0;}catch(_e){}
