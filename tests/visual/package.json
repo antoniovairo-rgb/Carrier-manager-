@@ -639,6 +639,7 @@
     "nomi-182": "node nomi-182.mjs",
     "nomi-190": "node nomi-190.mjs",
     "nomi-211": "node nomi-211.mjs",
+    "nomi-248": "node nomi-248.mjs && CPM_ROSSO248=1 node nomi-248.mjs",
     "calendario-218": "node calendario-218.mjs",
     "interviste-211": "node interviste-211.mjs && (CPM_ROSSO222=1 node interviste-211.mjs; test $? -eq 1)",
     "nomi-salvati-190": "node nomi-salvati-190.mjs",

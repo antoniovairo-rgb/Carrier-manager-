@@ -127,7 +127,7 @@ try {
           calendar: [{ week: 20, type: k.comp === 'euro_ko' ? 'euro' : k.comp === 'cup' ? 'cup' : 'league', euroPhase: ph, played: false }], euro: { phase: ph, competition: 'UCL' }, cup: { active: true, eliminated: false, round: rd }, euroMondiale: { koPhase: emPh, type: 'Mondiale' } };
         const seme = k.comp === 'euro_ko' ? 'euroko|' + sn + '|' + ph : k.comp === 'cup' ? 'cupko|' + sn + '|' + rd : 'natko|' + sn + '|' + emPh;
         if (k.ris === 'draw' && koShootoutWin(p, seme) !== (k.turno === 'passa' || k.turno === 'campione')) continue;
-        const r = { context: k.comp, won: k.ris === 'win', drew: k.ris === 'draw', homeScore: k.ris === 'win' ? 2 : k.ris === 'draw' ? 0 : 0, awayScore: k.ris === 'loss' ? 1 : 0, isHome: true, goals: 0, assists: 0, rating: 6.2, opponent: 'FC Valdenau' };
+        const r = { context: k.comp, won: k.ris === 'win', drew: k.ris === 'draw', homeScore: k.ris === 'win' ? 2 : k.ris === 'draw' ? 0 : 0, awayScore: k.ris === 'loss' ? 1 : 0, isHome: true, goals: 0, assists: 0, rating: 6.2, opponent: 'FC Isar' };
         const d = intervista183(p, { type: k.comp === 'cup' ? 'cup' : k.comp, opponentName: r.opponent }, r);
         trovato = { d, kk: { ko: true, res: k.ris, lega: false, turno: k.turno } };
       }
@@ -141,7 +141,7 @@ try {
     /* ---------- 4. [giro 222] ultima giornata del girone e rilancio ---------- */
     const gir = [];
     const club = { id: 'prova', n: 'FC Prova', a: 'PRV', lg: 'Lega A', p: 70 };
-    const opps = [{ id: 'g1', n: 'FC Valdenau', a: 'VAL', p: 75 }, { id: 'g2', n: 'Sporting Orvalle', a: 'ORV', p: 74 }, { id: 'g3', n: 'Real Montebranco', a: 'MON', p: 73 }];
+    const opps = [{ id: 'g1', n: 'FC Isar', a: 'ISR', p: 75 }, { id: 'g2', n: 'Sporting Orvalle', a: 'ORV', p: 74 }, { id: 'g3', n: 'Real Montebranco', a: 'MON', p: 73 }];
     const APERTO = /girone è ancora aperto|ripartiamo dalla prossima/i;
     const casoEuro = (prima, ris) => { /* prima = esito delle 5 gare precedenti (W/D/L), ris = l'ultima */
       const cal = [], gr = []; let pts = 0;
@@ -187,7 +187,7 @@ try {
     }
     /* il caso del PO di PO-473 (ottavi europei, fuori) e il rilancio */
     { const p = { name: 'Collaudo Esito', season: 2, week: 20, proStatus: 'pro', ovr: 70, morale: 60, club, standings: [], matchHistory: [], history: [], calendar: [{ week: 20, type: 'euro', euroPhase: 'r16', played: false }], euro: { phase: 'r16', competition: 'UCL' } };
-      const r = { context: 'euro_ko', won: false, drew: false, homeScore: 0, awayScore: 1, isHome: true, goals: 0, assists: 0, rating: 6.0, opponent: 'FC Valdenau' };
+      const r = { context: 'euro_ko', won: false, drew: false, homeScore: 0, awayScore: 1, isHome: true, goals: 0, assists: 0, rating: 6.0, opponent: 'FC Isar' };
       const es = esitoTurno211(p, r); const mali = []; const vis = new Set();
       for (const tone of ['diretto', 'diplomatico', 'umile']) for (let i = 0; i < 300; i++) { const rl = rilancio24(tone, 'po473|' + i, es); vis.add(rl.q); const T = rl.q + ' ' + rl.a.map(x => x && x.txt).join(' ');
         if (PUNTI.test(T)) mali.push('«' + rl.q + '»'); if (/prossimi avversari/i.test(rl.q)) mali.push('«' + rl.q + '»'); }

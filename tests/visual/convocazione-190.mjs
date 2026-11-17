@@ -27,7 +27,7 @@ try {
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => typeof calcCoachDecision === 'function', null, { timeout: 60000 });
   const R = await page.evaluate((base) => {
-    const AVV = ['FC Valmora', 'FC Genova', 'FC Bergamo', 'FC Sardo', 'FC Friulano', 'FC Salento', 'FC Torvelle'];
+    const AVV = ['FC Milano Brera', 'FC Genova', 'FC Bergamo', 'FC Sardo', 'FC Friulano', 'FC Salento', 'FC Torino Santa Rita'];
     const sett = (p0, profilo) => { const out = []; let p = JSON.parse(JSON.stringify(p0));
       for (let i = 0; i < 6; i++) {
         const wk = 10 + i; const avv = AVV[i + 1], prec = AVV[i];

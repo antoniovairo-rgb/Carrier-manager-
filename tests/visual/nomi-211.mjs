@@ -90,14 +90,14 @@ try {
         if (!g.length) senzaCorto.push(c.n); else if (k.includes(c.n.replace(/\s+Primavera$/, ''))) cortiNuovi++; }
     }
     const po = C({ n: 'Torino Athletic Primavera', a: 'TAT' });
-    const fc = C({ n: 'FC Valmora Primavera', a: 'VAL' });
+    const fc = C({ n: 'FC Milano Brera Primavera', a: 'MBR' });
     return { n: club.length, conCat, senzaCorto: senzaCorto.length, esempi: senzaCorto.slice(0, 4), storti: storti.slice(0, 3), nStorti: storti.length, cortiNuovi, po, fc };
   });
   console.log(`    club ${pura.n} · con la categoria nel nome ${pura.conCat} · senza un gradino senza categoria prima della sigla ${pura.senzaCorto} (${pura.esempi.join('; ')})`);
   ok(pura.n >= 250, `censimento: ${pura.n} club (attesi almeno 250)`);
   ok(pura.conCat > 0 && pura.senzaCorto === 0, `ogni club con la categoria ha il nome corto prima della sigla: mancano ${pura.senzaCorto} su ${pura.conCat}`);
   ok(JSON.stringify(pura.po) === JSON.stringify(['Torino Athletic Primavera', 'Torino Athletic U19', 'Torino Athletic', 'TAT']), `caso del PO: ${pura.po.join(' → ')}`);
-  ok(JSON.stringify(pura.fc) === JSON.stringify(['FC Valmora Primavera', 'FC Valmora U19', 'Valmora U19', 'Valmora', 'VAL']), `club con FC in testa invariato: ${pura.fc.join(' → ')}`);
+  ok(JSON.stringify(pura.fc) === JSON.stringify(['FC Milano Brera Primavera', 'FC Milano Brera U19', 'Milano Brera U19', 'Milano Brera', 'MBR']), `club con FC in testa invariato: ${pura.fc.join(' → ')}`);
   ok(pura.nStorti === 0, `scala dal piu' lungo al piu' corto, sigla ultima (${pura.nStorti} storti ${pura.storti.join('; ')})`);
   const club = await page.evaluate(() => [...new Map([...CLUBS, ...U18_CLUBS, ...U18_CLUBS_P2, ...TRIAL_OPPONENTS].map(c => [c.id || c.n, c])).values()].map(c => ({ ...c })));
   for (const vp of VISTE) {

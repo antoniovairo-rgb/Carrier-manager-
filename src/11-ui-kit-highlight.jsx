@@ -197,9 +197,9 @@ function FiguraV2({player,w=54,grande=false}){
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
 /* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
-   (a) PO-396 «Primavera» si accorcia in «U19» (FC Valmora Primavera → FC Valmora U19) prima di ogni altra cosa;
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Milano Brera Primavera → FC Milano Brera U19) prima di ogni altra cosa;
    (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
-       «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
+       «FC Milano Brera» → «Milano Brera», «FC Milano Brera U19» → «Milano Brera U19», poi «Milano Brera» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
 function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
@@ -209,7 +209,7 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   const ab=abbreviaSquadra182(u19);
   /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
      categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
-     nome corto c'e' gia' («Valmora»). Rosso __CPM_NO_G211 = scala di prima. */
+     nome corto c'e' gia' («Milano Brera»). Rosso __CPM_NO_G211 = scala di prima. */
   const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
   if(g211)add(senzaCat(u19));
   add(ab);

@@ -10,6 +10,8 @@ const port = srv.address().port;
 const browser = await launchBrowser();
 const page = await browser.newPage();
 await installCdnRoutes(page);
+/* [giro 248] prova del rosso: CPM_AUDIT_FLAG=__CPM_NO_G248 accende un interruttore del gioco prima del caricamento */
+if (process.env.CPM_AUDIT_FLAG) await page.addInitScript((k) => { window[k] = true; }, process.env.CPM_AUDIT_FLAG);
 let exitCode = 1;
 try {
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 30000 });

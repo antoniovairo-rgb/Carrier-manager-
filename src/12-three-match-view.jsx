@@ -2855,6 +2855,7 @@ function ThreeMatchView(props){
       /* IT — -e/-ese/-ate + nomi comuni con articolo */ BIANCOCELESTE:"E",NEROVERDE:"E",PARMENSE:"E",MODENESE:"E",PUGLIESE:"E",CESENATE:"E",EMPOLESE:"E",CAPITALE:"E",LAGUNA:"E",LEONESSA:"E",ALTOADIGE:"E",
       /* IT — aggettivi maschili */ FELSINEO:"M",FRIULANO:"M",SARDO:"M",SCALIGERO:"M",BRIANZOLO:"M",CALABRO:"M",SPEZZINO:"M",PISANO:"M",CIOCIARO:"M",CITTADINO:"M",BRUZIO:"M",LARIANO:"M",
       /* IT — plurali */ NERAZZURRI:"N",ROSSONERI:"N",BLUCERCHIATI:"N",
+      /* [giro 248 PO-511] nomi per citta' o quartiere: gli aggettivi e i luoghi con articolo (gli altri sono nomi propri, classe P) */ SASSOLESE:"E",GETAFENSE:"E","VIGUÉS":"M",ISAR:"E",DOMSTADT:"E",
       /* EN — nickname plurali */ HAMMERS:"N",SWANS:"N",STEELERS:"N",CLARETS:"N",CANARIES:"N",DOCKERS:"N",BLUEBIRDS:"N",HORNETS:"N",POTTERS:"N",
       /* ES */ HISPALENSE:"E",SOCIEDAD:"E",CELESTE:"E",BALEAR:"E",GRANOTA:"E",OSCENSE:"E",ALMERIENSE:"E",CALIFAL:"E",PUCELA:"E",
       SUBMARINO:"M",VERDIBLANCO:"M",VALENCIANO:"M",NAVARRO:"M","GIRONÍ":"M","AZULÓN":"M",CANARIO:"M","INDÁLICO":"M",PERICO:"M","CORUÑÉS":"M","CÁNTABRO":"M","TINERFEÑO":"M","BURGALÉS":"M","MAÑO":"M","MIRANDÉS":"M",MANCHEGO:"M",ILICITANO:"M",MALACITANO:"M","GIJONÉS":"M","CARBAYÓN":"M",GADITANO:"M",FERROLANO:"M",

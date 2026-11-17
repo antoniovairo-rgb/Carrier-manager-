@@ -119,7 +119,7 @@ async function pure() {
       (function w(o) { if (typeof o === 'string') testi.push(o); else if (Array.isArray(o)) o.forEach(w); else if (o && typeof o === 'object') Object.values(o).forEach(w); })(r); }
     out.d6 = { n: testi.length, cattivi: testi.filter(t => bad.test(t)).slice(0, 4), nCattivi: testi.filter(t => bad.test(t)).length };
     /* D7 */
-    const pl = { nation: 'Italia', club: { id: 'r', n: 'FC Rendalto', a: 'RDL', c: '#123', c2: '#fff' } };
+    const pl = { nation: 'Italia', club: { id: 'r', n: 'FC Lisboa Norte', a: 'LNO', c: '#123', c2: '#fff' } };
     const ci = clubIntervista94(pl, 'euroMondiale_group'), cc = clubIntervista94(pl, 'career');
     out.d7 = { naz: ci && (ci.n + '/' + ci.a), club: cc && cc.n };
     /* D8 */
@@ -128,7 +128,7 @@ async function pure() {
   console.log('D5 ' + JSON.stringify(R.d5)); console.log('D6 ' + JSON.stringify(R.d6)); console.log('D7 ' + JSON.stringify(R.d7)); console.log('D8 ' + JSON.stringify(R.d8));
   ok(R.d5.every(x => x.ok), `D5: il testo del trainer dice le settimane della quota del motore (${R.d5.map(x => x.atteso).join('/')})`);
   ok(R.d6.n > 50 && R.d6.nCattivi === 0, `D6: articoli delle nazionali (${R.d6.nCattivi} frasi sbagliate su ${R.d6.n}${R.d6.cattivi.length ? ': ' + R.d6.cattivi.join(' | ') : ''})`);
-  ok(R.d7.naz === 'Italia/ITA' && R.d7.club === 'FC Rendalto', `D7: sala stampa della Nazionale con la Nazionale (${R.d7.naz}), del club col club (${R.d7.club})`);
+  ok(R.d7.naz === 'Italia/ITA' && R.d7.club === 'FC Lisboa Norte', `D7: sala stampa della Nazionale con la Nazionale (${R.d7.naz}), del club col club (${R.d7.club})`);
   ok(!R.d8.slice(0, 2).some(t => /9\d\d/.test(t)) && /12ª giornata/.test(R.d8[2]), `D8: nessun codice interno come giornata (${R.d8.join(' | ')})`);
   ok(page._errors.length === 0, `pure: nessun errore di pagina`);
   await page.close();

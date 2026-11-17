@@ -20,7 +20,7 @@ for (const rosso of [true, false]) {
     for (let sn = 1; sn < 300; sn++) {   /* la stagione in cui ai rigori si esce (stessi semi del gioco) */
       const sv = JSON.parse(localStorage.getItem('cpm-v3')); const p = { ...(sv.player || sv), season: sn, week: 20, ivMem183: null, euro: { phase: 'r16', competition: 'UCL' }, calendar: [{ week: 20, type: 'euro', euroPhase: 'r16', played: false }] };
       if (koShootoutWin(p, 'euroko|' + sn + '|r16')) continue;
-      const r = { context: 'euro_ko', won: false, drew: true, homeScore: 0, awayScore: 0, isHome: true, goals: 0, assists: 0, rating: 5.6, opponent: 'FC Valdenau' };
+      const r = { context: 'euro_ko', won: false, drew: true, homeScore: 0, awayScore: 0, isHome: true, goals: 0, assists: 0, rating: 5.6, opponent: 'FC Isar' };
       const d = intervista183(p, { type: 'euro_ko', opponentName: r.opponent }, r);
       const i = d && d.si ? IV_FATTI183.indexOf(d.q) : -1;
       if (i >= 0) { window.__CPM_CAREER.forceIv183(i, 'draw', { hs: 0, as: 0, casa: true, voto: 5.6, gol: 0 }); return d.q.q; }
