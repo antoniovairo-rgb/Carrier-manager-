@@ -2315,5 +2315,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaANWuk4UjumWe4NgBo",
+  "titolo": "giro 250 · proposta nomi di tutti i club (PO-512)",
+  "creata": "2026-11-17T11:35:28Z",
+  "chiusa": "2026-11-17T11:46:13Z",
+  "cost_usd": 3.30136838,
+  "output_tokens": 60777,
+  "cache_read_tokens": 3919860,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
  }
 ]
