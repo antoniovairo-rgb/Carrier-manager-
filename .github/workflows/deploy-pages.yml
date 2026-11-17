@@ -94,6 +94,15 @@ jobs:
           done
           echo "radice servita da index.html ($(wc -c < _site/index.html) byte)"
 
+      # [giro 237 PO-502] verifica del sito COSI' COME VA ONLINE: la pagina servita su «/» e su «/CARRIER-MANAGER-AV.html» e' gia'
+      # tradotta (non scarica ne' esegue Babel), arriva al menu sotto 4 s e carica un salvataggio esistente. Rosso = il deploy si ferma.
+      # Ritirata dichiarata (NON da pubblicare): node tools/build-dist.mjs --web --babel-browser → dist-web-babel/.
+      - name: Verifica del sito — pagina gia' tradotta (web-237)
+        run: |
+          grep -q 'type="text/babel"' _site/index.html && { echo "::error::_site/index.html traduce il JSX nel browser"; exit 1; } || true
+          grep -q 'type="text/babel"' _site/CARRIER-MANAGER-AV.html && { echo "::error::_site/CARRIER-MANAGER-AV.html traduce il JSX nel browser"; exit 1; } || true
+          (cd tests/visual && CPM_WEB237_DIR=_site node web-237.mjs)
+
       - name: Guardia — nessun materiale interno nel sito
         run: |
           # rete permanente: se un domani la copia viene riallargata, il deploy si ferma

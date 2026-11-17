@@ -11,6 +11,7 @@ node_modules
 package-lock.json
 dist/
 dist-web/
+dist-web-babel/
 tests/visual/out/
 tests/character-lab/evidence/
 # Capacitor: il progetto nativo android/ è build-output riproducibile (nessun codice
