@@ -183,7 +183,7 @@ export async function coppeClub(page) {
 }
 
 /* P + Z in partita: provino (pagina pulita) fino a playing, poi pausa */
-export async function partita(b, port, w, flags = []) {
+export async function partita(b, port, w, flags = [], foto = null) {
   const { ctx, page, cdp, errs } = await apri(b, port, w, { flags: ['__CPM_SKIP_INTRO', ...flags], carriera: false, h: 800 });
   try {
     const { openMatch } = await import('./lib/harness.mjs');
@@ -195,6 +195,7 @@ export async function partita(b, port, w, flags = []) {
     await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => /pausa/i.test(x.getAttribute('aria-label') || x.title || '') || (x.innerText || '').trim() === '⏸'); if (b) b.click(); else document.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true })); });
     await sleep(500);
     const pausa = await page.evaluate(() => { const t = document.body.innerText; const m = t.match(/[^\n]*per riprendere[^\n]*/i); return m ? m[0].trim() : null; });
+    if (foto) await page.screenshot({ path: foto });
     return { fase, zoom: z, pausa, errori: errs.length };
   } finally { await ctx.close(); }
 }
@@ -238,7 +239,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       await vai(g.page, 'standings'); r.classificaTG = await classifica(g.page);
       if (FOTO) await g.page.screenshot({ path: path.join(FOTO, `classifica-testogrande-${w}.png`) });
       await g.ctx.close();
-      if (w < 900) r.partita = await partita(b, port, w, flags);
+      if (w < 900) r.partita = await partita(b, port, w, flags, FOTO ? path.join(FOTO, `pausa-${w}.png`) : null);
       R.larg[w] = r; console.error(w, JSON.stringify(r).slice(0, 400));
     }
   } finally { await b.close(); srv.close(); }
