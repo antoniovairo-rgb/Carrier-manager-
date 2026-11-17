@@ -9,8 +9,9 @@
        ROSSO: con premi le punizioni dalla trequarti tornano ai compagni (eroe sotto la meta').
    B · PARTITA VERA dal salvataggio 190 (FC Merseyside) con premiPatto227 {rig,piaz}: il motore del live riceve premi {rig,piaz}
        (cfg.eroe.premi) e le punizioni della squadra dalla trequarti NON tirabili (le tirabili dal limite sono dell'eroe anche senza
-       premio, 7.999.27) viste nel motore hanno l'eroe come battitore designato (>= 90%); ROSSO: sotto la meta' (almeno una vista,
-       altrimenti non giudicato = rosso).
+       premio, 7.999.27) hanno l'eroe come battitore designato (>= 90%); ROSSO: sotto la meta'. [giro 257] Campione PROVOCATO dalla
+       sonda (12 punizioni a partita, 4 minuti x 3 posizioni) e giudicate solo quelle con l'eroe NON compagno piu' vicino: almeno 4,
+       altrimenti non giudicato = rosso. Le naturali restano stampate.
    C · CARRIERA (salvataggio 190): profilo con la card «La parola del mister» (vice, voce, rigori, piazzati); bio «vice-capitano»;
        la voce alza la chimica di 1 nella settimana (weeklyStaffRel, chokepoint dei tre percorsi); il premio non vale in Nazionale
        (premiMotore238 → null) ne' in un altro club; cambiando club le voci del club lasciato spariscono dal salvataggio.
@@ -61,15 +62,33 @@ async function partita(rosso) {
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 90000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 12, policy: 'assist', tickMs: 150 }));
-  const visti = {}; let premi = 'assente'; const t0 = Date.now();
+  const visti = {}; let premi = 'assente'; const t0 = Date.now(); const prov = []; const fatti = new Set();
   while (Date.now() - t0 < 300000) {
+    /* [giro 257, dubbio 8 del 249 — riparazione secondo «Controlli instabili»] il campione naturale (1-2 punizioni a partita) e il
+       criterio «le batte il compagno piu' vicino» facevano un rosso instabile: il piu' vicino puo' essere l'eroe. Ora la sonda PROVOCA
+       le punizioni (ciò che il gioco non produce si provoca dalla sonda): a quattro minuti del motore (20', 35', 50', 65'), a gioco
+       fluido, tre punizioni della squadra dalla trequarti NON tirabili (x 72/74/76, sulla fascia opposta all'eroe), chieste SENZA
+       battitore (chiedi.piazzato: il battitore lo sceglie fermoSet con le sue regole). Si giudicano SOLO quelle in cui l'eroe NON e' il
+       compagno piu' vicino al pallone (distanza calcolata dalla sonda sulle posizioni del motore): li' verde e rosso si separano per
+       costruzione (verde: l'eroe designato dal premio; rosso: il compagno piu' vicino, che non e' l'eroe). */
+    for (const mm of [20, 35, 50, 65]) { if (fatti.has(mm)) continue;
+      const r = await page.evaluate((mm) => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const ph = window.__CPM_PHASE && window.__CPM_PHASE();
+        if (!M || !M._S || ph !== 'playing' || (M._S.min | 0) < mm || M._S.poss.stato === 'kickoff' || M._S.poss.stato === 'fermo') return null;
+        const g = M._g, H = M.HERO, eroe = g[H]; const out = [];
+        for (const x of [72, 74, 76]) { const y = eroe.y < 50 ? 86 : 14;
+          M.chiedi.piazzato({ lato: 'home', kind: 'foul', x, y }); const f = M._S.fermo; if (!f || f.kind !== 'foul' || Math.round(f.x) !== x) { out.push({ x, nullo: true }); continue; }
+          let vic = null, dv = 1e9; for (const q of g) { if (!q || q.team !== 'home' || q.gk) continue; if (q.eroe && !(M._cfg && M._cfg.eroe && M._cfg.eroe.attivo !== false)) continue; const d = Math.hypot(q.x - x, q.y - y); if (d < dv) { dv = d; vic = q.i; } }
+          out.push({ min: M._S.min | 0, x, y, eroe: f.batt === H, batt: f.batt, vicinoEroe: vic === H }); }
+        return out; } catch (e) { return [{ err: String(e.message).slice(0, 100) }]; } }, mm);
+      if (r) { fatti.add(mm); prov.push(...r); } }
     const o = await page.evaluate(() => { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const ph = window.__CPM_PHASE && window.__CPM_PHASE();
       if (!M) return { ph }; const f = M._S && M._S.fermo; return { ph, premi: JSON.stringify((M._cfg && M._cfg.eroe && M._cfg.eroe.premi) || null), f: f && f.lato === 'home' && f.kind === 'foul' && f.x >= 70 && !(f.x >= 78 && Math.abs(f.y - 50) <= 18) ? { k: f.kind + '@' + (M._S.min | 0) + ':' + Math.round(f.x) + ',' + Math.round(f.y), eroe: f.batt === M.HERO } : null }; });
     if (o.premi) premi = o.premi; if (o.f) visti[o.f.k] = o.f.eroe;
     if (o.ph === 'ended' || o.ph === 'ceremony') break; await sleep(250);
   }
   await ctx.close();
-  const v = Object.values(visti); return { premi, piazzati: v.length, eroe: v.filter(Boolean).length };
+  const v = Object.values(visti); const pg = prov.filter(q => !q.nullo && !q.err && !q.vicinoEroe);
+  return { premi, piazzati: v.length, eroe: v.filter(Boolean).length, provocate: prov.length, giudicate: pg.length, provEroe: pg.filter(q => q.eroe).length, scartate: prov.filter(q => q.vicinoEroe).length, nulle: prov.filter(q => q.nullo || q.err).length };
 }
 /* ---------- C · carriera ---------- */
 async function carriera(rosso) {
@@ -108,9 +127,9 @@ try {
   if (SOLO.includes('B')) {
     const V = await partita(false); console.log('B verde', JSON.stringify(V));
     giudica(V.premi === '{"rig":true,"piaz":true}', `partita vera: il motore riceve i premi ${V.premi}`);
-    giudica(V.piazzati >= 1 && V.eroe >= V.piazzati * 0.9, `partita vera: punizioni dalla trequarti non tirabili con l'eroe battitore designato ${V.eroe}/${V.piazzati} (non giudicato = rosso)`);
+    giudica(V.giudicate >= 4 && V.provEroe >= V.giudicate * 0.9, `partita vera: punizioni provocate dalla trequarti non tirabili (eroe non il piu' vicino) con l'eroe battitore designato ${V.provEroe}/${V.giudicate} (provocate ${V.provocate}, scartate perche' l'eroe era il piu' vicino ${V.scartate}, nulle ${V.nulle}; naturali viste ${V.eroe}/${V.piazzati}; meno di 4 giudicate = non giudicato = rosso)`);
     const R = await partita(true); console.log('B rosso', JSON.stringify(R));
-    { const vis = R.piazzati >= 1 && R.eroe < R.piazzati * 0.5; giudica(vis, `rosso __CPM_NO_G238 partita vera: eroe battitore ${R.eroe}/${R.piazzati} (le batte il compagno piu' vicino)${vis ? '' : ' — rosso NON visto o non giudicato'}`); }
+    { const vis = R.giudicate >= 4 && R.provEroe < R.giudicate * 0.5; giudica(vis, `rosso __CPM_NO_G238 partita vera: eroe battitore ${R.provEroe}/${R.giudicate} punizioni provocate (le batte il compagno piu' vicino, che non e' l'eroe; naturali ${R.eroe}/${R.piazzati})${vis ? '' : ' — rosso NON visto o non giudicato'}`); }
   }
   if (SOLO.includes('C')) {
     const V = await carriera(false); console.log('C verde', JSON.stringify(V));
