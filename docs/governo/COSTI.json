@@ -2469,5 +2469,47 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia9VNQ3Xj9S1oUygbAo",
+  "titolo": "giro 236 · store (PO-430, 322)",
+  "creata": "2026-11-17T18:55:51Z",
+  "chiusa": "2026-11-17T19:28:48Z",
+  "cost_usd": 9.98393472,
+  "output_tokens": 83279,
+  "cache_read_tokens": 30709801,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYiaAY5PjGR7gN594g3nZ",
+  "titolo": "giro 235 · profilo e grafica (PO-457, 458)",
+  "creata": "2026-11-17T17:11:17Z",
+  "chiusa": "2026-11-17T19:07:10Z",
+  "cost_usd": 19.1545732,
+  "output_tokens": 141037,
+  "cache_read_tokens": 67994486,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-17"
+ },
+ {
+  "sessione": "session_01QEYia9prATQiR2NwWNGzzq",
+  "titolo": "giro 256 · saluto alternato (PO-499)",
+  "creata": "2026-11-17T16:31:23Z",
+  "chiusa": "2026-11-17T19:28:47Z",
+  "cost_usd": 14.53996176,
+  "output_tokens": 121491,
+  "cache_read_tokens": 24421323,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-17"
  }
 ]
