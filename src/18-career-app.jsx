@@ -9732,9 +9732,12 @@ const getThisWeekMatchday=()=>{
                     <div key={i} data-cpm="riga-cal-v2" style={{display:"flex",alignItems:"center",gap:10,minHeight:50,padding:"6px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?TH.bgBlue:"transparent",borderRadius:isCur?RAD.sm:0,paddingLeft:isCur?8:0,paddingRight:isCur?8:0}}>{/* [PO-302 tappa 2b] riga compatta a blocchi: avversario, poi etichette CASA/FUORI e competizione */}
                       <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                        {(typeof window!=='undefined'&&window.__CPM_NO_G258)?<div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                           {isCur&&"▶ "}vs {md.opponentName}
                         </div>
+                        :<div data-cpm="cal-riga-258" style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,display:"flex",minWidth:0,whiteSpace:"nowrap"}}>{/* [giro 258 · rapporto 254 dubbio 1] «▶ vs FC Sampierdarena Primavera» era testo semplice e a 375 px veniva tagliato: l'avversario passa dalla scala unica dei nomi (intero → U19 → corto → sigla). Rosso __CPM_NO_G258 = riga di prima */}
+                          <span style={{flex:"0 0 auto"}}>{(isCur?"▶ ":"")+"vs\u00a0"}</span><NomeSquadra182 as="span" cpm="cal-avv-258" team={opp} testo={md.opponentName||undefined} fb="Avversario" style={{flex:"0 1 auto",minWidth:0}}/>
+                        </div>}
                         <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:"4px 6px",marginTop:3,fontSize:FS.caption,color:TH.muted}}>
                           <TagV2 t={md.isHome?"Casa":"Fuori"} c={md.isHome?TH.success:TH.muted}/>
                           {md.type==="cup"&&<TagV2 t={"Coppa · "+(md.cupRoundName||"Turno")} c={TH.goldText}/>}

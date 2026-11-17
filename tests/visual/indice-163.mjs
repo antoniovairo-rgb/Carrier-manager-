@@ -23,7 +23,7 @@ function savePlayer(over = {}) {
   const s = 66;
   return { name: 'Guardiano Indice', nation: 'Italia', avatarId: 0, proStatus: 'u18', season: 1, week: 12, weekLived: false, age: 17, ovr: 66, tutorialDone: true, position: 'Attaccante',
     campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1,
-    club: { id: 'milan', n: 'FC Milano Sempione Primavera', a: 'MSE', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
+    club: { id: 'milan', n: 'FC Rossoneri Primavera', a: 'RSN', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
     stats: { 'velocità': s, tecnica: s, fisico: s, 'mentalità': s, tiro: s + 2, passaggio: s, dribbling: s, posizionamento: s },
     form: 74, morale: 72, fatigue: 10, coachTrust: 62, contract: { duration: 1, wage: 200 }, matchHistory: mh(9, { rating: 7.1, goals: 1 }), ...over };
 }
@@ -116,7 +116,7 @@ try {
   ok(!!b6 && b6.tacca === '-' && /6ª partita/.test(b6.testo), `sotto le 6 partite: barra spenta con la spiegazione («${b6 && b6.testo.slice(0, 60)}»)`);
   await W6.page.close();
   /* professionista: niente barra */
-  const WP = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', club: { id: 'milan', n: 'FC Milano Sempione', a: 'MSE', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }));
+  const WP = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', club: { id: 'milan', n: 'FC Rossoneri', a: 'RSN', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }));
   /* [giro 165] da professionista la card c'e' col solo tasto «Vai al prossimo momento» (guardiano momento-165): la BARRA no */
   const bp = await WP.page.evaluate(() => !!document.querySelector('[data-cpm="ip163"]'));
   ok(!bp, 'professionista: la barra dell\'Indice non c\'è (solo Primavera)');
