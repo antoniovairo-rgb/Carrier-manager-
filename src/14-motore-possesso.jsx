@@ -267,6 +267,14 @@ function creaMotorePossesso(cfg){
      la soglia 70 angoli 393 → 387 e piazzati 1826 → 1887. Si cambia SOLO chi batte: fermoSet non consuma sorteggi in piu'; scene,
      tetti (4 piazzati, 1 punizione diretta) e ripiego del giro 154 restano.
      Rosso window.__CPM_NO_G238. */
+  /* [giro 249 PO-496 seguito, decisione PO 17/11 «Senza premio tira un compagno»] Il giro 238 ha misurato che l'eroe vinceva SEMPRE la
+     scelta del rigorista (ruolo «AT» + 6): il premio «il rigorista sei tu» non cambiava nulla. Ora SENZA il premio il rigore lo batte il
+     compagno piu' adatto (regola del motore per i compagni): il rigorista designato del club se esiste — nei dati del gioco NON esiste
+     (la rosa porta solo nome e ruolo, nessun attributo: dichiarato nel rapporto) — altrimenti il miglior attaccante in campo, con
+     un'attitudine al tiro dal dischetto FISSA per giocatore (dal nome, quindi la stessa partita dopo partita: un rigorista vero, non un
+     sorteggio). L'eroe solo se nessun compagno puo' calciare. CON il premio tira l'eroe (+100, giro 238). Rosso window.__CPM_NO_G249. */
+  const _g249=()=>!(typeof window!=='undefined'&&window&&window.__CPM_NO_G249);
+  const _att249=(q)=>{const s=String(q.name||"");let h=5381;for(let k=0;k<s.length;k++){h=(((h<<5)+h)^s.charCodeAt(k))>>>0;}return (h%1000)/250;};/* attitudine 0..4 dal nome (stessa scala del vecchio sorteggio) */
   const _pr238=(k)=>!!(cfg.eroe&&cfg.eroe.premi&&cfg.eroe.premi[k])&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G238);
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
@@ -462,7 +470,7 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;const _c249=_g249()&&!_pr238("rig")&&lato===HOME;/* solo la squadra dell'eroe: gli avversari scelgono come prima */for(const q of g){if(!mio(q,lato)||q.gk)continue;const _r=rnd()*4;/* [giro 249] il sorteggio si consuma comunque: stesso flusso di sorteggi in entrambi i bracci */const sc=_c249?((q.eroe?-1000:0)+(attivo(q)?0:-500)/* in campo: un espulso non calcia */+(q.rl==="AT"?10:0)+_att249(q)):(q.rl==="AT"?10:0)+(q.eroe?6+(_pr238("rig")?100:0):0)+_r;if(sc>bs){bs=sc;B=q;}}if(_c249&&B&&!B.eroe)S.conta.rig249=(S.conta.rig249|0)+1;}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;
         if(kind==="foul"&&advDi(S.fermo.x,lato)>=70&&_pr238("piaz")&&mio(g[HERO],lato)&&eroeAttivo)B=g[HERO];}S.fermo.batt=B?B.i:null;/* [giro 238 PO-496] il battitore designato dal patto (nessun sorteggio in piu': il numero e il seme dei piazzati non cambiano) */
       /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
          un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si

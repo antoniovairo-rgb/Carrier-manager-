@@ -6742,6 +6742,19 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
             _evM870=evAcc898Ref.current.concat(_evB);}evAcc898Ref.current=[];passi966Ref.current=0;/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
+          /* [giro 249 PO-496 seguito, decisione PO 17/11 «Senza premio tira un compagno» — rosso window.__CPM_NO_G249] SENZA il premio
+             «il rigorista sei tu» il rigore della squadra lo batte un compagno (src/14): niente scelta dell'eroe, ma il rigore SI VEDE — la
+             scena di sola visione del giro 204 (cronometro fermo ~4 s, il 3D rifa' il calcio con la direzione e l'esito del motore, sopra
+             solo il racconto col nome del compagno). Con il premio nulla cambia: tira l'eroe nella sua scena interattiva. */
+          if(brain137()&&!(typeof window!=='undefined'&&(window.__CPM_NO_G249||window.__CPM_NO_G204))&&!vis204Ref.current&&String(phaseRef.current)==="playing"&&!(_M._S&&_M._S.scena)){try{
+            const _pm249=(typeof premiMotore238==='function')?premiMotore238(player,context):null;
+            const _t249=!(_pm249&&_pm249.rig)?_evM870.find(e=>e&&e.t==='tiro'&&e.intent==='penalty'&&e.chi&&e.chi.team==='home'&&!e.chi.eroe):null;
+            if(_t249){const _e=String(_t249.esito||""),_ty=(_t249.to&&_t249.to.y!=null)?+_t249.to.y:50;const _n=(vis204N.current|0);vis204N.current=_n+1;
+              const _v={key:1000+_n*10/* src/12: floor(key/2)%5!==4 -> il battitore e' un compagno */,side:"H",dir:_ty<48.5?-1:(_ty>51.5?1:0),high:false,scored:_e==="goal",wide:_e==="wide"||_e==="post",post:_e==="post",
+                nome:(_t249.chi.nome||null),esito:_e,min:(_t249.min!=null?_t249.min:nx)|0,eroe:false,compagno249:true,t0:Date.now()};
+              vis204Ref.current=_v;setVis204(_v);setCutFx({key:Date.now(),dur:520});
+              cpmEv("rigore249",{min:nx|0,esito:_e,nome:_v.nome});
+              if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_RIG249=window.__CPM_RIG249||[]).push({min:nx|0,nome:_v.nome,esito:_e,eroe:false});}}catch(_e249){}}
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
