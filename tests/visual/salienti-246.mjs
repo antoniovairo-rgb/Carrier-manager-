@@ -10,7 +10,8 @@
      4. SOLI SALIENTI: la partita e' a soli salienti (testimone __CPM_LM166 attiva e scelta243, velo «solo-166-velo», gioco fluido
         <= 400 ms reali per minuto di gioco su una finestra di almeno 20 minuti — la partita intera sta a ~1600).
    Tre partite (Mondiale gironi, Primavera, provino) si giocano fino al fischio e la carriera/il provino le registrano.
-   Negativo: da PANCHINA il tasto non c'e'.
+   Panchina: dal giro 253 (decisione PO 17/11 «Sì, anche dalla panchina») il tasto C'E' anche partendo dalla panchina, nello stesso posto;
+   la partita dalla panchina a soli salienti la gioca il guardiano salienti-253.
    Rosso window.__CPM_NO_G246 (comportamento del giro 243): il tasto torna nel prompt e nelle lobby, il tasto della pre-partita salta
    formazioni e ingresso, Primavera e provino non lo hanno, il provino non passa dalla pre-partita → DEVE cadere su ogni percorso.
    «Non giudicato» = rosso. Verde e rosso stampati per ultimi.
@@ -231,7 +232,7 @@ async function panchina(rosso) {
     r = await daPrompt(A.page, A.W, null, fuori, CAL0); } catch (e) { r = { nonGiudicato: String(e.message).slice(0, 120) }; }
   await A.b.close(); A.srv.close();
   const g = r && r.pp && /panchina/.test(r.ingresso || '');
-  return { nome: 'panchina (prompt): il tasto NON c\'e\'', ok: g && !r.solo && fuori.length === 0, info: g ? `bottoni ${J(r.bottoni)} · fuori ${J(fuori)}` : `NON GIUDICATO: ${J(r).slice(0, 160)}` };
+  return { nome: 'panchina (prompt): il tasto c\'e\' nella pre-partita (giro 253) e solo li\'', ok: g && r.solo && /solo le tue azioni/.test(r.nota) && fuori.length === 0, info: g ? `bottoni ${J(r.bottoni)} · fuori ${J(fuori)}` : `NON GIUDICATO: ${J(r).slice(0, 160)}` };
 }
 
 async function braccio(rosso) {
