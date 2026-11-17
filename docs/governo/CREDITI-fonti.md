@@ -8,6 +8,8 @@ Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy sho
 
 Giro 184 (13/11, PO-374, decisione PO 12/11 «Toglierli dal repo»): gli originali CGTrader (`assets/source/cgtrader-soccer-player/originals/`: FBX, OBJ/MTL, GLB parziali; e `TEXTURES.zip`) sono tolti dal repo e dal sito il 13/11; restano nella storia git (nessun force push, decisione PO) e il PO li conserva nel suo acquisto CGTrader. Il gioco usa solo i GLB convertiti in `assets/` (verificato con grep e sulla rete del browser, rapporto `docs/sviluppo/RAPPORTO-giro184.md`). Guardiano `licenze-184`: nessun originale CGTrader/Mixamo/Rohr in `assets/`, `dist/`, `dist-web/`.
 
+Giro 233 (17/11, PO-453 «primo avvio leggero»): le quattro texture della testa del pacchetto CGTrader (`assets/hair-colors/source-textures/HEAD_hair_{brown,black,blond,auburn}.png`) hanno una copia in formato WebP in `assets/hair-colors/webp/` (stesso disegno 2048×2048, ritaglio alfa identico pixel per pixel, 9,91 → 0,85 MB), prodotta da `tools/capelli-233.py`. È un cambio di formato dello stesso file già in elenco (riga «Giocatori 3D … CGTrader»): stessa fonte, stessa licenza, nessuna risorsa nuova. I PNG restano nel repo: li usa il braccio rosso `__CPM_NO_G233`.
+
 | Risorsa | Autore | Licenza | Fonte |
 |---|---|---|---|
 | Giocatori 3D «Soccer Player - Rigged» (CGTrader) | Hisenberg | Royalty Free (standard) — dichiarata dal PO | ordine CGTrader #17876008 del 2026-09-20, foto docs/governo/foto/po238-ordine-cgtrader.jpg |

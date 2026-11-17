@@ -447,7 +447,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     const _cgIntro23=typeof corpoCG23==='function'&&typeof _hyperQ23==='function'&&/cgtrader/.test(_hyperQ23())&&!window.__CPM_NO_CGINTRO;
     if(_cgIntro23&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');
-      if(typeof _g233==='function'&&_g233()){_att233=true;_via233=copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'intro');
+      if(typeof _g233==='function'&&_g233()){_att233=true;_via233=copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'intro');try{const _b233=host.parentNode&&host.parentNode.querySelector('[data-cpm="intro-salta"]');if(_b233)_b233.style.zIndex='5';}catch(_e){}/* «Salta» resta sopra l'attesa: il video si puo' saltare anche mentre il corpo arriva */
         const _esci233=(m)=>{if(disposed||glbOk||!_att233)return;try{(window.__CPM_G233=window.__CPM_G233||{}).introSaltata=m;}catch(_e){}try{onDone&&onDone();}catch(_e){}};/* corpo fallito o oltre il tetto (120 s come la partita): il video si chiude, si rivede dal menu */
         _pr233.catch(()=>_esci233('fallito'));_cap233=setTimeout(()=>_esci233('tetto'),+window.__CPM_CAP196||120000);}
       _pr233.then(pkg=>{

@@ -2045,10 +2045,11 @@ function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_v
   const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
   if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
   if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
-    el.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(8px + env(safe-area-inset-top, 0px));z-index:9000;pointer-events:none;background:rgba(5,8,20,0.88);color:#fff;font:700 12px/1.2 system-ui,sans-serif;padding:7px 12px 9px;border-radius:999px;border:1px solid rgba(245,158,11,0.55);white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.35);';
-    el.innerHTML='<span data-t></span><span style="display:block;height:3px;margin-top:5px;background:rgba(255,255,255,0.18);border-radius:3px;overflow:hidden"><span data-b style="display:block;height:100%;width:0;background:#f59e0b;transition:width .3s linear"></span></span>';document.body.appendChild(el);}
+    /* striscia sottile in cima allo schermo (larga tutto, alta 18 px + area sicura): non copre titoli ne' tasti e non prende i tocchi */
+    el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:rgba(5,8,20,0.94);color:#fff;font:700 11px/18px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);white-space:nowrap;overflow:hidden;border-bottom:1px solid rgba(245,158,11,0.45);';
+    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';document.body.appendChild(el);}
   const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
-  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';
+  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(2,p)+'%';
   try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
   if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
 /* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
