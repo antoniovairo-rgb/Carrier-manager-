@@ -2,17 +2,18 @@
 /* [giro 256 · seguito di PO-499] SONDA del saluto della serata, una clip Rohr alla volta: come misura-240.mjs (braccio destro e due braccia
    per fotogramma, chiamato del battito 3) piu' lo scarto geometrico dal piano della cerniera per lato, gli scatti di orientazione fra un
    fotogramma e l'altro e le velocita' separate fra rampa (tratto calcolato) e clip a peso pieno.
-   Uso: node misura-256.mjs [clip] [--rosso] [--foto prefisso]   (--rosso = window.__CPM_NO_G256: la clip forzata resta grezza)
+   Uso: node misura-256.mjs [clip] [--rosso] [--lento] [--foto prefisso]   (--rosso = window.__CPM_NO_G256: la clip forzata resta grezza)
    Strumento di misura, non guardiano (il guardiano e' presentazione-225). */
-import { scatti256, velocita256, provaScatti256 } from './lib/saluto-256.mjs';
+import { scatti256, velocita256, provaScatti256, salti256, provaSalti256 } from './lib/saluto-256.mjs';
+const LENTO = process.argv.includes('--lento') ? 0.125 : 0, EXTRA = (process.env.CPM_FLAG || '').split(',').filter(Boolean);/* --lento: saluto al rallentatore (salti fra fotogrammi) · CPM_FLAG: altri interruttori di prova */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 import fs from 'node:fs';
 fs.mkdirSync('out/g256', { recursive: true });
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const args = process.argv.slice(2), rosso = args.includes('--rosso'), fi = args.indexOf('--foto'), FOTO = fi >= 0 ? args[fi + 1] : '', clip = args.find((a, k) => !a.startsWith('--') && (fi < 0 || k !== fi + 1)) || '';
+const args = process.argv.slice(2).filter(a => a !== '--lento'), rosso = args.includes('--rosso'), fi = args.indexOf('--foto'), FOTO = fi >= 0 ? args[fi + 1] : '', clip = args.find((a, k) => !a.startsWith('--') && (fi < 0 || k !== fi + 1)) || '';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const ctx = await b.newContext({ viewport: { width: 375, height: 812 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx); const p = await ctx.newPage(); const err = []; p.on('pageerror', e => err.push(String(e.message).slice(0, 160)));
-await p.addInitScript(([o, r, c]) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G256 = 1; if (c) window.__CPM_CLIP240 = c; localStorage.setItem('cpm-v3', JSON.stringify(o)); localStorage.setItem('cpm-intro-seen', '1'); }, [SAVE, rosso, clip]);
+await p.addInitScript(([o, r, c, l, x]) => { if (l) window.__CPM_LENTO256 = l; for (const k of x) window[k] = 1; window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G256 = 1; if (c) window.__CPM_CLIP240 = c; localStorage.setItem('cpm-v3', JSON.stringify(o)); localStorage.setItem('cpm-intro-seen', '1'); }, [SAVE, rosso, clip, LENTO, EXTRA]);
 await p.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
 await p.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); await sleep(1200);
 try { await p.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -26,7 +27,7 @@ const foto = FOTO ? (async () => { const st = () => p.evaluate(() => { const P =
 const S = await p.evaluate(async () => { const P = window.__CPM_PRES142; const S = []; const t0 = performance.now(); let visto = false, fuori = false;
   while (performance.now() - t0 < 150000) { await new Promise(r => requestAnimationFrame(r)); const i = P.pi144; if (i == null || i < 0) continue; const m = P.men[i];
     S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, br: P.braccio(i), mn: P.mani240 ? P.mani240(i) : null, or: P.orient256 ? P.orient256(i) : null });
-    const z = m.position.z; if (z > 6.5) visto = true; if (visto && z < 6.02 && (P.t144 || 0) > 3) { if (fuori) break; fuori = true; } if ((P.t144 || 0) > 16) break; }
+    const z = m.position.z; if (z > 6.5) visto = true; if (visto && z < 6.02 && (P.t144 || 0) > 3) { if (fuori) break; fuori = true; } if ((P.t144 || 0) > (window.__CPM_LENTO256 ? 60 : 16)) break; }
   return S; });
 if (foto) await foto;
 await b.close(); srv.close();
@@ -34,6 +35,9 @@ const B = S.filter(s => s.br && s.w > 0.02), mm = (f, A = B) => { const v = A.ma
 const G = 180 / Math.PI, ang = (a, c) => Math.acos(Math.max(-1, Math.min(1, a[0] * c[0] + a[1] * c[1] + a[2] * c[2]))) * G; let vU = 0, vF = 0, j = 0, tU = 0, tF = 0; const A = S.filter(s => s.br);
 for (let k = 1; k < A.length; k++) { while (j + 1 < k && A[k].t - A[j + 1].t >= 0.10) j++; const dw = A[k].t - A[j].t; if (!(dw >= 0.10) || dw > 0.3) continue; const a = ang(A[k].br.dU, A[j].br.dU) / dw, c = ang(A[k].br.dF, A[j].br.dF) / dw; if (a > vU) { vU = a; tU = A[k].ts; } if (c > vF) { vF = c; tF = A[k].ts; } }
 const dur = B.length ? B[B.length - 1].t - B[0].t : 0, scena = S.length ? S[S.length - 1].t - S[0].t : 0;
+if (LENTO) { const sl = salti256(S), A2 = S.filter(s => s.or && s.w > 0.02), aq = (a, c) => { const n = q => { const m = Math.hypot(...q); return q.map(x => x / m); }; a = n(a); c = n(c); return 2 * Math.acos(Math.min(1, Math.abs(a[0] * c[0] + a[1] * c[1] + a[2] * c[2] + a[3] * c[3]))) * 180 / Math.PI; };
+  const vic = A2.map((s, k) => k ? [+s.ts.toFixed(3), +s.w.toFixed(3), ...['u_l', 'u_r', 'f_l', 'f_r'].map(o => +aq(s.or[o], A2[k - 1].or[o]).toFixed(1))] : null).filter(r => r && sl.t != null && Math.abs(r[0] - sl.t) < 0.06);
+  console.log(JSON.stringify({ clip: info, rosso, extra: EXTRA, campioni: S.length, salti: sl, prova: provaSalti256(S, 30), intornoAlSalto: vic })); process.exit(0); }
 const pieno = B.filter(s => s.w >= 0.5 && s.or);
 const out = { clip: info, rosso, piano: pieno.length ? { l: mm(s => s.or.piano_l, pieno), r: mm(s => s.or.piano_r, pieno) } : null, scatti: scatti256(S), provaScatti: provaScatti256(S), vel: velocita256(S), campioni: S.length, saluto_s: +dur.toFixed(2), scena_s: +scena.toFixed(2), err,
   destro: { gomito: mm(s => s.br.gomito), elev: mm(s => s.br.elev), fuori: mm(s => s.br.fuori, B.filter(s => s.w >= 0.5)), polso: mm(s => s.br.polso), manoLato: mm(s => s.br.manoLato), busto: mm(s => s.br.busto), manoSu: mm(s => s.br.manoSu), pron: mm(s => s.br.pron), devia: mm(s => s.br.devia), velOmero: +vU.toFixed(0), velAvambraccio: +vF.toFixed(0), tVelOmero: +tU.toFixed(2), tVelAvambraccio: +tF.toFixed(2), tPolsoMax: (B.slice().sort((x, y) => y.br.polso - x.br.polso)[0] || {}).ts, sopra15: +B.reduce((a, s, k) => a + (k && s.br.manoSu >= 0.15 ? s.t - B[k - 1].t : 0), 0).toFixed(2) },

@@ -20,7 +20,7 @@
    «Non giudicato» = rosso. Soglie fissate dopo la misura (rapporto giro 225), mai da abbassare. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 import { misuraZone, apriPartita } from './lib/notte-206.mjs';
-import { scatti256, velocita256, provaScatti256 } from './lib/saluto-256.mjs';
+import { scatti256, velocita256, salti256, provaSalti256 } from './lib/saluto-256.mjs';
 import fs from 'node:fs';
 fs.mkdirSync('out/g225', { recursive: true });
 const TOL_RESA = 0.35, SAGOME_MIN = 5000, DE_PELLE = 12, PIEDE_MIN = -0.03, PIEDE_MAX = 0.05, SLITTA_MAX = 0.35, SALUTO_S = 1.5, SALUTO_MANO = 0.15;
@@ -30,15 +30,16 @@ const LIM = { gomitoMin: 40, elevMax: 150, fuoriMax: 25, polsoMax: 70, latoMin: 
    clip vera (rapporto giro 256). Restano quelli che vedono un difetto vero:
      gomito (angolo interno) >= LIM.gomitoMin · gomito fuori dalla cerniera <= LIM.fuoriMax a saluto in corso (rotazione, braccio destro) e scarto
      geometrico dell'avambraccio dal piano della cerniera <= PIANO_MAX per lato · nessuna compenetrazione (palmi >= MANI_MIN, mano destra dal suo lato
-     >= LATO_CLIP, mani e gomiti dal busto >= LIM.bustoMin e dalla testa >= TESTA_MIN) · nessuno scatto fra un fotogramma e l'altro (eccesso di
-     velocita' di orientazione di un passo isolato <= SCATTO_MAX, col metro provato nella stessa corsa) · le RAMPE (tratto calcolato: dissolvenza
+     >= LATO_CLIP, mani e gomiti dal busto >= LIM.bustoMin e dalla testa >= TESTA_MIN) · nessun salto fra un fotogramma e l'altro (saluto al
+     rallentatore: un passo di orientazione isolato non supera i vicini di piu' di SALTO_MAX gradi, col metro provato nella stessa corsa) · le RAMPE (tratto calcolato: dissolvenza
      dalla posa a riposo e ritorno) dentro i limiti di velocita' del giro 225.
    NON si applicano alla clip a peso pieno (decisione PO: ampiezza e velocita' del braccio): polso <= 70, omero <= 150, velocita' 350/530.
    Il gesto di «clap twice hand up»: almeno BATTITI_2 battiti e tutte e due le mani ad almeno ALTE_Q sopra le spalle per almeno ALTE_S. */
-const CLIP_A = 'rohr-clapping-hands-up', CLIP_B = 'rohr-clap-twice-hand-up', PIANO_MAX = 25, SCATTO_MAX = 240, SCATTO_PROVA = 30, BATTITI_2 = 2, ALTE_Q = 0.25, ALTE_S = 0.35;
+const CLIP_A = 'rohr-clapping-hands-up', CLIP_B = 'rohr-clap-twice-hand-up', PIANO_MAX = 25, LENTO = 0.125, SALTO_MAX = 15, SALTO_PROVA = 30, BATTITI_2 = 2, ALTE_Q = 0.25, ALTE_S = 0.35;
 /* soglie fissate DOPO la misura (rapporto giro 256): scarto dal piano — «clapping hands up» 12,6 a sinistra e 7,4 a destra, «clap twice hand up» risolta 1,3,
-   grezza 53,7 / 38,8: il limite e' lo stesso numero della cerniera del giro 225 (25 gradi) · scatti — eccesso 63-150 gradi/s nelle due clip, 440-510 con lo
-   scatto provocato di 30 gradi · gesto della clip nuova — 2-3 battiti, braccia in alto 0,62-0,64 s (mani fino a 0,385 sopra le spalle). */
+   grezza 53,7 / 38,8: il limite e' lo stesso numero della cerniera del giro 225 (25 gradi) · salti al rallentatore — «clapping hands up» 7,9-11,5 gradi, «clap twice hand up» risolta 9,0, grezza 9,9: e' un salto
+   dell'omero sinistro a inizio saluto che esiste gia' nella serata del giro 240 e viene dalla regola delle spalle del giro 146b (con __CPM_NO_G146: 4,1);
+   il limite sta sopra quel valore e vede cio' che si AGGIUNGE (salto provocato di 30 gradi: 29,6). Dichiarato nei «Dubbi per il PO» · gesto della clip nuova — 2-3 battiti, braccia in alto 0,62-0,64 s (mani fino a 0,385 sopra le spalle). */
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const SOLO = (process.env.CPM_SOLO || 'verde,rosso,rosso240,ripiego,verde256,rosso256').split(',');
 const FOTO = process.env.CPM_FOTO || '';/* prefisso (cartella/nome) per le foto prima/dopo */
@@ -120,7 +121,7 @@ function giudicaSerie(S) { const o = { campioni: S.length }; if (S.length < 40) 
     let su = 0; for (let k = 1; k < M.length; k++) { const dt = (M[k].t || 0) - (M[k - 1].t || 0); if (dt > 0 && dt < 0.3 && M[k].mn.su_l >= ALTE_Q && M[k].mn.su_r >= ALTE_Q) su += dt; } o.due.inAlto = +su.toFixed(2); o.due.suMax = +Math.max(...M.map(s => Math.min(s.mn.su_l, s.mn.su_r))).toFixed(3); }
   /* [giro 256] cerniera per lato (geometrica), scatti fra fotogrammi (col metro provato), velocita' separate rampa / clip */
   const O = S.filter(s => s.or && s.w >= 0.5 && s.or.piano_l != null && s.or.piano_r != null); if (O.length > 5) { const ab = k => +Math.max(...O.map(s => Math.abs(s.or[k]))).toFixed(1);
-    o.c256 = { piano_l: ab('piano_l'), piano_r: ab('piano_r'), scatti: scatti256(S), prova: provaScatti256(S, SCATTO_PROVA), vel: velocita256(S) }; }
+    o.c256 = { piano_l: ab('piano_l'), piano_r: ab('piano_r'), scatti: scatti256(S)/* a velocita' normale: solo stampato (dipende dai fotogrammi al secondo del banco) */, vel: velocita256(S) }; }
   return o; }
 async function braccio(flags, nome, viste) { const R = { nome }; 
   for (const [vista, vp] of [['tel', { width: 375, height: 812 }], ['pc', { width: 1280, height: 720 }]].filter(q => !viste || viste.includes(q[0]))) { const { ctx, p, err } = await apri(flags, vp); const V = R[vista] = {};
@@ -143,17 +144,24 @@ async function braccio(flags, nome, viste) { const R = { nome };
     V.err = err.slice(0, 3); await ctx.close(); }
   return R; }
 /* [giro 256] UNA SERATA sul dispositivo `ctx` (la memoria dell'alternanza resta fra una serata e l'altra): clip scelta e, se `misura`, la serie del saluto */
-async function serata256(flags, ctx, stagione, misura, vars, foto) { const save = { ...SAVE, player: { ...SAVE.player, season: (SAVE.player.season | 0) + stagione } }; const V = { stagione: save.player.season };
+async function serata256(flags, ctx, stagione, misura, vars, foto, senzaLento) { const save = { ...SAVE, player: { ...SAVE.player, season: (SAVE.player.season | 0) + stagione } }; const V = { stagione: save.player.season };
   const { p, err } = await apri(flags, { width: 375, height: 812 }, { ctx, save, vars });
   try { await beat(p, 1); await sleep(2600); await beat(p, 3); V.clip = await p.evaluate(() => { const P = window.__CPM_PRES142; return P && P.clip240 ? P.clip240() : null; }).catch(() => null);
     V.memoria = await p.evaluate(() => localStorage.getItem('cpm-saluto256')).catch(() => null); V.salvataggio = await p.evaluate(() => ['cpm-v3', 'cpm-v3-s2', 'cpm-v3-s3'].some(k => /saluto256|rohr-|clap/i.test(localStorage.getItem(k) || ''))).catch(() => null);/* nessun campo nel salvataggio */
     if (misura) { const fotoA = foto ? (async () => { const st = () => p.evaluate(() => { const P = window.__CPM_PRES142, m = P.men[P.pi144]; return m ? { w: P.w144 || 0, t: P.ts240 || 0 } : null; }).catch(() => null);
         for (const tt of foto.t) { for (let k = 0; k < 600; k++) { const x = await st(); if (x && x.w > 0.3 && x.t >= tt) break; if (x && x.t > tt + 0.6) break; await sleep(40); } await p.screenshot({ path: `${foto.pre}-t${String(tt).replace('.', '')}.png` }).catch(() => {}); } })() : null;
-      V.serie = giudicaSerie(await serie(p)); if (fotoA) await fotoA; } }
+      V.serie = giudicaSerie(await serie(p)); if (fotoA) await fotoA;
+      /* SALTI: lo stesso saluto al rallentatore (tempo del saluto a LENTO del passo di scena), un campione per fotogramma, fino a braccia di nuovo giu' */
+      if (!senzaLento) { await p.evaluate(v => { window.__CPM_LENTO256 = v; }, LENTO); await beat(p, 1); await sleep(2600); await beat(p, 3);
+      const L = await p.evaluate(async () => { const P = window.__CPM_PRES142, S = []; const t0 = performance.now(); let su = false;
+        while (performance.now() - t0 < 120000) { await new Promise(r => requestAnimationFrame(r)); const i = P.pi144; if (i == null || i < 0) continue; const w = P.w144 || 0; if (w > 0.9) su = true;
+          if (w > 0) S.push({ t: P.t144, w, ts: P.ts240 || 0, or: P.orient256 ? P.orient256(i) : null }); if (su && w <= 0) break; }
+        return S; });
+      V.lento = { campioni: L.length, salti: salti256(L), prova: provaSalti256(L, SALTO_PROVA) }; } } }
   catch (e) { V.errore = String(e && e.message || e).slice(0, 200); }
   V.err = err.slice(0, 3); await p.close(); return V; }
 /* i limiti DICHIARATI di una clip vera, uguali per le due clip; in piu' il gesto proprio di ciascuna */
-function difettiClip256(V, nome) { const d = [], add = x => d.push(nome + ': ' + x), S = V.serie, K = V.clip;
+function difettiClip256(V, nome, senzaLento) { const d = [], add = x => d.push(nome + ': ' + x), S = V.serie, K = V.clip;
   if (V.errore) add('non giudicato — ' + V.errore); if ((V.err || []).length) add('errori di pagina ' + JSON.stringify(V.err));
   if (!K || !(K.ossa >= 30)) { add('non giudicato (clip ' + JSON.stringify(K) + ')'); return d; }
   if (!S || S.errore || !S.braccio || !S.due || !S.c256) { add('non giudicato — ' + JSON.stringify(S && (S.errore || { braccio: !!S.braccio, due: !!S.due, c256: !!S.c256 })).slice(0, 160)); return d; }
@@ -163,9 +171,10 @@ function difettiClip256(V, nome) { const d = [], add = x => d.push(nome + ': ' +
   if (!(C.piano_l <= PIANO_MAX && C.piano_r <= PIANO_MAX)) add(`avambraccio fuori dal piano della cerniera: sinistro ${C.piano_l}, destro ${C.piano_r} gradi (limite ${PIANO_MAX})`);
   if (!(Q.mani >= MANI_MIN)) add(`le mani si compenetrano (palmi a ${Q.mani} < ${MANI_MIN})`); if (!(Q.lato >= LATO_CLIP)) add(`la mano destra passa il piano mediano del corpo (${Q.lato})`);
   if (!(Q.busto >= LIM.bustoMin)) add(`braccia dentro il busto (${Q.busto} dall'asse)`); if (!(Q.testa >= TESTA_MIN)) add(`mani o gomiti dentro la testa (${Q.testa})`);
-  if (!C.prova || !(C.prova.max > SCATTO_MAX)) add(`non giudicato: il metro degli scatti non vede uno scatto provocato di ${SCATTO_PROVA} gradi (${JSON.stringify(C.prova)})`);
-  else if (!(C.scatti.passi >= 40)) add(`non giudicato: scatti misurati su ${C.scatti.passi} passi`);
-  else if (!(C.scatti.max <= SCATTO_MAX)) add(`scatto fra due fotogrammi: ${C.scatti.osso} a ${C.scatti.t} s, eccesso ${C.scatti.max} gradi/s (limite ${SCATTO_MAX})`);
+  const Lr = V.lento; if (senzaLento) { /* braccio rosso: si giudica la cerniera */ } else if (!Lr || !Lr.salti) add('non giudicato (saluto al rallentatore)');
+  else if (!Lr.prova || !(Lr.prova.max > SALTO_MAX)) add(`non giudicato: il metro dei salti non vede un salto provocato di ${SALTO_PROVA} gradi (${JSON.stringify(Lr.prova)})`);
+  else if (!(Lr.salti.passi >= 400)) add(`non giudicato: salti misurati su ${Lr.salti.passi} passi`);
+  else if (!(Lr.salti.max <= SALTO_MAX)) add(`salto fra due fotogrammi: ${Lr.salti.osso} a ${Lr.salti.t} s, ${Lr.salti.max} gradi piu' dei fotogrammi vicini (limite ${SALTO_MAX})`);
   if (!(C.vel.rampaOmero <= LIM.velOmeroMax && C.vel.rampaAvambraccio <= LIM.velAvambraccioMax)) add(`scatto nella rampa — omero ${C.vel.rampaOmero} gradi/s (limite ${LIM.velOmeroMax}), avambraccio ${C.vel.rampaAvambraccio} gradi/s (limite ${LIM.velAvambraccioMax})`);
   if (K.nome === CLIP_A) { if (!(Q.alte >= SALUTO_S)) add(`mani all'altezza delle spalle o sopra per ${Q.alte} s < ${SALUTO_S}`); if (!(Q.battiti >= BATTITI_MIN)) add(`battiti dell'applauso ${Q.battiti} < ${BATTITI_MIN}`); }
   else if (K.nome === CLIP_B) { if (!(Q.battiti >= BATTITI_2)) add(`battiti ${Q.battiti} < ${BATTITI_2}`); if (!(Q.inAlto >= ALTE_S)) add(`braccia in alto (mani a ${ALTE_Q} sopra le spalle) per ${Q.inAlto} s < ${ALTE_S}`); }
@@ -224,10 +233,10 @@ if (SOLO.includes('verde256')) { const ctx = await b.newContext({ viewport: { wi
   d.push(...difettiClip256(R.prima, 'prima serata'), ...difettiClip256(R.seconda, 'seconda serata')); out.difettiVerde256 = d; d.forEach(x => g.push('verde256 · ' + x)); }
 /* rosso window.__CPM_NO_G256: sempre «clapping hands up» (l'alternanza non si vede) e, forzando la clip nuova, il gomito fuori dalla cerniera */
 if (SOLO.includes('rosso256')) { const ctx = await b.newContext({ viewport: { width: 375, height: 812 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx); const R = out.rosso256 = {};
-  R.prima = await serata256(['__CPM_NO_G256'], ctx, 0, false); R.seconda = await serata256(['__CPM_NO_G256'], ctx, 1, false); R.forzata = await serata256(['__CPM_NO_G256'], ctx, 1, true, { __CPM_CLIP240: CLIP_B }); await ctx.close();
+  R.prima = await serata256(['__CPM_NO_G256'], ctx, 0, false); R.seconda = await serata256(['__CPM_NO_G256'], ctx, 1, false); R.forzata = await serata256(['__CPM_NO_G256'], ctx, 1, true, { __CPM_CLIP240: CLIP_B }, null, true); await ctx.close();
   const n = k => R[k] && R[k].clip && R[k].clip.nome;
   if (!n('prima') || !n('seconda')) g.push('rosso256 · non giudicato (clip ' + n('prima') + ', ' + n('seconda') + ')'); else if (!(n('prima') === CLIP_A && n('seconda') === CLIP_A)) g.push(`rosso256 · il difetto non si vede: con __CPM_NO_G256 le due serate usano ${n('prima')} e ${n('seconda')}`);
-  const d = difettiClip256(R.forzata, 'clip nuova senza risoluzione'); out.difettiRosso256 = d;
+  const d = difettiClip256(R.forzata, 'clip nuova senza risoluzione', true); out.difettiRosso256 = d;
   if (n('forzata') !== CLIP_B || d.some(x => /non giudicato/.test(x))) g.push('rosso256 · non giudicato (clip forzata): ' + JSON.stringify(d).slice(0, 200)); else if (!d.some(x => /cerniera/.test(x))) g.push('rosso256 · il difetto non si vede: la clip nuova senza risoluzione sta nella cerniera');
   if (R.forzata.clip && R.forzata.clip.cerniera) g.push('rosso256 · con __CPM_NO_G256 la risoluzione della cerniera e\' ancora attiva'); }
 if (SOLO.includes('ripiego')) { const { ctx, p } = await apri(['__CPM_G225_NODRAW'], { width: 375, height: 812 }); try { await beat(p, 1); await sleep(3000); const t = await tifo(p); out.ripiego = t;
@@ -240,7 +249,7 @@ const riga = (n, R) => { if (!R) return; const T = R.tel || {}, S = T.serie || {
   (T.colori || []).forEach(c => console.log(`   ${String(c.nome || '').replace(/\s+/g, ' ').trim()} · volto ${c.volto} (${c.classe}, ${c.capelliFig}) viso ${c.viso} · 3D pelle ${c.pelle3d} dE ${c.dE} · capelli ${c.capelli3d} · reso ${c.reso} dE ${c.dEreso}`));
   console.log(`   piedi ${JSON.stringify(S.piedi)} · percorso ${S.percorso} slitta ${S.slitta} avanti ${S.avanti} · braccio ${JSON.stringify(S.braccio)}`); };
 console.log('partita di notte, spalti:', JSON.stringify(rif && rif.spalti)); riga('VERDE', out.verde); if (out.verde && out.verde.tel) console.log('   clip ' + JSON.stringify(out.verde.tel.clip) + ' · due braccia ' + JSON.stringify((out.verde.tel.serie || {}).due)); riga('ROSSO', out.rosso); if (out.rosso240) { riga('ROSSO 240', out.rosso240); console.log('   clip ' + JSON.stringify((out.rosso240.tel || {}).clip) + ' · difetti ' + JSON.stringify(out.difettiRosso240)); } if (out.ripiego) console.log('RIPIEGO: ' + JSON.stringify(out.ripiego));
-const riga256 = (et, V) => { if (!V) return; const S = V.serie || {}; console.log(`${et}: stagione ${V.stagione} · clip ${JSON.stringify(V.clip && { nome: V.clip.nome, cerniera: V.clip.cerniera, scelta: V.clip.scelta })}` + (V.serie ? `\n   braccio ${JSON.stringify(S.braccio)}\n   due braccia ${JSON.stringify(S.due)}\n   cerniera/scatti ${JSON.stringify(S.c256)}` : '')); };
+const riga256 = (et, V) => { if (!V) return; const S = V.serie || {}; console.log(`${et}: stagione ${V.stagione} · clip ${JSON.stringify(V.clip && { nome: V.clip.nome, cerniera: V.clip.cerniera, scelta: V.clip.scelta })}` + (V.serie ? `\n   braccio ${JSON.stringify(S.braccio)}\n   due braccia ${JSON.stringify(S.due)}\n   cerniera/velocita' ${JSON.stringify(S.c256)}\n   rallentatore ${JSON.stringify(V.lento)}` : '')); };
 if (out.verde256) { for (const k of ['prima', 'seconda', 'riaperta', 'terza']) riga256('VERDE 256 ' + k, out.verde256[k]); console.log('   memoria ' + out.verde256.seconda.memoria); }
 if (out.rosso256) { for (const k of ['prima', 'seconda', 'forzata']) riga256('ROSSO 256 ' + k, out.rosso256[k]); console.log('   difetti della clip forzata ' + JSON.stringify(out.difettiRosso256)); }
 if (out.difettiRosso) console.log('difetti visti nel rosso:\n  - ' + out.difettiRosso.join('\n  - '));

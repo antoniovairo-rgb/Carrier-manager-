@@ -46997,7 +46997,7 @@ function _cammino225(av,mx,idleAct,walkClip){try{const T=THREE;if(!av||!mx||!idl
    Rosso window.__CPM_NO_G240 (= saluto del giro 225). Misure in docs/sviluppo/RAPPORTO-giro240.md.
    ════════════════════════════════════════════════════════════════════════ */
 const _g240=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G240);
-const _CLIP240=['rohr-clapping-hands-up','rohr-clap-twice-hand-up'];/* le due indicate dal PO. MISURATE sul corpo della serata (misura-240.mjs): «clapping hands up» sta dentro tutti i limiti del braccio del giro 225 (gomito fuori cerniera 9,7 gradi, polso 62,7, velocita' 236/452 gradi/s); «clap twice hand up» ne supera tre (cerniera 39,5 > 25, polso 71,9 > 70, velocita' 397/570 > 350/530): la prima e' la clip, la seconda il ripiego */
+const _CLIP240=['rohr-clapping-hands-up','rohr-clap-twice-hand-up'];/* le due indicate dal PO. MISURATE sul corpo della serata (misura-240.mjs): «clapping hands up» sta dentro tutti i limiti del braccio del giro 225 (gomito fuori cerniera 9,7 gradi, polso 62,7, velocita' 236/452 gradi/s); «clap twice hand up» ne superava tre (cerniera 39,5 > 25, polso 71,9 > 70, velocita' 397/570 > 350/530). [giro 256, decisione PO «Alternarle»] si usano TUTTE E DUE, una serata l'una e una l'altra (saluto256Scegli); la cerniera della seconda la rimette a posto _risolvi256 */
 const _OSSA240=/^(clavicle|upperarm|upperarm_twist_01|lowerarm|lowerarm_twist_01|hand|(index|middle|ring|pinky)_(metacarpal|0[123])|thumb_0[123])_[lr]$/;
 const RAMPA240=0.50;/* s di scena: entrata e uscita in dissolvenza dalla posa a riposo */
 /* ════════════════════════════════════════════════════════════════════════
@@ -47373,15 +47373,16 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          braccio saltava di 53 gradi in un fotogramma all'inizio e alla fine del saluto. Ora, per ogni uomo: due passi veri avanti (un ciclo
          della clip walk, fase = distanza), il saluto da fermo (su in 0,85 s · fino a 2,05 s · giu' in 0,85 s, dalla posa a riposo), due passi indietro
          solo a braccio abbassato. Chi non e' piu' chiamato finisce di abbassare il braccio e torna camminando. */
-      if(_t225){const _no192c=!!(typeof window!=='undefined'&&window.__CPM_NO_G192C);
+      if(_t225){const _no192c=!!(typeof window!=='undefined'&&window.__CPM_NO_G192C);const _len256=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_LENTO256>0&&window.__CPM_LENTO256<=1)?+window.__CPM_LENTO256:1;
         for(let i=0;i<men.length;i++){const m=men[i],cm=m.userData.cam225,S=m.userData.st225||(m.userData.st225={lin:0,ts:0,fatto:false,w:0,ww:0});
           if(m.userData.ris256){try{m.userData.ris256(0);}catch(_e){}}/* [giro 256] IN TESTA al fotogramma, prima di ogni altra posa (misurato: il primo passaggio della regola delle spalle lavorava sulla posa gia' risolta del fotogramma prima e l'omero oscillava di 20 gradi a fotogramma): via cio' che la risoluzione della cerniera ha scritto */
           const mio=called&&i===pi;if(!mio){S.fatto=false;S.ts=0;}
           const zA=LZ+(cm?cm.Dc:1.35);let tz=LZ,goal=0;
           const c240=m.userData.sal240||null,fin240=c240?Math.min(c240.dur-RAMPA240,2.90-RAMPA240):2.05;/* [giro 240] con la clip il braccio e' giu' a 2,90 s come nel giro 225 (2,05 + 0,85): il chiamato torna in fila entro i 6 s di scena che giudica presentazione-142. La clip e' un applauso continuo: se ne usa il primo tratto */
-          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dt;goal=S.ts<fin240?1:0;if(S.ts>=fin240&&S.lin<=0.10)S.fatto=true;}}
+          const dS=dt*_len256;/* [giro 256] solo sonde: il saluto al rallentatore (il cammino no), per misurare la continuita' fotogramma per fotogramma */
+          if(mio&&!S.fatto){tz=zA;if(Math.abs(m.position.z-zA)<0.02){S.ts+=dS;goal=S.ts<fin240?1:0;if(S.ts>=fin240&&S.lin<=0.10)S.fatto=true;}}
           else if(S.lin>0.10)tz=m.position.z;
-          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dt/(c240?RAMPA240:0.85));S.w=_sm(S.lin);
+          S.lin+=Math.sign(goal-S.lin)*Math.min(Math.abs(goal-S.lin),dS/(c240?RAMPA240:0.85));S.w=_sm(S.lin);
           if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
         if(mixers.length)mixers.forEach(m=>m.update(dt));
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}

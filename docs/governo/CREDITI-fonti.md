@@ -36,6 +36,8 @@ Giro 233 (17/11, PO-453 «primo avvio leggero»): le quattro texture della testa
 
 ## Clip Anderson Rohr (giro 180b, 12/11/2026) — registrazione completa
 
+**Giro 256 (17/11/2026, seguito di PO-499, decisione PO «Alternarle»):** il saluto della serata usa **tutte e due** le clip indicate dal PO, una serata `rohr-clapping-hands-up` e la successiva `rohr-clap-twice-hand-up` (stesso file, stessa licenza, nessun asset nuovo).
+
 **Giro 240 (17/11/2026, PO-499, decisione PO «Posa ora, clip nella 197»):** le clip **entrano nel gioco**: il saluto della serata di presentazione usa `rohr-clapping-hands-up` (ripiego `rohr-clap-twice-hand-up`). Come deciso dalla madre nel giro 180c, la riga è ora **nella tabella** qui sopra e nella finestra Crediti del gioco (`src/17`, voce «Animazioni Anderson Rohr»; guardiano `crediti-254`), e `assets/cgtrader-clip-rohr.glb` (1.878.652 byte) **entra in `dist/`** (`tools/build-dist.mjs`, `tools/validate-dist.mjs`). Gli originali (zip, FBX) restano fuori dal repository e dal pacchetto (`licenze-184`). Il testo che segue è la registrazione del giro 180b, lasciata com'era.
 
 **Perché fuori dalla tabella:** il guardiano `crediti-254` pretende nella finestra Crediti del gioco ogni riga della tabella qui
