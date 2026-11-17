@@ -17,7 +17,9 @@
    Lo stesso giro giudica anche, col testimone __CPM_G255W (src/12, inerte):
    · SCHIERAMENTO: le due file a cavallo della meta' campo (x medio dei posti entro ±1, una fila per parte); negli stadi «tutto»
      (ingresso intero) anche la x media dei 23 corpi ARRIVATI entro ±1, zero coppie di corpi a meno di 0,5 fra i centri in tutto
-     l'ingresso, e la camera del gioco (regie «schierati» e «inno») con almeno 20 corpi su 23 nel quadro nel 90% dei fotogrammi;
+     l'ingresso, e la camera del gioco a squadre schierate con la fila nel quadro nel 90% dei fotogrammi: almeno 11 corpi su 23 nella
+     carrellata «schierati», almeno 8 nell'«inno» (camera vicina) — sono i minimi MISURATI sul gioco di prima (12 e 8: la camera e' in
+     verticale e scorre lungo la fila), fissati dopo la misura a copertura piena; altezza apparente media dei corpi almeno 0,06;
    · PANCA BASSA: nessun oggetto «panca-stadio»/«pensilina-stadio» (resta la panchina vera, una per squadra ai lati del tunnel);
    · SOSTITUZIONI (scenari «sost-*», partita vera, ingresso e uscita dell'eroe forzati dal banco): zero fotogrammi con l'eroe
      dentro un oggetto fermo; meno di 10 fotogrammi per verso = non giudicato = rosso.
@@ -63,7 +65,7 @@ async function ingresso(c) {
       await sleep(700); }
     out.walk = (await ph()) === 'walkout';
     if (c.sost) { await sost(page, ph, out, c); out.errori = errs.slice(0, 3); await ctx.close(); return out; }
-    const TF = (c.tutto || TUTTO) ? 0 : TFINE;
+    const TF = (c.tutto || TUTTO) ? 0 : TFINE; const rAlto = ['nazionale', 'finale', 'europea'].includes(c.tipo) ? 'inno' : 'schierati';/* la foto dall'alto si fa nell'ULTIMA regia a squadre schierate, dopo 15 suoi fotogrammi giudicabili */
     /* si attende un evento (il tempo di SCENA scritto dal testimone), mai un tempo fisso: foto dalla camera dell'ingresso a 2,4 s di scena,
        foto dall'alto (camera fissa di prova __CPM_CAM904) a 3,4 s — dopo la finestra in cui si giudica la camera. */
     const t0 = Date.now(); const fatte = new Set(); let visto = out.walk;
@@ -80,9 +82,10 @@ async function ingresso(c) {
       /* [giro 255] a squadre schierate: foto dalla camera del gioco al primo fotogramma con tutti arrivati (regia «schierati» o «inno»);
          dopo altri 14 fotogrammi giudicabili, foto dall'alto (camera fissa di prova): da li' in poi la camera non si giudica piu' (iAlto). */
       if (TF === 0 && process.env.CPM_FOTO !== '0' && !fatte.has('sch-alto')) {
-        const k = await page.evaluate(() => { const W = window.__CPM_G255W || []; let n = 0; for (const e of W) if (!e.sub && e.arr === e.n && (e.r === 'schierati' || e.r === 'inno')) n++; return [n, W.length]; }).catch(() => [0, 0]);
+        const k = await page.evaluate(ra => { const W = window.__CPM_G255W || []; let n = 0, u = 0, ni = 0; for (const e of W) if (!e.sub && e.arr === e.n) { if (e.r === 'schierati' || e.r === 'inno') n++; if (e.r === ra) u++; if (e.r === 'inno') ni++; } return [n, W.length, u, ni]; }, rAlto).catch(() => [0, 0, 0, 0]);
         if (k[0] >= 1 && !fatte.has('sch')) { fatte.add('sch'); const f = `${TAG}-${c.nome}${GLB ? '-glb' : ''}-schierati.jpg`; await page.screenshot({ path: path.join(DIR, f), type: 'jpeg', quality: 80 }).catch(() => {}); out.foto.push(f); }
-        else if (k[0] >= 15) { fatte.add('sch-alto'); out.iAlto = k[1];
+        else if (k[3] >= 4 && !fatte.has('inno')) { fatte.add('inno'); const f = `${TAG}-${c.nome}${GLB ? '-glb' : ''}-inno.jpg`; await page.screenshot({ path: path.join(DIR, f), type: 'jpeg', quality: 80 }).catch(() => {}); out.foto.push(f); }
+        else if (k[2] >= 15) { fatte.add('sch-alto'); out.iAlto = k[1];
           await page.evaluate(() => { window.__CPM_CAM904 = { x: -4, y: 46, z: 24, lx: -4, ly: 0, lz: -12 }; }); await sleep(GLB ? 2500 : 900);
           await page.addStyleTag({ content: 'body *{visibility:hidden!important} canvas{visibility:visible!important}' }).then(async st => { const f = `${TAG}-${c.nome}${GLB ? '-glb' : ''}-schierati-alto.jpg`; await page.screenshot({ path: path.join(DIR, f), type: 'jpeg', quality: 80 }).catch(() => {}); out.foto.push(f); await st.evaluate(n => n.remove()).catch(() => {}); }).catch(() => {});
           await page.evaluate(() => { try { delete window.__CPM_CAM904; } catch (e) { window.__CPM_CAM904 = null; } }); } }
@@ -93,7 +96,7 @@ async function ingresso(c) {
     { const W5 = D.W5, arr = W5.filter(e => e.arr === e.n), giud = arr.filter((e, i) => (e.r === 'schierati' || e.r === 'inno') && (out.iAlto == null || W5.indexOf(e) < out.iAlto));
       const conCc = W5.filter(e => e.cc > 0);
       out.sch = { frames: W5.length, arrivati: arr.length, mx: arr.length ? [Math.min(...arr.map(e => e.mx)), Math.max(...arr.map(e => e.mx))] : null, cc: conCc.length, ccEs: conCc.length ? { t: conCc[0].t, ce: conCc[0].ce } : null, dmin: W5.length ? Math.min(...W5.map(e => e.dm)) : null,
-        cam: { n: giud.length, ok: giud.filter(e => e.inq >= 20).length, inqMin: giud.length ? Math.min(...giud.map(e => e.inq)) : null, alt: giud.length ? +(giud.reduce((a, e) => a + e.alt, 0) / giud.length).toFixed(3) : null, regie: [...new Set(giud.map(e => e.r))], serie: W5.filter(e => e.r === 'schierati' || e.r === 'inno').map(e => [e.t, e.r[0], e.arr, e.inq, e.alt]), es: giud.length ? giud[giud.length - 1].cp : null }, arb: arr.length ? arr[arr.length - 1].arb : null }; }
+        cam: { n: giud.length, ok: giud.filter(e => e.inq >= (e.r === 'inno' ? 8 : 11)).length, nInno: giud.filter(e => e.r === 'inno').length, inqMin: giud.length ? Math.min(...giud.map(e => e.inq)) : null, alt: giud.length ? +(giud.reduce((a, e) => a + e.alt, 0) / giud.length).toFixed(3) : null, regie: [...new Set(giud.map(e => e.r))], serie: W5.filter(e => e.r === 'schierati' || e.r === 'inno').map(e => [e.t, e.r[0], e.arr, e.inq, e.alt]), es: giud.length ? giud[giud.length - 1].cp : null }, arb: arr.length ? arr[arr.length - 1].arb : null }; }
     out.err = D.err; out.S = D.S; const W = D.W; out.frames = W.length; out.fuoriMax = W.reduce((m, e) => Math.max(m, e.fuori | 0), 0); out.tMax = W.length ? W[W.length - 1].t : 0;
     const conta = k => { const fr = W.filter(e => e[k] && e[k].length); const tipi = {}; const chi = {}; fr.forEach(e => e[k].forEach(x => { tipi[x[1]] = (tipi[x[1]] | 0) + 1; chi[x[0]] = 1; })); return { fotogrammi: fr.length, tipi, corpi: Object.keys(chi).length, esempio: fr.length ? fr[0][k][0] : null, t: fr.length ? [fr[0].t, fr[fr.length - 1].t] : null }; };
     out.pen = conta('pen'); out.fig = conta('fig');
@@ -158,7 +161,9 @@ for (const c of PIANO) { if (SOLO && !SOLO.includes(c.nome)) continue;
       else if (Math.abs(sc.mx[0]) > 1 || Math.abs(sc.mx[1]) > 1) { fuori = true; g.push(`i 23 corpi schierati hanno x media ${sc.mx[0]}..${sc.mx[1]} (attesa entro ±1)`); }
       if (sc.cc) g.push(`${sc.cc} fotogrammi con due corpi a meno di 0,5 (es. ${JSON.stringify(sc.ccEs)})`);
       if (!sc.cam || sc.cam.n < 5) g.push(`non giudicato: ${sc.cam ? sc.cam.n : 0} fotogrammi di camera a squadre schierate (minimo 5)`);
-      else if (sc.cam.ok / sc.cam.n < 0.9) g.push(`la camera inquadra la fila (almeno 20 corpi su 23) in ${sc.cam.ok}/${sc.cam.n} fotogrammi (minimo 90%) — minimo ${sc.cam.inqMin} corpi, camera ${JSON.stringify(sc.cam.es)}`); }
+      else if (c.tipo === 'nazionale' && sc.cam.nInno < 5) g.push(`non giudicato: ${sc.cam.nInno} fotogrammi di camera durante l'inno (minimo 5)`);
+      else if (sc.cam.alt < 0.06) g.push(`a squadre schierate i corpi sono alti in media ${sc.cam.alt} del quadro (minimo 0,06)`);
+      else if (sc.cam.ok / sc.cam.n < 0.9) g.push(`la camera inquadra la fila (almeno 11 corpi su 23, 8 nell'inno) in ${sc.cam.ok}/${sc.cam.n} fotogrammi (minimo 90%) — minimo ${sc.cam.inqMin} corpi, camera ${JSON.stringify(sc.cam.es)}`); }
     if (fuori) visti.sch++;
     const pb = S ? (S.ost || []).filter(x => x.k === 'panca-stadio' || x.k === 'pensilina-stadio') : null;
     if (pb && pb.length) { visti.panca++; g.push(`panca bassa presente: ${pb.length} oggetti (es. ${pb[0].k} x ${pb[0].x0}..${pb[0].x1}, z ${pb[0].z0}..${pb[0].z1})`); }

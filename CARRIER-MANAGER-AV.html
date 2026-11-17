@@ -13751,7 +13751,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // [5.88.0 S2] PANCHINE + AREA TECNICA (tutti i template): due dugout ai lati del tunnel, lato Ovest
   {const _dgM=new THREE.MeshLambertMaterial({color:0x1c2430});
    const _dgGl=new THREE.MeshLambertMaterial({color:0x9fc2dd,transparent:true,opacity:0.4});
-   [[-14,-1],[14,1]].forEach(([dx])=>{
+   /* [giro 255, dubbio 4 del giro 245 — decisione PO 17/11 «Sì, toglila». Rosso __CPM_NO_G255] la panca bassa con pensilina di vetro
+      (z -34,6, a cavallo dei cartelloni) non si costruisce piu': resta la panchina vera coi panchinari di src/12 (z -38,5), una per
+      squadra ai lati del tunnel, in tutte le tipologie. */
+   if(typeof window!=='undefined'&&window.__CPM_NO_G255)[[-14,-1],[14,1]].forEach(([dx])=>{
      const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);b1.userData.ost245='panca-stadio';scene.add(b1);
      const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;r1.userData.ost245='pensilina-stadio';scene.add(r1);
    });}
@@ -17438,7 +17441,19 @@ function ThreeMatchView(props){
       m._wStartX=(typeof window!=='undefined'&&window.__CPM_NO_STADI246)?xRow-9:((typeof window!=='undefined'&&window.__CPM_NO_G245)?(side<0?-23.6:-20.4):(side<0?-1.3:1.3));/* [giro 245 PO-510 — rosso __CPM_NO_G245] la bocca e' a meta' campo (x 0, buildStadium): casa a sinistra, ospiti a destra, 2,6 fra le due file */ /* [giro 46 PO-071 — rosso __CPM_NO_STADI246] le due file escono affiancate dalla bocca del tunnel (x -22, buildStadium) invece che da due punti del bordo campo */m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
-    _placeRow(_homeMeshes,-15,-1);_placeRow(_awayMeshes,-7,1);
+    /* [giro 255, seguito di PO-510 — decisione PO 17/11 «Sì, al centro». Rosso __CPM_NO_G255 = schieramento a sinistra, come prima]
+       MISURATO (tunnel-245, 17 stadi, ingresso intero): con la bocca a meta' campo le due file andavano a schierarsi a x -15 e -7
+       (x media dei 23 corpi -11,0). Ora stanno a cavallo della meta' campo, davanti al tunnel: casa a x -4, ospiti a x +4 (stessa
+       distanza di 8 fra le file, stessi posti in z). Le camere che guardano la fila schierata (carrellata finale, inno) si spostano
+       degli stessi 11 (_SX255): l'inquadratura sulla fila e' quella di prima. */
+    const _G255=!(typeof window!=='undefined'&&window.__CPM_NO_G255),_SX255=_G255?11:0,_SUBX255=_G255?-3.9:-6;
+    /* [giro 255] sostituzioni: la strada fra il campo e la linea d'attesa passa da un punto sul prato davanti al varco (x -3,9, z -33,6),
+       cosi' il tratto che attraversa striscia e cartelloni e' dritto dentro il varco da qualunque punto del campo si arrivi o si parta.
+       p 0..1 lungo la spezzata (ax,az)→(wx,wz)→(bx,bz), a passo proporzionale alla lunghezza dei due tratti. Senza allocazioni. */
+    const _via255={x:0,z:0},_VIAZ255=-33.6;
+    const _spez255=(ax,az,wx,wz,bx,bz,p)=>{const d1=Math.hypot(wx-ax,wz-az),d2=Math.hypot(bx-wx,bz-wz),q=d1/Math.max(0.001,d1+d2);
+      if(p<q){const k=p/Math.max(0.001,q);_via255.x=ax+(wx-ax)*k;_via255.z=az+(wz-az)*k;}else{const k=(p-q)/Math.max(0.001,1-q);_via255.x=wx+(bx-wx)*k;_via255.z=wz+(bz-wz)*k;}return _via255;};
+    _placeRow(_homeMeshes,-15+_SX255,-1);_placeRow(_awayMeshes,-7+_SX255,1);
 
     // Palla — 5.47.17: design MATCH-BALL MODERNO e RICONOSCIBILE — base bianca, pannelli curvi a contrasto (slate) + un
     //   accento di colore vivo (teal) a "swoosh" → niente pentagoni retro, niente bianco piatto "identico" (feedback PO).
@@ -20823,8 +20838,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // item 2 (5.49.6): edge del trigger d'ingresso subentrante → l'eroe parte dalla LINEA LATERALE (area tecnica home) e avvia la sequenza.
-      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
+      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
@@ -23196,12 +23211,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   V3 veterano · V4 esplosivo.
           const V=hero._subVar||0;
           const _hold=[1.5,1.0,1.4,2.0,0.6][V],_runEnd=[3.5,3.2,3.6,3.9,2.9][V];
-          const _stx=-6,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
+          /* [giro 255, dubbio 6 del giro 245 — rosso __CPM_NO_G255] MISURATO con la sonda (tunnel-245, scenari «sost-*»): a x -6 il
+             subentrante aspettava DENTRO la striscia LED del perimetro (segmento x -8,86..-4,77, z -34,4: 91 fotogrammi su 149) e chi
+             usciva la attraversava. Linea d'attesa e punto d'uscita passano a x -3,9: dentro il varco della striscia (±4,77) e fuori
+             dalla parete del tunnel (x -3,08). */
+          const _stx=_SUBX255,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
           let _hex,_hez;
           if(subEntryT<_hold){_hex=_stx;_hez=_stz;}// istruzioni/pronto: fermo alla linea
           else if(subEntryT<_runEnd){const _r=(subEntryT-_hold)/Math.max(0.1,_runEnd-_hold);
             const _p=V===3?_r:V===4?(1-(1-_r)*(1-_r)):V===1?_r*_r:_r*_r*(3-2*_r);// veterano=linear · esplosivo=ease-out · concentrato=ease-in · altri=smoothstep
-            _hex=_stx+(_ftx-_stx)*_p;_hez=_stz+(_ftz-_stz)*_p;}
+            if(_G255){const _v=_spez255(_stx,_stz,_stx,_VIAZ255,_ftx,_ftz,_p);_hex=_v.x;_hez=_v.z;}else{_hex=_stx+(_ftx-_stx)*_p;_hez=_stz+(_ftz-_stz)*_p;}}
           else {_hex=_ftx;_hez=_ftz;}// arrivato a posizione
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);
           if(subEntryT<_hold&&hero._torso){
@@ -23235,10 +23254,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   applauso/saluto/thumbs-up · stanco → testa bassa/mani sui fianchi): l'eroe cammina dalla posizione
           //   CORRENTE al dugout, con gesti per variante, poi ESCE (nascosto, _benched). Onban → nessun HL interferisce.
           const XV=hero._exVar||0,_xdur=_EXIT_DUR[XV];
-          const _dx=-6,_dz=-36.2;// area tecnica / dugout home
+          const _dx=_SUBX255,_dz=-36.2;// area tecnica / dugout home · [giro 255] dentro il varco della striscia LED
           const _r=Math.min(1,subExitT/Math.max(0.1,_xdur*0.82));const _p=_r*_r*(3-2*_r);// walk-off smoothstep (più lento della corsa d'ingresso)
-          const _hex=(hero._exSx!=null?hero._exSx:hero.position.x)+(_dx-(hero._exSx!=null?hero._exSx:hero.position.x))*_p;
-          const _hez=(hero._exSz!=null?hero._exSz:hero.position.z)+(_dz-(hero._exSz!=null?hero._exSz:hero.position.z))*_p;
+          const _ex0=(hero._exSx!=null?hero._exSx:hero.position.x),_ez0=(hero._exSz!=null?hero._exSz:hero.position.z);
+          let _hex=_ex0+(_dx-_ex0)*_p,_hez=_ez0+(_dz-_ez0)*_p;
+          if(_G255&&_ez0>_VIAZ255){const _v=_spez255(_ex0,_ez0,_dx,_VIAZ255,_dx,_dz,_p);_hex=_v.x;_hez=_v.z;}/* [giro 255] dal campo al punto davanti al varco, poi dritto fuori */
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);// facing = direzione di marcia (verso il dugout) via animOne
           // gesti d'uscita (pieni sul rig procedurale; sul GLB la locomozione domina → pacing/traiettoria variano)
           if(hero._aR&&hero._aL){
@@ -25744,10 +25764,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-4){/* [giro 206] inno: squadre schierate coi bambini per mano, carrellata lenta e vicina lungo la fila */
           const _k=clamp((walkT-_WD206)/Math.max(0.5,_g206.inno),0,1);
-          tPx=-27;tPy=3.1;tPz=-8.5+17*_k;tLx=-11;tLy=1.55;tLz=tPz*0.9;
+          tPx=-27+_SX255;tPy=3.1;tPz=-8.5+17*_k;tLx=-11+_SX255;tLy=1.55;tLz=tPz*0.9;/* [giro 255] la camera dell'inno segue lo schieramento al centro */
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-2){
-          const _s245=(typeof window!=='undefined'&&window.__CPM_NO_G245)?1:-1;/* [giro 245 PO-510] dalla bocca a meta' campo le file vanno verso x negativo (schieramento a x -15 e -7): la camera sta da quel lato, cosi' vengono incontro invece di dare le spalle */tPx=_tn46.x+_s245*(8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0));/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+_s245*0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+          const _s245=(typeof window!=='undefined'&&window.__CPM_NO_G245)?1:-1;/* [giro 245 PO-510] la camera sta dal lato x negativo della bocca · [giro 255] lo schieramento ora e' al centro (file a x -4 e +4): da quel lato la fila di casa passa davanti alla camera */tPx=_tn46.x+_s245*(8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0));/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+_s245*0.5;tLy=1.7;tLz=_tn46.z1-1.2;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
         } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
@@ -25776,7 +25796,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
           const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
-          const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=_o277?-33:-42;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
+          const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=(_o277?-33:-42)+_SX255;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11+_SX255;tLy=2.0;tLz=panZ*0.5;/* [giro 255] la carrellata segue lo schieramento al centro */
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         }
         if(_g206){/* [giro 206] entrando e uscendo dalle inquadrature nuove (bandiere, inno) la camera STACCA, non attraversa il campo in volo */
