@@ -171,11 +171,43 @@ function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+
    un'eliminazione o una finale persa, niente domande che presuppongono un turno ancora da giocare (fuori222). Senza esito (intervista
    della settimana, prepartita) il rilancio e' quello di prima; se il filtro svuotasse la lista, resta la lista intera. */
 function _no222iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G222;}
+function _no239iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G239;}
 function coerenteRil222(r,es){if(!es)return true;
   if(!es.lega&&_LEGA211.test(String(r.q||"")+" "+(r.a||[]).map(x=>x&&x.txt).join(" ")))return false;
   if(r.fuori222&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;
   return true;}
-function rilancio24(tone,seed,es){let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+/* [giro 239 · PO-497] il rilancio dopo una sconfitta che qualifica: il giornalista incalza sul passaggio arrivato perdendo, non su un
+   girone «ancora aperto» ne' sulla classifica. Uno per tono della prima risposta, come RILANCIO24. */
+const RILANCIO239={
+  diretto:[
+    {q:"Hai parlato chiaro. Agli ottavi però una serata così non basterà: cosa deve cambiare?",a:[
+      {tone:"diretto",txt:"L'atteggiamento. Agli ottavi si entra in campo per vincere, non per gestire.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Poco, ma quel poco va fatto bene: attenzione per novanta minuti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Io per primo devo dare di più. Il passaggio non cancella gli errori.",ef:{m:1,p:0,t:2}}]},
+    {q:"Passare perdendo: qualcuno dirà che siete stati fortunati. Cosa gli rispondi?",a:[
+      {tone:"diretto",txt:"Che il passaggio ce lo siamo guadagnati nelle partite prima.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il girone si giudica intero, non da una sera.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Che ha un po' ragione: stasera non abbiamo meritato. Rimedieremo.",ef:{m:1,p:0,t:2}}]}],
+  umile:[
+    {q:"Ti prendi le colpe, ma la squadra è passata. Che cosa vi dite nello spogliatoio?",a:[
+      {tone:"diretto",txt:"Che siamo passati, ma che così il prossimo turno non si gioca.",ef:{m:2,p:2,t:0}},
+      {tone:"diplomatico",txt:"Ci diciamo le cose in faccia, e poi pensiamo al sorteggio.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Poche parole. Testa bassa e si lavora per la prossima.",ef:{m:1,p:0,t:2}}]},
+    {q:"Il passaggio del girone ti basta per stasera, o resta l'amaro in bocca?",a:[
+      {tone:"diretto",txt:"Resta l'amaro: perdere non mi va mai giù.",ef:{m:1,p:2,t:0}},
+      {tone:"diplomatico",txt:"Tutte e due le cose: contenti del passaggio, arrabbiati per la partita.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"L'amaro. Ma è un amaro che serve per crescere.",ef:{m:1,p:0,t:2}}]}],
+  diplomatico:[
+    {q:"Risposta equilibrata. Ma stasera, onestamente, avete rischiato di non passare il turno?",a:[
+      {tone:"diretto",txt:"No: il passaggio l'avevamo costruito nelle partite prima.",ef:{m:1,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il calcio è fatto anche di serate storte. L'importante è esserci.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Un po' sì. È un campanello d'allarme da ascoltare.",ef:{m:1,p:0,t:2}}]},
+    {q:"Si passa, ma con una sconfitta. Che segnale arriva al prossimo avversario?",a:[
+      {tone:"diretto",txt:"Che siamo ancora qui. E che la prossima sarà un'altra partita.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Nessun segnale: agli ottavi si riparte da zero, per tutti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Forse che siamo battibili. Tocca a noi dimostrare il contrario.",ef:{m:1,p:0,t:2}}]}]};
+function rilancio24(tone,seed,es){if(es&&es.turno==="qualificato"&&!_no239iv()){const Q=RILANCIO239[tone]||RILANCIO239.diplomatico;const x=Q[hashIv24(seed)%Q.length];return {q:x.q,a:[...x.a,IV_NOCOMMENT24]};}
+  let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
 const PRIMA24={
   win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
   loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
@@ -1490,6 +1522,12 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Rabbia. Abbiamo fatto la partita a metà e in Europa non basta.",ef:{m:-2,p:4,t:-2}},
   {tone:"umile",txt:"Una lezione. Rivediamo gli errori e torniamo più pronti.",ef:{m:-1,p:2,t:7}},
 ]},
+/* [giro 239 · PO-497] la sconfitta all'ultima giornata del girone che pero' qualifica */
+{ctx:["f_europa","f_nazionale"],g211:1,r:["loss"],e211:["qualificato"],q:"Sconfitta, ma siete passati: sollievo o preoccupazione?",a:[
+  {tone:"diplomatico",txt:"Tutte e due. Il passaggio l'abbiamo costruito nelle partite prima, stasera ci serve da lezione.",ef:{m:1,p:3,t:5}},
+  {tone:"diretto",txt:"Preoccupazione. Al turno dopo una partita così ci manda a casa.",ef:{m:-1,p:4,t:-1}},
+  {tone:"umile",txt:"Sollievo, lo ammetto. Ma adesso rivediamo gli errori: il prossimo turno non perdona.",ef:{m:0,p:2,t:6}},
+]},
 {ctx:["f_europa"],g211:1,e211:["eliminato"],q:"Fuori dall'Europa. Cosa è mancato per passare il turno?",a:[
   {tone:"diplomatico",txt:"Precisione nei momenti decisivi. Fa male, ma l'avversario ha meritato.",ef:{m:-3,p:3,t:5}},
   {tone:"diretto",txt:"La cattiveria. Un turno così non si può lasciare per strada.",ef:{m:-4,p:4,t:-3}},
@@ -1686,6 +1724,11 @@ function esitoTurno211(p,r){try{
      coppa europea → euroGroupKOPatch (src/17) sul salvataggio con questa partita aggiunta, come fa onMatchEnd; Europeo/Mondiale →
      ultima partita del girone e meno di 4 punti, come _emGroupOut in src/18. Solo l'eliminazione cambia (decisione PO): chi si
      qualifica resta «nessuno» come prima. */
+  /* [giro 239 · PO-497 — rosso __CPM_NO_G239] LA SCONFITTA CHE QUALIFICA. Prima una sconfitta all'ultima giornata del girone che
+     pero' qualificava restava «nessuno» e riceveva «Serata europea amara… il girone è ancora aperto» (girone chiuso). Ora, con la
+     stessa regola che decide l'eliminazione (euroGroupKOPatch per la coppa europea, 4 punti per Europeo/Mondiale), la sconfitta che
+     passa il girone e' l'esito «qualificato»: domanda dedicata (e211 qualificato) e rilancio dedicato (RILANCIO239). Vittorie e
+     pareggi che qualificano restano «nessuno» (decisione PO del giro 222: cambia solo questo caso). */
   if(!seme&&!_no222iv()){
     if(c==="euro_group"&&p.euro&&p.euro.phase==="group"&&typeof euroGroupKOPatch==="function"){
       const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
@@ -1693,9 +1736,11 @@ function esitoTurno211(p,r){try{
       const cal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true}:m);
       const k=euroGroupKOPatch({...p,calendar:cal,euro:{...p.euro,groupResults:gr,pts:(p.euro.pts||0)+(r.won?3:r.drew?1:0)}});
       if(k&&k.euro&&k.euro.eliminated)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(k&&k.euro&&k.euro.qualified&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */
     }
     if(c==="euroMondiale_group"&&p.euroMondiale){const em=p.euroMondiale,n=(em.groupOpponents||[]).length;
-      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};}
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */}
   }
   if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
   const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));

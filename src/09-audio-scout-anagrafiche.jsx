@@ -1263,6 +1263,22 @@ function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
   if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
   for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
   return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
+/* [giro 239 · PO-507a, dal giro 228 dubbio 2 — rosso __CPM_NO_G239] IL RUOLO INTERO AL TOCCO. Sul telefono il title della sigla
+   (giro 228) non si vede: un tocco sulla sigla apre un fumetto col ruolo intero (e l'etichetta jolly/U21), sopra la sigla; si chiude
+   con un altro tocco ovunque, con lo scorrimento o da solo dopo 3 s. Il fumetto vive in un portale sul body: il testo della riga
+   (sigla + etichetta) resta quello di prima per chi lo legge. Rosso = la sigla torna un semplice testo, senza tocco. */
+function SiglaRuolo239({testo,children,...resto}){
+  const [ap,setAp]=React.useState(null);const ref=React.useRef(null);
+  const no=typeof window!=='undefined'&&!!window.__CPM_NO_G239;
+  React.useEffect(()=>{if(!ap)return;const chiudi=e=>{if(ref.current&&ref.current.contains(e.target))return;setAp(null);};const via=()=>setAp(null);
+    const t=setTimeout(via,3000);document.addEventListener('pointerdown',chiudi,true);window.addEventListener('scroll',via,true);
+    return()=>{clearTimeout(t);document.removeEventListener('pointerdown',chiudi,true);window.removeEventListener('scroll',via,true);};},[ap]);
+  if(no)return <span {...resto}>{children}</span>;
+  const tocca=e=>{try{e.stopPropagation();}catch(_e){}if(ap){setAp(null);return;}const r=ref.current?ref.current.getBoundingClientRect():null;if(r)setAp({x:r.left+r.width/2,y:r.top});};
+  const W=(typeof window!=='undefined'&&window.innerWidth)||360;
+  return <span ref={ref} role="button" tabIndex={0} aria-expanded={!!ap} onClick={tocca} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tocca(e);}}} {...resto} style={{...(resto.style||{}),cursor:"pointer"}}>{children}{ap&&typeof document!=='undefined'&&ReactDOM.createPortal(
+    <span data-cpm="fumetto239" role="tooltip" style={{position:"fixed",left:clamp(ap.x,96,W-96),top:ap.y-6,transform:"translate(-50%,-100%)",zIndex:1200,maxWidth:180,padding:"6px 10px",borderRadius:RAD.sm,background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.bordo,fontSize:FS.caption,fontWeight:FW.bold,textAlign:"center",whiteSpace:"normal",pointerEvents:"none"}}>{testo}</span>,document.body)}</span>;
+}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
@@ -1810,8 +1826,23 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
     else{h.draws++;h.pts++;a.draws++;a.pts++;}
   }
+  /* [giro 239 · PO-498 — rosso __CPM_NO_G239] LA FORMA VERA DI OGNI SQUADRA. Il gioco non salvava la sequenza dei risultati delle
+     altre squadre e la grafica TV pre-partita ne mostrava cinque presi dal bilancio in ordine inventato. Ora ogni riga di classifica
+     tiene i suoi ultimi 5 esiti di campionato (campo facoltativo f239, "W"/"D"/"L", il piu' recente in fondo), scritti QUI dal
+     confronto con la riga di prima: un solo punto per tutti i rami (la tua partita, l'avversario speculare, il turno di riposo, le
+     coppie simulate). Salvataggi vecchi: il campo manca e si riempie da solo con le giornate successive; finche' non copre le ultime
+     min(5, gare) forma239 restituisce null e si mostra solo il bilancio. Nessun campo obbligatorio → nessun cambio di SAVE_VERSION. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G239)){
+    for(let i=0;i<s.length;i++){const o=standings[i],t=s[i];if(!o||!t||(t.played||0)<=(o.played||0))continue;
+      const e=(t.wins||0)>(o.wins||0)?"W":(t.draws||0)>(o.draws||0)?"D":"L";t.f239=(String(o.f239||"")+e).slice(-5);}
+  }
   return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 239 · PO-498] le ultime (fino a) 5 di campionato VERE di una riga di classifica, o null se il salvataggio non le copre */
+function forma239(row){try{
+  if(!row||typeof row.f239!=="string")return null;const n=Math.min(5,row.played|0);if(n<=0||row.f239.length<n)return null;
+  const f=row.f239.slice(-n).split("");return f.every(x=>x==="W"||x==="D"||x==="L")?f:null;
+}catch(e){return null;}}
 // [5.76.0] seed canonico della giornata di lega: stabile per (club, stagione, settimana) → ricaricare un
 //   save e riavanzare produce la STESSA classifica (pattern di calcWorldStandings).
 function standingsSeed(clubId,season,week){return(hashStr(String(clubId||"club"))+(season||1)*100003+(week||1)*9973)>>>0;}

@@ -6314,11 +6314,43 @@ function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+
    un'eliminazione o una finale persa, niente domande che presuppongono un turno ancora da giocare (fuori222). Senza esito (intervista
    della settimana, prepartita) il rilancio e' quello di prima; se il filtro svuotasse la lista, resta la lista intera. */
 function _no222iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G222;}
+function _no239iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G239;}
 function coerenteRil222(r,es){if(!es)return true;
   if(!es.lega&&_LEGA211.test(String(r.q||"")+" "+(r.a||[]).map(x=>x&&x.txt).join(" ")))return false;
   if(r.fuori222&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;
   return true;}
-function rilancio24(tone,seed,es){let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+/* [giro 239 · PO-497] il rilancio dopo una sconfitta che qualifica: il giornalista incalza sul passaggio arrivato perdendo, non su un
+   girone «ancora aperto» ne' sulla classifica. Uno per tono della prima risposta, come RILANCIO24. */
+const RILANCIO239={
+  diretto:[
+    {q:"Hai parlato chiaro. Agli ottavi però una serata così non basterà: cosa deve cambiare?",a:[
+      {tone:"diretto",txt:"L'atteggiamento. Agli ottavi si entra in campo per vincere, non per gestire.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Poco, ma quel poco va fatto bene: attenzione per novanta minuti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Io per primo devo dare di più. Il passaggio non cancella gli errori.",ef:{m:1,p:0,t:2}}]},
+    {q:"Passare perdendo: qualcuno dirà che siete stati fortunati. Cosa gli rispondi?",a:[
+      {tone:"diretto",txt:"Che il passaggio ce lo siamo guadagnati nelle partite prima.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il girone si giudica intero, non da una sera.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Che ha un po' ragione: stasera non abbiamo meritato. Rimedieremo.",ef:{m:1,p:0,t:2}}]}],
+  umile:[
+    {q:"Ti prendi le colpe, ma la squadra è passata. Che cosa vi dite nello spogliatoio?",a:[
+      {tone:"diretto",txt:"Che siamo passati, ma che così il prossimo turno non si gioca.",ef:{m:2,p:2,t:0}},
+      {tone:"diplomatico",txt:"Ci diciamo le cose in faccia, e poi pensiamo al sorteggio.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Poche parole. Testa bassa e si lavora per la prossima.",ef:{m:1,p:0,t:2}}]},
+    {q:"Il passaggio del girone ti basta per stasera, o resta l'amaro in bocca?",a:[
+      {tone:"diretto",txt:"Resta l'amaro: perdere non mi va mai giù.",ef:{m:1,p:2,t:0}},
+      {tone:"diplomatico",txt:"Tutte e due le cose: contenti del passaggio, arrabbiati per la partita.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"L'amaro. Ma è un amaro che serve per crescere.",ef:{m:1,p:0,t:2}}]}],
+  diplomatico:[
+    {q:"Risposta equilibrata. Ma stasera, onestamente, avete rischiato di non passare il turno?",a:[
+      {tone:"diretto",txt:"No: il passaggio l'avevamo costruito nelle partite prima.",ef:{m:1,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il calcio è fatto anche di serate storte. L'importante è esserci.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Un po' sì. È un campanello d'allarme da ascoltare.",ef:{m:1,p:0,t:2}}]},
+    {q:"Si passa, ma con una sconfitta. Che segnale arriva al prossimo avversario?",a:[
+      {tone:"diretto",txt:"Che siamo ancora qui. E che la prossima sarà un'altra partita.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Nessun segnale: agli ottavi si riparte da zero, per tutti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Forse che siamo battibili. Tocca a noi dimostrare il contrario.",ef:{m:1,p:0,t:2}}]}]};
+function rilancio24(tone,seed,es){if(es&&es.turno==="qualificato"&&!_no239iv()){const Q=RILANCIO239[tone]||RILANCIO239.diplomatico;const x=Q[hashIv24(seed)%Q.length];return {q:x.q,a:[...x.a,IV_NOCOMMENT24]};}
+  let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
 const PRIMA24={
   win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
   loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
@@ -7633,6 +7665,12 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Rabbia. Abbiamo fatto la partita a metà e in Europa non basta.",ef:{m:-2,p:4,t:-2}},
   {tone:"umile",txt:"Una lezione. Rivediamo gli errori e torniamo più pronti.",ef:{m:-1,p:2,t:7}},
 ]},
+/* [giro 239 · PO-497] la sconfitta all'ultima giornata del girone che pero' qualifica */
+{ctx:["f_europa","f_nazionale"],g211:1,r:["loss"],e211:["qualificato"],q:"Sconfitta, ma siete passati: sollievo o preoccupazione?",a:[
+  {tone:"diplomatico",txt:"Tutte e due. Il passaggio l'abbiamo costruito nelle partite prima, stasera ci serve da lezione.",ef:{m:1,p:3,t:5}},
+  {tone:"diretto",txt:"Preoccupazione. Al turno dopo una partita così ci manda a casa.",ef:{m:-1,p:4,t:-1}},
+  {tone:"umile",txt:"Sollievo, lo ammetto. Ma adesso rivediamo gli errori: il prossimo turno non perdona.",ef:{m:0,p:2,t:6}},
+]},
 {ctx:["f_europa"],g211:1,e211:["eliminato"],q:"Fuori dall'Europa. Cosa è mancato per passare il turno?",a:[
   {tone:"diplomatico",txt:"Precisione nei momenti decisivi. Fa male, ma l'avversario ha meritato.",ef:{m:-3,p:3,t:5}},
   {tone:"diretto",txt:"La cattiveria. Un turno così non si può lasciare per strada.",ef:{m:-4,p:4,t:-3}},
@@ -7829,6 +7867,11 @@ function esitoTurno211(p,r){try{
      coppa europea → euroGroupKOPatch (src/17) sul salvataggio con questa partita aggiunta, come fa onMatchEnd; Europeo/Mondiale →
      ultima partita del girone e meno di 4 punti, come _emGroupOut in src/18. Solo l'eliminazione cambia (decisione PO): chi si
      qualifica resta «nessuno» come prima. */
+  /* [giro 239 · PO-497 — rosso __CPM_NO_G239] LA SCONFITTA CHE QUALIFICA. Prima una sconfitta all'ultima giornata del girone che
+     pero' qualificava restava «nessuno» e riceveva «Serata europea amara… il girone è ancora aperto» (girone chiuso). Ora, con la
+     stessa regola che decide l'eliminazione (euroGroupKOPatch per la coppa europea, 4 punti per Europeo/Mondiale), la sconfitta che
+     passa il girone e' l'esito «qualificato»: domanda dedicata (e211 qualificato) e rilancio dedicato (RILANCIO239). Vittorie e
+     pareggi che qualificano restano «nessuno» (decisione PO del giro 222: cambia solo questo caso). */
   if(!seme&&!_no222iv()){
     if(c==="euro_group"&&p.euro&&p.euro.phase==="group"&&typeof euroGroupKOPatch==="function"){
       const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
@@ -7836,9 +7879,11 @@ function esitoTurno211(p,r){try{
       const cal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true}:m);
       const k=euroGroupKOPatch({...p,calendar:cal,euro:{...p.euro,groupResults:gr,pts:(p.euro.pts||0)+(r.won?3:r.drew?1:0)}});
       if(k&&k.euro&&k.euro.eliminated)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(k&&k.euro&&k.euro.qualified&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */
     }
     if(c==="euroMondiale_group"&&p.euroMondiale){const em=p.euroMondiale,n=(em.groupOpponents||[]).length;
-      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};}
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */}
   }
   if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
   const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));
@@ -10293,6 +10338,22 @@ function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
   if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
   for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
   return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
+/* [giro 239 · PO-507a, dal giro 228 dubbio 2 — rosso __CPM_NO_G239] IL RUOLO INTERO AL TOCCO. Sul telefono il title della sigla
+   (giro 228) non si vede: un tocco sulla sigla apre un fumetto col ruolo intero (e l'etichetta jolly/U21), sopra la sigla; si chiude
+   con un altro tocco ovunque, con lo scorrimento o da solo dopo 3 s. Il fumetto vive in un portale sul body: il testo della riga
+   (sigla + etichetta) resta quello di prima per chi lo legge. Rosso = la sigla torna un semplice testo, senza tocco. */
+function SiglaRuolo239({testo,children,...resto}){
+  const [ap,setAp]=React.useState(null);const ref=React.useRef(null);
+  const no=typeof window!=='undefined'&&!!window.__CPM_NO_G239;
+  React.useEffect(()=>{if(!ap)return;const chiudi=e=>{if(ref.current&&ref.current.contains(e.target))return;setAp(null);};const via=()=>setAp(null);
+    const t=setTimeout(via,3000);document.addEventListener('pointerdown',chiudi,true);window.addEventListener('scroll',via,true);
+    return()=>{clearTimeout(t);document.removeEventListener('pointerdown',chiudi,true);window.removeEventListener('scroll',via,true);};},[ap]);
+  if(no)return <span {...resto}>{children}</span>;
+  const tocca=e=>{try{e.stopPropagation();}catch(_e){}if(ap){setAp(null);return;}const r=ref.current?ref.current.getBoundingClientRect():null;if(r)setAp({x:r.left+r.width/2,y:r.top});};
+  const W=(typeof window!=='undefined'&&window.innerWidth)||360;
+  return <span ref={ref} role="button" tabIndex={0} aria-expanded={!!ap} onClick={tocca} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tocca(e);}}} {...resto} style={{...(resto.style||{}),cursor:"pointer"}}>{children}{ap&&typeof document!=='undefined'&&ReactDOM.createPortal(
+    <span data-cpm="fumetto239" role="tooltip" style={{position:"fixed",left:clamp(ap.x,96,W-96),top:ap.y-6,transform:"translate(-50%,-100%)",zIndex:1200,maxWidth:180,padding:"6px 10px",borderRadius:RAD.sm,background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.bordo,fontSize:FS.caption,fontWeight:FW.bold,textAlign:"center",whiteSpace:"normal",pointerEvents:"none"}}>{testo}</span>,document.body)}</span>;
+}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
@@ -10840,8 +10901,23 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
     else{h.draws++;h.pts++;a.draws++;a.pts++;}
   }
+  /* [giro 239 · PO-498 — rosso __CPM_NO_G239] LA FORMA VERA DI OGNI SQUADRA. Il gioco non salvava la sequenza dei risultati delle
+     altre squadre e la grafica TV pre-partita ne mostrava cinque presi dal bilancio in ordine inventato. Ora ogni riga di classifica
+     tiene i suoi ultimi 5 esiti di campionato (campo facoltativo f239, "W"/"D"/"L", il piu' recente in fondo), scritti QUI dal
+     confronto con la riga di prima: un solo punto per tutti i rami (la tua partita, l'avversario speculare, il turno di riposo, le
+     coppie simulate). Salvataggi vecchi: il campo manca e si riempie da solo con le giornate successive; finche' non copre le ultime
+     min(5, gare) forma239 restituisce null e si mostra solo il bilancio. Nessun campo obbligatorio → nessun cambio di SAVE_VERSION. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G239)){
+    for(let i=0;i<s.length;i++){const o=standings[i],t=s[i];if(!o||!t||(t.played||0)<=(o.played||0))continue;
+      const e=(t.wins||0)>(o.wins||0)?"W":(t.draws||0)>(o.draws||0)?"D":"L";t.f239=(String(o.f239||"")+e).slice(-5);}
+  }
   return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 239 · PO-498] le ultime (fino a) 5 di campionato VERE di una riga di classifica, o null se il salvataggio non le copre */
+function forma239(row){try{
+  if(!row||typeof row.f239!=="string")return null;const n=Math.min(5,row.played|0);if(n<=0||row.f239.length<n)return null;
+  const f=row.f239.slice(-n).split("");return f.every(x=>x==="W"||x==="D"||x==="L")?f:null;
+}catch(e){return null;}}
 // [5.76.0] seed canonico della giornata di lega: stabile per (club, stagione, settimana) → ricaricare un
 //   save e riavanzare produce la STESSA classifica (pattern di calcWorldStandings).
 function standingsSeed(clubId,season,week){return(hashStr(String(clubId||"club"))+(season||1)*100003+(week||1)*9973)>>>0;}
@@ -43357,10 +43433,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      salvataggio (se un dato manca la riga non compare). Rosso __CPM_NO_G224 = la rassegna del giro 202. */
   const _g224=()=>_g202()&&_g224x();
   const _T200=_g224()?["Risultato e statistiche","Voto e giocate","I giornali","Classifica e prossima partita"]:["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=_g224()?["Risultato","Voto e giocate","Giornali","Classifica"]:["Risultato","Giocate","Giornali","Classifica"];
-  const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-    <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
+  /* [giro 239 · PO-507b, dal giro 232 dubbio 6 — rosso __CPM_NO_G239] dopo una gara a eliminazione diretta la scheda 4 mostra il
+     TABELLONE (rassegnaComp232 tipo "tabellone"), non una classifica: l'etichetta in basso lo dice («4/4 · Tabellone», e il puntino
+     «Tabellone e prossima partita»). Stessa chiamata pura della scheda 4, stessi argomenti. */
+  const _tab239=()=>{try{if((typeof window!=='undefined'&&window.__CPM_NO_G239)||!_g224()||!_g232x())return false;
+    const c=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});
+    return !!(c&&c.tipo==="tabellone");}catch(_e){return false;}};
+  const _nav200=()=>{const _t239=_tab239();const _T=_t239?[..._T200.slice(0,3),"Tabellone e prossima partita"]:_T200,_C=_t239?[..._C200.slice(0,3),"Tabellone"]:_C200;return(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+    <div style={{display:"flex",alignItems:"center"}}>{_T.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
       style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
-    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C200[sk200]}</div></div>);
+    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C[sk200]}</div></div>);};
 
   useEffect(()=>{
     const sit=situations[hlIdx];
@@ -43758,11 +43840,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   Ora: (a) il PROPRIO club usa la forma REALE dalle ultime gare di LEGA (l'utente le conosce → deve
     //   combaciare); (b) gli altri usano il MULTISET ESATTO (w×W,d×D,l×L) mescolato deterministicamente → le 5
     //   mostrate sono SEMPRE un sottoinsieme reale del record (mai più sconfitte di quante ne ha).
-    let form=[];
+    let form=[],vera239=false;
     if(tot>0){
       if(team&&player.club&&team.id===player.club.id){
         form=(player.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national&&!m.friendly).slice(-5).map(m=>m.won?"W":m.drew?"D":"L");
       }
+      /* [giro 239 · PO-498 — rosso __CPM_NO_G239] le altre squadre: la forma VERA salvata in classifica (forma239, src/09); se il
+         salvataggio non la copre, nessuna striscia (resta il bilancio V/N/P delle righe sopra), mai piu' un ordine inventato */
+      if(!form.length&&!(typeof window!=='undefined'&&window.__CPM_NO_G239)){const _f239=(typeof forma239==="function")?forma239(e):null;if(_f239){form=_f239;vera239=true;}else return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form:[],vera239:false,soloBilancio239:true};}
+      else if(form.length)vera239=true;
       if(!form.length){
         const bag=[];for(let i=0;i<w;i++)bag.push("W");for(let i=0;i<d;i++)bag.push("D");for(let i=0;i<l;i++)bag.push("L");
         let s=(_seed>>>0)||1;const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
@@ -43770,7 +43856,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         form=bag.slice(-5);
       }
     }
-    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form};
+    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form,vera239};
   };
   const _tvHome=_tvTeamStat(homeTeamObj),_tvAway=_tvTeamStat(awayTeamObj);
   // [6.81.0 collaudo PO] alla PRIMA giornata (nessuna delle due ha ancora giocato) la tabella 0-0-0-0-0-0
@@ -44535,7 +44621,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     ))}
                     <div style={{display:"flex",alignItems:"center",padding:"7px 12px",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
-                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>— esordio stagionale</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
+                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>{_tvHome.soloBilancio239?"—":"— esordio stagionale"}</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                       <div style={{flex:1.4,fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textAlign:"center",textTransform:"uppercase",letterSpacing:0.5}}>Forma · ultime 5</div>
                       <div style={{flex:1,display:"flex",gap:3,justifyContent:"flex-end"}}>{_tvAway.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>—</span>}{_tvAway.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                     </div>
@@ -45656,7 +45742,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!_k232&&<Sez210 id="post-prossima224" titolo={_c232?"Prossima partita · Campionato":"Prossima partita"}>
                 <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):((_c232&&_c232.motivo)||"Nessuna partita in calendario dopo questa.")}</div>
                 {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
-                {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {((typeof window!=='undefined'&&window.__CPM_NO_G239)?!_g230x():!!(_avS&&_avS.vera239))/* [giro 239 · PO-498] torna la striscia, ma solo con la forma VERA */&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
                 {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
               </Sez210>}
             </div>);})()}
@@ -63232,7 +63318,7 @@ const getThisWeekMatchday=()=>{
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
                     <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}
-                    {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<span data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
+                    {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<SiglaRuolo239 testo={_cp49.r+(_cp49.tag?" · "+_cp49.tag:"")}/* [giro 239 PO-507a] fumetto al tocco */ data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</SiglaRuolo239>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>
                 );
