@@ -2031,6 +2031,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      dalla panchina: la cronaca veloce scorre fino all'ingresso (si ferma al minuto d'ingresso e lascia vedere la sostituzione), poi solo
      gli highlight; se il giocatore non entra mai, la partita finisce in cronaca veloce con un messaggio chiaro. Rosso __CPM_NO_G253. */
   const _g253=!(typeof window!=='undefined'&&window.__CPM_NO_G253);
+  const _g264=!(typeof window!=='undefined'&&window.__CPM_NO_G264);/* [giro 264] il battito della partita intera si applica per intero prima del successivo (vedi _batt264) */
   const [soloScelto243,setSoloScelto243]=useState(false);const soloScelto243Ref=useRef(false);/* il salvataggio della ripresa vive in un effetto montato una volta: legge il ref */
   const [onBench,setOnBench]=useState(resumeState?false:benchStart);/* [7.150.0] ripresa: sempre in campo */
   const onBenchRef=useRef(resumeState?false:benchStart);
@@ -9681,7 +9682,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(_CPM_TEST&&typeof window!=='undefined'){try{(window.__CPM_GOL173=window.__CPM_GOL173||[]).push({..._g,t:Math.round(performance.now())});}catch(_e){}}
             break;}}}
       if(_CPM_TEST&&typeof window!=='undefined'){try{const _w=(window.__CPM_G166=window.__CPM_G166||{battiti:0,lotti:0,ms:0});_w.battiti+=_n;_w.lotti++;_w.ms+=performance.now()-_t0;}catch(_e){}}};
-    const iv=setInterval(_solo166?_lotto166:_batt166,_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
+    /* [giro 264 — L'ORDINE FRA IL BATTITO DEL MOTORE E L'APERTURA DELLA SCENA NON DIPENDE DALL'OROLOGIO DA POLSO. Rosso __CPM_NO_G264]
+       MISURATO (sonda-264, «Collaudo Salienti», seme 7300, partita intera contro soli highlight): il battito che apre la scena chiede
+       la fase `hl_intro` con un aggiornamento di React, ma l'intervallo del metronomo si spegne solo quando React ha reso e ha
+       eseguito la pulizia dell'effetto — cioe' quando il processore ha tempo. Se nel frattempo l'intervallo batte ancora, il
+       motore riceve un passo del minuto dopo PRIMA che la scena giochi: 96 passi e 5228 estrazioni del flusso rnd a `giocaScena`
+       invece di 95 e 5169, e lo stesso passaggio esce «chance» invece di «assist». Nei soli highlight non succede per
+       costruzione: il lotto fa correre ogni battito dentro flushSync. Qui la partita intera fa lo stesso: ogni battito
+       dell'intervallo gira dentro flushSync (aggiornamenti ed effetti applicati subito: fase, cronometro e spegnimento
+       dell'intervallo sono fatti prima che il battito dopo possa partire). Stesso battito, stessi sorteggi, stessa cadenza. */
+    const _batt264=()=>{ReactDOM.flushSync(_batt166);};
+    const iv=setInterval(_solo166?_lotto166:(_g264?_batt264:_batt166),_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>{_vivo166=false;clearInterval(iv);};
   },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166,_sh173,vis204]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
