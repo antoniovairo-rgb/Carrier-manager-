@@ -11386,11 +11386,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   Ora: (a) il PROPRIO club usa la forma REALE dalle ultime gare di LEGA (l'utente le conosce → deve
     //   combaciare); (b) gli altri usano il MULTISET ESATTO (w×W,d×D,l×L) mescolato deterministicamente → le 5
     //   mostrate sono SEMPRE un sottoinsieme reale del record (mai più sconfitte di quante ne ha).
-    let form=[];
+    let form=[],vera239=false;
     if(tot>0){
       if(team&&player.club&&team.id===player.club.id){
         form=(player.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national&&!m.friendly).slice(-5).map(m=>m.won?"W":m.drew?"D":"L");
       }
+      /* [giro 239 · PO-498 — rosso __CPM_NO_G239] le altre squadre: la forma VERA salvata in classifica (forma239, src/09); se il
+         salvataggio non la copre, nessuna striscia (resta il bilancio V/N/P delle righe sopra), mai piu' un ordine inventato */
+      if(!form.length&&!(typeof window!=='undefined'&&window.__CPM_NO_G239)){const _f239=(typeof forma239==="function")?forma239(e):null;if(_f239){form=_f239;vera239=true;}else return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form:[],vera239:false,soloBilancio239:true};}
+      else if(form.length)vera239=true;
       if(!form.length){
         const bag=[];for(let i=0;i<w;i++)bag.push("W");for(let i=0;i<d;i++)bag.push("D");for(let i=0;i<l;i++)bag.push("L");
         let s=(_seed>>>0)||1;const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
@@ -11398,7 +11402,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         form=bag.slice(-5);
       }
     }
-    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form};
+    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form,vera239};
   };
   const _tvHome=_tvTeamStat(homeTeamObj),_tvAway=_tvTeamStat(awayTeamObj);
   // [6.81.0 collaudo PO] alla PRIMA giornata (nessuna delle due ha ancora giocato) la tabella 0-0-0-0-0-0
@@ -12163,7 +12167,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     ))}
                     <div style={{display:"flex",alignItems:"center",padding:"7px 12px",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
-                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>— esordio stagionale</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
+                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>{_tvHome.soloBilancio239?"—":"— esordio stagionale"}</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                       <div style={{flex:1.4,fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textAlign:"center",textTransform:"uppercase",letterSpacing:0.5}}>Forma · ultime 5</div>
                       <div style={{flex:1,display:"flex",gap:3,justifyContent:"flex-end"}}>{_tvAway.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>—</span>}{_tvAway.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                     </div>
@@ -13284,7 +13288,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!_k232&&<Sez210 id="post-prossima224" titolo={_c232?"Prossima partita · Campionato":"Prossima partita"}>
                 <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):((_c232&&_c232.motivo)||"Nessuna partita in calendario dopo questa.")}</div>
                 {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
-                {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {((typeof window!=='undefined'&&window.__CPM_NO_G239)?!_g230x():!!(_avS&&_avS.vera239))/* [giro 239 · PO-498] torna la striscia, ma solo con la forma VERA */&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
                 {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
               </Sez210>}
             </div>);})()}

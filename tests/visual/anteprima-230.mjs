@@ -8,6 +8,9 @@
    Partita: campionato da professionista dal prompt vero (lib partita-166), soli highlight, pilota seedato 7304, festa forzata;
    classifica riempita dal banco (18 squadre con punti, come rassegna-224). Viewport 375x667.
    ROSSO window.__CPM_NO_G230 (dall'avvio, stessa partita): torna la striscia → DEVE essere bocciato.
+   [giro 239 · PO-498] dal giro 239 la striscia torna, ma SOLO con la forma vera salvata in classifica (f239, guardiano forma-239); la
+   classifica del banco qui non la porta (come un salvataggio vecchio) → in verde la striscia resta assente. La striscia INVENTATA torna
+   solo spegnendo anche il giro 239: il braccio rosso accende __CPM_NO_G230 + __CPM_NO_G239.
    «Non giudicato» (partita non finita, scheda 4 o anteprima non trovate, avversario non in classifica) = rosso.
    Verde e rosso stampati per ultimi. Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node anteprima-230.mjs */
 import { sleep } from './lib/harness.mjs';
@@ -63,9 +66,9 @@ console.log('A) verde');
   } catch (e) { ok(verde, false, 'non giudicato: ' + String(e.message).slice(0, 160)); }
   await A.b.close(); A.srv.close();
 }
-console.log('R) rosso __CPM_NO_G230');
+console.log('R) rosso __CPM_NO_G230 + __CPM_NO_G239');
 {
-  const { A, g, m } = await braccio({ __CPM_NO_G230: true });
+  const { A, g, m } = await braccio({ __CPM_NO_G230: true, __CPM_NO_G239: true });
   try {
     const r = m ? giudica(m) : { giudicato: false, passa: false, msg: 'scheda 4 non misurata' };
     console.log('    ' + r.msg);

@@ -1796,8 +1796,23 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
     else{h.draws++;h.pts++;a.draws++;a.pts++;}
   }
+  /* [giro 239 · PO-498 — rosso __CPM_NO_G239] LA FORMA VERA DI OGNI SQUADRA. Il gioco non salvava la sequenza dei risultati delle
+     altre squadre e la grafica TV pre-partita ne mostrava cinque presi dal bilancio in ordine inventato. Ora ogni riga di classifica
+     tiene i suoi ultimi 5 esiti di campionato (campo facoltativo f239, "W"/"D"/"L", il piu' recente in fondo), scritti QUI dal
+     confronto con la riga di prima: un solo punto per tutti i rami (la tua partita, l'avversario speculare, il turno di riposo, le
+     coppie simulate). Salvataggi vecchi: il campo manca e si riempie da solo con le giornate successive; finche' non copre le ultime
+     min(5, gare) forma239 restituisce null e si mostra solo il bilancio. Nessun campo obbligatorio → nessun cambio di SAVE_VERSION. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G239)){
+    for(let i=0;i<s.length;i++){const o=standings[i],t=s[i];if(!o||!t||(t.played||0)<=(o.played||0))continue;
+      const e=(t.wins||0)>(o.wins||0)?"W":(t.draws||0)>(o.draws||0)?"D":"L";t.f239=(String(o.f239||"")+e).slice(-5);}
+  }
   return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 239 · PO-498] le ultime (fino a) 5 di campionato VERE di una riga di classifica, o null se il salvataggio non le copre */
+function forma239(row){try{
+  if(!row||typeof row.f239!=="string")return null;const n=Math.min(5,row.played|0);if(n<=0||row.f239.length<n)return null;
+  const f=row.f239.slice(-n).split("");return f.every(x=>x==="W"||x==="D"||x==="L")?f:null;
+}catch(e){return null;}}
 // [5.76.0] seed canonico della giornata di lega: stabile per (club, stagione, settimana) → ricaricare un
 //   save e riavanzare produce la STESSA classifica (pattern di calcWorldStandings).
 function standingsSeed(clubId,season,week){return(hashStr(String(clubId||"club"))+(season||1)*100003+(week||1)*9973)>>>0;}
