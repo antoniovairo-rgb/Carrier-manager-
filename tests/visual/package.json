@@ -654,6 +654,8 @@
     "patto-227": "node patto-227.mjs",
     "patto-238": "node patto-238.mjs",
     "rinnovo-238": "node rinnovo-238.mjs",
+    "rigorista-249": "node rigorista-249.mjs",
+    "offerta-249": "node offerta-249.mjs",
     "provini-201": "node provini-201.mjs",
     "scelte-201": "node scelte-201.mjs",
     "figurina-199": "node figurina-199.mjs",
