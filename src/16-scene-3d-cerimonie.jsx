@@ -57,13 +57,13 @@ function ProTransitionScreen({player,onChoose}){
           </div>
           {/* [7.999.49 parte A] il conteggio delle stagioni Under 18 resta solo nella barra qui sotto */}
         </div>
-        {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
-        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile."}</div>}
+        {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>{_g236()?"⚠️ Limite massimo raggiunto: non puoi restare in Primavera. Scegli il prossimo passo.":"⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo."}</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":(_g236()?"⏳ Se resti in Primavera, sarà la tua ultima stagione disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile.")}</div>}
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
-          <span>Stagioni Under 18: {_n85} di 2</span>
+          <span>{_g236()?"Stagioni in Primavera":"Stagioni Under 18"}: {_n85} di 2</span>{/* [giro 236 PO-430 G189-18 punto 6] un nome solo nella scheda: «Primavera» (PO-396: «U19» solo dove non entra) — rosso __CPM_NO_G236 */}
           <span style={{color:forced?TH.danger:(_no108("03")?TH.primary:TINTE.oro)}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
         <div style={{height:6,background:(_no108("03")?"#e2e8f0":TH.track),borderRadius:RAD.pill,overflow:"hidden"}}>
@@ -92,7 +92,7 @@ function ProTransitionScreen({player,onChoose}){
                   Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
                 <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:(_no108("03")?"#f3e8ff":TH.bgPurple),color:(_no108("03")?TH.accentText:TH.txPurple)}}>Crescita +{o.growthBonus}% nella prima stagione</span>
-                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>{_g236()?"⚠️ Ultima stagione in Primavera":"⚠️ Ultima chance U18"}</span>}
                 {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:(_no108("03")?TH.brandText:TH.txBlue)}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>

@@ -828,7 +828,7 @@ function generateProContracts(player){
   // 4. Stay another year in U18 (ONLY if under limit)
   if(!forced){
     const isLast=u18S>=1;
-    offers.push({id:"stay_u18",club:player.club,contractType:"Resta in Under 18",wage:player.contract?.wage||200,duration:1,role:"Protagonista U18",moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
+    offers.push({id:"stay_u18",club:player.club,contractType:(_g236()?"Resta in Primavera":"Resta in Under 18"),wage:player.contract?.wage||200,duration:1,role:(_g236()?"Protagonista in Primavera":"Protagonista U18"),/* [giro 236 PO-430 punto 6] */moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }

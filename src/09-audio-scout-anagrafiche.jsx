@@ -881,6 +881,20 @@ function artNaz94(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&w
     t=t.replace(new RegExp("(^|[.!?]\\s+)"+n+"(?=\\s+[a-zà-ÿ])","g"),(m,pre)=>pre+a.charAt(0).toUpperCase()+a.slice(1)+n);/* soggetto a inizio frase */
   }
   return t;}
+/* [giro 236 · PO-430 G189-18 punto 3 — rosso __CPM_NO_G236] «Il 0-0 riflette…» e «Il FC Cremona» nella rassegna. Stesso metodo di
+   artNaz94: si corregge la frase finita. (a) Punteggio: l'articolo segue come si LEGGE il primo numero — «lo» davanti a zero, «l'» davanti
+   a uno/otto/undici/diciotto/ottanta…, «il» altrimenti, anche nelle preposizioni articolate (dello 0-0, dell'1-1, del 2-1). (b) Club che
+   cominciano con una sigla letta con la vocale (FC, AC, AS, AT, SC…: «effe-ci»; non CF, «ci-effe»): «l'FC Cremona», «dell'FC», «all'FC». Funzione pura. */
+function artClub236(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&window.__CPM_NO_G236))return txt;
+  const el=(n)=>{const k=parseInt(n,10);return k===1||k===11||k===8||k===18||(k>=80&&k<=89)||(k>=800&&k<=899);};
+  const PRE={il:["il","lo","l'"],del:["del","dello","dell'"],al:["al","allo","all'"],dal:["dal","dallo","dall'"],nel:["nel","nello","nell'"],sul:["sul","sullo","sull'"]};
+  const base=(w)=>{const x=w.toLowerCase().replace(/'$/,"");if(x==="il"||x==="lo"||x==="l")return "il";for(const k in PRE){if(PRE[k].some(v=>v.replace(/'$/,"")===x))return k;}return null;};
+  const cap=(w,o)=>/^[A-Z]/.test(o)?w.charAt(0).toUpperCase()+w.slice(1):w;
+  const ART="(Il|il|Lo|lo|L'|l'|del|dello|dell'|al|allo|all'|dal|dallo|dall'|nel|nello|nell'|sul|sullo|sull')";
+  let t=txt.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*(\\d+)(?=\\s*[-–]\\s*\\d)","g"),(m,pre,w,n)=>{const b=base(w);if(!b)return m;const f=PRE[b][parseInt(n,10)===0?1:el(n)?2:0];return pre+cap(f,w)+(f.endsWith("'")?"":" ")+n;});
+  t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*((?:FC|AC|AS|AT|SC|AFC|SSC|US|ASD|AZ|AEK|IF|IFK|SK|FK|OSC|AJ|RC|RB|SV|SS)\\s)","g"),(m,pre,w,sig)=>{const b=base(w);if(!b)return m;return pre+cap(PRE[b][2],w)+sig;});
+  return t;}
+function artClub236Obj(o){if(typeof o==="string")return artClub236(o);if(Array.isArray(o))return o.map(artClub236Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artClub236Obj(o[k]);return r;}return o;}
 function artNaz94Obj(o){if(typeof o==="string")return artNaz94(o);if(Array.isArray(o))return o.map(artNaz94Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artNaz94Obj(o[k]);return r;}return o;}
 function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
@@ -1054,7 +1068,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     `${club} fuori ai rigori — la lotteria degli undici metri premia ${opp} (${score})`,
     `Rigori fatali: il cammino del ${club} si ferma dagli undici metri contro ${opp}`,
   ]):null;
-  return artNaz94Obj({/* [giro 94 D6] articoli delle nazionali */
+  return artClub236Obj(artNaz94Obj({/* [giro 94 D6] articoli delle nazionali · [giro 236] articoli di punteggi e sigle dei club */
     headlines:_titleHeads||_koHeads||[headA,headB,headC,headD,headE],
     titleWon,titleName:titleWon?titleName:null,
     papers:NEWSPAPERS.map(p=>p.name),
@@ -1065,7 +1079,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     fanReactions:titleWon?["Città in festa: notte indimenticabile!","I tifosi sognano — che trionfo!"]:fanReactions,
     quotes,trending:titleWon?`#${club.replace(/\s/g,"")}Campione🏆`:trending,memoriaTag,
     isLocal:true,
-  });
+  }));
 }
 
 async function generatePressAnalysis(matchResult,playerPerf,playerCtx={}){
@@ -1713,7 +1727,7 @@ function generateSeasonAwards(player, finalStandings){
     youngPlayer:{winner:leagueYoungWinner,playerWins:playerWinsLeagueYoung,isYoungEligible:isYoung}, // compat
     seasonRecord:{record:lgRec.seasonRecord,playerGoals:myGoals,beaten:beatSeasonRecord,near:nearSeasonRecord},
     allTime:{record:lgRec.allTimeScorer,playerCareerGoals,beaten:beatAllTime,position:allTimePos},
-    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
+    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:(_g236()&&(rival.relationship||"sconosciuto")==="sconosciuto")?null/* [giro 236 punto 4] «Sconosciuto» sopra il tuo nome nel duello della stagione: la relazione non ancora nata non si scrive (la pillola sparisce, come gia' previsto dal 7.999.49) */:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
     leagueRecords:lgRec,
     playerLeagueGoals:myGoals,playerLeagueAssists:myAssists,/* [7.289.0] per le righe di riepilogo dei premi europei */
   };

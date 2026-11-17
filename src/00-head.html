@@ -325,6 +325,8 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 @keyframes cpmSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes cpmShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}
+/* [giro 236 PO-430 punto 1] iniziali del calciatore sotto il volto della figurina: disegnate dal CSS (::before) per restare fuori da innerText */
+.fig236::before{content:attr(data-iniziali);letter-spacing:.04em;}
 /* [giro 213 PO-475] riscontro al tocco uniforme (strato tocco213 in src/19): schiacciato e illuminato dal fotogramma dopo il tocco */
 html.cpm-t213 .cpm-press:active,html.cpm-t213 .cpm-int:active{transform:none;}
 html.cpm-t213 [data-premuto213]{transition:scale 0s,filter 0s!important;filter:brightness(1.16) drop-shadow(0 0 6px rgba(255,236,205,.6))!important;}

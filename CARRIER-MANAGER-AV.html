@@ -302,6 +302,8 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 @keyframes cpmSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes cpmShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}
+/* [giro 236 PO-430 punto 1] iniziali del calciatore sotto il volto della figurina: disegnate dal CSS (::before) per restare fuori da innerText */
+.fig236::before{content:attr(data-iniziali);letter-spacing:.04em;}
 /* [giro 213 PO-475] riscontro al tocco uniforme (strato tocco213 in src/19): schiacciato e illuminato dal fotogramma dopo il tocco */
 html.cpm-t213 .cpm-press:active,html.cpm-t213 .cpm-int:active{transform:none;}
 html.cpm-t213 [data-premuto213]{transition:scale 0s,filter 0s!important;filter:brightness(1.16) drop-shadow(0 0 6px rgba(255,236,205,.6))!important;}
@@ -806,6 +808,9 @@ function voltoUrl(tipo,chiave,voltoId){
    che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
    finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
    riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
+/* [giro 236 · PO-430 G189-18] rifiniture per Google Play viste giocando (sei piccoli difetti del primo impatto). Interruttore unico
+   del rosso: window.__CPM_NO_G236 rimette il comportamento di prima su tutti e sei i punti. Guardiano `npm run store-236`. */
+function _g236(){return !(typeof window!=='undefined'&&window.__CPM_NO_G236);}
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,voltoId,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
   const [,_rif23]=React.useReducer(x=>x+1,0);
@@ -953,8 +958,11 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
         {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}</div>}
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
+        {_g236()&&<div aria-hidden="true" className="fig236" data-iniziali={[D.nome,D.cognome].filter(Boolean).map(x=>String(x).trim().charAt(0).toUpperCase()).join("").slice(0,2)||"·"}
+          style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:FW.black,fontSize:Math.max(10,Math.round(lato*0.36)),color:TH.muted,background:"linear-gradient(160deg,"+TH.card+","+TH.track+")"}}/>}{/* [giro 236 punto 1] «figurina vuota nella scheda di fine Primavera»: il volto si carica pigro (loading=lazy) e, finche' non e' decodificato o se la rete non lo da', il riquadro era un rettangolo scuro vuoto. Ora sotto il volto ci sono le iniziali (disegnate dal CSS, fuori da innerText): a volto caricato non si vedono */}
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
-          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
+          onError={_g236()?(e=>{try{e.currentTarget.style.visibility="hidden";}catch(_e){}}):undefined}
+          style={{position:"relative",width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
       </div>
       {usate.length>0&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,height:hPan,
         background:TH.card,borderRadius:ragF,padding:`0 ${pad}px`,boxSizing:"border-box",
@@ -6029,7 +6037,7 @@ function generateProContracts(player){
   // 4. Stay another year in U18 (ONLY if under limit)
   if(!forced){
     const isLast=u18S>=1;
-    offers.push({id:"stay_u18",club:player.club,contractType:"Resta in Under 18",wage:player.contract?.wage||200,duration:1,role:"Protagonista U18",moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
+    offers.push({id:"stay_u18",club:player.club,contractType:(_g236()?"Resta in Primavera":"Resta in Under 18"),wage:player.contract?.wage||200,duration:1,role:(_g236()?"Protagonista in Primavera":"Protagonista U18"),/* [giro 236 PO-430 punto 6] */moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
@@ -9889,6 +9897,20 @@ function artNaz94(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&w
     t=t.replace(new RegExp("(^|[.!?]\\s+)"+n+"(?=\\s+[a-zà-ÿ])","g"),(m,pre)=>pre+a.charAt(0).toUpperCase()+a.slice(1)+n);/* soggetto a inizio frase */
   }
   return t;}
+/* [giro 236 · PO-430 G189-18 punto 3 — rosso __CPM_NO_G236] «Il 0-0 riflette…» e «Il FC Cremona» nella rassegna. Stesso metodo di
+   artNaz94: si corregge la frase finita. (a) Punteggio: l'articolo segue come si LEGGE il primo numero — «lo» davanti a zero, «l'» davanti
+   a uno/otto/undici/diciotto/ottanta…, «il» altrimenti, anche nelle preposizioni articolate (dello 0-0, dell'1-1, del 2-1). (b) Club che
+   cominciano con una sigla letta con la vocale (FC, AC, AS, AT, SC…: «effe-ci»; non CF, «ci-effe»): «l'FC Cremona», «dell'FC», «all'FC». Funzione pura. */
+function artClub236(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&window.__CPM_NO_G236))return txt;
+  const el=(n)=>{const k=parseInt(n,10);return k===1||k===11||k===8||k===18||(k>=80&&k<=89)||(k>=800&&k<=899);};
+  const PRE={il:["il","lo","l'"],del:["del","dello","dell'"],al:["al","allo","all'"],dal:["dal","dallo","dall'"],nel:["nel","nello","nell'"],sul:["sul","sullo","sull'"]};
+  const base=(w)=>{const x=w.toLowerCase().replace(/'$/,"");if(x==="il"||x==="lo"||x==="l")return "il";for(const k in PRE){if(PRE[k].some(v=>v.replace(/'$/,"")===x))return k;}return null;};
+  const cap=(w,o)=>/^[A-Z]/.test(o)?w.charAt(0).toUpperCase()+w.slice(1):w;
+  const ART="(Il|il|Lo|lo|L'|l'|del|dello|dell'|al|allo|all'|dal|dallo|dall'|nel|nello|nell'|sul|sullo|sull')";
+  let t=txt.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*(\\d+)(?=\\s*[-–]\\s*\\d)","g"),(m,pre,w,n)=>{const b=base(w);if(!b)return m;const f=PRE[b][parseInt(n,10)===0?1:el(n)?2:0];return pre+cap(f,w)+(f.endsWith("'")?"":" ")+n;});
+  t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*((?:FC|AC|AS|AT|SC|AFC|SSC|US|ASD|AZ|AEK|IF|IFK|SK|FK|OSC|AJ|RC|RB|SV|SS)\\s)","g"),(m,pre,w,sig)=>{const b=base(w);if(!b)return m;return pre+cap(PRE[b][2],w)+sig;});
+  return t;}
+function artClub236Obj(o){if(typeof o==="string")return artClub236(o);if(Array.isArray(o))return o.map(artClub236Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artClub236Obj(o[k]);return r;}return o;}
 function artNaz94Obj(o){if(typeof o==="string")return artNaz94(o);if(Array.isArray(o))return o.map(artNaz94Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artNaz94Obj(o[k]);return r;}return o;}
 function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
@@ -10062,7 +10084,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     `${club} fuori ai rigori — la lotteria degli undici metri premia ${opp} (${score})`,
     `Rigori fatali: il cammino del ${club} si ferma dagli undici metri contro ${opp}`,
   ]):null;
-  return artNaz94Obj({/* [giro 94 D6] articoli delle nazionali */
+  return artClub236Obj(artNaz94Obj({/* [giro 94 D6] articoli delle nazionali · [giro 236] articoli di punteggi e sigle dei club */
     headlines:_titleHeads||_koHeads||[headA,headB,headC,headD,headE],
     titleWon,titleName:titleWon?titleName:null,
     papers:NEWSPAPERS.map(p=>p.name),
@@ -10073,7 +10095,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     fanReactions:titleWon?["Città in festa: notte indimenticabile!","I tifosi sognano — che trionfo!"]:fanReactions,
     quotes,trending:titleWon?`#${club.replace(/\s/g,"")}Campione🏆`:trending,memoriaTag,
     isLocal:true,
-  });
+  }));
 }
 
 async function generatePressAnalysis(matchResult,playerPerf,playerCtx={}){
@@ -10721,7 +10743,7 @@ function generateSeasonAwards(player, finalStandings){
     youngPlayer:{winner:leagueYoungWinner,playerWins:playerWinsLeagueYoung,isYoungEligible:isYoung}, // compat
     seasonRecord:{record:lgRec.seasonRecord,playerGoals:myGoals,beaten:beatSeasonRecord,near:nearSeasonRecord},
     allTime:{record:lgRec.allTimeScorer,playerCareerGoals,beaten:beatAllTime,position:allTimePos},
-    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
+    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:(_g236()&&(rival.relationship||"sconosciuto")==="sconosciuto")?null/* [giro 236 punto 4] «Sconosciuto» sopra il tuo nome nel duello della stagione: la relazione non ancora nata non si scrive (la pillola sparisce, come gia' previsto dal 7.999.49) */:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
     leagueRecords:lgRec,
     playerLeagueGoals:myGoals,playerLeagueAssists:myAssists,/* [7.289.0] per le righe di riepilogo dei premi europei */
   };
@@ -33728,6 +33750,18 @@ function rassegnaComp232(player,ctx,es){
   return null;
 }
 if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){window.rassegnaComp232=rassegnaComp232;window.__CPM_CLUBS232=()=>CLUBS;window.__CPM_SIG232=(k)=>euroSig(k);}/* solo banco di prova */
+/* [giro 236 · PO-430 G189-18 punto 5 — rosso __CPM_NO_G236] coro «FC CREMONA CAMPIONI! 🏆» sullo 0-0 alla 7a giornata con la squadra nona.
+   I cori che proclamano il titolo (in ogni lingua dei pool) escono solo se la squadra e' davvero PRIMA in classifica con almeno una giornata
+   giocata; altrimenti si tolgono dal sorteggio (se il pool restasse vuoto, si torna al pool intero). Funzione pura. */
+const CORO_TITOLO236=/campion|champion|meister|campe[oõ]|kampioen|top of the league|win the league|glory glory|tetracampe|şampiyon|sampiyon/i;
+function primaInClassifica236(player){try{const st=(player&&player.standings)||[];const id=player&&player.club&&player.club.id;if(!id||!st.length)return false;
+  const me=st.find(r=>r&&r.id===id);if(!me||!(me.played>0))return false;
+  return !st.some(r=>r&&r.id!==id&&((r.pts||0)>(me.pts||0)||((r.pts||0)===(me.pts||0)&&((r.gd||0)>(me.gd||0)||((r.gd||0)===(me.gd||0)&&(r.gf||0)>(me.gf||0))))));}catch(e){return false;}}
+function filtraCoriTitolo236(pool,player,context,alt){if(!Array.isArray(pool)||(typeof window!=="undefined"&&window.__CPM_NO_G236))return pool;
+  const club=!/^(national|nationsCup|euroMondiale)/.test(context||"");
+  if(club&&primaInClassifica236(player))return pool;
+  const no=(a)=>(Array.isArray(a)?a:[]).filter(t=>!CORO_TITOLO236.test(String(t)));
+  const f=no(pool);if(f.length)return f;const g=no(alt);return g.length?g:pool;}/* pool fatto solo di titoli (es. «CHAMPIONS!»): si canta il tifo di casa della stessa lingua */
 function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
@@ -36375,7 +36409,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
     const clubN=(typeof window!=="undefined"&&window.__CPM_NO_CORO23)?(_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra")):(_isNat?(player.nation||_natD?.n||_natD?.a||"Nazionale"):String(player.club?.n||player.club?.name||player.club?.a||"la squadra").replace(/\s+Primavera$/i,""));/* [23/09 POC — collaudo PO «nei cori non la sigla ma il nome per intero», «Primavera e' sottinteso nei cori»] rosso __CPM_NO_CORO23 */
     // [6.39.0] pool nella LINGUA giusta: per-lega/nazione → per-lingua (riempie i buchi) → base IT
-    const pool=chantPoolFor(_type,_isNat,player.nation,player.club?.lg);
+    const pool=filtraCoriTitolo236(chantPoolFor(_type,_isNat,player.nation,player.club?.lg),player,context,chantPoolFor("home",_isNat,player.nation,player.club?.lg));
     const t=pick(pool);
     const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
     /* [7.532.0 collaudo PO «i cori si accavallano con la cronaca» — rosso __CPM_NO541] I CORI AMBIENTALI
@@ -45731,13 +45765,13 @@ function ProTransitionScreen({player,onChoose}){
           </div>
           {/* [7.999.49 parte A] il conteggio delle stagioni Under 18 resta solo nella barra qui sotto */}
         </div>
-        {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
-        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile."}</div>}
+        {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>{_g236()?"⚠️ Limite massimo raggiunto: non puoi restare in Primavera. Scegli il prossimo passo.":"⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo."}</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":(_g236()?"⏳ Se resti in Primavera, sarà la tua ultima stagione disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile.")}</div>}
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
-          <span>Stagioni Under 18: {_n85} di 2</span>
+          <span>{_g236()?"Stagioni in Primavera":"Stagioni Under 18"}: {_n85} di 2</span>{/* [giro 236 PO-430 G189-18 punto 6] un nome solo nella scheda: «Primavera» (PO-396: «U19» solo dove non entra) — rosso __CPM_NO_G236 */}
           <span style={{color:forced?TH.danger:(_no108("03")?TH.primary:TINTE.oro)}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
         <div style={{height:6,background:(_no108("03")?"#e2e8f0":TH.track),borderRadius:RAD.pill,overflow:"hidden"}}>
@@ -45766,7 +45800,7 @@ function ProTransitionScreen({player,onChoose}){
                   Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
                 <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:(_no108("03")?"#f3e8ff":TH.bgPurple),color:(_no108("03")?TH.accentText:TH.txPurple)}}>Crescita +{o.growthBonus}% nella prima stagione</span>
-                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>{_g236()?"⚠️ Ultima stagione in Primavera":"⚠️ Ultima chance U18"}</span>}
                 {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:(_no108("03")?TH.brandText:TH.txBlue)}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
@@ -63295,7 +63329,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#e0e7ff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)"}}>{r.club?.n||"–"} · {r.club?.lg||"–"}</div>
-                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{relLabel} · {r.age||"?"} anni · OVR {r.ovr||"?"}</div>
+                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{(_g236()&&(r.relationship||"sconosciuto")==="sconosciuto")?"":relLabel+" · "}{r.age||"?"} anni · OVR {r.ovr||"?"}</div>{/* [giro 236 punto 4] niente «Sconosciuto» davanti all'eta' */}
                   </div>
                   {(r.trophies||0)>0&&<div style={{textAlign:"center",flexShrink:0}}>
                     <div style={{fontSize:FS.subhead}}>🏆</div>
