@@ -132,7 +132,11 @@ if (ROSSO) {
   if (con.some(x => x.W && x.W.id !== 'oggi')) g.push('rosso: il gioco dichiara una coreografia del catalogo ' + JSON.stringify(con.map(x => x.W && x.W.id)));
   if (g.length) { console.log('❌ coreografie-244 (prova del rosso)'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
   console.log('✅ coreografie-244: col rosso torna la coreografia di oggi (un disegno solo per curva e stagione, ferma)'); process.exit(0); }
-if (distinte.length < DISTINTE) g.push(`solo ${distinte.length} coreografie distinte su ${con.length} partite (minimo ${DISTINTE})`);
+/* distinte = il minore fra le forme lette dalla scena e i nomi dichiarati dal gioco (sigla e scritta cambiano forma col club: non contano due volte) */
+const nDist = Math.min(distinte.length, R.nomi.length);
+if (nDist < DISTINTE) g.push(`solo ${nDist} coreografie distinte su ${con.length} partite (minimo ${DISTINTE}; forme ${distinte.length}, nomi ${R.nomi.length})`);
+{ const fn = {}; con.forEach(x => { if (x.W) (fn[x.firma] = fn[x.firma] || new Set()).add(x.W.id); }); const dop = Object.entries(fn).filter(([, v]) => v.size > 1); if (dop.length) g.push('due nomi del catalogo hanno la stessa forma in scena ' + JSON.stringify(dop.map(([k, v]) => [k, [...v]]))); }
+for (let k = 1; k < S.length; k++) if (S[k].W && S[k - 1].W && S[k].W.id === S[k - 1].W.id) g.push(`lo stesso nome di coreografia due partite di fila: ${k}→${k + 1} «${S[k].W.id}»`);
 if (diFila) g.push(`la stessa coreografia due partite di fila: ${coppie.join(', ')}`);
 if (mosse.length < ANIMATE) g.push(`solo ${mosse.length} coreografie che si muovono (minimo ${ANIMATE})`);
 for (const x of con) { if (!x.W) { g.push(`partita ${x.i + 1}: il gioco non dichiara la coreografia`); continue; }
@@ -150,4 +154,4 @@ if (F) { if (!(F.verde.fps > 0 && F.rosso.fps > 0 && F.verde.fotogrammi > 20 && 
   else if (F.verde.fps < F.rosso.fps * FPSK) g.push(`fps: ${F.verde.fps} con la coreografia animata contro ${F.rosso.fps} con quella di oggi (minimo ${(FPSK * 100) | 0}%)`);
   if (F.verde.W && F.verde.W.id !== 'bandieroni') g.push('fps: la coreografia forzata non e\' quella misurata ' + JSON.stringify(F.verde.W)); }
 if (g.length) { console.log('❌ coreografie-244'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
-console.log(`✅ coreografie-244 verde: ${distinte.length} coreografie distinte su ${con.length} partite, mai la stessa due di fila, ${mosse.length} si muovono, partita riaperta uguale, fps ${R.fps ? R.fps.verde + ' contro ' + R.fps.rosso : 'non chiesti'}`);
+console.log(`✅ coreografie-244 verde: ${nDist} coreografie distinte su ${con.length} partite, mai la stessa due di fila, ${mosse.length} si muovono, partita riaperta uguale, fps ${R.fps ? R.fps.verde + ' contro ' + R.fps.rosso : 'non chiesti'}`);
