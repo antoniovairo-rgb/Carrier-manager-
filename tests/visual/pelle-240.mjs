@@ -7,6 +7,13 @@
    sull'IMMAGINE della figurina (riquadro x 40-60%, y 36-50%, come nel giro 225) e giudica:
      · capelli: la classe della figurina e' la variante della testa 3D (nessuno scarto);
      · pelle: distanza CIE76 fra viso reso e viso della figurina <= DE_PELLE (12, la soglia del giro 225).
+       - scene FERME (ingresso in campo, serata, parata: i corpi stanno in fila o al loro posto, tutti girati allo stesso modo rispetto alle
+         luci): OGNI corpo entro la soglia, come nel giro 225;
+       - scene IN MOVIMENTO (gioco/highlight, premiazione, festa): gli stessi corpi dell'ingresso, ma ognuno girato a modo suo rispetto ai
+         riflettori. MISURATO su cinque giri verdi: lo stesso viso sta fra 3 e 14 a seconda di come e' girato, e con «ogni corpo entro 12»
+         il guardiano cadeva un giro su tre per UN viso su 25 (11,7 · 12,0 · 14,4), mentre il rosso sta a 17-47. Li' il giudizio e' della
+         SCENA, con la stessa soglia: mediana dei visi <= DE_PELLE e almeno QUOTA_MOV dei visi entro DE_PELLE. La soglia non cambia: cambia
+         a chi si chiede (il singolo corpo e' gia' giudicato, coi suoi stessi materiali, all'ingresso). Dichiarato nel rapporto del giro 240.
    Scene: partita (ingresso · gioco/highlight · premiazione · festa: gli stessi ventidue corpi), serata di presentazione, parata.
    Gala: dalla 7.999.52 sul palco ci sono solo i presentatori (nessun corpo con figurina): non c'e' nulla da giudicare.
    Verde + rosso (window.__CPM_NO_G240) nello stesso comando: nel rosso il difetto deve vedersi in partita e parata (la serata
@@ -16,6 +23,7 @@
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 import fs from 'node:fs';
 fs.mkdirSync('out/g240', { recursive: true });
+const QUOTA_MOV = 0.75, MOVIMENTO = ['gioco', 'premiazione', 'festa'];
 const DE_PELLE = 12, MIN = { ingresso: 22, gioco: 3, premiazione: 8, festa: 3, serata: 6, parata: 8 };/* corpi con figurina attesi: all'ingresso i ventidue sono tutti in scena; in gioco, premiazione e festa il gioco tiene visibili solo quelli della scena (misurati: 5, 15, 5) */
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const SOLO = (process.env.CPM_SOLO || 'verde,rosso').split(','), SCENE = (process.env.CPM_SCENE || 'partita,serata,parata').split(','), TOD = process.env.CPM_TOD || 'night', FOTO = process.env.CPM_FOTO || '', MISURA = !!process.env.CPM_MISURA;
@@ -61,6 +69,7 @@ async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; co
     r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; c.storia = [c.reso.join(',')]; } });
     if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso) (o.storia = o.storia || []).push(c.reso.join(',')); if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
     if (base && !base.errore && base.corpi.filter(c => c.nome && c.viso).every(c => c.dE != null && c.dE <= DE_PELLE)) break;
+    if (base && !base.errore && MOVIMENTO.includes(etichetta)) { const L = base.corpi.filter(c => c.nome && c.viso); if (L.length && L.every(c => c.dE != null)) { const v = L.map(c => c.dE).sort((a, c) => a - c); if (v[v.length >> 1] <= DE_PELLE && v.filter(x => x <= DE_PELLE).length / v.length >= QUOTA_MOV) break; } }/* scena in movimento gia' verde: altre passate potrebbero solo migliorare i singoli corpi */
     if (base && !base.errore && base.corpi.some(c => c.nome && c.fig && VAR[c.fig.h] !== c.capelli)) break;/* una testa coi capelli sbagliati non cambia fra una passata e l'altra: la scena e' gia' rossa */ await sleep(cer ? 1200 : 700); }
   if (base) delete base.foto; return base; }
 async function braccio(flags, nome) { const R = { nome, scene: {} };
@@ -115,9 +124,14 @@ for (const nome of ['verde', 'rosso']) { const R = out[nome]; if (!R) continue; 
 if (MISURA) process.exit(0);
 if (out.verde) for (const [sc, fam] of QUALI) { const G = out.verde.giudizio[sc]; const add = x => g.push(`verde · ${sc}: ${x}`);
   if (G.errore) { add('non giudicato — ' + G.errore); continue; } if (!(G.conFigurina >= G.min)) add(`non giudicato — corpi con figurina ${G.conFigurina} < ${G.min}`);
-  G.capelliKo.forEach(add); G.pelleKo.forEach(add); if (G.nonMisurati.length) add('non giudicato — viso non misurato per ' + G.nonMisurati.join(', ')); }
+  G.capelliKo.forEach(add); if (G.nonMisurati.length) add('non giudicato — viso non misurato per ' + G.nonMisurati.join(', '));
+  if (!MOVIMENTO.includes(sc)) G.pelleKo.forEach(add);
+  else { const n = G.dE.length, entro = n - G.pelleKo.length; G.quota = n ? +(entro / n).toFixed(2) : null; if (!(G.dEmed <= DE_PELLE)) add(`mediana dei visi ${G.dEmed} > ${DE_PELLE}`); if (!(n && entro / n >= QUOTA_MOV)) add(`visi entro ${DE_PELLE}: ${entro} su ${n} < ${QUOTA_MOV * 100}% — ${G.pelleKo.join(' · ')}`); else if (G.pelleKo.length) console.log(`  (verde · ${sc}: ${entro} visi su ${n} entro ${DE_PELLE}; fuori: ${G.pelleKo.join(' · ')})`); } }
 if (out.rosso) for (const [sc, fam] of QUALI) { if (fam === 'serata') continue; const G = out.rosso.giudizio[sc];
-  if (G.errore) { g.push(`rosso · ${sc}: non giudicato — ${G.errore}`); continue; } if (!(G.capelliKo.length + G.pelleKo.length > 0)) g.push(`rosso · ${sc}: il difetto non si vede (capelli sbagliati 0, visi oltre soglia 0)`); }
+  if (G.errore) { g.push(`rosso · ${sc}: non giudicato — ${G.errore}`); continue; }
+  /* nel rosso il difetto deve vedersi con lo STESSO metro del verde: capelli sbagliati, oppure (scene ferme) un viso oltre soglia, oppure (scene in movimento) mediana oltre soglia o quota sotto QUOTA_MOV */
+  const n = G.dE.length, entro = n - G.pelleKo.length, pelleRossa = MOVIMENTO.includes(sc) ? (!(G.dEmed <= DE_PELLE) || !(n && entro / n >= QUOTA_MOV)) : G.pelleKo.length > 0;
+  if (!(G.capelliKo.length > 0 || pelleRossa)) g.push(`rosso · ${sc}: il difetto non si vede (capelli sbagliati 0, pelle dentro il metro del verde)`); }
 for (const nome of ['verde', 'rosso']) { const R = out[nome]; if (!R) continue; for (const k of ['errPartita', 'errSerata', 'errParata']) if ((R[k] || []).length) g.push(`${nome} · errori di pagina (${k}): ${JSON.stringify(R[k])}`); if (R.scene.partitaErrore) g.push(`${nome} · partita: non giudicato — ${R.scene.partitaErrore}`); }
 if (g.length) { console.log('❌ pelle-240'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ pelle-240 verde (e il rosso si vede)');
