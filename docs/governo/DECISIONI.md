@@ -1754,3 +1754,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 17/11 08:45 — PO-508 «soli momenti salienti» mancante nelle partite della Nazionale
 - Foto PO (Mondiale, pre-partita di src/13 senza il tasto). Errore della madre: il dubbio 2 del giro 229 («il tasto principale della home apre sempre la partita intera»; guardiano solo sul sorgente) era stato accettato invece di essere corretto, contro la decisione PO-494 «in OGNI partita». Giro 243 (piccolo, Opus) in testa alla coda: tutti i percorsi verso una partita, guardiano che gioca davvero una gara della Nazionale a soli salienti.
 - 08:50 PO-509 coreografie: «Anche in movimento», «Nella 197» → giro 244 (Fable) in coda dopo il 243.
+- 08:50 PO-510 tunnel: decisione della madre (coerente con «Tutto nella 197») — tunnel a metà campo fra le panchine simmetriche, varco libero nei cartelloni → giro 245 (Fable) in coda dopo 244. Il PO può spostarlo alla 198.
+- 08:50 giro 234 unito in lavoro/197 (92ff298b). Dubbi al PO: versione anche in testata, colore #0d0f14, descrizione dallo store, testo grande ×1,3, zoom in partita, riduci animazioni solo menu, «più tempo per scegliere» (PO-393 parte 2) non fatto.
+- 08:51 giro 243 (PO-508) lanciato: session_01QEYia9xneidVExpSjYgtEx.
