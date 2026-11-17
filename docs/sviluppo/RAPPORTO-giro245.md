@@ -86,7 +86,9 @@ zero fotogrammi con un corpo dentro un oggetto o addosso a una figura ferma · n
 dell'ingresso inquadra la bocca in almeno il 90% dei fotogrammi fra 1,5 e 3,0 s di scena. «Non giudicato» (ingresso non visto, meno
 di 30 fotogrammi, meno di 12 corpi usciti, meno di 5 fotogrammi di camera) = rosso.
 
-## 5. Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`, sul build dell'unione con `lavoro/197`)
+## 5. Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`)
+
+Primo giro: sul build dell'unione con `lavoro/197` a metà lavoro (giri 233 e 238 dentro, giro 244 non ancora).
 
 | Controllo | Esito | Nota |
 |---|---|---|
@@ -101,6 +103,20 @@ di 30 fotogrammi, meno di 12 corpi usciti, meno di 5 fotogrammi di camera) = ros
 | `ingresso-206` (eccezione della consegna: tocco l'ingresso) | verde, «il rosso si vede» | 41 min, 11 scenari |
 | `node tools/build-src.mjs` + `node tools/check-src.mjs` | fatti dopo ogni modifica a `src/` | |
 | `node --check ci-runner.mjs` | verde | |
+
+Secondo giro: dopo l'unione di `lavoro/197` col giro 244 (coreografie) e la correzione di un solo commento in src/12, sul build finale
+del ramo:
+
+| Controllo | Esito | Nota |
+|---|---|---|
+| `npm run tunnel-245` (verde 17 stadi + rosso 3 stadi) | verde, 0 guasti · rosso visto 3/3 | 15 min 37 s |
+| `notte-206` | verde | 4 min |
+| `coreografie-244` (guardiano del giro 244, per la convivenza) | verde (30 partite) e rosso visto | 38 min |
+| `test:logic` | verde | |
+| `save-compat` | verde | |
+
+`tpose-196`, `gigante-212`, `panchina-293` e `ingresso-206` **non** sono stati rieseguiti dopo l'unione del giro 244: il loro verde vale
+per il build del primo giro.
 
 **Non eseguiti**: gli altri guardiani della mappa mirata di `src/12` e `src/11` (circa cento voci, fra cui `validate-situations`,
 `partita-vera`, `career-critical`, `highlight-95`): ho eseguito i controlli elencati nella consegna e il guardiano nuovo. Restano alla
@@ -124,4 +140,4 @@ verifica di rilascio. In particolare non ho eseguito `guardalinee-222`, `ingress
 6. **Sostituzioni**: la linea d'attesa (x −6, z −34,4) e il punto d'uscita (x −6, z −36,2) non sono cambiati; ora cadono dentro il
    varco del cartellone LED centrale (x −6,55..6,55), quindi chi esce non attraversa più un pannello. Non l'ho misurato con una sonda.
 7. **Giro 244 (coreografie)**: lavora sulla stessa zona di src/12; ho unito `lavoro/197` una volta a metà giro (conflitto solo in
-   `ci-runner.mjs`, risolto tenendo la versione della madre e reinserendo `tunnel-245`). Il ramo 244 non era ancora in `lavoro/197`.
+   `ci-runner.mjs`, risolto tenendo la versione della madre e reinserendo `tunnel-245`). Poi il giro 244 è entrato in `lavoro/197`: l'ho unito una seconda volta (stesso conflitto, stessa soluzione) e ho rieseguito `tunnel-245`, `notte-206` e `coreografie-244` sul build finale.
