@@ -1102,12 +1102,17 @@ function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.V
     /* (2) braccio a riposo: lato = dal collo alla spalla, in orizzontale */
     B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);const lat=new T.Vector3(V.b.x-V.a.x,0,V.b.z-V.a.z).normalize();
     const o225=(s==='l'?1:-1)*(osc||0);/* [giro 225] camminando le braccia oscillano opposte alle gambe */
-    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k).addScaledVector(fwd,0.05+0.04*k+0.20*o225).normalize();
+    /* [giro 261 · A] la fila e' viva anche nelle braccia. Misurato (traccia lunga, docs/sviluppo/giro261/traccia-A-storia.txt): dal giro 192 la
+       velocita' mediana delle ossa della fila e' scesa da 19-24 a 8-10 mm/s di scena e un corpo restava sotto 1,5 mm fra due campioni fino a
+       1,6 s (prima 0,27): questa funzione scrive omero e avambraccio in una direzione fissa e cancellava l'oscillazione delle braccia del
+       giro 142. Ora la direzione porta quell'oscillazione (vita142 → br261): pochi centimetri alla mano, lenti, diversi per braccio e per uomo. */
+    const b261=(av.userData.br261&&!(typeof window!=='undefined'&&window.__CPM_NO_G261))?av.userData.br261[s==='l'?0:1]:0;
+    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k+0.010*b261).addScaledVector(fwd,0.05+0.04*k+0.20*o225+0.035*b261).normalize();
     punta(ua,la,dU);
-    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05).addScaledVector(fwd,0.24+0.06*k+0.30*o225).normalize();
+    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05+0.010*b261).addScaledVector(fwd,0.24+0.06*k+0.30*o225+0.050*b261).normalize();
     punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
-  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr])$/.test(o.name))B[o.name]=o;});
+  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr])$/.test(o.name))B[o.name]=o;});
   if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
   /* mescolatore a valanga (lo stesso di appearanceFromSeed): il passo di LCG singolo dava a semi vicini lo stesso numero, cioe' la stessa posa */
   const R=k=>(typeof _mix32==='function'?_mix32((seme>>>0)+Math.imul(k,0x9e3779b9)):((seme>>>0)^Math.imul(k,2654435761))>>>0)/4294967296;
@@ -1135,6 +1140,13 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
   /* (4) appoggio: la punta piu' bassa alla quota di riposo */
   av.updateMatrixWorld(true);const mn=Math.min(wp(B.ball_l,va).y,wp(B.ball_r,vb).y)-av.position.y;av.position.y=ballR-mn;
   const base={};['spine_01','spine_03','neck_01','head','foot_l','foot_r','upperarm_l','upperarm_r'].forEach(n=>{if(B[n])base[n]=B[n].quaternion.clone();});
+  /* [giro 261 · B] LE CLAVICOLE NELLA BASE. Misurato col bisect (docs/sviluppo/giro261/bisect-B-spalle.txt): dal giro 192 le spalle della fila
+     arretrano col passare dei secondi (teste degli omeri da +0,0156·H davanti al torace a −0,004·H in 5 s, testa da −0,006 a +0,011 davanti
+     alle spalle). La clip della fila e' in pausa e il mixer non riscrive un osso che non cambia; la regola delle spalle (_spalle146) ruota la
+     clavicola, poi _posa192 la ruota ancora, e al fotogramma dopo la regola prendeva quell'uscita come una posa nuova: due correzioni che si
+     inseguono, un po' piu' indietro a ogni fotogramma. Ora la clavicola e' riscritta in assoluto dalla base a ogni fotogramma, come gli omeri:
+     la regola delle spalle e la posa del giro 192 lavorano una volta sola, sempre dalla stessa partenza. Rosso __CPM_NO_G261. */
+  const base261={};['clavicle_l','clavicle_r'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});
   /* vita: frequenze e fasi dal seme, ampiezze piccole (gradi) */
   const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
   const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
@@ -1142,13 +1154,17 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
   const giro0=(b,asse,ang)=>{if(!b||!ang)return;b.parent.getWorldQuaternion(qa);qq.setFromAxisAngle(asse,ang);/* rotazione intorno a un asse del MONDO, riportata nello spazio del genitore */
     qw.copy(qa).multiply(b.quaternion);qw.premultiply(qq);b.quaternion.copy(qa.invert().multiply(qw));};
   const vita=(el,ww)=>{const kv=1-(ww>0?Math.min(1,ww):0);/* [giro 225] mentre cammina (ww) la posa e' della clip walk: la base rientra in dissolvenza */
-    if(kv<1){for(const n in base)B[n].quaternion.slerp(base[n],kv);}else{for(const n in base)B[n].quaternion.copy(base[n]);}av.updateMatrixWorld(true);if(kv<=0)return;
+    if(kv<1){for(const n in base)B[n].quaternion.slerp(base[n],kv);}else{for(const n in base)B[n].quaternion.copy(base[n]);}
+    const g261=!(typeof window!=='undefined'&&window.__CPM_NO_G261);if(g261){if(kv<1){for(const n in base261)B[n].quaternion.slerp(base261[n],kv);}else{for(const n in base261)B[n].quaternion.copy(base261[n]);}}
+    av.userData.br261=null;av.updateMatrixWorld(true);if(kv<=0)return;
     const giro=(b,asse,ang)=>giro0(b,asse,ang*kv);
     const res=Math.sin(el*Math.PI*2*P.fRes+P.pRes),peso=Math.sin(el*Math.PI*2*P.fPeso+P.pPeso),sg=Math.sin(el*Math.PI*2*P.fSg+P.pSg),br=Math.sin(el*Math.PI*2*P.fBr+P.pBr);
     if(B.spine_01){giro(B.spine_01,Z,peso*1.4*D);giro(B.spine_01,X,res*0.7*D);B.spine_01.updateMatrixWorld(true);}
     giro(B.spine_03,X,-res*1.2*D);B.spine_03.updateMatrixWorld(true);
     giro(B.head,Y,sg*P.sg*D);giro(B.head,X,(res*1.5-1)*D);
-    if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);};
+    if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);
+    /* [giro 261 · A] l'oscillazione delle braccia della fila, per _posa192 (che scrive le braccia in assoluto e la cancellava): due onde lente e sfasate, una per braccio */
+    if(g261){const o=av.userData.o261||(av.userData.o261=[0,0]);o[0]=br*kv;o[1]=Math.sin(el*Math.PI*2*P.fBr*0.87+P.pBr+2.1)*kv;av.userData.br261=o;}};
   av.userData.vita142=vita;av.userData.posa142={tb,buoni:buoni.length,riposo:{rN,rH,pL,pR,ballR}};
   try{av.userData.saluto144=_saluto144(av);}catch(_e){}
   return av.userData.posa142;}catch(_e){return null;}}
