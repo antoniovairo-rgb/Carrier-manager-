@@ -24,9 +24,11 @@ schermo 405 × 720 punti a densità 8/3 = **1080 × 1920 px esatti**. Si rifanno
 
 Limiti onesti, da valutare dal PO prima di caricarli:
 - sono **catture del banco** (Chrome senza scheda grafica), non di un telefono: luci e fluidità del 3D sul telefono sono diverse;
-- mostrano la versione **7.999.196** scritta in alto (la build del ramo `lavoro/197` al momento della cattura): rifarli sulla versione
-  che si carica;
+- [giro 260] rifatti sul ramo del giro 260 (base `lavoro/197`): la scritta in alto dice ancora **7.999.196**, perché `GAME_VERSION`
+  nel gioco non è stato toccato (regola del giro); la TWA è già alla 7.999.197. Al rilascio della 7.999.197 la scritta cambia: si rifanno
+  con lo stesso comando;
+- [giro 260] home, creazione e plancia sono scattate **come nell'app** (`?app=twa`): niente «Sostieni il progetto» (decisione PO 17/11);
+  lo script si ferma se lo trova nella plancia;
 - la partita è un **provino** con una scena forzata (rigore): mostra la scelta della giocata, non una partita di campionato;
-- la plancia mostra il pulsante **«Sostieni il progetto»** (donazione): se il PO lo toglie dalla versione store, vanno rifatti;
 - i vecchi `store-assets/screenshots/` (1080 × 1920 ma con il layout da computer a 1080 px di larghezza) restano dove sono: **non
   usarli** per il telefono.
