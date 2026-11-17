@@ -48712,7 +48712,12 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   /* [24/09 POC — commento PO sui premi «standardizza, rendila piu' bella»] IL PODIO: tre premiati sono un podio, non una lista.
      1° al centro e piu' alto, 2° a sinistra, 3° a destra; figurina sopra ogni gradino, valore sul gradino. Con meno di tre nomi
      (o col rosso __CPM_NO_PODIO23) restano le righe. */
-  const Podio23=({righe,label,extra,pari})=>{const R3=righe||[];
+  const Podio23=({righe,label,extra,pari,club260,dati260})=>{const R3=righe||[];
+    /* [giro 260 · decisione PO 17/11 E, dal dubbio 2 del giro 258] riga sotto la figurina: con i club piu' lunghi (FC Sampierdarena
+       Primavera, Catanzarese Primavera) la riga mista «9 assist · club» o «club · 🏆 2 · OVR 84» andava su 3 righe e il taglio a 2
+       ne mangiava un pezzo (misura a 375 px: colonne 103-119 px, 11 riquadri su 96 fuori regola). Ora il club ha le sue 2 righe e i
+       numeri una riga sua sotto, senza a capo. Guardiano podio-260, rosso __CPM_NO_G260 (la riga mista di prima). */
+    const _sep260=_g260()&&!!club260;
     if(R3.length<3||(typeof window!=='undefined'&&window.__CPM_NO_PODIO23))return <>{R3.map((c,i)=><ScoreRow key={i} rank={i} name={c.name} val={c.goals} label={label} isPlayer={!!c.isPlayer} extra={extra(c)}/>)}</>;
     const H=[64,48,38],MED=["#d4a017","#9aa4b2","#b87333"],ORD=[1,0,2];
     return(<div data-cpm="podio23" style={{display:"grid",gridTemplateColumns:"1fr 1.15fr 1fr",gap:SP.sm,alignItems:"end",margin:`${SP.sm}px 0 ${SP.xs}px`}}>
@@ -48720,7 +48725,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",minWidth:0}}>
           {(()=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||c.name):c.name} larg={i===0?58:46}/>;}catch(_e){return null;}})()}
           <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:me?TH.brandText:TH.text,marginTop:4,textAlign:"center",lineHeight:1.2,maxWidth:"100%",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{c.name}{me?" · tu":""}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{extra(c)||"\u00a0"}</div>{/* [7.999.49 parte A] a capo invece dei puntini */}
+          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(_sep260?club260(c):extra(c))||"\u00a0"}</div>{/* [7.999.49 parte A] a capo invece dei puntini */}
+          {_sep260&&dati260&&<div data-cpm="podio-dati260" className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,whiteSpace:"nowrap",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical"}}>{dati260(c)||"\u00a0"}</div>}
           <div style={{width:"100%",height:H[i],marginTop:4,borderRadius:`${RAD.sm}px ${RAD.sm}px 0 0`,background:TH.surface2,borderTop:"4px solid "+MED[i],
             outline:me?("2px solid "+(TH.primaryBorder||TH.primary)):"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
             <span className="cpm-num" style={{fontSize:i===0?FS.subhead:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{c.goals}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:2}}>{label}</span></span>
@@ -48991,7 +48997,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10,marginBottom:10}}>
           <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>🏅 MVP della stagione</div>
           <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>Miglior giocatore del campionato: contano gol, assist, OVR e titolo.</div>
-          <Podio23 righe={leagueMvp?.top3} label="gol" extra={c=>`${c.assists||0} assist · ${c.club||""}`}/>
+          <Podio23 righe={leagueMvp?.top3} label="gol" extra={c=>`${c.assists||0} assist · ${c.club||""}`} club260={c=>c.club||""} dati260={c=>`${c.assists||0} assist`}/>
           {leagueMvp?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.bgAmber,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txAmber}}>🏆 Miglior calciatore della {lg}!</div>}
         </div>
 
@@ -49034,7 +49040,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"rgba(245,158,11,0.13)":TH.card,border:palloneOro.playerWins?("1.5px solid "+"rgba(245,158,11,0.5)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
-        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
+        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")} club260={c=>c.league||c.club} dati260={c=>[c.trofei?`🏆 ${c.trofei}`:"",(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null)?`OVR ${c.ovr}`:""].filter(Boolean).join(" · ")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>
