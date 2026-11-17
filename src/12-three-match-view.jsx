@@ -435,6 +435,31 @@ function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchPa
    pigrizia: e' il modo in cui questo progetto tiene onesto il proprio specchio. Il rosso __CPM_NO794
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
+/* [giro 244 PO-509, foto PO 7.999.196 «Creare coreografie sempre diverse, non sempre la stessa»; decisione PO 17/11 «Anche in movimento» —
+   rosso __CPM_NO_G244] IL CATALOGO DELLE COREOGRAFIE D'INGRESSO. Misurato prima: la coreografia a cartoncini del giro 206 aveva UN disegno
+   solo (strisce + fascia a croce) e il seme (club + stagione) ne cambiava soltanto la grana. Ora dodici coreografie, tutte procedurali coi
+   due colori sociali del club di casa dello stadio: otto ferme e quattro che si muovono (anim). La SCELTA: fra quelle non viste nelle ultime
+   quattro partite con coreografia si pesca col seme della partita → mai la stessa due partite di fila. La memoria sta nel DISPOSITIVO
+   (chiave propria «cpm-coreo244», fuori dal salvataggio come la velocita' di partita: nessun campo nuovo nel save), una voce per giocatore;
+   la STESSA partita riaperta (salvataggio e ripresa, «Riprova» della scena 3D) mostra la stessa coreografia. Senza memoria (archivio del
+   browser spento) resta la pesca col seme della partita. */
+const COREO244=[{id:"croce"},{id:"pali"},{id:"scacchi"},{id:"diagonali"},{id:"raggi"},{id:"sigla"},{id:"stemma"},{id:"scritta"},
+  {id:"gira",anim:1},{id:"scorre",anim:1},{id:"bandieroni",anim:1},{id:"srotola",anim:1}];
+function coreo244Scegli(chiave,chi){
+  const ids=COREO244.map(c=>c.id),h=(t)=>(Math.abs(hashStr(String(t)))>>>0);
+  try{if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORZA244&&ids.includes(window.__CPM_FORZA244))return{id:window.__CPM_FORZA244,osp:window.__CPM_FORZA244==="croce"?"pali":"croce",mem:false,forzata:true};}catch(_e){}
+  let M=null,mem=false;try{M=JSON.parse(localStorage.getItem("cpm-coreo244")||"null");mem=true;}catch(_e){M=null;}
+  if(!M||typeof M!=="object"||Array.isArray(M))M={};
+  const k=String(chi||"?").slice(0,40),V=M[k];
+  if(V&&V.k===chiave&&ids.includes(V.id))return{id:V.id,osp:ids.includes(V.o)?V.o:"croce",mem,riaperta:true};
+  const rec=(V&&Array.isArray(V.r))?V.r.filter(x=>ids.includes(x)).slice(-4):[];
+  const cand=ids.filter(x=>!rec.includes(x));const id=cand[h(chiave+"|c244")%cand.length];
+  const fer=COREO244.filter(c=>!c.anim&&c.id!==id).map(c=>c.id);const osp=fer[h(chiave+"|o244")%fer.length];/* curva ospite (finali): una ferma, diversa da quella di casa */
+  try{let n=0;for(const q in M)n=Math.max(n,(M[q]&&M[q].n)|0);M[k]={k:chiave,id,o:osp,r:rec.concat([id]).slice(-4),n:n+1};
+    const ks=Object.keys(M);if(ks.length>6){ks.sort((a,b)=>((M[a].n|0)-(M[b].n|0)));delete M[ks[0]];}
+    localStorage.setItem("cpm-coreo244",JSON.stringify(M));}catch(_e){mem=false;}
+  return{id,osp,mem};}
+try{if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_CATALOGO244=COREO244;window.__CPM_SCEGLI244=coreo244Scegli;}}catch(_e244){}
 function ThreeMatchView(props){
   const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
@@ -3025,6 +3050,13 @@ function ThreeMatchView(props){
        morbidi coi colori del club che salgono dal basso della curva; CORIANDOLI = punti che cadono sulle squadre schierate.
        DOSE: telefono 8 fumogeni per curva e 80 coriandoli, PC 14 e 180 (un solo materiale per tipo, nessuna luce). Niente a stadio
        freddo (stessi cancelli _tifoHome/_tifoAway della scenografia). Si accende solo durante l'ingresso (_tick206). */
+    const _impo=Math.min(1,((props.matchImportance||5)/10)+(props.isFinal?0.35:0)+(isDerby?0.18:0)+(isBigGame?0.10:0));
+    const _cInt=_crowdCtx?(_crowdCtx.intensity||0.6):0.6;
+    /* [7.187.0] TIER come MEDIA PESATA, non OR: con l'OR una piazza calda restava inchiodata al tier 3 (muro pieno)
+       anche nella gara più banale — proprio dove il salto derby/finale dovrebbe vedersi di più. Ora l'importanza
+       pesa più dell'atmosfera: piazza calda in gara qualunque → tier 2, tier 3 solo per derby/finale/big match. */
+    const _cScore=_impo*0.62+_cInt*0.38;
+    const _ctier=_cScore>=0.74?3:_cScore>=0.50?2:1;
     const _G206=(function(){try{
       const _k=props.ingresso206;const _cfg=(_k&&typeof INGRESSO206!=='undefined')?INGRESSO206[_k]:null;
       if(!_cfg||(typeof window!=='undefined'&&window.__CPM_NO_G206))return null;
@@ -3054,8 +3086,86 @@ function ThreeMatchView(props){
           const s=new THREE.Sprite(new THREE.SpriteMaterial({map:G._ftx,color:col,transparent:true,opacity:0,depthWrite:false}));
           const t=0.10+_r()*0.32;s.userData={fumo206:true,home:!!home,x0:_cxAt(t,home),y0:_cyAt(t,home)+1.6,z0:-22+44*((i+_r()*0.8)/n),ph:_r()*7,v:0.8+_r()*0.5};
           s.visible=false;s.renderOrder=7;/* sopra i cartoncini (6): il fumo sale davanti alla coreografia */_rootG.add(s);G.fumo.push(s);}};
+      /* [giro 244 PO-509 — rosso __CPM_NO_G244] una coreografia del catalogo COREO244 al posto del disegno unico. TAGLIA: 3 = finali, derby e
+         gare di livello massimo (tier 3) · 2 = coppe europee, Nazionale, tier 2 (la misura di ieri) · 1 = le altre gare di cartello. */
+      const _no244=(typeof window!=='undefined'&&window.__CPM_NO_G244);
+      const _mk244=(home,id,tg,c1,c2,sig,nome)=>{
+        const TG=[[0.20,0.80,19],[0.14,0.86,25],[0.08,0.92,28]][tg-1],T0=TG[0],T1=TG[1],ZW=TG[2],fl=!home;
+        const _tela=(W,H)=>{const cv=document.createElement('canvas');cv.width=W;cv.height=H;return cv;};
+        const _fin=(cv,cella)=>{const x=cv.getContext('2d'),W=cv.width,H=cv.height,cs=cella||8;/* grana e griglia dei cartoncini, come nel giro 206 */
+          for(let i=0;i<(W*H/126)|0;i++){x.fillStyle=(_r()<0.5?'rgba(255,255,255,':'rgba(0,0,0,')+(0.04+_r()*0.10).toFixed(2)+')';x.fillRect(((_r()*(W/cs))|0)*cs,((_r()*(H/cs))|0)*cs,cs,cs);}
+          x.strokeStyle='rgba(0,0,0,0.20)';x.lineWidth=1;for(let gx=0;gx<=W;gx+=cs){x.beginPath();x.moveTo(gx+0.5,0);x.lineTo(gx+0.5,H);x.stroke();}
+          for(let gy=0;gy<=H;gy+=cs){x.beginPath();x.moveTo(0,gy+0.5);x.lineTo(W,gy+0.5);x.stroke();}
+          const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;return tx;};
+        const _txt=(x,t,cx,cy,mw,fs,col)=>{const L=String(t||"").toUpperCase();if(!L)return;x.font="900 "+fs+"px Arial, sans-serif";const w=x.measureText(L).width;if(w>mw){fs=Math.max(18,Math.floor(fs*mw/w));x.font="900 "+fs+"px Arial, sans-serif";}
+          x.textAlign="center";x.textBaseline="middle";x.lineJoin="round";x.lineWidth=Math.max(4,fs*0.09);x.strokeStyle="rgba(0,0,0,0.45)";x.strokeText(L,cx,cy);x.fillStyle=col;x.fillText(L,cx,cy);};
+        /* i disegni: x = contesto, ox = origine orizzontale (la «gira» ne affianca due), a/b = i due colori */
+        const D={
+          croce:(x,ox,a,b)=>{const NB=8;for(let i=0;i<NB;i++){x.fillStyle=(i%2)?b:a;x.fillRect(ox+i*256/NB,0,256/NB+1,128);}x.fillStyle=b;x.fillRect(ox,50,256,28);x.fillStyle=a;x.fillRect(ox,58,256,12);},
+          pali:(x,ox,a,b)=>{for(let i=0;i<5;i++){x.fillStyle=(i%2)?b:a;x.fillRect(ox+i*51.2,0,52,128);}},
+          fasce:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,40,256,48);},
+          scacchi:(x,ox,a,b)=>{for(let i=0;i<8;i++)for(let j=0;j<4;j++){x.fillStyle=((i+j)%2)?b:a;x.fillRect(ox+i*32,j*32,32,32);}},
+          diagonali:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){x.fillStyle=(((i+j)>>2)%2)?b:a;x.fillRect(ox+i*8,j*8,8,8);}},
+          frecce:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){x.fillStyle=(((i+Math.abs(j-7.5)+0.5)>>2)%2)?b:a;x.fillRect(ox+i*8,j*8,8,8);}},
+          raggi:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){const dx=(i+0.5)*8-128,dy=132-(j+0.5)*8;const s=Math.floor((Math.atan2(dy,dx)/Math.PI)*12);x.fillStyle=(Math.hypot(dx,dy)<34)?b:((s%2)?b:a);x.fillRect(ox+i*8,j*8,8,8);}},
+          sigla:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,0,256,16);x.fillRect(ox,112,256,16);x.fillRect(ox,0,16,128);x.fillRect(ox+240,0,16,128);_txt(x,sig,ox+128,66,200,92,b);},
+          stemma:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,56,256,16);
+            x.beginPath();x.moveTo(ox+84,8);x.lineTo(ox+172,8);x.lineTo(ox+172,72);x.quadraticCurveTo(ox+172,104,ox+128,122);x.quadraticCurveTo(ox+84,104,ox+84,72);x.closePath();x.fill();
+            x.fillStyle=a;x.fillRect(ox+116,8,24,112);x.fillRect(ox+84,40,88,16);},
+          scritta:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,32,256,64);_txt(x,nome||sig,ox+128,66,236,58,a);},
+          rombo:(x,ox,a,b)=>{x.fillStyle=b;x.fillRect(ox,0,256,128);x.fillStyle=a;x.beginPath();x.moveTo(ox+128,4);x.lineTo(ox+236,64);x.lineTo(ox+128,124);x.lineTo(ox+20,64);x.closePath();x.fill();_txt(x,sig,ox+128,66,120,56,b);}};
+        const _sup=(NT,NZ)=>{const pos=[],uv=[],idx=[];
+          for(let it=0;it<=NT;it++){const t=T0+(T1-T0)*it/NT;const cx=_cxAt(t,home)+(home?-0.6:0.6),cy=_cyAt(t,home)+1.3;
+            for(let iz=0;iz<=NZ;iz++){pos.push(cx,cy,-ZW+2*ZW*iz/NZ);uv.push(fl?1-iz/NZ:iz/NZ,it/NT);}}
+          for(let it=0;it<NT;it++)for(let iz=0;iz<NZ;iz++){const a=it*(NZ+1)+iz,b=a+1,c=a+NZ+1,d=c+1;idx.push(a,b,c,b,d,c);}
+          const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);return g;};
+        const _mesh=(g,tx)=>{const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+          m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';m.userData.coreo244=id;_rootG.add(m);G.coreo.push(m);return m;};
+        if(id==="gira"){/* CARTONCINI CHE GIRANO: due disegni affiancati nella stessa tela; ogni colonna di cartoncini mostra l'uno o l'altro e un fronte
+            li volta da un capo all'altro della curva, avanti e indietro. Si riscrivono solo le uv delle colonne che cambiano. */
+          const cv=_tela(512,128),x=cv.getContext('2d');D.pali(x,0,c1,c2);D.fasce(x,256,c2,c1);const tx=_fin(cv);
+          const NT=6,NC=32,pos=[],uv=[],idx=[];
+          for(let c=0;c<NC;c++)for(let it=0;it<NT;it++){const k=pos.length/3;
+            for(let q=0;q<4;q++){const tt=it+(q>>1),cc=c+(q&1),t=T0+(T1-T0)*tt/NT;pos.push(_cxAt(t,home)+(home?-0.6:0.6),_cyAt(t,home)+1.3,-ZW+2*ZW*cc/NC);const u=cc/NC;uv.push((fl?1-u:u)*0.5,tt/NT);}
+            idx.push(k,k+1,k+2,k+1,k+3,k+2);}
+          const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);
+          _mesh(g,tx);const st=new Uint8Array(NC),U=g.attributes.uv;
+          G.an244.push((t)=>{const ph=t/2.4,kk=Math.floor(ph),f=ph-kk;let ch=false;
+            for(let c=0;c<NC;c++){const v=((c+0.5)/NC<f)?1:0,want=(kk%2===0)?v:1-v;if(want===st[c])continue;st[c]=want;ch=true;
+              for(let it=0;it<NT;it++){const k=(c*NT+it)*4;for(let q=0;q<4;q++){const u=(c+(q&1))/NC;U.array[(k+q)*2]=(fl?1-u:u)*0.5+want*0.5;}}}
+            if(ch)U.needsUpdate=true;});
+        }else if(id==="scorre"){/* ONDA CHE SCORRE: le frecce bicolori corrono lungo la curva (solo lo scorrimento della tela: nessun ricalcolo) */
+          const cv=_tela(256,128);D.frecce(cv.getContext('2d'),0,c1,c2);const tx=_fin(cv);tx.wrapS=THREE.RepeatWrapping;_mesh(_sup(6,8),tx);
+          G.an244.push((t)=>{tx.offset.x=(t*0.07)%1;});
+        }else if(id==="srotola"){/* IL TELONE CHE SI SROTOLA dal basso della curva e poi ondeggia (63 punti) */
+          const cv=_tela(256,128);D.rombo(cv.getContext('2d'),0,c1,c2);const g=_sup(10,8);const m=_mesh(g,_fin(cv));const P=g.attributes.position,B=P.array.slice(),NR=10,NQ=8;g.setDrawRange(0,NQ*6);
+          G.an244.push((t)=>{const r=Math.max(1,Math.min(NR,Math.ceil((t-0.2)/0.3)));g.setDrawRange(0,r*NQ*6);
+            for(let i=0;i<P.count;i++){P.array[i*3+1]=B[i*3+1]+Math.sin(B[i*3+2]*0.28-t*2.2+((i/(NQ+1))|0)*0.5)*0.22;}P.needsUpdate=true;});
+        }else if(id==="bandieroni"){/* I BANDIERONI: grandi bandiere che sventolano sopra la curva. Una sola geometria (28 punti) e due tele per tutte. */
+          const n=[5,7,9][tg-1],FW=[7.5,9,10.5][tg-1],FH=FW*0.66;const g=new THREE.PlaneGeometry(FW,FH,6,3),P=g.attributes.position,B=P.array.slice();
+          const cA=_tela(128,96),xa=cA.getContext('2d');xa.fillStyle=c1;xa.fillRect(0,0,128,96);xa.fillStyle=c2;xa.fillRect(0,32,128,32);_txt(xa,sig,64,50,112,40,c1);
+          const cB=_tela(128,96),xb=cB.getContext('2d');xb.fillStyle=c2;xb.fillRect(0,0,128,96);xb.fillStyle=c1;xb.fillRect(0,0,64,96);
+          const mats=[cA,cB].map(cv=>{const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;return new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});});
+          const ms=[];for(let i=0;i<n;i++){const t=(i%2)?0.60:0.30;const m=new THREE.Mesh(g,mats[i%2]);m.position.set(_cxAt(t,home)+(home?-0.9:0.9),_cyAt(t,home)+FH/2+1.7,-ZW+FW/2+(2*ZW-FW)*i/(n-1));m.rotation.y=home?-Math.PI/2:Math.PI/2;
+            m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';m.userData.coreo244=id;m.userData.y0=m.position.y;_rootG.add(m);G.coreo.push(m);ms.push(m);}
+          G.an244.push((t)=>{for(let i=0;i<P.count;i++){const lx=B[i*3],k=(lx+FW/2)/FW;P.array[i*3+2]=Math.sin(lx*0.9-t*4.2)*0.42*k;P.array[i*3+1]=B[i*3+1]+Math.sin(lx*0.6-t*3.1)*0.16*k;}P.needsUpdate=true;
+            for(let i=0;i<ms.length;i++){ms[i].rotation.z=Math.sin(t*1.5+i*1.3)*0.11;ms[i].position.y=ms[i].userData.y0+Math.sin(t*1.9+i*0.8)*0.35;}});
+        }else{const cv=_tela(256,128);(D[id]||D.croce)(cv.getContext('2d'),0,c1,c2);_mesh(_sup(6,8),_fin(cv));}
+      };
+      G.an244=[];
+      if(_no244){
       if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
       if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
+      try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:"oggi",anim:false,taglia:0,ospiti:null};}catch(_e){}
+      }else if(_cfg.coreo>=1&&(_tifoHome||(_cfg.coreo>=2&&_tifoAway))){
+        const _sc=coreo244Scegli(String(props.partita244||("?|"+_adSeed44+"|"+_stadHId+"|"+_stadAId)),props.heroName);
+        const _tg=(_k==="finale"||_k==="derby"||_ctier>=3)?3:((_k==="europea"||_k==="nazionale"||_ctier>=2)?2:1);
+        const _corto=(n)=>{const t=String(n||"").replace(/^(FC|AC|AS|SC|CF|CD|US|SS|SV|RC)\s+/i,"").trim();return t.length<=13?t:"";};
+        if(_tifoHome)_mk244(true,_sc.id,_tg,_css(_tHCol),_css(_hc2),String(props.stadiumHomeAbbr||(homeClub&&homeClub.a)||"").slice(0,4),_corto(_stadHN));
+        if(_cfg.coreo>=2&&_tifoAway)_mk244(false,_sc.osp,_tg,_css(_tACol),_css(_ac2),String(props.stadiumAwayAbbr||"").slice(0,4),_corto(_stadAN));
+        G.id244=_sc.id;
+        try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:_tifoHome?_sc.id:null,anim:!!(_tifoHome&&(COREO244.find(c=>c.id===_sc.id)||{}).anim),taglia:_tg,ospiti:(_cfg.coreo>=2&&_tifoAway)?_sc.osp:null,mem:!!_sc.mem,riaperta:!!_sc.riaperta,pezzi:G.coreo.length};}catch(_e){}
+      }
       if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
       if(_cfg.coriandoli){const n=isDesktop?180:80;const p=new Float32Array(n*3),c=new Float32Array(n*3);const cols=[new THREE.Color(_css(_tHCol)),new THREE.Color(_css(_hc2)),new THREE.Color(0xffffff)];
         G._cv=new Float32Array(n*2);
@@ -3071,6 +3181,7 @@ function ThreeMatchView(props){
       const _in=clamp((t-0.6)/1.6,0,1),_out=clamp((TOT-t)/1.5,0,1),_a=Math.min(_in,_out);
       const _t0c=(G.cfg.regia==="bandiere")?G.cfg.orb:0.6,_ac=Math.min(clamp((t-_t0c)/1.6,0,1),_out);/* Nazionale: prima le bandiere della curva, i cartoncini si alzano dopo */
       for(const m of G.coreo){m.visible=_ac>0.01;m.material.opacity=0.94*_ac;}
+      if(G.an244&&G.an244.length&&_ac>0.01){const _ta=Math.max(0,t-_t0c);for(const f of G.an244)f(_ta);}/* [giro 244] le coreografie che si muovono: solo durante l'ingresso, a coreografia accesa */
       let nf=0;for(const s of G.fumo){const u=s.userData;s.visible=t>1.0&&_a>0.01;if(!s.visible)continue;nf++;const life=((t*u.v*0.16)+u.ph)%1;
         s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.6*Math.sin(life*Math.PI)*_a;}
       G.nF=nf;
@@ -3150,13 +3261,7 @@ function ThreeMatchView(props){
     //   tier1 = curva SOBRIA (1 fila bandiere · 3 file sciarpe · NIENTE telo · niente ola); tier2 = +2ª fila bandiere,
     //   +4ª sciarpa, telo, ola; tier3 (derby/finale/big match) = MURO PIENO (3 file bandiere · 5 sciarpe) + ola più
     //   rapida. Il seed alterna la scritta del telo → coreografie diverse a seconda del peso della partita e tra partite.
-    const _impo=Math.min(1,((props.matchImportance||5)/10)+(props.isFinal?0.35:0)+(isDerby?0.18:0)+(isBigGame?0.10:0));
-    const _cInt=_crowdCtx?(_crowdCtx.intensity||0.6):0.6;
-    /* [7.187.0] TIER come MEDIA PESATA, non OR: con l'OR una piazza calda restava inchiodata al tier 3 (muro pieno)
-       anche nella gara più banale — proprio dove il salto derby/finale dovrebbe vedersi di più. Ora l'importanza
-       pesa più dell'atmosfera: piazza calda in gara qualunque → tier 2, tier 3 solo per derby/finale/big match. */
-    const _cScore=_impo*0.62+_cInt*0.38;
-    const _ctier=_cScore>=0.74?3:_cScore>=0.50?2:1;
+    /* [giro 244] _impo/_cInt/_cScore/_ctier sono dichiarati piu' su, prima della scena dell'ingresso (la taglia della coreografia li legge) */
     const _choSeed=(_adSeed44>>>0);
     const _olaOn=_ctier>=2,_olaSpd=_ctier>=3?0.00052:0.00034;// ola (onda messicana): solo tier≥2, più rapida sui big match
     // MURO DI BANDIERE scalato dal tier (traveling wave + ola nel render-loop)
