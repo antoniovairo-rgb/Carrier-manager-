@@ -48,9 +48,12 @@ async function apri(rompi = false) {
   await sleep(1200);
   return page;
 }
-/* apre il pre-partita come farebbe il giocatore: CTA «Gioca vs …» → modal → «Gioca la partita» */
+/* apre il pre-partita come farebbe il giocatore: CTA «Gioca vs …» → modal → «Gioca la partita».
+   [giro 275] Dal giro 263 (PO-514, DECISIONI.md) il titolo del pulsante sta su due righe, «⚽ Gioca» + «vs Avversario», in due
+   elementi a blocco: il textContent li incolla («Giocavs …») e la regex non trovava piu' il pulsante (sonda cieca, 3 rossi).
+   Si legge il testo COME LO VEDE il giocatore (innerText: una riga per blocco), e lo spazio fra «Gioca» e «vs» resta preteso. */
 const apriPrePartita = async (page) => {
-  await page.evaluate(() => { const b2 = Array.from(document.querySelectorAll('button')).find(x => /Gioca vs/i.test(x.textContent || '')); if (b2) b2.click(); });
+  await page.evaluate(() => { const b2 = Array.from(document.querySelectorAll('button')).find(x => /Gioca\s+vs/i.test(x.innerText || '')); if (b2) b2.click(); });
   await sleep(1500);
   await page.evaluate(() => { const b2 = Array.from(document.querySelectorAll('button')).find(x => /Gioca la partita/i.test(x.textContent || '')); if (b2) b2.click(); });
   await sleep(2500);
