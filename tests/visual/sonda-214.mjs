@@ -54,7 +54,16 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     return { scorre, sx, dx, tabSx: tabSig[0] || null, tabNum, ph, so: so ? { hs: so.hs, as: so.as, done: so.done } : null, ris: r ? r.textContent.replace(/\s+/g, '') : null, min: m ? m.textContent.trim() : null,
       stacco: !!document.querySelector('[data-cpm="stacco191"]'), box: b ? { x: Math.round(b.left), y: Math.round(b.top), width: Math.round(b.width), height: Math.round(b.height) } : null };
   });
-  const tela = (vis) => pg.evaluate((v) => { for (const c of document.querySelectorAll('canvas')) c.style.visibility = v ? '' : 'hidden'; }, vis);
+  /* [giro 272] la seconda foto INVERTE la tela invece di nasconderla: nascosta, Chrome compone il tabellone su un altro livello e
+     l'antialiasing degli angoli dei pallini cambia (misurato: 1 pixel a (236,66), verde 0e2a1d contro 0d0f14, su 196 e 197). Invertita,
+     i livelli restano quelli e ogni pixel da cui si vede il 3D cambia lo stesso (il rosso C __CPM_NO_G214 resta di decine di migliaia). */
+  const tela = (vis) => pg.evaluate((v) => { for (const c of document.querySelectorAll('canvas')) c.style.filter = v ? '' : 'invert(1)'; }, vis);
+  /* [giro 272] lettura STABILE: lo stato della serie (__CPM_SO_STATE / __CPM_PHASE) e il DOM possono essere sfasati di un fotogramma
+     (misurato: «RIGORI 4–3 | serie 3–3» sulla 197, «🏆 1–1» ancora in shootout sulla 196). Si rilegge dopo due fotogrammi finche' due
+     letture coincidono; se non coincidono mai il campione e' segnato instabile e non e' giudicato (conta a parte, i minimi restano). */
+  const dueFot = () => pg.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+  const chiave = (x) => JSON.stringify([x.ph, x.so, x.ris, x.min, x.sx, x.dx, x.tabSx, x.tabNum, x.scorre, x.stacco]);
+  const leggiStabile = async () => { let a = await leggi(); for (let k = 0; k < 6; k++) { await dueFot(); const b2 = await leggi(); if (chiave(a) === chiave(b2)) return b2; a = b2; } a.instabile = true; return a; };
   const confronta = (a, b) => pg.evaluate(async ([A, B]) => {
     const dec = async (b64) => { const im = new Image(); im.src = 'data:image/png;base64,' + b64; await im.decode(); const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const x = c.getContext('2d'); x.drawImage(im, 0, 0); return x.getImageData(0, 0, c.width, c.height); };
     const p = await dec(A), q = await dec(B); const W = p.width, H = p.height; let diff = 0, bianchi = 0;
@@ -64,15 +73,17 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
       const wc = R > 170 && G > 170 && Bl > 170 && Math.max(R, G, Bl) - Math.min(R, G, Bl) < 40, w0 = r0 > 170 && g0 > 170 && b0 > 170 && Math.max(r0, g0, b0) - Math.min(r0, g0, b0) < 40; if (wc && !w0) bianchi++; }
     return { diff, bianchi, tot: W * H };
   }, [a.toString('base64'), b.toString('base64')]);
-  const campioni = []; let fotoMeta = null, fotoFine = false, migliore = -1;
+  let instabili272 = 0; const campioni = []; let fotoMeta = null, fotoFine = false, migliore = -1;
   for (let i = 0; i < 90; i++) {
     await sleep(500);
-    const r = await leggi(); if (r.ph !== 'shootout') { campioni.push(r); break; }
+    const r = await leggiStabile(); if (r.ph !== 'shootout') { campioni.push(r); break; } if (r.instabile) { instabili272++; continue; }
     if (r.box && r.box.width > 10 && r.box.height > 10) {
       await pg.evaluate(() => { const a = document.getElementById('cpm-anim-stop214'); if (!a) { const s = document.createElement('style'); s.id = 'cpm-anim-stop214'; s.textContent = '*{animation-play-state:paused!important}'; document.head.appendChild(s); } });
       /* il tabellone si aggiorna da React piu' in fretta di quanto durano le due foto: per la coppia si mette al suo posto una COPIA
          congelata (cloneNode: stessi stili scritti, quindi stessa opacita'), cosi' fra le due foto cambia solo il 3D */
       await pg.evaluate(() => { const t = [...document.querySelectorAll('div')].find(d => d.children.length === 0 && /CALCI DI RIGORE/.test(d.textContent)); if (!t) return; const o = t.parentElement; const c = o.cloneNode(true); c.id = 'cpm-gelo214'; o.style.visibility = 'hidden'; o.setAttribute('data-gelo214', '1'); o.parentElement.insertBefore(c, o.nextSibling); });
+      /* [giro 272] il riquadro si prende dalla COPIA congelata: misurato prima, a volte era 2 px piu' alto della copia (la riga «sul dischetto…»/«GOOOL!» cambia altezza) e le due righe scoperte mostravano il 3D (723 pixel su 196 e 197) */
+      { const bx = await pg.evaluate(() => { const c = document.getElementById('cpm-gelo214'); if (!c) return null; const q = c.getBoundingClientRect(); return { x: Math.round(q.left), y: Math.round(q.top), width: Math.round(q.width), height: Math.round(q.height) }; }); if (bx && bx.width > 10 && bx.height > 10) r.box = bx; }
       const con = await pg.screenshot({ clip: r.box }); await tela(false); const senza = await pg.screenshot({ clip: r.box }); await tela(true);
       r.fermo = await pg.evaluate(() => (window.__CPM_PHASE && window.__CPM_PHASE()) === 'shootout' && !!document.querySelector('[data-gelo214]'));/* la coppia di foto vale solo se a fine coppia si e' ancora nella lotteria e il tabellone vero c'e' ancora (misurato: la cerimonia partita fra le due foto copriva il campione con «TITOLO VINTO!») */
       await pg.evaluate(() => { const c = document.getElementById('cpm-gelo214'); if (c) c.remove(); const o = document.querySelector('[data-gelo214]'); if (o) { o.style.visibility = ''; o.removeAttribute('data-gelo214'); } });
@@ -84,8 +95,8 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     if (foto && r.so && r.so.done && !fotoFine) { fotoFine = true; await pg.screenshot({ path: foto + '-fine.png' }); }
   }
   /* dopo la serie: fase successiva e striscia (presente solo in cerimonia) */
-  let dopo = null; for (let i = 0; i < 20; i++) { await sleep(500); dopo = await leggi(); if (dopo.ph !== 'shootout') break; }
-  await sleep(1200); dopo = await leggi(); if (foto && dopo.ris) await pg.screenshot({ path: foto + '-dopo.png' });
+  let dopo = null; for (let i = 0; i < 20; i++) { await sleep(500); dopo = await leggiStabile(); if (dopo.ph !== 'shootout') break; }
+  await sleep(1200); dopo = await leggiStabile(); if (foto && dopo.ris) await pg.screenshot({ path: foto + '-dopo.png' });
   if (foto && fotoMeta) fs.writeFileSync(foto + '-serie.png', fotoMeta);
   await pg.close();
   const inSerie = campioni.filter(c => c.ph === 'shootout' && c.so);
@@ -102,7 +113,7 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     sigleCoerenti: giud.filter(coerente).length, ordineOpposto: giud.filter(c => c.so.hs !== c.so.as && ordine(c).tabEroeSx && c.ris === `${c.so.as}–${c.so.hs}` && ordine(c).nomeEroeDx).length,
     serieDiverse: giud.filter(c => c.so.hs !== c.so.as).length, ordini: [...new Set(giud.map(c => `${c.sx} ${c.ris} ${c.dx} | tab ${c.tabSx} ${c.tabNum}`))].slice(0, 12),
     dopoSx: dopo ? dopo.sx : null, dopoDx: dopo ? dopo.dx : null };
-  return { ...g216, siglaEroe, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
+  return { ...g216, siglaEroe, instabili272, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
     strisciaRigori: inSerie.filter(c => /RIGORI/i.test(c.min || '')).length, strisciaMinuto: inSerie.filter(c => /\d+\s*'/.test(c.min || '')).length,
     strisciaSerie: inSerie.filter(c => c.ris === atteso(c)).length, strisciaPartita: inSerie.filter(c => c.ris === '1–1' && atteso(c) !== '1–1').length, strisciaCapovolta: inSerie.filter(c => (trasferta && rosso216) ? c.ris === `${c.so.hs}–${c.so.as}` && c.so.hs !== c.so.as : c.ris === `${c.so.as}–${c.so.hs}` && c.so.hs !== c.so.as).length,
     perCampione: inSerie.map(c => [c.so && `${c.so.hs}-${c.so.as}`, c.stacco ? 'stacco' : '', c.fermo ? '' : 'fase cambiata', c.diff, c.box && `${c.box.x},${c.box.y},${c.box.width}x${c.box.height}`]),
