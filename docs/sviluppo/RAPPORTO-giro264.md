@@ -69,7 +69,30 @@ In tutte le 20 corse la scena del 5' gioca con 95 passi e 5169 estrazioni nei du
 
 ## 4 — Statistiche su 20 partite, prima e dopo
 
-STATISTICHE_DA_INSERIRE
+Sonda `sonda-264s` (`npm run sonda-264s`): 20 partite **diverse** giocate per intero dal prompt della carriera (nomi «Statistica 1…19»
+e «Conteggio 1»: il nome entra nel seme della partita; stessa settimana, stesso pilota seedato). Gol dal tabellone, tiri e possesso
+dal tabellino del motore (`M.tabellino()`), più un'impronta del libro mastro.
+- **Prima** = partita intera col rosso `__CPM_NO_G264`, velocità 2x (`g264-stat-prima.txt`).
+- **Dopo** = la stessa partita senza il rosso. Misurata a soli highlight (`g264-stat-dopo-solo.txt`), perché dopo la correzione i due
+  modi sono la stessa partita; verificato anche qui: le prime 6 giocate intere a 2x senza rosso hanno **6 impronte su 6 uguali** a
+  quelle a soli highlight (`g264-stat-dopo-intera.txt`).
+
+| su 20 partite | prima | dopo |
+|---|---|---|
+| gol a partita (casa + ospiti) | 2,40 (1,85 + 0,55) · dev. st. 1,20 | 2,55 (2,00 + 0,55) · dev. st. 1,28 |
+| tiri a partita (casa + ospiti) | 19,85 (13,90 + 5,95) · dev. st. 3,18 | 20,05 (14,25 + 5,80) · dev. st. 4,39 |
+| possesso della squadra di casa | 41,6 % · dev. st. 4,6 | 41,6 % · dev. st. 4,5 |
+| vittorie · pareggi · sconfitte | 15 · 3 · 2 | 13 · 4 · 3 |
+| scene giocate a partita | 6,45 | 6,60 |
+| partite con libro mastro diverso dai soli highlight | **17 su 20** | 0 su 6 misurate (per costruzione sulle altre) |
+
+Le differenze fra le due colonne stanno dentro la dispersione di 20 partite (gol: +0,15 con deviazione standard 1,2; errore standard
+della media ≈ 0,27): la correzione non sposta le medie in modo misurabile. Quello che cambia è **quale** partita esce: prima, 17 volte
+su 20 la partita intera a 2x non era quella dei soli highlight (né, per lo stesso motivo, quella di un'altra corsa intera); adesso è una.
+Non posso confermare con 20 partite differenze di statistica più piccole di circa mezzo gol a partita: servirebbe un banco più grande.
+
+Due nomi («Statistica 20», «Statistica 21») non hanno aperto la partita in nessuno dei due bracci (bottone non trovato in 10 s, con e
+senza rosso): non li ho indagati, li ho sostituiti con «Conteggio 1». Vedi «Dubbi».
 
 ## 5 — Guardiano nuovo `battito-264` (`npm run battito-264`)
 
