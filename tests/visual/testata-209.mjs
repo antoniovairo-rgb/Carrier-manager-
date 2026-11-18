@@ -27,7 +27,7 @@ const srv = await startServer(); const b = await launchBrowser();
 const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
 page.on('pageerror', e => console.log('PAGEERROR', e.message.slice(0, 160)));
 const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player; pl.week = 20; pl.weekLived = false; pl.matchHistory = []; delete pl.playedMd;
-await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO_TESTA209 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, ROSSO]);
+await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_NO_G183 = 1;/* [giro 268] dal giro 183 (PO-375 «Meno e più varie») l'intervista esce solo dopo una partita con posta: la sonda la PROVOCA (intervista dopo ogni partita, come prima del 183), in entrambi i bracci */ if (r) window.__CPM_NO_TESTA209 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, ROSSO]);
 await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
 await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
 try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -76,7 +76,11 @@ const leggiIntervista = async () => {
   }
 };
 /* [giro 268] dal giro 190 (PO-380a, «testi che rompono l'incanto») il tasto di fine partita dice «Torna alla Home»; «dashboard» resta sul rosso __CPM_NO_G190A */
-const fine = async () => { await page.getByText(/Torna alla (Home|dashboard)/).first().click({ timeout: 10000 }); };
+/* [giro 268] e dal giro 200 (PO-385, rassegna a schede 1/4) il tasto finale sta all'ultima scheda: si scorre con «Avanti» come il giocatore */
+const fine = async () => {
+  for (let i = 0; i < 4 && !(await page.getByText(/Torna alla (Home|dashboard)/).count()); i++) { try { await page.locator('[data-cpm="avanti200"]').first().click({ timeout: 4000 }); await sleep(700); } catch (e) { break; } }
+  await page.getByText(/Torna alla (Home|dashboard)/).first().click({ timeout: 10000 });
+};
 
 if (SC === 'post') { // gioca col club A, firma per B tra fischio e intervista
   await firma('ven', 'trasferimento definitivo');
@@ -86,7 +90,7 @@ if (SC === 'post') { // gioca col club A, firma per B tra fischio e intervista
     await sleep(1500); console.log('blocco intervista prima di firmare:', await page.evaluate(() => window.__CPM_IVBLK231));
     await page.getByRole('button', { name: 'Accetta', exact: true }).first().click({ timeout: 8000 }); await sleep(1500);
     for (let i = 0; i < 4; i++) { try { await page.getByText(/Continua|Inizia|Avanti/).first().click({ timeout: 2500 }); await sleep(700); } catch (e) { break; } }
-    await sleep(1500); console.log('club ora', JSON.stringify(await pClub()));
+    await sleep(1500); console.log('club ora', JSON.stringify(await pClub()), 'IV183', JSON.stringify(await page.evaluate(() => window.__CPM_IV183 || null)));
     await leggiIntervista();
   }
 } else if (SC === 'prestito') { // proprietario Moreira, prestito a Laguna
