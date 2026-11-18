@@ -54,6 +54,22 @@ dribbling-226, goal-postarc, parata-258.
 
 ## Esiti
 
+Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s). Durate in secondi.
+
+| # | controllo | esito 1ª | esito 2ª | esito sulla 196 | classificazione | ultima riga del controllo |
+|---|---|---|---|---|---|---|
+| 2 | tunnel-245 | ✅ verde (2008 s) | — | — | verde | «ROSSO VISTO: il guardiano riconosce lo schieramento a sinistra, la panca bassa e la sostituzione attraverso gli oggetti.» |
+| 5 | tocco3d-219 | ❌ rosso (437 s) | ❌ rosso (456 s) | in coda | in attesa della 196 | «ultimo: verde 2/9 · rosso bocciato 6/6» (2ª: «verde 0/9 · rosso bocciato 6/6»). Causa stampata sul braccio verde: «G3 compito lungo 748-1001 ms > 600 fra tocco e scena chiusa» |
+| 8 | nomi-182 | ✅ verde (284 s) | — | — | verde | «nomi-182: ROSSO (26 ok · 2 ko)» = braccio rosso atteso; verde «28 ok · 0 ko» |
+| 11 | colla-103 | ✅ verde (256 s) | — | — | verde | «✓ colla-103 VERDE (e il rosso si vede)» |
+| 14 | assist-298 | ⏱ oltre tetto (2400 s) | ⏱ oltre tetto (2400 s) | in coda (tetto 60 min) | oltre tetto | braccio verde chiuso «VERDE scene 19 giudicate 19 · passaggi riusciti 100.0% …» in entrambe; il braccio rosso non ha chiuso nessun seme prima del tetto (~8 min per seme, 5 semi per braccio) |
+| 17 | pc-tablet-292 | ✅ verde (725 s) | — | — | verde | «PC-TABLET-292: ✅ VERDE» |
+| 20 | ingresso-276 | ✅ verde (316 s) | — | — | verde | «✅ ingresso-276 verde (calciatori nel quadro nei primi 12 s, fila leggibile a fine ingresso) e il rosso si vede» |
+| 23 | avvicinamento-61 | ✅ verde (101 s) | — | — | verde | «✅ avvicinamento-61 verde (e il rosso si vede)» |
+| 26 | ingresso-277 | ✅ verde (463 s) | — | — | verde | «✅ ingresso-277 verde (durata intermedia, nessun velo, saltabile, corpi pronti a fine ingresso) e il rosso si vede» |
+| 29 | memoria-275 | ❌ rosso (493 s) | ❌ rosso (507 s) | in coda | in attesa della 196 | «❌ FAIL memoria-275: scene 2 · renderer 2→3 · corpi animati 869→1846 · heap dopo GC 305 MB» (identica nelle due corse: dopo la seconda partita la prima scena non è stata rilasciata, Object3D 13222→26458) |
+| 32 | esiti-218 | ❌ rosso (2354 s) | in corsa | | | «· partite non arrivate al fischio: verde 1234 fermo in playing» (verde: 17 scene, 0 contraddizioni; rosso visto: 7 contraddizioni) |
+
 <!-- TABELLA -->
 
 ## Dubbi
