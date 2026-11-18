@@ -83,7 +83,8 @@ Mappa mirata di `src/18` (90 passi, registro completo in `docs/sviluppo/giro263/
   `mister-215` (storico senza figurine), `coppa-prestito-245` (turno di coppa non giocato avanzando), `infortunio-263`
   (squalificato: settimana/fatica), `grafica-v2` (Club: anelli fiducia/popolarita' mancanti), `partita-v2` (post-partita su
   PC: manca il tasto finale), `difficolta-156` (curva fuori bersaglio), `testata-209` (scena dell'intervista n.d.).
-  `spazio-296` e `partita-rigiocata-194` (post-partita): BASE_PENDENTE.
+  `spazio-296` (post-partita mai raggiunto: «niente fischio») e `partita-rigiocata-194` (riapertura dopo il fischio): rossi
+  anche sulla base. Totale: **13 rossi, tutti preesistenti**.
 - **`grafica-v2` aveva UN rosso mio**: «testi tagliati: allenamento, eventi e crescita» a misura telefono (sulla base non c'e').
   Corretto marcando i testi troncati per scelta (`data-tronca263` + `title` col testo intero) e insegnandolo a `grafica-v2`;
   dopo la correzione resta solo il rosso preesistente degli anelli del Club.
@@ -109,7 +110,7 @@ ogni volta ho ripreso dal passo interrotto, rifacendolo da capo (le righe «--- 
    dettaglio troncato con «…». Ho tenuto la decisione di stanotte e ho reso il troncamento DICHIARATO: il testo intero sta nel
    `title` (`data-tronca263`), `grafica-v2` non lo conta come taglio e `pulsanti-263` pretende quel `title` su ogni testo troncato
    dei due pulsanti. Se il PO preferisce che nessun testo venga mai troncato, il dettaglio deve poter andare su 2 righe.
-6. **Rossi preesistenti** (vedi sopra): undici guardiani della mappa di `src/18` sono rossi anche sulla base `lavoro/197`. Non li
+6. **Rossi preesistenti** (vedi sopra): tredici guardiani della mappa di `src/18` sono rossi anche sulla base `lavoro/197`. Non li
    ho toccati (fuori ambito), ma la verifica di rilascio li trovera'. `prossima-131` era rosso anche lui sulla base (nome del club
    rinominato al giro 251): l'ho riparato leggendo il nome dal gioco, perche' lo stavo gia' adeguando.
 7. All'inizio del giro ho lanciato per errore `node ci-runner.mjs mirata lavoro/197 --elenco` (l'esecutore non ha un'opzione
