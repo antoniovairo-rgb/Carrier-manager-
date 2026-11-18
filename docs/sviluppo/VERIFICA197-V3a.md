@@ -8,9 +8,10 @@
 
 | Controllo | Esito 1ª | Esito 2ª | Esito sulla 196 | Classificazione | Ultima riga / casi rossi |
 |---|---|---|---|---|---|
-| highlight-95 | ROSSO (rc=1, ~116 min, 20:02→21:58 UTC) | in corsa | — | — | `❌ highlight-95` · `verde: 2 difetti — D4 s5/2021 «🔁 Uno-due con GÜNTHER»: esito a schermo solo 1188 ms prima della chiusura ‖ D4 s12/1234 «🔁 Uno-due con SPENCER»: esito a schermo solo 773 ms prima della chiusura` |
+| highlight-95 | ROSSO (rc=1, ~116 min, 20:02→21:58 UTC) | ROSSO (rc=1, ~115 min, 21:58→23:53 UTC): verde 2 difetti D4 s12/1234 e s12/2021 «🔁 Uno-due con SPENCER» (953 ms / 970 ms) | in corsa | rosso 2 su 2 (attesa 196) | `❌ highlight-95` · `verde: 2 difetti — D4 s5/2021 «🔁 Uno-due con GÜNTHER»: esito a schermo solo 1188 ms prima della chiusura ‖ D4 s12/1234 «🔁 Uno-due con SPENCER»: esito a schermo solo 773 ms prima della chiusura` |
 
 ## Note e dubbi
 
 - 1ª esecuzione: il braccio verde chiude «VERDE highlight 91 … difetti 2» (entrambi D4, esito a schermo troppo breve prima della chiusura, entrambi su «Uno-due»); il braccio rosso trova i suoi difetti come atteso. Il rosso dell'uscita viene solo dai 2 D4 del verde. Log completo: `VERIFICA197-V3a-highlight95-1.log`.
 - Nessuna foto rigenerata in docs/ (albero pulito dopo la corsa).
+- 2ª esecuzione: di nuovo rossa solo per 2 D4 del braccio verde, sempre «Uno-due» ma su casi diversi dalla 1ª (s5/2021 GÜNTHER e s12/1234 SPENCER nella 1ª; s12/1234 e s12/2021 SPENCER nella 2ª). Log: `VERIFICA197-V3a-highlight95-2.log`. Albero pulito, nessuna foto in docs/.
