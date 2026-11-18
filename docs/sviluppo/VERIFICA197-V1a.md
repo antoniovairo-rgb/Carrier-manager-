@@ -97,9 +97,23 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
 
 | # | Controllo | Esito 1ª | Esito 2ª | Sulla 196 | Classificazione | Ultima riga |
 |---|---|---|---|---|---|---|
+| 1 | `rigorista-257` | ❌ rosso (422 s): «C2 partita vera senza premio, ponte provocato: NON GIUDICATO (partita non finita)»; le altre 18 righe verdi | ✅ verde (321 s) | — | **instabile 1 su 2** | «✅ rigorista-257 verde (e il rosso si vede)» |
+| 4 | `guardalinee-222` | ✅ verde (399 s) | — | — | verde | «✅ difetto riprodotto — col rosso __CPM_NO_G222 6 verdetti rossi (posizione, festa, divisa)» |
+| 7 | `pullman-204` | ✅ verde (144 s) | — | — | verde | «✅ pullman-204 verde (e ogni rosso si vede)» |
+| 10 | `consegna-103` | ✅ verde (2113 s, vicino al tetto di 2400) | — | — | verde | «✓ consegna-103 VERDE (e il rosso si vede)» |
+| 13 | `carriera3-94` | ✅ verde (160 s) | — | — | verde | «VERDE» |
+| 16 | `panchina-293` | ✅ verde (228 s) | — | — | verde | «✅ panchina-293 verde (16/16 corpi CGTrader in ingresso e in partita, 0 procedurali, 0 CH38, piedi/bacino in tolleranza, fps >= 0.85 x rosso) e il rosso si vede» |
+| 19 | `corpi-073` | ✅ verde (415 s) | — | — | verde | «✅ corpi-073 verde (282,283,284f)» |
+| 22 | `render-3d-023` | ❌ non giudicato (121 s): `page.waitForFunction: Timeout 120000ms exceeded` a `render-3d-023.mjs:54` (attesa della home) | ❌ identico (121 s) | ❌ rosso (44 s) ma **per un'altra causa**: arriva alla home in 7303 ms e boccia «heap 1509.7 MB > 700» | **dichiarato** (rosso anche sulla 196) — vedi dubbio 3 | 197: `Node.js v22.23.5` dopo il TimeoutError · 196: «❌ RENDER 3D — 1 problemi: · heap 1509.7 MB > 700» |
 <!-- RIGHE -->
 
 ## Dubbi
 
 1. Vedi «Scelta da segnalare» sopra (guardiani già eseguiti da uno dei due giri).
 2. Il §5 del giro 265 dice 64 nomi, ne scrive 63.
+3. `render-3d-023`: rosso su entrambe le versioni, ma il sintomo è diverso. Sulla 196 la sonda arriva alla home (il suo testimone
+   `window.__T023.home`, un `MutationObserver` sui figli di `#root` armato a `DOMContentLoaded`, scatta a 7,3 s) e boccia sulla memoria.
+   Sulla 197 quel testimone non scatta mai in 120 s, 2 corse su 2, quindi la sonda non giudica niente, neanche la memoria. Non ho
+   indagato (consegna: niente correzioni). Una causa possibile, **non verificata**, è che sulla 197 la home si monti prima, o in modo
+   diverso, e l'osservatore non veda la mutazione. Per la regola PO-516 lo classifico «dichiarato», ma un rosso «non giudicato» sulla
+   197 non dimostra che il difetto della 196 (heap) ci sia ancora. Lo decide la madre.
