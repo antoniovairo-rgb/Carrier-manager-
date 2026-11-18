@@ -54,13 +54,13 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
 | 25 | `pallone-278` | src/12 (§5 giro 265) | **V1a** |
 | 26 | `ingresso-277` | src/12 (§5 giro 265) | altra sessione |
 | 27 | `inquadra-273` | src/12 (§5 giro 265) | altra sessione |
-| 28 | `salti-274` | src/12 (§5 giro 265) | **V1a** |
+| 28 | `salti-274` | ❌ rosso (599 s): Ivo Mansi, 2 salti non spiegati in conclusione (arco 13,4u/0,028s · 8,5u/0,029s) | ❌ rosso (595 s): stessi 2 salti (13,4u · 8,5u) | ✅ verde (620 s): «TOTALE salti non spiegati in conclusione: 0» (sonda identica byte per byte) | **verde sulla 196 = NATO nella 197** — vedi dubbio 5 | «❌ FAIL salti-274» («TOTALE salti non spiegati in conclusione: 2») |
 | 29 | `memoria-275` | src/12 (§5 giro 265) | altra sessione |
 | 30 | `buildup-sync` | src/12 (§5 giro 265) | altra sessione |
 | 31 | `po229-gi38` | src/12 (§5 giro 265) | **V1a** |
 | 32 | `esiti-218` | src/12 (§5 giro 265) | altra sessione |
 | 33 | `cross-218` | src/12 (§5 giro 265) | altra sessione |
-| 34 | `scene-221` | src/12 (§5 giro 265) | **V1a** |
+| 34 | `scene-221` | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 chiusi | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 | ✅ verde con tetto 60 min, ma in **2603 s** (anche la 196 supera i 40 min) | **oltre tetto** — vedi dubbio 6 | 197: «seme 5 fine ceremony scene 6 gol eroe 0» (seme 42 non raggiunto) · 196: «✅ scene-221 verde (scene 5.50 a partita; passaggio sempre offerto col compagno libero)» |
 | 35 | `fila-227` | src/12 (§5 giro 265) | altra sessione |
 | 36 | `bambini-294` | src/12 (§5 giro 265) | altra sessione |
 | 37 | `partita-vera` | src/12 (§5 giro 265) | **V1a** |
@@ -93,6 +93,16 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
 | 64 | `rinvio-252` | src/13 (non eseguito dal giro 262) | **V1a** |
 | 65 | `parata-258` | src/13 (non eseguito dal giro 262) | altra sessione |
 
+## Riepilogo
+
+Eseguiti **12 su 22** entro il tetto del blocco (circa 4 ore: dalle 17:05 alle 21:00, ora del contenitore).
+- **verde: 8** (`guardalinee-222`, `pullman-204`, `consegna-103`, `carriera3-94`, `panchina-293`, `corpi-073`, `pallone-278`, `po229-gi38`).
+- **instabile 1 su 2: 1** (`rigorista-257`: la 1ª corsa «NON GIUDICATO (partita non finita)» in C2).
+- **dichiarato: 1** (`render-3d-023`, rosso anche sulla 196, ma con un sintomo diverso: dubbio 3).
+- **NATO nella 197: 1**, **`salti-274`**: rosso 2 su 2 sulla 197 (gli stessi 2 salti in conclusione), verde 1 su 1 sulla 196. **Per la regola PO-516 blocca l'uscita.**
+- **oltre tetto: 1** (`scene-221`: oltre i 40 min 2 su 2 sulla 197; sulla 196 verde ma in 43 min).
+- **non eseguiti: 10** (37 … 64, elencati in tabella), da riassegnare.
+
 ## Esiti della parte V1a
 
 | # | Controllo | Esito 1ª | Esito 2ª | Sulla 196 | Classificazione | Ultima riga |
@@ -109,7 +119,16 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
 | 28 | `salti-274` | ❌ rosso (599 s): Ivo Mansi, 2 salti non spiegati in conclusione (arco 13,4u/0,028s · 8,5u/0,029s) | ❌ rosso (595 s): stessi 2 salti (13,4u · 8,5u) | *in corsa* | *in attesa della 196* | «❌ FAIL salti-274» («TOTALE salti non spiegati in conclusione: 2») |
 | 31 | `po229-gi38` | ✅ verde (32 s) | — | — | verde | «✅ PASS — 1 scene: restituzione, servizio al compagno e conclusione giocati» |
 | 34 | `scene-221` | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 chiusi | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 | *in corsa, tetto 60 min* | *in attesa della 196* | «seme 5 fine ceremony scene 6 gol eroe 0» (ultimo seme 42 non raggiunto) |
-<!-- RIGHE -->
+| 37 | `partita-vera` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 40 | `conduci-242` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 43 | `ingresso-camminata-245` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 46 | `difesa-252` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 49 | `apertura-261` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 52 | `spot-266` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 55 | `passaggio-coppa-137` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 58 | `portiere-265` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 61 | `gk-miss-229` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
+| 64 | `rinvio-252` | non eseguito | — | — | **non eseguito (tetto del blocco)** | — |
 
 ## Dubbi
 
@@ -123,3 +142,15 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
    197 non dimostra che il difetto della 196 (heap) ci sia ancora. Lo decide la madre.
 4. `partita-vera`: una prima corsa (partita alle 20:06) è stata **interrotta** da me dopo pochi secondi, insieme al gruppo in sottofondo
    che stava per toccare il suo limite di 2 ore. Non vale: la rifaccio da capo.
+5. `salti-274` «NATO nella 197» si basa su **una sola** corsa sulla 196 (come da consegna). Sulla 197 il difetto è identico nelle due corse
+   (stesso giocatore Ivo Mansi, stessi salti 13,4u e 8,5u, a T0/0,45 e T0/0,43), quindi non sembra rumore. Sulla 196 la sonda dà 0 salti
+   non spiegati su 6 conclusioni col pallone lontano. Non ho cercato la causa.
+6. `scene-221`: con la regola «oltre tetto anche alla riprova» la 196 si rifà con 60 min, ed è verde in 2603 s. Anche la 196 quindi
+   **non** starebbe nel tetto di 40 min: la durata è una proprietà della sonda (6 partite intere), non una regressione della 197. Le due
+   corse sulla 197 si sono fermate allo stesso punto (seme 5 chiuso, seme 42 non iniziato), con esiti per seme simili alla 196 (scene 7/6/3/7/6
+   contro 5/6/3/7/7). Che la 197 sia verde non è dimostrato: andrebbe rifatta con tetto 60 min. Decide la madre.
+7. **Tetto del blocco.** Ho dato la precedenza alle verifiche sulla 196 dei rossi già trovati, e il tetto di circa 4 ore è arrivato con 10
+   controlli non eseguiti (#37-#64). La loro durata stimata è alta (`partita-vera` gioca partite intere). Non li ho avviati per restare nel
+   tetto; vanno riassegnati.
+8. Nessuna foto rigenerata in `docs/` durante i controlli (controllato dopo ogni corsa); `docs/governo/STABILITA.json` non toccato
+   (i controlli sono girati con `npm run`, non con `ci-runner.mjs`). Worktree della 196 in `../w196` (3076a1b7), fuori dal repo.
