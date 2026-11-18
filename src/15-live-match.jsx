@@ -9688,10 +9688,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        eseguito la pulizia dell'effetto — cioe' quando il processore ha tempo. Se nel frattempo l'intervallo batte ancora, il
        motore riceve un passo del minuto dopo PRIMA che la scena giochi: 96 passi e 5228 estrazioni del flusso rnd a `giocaScena`
        invece di 95 e 5169, e lo stesso passaggio esce «chance» invece di «assist». Nei soli highlight non succede per
-       costruzione: il lotto fa correre ogni battito dentro flushSync. Qui la partita intera fa lo stesso: ogni battito
-       dell'intervallo gira dentro flushSync (aggiornamenti ed effetti applicati subito: fase, cronometro e spegnimento
-       dell'intervallo sono fatti prima che il battito dopo possa partire). Stesso battito, stessi sorteggi, stessa cadenza. */
-    const _batt264=()=>{ReactDOM.flushSync(_batt166);};
+       costruzione: il lotto fa correre ogni battito dentro flushSync. Qui la partita intera fa lo stesso sul BATTITO DEL MINUTO
+       (quello che decide, apre le scene, fischia: l'unico che cambia fase): gira dentro flushSync, cosi' fase, cronometro e
+       spegnimento dell'intervallo sono applicati prima che il battito dopo possa partire. Stesso battito, stessi sorteggi.
+       I 21 sotto-passi fra un minuto e l'altro restano come prima. MISURATO il primo tentativo (TUTTI i battiti in flushSync):
+       divergenze 0 su 20 ma il cronometro del banco rallentava da 1912 a 2576 ms per minuto di gioco (un render sincrono ogni
+       77 ms): ritirato. */
+    const _batt264=()=>{if(((k898Ref.current|0)+1)%_SUB898===0)ReactDOM.flushSync(_batt166);else _batt166();};
     const iv=setInterval(_solo166?_lotto166:(_g264?_batt264:_batt166),_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>{_vivo166=false;clearInterval(iv);};
   },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166,_sh173,vis204]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase

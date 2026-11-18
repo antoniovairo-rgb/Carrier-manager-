@@ -3,7 +3,7 @@
    La partita intera e quella a soli highlight sono la stessa partita solo se, quando la scena gioca (giocaScena, src/14), il motore
    ha ricevuto gli stessi passi e consumato le stesse estrazioni del suo flusso rnd. Prima del giro 264 la partita intera poteva
    ricevere un passo in piu' fra il battito che apre la scena e la scena: l'intervallo del metronomo si spegneva solo quando React
-   aveva reso (tempo reale). Dal 264 ogni battito dell'intervallo gira dentro flushSync (src/15, _batt264), come nel lotto.
+   aveva reso (tempo reale). Dal 264 il battito del minuto (l'unico che cambia fase) gira dentro flushSync (src/15, _batt264), come nel lotto.
    COSA FA. Gioca la stessa partita («Collaudo Salienti», seme 7300) intera e a soli highlight fino al minuto CPM_MIN (30) e confronta:
      a. il libro mastro voce per voce (senza ts/t/npd), sul tratto comune;
      b. per ogni scena, le estrazioni rnd gia' consumate e il minuto del motore all'ingresso in giocaScena (testimone __CPM_RND14).
@@ -24,7 +24,7 @@ const MIN = +(process.env.CPM_MIN || 30), NV = +(process.env.CPM_NV || 2), NR = 
 
 /* ---- statico ---- */
 const s15 = fs.readFileSync(path.join(ROOT, 'src/15-live-match.jsx'), 'utf8');
-const statico = (s15.match(/const _batt264=\(\)=>\{ReactDOM\.flushSync\(_batt166\);\};/g) || []).length === 1
+const statico = (s15.match(/const _batt264=\(\)=>\{if\(\(\(k898Ref\.current\|0\)\+1\)%_SUB898===0\)ReactDOM\.flushSync\(_batt166\);else _batt166\(\);\};/g) || []).length === 1
   && /setInterval\(_solo166\?_lotto166:\(_g264\?_batt264:_batt166\),/.test(s15) && /const _g264=!\(typeof window!=='undefined'&&window\.__CPM_NO_G264\);/.test(s15);
 
 /* la provocazione: gira nella pagina prima del gioco */
@@ -58,7 +58,7 @@ async function coppia(rosso, prov) {
 const riga = c => `  ${c.giud ? (c.d < 0 && c.dm < 0 ? '=' : '≠') : '?'} ${c.prov ? 'provocata' : 'tempo reale'} · voci ${c.voci.join('/')} · scene ${c.scene.join('/')} · minuti ${c.min.join('/')} · battute doppie ${c.doppi} · ${c.info}${c.giud ? '' : ' · NON GIUDICATO ' + JSON.stringify(c.err) + ' ' + c.note.join(' ')}`;
 const V = []; for (let i = 0; i < NV; i++) V.push(await coppia(false, true)); V.push(await coppia(false, false));
 const R = []; for (let i = 0; i < NR; i++) { const c = await coppia(true, true); R.push(c); if (c.giud && (c.d >= 0 || c.dm >= 0)) break; }
-console.log(`A. STATICO  ${statico ? '✓' : '✗'} un solo _batt264 che chiama il battito in flushSync, usato dall'intervallo quando __CPM_NO_G264 e' assente`);
+console.log(`A. STATICO  ${statico ? '✓' : '✗'} un solo _batt264 che chiama il battito del minuto in flushSync, usato dall'intervallo quando __CPM_NO_G264 e' assente`);
 console.log(`B. VERDE (fino al ${MIN}')`); for (const c of V) console.log(riga(c));
 console.log('C. ROSSO (__CPM_NO_G264)'); for (const c of R) console.log(riga(c));
 const divV = V.filter(c => c.d >= 0 || c.dm >= 0).length, ngV = V.filter(c => !c.giud).length, divR = R.filter(c => c.giud && (c.d >= 0 || c.dm >= 0)).length;
