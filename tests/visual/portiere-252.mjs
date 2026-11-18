@@ -66,7 +66,7 @@ for (const br of bracci) { ris[br] = [];
 await Promise.race([b.close(), new Promise(r => setTimeout(r, 5000))]); srv.close();
 if (process.env.CPM_SOLO) setTimeout(() => process.exit(0), 100);
 else { const V = ris.verde.filter(x => !x.p.nonGiud), R = ris.rosso.filter(x => !x.p.nonGiud);
-  if (V.length < 4) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati'); setTimeout(() => process.exit(2), 100); }
+  if (V.length < 8) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati nel verde (minimo 8; misurati 11 su 14 nel giro 271, erano 5 su 11 col portiere sulla linea)'); console.log('BRACCIO verde · MOTIVO ' + V.length + ' portieri giudicati, minimo 8'); setTimeout(() => process.exit(2), 100); }
   else { const ok = V.every(x => !x.ko) && R.filter(x => x.ko).length >= 1;/* il difetto vecchio e' intermittente: in catena il rosso ha dato 2/8, 2/8, 2/8 e 1/7 — ne basta uno per provare che il guardiano vede */
     console.log(`\nverde: KO ${V.filter(x => x.ko).length}/${V.length} · rosso: KO ${R.filter(x => x.ko).length}/${R.length}`);
     /* [giro 111 PO-311] braccio e motivo per ULTIMI: la coda dice chi ha fallito e perche' */

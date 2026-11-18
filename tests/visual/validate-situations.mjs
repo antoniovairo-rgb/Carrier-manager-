@@ -216,6 +216,10 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
         if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
       }
       phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers, scartati, coppie });
+      /* [giro 271] strumento: la sequenza che ha prodotto il numero (intervallo reale, passo di camera, stacco, fase), cosi' un rosso di
+         questo controllo si legge dal registro senza rifare la corsa. Solo stampa. */
+      { const seq = []; for (let i = 1; i < s.frames.length; i++) { const a0 = s.frames[i - 1], a1 = s.frames[i]; seq.push(`${a1.t - a0.t}ms:${(a0.cam && a1.cam) ? Math.hypot(a1.cam.x - a0.cam.x, a1.cam.y - a0.cam.y, a1.cam.z - a0.cam.z).toFixed(1) : '?'}${(a0.cut || a1.cut) ? 'N' : ''}${a1.phase !== a0.phase ? '>' + a1.phase : ''}`); }
+        console.log(`post-highlight gi${gi}: maxCam ${maxCam.toFixed(1)} · coppie ${coppie} · scartate ${scartati} · fase iniziale ${s.frames[0] ? s.frames[0].phase : '?'} · passi [${seq.join(' ')}]`); }
       try { replayRefs.push(writeReplayTrace(OUT, s)); } catch (_e) { /* trace best-effort, non blocca il gate */ }
       await sleep(300);
     }
