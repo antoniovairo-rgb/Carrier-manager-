@@ -75,7 +75,7 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
   }, [a.toString('base64'), b.toString('base64')]);
   let instabili272 = 0; const campioni = []; let fotoMeta = null, fotoFine = false, migliore = -1;
   for (let i = 0; i < 90; i++) {
-    await sleep(500);
+    await sleep(+process.env.CPM_PASSO214 || 150);/* [giro 272] era 500: la lettura stabile costa gia' due fotogrammi (headless ~0,3-1 s), cosi' i campioni per serie tornano quelli di prima */
     const r = await leggiStabile(); if (r.ph !== 'shootout') { campioni.push(r); break; } if (r.instabile) { instabili272++; continue; }
     if (r.box && r.box.width > 10 && r.box.height > 10) {
       await pg.evaluate(() => { const a = document.getElementById('cpm-anim-stop214'); if (!a) { const s = document.createElement('style'); s.id = 'cpm-anim-stop214'; s.textContent = '*{animation-play-state:paused!important}'; document.head.appendChild(s); } });
@@ -95,8 +95,14 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     if (foto && r.so && r.so.done && !fotoFine) { fotoFine = true; await pg.screenshot({ path: foto + '-fine.png' }); }
   }
   /* dopo la serie: fase successiva e striscia (presente solo in cerimonia) */
-  let dopo = null; for (let i = 0; i < 20; i++) { await sleep(500); dopo = await leggiStabile(); if (dopo.ph !== 'shootout') break; }
-  await sleep(1200); dopo = await leggiStabile(); if (foto && dopo.ris) await pg.screenshot({ path: foto + '-dopo.png' });
+  /* [giro 272] si ATTENDE L'EVENTO, non un tempo fisso (regola PO-311): prima si leggeva a +1,2 s dall'uscita dalla serie, e a volte la
+     cerimonia era gia' finita (misurato su 196 e 197, PC in trasferta: «ceremony@3066 ended@6096»). Ora si legge finche' si e' in
+     cerimonia con la striscia presente e tornata alla partita (senza «RIGORI»); se la cerimonia finisce prima, l'ultima lettura resta
+     quella fuori cerimonia e il verde cade (non giudicato = rosso). fasiDopo272 dice cosa si e' visto e quando. */
+  let dopo = null; const fasiDopo272 = []; const tDopo = Date.now();
+  for (let i = 0; i < 80; i++) { await sleep(250); dopo = await leggiStabile(); fasiDopo272.push(dopo.ph + (dopo.min ? '/' + dopo.min : '') + '@' + (Date.now() - tDopo));
+    if (dopo.ph === 'shootout') continue; if (dopo.ph !== 'ceremony') break; if (dopo.ris && dopo.sx != null && !/RIGORI/i.test(dopo.min || '')) break; }
+  if (foto && dopo.ris) await pg.screenshot({ path: foto + '-dopo.png' });
   if (foto && fotoMeta) fs.writeFileSync(foto + '-serie.png', fotoMeta);
   await pg.close();
   const inSerie = campioni.filter(c => c.ph === 'shootout' && c.so);
@@ -113,7 +119,7 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     sigleCoerenti: giud.filter(coerente).length, ordineOpposto: giud.filter(c => c.so.hs !== c.so.as && ordine(c).tabEroeSx && c.ris === `${c.so.as}–${c.so.hs}` && ordine(c).nomeEroeDx).length,
     serieDiverse: giud.filter(c => c.so.hs !== c.so.as).length, ordini: [...new Set(giud.map(c => `${c.sx} ${c.ris} ${c.dx} | tab ${c.tabSx} ${c.tabNum}`))].slice(0, 12),
     dopoSx: dopo ? dopo.sx : null, dopoDx: dopo ? dopo.dx : null };
-  return { ...g216, siglaEroe, instabili272, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
+  return { ...g216, siglaEroe, instabili272, fasiDopo272, ultimoCampione272: campioni.length ? campioni[campioni.length - 1].ph : null, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
     strisciaRigori: inSerie.filter(c => /RIGORI/i.test(c.min || '')).length, strisciaMinuto: inSerie.filter(c => /\d+\s*'/.test(c.min || '')).length,
     strisciaSerie: inSerie.filter(c => c.ris === atteso(c)).length, strisciaPartita: inSerie.filter(c => c.ris === '1–1' && atteso(c) !== '1–1').length, strisciaCapovolta: inSerie.filter(c => (trasferta && rosso216) ? c.ris === `${c.so.hs}–${c.so.as}` && c.so.hs !== c.so.as : c.ris === `${c.so.as}–${c.so.hs}` && c.so.hs !== c.so.as).length,
     perCampione: inSerie.map(c => [c.so && `${c.so.hs}-${c.so.as}`, c.stacco ? 'stacco' : '', c.fermo ? '' : 'fase cambiata', c.diff, c.box && `${c.box.x},${c.box.y},${c.box.width}x${c.box.height}`]),
