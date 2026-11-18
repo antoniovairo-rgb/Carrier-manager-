@@ -1082,7 +1082,7 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
 /* [giro 192 · PO-406] postura della fila: spalle e braccia a riposo, in spazio MONDO e in ASSOLUTO (si parte ogni volta dalla posa che la
    clip e la vita hanno appena scritto: niente accumulo). salutaR>0: il braccio destro e' del saluto e non si tocca. */
 const _P192={v:null};
-function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
+function _posa192(av,i,salutaR,osc,parte){/* [giro 261] parte 1 = solo la spalla (clavicola), PRIMA della regola delle spalle; parte 2 = solo le braccia, dopo; senza = tutto, come prima */const T=THREE;if(!_P192.v)_P192.v={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),up:new T.Vector3(0,1,0),q:new T.Quaternion(),qp:new T.Quaternion(),qb:new T.Quaternion()};
   const V=_P192.v,B=av.userData._b192||(av.userData._b192=(()=>{const o={};av.traverse(x=>{if(x.isBone&&/^(pelvis|neck_01|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|ball_[lr])$/.test(x.name))o[x.name]=x;});return o;})());
   if(!B.pelvis||!B.neck_01||!B.clavicle_l||!B.upperarm_l||!B.lowerarm_l||!B.hand_l||!B.ball_l||!B.ball_r)return;
   av.updateMatrixWorld(true);
@@ -1095,19 +1095,24 @@ function _posa192(av,i,salutaR,osc){const T=THREE;if(!_P192.v)_P192.v={a:new T.V
   const k=(((i*2654435761)>>>0)%1000)/1000;
   for(const s of ['l','r']){const cl=B['clavicle_'+s],ua=B['upperarm_'+s],la=B['lowerarm_'+s],hd=B['hand_'+s];if(!cl||!ua||!la||!hd)continue;
     /* (1) spalla: pendenza collo->spalla a -22 gradi (due passi di Newton sull'angolo misurato) */
-    for(let it=0;it<2;it++){B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);V.d.copy(V.b).sub(V.a);const h=Math.hypot(V.d.x,V.d.z)||1e-6;
+    for(let it=0;it<2&&parte!==2;it++){B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);V.d.copy(V.b).sub(V.a);const h=Math.hypot(V.d.x,V.d.z)||1e-6;
       const ang=Math.atan2(V.d.y,h),err=(-22*Math.PI/180)-ang;if(Math.abs(err)<0.004)break;
       V.c.set(V.d.x/h,0,V.d.z/h);const asse=new T.Vector3().crossVectors(V.c,V.up).normalize();ruota(cl,asse,err);}
-    if(s==='r'&&salutaR>0.01)continue;
+    if(parte===1||(s==='r'&&salutaR>0.01))continue;
     /* (2) braccio a riposo: lato = dal collo alla spalla, in orizzontale */
     B.neck_01.getWorldPosition(V.a);ua.getWorldPosition(V.b);const lat=new T.Vector3(V.b.x-V.a.x,0,V.b.z-V.a.z).normalize();
     const o225=(s==='l'?1:-1)*(osc||0);/* [giro 225] camminando le braccia oscillano opposte alle gambe */
-    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k).addScaledVector(fwd,0.05+0.04*k+0.20*o225).normalize();
+    /* [giro 261 · A] la fila e' viva anche nelle braccia. Misurato (traccia lunga, docs/sviluppo/giro261/traccia-A-storia.txt): dal giro 192 la
+       velocita' mediana delle ossa della fila e' scesa da 19-24 a 8-10 mm/s di scena e un corpo restava sotto 1,5 mm fra due campioni fino a
+       1,6 s (prima 0,27): questa funzione scrive omero e avambraccio in una direzione fissa e cancellava l'oscillazione delle braccia del
+       giro 142. Ora la direzione porta quell'oscillazione (vita142 → br261): pochi centimetri alla mano, lenti, diversi per braccio e per uomo. */
+    const b261=(av.userData.br261&&!(typeof window!=='undefined'&&window.__CPM_NO_G261))?av.userData.br261[s==='l'?0:1]:0;
+    const dU=new T.Vector3().addScaledVector(V.up,-0.985).addScaledVector(lat,0.13+0.03*k+0.010*b261).addScaledVector(fwd,0.05+0.04*k+0.20*o225+0.035*b261).normalize();
     punta(ua,la,dU);
-    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05).addScaledVector(fwd,0.24+0.06*k+0.30*o225).normalize();
+    const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05+0.010*b261).addScaledVector(fwd,0.24+0.06*k+0.30*o225+0.050*b261).normalize();
     punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
-  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr])$/.test(o.name))B[o.name]=o;});
+  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr])$/.test(o.name))B[o.name]=o;});
   if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
   /* mescolatore a valanga (lo stesso di appearanceFromSeed): il passo di LCG singolo dava a semi vicini lo stesso numero, cioe' la stessa posa */
   const R=k=>(typeof _mix32==='function'?_mix32((seme>>>0)+Math.imul(k,0x9e3779b9)):((seme>>>0)^Math.imul(k,2654435761))>>>0)/4294967296;
@@ -1135,6 +1140,13 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
   /* (4) appoggio: la punta piu' bassa alla quota di riposo */
   av.updateMatrixWorld(true);const mn=Math.min(wp(B.ball_l,va).y,wp(B.ball_r,vb).y)-av.position.y;av.position.y=ballR-mn;
   const base={};['spine_01','spine_03','neck_01','head','foot_l','foot_r','upperarm_l','upperarm_r'].forEach(n=>{if(B[n])base[n]=B[n].quaternion.clone();});
+  /* [giro 261 · B] LE CLAVICOLE NELLA BASE. Misurato col bisect (docs/sviluppo/giro261/bisect-B-spalle.txt): dal giro 192 le spalle della fila
+     arretrano col passare dei secondi (teste degli omeri da +0,0156·H davanti al torace a −0,004·H in 5 s, testa da −0,006 a +0,011 davanti
+     alle spalle). La clip della fila e' in pausa e il mixer non riscrive un osso che non cambia; la regola delle spalle (_spalle146) ruota la
+     clavicola, poi _posa192 la ruota ancora, e al fotogramma dopo la regola prendeva quell'uscita come una posa nuova: due correzioni che si
+     inseguono, un po' piu' indietro a ogni fotogramma. Ora la clavicola e' riscritta in assoluto dalla base a ogni fotogramma, come gli omeri:
+     la regola delle spalle e la posa del giro 192 lavorano una volta sola, sempre dalla stessa partenza. Rosso __CPM_NO_G261. */
+  const base261={};['clavicle_l','clavicle_r'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});
   /* vita: frequenze e fasi dal seme, ampiezze piccole (gradi) */
   const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
   const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
@@ -1142,13 +1154,17 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
   const giro0=(b,asse,ang)=>{if(!b||!ang)return;b.parent.getWorldQuaternion(qa);qq.setFromAxisAngle(asse,ang);/* rotazione intorno a un asse del MONDO, riportata nello spazio del genitore */
     qw.copy(qa).multiply(b.quaternion);qw.premultiply(qq);b.quaternion.copy(qa.invert().multiply(qw));};
   const vita=(el,ww)=>{const kv=1-(ww>0?Math.min(1,ww):0);/* [giro 225] mentre cammina (ww) la posa e' della clip walk: la base rientra in dissolvenza */
-    if(kv<1){for(const n in base)B[n].quaternion.slerp(base[n],kv);}else{for(const n in base)B[n].quaternion.copy(base[n]);}av.updateMatrixWorld(true);if(kv<=0)return;
+    if(kv<1){for(const n in base)B[n].quaternion.slerp(base[n],kv);}else{for(const n in base)B[n].quaternion.copy(base[n]);}
+    const g261=!(typeof window!=='undefined'&&window.__CPM_NO_G261);if(g261){if(kv<1){for(const n in base261)B[n].quaternion.slerp(base261[n],kv);}else{for(const n in base261)B[n].quaternion.copy(base261[n]);}}
+    av.userData.br261=null;av.updateMatrixWorld(true);if(kv<=0)return;
     const giro=(b,asse,ang)=>giro0(b,asse,ang*kv);
     const res=Math.sin(el*Math.PI*2*P.fRes+P.pRes),peso=Math.sin(el*Math.PI*2*P.fPeso+P.pPeso),sg=Math.sin(el*Math.PI*2*P.fSg+P.pSg),br=Math.sin(el*Math.PI*2*P.fBr+P.pBr);
     if(B.spine_01){giro(B.spine_01,Z,peso*1.4*D);giro(B.spine_01,X,res*0.7*D);B.spine_01.updateMatrixWorld(true);}
     giro(B.spine_03,X,-res*1.2*D);B.spine_03.updateMatrixWorld(true);
     giro(B.head,Y,sg*P.sg*D);giro(B.head,X,(res*1.5-1)*D);
-    if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);};
+    if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);
+    /* [giro 261 · A] l'oscillazione delle braccia della fila, per _posa192 (che scrive le braccia in assoluto e la cancellava): due onde lente e sfasate, una per braccio */
+    if(g261){const o=av.userData.o261||(av.userData.o261=[0,0]);o[0]=br*kv;o[1]=Math.sin(el*Math.PI*2*P.fBr*0.87+P.pBr+2.1)*kv;av.userData.br261=o;}};
   av.userData.vita142=vita;av.userData.posa142={tb,buoni:buoni.length,riposo:{rN,rH,pL,pR,ballR}};
   try{av.userData.saluto144=_saluto144(av);}catch(_e){}
   return av.userData.posa142;}catch(_e){return null;}}
@@ -1422,7 +1438,7 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
      (porta ancora il valore scritto qui) torna a com'era prima della risoluzione. */
   const _eq=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y)+Math.abs(a.z-b.z)+Math.abs(a.w-b.w)<1e-7;
   const riparti=()=>{for(const A of lati){if(!A.fatto)continue;for(let i=0;i<A.oo.length;i++)if(_eq(A.oo[i].quaternion,A.post[i]))A.oo[i].quaternion.copy(A.pre[i]);A.fatto=false;}};
-  return function(w){riparti();if(!(w>0))return;const kw=sm(0,0.5,w);
+  return function(w){riparti();if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.d256=null;if(!(w>0))return;const kw=sm(0,0.5,w);
     for(const A of lati){A.U.parent.updateWorldMatrix(true,false);A.U.parent.getWorldQuaternion(Qp).normalize();/* la corporatura scala le ossa in modo non uniforme: il quaternione di mondo letto dalla matrice non e' unitario (misurato: norma 0,993 a sinistra) */Qu.copy(Qp).multiply(A.U.quaternion);Lw.copy(Qu).multiply(A.L.quaternion);Hw.copy(Lw).multiply(A.H.quaternion);
       if(A.TU)TUw.copy(Qu).multiply(A.TU.quaternion);if(A.TL)TLw.copy(Lw).multiply(A.TL.quaternion);
       u.copy(A.aU).applyQuaternion(Qu).normalize();dF.copy(A.aF).applyQuaternion(Lw).normalize();aw.copy(A.cal.asse).applyQuaternion(Qu).normalize();
@@ -1432,14 +1448,37 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
       let th=0,best=null;for(const t of [giro(al-be),giro(al+be)]){Rt.setFromAxisAngle(u,t);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1);r1.copy(A.rF).applyQuaternion(Q1);
         const pos=cr.crossVectors(a1,u).dot(dF)>0;/* la flessione e' la rotazione POSITIVA intorno all'asse, contata dal braccio DISTESO (non dal riferimento, che e' gia' un po' flesso): il gomito piega da una parte sola */
         if(best===null||(pos&&!best.pos)||(pos===best.pos&&Math.abs(t)<Math.abs(best.t)))best={t,pos};}
-      th=best.t;Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
+      th=best.t;if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){(av.userData.d256||(av.userData.d256={}))[A.U.name]=[+c.toFixed(4),+(th*57.2958).toFixed(1),+k.toFixed(3),+(al*57.2958).toFixed(1),+(be*57.2958).toFixed(1),best.pos?1:0];}/* [giro 261] solo sonde: cosa ha scelto la risoluzione */Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
       rp.copy(r1).addScaledVector(a1,-a1.dot(r1));dp.copy(dF).addScaledVector(a1,-a1.dot(dF));const ph=Math.atan2(a1.dot(cr.crossVectors(rp,dp)),rp.dot(dp));
       Bw.setFromAxisAngle(a1,ph).multiply(Q1).multiply(A.cal.ref);/* avambraccio = riferimento + flessione pura, nel mondo */
       Rt.setFromAxisAngle(u,th*k);Q2.copy(Rt).multiply(Qu);/* omero ruotato sul proprio asse (peso k) */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G261)){Lw.normalize();Bw.normalize();}/* [giro 261 · C] i due quaternioni non sono unitari (ossa con scala non uniforme): con prodotto >= 1 la mescola restava ferma sul primo fino a k=1 e poi saltava (misurato: avambraccio destro 13,7 gradi in un fotogramma all'uscita dal saluto) */
       if(Lw.dot(Bw)<0)Bw.set(-Bw.x,-Bw.y,-Bw.z,-Bw.w);Q1.copy(Lw).slerp(Bw,k);/* le due orientazioni portano l'avambraccio nella stessa direzione: fra l'una e l'altra c'e' solo una rotazione intorno all'avambraccio */
       A.U.quaternion.copy(Qp).invert().multiply(Q2).normalize();Rt.copy(Q2).invert();A.L.quaternion.copy(Rt).multiply(Q1).normalize();if(A.TU)A.TU.quaternion.copy(Rt).multiply(TUw).normalize();
       Rt.copy(Q1).invert();A.H.quaternion.copy(Rt).multiply(Hw).normalize();if(A.TL)A.TL.quaternion.copy(Rt).multiply(TLw).normalize();
       for(let i=0;i<A.oo.length;i++)A.post[i].copy(A.oo[i].quaternion);A.fatto=true;}};}catch(_e){return null;}}
+/* [giro 261 · C · dubbio 1 del giro 256] L'INGRESSO GRADUALE DELLA REGOLA DELLE SPALLE NEL SALUTO. Dopo la clip del saluto la regola
+   (_spalle146) passa una seconda volta, ma solo a saluto in corso: al primo fotogramma del saluto entrava tutta insieme, e all'ultimo usciva
+   tutta insieme. Qui entra ed esce in rampa: nei primi RAMPA261 della dissolvenza (0,2 s di scena su 0,5) le ossa che la regola tocca
+   (clavicole, omeri, avambracci, mani e l'attacco dell'omero) stanno fra la posa prima della regola e quella dopo. Oltre, la regola vale
+   intera come prima. La memoria della regola (uscita registrata) viene allineata alla posa mescolata, cosi' al fotogramma dopo riparte
+   dall'ingresso giusto e niente si accumula. Rosso __CPM_NO_G261 (e __CPM_NO_G261C per la sola rampa): la regola entra di colpo. */
+const RAMPA261=0.40;
+function _spalleRampa261(av,lin){const B=_ossa23(av);const no=(typeof window!=='undefined'&&(window.__CPM_NO_G261||window.__CPM_NO_G261C));
+  const R0=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_RAMPA261>0)?+window.__CPM_RAMPA261:RAMPA261;/* solo sonde: prova un'altra durata */let r=Math.max(0,Math.min(1,(lin||0)/R0));r=r*r*(3-2*r);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.r261v=no?1:r;
+  if(no||r>=1||!B||typeof THREE==='undefined'){const m0=_spalle146(B);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.m261=m0?1:0;return m0;}
+  const T=THREE,M=av.userData._r261||(av.userData._r261=(()=>{const o=[B.clavicle_l,B.clavicle_r,B.upperarm_l,B.upperarm_r,B.lowerarm_l,B.lowerarm_r,B.hand_l,B.hand_r].filter(Boolean),U=[B.upperarm_l,B.upperarm_r].filter(Boolean);
+    return{o,q:o.map(()=>new T.Quaternion()),U,p:U.map(()=>new T.Vector3()),tq:new T.Quaternion(),ta:new T.Quaternion(),tp:new T.Vector3()};})());
+  for(let i=0;i<M.o.length;i++)M.q[i].copy(M.o[i].quaternion);for(let i=0;i<M.U.length;i++)M.p[i].copy(M.U[i].position);
+  const mosso=_spalle146(B);if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.m261=mosso?1:0;
+  for(let i=0;i<M.o.length;i++){const b=M.o[i],u=b.userData;M.tq.copy(b.quaternion);const n0=M.q[i].length(),n1=M.tq.length();if(!(n0>1e-6)||!(n1>1e-6))continue;
+    /* i quaternioni che la regola scrive vengono da orientazioni di mondo di ossa con scala non uniforme: NON sono unitari (lezione del giro 256). Si mescolano
+       la direzione (unitaria) e la norma separatamente, cosi' a r=1 la posa e' ESATTAMENTE quella della regola (misurato: senza, 3-4 gradi di gradino a fine rampa) */
+    const nn=n0+(n1-n0)*r;M.ta.copy(M.tq).normalize();b.quaternion.copy(M.q[i]).normalize().slerp(M.ta,r).normalize();b.quaternion.set(b.quaternion.x*nn,b.quaternion.y*nn,b.quaternion.z*nn,b.quaternion.w*nn);
+    if(u.q146bo&&u.q146bo.equals(M.tq))u.q146bo.copy(b.quaternion);}
+  for(let i=0;i<M.U.length;i++){const b=M.U[i],u=b.userData;M.tp.copy(b.position);b.position.copy(M.p[i]).lerp(M.tp,r);if(u.p146bo&&u.p146bo.equals(M.tp))u.p146bo.copy(b.position);if(u.p23o&&u.p23o.equals(M.tp))u.p23o.copy(b.position);}
+  for(let i=0;i<M.o.length;i++)M.o[i].updateMatrixWorld(true);
+  return mosso;}
 function _salutoClip240(av,pkgR,scelta){try{const T=THREE;if(!av||!pkgR||!pkgR.animations)return null;
   const vuole=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_CLIP240)||null;/* solo sonde: prova l'altra clip */
   let c0=null;for(const n of (vuole?[vuole]:(scelta&&_CLIP240.includes(scelta))?[scelta].concat(_CLIP240.filter(x=>x!==scelta)):_CLIP240)){c0=pkgR.animations.find(c=>c&&c.name===n)||null;if(c0)break;}if(!c0)return null;/* [giro 256] la clip scelta per questa serata; l'altra resta il ripiego se la prima mancasse dal file */
@@ -1768,10 +1807,15 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
           if(cm)S.ww=cm.passo(tz,dt);else{S.ww=0;m.position.z+=(tz-m.position.z)*Math.min(1,dt*3.2);}}
         if(mixers.length)mixers.forEach(m=>m.update(dt));
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225;if(u.vita142)u.vita142(el,S.ww);if(u.saluto144)u.saluto144(0,0);/* rimette alla base avambraccio, mano e dita */}
+        /* [giro 261 · B] LA REGOLA DELLE SPALLE PASSA PER ULTIMA SULLA SPALLA. La pendenza della spalla del giro 192 (collo→spalla a −22 gradi) si scrive PRIMA
+           della regola, le braccia lungo i fianchi dopo: alzare la spalla ruotando la clavicola la allarga (misurato con la posa scritta dopo la regola: eroe a
+           2,447 spalle/anche contro 2,34 delle altre scene, coerenza 1,047 su 1,05), e la regola — che sposta solo di lato — la riporta nella fascia. */
+        const _g261=!(typeof window!=='undefined'&&window.__CPM_NO_G261);
+        if(_g261&&!_no192c)for(let i=0;i<men.length;i++){try{_posa192(men[i],i,0,0,1);}catch(_e){}}
         if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
         for(let i=0;i<men.length;i++){const m=men[i],u=m.userData,S=u.st225,cm=u.cam225;
-          if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0);}catch(_e){}}
-          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalle146(_ossa23(m));}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
+          if(!_no192c){try{_posa192(m,i,0,cm?cm.osc:0,_g261?2:0);}catch(_e){}}
+          if(u.sal240){try{u.sal240.applica(S.w,S.ts);if(S.w>0&&typeof _spalle146==='function')_spalleRampa261(m,S.lin);}catch(_e){}if(u.ris256){try{u.ris256(S.w);}catch(_e){}}/* [giro 256] il gomito torna una cerniera, a ossa ferme (chiamata anche a peso 0: rimette a posto cio' che ha scritto) */}/* [giro 240 PO-499] clip Rohr, poi la regola delle spalle */
           else if(S.w>0&&u.sal225){try{u.sal225(S.w,S.ts);}catch(_e){}}
           if(cm)cm.terra();}
         _w144=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.w:0;try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.ts240=(called&&men[pi]&&men[pi].userData.st225)?men[pi].userData.st225.ts:0;}catch(_e){}

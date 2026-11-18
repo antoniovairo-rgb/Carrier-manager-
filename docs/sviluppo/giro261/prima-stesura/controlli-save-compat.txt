@@ -1,0 +1,8 @@
+== save-compat · 22:49:34 · cbba41ad
+Mem:           16087         890       11755          12        3741       15197
+/dev/vda        252G   13G   27G  33% /
+  ℹ️  nota: 2ª migration changed=true senza nuovi campi — rigenerazione calendario/standings perché il club sintetico del test non è nel pool lega (benigno; i save reali con club valido convergono a changed=false).
+
+=== SAVE-COMPAT === 12 pass · 0 fail
+✅ PASS
+== uscita 0 · durata 8 s · 22:49:42
