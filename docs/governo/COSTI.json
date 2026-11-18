@@ -2739,5 +2739,20 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYia9acegewVoGPBbbEeQ",
+  "titolo": "giro 264 · solo-highlight-166: battito del motore e scena deterministici",
+  "creata": "2026-11-17T22:27:49Z",
+  "chiusa": "2026-11-18T11:17:55Z",
+  "cost_usd": 13.0590294,
+  "output_tokens": 65194,
+  "cache_read_tokens": 36504677,
+  "worker_epoch": 3,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-18",
+  "nota": "worker riavviato: costo parziale"
  }
 ]
