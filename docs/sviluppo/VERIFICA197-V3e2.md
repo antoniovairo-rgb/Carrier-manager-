@@ -11,3 +11,6 @@
 | controllo | esito 1ª | esito 2ª | esito sulla 196 | classificazione | ultima riga del controllo |
 |---|---|---|---|---|---|
 | tabellino-lati | verde (12 s) | — | — | verde | `✅ PASS tabellino-lati` |
+| stat-279 | verde (41 s) | — | — | verde | `✅ STAT-279 OK` |
+| lessico-218 | verde (2 s) | — | — | verde | `✅ lessico-218 verde (0 su 138 azioni-tiro col lessico di passaggio) e il rosso si vede (138 su 138)` |
+| tabellino-228 | verde (388 s) | — | — | verde | `✅ tabellino-228 verde (e il rosso si vede)` |
