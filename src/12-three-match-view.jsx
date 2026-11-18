@@ -6555,7 +6555,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;}
               const _c0=Math.hypot(_px223-_sx223,_pz223-_sz223)||1,_c1=Math.hypot(_tx223-_sx223,_z223-_sz223);
               ballArcTgtX=_tx223;ballArcTgtZ=_z223;ballArcDur=Math.min(1.6,ballArcDur*Math.max(1,_c1/_c0));
-              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
             }
           }
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
@@ -11284,6 +11284,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          else if(!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61)&&!_ex520){
            if(_st.ball&&!ballArcActive&&hlPostArcType&&hlPostArcT>=0.9&&!/^(in_net_own|cross_goal|assist_recv|onetwo_back)$/.test(hlPostArcType))sr.current._keep61=P.hlSitKey;
            if(sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey){_st.ball=false;_st.acc=0;}}
+         /* [giro 241 PO-506] su un'azione FALLITA dell'eroe il soggetto resta l'eroe per tutta la scena (le reti che lo tengono in quadro
+            restano accese); il pallone lo tiene dentro la passata «eroe e pallone insieme», a valle, prima dell'arbitro d'inerzia. */
+         if(isResult&&P.hlSuccess===false&&!_ex520&&!P.shootout&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){_st.ball=false;_st.acc=0;}
          _subjBall50=_st.ball;}}
       /* [7.505.0 F6/3 — LA TAGLIA E' REGIA: 0,18 · decisione delegata dal PO, presa con lo sweep sulle 191]
          Lo sweep (7.503) ha dato la curva completa: a taglia 0 la mediana e' 0,054 con l'86% delle scene
@@ -11795,6 +11798,52 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;
          if(!_prc.cut){_prc.cut=1;camera.position.set(tPx,tPy,tPz);camLook.set(_kp.x,1.25,_kp.z);}}}
+      /* [giro 241 PO-506, decisione PO «Sì, eroe sempre in quadro» — EROE E PALLONE INSIEME DOPO UN'AZIONE FALLITA. Rosso __CPM_NO_G241,
+         guardiano camera-241] MISURATO (banco misura-241, testimone __CPM_G241W, azioni non difensive dell'eroe con esito fallito, GLB
+         acceso): quando il pallone si allontana il soggetto della regia passa al pallone (7.237/7.520) e la camera gli va dietro girando
+         ATTORNO all'eroe a 4-7 u: l'eroe esce dal quadro (gi6 «Stacco di testa»: 13% dei fotogrammi, ndc x fino a 6) e nel passaggio
+         riempie il quadro (altezza apparente 1,6 volte il quadro: e' l'«eroe enorme in primo piano» del dubbio 12 del giro 226, stesso
+         meccanismo). Col telefono in verticale il quadro e' largo 21 gradi: eroe e pallone a 20-40 u stanno insieme solo se l'asse
+         eroe→pallone corre in PROFONDITA'. Quindi, a pallone lontano (oltre 2,5 u, peso pieno a 6), la camera va DIETRO l'eroe sulla retta
+         pallone→eroe (14 u, 6,5 d'altezza: taglia ~0,13, quella del 7.713) e guarda a meta' fra i due, con l'eroe in basso e il pallone
+         in alto. Ci arriva lungo un ARCO attorno all'eroe (bersaglio a non piu' di 1,1 rad dalla camera vera, e solo se serve: a pallone vicino quasi ogni lato va bene), mai tagliando per il suo
+         corpo. L'eroe ha la precedenza: lo sguardo non lo porta mai oltre 0,55 del semiquadro. A pallone vicino (prima del gesto) la
+         regia resta quella del 7.482/7.505. La POSIZIONE si scrive qui, prima del lerp di posizione (scritta dopo, cambiava solo lo sguardo: misurato, la camera tagliava ancora per l'eroe a 4,3 u); lo SGUARDO piu' sotto, prima dell'arbitro d'inerzia (regola 7.521). Nessun sorteggio. */
+      {const S1=sr.current;S1._g241on=0;const _F1=S1._g241f||(S1._g241f={on:0,net:0,w:0,tv:0,th:0,v:1});_F1.on=0;_F1.net=0;/* oggetto riusato: nessuna allocazione per fotogramma */
+       if(isResult&&hero&&hero.visible&&ball&&P.hlSuccess===false&&!P.hlDef&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+         const _hx1=hero.position.x,_hz1=hero.position.z,_dx1=ball.position.x-_hx1,_dz1=ball.position.z-_hz1,_d1=Math.hypot(_dx1,_dz1);
+         const _st1=(S1._g241&&S1._g241.k===P.hlSitKey)?S1._g241:(S1._g241={k:P.hlSitKey,w:0,ax:0,az:0});
+         if(_d1>3){const _k1=(_st1.ax||_st1.az)?Math.min(dt/0.25,1):1;_st1.ax+=(_dx1/_d1-_st1.ax)*_k1;_st1.az+=(_dz1/_d1-_st1.az)*_k1;}
+         _F1.net=1;_F1.tv=Math.atan(Math.tan(((camera&&camera.fov)||46)*Math.PI/360));_F1.th=Math.atan(Math.tan(_F1.tv)*((camera&&camera.aspect)||0.45));/* la rete finale vale per tutta la scena fallita, costruzione compresa */
+         /* MAI ATTRAVERSO L'EROE (anche nella costruzione, prima del gesto). MISURATO col guardiano camera-241 su gi6 «Stacco di testa»
+            (cross in arrivo): il bersaglio della regia segue il pallone che gli passa sopra e la camera, andandogli dietro in linea
+            retta, sfila a 4-7 u dall'eroe: eroe fuori dal quadro della regia per 5-10 fotogrammi e alto fino a 0,39 del quadro (col
+            rosso: 1,6 — e' l'«eroe enorme in primo piano»). La distanza che la regia vuole dall'eroe e' ~17 u (taglia 0,12): se il
+            tratto camera→bersaglio passa a meno di 9 u dall'eroe (in pianta), il bersaglio diventa un punto di passaggio a 10,8 u sul
+            fianco da cui il tratto gia' passa; se e' il bersaglio stesso a stargli addosso, lo si allontana a 9 u. */
+         {const _cx0=camera.position.x,_cz0=camera.position.z,_sx0=tPx-_cx0,_sz0=tPz-_cz0,_sl0=_sx0*_sx0+_sz0*_sz0;
+          const _t0=_sl0>1e-6?clamp(((_hx1-_cx0)*_sx0+(_hz1-_cz0)*_sz0)/_sl0,0,1):1;
+          let _nx0=_cx0+_sx0*_t0-_hx1,_nz0=_cz0+_sz0*_t0-_hz1,_nd0=Math.hypot(_nx0,_nz0);
+          if(_nd0<9){if(_nd0<0.05){_nx0=-_sz0;_nz0=_sx0;_nd0=Math.hypot(_nx0,_nz0)||1;}_nx0/=_nd0;_nz0/=_nd0;
+            const _r0=_t0>=0.999?9:10.8;tPx=_hx1+_nx0*_r0;tPz=_hz1+_nz0*_r0;if(tPy<4.2)tPy=4.2;S1._g241a=(S1._g241a|0)+1;}}
+         /* DOPO l'azione: la passata si arma quando il pallone lascia l'eroe per il suo gesto (arco o post-arco). Nella costruzione (cross
+            o passaggio che gli arriva) resta la regia sull'eroe: misurato su gi6, girare dietro a un pallone in arrivo lo buttava fuori. */
+         if(ballArcActive||hlPostArcType)_st1.arm=1;
+         _st1.w+=((_st1.arm?clamp((_d1-2.5)/3.5,0,1):0)-_st1.w)*Math.min(dt/0.30,1);
+         const _al1=Math.hypot(_st1.ax,_st1.az);
+         if(_st1.w>0.01&&_al1>0.05){
+           const _azD=Math.atan2(-_st1.az/_al1,-_st1.ax/_al1),_azC=Math.atan2(camera.position.z-_hz1,camera.position.x-_hx1);
+           let _dA=_azD-_azC;while(_dA>Math.PI)_dA-=2*Math.PI;while(_dA<-Math.PI)_dA+=2*Math.PI;
+           const _tv1=Math.atan(Math.tan(((camera&&camera.fov)||46)*Math.PI/360)),_th1=Math.atan(Math.tan(_tv1)*((camera&&camera.aspect)||0.45));
+           /* quanto la camera puo' stare fuori dall'asse: i due devono stare entro 1,1 semiquadri visti da 14 u dietro l'eroe (triangolo
+              camera-eroe-pallone). Pallone a 5 u: 47 gradi, quasi nessuna rotazione; a 25 u: 18 gradi. */
+           const _g1=1.1*_th1,_sb1=14*Math.sin(_g1)/Math.max(_d1,0.5),_am1=_sb1>=1?Math.PI:Math.min(Math.PI,_g1+Math.asin(_sb1));
+           const _rot=Math.abs(_dA)<=_am1?0:_dA-Math.sign(_dA)*_am1,_st0=clamp(_rot,-1.1,1.1),_azT=_azC+_st0,_r1=14/Math.cos(_st0);/* il bersaglio sta sulla tangente: inseguendolo la camera resta a 14 u dall'eroe (a raggio fisso l'inseguimento stringeva l'orbita) */
+           const _px1=clamp(_hx1+Math.cos(_azT)*_r1,-60,60),_pz1=clamp(_hz1+Math.sin(_azT)*_r1,-40,40),_py1=6.5,_w1=_st1.w;
+           tPx+=(_px1-tPx)*_w1;tPy+=(_py1-tPy)*_w1;tPz+=(_pz1-tPz)*_w1;
+           _F1.on=1;_F1.w=_w1;_F1.tv=_tv1;_F1.th=_th1;_F1.v=clamp(1-Math.abs(_rot)/0.7,0.3,1);S1._g241on=_w1>0.5?1:0;
+           if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST))S1._g241t=[+_px1.toFixed(1),+_pz1.toFixed(1),+_dA.toFixed(2),+_am1.toFixed(2),+_w1.toFixed(2)];/* solo prova */}}
+       else if(S1._g241&&!isResult)S1._g241=null;}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('lerp:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
@@ -11857,6 +11906,18 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       /* [giro 127 PO-329] la regia dell'ingresso dalla panchina ha l'ULTIMA parola prima dell'arbitro d'inerzia (regola 7.521): misurato,
          le passate degli highlight che si accodano durante la scena spostavano lo sguardo e l'eroe finiva sul bordo del quadro (ndc ±0,8). */
       if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
+      /* [giro 241 PO-506] LO SGUARDO di «eroe e pallone insieme» (la posizione sta prima del lerp di posizione, vedi sopra): a meta' fra
+         eroe (busto) e pallone, in azimut e in elevazione, visti dalla camera VERA; l'eroe mai oltre 0,55 del semiquadro in orizzontale e
+         0,50 in verticale (oltre 0,76 la correzione del fotogramma disegnato del giro 96a lo schiaccerebbe sul bordo). Prima dell'arbitro d'inerzia (regola 7.521). */
+      {const _f1=sr.current._g241f;
+       if(_f1&&_f1.on&&hero&&ball){const _px1=camera.position.x,_py1=camera.position.y,_pz1=camera.position.z,_hx1=hero.position.x,_hz1=hero.position.z;
+         const _gh1=Math.hypot(_hx1-_px1,_hz1-_pz1)||1,_gb1=Math.hypot(ball.position.x-_px1,ball.position.z-_pz1)||1;
+         const _ah1=Math.atan2(_hz1-_pz1,_hx1-_px1),_eh1=Math.atan2(hero.position.y+0.9-_py1,_gh1);
+         let _db1=Math.atan2(ball.position.z-_pz1,ball.position.x-_px1)-_ah1;while(_db1>Math.PI)_db1-=2*Math.PI;while(_db1<-Math.PI)_db1+=2*Math.PI;
+         const _eb1=Math.atan2(Math.min(ball.position.y,5)-_py1,_gb1);
+         const _a1=_ah1+clamp(_db1*0.5,-0.55*_f1.th*_f1.v,0.55*_f1.th*_f1.v),_e1=_eh1+clamp((_eb1-_eh1)*0.5,-0.50*_f1.tv,0.50*_f1.tv);/* mentre la camera gira attorno all'eroe (v<1) lo sguardo gli resta piu' vicino: misurato su gi109, a meta' giro l'eroe in corsa scivolava a ndc -1,15 */
+         const _lx1=_px1+Math.cos(_a1)*_gh1,_lz1=_pz1+Math.sin(_a1)*_gh1,_ly1=clamp(_py1+Math.tan(_e1)*_gh1,0.4,26),_w1=_f1.w;
+         tLx+=(_lx1-tLx)*_w1;tLy+=(_ly1-tLy)*_w1;tLz+=(_lz1-tLz)*_w1;}}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('arb:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
@@ -12273,6 +12334,19 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
+      /* [giro 241 PO-506] L'ULTIMA RETE, per tutta la scena di un'azione fallita dell'eroe (anche nella costruzione: misurato su gi6, mentre
+         l'eroe corre incontro al cross lo sguardo della regia gli restava dietro e lui usciva per 7-15 fotogrammi): se nella vista RESA (dopo i lerp) il busto dell'eroe
+         sta oltre 0,66 del semiquadro (0,62 in verticale), lo sguardo ruota di quanto basta a riportarlo li' (azimut ed elevazione). Il bersaglio lo tiene
+         gia' entro 0,55: rete e lerp spingono dalla stessa parte (lezione 7.507), nessun tiro alla fune. Solo camLook. */
+      {const _f2=sr.current._g241f;
+       if(_f2&&_f2.net&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+         const _cx2=camera.position.x,_cy2=camera.position.y,_cz2=camera.position.z,_gl2=Math.hypot(camLook.x-_cx2,camLook.z-_cz2)||1,_gh2=Math.hypot(hero.position.x-_cx2,hero.position.z-_cz2)||1;
+         const _al2=Math.atan2(camLook.z-_cz2,camLook.x-_cx2),_el2=Math.atan2(camLook.y-_cy2,_gl2),_eh2=Math.atan2(hero.position.y+0.9-_cy2,_gh2);
+         let _da2=Math.atan2(hero.position.z-_cz2,hero.position.x-_cx2)-_al2;while(_da2>Math.PI)_da2-=2*Math.PI;while(_da2<-Math.PI)_da2+=2*Math.PI;
+         const _mh2=0.66*_f2.th,_mv2=0.62*_f2.tv;let _na2=_al2,_ne2=_el2,_ch2=0;
+         if(Math.abs(_da2)>_mh2){_na2=_al2+_da2-Math.sign(_da2)*_mh2;_ch2=1;}
+         if(Math.abs(_eh2-_el2)>_mv2){_ne2=_eh2-Math.sign(_eh2-_el2)*_mv2;_ch2=1;}
+         if(_ch2){camLook.x=_cx2+Math.cos(_na2)*_gl2;camLook.z=_cz2+Math.sin(_na2)*_gl2;camLook.y=_cy2+Math.tan(_ne2)*_gl2;sr.current._g241n=(sr.current._g241n|0)+1;}}}
       /* [giro 204 PO-450] la scena di sola visione del rigore: la camera e' quella della lotteria (dietro il rigorista, 7.999.58), ferma e
          presa di colpo al primo fotogramma — e' uno stacco di regia (il DOM lo copre col taglio). In gioco fluido le passate della regia
          normale la porterebbero via: qui ha l'ultima parola. */
@@ -13412,6 +13486,10 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
          l'ottica non si allarga per lui; (3) non piu' del 15% del quadro sopra l'orizzonte, inclinando in giu' finche' eroe,
          pallone e la porta gia' inquadrata restano dentro; (4) sull'esito un eroe piu' piccolo del 7% dell'altezza si avvicina stringendo l'ottica, mai
          oltre cio' che i punti (1)-(2) consentono. La camera non si sposta: cambia solo dove guarda e quanto apre. */
+      if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&hero&&ball){try{/* [giro 241, solo prova] l'eroe nella camera della REGIA, prima della correzione del fotogramma disegnato */
+        const S1=sr.current,_v1=(S1._v241||(S1._v241=new THREE.Vector3()));camera.updateMatrixWorld(true);
+        _v1.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);S1._rn241=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+        _v1.set(ball.position.x,ball.position.y,ball.position.z).project(camera);S1._rb241=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];}catch(_e241r){}}
       try{const K=sr.current._k96||(sr.current._k96={on:0,q:new THREE.Quaternion(),fov:46,n:0,a:new THREE.Vector3(),y:new THREE.Vector3(0,1,0),qq:new THREE.Quaternion()});
         const _ph96=String(P.matchPhase||''),_W96=(typeof window!=='undefined')?window:{};
         if(/^hl_/.test(_ph96)&&hero&&!P.ceremony&&!P.shootout&&!replaying&&!_W96.__CPM_NO_G96D2){
@@ -13463,6 +13541,26 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           }
         }
       }catch(_e96){}
+      /* [giro 241 PO-506 «eroe sempre in quadro» — TESTIMONE DI SOLA PROVA, acceso solo da __CPM_REC241 sotto cpmtest] Un campione per
+         FOTOGRAMMA in OGNI fase (anche il gioco fluido dopo la scena: dubbio 12 del giro 226, «eroe enorme in primo piano»), tutto dalle
+         mesh e col tempo di scena dentro, sulla camera DISEGNATA (dopo la correzione del fotogramma del giro 96a, con le matrici
+         aggiornate: il testimone del giro 226 stava prima di quella correzione e misurava la camera della regia, non il quadro a schermo): eroe (centro, piedi, testa in ndc), altezza apparente, pallone in ndc, distanza camera-eroe,
+         soggetto della regia, stacco nero vivo. Nessuna scrittura sullo stato del gioco. Lo leggono misura-241 e il guardiano camera-241. */
+      if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&hero&&ball){try{
+        const _W1=(window.__CPM_G241W=window.__CPM_G241W||[]);
+        if(_W1.length<12000){const S1=sr.current;S1._ck241=(S1._ck241||0)+aDt;const _v1=(S1._v241||(S1._v241=new THREE.Vector3()));camera.updateMatrixWorld(true);
+          _v1.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);const _hn=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+          _v1.set(hero.position.x,hero.position.y,hero.position.z).project(camera);const _fy=_v1.y,_fx=_v1.x,_fin=(Math.abs(_v1.x)<=1&&Math.abs(_v1.y)<=1&&_v1.z<1)?1:0;
+          _v1.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);const _tin=(Math.abs(_v1.x)<=1&&Math.abs(_v1.y)<=1&&_v1.z<1)?1:0,_hh=Math.abs(_v1.y-_fy)/2,_tx=_v1.x;
+          _v1.set(ball.position.x,ball.position.y,ball.position.z).project(camera);const _bn=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+          let _cut=0;try{_cut=(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())?1:0;}catch(_e){}
+          _W1.push({ck:+S1._ck241.toFixed(3),ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,ht:P.hlType||null,ok:P.hlSuccess==null?null:!!P.hlSuccess,kd:P.hlOutcomeKind||null,df:P.hlDef?1:0,
+            h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],hv:hero.visible?1:0,hn:_hn,fi:_fin,ti:_tin,hh:+_hh.toFixed(4),ex:+Math.max(Math.abs(_fx),Math.abs(_tx)).toFixed(3),rn:S1._rn241||null,rb:S1._rb241||null,
+            b:[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)],bv:ball.visible?1:0,bn:_bn,
+            c:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],dc:+Math.hypot(camera.position.x-hero.position.x,camera.position.y-hero.position.y-0.9,camera.position.z-hero.position.z).toFixed(2),
+            sb:S1._sb42?1:0,k61:(S1._keep61!=null)?1:0,g241:S1._g241on?1:0,gt:S1._g241on?S1._g241t:null,n241:S1._g241n|0,fov:+camera.fov.toFixed(1),cl:[+camLook.x.toFixed(1),+camLook.y.toFixed(1),+camLook.z.toFixed(1)],cut:_cut,arc:ballArcActive?1:0,pa:hlPostArcType||null,rp:(typeof replaying!=='undefined'&&replaying)?1:0,
+            gk:awayGkMesh?[+awayGkMesh.position.x.toFixed(2),+awayGkMesh.position.y.toFixed(2),+awayGkMesh.position.z.toFixed(2)]:null});}
+      }catch(_e241){}}
       /* [giro 96a PO-299 D5 — I CORPI NON SI COMPENETRANO. Rosso __CPM_NO_G96D5]
          MISURATO (scena3d-96 sui corpi DISEGNATI, radici GLB visibili): due corpi a meno di 0,45u per 4-8 fotogrammi in gi31, gi64,
          gi18, gi3 (fino a 0,12u, portiere sopra l'attaccante), e gia' all'apertura (gi31 0,22u per 6 fotogrammi, gi128 0,33u). Le
