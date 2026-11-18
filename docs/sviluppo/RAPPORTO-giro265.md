@@ -110,7 +110,7 @@ Un rosso così non vale: il guardiano lo **provoca**.
 | frenata dopo l'inversione (stampata, non giudicata) | 1,5-1,7 u | 2,9-4,3 u |
 | esito | 0 difetti su 7 | 3 rientri su 3 con difetto |
 
-Eseguito 2 volte intero e 2 volte sui soli rientri: stessi esiti.
+Eseguito 2 volte intero con questi criteri: stessi esiti.
 
 ## 5. Controlli
 
@@ -119,9 +119,60 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
 
 | Controllo | Esito | Durata | Ultima riga |
 |---|---|---|---|
-@@CONTROLLI@@
+| `portiere-223` braccio verde, 3 corse di fila | ✅ verde ×3 | 177 · 173 · 182 s | «VERDE — sui tiri sbagliati il pallone non attraversa il portiere…» (14 tiri giudicati, 3 con gesto, 3 a portata, in tutte e tre) |
+| `portiere-223` braccio rosso (`__CPM_NO_G223`) | ✅ rosso visto | 177 s | «ROSSO (atteso: __CPM_NO_G223) — 13 difetti» |
+| `portiere-265` (nuovo, verde + rosso `__CPM_NO_G265`) | ✅ verde | 276 s | «portiere-265 VERDE (verde col verde, rosso col rosso)» — 0 difetti su 7 · 3 rientri provocati su 3 con difetto |
+| `parata-100`, 2 corse | ✅ verde ×2 | 1790 · 1788 s | «parata-100 verde · il rosso si vede» (verde: parate 7 e 6, difetti 0; rosso: difetti 2 e 1) |
+| `camera-241` | ✅ verde | 732 s | «camera-241 VERDE (verde col verde, rosso col rosso)» — 22/22, rosso in 5 testimoni su 8 |
+| `dribbling-226` | ✅ verde | 731 s | «dribbling-226 VERDE (verde col verde, rosso col rosso)» — rosso in 7 esecuzioni su 12 |
+| `gol-eroe-154` | ✅ verde | 3909 s | «gol-eroe-154 verde e rosso» — 10/10 partite valide per braccio |
+| `test:logic` | ✅ verde | 2 s | 51 prove, nessuna fallita |
+| `save-compat` | ✅ verde | 1 s | «SAVE-COMPAT 12 pass · 0 fail · PASS» |
+| `design-system` (nucleo) | ✅ verde | <1 s | «SISTEMA GRAFICO OK» |
+| `tema-unico` (nucleo) | ✅ verde | 18 s | «ROSSO ATTESO OK…» |
+| `typing-shortcuts` (nucleo) | ✅ verde | 13 s | «PASS — chi scrive tiene la tastiera…» |
+| `web-237` (nucleo) | ✅ verde | 47 s | «PROVA DEL ROSSO RIUSCITA…» |
+| `gk-miss-229` (mappa `src/12`) | ✅ verde | 171 s | «VERDE — sui tiri sbagliati il portiere si muove verso il pallone prima che lo superi, e guarda uscire quelli lontani» |
+| `gk-dive-sync` (mappa) | ✅ verde | 154 s | «PASS — quando il portiere completa la distesa, la completa all'arrivo della palla» |
+| `parata-258` (mappa) | ✅ verde | 74 s | «PASS parata-258 (4/4 parate con il pallone sulle mani)» |
+| `rete-252` (mappa) | ✅ verde | 270 s | «rete-252 VERDE» |
+| `rinvio-252` (mappa) | ✅ verde | 221 s | «rinvio-252 VERDE» |
+| `goal-postarc` (mappa) | ✅ verde | 358 s | «PASS — ogni gol dichiarato ha la sua conclusione giocata e la palla arriva in porta» |
+| `esiti-241` (mappa), 2 corse | ⚠️ **instabile**: rosso, verde | 343 · 356 s | 1ª: «rosso G102: 0 consegne in area col portiere in tuffo su 2 (attese >= 1)» · 2ª: «esiti-241 verde … e il rosso si vede» (2/2). Sulla base, 1 corsa: verde (2/2) |
+| `validate-situations` (mappa), 2 corse | ⚠️ **instabile**: rosso, verde | 840 · 952 s | 1ª: 13 categorie su 14, «post-highlight — gi0: salto camera 41,9 > 30» · 2ª: «PASS», 14 su 14. Sulla base, 1 corsa: PASS |
+| `portiere-252` (mappa) | ❌ **rosso** | 517 s | «portiere-252 ROSSO — rosso NON VISTO: 0 KO su 5 portieri giudicati». Il braccio verde è pulito (0 KO su 5). **Sulla base il solo braccio rosso dà lo stesso: 0 KO su 4 giudicati** (304 s) |
 
-@@NONESEGUITI@@
+**Tre esiti non verdi, misurati anche sulla base (copia separata di `lavoro/197`, 91ba72d, senza le mie modifiche):**
+
+- **`portiere-252` è rosso, e lo è anche sulla base.** Il suo braccio verde è pulito; è il braccio rosso (`__CPM_NO_GK252`) che non
+  produce il difetto atteso, col mio build (0 KO su 5) e sulla base (0 KO su 4). Il guardiano stesso si dichiara «intermittente».
+  Non l'ho riparato: è fuori dalla consegna (dubbio 9). Non dichiaro verde questo controllo.
+- **`esiti-241`: rosso, poi verde.** Il rosso era il suo braccio `__CPM_NO_G102` che non vedeva il tuffo (0 su 2); alla riprova 2 su 2.
+  Il guardiano annota già questo comportamento sotto carico. Sulla base: verde in 1 corsa. Due corse non bastano a dire se la mia
+  correzione lo rende più frequente (dubbio 10).
+- **`validate-situations`: rosso, poi verde.** `post-highlight`, salto di camera su gi0; `CLAUDE.md` lo descrive come tremolante.
+  Sulla base: verde in 1 corsa. Stesso limite: una corsa per parte (dubbio 10).
+
+Una prima corsa di `gol-eroe-154` è stata **interrotta** a 8 partite su 10 dal tetto di due ore del gruppo in sottofondo: non
+vale, l'ho rifatta da capo (è quella in tabella). Una corsa di `portiere-252` sulla base è stata tagliata dal tetto di dieci
+minuti a due scene dalla fine: non vale, ho rifatto il solo braccio rosso. Durante le misure sulla base il contenitore è stato
+riavviato: nessun file perso, misura rifatta.
+
+**Non eseguiti.** La riga della mappa mirata per `src/12` elenca 76 guardiani. Ne ho eseguiti 12 (quelli del portiere, il gate
+e i tre della consegna che ci stanno dentro: `portiere-223`, `parata-100`, `dribbling-226`). **Non ho eseguito gli altri 64**:
+`rigorista-257`, `formazioni-262`, `tunnel-245`, `coreografie-244`, `salienti-243`, `guardalinee-222`, `tocco3d-219`,
+`lotteria-191`, `piazzato-204`, `pullman-204`, `nomi-182`, `chiusura-99`, `consegna-103`, `colla-103`, `contatto-103`,
+`carriera3-94`, `assist-298`, `scena3d-96`, `spazio-296`, `panchina-293`, `pc-tablet-292`, `ingresso-285`, `corpi-073`,
+`ingresso-276`, `stadi-064`, `render-3d-023`, `avvicinamento-61`, `linee-61`, `pallone-278`, `ingresso-277`, `inquadra-273`,
+`salti-274`, `memoria-275`, `buildup-sync`, `po229-gi38`, `esiti-218`, `cross-218`, `scene-221`, `fila-227`, `bambini-294`,
+`partita-vera`, `bambini-236`, `pressing-143`, `conduci-242`, `ingresso-245`, `giornale-244`, `difesa-220-scena`,
+`ingresso-camminata-245`, `analisi-217`, `piedi-252`, `difesa-252`, `aereo-252`, `difesa-220-giro31`, `apertura-261`,
+`camera-252`, `reazione-252`, `spot-266`, `testa-143`, `stadi-071`, `cerimonie`, `passaggio-coppa-137`,
+`kit-061`, `strisce-corpo`. I controlli già fatti hanno preso circa 4 ore e mezza di macchina; il resto va alla verifica di
+rilascio. Fuori per regola: `highlight-95`, `ingresso-206`, `career-critical`.
+
+Nessuna foto di altri giri rigenerata in `docs/`; `docs/governo/STABILITA.json`, scritto da un avvio di `ci-runner.mjs`, è stato
+rimesso com'era e non è nei commit.
 
 ## 6. File toccati
 
@@ -157,4 +208,8 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
    La regola dice «ogni catena una sola volta». Non le ho sistemate: scegliere quale delle 12 è quella giusta è una decisione.
    Ho aggiunto `portiere-265` alla prima, che è quella usata.
 8. **Bisezione non fatta** (vedi §1): non so quale giro ha reso visibile il difetto.
-@@DUBBI_EXTRA@@
+9. **`portiere-252` è rosso anche sulla base**: il suo braccio rosso non vede più il difetto (0 KO su 4 sulla base, 0 su 5 col mio
+   build). Va riparato in un giro suo (decisione PO 13/10).
+10. **`esiti-241` e `validate-situations` sono usciti una volta rossi e una verdi** sul mio build, verdi nell'unica corsa sulla
+    base. Con una corsa per parte non posso dire se la correzione li rende più instabili o se è il loro tremolio di sempre.
+11. **64 guardiani della mappa di `src/12` non eseguiti** (elenco al §5).
