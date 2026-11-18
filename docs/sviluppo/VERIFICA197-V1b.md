@@ -72,11 +72,20 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 | 35 | fila-227 | ✅ verde (382 s) | — | — | verde | «✅ fila-227 verde (e il rosso si vede)» |
 | 38 | bambini-236 | ✅ verde (1311 s) | — | — | verde | «✅ VERDE — bambini con entrambe le squadre in ogni contesto, prova del rosso riconosciuta» |
 | 41 | ingresso-245 | ✅ verde (181 s) | — | — | verde | «✅ ingresso-245 verde (stesso tunnel, passo da camminata, tutti al posto) e il rosso si vede» |
-| 44 | analisi-217 | ❌ rosso (13 s) | ❌ rosso (13 s) | in coda | in attesa della 196 | «PO-217 analisi pre-partita → ROSSO»; causa: «❌ B1 pulsante non in fondo o fuori schermo null» a 412×915 e 360×780 (il pulsante non viene trovato) |
+| 44 | analisi-217 | ❌ rosso (13 s) | ❌ rosso (13 s) | ✅ verde (29 s, «PO-217 analisi pre-partita → VERDE», pulsante trovato a 412×915 top 827 bottom 875, ultimo blocco) | **NATO nella 197** (verde sulla 196; vedi dubbio 3) | «PO-217 analisi pre-partita → ROSSO»; causa: «❌ B1 pulsante non in fondo o fuori schermo null» a 412×915 e 360×780 (il pulsante non viene trovato) |
 | 47 | aereo-252 | ✅ verde (158 s) | — | — | verde | «✅ aereo-252 VERDE» |
 | 50 | camera-252 | ✅ verde (273 s) | — | — | verde | «✅ camera-252 VERDE (e il rosso vede il salto)» |
 | 53 | testa-143 | ✅ verde (287 s) | — | — | verde | «✅ testa-143 verde (e il rosso si vede)» |
 | 56 | kit-061 | ✅ verde (29 s) | — | — | verde | «✅ PASS kit-061» |
+
+| 59 | dribbling-226 | ✅ verde (891 s) | — | — | verde | «✅ dribbling-226 VERDE (verde col verde, rosso col rosso) · 891 s» («non giudicate 0») |
+| 62 | goal-postarc | ✅ verde (624 s) | — | — | verde | «✅ PASS — ogni gol dichiarato ha la sua conclusione giocata e la palla arriva in porta.» |
+| 65 | parata-258 | ✅ verde (85 s) | ✅ verde (82 s, corsa ripetuta pulita, vedi nota) | — | verde | «✅ PASS parata-258 (4/4 parate con il pallone sulle mani)» |
+
+**Nota su parata-258 (errore mio, dichiarato).** Alle 22:55 un mio script di coda ha avviato per sbaglio la corsa sulla 196 di
+`analisi-217` mentre `parata-258` (1ª) era appena partita: le due corse si sono sovrapposte per circa 12 s. Ho fermato `analisi-217`
+(corsa scartata, log cancellato, rifatta da sola dopo) e, siccome la 1ª di `parata-258` non era più «una alla volta», l'ho ripetuta da
+sola: verde anche così. In tabella valgono la corsa ripetuta e la `analisi-217` rifatta.
 
 <!-- TABELLA -->
 
@@ -92,3 +101,8 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
    fra loro: 188 contro 422 MB già alla prima partita.)
    Non ho cercato la causa (consegna: solo eseguire e classificare). Indizio da verificare per chi ripara: il rilascio della partita
    allo smontaggio (`__CPM_SMONTA219`, invariante del giro 219) e ciò che i giri del lotto 197 hanno aggiunto in src/12-13.
+3. **`analisi-217` è NATO nella 197 (B1: il pulsante «Entra in campo» non viene trovato, `pulsante null`).** Ipotesi NON verificata,
+   per chi ripara: il guardiano cerca il tasto con `/Entra in campo/.test(b.innerText)` (maiuscole e minuscole contano); nella 197 il
+   giro 235 dà ai tasti primari `textTransform:"uppercase"` (`stileTasto235`, `src/11-ui-kit-highlight.jsx:95` e `:112`), e
+   `innerText` restituisce il testo trasformato («ENTRA IN CAMPO»). Se è così il rosso sarebbe dello strumento e non della schermata,
+   ma resta un rosso nato nella 197 finché qualcuno non lo misura. Non ho modificato né la sonda né il gioco.
