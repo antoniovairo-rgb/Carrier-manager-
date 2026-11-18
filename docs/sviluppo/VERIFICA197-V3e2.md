@@ -17,3 +17,4 @@
 | intervista-231 | rosso (1873 s) | rosso (1875 s) | rosso (1921 s) — stessi 6 difetti | dichiarato (rosso anche sulla 196) | `· rosso: la partita non e' arrivata al fischio {"fine":"playing",… 53' …}` |
 | schede-234 | verde (761 s) | — | — | verde | `✅ VERDE — schede con almeno 3 opzioni, lessico «indicazioni», effetti distinti sul motore, prova del rosso riconosciuta` |
 | catalogo-022 | verde (482 s) | — | — | verde | `✅ catalogo-022 verde` |
+| schede-246 | rosso (704 s) | rosso (697 s) | rosso (704 s) — stessi 2 difetti | dichiarato (rosso anche sulla 196) | `· rosso: il cronometro non corre con la scheda aperta, il difetto non si vede` |
