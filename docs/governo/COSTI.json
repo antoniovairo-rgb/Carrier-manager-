@@ -2895,5 +2895,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYia8Yb6DzRoWzw9QtAKZ",
+  "titolo": "giro 275 · career-critical/playing-mdref",
+  "creata": "2026-11-18T21:41:23Z",
+  "chiusa": "2026-11-18T22:00:47Z",
+  "cost_usd": 2.70506062,
+  "output_tokens": 14954,
+  "cache_read_tokens": 6391006,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
  }
 ]
