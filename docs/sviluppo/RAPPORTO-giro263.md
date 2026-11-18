@@ -58,7 +58,38 @@ Foto `prima-*` (braccio rosso) e `dopo-*` (verde) in `docs/sviluppo/giro263/`, p
 
 ## Controlli eseguiti (uno alla volta, CPM_CHROME=/opt/pw-browsers/chromium)
 
-ESITI: vedi sezione in fondo (aggiornata a fine giro).
+Consegna:
+
+| controllo | esito |
+|---|---|
+| pulsanti-263 (nuovo) | **verde 20/20, rosso 20/20 caduti** (rieseguito dopo l'ultima modifica) |
+| home-199 | verde |
+| griglia-mobile | verde (14 schermate × 5 larghezze) |
+| coerenza-235 | verde |
+| sigle-203 | verde (la prima esecuzione e' stata tagliata dal mio tetto di 580 s, non un rosso; rifatta senza tetto: verde, rosso visto) |
+| test:logic | verde |
+| save-compat | verde 12/12 |
+| prossima-131 (adeguato) | **verde su tutti e 6 i bracci** (verde, storico263, rosso 131/133/134/137w caduti come devono) — rieseguito sull'ultima build |
+
+Mappa mirata di `src/18` (90 passi, registro completo in `docs/sviluppo/giro263/mappa-mirata.txt`; esclusi per regola
+`highlight-95`, `career-critical`, `ingresso-206`; un rosso riprovato una volta; tetto 20 minuti per passo):
+
+- **verdi: 72** (fra cui simula-v2, momenti-v2, home-066, giornata-233, nazionale-155, schermate-97, pc-tablet-292, …).
+- **oltre 20 minuti, non giudicati**: `assist-nome-98`, `intervista-231` (li esegue la verifica di rilascio).
+- **`squalifica-222`**: rosso alla prima prova, verde alla seconda → instabile, non legato a questa modifica.
+- **rossi 2 su 2 — tutti identici sulla base `lavoro/197` senza le mie modifiche** (stesso motivo, stessi numeri; registro
+  `b-*.log` in sessione): `rosa-228` (ruolo «R» non in sigla, 24 club), `agente-198` (B1/B2: il tasto non porta all'Agente),
+  `neutro-287` («stile di gioco» in Carriera › Profilo), `ritratto-171-72` (ritratto dell'eroe assente in Home),
+  `mister-215` (storico senza figurine), `coppa-prestito-245` (turno di coppa non giocato avanzando), `infortunio-263`
+  (squalificato: settimana/fatica), `grafica-v2` (Club: anelli fiducia/popolarita' mancanti), `partita-v2` (post-partita su
+  PC: manca il tasto finale), `difficolta-156` (curva fuori bersaglio), `testata-209` (scena dell'intervista n.d.).
+  `spazio-296` e `partita-rigiocata-194` (post-partita): BASE_PENDENTE.
+- **`grafica-v2` aveva UN rosso mio**: «testi tagliati: allenamento, eventi e crescita» a misura telefono (sulla base non c'e').
+  Corretto marcando i testi troncati per scelta (`data-tronca263` + `title` col testo intero) e insegnandolo a `grafica-v2`;
+  dopo la correzione resta solo il rosso preesistente degli anelli del Club.
+
+Il container e' stato riavviato due volte durante la mappa e la corsa in sottofondo e' stata fermata due volte al tetto di 2 ore:
+ogni volta ho ripreso dal passo interrotto, rifacendolo da capo (le righe «--- ripresa» nel registro).
 
 ## Dubbi per il PO
 
@@ -74,6 +105,13 @@ ESITI: vedi sezione in fondo (aggiornata a fine giro).
    riga a 360 viene troncata dopo il nome. Non misurato dal guardiano (i suoi casi Nazionale sono Mondiale/Europeo).
 4. Il pulsante principale e Simula restano diversi di ~6 px (bordo tratteggiato del pulsante spento): dentro la tolleranza decisa
    (0,95–1,05), ma non identici al pixel.
-5. All'inizio del giro ho lanciato per errore `node ci-runner.mjs mirata lavoro/197 --elenco` (l'esecutore non ha un'opzione
+5. **Troncamento e `grafica-v2`.** `grafica-v2` vieta ogni testo tagliato nei riquadri V2; la decisione di stanotte ammette il
+   dettaglio troncato con «…». Ho tenuto la decisione di stanotte e ho reso il troncamento DICHIARATO: il testo intero sta nel
+   `title` (`data-tronca263`), `grafica-v2` non lo conta come taglio e `pulsanti-263` pretende quel `title` su ogni testo troncato
+   dei due pulsanti. Se il PO preferisce che nessun testo venga mai troncato, il dettaglio deve poter andare su 2 righe.
+6. **Rossi preesistenti** (vedi sopra): undici guardiani della mappa di `src/18` sono rossi anche sulla base `lavoro/197`. Non li
+   ho toccati (fuori ambito), ma la verifica di rilascio li trovera'. `prossima-131` era rosso anche lui sulla base (nome del club
+   rinominato al giro 251): l'ho riparato leggendo il nome dal gioco, perche' lo stavo gia' adeguando.
+7. All'inizio del giro ho lanciato per errore `node ci-runner.mjs mirata lavoro/197 --elenco` (l'esecutore non ha un'opzione
    «elenco»): con i `node_modules` non ancora installati e' fallito subito su ogni passo ed e' stato interrotto in pochi secondi; non ha
    scritto `docs/governo/STABILITA.json` (stato git pulito subito dopo).
