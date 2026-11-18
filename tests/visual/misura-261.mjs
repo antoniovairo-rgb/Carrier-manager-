@@ -88,7 +88,9 @@ export async function misuraC(browser, port, NO = [], { clip = process.env.CPM_C
        li' un passo grande e' velocita' x intervallo, non un salto). Si confronta col secondo piu' grande dei quattro passi successivi, come salti256. */
     let primo = null; if (ing.length >= 5) { const v = c => { const vic = [1, 2, 3, 4].map(j => ing[j][c]).sort((a, b) => b - a); return +(ing[0][c] - vic[1]).toFixed(2); }; primo = { ts: ing[0][0], peso: ing[0][1], omeroDx: ing[0][3], avambraccioDx: ing[0][5], eccOmeroDx: v(3), eccAvambraccioDx: v(5) }; }
     const pv = provaSalti256(S, 30);
-    out = { no: NO, clip, campioni: S.length, salti: salti256(S), prova: pv ? pv.max : null, primo, primi: ing.slice(0, 12), tutti: tutti ? passi(1, A.length - 1) : undefined };
+    /* i salti dei primi 0,20 s del saluto (dove cadeva il salto del dubbio 1 del giro 256), stesso metro */
+    const sIng = salti256(S.filter(x => x.ts <= 0.20));
+    out = { no: NO, clip, campioni: S.length, salti: salti256(S), saltiIngresso: sIng, prova: pv ? pv.max : null, primo, primi: ing.slice(0, 12), tutti: tutti ? passi(1, A.length - 1) : undefined };
   } catch (e) { out = { errore: 'C: ' + String(e.message || e).slice(0, 200) }; }
   await ctx.close(); return out;
 }

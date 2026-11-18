@@ -1,0 +1,11 @@
+serata-261 (prima corsa, giudizio dei salti precedente) uscita 0 durata 451 s
+presentazione-142 uscita 0 durata 183 s
+spalle-146 uscita 0 durata 490 s
+test:logic uscita 0 durata 2 s
+save-compat uscita 0 durata 9 s
+cerimonie-192 uscita 0 durata 529 s
+pelle-240 uscita 0 durata 481 s
+presentazione-225 uscita 0 durata 1424 s
+tpose-196 uscita 0 durata 2068 s
+gigante-212 (prima corsa) uscita 1 durata 810 s
+serata-261 uscita 0 durata 458 s
