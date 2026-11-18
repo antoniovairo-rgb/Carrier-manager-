@@ -16,10 +16,10 @@ Regola PO-516: rosso anche sulla 196 = DICHIARATO; verde sulla 196 = NATO nella 
 | grafica-v2 | verde (117s) | — | — | verde | `ROSSO 269 OK: con __CPM_NO_G235 (anelli) cade la misura dei gradini del Club in ogni formato` |
 | partita-v2 | verde (464s) | — | — | verde | `ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato` |
 | testata-209 | rosso, uscita 1 (952s) | rosso, uscita 1 (953s) | rosso, uscita 1 (732s) | dichiarato (rosso anche sulla 196) | `  · rosso: il difetto non si vede («null»)` |
-| spazio-296 | in corsa | — | — | in corsa | `  tel stagione-calendario carte v:  3 mediana   7.8 min 7.8 max 7.8 · sovrapposte 0 · hscroll 0` |
-| partita-rigiocata-194 | — | — | — | da eseguire | `` |
-| tabellone-214 | — | — | — | da eseguire | `` |
-| ripartenza-235 | — | — | — | da eseguire | `` |
+| spazio-296 | verde (488s) | — | — | verde | `  tel opzioni: 1 distanze oltre 10 (16.8 div«Crea il tuo calciatore»)` |
+| partita-rigiocata-194 | verde (315s) | — | — | verde | `✅ partita-rigiocata-194 verde (e il rosso si vede)` |
+| tabellone-214 | verde (499s) | — | — | verde | `✅ tabellone-214 verde (e il rosso si vede)` |
+| ripartenza-235 | in corsa | — | — | in corsa | `` |
 | squalifica-222 | — | — | — | da eseguire | `` |
 
 ## Note e dubbi
