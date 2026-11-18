@@ -67,7 +67,7 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 | 20 | ingresso-276 | ✅ verde (316 s) | — | — | verde | «✅ ingresso-276 verde (calciatori nel quadro nei primi 12 s, fila leggibile a fine ingresso) e il rosso si vede» |
 | 23 | avvicinamento-61 | ✅ verde (101 s) | — | — | verde | «✅ avvicinamento-61 verde (e il rosso si vede)» |
 | 26 | ingresso-277 | ✅ verde (463 s) | — | — | verde | «✅ ingresso-277 verde (durata intermedia, nessun velo, saltabile, corpi pronti a fine ingresso) e il rosso si vede» |
-| 29 | memoria-275 | ❌ rosso (493 s) | ❌ rosso (507 s) | ✅ verde (583 s, «✅ PASS memoria-275: scene 1 · renderer 2→2 · corpi animati 962→976 · heap dopo GC 370 MB») | **NATO nella 197** (verde sulla 196) | «❌ FAIL memoria-275: scene 2 · renderer 2→3 · corpi animati 869→1846 · heap dopo GC 305 MB» (identica nelle due corse: dopo la seconda partita la prima scena non è stata rilasciata, Object3D 13222→26458) |
+| 29 | memoria-275 | ❌ rosso (493 s) | ❌ rosso (507 s) | ✅ verde (583 s, «✅ PASS memoria-275: scene 1 · renderer 2→2 · corpi animati 962→976 · heap dopo GC 370 MB»; vedi dubbio 2) | **NATO nella 197** (verde sulla 196) | «❌ FAIL memoria-275: scene 2 · renderer 2→3 · corpi animati 869→1846 · heap dopo GC 305 MB» (identica nelle due corse: dopo la seconda partita la prima scena non è stata rilasciata, Object3D 13222→26458) |
 | 32 | esiti-218 | ❌ rosso (2354 s) | in corsa | | | «· partite non arrivate al fischio: verde 1234 fermo in playing» (verde: 17 scene, 0 contraddizioni; rosso visto: 7 contraddizioni) |
 
 <!-- TABELLA -->
@@ -75,8 +75,12 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 ## Dubbi
 
 1. Lettura «unione» dell'elenco (sopra).
-2. **`memoria-275` è NATO nella 197 e per la regola PO-516 blocca l'uscita.** Sulla 197, in due corse uguali, dopo la seconda
-   partita la scena della prima resta viva: `Scene` 1→2, `Renderer` 2→3, corpi animati 869→1846, Object3D 13222→26458, heap dopo GC
-   188→302 MB (anche togliendo i 368 agganci `__CPM*`: 305 MB). Sulla 196, stesso comando: una scena, renderer 2→2, corpi 962→976.
+2. **`memoria-275` è NATO nella 197 e per la regola PO-516 blocca l'uscita.** Il guardiano giudica la misura «avvio-2-senza-__CPM»
+   (all'avvio della seconda partita, dopo aver tolto gli agganci di prova `window.__CPM*`). La misura grezza «avvio-2» è uguale nelle
+   due versioni (Scene 2, Renderer 3, Object3D ~26.500: la scena vecchia è ancora viva finché ci sono gli agganci). La differenza è
+   dopo aver tolto gli agganci: **sulla 196** la vecchia scena si libera (Scene 1, Renderer 2, Object3D 13731, corpi 976, heap 370 MB);
+   **sulla 197**, in due corse uguali, no (Scene 2, Renderer 3, Object3D 26481, corpi 1846, heap 305 MB). Quindi nella 197 c'è un
+   riferimento alla partita smontata che non passa da un aggancio `__CPM*`. (Gli heap assoluti delle due versioni non sono confrontabili
+   fra loro: 188 contro 422 MB già alla prima partita.)
    Non ho cercato la causa (consegna: solo eseguire e classificare). Indizio da verificare per chi ripara: il rilascio della partita
    allo smontaggio (`__CPM_SMONTA219`, invariante del giro 219) e ciò che i giri del lotto 197 hanno aggiunto in src/12-13.
