@@ -1,0 +1,29 @@
+verde provocata gi16 {"lab":"↗️ Cross teso","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>assist_shot>deflect","minGB":1.94,"rev":true}
+verde provocata gi42 {"lab":"🦶 Cross d'esterno","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>assist_shot>deflect","minGB":1.28,"rev":true}
+verde gioco s5/7 fine playing scene 7 parate 0
+verde gioco s5/2021 fine playing scene 7 parate 2
+    gioco s5/2021 «🔁 Uno-due con GÜNTHER» g=assist:saved key=chance minGB=1.9 tiro=-20275 tuffo=-17490 rev=true via=riserva+wpa dur=57525 fr=131 pa=>assist_recv>assist_shot>deflect «Assist servito — GÜNTHER si fa parare il tiro»
+    gioco s5/2021 «🛡️ Proteggi palla e scarica s» g=assist:saved key=chance minGB=1.3 tiro=-22879 tuffo=-19229 rev=true via=chiusura+wpa dur=51979 fr=113 pa=>assist_recv>assist_shot>deflect «Assist da gol — il portiere dice no a WENDEL»
+verde prova s5/7 fine playing scene 7 parate 0
+verde prova s5/2021 fine hl_result scene 7 parate 1
+    prova s5/2021 «🔁 Uno-due con GÜNTHER» g=assist:saved key=chance minGB=2.5 tiro=-28849 tuffo=-24521 rev=true via=scena-tiro+wpa dur=62970 fr=126 pa=>assist_recv>assist_shot>deflect «Assist servito — GÜNTHER si fa parare il tiro»
+2 scene provocate giudicate su 2; 
+VERDE parate 5 (tiro del compagno 3) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 0
+rosso provocata gi16 {"lab":"↗️ Cross teso","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>deflect","minGB":15.37,"rev":true}
+rosso provocata gi42 {"lab":"🦶 Cross d'esterno","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>deflect","minGB":12.36,"rev":true}
+rosso prova s5/7 fine hl_result scene 6 parate 2
+    prova s5/7 «🤝 Servi KURZ libero» g=assist:saved key=chance minGB=1.2 tiro=-18604 tuffo=-16467 rev=true via=chiusura+wpa dur=34463 fr=117 pa=>assist_recv>assist_shot>deflect «Assist servito — KURZ si fa parare il tiro»
+    prova s5/7 «🔁 Uno-due con WENDEL» g=assist:saved key=chance minGB=1.9 tiro=-20194 tuffo=-17475 rev=true via=chiusura+wpa dur=44217 fr=135 pa=>assist_recv>assist_shot>deflect «Assist da gol — il portiere dice no a WENDEL»
+rosso prova s5/2021 fine playing scene 6 parate 1
+    prova s5/2021 «🔁 Uno-due con GÜNTHER» g=assist:saved key=chance minGB=2.4 tiro=-29079 tuffo=-23316 rev=true via=riserva+wpa dur=62108 fr=127 pa=>assist_recv>assist_shot>deflect «Assist servito — GÜNTHER si fa parare il tiro»
+2 scene provocate giudicate su 2; 
+ROSSO parate 5 (tiro del compagno 3) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 2
+  · provocata gi16 «Cross da gol — il portiere dice no a il compagno» minGB 15.4 (>cross_goal>deflect)
+  · provocata gi42 «Cross da gol — il portiere dice no a il compagno» minGB 12.4 (>cross_goal>deflect)
+✅ parata-100 verde · il rosso si vede
+
+real	29m54.789s
+user	0m12.582s
+sys	0m3.841s
+USCITA 0
+FINE

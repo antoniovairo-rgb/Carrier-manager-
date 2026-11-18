@@ -275,7 +275,7 @@ file toccati è vuota: restano il nucleo e i controlli della consegna).
 | `validate-situations` com'era, 5 corse sulla base | ⚠️ 4 verdi, **1 rossa** | 851-876 s | rossa: «❌ FAIL — post-highlight», gi0 salto camera 45,3 |
 | `validate-situations` com'era (`CPM_PH_APRI=0`), 5 corse sull'attuale | ⚠️ 3 verdi, **2 rosse** | 836-870 s | rosse: gi0 salto camera 42,4 · 41,9 |
 | `validate-situations` riparato, 5 corse | ✅ verde ×5 | 845-869 s | «✅ PASS», 14 categorie su 14 |
-| `parata-100` | PARATA100 |
+| `parata-100`, 2 corse | ⚠️ **instabile: rosso, poi verde** | 1800 · 1795 s | 1ª: «❌ parata-100 · verde: 1 parate senza pallone al portiere» (regime prova, s5/7, «Uno-due con WENDEL», minGB 16,0; il braccio rosso vedeva: difetti 2) · 2ª (riprova unica): «✅ parata-100 verde · il rosso si vede» (verde: parate 5, difetti 0; rosso: difetti 2). Gioco e sonda non toccati da questo giro: vedi dubbio 13 |
 | `test:logic` | ✅ verde | 2 s | 51 prove, 0 fallite |
 | `save-compat` | ✅ verde | 1 s | «SAVE-COMPAT 12 pass · 0 fail · PASS» |
 | `design-system` (nucleo) | ✅ verde | 1 s | «✅ SISTEMA GRAFICO OK» |
@@ -337,3 +337,12 @@ Non eseguiti per regola: `highlight-95`, `ingresso-206`, `career-critical` (li e
 11. **Il gate dura qualche secondo in più** (l'attesa dell'apertura: 0,8-2,5 s per le 6 scene di `post-highlight`).
 12. **`sonda-motion-161.mjs`** usa lo stesso `samplePostHighlight`: ora aspetta anche lei il pallone fermo. Non è nelle
     catene di `ci-runner.mjs` e non l'ho eseguita.
+13. **`parata-100` è uscito rosso una volta su due, e non l'ho riparato** (fuori dal lotto; questo giro non tocca né il
+    gioco né quella sonda; nel giro 265 era verde 2 su 2). Che cosa ho visto, senza poterlo dimostrare: ogni partita della
+    sonda è chiusa da un tetto di 480 s **reali**, e nessuna delle 12 partite delle due corse è arrivata al fischio
+    («fine playing» o «fine hl_result» in tutte). Nella corsa rossa la partita col difetto (verde, prova, s5/7) è stata
+    tagliata **dentro una scena** («fine hl_result»): se la scena tagliata è quella della parata, il pallone non aveva
+    ancora raggiunto il portiere quando la misura è finita (minGB 16,0). Non ho la riga per scena di quella corsa, quindi
+    resta un'ipotesi. Inoltre le stesse partite (stesso salvataggio, stesso seme) danno scene diverse da una corsa
+    all'altra (s5/7 prova: 6 scene e 2 parate nella prima, 7 scene e 0 parate nella seconda): il guardiano non rigioca la
+    stessa partita. Per la regola PO 13/10 alla seconda instabilità va riparato in un giro suo.
