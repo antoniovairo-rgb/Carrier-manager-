@@ -15,4 +15,18 @@
 | esiti-241 | verde (342 s) | — | — | verde | `BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno` (prima: `✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede`) |
 | validate-situations | verde (839 s) | — | — | verde | `✅ PASS` — 14/14, fingerprint `00001505`, 0 failure; `final-state OK` (24 situations, 0/24 al limite), `post-highlight OK` (6 situations, 0 coppie scartate) |
 | gigante-212 | verde (1043 s) | — | — | verde | `✅ difetto riprodotto — col rosso __CPM_NO_G212 tornano 3 corpi sopra 2.05 m` (verde: `✅ PASS — 12 scene giudicate, nessun corpo fuori misura…`) |
-| parata-100 | oltre tetto di 2 s (rc 124 a 2400 s; il processo figlio ha poi stampato `✅ parata-100 verde · il rosso si vede` a 22:10:46) | oltre tetto di 3 s (rc 124 a 2400 s; poi `✅ parata-100 verde · il rosso si vede` a 22:51:03) | in corsa (tetto 60 min) | oltre tetto | — |
+| parata-100 | oltre tetto (rc 124 a 2400 s; il processo figlio ha poi stampato `✅ parata-100 verde · il rosso si vede` a 22:10:46, 2 s dopo il taglio) | oltre tetto (rc 124 a 2400 s; poi `✅ parata-100 verde · il rosso si vede` a 22:51:03, 3 s dopo il taglio) | verde in 1852 s (tetto 60 min) | oltre tetto | `✅ parata-100 verde · il rosso si vede` (su tutte e tre le corse, ma sulla 197 oltre il tetto di 40 min) |
+
+## Sintesi
+
+- **8 verdi su 9** al primo tentativo: solo-highlight-166, battito-264, spazio-270, portiere-223, portiere-252, esiti-241, validate-situations (14/14, `post-highlight` e `final-state` OK, fingerprint 00001505), gigante-212.
+- **parata-100: «oltre tetto»** sulla 197 (2 su 2), verde sulla 196 in 1852 s. Nessun rosso nato nella 197 nel mio elenco; nessun rosso dichiarato toccato.
+
+## Dubbi e scelte da decidere (non decisi da me)
+
+1. **parata-100 oltre tetto per 2-3 s, ma con verdetto verde.** Il comando `timeout` ha ucciso `npm` a 2400 s (rc 124) e il processo `node` figlio, sopravvissuto, ha stampato `✅ parata-100 verde · il rosso si vede` 2-3 s dopo. Formalmente è «oltre tetto» (classificato così); nel merito il controllo è arrivato al verde con il braccio rosso che cade. Da decidere se questo conta come verde.
+2. **Perché la 197 è più lenta (misurato, non interpretato oltre):** in entrambe le corse sulla 197 il braccio verde ha stampato `verde copertura insufficiente: secondo giro 1` e ha fatto un secondo giro; sulla 196 quella riga non compare (0 occorrenze) e la corsa è durata 1852 s. Il conteggio finale del verde è simile (197: `parate 9 · cross_goal 4` e `parate 9 · cross_goal 2`; 196: `parate 7 · cross_goal 4`, 0 difetti in tutti). Con una corsa per lato non posso dire se il secondo giro sia un effetto della 197 o una variabilità delle scene raccolte: **non posso confermarlo**.
+3. **GAME_VERSION nel build verificato `a81ebb10` vale ancora `7.999.196`** (il gate stampa `gameVersion 7.999.196`); come da istruzioni non l'ho toccato. Lo segnalo perché il build finale del lotto 197 non porta ancora il numero 197.
+4. Nota tecnica: sulla copia della 196 (`../w196`, worktree detached su `3076a1b7`) `node_modules` di `tests/visual` è un collegamento a quello della 197; le `devDependencies` sono identiche fra i due commit (il diff di `package.json` tocca solo script).
+
+Nessuna foto in `docs/` rigenerata da questi controlli (lista vuota a ogni corsa). Nessun file di `src/` o `tests/` modificato.
