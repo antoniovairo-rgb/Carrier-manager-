@@ -1,0 +1,15 @@
+� su 2 · portiere altrui 0/4
+   r6: campioni 31 · stacco si · sguardo max 29.2° su 1 (primo fotogramma dopo il nero) · portiere altrui 0/2
+telefono ROSSO D errs=0 {"n":6,"stacco":6,"sguardoOk":5,"sguardoNG":1,"angMax":0,"portiereOk":0,"portiereNG":1,"portiereFot":15}
+   r1: campioni 11 · stacco si · sguardo max null° su 0 · portiere altrui 0/0
+   r2: campioni 14 · stacco si · sguardo max 0° su 1 · portiere altrui 3/3
+   r3: campioni 14 · stacco si · sguardo max 0° su 1 · portiere altrui 3/4
+   r4: campioni 16 · stacco si · sguardo max 0° su 1 · portiere altrui 3/4
+   r5: campioni 15 · stacco si · sguardo max 0° su 1 · portiere altrui 3/5
+   r6: campioni 31 · stacco si · sguardo max 0° su 1 · portiere altrui 3/3
+✅ verde telefono: 6 cambi · stacco 6/6 · sguardo <=15° 6/6 (max 0°, non giudicati 0) · senza portiere altrui 6/6 (non giudicati 0)
+❌ verde pc: 6 cambi · stacco 6/6 · sguardo <=15° 4/6 (max 8.9°, non giudicati 2) · senza portiere altrui 6/6 (non giudicati 0)
+✅ rosso __CPM_NO_G191B: il difetto si vede ({"n":6,"stacco":0,"sguardoOk":6,"sguardoNG":0,"angMax":0,"portiereOk":6,"portiereNG":0,"portiereFot":0})
+✅ rosso __CPM_NO_G191C: il difetto si vede ({"n":6,"stacco":6,"sguardoOk":2,"sguardoNG":0,"angMax":150.6,"portiereOk":6,"portiereNG":0,"portiereFot":0})
+❌ rosso __CPM_NO_G191D: rosso NON visto ({"n":6,"stacco":6,"sguardoOk":5,"sguardoNG":1,"angMax":0,"portiereOk":0,"portiereNG":1,"portiereFot":15})
+❌ lotteria-191 rosso

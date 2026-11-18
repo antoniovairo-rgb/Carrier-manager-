@@ -104,7 +104,7 @@ libro mastro voce per voce e, per ogni scena, estrazioni e minuto del motore all
   provocazione non ingaggiata (meno di 50 battute doppie) = non giudicata = rosso.
 - Rosso (`__CPM_NO_G264`): fino a 2 coppie provocate, almeno una divergenza (misurato: la prima, voce 15 al 6').
 - Parte statica: un solo `_batt264`, usato dall'intervallo quando il rosso è assente.
-Durata 7 min 30 s. Registrato in `ci-runner.mjs`: catena `completa`, mappa di `src/15` (le due righe), lenti; `node --check` ok.
+Durata 7 min 30 s. Registrato in `ci-runner.mjs`: catena `completa`, mappa di `src/15` (la prima riga, quella che la mirata legge, e le due con `solo-highlight-166`), lenti; `node --check` ok.
 `solo-highlight-166`: la parte statica (caso 1) ora pretende l'intervallo scritto con `_batt264` (più stretta di prima, non più larga).
 
 ## 6 — Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`)
@@ -121,16 +121,25 @@ Durata 7 min 30 s. Registrato in `ci-runner.mjs`: catena `completa`, mappa di `s
 | `momento-165` | ✅ 33 verdi, 0 rossi |
 | `rigorista-257` | ✅ verde e il rosso si vede |
 | `patto-238` | ✅ verde e il rosso si vede |
-| `test:logic` | ✅ uscita 0 |
+| `test:logic` | ✅ 51 su 51 |
 | `save-compat` | ✅ 12 pass · 0 fail |
 
 `node tools/build-src.mjs` + `node tools/check-src.mjs` dopo ogni modifica a `src/` (allineato); `node --check` su `ci-runner.mjs`.
 `highlight-95`, `ingresso-206`, `career-critical` non eseguiti (verifica di rilascio).
 
 **Mappa mirata di `src/15`** (la riga che la mirata legge davvero è la prima delle righe `src/15` di `ci-runner.mjs`: 71 guardiani; più il
-nucleo). In sequenza, tetto di 20 minuti a guardiano. Eseguiti MAPPA_N; i rimanenti sono elencati sotto come **non eseguiti**.
+nucleo). In sequenza, tetto di 20 minuti a guardiano. Eseguiti 34 su 73 (i 71 della riga meno `salienti-229`, già nella consegna, più `design-system`, `tema-unico`, `typing-shortcuts` del nucleo) in tre blocchi (circa cinque ore di banco); gli altri sono elencati come **non eseguiti**.
 
-MAPPA_TABELLA
+| | quanti | quali |
+|---|---|---|
+| ✅ verdi | 24 | design-system · tema-unico · typing-shortcuts · coerenza-235 · accessibilita-234 · rassegna-232 · salienti-243 · barra-221 · rigore-191 · partita-vera · minuti-202 · ripresa-202 · recupero-202 · tetto-202 · tempo-138 · ripartenza-207 · piazzato-204 · pressing-143 · conduci-242 · attesa-241 · intro-292 · fps-249 · nomi-182 · carriera3-94 |
+| ❌ rossi (tutti preesistenti, tabella sotto) | 6 | tabellone-214 · rassegna-200 · partita-v2 · finale-202 · ripartenza-235 · lotteria-191 |
+| ⏱ oltre il tetto di 20 minuti (non giudicati) | 4 | interazioni-226 · scene-221 · assist-298 · parata-100 |
+| non eseguiti | 39 | highlight-95 · riserva-103 · riserva-104 · contatto-103 · assist-nome-98 · chiusura-99 · esiti-96 · partita2d-297 · colori-286 · pc-tablet-292 · cori-291 · ingresso-285 · rigore-79 · voto-79 · corpi-073 · pagella-75 · pallino-278 · pillola-58 · esito-280 · tabellino-lati · stat-279 · ingresso-277 · esiti-218 · lessico-218 · cross-218 · tabellino-228 · intervista-231 · validate-situations · schede-234 · catalogo-022 · giornale-244 · schede-246 · schede-259 · difesa-220-giro31 · esiti-241 · spot-266 · schede-260 · tecnica-045 · esiti-60 |
+
+Dei non eseguiti: `highlight-95` è escluso dalla consegna; `validate-situations` non l'ho eseguito (è il gate: CLAUDE.md lo dà a circa 25 minuti, oltre il tetto; verifica di rilascio);
+gli altri 37 non sono stati eseguiti **per tempo**, non per scelta di merito. Ordine di esecuzione: prima i guardiani che esercitano il
+cronometro e la ripresa della partita vera (`partita-vera`, i `-202`, `tempo-138`, le ripartenze), poi il resto nell'ordine della riga.
 
 I rossi incontrati sono stati tutti ripetuti sul file di gioco della base (`origin/lavoro/197`, messo al posto di quello del giro e poi
 ripristinato) o ricondotti a un file che il giro non tocca:
@@ -142,7 +151,8 @@ ripristinato) o ricondotti a un file che il giro non tocca:
 | `partita-v2` | «FORMA …:post: manca il tasto finale» (3 formati) | identico | preesistente |
 | `finale-202` | statico, 0 s: «ancora della simulazione non trovata» in `src/14` | `src/14` non è toccato dal giro | preesistente |
 | `ripartenza-235` | parte delegata `ripartenza-piazzato-27`: «rigore verde: nessuna battuta dopo il gol: misura cieca» | identico | preesistente |
-| `interazioni-226` | fermato dal tetto dei 20 minuti | — | non giudicato (oltre 20 minuti: verifica di rilascio) |
+| `lotteria-191` | verde PC: «sguardo ≤ 15° 5/6, non giudicati 1» (ripetuto una volta: 4/6, non giudicati 2) | identico (5/6, non giudicati 1) | preesistente |
+| `interazioni-226` · `scene-221` · `assist-298` · `parata-100` | fermati dal tetto dei 20 minuti | — | non giudicati (oltre 20 minuti: verifica di rilascio) |
 
 Foto rigenerate dai guardiani in `docs/` rimesse con `git checkout --` e non committate.
 
@@ -166,14 +176,16 @@ Foto rigenerate dai guardiani in `docs/` rimesse con `git checkout --` e non com
    prima era uno dei tanti possibili secondo il carico del dispositivo, ora è quello dei soli highlight. Le medie su 20 partite non
    si spostano in modo misurabile (sezione 4), ma con 20 partite non si vedono differenze sotto il mezzo gol a partita.
 5. **Rossi preesistenti nella mappa di `src/15`** (tabella della sezione 6): `tabellone-214`, `rassegna-200`, `partita-v2`,
-   `finale-202`, `ripartenza-235` sono rossi anche sulla base; `interazioni-226` supera i 20 minuti. La mirata di chiunque tocchi
+   `finale-202`, `ripartenza-235`, `lotteria-191` sono rossi anche sulla base; `interazioni-226`, `scene-221`, `assist-298`, `parata-100`
+   superano i 20 minuti in sequenza su questo banco. **37 guardiani della riga non sono stati eseguiti per tempo** (elenco in sezione 6): se la
+   verifica di rilascio non li copre, vanno eseguiti prima di unire. La mirata di chiunque tocchi
    `src/15` li vedrà rossi finché qualcuno non li ripara. In particolare `rassegna-200` ha un tetto di 420 s che la sua partita
    (telefono, densità 2, velocità 2) oggi supera di oltre due minuti sul banco, e `ripartenza-piazzato-27` chiede all'eroe un rigore
    che dal giro 257 l'eroe senza premio non tira più (ipotesi mia sul motivo: non l'ho misurata).
 6. **Il banco è più lento del nominale.** L'intervallo reale fra due battute è 95–135 ms contro i 77 nominali (in tutti i bracci,
    anche col rosso): la partita intera di «Collaudo Salienti» dura ~300 s contro i ~195 dei rapporti del giro 166. Non dipende dal
    giro 264 (stesso passo coi tre bracci); non so dire da quando né perché.
-7. **`ci-runner.mjs`: le righe di `src/15` nella mappa sono dieci**, e la mirata legge solo la prima (`MAPPA.find`). Ho aggiunto
+7. **`ci-runner.mjs`: le righe di `src/15` nella mappa sono 13**, e la mirata legge solo la prima (`MAPPA.find`). Ho aggiunto
    `battito-264` alla prima e alle due che contengono `solo-highlight-166`; `solo-highlight-166` stesso **non è nella prima riga**,
    quindi oggi la mirata di `src/15` non lo esegue. Non ho riordinato le righe (fuori consegna).
 8. **Due nomi di prova che non aprono la partita** («Statistica 20», «Statistica 21»: bottone non trovato in 10 s, con e senza il
