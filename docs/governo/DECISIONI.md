@@ -1504,3 +1504,11 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:45 Roma — giro 189 (Fable) seconda tornata di idee
 - PO: «va bene così» sulle scelte del giro 181 (sfida del giorno resta fuori); «fagli trovare nuove idee migliorie». Giro 189 su Fable, ramo collaudo/giro189-idee, senza ripetere G181 né le voci già in BACKLOG. Giri in corso: 188 (Opus) e 189 (Fable), sotto il tetto di 3.
+
+## 18/11 Roma — giro 268: controlli rimasti indietro rispetto a decisioni gia' prese (rosa · agente · profilo · allenatori)
+- Decisione PO 18/11 08:20: «Riparali tutti, in parallelo». Lotto 197 chiuso: solo questi controlli. Rapporto `docs/sviluppo/RAPPORTO-giro268.md`.
+- `rosa-228`: la sonda (`misura-228`) prendeva come ruolo lo span subito dopo il nome, che dal giro 257 e' la «R» del rigorista — decisione PO-496 «Sì, segnato nella Rosa». Ora salta la «R»; soglie e rosso `__CPM_NO_G228` invariati.
+- `mister-215`: dal giro 235 (PO-457, «Profilo in 4-5 gruppi con nomi chiari») lo storico sta nel gruppo «Persone», chiuso di partenza, e si chiama «I tuoi allenatori». La sonda apre il gruppo e accetta i due nomi; misure e rosso `__CPM_NO_MISTER215` invariati.
+- `agente-198`: dal giro 260 (decisione PO 17/11 C, «titolo solo nella testata») la scheda Agente si riconosce dal titolo della testata (come gia' nella parte A); un evento settimanale che copre il tasto viene chiuso dalla sonda e dichiarato. Correzione del gioco: il riquadro «Da fare ora» ha 8 px di respiro sopra (era a −0,11 px, fuori vista per la sonda), rosso `__CPM_NO_G268`.
+- `neutro-287`: correzione del gioco, non del controllo. La nota del gruppo «Contratto e attributi» (giro 235) prometteva «stile di gioco» contro la decisione «Tutto: eroe neutro» (PO-287); ora «Attributi, contratto e futuro», rosso `__CPM_NO_G268` con braccio nuovo nel guardiano.
+- `testata-209`: rosso anche sulla 7.999.196 pubblicata. Il tasto di fine partita dice «Torna alla Home» dal giro 190 (PO-380a, testi che rompono l'incanto); la sonda accetta «Home» e «dashboard» (rosso `__CPM_NO_TESTA209` invariato).

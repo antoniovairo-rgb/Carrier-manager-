@@ -75,7 +75,8 @@ const leggiIntervista = async () => {
     await sleep(900);
   }
 };
-const fine = async () => { await page.getByText('Torna alla dashboard').first().click({ timeout: 10000 }); };
+/* [giro 268] dal giro 190 (PO-380a, «testi che rompono l'incanto») il tasto di fine partita dice «Torna alla Home»; «dashboard» resta sul rosso __CPM_NO_G190A */
+const fine = async () => { await page.getByText(/Torna alla (Home|dashboard)/).first().click({ timeout: 10000 }); };
 
 if (SC === 'post') { // gioca col club A, firma per B tra fischio e intervista
   await firma('ven', 'trasferimento definitivo');
