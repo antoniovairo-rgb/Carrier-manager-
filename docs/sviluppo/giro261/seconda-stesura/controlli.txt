@@ -1,0 +1,8 @@
+serata-261 uscita 0 durata 450 s
+presentazione-142 uscita 0 durata 177 s
+spalle-146 uscita 0 durata 511 s
+test:logic uscita 0 durata 2 s
+save-compat uscita 0 durata 9 s
+cerimonie-192 uscita 0 durata 520 s
+pelle-240 uscita 0 durata 464 s
+presentazione-225 uscita 0 durata 1404 s

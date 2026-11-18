@@ -46914,7 +46914,7 @@ function _posa192(av,i,salutaR,osc,parte){/* [giro 261] parte 1 = solo la spalla
     const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05+0.010*b261).addScaledVector(fwd,0.24+0.06*k+0.30*o225+0.050*b261).normalize();
     punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
-  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr])$/.test(o.name))B[o.name]=o;});
+  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr]|lowerarm_l|hand_l)$/.test(o.name))B[o.name]=o;});
   if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
   /* mescolatore a valanga (lo stesso di appearanceFromSeed): il passo di LCG singolo dava a semi vicini lo stesso numero, cioe' la stessa posa */
   const R=k=>(typeof _mix32==='function'?_mix32((seme>>>0)+Math.imul(k,0x9e3779b9)):((seme>>>0)^Math.imul(k,2654435761))>>>0)/4294967296;
@@ -46948,7 +46948,7 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
      clavicola, poi _posa192 la ruota ancora, e al fotogramma dopo la regola prendeva quell'uscita come una posa nuova: due correzioni che si
      inseguono, un po' piu' indietro a ogni fotogramma. Ora la clavicola e' riscritta in assoluto dalla base a ogni fotogramma, come gli omeri:
      la regola delle spalle e la posa del giro 192 lavorano una volta sola, sempre dalla stessa partenza. Rosso __CPM_NO_G261. */
-  const base261={};['clavicle_l','clavicle_r'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});
+  const base261={};['clavicle_l','clavicle_r','lowerarm_l','hand_l'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});/* avambraccio e mano SINISTRI: i destri li riscrive gia' il saluto del giro 144; i sinistri tornavano alla partenza solo attraverso la memoria della regola delle spalle */
   /* vita: frequenze e fasi dal seme, ampiezze piccole (gradi) */
   const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
   const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
@@ -47240,7 +47240,7 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
      (porta ancora il valore scritto qui) torna a com'era prima della risoluzione. */
   const _eq=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y)+Math.abs(a.z-b.z)+Math.abs(a.w-b.w)<1e-7;
   const riparti=()=>{for(const A of lati){if(!A.fatto)continue;for(let i=0;i<A.oo.length;i++)if(_eq(A.oo[i].quaternion,A.post[i]))A.oo[i].quaternion.copy(A.pre[i]);A.fatto=false;}};
-  return function(w){riparti();if(!(w>0))return;const kw=sm(0,0.5,w);
+  return function(w){riparti();if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.d256=null;if(!(w>0))return;const kw=sm(0,0.5,w);
     for(const A of lati){A.U.parent.updateWorldMatrix(true,false);A.U.parent.getWorldQuaternion(Qp).normalize();/* la corporatura scala le ossa in modo non uniforme: il quaternione di mondo letto dalla matrice non e' unitario (misurato: norma 0,993 a sinistra) */Qu.copy(Qp).multiply(A.U.quaternion);Lw.copy(Qu).multiply(A.L.quaternion);Hw.copy(Lw).multiply(A.H.quaternion);
       if(A.TU)TUw.copy(Qu).multiply(A.TU.quaternion);if(A.TL)TLw.copy(Lw).multiply(A.TL.quaternion);
       u.copy(A.aU).applyQuaternion(Qu).normalize();dF.copy(A.aF).applyQuaternion(Lw).normalize();aw.copy(A.cal.asse).applyQuaternion(Qu).normalize();
@@ -47250,10 +47250,11 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
       let th=0,best=null;for(const t of [giro(al-be),giro(al+be)]){Rt.setFromAxisAngle(u,t);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1);r1.copy(A.rF).applyQuaternion(Q1);
         const pos=cr.crossVectors(a1,u).dot(dF)>0;/* la flessione e' la rotazione POSITIVA intorno all'asse, contata dal braccio DISTESO (non dal riferimento, che e' gia' un po' flesso): il gomito piega da una parte sola */
         if(best===null||(pos&&!best.pos)||(pos===best.pos&&Math.abs(t)<Math.abs(best.t)))best={t,pos};}
-      th=best.t;Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
+      th=best.t;if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){(av.userData.d256||(av.userData.d256={}))[A.U.name]=[+c.toFixed(4),+(th*57.2958).toFixed(1),+k.toFixed(3),+(al*57.2958).toFixed(1),+(be*57.2958).toFixed(1),best.pos?1:0];}/* [giro 261] solo sonde: cosa ha scelto la risoluzione */Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
       rp.copy(r1).addScaledVector(a1,-a1.dot(r1));dp.copy(dF).addScaledVector(a1,-a1.dot(dF));const ph=Math.atan2(a1.dot(cr.crossVectors(rp,dp)),rp.dot(dp));
       Bw.setFromAxisAngle(a1,ph).multiply(Q1).multiply(A.cal.ref);/* avambraccio = riferimento + flessione pura, nel mondo */
       Rt.setFromAxisAngle(u,th*k);Q2.copy(Rt).multiply(Qu);/* omero ruotato sul proprio asse (peso k) */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G261)){Lw.normalize();Bw.normalize();}/* [giro 261 · C] i due quaternioni non sono unitari (ossa con scala non uniforme): con prodotto >= 1 la mescola restava ferma sul primo fino a k=1 e poi saltava (misurato: avambraccio destro 13,7 gradi in un fotogramma all'uscita dal saluto) */
       if(Lw.dot(Bw)<0)Bw.set(-Bw.x,-Bw.y,-Bw.z,-Bw.w);Q1.copy(Lw).slerp(Bw,k);/* le due orientazioni portano l'avambraccio nella stessa direzione: fra l'una e l'altra c'e' solo una rotazione intorno all'avambraccio */
       A.U.quaternion.copy(Qp).invert().multiply(Q2).normalize();Rt.copy(Q2).invert();A.L.quaternion.copy(Rt).multiply(Q1).normalize();if(A.TU)A.TU.quaternion.copy(Rt).multiply(TUw).normalize();
       Rt.copy(Q1).invert();A.H.quaternion.copy(Rt).multiply(Hw).normalize();if(A.TL)A.TL.quaternion.copy(Rt).multiply(TLw).normalize();

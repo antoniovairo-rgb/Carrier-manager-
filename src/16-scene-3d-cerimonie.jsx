@@ -1438,7 +1438,7 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
      (porta ancora il valore scritto qui) torna a com'era prima della risoluzione. */
   const _eq=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y)+Math.abs(a.z-b.z)+Math.abs(a.w-b.w)<1e-7;
   const riparti=()=>{for(const A of lati){if(!A.fatto)continue;for(let i=0;i<A.oo.length;i++)if(_eq(A.oo[i].quaternion,A.post[i]))A.oo[i].quaternion.copy(A.pre[i]);A.fatto=false;}};
-  return function(w){riparti();if(!(w>0))return;const kw=sm(0,0.5,w);
+  return function(w){riparti();if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)av.userData.d256=null;if(!(w>0))return;const kw=sm(0,0.5,w);
     for(const A of lati){A.U.parent.updateWorldMatrix(true,false);A.U.parent.getWorldQuaternion(Qp).normalize();/* la corporatura scala le ossa in modo non uniforme: il quaternione di mondo letto dalla matrice non e' unitario (misurato: norma 0,993 a sinistra) */Qu.copy(Qp).multiply(A.U.quaternion);Lw.copy(Qu).multiply(A.L.quaternion);Hw.copy(Lw).multiply(A.H.quaternion);
       if(A.TU)TUw.copy(Qu).multiply(A.TU.quaternion);if(A.TL)TLw.copy(Lw).multiply(A.TL.quaternion);
       u.copy(A.aU).applyQuaternion(Qu).normalize();dF.copy(A.aF).applyQuaternion(Lw).normalize();aw.copy(A.cal.asse).applyQuaternion(Qu).normalize();
@@ -1448,10 +1448,11 @@ function _risolvi256(av,pkg){try{const T=THREE,B={};av.traverse(o=>{if(o.isBone&
       let th=0,best=null;for(const t of [giro(al-be),giro(al+be)]){Rt.setFromAxisAngle(u,t);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1);r1.copy(A.rF).applyQuaternion(Q1);
         const pos=cr.crossVectors(a1,u).dot(dF)>0;/* la flessione e' la rotazione POSITIVA intorno all'asse, contata dal braccio DISTESO (non dal riferimento, che e' gia' un po' flesso): il gomito piega da una parte sola */
         if(best===null||(pos&&!best.pos)||(pos===best.pos&&Math.abs(t)<Math.abs(best.t)))best={t,pos};}
-      th=best.t;Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
+      th=best.t;if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){(av.userData.d256||(av.userData.d256={}))[A.U.name]=[+c.toFixed(4),+(th*57.2958).toFixed(1),+k.toFixed(3),+(al*57.2958).toFixed(1),+(be*57.2958).toFixed(1),best.pos?1:0];}/* [giro 261] solo sonde: cosa ha scelto la risoluzione */Rt.setFromAxisAngle(u,th);Q1.copy(Rt).multiply(Qu);a1.copy(A.cal.asse).applyQuaternion(Q1).normalize();r1.copy(A.rF).applyQuaternion(Q1);
       rp.copy(r1).addScaledVector(a1,-a1.dot(r1));dp.copy(dF).addScaledVector(a1,-a1.dot(dF));const ph=Math.atan2(a1.dot(cr.crossVectors(rp,dp)),rp.dot(dp));
       Bw.setFromAxisAngle(a1,ph).multiply(Q1).multiply(A.cal.ref);/* avambraccio = riferimento + flessione pura, nel mondo */
       Rt.setFromAxisAngle(u,th*k);Q2.copy(Rt).multiply(Qu);/* omero ruotato sul proprio asse (peso k) */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G261)){Lw.normalize();Bw.normalize();}/* [giro 261 · C] i due quaternioni non sono unitari (ossa con scala non uniforme): con prodotto >= 1 la mescola restava ferma sul primo fino a k=1 e poi saltava (misurato: avambraccio destro 13,7 gradi in un fotogramma all'uscita dal saluto) */
       if(Lw.dot(Bw)<0)Bw.set(-Bw.x,-Bw.y,-Bw.z,-Bw.w);Q1.copy(Lw).slerp(Bw,k);/* le due orientazioni portano l'avambraccio nella stessa direzione: fra l'una e l'altra c'e' solo una rotazione intorno all'avambraccio */
       A.U.quaternion.copy(Qp).invert().multiply(Q2).normalize();Rt.copy(Q2).invert();A.L.quaternion.copy(Rt).multiply(Q1).normalize();if(A.TU)A.TU.quaternion.copy(Rt).multiply(TUw).normalize();
       Rt.copy(Q1).invert();A.H.quaternion.copy(Rt).multiply(Hw).normalize();if(A.TL)A.TL.quaternion.copy(Rt).multiply(TLw).normalize();

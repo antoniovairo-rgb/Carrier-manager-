@@ -75,13 +75,13 @@ export async function misuraC(browser, port, NO = [], { clip = process.env.CPM_C
     await serata(p, 1); await p.waitForFunction(() => !!window.__CPM_PRES142.cam, null, { timeout: 90000 }); await sleep(2600); await serata(p, 3);
     const S = await p.evaluate(async () => { const P = window.__CPM_PRES142; const S = []; const t0 = performance.now(); let visto = false, fuori = false;
       while (performance.now() - t0 < 150000) { await new Promise(r => requestAnimationFrame(r)); const i = P.pi144; if (i == null || i < 0) continue; const m = P.men[i];
-        S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, or: P.orient256 ? P.orient256(i) : null, r261: m.userData.r261v != null ? m.userData.r261v : null, m261: m.userData.m261 });
+        S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, or: P.orient256 ? P.orient256(i) : null, r261: m.userData.r261v != null ? m.userData.r261v : null, m261: m.userData.m261, d256: m.userData.d256 ? JSON.stringify(m.userData.d256) : null }); return o || (m.userData.d256 ? JSON.stringify(m.userData.d256) : null); })() });
         const z = m.position.z; if (z > 6.5) visto = true; if (visto && z < 6.02 && (P.t144 || 0) > 3) { if (fuori) break; fuori = true; } if ((P.t144 || 0) > 60) break; }
       return S; });
     const nrm = q => { const m = Math.hypot(...q); return q.map(x => x / m); }, aq = (a, c) => { a = nrm(a); c = nrm(c); return 2 * Math.acos(Math.min(1, Math.abs(a[0] * c[0] + a[1] * c[1] + a[2] * c[2] + a[3] * c[3]))) * 180 / Math.PI; };
     const O = ['u_l', 'u_r', 'f_l', 'f_r'], A = S.filter(s => s.or); let k0 = -1; for (let k = 1; k < A.length; k++) if (A[k].w > 0 && A[k - 1].w === 0 && A[k].ts < 0.2) { k0 = k; break; }
     /* un passo = [tempo del saluto, peso, omero sx, omero dx, avambraccio sx, avambraccio dx (gradi dal fotogramma prima), peso della rampa 261, la regola ha mosso] */
-    const passi = (a, b) => { const R = []; for (let k = Math.max(1, a); k <= b && k < A.length; k++) R.push([+A[k].ts.toFixed(3), +A[k].w.toFixed(3), ...O.map(o => +aq(A[k].or[o], A[k - 1].or[o]).toFixed(1)), A[k].r261 != null ? +A[k].r261.toFixed(2) : null, A[k].m261]); return R; };
+    const passi = (a, b) => { const R = []; for (let k = Math.max(1, a); k <= b && k < A.length; k++) R.push([+A[k].ts.toFixed(3), +A[k].w.toFixed(3), ...O.map(o => +aq(A[k].or[o], A[k - 1].or[o]).toFixed(1)), A[k].r261 != null ? +A[k].r261.toFixed(2) : null, A[k].m261, A[k].d256 || undefined]); return R; };
     let k1 = k0; while (k1 >= 0 && k1 < A.length && A[k1].ts < 0.25) k1++;
     const ing = k0 >= 0 ? passi(k0, k1) : [];
     /* IL PRIMO FOTOGRAMMA DEL SALUTO, braccio DESTRO (il sinistro in quel fotogramma sta ancora finendo l'oscillazione del cammino, che non e' rallentato:
