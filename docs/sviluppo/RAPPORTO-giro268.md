@@ -9,10 +9,10 @@ La 7.999.196 pubblicata e' `origin/main` (`3076a1b7`, «Rilascio 7.999.196»), m
 
 | Controllo | prima su 196 (main) | prima su 197 (`9ad0bd6`) | nato in | causa | dopo (build finale) |
 |---|---|---|---|---|---|
-| rosa-228 | verde (24 club, ruoli non in sigla 0) | rosso: ruoli non in sigla 24, «ruolo R» | giro 257 (`1a9b5146`, «R» del rigorista nella Rosa) | **controllo**: la sonda prendeva come ruolo lo span dopo il nome, che ora e' la «R» | verde 3/3 (58·54·54 s), rossi `__CPM_NO_G228` e `__CPM_NO_G239` bocciati |
+| rosa-228 | verde (24 club, ruoli non in sigla 0) | rosso: ruoli non in sigla 24, «ruolo R» | giro 257 (`1a9b5146`, «R» del rigorista nella Rosa) | **controllo**: la sonda prendeva come ruolo lo span dopo il nome, che ora e' la «R» | verde 2/2 di fila sul build finale, rossi `__CPM_NO_G228` e `__CPM_NO_G239` bocciati |
 | agente-198 | verde | rosso: B1/B2 «il tasto non porta all'Agente» (1 corsa su 2 anche TimeoutError del clic) | giro 260 (`17898063`; verde su `1a9b5146`, rosso su `17898063^2`) | **controllo** (riconosceva la scheda da `agente-v2`, tolto dal 260; eventi a caso sopra il tasto) **+ gioco** (riquadro a −0,11 px dal bordo) | verde 2/2 di fila sull'ultimo build (fin3, fin4), rossi `__CPM_NO_G198` e `__CPM_NO_G268` bocciati |
-| neutro-287 | verde | rosso: Carriera › Profilo cita «stile di gioco» | giro 235 (`5fe24f5e`, nota del gruppo «Contratto e attributi») | **gioco**: la nota prometteva una scheda che l'eroe neutro non ha | verde 3/3, rossi `__CPM_NO_NEUTRO287` (68 violazioni) e `__CPM_NO_G268` bocciati |
-| mister-215 | verde (5 righe, 5 figurine) | rosso: 0 righe lette in entrambi i bracci | giro 235 (gruppo «Persone» chiuso, sezione rinominata «I tuoi allenatori») | **controllo** | verde 3/3 (5 figurine su 5 righe), rosso `__CPM_NO_MISTER215` bocciato (5 icone, 75 omonimi) |
+| neutro-287 | verde | rosso: Carriera › Profilo cita «stile di gioco» | giro 235 (`5fe24f5e`, nota del gruppo «Contratto e attributi») | **gioco**: la nota prometteva una scheda che l'eroe neutro non ha | verde 2/2 di fila sul build finale, rossi `__CPM_NO_NEUTRO287` (68 violazioni) e `__CPM_NO_G268` bocciati |
+| mister-215 | verde (5 righe, 5 figurine) | rosso: 0 righe lette in entrambi i bracci | giro 235 (gruppo «Persone» chiuso, sezione rinominata «I tuoi allenatori») | **controllo** | verde 2/2 di fila sul build finale (5 figurine su 5 righe), rosso `__CPM_NO_MISTER215` bocciato (5 icone, 75 omonimi) |
 | testata-209 | **rosso** (il braccio verde muore: «Torna alla dashboard» non c'e') | rosso: scena dell'intervista n.d. | **prima della 196**: giri 183, 190, 200 | **controllo** (tre decisioni PO gia' prese) | verde 2/2 di fila (edicola «LAG …», scena FC Laguna), rosso `__CPM_NO_TESTA209` bocciato (edicola «MRA …», scena FC Moreira) |
 
 ## Che cosa ho cambiato
@@ -64,9 +64,9 @@ Le foto rigenerate in `docs/sviluppo/giro198/` (agente-198) sono state rimesse c
 
 | Controllo | corse verdi di fila | rossi bocciati |
 |---|---|---|
-| rosa-228 | 3 (197b, fin1, fin2) | `__CPM_NO_G228`, `__CPM_NO_G239` |
-| neutro-287 | 3 (268a, fin1, fin2) | `__CPM_NO_NEUTRO287` (68 violazioni), `__CPM_NO_G268` |
-| mister-215 | 3 (268b, fin1, fin2) | `__CPM_NO_MISTER215` |
+| rosa-228 | 2 (fin1, fin2; la prima verde, 197b, era su un build precedente) | `__CPM_NO_G228`, `__CPM_NO_G239` |
+| neutro-287 | 2 (fin1, fin2; 268a su un build precedente) | `__CPM_NO_NEUTRO287` (68 violazioni), `__CPM_NO_G268` |
+| mister-215 | 2 (fin1, fin2; 268b su un build precedente) | `__CPM_NO_MISTER215` |
 | agente-198 | 2 (fin3, fin4: in fin4 un foglio chiuso e dichiarato) — fin2 era rosso per un momento di carriera che `dismiss` non chiudeva, da cui l'ultima modifica della sonda | `__CPM_NO_G198`, `__CPM_NO_G268` |
 | testata-209 | 2 (corse complete 1 e 2) | `__CPM_NO_TESTA209` |
 
