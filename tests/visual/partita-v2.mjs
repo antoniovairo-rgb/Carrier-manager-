@@ -38,12 +38,20 @@ const GIUDICI = {
         [r.filter(x => x.getBoundingClientRect().height < 44).map(x => 'scelta ' + Math.round(x.getBoundingClientRect().height) + 'px')[0] || null]]; }
     const col = document.querySelector('[data-cpm="colonna-partita-v2"]');
     return [[!col ? 'né scheda né colonna delle scelte' : null], [col && !getComputedStyle(col).backgroundColor.includes(C.BG) ? 'colonna non sul fondo V2' : null], []]; },
-  post: ({ C }) => { const h = document.querySelector('[data-cpm="post-v2"]'), r = document.querySelector('[data-cpm="post-risultato-v2"]'), b = document.querySelector('[data-cpm="post-continua-v2"]');
-    return [[!h ? 'manca la testata del risultato' : null, !r || !/Barlow Condensed/.test(getComputedStyle(r).fontFamily) || parseFloat(getComputedStyle(r).fontSize) < 44 ? 'risultato non grande in carattere TV' : null, !b ? 'manca il tasto finale' : null],
-      [h && !getComputedStyle(h).backgroundColor.includes(C.BG) ? 'testata non sul fondo V2' : null, b && !getComputedStyle(b).backgroundColor.includes(C.TESTO) ? 'tasto finale non chiaro #f4f1ea' : null, r && !getComputedStyle(r).color.includes(C.TESTO) ? 'risultato non in #f4f1ea' : null],
+  /* [giro 270] dal giro 200 (PO-385, decisione PO 13/11 «Schede una dopo l'altra»: 4 passi con Avanti/Salta e puntini) il post partita e'
+     a schede: sulla scheda 1 ci sono testata, risultato, «Avanti ›» (tasto chiaro) e «Salta»; il tasto finale sta sull'ultima scheda.
+     Prima il controllo cercava il tasto finale sulla scheda 1 e cadeva in ogni formato (anche su 7.999.196). Ora: post = scheda 1,
+     postfine = ultima scheda raggiunta premendo Avanti, con gli stessi criteri di forma, colore e altezza di prima. */
+  post: ({ C }) => { const h = document.querySelector('[data-cpm="post-v2"]'), r = document.querySelector('[data-cpm="post-risultato-v2"]'), b = document.querySelector('[data-cpm="avanti200"]'), sl = document.querySelector('[data-cpm="salta200"]');
+    return [[!h ? 'manca la testata del risultato' : null, !r || !/Barlow Condensed/.test(getComputedStyle(r).fontFamily) || parseFloat(getComputedStyle(r).fontSize) < 44 ? 'risultato non grande in carattere TV' : null, !b ? 'manca il tasto Avanti' : null, !sl ? 'manca Salta' : null],
+      [h && !getComputedStyle(h).backgroundColor.includes(C.BG) ? 'testata non sul fondo V2' : null, b && !getComputedStyle(b).backgroundColor.includes(C.TESTO) ? 'tasto Avanti non chiaro #f4f1ea' : null, r && !getComputedStyle(r).color.includes(C.TESTO) ? 'risultato non in #f4f1ea' : null],
+      [b && b.getBoundingClientRect().height < 44 ? 'tasto Avanti ' + Math.round(b.getBoundingClientRect().height) + 'px' : null, sl && sl.getBoundingClientRect().height < 44 ? 'Salta ' + Math.round(sl.getBoundingClientRect().height) + 'px' : null]]; },
+  postfine: ({ C }) => { const b = document.querySelector('[data-cpm="post-continua-v2"]'), pz = document.querySelector('[data-cpm="piede202"]');
+    return [[!b ? 'manca il tasto finale' : null],
+      [b && !getComputedStyle(b).backgroundColor.includes(C.TESTO) ? 'tasto finale non chiaro #f4f1ea' : null, pz && !getComputedStyle(pz).backgroundColor.includes(C.BG) ? 'piede non sul fondo V2' : null],
       [b && b.getBoundingClientRect().height < 44 ? 'tasto finale ' + Math.round(b.getBoundingClientRect().height) + 'px' : null]]; },
 };
-const SEL = { ingresso: '[data-cpm="tv225"],[data-cpm="salta-ingresso-v2"]', partita2d: '[data-cpm="barra"],[data-cpm="striscia918"]', highlight: '[data-cpm="scelte"],[data-cpm="colonna-partita-v2"]', post: '[data-cpm="post-v2"],[data-cpm="post-continua-v2"],[data-cpm="motm23"]' };
+const SEL = { ingresso: '[data-cpm="tv225"],[data-cpm="salta-ingresso-v2"]', partita2d: '[data-cpm="barra"],[data-cpm="striscia918"]', highlight: '[data-cpm="scelte"],[data-cpm="colonna-partita-v2"]', post: '[data-cpm="post-v2"],[data-cpm="nav200"],[data-cpm="motm23"]', postfine: '[data-cpm="piede202"]' };
 const srv = await startServer(); const b = await launchBrowser(); const port = srv.address().port;
 const fail = { FORMA: [], PAL: [], TOCCO: [], TXT: [], CON: [] }, errs = [], mancanti = []; let conMin = 99, visti = 0;
 const KO = (k, f, sc, m) => fail[k].push(`${f.k}:${sc}: ${m}`);
@@ -60,7 +68,9 @@ for (const f of SCELTI) {
     if (await page.evaluate(() => window.__CPM_PHASE()) === 'walkout') await giudica(page, f, 'ingresso'); else mancanti.push(f.k + ' ingresso'); await ctx.close(); } catch (e) { mancanti.push(f.k + ' ingresso: ' + e.message.slice(0, 80)); }
   try { const { ctx, page } = await apriPartitaV2(b, port, f, { rosso: ROSSO, errs }); await sleep(1500); await giudica(page, f, 'partita2d');
     await forzaHL(page, 4); if (await page.evaluate(() => window.__CPM_PHASE()) === 'hl_choose') await giudica(page, f, 'highlight'); else mancanti.push(f.k + ' highlight'); await ctx.close(); } catch (e) { mancanti.push(f.k + ' partita: ' + e.message.slice(0, 80)); }
-  try { const { ctx, page } = await apriPartitaV2(b, port, f, { rosso: ROSSO, errs }); if (await finePartita(page)) { await sleep(1500); await giudica(page, f, 'post'); } else mancanti.push(f.k + ' post'); await ctx.close(); } catch (e) { mancanti.push(f.k + ' post: ' + e.message.slice(0, 80)); }
+  try { const { ctx, page } = await apriPartitaV2(b, port, f, { rosso: ROSSO, errs }); if (await finePartita(page)) { await sleep(1500); await giudica(page, f, 'post');
+      for (let i = 0; i < 4 && !(await page.evaluate(() => !!document.querySelector('[data-cpm="post-continua-v2"]'))); i++) { await page.evaluate(() => { const a = document.querySelector('[data-cpm="avanti200"]'); if (a) a.click(); }); await sleep(700); }
+      await giudica(page, f, 'postfine'); } else { mancanti.push(f.k + ' post'); mancanti.push(f.k + ' postfine'); } await ctx.close(); } catch (e) { mancanti.push(f.k + ' post: ' + e.message.slice(0, 80)); }
 }
 await b.close(); srv.close();
 if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 4).join(' | ')); if (mancanti.length) console.log('non raggiunte: ' + mancanti.join(', '));
