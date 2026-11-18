@@ -2839,5 +2839,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaBDK49nEn8Eqt8gx2z",
+  "titolo": "giro 272 · tabellone-214 e ripartenza-235",
+  "creata": "2026-11-18T16:23:07Z",
+  "chiusa": "2026-11-18T19:02:43Z",
+  "cost_usd": 5.59741348,
+  "output_tokens": 46815,
+  "cache_read_tokens": 15099419,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
  }
 ]
