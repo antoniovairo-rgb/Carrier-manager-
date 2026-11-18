@@ -65,7 +65,7 @@ export async function esegui(page, ex, { totale = 191, post = 0, kind = null, fo
     if (!c || c.s == null) continue;
     if (ck0 == null) ck0 = c.s; ckU = c.s - ck0;
     if (c.ph === 'hl_result') visto = true;
-    if (foto && nF < foto.max && ckU >= nF * foto.passo) { try { const cv = await page.$('canvas'); await (cv || page).screenshot({ path: `${foto.base}-${String(nF).padStart(2, '0')}.jpg`, type: 'jpeg', quality: 70 }); } catch (e) {} nF++; }
+    if (foto && nF < foto.max && ckU >= nF * foto.passo) { try { const cv = await page.$('canvas'); await (cv || page).screenshot({ path: `${foto.base}-${String(nF).padStart(2, '0')}-t${ckU.toFixed(2)}.jpg`, type: 'jpeg', quality: 70 }); } catch (e) {} nF = Math.max(nF + 1, Math.floor(ckU / foto.passo) + 1); /* il tempo di scena VERO dello scatto sta nel nome: lo scatto e' lento e il passo reale non e' quello chiesto */ }
     if (fine == null && ((visto && c.ph !== 'hl_result' && ckU > 1.0) || c.fine != null || ckU >= S.SCENA_MAX)) fine = c.s;
     if (fine != null && c.s - fine >= post) break;
   }
