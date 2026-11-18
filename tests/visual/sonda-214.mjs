@@ -25,6 +25,9 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
   await pg.waitForFunction(() => document.getElementById('root')?.children.length > 0, null, { timeout: 90000 }); await sleep(1500);
   try { await pg.getByText('Continua', { exact: false }).first().click({ timeout: 6000 }); } catch (e) {}
   await pg.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 });
+  /* [giro 272] la sigla dell'eroe si legge dal gioco: dal giro 251 (PO-512, CLUB_NOMI_251 + migrazione) «FC Salernum»/«SAL» del
+     salvataggio di prova e' «FC Salernum 1919»/«SLR» (stesso rimedio di prossima-131 al giro 263). Il nome resta /salern/. */
+  const siglaEroe = (await pg.evaluate(() => { try { return window.__CPM_CAREER.snapshot().club.a; } catch (e) { return null; } }).catch(() => null)) || 'SAL';
   for (let a = 0; a < 16; a++) { if (await pg.evaluate(() => typeof window.__CPM_PHASE === 'function')) break;
     await pg.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); if (C.playMatch() === true) return; C.step(); }); await sleep(1500); }
   await pg.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 8080, policy: 'seeded', tickMs: 300 }));
@@ -88,9 +91,9 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
   const inSerie = campioni.filter(c => c.ph === 'shootout' && c.so);
   const atteso = (c) => (trasferta && rosso216) ? `${c.so.as}–${c.so.hs}` : `${c.so.hs}–${c.so.as}`;/* [giro 216] la serie ha SEMPRE l'eroe a sinistra (hs = la serie dell'eroe), come il tabellone; solo col rosso __CPM_NO_G216 (= 214) in trasferta torna casa a sinistra */
   const pix = inSerie.filter(c => c.diff != null && c.fermo), pixLuce = pix.filter(c => !c.stacco);
-  const eroe = (t) => /salern|\bSAL\b/i.test(t || '');
+  const eroe = (t) => /salern|\bSAL\b/i.test(t || '') || (t || '').includes(siglaEroe);/* [giro 272] anche la sigla del gioco (SLR dal giro 251) */
   const ordine = (c) => ({ strisciaEroeSx: c.ris === `${c.so.hs}–${c.so.as}`, nomeEroeSx: eroe(c.sx) && !eroe(c.dx), nomeEroeDx: eroe(c.dx) && !eroe(c.sx),
-    tabEroeSx: c.tabNum === `${c.so.hs}—${c.so.as}` && c.tabSx === 'SAL' });
+    tabEroeSx: c.tabNum === `${c.so.hs}—${c.so.as}` && c.tabSx === siglaEroe });
   /* sigle coerenti coi numeri: la squadra scritta sopra il numero di sinistra e' quella che lo ha segnato (eroe a sx <=> serie eroe a sx) */
   const coerente = (c) => { const o = ordine(c); if (c.so.hs === c.so.as) return o.nomeEroeSx || o.nomeEroeDx; return (o.nomeEroeSx && c.ris === `${c.so.hs}–${c.so.as}`) || (o.nomeEroeDx && c.ris === `${c.so.as}–${c.so.hs}`); };
   const giud = inSerie.filter(c => c.so && c.sx != null && !c.scorre);/* un campione preso mentre gli stemmi scorrono (0,6 s) non e' giudicato sull'ordine: si conta a parte (scorrimento216) */
@@ -99,7 +102,7 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
     sigleCoerenti: giud.filter(coerente).length, ordineOpposto: giud.filter(c => c.so.hs !== c.so.as && ordine(c).tabEroeSx && c.ris === `${c.so.as}–${c.so.hs}` && ordine(c).nomeEroeDx).length,
     serieDiverse: giud.filter(c => c.so.hs !== c.so.as).length, ordini: [...new Set(giud.map(c => `${c.sx} ${c.ris} ${c.dx} | tab ${c.tabSx} ${c.tabNum}`))].slice(0, 12),
     dopoSx: dopo ? dopo.sx : null, dopoDx: dopo ? dopo.dx : null };
-  return { ...g216, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
+  return { ...g216, siglaEroe, errs: errs.length, errTesti: errs.slice(0, 3), prima, campioni: inSerie.length,
     strisciaRigori: inSerie.filter(c => /RIGORI/i.test(c.min || '')).length, strisciaMinuto: inSerie.filter(c => /\d+\s*'/.test(c.min || '')).length,
     strisciaSerie: inSerie.filter(c => c.ris === atteso(c)).length, strisciaPartita: inSerie.filter(c => c.ris === '1–1' && atteso(c) !== '1–1').length, strisciaCapovolta: inSerie.filter(c => (trasferta && rosso216) ? c.ris === `${c.so.hs}–${c.so.as}` && c.so.hs !== c.so.as : c.ris === `${c.so.as}–${c.so.hs}` && c.so.hs !== c.so.as).length,
     perCampione: inSerie.map(c => [c.so && `${c.so.hs}-${c.so.as}`, c.stacco ? 'stacco' : '', c.fermo ? '' : 'fase cambiata', c.diff, c.box && `${c.box.x},${c.box.y},${c.box.width}x${c.box.height}`]),

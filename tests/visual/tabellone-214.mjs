@@ -41,10 +41,13 @@ const verde = (r) => r.errs === 0 && r.campioni >= 5 && r.letture.length >= 3 &&
   && r.strisciaSerie === r.campioni && r.strisciaPartita === 0 && r.strisciaCapovolta === 0
   && r.pixelGiudicati >= 3 && r.pixelLuceGiudicati >= 3 && r.diffMax === 0
   && !!r.dopo && r.dopo.ph === 'ceremony' && r.dopo.ris === '1–1' && !/RIGORI/i.test(r.dopo.min || '');
-const eroe216 = (t) => /salern|\bSAL\b/i.test(t || '');
+/* [giro 272] l'eroe si riconosce dal nome (/salern/) o dalla SIGLA letta dal gioco (r.siglaEroe, sonda-214): dal giro 251 (PO-512) il
+   club del salvataggio di prova e' «FC Salernum 1919»/«SLR», e sul telefono la regola dei nomi lunghi (NomeSquadra182) mostra la sigla
+   al posto del nome («SLRSLR» in cerimonia). Nessuna soglia cambiata. */
+const eroe216 = (t, sig) => /salern|\bSAL\b/i.test(t || '') || (!!sig && (t || '').includes(sig));
 const verde216 = (r, trasferta) => r.giudicati216 >= 5 && r.serieDiverse >= 1 && r.eroeSxStriscia === r.giudicati216 && r.tabelloneEroeSx === r.giudicati216
   && r.stessoOrdine === r.giudicati216 && r.sigleCoerenti === r.giudicati216 && r.ordineOpposto === 0
-  && (trasferta ? (!eroe216(r.dopoSx) && eroe216(r.dopoDx)) : (eroe216(r.dopoSx) && !eroe216(r.dopoDx)));
+  && (trasferta ? (!eroe216(r.dopoSx, r.siglaEroe) && eroe216(r.dopoDx, r.siglaEroe)) : (eroe216(r.dopoSx, r.siglaEroe) && !eroe216(r.dopoDx, r.siglaEroe)));
 const rosso216 = (r) => r.errs === 0 && r.giudicati216 >= 5 && r.stessoOrdine === 0 && r.ordineOpposto >= 1 && r.sigleCoerenti === r.giudicati216 && r.tabelloneEroeSx === r.giudicati216;
 const desc216 = (r) => `ordine (giro 216): giudicati ${r.giudicati216} (scorrimento ${r.scorrimento216}, serie non pari ${r.serieDiverse}) · eroe a sinistra nella striscia ${r.eroeSxStriscia} · tabellone eroe a sinistra ${r.tabelloneEroeSx} · stesso ordine ${r.stessoOrdine} · sigle coerenti ${r.sigleCoerenti} · ordine opposto ${r.ordineOpposto} · dopo ${r.dopoSx} | ${r.dopoDx}`;
 const rosso = (r) => r.campioni >= 5 && r.strisciaRigori === 0 && r.strisciaMinuto === r.campioni && r.pixelLuceGiudicati >= 3 && r.diffMaxLuce >= 1000;
