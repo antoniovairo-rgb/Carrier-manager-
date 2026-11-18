@@ -11503,7 +11503,7 @@ const getThisWeekMatchday=()=>{
             </Fisarmonica>
           )}
           </GruppoProfilo235>
-          <GruppoProfilo235 id="contratto" titolo="Contratto e attributi" nota="Attributi, stile di gioco, contratto e futuro">
+          <GruppoProfilo235 id="contratto" titolo="Contratto e attributi" nota={(neutro287()&&!(typeof window!=="undefined"&&window.__CPM_NO_G268))?"Attributi, contratto e futuro":"Attributi, stile di gioco, contratto e futuro"}>{/* [giro 268] eroe neutro (PO-287): la nota non promette la scheda «Stile di gioco» che non c'e'; rosso window.__CPM_NO_G268 */}
           {/* [6.84.0 collaudo PO] «Esporta salvataggio JSON» spostato IN FONDO al sottotab Profilo (era qui, tra contratto e statistiche) */}
           {/* [6.77.0 collaudo PO «duplicazione box da eliminare»] il banner-identità (avatar+nome+club+OVR) era
               la COPIA dell'header globale dell'app sempre visibile in cima → rimosso; restano le STATISTICHE
@@ -11744,7 +11744,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,lineHeight:1.3}}>{tit}</div>
                 {sub&&<div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{sub}</div>}
                 {figli}</div>);};
-              return(<Card data-cpm="agente198-ora" style={{padding:"10px 12px 4px",borderLeft:"3px solid "+TH.warning}}>
+              return(<Card data-cpm="agente198-ora" style={{padding:"10px 12px 4px",borderLeft:"3px solid "+TH.warning,...((typeof window!=="undefined"&&window.__CPM_NO_G268)?{}:{scrollMarginTop:SP.sm})/* [giro 268] dal giro 260 (titolo solo in testata) lo scorrimento lo incollava al bordo, -0,11 px: un respiro sopra; rosso __CPM_NO_G268 */}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted,marginBottom:2}}>Da fare ora</div>
                 {_rinOk&&_riga("contratto",player.contractExpired?"⛔ Contratto scaduto: sei svincolato":"📋 Il contratto scade a fine stagione",
                   player.contractExpired?"Senza contratto non giochi: rinnova col club o cerca una squadra qui sotto.":("Il rinnovo si tratta fino alla settimana 35"+(player.hasAgent?" · il compito «Prepara rinnovo» vale +10% sull'offerta":"")+"."),

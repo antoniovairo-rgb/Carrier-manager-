@@ -16,7 +16,8 @@ export async function misuraRosa(page) {
     for (const s of fis.querySelectorAll('span')) {
       const st = s.style; if (st.textOverflow !== 'ellipsis' || st.flexGrow !== '1') continue;
       const row = s.parentElement; const sp = [...row.children];
-      const ruolo = sp[sp.indexOf(s) + 1];
+      /* [giro 268] la «R» del rigorista (SegnoR257, giro 257, decisione PO-496 «Sì, segnato nella Rosa») sta fra nome e ruolo: si salta */
+      const ruolo = sp.slice(sp.indexOf(s) + 1).find(e => e.getAttribute('data-cpm') !== 'rigorista257');
       out.push({ nome: (s.innerText || '').replace(/^★ /, ''), tagliato: s.scrollWidth > s.clientWidth + 0.5, w: s.clientWidth, sw: s.scrollWidth,
         ruolo: ruolo ? (ruolo.innerText || '').replace(/\s+/g, ' ').trim() : null, ruoloTitolo: ruolo ? ruolo.getAttribute("aria-label") : null, ruoloTitle: ruolo ? ruolo.getAttribute("title") : null,
         rigaOk: row.scrollWidth <= row.clientWidth + 1 });

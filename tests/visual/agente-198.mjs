@@ -94,8 +94,12 @@ try {
   }
 
   if (fai('B')) {
+    /* [giro 268] un evento settimanale (foglio cpm-foglio114, es. «L'Offerta della Notte») puo' uscire a caso entrando nella settimana e
+       coprire il tasto: misurato su lavoro/197 (TimeoutError del clic, «non giudicato»). Il giocatore lo chiude prima; la sonda lo chiude
+       con l'aggancio dei modali (__CPM_CAREER.dismiss) e lo DICHIARA nella riga del braccio. */
+    var chiudiEvento = async (pg) => { const tt = []; for (let i = 0; i < 4; i++) { const t = await pg.evaluate(() => { const f = document.querySelector('.cpm-foglio114'); if (!f) return null; const x = (f.innerText || '').split('\n')[0].slice(0, 40); try { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.chiudi163(); } catch (e) {} return x; }); if (!t) break; tt.push(t); await sleep(500); } return tt.join(' / ') || null; };/* dismiss: eventi della settimana, offerte; chiudi163: momenti di carriera, mese, traguardi */
     console.log('B) PO-446 · la fermata del tasto porta dove c\'e\' la cosa da fare');
-    for (const [flag, rosso] of [[null, false], ['__CPM_NO_G198', true]]) {
+    for (const [flag, rosso] of [[null, false], ['__CPM_NO_G198', true], ['__CPM_NO_G268', 'g268']]) {/* [giro 268] terzo braccio: riquadro senza respiro sopra */
       /* B1: la corsa si ferma entrando nella settimana 28 (rinnovo) */
       const { page, errors } = await apri(salva({ week: 27, weekLived: true }), flag);
       const premuto = await page.evaluate(() => { const t = document.querySelector('[data-cpm="salta163-tasto"]'); if (!t || t.disabled) return false; t.click(); return true; });
@@ -108,9 +112,11 @@ try {
       if (!rosso) { const card = await page.$('[data-cpm="corsa163"]'); if (card) { await card.scrollIntoViewIfNeeded(); await card.screenshot({ path: path.join(FOTO, 'dopo-fermata-rinnovo-375.png') }); } }
       else { const card = await page.$('[data-cpm="corsa163"]'); if (card) { await card.scrollIntoViewIfNeeded(); await card.screenshot({ path: path.join(FOTO, 'prima-fermata-rinnovo-375.png') }); } }
       let arrivo = null;
-      if (f.tasto) { await page.click('[data-cpm="salta198-vai"]'); await sleep(900); arrivo = await page.evaluate(() => { const b = document.querySelector('[data-cpm="agente198-ora"]'); const r = b && b.getBoundingClientRect(); return { tab: !!document.querySelector('[data-cpm="agente-v2"]'), vista: !!r && r.top >= 0 && r.top < window.innerHeight * 0.5 }; }); }
-      console.log(`    ${rosso ? 'rosso' : 'verde'} B1: premuto ${premuto && vai} · fermata «${f.mot}» · riepilogo «${f.riep}» · tasto ${f.tasto} · arrivo ${JSON.stringify(arrivo)}`);
+      const ev1 = await chiudiEvento(page);
+      if (f.tasto) { await page.click('[data-cpm="salta198-vai"]'); await sleep(900); arrivo = await page.evaluate(() => { const b = document.querySelector('[data-cpm="agente198-ora"]'); const r = b && b.getBoundingClientRect(); return { tab: !!document.querySelector('[data-cpm="agente-v2"]') || /^agente$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')/* [giro 268] dal giro 260 il titolo sta solo nella testata, come in A */, vista: !!r && r.top >= 0 && r.top < window.innerHeight * 0.5 }; }); }
+      console.log(`    ${rosso ? 'rosso' : 'verde'} B1: premuto ${premuto && vai} · fermata «${f.mot}» · riepilogo «${f.riep}» · tasto ${f.tasto} · arrivo ${JSON.stringify(arrivo)}${ev1 ? ' · evento chiuso dalla sonda «' + ev1 + '»' : ''}`);
       const v1 = f.mot === 'rinnovo' && f.tasto && /scheda Agente/.test(f.riep || '') && !!arrivo && arrivo.tab && arrivo.vista && !errors.length;
+      if (rosso === 'g268') { ok(f.tasto && !!arrivo && arrivo.tab && !arrivo.vista, 'rosso __CPM_NO_G268 B1 bocciato (riquadro incollato al bordo, fuori vista di una frazione di pixel)'); await page.close(); continue; }
       if (!rosso) ok(v1, 'verde B1: la fermata sul rinnovo dice dove andare e il tasto porta all\'Agente col riquadro in vista');
       else ok(f.mot === 'rinnovo' && !v1, 'rosso B1 bocciato (fermata sul rinnovo senza tasto)');
       await page.close();
@@ -118,8 +124,9 @@ try {
       const q = await apri(salva({ week: 29 }), flag);
       const m = await q.page.evaluate(() => { const e = document.querySelector('[data-cpm="salta163-motivo"]'); return e ? { txt: e.innerText, tag: e.tagName } : null; });
       let arr2 = null;
-      if (m && m.tag === 'BUTTON') { await q.page.click('[data-cpm="salta163-motivo"]'); await sleep(900); arr2 = await q.page.evaluate(() => { const b = document.querySelector('[data-cpm="agente198-ora"]'); const r = b && b.getBoundingClientRect(); return { tab: !!document.querySelector('[data-cpm="agente-v2"]'), vista: !!r && r.top >= 0 && r.top < window.innerHeight * 0.5 }; }); }
-      console.log(`    ${rosso ? 'rosso' : 'verde'} B2: motivo ${JSON.stringify(m)} · arrivo ${JSON.stringify(arr2)}`);
+      const ev2 = await chiudiEvento(q.page);
+      if (m && m.tag === 'BUTTON') { await q.page.click('[data-cpm="salta163-motivo"]'); await sleep(900); arr2 = await q.page.evaluate(() => { const b = document.querySelector('[data-cpm="agente198-ora"]'); const r = b && b.getBoundingClientRect(); return { tab: !!document.querySelector('[data-cpm="agente-v2"]') || /^agente$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')/* [giro 268] dal giro 260 il titolo sta solo nella testata, come in A */, vista: !!r && r.top >= 0 && r.top < window.innerHeight * 0.5 }; }); }
+      console.log(`    ${rosso ? 'rosso' : 'verde'} B2: motivo ${JSON.stringify(m)} · arrivo ${JSON.stringify(arr2)}${ev2 ? ' · evento chiuso dalla sonda «' + ev2 + '»' : ''}`);
       const v2 = !!m && /Prima rispondi al rinnovo/.test(m.txt) && m.tag === 'BUTTON' && !!arr2 && arr2.tab && arr2.vista && !q.errors.length;
       if (!rosso) ok(v2, 'verde B2: il motivo «Prima rispondi al rinnovo» si tocca e porta all\'Agente col riquadro in vista');
       else ok(!!m && !v2, 'rosso B2 bocciato (motivo solo testo)');

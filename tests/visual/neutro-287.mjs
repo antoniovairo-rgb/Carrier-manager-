@@ -40,12 +40,12 @@ async function creazione(rosso) {
   return { premuto, crea, creato, bande, errori };
 }
 
-async function carriera(rosso) {
+async function carriera(rosso, g268 = false) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 900 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errori = []; page.on('pageerror', e => errori.push(String(e.message).slice(0, 160)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.tutorialDone = true;
-  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_FIS_APERTE = true; if (r) window.__CPM_NO_NEUTRO287 = true;
-    try { if (!sessionStorage.getItem('n287')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('n287', '1'); } } catch (e) {} }, [JSON.stringify(sv), rosso]);
+  await page.addInitScript(([s, r, g]) => { window.__CPM_GLB = false; window.__CPM_FIS_APERTE = true; if (r) window.__CPM_NO_NEUTRO287 = true; if (g) window.__CPM_NO_G268 = true;
+    try { if (!sessionStorage.getItem('n287')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('n287', '1'); } } catch (e) {} }, [JSON.stringify(sv), rosso, g268]);
   await page.goto(URL0, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 150000 });
   await sleep(1200);
@@ -86,6 +86,8 @@ async function migrazione(rosso) {
 }
 
 for (const rosso of [false, true]) { const k = rosso ? 'rosso' : 'verde'; out[k] = { ...(await creazione(rosso)), ...(await carriera(rosso)), ...(await migrazione(rosso)) }; }
+/* [giro 268] rosso window.__CPM_NO_G268: eroe neutro ma la nota del gruppo «Contratto e attributi» torna a promettere lo «stile di gioco» → Carriera/profile DEVE citarlo */
+const g268 = await carriera(false, true);
 await b.close(); srv.close();
 
 const STILE_DA_ARCH8 = { bomber: 'finalizzatore', centravanti: 'finalizzatore', trequartista: 'regista', fantasista: 'regista', velocista: 'incursore', leader: 'trascinatore', tuttocampista: 'trascinatore' };
@@ -124,6 +126,8 @@ const err = [...eV];
 if (!out.rosso.creato || out.rosso.creato.archetype === null || !out.rosso.creato.archetype) err.push('rosso: l\'eroe creato non e\' Finalizzatore (interruttore che non spegne)');
 if (!Object.values(out.rosso.schede).some(s => s.vietato && /Stile di gioco|Finalizzator/i.test(s.vietato))) err.push('rosso: la scheda «Stile di gioco» non compare in Carriera (interruttore che non spegne)');
 if (!out.rosso.bande.fuori) err.push('rosso: baseStats senza bonus (interruttore che non spegne)');
+if (!(g268.schede.profile && g268.schede.profile.vietato && g268.schede.profile.len >= 300)) err.push('rosso __CPM_NO_G268: Carriera/profile non cita «stile di gioco» (interruttore che non spegne o scheda non letta)');
+else console.log('✓ rosso __CPM_NO_G268 bocciato: Carriera/profile cita «' + g268.schede.profile.vietato + '» (…' + g268.schede.profile.brano + '…)');
 if (eR.length < 8) err.push('rosso: solo ' + eR.length + ' violazioni (il guardiano guarda a vuoto)');
 if (err.length) { console.error('❌ neutro-287: ' + err.join(' · ')); process.exit(1); }
 console.log(`✅ neutro-287 verde (creazione senza stile, eroe senza archetipo, statistiche senza bonus, stileMotore neutro, Carriera senza «Stile di gioco» né «Finalizzatore»; ${Object.keys(out.verde.mig).length} casi di migrazione → neutro con stilePrima287, idempotenti) · rosso: ${eR.length} violazioni, la 7.999.176 torna`);
