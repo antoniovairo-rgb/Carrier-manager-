@@ -2651,5 +2651,20 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaBWMjNaETAbhb6wUw3",
+  "titolo": "giro 261 · serata: corpi fermi e spalle",
+  "creata": "2026-11-17T21:20:00Z",
+  "chiusa": "2026-11-18T03:05:38Z",
+  "cost_usd": 5.91922938,
+  "output_tokens": 26867,
+  "cache_read_tokens": 16416578,
+  "worker_epoch": 2,
+  "nota": "worker riavviato: il costo riportato potrebbe coprire solo l'ultima parte",
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-18"
  }
 ]
