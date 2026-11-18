@@ -97,7 +97,7 @@ try {
     /* [giro 268] un evento settimanale (foglio cpm-foglio114, es. «L'Offerta della Notte») puo' uscire a caso entrando nella settimana e
        coprire il tasto: misurato su lavoro/197 (TimeoutError del clic, «non giudicato»). Il giocatore lo chiude prima; la sonda lo chiude
        con l'aggancio dei modali (__CPM_CAREER.dismiss) e lo DICHIARA nella riga del braccio. */
-    var chiudiEvento = async (pg) => { const t = await pg.evaluate(() => { const f = document.querySelector('.cpm-foglio114'); if (!f) return null; const x = (f.innerText || '').split('\n')[0].slice(0, 40); try { window.__CPM_CAREER.dismiss(); } catch (e) {} return x; }); if (t) await sleep(500); return t; };
+    var chiudiEvento = async (pg) => { const tt = []; for (let i = 0; i < 4; i++) { const t = await pg.evaluate(() => { const f = document.querySelector('.cpm-foglio114'); if (!f) return null; const x = (f.innerText || '').split('\n')[0].slice(0, 40); try { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.chiudi163(); } catch (e) {} return x; }); if (!t) break; tt.push(t); await sleep(500); } return tt.join(' / ') || null; };/* dismiss: eventi della settimana, offerte; chiudi163: momenti di carriera, mese, traguardi */
     console.log('B) PO-446 · la fermata del tasto porta dove c\'e\' la cosa da fare');
     for (const [flag, rosso] of [[null, false], ['__CPM_NO_G198', true], ['__CPM_NO_G268', 'g268']]) {/* [giro 268] terzo braccio: riquadro senza respiro sopra */
       /* B1: la corsa si ferma entrando nella settimana 28 (rinnovo) */
