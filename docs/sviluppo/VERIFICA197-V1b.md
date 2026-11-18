@@ -67,8 +67,16 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 | 20 | ingresso-276 | ✅ verde (316 s) | — | — | verde | «✅ ingresso-276 verde (calciatori nel quadro nei primi 12 s, fila leggibile a fine ingresso) e il rosso si vede» |
 | 23 | avvicinamento-61 | ✅ verde (101 s) | — | — | verde | «✅ avvicinamento-61 verde (e il rosso si vede)» |
 | 26 | ingresso-277 | ✅ verde (463 s) | — | — | verde | «✅ ingresso-277 verde (durata intermedia, nessun velo, saltabile, corpi pronti a fine ingresso) e il rosso si vede» |
-| 29 | memoria-275 | ❌ rosso (493 s) | ❌ rosso (507 s) | ✅ verde (583 s, «✅ PASS memoria-275: scene 1 · renderer 2→2 · corpi animati 962→976 · heap dopo GC 370 MB»; vedi dubbio 2) | **NATO nella 197** (verde sulla 196) | «❌ FAIL memoria-275: scene 2 · renderer 2→3 · corpi animati 869→1846 · heap dopo GC 305 MB» (identica nelle due corse: dopo la seconda partita la prima scena non è stata rilasciata, Object3D 13222→26458) |
-| 32 | esiti-218 | ❌ rosso (2354 s) | in corsa | | | «· partite non arrivate al fischio: verde 1234 fermo in playing» (verde: 17 scene, 0 contraddizioni; rosso visto: 7 contraddizioni) |
+| 29 | memoria-275 | ❌ rosso (493 s) | ❌ rosso (507 s) | ✅ verde (583 s, «✅ PASS memoria-275: scene 1 · renderer 2→2 · corpi animati 962→976 · heap dopo GC 370 MB»; vedi dubbio 2) | **NATO nella 197** (verde sulla 196) | «❌ FAIL memoria-275: scene 2 · renderer 2→3 · corpi animati 869→1846 · heap dopo GC 305 MB» (identica nelle due corse) |
+| 32 | esiti-218 | ❌ rosso (2354 s) | ❌ rosso (2357 s) | in coda | in attesa della 196 | «· partite non arrivate al fischio: verde 1234 fermo in playing» in entrambe (verde: 17 scene, 0 contraddizioni; rosso visto: 7 contraddizioni). Il guasto è la partita del seme 1234 che non arriva al fischio, non una contraddizione |
+| 35 | fila-227 | ✅ verde (382 s) | — | — | verde | «✅ fila-227 verde (e il rosso si vede)» |
+| 38 | bambini-236 | ✅ verde (1311 s) | — | — | verde | «✅ VERDE — bambini con entrambe le squadre in ogni contesto, prova del rosso riconosciuta» |
+| 41 | ingresso-245 | ✅ verde (181 s) | — | — | verde | «✅ ingresso-245 verde (stesso tunnel, passo da camminata, tutti al posto) e il rosso si vede» |
+| 44 | analisi-217 | ❌ rosso (13 s) | ❌ rosso (13 s) | in coda | in attesa della 196 | «PO-217 analisi pre-partita → ROSSO»; causa: «❌ B1 pulsante non in fondo o fuori schermo null» a 412×915 e 360×780 (il pulsante non viene trovato) |
+| 47 | aereo-252 | ✅ verde (158 s) | — | — | verde | «✅ aereo-252 VERDE» |
+| 50 | camera-252 | ✅ verde (273 s) | — | — | verde | «✅ camera-252 VERDE (e il rosso vede il salto)» |
+| 53 | testa-143 | ✅ verde (287 s) | — | — | verde | «✅ testa-143 verde (e il rosso si vede)» |
+| 56 | kit-061 | ✅ verde (29 s) | — | — | verde | «✅ PASS kit-061» |
 
 <!-- TABELLA -->
 
