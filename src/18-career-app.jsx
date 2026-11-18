@@ -8325,16 +8325,27 @@ const getThisWeekMatchday=()=>{
                   mister, squalifica, infortunio) con la scelta gia' fatta. Quando non e' possibile resta spento e dice perche'. */
                 const _nq=player.nationsCupQueue,_em=player.euroMondiale;
                 const _mot=cs.disabled?(cs.sub||"non disponibile ora"):player.injured?"sei infortunato":!player.weekLived?"prima vivi la settimana":(_nq?.active&&!_nq?.done)?"prima la Nazionale":(_em?.active&&!_em?.done&&!_emInAttesa(_em))?"prima il torneo della Nazionale":null;
+                /* [giro 263 · PO-514] i due pulsanti hanno la stessa larghezza (e la stessa altezza: la riga li stira). Rosso __CPM_NO_G263 = com'era. */
+                const _g263=!(typeof window!=="undefined"&&window.__CPM_NO_G263);
                 return(
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
               <div style={{display:"flex",gap:8}}>
                 <button data-cpm="avanza23" onClick={cs.disabled?undefined:()=>handleContinua()} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
                   style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:TINTE.testo,color:cs.disabled?TH.faint:TINTE.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
+                  {_g263?(()=>{/* [giro 263 · PO-514] (data-tronca263 + title col testo intero: troncamento voluto, grafica-v2 lo riconosce) titolo in al piu' 2 righe: «🌍 Mondiale» + «vs Belgio» (ogni riga una sola, «…» se non ci sta);
+                      senza «vs» il titolo va a capo al massimo una volta. Il dettaglio in UNA riga, senza «poi: …» (c'e' gia' la riga «Poi:» sopra). */
+                    const _lb=String(cs.label||""),_iv=_lb.search(/\s(vs)\s/i);const _r1={display:"block",maxWidth:"100%",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"};
+                    const _sub=_poi?String(cs.sub||"").replace(/\s*·\s*poi:.*$/i,""):cs.sub;
+                    return(<>
+                      <span data-p263="titolo" style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05,maxWidth:"100%"}}>{_iv>0?(<><span data-tronca263="" title={_lb.slice(0,_iv).replace(/\s*[—–-]\s*$/,"")} style={_r1}>{_lb.slice(0,_iv).replace(/\s*[—–-]\s*$/,"")}</span><span data-tronca263="" title={_lb.slice(_iv+1)} style={_r1}>{_lb.slice(_iv+1)}</span></>):(<span data-tronca263="" title={_lb} style={{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",overflowWrap:"anywhere"}}>{_lb}</span>)}</span>
+                      {_sub&&<span data-p263="dettaglio" data-tronca263="" title={_sub} data-motivo221={cs.disabled?"":undefined} style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center",..._r1}}>{_sub}</span>}
+                    </>);})():(<>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
                   {cs.sub&&<span data-motivo221={cs.disabled?"":undefined} style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                  </>)}
                 </button>
                 <button data-cpm="simula-v2" onClick={_mot?undefined:()=>handleContinua(true)} disabled={!!_mot} aria-disabled={!!_mot} className={_mot?"":"cpm-press"}
-                  style={{flex:"0 1 auto",minWidth:96,minHeight:52,borderRadius:RAD.md,border:_mot?("1px dashed "+_v(0.5)):"none",background:_mot?"rgba(0,0,0,0.18)":TINTE.tasto,color:_mot?_ink:TINTE.testo,cursor:_mot?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 12px",fontFamily:"inherit"}}>
+                  style={{flex:_g263?"1 1 0":"0 1 auto",minWidth:_g263?0:96,minHeight:52,borderRadius:RAD.md,border:_mot?("1px dashed "+_v(0.5)):"none",background:_mot?"rgba(0,0,0,0.18)":TINTE.tasto,color:_mot?_ink:TINTE.testo,cursor:_mot?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 12px",fontFamily:"inherit"}}>
                   <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.05}}>Simula</span>
                   {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>

@@ -25,7 +25,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, sleep, SAVE, INIT, entraInCarriera } from './c178-graf-lib.mjs';
 import { preparaCalendario, FORMATI } from './c180-lib.mjs';
-const BRACCI = (process.env.P131_BRACCI || 'verde,rosso,rosso133,rosso134,rosso137w').split(',');
+const BRACCI = (process.env.P131_BRACCI || 'verde,storico263,rosso,rosso133,rosso134,rosso137w').split(',');
 const SCELTI = (process.env.P131_FORMATI || 's360,s412,pc').split(',').map(k => FORMATI[k]).filter(Boolean);
 const FOTO = process.env.P131_FOTO || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
@@ -37,7 +37,10 @@ const CASI = [
   { id: 'nessuna', opp: null, patch: { nationsCupQueue: null, euroMondiale: null } },
   { id: 'amichevole', opp: 'Portogallo', amich: true, turno: /Amichevole Internazionale/i, patch: { nationsCupQueue: null, euroMondiale: null } },
 ];
-const ROSSI = { verde: [], rosso: ['__CPM_NO_G131'], rosso133: ['__CPM_NO_G133'], rosso134: ['__CPM_NO_G134A'], rosso137w: ['__CPM_NO_G137W'] };
+/* [giro 263 · PO-514] decisione della madre (notte 17/11): il pulsante principale NON ripete piu' «poi: <club> W.N» (c'e' gia' la riga
+   «Poi:» della card). I controlli 134/137 sul sottotitolo valgono quindi sul pulsante di prima: i loro bracci (e il braccio «storico263»,
+   verde col solo __CPM_NO_G263) girano con __CPM_NO_G263; nel verde si pretende invece che il pulsante NON contenga «poi:». */
+const ROSSI = { verde: [], storico263: ['__CPM_NO_G263'], rosso: ['__CPM_NO_G131'], rosso133: ['__CPM_NO_G133'], rosso134: ['__CPM_NO_G134A', '__CPM_NO_G263'], rosso137w: ['__CPM_NO_G137W', '__CPM_NO_G263'] };
 const RIGA137 = ['s360', 's412']; /* formati su cui si giudica «<club> W.N» su una riga */
 /* [giro 137] righe occupate dal gruppo «<club> W.N» nel sottotitolo del comando: righe distinte dei rettangoli del testo */
 const RIGHE_WN = () => { const bt = document.querySelector('button[data-cpm="avanza23"]'); if (!bt) return { motivo: 'comando assente' };
@@ -72,7 +75,7 @@ const norm = s => String(s || '').replace(/\u00a0/g, ' ').replace(/\u2011/g, '-'
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const esito = [];
 for (const braccio of BRACCI) {
-  const rosso = braccio === 'rosso'; const righe = []; let primoRosso = null;
+  const rosso = braccio === 'rosso'; const righe = []; let primoRosso = null; const vecchio263 = (ROSSI[braccio] || []).includes('__CPM_NO_G263');
   for (const f of SCELTI) {
     const errs = [];
     const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
@@ -83,7 +86,8 @@ for (const braccio of BRACCI) {
     await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
     const dentro = await entraInCarriera(page, errs);
     const cal = dentro ? await preparaCalendario(page, SAVE) : { md: null };
-    const club = SAVE.player.club.n;
+    /* [giro 263] il nome del club si legge dal gioco: dal giro 251 (CLUB_NOMI_251 + migrazione) «FC Salernum» del salvataggio di prova e' «FC Salernum 1919» */
+    const club = (dentro ? await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().club.n; } catch (e) { return null; } }).catch(() => null) : null) || SAVE.player.club.n;
     for (const c of CASI) {
       let r = { nomi: null }, md = cal.md, motivo = [], am = null;
       if (dentro && md) {
@@ -94,7 +98,7 @@ for (const braccio of BRACCI) {
         for (let i = 0; i < 4; i++) { const chiuso = await page.evaluate(CHIUDI_OVL).catch(() => false); if (!chiuso) break; await sleep(700); }
         md = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd()).catch(() => null);
         r = await page.evaluate(LEGGI, NAZ);
-        if (c.opp && RIGA137.includes(f.k)) r.wn = await page.evaluate(RIGHE_WN).catch(e => ({ motivo: 'misura fallita ' + String(e).slice(0, 60) }));
+        if (c.opp && vecchio263 && RIGA137.includes(f.k)) r.wn = await page.evaluate(RIGHE_WN).catch(e => ({ motivo: 'misura fallita ' + String(e).slice(0, 60) }));
         if (FOTO) await page.screenshot({ path: path.join(FOTO, `prossima131-${c.id}-${f.k}-${braccio}.png`) }).catch(() => {});
       }
       if (!r.nomi || r.nomi.length !== 2 || !r.cmd) motivo.push('non giudicato (card o comando assenti)');
@@ -112,11 +116,12 @@ for (const braccio of BRACCI) {
           if (!poiAtt) motivo.push('non giudicato (gara del club attesa per «Poi» sconosciuta)');
           else if (!norm(r.poi).includes(norm(poiAtt))) motivo.push(`riga «Poi» «${r.poi}» non porta ${poiAtt}`);
           else if (c.amich && !(r.poi || '').includes('sett. ' + am.poiW)) motivo.push(`riga «Poi» «${r.poi}» non porta la settimana ${am.poiW}`);
-          if (c.amich && am) { const mc = /poi:\s*(.+?)\s+W\.(\d+)/i.exec(r.cmd || ''); const mp = /(\d+)/.exec((r.poi || '').replace(/^.*sett\.\s*/i, ''));
+          if (!vecchio263 && /poi:/i.test(r.cmd || '')) motivo.push(`comando «${(r.cmd || '').slice(0, 90)}» ripete «poi:» (giro 263)`);
+          if (vecchio263 && c.amich && am) { const mc = /poi:\s*(.+?)\s+W\.(\d+)/i.exec(r.cmd || ''); const mp = /(\d+)/.exec((r.poi || '').replace(/^.*sett\.\s*/i, ''));
             if (!mc) motivo.push(`comando «${(r.cmd || '').slice(0, 90)}» senza «poi: <club> W.N»`);
             else if (norm(mc[1]) !== norm(am.poi) || +mc[2] !== am.poiW || !norm(r.poi).includes(norm(mc[1])) || !mp || +mp[1] !== +mc[2]) motivo.push(`comando «poi: ${mc[1]} W.${mc[2]}» ≠ riga «Poi» «${r.poi}» (attesa ${am.poi} W.${am.poiW})`); }
           if (r.forma) motivo.push('forma del club sotto la Nazionale');
-          if (RIGA137.includes(f.k)) { if (!r.wn || r.wn.righe == null) motivo.push(`riga137: non giudicato (${r.wn && r.wn.motivo})`); else if (r.wn.righe !== 1) motivo.push(`riga137: «${r.wn.gruppo}» spezzato su ${r.wn.righe} righe`); }
+          if (vecchio263 && RIGA137.includes(f.k)) { if (!r.wn || r.wn.righe == null) motivo.push(`riga137: non giudicato (${r.wn && r.wn.motivo})`); else if (r.wn.righe !== 1) motivo.push(`riga137: «${r.wn.gruppo}» spezzato su ${r.wn.righe} righe`); }
           if (!r.fondoNaz || r.fondo !== r.fondoNaz) motivo.push(`fondo ${r.fondo} ≠ colore della Nazionale ${r.fondoNaz}`);
         } else if (r.poi) motivo.push(`riga «Poi» presente senza Nazionale: «${r.poi}»`);
       }
@@ -133,7 +138,7 @@ for (const braccio of BRACCI) {
 await b.close(); srv.close();
 let fallito = false; console.log('\n=== prossima-131: esito per braccio');
 for (const e of esito) {
-  if (e.braccio === 'verde') { const ok = e.rossi === 0 && e.n === CASI.length * SCELTI.length; if (!ok) fallito = true; console.log(`  VERDE: ${e.n} controlli, ${e.rossi} rossi → ${ok ? 'PASSA' : 'FALLISCE'}`); }
+  if (e.braccio === 'verde' || e.braccio === 'storico263') { const ok = e.rossi === 0 && e.n === CASI.length * SCELTI.length; if (!ok) fallito = true; console.log(`  ${e.braccio === 'verde' ? 'VERDE' : 'VERDE storico (__CPM_NO_G263)'}: ${e.n} controlli, ${e.rossi} rossi → ${ok ? 'PASSA' : 'FALLISCE'}`); }
   else if (e.braccio === 'rosso134') { const ok = e.n === CASI.length * SCELTI.length && e.casiRossi.length === 1 && e.casiRossi[0] === 'amichevole' && e.rossi === SCELTI.length; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G134A): ${e.rossi}/${e.n} rossi, casi caduti: ${e.casiRossi.join(',') || 'nessuno'} → ${ok ? 'CADE COME DEVE (solo il pulsante dell\'amichevole)' : 'NON CADE COME DEVE'}`); }
   else if (e.braccio === 'rosso137w') { const ok = e.n === CASI.length * SCELTI.length && e.rossi > 0 && e.tuttiRiga; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G137W): ${e.rossi}/${e.n} rossi, casi caduti: ${e.casiRossi.join(',') || 'nessuno'} → ${ok ? 'CADE COME DEVE (solo «<club> W.N» spezzato)' : 'NON CADE COME DEVE'}`); }
   else if (e.braccio === 'rosso133') { const ok = e.n === CASI.length * SCELTI.length && e.casiRossi.length === 1 && e.casiRossi[0] === 'amichevole' && e.rossi === SCELTI.length; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G133): ${e.rossi}/${e.n} rossi, casi caduti: ${e.casiRossi.join(',') || 'nessuno'} → ${ok ? 'CADE COME DEVE (solo l\'amichevole, casi del giro 131 verdi)' : 'NON CADE COME DEVE'}`); }

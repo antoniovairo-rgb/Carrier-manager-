@@ -1,0 +1,14 @@
+rosa-228 rc=1 50s | ROSSO __CPM_NO_G228: ✓ bocciato 24 club · 576 righe · ruoli non in sigla 535 · senza ruolo intero 576 · nomi <18 tagliati 68 · nomi ≥18 tagliati 4 · e
+agente-198 rc=1 147s |   ✓ rosso B2 bocciato (motivo solo testo) ❌ ROSSO — 2 controlli: verde B1: la fermata sul rinnovo dice dove andare e il tasto porta all'Agente col riquadr
+neutro-287 rc=1 77s | } ❌ neutro-287: Carriera/profile cita «stile di gioco» (…Favorevole | Rapporto 74/100 | CONTRATTO E ATTRIBUTI | Attributi, stile di gioco, contratto e fut
+ritratto-171-72 rc=1 102s | ❌ ritratto-171-72   · verde home: ritratto dell'eroe assente o non caricato 
+mister-215 rc=1 44s |   · verde: storico senza figurine per riga {"figurine":0,"icone":0,"righe":0}   · rosso: icone non si vedono {"figurine":0,"icone":0,"righe":0} 
+coppa-prestito-245 rc=1 40s | ❌ coppa-prestito-245   · verde: il turno di coppa non viene giocato avanzando {"A":{"settimana":30,"voce":[{"played":true,"result":null}],"risultati":2,"cup"
+infortunio-263 rc=1 184s |  ✗ ROSSO infortunio-263: 3 controlli falliti 
+grafica-v2 rc=1 106s |   ✗ SCH pc: club: anelli fiducia/popolarita' mancanti grafica-v2 ROSSO 
+partita-v2 rc=1 301s |   ✗ FORMA pc:post: manca il tasto finale partita-v2 ROSSO 
+difficolta-156 rc=1 313s |  ❌ CURVA FUORI BERSAGLIO 
+testata-209 rc=1 834s |   · verde: scena dell'intervista n.d.   · rosso: il difetto non si vede («null») 
+spazio-296 rc=1 1165s | schermate non raggiunte: tel post-partita (niente fischio), pc post-partita (niente fischio) spazio-296 ROSSO: 0 schermate cadute, 2 non raggiunte 
+partita-rigiocata-194 rc=1 981s | rosso: riapertura dopo il fischio no (strada playing, informativo) ❌ partita-rigiocata-194 ROSSO 
+FINE
