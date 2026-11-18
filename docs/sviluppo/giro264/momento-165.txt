@@ -1,0 +1,46 @@
+1) la regola di posta (posta165)
+  ✓ partita qualunque di metà classifica: nessuna posta (null) e stessa risposta due volte
+  ✓ ex club → «🔙 Ex club»
+  ✓ primo match dopo l'infortunio → «🩹 Primo match dopo l'infortunio»; con una gara già giocata dopo il rientro → null
+  ✓ 99 presenze → «🎖️ 100ª presenza in carriera»
+  ✓ 49 gol → «🎯 A un gol dai 50 in carriera»
+  ✓ contratto in scadenza con fiducia 45 → «📋 Contratto in bilico»; con fiducia 80 → null
+  ✓ derby → «⚡ Derby del Monte Alto» (juve-inter)
+  ✓ scontro diretto in classifica → «📊 Scontro diretto in classifica» (gen)
+  ✓ settimana 38 → «🏁 Finale di stagione»
+  ✓ coppa → «🏆 Coppa»
+  ✓ la regola è pura: il salvataggio non cambia
+  ✓ nessun errore di pagina
+2) il tasto c'è da professionista e chiede prima
+  ✓ il tasto c'è sulla home da professionista («⏩ VAI AL PROSSIMO MOMENTO fino alla partita chiave · sett. 1»)
+  ✓ primo tocco: pannello di conferma («Simulo le partite senza posta in gioco. Mi fermo sulla prossima partita che conta (derby, ex club, s…»)
+  ✓ primo tocco: nulla è cambiato (settimana, storico, calendario)
+  ✓ «Annulla»: torna il tasto, nulla è cambiato
+3) una stagione intera col solo tasto (club di prestigio basso)
+  ✓ il tasto ha simulato 18 gare, tutte da professionista
+  ✓ nessuna partita con posta simulata dal tasto (0)
+  ✓ ogni fermata «partita» lascia il prompt aperto e la gara non giocata (12/12)
+  ✓ almeno 8 fermate su partite con posta in una stagione da club basso (12)
+  ✓ ogni fermata «scelta da fare» lascia davanti il riquadro con almeno due scelte (2/2)
+  ✓ stagione arrivata in fondo (S3 W39)
+  ✓ 34 gare di lega nello storico (34)
+  ✓ una gara per settimana, nessuna settimana ripetuta (nessuna)
+  ✓ calendario di lega tutto giocato (34/34)
+  ✓ classifica a 18 righe (18)
+  ✓ nessun errore di pagina
+4) rinnovo
+  ✓ card del rinnovo sulla home → fermata «rinnovo» (rinnovo, card true)
+  ✓ ripartendo, il rinnovo non riferma nella stessa stagione (seconda corsa avviata true, ["rinnovo","scelta da fare"])
+5) mercato
+  ✓ offerta durante la corsa → fermata «mercato» (offerta true, motivo mercato, stato fermo)
+6) PC e Primavera
+  ✓ a 1280×800 il tasto c'è
+  ✓ nessuno scorrimento orizzontale a 1280
+  ✓ Primavera invariata: tasto del giro 163 («⏩ VAI AL PROSSIMO MOMENTO IMPORTANTE fino alla partita chiave · sett. 3») e barra dell'Indice (true)
+  · tocchi per la stagione: 73 (giri del tasto 23) · fermate: {"partita chiave":12,"mercato":4,"momento importante":5,"scelta da fare":2} · gare simulate dal tasto 18
+  · veli che coprivano un tasto: []
+  · fermate «partita» per motivo: {"⚔️ Il tuo rivale":1,"📊 Scontro diretto in classifica":3,"🏆 Sfida alla capolista":5,"🩹 Primo match dopo l'infortunio":1,"🏁 Finale di stagione":2} · finestre chiuse dal banco fra due corse: {"finestra-corpo":1,"finestra230":1,"confronto253":2}
+  · rinnovo: finestra del presidente (giro 198) aperta al caricamento, chiusa con «Ci penso»
+
+momento-165 [verde atteso]: 33 verdi, 0 rossi
+ESITO: VERDE

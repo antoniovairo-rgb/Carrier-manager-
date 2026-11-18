@@ -1,0 +1,34 @@
+A. STATICO
+  ✓ 1 il tasto dipende da salienti229 (rosso 229 = senzaPosta166), solo professionisti — regola 230 car.
+  ✓ 2 la modalita' arriva alla partita in ogni contesto — 
+  ✓ 3 i tornei della Nazionale: tasto e modalita' letta dalla scelta o dalla ripresa — 
+B+C. braccio VERDE
+  ✓ B titolare · campionato con posta: il tasto c'e' — bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.» · peso 5
+  ✓ B titolare · coppa nazionale: il tasto c'e' — bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+  ✓ B titolare · Europa girone: il tasto c'e' — bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+  ✓ B titolare · Europa eliminazione diretta: il tasto c'e' — bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+  ✓ B titolare · Nazionale (amichevole): il tasto c'e' — bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+  ✓ B panchina · campionato: il tasto non c'e' — panchina mostrata true · bottoni ["Gioca · parti dalla panchina","Simula e avanza la settimana","Non ora"]
+  ✓ B panchina · Europa eliminazione diretta: il tasto non c'e' — panchina mostrata true · bottoni ["Gioca · parti dalla panchina","Simula e avanza la settimana","Non ora"]
+  ✓ B squalificato · coppa nazionale: il tasto non c'e' — squalifica mostrata true · bottoni ["Simula e avanza la settimana","Non ora"]
+  ✓ B squalificato · Europa girone: il tasto non c'e' — squalifica mostrata true · bottoni ["Simula e avanza la settimana","Non ora"]
+  ✓ B errori di pagina — []
+  ✓ C la partita KO aperta col tasto e' a soli salienti (testimone, velo) — testimone {"chiesta":true,"scelta243":false,"attiva":true} · velo true ·  []
+  ✓ C pareggio a eliminazione diretta → rigori in entrambe, stesso risultato — rigori true/true · forzati {"ok":true,"min":3} {"ok":true,"min":3} · risultato {"h":1,"a":1} vs {"h":1,"a":1}
+  ✓ C libro mastro e schermata finale identici — voci 10/10 · finale 1897/1897 car. · settimana 2/2
+  ✓ C il turno si chiude come nella partita intera (calendario, stato europeo, storico, presenze) — intera {"cal":{"played":true,"result":{"homeScore":1,"awayScore":1,"won":false,"drew":true}},"euro":{"phase":"quarti","eliminated":false,"champion":false,"koRound":1,"koResults":[{"phase":"r16","name":"Ottavi di Finale","oppId":"lazio","opp":"FC Biancocelesti","homeS · soli {"cal":{"played":true,"result":{"homeScore":1,"awayScore":1,"won":false,"drew":true}},"euro":{"phase":"quarti","eliminated":false,"champion":false,"koRound":1,"koResults":[{"phase":"r16","name":"Ottavi di Finale","oppId":"lazio","opp":"FC Biancocelesti","homeS
+  ✓ C errori di pagina — [[],[],null]
+B+C. braccio ROSSO (__CPM_NO_G229)
+  ✗ B titolare · campionato con posta: il tasto c'e' — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] · nota «» · peso 5
+  ✗ B titolare · coppa nazionale: il tasto c'e' — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] · nota «»
+  ✗ B titolare · Europa girone: il tasto c'e' — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] · nota «»
+  ✗ B titolare · Europa eliminazione diretta: il tasto c'e' — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] · nota «»
+  ✗ B titolare · Nazionale (amichevole): il tasto c'e' — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] · nota «»
+  ✓ B panchina · campionato: il tasto non c'e' — panchina mostrata true · bottoni ["Gioca · parti dalla panchina","Simula e avanza la settimana","Non ora"]
+  ✓ B panchina · Europa eliminazione diretta: il tasto non c'e' — panchina mostrata true · bottoni ["Gioca · parti dalla panchina","Simula e avanza la settimana","Non ora"]
+  ✓ B squalificato · coppa nazionale: il tasto non c'e' — squalifica mostrata true · bottoni ["Simula e avanza la settimana","Non ora"]
+  ✓ B squalificato · Europa girone: il tasto non c'e' — squalifica mostrata true · bottoni ["Simula e avanza la settimana","Non ora"]
+  ✓ B errori di pagina — []
+  ottavo a soli salienti: tasto false · tasto assente ["tasto dei momenti salienti assente: la partita non si apre a soli salienti"]
+VERDE: PASSA
+ROSSO: CADE (come deve): tasto assente fuori dal campionato senza posta, partita KO non apribile a soli salienti
