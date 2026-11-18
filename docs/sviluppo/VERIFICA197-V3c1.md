@@ -29,4 +29,4 @@
 3. **GAME_VERSION nel build verificato `a81ebb10` vale ancora `7.999.196`** (il gate stampa `gameVersion 7.999.196`); come da istruzioni non l'ho toccato. Lo segnalo perché il build finale del lotto 197 non porta ancora il numero 197.
 4. Nota tecnica: sulla copia della 196 (`../w196`, worktree detached su `3076a1b7`) `node_modules` di `tests/visual` è un collegamento a quello della 197; le `devDependencies` sono identiche fra i due commit (il diff di `package.json` tocca solo script).
 
-Nessuna foto in `docs/` rigenerata da questi controlli (lista vuota a ogni corsa). Nessun file di `src/` o `tests/` modificato.
+Foto rigenerate: solo `gigante-212` ha riscritto 16 immagini e 2 json in `docs/sviluppo/giro212/`; rimesse con `git checkout --` e mai committate (il mio filtro di ripristino escludeva per errore `docs/sviluppo/`, me ne sono accorto alla fine e le ho ripristinate a mano). Le altre corse non hanno toccato `docs/`. Nessun file di `src/` o `tests/` modificato.
