@@ -2951,5 +2951,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaBjjQ6f11QCGsdGGGp",
+  "titolo": "verifica 197 · blocco V3e1",
+  "creata": "2026-11-18T20:01:49Z",
+  "chiusa": "2026-11-18T23:45:38Z",
+  "cost_usd": 2.63400792,
+  "output_tokens": 17403,
+  "cache_read_tokens": 7300250,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
