@@ -6,7 +6,7 @@
    Scenari (CPM_SCENARI, separati da virgola):
      trasferta-tel  · salvataggio pro, partita di campionato in trasferta, 375x812: ingresso, highlight, festa del fischio finale «Doppietta» (forzata)
      casa-pc        · partita di coppa in casa, 1280x720, piu' la premiazione di coppa (anche trasferta-pc, casa-tel)
-     festa-vera-tel · partita del provino giocata fino al fischio (autoplay, 2 gol forzati): la festa che nasce dal fischio finale vero
+     festa-vera-tel · partita del provino giocata fino al fischio (autoplay, 2 gol forzati, vittoria provocata dal giro 266): la festa che nasce dal fischio finale vero
      cerimonie-tel  · presentazione (beat 3), gala, parata col pullman, intro della schermata d'avvio
    VERDE: ogni corpo misurato ha statura in [1,45 · 2,05] m (bambini dell'ingresso in [1,05 · 1,45] m; i corpi in campo sono disegnati a
    0,9 della statura dichiarata per scelta del giro 21, _scalaCorpo21: un calciatore da 1,80 misura 1,62), nessun corpo con ossa dentro
@@ -124,8 +124,23 @@ async function festaVera(v) {
     await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 4545, policy: 'seeded', tickMs: 300 }));
     const t0 = Date.now(); let ph = null;
     while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
-      if (ph === 'ceremony' || ph === 'ended') break; await page.evaluate(() => { window.__CPM_G212W = []; }).catch(() => {}); await sleep(600); }
-    log.push(quando(`${nomeSc}: fischio finale → ${ph} dopo ${((Date.now() - t0) / 1000).toFixed(0)} s`));
+      if (ph === 'ceremony' || ph === 'ended') break; await page.evaluate(() => { window.__CPM_G212W = []; }).catch(() => {});
+      /* [giro 266] LA VITTORIA SI PROVOCA DALLA SONDA. La festa nasce solo da una partita VINTA (src/15, _vinta), e il risultato della
+         partita di prova non e' riproducibile (giro 261: 5 corse, 3 perse): da perse la scena non veniva giudicata = rosso dello
+         STRUMENTO. Come le statistiche (__CPM_FESTA942_FORCE), il punteggio lo porta la sonda col gancio di collaudo gia' esistente
+         __CPM_SALTA297 (giro 92, montato solo sotto ?cpmtest=1): a ogni giro, se la squadra dell'eroe (home nel tabellone logico) non
+         e' avanti di 3, il tabellone va a avversario+3 e il minuto resta quello vero. Il fischio resta quello vero della partita.
+         Margine 3: fra due giri (600 ms) l'avversario non segna tre gol. CPM_NO_VITTORIA266=1 = la sonda di prima (misura del prima). */
+      /* CPM_PERDI266=1 (solo misura): la sonda provoca la SCONFITTA, cioe' il caso del giro 261 a comando; la scena deve uscire NON GIUDICATA. */
+      /* CPM_PERDI266_FINO=<minuto>: sconfitta provocata solo fino a quel minuto, poi la vittoria provocata: la sonda deve recuperare una partita persa. */
+      const perdi266 = !!process.env.CPM_PERDI266 && (!process.env.CPM_PERDI266_FINO || ((await page.evaluate(() => window.__CPM_CLOCK && window.__CPM_CLOCK()).catch(() => 0)) | 0) < +process.env.CPM_PERDI266_FINO);
+      if (perdi266) await page.evaluate(() => { try { const s = window.__CPM_SCORE && window.__CPM_SCORE(); const m = window.__CPM_CLOCK && window.__CPM_CLOCK();
+        if (s && typeof m === 'number' && typeof window.__CPM_SALTA297 === 'function' && !(s.away >= s.home + 3)) window.__CPM_SALTA297(m, s.home, s.home + 3); } catch (_e) {} }).catch(() => {});
+      else if (!process.env.CPM_NO_VITTORIA266) await page.evaluate(() => { try { const s = window.__CPM_SCORE && window.__CPM_SCORE(); const m = window.__CPM_CLOCK && window.__CPM_CLOCK();
+        if (s && typeof m === 'number' && typeof window.__CPM_SALTA297 === 'function' && !(s.home >= s.away + 3)) { window.__CPM_SALTA297(m, s.away + 3, s.away); window.__CPM_V266 = (window.__CPM_V266 | 0) + 1; } } catch (_e) {} }).catch(() => {});
+      await sleep(600); }
+    const fine266 = await page.evaluate(() => ({ s: window.__CPM_SCORE && window.__CPM_SCORE(), f: window.__CPM_FESTA942 || null, v: window.__CPM_V266 | 0 })).catch(() => null);
+    log.push(quando(`${nomeSc}: fischio finale → ${ph} dopo ${((Date.now() - t0) / 1000).toFixed(0)} s · tabellone ${fine266 && fine266.s ? fine266.s.home + '-' + fine266.s.away : '?'} · vittoria provocata ${process.env.CPM_PERDI266 ? (process.env.CPM_PERDI266_FINO ? `sconfitta provocata fino al ${process.env.CPM_PERDI266_FINO}', poi vittoria ${(fine266 ? fine266.v : '?')} volte` : 'NO, SCONFITTA provocata (CPM_PERDI266)') : process.env.CPM_NO_VITTORIA266 ? 'NO (CPM_NO_VITTORIA266)' : (fine266 ? fine266.v : '?') + ' volte'} · festa decisa ${JSON.stringify(fine266 && fine266.f)}`));
     if (ph === 'ceremony') for (let i = 0; i < 6; i++) { await guarda(page, `${nomeSc}:festa`, 1500); if (i === 2) await foto(page, `${nomeSc}`); }
   } catch (e) { guasti.push(`${nomeSc}: ${String(e.message).slice(0, 160)}`); }
   if (errs.length) log.push(`${nomeSc}: errori di pagina ${errs.length} → ${errs[0]}`);
