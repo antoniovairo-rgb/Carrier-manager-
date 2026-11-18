@@ -9,7 +9,7 @@
    Larghezze 360 · 375 · 412 · 1366. Per ogni caso e larghezza (verde):
      - rapporto larghezze principale/Simula in [0,95 · 1,05]; altezze uguali entro 2 px;
      - titolo del principale <= 2 righe (righe distinte dei rettangoli del testo); dettaglio <= 1 riga;
-     - nessun «poi:» dentro il pulsante principale; motivo del pulsante spento presente, corpo >= 11 px, contrasto >= 4,5:1, mai troncato;
+     - nessun «poi:» dentro il pulsante principale; ogni testo troncato porta il testo intero nel title (data-tronca263); motivo del pulsante spento presente, corpo >= 11 px, contrasto >= 4,5:1, mai troncato;
      - zero errori di pagina. Un pulsante o un caso che non si trova = non giudicato = rosso.
    BRACCIO ROSSO: window.__CPM_NO_G263 (com'era) — deve cadere (almeno il caso nazionale a 360/375/412).
    Foto (dpr 2) in docs/sviluppo/giro263/ (prima = braccio rosso, dopo = verde). Uscita 0 solo se il verde passa E il rosso cade.
@@ -53,6 +53,7 @@ const MISURA = () => {
   let motivo = null; if (mot) { const cs = getComputedStyle(mot); const fg = rgb(cs.color), bg = fondo(mot); const L1 = lum(fg), L2 = lum(bg);
     motivo = { testo: mot.textContent, px: parseFloat(cs.fontSize), contrasto: +(((Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05))).toFixed(2), troncato: mot.scrollWidth > mot.clientWidth + 1 || cs.textOverflow === 'ellipsis' && cs.overflow === 'hidden', righe: righe(mot) }; }
   return { wA: +ra.width.toFixed(1), hA: +ra.height.toFixed(1), wS: +rs.width.toFixed(1), hS: +rs.height.toFixed(1), rTit: righe(tit), rDet: det ? righe(det) : 0, testoA: (a.textContent || '').trim(), titolo: tit ? tit.textContent : null, dettaglio: det ? det.textContent : null,
+    tronchi: [a, s].flatMap(b => [...b.querySelectorAll('*')].filter(e => e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflow !== 'visible').map(e => { const t = e.closest('[data-tronca263]'); return { testo: (e.textContent || '').trim(), title: t ? t.getAttribute('title') : null }; })),
     sDis: !!s.disabled, motivo, poiNelPulsante: /poi:/i.test(a.textContent || ''), righeA: righe(a) };
 };
 function giudica(m, c) {
@@ -63,6 +64,8 @@ function giudica(m, c) {
   if (!(m.rTit >= 1 && m.rTit <= 2)) out.push(`titolo su ${m.rTit} righe`);
   if (m.rDet > 1) out.push(`dettaglio su ${m.rDet} righe`);
   if (m.poiNelPulsante) out.push('«poi:» ripetuto nel pulsante');
+  /* [giro 263] un testo troncato con «…» porta il testo intero nel title (data-tronca263), altrimenti e' un taglio non voluto */
+  for (const t of (m.tronchi || [])) if (!t.title || t.title.trim() !== t.testo) out.push(`troncato senza testo intero: «${t.testo.slice(0, 30)}»`);
   if (c.spento !== m.sDis) out.push(`Simula ${m.sDis ? 'spento' : 'acceso'} (atteso ${c.spento ? 'spento' : 'acceso'})`);
   if (c.spento) { if (!m.motivo) out.push('motivo del pulsante spento assente'); else { if (m.motivo.px < 11) out.push(`motivo a ${m.motivo.px}px`); if (m.motivo.contrasto < 4.5) out.push(`motivo contrasto ${m.motivo.contrasto}`); if (m.motivo.troncato) out.push('motivo troncato'); } }
   return out.join('; ');

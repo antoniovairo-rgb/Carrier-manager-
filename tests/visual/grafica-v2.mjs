@@ -43,8 +43,11 @@ function MISURA(sel) {
     if (e instanceof SVGElement) continue;/* testo disegnato dentro uno stemma SVG: il suo fondo e' la forma dello stemma, non un colore CSS */
     const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity < 0.1) continue;
     const r = e.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
-    if (e.scrollWidth > e.clientWidth + 1 && cs.overflow !== 'visible' && cs.overflowX !== 'visible') out.tagliati.push((e.textContent || '').trim().slice(0, 30));
-    if (cs.textOverflow === 'ellipsis' && e.scrollWidth > e.clientWidth + 1) out.tagliati.push((e.textContent || '').trim().slice(0, 30));
+    /* [giro 263 · PO-514] il troncamento con «…» deciso per i pulsanti della scheda «Prossima» (data-tronca263, col testo intero nel title,
+       controllato da pulsanti-263) non e' un testo tagliato per errore */
+    const voluto263 = !!(e.closest('[data-tronca263]') && e.closest('[data-tronca263]').getAttribute('title'));
+    if (!voluto263 && e.scrollWidth > e.clientWidth + 1 && cs.overflow !== 'visible' && cs.overflowX !== 'visible') out.tagliati.push((e.textContent || '').trim().slice(0, 30));
+    if (!voluto263 && cs.textOverflow === 'ellipsis' && e.scrollWidth > e.clientWidth + 1) out.tagliati.push((e.textContent || '').trim().slice(0, 30));
     const proprio = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 0); if (!proprio) continue;
     if (/^[\p{Extended_Pictographic}\s›·]+$/u.test(e.textContent.trim())) continue;/* solo icone/emoji: non e' testo */
     const b = fondo(e), c = P(cs.color); const t = c[3] < 1 ? sopra(c, b) : c.slice(0, 3);
