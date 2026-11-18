@@ -1,0 +1,46 @@
+INIZIO design-system 06:12:58
+USCITA design-system 0 1s
+INIZIO tema-unico 06:12:59
+USCITA tema-unico 0 45s
+INIZIO typing-shortcuts 06:13:44
+USCITA typing-shortcuts 0 21s
+INIZIO coerenza-235 06:14:05
+USCITA coerenza-235 0 324s
+INIZIO accessibilita-234 06:19:29
+USCITA accessibilita-234 0 198s
+INIZIO rassegna-232 06:22:47
+USCITA rassegna-232 0 680s
+INIZIO salienti-243 06:34:07
+USCITA salienti-243 0 257s
+INIZIO barra-221 06:38:24
+USCITA barra-221 0 269s
+INIZIO tabellone-214 06:42:53
+USCITA tabellone-214 1 557s
+INIZIO rassegna-200 06:52:10
+USCITA rassegna-200 1 627s
+INIZIO rigore-191 07:02:37
+USCITA rigore-191 0 364s
+INIZIO lotteria-191 07:08:41
+INIZIO partita-vera 07:42:13
+USCITA partita-vera 0 673s
+INIZIO partita-v2 07:53:26
+USCITA partita-v2 1 293s
+INIZIO minuti-202 07:58:19
+USCITA minuti-202 0 186s
+INIZIO ripresa-202 08:01:25
+USCITA ripresa-202 0 647s
+INIZIO recupero-202 08:12:12
+USCITA recupero-202 0 723s
+INIZIO finale-202 08:24:15
+USCITA finale-202 1 0s
+INIZIO tetto-202 08:24:15
+USCITA tetto-202 0 5s
+INIZIO tempo-138 08:24:20
+USCITA tempo-138 0 836s
+INIZIO ripartenza-207 08:38:16
+USCITA ripartenza-207 0 231s
+INIZIO ripartenza-235 08:42:07
+USCITA ripartenza-235 1 425s
+INIZIO interazioni-226 08:49:12
+USCITA interazioni-226 124 1200s
+INIZIO lotteria-191 09:09:12

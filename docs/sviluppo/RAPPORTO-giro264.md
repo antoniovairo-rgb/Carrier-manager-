@@ -109,8 +109,76 @@ Durata 7 min 30 s. Registrato in `ci-runner.mjs`: catena `completa`, mappa di `s
 
 ## 6 — Controlli eseguiti (uno alla volta, `CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`)
 
-CONTROLLI_DA_INSERIRE
+**Guardiani della consegna** (tutti sul build finale, `cf91892` per il file di gioco):
+
+| controllo | esito |
+|---|---|
+| `battito-264` (nuovo) | ✅ verde 0 divergenti su 3 coppie (2 provocate, 300+ battute doppie ciascuna) · rosso `__CPM_NO_G264` cade alla prima coppia (voce 15, 6') · 7 min 28 s |
+| `solo-highlight-166` × 3 di fila | ✅ ✅ ✅ verde intero, tutti i casi (10: 244/244 voci, 3-1 = 3-1 · 11 · 12 · 12b con la sorpresa chiesta in entrambe e uguale · 13) · rosso `__CPM_NO_G166` cade su 3, 7, 8 ogni volta · ~15 min l'una |
+| `salienti-229` | ✅ verde · rosso cade |
+| `salienti-246` | ✅ verde · rosso cade su ogni percorso (17 min 30 s) |
+| `gol-eroe-154` | ✅ verde 10/10 partite valide, gol e assist dell'eroe in gioco fluido 0, 0,80 gol registrati a partita (fascia 0,2–1,2) · rosso `__CPM_NO_G154` 7 gol fluidi (67 min in sequenza) |
+| `momento-165` | ✅ 33 verdi, 0 rossi |
+| `rigorista-257` | ✅ verde e il rosso si vede |
+| `patto-238` | ✅ verde e il rosso si vede |
+| `test:logic` | ✅ uscita 0 |
+| `save-compat` | ✅ 12 pass · 0 fail |
+
+`node tools/build-src.mjs` + `node tools/check-src.mjs` dopo ogni modifica a `src/` (allineato); `node --check` su `ci-runner.mjs`.
+`highlight-95`, `ingresso-206`, `career-critical` non eseguiti (verifica di rilascio).
+
+**Mappa mirata di `src/15`** (la riga che la mirata legge davvero è la prima delle righe `src/15` di `ci-runner.mjs`: 71 guardiani; più il
+nucleo). In sequenza, tetto di 20 minuti a guardiano. Eseguiti MAPPA_N; i rimanenti sono elencati sotto come **non eseguiti**.
+
+MAPPA_TABELLA
+
+I rossi incontrati sono stati tutti ripetuti sul file di gioco della base (`origin/lavoro/197`, messo al posto di quello del giro e poi
+ripristinato) o ricondotti a un file che il giro non tocca:
+
+| rosso nella mappa | sul giro 264 | sulla base `lavoro/197` | conclusione |
+|---|---|---|---|
+| `tabellone-214` | braccio verde D (rigori in trasferta: ordine delle squadre nel tabellone) e rosso E | rosso anche lì (verdi A, B, D e rosso E) | preesistente |
+| `rassegna-200` | «partita intera non finita» entro 420 s (telefono a densità 2, velocità 2) | — misurato con `sonda-264t`: la stessa partita dura **560 s col rosso `__CPM_NO_G264` e 556 s senza** | preesistente: è il banco che non regge 420 s, non il giro |
+| `partita-v2` | «FORMA …:post: manca il tasto finale» (3 formati) | identico | preesistente |
+| `finale-202` | statico, 0 s: «ancora della simulazione non trovata» in `src/14` | `src/14` non è toccato dal giro | preesistente |
+| `ripartenza-235` | parte delegata `ripartenza-piazzato-27`: «rigore verde: nessuna battuta dopo il gol: misura cieca» | identico | preesistente |
+| `interazioni-226` | fermato dal tetto dei 20 minuti | — | non giudicato (oltre 20 minuti: verifica di rilascio) |
+
+Foto rigenerate dai guardiani in `docs/` rimesse con `git checkout --` e non committate.
 
 ## Dubbi per il PO
 
-DUBBI_DA_INSERIRE
+1. **Scelta fra i due tentativi.** Ho spedito il secondo (flushSync sul solo battito del minuto). Regge su un presupposto che ho
+   controllato leggendo il codice ma che nessun guardiano protegge: **solo il battito del minuto cambia fase**. Se un giorno un
+   sotto-passo aprisse una scena o fischiasse, la gara tornerebbe; `battito-264` la vedrebbe (provoca la doppia battuta su tutte le
+   battute), ma solo se quel sotto-passo capita entro il 30' della partita di prova. Il primo tentativo (tutte le battute in flushSync)
+   non ha questo presupposto e costa 3,1 ms a battuta sul banco invece di 0,46. Il costo su un telefono vero non l'ho misurato: non
+   posso confermare quale dei due convenga lì.
+2. **Altre precedenze a tempo reale non toccate.** La correzione chiude la gara fra il battito e l'apertura della scena. Restano
+   legati all'orologio da polso, per come sono scritti: quanti sotto-passi dell'intervallo arrivano prima che React esegua gli
+   aggiornatori in coda (`setMatchPlayers`, che scrive `matchPlayersRef` dentro l'aggiornatore) e il pagamento dei passi mancanti al
+   battito (cicli 161/967/175, che già lo compensano). Su 20 corse al 12', 3 coppie al 30', 3 + 2 partite complete a 1x e 6 a 2x non
+   hanno prodotto divergenze; non è una prova che non ne esistano altre più rare.
+3. **Le tre velocità.** Per lo stesso motivo prima del giro la partita a 2x era quasi sempre un'altra partita rispetto ai soli
+   highlight (17 su 20). Dopo, 6 partite a 2x su 6 coincidono coi soli highlight. Non ho misurato 1,5x né eseguito `match-sequence` /
+   `match-speed` (non sono nella consegna né nella riga della mappa).
+4. **I salvataggi e la «stessa partita».** Nessun campo salvato cambia. Cambia però l'esito che una data partita intera produce:
+   prima era uno dei tanti possibili secondo il carico del dispositivo, ora è quello dei soli highlight. Le medie su 20 partite non
+   si spostano in modo misurabile (sezione 4), ma con 20 partite non si vedono differenze sotto il mezzo gol a partita.
+5. **Rossi preesistenti nella mappa di `src/15`** (tabella della sezione 6): `tabellone-214`, `rassegna-200`, `partita-v2`,
+   `finale-202`, `ripartenza-235` sono rossi anche sulla base; `interazioni-226` supera i 20 minuti. La mirata di chiunque tocchi
+   `src/15` li vedrà rossi finché qualcuno non li ripara. In particolare `rassegna-200` ha un tetto di 420 s che la sua partita
+   (telefono, densità 2, velocità 2) oggi supera di oltre due minuti sul banco, e `ripartenza-piazzato-27` chiede all'eroe un rigore
+   che dal giro 257 l'eroe senza premio non tira più (ipotesi mia sul motivo: non l'ho misurata).
+6. **Il banco è più lento del nominale.** L'intervallo reale fra due battute è 95–135 ms contro i 77 nominali (in tutti i bracci,
+   anche col rosso): la partita intera di «Collaudo Salienti» dura ~300 s contro i ~195 dei rapporti del giro 166. Non dipende dal
+   giro 264 (stesso passo coi tre bracci); non so dire da quando né perché.
+7. **`ci-runner.mjs`: le righe di `src/15` nella mappa sono dieci**, e la mirata legge solo la prima (`MAPPA.find`). Ho aggiunto
+   `battito-264` alla prima e alle due che contengono `solo-highlight-166`; `solo-highlight-166` stesso **non è nella prima riga**,
+   quindi oggi la mirata di `src/15` non lo esegue. Non ho riordinato le righe (fuori consegna).
+8. **Due nomi di prova che non aprono la partita** («Statistica 20», «Statistica 21»: bottone non trovato in 10 s, con e senza il
+   rosso). Non indagato; può essere un limite della sonda o del salvataggio sintetico con quei nomi.
+9. **Durante il lavoro** ho lanciato per errore `node ci-runner.mjs mirata lavoro/197` credendo che elencasse soltanto: esegue. L'ho
+   fermato dopo meno di due minuti; non ha lasciato file modificati (controllato con `git status`). Per fermare i processi di Chrome
+   rimasti dopo uno stop ho usato due volte `pkill -x chrome` (nome esatto, non `-f`).
+10. **Roadmap**: non aggiornata (giro di sviluppo, nessuna versione spedita): la riga la scrive chi unisce e rilascia.
