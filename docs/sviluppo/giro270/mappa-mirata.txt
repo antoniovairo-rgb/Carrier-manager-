@@ -1,0 +1,20 @@
+VERDE test:logic 2s prova 1
+VERDE save-compat 2s prova 1
+VERDE spazio-270 589s prova 1
+VERDE coerenza-235 176s prova 1
+VERDE accessibilita-234 103s prova 1
+VERDE rassegna-232 666s prova 1
+VERDE salienti-229 181s prova 1
+VERDE salienti-243 221s prova 1
+ROSSO barra-221 215s prova 1 rc 1 |  1 · non giudicati 0 → ✗ bocciato ROSSO __CPM_NO_G221: barra corta vista nei tre livelli true · tasto spento muto visto true · non giudicati 0 → ✓ bocciato come deve ROSSO __CPM_NO_G229: timer che riparte intero visto true · non giudicati 0 → ✓ bocciato come deve ✗ barra-221 ROSSO 
+ROSSO2 barra-221 215s prova 2 rc 1 |  1 · non giudicati 0 → ✗ bocciato ROSSO __CPM_NO_G221: barra corta vista nei tre livelli true · tasto spento muto visto true · non giudicati 0 → ✓ bocciato come deve ROSSO __CPM_NO_G229: timer che riparte intero visto true · non giudicati 0 → ✓ bocciato come deve ✗ barra-221 ROSSO 
+ROSSO tabellone-214 675s prova 1 rc 1 | so E __CPM_NO_G216 (= 214), telefono, in trasferta: ordine (giro 216): giudicati 11 (scorrimento 0, serie non pari 4) · eroe a sinistra nella striscia 0 · tabellone eroe a sinistra 0 · stesso ordine 0 · sigle coerenti 11 · ordine opposto 0 · dopo NRZNerazzurri | SLRSLR ❌ tabellone-214 rosso 
+ROSSO2 tabellone-214 636s prova 2 rc 1 | so E __CPM_NO_G216 (= 214), telefono, in trasferta: ordine (giro 216): giudicati 11 (scorrimento 0, serie non pari 4) · eroe a sinistra nella striscia 0 · tabellone eroe a sinistra 0 · stesso ordine 0 · sigle coerenti 11 · ordine opposto 0 · dopo NRZNerazzurri | SLRSLR ❌ tabellone-214 rosso 
+ROSSO rassegna-200 607s prova 1 rc 1 | 0→1) · nessuna rassegna true · errori 0 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] R) rosso __CPM_NO_G200   ✓ rosso bocciato: puntini 0 · Avanti false · pagina 3.28 schermi (finita true)  VERDE: 11/14 ✗ ROSSO __CPM_NO_G200 bocciato: ✓ ✗ rassegna-200 ROSSO 
+ROSSO2 rassegna-200 608s prova 2 rc 1 | 0→1) · nessuna rassegna true · errori 0 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"] R) rosso __CPM_NO_G200   ✓ rosso bocciato: puntini 0 · Avanti false · pagina 3.28 schermi (finita true)  VERDE: 11/14 ✗ ROSSO __CPM_NO_G200 bocciato: ✓ ✗ rassegna-200 ROSSO 
+ROSSO rigore-191 422s prova 1 rc 1 | 0,"battuteEroe":0}     verde-banco: {"giudicate":1,"dopo191":0,"doppi":0,"battuteEroe":0}     rosso-prod: {"giudicate":0,"dopo191":0,"doppi":0}     ❌ verde-prod: NON verde (o non giudicato) ❌ verde-banco: NON verde (o non giudicato) ❌ rosso __CPM_NO_G191A: rosso NON visto ❌ rigore-191 rosso 
+ROSSO2 rigore-191 422s prova 2 rc 1 | 0,"battuteEroe":0}     verde-banco: {"giudicate":0,"dopo191":0,"doppi":0,"battuteEroe":0}     rosso-prod: {"giudicate":0,"dopo191":0,"doppi":0}     ❌ verde-prod: NON verde (o non giudicato) ❌ verde-banco: NON verde (o non giudicato) ❌ rosso __CPM_NO_G191A: rosso NON visto ❌ rigore-191 rosso 
+ROSSO lotteria-191 286s prova 1 rc 1 | etto si vede ({"n":6,"stacco":6,"sguardoOk":3,"sguardoNG":0,"angMax":135.5,"portiereOk":6,"portiereNG":0,"portiereFot":0}) ✅ rosso __CPM_NO_G191D: il difetto si vede ({"n":6,"stacco":6,"sguardoOk":6,"sguardoNG":0,"angMax":7.7,"portiereOk":0,"portiereNG":0,"portiereFot":18}) ❌ lotteria-191 rosso 
+ROSSO2 lotteria-191 282s prova 2 rc 1 | ifetto si vede ({"n":6,"stacco":6,"sguardoOk":2,"sguardoNG":0,"angMax":150.7,"portiereOk":6,"portiereNG":0,"portiereFot":0}) ✅ rosso __CPM_NO_G191D: il difetto si vede ({"n":6,"stacco":6,"sguardoOk":6,"sguardoNG":0,"angMax":0,"portiereOk":0,"portiereNG":0,"portiereFot":16}) ❌ lotteria-191 rosso 
+ROSSO piazzato-204 484s prova 1 rc 1 |    at UtilityScript.evaluate (<anonymous>:372:16)     at UtilityScript.<anonymous> (<anonymous>:1:44)     at misura90 (/home/user/Carrier-manager-/tests/visual/sonda-90-204.mjs:44:16)     at async file:///home/user/Carrier-manager-/tests/visual/piazzato-204.mjs:59:54 {   log: [] }  Node.js v22.23.5 
+--- INTERROTTA: la corsa e' stata fermata al tetto di 2 h del sottofondo durante piazzato-204 prova 2 (non rilanciata); passi non eseguiti: da piazzato-204 in poi

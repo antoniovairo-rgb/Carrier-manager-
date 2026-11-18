@@ -100,7 +100,24 @@ corretto con rosso `window.__CPM_NO_G270`.
 | spazio-270 (nuovo) | verde 2/2 (rosso dentro la stessa corsa, visto 2/2) |
 | mappa mirata di src/15 + test:logic + save-compat | vedi sotto |
 
-MAPPA_PLACEHOLDER
+Mappa mirata di `src/15` (riga 29 di `ci-runner.mjs`, 71 passi + test:logic e save-compat; esclusi per regola `highlight-95`,
+`ingresso-206`, `career-critical`; uno alla volta, un rosso riprovato una volta, tetto 20 minuti per passo). Registro completo in
+`docs/sviluppo/giro270/mappa-mirata.txt`.
+
+- **Eseguiti 13 passi su 73, poi la corsa e' stata fermata dal tetto di 2 ore del sottofondo** (durante `piazzato-204`, prova 2). Seguendo
+  l'avviso dell'ambiente non l'ho rilanciata: **i 60 passi da `piazzato-204` in poi non sono stati eseguiti** (fra questi `partita-v2`,
+  che pero' ho eseguito a parte 2 volte, verde). Li deve eseguire la verifica di rilascio.
+- **Verdi (8):** test:logic, save-compat, spazio-270, coerenza-235, accessibilita-234, rassegna-232, salienti-229, salienti-243.
+- **Rossi 2 su 2 (5) + piazzato-204 rosso alla prima prova — tutti e sei rossi anche sulla base `lavoro/197` senza le mie modifiche**
+  (worktree a 9ad0bd65, stesso motivo):
+  - `barra-221`: «C pausa: la barra riparte con 10239 ms invece del rimasto 10640» (base: 10332 invece di 10649);
+  - `tabellone-214`: maxischermo dei rigori, «1–1 della partita 0» e braccio rosso E (ordine, giro 216) che non cade;
+  - `rassegna-200`: «partita intera finita (…, 420 s)» — stesso tetto di parete da 420 s corretto in questo giro per altri due controlli;
+  - `rigore-191`: «verde-banco giudicate 0/1, battuteEroe 0»;
+  - `lotteria-191`: braccio rosso che non si vede come atteso;
+  - `piazzato-204`: verde e rossi del maxischermo passano, il controllo esce rosso (errore di pagina in `UtilityScript.evaluate`).
+  La mia unica modifica al gioco e' il margine di `riep259` nel post partita (src/15): nessuno di questi rossi passa da li'.
+- `rassegna-200` ha rigenerato foto in `docs/sviluppo/giro200/`: rimesse com'erano con `git checkout --`, non committate.
 
 ## Dubbi per il PO
 
@@ -112,8 +129,12 @@ MAPPA_PLACEHOLDER
 2. **Il salto all'85' nei due controlli.** partita-rigiocata-194 e spazio-296 non giocano piu' 90 minuti veri: 10' veri, poi l'85'. Per
    quello che giudicano (conferenza dopo il fischio, spazi del post partita) basta, ma il post partita misurato e' quello di una partita
    «corta» (meno eventi). Se il PO preferisce la partita intera, il controllo deve poter durare 15-20 minuti per braccio.
-3. **Altri controlli con lo stesso tetto di parete.** `schede-259` ha `TETTO=420000` sulla partita intera con lo stesso schema; non era nella
-   lista e non l'ho toccato (lo vedra' la mappa se rosso).
+3. **Altri controlli con lo stesso tetto di parete.** `rassegna-200` (rosso nella mappa, anche sulla base: «partita intera finita, 420 s») e
+   `schede-259` (`TETTO=420000`) aspettano la partita intera con lo stesso schema. Non erano nella lista del lotto: non li ho toccati.
+   Se il PO vuole, `lib/fischio-270.mjs` si applica allo stesso modo.
+6. **Mappa mirata incompleta.** 13 passi su 73 (vedi sopra): la corsa e' stata fermata al tetto di 2 ore e non l'ho rilanciata. Sei rossi
+   preesistenti trovati (barra-221, tabellone-214, rassegna-200, rigore-191, lotteria-191, piazzato-204), tutti rossi anche sulla base: fuori
+   dal lotto 197 come chiesto («niente altro oltre a questi controlli»). Decide il PO se e quando ripararli.
 4. **infortunio-263 verde sulla 196 per caso.** La verifica di rilascio della 196 poteva vederlo verde o rosso: con la correzione e' stabile.
 5. **coppa-prestito-245 e le giornate di campionato dopo il prestito.** Nella sonda, dopo il prestito ogni giornata di lega del club nuovo
    veniva «bonificata come gia' giocata» e recuperata «senza di te». Nel banco e' dovuto al salvataggio S12 riportato indietro dalla
