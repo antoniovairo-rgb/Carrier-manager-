@@ -1,0 +1,23 @@
+A) verde — soli highlight
+  ✓ partita a soli highlight finita ({"h":3,"a":1})
+  ✓ schede 1,2,3,4 · puntini 4 · Avanti true · Salta true
+  ✓ scheda 1 «1/4 · RISULTATO» · 1.12 schermi (tetto 1.3) · Avanti true
+  ✓ scheda 2 «2/4 · VOTO E GIOCATE» · 1.24 schermi (tetto 1.3) · Avanti true
+  ✓ scheda 3 «3/4 · GIORNALI» · 1.04 schermi (tetto 1.3) · Avanti true
+  ✓ scheda 4 «4/4 · CLASSIFICA» · 1.19 schermi (tetto 1.3) · tasto di sempre true
+  ✓ scheda 4: classifica (con la tua riga) e prossima partita «CLASSIFICA › Prima dei risultati degli altri campi · questa partita: +3 punti 1° FC Westfalen 3 pt 2° FC Leipzig 3 pt 3°»
+  ✓ contenuto di prima presente: 106/106 righe della pagina unica (3.26 schermi) nelle 4 schede
+  ✓ zero errori di pagina 
+  ✓ misure schede 1:1.12 2:1.24 3:1.04 4:1.19 · pagina unica 3.26
+B) verde — partita intera (velocita' 2)
+  ✗ partita intera finita ({"h":2,"a":1}, 420 s)
+  ✗ schede  →  →  → 
+  ✗ puntino → «undefined»; Salta torna alla carriera e salva (matchHistory 0→0, fase carriera) · errori 0
+C) verde — Simula dal prompt
+  ✓ Simula: partita salvata (matchHistory 0→1) · nessuna rassegna true · errori 0 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+R) rosso __CPM_NO_G200
+  ✓ rosso bocciato: puntini 0 · Avanti false · pagina 3.28 schermi (finita true)
+
+VERDE: 11/14 ✗
+ROSSO __CPM_NO_G200 bocciato: ✓
+✗ rassegna-200 ROSSO

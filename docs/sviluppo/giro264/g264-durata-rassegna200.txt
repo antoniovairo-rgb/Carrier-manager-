@@ -1,0 +1,3 @@
+{"braccio":"rosso","finita":true,"sec":560,"minuto":92,"score":{"h":1,"a":0},"playingSec":520,"sceneSec":39,"impronta":"dc76031f0b"}
+{"braccio":"verde","finita":true,"sec":556,"minuto":92,"score":{"h":3,"a":1},"playingSec":501,"sceneSec":55,"impronta":"c2b3b5ca9c"}
+FINE
