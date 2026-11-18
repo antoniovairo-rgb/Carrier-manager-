@@ -2797,5 +2797,47 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYia9ciQsQC1p8Z5NavoE",
+  "titolo": "giro 273 · squalifica-222 nato nella 197",
+  "creata": "2026-11-18T16:23:09Z",
+  "chiusa": "2026-11-18T17:14:06Z",
+  "cost_usd": 2.46385398,
+  "output_tokens": 20099,
+  "cache_read_tokens": 4414137,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaCLLzwGZu2tXCCgpsL",
+  "titolo": "verifica 197 · blocco V2a",
+  "creata": "2026-11-18T17:05:36Z",
+  "chiusa": "2026-11-18T17:14:01Z",
+  "cost_usd": 2.00130058,
+  "output_tokens": 13078,
+  "cache_read_tokens": 4243692,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaBUkk19ZQvFRGBu2xs",
+  "titolo": "verifica 197 · blocco V2b",
+  "creata": "2026-11-18T17:05:38Z",
+  "chiusa": "2026-11-18T17:11:48Z",
+  "cost_usd": 1.70515368,
+  "output_tokens": 11220,
+  "cache_read_tokens": 3343534,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
  }
 ]
