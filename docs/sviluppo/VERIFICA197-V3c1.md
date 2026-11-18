@@ -15,4 +15,4 @@
 | esiti-241 | verde (342 s) | — | — | verde | `BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno` (prima: `✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede`) |
 | validate-situations | verde (839 s) | — | — | verde | `✅ PASS` — 14/14, fingerprint `00001505`, 0 failure; `final-state OK` (24 situations, 0/24 al limite), `post-highlight OK` (6 situations, 0 coppie scartate) |
 | gigante-212 | verde (1043 s) | — | — | verde | `✅ difetto riprodotto — col rosso __CPM_NO_G212 tornano 3 corpi sopra 2.05 m` (verde: `✅ PASS — 12 scene giudicate, nessun corpo fuori misura…`) |
-| parata-100 | oltre tetto di 2 s (rc 124 a 2400 s; il processo figlio ha poi stampato `✅ parata-100 verde · il rosso si vede` a 22:10:46) | in corsa | — | in corso | — |
+| parata-100 | oltre tetto di 2 s (rc 124 a 2400 s; il processo figlio ha poi stampato `✅ parata-100 verde · il rosso si vede` a 22:10:46) | oltre tetto di 3 s (rc 124 a 2400 s; poi `✅ parata-100 verde · il rosso si vede` a 22:51:03) | in corsa (tetto 60 min) | oltre tetto | — |
