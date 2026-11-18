@@ -75,7 +75,7 @@ export async function misuraC(browser, port, NO = [], { clip = process.env.CPM_C
     await serata(p, 1); await p.waitForFunction(() => !!window.__CPM_PRES142.cam, null, { timeout: 90000 }); await sleep(2600); await serata(p, 3);
     const S = await p.evaluate(async () => { const P = window.__CPM_PRES142; const S = []; const t0 = performance.now(); let visto = false, fuori = false;
       while (performance.now() - t0 < 150000) { await new Promise(r => requestAnimationFrame(r)); const i = P.pi144; if (i == null || i < 0) continue; const m = P.men[i];
-        S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, or: P.orient256 ? P.orient256(i) : null, r261: m.userData.r261v != null ? m.userData.r261v : null, m261: m.userData.m261, d256: m.userData.d256 ? JSON.stringify(m.userData.d256) : null }); return o || (m.userData.d256 ? JSON.stringify(m.userData.d256) : null); })() });
+        S.push({ t: P.t144, w: P.w144 || 0, ts: P.ts240 || 0, z: m.position.z, or: P.orient256 ? P.orient256(i) : null, r261: m.userData.r261v != null ? m.userData.r261v : null, m261: m.userData.m261, d256: m.userData.d256 ? JSON.stringify(m.userData.d256) : null });
         const z = m.position.z; if (z > 6.5) visto = true; if (visto && z < 6.02 && (P.t144 || 0) > 3) { if (fuori) break; fuori = true; } if ((P.t144 || 0) > 60) break; }
       return S; });
     const nrm = q => { const m = Math.hypot(...q); return q.map(x => x / m); }, aq = (a, c) => { a = nrm(a); c = nrm(c); return 2 * Math.acos(Math.min(1, Math.abs(a[0] * c[0] + a[1] * c[1] + a[2] * c[2] + a[3] * c[3]))) * 180 / Math.PI; };

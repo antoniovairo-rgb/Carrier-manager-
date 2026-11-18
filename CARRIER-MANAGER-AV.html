@@ -46914,7 +46914,7 @@ function _posa192(av,i,salutaR,osc,parte){/* [giro 261] parte 1 = solo la spalla
     const dL=new T.Vector3().addScaledVector(V.up,-0.955).addScaledVector(lat,0.05+0.010*b261).addScaledVector(fwd,0.24+0.06*k+0.30*o225+0.050*b261).normalize();
     punta(la,hd,dL);}}
 function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
-  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr]|lowerarm_l|hand_l)$/.test(o.name))B[o.name]=o;});
+  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr]|clavicle_[lr])$/.test(o.name))B[o.name]=o;});
   if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
   /* mescolatore a valanga (lo stesso di appearanceFromSeed): il passo di LCG singolo dava a semi vicini lo stesso numero, cioe' la stessa posa */
   const R=k=>(typeof _mix32==='function'?_mix32((seme>>>0)+Math.imul(k,0x9e3779b9)):((seme>>>0)^Math.imul(k,2654435761))>>>0)/4294967296;
@@ -46948,7 +46948,7 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
      clavicola, poi _posa192 la ruota ancora, e al fotogramma dopo la regola prendeva quell'uscita come una posa nuova: due correzioni che si
      inseguono, un po' piu' indietro a ogni fotogramma. Ora la clavicola e' riscritta in assoluto dalla base a ogni fotogramma, come gli omeri:
      la regola delle spalle e la posa del giro 192 lavorano una volta sola, sempre dalla stessa partenza. Rosso __CPM_NO_G261. */
-  const base261={};['clavicle_l','clavicle_r','lowerarm_l','hand_l'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});/* avambraccio e mano SINISTRI: i destri li riscrive gia' il saluto del giro 144; i sinistri tornavano alla partenza solo attraverso la memoria della regola delle spalle */
+  const base261={};['clavicle_l','clavicle_r'].forEach(n=>{if(B[n])base261[n]=B[n].quaternion.clone();});
   /* vita: frequenze e fasi dal seme, ampiezze piccole (gradi) */
   const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
   const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
