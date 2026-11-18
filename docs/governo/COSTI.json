@@ -2710,5 +2710,20 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaANwDD9Wve6TSpFSeH",
+  "titolo": "giro 265 · portiere-223 niente tuffo sul pallone largo",
+  "creata": "2026-11-18T01:02:56Z",
+  "chiusa": "2026-11-18T08:11:42Z",
+  "cost_usd": 2.81141562,
+  "output_tokens": 12530,
+  "cache_read_tokens": 5960341,
+  "worker_epoch": 2,
+  "nota": "worker riavviato: il costo potrebbe essere parziale",
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-18"
  }
 ]
