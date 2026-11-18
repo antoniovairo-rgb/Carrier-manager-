@@ -1,0 +1,76 @@
+### gate dopo 4 · 13:51:10 · mem libera 15459 MB · disco 28G
+post-highlight gi0: maxCam 0.4 · coppie 7 · scartate 0 · fase iniziale hl_result · apertura pallone fermo dopo 865 ms · passi [130ms:0.0N 145ms:7.6N 139ms:0.2N 141ms:0.3N 141ms:0.3 131ms:0.4 136ms:0.4]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate dopo 4 = 0 in 845 s
+### gate dopo 5 · 14:05:15 · mem libera 15301 MB · disco 28G
+post-highlight gi0: maxCam 0.9 · coppie 7 · scartate 0 · fase iniziale hl_result · apertura pallone fermo dopo 781 ms · passi [138ms:0.0N 118ms:7.9N 115ms:0.2N 119ms:0.3N 121ms:0.4 224ms:0.8 219ms:0.9]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate dopo 5 = 0 in 869 s
+### esiti-241 dopo 1 · 14:19:44 · mem libera 15325 MB · disco 28G
+VERDE A1 fallo cercato 0/2 · A2 dribbling col lessico del passaggio 0/16 · A3 motore contrasto (conduzione+contrasto+rammarico) · B contraddizioni 0/3
+ROSSO A1 fallo cercato 2/2 · A2 dribbling col lessico del passaggio 16/16 · A3 motore tiro (conduzione+tiro+rammarico) · B contraddizioni 3/3
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» «⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!» [osservati 7.0 s di scena in 13 s reali] ❌ «filtrante» su un cross/palla in area (PO-250) | chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» «👁️ Che apertura! Il primo tentativo è murato — palla viva!» [osservati 7.1 s di scena in 13 s reali] ❌ chance: il testo racconta una conclusione respinta che il 3D non mostra
+  gi150 «🌀 Dribbling provocatorio — il fallo c'è!» chance/win_freekick «Palla d'oro!» «🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!» [osservati 4.2 s di scena in 7 s reali] ❌ fallo cercato riuscito raccontato senza fallo
+ROSSO G102 (__CPM_NO_G102) B contraddizioni 2/2
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» [osservati 7.2 s di scena in 14 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» [osservati 7.2 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede
+BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+### USCITA esiti-241 dopo 1 = 0 in 319 s
+### esiti-241 dopo 2 · 14:25:03 · mem libera 15447 MB · disco 28G
+VERDE A1 fallo cercato 0/2 · A2 dribbling col lessico del passaggio 0/16 · A3 motore contrasto (conduzione+contrasto+rammarico) · B contraddizioni 0/3
+ROSSO A1 fallo cercato 2/2 · A2 dribbling col lessico del passaggio 16/16 · A3 motore tiro (conduzione+tiro+rammarico) · B contraddizioni 3/3
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» «⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!» [osservati 7.2 s di scena in 13 s reali] ❌ «filtrante» su un cross/palla in area (PO-250) | chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» «👁️ Che apertura! Il primo tentativo è murato — palla viva!» [osservati 7.1 s di scena in 13 s reali] ❌ chance: il testo racconta una conclusione respinta che il 3D non mostra
+  gi150 «🌀 Dribbling provocatorio — il fallo c'è!» chance/win_freekick «Palla d'oro!» «🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!» [osservati 4.0 s di scena in 10 s reali] ❌ fallo cercato riuscito raccontato senza fallo
+  scartata (non «chance»): gi16 assist/null «Assist decisivo!»
+ROSSO G102 (__CPM_NO_G102) B contraddizioni 2/2
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» [osservati 7.0 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» [osservati 7.2 s di scena in 12 s reali] [pagina 2] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede
+BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+### USCITA esiti-241 dopo 2 = 0 in 349 s
+### esiti-241 dopo 3 · 14:30:52 · mem libera 15451 MB · disco 28G
+VERDE A1 fallo cercato 0/2 · A2 dribbling col lessico del passaggio 0/16 · A3 motore contrasto (conduzione+contrasto+rammarico) · B contraddizioni 0/3
+ROSSO A1 fallo cercato 2/2 · A2 dribbling col lessico del passaggio 16/16 · A3 motore tiro (conduzione+tiro+rammarico) · B contraddizioni 2/3
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» «⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!» [osservati 7.3 s di scena in 12 s reali] ❌ «filtrante» su un cross/palla in area (PO-250) | chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi150 «🌀 Dribbling provocatorio — il fallo c'è!» chance/win_freekick «Palla d'oro!» «🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!» [osservati 4.1 s di scena in 8 s reali] ❌ fallo cercato riuscito raccontato senza fallo
+ROSSO G102 (__CPM_NO_G102) B contraddizioni 2/2
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» [osservati 7.1 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» [osservati 7.2 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede
+BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+### USCITA esiti-241 dopo 3 = 0 in 313 s
+### esiti-241 dopo 4 · 14:36:05 · mem libera 15458 MB · disco 28G
+VERDE A1 fallo cercato 0/2 · A2 dribbling col lessico del passaggio 0/16 · A3 motore contrasto (conduzione+contrasto+rammarico) · B contraddizioni 0/3
+  scartata (non «chance»): gi16 assist/null «Assist decisivo!»
+ROSSO A1 fallo cercato 2/2 · A2 dribbling col lessico del passaggio 16/16 · A3 motore tiro (conduzione+tiro+rammarico) · B contraddizioni 2/3
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» «⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!» [osservati 7.0 s di scena in 13 s reali] ❌ «filtrante» su un cross/palla in area (PO-250) | chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi150 «🌀 Dribbling provocatorio — il fallo c'è!» chance/win_freekick «Palla d'oro!» «🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!» [osservati 4.2 s di scena in 8 s reali] ❌ fallo cercato riuscito raccontato senza fallo
+ROSSO G102 (__CPM_NO_G102) B contraddizioni 2/2
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» [osservati 7.0 s di scena in 12 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» [osservati 7.0 s di scena in 11 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede
+BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+### USCITA esiti-241 dopo 4 = 0 in 330 s
+### esiti-241 dopo 5 · 14:41:35 · mem libera 15452 MB · disco 28G
+VERDE A1 fallo cercato 0/2 · A2 dribbling col lessico del passaggio 0/16 · A3 motore contrasto (conduzione+contrasto+rammarico) · B contraddizioni 0/3
+ROSSO A1 fallo cercato 2/2 · A2 dribbling col lessico del passaggio 16/16 · A3 motore tiro (conduzione+tiro+rammarico) · B contraddizioni 3/3
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» «⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!» [osservati 7.3 s di scena in 12 s reali] ❌ «filtrante» su un cross/palla in area (PO-250) | chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» «👁️ Che apertura! Il primo tentativo è murato — palla viva!» [osservati 7.1 s di scena in 12 s reali] ❌ chance: il testo racconta una conclusione respinta che il 3D non mostra
+  gi150 «🌀 Dribbling provocatorio — il fallo c'è!» chance/win_freekick «Palla d'oro!» «🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!» [osservati 4.2 s di scena in 7 s reali] ❌ fallo cercato riuscito raccontato senza fallo
+ROSSO G102 (__CPM_NO_G102) B contraddizioni 2/2
+  gi14 «↗️ Cross basso teso» chance/chance «Palla d'oro!» [osservati 7.1 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+  gi16 «↗️ Cross teso» chance/chance «Palla velenosa in area!» [osservati 7.1 s di scena in 13 s reali] gk:{"gk_dive":1} ❌ chance: il portiere si tuffa su una consegna in area (PO-250)
+✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede
+BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno
+### USCITA esiti-241 dopo 5 = 0 in 316 s
+FINE

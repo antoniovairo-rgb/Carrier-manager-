@@ -138,7 +138,12 @@ rosso si legge dal registro. `CPM_PH_APRI=0` rimette l'attesa fissa (braccio ros
 
 Sulle sei scene del check (2 prove l'una): 0 salti su 12, pallone fermo dopo 0,8-2,5 s, nessuna apertura al tetto.
 
-SERIE_DOPO
+**Serie dopo la riparazione, sull'attuale, una alla volta** (registri `giro271/catena271-1.txt` e `catena271-2.txt`):
+
+| controllo | corse | verdi | rosso visto |
+|---|---|---|---|
+| `validate-situations` (14 categorie su 14) | 5 | **5 su 5** (845-869 s) — gi0: pallone fermo dopo 0,78-1,08 s, salto scoperto 0,4-0,9; lo stacco d'esito (7,6-8,8 u) cade dentro il nero | sì: lo stesso gate con `CPM_PH_APRI=0` (attesa fissa) è rosso 2 corse su 5, e sulla base 1 su 5 |
+| `esiti-241` | 5 | **5 su 5** (313-349 s) — in 2 corse una scena uscita «assist» (gi16, una volta nel braccio G102 e una nel rosso) è stata scartata e rifatta | sì, in ogni corsa: rosso A 2/2 · 16/16 · tiro, rosso B 2/3 (2 corse) o 3/3 (3 corse), rosso C 0/2, rosso G102 2/2 |
 
 ## C) Righe doppie nella mappa mirata di `tests/visual/ci-runner.mjs` (dubbio 7 del 265) — **non ho scelto**
 
@@ -261,7 +266,26 @@ Uno alla volta (`CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`), memoria
 `build-src` + `check-src` all'inizio: IDENTICO BYTE PER BYTE (nessun file di `src/` toccato, quindi la mappa mirata dei
 file toccati è vuota: restano il nucleo e i controlli della consegna).
 
-TABELLA_CONTROLLI
+| Controllo | Esito | Durata | Ultima riga / numeri |
+|---|---|---|---|
+| `portiere-252` (verde + rosso), 2 corse complete con la sonda riparata | ✅ verde ×2 | 836 · 879 s | «✅ portiere-252 VERDE (seme 1; rosso visto…)» — 1ª: verde KO 0/11 · rosso KO 2/11 (gi13@88,14 fuori e parata) · 2ª: verde KO 0/11 · rosso KO 3/11 (gli stessi + gi9 fuori, tutti «verso») |
+| `portiere-223` (verde + rosso `__CPM_NO_G223`) | ✅ verde | 422 s | «✅ VERDE — sui tiri sbagliati il pallone non attraversa il portiere…» · «❌ ROSSO (atteso: __CPM_NO_G223) — 13 difetti» |
+| `esiti-241`, 5 corse sulla base + 5 sull'attuale, strumento com'era | ✅ verde ×10 | 317-339 s | «✅ esiti-241 verde … e il rosso si vede» |
+| `esiti-241` riparato, 5 corse | ✅ verde ×5 | 313-349 s | «BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno» (2 scene scartate e rifatte in tutto) |
+| `validate-situations` com'era, 5 corse sulla base | ⚠️ 4 verdi, **1 rossa** | 851-876 s | rossa: «❌ FAIL — post-highlight», gi0 salto camera 45,3 |
+| `validate-situations` com'era (`CPM_PH_APRI=0`), 5 corse sull'attuale | ⚠️ 3 verdi, **2 rosse** | 836-870 s | rosse: gi0 salto camera 42,4 · 41,9 |
+| `validate-situations` riparato, 5 corse | ✅ verde ×5 | 845-869 s | «✅ PASS», 14 categorie su 14 |
+| `parata-100` | PARATA100 |
+| `test:logic` | ✅ verde | 2 s | 51 prove, 0 fallite |
+| `save-compat` | ✅ verde | 1 s | «SAVE-COMPAT 12 pass · 0 fail · PASS» |
+| `design-system` (nucleo) | ✅ verde | 1 s | «✅ SISTEMA GRAFICO OK» |
+| `tema-unico` (nucleo) | ✅ verde | 17 s | «ROSSO ATTESO OK: col tema di prova armato cade P (fondo non notte)» |
+| `typing-shortcuts` (nucleo) | ✅ verde | 15 s | «✅ PASS — chi scrive tiene la tastiera…» |
+| `web-237` (nucleo) | ✅ verde | 56 s | «PROVA DEL ROSSO RIUSCITA: il guardiano vede la traduzione nel browser» |
+| `node --check` su tutti i file `.mjs` toccati | ✅ | — | — |
+
+Due corse non valgono e non sono in tabella: un'esplorazione di `portiere-252` tagliata dal tetto di dieci minuti a due
+scene dalla fine (i risultati per scena letti fin lì sono riportati come esplorazione) e la sua attesa, fermata a mano.
 
 Non eseguiti per regola: `highlight-95`, `ingresso-206`, `career-critical` (li esegue la verifica di rilascio).
 `docs/governo/STABILITA.json` non toccato (non ho usato `ci-runner.mjs`). Nessuna foto di altri giri rigenerata in `docs/`.
@@ -292,8 +316,8 @@ Non eseguiti per regola: `highlight-95`, `ingresso-206`, `career-critical` (li e
 4. **`esiti-241`: il rosso del 265 non riprodotto.** 10 corse verdi su 10. La riparazione chiude la sola sorgente di
    instabilità che ho misurato (esito «assist» al posto di «chance», 4 scene su 60); se il rosso del 265 aveva un'altra
    causa (macchina sotto carico: in quella sessione il contenitore è stato riavviato), può tornare.
-5. **`esiti-241`, braccio rosso B: margine sottile.** Pretende ≥ 2 scene contraddittorie su 3 e di norma ne escono
-   proprio 2 (gi14 e gi150; gi16 solo a volte, dipende dal testo sorteggiato). Con la riparazione gi14 è sempre una
+5. **`esiti-241`, braccio rosso B: margine sottile.** Pretende ≥ 2 scene contraddittorie su 3 e ne escono 2 o 3
+   (nelle 5 corse finali: 2 su 3 due volte, 3 su 3 tre volte; gi16 dipende dal testo sorteggiato). Con la riparazione gi14 è sempre una
    «chance», quindi il 2 regge; ma è un margine di una scena. Non ho cambiato la soglia.
 6. **Il testimone `__CPM_CUTLIVE` non usa lo stesso criterio del gioco.** Il gioco considera «nero vivo» anche la propria
    richiesta di stacco appena fatta (`_cutAt471`); il testimone legge solo il timbro scritto da LiveMatch, che arriva
