@@ -11503,7 +11503,7 @@ const getThisWeekMatchday=()=>{
             </Fisarmonica>
           )}
           </GruppoProfilo235>
-          <GruppoProfilo235 id="contratto" titolo="Contratto e attributi" nota="Attributi, stile di gioco, contratto e futuro">
+          <GruppoProfilo235 id="contratto" titolo="Contratto e attributi" nota={(neutro287()&&!(typeof window!=="undefined"&&window.__CPM_NO_G268))?"Attributi, contratto e futuro":"Attributi, stile di gioco, contratto e futuro"}>{/* [giro 268] eroe neutro (PO-287): la nota non promette la scheda «Stile di gioco» che non c'e'; rosso window.__CPM_NO_G268 */}
           {/* [6.84.0 collaudo PO] «Esporta salvataggio JSON» spostato IN FONDO al sottotab Profilo (era qui, tra contratto e statistiche) */}
           {/* [6.77.0 collaudo PO «duplicazione box da eliminare»] il banner-identità (avatar+nome+club+OVR) era
               la COPIA dell'header globale dell'app sempre visibile in cima → rimosso; restano le STATISTICHE
