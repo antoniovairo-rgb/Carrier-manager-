@@ -1,5 +1,8 @@
 # Verifica di rilascio 7.999.197 — blocco V1c
 
+**Sintesi: 14 controlli su 21 eseguiti · 11 verdi · 1 instabile 1 su 2 (`scena3d-96`) · 2 dichiarati, rossi anche sulla 196
+(`buildup-sync`, `difesa-220-scena`) · nessun rosso NATO nella 197 · 7 non eseguiti per il tetto del blocco (§4).**
+
 Sola esecuzione e classificazione: nessun file di `src/` o `tests/` modificato. Build verificato: `lavoro/197` a **30a456b3**
 (staccato, «Unione sviluppo/giro271-portiere252-esiti in lavoro/197»), `node tools/build-src.mjs` → byte identici,
 `node tools/check-src.mjs` → allineato a HEAD. Confronto: copia della 7.999.196 pubblicata (`origin/main` **3076a1b7**) in
@@ -96,7 +99,7 @@ Elenco completo numerato (65); la mia parte è una posizione ogni tre (3, 6, 9, 
 65. `parata-258` (src/13)
 
 
-## 2 · Esiti (10 su 21 eseguiti)
+## 2 · Esiti (14 su 21 eseguiti)
 
 | # | Controllo | Esito 1ª | Esito 2ª | Esito sulla 196 | Classificazione | Ultima riga del controllo |
 |---|---|---|---|---|---|---|
@@ -110,17 +113,17 @@ Elenco completo numerato (65); la mia parte è una posizione ogni tre (3, 6, 9, 
 | 24 | `linee-61` | verde (691 s) | — | — | **verde** | 1ª: «✅ PASS linee-61» |
 | 27 | `inquadra-273` | verde (667 s) | — | — | **verde** | 1ª: «✅ PASS inquadra-273 (0.0%)» |
 | 30 | `buildup-sync` | rosso(rc=2) (162 s) | rosso(rc=2) (163 s) | rosso(rc=2) (170 s) | **dichiarato (rosso anche sulla 196: rosso(rc=2))** | 1ª: «  · gi83/az0: salto del pallone di 26.7u in 43ms (a x 18.76) al passaggio di beat INGRESSO→carry» · 2ª: «  · gi91/az0: salto del pallone di 27.9u in 57ms (a x 45) al passaggio di beat INGRESSO→carry» · 196: «  · gi96/az0: salto del pallone di 22.3u in 49ms (a x 36.69) al passaggio di beat INGRESSO→carry» |
-| 33 | `cross-218` | da eseguire | | | | |
-| 36 | `bambini-294` | da eseguire | | | | |
-| 39 | `pressing-143` | da eseguire | | | | |
-| 42 | `difesa-220-scena` | da eseguire | | | | |
-| 45 | `piedi-252` | da eseguire | | | | |
-| 48 | `difesa-220-giro31` | da eseguire | | | | |
-| 51 | `reazione-252` | da eseguire | | | | |
-| 54 | `cerimonie` | da eseguire | | | | |
-| 57 | `strisce-corpo` | da eseguire | | | | |
-| 60 | `gk-dive-sync` | da eseguire | | | | |
-| 63 | `rete-252` | da eseguire | | | | |
+| 33 | `cross-218` | verde (174 s) | — | — | **verde** | 1ª: «✅ cross-218 verde (riquadro, motore e 3D concordi sul cross sbagliato) e il rosso si vede» |
+| 36 | `bambini-294` | verde (340 s) | — | — | **verde** | 1ª: «✅ bambini-294 verde (e il rosso si vede)» |
+| 39 | `pressing-143` | verde (23 s) | — | — | **verde** | 1ª: «✅ pressing-143 verde (e il rosso si vede)» |
+| 42 | `difesa-220-scena` | rosso (2355 s) | rosso (2391 s) | rosso (verdetto stampato; corsa chiusa a ~2400 s, vedi dubbio 5) (2401 s) | **dichiarato (rosso anche sulla 196)** | 1ª: «❌ difesa-220-scena · verde: 5 scene col contrasto mai partito nella sua scena (attesa del pallone, tetto 0,5 s)» · 2ª: «❌ difesa-220-scena · verde: 6 scene col contrasto mai partito nella sua scena (attesa del pallone, tetto 0,5 s)» · 196: «❌ difesa-220-scena · verde: 4 scene col contrasto mai partito nella sua scena (attesa del pallone, tetto 0,5 s)» |
+| 45 | `piedi-252` | **non eseguito** (tetto del blocco) | | | | |
+| 48 | `difesa-220-giro31` | **non eseguito** (tetto del blocco) | | | | |
+| 51 | `reazione-252` | **non eseguito** (tetto del blocco) | | | | |
+| 54 | `cerimonie` | **non eseguito** (tetto del blocco) | | | | |
+| 57 | `strisce-corpo` | **non eseguito** (tetto del blocco) | | | | |
+| 60 | `gk-dive-sync` | **non eseguito** (tetto del blocco) | | | | |
+| 63 | `rete-252` | **non eseguito** (tetto del blocco) | | | | |
 
 
 ## 3 · Dubbi (scritti, non decisi)
@@ -134,3 +137,22 @@ Elenco completo numerato (65); la mia parte è una posizione ogni tre (3, 6, 9, 
 3. **63 contro 64.** Il §5 del giro 265 dichiara 64 non eseguiti ma ne nomina 63; ho usato i nomi.
 4. Le altre due sessioni del blocco V1 devono ricavare lo stesso elenco: se il loro differisce, la numerazione qui sopra è quella che
    ho usato io.
+5. **`difesa-220-scena`, durate al limite.** Le tre corse sono durate 2355 · 2391 · ~2401 s contro un tetto di 2400. Tutte e tre hanno
+   stampato il verdetto «❌ … scene col contrasto mai partito» (5 · 6 · 4 scene), quindi il rosso è un rosso vero e non un tetto;
+   la terza (sulla 196) è finita a ridosso del tetto e il suo codice d'uscita non l'ho registrato (la sequenza era stata fermata,
+   vedi §4). Il braccio rosso del guardiano si vede in tutte le corse (fuori 9 · 9 · 6). Classificato **dichiarato**: rosso sulla
+   196 con lo stesso difetto.
+6. **`buildup-sync` dichiarato**: stesso difetto sulla 197 (2 e 3 salti del pallone 19-28 u al passaggio INGRESSO→carry) e sulla 196
+   (3 salti + gi24 «si muove solo la palla»). Le scene colpite cambiano da corsa a corsa (gi40, gi83, gi84, gi91, gi92, gi96).
+7. **`scena3d-96` instabile 1 su 2**: alla prima un solo rosso (D11, un salto del pallone 3,1 u in 0,05 s su tabo-gi64, scrittore
+   `buildup-volo`, 31/31 scene giudicate); alla riprova verde. Non rifatto sulla 196 (la regola lo chiede solo per i rossi 2 su 2).
+
+## 4 · Tetto del blocco: 7 controlli non eseguiti
+
+La sequenza è partita alle 17:08; alle 21:10 (4 ore) restavano `piedi-252`, `difesa-220-giro31`, `reazione-252`, `cerimonie`,
+`strisce-corpo`, `gk-dive-sync`, `rete-252`. Ho lasciato finire la corsa in volo (`difesa-220-scena` sulla 196, chiusa alle 21:32) e
+ho fermato la sequenza per rispettare il tetto «circa 4 ore» della consegna. **Questi 7 non sono stati eseguiti da questo blocco**:
+vanno assegnati da chi coordina. `gk-dive-sync` e `rete-252` il giro 265 li ha eseguiti verdi sul suo build (vedi dubbio 1).
+
+Nessun file di `src/` o `tests/` toccato; nessuna foto rigenerata committata (`git checkout -- docs/` dopo ogni corsa, albero pulito
+sia qui sia nella copia della 196).
