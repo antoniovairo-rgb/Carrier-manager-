@@ -190,7 +190,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     const phSamples = [];
     for (const gi of phIdx) {
       const POLL = 110;
-      const s = await samplePostHighlight(page, gi, { windowMs: 1100, pollMs: POLL });
+      const s = await samplePostHighlight(page, gi, { windowMs: 1100, pollMs: POLL, apri: process.env.CPM_PH_APRI !== '0' });/* [giro 271] si risolve a scena aperta (pallone fermo); CPM_PH_APRI=0 = l'attesa fissa di prima, braccio rosso dello strumento */
       let maxCam = 0, maxBall = 0, movers = 0, scartati = 0, coppie = 0;
       for (let i = 1; i < s.frames.length; i++) {
         const f0 = s.frames[i - 1], f1 = s.frames[i];
@@ -215,11 +215,11 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
         if (f0.ball && f1.ball) maxBall = Math.max(maxBall, D(f0.ball, f1.ball));
         if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
       }
-      phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers, scartati, coppie });
+      phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers, scartati, coppie, aperta: s.aperta || null });
       /* [giro 271] strumento: la sequenza che ha prodotto il numero (intervallo reale, passo di camera, stacco, fase), cosi' un rosso di
          questo controllo si legge dal registro senza rifare la corsa. Solo stampa. */
       { const seq = []; for (let i = 1; i < s.frames.length; i++) { const a0 = s.frames[i - 1], a1 = s.frames[i]; seq.push(`${a1.t - a0.t}ms:${(a0.cam && a1.cam) ? Math.hypot(a1.cam.x - a0.cam.x, a1.cam.y - a0.cam.y, a1.cam.z - a0.cam.z).toFixed(1) : '?'}${(a0.cut || a1.cut) ? 'N' : ''}${a1.phase !== a0.phase ? '>' + a1.phase : ''}`); }
-        console.log(`post-highlight gi${gi}: maxCam ${maxCam.toFixed(1)} · coppie ${coppie} · scartate ${scartati} · fase iniziale ${s.frames[0] ? s.frames[0].phase : '?'} · passi [${seq.join(' ')}]`); }
+        console.log(`post-highlight gi${gi}: maxCam ${maxCam.toFixed(1)} · coppie ${coppie} · scartate ${scartati} · fase iniziale ${s.frames[0] ? s.frames[0].phase : '?'} · apertura ${s.aperta ? (s.aperta.settled ? 'pallone fermo dopo ' : 'TETTO a ') + s.aperta.ms + ' ms' : 'attesa fissa'} · passi [${seq.join(' ')}]`); }
       try { replayRefs.push(writeReplayTrace(OUT, s)); } catch (_e) { /* trace best-effort, non blocca il gate */ }
       await sleep(300);
     }
