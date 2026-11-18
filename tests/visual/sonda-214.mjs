@@ -100,7 +100,10 @@ export async function misura214(browser, port, { rosso216 = false, rosso = false
      cerimonia con la striscia presente e tornata alla partita (senza «RIGORI»); se la cerimonia finisce prima, l'ultima lettura resta
      quella fuori cerimonia e il verde cade (non giudicato = rosso). fasiDopo272 dice cosa si e' visto e quando. */
   let dopo = null; const fasiDopo272 = []; const tDopo = Date.now();
-  for (let i = 0; i < 80; i++) { await sleep(250); dopo = await leggiStabile(); fasiDopo272.push(dopo.ph + (dopo.min ? '/' + dopo.min : '') + '@' + (Date.now() - tDopo));
+  const ok272 = (d) => d && d.ph === 'ceremony' && d.ris && d.sx != null && !/RIGORI/i.test(d.min || '');
+  const ultimo272 = campioni.length ? campioni[campioni.length - 1] : null;/* la lettura (stabile) che ha chiuso la serie: se e' gia' la cerimonia giusta vale come prima lettura del dopo */
+  if (ultimo272 && ultimo272.ph !== 'shootout') { dopo = ultimo272; fasiDopo272.push('chiusura:' + dopo.ph + (dopo.min ? '/' + dopo.min : '')); }
+  for (let i = 0; i < 80 && !ok272(dopo); i++) { await sleep(250); dopo = await leggiStabile(); fasiDopo272.push(dopo.ph + (dopo.min ? '/' + dopo.min : '') + '@' + (Date.now() - tDopo));
     if (dopo.ph === 'shootout') continue; if (dopo.ph !== 'ceremony') break; if (dopo.ris && dopo.sx != null && !/RIGORI/i.test(dopo.min || '')) break; }
   if (foto && dopo.ris) await pg.screenshot({ path: foto + '-dopo.png' });
   if (foto && fotoMeta) fs.writeFileSync(foto + '-serie.png', fotoMeta);
