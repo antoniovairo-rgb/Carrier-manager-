@@ -22,10 +22,15 @@ for (const rosso of [false, true]) {
     return { club: tot, conOmonimo: n, esempi: es }; }, save);
   await page.evaluate(() => window.__CPM_CAREER.goTab('profile'));
   await sleep(1500);
-  const fis = page.locator('text=Storico allenatori').first();
+  /* [giro 268] dal giro 235 (PO-457, «Profilo in 4-5 gruppi con nomi chiari») lo storico vive nel gruppo «Persone», chiuso di
+     partenza: si apre il gruppo con un tocco come farebbe il giocatore, poi la fisarmonica come prima */
+  const gr = page.locator('section[data-gruppo235="Persone"] > button[aria-expanded="false"]').first();
+  try { if (await gr.count()) { await gr.scrollIntoViewIfNeeded({ timeout: 5000 }); await gr.click({ timeout: 5000 }); await sleep(600); } } catch (e) {}
+  /* [giro 268] e la fisarmonica si chiama «I tuoi allenatori» (NOMI235, stesso giro); «Storico allenatori» resta per il rosso del 235 */
+  const fis = page.locator('[data-cpm-fis] button').filter({ hasText: /I tuoi allenatori|Storico allenatori/ }).first();
   try { await fis.scrollIntoViewIfNeeded({ timeout: 5000 }); await fis.click({ timeout: 5000 }); } catch (e) {}
   await sleep(1200);
-  const vista = await page.evaluate(() => { const t = [...document.querySelectorAll('*')].find(e => e.textContent.trim() === 'Storico allenatori'); let box = t; for (let i = 0; i < 6 && box && box.parentElement; i++) box = box.parentElement;
+  const vista = await page.evaluate(() => { const t = [...document.querySelectorAll('*')].find(e => /^(I tuoi allenatori|Storico allenatori)$/.test(e.textContent.trim())); let box = t; for (let i = 0; i < 6 && box && box.parentElement; i++) box = box.parentElement;
     const txt = box ? box.innerText : ''; return { figurine: box ? box.querySelectorAll('[data-cpm="mister215"]').length : 0, icone: (txt.match(/🧑‍💼/g) || []).length, righe: (txt.match(/Fiducia/g) || []).length, conClub: (txt.match(/FC [A-Z]|Athletic|United|City|Real|Sporting/g) || []).length, testo: txt.slice(0, 400) }; });
   if (!rosso) await page.screenshot({ path: new URL('./out/mister-215.png', import.meta.url).pathname, fullPage: false }).catch(() => {});
   const _e = { omo, vista: { figurine: vista.figurine, icone: vista.icone, righe: vista.righe } };
