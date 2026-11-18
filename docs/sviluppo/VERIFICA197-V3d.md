@@ -12,3 +12,8 @@
 | classifica-194 | rosso (500 s) | rosso (498 s) | in coda | in attesa della 196 | ❌ classifica-194: la giornata 34 non risulta giocata (settimana 38, playMatch true, fase playing) |
 | sigle-203 | verde (618 s) | — | — | verde | prova del rosso: il difetto si vede (VERDE 8 ok · 0 ko) |
 | tocco-213 | verde (253 s) | — | — | verde | ✓ tocco-213 VERDE |
+| salienti-229 | verde (176 s) | — | — | verde | ROSSO: CADE (come deve): tasto assente fuori dal campionato senza posta, partita KO non apribile a soli salienti |
+| schermate-97 | rosso (65 s) | rosso | in coda | in attesa della 196 | ✗ D14 +150 ms: fase hl_intro, luminosita' 115.9, neri 0% · schermate-97 ROSSO |
+| web-237 | verde (52 s) | — | — | verde | [web-237] braccio ROSSO … PROVA DEL ROSSO RIUSCITA (verde: menu in 462 ms) |
+| formazioni-262 | verde (47 s) | — | — | verde | ✅ formazioni-262 verde (e il rosso si vede) |
+| pulsanti-263 | verde (133 s) | — | — | verde | ✓ pulsanti-263 VERDE |
