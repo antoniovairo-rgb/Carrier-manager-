@@ -8,7 +8,7 @@
 
 | controllo | esito 1ª | esito 2ª | esito sulla 196 | classificazione | ultima riga / casi rossi |
 |---|---|---|---|---|---|
-| ingresso-206 | in corsa | — | — | — | — |
-| career-critical | da eseguire | — | — | — | — |
+| ingresso-206 | verde (rc 0, ~40 min, 11 casi incl. 3 bracci rossi che si vedono) | non necessaria | non necessaria | **verde** | «✅ ingresso-206 verde (regia per tipo, ingresso breve nelle normali, coreografia/fumogeni/coriandoli/inno solo dove previsti, squadra schierata, fps tenuti) e il rosso si vede» |
+| career-critical | in corsa | — | — | — | — |
 
 ## Note e dubbi
