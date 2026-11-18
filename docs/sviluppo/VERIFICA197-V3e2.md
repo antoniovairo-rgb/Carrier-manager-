@@ -14,3 +14,4 @@
 | stat-279 | verde (41 s) | — | — | verde | `✅ STAT-279 OK` |
 | lessico-218 | verde (2 s) | — | — | verde | `✅ lessico-218 verde (0 su 138 azioni-tiro col lessico di passaggio) e il rosso si vede (138 su 138)` |
 | tabellino-228 | verde (388 s) | — | — | verde | `✅ tabellino-228 verde (e il rosso si vede)` |
+| intervista-231 | rosso (1873 s) | rosso (1875 s) | rosso (1921 s) — stessi 6 difetti | dichiarato (rosso anche sulla 196) | `· rosso: la partita non e' arrivata al fischio {"fine":"playing",… 53' …}` |
