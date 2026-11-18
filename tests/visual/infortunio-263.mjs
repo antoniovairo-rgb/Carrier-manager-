@@ -111,6 +111,15 @@ async function braccio(id, extra, via, sett) {
     }
   }
   await sleep(900);
+  /* [giro 270] si attende l'EVENTO «salvataggio allineato», non un tempo fisso (PROCESSO.md, controlli instabili): l'autosave ha un
+     debounce di 600 ms che riparte a ogni cambio di player, e la copia delle finestre aperte (scelte201, giro 201) cambia player ~0,5 s
+     dopo la simulazione quando si apre l'impulso della settimana: misurato 3 volte su 10 sia su 7.999.196 sia su lavoro/197, salvataggio
+     a ~1080 ms invece di ~650, e la lettura a 900 ms trovava la settimana vecchia. Tetto 10 s: se il salvataggio non arriva, si legge
+     comunque e il controllo resta rosso come prima. */
+  for (let t0 = Date.now(); Date.now() - t0 < 10000;) {
+    const al = await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot() || {}; const l = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};
+      const f = x => JSON.stringify([x.week, x.fatigue, !!x.injured, (x.matchHistory || []).length]); return f(p) === f(l); });
+    if (al) break; await sleep(100); }
   const dopo = await stato(page);
   await ctx.close();
   return { id, via, sett, azione, suspVivo, fatPrima, prima, dopo, errori, avanzata: dopo.week === prima.week + 1 };

@@ -32,7 +32,12 @@ for (const rosso of [false, true]) {
     const L = legaDopoTrasferimento212({ ...g, week: W }, club, g.leagueOverrides || {});
     const usate = new Set((L.newCalendar || []).filter(m => !m.played).map(m => m.week));
     const libere = []; for (let w = W + 1; w <= 37; w++) if (!usate.has(w)) libere.push(w);
-    const cal = (g.calendar || []).filter(m => m.played || (!m.type && m.week <= W));
+    /* [giro 270] dal giro 155 (D17, bassi di PO-337 accettati dal PO il 10/11) il registro playedMd RICOPIA ogni voce giocata del calendario:
+       la semifinale gia' giocata dal salvataggio S12 (giornata 993) va tolta anche dal calendario, non solo dal registro, altrimenti il
+       registro la riscrive e la semifinale del banco viene bonificata come «gia' giocata». Stato impossibile in gioco (un turno giocato e
+       da giocare insieme): e' il banco che lo creava. */
+    const _giaFatto270 = m => m.type === 'cup' && ((m.cupRound != null && m.cupRound >= R) || (m.matchday >= 990 + R && m.matchday <= 999));
+    const cal = (g.calendar || []).filter(m => (m.played && !_giaFatto270(m)) || (!m.type && m.week <= W));
     cal.push({ matchday: 993, week: CRW[R], opponentId: 'x', opponentName: 'Avversario di coppa', isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: R, cupRoundName: CRN[R] });
     libere.forEach(w => cal.push({ matchday: 800 + w, week: w, opponentId: 'nat', opponentName: 'Portogallo', isHome: true, played: false, result: null, type: 'national' }));
     C.patch({ week: W, weekLived: false, calendar: cal, playedMd: { s: g.season, md: ((g.playedMd && g.playedMd.md) || []).filter(x => x < 990 || x > 999) }/* il salvataggio S12 ha gia' giocato la SUA semifinale (giornata 993): senza pulire il registro la voce di coppa del banco risulterebbe gia' giocata */, euro: null, euroMondiale: null, nationsCupQueue: null, injury: null,
