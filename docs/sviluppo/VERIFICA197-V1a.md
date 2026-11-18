@@ -105,6 +105,10 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
 | 16 | `panchina-293` | ✅ verde (228 s) | — | — | verde | «✅ panchina-293 verde (16/16 corpi CGTrader in ingresso e in partita, 0 procedurali, 0 CH38, piedi/bacino in tolleranza, fps >= 0.85 x rosso) e il rosso si vede» |
 | 19 | `corpi-073` | ✅ verde (415 s) | — | — | verde | «✅ corpi-073 verde (282,283,284f)» |
 | 22 | `render-3d-023` | ❌ non giudicato (121 s): `page.waitForFunction: Timeout 120000ms exceeded` a `render-3d-023.mjs:54` (attesa della home) | ❌ identico (121 s) | ❌ rosso (44 s) ma **per un'altra causa**: arriva alla home in 7303 ms e boccia «heap 1509.7 MB > 700» | **dichiarato** (rosso anche sulla 196) — vedi dubbio 3 | 197: `Node.js v22.23.5` dopo il TimeoutError · 196: «❌ RENDER 3D — 1 problemi: · heap 1509.7 MB > 700» |
+| 25 | `pallone-278` | ✅ verde (123 s) | — | — | verde | «✅ pallone-278 verde (rapporto in [0.08;0.19], alone <= 0.45 in ingresso/gioco/highlight) e il rosso si vede (6 soglie cadute)» |
+| 28 | `salti-274` | ❌ rosso (599 s): Ivo Mansi, 2 salti non spiegati in conclusione (arco 13,4u/0,028s · 8,5u/0,029s) | ❌ rosso (595 s): stessi 2 salti (13,4u · 8,5u) | *in corsa* | *in attesa della 196* | «❌ FAIL salti-274» («TOTALE salti non spiegati in conclusione: 2») |
+| 31 | `po229-gi38` | ✅ verde (32 s) | — | — | verde | «✅ PASS — 1 scene: restituzione, servizio al compagno e conclusione giocati» |
+| 34 | `scene-221` | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 chiusi | ⏱ oltre tetto (2400 s, rc 124): 5 semi su 6 | *in corsa, tetto 60 min* | *in attesa della 196* | «seme 5 fine ceremony scene 6 gol eroe 0» (ultimo seme 42 non raggiunto) |
 <!-- RIGHE -->
 
 ## Dubbi
@@ -117,3 +121,5 @@ Elenco completo numerato (65), divisione uno ogni 3: **la mia parte è 1, 4, 7, 
    indagato (consegna: niente correzioni). Una causa possibile, **non verificata**, è che sulla 197 la home si monti prima, o in modo
    diverso, e l'osservatore non veda la mutazione. Per la regola PO-516 lo classifico «dichiarato», ma un rosso «non giudicato» sulla
    197 non dimostra che il difetto della 196 (heap) ci sia ancora. Lo decide la madre.
+4. `partita-vera`: una prima corsa (partita alle 20:06) è stata **interrotta** da me dopo pochi secondi, insieme al gruppo in sottofondo
+   che stava per toccare il suo limite di 2 ore. Non vale: la rifaccio da capo.
