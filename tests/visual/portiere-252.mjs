@@ -14,37 +14,65 @@ const CASI = [[13, 'fail', null], [13, 'fail', 'saved'], [15, 'fail', null], [15
      (startZone di quella scena, nella sua pagina: il gioco non cambia) vicino al fondo, sulla fascia: x 88, y 14 / y 86. Misurato in
      esplorazione col solo braccio rosso: gi13 da (88,14) KO «verso» 2 su 2, gi1 da (88,86) KO «tardi». Gli stessi casi girano nel braccio
      verde, che deve restare senza KO. Il seme del bersaglio e' quello del caso base (stessa scena, stesso esito). */
-  [13, 'fail', null, [88, 14]], [13, 'fail', 'saved', [88, 14]], [1, 'fail', 'saved', [88, 86]]];
+  [13, 'fail', null, [88, 14]], [13, 'fail', 'saved', [88, 14]], [1, 'fail', 'saved', [88, 86]],
+  /* [giro 271] PORTIERE SULLA LINEA: le tre scene che nella partita «Validator» del banco (portiere nato a x 97) si giudicano ancora.
+     Tutte le altre righe qui sopra girano nella partita col portiere avanzato (la geometria su cui il guardiano e' stato tarato fino al
+     giro 148); sulla linea 5 delle 8 scene base non sono piu' giudicabili («il pallone non arriva al portiere», vedi rapporto 271). */
+  [13, 'fail', null, null, 'L'], [13, 'fail', 'saved', null, 'L'], [67, 'success', null, null, 'L']];
 /* [giro 111 PO-311] SEME FISSO: il bersaglio dei tiri e' Math.random del gioco; la sonda lo rende una sequenza fissa (ripristinata prima
    di OGNI scena), cosi' le stesse 8 scene danno gli stessi angoli a ogni giro e verde e rosso sono confrontabili. CPM_SEME252=0 lo spegne
    (come prima del giro 111); CPM_SEME252=<n> cambia la serie. */
+/* [giro 271] IL ROSSO ERA CIECO DAL GIRO 175 (0 KO su 4-7 da allora; bisezione: 5a2b17e6 portiere a x 41 e KO 2/2, 878cc43c x 47 e KO 0).
+   CAUSA MISURATA: il difetto vecchio nasce solo se il pallone ATTRAVERSA il piano del portiere prima di finire l'arco (allora il punto
+   al piano e il punto d'arrivo possono cadere da lati opposti). Il portiere in scena sta alla x con cui e' nato al calcio d'inizio
+   (x 94 ± 4, tetto 97). Fino al giro 174 quello scarto era Math.random, cioe' il seme di questa sonda: usciva 91 (mondo 41), davanti
+   all'arrivo dell'arco (x 46). Dal giro 175 lo scarto viene dal seme della PARTITA (avversario+stagione+settimana+nome): nella partita
+   «Validator» del banco esce 97 (mondo 47), DIETRO l'arrivo dell'arco — il pallone non attraversa mai il suo piano e il difetto non
+   puo' nascere. Con __CPM_NO_G175 torna a 41 e torna il KO (2 su 2). Il gioco non cambia: i tiri angolati girano in una partita
+   il cui seme fa nascere il portiere ospite AVANZATO (nome in NOMI_AVANTI; verificato a ogni scena all'armo del gesto: x mondo <= GX_AVANTI).
+   Se nessun nome lo da' piu' (un giro futuro cambia il seme), la scena e' «non giudicata» col motivo scritto, cioe' rossa. */
+const NOMI_AVANTI = (process.env.CPM_NOMI252 || 'Portiere C,Portiere D,Portiere C').split(','), GX_AVANTI = 42.5;/* mondo: 42,5 = x logica 92,5; l'arco di tiri e punizioni finisce a x 42-46,5 */
+const gkOspite = page => page.evaluate(() => { try { const g = (window.__CPM_MP() || []).find(q => q && q.gk && q.t === 'away'); return g ? g.x : null; } catch (e) { return null; } });
 const SEME = process.env.CPM_SEME252 != null ? +process.env.CPM_SEME252 : 1;
 const SZ = process.env.CPM_SZ252 ? process.env.CPM_SZ252.split(',').map(Number) : null;/* [giro 138] esplorazione: posizione di partenza dell'eroe fissata (x,y logici) */
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const bracci = process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'];
 const ris = {};
 for (const br of bracci) { ris[br] = [];
-  for (const [gi, out, kind, sz0] of CASI.filter(c => !process.env.CPM_GI || process.env.CPM_GI.split(',').map(Number).includes(c[0])).filter(c => !process.env.CPM_SOLO_ANGOLATI || c[3])) {
+  for (const [gi, out, kind, sz0, lin0] of CASI.filter(c => !process.env.CPM_GI || process.env.CPM_GI.split(',').map(Number).includes(c[0])).filter(c => !process.env.CPM_SOLO_ANGOLATI || c[3])) {
     const szC = sz0 || SZ;
-    const page = await pagina252(b, port, Object.assign(br === 'rosso' ? { __CPM_NO_GK252: 1, __CPM_NO_PARATA258: 1 } : {}, SEME ? { __SEME252: SEME * 7919 + CASI.findIndex(c => c[0] === gi && c[1] === out && c[2] === kind) } : {}));/* [giro 40 PO-258] l'arco della parata ora finisce sul piano del portiere: z finale = z al piano, e col solo NO_GK252 il difetto non si riproduce piu' (misurato: rosso 0/8; con entrambi gi15 KO come sulla base) */
-    const k = await kDi(page, gi, null);
-    if (szC) await page.evaluate(([g, z]) => { SITUATIONS[g].startZone = { x: [z[0], z[0]], y: [z[1], z[1]] }; }, [gi, szC]);
-    const r = await scena252(page, { gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_GK229 = []; if (window.__SEME252_RESET) window.__SEME252_RESET(window.__SEME252); }, raccogli: () => ({ gk: (window.__CPM_GK229 || []).slice(), kind: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind || null : null, dbg: { gkact: window.__CPM_GKACT || null, t23: (window.__CPM_TIRO23 || []).slice(-1)[0] || null, hero: (() => { try { const p = window.__CPM_PROBE && window.__CPM_PROBE(); return p && p.hero ? [+p.hero.world.x.toFixed(1), +p.hero.world.z.toFixed(1)] : null; } catch (e) { return null; } })() } }) });
-    await page.close();
+    const fl271 = Object.assign(br === 'rosso' ? { __CPM_NO_GK252: 1, __CPM_NO_PARATA258: 1 } : {}, Object.fromEntries((process.env.CPM_FLAG252 || '').split(',').filter(Boolean).map(f => [f, 1]))/* [giro 271] esplorazione: interruttori in piu' per ENTRAMBI i bracci (mai usato dal guardiano) */, SEME ? { __SEME252: SEME * 7919 + CASI.findIndex(c => c[0] === gi && c[1] === out && c[2] === kind) } : {});/* [giro 40 PO-258] l'arco della parata ora finisce sul piano del portiere: z finale = z al piano, e col solo NO_GK252 il difetto non si riproduce piu' (misurato: rosso 0/8; con entrambi gi15 KO come sulla base) */
+    /* [giro 271] av = scena nella partita col portiere AVANZATO. La precondizione si legge DOVE NASCE: la x del portiere all'armo del
+       suo gesto (__CPM_GKACT.d148.gx, mondo). Letta prima della scena da __CPM_MP non basta: la partita scorre mentre la pagina carica
+       e il portiere puo' essersi mosso (misurato: 1 pagina su 22 con x 93 al posto di 91). Se all'armo non e' davanti (gx > GX_AVANTI)
+       si riprova col nome successivo; finiti i nomi la scena e' non giudicata. */
+    const av = lin0 !== 'L' || !!sz0;
+    let r = null, gkx = null, gxArmo = null, prove = 0;
+    for (const nome of (av ? NOMI_AVANTI : [null])) { prove++;
+      const page = await pagina252(b, port, fl271, nome ? { name: nome } : null); gkx = await gkOspite(page);
+      const k = await kDi(page, gi, null);
+      if (szC) await page.evaluate(([g, z]) => { SITUATIONS[g].startZone = { x: [z[0], z[0]], y: [z[1], z[1]] }; }, [gi, szC]);
+      r = await scena252(page, { gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_GK229 = []; if (window.__SEME252_RESET) window.__SEME252_RESET(window.__SEME252); }, raccogli: () => ({ gk: (window.__CPM_GK229 || []).slice(), kind: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind || null : null, dbg: { gkact: window.__CPM_GKACT || null, t23: (window.__CPM_TIRO23 || []).slice(-1)[0] || null, hero: (() => { try { const p = window.__CPM_PROBE && window.__CPM_PROBE(); return p && p.hero ? [+p.hero.world.x.toFixed(1), +p.hero.world.z.toFixed(1)] : null; } catch (e) { return null; } })() } }) });
+      await page.close();
+      const d = r && r.dbg && r.dbg.gkact && r.dbg.gkact.d148; gxArmo = d ? d.gx : null;
+      if (!av || gxArmo == null || gxArmo <= GX_AVANTI) break; r = null; }
+    if (!r) { const p = { nonGiud: 'nessuna partita col portiere avanzato all\'armo (x mondo <= ' + GX_AVANTI + '; ultima ' + gxArmo + ', nomi ' + NOMI_AVANTI.join('/') + ')' }; ris[br].push({ gi, out, kind, sz: szC, p, ko: false, avanti: true }); console.log(`  ${br.padEnd(5)} gi${gi}${szC ? '@' + szC.join(',') : ''} ${(kind || out).padEnd(11)} n.g. (${p.nonGiud})`); continue; }
     const p = analizzaPortiere((r && r.gk) || [], { kind: (r && r.kind) || null }, { kind });
     const ko = !p.nonGiud && (p.tardi || p.verso || p.fermo);
-    ris[br].push({ gi, out, kind, sz: szC, p, ko });
-    console.log(`  ${br.padEnd(5)} gi${gi}${szC ? '@' + szC.join(',') : ''} ${(kind || out).padEnd(11)} ${p.nonGiud ? 'n.g. (' + p.nonGiud + ')' : (ko ? 'KO' : 'ok')} · ${JSON.stringify(p)}${process.argv.includes('--verbose') && r && r.dbg ? ' · ' + JSON.stringify(r.dbg).slice(0, 300) : ''}`);
+    p.gk271 = { nascita: gkx, armo: gxArmo, prove };
+    ris[br].push({ gi, out, kind, sz: szC, p, ko, avanti: av });
+    console.log(`  ${br.padEnd(5)} gi${gi}${szC ? '@' + szC.join(',') : ''}${av ? '' : ' [linea]'} ${(kind || out).padEnd(11)} ${p.nonGiud ? 'n.g. (' + p.nonGiud + ')' : (ko ? 'KO' : 'ok')} · ${JSON.stringify(p)}${process.argv.includes('--verbose') && r && r.dbg ? ' · ' + JSON.stringify(r.dbg).slice(0, 300) : ''}`);
   } }
 await Promise.race([b.close(), new Promise(r => setTimeout(r, 5000))]); srv.close();
 if (process.env.CPM_SOLO) setTimeout(() => process.exit(0), 100);
 else { const V = ris.verde.filter(x => !x.p.nonGiud), R = ris.rosso.filter(x => !x.p.nonGiud);
-  if (V.length < 4) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati'); setTimeout(() => process.exit(2), 100); }
+  if (V.length < 8) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati nel verde (minimo 8; misurati 11 su 14 nel giro 271, erano 5 su 11 col portiere sulla linea)'); console.log('BRACCIO verde · MOTIVO ' + V.length + ' portieri giudicati, minimo 8'); setTimeout(() => process.exit(2), 100); }
   else { const ok = V.every(x => !x.ko) && R.filter(x => x.ko).length >= 1;/* il difetto vecchio e' intermittente: in catena il rosso ha dato 2/8, 2/8, 2/8 e 1/7 — ne basta uno per provare che il guardiano vede */
     console.log(`\nverde: KO ${V.filter(x => x.ko).length}/${V.length} · rosso: KO ${R.filter(x => x.ko).length}/${R.length}`);
     /* [giro 111 PO-311] braccio e motivo per ULTIMI: la coda dice chi ha fallito e perche' */
     const why = []; V.filter(x => x.ko).forEach(x => why.push(`verde KO su gi${x.gi} ${x.kind || x.out} (${['tardi', 'verso', 'fermo'].filter(f => x.p[f]).join('+')})`));
     if (!R.filter(x => x.ko).length) why.push(`rosso NON VISTO: 0 KO su ${R.length} portieri giudicati (seme ${SEME}, ${CASI.length} scene)`);
+    if (!ok) ris.rosso.filter(x => x.avanti && x.p.nonGiud).forEach(x => why.push(`rosso gi${x.gi}${x.sz ? '@' + x.sz.join(',') : ''} non giudicato: ${x.p.nonGiud}`));/* [giro 271] */
     const koR = R.filter(x => x.ko).map(x => `gi${x.gi}${x.sz ? '@' + x.sz.join(',') : ''} ${x.kind || x.out} (${['tardi', 'verso', 'fermo'].filter(f => x.p[f]).join('+')})`);
     console.log(ok ? `✅ portiere-252 VERDE (seme ${SEME}; rosso visto: ${koR.length} KO — ${koR.join(', ')})` : '❌ portiere-252 ROSSO — ' + why.join(' · '));
     console.log(`BRACCIO verde+rosso · MOTIVO ${ok ? 'nessuno' : why.join(' · ')}`); setTimeout(() => process.exit(ok ? 0 : 1), 100); } }

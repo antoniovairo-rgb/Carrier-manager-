@@ -4,7 +4,7 @@
    Le pagine si aprono con `pagina252` (init comune + flag della prova): una pagina nuova per ogni gruppo di scene (7.483). */
 import { installCdnRoutes, openMatch, sleep } from './harness.mjs';
 
-export async function pagina252(b, port, flags = {}) {
+export async function pagina252(b, port, flags = {}, opts = null) {/* [giro 271] opts = opzioni di openMatch (name: il nome cambia il seme della partita, e dal giro 175 il seme decide dove nascono i ventidue) */
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page._errs = []; page.on('pageerror', e => page._errs.push(String(e.message).slice(0, 160)));
@@ -23,7 +23,7 @@ export async function pagina252(b, port, flags = {}) {
         h: p && p.hero ? [p.hero.world.x, p.hero.world.y, p.hero.world.z] : null, b: p && p.ball ? [p.ball.world.x, p.ball.world.y, p.ball.world.z] : null, g: window.__CPM_GST ? [window.__CPM_GST.cur || null, window.__CPM_GST.w, window.__CPM_GST.at || null, window.__CPM_GST.want || null, window.__CPM_GST.g || null] : null }); } } catch (e) {} requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }, flags);
-  await openMatch(page, port);
+  await openMatch(page, port, opts || undefined);
   await page.waitForFunction(() => window.__CPM_GLB_READY === true, null, { timeout: 60000 }).catch(() => {});
   page._glb = await page.evaluate(() => window.__CPM_GLB_READY === true);
   await sleep(500);
