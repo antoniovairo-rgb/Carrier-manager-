@@ -99,10 +99,21 @@ async function braccio(id, extra, via, sett) {
       if ((await page.evaluate(() => window.__CPM_CAREER.snapshot().week)) !== prima.week) break;
     }
   }
-  await sleep(900);
+  /* [giro 273] si attende l'EVENTO «salvataggio allineato alla settimana nuova», non 900 ms fissi (PROCESSO.md, controlli instabili,
+     regola 4): l'autosave ha un debounce di 600 ms che riparte a ogni cambio di player, e la copia delle finestre aperte (scelte201,
+     giro 201) cambia player ~450 ms dopo la simulazione quando si apre il «momento di carriera»: il salvataggio arriva a ~1060 ms e la
+     lettura a 900 ms trovava la settimana VECCHIA (misurato con probe-squalifica-273: 3 bracci su 81 sulla 7.999.196, 11 su 144 su
+     lavoro/197 — stessa causa di infortunio-263, giro 270). Tetto 10 s: se il salvataggio non si allinea il braccio e' «non giudicato»
+     e il controllo esce rosso (regola 7). */
+  let allineato = false;
+  for (let t0 = Date.now(); Date.now() - t0 < 10000;) {
+    allineato = await page.evaluate((w0) => { const p = window.__CPM_CAREER.snapshot() || {}; const l = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};
+      const f = x => JSON.stringify([x.week, !!x.isSuspended, x.matches || 0, x.totalMatches || 0, x.goals || 0, x.assists || 0, (x.matchHistory || []).length, (x.matchHistory || []).slice(-1)]);
+      return p.week !== w0 && f(p) === f(l); }, prima.week);
+    if (allineato) break; await sleep(100); }
   const dopo = await stato(page);
   await ctx.close();
-  return { id, via, azione, suspVivo, prima, dopo, errori, dM: dopo.matches - prima.matches, dT: dopo.totalMatches - prima.totalMatches, avanzata: dopo.week === prima.week + 1 };
+  return { id, via, azione, suspVivo, prima, dopo, errori, allineato, dM: dopo.matches - prima.matches, dT: dopo.totalMatches - prima.totalMatches, avanzata: dopo.week === prima.week + 1 };
 }
 
 const R = [];
@@ -123,7 +134,7 @@ console.log(`PO-222 · settimana di lega W${W} · coppa ${WC ? 'W' + WC : 'iniet
 console.log('braccio              via      presenze  totali  storico  ultima voce');
 for (const r of R) console.log(`${r.id.padEnd(20)} ${r.via.padEnd(8)} ${String(r.prima.matches + '→' + r.dopo.matches).padEnd(9)} ${String(r.prima.totalMatches + '→' + r.dopo.totalMatches).padEnd(7)} ${String(r.prima.histN + '→' + r.dopo.histN).padEnd(8)} ${JSON.stringify(r.dopo.ultima)}  [${String(r.azione).slice(0, 40)}]`);
 
-for (const r of R) { ok(r.avanzata, `${r.id}: la settimana avanza (misura non cieca)`); ok(!r.errori.length, `${r.id}: nessun errore di pagina ${r.errori.join(' | ')}`); }
+for (const r of R) { ok(r.allineato, `${r.id}: salvataggio allineato alla settimana nuova entro 10 s (altrimenti non giudicato)`); ok(r.avanzata, `${r.id}: la settimana avanza (misura non cieca)`); ok(!r.errori.length, `${r.id}: nessun errore di pagina ${r.errori.join(' | ')}`); }
 ok(g('sano').dM === 1 && g('sano').dT === 1, 'sano: presenza +1 (controllo)');
 for (const id of ['squalificato', 'squalificato-banco']) {
   const r = g(id);
@@ -142,6 +153,6 @@ ok(!g('squalificato').dopo.susp, 'squalificato (bottone): squalifica scontata do
 ok(g('infortunato').dM === 0 && g('svincolato').dM === 0, 'infortunato/svincolato: nessuna presenza (non-regressione)');
 
 console.log(righe.join('\n'));
-console.log(guasti.length ? `\n✗ ROSSO squalifica-222: ${guasti.length} controlli falliti` : '\n✅ VERDE squalifica-222');
+console.log(guasti.length ? `\n✗ ROSSO squalifica-222${ROSSO ? ' (braccio rosso)' : ' (braccio verde)'}: ${guasti.length} controlli falliti — ${guasti.slice(0, 2).join(' · ')}${R.some(r => !r.allineato) ? ' · NON GIUDICATO: salvataggio mai allineato' : ''}` : `\n✅ VERDE squalifica-222${ROSSO ? ' (braccio rosso: DOVEVA essere rosso)' : ' (braccio verde)'}`);
 await browser.close(); srv.close();
 process.exit(guasti.length ? 1 : 0);
