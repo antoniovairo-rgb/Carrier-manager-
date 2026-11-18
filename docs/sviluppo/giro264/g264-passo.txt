@@ -1,0 +1,6 @@
+{"braccio":"rosso","vel":"1","minuto":15,"battute":302,"intervalloMedio":103.3,"mediano":84,"p90":188,"msPerBattuta":0.25,"playingMsPerMinuto":2082,"esiti":"chance","gol":""}
+{"braccio":"verde","vel":"1","minuto":15,"battute":299,"intervalloMedio":130.9,"mediano":99,"p90":253,"msPerBattuta":0.46,"playingMsPerMinuto":2524,"esiti":"assist","gol":"5"}
+{"braccio":"rosso","vel":"1","minuto":15,"battute":300,"intervalloMedio":128.1,"mediano":94,"p90":278,"msPerBattuta":0.23,"playingMsPerMinuto":2503,"esiti":"assist","gol":"5"}
+{"braccio":"verde","vel":"1","minuto":15,"battute":300,"intervalloMedio":134.8,"mediano":108,"p90":250,"msPerBattuta":0.48,"playingMsPerMinuto":2506,"esiti":"assist","gol":"5"}
+{"braccio":"tutti","vel":"1","minuto":15,"battute":301,"intervalloMedio":127.2,"mediano":106,"p90":234,"msPerBattuta":3.1,"playingMsPerMinuto":2478,"esiti":"assist","gol":"5"}
+FINE

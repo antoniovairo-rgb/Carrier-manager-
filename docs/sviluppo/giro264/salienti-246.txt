@@ -1,0 +1,56 @@
+o della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✗ unico punto — tasti fuori dalla pre-partita ["Gioca solo i momenti salienti"]
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_choose","hl_result","playing","hl_intro"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 175 ms/minuto (minuti 0→20)
+    ✓ errori di pagina — [[],null]
+  Primavera U18 (prompt)
+    ✗ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Torna alla home"] · nota «»
+    ✓ unico punto — tasti fuori dalla pre-partita []
+    ✗ ingresso prima della prima scena — NON GIUDICATO: tasto assente
+    ✗ a soli salienti — NON GIUDICATO: tasto assente
+    ✓ errori di pagina — [[],null]
+  Coppa delle Nazioni (tasto della home)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✓ unico punto — tasti fuori dalla pre-partita []
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_move","hl_choose","hl_result","playing","hl_intro"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 137 ms/minuto (minuti 0→21)
+    ✓ errori di pagina — [[],null]
+  Coppa delle Nazioni (lobby)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✗ unico punto — tasti fuori dalla pre-partita ["Gioca solo i momenti salienti"]
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_move","hl_choose","hl_result","playing","hl_intro"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 150 ms/minuto (minuti 0→21)
+    ✓ errori di pagina — [[],null]
+  Europeo qualificazioni (tasto della home)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✓ unico punto — tasti fuori dalla pre-partita []
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_choose","hl_result","playing"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 216 ms/minuto (minuti 0→22)
+    ✓ errori di pagina — [[],null]
+  Mondiale gironi (tasto della home)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✓ unico punto — tasti fuori dalla pre-partita []
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_choose","hl_result","playing"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 202 ms/minuto (minuti 0→22)
+    ✓ errori di pagina — [[],null]
+  Mondiale gironi (lobby)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✗ unico punto — tasti fuori dalla pre-partita ["Gioca solo i momenti salienti"]
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","hl_intro","hl_choose","hl_result","playing"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 197 ms/minuto (minuti 0→20)
+    ✓ errori di pagina — [[],null]
+  Mondiale eliminazione diretta (tasto della home)
+    ✓ tasto — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Simula la partita","Torna alla home"] · nota «Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.»
+    ✓ unico punto — tasti fuori dalla pre-partita []
+    ✗ ingresso prima della prima scena — fasi ["playing","hl_intro","hl_choose","hl_result","hl_intro","hl_move","hl_choose","hl_result","hl_intro","hl_choose","hl_result","playing","hl_intro","hl_move","hl_choose","hl_result","playing","hl_intro","hl_move","hl_choose","hl_result","playing"]
+    ✓ a soli salienti — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo true · 125 ms/minuto (minuti 0→24)
+    ✓ errori di pagina — [[],null]
+  provino (creazione)
+    ✗ tasto — NON GIUDICATO: pre-partita saltata, fase playing
+    ✗ unico punto — NON GIUDICATO: pre-partita saltata, fase playing
+    ✗ ingresso prima della prima scena — NON GIUDICATO: tasto assente
+    ✗ a soli salienti — NON GIUDICATO: tasto assente
+    ✓ errori di pagina — [[],null]
+  ✓ panchina (prompt): il tasto c'e' nella pre-partita (giro 253) e solo li' — bottoni ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Gioca solo i momenti salienti","Torna alla home"] · fuori []
+VERDE: PASSA
+ROSSO: CADE (come deve) su ogni percorso

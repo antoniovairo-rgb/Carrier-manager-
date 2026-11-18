@@ -1,0 +1,8 @@
+verde {"tentativo":1,"ambientale":{"min":19,"lato":"home","scena":false,"eroe":false,"sch":false,"dopo":"kickoff","palla":[50,50],"fuori":7,"hold":0,"fine":"kickoff","pallaFine":[50,50]},"ripartenze":["eroe/sch/undefined@/hundefined/fundefined","amb/-/kickoff@50,50/h0/f7"],"gol":["highlight@2","cronaca@19"],"errs":[],"s":60}
+rosso {"tentativo":1,"ambientale":{"min":19,"lato":"home","scena":false,"eroe":false,"sch":true,"dopo":"kickoff","palla":[50,50],"fuori":0,"hold":11,"fine":"kickoff","pallaFine":[50,50]},"ripartenze":["eroe/sch/undefined@/hundefined/fundefined","amb/sch/kickoff@50,50/h11/f0"],"gol":["highlight@2","cronaca@19"],"errs":[],"s":59}
+--- piazzato dell'eroe (ripartenza-piazzato-27, verde)
+{"rigore/verde":{"caso":"rigore","braccio":"verde","fase":"chiesto","fine":{"ph":"playing","min":18,"sc":{"home":1,"away":0},"ev":["cronaca@13"],"oc":null},"nChieste":3,"stile":null,"battuta":null,"ripresa":{"lato":"away","fine":"kickoff","palla":[50,50]},"errs":[]}}
+❌ ripartenza-piazzato-27
+  · rigore verde: nessuna battuta dopo il gol (fase chiesto): misura cieca
+❌ ripartenza-235
+  · piazzato dell'eroe: lo schieramento dopo rigore/punizione non c'e' (exit 1)

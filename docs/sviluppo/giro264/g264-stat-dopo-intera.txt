@@ -1,0 +1,7 @@
+{"k":1,"finita":true,"min":92,"score":{"h":3,"a":0},"scene":5,"gol":[3,0],"tiri":[24,1],"poss":[39,61],"voci":284,"impronta":"36c4c12249","esiti":"chance,recovery,intercept,miss,miss","err":0,"sec":301}
+{"k":2,"finita":true,"min":92,"score":{"h":2,"a":0},"scene":7,"gol":[2,0],"tiri":[12,4],"poss":[39,61],"voci":253,"impronta":"1e3c46bf2d","esiti":"intercept,recovery,chance,miss,chance,chance,goal","err":0,"sec":274}
+{"k":3,"finita":true,"min":92,"score":{"h":5,"a":0},"scene":8,"gol":[5,0],"tiri":[16,4],"poss":[39,61],"voci":268,"impronta":"aeb5f3eaf0","esiti":"through,chance,goal,miss,miss,goal,miss,miss","err":0,"sec":258}
+{"k":4,"finita":true,"min":90,"score":{"h":0,"a":0},"scene":7,"gol":[0,0],"tiri":[10,4],"poss":[40,60],"voci":273,"impronta":"8d49167728","esiti":"through,intercept,miss,miss,miss,miss,intercept","err":0,"sec":231}
+{"k":5,"finita":true,"min":90,"score":{"h":1,"a":0},"scene":7,"gol":[1,0],"tiri":[15,6],"poss":[45,55],"voci":279,"impronta":"8af3848da7","esiti":"through,miss,chance,intercept,intercept,assist,miss","err":0,"sec":218}
+{"k":6,"finita":true,"min":92,"score":{"h":2,"a":0},"scene":7,"gol":[2,0],"tiri":[22,4],"poss":[38,62],"voci":260,"impronta":"f2dee26650","esiti":"intercept,foul,miss,miss,miss,miss,intercept","err":0,"sec":236}
+{"FINE":true,"modo":"intera","vel":"2","rosso":false,"partite":6,"golPerPartita":2.17,"tiriPerPartita":20.33,"possessoCasaMedio":40,"sec":1605}

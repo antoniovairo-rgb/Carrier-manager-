@@ -1,0 +1,10 @@
+A. STATICO  ✓ un solo _batt264 che chiama il battito del minuto in flushSync, usato dall'intervallo quando __CPM_NO_G264 e' assente
+B. VERDE (fino al 30')
+  = provocata · voci 76/79 · scene 1/1 · minuti 30/30 · battute doppie 318 · identiche
+  = provocata · voci 76/76 · scene 1/1 · minuti 30/30 · battute doppie 315 · identiche
+  = tempo reale · voci 76/79 · scene 1/1 · minuti 30/30 · battute doppie 0 · identiche
+C. ROSSO (__CPM_NO_G264)
+  ≠ provocata · voci 76/83 · scene 1/1 · minuti 30/31 · battute doppie 312 · prima voce diversa 15: {"arc":"pass","ev":"recita","ex":50,"ey":50,"kind":"motore","min":6,"side":"home"} ≠ {"arc":"pass","ev":"recita","ex":44.6,"ey":84.2,"kind":"motore","min":7,"side":"away"}
+MISURA — verde: divergenti 0 su 3 coppie (non giudicate 0) · rosso: divergenti 1 su 1
+VERDE: PASSA
+ROSSO: CADE (come deve): la partita intera diverge dai soli highlight

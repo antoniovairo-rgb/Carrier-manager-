@@ -1,0 +1,17 @@
+INIZIO test:logic 01:42:27 mem 15550
+USCITA test:logic 0 01:42:29
+INIZIO save-compat 01:42:29 mem 15344
+USCITA save-compat 0 01:42:37
+INIZIO salienti-229 01:42:37 mem 15305
+USCITA salienti-229 0 01:45:59
+INIZIO salienti-246 01:45:59 mem 15372
+USCITA salienti-246 0 02:03:28
+INIZIO gol-eroe-154 02:03:28 mem 15366
+USCITA gol-eroe-154 0 03:10:24
+INIZIO momento-165 03:10:24 mem 15530
+USCITA momento-165 0 03:13:44
+INIZIO rigorista-257 03:13:44 mem 15316
+USCITA rigorista-257 0 03:19:24
+INIZIO patto-238 03:19:24 mem 15521
+USCITA patto-238 0 03:33:56
+CODA-FINITA
