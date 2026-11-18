@@ -12,7 +12,7 @@
    ⚠️ Dipende dal battito del minuto: se il giro 264 lo cambia, rimisurare con probe-fischio-270. */
 import { sleep } from './harness.mjs';
 const stato = (page) => page.evaluate(() => { try { return { ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, m: window.__CPM_CLOCK ? window.__CPM_CLOCK() : null }; } catch (e) { return { ph: null, m: null }; } }).catch(() => ({ ph: null, m: null }));
-export async function aspettaFischio270(page, { daMin = 10, primaMs = 90000, aMin = 85, fermoMs = 120000, tettoMs = 900000, passoMs = 1000 } = {}) {
+export async function aspettaFischio270(page, { daMin = 10, primaMs = 90000, aMin = 85, punteggio = null, fermoMs = 120000, tettoMs = 900000, passoMs = 1000 } = {}) {
   const t0 = Date.now(); let saltoDa = null, ultimoMin = null, tMin = Date.now(), s = await stato(page);
   while (Date.now() - t0 < tettoMs) {
     s = await stato(page);
@@ -20,7 +20,7 @@ export async function aspettaFischio270(page, { daMin = 10, primaMs = 90000, aMi
     if (s.m !== ultimoMin || s.ph !== 'playing') { ultimoMin = s.m; tMin = Date.now(); }/* negli highlight l'orologio e' fermo per regola */
     if (saltoDa == null && s.ph === 'playing' && ((s.m | 0) >= daMin || Date.now() - t0 >= primaMs)) {
       saltoDa = s.m;
-      if ((s.m | 0) < aMin) await page.evaluate((a) => { const sc = window.__CPM_SCORE ? window.__CPM_SCORE() : null; window.__CPM_SALTA297(a, sc ? sc.home : null, sc ? sc.away : null); }, aMin).catch(() => {});
+      if ((s.m | 0) < aMin) await page.evaluate(([a, pt]) => { const sc = pt || (window.__CPM_SCORE ? window.__CPM_SCORE() : null); window.__CPM_SALTA297(a, sc ? sc.home : null, sc ? sc.away : null); }, [aMin, punteggio]).catch(() => {});/* punteggio {home,away}: solo per provocare un momento (es. pari dopo il 75') */
       tMin = Date.now();
     }
     if (s.ph === 'playing' && Date.now() - tMin > fermoMs) break;/* orologio fermo in gioco fluido: niente fischio, rosso vero */

@@ -45746,7 +45746,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!r.panca,ingresso:r.ingresso};const _ef=INT259.finaleEsito(_rr);
                 if(typeof window!=='undefined'){try{const _W=(window.__CPM_ESITO280=window.__CPM_ESITO280||{});_W[r.m0+"|"+r.fatto]={r:_rr,es5:r.es5||null,finale:_ef};}catch(_e){}}
                 return Object.assign({},r,{breve:_ef.breve});});}catch(_e280){}}
-            return(<div data-cpm="riep259" style={{margin:"0 0 14px",padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
+            return(<div data-cpm="riep259" style={{margin:"0 0 "+((typeof window!=='undefined'&&window.__CPM_NO_G270)?14:_sb(14))+"px",/* [giro 270] spazio fra riquadri fratelli = SP.box (regola PO-296, spazio-296: 14 px misurati sul telefono, anche su 7.999.196). Rosso __CPM_NO_G270 = 14 px */padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
               {_L.map((r,i)=>(<div key={i} style={{fontSize:FS.small,lineHeight:1.4,color:TH.text,marginTop:i?6:0}}>
                 <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
                 <span style={{color:TH.muted}}>{" \u2192 "+(r.breve||"non c'è stato il tempo di vederne l'effetto")}</span></div>))}
