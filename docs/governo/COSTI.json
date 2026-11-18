@@ -2937,5 +2937,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYia9CpyGsLpnREM5cBci",
+  "titolo": "giro 278 · analisi-217 (tasto in maiuscolo)",
+  "creata": "2026-11-18T23:19:16Z",
+  "chiusa": "2026-11-18T23:24:39Z",
+  "cost_usd": 2.04758908,
+  "output_tokens": 12069,
+  "cache_read_tokens": 3754335,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
