@@ -102,5 +102,8 @@ apertura» più che un inno. #2 e #3 sono più lunghi e vanno tagliati su un tra
 l'unico che l'autore chiama «hymn». Anteprime normalizzate prodotte nella cartella di prova (non nel repo): il PO può ascoltare i
 brani dalle pagine OpenGameArt indicate.
 
+**Anteprime da ascoltare sul telefono (giro 267):** [`giro242/inno/ASCOLTA.md`](giro242/inno/ASCOLTA.md) — i tre candidati
+(#1-#3) interi, in mono a −18 LUFS, più un taglio da 7 s per #2 (46,5-53,5 s) e #3 (41,5-48,5 s). Licenze riverificate il 18/11: CC0.
+
 Nota: il pacchetto ha già un brano CC0 dello stesso sito per le cerimonie (`music/ceremony/il-mondo-e-nostro`, Zane Little Music):
 nessun candidato è quel brano.
