@@ -15,8 +15,8 @@ Regola PO-516: rosso anche sulla 196 = DICHIARATO; verde sulla 196 = NATO nella 
 | infortunio-263 | verde (77s) | — | — | verde | `✅ VERDE infortunio-263` |
 | grafica-v2 | verde (117s) | — | — | verde | `ROSSO 269 OK: con __CPM_NO_G235 (anelli) cade la misura dei gradini del Club in ogni formato` |
 | partita-v2 | verde (464s) | — | — | verde | `ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato` |
-| testata-209 | rosso, uscita 1 (952s) | in corsa | — | in corsa | `` |
-| spazio-296 | — | — | — | da eseguire | `` |
+| testata-209 | rosso, uscita 1 (952s) | rosso, uscita 1 (953s) | rosso, uscita 1 (732s) | dichiarato (rosso anche sulla 196) | `  · rosso: il difetto non si vede («null»)` |
+| spazio-296 | in corsa | — | — | in corsa | `  tel stagione-calendario carte v:  3 mediana   7.8 min 7.8 max 7.8 · sovrapposte 0 · hscroll 0` |
 | partita-rigiocata-194 | — | — | — | da eseguire | `` |
 | tabellone-214 | — | — | — | da eseguire | `` |
 | ripartenza-235 | — | — | — | da eseguire | `` |
@@ -25,3 +25,4 @@ Regola PO-516: rosso anche sulla 196 = DICHIARATO; verde sulla 196 = NATO nella 
 ## Note e dubbi
 - agente-198 ha rigenerato 6 foto in `docs/sviluppo/giro198/`: rimesse con `git checkout --`, non committate.
 - testata-209, 1ª corsa (952 s): entrambi i bracci senza lettura — «tabellino [] · edicola «null» · scena dell'intervista n.d.» sia nel verde sia nel rosso; il controllo non ha letto nulla (equivale a «non giudicato» = rosso). Nessun messaggio d'errore nel registro (7 righe).
+- testata-209, 2ª corsa (953 s): identica alla 1ª (tabellino [] in entrambi i bracci). Sulla 196 (732 s) rosso anche lì → classificato DICHIARATO secondo PO-516. **Dubbio da segnalare, non deciso:** il modo di fallire è diverso. Sulla 196 il tabellino viene letto («FC Laguna | — | FC Sicania») e i due bracci si fermano dopo, su `locator.click: Timeout 10000ms` in attesa di «Torna alla dashboard» (testata-209.mjs:78). Sulla 197 il tabellino non viene nemmeno letto (`[]`) e ogni braccio dura ~475 s senza alcun errore stampato. Il controllo è rosso su entrambe le versioni, ma sulla 197 si ferma prima: non posso confermare che sia lo stesso difetto.
