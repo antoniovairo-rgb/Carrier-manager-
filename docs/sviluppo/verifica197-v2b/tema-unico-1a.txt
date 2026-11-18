@@ -1,0 +1,14 @@
+# tema-unico 1a 2026-11-18 17:10:40 commit 30a456b3
+Mem:           16087         618       14015          12        1704       15469
+/dev/vda        252G   12G   28G  29% /
+  S statico: 0 residui di temi alternativi
+  P preferenza cpm-dark=1: carriera aperta · fondo 13,15,20 · Opzioni aperte, 40 righe
+  B senza ?cpmtest=1 col tema di prova armato: {"bg":"#0d0f14","sec":"#9aa3b2","th":"#9aa3b2"}
+tema-unico VERDE: nessun tema alternativo nel codice, preferenza vecchia innocua, banco di prova chiuso fuori da ?cpmtest=1
+  S statico: 0 residui di temi alternativi
+  P preferenza cpm-dark=1: carriera aperta · fondo 28,32,41 · Opzioni aperte, 40 righe
+  B senza ?cpmtest=1 col tema di prova armato: {"bg":"#0d0f14","sec":"#9aa3b2","th":"#9aa3b2"}
+  ✗ P fondo della pagina 28,32,41 (atteso 13,15,20)
+  ✗ P fondo della radice 28,32,41
+ROSSO ATTESO OK: col tema di prova armato cade P (fondo non notte)
+## USCITA rc=0 durata=19s

@@ -1,0 +1,13 @@
+# convocazione-235 1a 2026-11-18 17:10:04 commit 30a456b3
+Mem:           16087         525       14110          12        1702       15562
+/dev/vda        252G   12G   28G  29% /
+verde spagna 360px: bottone primario h48 · card del kit 3 (raggio 16) · gradienti 0 · testi sotto contrasto 0 · scorrimento no → OK · tests/visual/out/convocazione-235/dopo-spagna-360.png
+rosso spagna 360px: bottone primario h47 · card del kit 2 (raggio 16) · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-360.png
+verde prima-convocazione 360px: bottone primario h48 · card del kit 3 (raggio 16) · gradienti 0 · testi sotto contrasto 0 · scorrimento no → OK · tests/visual/out/convocazione-235/dopo-prima-convocazione-360.png
+rosso prima-convocazione 360px: bottone primario h47 · card del kit 2 (raggio 16) · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-360.png
+verde spagna 412px: bottone primario h48 · card del kit 3 (raggio 16) · gradienti 0 · testi sotto contrasto 0 · scorrimento no → OK · tests/visual/out/convocazione-235/dopo-spagna-412.png
+rosso spagna 412px: bottone primario h47 · card del kit 2 (raggio 16) · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-412.png
+verde prima-convocazione 412px: bottone primario h48 · card del kit 3 (raggio 16) · gradienti 0 · testi sotto contrasto 0 · scorrimento no → OK · tests/visual/out/convocazione-235/dopo-prima-convocazione-412.png
+rosso prima-convocazione 412px: bottone primario h47 · card del kit 2 (raggio 16) · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-412.png
+✅ VERDE — convocazione al kit standard (360/412), prova del rosso riconosciuta
+## USCITA rc=0 durata=20s

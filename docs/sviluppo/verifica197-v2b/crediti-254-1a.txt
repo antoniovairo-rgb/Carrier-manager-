@@ -1,0 +1,8 @@
+# crediti-254 1a 2026-11-18 17:10:28 commit 30a456b3
+Mem:           16087         594       14040          12        1703       15493
+/dev/vda        252G   12G   28G  29% /
+  360px: pulsante 347/347 px, icona true, sotto true · voci 24 · da completare 0 · non confermabili 0 · orizz 0/0
+  412px: pulsante 394/394 px, icona true, sotto true · voci 24 · da completare 0 · non confermabili 0 · orizz 0/0
+PO-254 crediti · verde · righe del documento 21
+✅ VERDE — pulsante del kit, nessuna «Fonte da completare», ogni voce di CREDITI-fonti.md presente
+## USCITA rc=0 durata=7s

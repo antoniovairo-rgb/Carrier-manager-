@@ -1,0 +1,9 @@
+# badge-255 1a 2026-11-18 17:09:12 commit 30a456b3
+Mem:           16087         596       14042          12        1699       15491
+/dev/vda        252G   12G   28G  29% /
+412px VERDE {"a":{"testo":"v 7.999.196","opacita":1,"visibilita":"visible","w":96,"h":13},"z":{"testo":"","opacita":0,"visibilita":"hidden","w":96,"h":13}}
+412px ROSSO {"a":{"testo":"TEST KE 7.999.196","opacita":1,"visibilita":"visible","w":159,"h":18},"z":{"testo":"","opacita":0,"visibilita":"hidden","w":159,"h":18}}
+360px VERDE {"a":{"testo":"v 7.999.196","opacita":1,"visibilita":"visible","w":96,"h":13},"z":{"testo":"","opacita":0,"visibilita":"hidden","w":96,"h":13}}
+360px ROSSO {"a":{"testo":"TEST KE 7.999.196","opacita":1,"visibilita":"visible","w":159,"h":18},"z":{"testo":"","opacita":0,"visibilita":"hidden","w":159,"h":18}}
+✅ badge-255 verde (solo «v 7.999.196», svanisce) e il rosso si vede (PROD/TEST · KE)
+## USCITA rc=0 durata=47s

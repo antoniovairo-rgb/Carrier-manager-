@@ -1,0 +1,27 @@
+# spogliatoio-182 1a 2026-11-18 17:08:45 commit 30a456b3
+Mem:           16087         520       14364          12        1446       15567
+/dev/vda        252G   12G   28G  29% /
+1) Primavera — compagni pescati alla creazione (club null)
+    prima: Dario Porcu, Rocco Landi, Michele Giordano · dopo: Davide Greco, Christian Silvestri, Dario Rallo · rosa 23
+  ✓ 1) Primavera — compagni pescati alla creazione (club null): 3 compagni nello spogliatoio (3)
+  ✓ 1) Primavera — compagni pescati alla creazione (club null): tutti nella rosa mostrata (fuori: nessuno)
+  ✓ 1) Primavera — compagni pescati alla creazione (club null): archetipi e legame conservati
+  ✓ 1) Primavera — compagni pescati alla creazione (club null): migrazione idempotente (seconda passata changed=true)
+  ✓ 1) Primavera — compagni pescati alla creazione (club null): zero errori di pagina 
+2) Primavera, seconda stagione — compagni della stagione 1
+    prima: Dario Porcu, Rocco Landi, Michele Giordano · dopo: Omar Re, Franco Spagnolo, Alberto Poli · rosa 23
+  ✓ 2) Primavera, seconda stagione — compagni della stagione 1: 3 compagni nello spogliatoio (3)
+  ✓ 2) Primavera, seconda stagione — compagni della stagione 1: tutti nella rosa mostrata (fuori: nessuno)
+  ✓ 2) Primavera, seconda stagione — compagni della stagione 1: archetipi e legame conservati
+  ✓ 2) Primavera, seconda stagione — compagni della stagione 1: migrazione idempotente (seconda passata changed=true)
+  ✓ 2) Primavera, seconda stagione — compagni della stagione 1: zero errori di pagina 
+3) Professionista — compagni di una stagione vecchia
+    prima: Davide Greco, Christian Silvestri, Dario Rallo · dopo: Diego De Luca, Christian Rossi, Ettore Mancini · rosa 23
+  ✓ 3) Professionista — compagni di una stagione vecchia: 3 compagni nello spogliatoio (3)
+  ✓ 3) Professionista — compagni di una stagione vecchia: tutti nella rosa mostrata (fuori: nessuno)
+  ✓ 3) Professionista — compagni di una stagione vecchia: archetipi e legame conservati
+  ✓ 3) Professionista — compagni di una stagione vecchia: migrazione idempotente (seconda passata changed=true)
+  ✓ 3) Professionista — compagni di una stagione vecchia: zero errori di pagina 
+
+spogliatoio-182: VERDE (15 ok · 0 ko)
+## USCITA rc=0 durata=23s

@@ -1,0 +1,22 @@
+# impulsi-contesto 1a 2026-11-18 17:11:05 commit 30a456b3
+Mem:           16087         606       14025          12        1706       15481
+/dev/vda        252G   12G   28G  29% /
+impulsi nel pool: 130
+impulsi che presuppongono una carriera: 27 · senza alcuna condizione: 0
+
+_brandOk453: ragazzo di Primavera no ✓ · professionista affermato si ✓ · giovane esploso si ✓
+
+_notoOk453: ragazzo di Primavera no ✓ · professionista affermato si ✓ · giovane esploso si ✓
+
+domande d'intervista nel pool: 211 · che danno per scontato uno status, senza condizione: 0
+_statusOk453: ragazzo di Primavera no ✓ · professionista affermato si ✓ · giovane esploso si ✓
+
+domande post-gara che nominano luogo o «prima vittoria» senza condizione: 0
+_primaCasa77 trasferta (il caso del PO): no ✓
+_primaCasa77 casa, gia' vinta in casa alla 3a: no ✓
+_primaCasa77 casa, nessuna vittoria in casa prima: si ✓
+
+wi_nazionale_b guarda le partite giocate: si ✓
+
+✅ IMPULSI NEL CONTESTO GIUSTO (nessuna offerta da professionista a un ragazzo della Primavera · le regole condivise reggono ai tre profili)
+## USCITA rc=0 durata=0s
