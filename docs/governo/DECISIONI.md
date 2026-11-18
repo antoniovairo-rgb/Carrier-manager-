@@ -1504,3 +1504,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~08:45 Roma — giro 189 (Fable) seconda tornata di idee
 - PO: «va bene così» sulle scelte del giro 181 (sfida del giorno resta fuori); «fagli trovare nuove idee migliorie». Giro 189 su Fable, ramo collaudo/giro189-idee, senza ripetere G181 né le voci già in BACKLOG. Giri in corso: 188 (Opus) e 189 (Fable), sotto il tetto di 3.
+
+## 18/11 — giro 269: controlli rimasti indietro rispetto a decisioni PO già prese (lotto 197)
+- `ritratto-171-72` adeguato alla decisione PO 02/11 «Testata compatta» (V2 tappa 2, sezione «02/11 notte» sopra): il ritratto non sta più in testata né in Home; la figurina piccola della card dell'eroe è il pulsante che apre la figurina completa col volto. Il controllo in Home ora tocca quel pulsante e giudica il volto nella figurina completa (stessa misura di prima; rosso: volti negati, invariato). Rosso già sulla 7.999.186 e sulla 196: non nato nella 197.
+- `grafica-v2` adeguato a PO-391 (questionario 13/11 23:58: «popolarità e fiducia a gradini, non a barra») e PO-458 (14/11: «fiducia e popolarità con la stessa forma»), realizzate dal giro 235: nel Club si pretendono i due gradini (fiducia, popolarità) invece dei due anelli. Nessuna soglia toccata; braccio rosso nuovo `CPM_ROSSO269` (`__CPM_NO_G235`) che deve cadere, oltre al rosso dei token. Verde sulla 196, rosso nato nella 197 col giro 235.
+- `difficolta-156` NON toccato: il rosso nasce dal giro 158 (PO-360, decisioni PO 11/11 «C, pagella del motore» e occasione simulata da gol) contro i bersagli A di PO-156. Scelta del PO: dubbio 1 di `docs/sviluppo/RAPPORTO-giro269.md`.
