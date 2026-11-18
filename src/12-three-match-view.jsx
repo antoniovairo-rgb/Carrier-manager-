@@ -4915,9 +4915,34 @@ function ThreeMatchView(props){
         if(_preT74<=0.05&&ballArcT+aDt>=0&&isResult&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA146)){try{
           const _hv=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hv&&(_hv._head145||(_hv._head145=_findBone904(_hv.visualRoot||_hv.root,/^head$/i)));
           const _hp=sr.current._hp146||(sr.current._hp146=new THREE.Vector3());if(_hb)_hb.getWorldPosition(_hp);else _hp.set(hero.position.x,(hero.position.y||0)+2.0,hero.position.z);
-          const _d146=_hp.distanceTo(ball.position);const S=sr.current;if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;}
-          if(!S._l146&&!(_d146>0.9&&S._w146<0.8))S._l146=true;/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
-          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
+          let _d146=_hp.distanceTo(ball.position);const S=sr.current;
+          /* [giro 274 PO-516, rosso __CPM_NO_G274] IL PALLONE LONTANO VOLA ALLA TESTA, NON SCIVOLA. MISURATO (salti-274 sulla 7.999.197, partita
+             «Ivo Mansi» seme 7, 25': colpo di testa su azione d'angolo): l'esito si arma col pallone ancora sulla bandierina (97;97,5 logico),
+             a 34,8 u dalla testa dell'eroe, e questa attesa col guadagno 14/s lo trascinava fino alla testa in 5 fotogrammi (34,8 → 21,4 →
+             12,9 → 7,6 → 4,4 u: scatti di 13,4 e 8,5 u in 0,028 s, circa 480 u/s). E' lo stesso difetto del giro 53 (PO-274), riparato
+             allora sul solo ramo del calcio: qui mancava il ramo del colpo di testa. Ora, se quando il colpo si arma il pallone e' oltre
+             4 u dalla testa (la soglia del volo 274), fa una parabola fino alla testa a velocita' da cross (32 u/s di scena) e il colpo
+             aspetta che arrivi; sotto 4 u resta l'attesa di prima (tetto 0,8 s, guadagno 14/s). Il volo dura d/32 s di SCENA (34,8 u → 1,09 s) e
+             finisce da solo; il tetto in tempo reale e' 6 s (quello della scena d'esito, 7.461) e non 2,4 s come nel calcio: MISURATO sul
+             banco (7 fotogrammi al secondo, tempo di scena a ~1/3 del reale) con 2,4 s il volo di 28-30 u si fermava a 3,1-4,3 u dalla
+             testa. Finito il volo (arrivato o al tetto) il colpo parte da dove il pallone e': mai piu' il trascinamento.
+             __CPM_TESTA274_LONTANO (solo cpmtest) e' la provocazione di collaudo: al primo fotogramma dell'attesa mette il pallone sulla
+             bandierina, cosi' il guardiano non dipende dal fatto che una partita produca un colpo di testa su angolo. */
+          if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;S._v274t=null;
+            if(typeof window!=='undefined'&&window.__CPM_TESTA274_LONTANO&&(_CPM_TEST||_SIT_TEST)){ball.position.x=(hero.position.x>=0?47:-47);ball.position.z=(hero.position.z>=0?32:-32);ball.position.y=0.22;ballArcY0=ball.position.y;_d146=_hp.distanceTo(ball.position);if(S._bj0){S._bj0.x=ball.position.x;S._bj0.z=ball.position.z;}/* lo spostamento della provocazione non e' un salto del gioco: il varco dei salti riparte da qui */}
+            if(_d146>4){const _no274t=!!(typeof window!=='undefined'&&window.__CPM_NO_G274);
+              S._v274t={on:!_no274t,sx:ball.position.x,sy:ball.position.y,sz:ball.position.z,D:_d146/32,H:Math.min(5,0.12*_d146),f:0,tr:0,w:null};
+              /* testimone in ENTRAMBI i bracci: ogni colpo di testa armato col pallone lontano e la velocita' di scena massima del pallone nell'attesa */
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TESTA274=window.__CPM_TESTA274||[]);if(W.length<100){S._v274t.w={k:String(P.hlSitKey),t0:Math.round(performance.now()),d0:+_d146.toFixed(1),D:+S._v274t.D.toFixed(2),vmax:0,arrivo:null,rosso:_no274t?1:0};W.push(S._v274t.w);}}catch(_e){}}}}
+          const _Vt=S._v274t;const _vola274t=!!(_Vt&&_Vt.on&&_Vt.f<_Vt.D&&_Vt.tr<6);
+          if(!S._l146&&!_vola274t&&((_Vt&&_Vt.on)/* volo finito (arrivato o al tetto): il colpo parte da dove il pallone e', nessun trascinamento */||!(_d146>0.9&&S._w146<0.8))){S._l146=true;if(_Vt&&_Vt.w&&_Vt.w.arrivo==null)_Vt.w.arrivo=+_d146.toFixed(2);}/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
+          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */const _px274t=ball.position.x,_pz274t=ball.position.z;
+            if(_vola274t){_Vt.f+=aDt;_Vt.tr+=(S._dtReal708||aDt);const _u274t=Math.min(_Vt.f/_Vt.D,1);
+              ball.position.x=_Vt.sx+(_hp.x-_Vt.sx)*_u274t;ball.position.z=_Vt.sz+(_hp.z-_Vt.sz)*_u274t;ball.position.y=_Vt.sy+(_hp.y-_Vt.sy)*_u274t+_Vt.H*Math.sin(_u274t*Math.PI);
+              if(S._bj0){S._bj0.src='volo274t';S._bj0.srcs.push('volo274t');}}
+            else{ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;}
+            ballArcY0=ball.position.y;
+            if(_Vt&&_Vt.w&&aDt>0){const _v274t=Math.hypot(ball.position.x-_px274t,ball.position.z-_pz274t)/aDt;if(_v274t>_Vt.w.vmax)_Vt.w.vmax=+_v274t.toFixed(1);}}
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2),(_hv&&glbAvatars&&_hv===glbAvatars[0])?1:0,_hb?1:0,+(_hv&&_hv.root?Math.hypot(_hv.root.position.x-hero.position.x,_hv.root.position.z-hero.position.z):-1).toFixed(2)]);/* [giro 17 PO-143 #64] testimone: avatar visibile? osso trovato? scarto radice-eroe */}}catch(_e146){}}
         /* [giro 31 PO-220, rosso __CPM_NO_ARRIVO31] IL PALLONE D'ESITO PARTE AL CONTATTO. L'arco difensivo partiva 0,35 s dopo l'inizio
            dell'esito, qualunque cosa facesse l'eroe: quando il gesto partiva tardi (0,9-1,2 s) al contatto il pallone era gia' a 5-14 u
