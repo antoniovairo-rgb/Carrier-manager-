@@ -2680,5 +2680,35 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaBQeRzjG8BrkJveZVG",
+  "titolo": "giro 263 · pulsanti Home stessa misura (PO-514)",
+  "creata": "2026-11-17T22:15:28Z",
+  "chiusa": "2026-11-18T06:23:03Z",
+  "cost_usd": 1.18087796,
+  "output_tokens": 6954,
+  "cache_read_tokens": 3380159,
+  "worker_epoch": 4,
+  "nota": "worker riavviato 3 volte: il costo riportato copre solo l'ultima parte",
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaAz7oXCwqM1FUroaB7",
+  "titolo": "giro 267 · anteprime dei 3 inni (PO-476)",
+  "creata": "2026-11-18T06:39:55Z",
+  "chiusa": "2026-11-18T06:42:58Z",
+  "cost_usd": 1.56762874,
+  "output_tokens": 11363,
+  "cache_read_tokens": 1859612,
+  "worker_epoch": 2,
+  "nota": "worker riavviato: il costo potrebbe essere parziale",
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
  }
 ]
