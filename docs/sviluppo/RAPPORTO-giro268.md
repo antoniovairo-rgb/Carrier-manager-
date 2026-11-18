@@ -13,7 +13,7 @@ La 7.999.196 pubblicata e' `origin/main` (`3076a1b7`, «Rilascio 7.999.196»), m
 | agente-198 | verde | rosso: B1/B2 «il tasto non porta all'Agente» (1 corsa su 2 anche TimeoutError del clic) | giro 260 (`17898063`; verde su `1a9b5146`, rosso su `17898063^2`) | **controllo** (riconosceva la scheda da `agente-v2`, tolto dal 260; eventi a caso sopra il tasto) **+ gioco** (riquadro a −0,11 px dal bordo) | verde 2/2 di fila sull'ultimo build (fin3, fin4), rossi `__CPM_NO_G198` e `__CPM_NO_G268` bocciati |
 | neutro-287 | verde | rosso: Carriera › Profilo cita «stile di gioco» | giro 235 (`5fe24f5e`, nota del gruppo «Contratto e attributi») | **gioco**: la nota prometteva una scheda che l'eroe neutro non ha | verde 3/3, rossi `__CPM_NO_NEUTRO287` (68 violazioni) e `__CPM_NO_G268` bocciati |
 | mister-215 | verde (5 righe, 5 figurine) | rosso: 0 righe lette in entrambi i bracci | giro 235 (gruppo «Persone» chiuso, sezione rinominata «I tuoi allenatori») | **controllo** | verde 3/3 (5 figurine su 5 righe), rosso `__CPM_NO_MISTER215` bocciato (5 icone, 75 omonimi) |
-| testata-209 | **rosso** (il braccio verde muore: «Torna alla dashboard» non c'e') | rosso: scena dell'intervista n.d. | **prima della 196**: giri 183, 190, 200 | **controllo** (tre decisioni PO gia' prese) | verde VEDI SOTTO, rosso `__CPM_NO_TESTA209` bocciato (edicola «MRA …», scena FC Moreira) |
+| testata-209 | **rosso** (il braccio verde muore: «Torna alla dashboard» non c'e') | rosso: scena dell'intervista n.d. | **prima della 196**: giri 183, 190, 200 | **controllo** (tre decisioni PO gia' prese) | verde 2/2 di fila (edicola «LAG …», scena FC Laguna), rosso `__CPM_NO_TESTA209` bocciato (edicola «MRA …», scena FC Moreira) |
 
 ## Che cosa ho cambiato
 
@@ -60,7 +60,29 @@ Rosso `__CPM_NO_TESTA209` invariato: edicola «MRA 0-0 FC SICANIA», scena FC Mo
 Tutti uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, `CPM_CI_PAR=0`, con `free -m` e `df -h` prima di ciascuno.
 Le foto rigenerate in `docs/sviluppo/giro198/` (agente-198) sono state rimesse con `git checkout --` e non committate.
 
-MAPPA
+**I cinque della consegna, sul build finale** (dopo l'ultima modifica a `src/` e alle sonde):
+
+| Controllo | corse verdi di fila | rossi bocciati |
+|---|---|---|
+| rosa-228 | 3 (197b, fin1, fin2) | `__CPM_NO_G228`, `__CPM_NO_G239` |
+| neutro-287 | 3 (268a, fin1, fin2) | `__CPM_NO_NEUTRO287` (68 violazioni), `__CPM_NO_G268` |
+| mister-215 | 3 (268b, fin1, fin2) | `__CPM_NO_MISTER215` |
+| agente-198 | 2 (fin3, fin4: in fin4 un foglio chiuso e dichiarato) — fin2 era rosso per un momento di carriera che `dismiss` non chiudeva, da cui l'ultima modifica della sonda | `__CPM_NO_G198`, `__CPM_NO_G268` |
+| testata-209 | 2 (corse complete 1 e 2) | `__CPM_NO_TESTA209` |
+
+`node tools/build-src.mjs` + `node tools/check-src.mjs` dopo ogni modifica a `src/`: **IDENTICO BYTE PER BYTE**.
+
+**Mappa mirata di `src/18`** (unico file `src` toccato) + nucleo, esclusi highlight-95, ingresso-206 e career-critical come da
+consegna e i cinque qui sopra: **92 passi**, in serie, un rosso riprovato una volta. Registro: `docs/sviluppo/giro268/mappa-mirata.txt`.
+- **80 verdi**, fra cui `test:logic` e `save-compat`.
+- **stadi-071 instabile** (rosso alla prima — «borgo/arena tipo null» —, verde alla seconda; nel giro 263 era verde).
+- **11 rossi, tutti gia' rossi sulla base 197** nel registro del giro 263 (`docs/sviluppo/giro263/mappa-mirata.txt`) e fuori dal lotto:
+  partita-v2 (manca il tasto finale nel post), grafica-v2 (anelli del Club), spazio-296, ritratto-171-72, difficolta-156,
+  coppa-prestito-245, infortunio-263, partita-rigiocata-194 (2ª prova fermata dal tetto di 2 ore), assist-nome-98 e intervista-231
+  (oltre 25 minuti, come gli «OLTRE20» del 263; la 2ª prova di intervista-231 l'ho fermata io per PID dopo 7 minuti, quella di
+  assist-nome-98 il tetto di 2 ore), **squalifica-222** (2 su 2 rosso qui; nel 263 rosso poi verde; rimisurato sulla base esatta
+  `9ad0bd6`: rosso poi verde, stessi due controlli «non-convocato» → instabile gia' sulla base, non nato da questo giro).
+- La corsa in sottofondo e' stata fermata due volte al tetto di 2 ore: ripresa dal passo interrotto (righe «--- ripresa»).
 
 ## Dubbi per il PO
 
@@ -75,3 +97,8 @@ MAPPA
    rilascio della 196 non lo eseguiva o non lo ha visto. Lo segnalo perche' contraddice «rosso nato nella 197» della consegna.
 4. Il margine di 8 px del riquadro «Da fare ora» e' una scelta tecnica minima (il token piu' piccolo dopo `xs`); a occhio il riquadro
    non cambia. Foto non rifatte.
+5. **squalifica-222 e' instabile gia' sulla base 197** (i due controlli «non-convocato»), **stadi-071** una volta rosso e una verde:
+   non li ho toccati (lotto chiuso). Per la regola «un guardiano instabile due volte si ripara» andrebbero dati a un giro.
+6. Gli undici rossi della mappa di `src/18` elencati sopra restano: sono rossi anche senza questo giro e la verifica di rilascio li
+   trovera'. Con questo giro i rossi della lista del 263 (dubbio 6) scendono di cinque.
+7. Non ho scritto la riga di ROADMAP: e' un giro dentro il lotto 197 (nessuna versione nuova); la scrive chi rilascia.

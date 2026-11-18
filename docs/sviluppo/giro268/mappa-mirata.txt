@@ -1,0 +1,105 @@
+VERDE test:logic 3s prova 1
+VERDE save-compat 1s prova 1
+VERDE design-system 0s prova 1
+VERDE tema-unico 16s prova 1
+VERDE typing-shortcuts 13s prova 1
+VERDE web-237 47s prova 1
+VERDE pulsanti-263 129s prova 1
+VERDE primavera-260 63s prova 1
+VERDE podio-260 20s prova 1
+VERDE store-236 31s prova 1
+VERDE coerenza-235 168s prova 1
+VERDE accessibilita-234 96s prova 1
+VERDE interviste-211 5s prova 1
+VERDE patto-227 37s prova 1
+VERDE salienti-229 171s prova 1
+VERDE salienti-243 209s prova 1
+VERDE calendario-218 32s prova 1
+VERDE pullman-204 139s prova 1
+VERDE svincolato-198 72s prova 1
+VERDE home-199 113s prova 1
+VERDE figurina-199 44s prova 1
+VERDE rifiniture-200 147s prova 1
+VERDE nomi-182 267s prova 1
+VERDE indice-163 19s prova 1
+VERDE salta-163 100s prova 1
+VERDE momento-165 174s prova 1
+VERDE momento-165b 165s prova 1
+VERDE momento-173 89s prova 1
+VERDE momento-185 155s prova 1
+VERDE gioca-188 22s prova 1
+VERDE patrimonio-303 53s prova 1
+ROSSO partita-v2 223s prova 1 rc 1 | c     partita2d  testi 23 · contrasto min 7.35   pc     highlight  testi 21 · contrasto min 6.7   pc     post       testi 8 · contrasto min 7.54   ✗ FORMA tel360:post: manca il tasto finale   ✗ FORMA tabv:post: manca il tasto finale   ✗ FORMA pc:post: manca il tasto finale partita-v2 ROSSO 
+ROSSO partita-v2 220s prova 2 rc 1 | c     partita2d  testi 23 · contrasto min 7.35   pc     highlight  testi 21 · contrasto min 6.7   pc     post       testi 8 · contrasto min 7.54   ✗ FORMA tel360:post: manca il tasto finale   ✗ FORMA tabv:post: manca il tasto finale   ✗ FORMA pc:post: manca il tasto finale partita-v2 ROSSO 
+ROSSO grafica-v2 39s prova 1 rc 1 |  testi) carriera 6.56 (30) · grafico 12 barre, oro 1   ✗ SCH tel: club: anelli fiducia/popolarita' mancanti   ✗ SCH tabv: club: anelli fiducia/popolarita' mancanti   ✗ SCH tabo: club: anelli fiducia/popolarita' mancanti   ✗ SCH pc: club: anelli fiducia/popolarita' mancanti grafica-v2 ROSSO 
+ROSSO grafica-v2 38s prova 2 rc 1 |  testi) carriera 6.56 (30) · grafico 12 barre, oro 1   ✗ SCH tel: club: anelli fiducia/popolarita' mancanti   ✗ SCH tabv: club: anelli fiducia/popolarita' mancanti   ✗ SCH tabo: club: anelli fiducia/popolarita' mancanti   ✗ SCH pc: club: anelli fiducia/popolarita' mancanti grafica-v2 ROSSO 
+VERDE simula-v2 29s prova 1
+VERDE momenti-v2 157s prova 1
+VERDE carriera3-94 163s prova 1
+ROSSO assist-nome-98 1500s prova 1 rc 124 | VERDE C · D3 protezione: persa con fisico 50 41.2% · fisico 95 9.7% · passaggio 50 21.0% · passaggio 95 21.0% · duelli/persi 557/557 (n=600 per braccio) verde assist seme 1234 fine playing scene 3 verde assist seme 2021 fine ceremony scene 7 verde assist seme 7 fine ceremony scene 7 
+ROSSO assist-nome-98 oltre il tetto prova 2 interrotta dal limite di 2 ore della corsa in sottofondo | --- ripresa
+ROSSO spazio-296 916s prova 1 rc 1 |    pc  fine-stagione-offerte carte v:  0 mediana  null min - max - · sovrapposte 0 · hscroll 0   pc  prepartita       carte v:  4 mediana   7.5 min 7 max 8 · sovrapposte 0 · hscroll 0 schermate non raggiunte: pc post-partita (niente fischio) spazio-296 ROSSO: 0 schermate cadute, 1 non raggiunte 
+ROSSO spazio-296 895s prova 2 rc 1 |  0 · hscroll 0   pc  prepartita       carte v:  4 mediana   7.5 min 7 max 8 · sovrapposte 0 · hscroll 0 schermate non raggiunte: pc post-partita (niente fischio)   ✗ tel post-partita: 1 distanze oltre 10 (14 div«🧠 La tua scelta al 90») spazio-296 ROSSO: 1 schermate cadute, 1 non raggiunte 
+VERDE schermate-97 115s prova 1
+VERDE crea-home-295 6s prova 1
+VERDE pc-tablet-292 645s prova 1
+VERDE impulsi-289 19s prova 1
+VERDE piccoli-85 41s prova 1
+VERDE trainer-288 11s prova 1
+VERDE livello-79 30s prova 1
+VERDE errori-168 8s prova 1
+VERDE barra-360-72 26s prova 1
+ROSSO ritratto-171-72 52s prova 1 rc 1 | 737 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1 rosso carriera: volto atteso null · img dei volti 0 · testo 1759 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1 ❌ ritratto-171-72   · verde home: ritratto dell'eroe assente o non caricato 
+ROSSO ritratto-171-72 53s prova 2 rc 1 | 737 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1 rosso carriera: volto atteso null · img dei volti 0 · testo 1759 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1 ❌ ritratto-171-72   · verde home: ritratto dell'eroe assente o non caricato 
+VERDE acquisti-281 24s prova 1
+ROSSO difficolta-156 143s prova 1 rc 1 |  (bersaglio 6) · gavetta.min 65 (bersaglio 55) · gavetta.tit 59.2 (bersaglio 45) · affermazione.voto 6.74 (bersaglio 6.4) · affermazione.tit 86.3 (bersaglio 75) · declino.voto 6.67 (bersaglio 6.3) · declino.vitt 54.4 (bersaglio 45) · declino.tit 71.8 (bersaglio 60)  ❌ CURVA FUORI BERSAGLIO 
+ROSSO difficolta-156 147s prova 2 rc 1 | ) · affermazione.voto 6.75 (bersaglio 6.4) · affermazione.gol 0.399 (bersaglio 0.3) · affermazione.vitt 55.7 (bersaglio 45) · affermazione.tit 88.6 (bersaglio 75) · declino.voto 6.66 (bersaglio 6.3) · declino.vitt 55 (bersaglio 45) · declino.tit 71.6 (bersaglio 60)  ❌ CURVA FUORI BERSAGLIO 
+VERDE stile-unico-75 10s prova 1
+VERDE impulsi-memoria-154 40s prova 1
+VERDE popup-224b 37s prova 1
+VERDE nazionale-155 42s prova 1
+VERDE rinnovo-270 31s prova 1
+VERDE chip-269 9s prova 1
+VERDE simulata-272 8s prova 1
+VERDE giornata-233 14s prova 1
+VERDE popup-224 16s prova 1
+VERDE finestra-230 40s prova 1
+ROSSO intervista-231 1500s prova 1 rc 124 | 
+ROSSO intervista-231 420s prova 2 rc 1 | s been closed     at settimana (/home/user/Carrier-manager-/tests/visual/intervista-231.mjs:32:32)     at braccio (/home/user/Carrier-manager-/tests/visual/intervista-231.mjs:33:36)     at async file:///home/user/Carrier-manager-/tests/visual/intervista-231.mjs:44:11 {   log: [] }  Node.js v22.23.5 
+VERDE classifica-102 7s prova 1
+VERDE recupero-103 24s prova 1
+VERDE euro-attesa-181 9s prova 1
+VERDE riquadro-euro-105 10s prova 1
+VERDE avversario-106 1s prova 1
+VERDE rinvio-coppe-107 16s prova 1
+VERDE etichette-108 2s prova 1
+VERDE titolo-110 7s prova 1
+VERDE pre-188 7s prova 1
+VERDE conferenza-192 0s prova 1
+ROSSO partita-rigiocata-194 968s prova 1 rc 1 | ull,"week":38,"season":1,"giocata":false,"alto":1} ROSSO (__CPM_NO_CONF194): {"pm":true,"confPrima":false,"fine":"playing","riaperta":false,"quando":null,"week":38,"season":1,"giocata":false,"alto":1} rosso: riapertura dopo il fischio no (strada playing, informativo) ❌ partita-rigiocata-194 ROSSO 
+ROSSO partita-rigiocata-194 prova 2 interrotta dal limite di 2 ore | --- ripresa
+VERDE pro-rivale-176 25s prova 1
+VERDE anteprima-212 19s prova 1
+VERDE presentazione-214 29s prova 1
+VERDE toast-247 19s prova 1
+VERDE calendario-247 15s prova 1
+ROSSO coppa-prestito-245 23s prova 1 rc 1 | ":[]} ❌ coppa-prestito-245   · verde: il turno di coppa non viene giocato avanzando {"A":{"settimana":30,"voce":[{"played":true,"result":null}],"risultati":2,"cup":{"active":true,"eliminated":false,"champion":false,"round":3}},"passi":["advanced","lived","simulated","lived","simulated","lived"]} 
+ROSSO coppa-prestito-245 24s prova 2 rc 1 | ":[]} ❌ coppa-prestito-245   · verde: il turno di coppa non viene giocato avanzando {"A":{"settimana":30,"voce":[{"played":true,"result":null}],"risultati":2,"cup":{"active":true,"eliminated":false,"champion":false,"round":3}},"passi":["advanced","lived","simulated","lived","simulated","lived"]} 
+VERDE toast-intervista-247 42s prova 1
+VERDE festa-oro-251 21s prova 1
+VERDE procuratore-253 72s prova 1
+VERDE toast-256 33s prova 1
+VERDE backup-167 23s prova 1
+VERDE home-066 51s prova 1
+ROSSO squalifica-222 58s prova 1 rc 1 | a (controllo) ✓ coppa infortunato: nessuna presenza, voce senza voto ✓ coppa squalificato: nessuna presenza, voce marcata ✓ squalificato (bottone): squalifica scontata dopo la partita ✓ infortunato/svincolato: nessuna presenza (non-regressione)  ✗ ROSSO squalifica-222: 4 controlli falliti 
+ROSSO squalifica-222 58s prova 2 rc 1 | a (controllo) ✓ coppa infortunato: nessuna presenza, voce senza voto ✓ coppa squalificato: nessuna presenza, voce marcata ✓ squalificato (bottone): squalifica scontata dopo la partita ✓ infortunato/svincolato: nessuna presenza (non-regressione)  ✗ ROSSO squalifica-222: 2 controlli falliti 
+VERDE investimento-223 151s prova 1
+ROSSO infortunio-263 78s prova 1 rc 1 | �� coppa, sano a fatica 90: il tiro +11 lo infortuna (controllo) ✓ squalificato-coppa: nessun infortunio, fatica da settimana senza gara (90→84, attesa 84) ✓ svincolato-coppa: nessun infortunio, fatica da settimana senza gara (90→84, attesa 84)  ✗ ROSSO infortunio-263: 3 controlli falliti 
+ROSSO infortunio-263 77s prova 2 rc 1 | �� coppa, sano a fatica 90: il tiro +11 lo infortuna (controllo) ✓ squalificato-coppa: nessun infortunio, fatica da settimana senza gara (90→84, attesa 84) ✓ svincolato-coppa: nessun infortunio, fatica da settimana senza gara (98→92, attesa 92)  ✗ ROSSO infortunio-263: 7 controlli falliti 
+VERDE svincolato-264 58s prova 1
+VERDE meta-conto-265 25s prova 1
+VERDE via-ch38-171 73s prova 1
+ROSSO stadi-071 87s prova 1 rc 1 |  271 · draw call TV 304 · triangoli TV 17015 · luci 13 · errori 0 borgo:3000 rosso — tipo null · tunnel no · terrapieni 0 · corona 0 · mesh 150 arena:60000 rosso — tipo null · tunnel no · terrapieni 0 · corona 0 · mesh 260 ❌ stadi-071   · mattoni: 340 draw call oltre il tetto 339 
+VERDE stadi-071 86s prova 2
+VERDE scene-fuori-137 17s prova 1
+FINE
