@@ -2853,5 +2853,47 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaBGBCbkLCqwZY7E8Yt",
+  "titolo": "verifica 197 · blocco V1c",
+  "creata": "2026-11-18T17:05:35Z",
+  "chiusa": "2026-11-18T21:40:44Z",
+  "cost_usd": 3.98776008,
+  "output_tokens": 22592,
+  "cache_read_tokens": 11273326,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYia8omeWNTvK9MWV9Nbv",
+  "titolo": "verifica 197 · blocco V3b",
+  "creata": "2026-11-18T20:01:44Z",
+  "chiusa": "2026-11-18T21:08:14Z",
+  "cost_usd": 1.64795578,
+  "output_tokens": 9622,
+  "cache_read_tokens": 3452214,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
+ },
+ {
+  "sessione": "session_01QEYiaAaFcPtbc2FSqsPQB9",
+  "titolo": "verifica 197 · blocco V3c2",
+  "creata": "2026-11-18T20:01:46Z",
+  "chiusa": "2026-11-18T21:34:13Z",
+  "cost_usd": 2.17117244,
+  "output_tokens": 16156,
+  "cache_read_tokens": 5187728,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-18"
  }
 ]
