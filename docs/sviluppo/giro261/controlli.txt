@@ -9,3 +9,5 @@ presentazione-225 uscita 0 durata 1424 s
 tpose-196 uscita 0 durata 2068 s
 gigante-212 (prima corsa) uscita 1 durata 810 s
 serata-261 uscita 0 durata 458 s
+gigante-212 uscita 1 durata 855 s
+FINE

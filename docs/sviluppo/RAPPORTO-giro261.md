@@ -6,9 +6,9 @@ Ramo `sviluppo/giro261-serata-spalle`, partito da `lavoro/197` (commit `c14fa1b`
 **Esito in una riga.** I due rossi **non nascono dal giro 240 né dal 256: nascono tutti e due dal giro 192** (commit `af84d42a`,
 PO-406 «spalle −35°→−22°, braccia lungo i fianchi»). Li ho corretti nel gioco senza toccare nessuna soglia; anche il salto del
 braccio del dubbio 1 veniva dalla stessa causa ed è sparito con la correzione B, e in più la regola delle spalle ora entra in
-rampa nel saluto. `presentazione-142` e `spalle-146` sono verdi, il guardiano nuovo `serata-261` è verde e il rosso
-`window.__CPM_NO_G261` cade su A, B e C. **Tutte le misure sono del banco di prova, nessuna è del telefono.** Ci sono nove dubbi
-per il PO.
+rampa nel saluto. `presentazione-142` e `spalle-146` sono verdi (erano i due rossi), il guardiano nuovo `serata-261` è verde e il rosso
+`window.__CPM_NO_G261` cade su A, B e C. **Tutte le misure sono del banco di prova, nessuna è del telefono.** Un controllo della consegna è **rosso**: `gigante-212`, per una scena non giudicata che dipende dal risultato di una partita
+(instabile anche sulla base; dettagli nella sezione 6). Ci sono dieci dubbi per il PO.
 
 ---
 
@@ -156,10 +156,19 @@ Uscite complete in `docs/sviluppo/giro261/controlli-*.txt`, riepilogo in `contro
 | `presentazione-225` | **verde**, e il rosso si vede | 23 min 44 s | salti: «clapping hands up» 4,1° · «clap twice hand up» 10,72° (limite 15; dubbio 9) |
 | `pelle-240` | **verde**, e il rosso si vede | 8 min 1 s | |
 | `tpose-196` | **verde**, e il rosso atteso si vede | 34 min 28 s | supera i 20 minuti: è nell'elenco della consegna |
-| `gigante-212` | @@GIGANTE@@ |
+| `gigante-212` | **ROSSO, due corse su due** | 13 min 30 s · 14 min 15 s | nessun corpo fuori misura in nessuna scena giudicata (serata compresa); rosso perché la scena «festa a fine partita» **non è stata giudicata**: la partita di prova non è stata vinta e la festa non è comparsa. Vedi sotto e dubbio 10 |
 | `test:logic` | **verde** | 2 s | |
 | `save-compat` | **verde** | 9 s | |
 | `cerimonie-192` (aggiunto da me) | **verde**, e ogni rosso si vede | 8 min 49 s | giudica `_posa192`, la funzione che ho modificato: spalle −23,6° · gomiti 167,4° · mano 0,10 |
+
+**Il rosso di `gigante-212`.** Lo scenario `festa-vera-tel` gioca una partita vera fino al fischio e misura la festa che ne nasce;
+la festa compare solo se la partita è **vinta**. Ho giocato la stessa partita da sola cinque volte (`CPM_SCENARI=festa-vera-tel`
+e una sonda che stampa cosa decide la festa): sulla build di questo giro persa · persa · **vinta 5-1 (festa)**; su `lavoro/197`
+senza questo giro **vinta (festa, scena verde)** · persa 0-1. Il risultato cambia da corsa a corsa **sulla stessa build**, anche
+sulla base: il rosso non dipende dalle modifiche di questo giro, ma resta un rosso e **non l'ho riparato** (lo scenario è del
+giro 212, la partita è `src/15`: fuori dall'ambito). Non ho fatto una terza corsa intera. La prova del rosso di `gigante-212`
+(il secondo comando dello script) non è partita, perché il primo è uscito rosso. La sonda usata per le cinque partite era
+provvisoria e non è nel ramo.
 
 `tpose-196` e `gigante-212` rigenerano foto di altri giri in `docs/sviluppo/giro196/`: le ho rimesse con `git checkout --` e non
 sono nel commit.
@@ -229,4 +238,9 @@ Aggiunti: `tests/visual/serata-261.mjs`, `tests/visual/misura-261.mjs`, due voci
    delle spalle che sposta la spalla è continua in quel punto (misurata); le due ipotesi che ho provato erano sbagliate.
    Cosa non so: quale passaggio lo produce. Serve un giro dedicato sulla regola delle spalle (`src/12`), con la sua mappa di
    controlli.
+10. **`gigante-212` è instabile e in questo giro è rosso.** La sua scena «festa a fine partita» viene giudicata solo se la partita
+    di prova finisce con una vittoria, e il risultato di quella partita non è riproducibile (cinque corse, due build: tre perse,
+    due vinte). Quando è persa il guardiano dice «non giudicata», cioè rosso. Serve una decisione: riparare lo scenario (per
+    esempio provocando la vittoria dalla sonda, come già si fa con le statistiche) è un lavoro sul guardiano del giro 212 e non
+    l'ho fatto. Tutte le altre scene di `gigante-212`, compresa la serata, sono state giudicate e sono verdi.
 
