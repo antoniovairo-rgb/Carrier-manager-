@@ -69,7 +69,10 @@ for (const [w, h] of TAGLIE) {
       const t0 = Math.min(...figli.map(f => f.getBoundingClientRect().top)), b0 = Math.max(...figli.map(f => f.getBoundingClientRect().bottom));
       const g = (t0 - kr.top - parseFloat(z.paddingTop)) + (kr.bottom - parseFloat(z.paddingBottom) - b0);
       if (g > vuotoDentro) { vuotoDentro = g; doveDentro = (k.innerText || '').trim().slice(0, 24).replace(/\n/g, ' '); } }
-    const btn = [...c.querySelectorAll('button')].find(b => /Entra in campo/.test(b.innerText || ''));
+    /* [giro 278] dal giro 235 (PO-458, regola unica del tasto principale da PO-411: carattere TV MAIUSCOLO) innerText
+       restituisce «ENTRA IN CAMPO» (textTransform:uppercase) e la ricerca sensibile alle maiuscole non trovava il tasto
+       (B1 «null», rosso nato nella 197 in 5fe24f5e). Si legge il testo del DOM (textContent) senza badare alle maiuscole. */
+    const btn = [...c.querySelectorAll('button')].find(b => /Entra in campo/i.test(b.textContent || ''));
     const br = btn ? btn.getBoundingClientRect() : null;
     const raggi = new Set(), corpi = new Set(), oltre = [];
     let maxDiff = 0, corpoMax = 0;
