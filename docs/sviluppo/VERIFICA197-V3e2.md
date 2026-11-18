@@ -18,6 +18,7 @@
 | schede-234 | verde (761 s) | — | — | verde | `✅ VERDE — schede con almeno 3 opzioni, lessico «indicazioni», effetti distinti sul motore, prova del rosso riconosciuta` |
 | catalogo-022 | verde (482 s) | — | — | verde | `✅ catalogo-022 verde` |
 | schede-246 | rosso (704 s) | rosso (697 s) | rosso (704 s) — **solo 1 difetto su 2** (braccio rosso); il braccio verde sulla 196 è sano | **rosso anche sulla 196, MA il difetto «verde: nessuna scheda comparsa, guardiano cieco» è NATO nella 197** (vedi nota) | `· rosso: il cronometro non corre con la scheda aperta, il difetto non si vede` |
+| schede-259 | rosso (1097 s) | rosso (1101 s) | rosso (1146 s; 1ª partenza interrotta dal riavvio, rifatta) | dichiarato (rosso anche sulla 196) | `❌ ROSSO — C verde: partite non finite o errori` |
 
 ## Note e casi da decidere (dal registro delle corse)
 
@@ -28,3 +29,4 @@
   - 196: braccio VERDE `schede a schermo 2 · arrivate al motore 2 ["eroe_stanco@55a","sotto_finale@70a"] · aperte ["55-55","70-70"]` → sano; fallisce SOLO il braccio rosso (stessa riga della 197).
   - Quindi: il rosso del braccio rosso è DICHIARATO (c'era sulla 196); la scomparsa delle schede nel braccio verde è NATA nella 197 (2 su 2 sulla 197, 0 su 1 sulla 196). Per la regola PO-516 questo secondo difetto bloccherebbe l'uscita; non decido io.
 - **schede-259 sulla 196, prima partenza (23:23) NON VALE**: il container è stato riavviato a metà corsa (uptime 0 alle 23:27); rifatta da capo.
+- **schede-259**: rosso «C verde: partite non finite o errori» su tutte e tre le corse valide. 197: 3/4 partite finite in entrambi i bracci (p3 ferma sullo 0-2). 196: 1/4 finite e in più «riga di riepilogo mancante». Classificato dichiarato. ⚠️ Osservazione, non conclusione: sulla 197 nel braccio verde p0 e p1 FINISCONO con **0 schede** (2 corse su 2), mentre sulla 196 ogni partita verde tranne p3 ha avuto almeno una scheda. È lo stesso sintomo del braccio verde di schede-246 (schede che non compaiono), ma qui il controllo non lo giudica come difetto separato: lo segnalo perché il PO lo valuti insieme a schede-246.
