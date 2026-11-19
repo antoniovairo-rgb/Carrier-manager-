@@ -7449,6 +7449,7 @@ const getThisWeekMatchday=()=>{
                 <Btn data-pesante213=""/* [giro 213] lavoro sincrono misurato 108 ms: il tasto si disegna premuto con la rotellina prima di montare la partita */ onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
+              {coachDecision?.status!=="not_called"&&!player.injured&&!player.isSuspended&&!simula302&&<AvvisoSalienti290/>/* [giro 290] dove trovare i salienti */}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
               {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&!_g246()&&salienti229(showMatchPrompt)&&(<>
                 <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
@@ -8350,6 +8351,7 @@ const getThisWeekMatchday=()=>{
                   {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
+              {!cs.disabled&&!player.injured&&player.weekLived&&!_sv200&&(_nz131||getThisWeekMatchday())&&<AvvisoSalienti290 style={{color:_ink,opacity:0.85}}/>/* [giro 290] «Gioca» porta alla pre-partita: la riga dice dove sono i salienti */}
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>
               </div>);})()}
             </div>
@@ -12467,6 +12469,7 @@ const getThisWeekMatchday=()=>{
                   <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
+                {!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
@@ -12572,6 +12575,7 @@ const getThisWeekMatchday=()=>{
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
+                {!em.champion&&!em.eliminated&&!em.done&&!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!em.champion&&!em.eliminated&&!em.done&&!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
