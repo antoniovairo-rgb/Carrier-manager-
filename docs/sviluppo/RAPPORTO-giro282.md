@@ -12,14 +12,14 @@ Macchina: 4 processori, 16 GB, Chromium `/opt/pw-browsers/chromium`, controlli u
 - Correzione: la rete chiede l'esito una volta sola, aspetta che sia davvero a schermo (tetto 8 s) e **da lì** conta 1,6 s.
   Rosso `window.__CPM_NO_G282`.
 - Guardiano nuovo `esito-282` (verde 1814–1962 ms, rosso 532–907 ms).
-- highlight-95 intero sulla build del ramo: vedi tabella (RISULTATO_H95).
+- highlight-95 intero sulla build del ramo (`c1b0…`, vedi sotto): **verde, e il rosso si vede** — braccio verde 98 highlight, 0 D4, 0 difetti.
 
 ## Tabella «196 / 197 prima / dopo»
 
 | Misura | 196 (`3076a1b7`) | 197 prima (`51862a1e`) | 197 dopo (ramo) |
 |---|---|---|---|
-| highlight-95 intero, braccio verde | verde: 103 highlight, 0 D4 (da VERIFICA197-V3a, non rieseguito qui) | rosso 2 su 2: 91 highlight, 2 D4 per corsa (da VERIFICA197-V3a, su `a81ebb10`) | RIGA_VERDE |
-| highlight-95 intero, braccio rosso | il rosso si vede (da VERIFICA197-V3a) | il rosso si vede (da VERIFICA197-V3a) | RIGA_ROSSO |
+| highlight-95 intero, braccio verde | verde: 103 highlight, 0 D4 (da VERIFICA197-V3a, non rieseguito qui) | rosso 2 su 2: 91 highlight, 2 D4 per corsa (da VERIFICA197-V3a, su `a81ebb10`) | **verde**: 98 highlight, 0 D4, 0 difetti, 0 non giudicabili; passaggi arrivati 89,3% (pavimento 70%) |
+| highlight-95 intero, braccio rosso | il rosso si vede (da VERIFICA197-V3a) | il rosso si vede (da VERIFICA197-V3a) | il rosso si vede: 108 highlight, D1, D2, D3 e D4 tutti presenti (5 D4) |
 | Corsa mirata (braccio verde, `CPM_NO_SENZA=1 CPM_MISURA=1`) | s12 × semi 1234, 2021 × pass, drib: 23 highlight, **0 D4** | s12 e s5 × semi 1234, 2021 × pass, drib: 32 highlight, **2 D4** (1179 ms e 1126 ms) | (coperta dalla corsa intera) |
 | Scene chiuse dalla rete D4: ritardo richiesta → esito a schermo | 254 · 500 · 551 · 809 · 1103 ms (5 scene) | 737 · 969 · 1176 ms (le 3 scene sotto 1400 ms; le altre non registrate in quella corsa) | da 1 a 1117 ms (18 scene) |
 | Scene chiuse dalla rete D4: esito a schermo → chiusura | 1680 · 1990 · 2062 · 2334 · 2954 ms | 1126 · 1179 · 1338 ms | minimo 1669, massimo 2514 ms |
