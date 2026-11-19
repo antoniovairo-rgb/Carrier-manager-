@@ -1891,3 +1891,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 19:25 (19/11) PO-557 registrato senza lavoro: staff personale troppo facile da comprare. Lunedì: misurare prezzi contro stipendio/conto nelle carriere simulate e chiedere al PO se riaprire l'economia (chiusa il 20/10).
 - 19:40 (19/11) PO-558 e PO-559 registrati senza lavoro: in Home un solo riquadro Classifica e un solo riquadro Notizie (oggi due ciascuno). Lunedì: chiedere al PO quale contenuto tenere nel riquadro unico.
 - 19:50 (19/11) PO-560 registrato senza lavoro: Simula forse troppo severo (ritorno di PO-360). Lunedì: misura simulate contro giocate prima di proporre ritocchi.
+- 20:00 (19/11) PO-561 registrato senza lavoro: i movimenti negli highlight devono contare di più. Lunedì: misura fermo vs mossa migliore e proposta di leve al PO (Fable, tocca il 3D).
