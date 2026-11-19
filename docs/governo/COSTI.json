@@ -3119,5 +3119,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaASu6XQQsccLeiidyN",
+  "titolo": "giro 281 · render-3d-023 (home già montata al DCL)",
+  "creata": "2026-11-19T02:55:24Z",
+  "chiusa": "2026-11-19T03:02:02Z",
+  "cost_usd": 1.47578118,
+  "output_tokens": 7739,
+  "cache_read_tokens": 1878979,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
