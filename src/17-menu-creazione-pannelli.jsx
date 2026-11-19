@@ -772,6 +772,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
     </div>
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
+    {(!_CPM_TEST||(typeof window!=="undefined"&&window.__CPM_PREP246))&&<AvvisoSalienti290 style={{marginTop:8}}/>}{/* [giro 290] il provino passa dalla pre-partita (giro 246) */}
   </div>;
 }
 
@@ -910,6 +911,7 @@ function NationalCallupScreen(props){
         </div>
       </Card>
       <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+      <AvvisoSalienti290/>{/* [giro 290] */}
     </div>
   );
 }

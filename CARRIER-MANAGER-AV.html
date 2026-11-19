@@ -12196,6 +12196,15 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
   const isOff=disabled||loading;
   return<button data-suono={(v==="primary"||v==="green"||v==="gold"||v==="festa")?"conferma":undefined}/* [giro 172 PO-370] il tasto pieno della vista e' la conferma importante: l'unico che suona */ onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:_tocco292()?Math.max(sz.minHeight||0,40):sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
 };
+/* [giro 290 · PO-549, decisione PO 17/11 + risposta 19/11 «dove vuoi basta che sia in unico punto per tutte le partite»] AVVISO DEI SALIENTI.
+   Il tasto «Gioca solo i momenti salienti» resta in UN punto, la pre-partita (giro 246). Dove si preme «Gioca» PRIMA della pre-partita
+   (finestra della settimana, card «Prossima» della home, convocazione e lobby della Nazionale, provino) c'e' solo questa riga che dice
+   dove trovarlo: nessun secondo tasto, nessun cambio di percorso. Chi la mette la mostra solo dove la pre-partita che segue ha il tasto
+   (stessa condizione del giro 246: giocatore non infortunato). Rosso __CPM_NO_G290 = com'era (nessuna riga). */
+const AvvisoSalienti290=({style})=>{
+  if(typeof window!=='undefined'&&(window.__CPM_NO_G290||window.__CPM_NO_G246||window.__CPM_NO_G243||window.__CPM_NO_G166))return null;
+  return <div data-cpm="avviso-290" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.4,textAlign:"center",overflowWrap:"anywhere",...(style||{})}}>Nella pre-partita puoi giocare solo i momenti salienti</div>;
+};
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */
 const StatBar=({label,value,tone,track,height=4,mb=8})=>{
@@ -50918,6 +50927,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
     </div>
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
+    {(!_CPM_TEST||(typeof window!=="undefined"&&window.__CPM_PREP246))&&<AvvisoSalienti290 style={{marginTop:8}}/>}{/* [giro 290] il provino passa dalla pre-partita (giro 246) */}
   </div>;
 }
 
@@ -51056,6 +51066,7 @@ function NationalCallupScreen(props){
         </div>
       </Card>
       <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+      <AvvisoSalienti290/>{/* [giro 290] */}
     </div>
   );
 }
@@ -60457,6 +60468,7 @@ const getThisWeekMatchday=()=>{
                 <Btn data-pesante213=""/* [giro 213] lavoro sincrono misurato 108 ms: il tasto si disegna premuto con la rotellina prima di montare la partita */ onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
+              {coachDecision?.status!=="not_called"&&!player.injured&&!player.isSuspended&&!simula302&&<AvvisoSalienti290/>/* [giro 290] dove trovare i salienti */}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
               {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&!_g246()&&salienti229(showMatchPrompt)&&(<>
                 <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti{_g287()&&sotto287("solo-166-nota",_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.")}</Btn>{/* [giro 287 PO-546] nota dentro il tasto */}
@@ -61358,6 +61370,7 @@ const getThisWeekMatchday=()=>{
                   {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
+              {!cs.disabled&&!player.injured&&player.weekLived&&!_sv200&&(_nz131||getThisWeekMatchday())&&<AvvisoSalienti290 style={{color:_ink,opacity:0.85}}/>/* [giro 290] «Gioca» porta alla pre-partita: la riga dice dove sono i salienti */}
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>
               </div>);})()}
             </div>
@@ -65475,6 +65488,7 @@ const getThisWeekMatchday=()=>{
                   <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
+                {!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
@@ -65580,6 +65594,7 @@ const getThisWeekMatchday=()=>{
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
+                {!em.champion&&!em.eliminated&&!em.done&&!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!em.champion&&!em.eliminated&&!em.done&&!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
