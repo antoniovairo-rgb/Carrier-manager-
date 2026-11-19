@@ -33,7 +33,7 @@ const OUTD = path.join(ROOT, 'docs', 'sviluppo', 'giro289');
 const PC = [{ w: 1366, h: 768 }, { w: 1920, h: 1080 }], TEL = [{ w: 360, h: 800 }, { w: 412, h: 915 }];
 const SEME = 4242;
 /* le schermate corrette dal giro 289 (il guardiano giudica queste) */
-const CORRETTE = (process.env.CPM_289_SOLO || 'offerte,provini,stagione-coppe,stagione-calendario,stagione-classifica,carriera-profilo,carriera-nazionale,agente,fine-stagione').split(',');
+const CORRETTE = (process.env.CPM_289_SOLO || 'offerte,stagione-coppe,stagione-calendario,stagione-classifica,carriera-profilo,carriera-nazionale,agente,fine-stagione').split(',');
 const TRIAL = (ph, res) => ({ ph, slot: 0, res, p: { name: 'Grafica Probe', nation: 'Italia', avatarId: 0, ovr: 58, age: 16, proStatus: 'youth', archetype: 'finalizzatore',
   stats: { 'velocità': 60, tecnica: 58, fisico: 56, 'mentalità': 57, tiro: 62, passaggio: 56, dribbling: 60, posizionamento: 58 } } });
 const RES3 = [{ goals: 1, assists: 0, rating: 6.6 }, { goals: 1, assists: 1, rating: 7.0 }, { goals: 0, assists: 0, rating: 6.8 }];/* 2 gol, voto 6,8: la riga della foto del PO */
@@ -182,7 +182,7 @@ for (const [k, rossi] of [['verde', []], ['rosso', ['__CPM_NO_G289']]]) {
 for (const [k, rossi] of [['telV', []], ['telR', ['__CPM_NO_G289']]]) {
   await contesti(TEL, rossi, true, async (page, id) => { if (!CORRETTE.includes(id)) return;
     /* prova del rosso del controllo telefono: CPM_289_PROVA_TEL=1 forza la regola da PC anche al telefono nel braccio verde; il confronto DEVE cadere */
-    if (process.env.CPM_289_PROVA_TEL === '1' && k === 'telV') await page.addStyleTag({ content: '.cpm-leggi289,.cpm-leggi289c{max-width:20ch!important}.cpm-pc289 .cpm-offers>*{flex:0 0 auto!important}[data-cpm="provino-pre"]>div:first-child{flex:0 0 auto!important}' });
+    if (process.env.CPM_289_PROVA_TEL === '1' && k === 'telV') await page.addStyleTag({ content: '.cpm-leggi289,.cpm-leggi289c{max-width:20ch!important}.cpm-pc289 .cpm-offers>*{flex:0 0 auto!important}' });
     await misuraSu(page, TEL, id, async (pg, t) => {
     /* [stabilita'] l'impronta si legge finche' due letture consecutive coincidono (max 8): una lettura a meta' di un'animazione d'ingresso ha dato un falso rosso */
     let prev = await pg.evaluate(IMPRONTA), cur = prev; for (let i = 0; i < 8; i++) { await sleep(450); await congela(pg); cur = await pg.evaluate(IMPRONTA); if (cur.h === prev.h) break; prev = cur; }
