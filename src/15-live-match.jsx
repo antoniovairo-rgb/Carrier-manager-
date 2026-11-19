@@ -12939,7 +12939,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       )}
                     </div>
                   </div>
-                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:_dito292?"13px 7px":"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:_dito292?FS.small:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto{_dito292?"":" [0]"}</button>}{/* [giro 90 PO-292 D2/D14] a tocco: bersaglio >= 40 px e niente suggerimento da tastiera */}
+                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:_dito292?"13px 7px":"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:_dito292?FS.small:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto{(!_dito292&&typeof window!=="undefined"&&window.__CPM_NO_G288)?" [0]":""}</button>}{/* [giro 288 PO-547] «togli lo 0 ovunque dai pulsanti»: il suggerimento del tasto esce dalla scritta, il tasto 0 resta (keydown hl_move). Rosso __CPM_NO_G288 */}{/* [giro 90 PO-292 D2/D14] a tocco: bersaglio >= 40 px e niente suggerimento da tastiera */}
                 </div>
               )}
 
