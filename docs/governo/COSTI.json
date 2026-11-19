@@ -3175,5 +3175,61 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaCShEnKpsVhL5L5Pgk",
+  "titolo": "giro 284 · Home da PC e liste leggibili",
+  "creata": "2026-11-19T09:36:18Z",
+  "chiusa": "2026-11-19T09:52:11Z",
+  "cost_usd": 2.93533396,
+  "output_tokens": 27491,
+  "cache_read_tokens": 6232194,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia9kvXNY76wSLxcf3Ct",
+  "titolo": "giro 287 · pre-partita da PC, nota nel pulsante",
+  "creata": "2026-11-19T09:52:49Z",
+  "chiusa": "2026-11-19T10:30:45Z",
+  "cost_usd": 3.51492738,
+  "output_tokens": 26974,
+  "cache_read_tokens": 7632261,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia9gaKx7tsjzPiC6aqC",
+  "titolo": "giro 288 · togliere «[0]» dai pulsanti",
+  "creata": "2026-11-19T09:53:37Z",
+  "chiusa": "2026-11-19T10:07:44Z",
+  "cost_usd": 2.39652762,
+  "output_tokens": 16490,
+  "cache_read_tokens": 5473187,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaCXcuzm66DdPVEQKEK",
+  "titolo": "giro 290 · avviso salienti nelle finestre Gioca",
+  "creata": "2026-11-19T09:59:52Z",
+  "chiusa": "2026-11-19T10:23:46Z",
+  "cost_usd": 3.2930897,
+  "output_tokens": 30646,
+  "cache_read_tokens": 7551636,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
