@@ -1259,6 +1259,14 @@ function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.Da
   const P=(typeof window!=='undefined'&&window.__CPM_TESTE237)||{},carica=v=>new Promise(res=>{const p=P[v];if(p&&p.complete&&p.naturalWidth>0)return res(p);const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src='./assets/hair-colors/source-textures/HEAD_hair_'+v+'.png';});
   Promise.all([carica('black'),carica('blond')]).then(([a,b])=>{if(a&&b)fai(a,b);else _MASC240.stato=3;});
   return _MASC240.u;}catch(_e){return _MASC240.u;}}
+/* [giro 276 · riparazione di memoria-275, rosso window.__CPM_NO_G276] LA MASCHERA DEL VISO TRATTENEVA LA PARTITA SMONTATA. Dal giro 240 la
+   maschera e' una texture di MODULO (una per pagina) passata allo shader della testa come uniform: il renderer della partita la carica e
+   registra su di lei il proprio ascoltatore 'dispose'. Lo smontaggio libera le texture che trova come proprieta' dei materiali, ma un
+   uniform non e' una proprieta' del materiale: l'ascoltatore restava, e con lui _MASC240 → texture → ascoltatore del renderer vecchio →
+   contesto WebGL → tela → ascoltatori della tela → scena della partita finita (misurato con l'istantanea dell'heap: 2 scene, 3 renderer,
+   corpi animati 869→1846 all'avvio della seconda partita). Stessa classe dei due trattenitori del giro 53 (_glbCache, _kitTexCache).
+   Allo smontaggio la texture si libera: il suo 'dispose' toglie l'ascoltatore; l'immagine resta e il renderer successivo la ricarica al primo uso. */
+function _rilascia276(){try{if(typeof window!=='undefined'&&window.__CPM_NO_G276)return 0;const t=_MASC240.u.value;if(t&&t.isTexture){t.dispose();return 1;}return 0;}catch(_e){return 0;}}
 function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255],auto240=lineare0==='auto';
   const fL=(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}),fS=(v=>v/255);let fatti=0;if(!_UNO240)_UNO240=new T.Vector3(1,1,1);
   av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];

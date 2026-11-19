@@ -13731,6 +13731,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         /* secondo trattenitore, stessa classe (snapshot dopo il primo rimedio): _kitTexCache → texture della maglia → ascoltatore del renderer → contesto → canvas → scena */
         if(typeof _kitTexCache!=='undefined')Object.values(_kitTexCache).forEach(t=>{try{if(t&&t.isTexture)t.dispose();}catch(_e){}});
       }catch(_e275){}}
+      try{if(typeof _rilascia276==='function')_rilascia276();}catch(_e276){}/* [giro 276] terzo trattenitore della stessa classe: la maschera del viso del giro 240 (uniform, non proprieta' del materiale). Rosso __CPM_NO_G276 */
 
       };const _p3_219=()=>{
       try{renderer.forceContextLoss();}catch(e){}try{renderer.dispose();}catch(e){}// 5.69.3: rilascia il contesto WebGL della partita a fine match → non si accumula tra una partita e l'altra
