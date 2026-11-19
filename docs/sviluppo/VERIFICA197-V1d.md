@@ -20,3 +20,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 8 | portiere-265 | verde (284 s; braccio verde 0 difetti su 7, rosso 3/3) | — | — | **verde** | `✅ portiere-265 VERDE (verde col verde, rosso col rosso): negli highlight il portiere resta sul suo punto, davanti alla linea, fermo al calcio.` |
 | 9 | gk-miss-229 | verde (180 s; 12 tiri giudicati, 2 volée «a bruciapelo» non giudicate per regola della sonda) | — | — | **verde** | `✅ VERDE — sui tiri sbagliati il portiere si muove verso il pallone prima che lo superi, e guarda uscire quelli lontani.` |
 | 10 | rinvio-252 | verde (209 s) | — | — | **verde** | `✅ rinvio-252 VERDE` |
+| 11 | render-3d-023 | rosso (121 s) | rosso (121 s) | rosso (46 s) | **NATO nella 197** (causa diversa dalla 196) | 197: `page.waitForFunction: Timeout 120000ms exceeded. at render-3d-023.mjs:54:12` (attesa di `__T023.home`, mai scritta) · 196: `❌ RENDER 3D — 1 problemi: · heap 1498.6 MB > 700` (home in 8131 ms) |
