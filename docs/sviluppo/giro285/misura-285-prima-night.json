@@ -1,0 +1,596 @@
+{
+ "provino": {
+  "nome": "provino",
+  "foto": [
+   "prima-provino-night-glb-camera.jpg",
+   "prima-provino-night-glb-alto.jpg",
+   "prima-provino-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 1.05,
+    "ogg": [
+     {
+      "id": "58FE02B3-DAF1-4BE1-A1DE-97412C1CFD6F",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#181b24",
+      "l": 0.107,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 3.1,
+    "ogg": [
+     {
+      "id": "58FE02B3-DAF1-4BE1-A1DE-97412C1CFD6F",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#181b24",
+      "l": 0.107,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 17.48,
+    "ogg": [
+     {
+      "id": "58FE02B3-DAF1-4BE1-A1DE-97412C1CFD6F",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#181b24",
+      "l": 0.107,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [
+   {
+    "id": "58FE02B3-DAF1-4BE1-A1DE-97412C1CFD6F",
+    "k": "nastro-competizione",
+    "g": "PlaneGeometry",
+    "x": [
+     -50,
+     50
+    ],
+    "y": [
+     0.48,
+     0.48
+    ],
+    "z": [
+     -35.18,
+     -34.62
+    ],
+    "col": "#181b24",
+    "l": 0.107,
+    "op": 0.8,
+    "tr": true
+   }
+  ],
+  "coperte": 141,
+  "raggi": 564,
+  "rossoVisto": true,
+  "guasti": [
+   "superficie ferma nel varco: nastro-competizione (PlaneGeometry) x -50..50 · y 0.48..0.48 · z -35.18..-34.62 · colore #181b24 luminanza 0.107 opacita' 0.8 · 141 celle dall'alto",
+   "141 celle su 564 coperte dall'alto (25.0% del varco)"
+  ]
+ },
+ "comunale": {
+  "nome": "comunale",
+  "foto": [
+   "prima-comunale-night-glb-camera.jpg",
+   "prima-comunale-night-glb-alto.jpg",
+   "prima-comunale-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 1.05,
+    "ogg": [
+     {
+      "id": "9201B0FA-7EA5-49F9-AC35-E348B41BEC10",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 3.1,
+    "ogg": [
+     {
+      "id": "9201B0FA-7EA5-49F9-AC35-E348B41BEC10",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 17.48,
+    "ogg": [
+     {
+      "id": "9201B0FA-7EA5-49F9-AC35-E348B41BEC10",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [
+   {
+    "id": "9201B0FA-7EA5-49F9-AC35-E348B41BEC10",
+    "k": "nastro-competizione",
+    "g": "PlaneGeometry",
+    "x": [
+     -50,
+     50
+    ],
+    "y": [
+     0.48,
+     0.48
+    ],
+    "z": [
+     -35.18,
+     -34.62
+    ],
+    "col": "#22252e",
+    "l": 0.145,
+    "op": 0.8,
+    "tr": true
+   }
+  ],
+  "coperte": 141,
+  "raggi": 564,
+  "rossoVisto": true,
+  "guasti": [
+   "superficie ferma nel varco: nastro-competizione (PlaneGeometry) x -50..50 · y 0.48..0.48 · z -35.18..-34.62 · colore #22252e luminanza 0.145 opacita' 0.8 · 141 celle dall'alto",
+   "141 celle su 564 coperte dall'alto (25.0% del varco)"
+  ]
+ },
+ "borgo": {
+  "nome": "borgo",
+  "foto": [
+   "prima-borgo-night-glb-camera.jpg",
+   "prima-borgo-night-glb-alto.jpg",
+   "prima-borgo-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 1.05,
+    "ogg": [
+     {
+      "id": "F7DFC55E-263F-4386-AB14-242CDF9ECB19",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 3.1,
+    "ogg": [
+     {
+      "id": "F7DFC55E-263F-4386-AB14-242CDF9ECB19",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 17.48,
+    "ogg": [
+     {
+      "id": "F7DFC55E-263F-4386-AB14-242CDF9ECB19",
+      "k": "nastro-competizione",
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [
+   {
+    "id": "F7DFC55E-263F-4386-AB14-242CDF9ECB19",
+    "k": "nastro-competizione",
+    "g": "PlaneGeometry",
+    "x": [
+     -50,
+     50
+    ],
+    "y": [
+     0.48,
+     0.48
+    ],
+    "z": [
+     -35.18,
+     -34.62
+    ],
+    "col": "#22252e",
+    "l": 0.145,
+    "op": 0.8,
+    "tr": true
+   }
+  ],
+  "coperte": 94,
+  "raggi": 470,
+  "rossoVisto": true,
+  "guasti": [
+   "superficie ferma nel varco: nastro-competizione (PlaneGeometry) x -50..50 · y 0.48..0.48 · z -35.18..-34.62 · colore #22252e luminanza 0.145 opacita' 0.8 · 94 celle dall'alto",
+   "94 celle su 470 coperte dall'alto (20.0% del varco)"
+  ]
+ }
+}

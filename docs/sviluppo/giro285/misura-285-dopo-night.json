@@ -1,0 +1,323 @@
+{
+ "provino": {
+  "nome": "provino",
+  "foto": [
+   "dopo-provino-night-glb-camera.jpg",
+   "dopo-provino-night-glb-alto.jpg",
+   "dopo-provino-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 1.1,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 3.05,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 10.77,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 17.53,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [],
+  "coperte": 0,
+  "raggi": 564,
+  "rossoVisto": false,
+  "guasti": []
+ },
+ "comunale": {
+  "nome": "comunale",
+  "foto": [
+   "dopo-comunale-night-glb-camera.jpg",
+   "dopo-comunale-night-glb-alto.jpg",
+   "dopo-comunale-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 1.05,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 3.1,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": 17.48,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [],
+  "coperte": 0,
+  "raggi": 564,
+  "rossoVisto": false,
+  "guasti": []
+ },
+ "borgo": {
+  "nome": "borgo",
+  "foto": [
+   "dopo-borgo-night-glb-camera.jpg",
+   "dopo-borgo-night-glb-alto.jpg",
+   "dopo-borgo-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 1.05,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 3.1,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   },
+   {
+    "tun": {
+     "x": 0,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.5,
+    "t": 17.48,
+    "ogg": [],
+    "led": [
+     [
+      -13.41,
+      -9.32
+     ],
+     [
+      -8.86,
+      -4.77
+     ],
+     [
+      4.77,
+      8.86
+     ],
+     [
+      9.32,
+      13.41
+     ]
+    ],
+    "raggi": 470
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [],
+  "coperte": 0,
+  "raggi": 470,
+  "rossoVisto": false,
+  "guasti": []
+ }
+}

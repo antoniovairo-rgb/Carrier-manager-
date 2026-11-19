@@ -18035,8 +18035,19 @@ function ThreeMatchView(props){
       cx.font="bold 13px monospace";cx.fillStyle="rgba(255,255,255,0.82)";
       const seg="  "+_compLbl+"  ·  ";for(let k=0;k<12;k++)cx.fillText(seg,k*Math.ceil(seg.length*7.8),18);
       const tex=new THREE.CanvasTexture(c);tex.wrapS=THREE.RepeatWrapping;tex.repeat.set(1,1);
-      const bm=new THREE.Mesh(new THREE.PlaneGeometry(100,0.55),new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:0.80,side:THREE.DoubleSide,depthWrite:false}));
-      bm.rotation.x=-Math.PI/2;bm.position.set(0,0.48,z);scene.add(bm);return bm;};
+      /* [giro 285 PO-544 «c'e' una fascia nera davanti al tunnel che non dovrebbe esserci» — rosso __CPM_NO_G285: il nastro intero]
+         MISURATO (sonda-285/tunnel-285, censimento delle mesh nel varco): la fascia e' QUESTO nastro — un piano scuro (#030610,
+         opacita' 0,80) lungo 100 e largo 0,55, steso in orizzontale a y 0,48 e z -34,9. Non era etichettato `ost245` ed e' lungo
+         piu' di 40: il testimone del giro 245 non lo vedeva. Finche' davanti c'erano striscia LED e cartellone restava coperto;
+         dal giro 245 (varco davanti alla bocca a meta' campo) resta sospeso da solo nel varco e le due file lo attraversano.
+         Sul lato panchine ora e' in DUE tratti che si fermano a x -4,77 e +4,77 (il varco piu' stretto, quello della striscia
+         LED); le coordinate della scritta restano quelle del nastro intero (stesso materiale, stesso scorrimento). Etichettato. */
+      const mat=new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:0.80,side:THREE.DoubleSide,depthWrite:false});
+      const _tr285=(x0,x1)=>{const g=new THREE.PlaneGeometry(x1-x0,0.55),uv=g.attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,(x0+50+uv.getX(i)*(x1-x0))/100);
+        const bm=new THREE.Mesh(g,mat);bm.rotation.x=-Math.PI/2;bm.position.set((x0+x1)/2,0.48,z);bm.userData.ost245='nastro-competizione';scene.add(bm);return bm;};
+      const _W=typeof window!=='undefined'?window:{};
+      if(z<0&&!_W.__CPM_NO_G285&&!_W.__CPM_NO_G245&&!_W.__CPM_NO_STADI246){_tr285(-50,-4.77);return _tr285(4.77,50);}
+      return _tr285(-50,50);};
     const compBanner1=_mkCompBanner(-34.9);const compBanner2=_mkCompBanner(34.9);
 
     // Particelle meteo (pioggia / temporale / neve) + flash per il temporale

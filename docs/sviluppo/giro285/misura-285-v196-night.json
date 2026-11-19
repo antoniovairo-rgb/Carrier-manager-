@@ -1,0 +1,1494 @@
+{
+ "comunale": {
+  "nome": "comunale",
+  "foto": [
+   "v196-comunale-night-glb-camera.jpg",
+   "v196-comunale-night-glb-alto.jpg",
+   "v196-comunale-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": -22,
+     "z0": -42.5,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "5FD2423F-CA10-4C53-BAF3-03446D5A1713",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "C838FE8D-5E5B-4D87-A4E1-C6A5C0E209EF",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "6CD1C111-F4E7-4F70-A101-BC0C436D12D6",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#292929",
+      "l": 0.162,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "0097CF87-1059-4462-A8D7-5A5BFB014F81",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#020202",
+      "l": 0.008,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CD638D0E-38AB-47D9-AE8E-7C258C0534A8",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#2a0707",
+      "l": 0.057,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AEAE8C6D-222F-49D5-A52F-9DDB278D8A37",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#b88036",
+      "l": 0.528,
+      "op": 0.98,
+      "tr": true
+     },
+     {
+      "id": "F9A77248-3E79-41C4-81A4-83766E187312",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": -22,
+     "z0": -42.5,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "5FD2423F-CA10-4C53-BAF3-03446D5A1713",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "C838FE8D-5E5B-4D87-A4E1-C6A5C0E209EF",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "6CD1C111-F4E7-4F70-A101-BC0C436D12D6",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#9d9d9d",
+      "l": 0.614,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "0097CF87-1059-4462-A8D7-5A5BFB014F81",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#070707",
+      "l": 0.029,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CD638D0E-38AB-47D9-AE8E-7C258C0534A8",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#4e0e0e",
+      "l": 0.107,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AEAE8C6D-222F-49D5-A52F-9DDB278D8A37",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#b88036",
+      "l": 0.528,
+      "op": 0.98,
+      "tr": true
+     },
+     {
+      "id": "F9A77248-3E79-41C4-81A4-83766E187312",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": -22,
+     "z0": -42.5,
+     "z1": -35.9,
+     "L": 6.6,
+     "stile": "telescopico"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "5FD2423F-CA10-4C53-BAF3-03446D5A1713",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "C838FE8D-5E5B-4D87-A4E1-C6A5C0E209EF",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "6CD1C111-F4E7-4F70-A101-BC0C436D12D6",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#8d1818",
+      "l": 0.193,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "0097CF87-1059-4462-A8D7-5A5BFB014F81",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#878787",
+      "l": 0.531,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CD638D0E-38AB-47D9-AE8E-7C258C0534A8",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#060606",
+      "l": 0.023,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AEAE8C6D-222F-49D5-A52F-9DDB278D8A37",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#b88036",
+      "l": 0.528,
+      "op": 0.98,
+      "tr": true
+     },
+     {
+      "id": "F9A77248-3E79-41C4-81A4-83766E187312",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [
+   {
+    "id": "5FD2423F-CA10-4C53-BAF3-03446D5A1713",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -18.5,
+     -9.5
+    ],
+    "y": [
+     0,
+     1.1
+    ],
+    "z": [
+     -35.4,
+     -33.8
+    ],
+    "col": "#1c2430",
+    "l": 0.138,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "C838FE8D-5E5B-4D87-A4E1-C6A5C0E209EF",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -18.8,
+     -9.2
+    ],
+    "y": [
+     1.83,
+     2.37
+    ],
+    "z": [
+     -35.9,
+     -33.7
+    ],
+    "col": "#9fc2dd",
+    "l": 0.739,
+    "op": 0.4,
+    "tr": true
+   },
+   {
+    "id": "6CD1C111-F4E7-4F70-A101-BC0C436D12D6",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -27.05,
+     -22.95
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#9d9d9d",
+    "l": 0.614,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "0097CF87-1059-4462-A8D7-5A5BFB014F81",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -22.5,
+     -18.41
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#070707",
+    "l": 0.029,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "CD638D0E-38AB-47D9-AE8E-7C258C0534A8",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -17.95,
+     -13.86
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#4e0e0e",
+    "l": 0.107,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "AEAE8C6D-222F-49D5-A52F-9DDB278D8A37",
+    "k": null,
+    "g": "PlaneGeometry",
+    "x": [
+     -19.15,
+     -6.05
+    ],
+    "y": [
+     0.15,
+     1.85
+    ],
+    "z": [
+     -34.86,
+     -34.86
+    ],
+    "col": "#b88036",
+    "l": 0.528,
+    "op": 0.98,
+    "tr": true
+   },
+   {
+    "id": "F9A77248-3E79-41C4-81A4-83766E187312",
+    "k": null,
+    "g": "PlaneGeometry",
+    "x": [
+     -50,
+     50
+    ],
+    "y": [
+     0.48,
+     0.48
+    ],
+    "z": [
+     -35.18,
+     -34.62
+    ],
+    "col": "#22252e",
+    "l": 0.145,
+    "op": 0.8,
+    "tr": true
+   }
+  ],
+  "coperte": 242,
+  "raggi": 564,
+  "rossoVisto": true,
+  "guasti": [
+   "non giudicato: controllo di vista fallito, 0 tratti di striscia LED visti accanto alla bocca (minimo 2)",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -18.5..-9.5 · y 0..1.1 · z -35.4..-33.8 · colore #1c2430 luminanza 0.138 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -18.8..-9.2 · y 1.83..2.37 · z -35.9..-33.7 · colore #9fc2dd luminanza 0.739 opacita' 0.4 · 88 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -27.05..-22.95 · y 0.07..0.77 · z -34.46..-34.34 · colore #9d9d9d luminanza 0.614 opacita' 1 · 19 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -22.5..-18.41 · y 0.07..0.77 · z -34.46..-34.34 · colore #070707 luminanza 0.029 opacita' 1 · 18 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -17.95..-13.86 · y 0.07..0.77 · z -34.46..-34.34 · colore #4e0e0e luminanza 0.107 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (PlaneGeometry) x -19.15..-6.05 · y 0.15..1.85 · z -34.86..-34.86 · colore #b88036 luminanza 0.528 opacita' 0.98 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (PlaneGeometry) x -50..50 · y 0.48..0.48 · z -35.18..-34.62 · colore #22252e luminanza 0.145 opacita' 0.8 · 117 celle dall'alto",
+   "242 celle su 564 coperte dall'alto (42.9% del varco)"
+  ]
+ },
+ "borgo": {
+  "nome": "borgo",
+  "foto": [
+   "v196-borgo-night-glb-camera.jpg",
+   "v196-borgo-night-glb-alto.jpg",
+   "v196-borgo-night-glb-fianco.jpg"
+  ],
+  "mis": [
+   {
+    "tun": {
+     "x": -22,
+     "z0": -36,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "9C249531-228A-4CA5-9603-B7DDEA7107EB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3F741578-2833-48C9-9BDD-0C31DB0196F3",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "D8702885-BE7F-495C-9B02-01730C08D3F4",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -24.72,
+       -24.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CA46DADB-F3FB-4D12-BC34-D32B9A029B17",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -19.72,
+       -19.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "4575D4DF-3F79-471B-B55E-C1E0D1933D65",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#020202",
+      "l": 0.009,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AD24F61B-E0EC-45D8-A6C8-BB13013D7CE9",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#310808",
+      "l": 0.067,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "2E344D18-7489-4FD6-A46E-C5D24F2A29BB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#575757",
+      "l": 0.341,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3380100A-C0D8-4DE9-B744-22BAA944EFEE",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#d0c5b2",
+      "l": 0.775,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "1DECD006-FB85-4CF7-B1E9-81E1FDD2F0E7",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": -22,
+     "z0": -36,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "9C249531-228A-4CA5-9603-B7DDEA7107EB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3F741578-2833-48C9-9BDD-0C31DB0196F3",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "D8702885-BE7F-495C-9B02-01730C08D3F4",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -24.72,
+       -24.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CA46DADB-F3FB-4D12-BC34-D32B9A029B17",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -19.72,
+       -19.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "4575D4DF-3F79-471B-B55E-C1E0D1933D65",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#0a0a0a",
+      "l": 0.039,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AD24F61B-E0EC-45D8-A6C8-BB13013D7CE9",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#7f1616",
+      "l": 0.173,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "2E344D18-7489-4FD6-A46E-C5D24F2A29BB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#727272",
+      "l": 0.446,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3380100A-C0D8-4DE9-B744-22BAA944EFEE",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#d0c5b2",
+      "l": 0.775,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "1DECD006-FB85-4CF7-B1E9-81E1FDD2F0E7",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   },
+   {
+    "tun": {
+     "x": -22,
+     "z0": -36,
+     "z1": -35.9,
+     "L": 0.1,
+     "stile": "pensilina"
+    },
+    "z0": -35.85,
+    "t": null,
+    "ogg": [
+     {
+      "id": "9C249531-228A-4CA5-9603-B7DDEA7107EB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.5,
+       -9.5
+      ],
+      "y": [
+       0,
+       1.1
+      ],
+      "z": [
+       -35.4,
+       -33.8
+      ],
+      "col": "#1c2430",
+      "l": 0.138,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3F741578-2833-48C9-9BDD-0C31DB0196F3",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -18.8,
+       -9.2
+      ],
+      "y": [
+       1.83,
+       2.37
+      ],
+      "z": [
+       -35.9,
+       -33.7
+      ],
+      "col": "#9fc2dd",
+      "l": 0.739,
+      "op": 0.4,
+      "tr": true
+     },
+     {
+      "id": "D8702885-BE7F-495C-9B02-01730C08D3F4",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -24.72,
+       -24.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "CA46DADB-F3FB-4D12-BC34-D32B9A029B17",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -19.72,
+       -19.28
+      ],
+      "y": [
+       0,
+       3
+      ],
+      "z": [
+       -36.05,
+       -35.55
+      ],
+      "col": "#0f0f0f",
+      "l": 0.059,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "4575D4DF-3F79-471B-B55E-C1E0D1933D65",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -27.05,
+       -22.95
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#929292",
+      "l": 0.574,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "AD24F61B-E0EC-45D8-A6C8-BB13013D7CE9",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -22.5,
+       -18.41
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#070707",
+      "l": 0.026,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "2E344D18-7489-4FD6-A46E-C5D24F2A29BB",
+      "k": null,
+      "g": "BoxGeometry",
+      "x": [
+       -17.95,
+       -13.86
+      ],
+      "y": [
+       0.07,
+       0.77
+      ],
+      "z": [
+       -34.46,
+       -34.34
+      ],
+      "col": "#430c0c",
+      "l": 0.092,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "3380100A-C0D8-4DE9-B744-22BAA944EFEE",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -19.15,
+       -6.05
+      ],
+      "y": [
+       0.15,
+       1.85
+      ],
+      "z": [
+       -34.86,
+       -34.86
+      ],
+      "col": "#d0c5b2",
+      "l": 0.775,
+      "op": 1,
+      "tr": false
+     },
+     {
+      "id": "1DECD006-FB85-4CF7-B1E9-81E1FDD2F0E7",
+      "k": null,
+      "g": "PlaneGeometry",
+      "x": [
+       -50,
+       50
+      ],
+      "y": [
+       0.48,
+       0.48
+      ],
+      "z": [
+       -35.18,
+       -34.62
+      ],
+      "col": "#22252e",
+      "l": 0.145,
+      "op": 0.8,
+      "tr": true
+     }
+    ],
+    "led": [],
+    "raggi": 564
+   }
+  ],
+  "walk": true,
+  "errori": [],
+  "fermi": [
+   {
+    "id": "9C249531-228A-4CA5-9603-B7DDEA7107EB",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -18.5,
+     -9.5
+    ],
+    "y": [
+     0,
+     1.1
+    ],
+    "z": [
+     -35.4,
+     -33.8
+    ],
+    "col": "#1c2430",
+    "l": 0.138,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "3F741578-2833-48C9-9BDD-0C31DB0196F3",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -18.8,
+     -9.2
+    ],
+    "y": [
+     1.83,
+     2.37
+    ],
+    "z": [
+     -35.9,
+     -33.7
+    ],
+    "col": "#9fc2dd",
+    "l": 0.739,
+    "op": 0.4,
+    "tr": true
+   },
+   {
+    "id": "D8702885-BE7F-495C-9B02-01730C08D3F4",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -24.72,
+     -24.28
+    ],
+    "y": [
+     0,
+     3
+    ],
+    "z": [
+     -36.05,
+     -35.55
+    ],
+    "col": "#0f0f0f",
+    "l": 0.059,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "CA46DADB-F3FB-4D12-BC34-D32B9A029B17",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -19.72,
+     -19.28
+    ],
+    "y": [
+     0,
+     3
+    ],
+    "z": [
+     -36.05,
+     -35.55
+    ],
+    "col": "#0f0f0f",
+    "l": 0.059,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "4575D4DF-3F79-471B-B55E-C1E0D1933D65",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -27.05,
+     -22.95
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#0a0a0a",
+    "l": 0.039,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "AD24F61B-E0EC-45D8-A6C8-BB13013D7CE9",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -22.5,
+     -18.41
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#7f1616",
+    "l": 0.173,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "2E344D18-7489-4FD6-A46E-C5D24F2A29BB",
+    "k": null,
+    "g": "BoxGeometry",
+    "x": [
+     -17.95,
+     -13.86
+    ],
+    "y": [
+     0.07,
+     0.77
+    ],
+    "z": [
+     -34.46,
+     -34.34
+    ],
+    "col": "#727272",
+    "l": 0.446,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "3380100A-C0D8-4DE9-B744-22BAA944EFEE",
+    "k": null,
+    "g": "PlaneGeometry",
+    "x": [
+     -19.15,
+     -6.05
+    ],
+    "y": [
+     0.15,
+     1.85
+    ],
+    "z": [
+     -34.86,
+     -34.86
+    ],
+    "col": "#d0c5b2",
+    "l": 0.775,
+    "op": 1,
+    "tr": false
+   },
+   {
+    "id": "1DECD006-FB85-4CF7-B1E9-81E1FDD2F0E7",
+    "k": null,
+    "g": "PlaneGeometry",
+    "x": [
+     -50,
+     50
+    ],
+    "y": [
+     0.48,
+     0.48
+    ],
+    "z": [
+     -35.18,
+     -34.62
+    ],
+    "col": "#22252e",
+    "l": 0.145,
+    "op": 0.8,
+    "tr": true
+   }
+  ],
+  "coperte": 242,
+  "raggi": 564,
+  "rossoVisto": true,
+  "guasti": [
+   "non giudicato: controllo di vista fallito, 0 tratti di striscia LED visti accanto alla bocca (minimo 2)",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -18.5..-9.5 · y 0..1.1 · z -35.4..-33.8 · colore #1c2430 luminanza 0.138 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -18.8..-9.2 · y 1.83..2.37 · z -35.9..-33.7 · colore #9fc2dd luminanza 0.739 opacita' 0.4 · 88 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -24.72..-24.28 · y 0..3 · z -36.05..-35.55 · colore #0f0f0f luminanza 0.059 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -19.72..-19.28 · y 0..3 · z -36.05..-35.55 · colore #0f0f0f luminanza 0.059 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -27.05..-22.95 · y 0.07..0.77 · z -34.46..-34.34 · colore #0a0a0a luminanza 0.039 opacita' 1 · 19 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -22.5..-18.41 · y 0.07..0.77 · z -34.46..-34.34 · colore #7f1616 luminanza 0.173 opacita' 1 · 18 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (BoxGeometry) x -17.95..-13.86 · y 0.07..0.77 · z -34.46..-34.34 · colore #727272 luminanza 0.446 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (PlaneGeometry) x -19.15..-6.05 · y 0.15..1.85 · z -34.86..-34.86 · colore #d0c5b2 luminanza 0.775 opacita' 1 · 0 celle dall'alto",
+   "superficie ferma nel varco: senza etichetta (PlaneGeometry) x -50..50 · y 0.48..0.48 · z -35.18..-34.62 · colore #22252e luminanza 0.145 opacita' 0.8 · 117 celle dall'alto",
+   "242 celle su 564 coperte dall'alto (42.9% del varco)"
+  ]
+ }
+}
