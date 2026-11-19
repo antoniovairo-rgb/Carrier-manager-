@@ -5,6 +5,14 @@ Nessun file di `src/` o `tests/` modificato. `node tools/build-src.mjs` → «by
 Modo: un controllo alla volta, `CPM_CI_PAR=0 CPM_CHROME=/opt/pw-browsers/chromium npm run -s <nome>` in `tests/visual`, `timeout 2400`;
 `free -m` e `df -h` prima di ognuno (in `diario`, memoria libera ~15 GB, disco 29 GB); dopo ognuno `git checkout -- docs/`.
 
+## Riepilogo
+
+Dei 22 controlli della mia parte: **17 verdi** · **2 dichiarati** (`tocco3d-219`, `esiti-218`: rossi 2 su 2 e rossi anche sulla 196)
+· **2 NATI nella 197** (`memoria-275`, `analisi-217`: rossi 2 su 2, verdi sulla 196 → **per la regola PO-516 bloccano l'uscita**)
+· **1 oltre tetto** (`assist-298`: 2400 s due volte sulla 197; sulla 196 verde ma in 2801 s). Nessun «instabile 1 su 2».
+Durata del blocco: dalle 17:07 alle 00:24 (oltre il tetto di circa 4 ore: le sole prove degli oltre-tetto e dei rossi sulla 196 hanno
+preso ~2 ore). Nessun file di `src/` o `tests/` modificato; nessuna foto in `docs/` rigenerata rimasta modificata; `STABILITA.json` non toccato.
+
 ## Come ho ricavato l'elenco
 
 - In `tests/visual/ci-runner.mjs` la PRIMA riga di `MAPPA` che risponde sia a `src/12-…` sia a `src/13-…` è la stessa:
@@ -62,7 +70,7 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 | 5 | tocco3d-219 | ❌ rosso (437 s) | ❌ rosso (456 s) | ❌ rosso (536 s, «verde 3/9 · rosso bocciato 6/6», stessa causa G3) | **dichiarato** (rosso anche sulla 196) | «ultimo: verde 2/9 · rosso bocciato 6/6» (2ª: «verde 0/9 · rosso bocciato 6/6»). Causa stampata sul braccio verde: «G3 compito lungo 748-1001 ms > 600 fra tocco e scena chiusa» |
 | 8 | nomi-182 | ✅ verde (284 s) | — | — | verde | «nomi-182: ROSSO (26 ok · 2 ko)» = braccio rosso atteso; verde «28 ok · 0 ko» |
 | 11 | colla-103 | ✅ verde (256 s) | — | — | verde | «✓ colla-103 VERDE (e il rosso si vede)» |
-| 14 | assist-298 | ⏱ oltre tetto (2400 s) | ⏱ oltre tetto (2400 s) | in coda (tetto 60 min) | oltre tetto | braccio verde chiuso «VERDE scene 19 giudicate 19 · passaggi riusciti 100.0% …» in entrambe; il braccio rosso non ha chiuso nessun seme prima del tetto (~8 min per seme, 5 semi per braccio) |
+| 14 | assist-298 | ⏱ oltre tetto (2400 s) | ⏱ oltre tetto (2400 s) | ✅ verde in **2801 s** col tetto di 60 min («✅ assist-298 verde (e il rosso si vede)»): anche sulla 196 supera i 40 min | **oltre tetto** (vedi dubbio 4) | braccio verde chiuso «VERDE scene 19 giudicate 19 · passaggi riusciti 100.0% …» in entrambe; il braccio rosso non ha chiuso nessun seme prima del tetto (~8 min per seme, 5 semi per braccio) |
 | 17 | pc-tablet-292 | ✅ verde (725 s) | — | — | verde | «PC-TABLET-292: ✅ VERDE» |
 | 20 | ingresso-276 | ✅ verde (316 s) | — | — | verde | «✅ ingresso-276 verde (calciatori nel quadro nei primi 12 s, fila leggibile a fine ingresso) e il rosso si vede» |
 | 23 | avvicinamento-61 | ✅ verde (101 s) | — | — | verde | «✅ avvicinamento-61 verde (e il rosso si vede)» |
@@ -87,7 +95,6 @@ Esito = codice d'uscita del comando (0 verde; 124 = ucciso dal tetto di 2400 s).
 (corsa scartata, log cancellato, rifatta da sola dopo) e, siccome la 1ª di `parata-258` non era più «una alla volta», l'ho ripetuta da
 sola: verde anche così. In tabella valgono la corsa ripetuta e la `analisi-217` rifatta.
 
-<!-- TABELLA -->
 
 ## Dubbi
 
@@ -106,3 +113,10 @@ sola: verde anche così. In tabella valgono la corsa ripetuta e la `analisi-217`
    giro 235 dà ai tasti primari `textTransform:"uppercase"` (`stileTasto235`, `src/11-ui-kit-highlight.jsx:95` e `:112`), e
    `innerText` restituisce il testo trasformato («ENTRA IN CAMPO»). Se è così il rosso sarebbe dello strumento e non della schermata,
    ma resta un rosso nato nella 197 finché qualcuno non lo misura. Non ho modificato né la sonda né il gioco.
+4. **`assist-298` non è classificabile verde/rosso sulla 197 col tetto dato.** Il braccio verde chiude VERDE in entrambe le corse
+   (19 scene giudicate su 19), poi il tetto di 2400 s taglia il braccio rosso prima che chiuda un seme. Sulla 196 l'intero controllo
+   dura 2801 s: il tetto di 40 min è più corto del controllo stesso anche sulla versione pubblicata. Per decidere serve una corsa della
+   197 col tetto di 60 min (non prevista dalla consegna, non l'ho fatta).
+5. Copia della 196: `git worktree add ../w196 3076a1b7`, `node_modules` collegato a quello della 197 (le dipendenze di
+   `tests/visual/package.json` sono identiche fra 3076a1b7 e 30a456b3: controllato col diff), build già allineato al suo HEAD (`check-src` verde; `build-src` rifiutato perché un
+   rituale era in corsa, non serviva).
