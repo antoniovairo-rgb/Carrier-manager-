@@ -8157,12 +8157,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              0/40 — e la prova del rosso da' 0/40 anche SENZA il rimedio. Riga tolta: nessun guadagno
              misurabile, e un blocco che sposta uomini ogni fotogramma di lettura non si tiene «per
              sicurezza». Resta la sonda, che ora misura il regime del giocatore. */
+          /* [giro 286 PO-545 «il portatore di palla prima della scelta si muove in continuazione avanti ed indietro». Rosso __CPM_NO_G286]
+             MISURATO (misura-286, GLB acceso, stacco di scena attivo, un campione per fotogramma col tempo di scena; identico sulla 7.999.196):
+             prima della scelta chi ha il pallone aveva DUE scrittori sul corpo. (1) Il battitore messo in scena (corner, rimessa, consegna):
+             la colla 7.405 lo porta sul pallone quando e' oltre 1,5 u, e il fotogramma dopo l'attesa attiva (7.685 / 7.999.144) lo riporta
+             alla sua base, presa PRIMA che arrivasse: gi6, un fotogramma sul pallone e uno a 27 u, 37 inversioni al secondo di scena.
+             (2) L'avversario col pallone nelle scene difensive: il pallone segue il suo corpo, e l'attesa attiva lo muove «sulla linea del
+             pallone», cioe' verso il punto dove lui stesso era un fotogramma prima: a seno negativo cambia lato a ogni fotogramma (gi36:
+             11-19 inversioni al secondo, 2 u). (3) Anche senza conflitto, chi ha il pallone fermo ai piedi faceva il «va e vieni» di 1 u
+             pensato per chi ASPETTA lontano dal pallone. Ora, prima della scelta, chi ha il pallone sta fermo sulla sua base: il battitore
+             (la base si riprende sul punto del pallone), il portatore difensivo e chiunque abbia la base entro 1,8 u dal pallone per 0,3 s
+             di scena (lo spostamento si spegne in rampa, niente scatto). Gli altri continuano l'attesa attiva decisa dal PO il 06/10. */
+          const _g286=!(typeof window!=='undefined'&&window.__CPM_NO_G286);let _tk286=false;
           if(_asIfPlay&&_inRead){
             const _ss405=P.stagedSpot&&P.stagedSpot.current,_src405=(P.allPlayers||[])[i];
             if(_ss405&&_src405&&_src405._taker402&&((typeof window!=='undefined'&&window.__CPM_NO_SPOT266)||_ss405.taker===i)){/* [giro 43 PO-266] solo il battitore piazzato per questa scena (src/15) */
               const _sx5=G2X(clamp(_ss405.x,2,98)),_sz5=G2Z(clamp(_ss405.y,2,98));
               if(Math.hypot(_sx5-pp.mesh.position.x,_sz5-pp.mesh.position.z)>1.5){
-                pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;continue;}}}
+                pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;if(_g286)pp.mesh._frz685=null;continue;}
+              _tk286=true;}}
           if(pp.mesh._mIdx==null)pp.mesh._mIdx=i;/* [7.198.0 S5] indice stabile: da qui derivano punta/spunto/prontezza del singolo giocatore */
           const _i143=(_sw219&&_sw219[i]!=null)?_sw219[i]:i;/* [giro 17 PO-123] l'indice logico dietro questa mesh (lo scambio _sw219 mette in scena il difensore nominato) */
           /* [giro 17 PO-123/PO-143 «difensori che pressano». Rosso __CPM_NO_MARCA143] MISURATO (sonda pressing-143-flusso, teatro acceso): il motore
@@ -8199,6 +8212,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(!(typeof window!=='undefined'&&window.__CPM_NO685)){
               if(!pp.mesh._frz685)pp.mesh._frz685={x:pp.mesh.position.x,z:pp.mesh.position.z,ph:(ak*1.7)%6.283};
               const _F685=pp.mesh._frz685,_t685=(now*0.0011)+_F685.ph;
+              let _k286=1;
+              if(_g286){const _dP286=Math.hypot(bx-_F685.x,bz-_F685.z),_tit286=(_tk286||pp.mesh===_tackleCarrier);
+                if(_tit286)_F685.k286=0;else if(_F685.lk286||_dP286<1.8){_F685.k286=Math.max(0,(_F685.k286==null?1:_F685.k286)-aDt/0.3);if(_F685.k286<=0)_F685.lk286=1;}else _F685.k286=Math.min(1,(_F685.k286==null?1:_F685.k286)+aDt/0.3);
+                _k286=_F685.k286;}
+              if(typeof window!=='undefined'&&window.__CPM_G286W&&(_CPM_TEST||_SIT_TEST)){try{const _W=window.__CPM_G286W;if(_W.length<4000&&(_k286<1||Math.hypot(bx-pp.mesh.position.x,bz-pp.mesh.position.z)<3.5))_W.push({i,st:+(window.__CPM_SCENET||0).toFixed(3),k:+_k286.toFixed(2),tk:_tk286?1:0,tc:pp.mesh===_tackleCarrier?1:0,ph:P.matchPhase});}catch(_e286){}}
               /* [7.999.144 PO-123, decisione PO 06/10 «al massimo il 30% fermi prima dell'azione»] L'ATTESA ATTIVA. Misurato (sonda
                  hl-credibilita sul tempo di scena, 3 partite): prima dell'azione compagni fermi 34-43%, avversari 29-46% — il respiro 685
                  (0,30 u, circa 0,3 u/s) resta sotto la soglia del movimento. Entro 35 u dal pallone ora chi aspetta si muove davvero,
@@ -8208,10 +8226,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _dB147=Math.hypot(bx-_F685.x,bz-_F685.z),_s147=(P.allPlayers||[])[i]||{};
               if(!(typeof window!=='undefined'&&window.__CPM_NO_ATTIVI147)&&_dB147<35&&!_s147.gk){
                 let _ux=1,_uz=0;if(_s147.team==='home'){_ux=0.8;_uz=((pp.mesh._mIdx!=null?pp.mesh._mIdx:i)%2)?0.6:-0.6;}else{_ux=(bx-_F685.x)/(_dB147||1);_uz=(bz-_F685.z)/(_dB147||1);}
-                const _sn147=Math.sin((now*0.0016)+_F685.ph);pp.mesh.position.x=_F685.x+_ux*1.0*_sn147;pp.mesh.position.z=_F685.z+_uz*1.0*_sn147;}
+                const _sn147=Math.sin((now*0.0016)+_F685.ph)*_k286;pp.mesh.position.x=_F685.x+_ux*1.0*_sn147;pp.mesh.position.z=_F685.z+_uz*1.0*_sn147;}
               else{
-              pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30;
-              pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22;}
+              pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30*_k286;
+              pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22*_k286;}
             }
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
