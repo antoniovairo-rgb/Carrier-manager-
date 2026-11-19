@@ -40,7 +40,7 @@ export function analizza(sc) {
   o.dxB = +(F[F.length - 1].b[0] - F[0].b[0]).toFixed(1);
   o.dxEtot = +(F[F.length - 1].h[0] - F[0].h[0]).toFixed(1); o.dzEtot = +(F[F.length - 1].h[1] - F[0].h[1]).toFixed(1);
   const W = (sc.w291 || []); const wl = W.length ? W[W.length - 1] : null;
-  if (wl) { o.chi = wl.q; o.v = [wl.vx, wl.vz]; }
+  if (wl) { o.chi = wl.q; o.v = [wl.vx, wl.vz]; o.win = wl.win; if (typeof o.ok !== 'boolean' && wl.ok != null) o.ok = wl.ok === 1; }
   if (car.length < 3) { o.verdetto = 'non portata'; o.dFine = +d(F[F.length - 1]).toFixed(1); return o; }
   const a = F[car[0]], b = F[car[car.length - 1]];
   const dx = b.h[0] - a.h[0], dz = b.h[1] - a.h[1], sp = Math.hypot(dx, dz);
