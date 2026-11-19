@@ -3035,5 +3035,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia8RceaJgbUZzrBpTgz",
+  "titolo": "giro 279 · riserva-104 (scene provocate)",
+  "creata": "2026-11-18T23:52:26Z",
+  "chiusa": "2026-11-19T01:20:41Z",
+  "cost_usd": 1.16177294,
+  "output_tokens": 10779,
+  "cache_read_tokens": 2242838,
+  "worker_epoch": 2,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-19"
  }
 ]
