@@ -1896,3 +1896,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 20:20 (19/11) PO-563 registrato senza lavoro: capitano e vice-capitano visibili nella Rosa come il rigorista.
 - 20:25 (19/11) PO-564 registrato senza lavoro: angoli dei riquadri incoerenti (Rosa); lunedì censimento su tutte le schermate, come il censimento PC del giro 289.
 - 20:30 (19/11) PO-565 registrato senza lavoro: tasto «Gioca solo i momenti salienti» più bello ed evidente; lunedì 2-3 vesti da scegliere.
+- 20:35 (19/11) PO-566 registrato senza lavoro: nelle Formazioni prima dell'ingresso manca il ritorno al pre-partita.
