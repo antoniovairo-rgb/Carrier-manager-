@@ -7,7 +7,7 @@
 | Creazione | 1366 | 0 | 0 (max 72) | 0 | 0 | 179 / 179 (larga 1008) | 138 | [foto](foto/1366/creazione.jpg) |
 | Creazione | 1920 | 0 | 0 (max 72) | 0 | 0 | 456 / 456 (larga 1008) | 0 | [foto](foto/1920/creazione.jpg) |
 | Provini · prima del provino | 1366 | 0 | 0 (max 97) | 0 | 0 | 369 / 369 (larga 627) | 0 | [foto](foto/1366/provini.jpg) |
-| Provini · prima del provino | 1920 | 0 | 0 (max 97) | 0 | 0 | 646 / 646 (larga 627) | 0 | [foto](foto/1920/provini.jpg) |
+| Provini · prima del provino | 1920 | 0 | 0 (max 97) | 0 | «⚡ INIZIA IL PROVINO» 250 px | 646 / 646 (larga 627) | 0 | [foto](foto/1920/provini.jpg) |
 | Offerte ricevute | 1366 | 0 | 0 (max 85) | 0 | 0 | 271 / 271 (larga 824) | 0 | [foto](foto/1366/offerte.jpg) |
 | Offerte ricevute | 1920 | 0 | 0 (max 85) | 0 | 0 | 548 / 548 (larga 824) | 0 | [foto](foto/1920/offerte.jpg) |
 | Home di carriera | 1366 | 0 | 1 (max 139) | 0 | 0 | 54 / 54 (larga 1012) | 1078 | [foto](foto/1366/dashboard.jpg) |

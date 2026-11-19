@@ -12,7 +12,7 @@
         laterale, scarto oltre 40 px;
      S  scorrimento senza motivo: la pagina scorre e il vuoto dei riquadri segnati basterebbe a non farla scorrere.
    MODI
-     CPM_CENSIMENTO=1  tutte le schermate raggiungibili senza giocare (piu' la rassegna dopo partita con CPM_PARTITA=1), foto JPEG in
+     CPM_CENSIMENTO=1  tutte le schermate raggiungibili senza giocare (la rassegna dopo partita NON e' inclusa: serve una partita intera), foto JPEG in
                        docs/sviluppo/giro289/foto/<larghezza>/, tabella in docs/sviluppo/giro289/CENSIMENTO-PC.md e dati in censimento.json.
                        Con CPM_ROSSO=1 lo stesso col rosso acceso (la foto «prima»: foto-prima/).
      (default)         GUARDIANO sulle schermate corrette dal giro 289: verde = zero V/L/P/C a 1366 e 1920; rosso (__CPM_NO_G289) = almeno
@@ -28,7 +28,7 @@ import { SAVE, INIT } from './lib/banco-g0.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const CENS = process.env.CPM_CENSIMENTO === '1', ROSSO_C = process.env.CPM_ROSSO === '1', PARTITA = process.env.CPM_PARTITA === '1';
+const CENS = process.env.CPM_CENSIMENTO === '1', ROSSO_C = process.env.CPM_ROSSO === '1';
 const OUTD = path.join(ROOT, 'docs', 'sviluppo', 'giro289');
 const PC = [{ w: 1366, h: 768 }, { w: 1920, h: 1080 }], TEL = [{ w: 360, h: 800 }, { w: 412, h: 915 }];
 const SEME = 4242;
