@@ -1133,9 +1133,19 @@ function App(){
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-slots{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G284)?'':`/* [giro 284 PO-542 «da PC si vede male», scelta PO «Logo compatto, azioni in vista»] SOLO DA 900 PX (il telefono non cambia). MISURATO sulla 7.999.197: logo 69% della finestra a 1366x768 (78% a 1920x1080), «Nuova carriera» un terzo della colonna (la griglia a tre colonne dei salvataggi con un figlio solo), colonna 80 px dal menu e 54 dal bordo (il padding della .cpm-scroll e' sotto lo zoom 1,12, il menu no), tasti 1 2 3 di 22x19 px. Ora: riquadro del logo alto quanto il contenuto e almeno un terzo della finestra, colonna larga al massimo 720 (806 a schermo) e centrata nello spazio a destra del menu (220 px: il padding sinistro si divide per lo zoom), tutto centrato in verticale, «Nuova carriera» a tutta riga, tasti 1 2 3 da 44 px. Rosso __CPM_NO_G284 */
+        @media(min-width:900px){
+          .cpm-root:has(.cpm-home284) .cpm-scroll{padding-left:calc(220px / 1.12 + 24px)!important;padding-right:24px!important;}
+          .cpm-home284{max-width:720px;margin-left:auto;margin-right:auto;justify-content:center;}
+          .cpm-home284>.cpm-logo284{flex:0 0 auto!important;min-height:calc(32vh / 1.12);}
+          .cpm-slots>:only-child{grid-column:1/-1;}
+          .cpm-tasti284{display:flex;align-items:center;justify-content:center;gap:${SP.sm}px;font-size:${FS.body}px!important;}
+          .cpm-tasti284 .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 ${SP.sm}px;font-size:${FS.bodyLg}px;border-radius:${RAD.sm}px;}
+        }
+        @media(min-width:1280px){.cpm-root:has(.cpm-home284) .cpm-scroll{padding-left:calc(220px / 1.12 + 48px)!important;padding-right:48px!important;}}`}
         .cpm-create{display:flex;flex-direction:column;gap:16px;}
         @media(min-width:900px){.cpm-create{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:20px;}}
-        select option{background:#fff;}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G284)?'select option{background:#fff;}':`select option,select optgroup{background:${TINTE.sup};color:${TINTE.testo};}`}/* [giro 284 PO-543 «non si legge bene l'elenco»] le voci delle tendine prendevano il testo chiaro del tema (ereditato dal select) su un fondo bianco cablato: 1,13:1 misurato sulla nazione della creazione. Ora fondo e testo dai token del tema unico (14,9:1), anche sui gruppi (classifica). Rosso __CPM_NO_G284 */
         ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
         button:hover:not(:disabled){filter:brightness(0.96);}
