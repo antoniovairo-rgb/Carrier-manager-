@@ -18,3 +18,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 6 | aim-latch | ✅ | — | — | **verde** | `✅ il corpo guarda dove calcia (mediana 0 rad)` (13 rilasci, p90 0.11) |
 | 7 | difesa-252 | ✅ | — | — | **verde** | `✅ difesa-252 VERDE` (reale: fermi ≥0,8 0/4 · prova 0/3, correzione attiva in 3 · rosso 3/3) |
 | 8 | tunnel-285 | ✅ | — | — | **verde** | `VERDE: fra la bocca del tunnel e la linea laterale non c'e' nessuna superficie ferma.` (verde 5 stadi 0 guasti · `ROSSO VISTO` 5/5, non giudicati 0) |
+| 9 | zero-288 | ✅ | — | — | **verde** | `zero-288: ✓ (VERDE+ROSSO)` |
