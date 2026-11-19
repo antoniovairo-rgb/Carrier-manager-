@@ -7,5 +7,7 @@
 
 | Controllo | Esito 1ª | Esito 2ª | Esito sulla 196 | Classificazione | Ultima riga del controllo |
 |---|---|---|---|---|---|
-| partita2d-297 | verde (rc 0, ~4 min) | — | — | verde | `✅ partita2d-297 VERDE` |
+| partita2d-297 | verde (rc 0, ~2 min) | — | — | verde | `✅ partita2d-297 VERDE` |
 | colori-286 | verde (rc 0, ~16 min) | — | — | verde | `✅ PASS colori-286 (verde, e il rosso si vede)` |
+| cori-291 | verde (rc 0, <1 min) | — | — | verde | `CORI-291: ✅ VERDE` |
+| rigore-79 | verde (rc 0, <1 min) | — | — | verde | `✅ rigore-79 verde: «rigore per loro» solo sui rigori degli avversari; il rosso __CPM_NO_RIG79 la riapre sui rigori dell'eroe` |
