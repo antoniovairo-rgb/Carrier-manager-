@@ -14,4 +14,5 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 2 | chiusura-99 | ✅ | — | — | **verde** | `✓ chiusura-99 VERDE` (braccio verde: D9 6/6 mediana contrasto 5.75, RIC 5/5 100%; braccio rosso: D9 ROSSO 5 sotto 3, RIC ROSSO 4/5 — come atteso). Durata ~35 min |
 | 3 | portiere-265 | ✅ | — | — | **verde** | `✅ portiere-265 VERDE (verde col verde, rosso col rosso): negli highlight il portiere resta sul suo punto, davanti alla linea, fermo al calcio.` (verde 0 difetti su 7 casi; rosso 6 su 7) |
 | 4 | ball-owner | ✅ | — | — | **verde** | `✅ baseline F2 misurata su 2481 fotogrammi · 62 movimenti senza padrone da attribuire` (conflitti 145 = 5,8%; coppia inseguitore+addosso assente dall elenco; lanciato senza `CPM_IA_MAX`, come da elenco: è la sola misura di osservazione) |
-| 5 | frozen-mate | ✅ | — | — | **verde** | `✅ nessun compagno congelato: il gesto si rilascia sempre` (fotogrammi-orfano 0) |
+| 5 | frozen-mate | ✅ | — | — | **verde** | `✅ nessun compagno congelato: il gesto si rilascia sempre` (fotogrammi-orfano 0; GLB montati. Dubbio: il controllo gira solo il braccio verde e non stampa quanti gesti di compagni ha osservato) |
+| 6 | aim-latch | ✅ | — | — | **verde** | `✅ il corpo guarda dove calcia (mediana 0 rad)` (13 rilasci, p90 0.11) |
