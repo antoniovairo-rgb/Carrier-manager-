@@ -9,30 +9,40 @@
    (politica passaggio, pagina nuova) due volte:
      VERDE  gancio acceso: i richiami altrui devono essere INTERCETTATI (testimone __CPM_G104X > 0) e nessun D3.
      ROSSO  gancio + __CPM_NO_G104A: deve comparire almeno un D3 «rivelato dalla riserva» con la scena occupata.
-   Uso: node riserva-104.mjs (circa 10 minuti). */
+   [giro 279] SCENE PROVOCATE (regola PO-311: «cio' che il gioco non produce si provoca dalla sonda»). Il D3 del rosso nasce solo su una
+   scena la cui conclusione 3D dura oltre il pavimento dell'esito (un passaggio perso, un contrasto): nella partita s1/1234 della 196
+   ne uscivano due per caso; dal giro 264 (battito del minuto, commit 8f029f61) la stessa partita si svolge diversamente (5 highlight,
+   tutti passaggi riusciti) e il rosso non mostrava piu' il difetto: guardiano cieco. Ora in ENTRAMBI i bracci la sonda forza ogni
+   highlight a fallire (CPM_G104FAIL di highlight-95, gancio di sola prova __CPM_FORCE_OUTCOME gia' esistente): le scene che servono
+   non dipendono piu' da come si svolge la partita. Soglie invariate; in piu' ogni braccio deve dimostrare che la provocazione ha
+   agito (almeno 3 scene fallite), altrimenti e' una passata cieca = rosso.
+   Uso: node riserva-104.mjs (circa 12 minuti). */
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 const env0 = { ...process.env };
 if (!env0.CPM_CHROME && fs.existsSync('/opt/pw-browsers/chromium')) env0.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!env0.PLAYWRIGHT_BROWSERS_PATH && fs.existsSync('/opt/pw-browsers')) env0.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
-const base = { CPM_ARMI: 'verde', CPM_SALVA: 's1', CPM_SEMI: process.env.CPM_G104_SEME || '1234', CPM_POL: 'pass', CPM_NO_SENZA: '1', CPM_RIGHE: '1' };
+const base = { CPM_ARMI: 'verde', CPM_SALVA: 's1', CPM_SEMI: process.env.CPM_G104_SEME || '1234', CPM_POL: 'pass', CPM_NO_SENZA: '1', CPM_RIGHE: '1', CPM_G104FAIL: '1' };
 function gioca(flag) {
   const r = spawnSync(process.execPath, [new URL('./highlight-95.mjs', import.meta.url).pathname], { env: { ...env0, ...base, CPM_FLAG: flag }, encoding: 'utf8', maxBuffer: 64 << 20, timeout: 900000 });
   const out = (r.stdout || '') + (r.stderr || '');
   const x = (out.match(/riserva su riquadro altrui (\d+)/) || [])[1] | 0;
   const d3 = out.split('\n').filter(l => /^\s*· D3 .*rivelato dalla riserva/.test(l));
   const hl = +((out.match(/VERDE highlight (\d+)/) || [])[1] || 0);
-  return { x, d3, hl, out };
+  const prov = out.split('\n').filter(l => /^\s+s\d+\/\d+ «.*\bok=false\b/.test(l)).length;/* [giro 279] scene davvero fallite: la provocazione ha agito */
+  return { x, d3, hl, prov, out };
 }
 const V = gioca('__CPM_G104STALE');
-console.log(`VERDE  highlight ${V.hl} · richiami altrui intercettati ${V.x} · D3 riserva ${V.d3.length}`); V.d3.forEach(l => console.log('   ' + l.trim().slice(0, 300)));
+console.log(`VERDE  highlight ${V.hl} · scene provocate (fallite) ${V.prov} · richiami altrui intercettati ${V.x} · D3 riserva ${V.d3.length}`); V.d3.forEach(l => console.log('   ' + l.trim().slice(0, 300)));
 const R = gioca('__CPM_G104STALE,__CPM_NO_G104A');
-console.log(`ROSSO  highlight ${R.hl} · richiami altrui ${R.x} · D3 riserva ${R.d3.length}`); R.d3.slice(0, 4).forEach(l => console.log('   ' + l.trim().slice(0, 300)));
+console.log(`ROSSO  highlight ${R.hl} · scene provocate (fallite) ${R.prov} · richiami altrui ${R.x} · D3 riserva ${R.d3.length}`); R.d3.slice(0, 4).forEach(l => console.log('   ' + l.trim().slice(0, 300)));
 const g = [];
 if (V.hl < 3) g.push(`verde: solo ${V.hl} highlight (partita non giocata?)`);
+if (V.prov < 3) g.push(`verde: solo ${V.prov} scene provocate (fallite) — la provocazione non ha agito, passata cieca`);
 if (V.x < 1) g.push('verde: nessun richiamo altrui da intercettare — il gancio non ha agito, passata cieca');
 if (V.d3.length) g.push(`verde: ${V.d3.length} D3 «rivelato dalla riserva»`);
 if (R.hl < 3) g.push(`rosso: solo ${R.hl} highlight`);
+if (R.prov < 3) g.push(`rosso: solo ${R.prov} scene provocate (fallite) — la provocazione non ha agito, passata cieca`);
 if (!R.d3.length) g.push('rosso: nessun D3 — il difetto non si vede, il guardiano non giudica');
 if (g.length) { g.forEach(x => console.log('✗ ' + x)); console.log('✗ riserva-104 ROSSO'); process.exit(1); }
 console.log('✓ riserva-104 VERDE'); process.exit(0);
