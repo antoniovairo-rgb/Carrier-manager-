@@ -26,11 +26,12 @@
    nei due highlight misurati il pallone lo ha l'eroe, che non ha mai avuto il difetto (0 inversioni in entrambi i bracci).
 
      CPM_CHROME=… node tests/visual/portatore-286.mjs      (verde, poi rosso)
+     CPM_ROOT=<cartella di un'altra versione del gioco> CPM_SOLO=verde   (confronto con una versione precedente: li' il «verde» e' il suo comportamento)
      CPM_SOLO=verde|rosso · CPM_SCENE=6:b,31:d,f · CPM_SEC=<secondi di scena, default 4> · CPM_TRACCIA=1 */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const SCENE = (process.env.CPM_SCENE || '6:b,37:b,50:b,31:d,36:d,44:d,54:d,f,f').split(',').map(s => { const [gi, k] = s.split(':'); return gi === 'f' ? { f: 1 } : { gi: +gi, k: k || 'd' }; });
 const SEC = +(process.env.CPM_SEC || 4), SALTA = 0.6, MIN = 2.5, INV_MAX = 1.0, AMP_MAX = 0.5, IST = 0.12;
-const srv = await startServer(), port = srv.address().port, b = await launchBrowser();
+const srv = await startServer(process.env.CPM_ROOT || undefined), port = srv.address().port, b = await launchBrowser();
 const PRE = ph => ph === 'hl_intro' || ph === 'hl_move' || ph === 'hl_choose';
 
 function analizza(R) {
