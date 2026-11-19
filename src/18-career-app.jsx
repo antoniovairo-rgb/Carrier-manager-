@@ -7451,8 +7451,8 @@ const getThisWeekMatchday=()=>{
                 </Btn>)}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
               {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&!_g246()&&salienti229(showMatchPrompt)&&(<>
-                <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
-                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>
+                <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti{_g287()&&sotto287("solo-166-nota",_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.")}</Btn>{/* [giro 287 PO-546] nota dentro il tasto */}
+                {!_g287()&&<div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>}
               </>)}
               <Btn data-cpm="simula-conferma" data-pesante213=""/* [giro 213] 136 ms di lavoro sincrono misurati */ onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
                 {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
