@@ -1893,3 +1893,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 19:50 (19/11) PO-560 registrato senza lavoro: Simula forse troppo severo (ritorno di PO-360). Lunedì: misura simulate contro giocate prima di proporre ritocchi.
 - 20:00 (19/11) PO-561 registrato senza lavoro: i movimenti negli highlight devono contare di più. Lunedì: misura fermo vs mossa migliore e proposta di leve al PO (Fable, tocca il 3D).
 - 20:10 (19/11) PO-562 registrato senza lavoro: il portatore oscilla ancora prima della scelta (ritorno di PO-545, giro 286). Lunedì: priorità alta, Fable, insieme all'instabilità di portatore-286.
+- 20:20 (19/11) PO-563 registrato senza lavoro: capitano e vice-capitano visibili nella Rosa come il rigorista.
