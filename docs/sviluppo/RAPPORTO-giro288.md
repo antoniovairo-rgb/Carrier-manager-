@@ -43,7 +43,7 @@ dashboard (avanza settimana, `src/18-career-app.jsx:798`) è invariato: non avev
 | `test:logic` | 51 pass · 0 fail |
 | `save-compat` | 12 pass · 0 fail |
 | `griglia-mobile` | uscita 0 · misura completa 14 schermate × 5 larghezze (foto rigenerate in docs/collaudo-grafico rimesse con git checkout) |
-| `career-critical` | ESITO_CC |
+| `career-critical` | uscita 0 (tutti gli 11 passi della catena) |
 
 Guardiani che leggono il testo «Pronto» (grep in `tests/visual`): `lib/partita-v2.mjs` (cerca `/Pronto/`, non
 «[0]»: invariato), `misura-213.mjs` (non cerca «[0]»), `pc-tablet-292.mjs` (pretende l'ASSENZA di «[0]»/WASD a
