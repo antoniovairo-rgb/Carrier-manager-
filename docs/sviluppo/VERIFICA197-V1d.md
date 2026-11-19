@@ -13,3 +13,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 1 | partita-vera | verde (601 s) | — | — | **verde** | `ESITO partita-vera: uscita 0 · BRACCIO verde · MOTIVO tutte le 12 bande giudicate e tenute (partite finite 2/2)` |
 | 2 | conduci-242 | verde (82 s) | — | — | **verde** | `✅ conduci-242 verde (riga, riquadro e portiere dicono il tiro) e il rosso si vede` |
 | 3 | ingresso-camminata-245 | verde (219 s) | — | — | **verde** | `✅ ingresso-camminata-245 verde (camminata, tutti al posto, clip di camminata) e il rosso si vede` |
+| 4 | difesa-252 | verde (223 s) | — | — | **verde** | `✅ difesa-252 VERDE` |
