@@ -609,7 +609,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
     </div>);
     return(
     <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md),...(_g114()?{flex:"1 0 auto"}:{})/* [giro 114 G184-01] schermata piena */}}>
-      <Card style={{padding:`${SP.md}px ${SP.lg}px`,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"space-evenly"}:{})}}>
+      <Card data-cpm={_g287()?"testata287":undefined}/* [giro 287] da PC altezza dal contenuto (src/19) */ style={{padding:`${SP.md}px ${SP.lg}px`,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"space-evenly"}:{})}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
           {_no108("07")?<span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
           :<span data-cpm="pillola-comp108" style={{display:"inline-flex",alignItems:"center",gap:6,background:TINTE.inc,border:"1px solid "+TINTE.bordo,color:TINTE.testo,borderRadius:RAD.pill,padding:"4px 12px 4px 6px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase"}}><span aria-hidden="true" style={{width:18,height:12,borderRadius:RAD.xs,background:_cs99.bg,flexShrink:0,boxShadow:"inset 0 0 0 1px rgba(255,255,255,0.18)"}}/>{_cs99.e} {_cs99.label}</span>}{/* [giro 108 G180-07] la sfumatura della bandiera sotto il testo bianco scendeva a 1,40:1 (Premier Division: bianco-rosso-bianco). La pillola va su fondo pieno notte e la bandiera resta come campione di colore accanto. Rosso __CPM_NO_G108_07 */}
@@ -622,7 +622,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
           <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.faint,marginTop:18}}>VS</div>
           <Squadra t={awayTeam} lato="away"/>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:SP.sm,borderTop:"1px solid "+TH.divider,paddingTop:SP.md}}>
+        <div data-cpm={_g287()?"pp-info287":undefined} style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:SP.sm,borderTop:"1px solid "+TH.divider,paddingTop:SP.md}}>
           {[{l:"Stadio",v:stadium||"–",s:(typeof stadiumKindLabel==="function")?stadiumKindLabel(stadiumKind):null},{l:"Spettatori",v:(attendance||0).toLocaleString("it-IT")},{l:"Meteo",v:weather},{l:"Orario",v:time}].map(x=>(
             <div key={x.l} style={{minWidth:0}}>
               <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{x.l}</div>
@@ -650,8 +650,9 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
         <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSolo243&&<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
-      <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>}
+      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
+      :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
+      <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
       {onBack&&<Btn onClick={onBack} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Torna alla home</Btn>}
       </div>

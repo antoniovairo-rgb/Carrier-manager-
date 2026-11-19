@@ -290,6 +290,10 @@ const _sb=(vecchio)=>(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?ve
    Una classe sola (.cpm-piena / .cpm-piena-az, src/19) + questo interruttore. Rosso __CPM_NO_G114 = il comportamento della 7.999.183. */
 const _g114=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G114);
 const piena114=()=>_g114()?"cpm-piena":"";
+/* [giro 287 · PO-546, decisione PO 19/11 «Dentro il pulsante»] la nota di un pulsante sta DENTRO il pulsante (sottotitolo piccolo), mai
+   staccata sotto la pila; da PC (>= 900 px) la testata della pre-partita prende l'altezza dal contenuto (CSS in src/19). Rosso __CPM_NO_G287. */
+const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
+const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
    cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua

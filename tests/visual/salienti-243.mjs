@@ -16,6 +16,7 @@
       (Mondiale: gara del girone avanzata; amichevole: presenza in Nazionale in piu').
    Rosso window.__CPM_NO_G243: il tasto sparisce dalla schermata pre-partita → i percorsi del tasto principale e la schermata pre-partita
    DEVONO cadere e le due partite non si aprono a soli salienti. «Non giudicato» = rosso. Verde e rosso stampati per ultimi.
+   [giro 287] l'etichetta di un tasto si legge SENZA la sua nota (dal 287 la nota e' il sottotitolo DENTRO il tasto).
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node salienti-243.mjs   (CPM_PARTE=verde|rosso) */
 import { apriCarriera166, sleep } from './lib/partita-166.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
@@ -43,7 +44,7 @@ async function alPrepartita(page) {
     const s = await page.evaluate(() => { const pp = document.querySelector('[data-cpm="prepartita23"]');
       return { pp: !!pp, f: typeof window.__CPM_PHASE === 'function' ? window.__CPM_PHASE() : null, solo: !!document.querySelector('[data-cpm="solo-243"]'),
         nota: ((document.querySelector('[data-cpm="solo-243-nota"]') || {}).textContent || '').trim(),
-        bottoni: pp ? [...pp.querySelectorAll('button')].map(x => (x.textContent || '').trim()) : [], testo: pp ? (pp.innerText || '').slice(0, 120).replace(/\s+/g, ' ') : '' }; }).catch(() => null);
+        bottoni: pp ? [...pp.querySelectorAll('button')].map(x => (c => (c.querySelectorAll('[data-cpm$="-nota"]').forEach(n => n.remove()), (c.textContent || '').trim()))(x.cloneNode(true))) : [], testo: pp ? (pp.innerText || '').slice(0, 120).replace(/\s+/g, ' ') : '' }; }).catch(() => null);
     if (s && s.pp && s.f === 'matchday') return s;
     if (s && s.f && s.f !== 'matchday') return { ...s, fuori: true };
     await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {}
