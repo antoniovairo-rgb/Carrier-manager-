@@ -3161,5 +3161,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaBtbCGUKxKisDWwnTK",
+  "titolo": "verifica 197 · blocco V4 (guardiani vicini al giro 282)",
+  "creata": "2026-11-19T06:36:27Z",
+  "chiusa": "2026-11-19T08:27:28Z",
+  "cost_usd": 2.06475264,
+  "output_tokens": 9644,
+  "cache_read_tokens": 4485730,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
