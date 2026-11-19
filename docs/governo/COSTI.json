@@ -3063,5 +3063,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaCZKr1TDgoeYyFb5dk",
+  "titolo": "verifica 197 · blocco V3f",
+  "creata": "2026-11-18T23:52:27Z",
+  "chiusa": "2026-11-19T01:50:20Z",
+  "cost_usd": 1.03760424,
+  "output_tokens": 6568,
+  "cache_read_tokens": 2592843,
+  "worker_epoch": 2,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
