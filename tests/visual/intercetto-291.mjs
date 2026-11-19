@@ -41,6 +41,10 @@ export function analizza(sc) {
   o.dxEtot = +(F[F.length - 1].h[0] - F[0].h[0]).toFixed(1); o.dzEtot = +(F[F.length - 1].h[1] - F[0].h[1]).toFixed(1);
   const W = (sc.w291 || []); const wl = W.length ? W[W.length - 1] : null;
   if (wl) { o.chi = wl.q; o.v = [wl.vx, wl.vz]; o.win = wl.win; if (typeof o.ok !== 'boolean' && wl.ok != null) o.ok = wl.ok === 1; }
+  /* [verifica 198, blocco D] la regola scritta sopra («non portata» se lo vince un compagno) si legge dal vincitore dichiarato dal gioco,
+     non solo dalla distanza: in gi34 il vincitore dell'esito (_w31, giro 31) a volte e' un compagno («appoggio») e il pallone si ferma a ~2 u
+     dall'eroe, cosi' la sola distanza dava una volta «non portata» e una «ferma» (rosso finto, 2 volte nella verifica). Nessuna soglia cambiata. */
+  if (wl && wl.win === 'altro') { o.verdetto = 'non portata'; o.dFine = +d(F[F.length - 1]).toFixed(1); return o; }
   if (car.length < 3) { o.verdetto = 'non portata'; o.dFine = +d(F[F.length - 1]).toFixed(1); return o; }
   const a = F[car[0]], b = F[car[car.length - 1]];
   const dx = b.h[0] - a.h[0], dz = b.h[1] - a.h[1], sp = Math.hypot(dx, dz);
