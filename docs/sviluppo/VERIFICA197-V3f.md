@@ -14,7 +14,14 @@
 | pagella-75 | rosso (rc 1, ~20 min) | rosso (rc 1, ~20 min) | rosso (rc 1, ~21 min) = **rosso anche sulla 196** | **dichiarato** (PO-516) | `❌ pagella-75: verde: nessuna partita con un gol dell'eroe in gioco fluido (il caso non e' esercitato) · rosso: nessuna divergenza (il guardiano guarda a vuoto)` |
 | pallino-278 | verde (rc 0, ~2 min) | — | — | verde | `✅ pallino-278 verde (e il rosso si vede) — foto in out/pallino-278/` |
 | pillola-58 | verde (rc 0, ~1 min) | — | — | verde | `✅ pillola-58 verde (e il rosso si vede)` |
+| esito-280 | rosso (rc 1, ~9 min) | rosso (rc 1, ~9 min) | rosso (rc 1, ~9 min) = **rosso anche sulla 196** | **dichiarato** (PO-516) | `❌ ROSSO — B verde: partite non finite o errori · B verde: tabellino della gara con gol attribuiti male o assente` |
+
+## Esito del blocco
+- **8 controlli eseguiti su 8**, nell'ordine dato: **6 verdi** (partita2d-297, colori-286, cori-291, rigore-79, pallino-278, pillola-58) · **2 rossi dichiarati** (pagella-75, esito-280: rossi 2 su 2 sulla 197 e rossi anche sulla 196 pubblicata, 3076a1b7) · **nessun rosso NATO nella 197** · nessun controllo oltre tetto · nessun instabile.
+- Nessun file di `src/` o `tests/` modificato; nessuna foto rigenerata in `docs/` (`git status` pulito su entrambe le copie dopo ogni controllo).
 
 ## Note
 - **pagella-75**: il rosso è «non giudicato» su entrambi i bracci: nelle partite giocate dalla sonda (k4, k12, k13) l'eroe non segna mai in gioco fluido, quindi il caso non viene esercitato e il braccio rosso non trova divergenze. Stesso messaggio sulla 196 (3076a1b7, sonda `pagella-75.mjs` identica byte per byte). Va notato che sulla 196 i punteggi delle stesse partite sono diversi (k4 rosso 0-1 / verde 3-0 contro il 2-1 della 197): il motore è cambiato, ma il verdetto no. Non lo decido io: lo segnalo.
 - La prima corsa sulla 196 è stata interrotta dal riavvio del contenitore (00:54 → riavvio 00:58): **non vale**, rifatta da capo alle 00:59.
+- **esito-280**: la parte (A) (banco di 96 partite) è verde su entrambi i bracci; il rosso viene dalla parte (B), due partite giocate dal vivo: nel braccio verde la partita **p1 non arriva al fischio** (0-1, nessun riepilogo) e quindi il tabellino conta 1/2. Identico tre volte (197 ×2, 196 ×1). Sulla 196 il braccio rosso cambia (p0 non finita, p1 finita), il braccio verde no. Il difetto è «partita non finita entro la finestra della sonda»: se dipenda dal tempo concesso dalla sonda o dal gioco non lo posso confermare senza indagine, che non è nel mio mandato.
+- Tetto del blocco rispettato: dalle 23:54 alle 01:50 circa (~2 h), riavvio del contenitore compreso.
