@@ -12,7 +12,7 @@ Macchina: 4 processori, 16 GB, Chromium `/opt/pw-browsers/chromium`, controlli u
 - Correzione: la rete chiede l'esito una volta sola, aspetta che sia davvero a schermo (tetto 8 s) e **da lì** conta 1,6 s.
   Rosso `window.__CPM_NO_G282`.
 - Guardiano nuovo `esito-282` (verde 1814–1962 ms, rosso 532–907 ms).
-- highlight-95 intero sulla build del ramo (`c1b0…`, vedi sotto): **verde, e il rosso si vede** — braccio verde 98 highlight, 0 D4, 0 difetti.
+- highlight-95 intero sulla build del ramo (`542fee61`): **verde, e il rosso si vede** — braccio verde 98 highlight, 0 D4, 0 difetti.
 
 ## Tabella «196 / 197 prima / dopo»
 
@@ -72,8 +72,46 @@ accorciata per stare nel tempo. Le due corse non sono quindi a parità di numero
 
 ## Esiti dei controlli sulla build del ramo
 
-TABELLA_CONTROLLI
+Tutti con `CPM_CHROME=/opt/pw-browsers/chromium`, uno alla volta. Gioco, `highlight-95.mjs` e `tests/visual/lib/` non sono cambiati dopo `542fee61`.
+
+| Controllo | Esito | Numeri |
+|---|---|---|
+| highlight-95 intero (04:03→05:57 UTC, 113 min, con `CPM_G282DIAG=1`: sola stampa in più) | **verde, e il rosso si vede** (rc 0) | verde: 98 highlight, D4 0, difetti 0, non giudicabili 0, passaggi arrivati 89,3%; rosso: 108 highlight, 157 difetti, D1-D4 tutti visti |
+| esito-282 (nuovo), 1ª esecuzione (20 min) | verde, e il rosso si vede | verde 1962 · 1827 · 1814 ms; rosso 907 · 658 · 532 ms (pavimento 1200) |
+| esito-282, 2ª esecuzione (dopo il ritocco dell'attesa: si ferma alla 3ª scena, 6 min) | verde, e il rosso si vede | verde 2046 · 1797 · 2058 ms; rosso 538 · 432 · 674 ms |
+| battito-264 | verde, il rosso cade come deve | verde: divergenti 0 su 3 coppie; rosso: 1 su 1 |
+| solo-highlight-166 | verde, il rosso cade su 3, 7 e 8 | intera 295,2 s · soli highlight 61,0 s (7 scene) |
+| test:logic | verde | 51 su 51 |
+| save-compat | verde | 12 pass · 0 fail |
+| build-src / check-src | IDENTICO byte per byte | 7.869.431 byte |
+
+Log intero di highlight-95: `docs/sviluppo/RAPPORTO-giro282-highlight95.log`. Nessuna foto rigenerata in `docs/` (albero pulito dopo i controlli).
+
+**Non eseguiti** (dichiarati): gli altri guardiani della MAPPA di `src/15` (la prima riga ne elenca decine: coerenza-235,
+accessibilita-234, rassegna-232, salienti-229/243, barra-221, tabellone-214, rassegna-200, rigore-191, lotteria-191,
+piazzato-204, nomi-182, partita-v2, intro-292, carriera3-94, assist-298, parata-100, riserva-103, riserva-104, contatto-103,
+assist-nome-98, chiusura-99, esiti-96 e seguenti). Non c'era tempo dopo le due ore di highlight-95. Fra questi, i più vicini
+alla riga toccata sono `chiusura-99`, `riserva-103`, `riserva-104`, `parata-100`, `contatto-103`: vanno eseguiti prima
+dell'unione. Non eseguiti per regola: `ingresso-206`, `career-critical`, `ci-runner mirata`.
 
 ## Dubbi per il PO
 
-DUBBI
+1. **Tempo.** Il giro è durato circa 3 ore e 45 minuti contro il tetto di circa 3 ore: highlight-95 intero (113 min) era
+   richiesto e l'ho lanciato solo dopo riproduzione, misura sulla 196 e guardiano.
+2. **Quale giro della 197 ha tolto il margine della 196 non è stabilito.** Non ho eseguito «gioco 197 + libreria 196» né
+   gli interruttori `__CPM_NO_G264` / `G274` / `G276`. Quello che è misurato: la rete è identica nelle due versioni; sulla
+   196 la scena restava aperta 2,2–4,1 s dopo la richiesta, sulla 197 1,9–2,4 s. La correzione non dipende dalla risposta
+   (il conto parte dall'esito a schermo), ma se il PO vuole il nome del giro servono 2–4 corse mirate da 16–28 minuti.
+3. **Non posso confermare con una prova diretta che la libreria di test sia estranea** (corsa incrociata non fatta). Lo
+   deduco dal fatto che la misura D4 è tutta dentro la pagina e che la causa è riprodotta e corretta nel gioco.
+4. **La 196 aveva lo stesso meccanismo.** Sulla 196 la lettura minima misurata è 1680 ms su 5 scene: sopra il pavimento,
+   ma con ritardi fino a 1103 ms. Non posso escludere che su più corse anche la 196 scenda sotto 1200 ms.
+5. **Durata della scena.** Con la correzione una scena chiusa dalla rete può durare fino a ~1,2 s in più su una macchina
+   lenta (il ritardo misurato), e al massimo 8 s in più se l'esito non compare mai (tetto). A fotogrammi normali nulla cambia.
+   Il tetto di 8 s è una mia scelta tecnica: se il PO lo vuole diverso è una riga.
+6. **Il difetto non riguarda solo l'«Uno-due»**: una delle due scene rosse riprodotte è «Palla in area». Ogni scena che
+   arriva alla fine della finestra senza esito a schermo passava dalla stessa rete.
+7. **Guardiani della MAPPA di `src/15` non eseguiti** (elenco sopra): la riparazione è verificata da highlight-95,
+   esito-282, battito-264, solo-highlight-166, test:logic e save-compat, non dal resto della mappa.
+8. **Highlight giudicati dal verde: 98** (196: 103; 197 prima: 91). Il numero cambia fra corse; non l'ho indagato.
+9. **Roadmap e registro delle release non toccati**: questo giro è una riparazione su un ramo di sviluppo, GAME_VERSION invariata.
