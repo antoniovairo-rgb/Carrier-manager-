@@ -11,4 +11,8 @@
 | colori-286 | verde (rc 0, ~16 min) | — | — | verde | `✅ PASS colori-286 (verde, e il rosso si vede)` |
 | cori-291 | verde (rc 0, <1 min) | — | — | verde | `CORI-291: ✅ VERDE` |
 | rigore-79 | verde (rc 0, <1 min) | — | — | verde | `✅ rigore-79 verde: «rigore per loro» solo sui rigori degli avversari; il rosso __CPM_NO_RIG79 la riapre sui rigori dell'eroe` |
-| pagella-75 | rosso (rc 1, ~20 min) | rosso (rc 1, ~20 min) | *in corso* | *da classificare* | `❌ pagella-75: verde: nessuna partita con un gol dell'eroe in gioco fluido (il caso non e' esercitato) · rosso: nessuna divergenza (il guardiano guarda a vuoto)` |
+| pagella-75 | rosso (rc 1, ~20 min) | rosso (rc 1, ~20 min) | rosso (rc 1, ~21 min) = **rosso anche sulla 196** | **dichiarato** (PO-516) | `❌ pagella-75: verde: nessuna partita con un gol dell'eroe in gioco fluido (il caso non e' esercitato) · rosso: nessuna divergenza (il guardiano guarda a vuoto)` |
+
+## Note
+- **pagella-75**: il rosso è «non giudicato» su entrambi i bracci: nelle partite giocate dalla sonda (k4, k12, k13) l'eroe non segna mai in gioco fluido, quindi il caso non viene esercitato e il braccio rosso non trova divergenze. Stesso messaggio sulla 196 (3076a1b7, sonda `pagella-75.mjs` identica byte per byte). Va notato che sulla 196 i punteggi delle stesse partite sono diversi (k4 rosso 0-1 / verde 3-0 contro il 2-1 della 197): il motore è cambiato, ma il verdetto no. Non lo decido io: lo segnalo.
+- La prima corsa sulla 196 è stata interrotta dal riavvio del contenitore (00:54 → riavvio 00:58): **non vale**, rifatta da capo alle 00:59.
