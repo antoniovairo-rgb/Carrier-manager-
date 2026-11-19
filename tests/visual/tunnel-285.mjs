@@ -17,7 +17,7 @@
    se non li vede e' cieco) · griglia con meno di 200 raggi.
    ROSSO (CPM_PROVA_ROSSO=1 → window.__CPM_NO_G285, il nastro della competizione intero): il guardiano DEVE vedere in OGNI stadio
    una superficie ferma scura (luminanza < 0,25) nel varco e celle coperte; esce 0 solo se la vede.
-   CPM_SCENARI=a,b · CPM_TOD=night|day|dusk · CPM_GLB=1 (foto coi corpi 3D) · CPM_FOTO_DIR · CPM_TAG · CPM_ROOT=<altra copia del gioco, es. la 196> · CPM_SOLO_MISURA=1.
+   CPM_SCENARI=a,b · CPM_TOD=night|day|dusk · CPM_GLB=1 (foto coi corpi 3D) · CPM_FOTO_DIR · CPM_TAG · CPM_ROOT=<altra copia del gioco, es. la 196> · CPM_SOLO_MISURA=1 · CPM_SENZA_TESTIMONE=1 (solo misura di versioni senza il testimone 245: tempo di parete).
    Uso: CPM_CHROME=/opt/pw-browsers/chromium PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tunnel-285.mjs */
 import fs from 'node:fs'; import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, clickByText, sleep, ROOT } from './lib/harness.mjs';
@@ -75,7 +75,7 @@ async function stadio(nome) {
     for (let k = 0; k < 70; k++) { const p = await ph(); if (p === 'walkout') break;
       await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua/i.test(b.textContent || '') && !/Salta/i.test(b.textContent || '')); if (x) x.click(); }).catch(() => {}); await sleep(700); }
     out.walk = (await ph()) === 'walkout'; if (!out.walk) out.fase = [await ph(), await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null).map(b => (b.textContent || '').trim().slice(0, 30)).slice(0, 12)).catch(() => null)];
-    const tScena = () => page.evaluate(() => { const W = window.__CPM_G245W || []; return W.length ? W[W.length - 1].t : 0; }).catch(() => 0);
+    const tW = Date.now(); const tScena = () => process.env.CPM_SENZA_TESTIMONE ? Promise.resolve((Date.now() - tW) / 1000)/* solo per misurare versioni precedenti al giro 245, che non hanno il tempo di scena: tempo di parete, misura e non verdetto */ : page.evaluate(() => { const W = window.__CPM_G245W || []; return W.length ? W[W.length - 1].t : 0; }).catch(() => 0);
     const fino = async t => { const t0 = Date.now(); while (Date.now() - t0 < 300000) { if ((await ph()) !== 'walkout') return false; if (await tScena() >= t) return true; await sleep(150); } return false; };
     if (out.walk && await fino(1.0)) out.mis.push(await page.evaluate(censimento));
     if (out.walk && await fino(2.4) && process.env.CPM_FOTO !== '0') { const f = `${TAG}-${nome}-${TOD}${GLB ? '-glb' : ''}-camera.jpg`; await page.screenshot({ path: path.join(DIR, f), type: 'jpeg', quality: 85 }).catch(() => {}); out.foto.push(f); }
