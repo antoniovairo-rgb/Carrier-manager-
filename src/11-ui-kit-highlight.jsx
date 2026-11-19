@@ -592,14 +592,14 @@ function AnteprimaSezione({icona,titolo,sotto,voci=[],nota}){
       <div style={{fontSize:FS.display,lineHeight:1}}>{icona}</div>
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textWrap:"balance"}}>{titolo}</div>
-        {sotto&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
+        {sotto&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
       </div>
     </div>
     <div style={{display:"flex",flexDirection:"column",gap:8}}>
       {voci.map(function(v,i){return(<div key={i} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm}}>
         <span style={{fontSize:FS.bodyLg,lineHeight:1.2}}>{v.e}</span>
         <div style={{flex:1,minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{v.t}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
+          <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
     </div>
     {nota&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:FW.semibold,marginTop:10}}>{nota}</div>}
   </div></Card>);

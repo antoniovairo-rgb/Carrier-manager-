@@ -1129,6 +1129,19 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G156)?'':'@media(min-width:900px){.cpm-dash-grid>*{grid-column:1/-1;}}'}/* [giro 156 PO-361 «ultime notizie, graficamente tagliato...uniforma»] la griglia a due colonne ha un figlio solo («Ultime notizie», src/18 ~9129): misurato a 1428 px 533 contro 1074 px delle altre card. Ogni card della griglia prende la riga piena, come il resto della Home. Rosso __CPM_NO_G156, guardiano home-larghezza-156 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G289)?'':`/* [giro 289 · PO-548, decisioni PO 19/11 «Censimento PC di tutte» e «Riquadro compatto»] REGOLA UNICA DA PC (>= 1024 px; telefono e tablet verticale invariati):
+           (1) un riquadro e' alto quanto il suo contenuto — la «schermata piena» del giro 114 (PO-320) non allunga piu' i riquadri da PC, dove l'altezza in piu'
+           diventava vuoto (misurato: Offerte 890 px di riquadro per 79 di contenuto, Coppe 874 per 220); (2) la colonna delle schermate senza barra laterale ha una
+           larghezza massima e sta al centro (.cpm-pc289); (3) il testo corrente ha una larghezza di lettura (.cpm-leggi289, .cpm-leggi289c centrato): 62ch, ~80
+           caratteri (misurato prima: righe fino a 246). Rosso __CPM_NO_G289, guardiano npm run pc-289. */
+        @media(min-width:1024px){
+          .cpm-leggi289{max-width:62ch;}
+          .cpm-leggi289c{max-width:62ch;margin-left:auto!important;margin-right:auto!important;}
+          .cpm-pc289{max-width:${SP.xxxl*23}px;margin-left:auto;margin-right:auto;justify-content:center;}
+          .cpm-pc289 .cpm-offers{display:flex!important;flex-direction:column;flex:0 0 auto!important;}
+          .cpm-pc289 .cpm-offers>*{flex:0 0 auto!important;}
+          .cpm-career:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:0 0 auto!important;justify-content:flex-start!important;}
+        }`}
         .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}

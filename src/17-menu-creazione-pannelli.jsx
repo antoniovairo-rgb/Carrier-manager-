@@ -565,6 +565,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
   const _dk=window.innerWidth>=640;
+  /* [giro 289 · PO-548, decisione PO 19/11 «Riquadro compatto»] DA PC (>= 1024 px) i due «Scegli» avevano due stili: MISURATO, non era un
+     difetto del riquadro ma la selezione da tastiera (selIdx parte da 0, il tasto selezionato e' «primary», gli altri «secondary»), che col
+     mouse sembrava una scelta gia' fatta. Da PC tutti i «Scegli» hanno lo stesso stile; la selezione da tastiera ([1]/[2]/frecce) resta
+     visibile col contorno del riquadro. Al telefono nulla cambia. Riquadri alti quanto il contenuto, colonna e testo: regola .cpm-pc289 in src/19.
+     Rosso __CPM_NO_G289 = la 7.999.197. */
+  const _pc289=!(typeof window!=="undefined"&&window.__CPM_NO_G289)&&window.innerWidth>=1024;
   const _ass49=trialStats.reduce((a,m)=>a+(m.assists||0),0);/* [7.999.49 parte A] assist nel riepilogo in una riga */
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
   /* [giro 201 · PO-418 (G189-06)] LE OFFERTE NASCONO DAL NOME E DAI PROVINI: il rumore del sorteggio era Math.random, quindi chiudendo e
@@ -595,10 +601,10 @@ function OffersScreen({player,trialStats,onChoose}){
     return()=>window.removeEventListener("keydown",onKey);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */+" cpm-pc289"/* [giro 289] da PC: colonna compatta e centrata (src/19) */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
-      {!_no201&&<p data-cpm="offerte201-motivo" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
+      {!_no201&&<p data-cpm="offerte201-motivo" className="cpm-leggi289c" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
       
       <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
@@ -614,7 +620,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
-                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
+                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={(isSel||_pc289)?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
               </div>
