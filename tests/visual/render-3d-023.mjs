@@ -39,8 +39,12 @@ const issues = []; let errori = 0;
 page.on('pageerror', e => { errori++; if (errori <= 3) console.log('pageerror: ' + String(e.message).slice(0, 140)); });
 await page.addInitScript(rosso => {
   window.__T023 = {};
-  const mo = new MutationObserver(() => { const r = document.getElementById('root'); if (r && r.children.length && !window.__T023.home) { window.__T023.home = performance.now(); mo.disconnect(); } });
-  document.addEventListener('DOMContentLoaded', () => { const r = document.getElementById('root'); if (r) mo.observe(r, { childList: true }); });
+  /* [giro 281] dalla 197 la pagina arriva gia' tradotta e l'app monta PRIMA del DOMContentLoaded (#root ha gia'
+     1 figlio): l'osservatore armato li' non vedeva piu' nessuna mutazione e la sonda aspettava 120 s una home
+     gia' a schermo. Si controlla subito, poi si osserva. */
+  const segna = () => { const r = document.getElementById('root'); if (r && r.children.length && !window.__T023.home) { window.__T023.home = performance.now(); mo.disconnect(); return true; } return false; };
+  const mo = new MutationObserver(segna);
+  document.addEventListener('DOMContentLoaded', () => { const r = document.getElementById('root'); if (r && !segna()) mo.observe(r, { childList: true }); });
   if (rosso) {
     const ms = +(window.__ROSSO_MS || 300);
     const hog = () => { const t = performance.now(); while (performance.now() - t < ms) {} requestAnimationFrame(hog); };
