@@ -24,3 +24,25 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 12 | typing-shortcuts | ✅ | — | — | **verde** | `✅ PASS — chi scrive tiene la tastiera: nessuna scorciatoia gli ruba i tasti` |
 | 13 | career-critical | ✅ | — | — | **verde** | `✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.` (ultimo degli 11 passi incatenati con `&&`, uscita 0; nessun ❌/FAIL nel log) |
 | 14 | test:logic | ✅ | — | — | **verde** | `# pass 51` · `# fail 0` (con `CPM_CHROME`, in `tests/visual`) |
+| 15 | save-compat | ✅ | — | — | **verde** | `=== SAVE-COMPAT === 12 pass · 0 fail` · `✅ PASS` (con `CPM_CHROME`, in `tests/visual`; nota benigna già nota sul club sintetico) |
+
+## Esito
+
+**15/15 verdi alla prima prova.** Nessuna seconda prova e nessuna prova sulla base f4051ca0 sono servite, quindi nessun controllo è
+classificato instabile, nato coi giri 286-291, già presente o oltre tetto, e gli interruttori `__CPM_NO_G286` / `__CPM_NO_G291` non sono
+stati usati. Tutti i controlli sono finiti dentro il tetto di 2400 s (il più lungo, `chiusura-99`, ~35 min).
+Nessun controllo ha lasciato foto modificate in `docs/` (`git restore -- docs` eseguito dopo ognuno).
+
+## Dubbi e note (nessuno blocca)
+
+- `GAME_VERSION` nel build provato è ancora `7.999.197`: il bump a 7.999.198 resta da fare nel rituale di rilascio.
+- `partita-vera`: la riga informativa `portatore-stato: campioni 0 · copertura 0%` non è una banda giudicata; la segnalo perché a
+  copertura 0 quella riga non dice nulla.
+- `frozen-mate`: gira solo il braccio verde (fotogrammi-orfano 0) e non stampa quanti gesti di compagni ha osservato, quindi non posso
+  confermare dal solo log che abbia visto gesti da giudicare (ha invece verificato che i GLB fossero montati).
+- `ball-owner` è stato lanciato com'è nell'elenco, senza `CPM_IA_MAX`: in quel modo è una misura d'osservazione (conflitti 145, 5,8%)
+  e non giudica il tetto della coppia inseguitore/colla.
+- `npm ci` non è possibile (manca `package-lock.json`): i `node_modules` di `tests/visual` sono stati installati con `npm install`;
+  il `package-lock.json` generato non è stato committato.
+
+I log completi stanno nello scratchpad della sessione (non nel repo).
