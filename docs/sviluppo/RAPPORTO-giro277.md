@@ -94,7 +94,11 @@ Nota di precisione: fra il verde 1 e il verde 2 ho alzato da 3 a 8 s il tetto «
 |---|---|
 | schermate-97 | verde 2 su 2, rosso riconosciuto (vedi sopra) |
 | schede-246 | **rosso** (non riparato) |
-| test:logic · save-compat · spazio-270 · battito-264 · solo-highlight-166 | vedi «Controlli finali» in fondo |
+| test:logic | verde (uscita 0) |
+| save-compat | verde («12 pass · 0 fail») |
+| spazio-270 | verde (581 s: «riga della scelta a SP.box … e col rosso torna oltre 10 px») |
+| battito-264 | **non giudicato = rosso**: era in corso quando il contenitore della sessione è stato riavviato; una corsa interrotta non vale e non l'ho rifatta (tetto del giro già superato) |
+| solo-highlight-166 | **non giudicato = rosso**: non partito, per lo stesso riavvio |
 | guardiani della MAPPA | nessuno: nessun file di `src/` toccato |
 | `node --check` su `schermate-97.mjs` | passa; `ci-runner.mjs` non toccato |
 
@@ -108,4 +112,6 @@ Non eseguiti, come da regola: highlight-95, ingresso-206, career-critical.
 4. **La cerimonia comandata dentro un highlight può non partire.** In una delle misure comandate in `hl_intro` la fase è finita in `hl_choose` e non in `ceremony` (visto una volta). È un gancio di sola prova (`__CPM_FORCE_CEREMONY`) e nel gioco vero il fischio arriva dal gioco fluido: non l'ho indagato.
 5. **Col rosso `__CPM_NO_G264` (insieme a 253/246/243/233) la stessa partita finisce 1-3 invece di 0-2.** Una sola partita per braccio: non posso dire quale dei cinque rossi la cambi, né se sia atteso.
 6. **Il rosso di schermate-97 ora gioca anche la partita di D14** (lo script non passa più `CPM_SENZA_D14=1`): circa un minuto in più.
-7. Il secondo verde di schermate-97 è stato eseguito dopo l'ultimo ritocco (tetto dello stacco 3 → 8 s); il rosso no. La logica del rosso non dipende da quel tetto, ma non l'ho rieseguito.
+7. **battito-264 e solo-highlight-166 non hanno un esito in questo giro** (riavvio del contenitore a metà di battito-264). Il file di gioco è identico byte per byte a `lavoro/197` e i due controlli non sono stati toccati: il loro esito è quindi quello che hanno su `83ae5e5c`, ma io non l'ho misurato. Vanno eseguiti prima dell'uscita.
+8. **Un indizio per schede-246**: nella corsa di spazio-270 sulla 197 una scheda nasce («schede: 81' pari_finale»), con un altro scenario. Il sistema delle schede quindi funziona; può servire da base per rimettere in piedi lo scenario di schede-246.
+9. Il secondo verde di schermate-97 è stato eseguito dopo l'ultimo ritocco (tetto dello stacco 3 → 8 s); il rosso no. La logica del rosso non dipende da quel tetto, ma non l'ho rieseguito.
