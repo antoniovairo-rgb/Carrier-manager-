@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* [giro 190 · PO-396 «Primavera → U19» · PO-397 «barra a 375 px: prima il nome abbreviato, la sigla solo se non entra»]
    GUARDIANO nomi-190. Sul gioco vero (?cpmtest=1):
-   1. SCALA DEI NOMI (pura, funzione unica candidatiSquadra182): «FC Valmora Primavera» → «FC Valmora U19» → «Valmora U19» →
-      «Valmora» → «VAL»; «FC Valmora» → «Valmora» → «VAL»; «Selezione Granata» resta → «Sel. Granata» → «GRA» (nessun FC in testa).
+   1. SCALA DEI NOMI (pura, funzione unica candidatiSquadra182): «FC Milano Brera Primavera» → «FC Milano Brera U19» → «Milano Brera U19» →
+      «Milano Brera» → «MBR»; «FC Milano Brera» → «Milano Brera» → «MBR»; «Selezione Granata» resta → «Sel. Granata» → «GRA» (nessun FC in testa).
       Ogni gradino e' piu' corto o uguale al precedente in caratteri; la sigla e' sempre l'ultimo.
    2. CENSIMENTO SULLA BARRA DELLA PARTITA (provino vero) a 375 e 390 px: con il carattere e lo spazio veri del nome sulla
       barra, per TUTTI i club si sceglie il primo gradino che ci sta; si contano intero / U19-dizionario / abbreviato / sigla.
@@ -40,11 +40,11 @@ try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!window.__CPM_NOMI182, null, { timeout: 60000 });
     const casi = [
-      [{ n: 'FC Valmora Primavera', a: 'VAL' }, ['FC Valmora Primavera', 'FC Valmora U19', 'Valmora U19', 'Valmora', 'VAL']],
-      [{ n: 'FC Valmora', a: 'VAL' }, ['FC Valmora', 'Valmora', 'VAL']],
+      [{ n: 'FC Milano Brera Primavera', a: 'MBR' }, ['FC Milano Brera Primavera', 'FC Milano Brera U19', 'Milano Brera U19', 'Milano Brera', 'MBR']],
+      [{ n: 'FC Milano Brera', a: 'MBR' }, ['FC Milano Brera', 'Milano Brera', 'MBR']],
       [{ n: 'Torino Athletic Primavera', a: 'TAT' }, ['Torino Athletic Primavera', 'Torino Athletic U19', 'Torino Athletic', 'TAT']],   /* [giro 211 · PO-472] il nome corto fra U19 e sigla */
       [{ n: 'Selezione Granata', a: 'GRA' }, ['Selezione Granata', 'Sel. Granata', 'GRA']],
-      [{ n: 'AC Dorvelli', a: 'ACR' }, ['AC Dorvelli', 'Dorvelli', 'ACR']],
+      [{ n: 'AC Prova', a: 'APR' }, ['AC Prova', 'Prova', 'APR']]   /* [giro 248] dato inventato: i nomi del giro 6 sono usciti dal gioco */,
     ];
     const r = await page.evaluate((c) => c.map(([t]) => window.__CPM_NOMI182.candidati(t)), casi);
     casi.forEach(([t, exp], i) => ok(JSON.stringify(r[i]) === JSON.stringify(exp), `«${t.n}»: ${r[i].join(' → ')} (atteso ${exp.join(' → ')})`));

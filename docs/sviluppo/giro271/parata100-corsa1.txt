@@ -1,0 +1,19 @@
+verde provocata gi16 {"lab":"↗️ Cross teso","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>assist_shot>deflect","minGB":2.04,"rev":true}
+verde provocata gi42 {"lab":"🦶 Cross d'esterno","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>assist_shot>deflect","minGB":1.47,"rev":true}
+verde gioco s5/7 fine playing scene 6 parate 1
+verde gioco s5/2021 fine playing scene 6 parate 1
+verde prova s5/7 fine hl_result scene 6 parate 2
+verde prova s5/2021 fine playing scene 7 parate 2
+2 scene provocate giudicate su 2; 
+VERDE parate 8 (tiro del compagno 5) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 1
+  · prova s5/7 «🔁 Uno-due con WENDEL» «Assist da gol — il portiere dice no a WENDEL» minGB 16.0
+rosso provocata gi16 {"lab":"↗️ Cross teso","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>deflect","minGB":13.56,"rev":true}
+rosso provocata gi42 {"lab":"🦶 Cross d'esterno","ovl":"Cross da gol — il portiere dice no a il compagno","sp":"saved","pas":">cross_goal>deflect","minGB":11.57,"rev":true}
+rosso prova s5/7 fine playing scene 7 parate 1
+rosso prova s5/2021 fine playing scene 6 parate 1
+2 scene provocate giudicate su 2; 
+ROSSO parate 4 (tiro del compagno 1) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 2
+  · provocata gi16 «Cross da gol — il portiere dice no a il compagno» minGB 13.6 (>cross_goal>deflect)
+  · provocata gi42 «Cross da gol — il portiere dice no a il compagno» minGB 11.6 (>cross_goal>deflect)
+❌ parata-100
+  · verde: 1 parate senza pallone al portiere

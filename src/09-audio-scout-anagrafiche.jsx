@@ -866,7 +866,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
 
 // ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
 /* [giro 94 D6 collaudo 177-3 «Il Italia cede 1-2 a Argentina», «lacune difensive del Italia» — rosso __CPM_NO_C3D6] I TESTI DELLA STAMPA
-   SONO SCRITTI PER I CLUB («Il FC Rendalto», «del FC Rendalto», «a FC Marseille»): con le nazionali l'articolo va col genere e con
+   SONO SCRITTI PER I CLUB («Il FC Lisboa Norte», «del FC Lisboa Norte», «a FC Marseille»): con le nazionali l'articolo va col genere e con
    l'elisione del nome. Qui si corregge la frase finita, per ogni nazione nota: articolo (il/lo/la/l'), preposizioni articolate
    (del/al/dal/nel/sul) e la «a»/«da»/«di»/«in»/«su» semplice davanti al nome. Funzione pura (guardiano carriera3-94). */
 const NAZ_ART94={Italia:"l'",Spagna:"la ",Francia:"la ",Germania:"la ",Inghilterra:"l'",Portogallo:"il ",Brasile:"il ",Argentina:"l'",Olanda:"l'",Belgio:"il ",
@@ -881,6 +881,20 @@ function artNaz94(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&w
     t=t.replace(new RegExp("(^|[.!?]\\s+)"+n+"(?=\\s+[a-zà-ÿ])","g"),(m,pre)=>pre+a.charAt(0).toUpperCase()+a.slice(1)+n);/* soggetto a inizio frase */
   }
   return t;}
+/* [giro 236 · PO-430 G189-18 punto 3 — rosso __CPM_NO_G236] «Il 0-0 riflette…» e «Il FC Cremona» nella rassegna. Stesso metodo di
+   artNaz94: si corregge la frase finita. (a) Punteggio: l'articolo segue come si LEGGE il primo numero — «lo» davanti a zero, «l'» davanti
+   a uno/otto/undici/diciotto/ottanta…, «il» altrimenti, anche nelle preposizioni articolate (dello 0-0, dell'1-1, del 2-1). (b) Club che
+   cominciano con una sigla letta con la vocale (FC, AC, AS, AT, SC…: «effe-ci»; non CF, «ci-effe»): «l'FC Cremona», «dell'FC», «all'FC». Funzione pura. */
+function artClub236(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&window.__CPM_NO_G236))return txt;
+  const el=(n)=>{const k=parseInt(n,10);return k===1||k===11||k===8||k===18||(k>=80&&k<=89)||(k>=800&&k<=899);};
+  const PRE={il:["il","lo","l'"],del:["del","dello","dell'"],al:["al","allo","all'"],dal:["dal","dallo","dall'"],nel:["nel","nello","nell'"],sul:["sul","sullo","sull'"]};
+  const base=(w)=>{const x=w.toLowerCase().replace(/'$/,"");if(x==="il"||x==="lo"||x==="l")return "il";for(const k in PRE){if(PRE[k].some(v=>v.replace(/'$/,"")===x))return k;}return null;};
+  const cap=(w,o)=>/^[A-Z]/.test(o)?w.charAt(0).toUpperCase()+w.slice(1):w;
+  const ART="(Il|il|Lo|lo|L'|l'|del|dello|dell'|al|allo|all'|dal|dallo|dall'|nel|nello|nell'|sul|sullo|sull')";
+  let t=txt.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*(\\d+)(?=\\s*[-–]\\s*\\d)","g"),(m,pre,w,n)=>{const b=base(w);if(!b)return m;const f=PRE[b][parseInt(n,10)===0?1:el(n)?2:0];return pre+cap(f,w)+(f.endsWith("'")?"":" ")+n;});
+  t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])"+ART+"\\s*((?:FC|AC|AS|AT|SC|AFC|SSC|US|ASD|AZ|AEK|IF|IFK|SK|FK|OSC|AJ|RC|RB|SV|SS)\\s)","g"),(m,pre,w,sig)=>{const b=base(w);if(!b)return m;return pre+cap(PRE[b][2],w)+sig;});
+  return t;}
+function artClub236Obj(o){if(typeof o==="string")return artClub236(o);if(Array.isArray(o))return o.map(artClub236Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artClub236Obj(o[k]);return r;}return o;}
 function artNaz94Obj(o){if(typeof o==="string")return artNaz94(o);if(Array.isArray(o))return o.map(artNaz94Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artNaz94Obj(o[k]);return r;}return o;}
 function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
@@ -1054,7 +1068,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     `${club} fuori ai rigori — la lotteria degli undici metri premia ${opp} (${score})`,
     `Rigori fatali: il cammino del ${club} si ferma dagli undici metri contro ${opp}`,
   ]):null;
-  return artNaz94Obj({/* [giro 94 D6] articoli delle nazionali */
+  return artClub236Obj(artNaz94Obj({/* [giro 94 D6] articoli delle nazionali · [giro 236] articoli di punteggi e sigle dei club */
     headlines:_titleHeads||_koHeads||[headA,headB,headC,headD,headE],
     titleWon,titleName:titleWon?titleName:null,
     papers:NEWSPAPERS.map(p=>p.name),
@@ -1065,7 +1079,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     fanReactions:titleWon?["Città in festa: notte indimenticabile!","I tifosi sognano — che trionfo!"]:fanReactions,
     quotes,trending:titleWon?`#${club.replace(/\s/g,"")}Campione🏆`:trending,memoriaTag,
     isLocal:true,
-  });
+  }));
 }
 
 async function generatePressAnalysis(matchResult,playerPerf,playerCtx={}){
@@ -1119,7 +1133,17 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   // coi nomi fantasia attuali ("Porto" NON si può bloccare: substring di "FC Portomar")
   "Eindhoven","Sochaux","Bruges","Anderlecht","Brugge","Feyenoord","Ajax","Benfica","Sporting CP","Olympique",
   // [giro 6, decisione PO 11/10] nomi reali di club, soprannomi da colori e derby rinominati: se tornano, l'audit li segnala
-  "Nerazzurri","Rossoneri","Partenope","Biancoceleste","Blucerchiati","Verdiblanco","FC Paris","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
+  /* [giro 251 PO-512, decisione PO 17/11 14:50 «Tengo i miei nomi, rischio mio»] tolte «Nerazzurri», «Rossoneri», «Partenope» e
+     «FC Paris», che bloccavano FC Nerazzurri, FC Rossoneri, FC Partenope, FC Paris Île-de-France scelti dal PO: restano bloccati i
+     nomi ufficiali interi gia' in lista («AC Milan», «SSC Napoli», «Juventus», «Bayern»…). */
+  "Biancoceleste","Blucerchiati","Verdiblanco","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
+  /* [giro 248 PO-511, decisione della madre] i 16 nomi inventati del giro 6 e i loro stadi escono dal gioco: se tornano, l'audit li segnala.
+     Blocco esplicito anche sui nomi ufficiali interi «AC Milan»/«SSC Napoli» (confronto per sottostringa: mai «Milan» da solo,
+     sottostringa di «FC Milano Sempione»/«Stadio Milano Ovest»). */
+  /* [giro 251 PO-512] i nomi del giro 248 che escono: se tornano, l'audit li segnala (gli stadi del 248 restano). */
+  "FC Milano Brera","FC Milano Sempione","FC Napoli Fuorigrotta","FC Flaminio","FC Parigi Ovest","FC Torino Santa Rita","FC Genova Ponente","FC Vigués","FC Isar","FC Domstadt",
+  "FC Valmora","AC Dorvelli","FC Vellamare","FC Alcavera","FC Lumeranza","FC Torvelle","FC Brenvar","FC Marnesi","FC Caldoran","FC Ventrana","FC Oriolan","FC Dalvora","FC Pelvanni","FC Valdenau","FC Ravelmund","FC Rendalto",
+  "Stadio Valmora","Stadio Alcavera","Stadio Vellamare","Stadio Torvelle","Estadio Ventrana","Estadio Oriolan","Estádio Rendalto","AC Milan","SSC Napoli",
   "Stadio Sabaudo","Stadio Meneghino","Stadio Capitolino","Stadio Vesuvio","Stade Phocéen","Estadi Blau","Stadion der Wand","Cannon Stadium","Bridge Stadium","Estádio Leonino","Kadıköy Stadyumu","Kartal Park","Stade Princier","Stadio Adriatico","Stade Gabriel Montpied","Arena Lviv","Estadio de la Cerámica Vieja","Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
 const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
@@ -1128,9 +1152,44 @@ const _CR_FULLNAMES=new Set(["thomas müller","timo werner","manuel neuer","marc
 // [giro 6, decisione PO 11/10] club con nomi reali rinominati: vecchio → nuovo. Serve alla migration di CareerApp
 // (il nome del club si salva in player.club.n, player.standings[].n, calendar[].opponentName, matchHistory[].opponent).
 // I derby NON si salvano (isDerby li ricalcola dagli id) → nessuna migration per loro.
-const CLUB_RENAME_6={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvelli","FC Partenope":"FC Vellamare","FC Biancoceleste":"FC Alcavera","FC Paris":"FC Lumeranza","FC Granata":"FC Torvelle","FC Viola":"FC Brenvar","FC Blucerchiati":"FC Marnesi","FC Neroverde":"FC Caldoran","FC Verdiblanco":"FC Ventrana","FC Celeste":"FC Oriolan","FC Leões":"FC Rendalto","FC Perico":"FC Pelvanni","FC Azulón":"FC Dalvora","FC München":"FC Valdenau","FC Köln":"FC Ravelmund"};
+const _CLUB_RENAME_6_OLD={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvelli","FC Partenope":"FC Vellamare","FC Biancoceleste":"FC Alcavera","FC Paris":"FC Lumeranza","FC Granata":"FC Torvelle","FC Viola":"FC Brenvar","FC Blucerchiati":"FC Marnesi","FC Neroverde":"FC Caldoran","FC Verdiblanco":"FC Ventrana","FC Celeste":"FC Oriolan","FC Leões":"FC Rendalto","FC Perico":"FC Pelvanni","FC Azulón":"FC Dalvora","FC München":"FC Valdenau","FC Köln":"FC Ravelmund"};
+/* [giro 248 PO-511] nomi per citta' o quartiere scelti dal PO il 17/11: [nome reale di prima del giro 6, nome del giro 6, nome nuovo, sigla nuova].
+   CLUB_RENAME_6 porta ENTRAMBI (reale e giro 6) al nome nuovo in un passo solo; nessun nome nuovo e' chiave (idempotente).
+   Rosso __CPM_NO_G248 = mappa del giro 6 com'era (reale → giro 6) e nessuna migrazione 248. */
+const _CLUB_248=[["FC Nerazzurri","FC Valmora","FC Milano Brera","MBR"],["AC Rossoneri","AC Dorvelli","FC Milano Sempione","MSE"],["FC Partenope","FC Vellamare","FC Napoli Fuorigrotta","NFG"],["FC Biancoceleste","FC Alcavera","FC Flaminio","FLM"],["FC Paris","FC Lumeranza","FC Parigi Ovest","PGO"],["FC Granata","FC Torvelle","FC Torino Santa Rita","TSR"],["FC Viola","FC Brenvar","FC Firenze","FRZ"],["FC Blucerchiati","FC Marnesi","FC Genova Ponente","GPO"],["FC Neroverde","FC Caldoran","FC Sassolese","SSL"],["FC Verdiblanco","FC Ventrana","FC Heliópolis","HEL"],["FC Celeste","FC Oriolan","FC Vigués","VGS"],["FC Azulón","FC Dalvora","FC Getafense","GTF"],["FC Perico","FC Pelvanni","FC Sarrià","SRR"],["FC München","FC Valdenau","FC Isar","ISR"],["FC Köln","FC Ravelmund","FC Domstadt","DMS"],["FC Leões","FC Rendalto","FC Lisboa Norte","LNO"]];
+/* [giro 251 PO-512] nomi definitivi del PO (tabella unica CLUB_NOMI_251 in src/02): ogni nome di oggi (righe mkT, cioe' giro 248
+   compreso) e ogni nome reale o del giro 6 va al nome DEFINITIVO in un passo solo; identita' tolte (FC Nerazzurri, FC Partenope e
+   FC Granata erano nomi reali di prima del giro 6 e ora sono le scelte del PO). Rosso __CPM_NO_G251 = migrazione del giro 248. */
+const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id,[n]])=>CLUB_NOMI_251[id][0]!==n).map(([id,[n]])=>[n,CLUB_NOMI_251[id][0]]));
+const _def251=n=>_DEF251[n]||n;
+const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251)].filter(([k,v])=>k!==v));
+const _CLUB_ABBR_248=_NO_G248?{}:(()=>{const byN=Object.fromEntries(CLUBS.map(c=>[c.n,c.a]));const ns=new Set(_CLUB_248.map(([,,n])=>_def251(n)));
+  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
+const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte",
+  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"})};
+/* [giro 251] nomi definitivi che COMINCIANO con un nome da migrare («FC Paris Île-de-France» con «FC Paris», «FC Salernum 1919» con
+   «FC Salernum»): si proteggono, o una seconda passata li allungherebbe («FC Paris Île-de-France Île-de-France»). */
+const _LUNGHI251=CLUBS.map(c=>c.n).filter(n=>Object.keys(CLUB_RENAME_6).some(k=>n.startsWith(k+" ")));
 // idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
-function _renameClub6(v){if(typeof v!=="string")return v;for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+/* [giro 248 PO-511] migrazione COMPLETA dei nomi salvati: i nomi del club non vivono solo in club/standings/calendar/matchHistory
+   (misurato sul salvataggio fixtures/save-c177-s5w20.json: anche lastAwards…club, standings[].a, matchHistory[].oppAbbr).
+   Una passata su tutto l'oggetto: (1) ogni stringa che CONTIENE un nome reale o del giro 6 (club o stadio, anche dentro un testo
+   o con suffisso U18/Primavera/U19) prende il nome nuovo; (2) la sigla accanto a un nome nuovo (a/abbr/oppAbbr) segue il nome.
+   Idempotente (nessun nome nuovo contiene una chiave) e restituisce lo STESSO oggetto se non cambia nulla. */
+const _RX248=(()=>{const ks=[...Object.keys(CLUB_RENAME_6),...Object.keys(_STADI_248),..._LUNGHI251].sort((a,b)=>b.length-a.length);/* [giro 251] i _LUNGHI251 restano se stessi */if(_NO_G248||!ks.length)return null;
+  return new RegExp("(^|[^\\p{L}])("+ks.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![\\p{L}])","gu");})();
+const _NAME_K248=["n","name","club","opponent","opponentName","team"],_ABBR_K248=["a","abbr","oppAbbr","clubAbbr"];
+function _migraNomi248(o){
+  if(!_RX248)return o;
+  if(typeof o==="string"){if(!_RX248.test(o)){_RX248.lastIndex=0;return o;}_RX248.lastIndex=0;return o.replace(_RX248,(m,pre,k)=>pre+(CLUB_RENAME_6[k]||_STADI_248[k]||k));}
+  if(Array.isArray(o)){let ch=false;const r=o.map(x=>{const y=_migraNomi248(x);if(y!==x)ch=true;return y;});return ch?r:o;}
+  if(o&&typeof o==="object"){let ch=false;const r={};for(const k in o){const y=_migraNomi248(o[k]);if(y!==o[k])ch=true;r[k]=y;}
+    for(const nk of _NAME_K248){const v=r[nk];if(typeof v!=="string")continue;const base=v.replace(/ (U18|U19|Primavera)$/,"");const ab=_CLUB_ABBR_248[base];if(!ab)continue;
+      for(const ak of _ABBR_K248){if(typeof r[ak]==="string"&&r[ak]!==ab){r[ak]=ab;ch=true;}}}
+    return ch?r:o;}
+  return o;}
+if(typeof window!=="undefined"&&/[?&]cpmtest=1/.test(window.location.search||""))window.__CPM_MIGRA248=_migraNomi248;
 function _auditCopyrightSafety(){
   const hits=[];
   const subScan=(label,arr)=>{(arr||[]).forEach(s=>{const t=typeof s==="string"?s:((s&&(s.n||s.name||s.club))||"");if(!t)return;_CR_BRANDS.forEach(b=>{if(t.indexOf(b)>=0)hits.push(label+": \""+t+"\" ~ "+b);});});};
@@ -1204,6 +1263,22 @@ function siglaRuolo228(r){const t=String(r||"").trim();if(!t)return"";
   if(/^[A-Za-z]{2,3}$/.test(t)){const u=t.toUpperCase();return _CODICI228[u]||u;}
   for(const[re,sg]of _SIGLE228)if(re.test(t))return sg;
   return t.replace(/[^A-Za-zÀ-ÿ]/g,"").slice(0,3).toUpperCase();}
+/* [giro 239 · PO-507a, dal giro 228 dubbio 2 — rosso __CPM_NO_G239] IL RUOLO INTERO AL TOCCO. Sul telefono il title della sigla
+   (giro 228) non si vede: un tocco sulla sigla apre un fumetto col ruolo intero (e l'etichetta jolly/U21), sopra la sigla; si chiude
+   con un altro tocco ovunque, con lo scorrimento o da solo dopo 3 s. Il fumetto vive in un portale sul body: il testo della riga
+   (sigla + etichetta) resta quello di prima per chi lo legge. Rosso = la sigla torna un semplice testo, senza tocco. */
+function SiglaRuolo239({testo,children,...resto}){
+  const [ap,setAp]=React.useState(null);const ref=React.useRef(null);
+  const no=typeof window!=='undefined'&&!!window.__CPM_NO_G239;
+  React.useEffect(()=>{if(!ap)return;const chiudi=e=>{if(ref.current&&ref.current.contains(e.target))return;setAp(null);};const via=()=>setAp(null);
+    const t=setTimeout(via,3000);document.addEventListener('pointerdown',chiudi,true);window.addEventListener('scroll',via,true);
+    return()=>{clearTimeout(t);document.removeEventListener('pointerdown',chiudi,true);window.removeEventListener('scroll',via,true);};},[ap]);
+  if(no)return <span {...resto}>{children}</span>;
+  const tocca=e=>{try{e.stopPropagation();}catch(_e){}if(ap){setAp(null);return;}const r=ref.current?ref.current.getBoundingClientRect():null;if(r)setAp({x:r.left+r.width/2,y:r.top});};
+  const W=(typeof window!=='undefined'&&window.innerWidth)||360;
+  return <span ref={ref} role="button" tabIndex={0} aria-expanded={!!ap} onClick={tocca} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tocca(e);}}} {...resto} style={{...(resto.style||{}),cursor:"pointer"}}>{children}{ap&&typeof document!=='undefined'&&ReactDOM.createPortal(
+    <span data-cpm="fumetto239" role="tooltip" style={{position:"fixed",left:clamp(ap.x,96,W-96),top:ap.y-6,transform:"translate(-50%,-100%)",zIndex:1200,maxWidth:180,padding:"6px 10px",borderRadius:RAD.sm,background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.bordo,fontSize:FS.caption,fontWeight:FW.bold,textAlign:"center",whiteSpace:"normal",pointerEvents:"none"}}>{testo}</span>,document.body)}</span>;
+}
 /* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
 function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
   const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
@@ -1668,7 +1743,7 @@ function generateSeasonAwards(player, finalStandings){
     youngPlayer:{winner:leagueYoungWinner,playerWins:playerWinsLeagueYoung,isYoungEligible:isYoung}, // compat
     seasonRecord:{record:lgRec.seasonRecord,playerGoals:myGoals,beaten:beatSeasonRecord,near:nearSeasonRecord},
     allTime:{record:lgRec.allTimeScorer,playerCareerGoals,beaten:beatAllTime,position:allTimePos},
-    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
+    rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,tie:myGoals===rivalGoals,/* [7.462.0 collaudo PO «e' in parita'!»] IL PAREGGIO NON E' UNA SCONFITTA. `playerWins` e' un booleano su `>`, quindi 17-17 cadeva nel ramo «ti ha superato» — col tuo numero in rosso e quello del rivale in verde. Il confronto ha TRE esiti, non due. */relLabel:(_g236()&&(rival.relationship||"sconosciuto")==="sconosciuto")?null/* [giro 236 punto 4] «Sconosciuto» sopra il tuo nome nel duello della stagione: la relazione non ancora nata non si scrive (la pillola sparisce, come gia' previsto dal 7.999.49) */:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
     leagueRecords:lgRec,
     playerLeagueGoals:myGoals,playerLeagueAssists:myAssists,/* [7.289.0] per le righe di riepilogo dei premi europei */
   };
@@ -1751,8 +1826,23 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
     else{h.draws++;h.pts++;a.draws++;a.pts++;}
   }
+  /* [giro 239 · PO-498 — rosso __CPM_NO_G239] LA FORMA VERA DI OGNI SQUADRA. Il gioco non salvava la sequenza dei risultati delle
+     altre squadre e la grafica TV pre-partita ne mostrava cinque presi dal bilancio in ordine inventato. Ora ogni riga di classifica
+     tiene i suoi ultimi 5 esiti di campionato (campo facoltativo f239, "W"/"D"/"L", il piu' recente in fondo), scritti QUI dal
+     confronto con la riga di prima: un solo punto per tutti i rami (la tua partita, l'avversario speculare, il turno di riposo, le
+     coppie simulate). Salvataggi vecchi: il campo manca e si riempie da solo con le giornate successive; finche' non copre le ultime
+     min(5, gare) forma239 restituisce null e si mostra solo il bilancio. Nessun campo obbligatorio → nessun cambio di SAVE_VERSION. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G239)){
+    for(let i=0;i<s.length;i++){const o=standings[i],t=s[i];if(!o||!t||(t.played||0)<=(o.played||0))continue;
+      const e=(t.wins||0)>(o.wins||0)?"W":(t.draws||0)>(o.draws||0)?"D":"L";t.f239=(String(o.f239||"")+e).slice(-5);}
+  }
   return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 239 · PO-498] le ultime (fino a) 5 di campionato VERE di una riga di classifica, o null se il salvataggio non le copre */
+function forma239(row){try{
+  if(!row||typeof row.f239!=="string")return null;const n=Math.min(5,row.played|0);if(n<=0||row.f239.length<n)return null;
+  const f=row.f239.slice(-n).split("");return f.every(x=>x==="W"||x==="D"||x==="L")?f:null;
+}catch(e){return null;}}
 // [5.76.0] seed canonico della giornata di lega: stabile per (club, stagione, settimana) → ricaricare un
 //   save e riavanzare produce la STESSA classifica (pattern di calcWorldStandings).
 function standingsSeed(clubId,season,week){return(hashStr(String(clubId||"club"))+(season||1)*100003+(week||1)*9973)>>>0;}
@@ -1918,3 +2008,12 @@ function calcWorldStandings(lg,season,currentWeek,overrides){
   }
   return[...st].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
+/* [giro 259 · dubbio 4 del giro 253] UN SOLO ORDINE DELLA CLASSIFICA: punti, differenza reti, gol fatti, poi l'ordine in cui la
+   classifica e' salvata (quello della tabella principale: sort stabile). Ogni schermata che dice una posizione passa da qui:
+   prima c'erano 36 ordinamenti con spareggi diversi (alcuni senza i gol fatti, alcuni solo i punti), e a pari punti e pari
+   differenza reti due schermate potevano dire due posizioni. Rosso __CPM_NO_G259 = ogni sito col suo ordinamento di prima
+   (passato come secondo argomento) e la tabella principale nell'ordine salvato. Guardiano classifica-259. */
+function _no259(){return typeof window!=="undefined"&&!!window.__CPM_NO_G259;}
+function ordinaClassifica259(st,vecchio){const a=(Array.isArray(st)?st:[]).filter(Boolean);
+  if(_no259())return vecchio?a.sort(vecchio):a;
+  return a.sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0)))||((y.gf||0)-(x.gf||0)));}

@@ -191,7 +191,7 @@ function cgCapelli142(visual,appearance){try{if(!visual||typeof THREE==='undefin
   const im=(typeof window!=='undefined'&&window.__CPM_TESTE237)?window.__CPM_TESTE237[variant]:null;
   if(im&&im.complete&&im.naturalWidth>0){t=new THREE.Texture(im);t.flipY=false;t.needsUpdate=true;t._ok142=true;_cgCapTex142.set(variant,t);applica(t);return variant;}
   /* la testa resta quella del GLB finche' la mappa non e' arrivata (lezione PO-232: una mappa vuota col ritaglio alfa cancella la testa) */
-  new THREE.TextureLoader().load('./assets/hair-colors/source-textures/HEAD_hair_'+variant+'.png',lt=>{lt.flipY=false;lt.needsUpdate=true;lt._ok142=true;_cgCapTex142.set(variant,lt);applica(lt);});
+  new THREE.TextureLoader().load(urlTesta233(variant),lt=>{lt.flipY=false;lt.needsUpdate=true;lt._ok142=true;_cgCapTex142.set(variant,lt);applica(lt);});
   visual.userData.cpmNativeHair={variant,applied:0,pending:true};return variant;}catch(_e){return null;}}
 function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
@@ -435,6 +435,31 @@ function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchPa
    pigrizia: e' il modo in cui questo progetto tiene onesto il proprio specchio. Il rosso __CPM_NO794
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
+/* [giro 244 PO-509, foto PO 7.999.196 «Creare coreografie sempre diverse, non sempre la stessa»; decisione PO 17/11 «Anche in movimento» —
+   rosso __CPM_NO_G244] IL CATALOGO DELLE COREOGRAFIE D'INGRESSO. Misurato prima: la coreografia a cartoncini del giro 206 aveva UN disegno
+   solo (strisce + fascia a croce) e il seme (club + stagione) ne cambiava soltanto la grana. Ora dodici coreografie, tutte procedurali coi
+   due colori sociali del club di casa dello stadio: otto ferme e quattro che si muovono (anim). La SCELTA: fra quelle non viste nelle ultime
+   quattro partite con coreografia si pesca col seme della partita → mai la stessa due partite di fila. La memoria sta nel DISPOSITIVO
+   (chiave propria «cpm-coreo244», fuori dal salvataggio come la velocita' di partita: nessun campo nuovo nel save), una voce per giocatore;
+   la STESSA partita riaperta (salvataggio e ripresa, «Riprova» della scena 3D) mostra la stessa coreografia. Senza memoria (archivio del
+   browser spento) resta la pesca col seme della partita. */
+const COREO244=[{id:"croce"},{id:"pali"},{id:"scacchi"},{id:"diagonali"},{id:"raggi"},{id:"sigla"},{id:"stemma"},{id:"scritta"},
+  {id:"gira",anim:1},{id:"scorre",anim:1},{id:"bandieroni",anim:1},{id:"srotola",anim:1}];
+function coreo244Scegli(chiave,chi){
+  const ids=COREO244.map(c=>c.id),h=(t)=>(Math.abs(hashStr(String(t)))>>>0);
+  try{if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORZA244&&ids.includes(window.__CPM_FORZA244))return{id:window.__CPM_FORZA244,osp:window.__CPM_FORZA244==="croce"?"pali":"croce",mem:false,forzata:true};}catch(_e){}
+  let M=null,mem=false;try{M=JSON.parse(localStorage.getItem("cpm-coreo244")||"null");mem=true;}catch(_e){M=null;}
+  if(!M||typeof M!=="object"||Array.isArray(M))M={};
+  const k=String(chi||"?").slice(0,40),V=M[k];
+  if(V&&V.k===chiave&&ids.includes(V.id))return{id:V.id,osp:ids.includes(V.o)?V.o:"croce",mem,riaperta:true};
+  const rec=(V&&Array.isArray(V.r))?V.r.filter(x=>ids.includes(x)).slice(-4):[];
+  const cand=ids.filter(x=>!rec.includes(x));const id=cand[h(chiave+"|c244")%cand.length];
+  const fer=COREO244.filter(c=>!c.anim&&c.id!==id).map(c=>c.id);const osp=fer[h(chiave+"|o244")%fer.length];/* curva ospite (finali): una ferma, diversa da quella di casa */
+  try{let n=0;for(const q in M)n=Math.max(n,(M[q]&&M[q].n)|0);M[k]={k:chiave,id,o:osp,r:rec.concat([id]).slice(-4),n:n+1};
+    const ks=Object.keys(M);if(ks.length>6){ks.sort((a,b)=>((M[a].n|0)-(M[b].n|0)));delete M[ks[0]];}
+    localStorage.setItem("cpm-coreo244",JSON.stringify(M));}catch(_e){mem=false;}
+  return{id,osp,mem};}
+try{if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_CATALOGO244=COREO244;window.__CPM_SCEGLI244=coreo244Scegli;}}catch(_e244){}
 function ThreeMatchView(props){
   const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
@@ -966,12 +991,12 @@ function ThreeMatchView(props){
       const mesh=mkP(col,false,i+1,_ri);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;if(pl.gk)mesh._isGk=true;/* [7.153.0] portiere → ready stance in animOne */
       let _num;if(pl.gk)_num=1;else if(isHome){if(_hN===_heroN)_hN++;_num=_hN++;}else _num=_aN++;// salta il numero dell'eroe tra i compagni
-      mesh._num=_num;mesh._name=pl.name||"";{const _bnp=_mkNumPlane(_num,mesh._name);_bnp.position.set(0,1.16,-0.2);_bnp.rotation.y=Math.PI;mesh.add(_bnp);}// [7.132.0] NUMERO sulla schiena (procedurale/gate; nascosto in GLB con la mesh proc)
+      mesh._num=_num;mesh._name=pl.name||"";mesh._nf=pl.nf||"";/* [giro 240 PO-500] nome intero: la chiave della figurina */{const _bnp=_mkNumPlane(_num,mesh._name);_bnp.position.set(0,1.16,-0.2);_bnp.rotation.y=Math.PI;mesh.add(_bnp);}// [7.132.0] NUMERO sulla schiena (procedurale/gate; nascosto in GLB con la mesh proc)
       scene.add(mesh);players.push({mesh,team:pl.team,gk:!!pl.gk,num:_num});
       if(pl.gk&&pl.team==='away')awayGkMesh=mesh; // CIN-2
     });
     // Protagonista (ring dorato)
-    const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);hero._isHero=true;// Step C: l'eroe mantiene risposta CRISP (controllo diretto), niente inerzia off-ball
+    const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);hero._isHero=true;hero._nf=(props&&props.heroName)||"eroe";/* [giro 240 PO-500] */// Step C: l'eroe mantiene risposta CRISP (controllo diretto), niente inerzia off-ball
     hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
     const _heroSurn=(((typeof _surnBG==="function"&&_surnBG(props.heroName||""))||(props.heroName||"").trim().split(/\s+/).pop())||"").toUpperCase();// [7.130.0] cognome dell'eroe · [7.304.0] particella inclusa («De Luca», non «Luca»)
     hero._num=_heroN;hero._name=_heroSurn;{const _hnp=_mkNumPlane(_heroN,_heroSurn);_hnp.position.set(0,1.16,-0.2);_hnp.rotation.y=Math.PI;hero.add(_hnp);}// [7.132.0] NUMERO dell'eroe sulla schiena
@@ -1352,6 +1377,51 @@ function ThreeMatchView(props){
         if(vis)for(const b of bersagli){const s=scr(b.w[0],b.w[1],b.w[2]);if(Math.abs(s[0])>1||Math.abs(s[1])>1||s[2]<=-1||s[2]>=1)continue;const dB=Math.hypot(cp.x-b.w[0],cp.y-b.w[1],cp.z-b.w[2]);if(s[0]>=x0&&s[0]<=x1&&s[1]>=y0&&s[1]<=y1&&dL<dB)copre.push(b.k);}
         return {i,x:+X.toFixed(2),z:+Z.toFixed(2),vis,inQ,cartPetto:vis?coperto(X,1.2,Z):null,cartTesta:vis?coperto(X,1.6,Z):null,copre};});
       W.push({sc:String(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione'):''),cam:[+cp.x.toFixed(1),+cp.y.toFixed(1),+cp.z.toFixed(1)],lin});}catch(_e){}};
+    /* [giro 245 PO-510] testimone INERTE di tunnel-245 (solo con window.__CPM_G245W armato dalla sonda, solo nell'ingresso): gli
+       oggetti fermi etichettati `userData.ost245` (cartelloni, panchine, pensiline, pareti del tunnel) come scatole in coordinate
+       mondo; a ogni fotogramma i corpi che camminano (22 + bambini) contro le scatole (cerchio di raggio 0,35 al suolo, quota del
+       corpo 0,15-1,7) e contro le figure ferme a bordo campo (mister, vice, panchinari, terna); la bocca del tunnel proiettata in
+       camera. Nessuna scrittura sullo stato della scena. */
+    const _o245={b:null,v:null};
+    const _w245=()=>{try{const W=window.__CPM_G245W;if(!Array.isArray(W)||W.length>=6000)return;const P=propsRef.current||{};if(P.matchPhase!=='walkout')return;const T=THREE;
+      if(!_o245.b){const bb=new T.Box3(),L=[];scene.traverse(o=>{const k=o.userData&&o.userData.ost245;if(!k||!o.isMesh||o.visible===false)return;o.updateMatrixWorld(true);bb.setFromObject(o);L.push({k,x0:+bb.min.x.toFixed(2),x1:+bb.max.x.toFixed(2),y0:+bb.min.y.toFixed(2),y1:+bb.max.y.toFixed(2),z0:+bb.min.z.toFixed(2),z1:+bb.max.z.toFixed(2)});});_o245.b=L;_o245.v=new T.Vector3();
+        const altri=[];const tn0=sr.current&&sr.current._tun46;const cx=tn0?tn0.x:-22;scene.children.forEach(o=>{if(!o.isMesh||o.visible===false||(o.userData&&o.userData.ost245))return;bb.setFromObject(o);if(bb.max.x-bb.min.x>40||bb.max.z-bb.min.z>40)return;if(bb.max.y<0.2||bb.min.y>1.6)return;if(bb.max.x<cx-3.2||bb.min.x>cx+3.2||bb.max.z<-36.2||bb.min.z>-33.4)return;altri.push({g:(o.geometry&&o.geometry.type)||'',x0:+bb.min.x.toFixed(2),x1:+bb.max.x.toFixed(2),y0:+bb.min.y.toFixed(2),y1:+bb.max.y.toFixed(2),z0:+bb.min.z.toFixed(2),z1:+bb.max.z.toFixed(2)});});
+        const figs=(typeof benchFigs!=='undefined'?benchFigs:[]).map(f=>f?{casa:!!f._home,mister:!!f._isCoach,x:+f.position.x.toFixed(2),z:+f.position.z.toFixed(2)}:null);
+        window.__CPM_G245={tunnel:tn0?{x:tn0.x,z1:tn0.z1,L:+(+tn0.L).toFixed(2),stile:tn0.stile}:null,ost:L,altri,panchina:figs,kind:((sr.current._stad455||{}).kind)||null,tpl:((sr.current._stad455||{}).tpl)||null};}
+      const R=0.35,pen=[],fig=[];const cam=[];
+      const fermi=[];(typeof benchFigs!=='undefined'?benchFigs:[]).forEach(f=>{if(f)fermi.push([f._isCoach?'mister/vice':'panchinaro',f.position.x,f.position.z]);});
+      if(typeof refMesh!=='undefined'&&refMesh)fermi.push(['arbitro',refMesh.position.x,refMesh.position.z]);
+      if(typeof linRef1!=='undefined'&&linRef1)fermi.push(['guardalinee',linRef1.position.x,linRef1.position.z]);
+      if(typeof linRef2!=='undefined'&&linRef2)fermi.push(['guardalinee',linRef2.position.x,linRef2.position.z]);
+      let fuori=0;const uno=(m,nome,att)=>{if(!m)return;const x=m.position.x,z=m.position.z;if(att)fuori++;
+        for(const b of _o245.b){if(b.y0>1.7||b.y1<0.15)continue;const dx=Math.max(b.x0-x,0,x-b.x1),dz=Math.max(b.z0-z,0,z-b.z1);if(dx*dx+dz*dz<R*R)pen.push([nome,b.k,+x.toFixed(2),+z.toFixed(2)]);}
+        if(att)for(const f of fermi){if(Math.hypot(f[1]-x,f[2]-z)<2*R)fig.push([nome,f[0],+x.toFixed(2),+z.toFixed(2)]);}};
+      (sr.current.players||[]).forEach((pp,i)=>{const m=pp&&pp.mesh;if(m)uno(m,(pp.team==='home'?'c':'o')+i,m._wDelay!=null&&walkT>=m._wDelay);});uno(hero,'eroe',hero&&hero._wDelay!=null&&walkT>=hero._wDelay);
+      (typeof _mascots!=='undefined'?_mascots:[]).forEach((mm,i)=>{const g=mm&&mm.glb911&&mm.glb911.root;if(mm&&((g&&g.visible)||(mm.c&&mm.c.visible)))uno((g&&g.visible)?g:mm.c,'b'+i,false);});
+      const tn=sr.current&&sr.current._tun46;if(tn){_o245.v.set(tn.x,1.5,tn.z1).project(camera);cam.push(+_o245.v.x.toFixed(3),+_o245.v.y.toFixed(3),+_o245.v.z.toFixed(4));}
+      W.push({t:+walkT.toFixed(2),fuori,pen,fig,bocca:cam,cp:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]});}catch(_e){try{window.__CPM_G245ERR=String(_e&&_e.message);}catch(_ee){}}};
+    /* [giro 255, seguito di PO-510] testimone INERTE di tunnel-245/schieramento (solo con window.__CPM_G255W armato dalla sonda).
+       INGRESSO: il posto di schieramento delle due file (x medio dei posti, estremi in z), a ogni fotogramma quanti sono arrivati al
+       posto, la x media dei 23 corpi, quanti corpi sono nel quadro della camera e la loro altezza apparente media, le coppie di corpi
+       (calciatori usciti dal tunnel + bambini) a meno di 0,5 fra i centri. SOSTITUZIONE (ingresso o uscita dell'eroe): l'eroe contro
+       le scatole degli oggetti fermi etichettati (stesso cerchio di raggio 0,35 di tunnel-245). Nessuna scrittura sulla scena. */
+    const _o255={b:null,v:null,s:false};
+    const _w255=()=>{try{const W=window.__CPM_G255W;if(!Array.isArray(W)||W.length>=9000)return;const P=propsRef.current||{};const T=THREE;
+      const walk=P.matchPhase==='walkout';const sub=subEntryT>=0?'entra':(subExitT>=0?'esce':null);if(!walk&&!sub)return;
+      if(!_o255.v)_o255.v=new T.Vector3();
+      if(!walk){if(!_o255.b){const bb=new T.Box3(),L=[];scene.traverse(o=>{const k=o.userData&&o.userData.ost245;if(!k||!o.isMesh||o.visible===false)return;o.updateMatrixWorld(true);bb.setFromObject(o);L.push({k,x0:bb.min.x,x1:bb.max.x,y0:bb.min.y,y1:bb.max.y,z0:bb.min.z,z1:bb.max.z});});_o255.b=L;}
+        const x=hero.position.x,z=hero.position.z,R=0.35,pen=[];if(hero.visible!==false){for(const b of _o255.b){if(b.y0>1.7||b.y1<0.15)continue;const dx=Math.max(b.x0-x,0,x-b.x1),dz=Math.max(b.z0-z,0,z-b.z1);if(dx*dx+dz*dz<R*R)pen.push(b.k);}}
+        W.push({sub,t:+(sub==='entra'?subEntryT:subExitT).toFixed(2),x:+x.toFixed(2),z:+z.toFixed(2),vis:hero.visible!==false,pen});return;}
+      const L=[];(sr.current.players||[]).forEach(pp=>{if(pp&&pp.mesh)L.push([pp.team==='home'?0:1,pp.mesh]);});L.push([0,hero]);
+      if(!_o255.s){_o255.s=true;const q=[{n:0,x:0,z0:99,z1:-99},{n:0,x:0,z0:99,z1:-99}];L.forEach(e=>{const m=e[1];if(m._wx==null)return;const o=q[e[0]];o.n++;o.x+=m._wx;o.z0=Math.min(o.z0,m._wz);o.z1=Math.max(o.z1,m._wz);});q.forEach(o=>{if(o.n)o.x=+(o.x/o.n).toFixed(2);});
+        window.__CPM_G255={casa:q[0],ospiti:q[1],tappeto:(typeof _ceremonyCarpet!=='undefined'&&_ceremonyCarpet)?{x:_ceremonyCarpet.position.x,z:_ceremonyCarpet.position.z,r:11}:null};}
+      let arr=0,sx=0,nn=0,inq=0,alt=0;const B=[];const v=_o255.v;
+      for(const e of L){const m=e[1];nn++;sx+=m.position.x;if(m._wx!=null&&Math.hypot(m.position.x-m._wx,m.position.z-m._wz)<0.01)arr++;
+        if(m._wDelay!=null&&walkT>=m._wDelay+0.3)B.push(m.position);/* 0,3 s dopo l'uscita: prima il corpo e' ancora sul punto di partenza comune */
+        v.set(m.position.x,1.0,m.position.z).project(camera);if(Math.abs(v.x)<=0.95&&Math.abs(v.y)<=0.95&&v.z<1){inq++;const y1=v.set(m.position.x,1.8,m.position.z).project(camera).y,y0=v.set(m.position.x,0,m.position.z).project(camera).y;alt+=Math.abs(y1-y0)/2;}}
+      (typeof _mascots!=='undefined'?_mascots:[]).forEach(mm=>{const g=mm&&mm.glb911&&mm.glb911.root;if(mm&&mm.p&&mm.p._wDelay!=null&&walkT>=mm.p._wDelay+0.3&&((g&&g.visible)||(mm.c&&mm.c.visible)))B.push(((g&&g.visible)?g:mm.c).position);});
+      let cc=0,ce=null,dm=99;for(let i=0;i<B.length;i++)for(let j=i+1;j<B.length;j++){const d=Math.hypot(B[i].x-B[j].x,B[i].z-B[j].z);if(d<dm)dm=d;if(d<0.5){cc++;if(!ce)ce=[+B[i].x.toFixed(2),+B[i].z.toFixed(2),+B[j].x.toFixed(2),+B[j].z.toFixed(2)];}}
+      W.push({t:+walkT.toFixed(2),r:(sr.current&&sr.current._br206)||null,n:nn,arr,mx:+(sx/Math.max(1,nn)).toFixed(2),inq,alt:+(inq?alt/inq:0).toFixed(3),cc,ce,dm:+dm.toFixed(2),arb:(typeof refMesh!=='undefined'&&refMesh)?[+refMesh.position.x.toFixed(1),+refMesh.position.z.toFixed(1)]:null,cp:[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]});}catch(_e){try{window.__CPM_G255ERR=String(_e&&_e.message);}catch(_ee){}}};
     const _w212=()=>{const P=propsRef.current||{};misuraCorpi212('partita:'+(P.matchPhase||'')+(P.ceremony?(P.ceremony.light?':festa':':premiazione:'+(P.ceremony.kind||'')):''),scene,camera,_g212chi);};
     /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
        visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
@@ -1396,7 +1466,9 @@ function ThreeMatchView(props){
        montaggio: una copia NASCOSTA entra in scena e il fotogramma di prova la compila e ne carica le texture sotto il velo
        dell'attesa; la cerimonia trova modello, programmi e texture pronti. Nulla di visibile cambia. Rosso __CPM_NO_G219. */
     if(_useGLB&&typeof loadGLB==='function'&&!(typeof window!=='undefined'&&window.__CPM_NO_G219)&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){try{sr.current._misterP219=loadGLB('./assets/actor-presenter.glb').then(_g219=>{try{if(!_g219||!_g219.scene||!sr.current||sr.current._tex16Stop||sr.current._caldo219)return;const _w219=THREE.SkeletonUtils.clone(_g219.scene);_w219.name='caldo219';_w219.visible=false;_w219.traverse(m=>{if(m.isMesh)m.frustumCulled=false;});scene.add(_w219);sr.current._caldo219=_w219;try{window.__CPM_CALDO219=1;}catch(_e){}}catch(_e){}},()=>{});}catch(_e219){}}
-    if(_useGLB&&typeof loadGLB==='function'){const _optGLB=u=>loadGLB(u).catch(()=>null);
+    if(_useGLB&&typeof loadGLB==='function'){const _optGLB=u=>u?loadGLB(u).catch(()=>null):Promise.resolve(null);
+      /* [giro 233 PO-453] nel modo CGTrader il corpo «regular» non si vede mai (giro 196: mai corpi non CGTrader): le sue due varianti di corporatura (4,2 MB) non si scaricano. Rosso __CPM_NO_G233 */
+      const _noVar233=typeof _g233==='function'&&_g233()&&typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';
       /* [PO-252/1 giro 22] la clip di CORSA vera (regular-anim-running, negli asset dal 7.9xx e mai caricata): l'eroe la usa sopra ~5 u/s,
          dove la «jog» (velocita' naturale 1,83 u/s, tetto di cadenza 2,5 = 4,6 u/s) non puo' tenere il piede fermo. Facoltativa:
          se non arriva, resta la jog di sempre. Rosso __CPM_NO_PIEDI252. */
@@ -1404,7 +1476,7 @@ function ThreeMatchView(props){
       // [7.8.19] RETRY del corpo footballer.glb (obbligatorio): un fallimento TRANSITORIO di rete mobile non deve
       //   mandare in campo i burattini → 3 tentativi con backoff (loadGLB evince i fallimenti dalla cache → riscarica).
       const _loadBody=(u,n)=>loadGLB(u).catch(e=>{if(n<=0)throw e;return new Promise(r=>setTimeout(r,1800)).then(()=>_loadBody(u,n-1));});
-      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),_optGLB('./assets/korward-regular-player-slim.glb'),_optGLB('./assets/korward-regular-player-stocky.glb'),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/korward-regular-anims/regular-anim-idle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-kick.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-penalty.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-header.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-tackle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-volley.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-catch.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-block.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-receive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-throwin.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog-back.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-left.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-right.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-pass.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-dribble.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-change-direction.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-missed-chance.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-walk.glb')/* [giro 23 PO-245] camminata dell'ingresso */]).then(([_cg,_sg,_xg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg,_pasg,_drbg,_chg,_misg,_wkg245])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
+      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),_optGLB(_noVar233?null:'./assets/korward-regular-player-slim.glb'),_optGLB(_noVar233?null:'./assets/korward-regular-player-stocky.glb'),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/korward-regular-anims/regular-anim-idle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-kick.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-penalty.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-header.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-tackle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-volley.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-catch.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-block.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-receive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-throwin.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog-back.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-left.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-right.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-pass.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-dribble.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-change-direction.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-missed-chance.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-walk.glb')/* [giro 23 PO-245] camminata dell'ingresso */]).then(([_cg,_sg,_xg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg,_pasg,_drbg,_chg,_misg,_wkg245])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
       // clip da file separati (Mixamo "without skin") applicate per NOME al rig del personaggio (stesso scheletro mixamorig)
       /* A runtime package may provide an AnimationClip directly (CGTrader review) or a GLTF result (regular assets). Accept both without relying on an optional isAnimationClip flag. */
       const _clip1=g=>(g&&((g.isAnimationClip===true)||(Array.isArray(g.tracks)&&typeof g.duration==="number"))&&g)||(g&&g.animations&&g.animations[0])||null;
@@ -1752,7 +1824,7 @@ function ThreeMatchView(props){
          materiale testa, mai la geometria né l''incarnato a runtime. */
       const _cgtraderHairMaterialCache=new Map(),_cgtraderHairTextureCache=new Map(),_cgtraderHairLoader=new THREE.TextureLoader();
       const _cgtraderHairVariant=cgVarianteCapelli;/* [giro 142] stessa funzione delle cerimonie */
-      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);{/* [PO-237] testa gia' decodificata all'avvio (11-ui-kit, __CPM_TESTE237): pronta subito, niente secondo download/decodifica. Rosso __CPM_NO_PRE237 */const _im237=(typeof window!=='undefined'&&!window.__CPM_NO_PRE237&&window.__CPM_TESTE237)?window.__CPM_TESTE237[key]:null;if(_im237&&_im237.complete&&_im237.naturalWidth>0){const t237=new THREE.Texture(_im237);t237.flipY=false;if('colorSpace' in t237&&THREE.SRGBColorSpace)t237.colorSpace=THREE.SRGBColorSpace;t237.needsUpdate=true;t237._ok232=true;_cgtraderHairTextureCache.set(key,t237);return t237;}}const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
+      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);{/* [PO-237] testa gia' decodificata all'avvio (11-ui-kit, __CPM_TESTE237): pronta subito, niente secondo download/decodifica. Rosso __CPM_NO_PRE237 */const _im237=(typeof window!=='undefined'&&!window.__CPM_NO_PRE237&&window.__CPM_TESTE237)?window.__CPM_TESTE237[key]:null;if(_im237&&_im237.complete&&_im237.naturalWidth>0){const t237=new THREE.Texture(_im237);t237.flipY=false;if('colorSpace' in t237&&THREE.SRGBColorSpace)t237.colorSpace=THREE.SRGBColorSpace;t237.needsUpdate=true;t237._ok232=true;_cgtraderHairTextureCache.set(key,t237);return t237;}}const texture=_cgtraderHairLoader.load(urlTesta233(key),loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
       /* [7.999.162 PO-232] LA TESTA SPARIVA FINCHE' LA SUA TEXTURE NON ERA ARRIVATA. Il materiale della testa (Material.002) riceveva subito
          la mappa dei capelli (PNG da ~2,5 MB) ancora vuota; three r128 nell'attesa campiona una texture nera con alfa 0, e il ritaglio
          alphaTest 0,5 (ALPHAFIX) scartava l'intera testa: corpi senza testa per tutto il download. Ora la mappa si scambia SOLO a
@@ -1760,7 +1832,16 @@ function ThreeMatchView(props){
          attesa: finche' non e' zero la scena dell'eroe non parte (LiveMatch, tetto 8 s). Rosso __CPM_NO_GLB232 = scambio immediato. */
       const _testePend232=new Map();
       const _flushTeste232=key=>{const L=_testePend232.get(key);if(!L)return;_testePend232.delete(key);try{if(sr.current)sr.current._testePend232=Math.max(0,(sr.current._testePend232|0)-L.length);}catch(_e){}L.forEach(([v,a])=>{try{_applyCgtraderNativeHair(v,a);}catch(_e){}});};
-      const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
+      /* [giro 240 · PO-500 decisione PO «Sì, nella 197»] PELLE E CAPELLI DALLA FIGURINA anche in partita (e quindi ingresso, highlight,
+         premiazione e festa, che usano questi stessi corpi). Chi ha un nome (i ventuno + l'eroe) prende i capelli dalla classe della
+         sua figurina e la pelle dal colore misurato sul ritratto, con lo stesso metodo della serata (giro 225: aspettoFigurina225,
+         _pelle225). Arbitro, panchine, mascotte e assistenti non hanno figurina: restano dal seme. Rosso __CPM_NO_G240. */
+      const _resaViva240=new THREE.Vector3(1,1,1);sr.current._resa240=()=>{try{const q=resa240('partita',tod);_resaViva240.set(q[0],q[1],q[2]);}catch(_e){}};sr.current._resa240();/* la compensazione delle luci di base dell'ora (giorno · tramonto · notte): un vettore condiviso da tutti i materiali di pelle */
+      const _aspetto240=(proc,appr)=>{try{if(!proc||proc._nf==null||proc._nf===''||typeof _g240!=='function'||!_g240()||typeof aspettoFigurina225!=='function')return appr;const fg=aspettoFigurina225(proc._nf);if(!fg)return appr;return Object.assign({},appr||{},fg.hair?{hair:fg.hair}:null,{_fig240:fg});}catch(_e){return appr;}};
+      const _chi240=(visual,proc,ruolo)=>{try{if(visual&&proc)visual.userData.chi240={nome:proc._nf||null,ruolo:ruolo||null};}catch(_e){}};
+      const _pelleFig240=(visual,appearance)=>{try{const fg=appearance&&appearance._fig240;if(!fg||!fg.p||typeof _pelle225!=='function')return;_pelle225(visual,fg.p,'auto',_resaViva240,renderer.outputEncoding===THREE.sRGBEncoding,ESP240);}catch(_e){}};
+      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}};/* la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
+      const _applyCgtraderNativeHair0=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
       /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
@@ -1928,7 +2009,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(_scalaCorpo21()*(targetHeight/rawHeight));visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          _applyHyperBuild(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)),old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
+          {const _ap240=_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -1955,7 +2036,7 @@ function ThreeMatchView(props){
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-            const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
+            const appearance=_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
@@ -2134,13 +2215,13 @@ function ThreeMatchView(props){
           pieni anche per chi sta lontano. Il meccanismo di assegnazione esisteva gia' ed e' provato: si
           riusa, non si riscrive. */
           const _trioLod=(_cgtraderMixedLodBenchmark||(_cgtraderHighlightOptimized&&!(typeof window!=='undefined'&&window.__CPM_NO_TRIO)));
-          const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
+          const _hyperAssetUrls=_trioLod?[urlLod233('lod0')/* [giro 233 PO-453] dispositivo leggero: il posto del lod0 lo prende il file lod1 (16,4 MB in meno) */,'./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
         const _esu31=_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31);
-        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po2.glb']:[]).map(url=>loadGLB(url))).then(results=>{
+        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po2.glb']:[]).map(url=>loadGLB(url))).then(results=>((typeof _g240==='function'&&_g240()&&typeof voltiPronti225==='function')?voltiPronti225(4000):Promise.resolve()).then(()=>results)/* [giro 240 PO-500] l'indice dei volti (82 KB) prima dei corpi, come nella serata */).then(results=>{
           const _po2Res=_esu31?results.pop():null;const _esuRes=_esu31?results.pop():null;const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){const ok=riparaCadute7(_mxAnims23);try{window.__CPM_CADUTA8={riparate:ok};}catch(_e){}}if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRO34)){const ok34=_tiro34Prep(_mxAnims23);try{window.__CPM_TIRO34P={pronta:ok34};}catch(_e){}}}
           if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);if(!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31))for(const _n31 of ['pass','penalty']){const _c31=(_p0.animations||[]).find(c=>c&&c.name===_n31);const _m31=_c31&&_specchiaClip23(_c31,_p0.scene,_n31+'~m');if(_m31)_mxAnims23.push(_m31);}{const _s34=_mxAnims23.find(c=>c&&c.name==='mx-strike-foward-jog');if(_s34&&_s34._root34){const _m34=_specchiaClip23(_s34,_p0.scene,'mx-strike-foward-jog~m');if(_m34){_m34._root34=_s34._root34;_mxAnims23.push(_m34);}}}/* [7.999.34] il tiro in corsa anche col sinistro */}/* [7.999.31] le esultanze del PO (Mixamo sullo scheletro CGTrader): via le tracce del nodo `root`, che nell'export da FBX porta la scala dei centimetri (0,01) e farebbe sparire il corpo */if(_esuRes&&_esuRes.status==='fulfilled'&&_esuRes.value){for(const _c of (_esuRes.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));_mxAnims23.push(_c);}}if(_po2Res&&_po2Res.status==='fulfilled'&&_po2Res.value&&!(typeof window!=='undefined'&&window.__CPM_NO_CLIP145)){for(const _c of (_po2Res.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));if(_c.name==='mx-receive-thigh'){const _tp=_c.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));if(_tp){const v=_tp.values;const x0=v[0],z0=v[2];for(let k=0;k<v.length;k+=3){v[k]=x0;v[k+2]=z0;}}}_mxAnims23.push(_c);}}/* [7.999.144 PO-075, decisione PO 06/10 «testa + coscia»] secondo pacchetto del PO: stacco di testa da fermo e controllo di coscia (tratto 0,8-1,6 s, sul posto: tolto l'avanzamento del bacino) */try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
-          const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
+          const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value);if(_trioLod&&packages.length===3&&packages[0]===packages[1]){packages[0]=Object.assign({},packages[1]);try{window.__CPM_LEGGERO233=true;}catch(_e233){}}/* [giro 233] stesso file per i due posti: una copia dell'involucro, cosi' ciascun posto tiene la sua etichetta _cgLod */const pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_trioLod&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           /* [23/09 — IL PEZZO CHE MANCAVA, ed e' quello che rendeva invisibili i corpi.
           Le varianti LOD nascono `visible=false` e vengono accese da `_activateCgtraderLod`, che pero' le
@@ -2333,10 +2414,22 @@ function ThreeMatchView(props){
       const _H277=(typeof window!=='undefined'&&window.__CPM_NO_ING277)?28:10;/* [giro 54 PO-277 «ingresso piu' rapido, non velocissimo» — rosso __CPM_NO_ING277] la fila schierata stava su 56u (5,6u fra due compagni): ora 20u, spalla a spalla come in tv, e la strada dal tunnel si accorcia */
       m._wx=xRow;m._wz=n>1?(-_H277+2*_H277*i/(n-1)):0;// slot finale schierato
       m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*((typeof window!=='undefined'&&window.__CPM_NO_CAMM245)?0.20:0.65);/* [giro 23 PO-245 «camminata vera» — rosso __CPM_NO_CAMM245] a passo di camminata (1,8 u/s) 0,2 s fra uno e l'altro vorrebbero dire 0,36u: corpi uno dentro l'altro. 0,65 s = ~1,2u di fila */// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
-      m._wStartX=(typeof window!=='undefined'&&window.__CPM_NO_STADI246)?xRow-9:(side<0?-23.6:-20.4);/* [giro 46 PO-071 — rosso __CPM_NO_STADI246] le due file escono affiancate dalla bocca del tunnel (x -22, buildStadium) invece che da due punti del bordo campo */m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
+      m._wStartX=(typeof window!=='undefined'&&window.__CPM_NO_STADI246)?xRow-9:((typeof window!=='undefined'&&window.__CPM_NO_G245)?(side<0?-23.6:-20.4):(side<0?-1.3:1.3));/* [giro 245 PO-510 — rosso __CPM_NO_G245] la bocca e' a meta' campo (x 0, buildStadium): casa a sinistra, ospiti a destra, 2,6 fra le due file */ /* [giro 46 PO-071 — rosso __CPM_NO_STADI246] le due file escono affiancate dalla bocca del tunnel (x -22, buildStadium) invece che da due punti del bordo campo */m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
-    _placeRow(_homeMeshes,-15,-1);_placeRow(_awayMeshes,-7,1);
+    /* [giro 255, seguito di PO-510 — decisione PO 17/11 «Sì, al centro». Rosso __CPM_NO_G255 = schieramento a sinistra, come prima]
+       MISURATO (tunnel-245, 17 stadi, ingresso intero): con la bocca a meta' campo le due file andavano a schierarsi a x -15 e -7
+       (x media dei 23 corpi -11,0). Ora stanno a cavallo della meta' campo, davanti al tunnel: casa a x -4, ospiti a x +4 (stessa
+       distanza di 8 fra le file, stessi posti in z). Le camere che guardano la fila schierata (carrellata finale, inno) si spostano
+       degli stessi 11 (_SX255): l'inquadratura sulla fila e' quella di prima. */
+    const _G255=!(typeof window!=='undefined'&&window.__CPM_NO_G255),_SX255=_G255?11:0,_SUBX255=_G255?-3.9:-6;
+    /* [giro 255] sostituzioni: la strada fra il campo e la linea d'attesa passa da un punto sul prato davanti al varco (x -3,9, z -33,6),
+       cosi' il tratto che attraversa striscia e cartelloni e' dritto dentro il varco da qualunque punto del campo si arrivi o si parta.
+       p 0..1 lungo la spezzata (ax,az)→(wx,wz)→(bx,bz), a passo proporzionale alla lunghezza dei due tratti. Senza allocazioni. */
+    const _via255={x:0,z:0},_VIAZ255=-33.6;
+    const _spez255=(ax,az,wx,wz,bx,bz,p)=>{const d1=Math.hypot(wx-ax,wz-az),d2=Math.hypot(bx-wx,bz-wz),q=d1/Math.max(0.001,d1+d2);
+      if(p<q){const k=p/Math.max(0.001,q);_via255.x=ax+(wx-ax)*k;_via255.z=az+(wz-az)*k;}else{const k=(p-q)/Math.max(0.001,1-q);_via255.x=wx+(bx-wx)*k;_via255.z=wz+(bz-wz)*k;}return _via255;};
+    _placeRow(_homeMeshes,-15+_SX255,-1);_placeRow(_awayMeshes,-7+_SX255,1);
 
     // Palla — 5.47.17: design MATCH-BALL MODERNO e RICONOSCIBILE — base bianca, pannelli curvi a contrasto (slate) + un
     //   accento di colore vivo (teal) a "swoosh" → niente pentagoni retro, niente bianco piatto "identico" (feedback PO).
@@ -2435,8 +2528,9 @@ function ThreeMatchView(props){
     // buildStadium resta invariato; queste sono la prima fila luminosa che incornicia il campo in TV.
     const LED_SEG=22,ledStrips=[],_ledCols=[new THREE.Color(_hCol),new THREE.Color(0xffffff),new THREE.Color(_aCol)];
     const _segW=100/LED_SEG;
-    const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);scene.add(m);ledStrips.push(m);}};
+    const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);m.userData.ost245='striscia-led';scene.add(m);ledStrips.push(m);}};
     _mkLed(-34.4);_mkLed(34.4);
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G245)&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)){ledStrips[10].visible=false;ledStrips[11].visible=false;}/* [giro 245 PO-510] la striscia LED del lato panchine era continua: le due file la attraversavano (misurato: ~300 corpi-fotogramma per ingresso). Varco davanti alla bocca del tunnel (misurato: x -4,77..4,77); i due segmenti restano nella lista, solo spenti */
     // item 2 (5.49.12): CARTELLONI col LOGO DEL GIOCO — "ELEVORA" ben VISIBILE: DIETRO entrambe le porte (di fronte alla camera broadcast) + lungo le linee laterali. Look LED da bordo campo.
     /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL BUDGET DELLE
        TEXTURE] Censimento (hook __CPM_DECOR): 192 piani texturizzati per scena, **120 texture GPU distinte
@@ -2524,7 +2618,7 @@ function ThreeMatchView(props){
        piani trasparenti COMPLANARI sovrapposti, facevano Z-FIGHTING (il renderer alterna quale sta davanti a ogni
        frame = «lampeggio»). FIX: larghezza < passo (parametro w) → gap tra i board → niente overlap né z-fight. */
     const _cart222=[];
-    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);_cart222.push(m);/* [giro 222] il testimone dei guardalinee li usa per sapere se coprono */};
+    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;m.userData.ost245='cartellone-led';scene.add(m);_cart222.push(m);/* [giro 222] il testimone dei guardalinee li usa per sapere se coprono */};
     // [7.8.12/7.8.13 collaudo tester] i cartelloni erano a x=±49, IN FRONT della rete di fondo (49.4) → il piano
     //   TAGLIAVA la bocca della porta (comparivano davanti alla rete). Spostarli a ±51.2 (dietro TUTTA la porta,
     //   rete laterale ~51.15) li ha fatti SPARIRE dietro la curva/perimetro negli stadi piccoli. Posizione giusta:
@@ -2553,7 +2647,7 @@ function ThreeMatchView(props){
     // [7.129.0 collaudo PO «i cartelloni devono stare DIETRO la linea della rimessa laterale e dunque anche della
     //   bandierina»] erano a z=±33.2 = SULLA touchline (e alla stessa z delle bandierine d'angolo _TLZ) → ora a ±34.8,
     //   OLTRE il bordo del prato (34) → dietro la touchline e dietro le bandierine, sul perimetro come i board veri.
-    [-37.8,-25.2,-12.6,0,12.6,25.2,37.8].forEach((x,i)=>{if(!(i===1&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)))/* [giro 46 PO-071] varco del tunnel d'ingresso (buildStadium, x -22) */_mkAdBoard(x,-34.8-i*0.03,0,i,true,13.1);_mkAdBoard(x,34.8+i*0.03,Math.PI,i+4,true,13.1);});/* passo 12.6, w 13.1 (overlap 0.5), z-stagger anti-flicker → strip continua */
+    [-37.8,-25.2,-12.6,0,12.6,25.2,37.8].forEach((x,i)=>{if(!(i===((typeof window!=='undefined'&&window.__CPM_NO_G245)?1:3)&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)))/* [giro 46 PO-071] varco del tunnel d'ingresso · [giro 245 PO-510] la bocca e' a meta' campo: il varco e' il pannello centrale (x -6,55..6,55), quello a x -25,2 torna */_mkAdBoard(x,-34.8-i*0.03,0,i,true,13.1);_mkAdBoard(x,34.8+i*0.03,Math.PI,i+4,true,13.1);});/* passo 12.6, w 13.1 (overlap 0.5), z-stagger anti-flicker → strip continua */
     // [7.119.0 collaudo PO «i cartelloni si vedono su tutti i lati ma senza sponsor»] i board a BORDO CAMPO delle
     //   LINEE LATERALI (tribuna/distinti) sono di TAGLIO rispetto alla camera dietro la porta → leggono come strisce
     //   vuote. Solo la curva di fondo mostra sponsor leggibili. FIX: una fascia LED di sponsor RIALZATA e INCLINATA
@@ -2705,12 +2799,12 @@ function ThreeMatchView(props){
       const flM=new THREE.MeshLambertMaterial({color:0x1e1e28});
       const dFloor=new THREE.Mesh(new THREE.BoxGeometry(13,0.28,2.6),flM);dFloor.position.set(bx,-0.14,dZ);scene.add(dFloor);
       // Parete posteriore
-      const dBack=new THREE.Mesh(new THREE.BoxGeometry(13,3.0,0.28),flM);dBack.position.set(bx,1.5,dZ-1.2);scene.add(dBack);
+      const dBack=new THREE.Mesh(new THREE.BoxGeometry(13,3.0,0.28),flM);dBack.position.set(bx,1.5,dZ-1.2);dBack.userData.ost245='panchina-parete:'+(bx<0?'casa':'ospiti');scene.add(dBack);
       // Tetto/pensilina (trasparente fumé)
       const rfM=new THREE.MeshLambertMaterial({color:0x667788,transparent:true,opacity:0.55});
-      const dRoof=new THREE.Mesh(new THREE.BoxGeometry(13.5,0.22,2.9),rfM);dRoof.position.set(bx,3.0,dZ);scene.add(dRoof);
+      const dRoof=new THREE.Mesh(new THREE.BoxGeometry(13.5,0.22,2.9),rfM);dRoof.position.set(bx,3.0,dZ);dRoof.userData.ost245='panchina-pensilina:'+(bx<0?'casa':'ospiti');scene.add(dRoof);
       // Seduta panchina
-      const bSeat=new THREE.Mesh(new THREE.BoxGeometry(11.5,0.18,0.5),new THREE.MeshLambertMaterial({color:0x2a3a4a}));bSeat.position.set(bx,0.68,dZ+0.5);scene.add(bSeat);
+      const bSeat=new THREE.Mesh(new THREE.BoxGeometry(11.5,0.18,0.5),new THREE.MeshLambertMaterial({color:0x2a3a4a}));bSeat.position.set(bx,0.68,dZ+0.5);bSeat.userData.ost245='panchina-seduta:'+(bx<0?'casa':'ospiti');scene.add(bSeat);
       // 6 giocatori seduti
       for(let i=0;i<6;i++){const f=mkFig(kitCol,1.2);f.position.set(bx-7.5+i*2.8,0.72,dZ+0.4);f._home=(bx<0);scene.add(f);benchFigs.push(f);}// 5.45.2: tag lato
       // Coach in piedi sul bordo campo
@@ -2828,6 +2922,8 @@ function ThreeMatchView(props){
       /* IT — -e/-ese/-ate + nomi comuni con articolo */ BIANCOCELESTE:"E",NEROVERDE:"E",PARMENSE:"E",MODENESE:"E",PUGLIESE:"E",CESENATE:"E",EMPOLESE:"E",CAPITALE:"E",LAGUNA:"E",LEONESSA:"E",ALTOADIGE:"E",
       /* IT — aggettivi maschili */ FELSINEO:"M",FRIULANO:"M",SARDO:"M",SCALIGERO:"M",BRIANZOLO:"M",CALABRO:"M",SPEZZINO:"M",PISANO:"M",CIOCIARO:"M",CITTADINO:"M",BRUZIO:"M",LARIANO:"M",
       /* IT — plurali */ NERAZZURRI:"N",ROSSONERI:"N",BLUCERCHIATI:"N",
+      /* [giro 248 PO-511] nomi per citta' o quartiere: gli aggettivi e i luoghi con articolo (gli altri sono nomi propri, classe P) */ SASSOLESE:"E",GETAFENSE:"E","VIGUÉS":"M",ISAR:"E",DOMSTADT:"E",
+      /* [giro 251 PO-512] nomi definitivi del PO: plurali, aggettivi in -ese/-ense/-ois/-ien e regioni/fiumi con articolo (gli altri: nome proprio, P) */ BIANCOCELESTI:"N",ZEBRE:"N",EMSCHER:"E","BÖRDE":"E",SAARLAND:"E",CATANZARESE:"E",OVETENSE:"E",AROUQUENSE:"E",BRACARENSE:"E",FAMALICENSE:"E",PORTUENSE:"E",VIZELENSE:"E",BRUGSE:"E",GRONINGER:"E","CORDOBÉS":"M",LENSOIS:"M",ANNECIEN:"M",
       /* EN — nickname plurali */ HAMMERS:"N",SWANS:"N",STEELERS:"N",CLARETS:"N",CANARIES:"N",DOCKERS:"N",BLUEBIRDS:"N",HORNETS:"N",POTTERS:"N",
       /* ES */ HISPALENSE:"E",SOCIEDAD:"E",CELESTE:"E",BALEAR:"E",GRANOTA:"E",OSCENSE:"E",ALMERIENSE:"E",CALIFAL:"E",PUCELA:"E",
       SUBMARINO:"M",VERDIBLANCO:"M",VALENCIANO:"M",NAVARRO:"M","GIRONÍ":"M","AZULÓN":"M",CANARIO:"M","INDÁLICO":"M",PERICO:"M","CORUÑÉS":"M","CÁNTABRO":"M","TINERFEÑO":"M","BURGALÉS":"M","MAÑO":"M","MIRANDÉS":"M",MANCHEGO:"M",ILICITANO:"M",MALACITANO:"M","GIJONÉS":"M","CARBAYÓN":"M",GADITANO:"M",FERROLANO:"M",
@@ -3025,6 +3121,13 @@ function ThreeMatchView(props){
        morbidi coi colori del club che salgono dal basso della curva; CORIANDOLI = punti che cadono sulle squadre schierate.
        DOSE: telefono 8 fumogeni per curva e 80 coriandoli, PC 14 e 180 (un solo materiale per tipo, nessuna luce). Niente a stadio
        freddo (stessi cancelli _tifoHome/_tifoAway della scenografia). Si accende solo durante l'ingresso (_tick206). */
+    const _impo=Math.min(1,((props.matchImportance||5)/10)+(props.isFinal?0.35:0)+(isDerby?0.18:0)+(isBigGame?0.10:0));
+    const _cInt=_crowdCtx?(_crowdCtx.intensity||0.6):0.6;
+    /* [7.187.0] TIER come MEDIA PESATA, non OR: con l'OR una piazza calda restava inchiodata al tier 3 (muro pieno)
+       anche nella gara più banale — proprio dove il salto derby/finale dovrebbe vedersi di più. Ora l'importanza
+       pesa più dell'atmosfera: piazza calda in gara qualunque → tier 2, tier 3 solo per derby/finale/big match. */
+    const _cScore=_impo*0.62+_cInt*0.38;
+    const _ctier=_cScore>=0.74?3:_cScore>=0.50?2:1;
     const _G206=(function(){try{
       const _k=props.ingresso206;const _cfg=(_k&&typeof INGRESSO206!=='undefined')?INGRESSO206[_k]:null;
       if(!_cfg||(typeof window!=='undefined'&&window.__CPM_NO_G206))return null;
@@ -3054,8 +3157,90 @@ function ThreeMatchView(props){
           const s=new THREE.Sprite(new THREE.SpriteMaterial({map:G._ftx,color:col,transparent:true,opacity:0,depthWrite:false}));
           const t=0.10+_r()*0.32;s.userData={fumo206:true,home:!!home,x0:_cxAt(t,home),y0:_cyAt(t,home)+1.6,z0:-22+44*((i+_r()*0.8)/n),ph:_r()*7,v:0.8+_r()*0.5};
           s.visible=false;s.renderOrder=7;/* sopra i cartoncini (6): il fumo sale davanti alla coreografia */_rootG.add(s);G.fumo.push(s);}};
+      /* [giro 244 PO-509 — rosso __CPM_NO_G244] una coreografia del catalogo COREO244 al posto del disegno unico. TAGLIA: 3 = finali, derby e
+         gare di livello massimo (tier 3) · 2 = coppe europee, Nazionale, tier 2 (la misura di ieri) · 1 = le altre gare di cartello. */
+      const _no244=(typeof window!=='undefined'&&window.__CPM_NO_G244);
+      const _mk244=(home,id,tg,c1,c2,sig,nome)=>{
+        const TG=[[0.20,0.80,19],[0.14,0.86,25],[0.08,0.92,28]][tg-1],T0=TG[0],T1=TG[1],ZW=TG[2],fl=!home;
+        const _tela=(W,H)=>{const cv=document.createElement('canvas');cv.width=W;cv.height=H;return cv;};
+        const _fin=(cv,cella)=>{const x=cv.getContext('2d'),W=cv.width,H=cv.height,cs=cella||8;/* grana e griglia dei cartoncini, come nel giro 206 */
+          for(let i=0;i<(W*H/126)|0;i++){x.fillStyle=(_r()<0.5?'rgba(255,255,255,':'rgba(0,0,0,')+(0.04+_r()*0.10).toFixed(2)+')';x.fillRect(((_r()*(W/cs))|0)*cs,((_r()*(H/cs))|0)*cs,cs,cs);}
+          x.strokeStyle='rgba(0,0,0,0.20)';x.lineWidth=1;for(let gx=0;gx<=W;gx+=cs){x.beginPath();x.moveTo(gx+0.5,0);x.lineTo(gx+0.5,H);x.stroke();}
+          for(let gy=0;gy<=H;gy+=cs){x.beginPath();x.moveTo(0,gy+0.5);x.lineTo(W,gy+0.5);x.stroke();}
+          const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;return tx;};
+        const _txt=(x,t,cx,cy,mw,fs,col)=>{const L=String(t||"").toUpperCase();if(!L)return;x.font="900 "+fs+"px Arial, sans-serif";const w=x.measureText(L).width;if(w>mw){fs=Math.max(18,Math.floor(fs*mw/w));x.font="900 "+fs+"px Arial, sans-serif";}
+          x.textAlign="center";x.textBaseline="middle";x.lineJoin="round";x.lineWidth=Math.max(4,fs*0.09);x.strokeStyle="rgba(0,0,0,0.45)";x.strokeText(L,cx,cy);x.fillStyle=col;x.fillText(L,cx,cy);};
+        /* i disegni: x = contesto, ox = origine orizzontale (la «gira» ne affianca due), a/b = i due colori */
+        const D={
+          croce:(x,ox,a,b)=>{const NB=8;for(let i=0;i<NB;i++){x.fillStyle=(i%2)?b:a;x.fillRect(ox+i*256/NB,0,256/NB+1,128);}x.fillStyle=b;x.fillRect(ox,50,256,28);x.fillStyle=a;x.fillRect(ox,58,256,12);},
+          pali:(x,ox,a,b)=>{for(let i=0;i<5;i++){x.fillStyle=(i%2)?b:a;x.fillRect(ox+i*51.2,0,52,128);}},
+          fasce:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,40,256,48);},
+          scacchi:(x,ox,a,b)=>{for(let i=0;i<8;i++)for(let j=0;j<4;j++){x.fillStyle=((i+j)%2)?b:a;x.fillRect(ox+i*32,j*32,32,32);}},
+          diagonali:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){x.fillStyle=(((i+j)>>2)%2)?b:a;x.fillRect(ox+i*8,j*8,8,8);}},
+          frecce:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){x.fillStyle=(((i+Math.abs(j-7.5)+0.5)>>2)%2)?b:a;x.fillRect(ox+i*8,j*8,8,8);}},
+          raggi:(x,ox,a,b)=>{for(let i=0;i<32;i++)for(let j=0;j<16;j++){const dx=(i+0.5)*8-128,dy=132-(j+0.5)*8;const s=Math.floor((Math.atan2(dy,dx)/Math.PI)*12);x.fillStyle=(Math.hypot(dx,dy)<34)?b:((s%2)?b:a);x.fillRect(ox+i*8,j*8,8,8);}},
+          sigla:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,0,256,16);x.fillRect(ox,112,256,16);x.fillRect(ox,0,16,128);x.fillRect(ox+240,0,16,128);_txt(x,sig,ox+128,66,200,92,b);},
+          stemma:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,56,256,16);
+            x.beginPath();x.moveTo(ox+84,8);x.lineTo(ox+172,8);x.lineTo(ox+172,72);x.quadraticCurveTo(ox+172,104,ox+128,122);x.quadraticCurveTo(ox+84,104,ox+84,72);x.closePath();x.fill();
+            x.fillStyle=a;x.fillRect(ox+116,8,24,112);x.fillRect(ox+84,40,88,16);},
+          scritta:(x,ox,a,b)=>{x.fillStyle=a;x.fillRect(ox,0,256,128);x.fillStyle=b;x.fillRect(ox,32,256,64);_txt(x,nome||sig,ox+128,66,236,58,a);},
+          rombo:(x,ox,a,b)=>{x.fillStyle=b;x.fillRect(ox,0,256,128);x.fillStyle=a;x.beginPath();x.moveTo(ox+128,4);x.lineTo(ox+236,64);x.lineTo(ox+128,124);x.lineTo(ox+20,64);x.closePath();x.fill();_txt(x,sig,ox+128,66,120,56,b);}};
+        const _sup=(NT,NZ)=>{const pos=[],uv=[],idx=[];
+          for(let it=0;it<=NT;it++){const t=T0+(T1-T0)*it/NT;const cx=_cxAt(t,home)+(home?-0.6:0.6),cy=_cyAt(t,home)+1.3;
+            for(let iz=0;iz<=NZ;iz++){pos.push(cx,cy,-ZW+2*ZW*iz/NZ);uv.push(fl?1-iz/NZ:iz/NZ,it/NT);}}
+          for(let it=0;it<NT;it++)for(let iz=0;iz<NZ;iz++){const a=it*(NZ+1)+iz,b=a+1,c=a+NZ+1,d=c+1;idx.push(a,b,c,b,d,c);}
+          const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);return g;};
+        const _mesh=(g,tx)=>{const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+          m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';m.userData.coreo244=id;_rootG.add(m);G.coreo.push(m);return m;};
+        if(id==="gira"){/* CARTONCINI CHE GIRANO: due disegni affiancati nella stessa tela; ogni colonna di cartoncini mostra l'uno o l'altro e un fronte
+            li volta da un capo all'altro della curva, avanti e indietro. Si riscrivono solo le uv delle colonne che cambiano. */
+          const cv=_tela(512,128),x=cv.getContext('2d');D.pali(x,0,c1,c2);D.fasce(x,256,c2,c1);const tx=_fin(cv);
+          const NT=6,NC=32,pos=[],uv=[],idx=[];
+          for(let c=0;c<NC;c++)for(let it=0;it<NT;it++){const k=pos.length/3;
+            for(let q=0;q<4;q++){const tt=it+(q>>1),cc=c+(q&1),t=T0+(T1-T0)*tt/NT;pos.push(_cxAt(t,home)+(home?-0.6:0.6),_cyAt(t,home)+1.3,-ZW+2*ZW*cc/NC);const u=cc/NC;uv.push((fl?1-u:u)*0.5,tt/NT);}
+            idx.push(k,k+1,k+2,k+1,k+3,k+2);}
+          const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);
+          _mesh(g,tx);const st=new Uint8Array(NC),U=g.attributes.uv;
+          G.an244.push((t)=>{const ph=t/2.4,kk=Math.floor(ph),f=ph-kk;let ch=false;
+            for(let c=0;c<NC;c++){const v=((c+0.5)/NC<f)?1:0,want=(kk%2===0)?v:1-v;if(want===st[c])continue;st[c]=want;ch=true;
+              for(let it=0;it<NT;it++){const k=(c*NT+it)*4;for(let q=0;q<4;q++){const u=(c+(q&1))/NC;U.array[(k+q)*2]=(fl?1-u:u)*0.5+want*0.5;}}}
+            if(ch)U.needsUpdate=true;});
+        }else if(id==="scorre"){/* ONDA CHE SCORRE: le frecce bicolori corrono lungo la curva (solo lo scorrimento della tela: nessun ricalcolo) */
+          const cv=_tela(256,128);D.frecce(cv.getContext('2d'),0,c1,c2);const tx=_fin(cv);tx.wrapS=THREE.RepeatWrapping;_mesh(_sup(6,8),tx);
+          G.an244.push((t)=>{tx.offset.x=(t*0.07)%1;});
+        }else if(id==="srotola"){/* IL TELONE CHE SI SROTOLA dal basso della curva e poi ondeggia (63 punti) */
+          const cv=_tela(256,128);D.rombo(cv.getContext('2d'),0,c1,c2);const g=_sup(10,8);const m=_mesh(g,_fin(cv));const P=g.attributes.position,B=P.array.slice(),NR=10,NQ=8;g.setDrawRange(0,NQ*6);
+          G.an244.push((t)=>{const r=Math.max(1,Math.min(NR,Math.ceil((t-0.2)/0.3)));g.setDrawRange(0,r*NQ*6);
+            for(let i=0;i<P.count;i++){P.array[i*3+1]=B[i*3+1]+Math.sin(B[i*3+2]*0.28-t*2.2+((i/(NQ+1))|0)*0.5)*0.22;}P.needsUpdate=true;});
+        }else if(id==="bandieroni"){/* I BANDIERONI: grandi bandiere che sventolano sopra la curva. Una sola geometria (28 punti) e due tele per tutte. */
+          const n=[5,7,9][tg-1],FW=[7.5,9,10.5][tg-1],FH=FW*0.66;const g=new THREE.PlaneGeometry(FW,FH,6,3),P=g.attributes.position,B=P.array.slice();
+          const cA=_tela(128,96),xa=cA.getContext('2d');xa.fillStyle=c1;xa.fillRect(0,0,128,96);xa.fillStyle=c2;xa.fillRect(0,32,128,32);_txt(xa,sig,64,50,112,40,c1);
+          const cB=_tela(128,96),xb=cB.getContext('2d');xb.fillStyle=c2;xb.fillRect(0,0,128,96);xb.fillStyle=c1;xb.fillRect(0,0,64,96);
+          const mats=[cA,cB].map(cv=>{const tx=new THREE.CanvasTexture(cv);if(THREE.sRGBEncoding!=null)tx.encoding=THREE.sRGBEncoding;return new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});});
+          const ms=[];for(let i=0;i<n;i++){const t=(i%2)?0.60:0.30;const m=new THREE.Mesh(g,mats[i%2]);m.position.set(_cxAt(t,home)+(home?-0.9:0.9),_cyAt(t,home)+FH/2+1.7,-ZW+FW/2+(2*ZW-FW)*i/(n-1));m.rotation.y=home?-Math.PI/2:Math.PI/2;
+            m.visible=false;m.frustumCulled=false;m.renderOrder=6;m.userData.coreo206=home?'casa':'ospiti';m.userData.coreo244=id;m.userData.y0=m.position.y;_rootG.add(m);G.coreo.push(m);ms.push(m);}
+          G.an244.push((t)=>{for(let i=0;i<P.count;i++){const lx=B[i*3],k=(lx+FW/2)/FW;P.array[i*3+2]=Math.sin(lx*0.9-t*4.2)*0.42*k;P.array[i*3+1]=B[i*3+1]+Math.sin(lx*0.6-t*3.1)*0.16*k;}P.needsUpdate=true;
+            for(let i=0;i<ms.length;i++){ms[i].rotation.z=Math.sin(t*1.5+i*1.3)*0.11;ms[i].position.y=ms[i].userData.y0+Math.sin(t*1.9+i*0.8)*0.35;}});
+        }else{const cv=_tela(256,128);(D[id]||D.croce)(cv.getContext('2d'),0,c1,c2);_mesh(_sup(6,8),_fin(cv));}
+      };
+      G.an244=[];
+      /* [giro 252, decisione PO 17/11 «Sì, piccole» — rosso __CPM_NO_G252] anche la partita NORMALE (tabella INGRESSO206: coreo 0) ha una
+         coreografia del catalogo, in TAGLIA 1, solo nella curva di casa e solo col tifo di casa (_tifoHome, stadio non vuoto/freddo);
+         stessa rotazione delle altre taglie (coreo244Scegli). La tabella non cambia: fumogeni, coriandoli e inno restano spenti. */
+      const _co252=(_k==="normale"&&!(typeof window!=='undefined'&&window.__CPM_NO_G252))?1:_cfg.coreo;
+      if(_no244){
       if(_cfg.coreo>=1&&_tifoHome)_mkCoreo(true,_css(_tHCol),_css(_hc2));
       if(_cfg.coreo>=2&&_tifoAway)_mkCoreo(false,_css(_tACol),_css(_ac2));
+      try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:"oggi",anim:false,taglia:0,ospiti:null};}catch(_e){}
+      }else if(_co252>=1&&(_tifoHome||(_co252>=2&&_tifoAway))){
+        const _sc=coreo244Scegli(String(props.partita244||("?|"+_adSeed44+"|"+_stadHId+"|"+_stadAId)),props.heroName);
+        const _tg=(_k==="normale")?1:(_k==="finale"||_k==="derby"||_ctier>=3)?3:((_k==="europea"||_k==="nazionale"||_ctier>=2)?2:1);
+        const _corto=(n)=>{const t=String(n||"").replace(/^(FC|AC|AS|SC|CF|CD|US|SS|SV|RC)\s+/i,"").trim();return t.length<=13?t:"";};
+        if(_tifoHome)_mk244(true,_sc.id,_tg,_css(_tHCol),_css(_hc2),String(props.stadiumHomeAbbr||(homeClub&&homeClub.a)||"").slice(0,4),_corto(_stadHN));
+        if(_co252>=2&&_tifoAway)_mk244(false,_sc.osp,_tg,_css(_tACol),_css(_ac2),String(props.stadiumAwayAbbr||"").slice(0,4),_corto(_stadAN));
+        G.id244=_sc.id;
+        try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_COREO244={id:_tifoHome?_sc.id:null,anim:!!(_tifoHome&&(COREO244.find(c=>c.id===_sc.id)||{}).anim),taglia:_tg,ospiti:(_co252>=2&&_tifoAway)?_sc.osp:null,mem:!!_sc.mem,riaperta:!!_sc.riaperta,pezzi:G.coreo.length};}catch(_e){}
+      }
       if(_cfg.fumo){if(_tifoHome)_mkFumo(true,_tHCol,_hc2);if(_cfg.coreo>=2&&_tifoAway)_mkFumo(false,_tACol,_ac2);}
       if(_cfg.coriandoli){const n=isDesktop?180:80;const p=new Float32Array(n*3),c=new Float32Array(n*3);const cols=[new THREE.Color(_css(_tHCol)),new THREE.Color(_css(_hc2)),new THREE.Color(0xffffff)];
         G._cv=new Float32Array(n*2);
@@ -3071,6 +3256,7 @@ function ThreeMatchView(props){
       const _in=clamp((t-0.6)/1.6,0,1),_out=clamp((TOT-t)/1.5,0,1),_a=Math.min(_in,_out);
       const _t0c=(G.cfg.regia==="bandiere")?G.cfg.orb:0.6,_ac=Math.min(clamp((t-_t0c)/1.6,0,1),_out);/* Nazionale: prima le bandiere della curva, i cartoncini si alzano dopo */
       for(const m of G.coreo){m.visible=_ac>0.01;m.material.opacity=0.94*_ac;}
+      if(G.an244&&G.an244.length&&_ac>0.01){const _ta=Math.max(0,t-_t0c);for(const f of G.an244)f(_ta);}/* [giro 244] le coreografie che si muovono: solo durante l'ingresso, a coreografia accesa */
       let nf=0;for(const s of G.fumo){const u=s.userData;s.visible=t>1.0&&_a>0.01;if(!s.visible)continue;nf++;const life=((t*u.v*0.16)+u.ph)%1;
         s.position.set(u.x0+(u.home?-1:1)*life*3,u.y0+life*11,u.z0+Math.sin(u.ph+t*0.5)*1.5);const sc=5+life*9;s.scale.set(sc,sc,1);s.material.opacity=0.6*Math.sin(life*Math.PI)*_a;}
       G.nF=nf;
@@ -3150,13 +3336,7 @@ function ThreeMatchView(props){
     //   tier1 = curva SOBRIA (1 fila bandiere · 3 file sciarpe · NIENTE telo · niente ola); tier2 = +2ª fila bandiere,
     //   +4ª sciarpa, telo, ola; tier3 (derby/finale/big match) = MURO PIENO (3 file bandiere · 5 sciarpe) + ola più
     //   rapida. Il seed alterna la scritta del telo → coreografie diverse a seconda del peso della partita e tra partite.
-    const _impo=Math.min(1,((props.matchImportance||5)/10)+(props.isFinal?0.35:0)+(isDerby?0.18:0)+(isBigGame?0.10:0));
-    const _cInt=_crowdCtx?(_crowdCtx.intensity||0.6):0.6;
-    /* [7.187.0] TIER come MEDIA PESATA, non OR: con l'OR una piazza calda restava inchiodata al tier 3 (muro pieno)
-       anche nella gara più banale — proprio dove il salto derby/finale dovrebbe vedersi di più. Ora l'importanza
-       pesa più dell'atmosfera: piazza calda in gara qualunque → tier 2, tier 3 solo per derby/finale/big match. */
-    const _cScore=_impo*0.62+_cInt*0.38;
-    const _ctier=_cScore>=0.74?3:_cScore>=0.50?2:1;
+    /* [giro 244] _impo/_cInt/_cScore/_ctier sono dichiarati piu' su, prima della scena dell'ingresso (la taglia della coreografia li legge) */
     const _choSeed=(_adSeed44>>>0);
     const _olaOn=_ctier>=2,_olaSpd=_ctier>=3?0.00052:0.00034;// ola (onda messicana): solo tier≥2, più rapida sui big match
     // MURO DI BANDIERE scalato dal tier (traveling wave + ola nel render-loop)
@@ -3882,7 +4062,17 @@ function ThreeMatchView(props){
            LEZIONE: quando un numero descrive «quanto e' grave X», il campione non puo' essere selezionato
            su X. Vale anche per i 3,5 m «a gioco vivo» dello stesso censimento — stessa tautologia, stessa
            inaffidabilita'. */
-        const _tsm=mesh._port850?1:Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE · [7.850] il portatore non ha bersaglio commesso: e' sul pallone
+        /* [giro 265 — NEGLI HIGHLIGHT IL PORTIERE STA SUL SUO PUNTO. Rosso __CPM_NO_G265, guardiano portiere-223 (braccio «giro 265»), sonda misura-265]
+           MISURATO (portiere-223 rosso a tratti su lavoro/197: «tuffo su un pallone largo» gi86/gi62; sonda misura-265, gi86 fuori, pagina
+           nuova per tiro): quando il bersaglio del portiere cambia a scena in corso (sul banco: scena forzata mentre lui e' in viaggio verso
+           il punto della scena prima, senza lo stacco che nel gioco lo rimette a posto) il suo bersaglio COMMESSO resta indietro di 6 u
+           (media mobile, ~0,6 s), lui lo insegue per 3 u, poi torna con l'inerzia e la sterzata limitata dei giocatori di movimento: un giro
+           largo fino a 5,6 u dal suo punto, che finisce a x 49,2 — il bordo del campo, 0,6 u OLTRE la linea di porta, dentro la rete.
+           Li' il calcolo «a portata» del giro 223 lo trovava DIETRO il punto d'arrivo del tiro e lo faceva tuffare su un pallone che il
+           guardiano misura largo (5 tiri su 12 col portiere a piu' di 1,5 u dal suo punto, 4 oltre la linea). Il portiere negli highlight
+           «resta fermo in posizione di pronto» (5.49.0): qui il suo bersaglio commesso e' il bersaglio (come il portatore, 7.850), si gira
+           sul posto invece di fare la curva, e la linea di porta e' un vincolo (sotto). Deterministico, nessun sorteggio. */
+        const _tsm=(mesh._port850||mesh._g265)?1:Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE · [7.850] il portatore non ha bersaglio commesso: e' sul pallone
         const cdx=mesh._ctx-mesh.position.x,cdz=mesh._ctz-mesh.position.z,cd=Math.hypot(cdx,cdz);
         const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._port850?(cd>3?13.0:mesh._vmax):mesh._vmax);/* [7.850] il portatore in ritardo di piu' di 3u scatta a 13 u/s */
         /* RAMPA D'ARRIVO CONTINUA invece della soglia secca. Con una deadzone netta la velocità-obiettivo
@@ -3899,7 +4089,7 @@ function ThreeMatchView(props){
         /* [7.850 v4] Traccia per fotogramma (tr850): per il portatore la velocita' voluta scendeva a 2-4 u/s con 13 disponibili — il freno
            per girarsi (7.241, x0,18) e il limite di sterzata scattano a ogni spostamento del bersaglio, e il bersaglio dell'uomo sul
            pallone si sposta di continuo. Chi porta o insegue il pallone sterza senza freno: e' l'unico corpo che deve STARE su un punto. */
-        if(!mesh._port850&&_cs>0.7&&(_tvx||_tvz)){
+        if(!mesh._port850&&!mesh._g265&&_cs>0.7&&(_tvx||_tvz)){
           const _cur=Math.atan2(mesh._vz,mesh._vx),_wnt=Math.atan2(_tvz,_tvx);
           let _da=((_wnt-_cur+Math.PI*3)%(Math.PI*2))-Math.PI;
           /* [7.241.0 batch PO gi28/29/37 «Non si vede il compagno che conclude» — attribuito con AR53/54: il
@@ -3931,6 +4121,8 @@ function ThreeMatchView(props){
            nessuno usciva mai; con l'accelerazione limitata un giocatore lanciato ha bisogno di spazio per frenare
            e può SBORDARE oltre la linea (65 casi rilevati dal gate). Ora il bordo campo ferma il giocatore e
            azzera la sola componente di velocità che spinge fuori: si arriva alla linea e ci si ferma, come in campo. */
+        if(mesh._g265){const _lx265=GOAL_LINE_X-0.4;/* [giro 265] il portiere in highlight non entra in porta: si ferma 0,4 u davanti alla linea (48,6) */
+          if(mesh.position.x<-_lx265){mesh.position.x=-_lx265;if(mesh._vx<0)mesh._vx=0;}else if(mesh.position.x>_lx265){mesh.position.x=_lx265;if(mesh._vx>0)mesh._vx=0;}}
         if(mesh.position.x<-49.2){mesh.position.x=-49.2;if(mesh._vx<0)mesh._vx=0;}
         else if(mesh.position.x>49.2){mesh.position.x=49.2;if(mesh._vx>0)mesh._vx=0;}
         if(mesh.position.z<-33.6){mesh.position.z=-33.6;if(mesh._vz<0)mesh._vz=0;}
@@ -4723,9 +4915,34 @@ function ThreeMatchView(props){
         if(_preT74<=0.05&&ballArcT+aDt>=0&&isResult&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA146)){try{
           const _hv=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hv&&(_hv._head145||(_hv._head145=_findBone904(_hv.visualRoot||_hv.root,/^head$/i)));
           const _hp=sr.current._hp146||(sr.current._hp146=new THREE.Vector3());if(_hb)_hb.getWorldPosition(_hp);else _hp.set(hero.position.x,(hero.position.y||0)+2.0,hero.position.z);
-          const _d146=_hp.distanceTo(ball.position);const S=sr.current;if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;}
-          if(!S._l146&&!(_d146>0.9&&S._w146<0.8))S._l146=true;/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
-          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
+          let _d146=_hp.distanceTo(ball.position);const S=sr.current;
+          /* [giro 274 PO-516, rosso __CPM_NO_G274] IL PALLONE LONTANO VOLA ALLA TESTA, NON SCIVOLA. MISURATO (salti-274 sulla 7.999.197, partita
+             «Ivo Mansi» seme 7, 25': colpo di testa su azione d'angolo): l'esito si arma col pallone ancora sulla bandierina (97;97,5 logico),
+             a 34,8 u dalla testa dell'eroe, e questa attesa col guadagno 14/s lo trascinava fino alla testa in 5 fotogrammi (34,8 → 21,4 →
+             12,9 → 7,6 → 4,4 u: scatti di 13,4 e 8,5 u in 0,028 s, circa 480 u/s). E' lo stesso difetto del giro 53 (PO-274), riparato
+             allora sul solo ramo del calcio: qui mancava il ramo del colpo di testa. Ora, se quando il colpo si arma il pallone e' oltre
+             4 u dalla testa (la soglia del volo 274), fa una parabola fino alla testa a velocita' da cross (32 u/s di scena) e il colpo
+             aspetta che arrivi; sotto 4 u resta l'attesa di prima (tetto 0,8 s, guadagno 14/s). Il volo dura d/32 s di SCENA (34,8 u → 1,09 s) e
+             finisce da solo; il tetto in tempo reale e' 6 s (quello della scena d'esito, 7.461) e non 2,4 s come nel calcio: MISURATO sul
+             banco (7 fotogrammi al secondo, tempo di scena a ~1/3 del reale) con 2,4 s il volo di 28-30 u si fermava a 3,1-4,3 u dalla
+             testa. Finito il volo (arrivato o al tetto) il colpo parte da dove il pallone e': mai piu' il trascinamento.
+             __CPM_TESTA274_LONTANO (solo cpmtest) e' la provocazione di collaudo: al primo fotogramma dell'attesa mette il pallone sulla
+             bandierina, cosi' il guardiano non dipende dal fatto che una partita produca un colpo di testa su angolo. */
+          if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;S._v274t=null;
+            if(typeof window!=='undefined'&&window.__CPM_TESTA274_LONTANO&&(_CPM_TEST||_SIT_TEST)){ball.position.x=(hero.position.x>=0?47:-47);ball.position.z=(hero.position.z>=0?32:-32);ball.position.y=0.22;ballArcY0=ball.position.y;_d146=_hp.distanceTo(ball.position);if(S._bj0){S._bj0.x=ball.position.x;S._bj0.z=ball.position.z;}/* lo spostamento della provocazione non e' un salto del gioco: il varco dei salti riparte da qui */}
+            if(_d146>4){const _no274t=!!(typeof window!=='undefined'&&window.__CPM_NO_G274);
+              S._v274t={on:!_no274t,sx:ball.position.x,sy:ball.position.y,sz:ball.position.z,D:_d146/32,H:Math.min(5,0.12*_d146),f:0,tr:0,w:null};
+              /* testimone in ENTRAMBI i bracci: ogni colpo di testa armato col pallone lontano e la velocita' di scena massima del pallone nell'attesa */
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TESTA274=window.__CPM_TESTA274||[]);if(W.length<100){S._v274t.w={k:String(P.hlSitKey),t0:Math.round(performance.now()),d0:+_d146.toFixed(1),D:+S._v274t.D.toFixed(2),vmax:0,arrivo:null,rosso:_no274t?1:0};W.push(S._v274t.w);}}catch(_e){}}}}
+          const _Vt=S._v274t;const _vola274t=!!(_Vt&&_Vt.on&&_Vt.f<_Vt.D&&_Vt.tr<6);
+          if(!S._l146&&!_vola274t&&((_Vt&&_Vt.on)/* volo finito (arrivato o al tetto): il colpo parte da dove il pallone e', nessun trascinamento */||!(_d146>0.9&&S._w146<0.8))){S._l146=true;if(_Vt&&_Vt.w&&_Vt.w.arrivo==null)_Vt.w.arrivo=+_d146.toFixed(2);}/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
+          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */const _px274t=ball.position.x,_pz274t=ball.position.z;
+            if(_vola274t){_Vt.f+=aDt;_Vt.tr+=(S._dtReal708||aDt);const _u274t=Math.min(_Vt.f/_Vt.D,1);
+              ball.position.x=_Vt.sx+(_hp.x-_Vt.sx)*_u274t;ball.position.z=_Vt.sz+(_hp.z-_Vt.sz)*_u274t;ball.position.y=_Vt.sy+(_hp.y-_Vt.sy)*_u274t+_Vt.H*Math.sin(_u274t*Math.PI);
+              if(S._bj0){S._bj0.src='volo274t';S._bj0.srcs.push('volo274t');}}
+            else{ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;}
+            ballArcY0=ball.position.y;
+            if(_Vt&&_Vt.w&&aDt>0){const _v274t=Math.hypot(ball.position.x-_px274t,ball.position.z-_pz274t)/aDt;if(_v274t>_Vt.w.vmax)_Vt.w.vmax=+_v274t.toFixed(1);}}
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2),(_hv&&glbAvatars&&_hv===glbAvatars[0])?1:0,_hb?1:0,+(_hv&&_hv.root?Math.hypot(_hv.root.position.x-hero.position.x,_hv.root.position.z-hero.position.z):-1).toFixed(2)]);/* [giro 17 PO-143 #64] testimone: avatar visibile? osso trovato? scarto radice-eroe */}}catch(_e146){}}
         /* [giro 31 PO-220, rosso __CPM_NO_ARRIVO31] IL PALLONE D'ESITO PARTE AL CONTATTO. L'arco difensivo partiva 0,35 s dopo l'inizio
            dell'esito, qualunque cosa facesse l'eroe: quando il gesto partiva tardi (0,9-1,2 s) al contatto il pallone era gia' a 5-14 u
@@ -5635,8 +5852,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // item 2 (5.49.6): edge del trigger d'ingresso subentrante → l'eroe parte dalla LINEA LATERALE (area tecnica home) e avvia la sequenza.
-      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
+      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
@@ -6350,7 +6567,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _minD223=(sx,sz,tx,tz,curl,gx,gz,ym)=>{let m=1e9;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(y>(ym||2.0))return false;const d=Math.hypot(x-gx,z-gz);if(d<m)m=d;return false;});return m;};
           /* A PORTATA = la definizione del 229 (gk-miss-229, PORTATA): nel punto di massimo avvicinamento il pallone gli passa entro 4,5 u di
              lato, 5,5 u in pianta e sotto i 2,6 u di quota (portata del tuffo). Oltre, lo guarda uscire. */
-          const _avv223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9,lat=1e9,yy=0;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(Math.hypot(x-sx,z-sz)<1.5)return false;const d=Math.hypot(x-gx,z-gz);if(d<m){m=d;lat=Math.abs(z-gz);yy=y;}return false;});return{m,lat,y:yy};};
+          /* [giro 265, rosso __CPM_NO_G265] ...e conta solo il pallone che il portiere puo' ancora raggiungere: fino a 1,2 u dalla linea di porta
+             (un pallone pieno contro il palo), lo stesso tratto su cui misura portiere-223. MISURATO (gi17 tiro a giro, esito palo, 9 tiri): il
+             pallone arriva sul palo in diagonale e negli ultimi 0,9 u di x scende da z 5,0-5,9 a 3,66; contando anche quel tratto il portiere
+             risultava «a portata» per pochi centimetri (4,11-4,59 u di lato contro la soglia 4,5, secondo dove si era fermato) e si tuffava
+             verso un pallone che fino alla linea gli passa a 5,4-7,3 u. Gioco e guardiano ora guardano lo stesso pezzo di traiettoria. */
+          const _xl265=(typeof window!=='undefined'&&window.__CPM_NO_G265)?1e9:GOAL_LINE_X-1.2;
+          const _avv223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9,lat=1e9,yy=0;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(Math.hypot(x-sx,z-sz)<1.5||x>_xl265)return false;const d=Math.hypot(x-gx,z-gz);if(d<m){m=d;lat=Math.abs(z-gz);yy=y;}return false;});return{m,lat,y:yy};};
           const _portata223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz);if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223P=window.__CPM_G223P||[]);if(W.length<60)W.push({d:+a.m.toFixed(2),lat:+a.lat.toFixed(2),y:+a.y.toFixed(2),H:+(+ballArcH).toFixed(2),tz:+tz.toFixed(1),gx:+gx.toFixed(1),gz:+gz.toFixed(1)});}catch(_e){}}return a.lat<=4.5&&a.m<=5.5&&a.y<=2.6;};
           /* sul bordo della portata (entro 0,25 u da una delle tre soglie) il verdetto dipenderebbe dallo scarto della stima: il fuori sceglie un bersaglio che non ci cada */
           const _ambiguo223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz),B=0.25,lat=a.lat<=4.5+B,d=a.m<=5.5+B,y=a.y<=2.6+B;
@@ -6375,7 +6598,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;}
               const _c0=Math.hypot(_px223-_sx223,_pz223-_sz223)||1,_c1=Math.hypot(_tx223-_sx223,_z223-_sz223);
               ballArcTgtX=_tx223;ballArcTgtZ=_z223;ballArcDur=Math.min(1.6,ballArcDur*Math.max(1,_c1/_c0));
-              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
             }
           }
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
@@ -7177,6 +7400,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_G245)&&typeof linRef1!=='undefined'&&linRef1)linRef1.position.x=7.5;/* [giro 245 PO-510] durante l'ingresso il guardalinee del lato panchine stava a (0, -34), cioe' davanti alla nuova bocca del tunnel (misurato: la prima fila ospite gli passava a 0,68u): aspetta di lato, oltre il varco; al fischio torna a seguire l'azione col suo passo */
         if(_G206)_tick206(walkT,WALK_DUR-((sr.current._ing206&&sr.current._ing206.inno)||0),WALK_DUR,dt,true);
         if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),s:+(walkT-(sr.current._skip285||0)).toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
@@ -8007,12 +8231,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   V3 veterano · V4 esplosivo.
           const V=hero._subVar||0;
           const _hold=[1.5,1.0,1.4,2.0,0.6][V],_runEnd=[3.5,3.2,3.6,3.9,2.9][V];
-          const _stx=-6,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
+          /* [giro 255, dubbio 6 del giro 245 — rosso __CPM_NO_G255] MISURATO con la sonda (tunnel-245, scenari «sost-*»): a x -6 il
+             subentrante aspettava DENTRO la striscia LED del perimetro (segmento x -8,86..-4,77, z -34,4: 91 fotogrammi su 149) e chi
+             usciva la attraversava. Linea d'attesa e punto d'uscita passano a x -3,9: dentro il varco della striscia (±4,77) e fuori
+             dalla parete del tunnel (x -3,08). */
+          const _stx=_SUBX255,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
           let _hex,_hez;
           if(subEntryT<_hold){_hex=_stx;_hez=_stz;}// istruzioni/pronto: fermo alla linea
           else if(subEntryT<_runEnd){const _r=(subEntryT-_hold)/Math.max(0.1,_runEnd-_hold);
             const _p=V===3?_r:V===4?(1-(1-_r)*(1-_r)):V===1?_r*_r:_r*_r*(3-2*_r);// veterano=linear · esplosivo=ease-out · concentrato=ease-in · altri=smoothstep
-            _hex=_stx+(_ftx-_stx)*_p;_hez=_stz+(_ftz-_stz)*_p;}
+            if(_G255){const _v=_spez255(_stx,_stz,_stx,_VIAZ255,_ftx,_ftz,_p);_hex=_v.x;_hez=_v.z;}else{_hex=_stx+(_ftx-_stx)*_p;_hez=_stz+(_ftz-_stz)*_p;}}
           else {_hex=_ftx;_hez=_ftz;}// arrivato a posizione
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);
           if(subEntryT<_hold&&hero._torso){
@@ -8046,10 +8274,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   applauso/saluto/thumbs-up · stanco → testa bassa/mani sui fianchi): l'eroe cammina dalla posizione
           //   CORRENTE al dugout, con gesti per variante, poi ESCE (nascosto, _benched). Onban → nessun HL interferisce.
           const XV=hero._exVar||0,_xdur=_EXIT_DUR[XV];
-          const _dx=-6,_dz=-36.2;// area tecnica / dugout home
+          const _dx=_SUBX255,_dz=-36.2;// area tecnica / dugout home · [giro 255] dentro il varco della striscia LED
           const _r=Math.min(1,subExitT/Math.max(0.1,_xdur*0.82));const _p=_r*_r*(3-2*_r);// walk-off smoothstep (più lento della corsa d'ingresso)
-          const _hex=(hero._exSx!=null?hero._exSx:hero.position.x)+(_dx-(hero._exSx!=null?hero._exSx:hero.position.x))*_p;
-          const _hez=(hero._exSz!=null?hero._exSz:hero.position.z)+(_dz-(hero._exSz!=null?hero._exSz:hero.position.z))*_p;
+          const _ex0=(hero._exSx!=null?hero._exSx:hero.position.x),_ez0=(hero._exSz!=null?hero._exSz:hero.position.z);
+          let _hex=_ex0+(_dx-_ex0)*_p,_hez=_ez0+(_dz-_ez0)*_p;
+          if(_G255&&_ez0>_VIAZ255){const _v=_spez255(_ex0,_ez0,_dx,_VIAZ255,_dx,_dz,_p);_hex=_v.x;_hez=_v.z;}/* [giro 255] dal campo al punto davanti al varco, poi dritto fuori */
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);// facing = direzione di marcia (verso il dugout) via animOne
           // gesti d'uscita (pieni sul rig procedurale; sul GLB la locomozione domina → pacing/traiettoria variano)
           if(hero._aR&&hero._aL){
@@ -8260,8 +8489,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const gm=pp.mesh;const _gx=G2X(clamp(t.x,2,98)),_gz=G2Z(clamp(t.y,2,98));
           // 5.49.10: il PORTIERE è freezato come gli altri all'avvio dell'highlight — SNAP in posizione poi FERMO durante la fase di lettura,
           //   in attesa dei 2 eventi (conclusione movimenti eroe + scelta). La posa di pronto resta applicata. Sotto cpmtest il freeze è off (gate).
-          if(_doSnap){gm.position.x=_gx;gm.position.z=_gz;gm._ctx=_gx;gm._ctz=_gz;gm._vx=0;gm._vz=0;gm._px=_gx;gm._pz=_gz;}
-          else if(!_readFreeze){animOne(gm,_gx,_gz,aDt,ak,bx,bz);}
+          if(_doSnap){gm.position.x=_gx;gm.position.z=_gz;gm._ctx=_gx;gm._ctz=_gz;gm._vx=0;gm._vz=0;gm._px=_gx;gm._pz=_gz;if(gm===awayGkMesh)sr.current._snap265=1;}
+          else if(!_readFreeze){gm._g265=isHL&&!(typeof window!=='undefined'&&window.__CPM_NO_G265);animOne(gm,_gx,_gz,aDt,ak,bx,bz);gm._g265=false;/* [giro 265] la regola vale per QUESTA guida (il punto del portiere); il copione del build-up, che lo chiama dopo nello stesso fotogramma, resta com'era */}
           gm._runB=0;// azzera il blend di corsa → niente pompaggio gambe
           if(gm._lL){gm._lL.rotation.x=0.18;gm._lL.rotation.z=-0.14;}if(gm._lR){gm._lR.rotation.x=0.18;gm._lR.rotation.z=0.14;}// gambe divaricate, leggera flessione (pronto)
           if(gm._aL){gm._aL.rotation.x=0.55;gm._aL.rotation.z=-0.45;}if(gm._aR){gm._aR.rotation.x=0.55;gm._aR.rotation.z=0.45;}// braccia avanti/aperte (pronto a parare)
@@ -8730,7 +8959,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(typeof window!=='undefined'&&window.__CPM_REC229&&(_CPM_TEST||_SIT_TEST)){try{const _R=(window.__CPM_GK229=window.__CPM_GK229||[]);sr.current._ck229=(sr.current._ck229||0)+aDt;
           if(_R.length<3000&&awayGkMesh)_R.push({ck:+sr.current._ck229.toFixed(3),ph:P.matchPhase||null,ok:P.hlOutcomeKind||null,at:ballArcActive?1:0,aT:+(+ballArcT).toFixed(3),aD:+(+ballArcDur).toFixed(2),
             bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gy:+awayGkMesh.position.y.toFixed(2),
-            op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null});}catch(_e229){}}
+            op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null,/* [giro 265, solo testimone] bersaglio commesso, velocita' e stacco di scena: chi porta il portiere lontano dal suo punto */cx:awayGkMesh._ctx==null?null:+(+awayGkMesh._ctx).toFixed(2),cz:awayGkMesh._ctz==null?null:+(+awayGkMesh._ctz).toFixed(2),vx:+(+(awayGkMesh._vx||0)).toFixed(2),vz:+(+(awayGkMesh._vz||0)).toFixed(2),sn:sr.current._snap265|0,sk:P.hlSitKey,ex:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+(window.__CPM_GKT705.away.x-50).toFixed(2):null,ez:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+((window.__CPM_GKT705.away.y-50)*0.68).toFixed(2):null/* bersaglio del portiere in coordinate di mondo (da __CPM_GKT705, solo con __CPM_REC) */});sr.current._snap265=0;}catch(_e229){}}
         sr.current._pk96=!!(oppActType&&/^gk_/.test(String(oppActType))&&oppMesh&&oppMesh===awayGkMesh&&ballArcActive&&ballArcT<0&&(P.hlType==='penalty'||P.hlType==='freekick')&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D4));/* [giro 96a D4] portiere fermo finche' il piazzato non e' calciato */
         if(oppActType&&oppMesh){
           /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
@@ -10555,10 +10784,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-4){/* [giro 206] inno: squadre schierate coi bambini per mano, carrellata lenta e vicina lungo la fila */
           const _k=clamp((walkT-_WD206)/Math.max(0.5,_g206.inno),0,1);
-          tPx=-27;tPy=3.1;tPz=-8.5+17*_k;tLx=-11;tLy=1.55;tLz=tPz*0.9;
+          tPx=-27+_SX255;tPy=3.1;tPz=-8.5+17*_k;tLx=-11+_SX255;tLy=1.55;tLz=tPz*0.9;/* [giro 255] la camera dell'inno segue lo schieramento al centro */
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         } else if(prog===-2){
-          tPx=_tn46.x+8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0);/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+          const _s245=(typeof window!=='undefined'&&window.__CPM_NO_G245)?1:-1;/* [giro 245 PO-510] la camera sta dal lato x negativo della bocca · [giro 255] lo schieramento ora e' al centro (file a x -4 e +4): da quel lato la fila di casa passa davanti alla camera */tPx=_tn46.x+_s245*(8.5-((_g206&&_g206.regia==="tunnel")?2.0*Math.min(1,walkT/_T46):0));/* [giro 206] derby: lento avvicinamento alla bocca del tunnel */tPy=3.3;tPz=-27.2;tLx=_tn46.x+_s245*0.5;tLy=1.7;tLz=_tn46.z1-1.2;
           kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
         } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
@@ -10587,7 +10816,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
           const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
-          const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=_o277?-33:-42;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
+          const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=(_o277?-33:-42)+_SX255;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11+_SX255;tLy=2.0;tLz=panZ*0.5;/* [giro 255] la carrellata segue lo schieramento al centro */
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         }
         if(_g206){/* [giro 206] entrando e uscendo dalle inquadrature nuove (bandiere, inno) la camera STACCA, non attraversa il campo in volo */
@@ -11098,6 +11327,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          else if(!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61)&&!_ex520){
            if(_st.ball&&!ballArcActive&&hlPostArcType&&hlPostArcT>=0.9&&!/^(in_net_own|cross_goal|assist_recv|onetwo_back)$/.test(hlPostArcType))sr.current._keep61=P.hlSitKey;
            if(sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey){_st.ball=false;_st.acc=0;}}
+         /* [giro 241 PO-506] su un'azione FALLITA dell'eroe il soggetto resta l'eroe per tutta la scena (le reti che lo tengono in quadro
+            restano accese); il pallone lo tiene dentro la passata «eroe e pallone insieme», a valle, prima dell'arbitro d'inerzia. */
+         if(isResult&&P.hlSuccess===false&&!_ex520&&!P.shootout&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){_st.ball=false;_st.acc=0;}
          _subjBall50=_st.ball;}}
       /* [7.505.0 F6/3 — LA TAGLIA E' REGIA: 0,18 · decisione delegata dal PO, presa con lo sweep sulle 191]
          Lo sweep (7.503) ha dato la curva completa: a taglia 0 la mediana e' 0,054 con l'86% delle scene
@@ -11609,6 +11841,52 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;
          if(!_prc.cut){_prc.cut=1;camera.position.set(tPx,tPy,tPz);camLook.set(_kp.x,1.25,_kp.z);}}}
+      /* [giro 241 PO-506, decisione PO «Sì, eroe sempre in quadro» — EROE E PALLONE INSIEME DOPO UN'AZIONE FALLITA. Rosso __CPM_NO_G241,
+         guardiano camera-241] MISURATO (banco misura-241, testimone __CPM_G241W, azioni non difensive dell'eroe con esito fallito, GLB
+         acceso): quando il pallone si allontana il soggetto della regia passa al pallone (7.237/7.520) e la camera gli va dietro girando
+         ATTORNO all'eroe a 4-7 u: l'eroe esce dal quadro (gi6 «Stacco di testa»: 13% dei fotogrammi, ndc x fino a 6) e nel passaggio
+         riempie il quadro (altezza apparente 1,6 volte il quadro: e' l'«eroe enorme in primo piano» del dubbio 12 del giro 226, stesso
+         meccanismo). Col telefono in verticale il quadro e' largo 21 gradi: eroe e pallone a 20-40 u stanno insieme solo se l'asse
+         eroe→pallone corre in PROFONDITA'. Quindi, a pallone lontano (oltre 2,5 u, peso pieno a 6), la camera va DIETRO l'eroe sulla retta
+         pallone→eroe (14 u, 6,5 d'altezza: taglia ~0,13, quella del 7.713) e guarda a meta' fra i due, con l'eroe in basso e il pallone
+         in alto. Ci arriva lungo un ARCO attorno all'eroe (bersaglio a non piu' di 1,1 rad dalla camera vera, e solo se serve: a pallone vicino quasi ogni lato va bene), mai tagliando per il suo
+         corpo. L'eroe ha la precedenza: lo sguardo non lo porta mai oltre 0,55 del semiquadro. A pallone vicino (prima del gesto) la
+         regia resta quella del 7.482/7.505. La POSIZIONE si scrive qui, prima del lerp di posizione (scritta dopo, cambiava solo lo sguardo: misurato, la camera tagliava ancora per l'eroe a 4,3 u); lo SGUARDO piu' sotto, prima dell'arbitro d'inerzia (regola 7.521). Nessun sorteggio. */
+      {const S1=sr.current;S1._g241on=0;const _F1=S1._g241f||(S1._g241f={on:0,net:0,w:0,tv:0,th:0,v:1});_F1.on=0;_F1.net=0;/* oggetto riusato: nessuna allocazione per fotogramma */
+       if(isResult&&hero&&hero.visible&&ball&&P.hlSuccess===false&&!P.hlDef&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+         const _hx1=hero.position.x,_hz1=hero.position.z,_dx1=ball.position.x-_hx1,_dz1=ball.position.z-_hz1,_d1=Math.hypot(_dx1,_dz1);
+         const _st1=(S1._g241&&S1._g241.k===P.hlSitKey)?S1._g241:(S1._g241={k:P.hlSitKey,w:0,ax:0,az:0});
+         if(_d1>3){const _k1=(_st1.ax||_st1.az)?Math.min(dt/0.25,1):1;_st1.ax+=(_dx1/_d1-_st1.ax)*_k1;_st1.az+=(_dz1/_d1-_st1.az)*_k1;}
+         _F1.net=1;_F1.tv=Math.atan(Math.tan(((camera&&camera.fov)||46)*Math.PI/360));_F1.th=Math.atan(Math.tan(_F1.tv)*((camera&&camera.aspect)||0.45));/* la rete finale vale per tutta la scena fallita, costruzione compresa */
+         /* MAI ATTRAVERSO L'EROE (anche nella costruzione, prima del gesto). MISURATO col guardiano camera-241 su gi6 «Stacco di testa»
+            (cross in arrivo): il bersaglio della regia segue il pallone che gli passa sopra e la camera, andandogli dietro in linea
+            retta, sfila a 4-7 u dall'eroe: eroe fuori dal quadro della regia per 5-10 fotogrammi e alto fino a 0,39 del quadro (col
+            rosso: 1,6 — e' l'«eroe enorme in primo piano»). La distanza che la regia vuole dall'eroe e' ~17 u (taglia 0,12): se il
+            tratto camera→bersaglio passa a meno di 9 u dall'eroe (in pianta), il bersaglio diventa un punto di passaggio a 10,8 u sul
+            fianco da cui il tratto gia' passa; se e' il bersaglio stesso a stargli addosso, lo si allontana a 9 u. */
+         {const _cx0=camera.position.x,_cz0=camera.position.z,_sx0=tPx-_cx0,_sz0=tPz-_cz0,_sl0=_sx0*_sx0+_sz0*_sz0;
+          const _t0=_sl0>1e-6?clamp(((_hx1-_cx0)*_sx0+(_hz1-_cz0)*_sz0)/_sl0,0,1):1;
+          let _nx0=_cx0+_sx0*_t0-_hx1,_nz0=_cz0+_sz0*_t0-_hz1,_nd0=Math.hypot(_nx0,_nz0);
+          if(_nd0<9){if(_nd0<0.05){_nx0=-_sz0;_nz0=_sx0;_nd0=Math.hypot(_nx0,_nz0)||1;}_nx0/=_nd0;_nz0/=_nd0;
+            const _r0=_t0>=0.999?9:10.8;tPx=_hx1+_nx0*_r0;tPz=_hz1+_nz0*_r0;if(tPy<4.2)tPy=4.2;S1._g241a=(S1._g241a|0)+1;}}
+         /* DOPO l'azione: la passata si arma quando il pallone lascia l'eroe per il suo gesto (arco o post-arco). Nella costruzione (cross
+            o passaggio che gli arriva) resta la regia sull'eroe: misurato su gi6, girare dietro a un pallone in arrivo lo buttava fuori. */
+         if(ballArcActive||hlPostArcType)_st1.arm=1;
+         _st1.w+=((_st1.arm?clamp((_d1-2.5)/3.5,0,1):0)-_st1.w)*Math.min(dt/0.30,1);
+         const _al1=Math.hypot(_st1.ax,_st1.az);
+         if(_st1.w>0.01&&_al1>0.05){
+           const _azD=Math.atan2(-_st1.az/_al1,-_st1.ax/_al1),_azC=Math.atan2(camera.position.z-_hz1,camera.position.x-_hx1);
+           let _dA=_azD-_azC;while(_dA>Math.PI)_dA-=2*Math.PI;while(_dA<-Math.PI)_dA+=2*Math.PI;
+           const _tv1=Math.atan(Math.tan(((camera&&camera.fov)||46)*Math.PI/360)),_th1=Math.atan(Math.tan(_tv1)*((camera&&camera.aspect)||0.45));
+           /* quanto la camera puo' stare fuori dall'asse: i due devono stare entro 1,1 semiquadri visti da 14 u dietro l'eroe (triangolo
+              camera-eroe-pallone). Pallone a 5 u: 47 gradi, quasi nessuna rotazione; a 25 u: 18 gradi. */
+           const _g1=1.1*_th1,_sb1=14*Math.sin(_g1)/Math.max(_d1,0.5),_am1=_sb1>=1?Math.PI:Math.min(Math.PI,_g1+Math.asin(_sb1));
+           const _rot=Math.abs(_dA)<=_am1?0:_dA-Math.sign(_dA)*_am1,_st0=clamp(_rot,-1.1,1.1),_azT=_azC+_st0,_r1=14/Math.cos(_st0);/* il bersaglio sta sulla tangente: inseguendolo la camera resta a 14 u dall'eroe (a raggio fisso l'inseguimento stringeva l'orbita) */
+           const _px1=clamp(_hx1+Math.cos(_azT)*_r1,-60,60),_pz1=clamp(_hz1+Math.sin(_azT)*_r1,-40,40),_py1=6.5,_w1=_st1.w;
+           tPx+=(_px1-tPx)*_w1;tPy+=(_py1-tPy)*_w1;tPz+=(_pz1-tPz)*_w1;
+           _F1.on=1;_F1.w=_w1;_F1.tv=_tv1;_F1.th=_th1;_F1.v=clamp(1-Math.abs(_rot)/0.7,0.3,1);S1._g241on=_w1>0.5?1:0;
+           if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST))S1._g241t=[+_px1.toFixed(1),+_pz1.toFixed(1),+_dA.toFixed(2),+_am1.toFixed(2),+_w1.toFixed(2)];/* solo prova */}}
+       else if(S1._g241&&!isResult)S1._g241=null;}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('lerp:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
@@ -11671,6 +11949,18 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       /* [giro 127 PO-329] la regia dell'ingresso dalla panchina ha l'ULTIMA parola prima dell'arbitro d'inerzia (regola 7.521): misurato,
          le passate degli highlight che si accodano durante la scena spostavano lo sguardo e l'eroe finiva sul bordo del quadro (ndc ±0,8). */
       if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
+      /* [giro 241 PO-506] LO SGUARDO di «eroe e pallone insieme» (la posizione sta prima del lerp di posizione, vedi sopra): a meta' fra
+         eroe (busto) e pallone, in azimut e in elevazione, visti dalla camera VERA; l'eroe mai oltre 0,55 del semiquadro in orizzontale e
+         0,50 in verticale (oltre 0,76 la correzione del fotogramma disegnato del giro 96a lo schiaccerebbe sul bordo). Prima dell'arbitro d'inerzia (regola 7.521). */
+      {const _f1=sr.current._g241f;
+       if(_f1&&_f1.on&&hero&&ball){const _px1=camera.position.x,_py1=camera.position.y,_pz1=camera.position.z,_hx1=hero.position.x,_hz1=hero.position.z;
+         const _gh1=Math.hypot(_hx1-_px1,_hz1-_pz1)||1,_gb1=Math.hypot(ball.position.x-_px1,ball.position.z-_pz1)||1;
+         const _ah1=Math.atan2(_hz1-_pz1,_hx1-_px1),_eh1=Math.atan2(hero.position.y+0.9-_py1,_gh1);
+         let _db1=Math.atan2(ball.position.z-_pz1,ball.position.x-_px1)-_ah1;while(_db1>Math.PI)_db1-=2*Math.PI;while(_db1<-Math.PI)_db1+=2*Math.PI;
+         const _eb1=Math.atan2(Math.min(ball.position.y,5)-_py1,_gb1);
+         const _a1=_ah1+clamp(_db1*0.5,-0.55*_f1.th*_f1.v,0.55*_f1.th*_f1.v),_e1=_eh1+clamp((_eb1-_eh1)*0.5,-0.50*_f1.tv,0.50*_f1.tv);/* mentre la camera gira attorno all'eroe (v<1) lo sguardo gli resta piu' vicino: misurato su gi109, a meta' giro l'eroe in corsa scivolava a ndc -1,15 */
+         const _lx1=_px1+Math.cos(_a1)*_gh1,_lz1=_pz1+Math.sin(_a1)*_gh1,_ly1=clamp(_py1+Math.tan(_e1)*_gh1,0.4,26),_w1=_f1.w;
+         tLx+=(_lx1-tLx)*_w1;tLy+=(_ly1-tLy)*_w1;tLz+=(_lz1-tLz)*_w1;}}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('arb:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
@@ -12087,6 +12377,19 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
+      /* [giro 241 PO-506] L'ULTIMA RETE, per tutta la scena di un'azione fallita dell'eroe (anche nella costruzione: misurato su gi6, mentre
+         l'eroe corre incontro al cross lo sguardo della regia gli restava dietro e lui usciva per 7-15 fotogrammi): se nella vista RESA (dopo i lerp) il busto dell'eroe
+         sta oltre 0,66 del semiquadro (0,62 in verticale), lo sguardo ruota di quanto basta a riportarlo li' (azimut ed elevazione). Il bersaglio lo tiene
+         gia' entro 0,55: rete e lerp spingono dalla stessa parte (lezione 7.507), nessun tiro alla fune. Solo camLook. */
+      {const _f2=sr.current._g241f;
+       if(_f2&&_f2.net&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_G241)){
+         const _cx2=camera.position.x,_cy2=camera.position.y,_cz2=camera.position.z,_gl2=Math.hypot(camLook.x-_cx2,camLook.z-_cz2)||1,_gh2=Math.hypot(hero.position.x-_cx2,hero.position.z-_cz2)||1;
+         const _al2=Math.atan2(camLook.z-_cz2,camLook.x-_cx2),_el2=Math.atan2(camLook.y-_cy2,_gl2),_eh2=Math.atan2(hero.position.y+0.9-_cy2,_gh2);
+         let _da2=Math.atan2(hero.position.z-_cz2,hero.position.x-_cx2)-_al2;while(_da2>Math.PI)_da2-=2*Math.PI;while(_da2<-Math.PI)_da2+=2*Math.PI;
+         const _mh2=0.66*_f2.th,_mv2=0.62*_f2.tv;let _na2=_al2,_ne2=_el2,_ch2=0;
+         if(Math.abs(_da2)>_mh2){_na2=_al2+_da2-Math.sign(_da2)*_mh2;_ch2=1;}
+         if(Math.abs(_eh2-_el2)>_mv2){_ne2=_eh2-Math.sign(_eh2-_el2)*_mv2;_ch2=1;}
+         if(_ch2){camLook.x=_cx2+Math.cos(_na2)*_gl2;camLook.z=_cz2+Math.sin(_na2)*_gl2;camLook.y=_cy2+Math.tan(_ne2)*_gl2;sr.current._g241n=(sr.current._g241n|0)+1;}}}
       /* [giro 204 PO-450] la scena di sola visione del rigore: la camera e' quella della lotteria (dietro il rigorista, 7.999.58), ferma e
          presa di colpo al primo fotogramma — e' uno stacco di regia (il DOM lo copre col taglio). In gioco fluido le passate della regia
          normale la porterebbero via: qui ha l'ultima parola. */
@@ -13226,6 +13529,10 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
          l'ottica non si allarga per lui; (3) non piu' del 15% del quadro sopra l'orizzonte, inclinando in giu' finche' eroe,
          pallone e la porta gia' inquadrata restano dentro; (4) sull'esito un eroe piu' piccolo del 7% dell'altezza si avvicina stringendo l'ottica, mai
          oltre cio' che i punti (1)-(2) consentono. La camera non si sposta: cambia solo dove guarda e quanto apre. */
+      if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&hero&&ball){try{/* [giro 241, solo prova] l'eroe nella camera della REGIA, prima della correzione del fotogramma disegnato */
+        const S1=sr.current,_v1=(S1._v241||(S1._v241=new THREE.Vector3()));camera.updateMatrixWorld(true);
+        _v1.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);S1._rn241=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+        _v1.set(ball.position.x,ball.position.y,ball.position.z).project(camera);S1._rb241=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];}catch(_e241r){}}
       try{const K=sr.current._k96||(sr.current._k96={on:0,q:new THREE.Quaternion(),fov:46,n:0,a:new THREE.Vector3(),y:new THREE.Vector3(0,1,0),qq:new THREE.Quaternion()});
         const _ph96=String(P.matchPhase||''),_W96=(typeof window!=='undefined')?window:{};
         if(/^hl_/.test(_ph96)&&hero&&!P.ceremony&&!P.shootout&&!replaying&&!_W96.__CPM_NO_G96D2){
@@ -13277,6 +13584,26 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           }
         }
       }catch(_e96){}
+      /* [giro 241 PO-506 «eroe sempre in quadro» — TESTIMONE DI SOLA PROVA, acceso solo da __CPM_REC241 sotto cpmtest] Un campione per
+         FOTOGRAMMA in OGNI fase (anche il gioco fluido dopo la scena: dubbio 12 del giro 226, «eroe enorme in primo piano»), tutto dalle
+         mesh e col tempo di scena dentro, sulla camera DISEGNATA (dopo la correzione del fotogramma del giro 96a, con le matrici
+         aggiornate: il testimone del giro 226 stava prima di quella correzione e misurava la camera della regia, non il quadro a schermo): eroe (centro, piedi, testa in ndc), altezza apparente, pallone in ndc, distanza camera-eroe,
+         soggetto della regia, stacco nero vivo. Nessuna scrittura sullo stato del gioco. Lo leggono misura-241 e il guardiano camera-241. */
+      if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&hero&&ball){try{
+        const _W1=(window.__CPM_G241W=window.__CPM_G241W||[]);
+        if(_W1.length<12000){const S1=sr.current;S1._ck241=(S1._ck241||0)+aDt;const _v1=(S1._v241||(S1._v241=new THREE.Vector3()));camera.updateMatrixWorld(true);
+          _v1.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);const _hn=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+          _v1.set(hero.position.x,hero.position.y,hero.position.z).project(camera);const _fy=_v1.y,_fx=_v1.x,_fin=(Math.abs(_v1.x)<=1&&Math.abs(_v1.y)<=1&&_v1.z<1)?1:0;
+          _v1.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);const _tin=(Math.abs(_v1.x)<=1&&Math.abs(_v1.y)<=1&&_v1.z<1)?1:0,_hh=Math.abs(_v1.y-_fy)/2,_tx=_v1.x;
+          _v1.set(ball.position.x,ball.position.y,ball.position.z).project(camera);const _bn=[+_v1.x.toFixed(3),+_v1.y.toFixed(3),_v1.z<1?1:0];
+          let _cut=0;try{_cut=(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())?1:0;}catch(_e){}
+          _W1.push({ck:+S1._ck241.toFixed(3),ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,ht:P.hlType||null,ok:P.hlSuccess==null?null:!!P.hlSuccess,kd:P.hlOutcomeKind||null,df:P.hlDef?1:0,
+            h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],hv:hero.visible?1:0,hn:_hn,fi:_fin,ti:_tin,hh:+_hh.toFixed(4),ex:+Math.max(Math.abs(_fx),Math.abs(_tx)).toFixed(3),rn:S1._rn241||null,rb:S1._rb241||null,
+            b:[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)],bv:ball.visible?1:0,bn:_bn,
+            c:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],dc:+Math.hypot(camera.position.x-hero.position.x,camera.position.y-hero.position.y-0.9,camera.position.z-hero.position.z).toFixed(2),
+            sb:S1._sb42?1:0,k61:(S1._keep61!=null)?1:0,g241:S1._g241on?1:0,gt:S1._g241on?S1._g241t:null,n241:S1._g241n|0,fov:+camera.fov.toFixed(1),cl:[+camLook.x.toFixed(1),+camLook.y.toFixed(1),+camLook.z.toFixed(1)],cut:_cut,arc:ballArcActive?1:0,pa:hlPostArcType||null,rp:(typeof replaying!=='undefined'&&replaying)?1:0,
+            gk:awayGkMesh?[+awayGkMesh.position.x.toFixed(2),+awayGkMesh.position.y.toFixed(2),+awayGkMesh.position.z.toFixed(2)]:null});}
+      }catch(_e241){}}
       /* [giro 96a PO-299 D5 — I CORPI NON SI COMPENETRANO. Rosso __CPM_NO_G96D5]
          MISURATO (scena3d-96 sui corpi DISEGNATI, radici GLB visibili): due corpi a meno di 0,45u per 4-8 fotogrammi in gi31, gi64,
          gi18, gi3 (fino a 0,12u, portiere sopra l'attaccante), e gia' all'apertura (gi31 0,22u per 6 fotogrammi, gi128 0,33u). Le
@@ -13351,8 +13678,10 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
-      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();/* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
+      if(typeof window!=='undefined'&&window.__CPM_G212W)_w212();if(typeof window!=='undefined'&&window.__CPM_G240W){if(sr.current&&sr.current._resa240)sr.current._resa240();/* solo banco: rilegge la taratura di prova */const P240=propsRef.current||{};misuraPelle240('partita:'+(P240.matchPhase||'')+(P240.ceremony?(P240.ceremony.light?':festa':':premiazione'):''),renderer,scene,camera);}/* [giro 240 PO-500] testimone di pelle e capelli, solo con __CPM_G240W *//* [giro 212 PO-474] testimone dei corpi: altezza, distanza, quota d'inquadratura */
       if(typeof window!=='undefined'&&window.__CPM_G222W)_w222();/* [giro 222 PO-481] testimone dei guardalinee */
+      if(typeof window!=='undefined'&&window.__CPM_G245W)_w245();/* [giro 245 PO-510] testimone del tunnel */
+      if(typeof window!=='undefined'&&window.__CPM_G255W)_w255();/* [giro 255] testimone dello schieramento e delle sostituzioni */
     };
     loop();
 
@@ -13402,6 +13731,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         /* secondo trattenitore, stessa classe (snapshot dopo il primo rimedio): _kitTexCache → texture della maglia → ascoltatore del renderer → contesto → canvas → scena */
         if(typeof _kitTexCache!=='undefined')Object.values(_kitTexCache).forEach(t=>{try{if(t&&t.isTexture)t.dispose();}catch(_e){}});
       }catch(_e275){}}
+      try{if(typeof _rilascia276==='function')_rilascia276();}catch(_e276){}/* [giro 276] terzo trattenitore della stessa classe: la maschera del viso del giro 240 (uniform, non proprieta' del materiale). Rosso __CPM_NO_G276 */
 
       };const _p3_219=()=>{
       try{renderer.forceContextLoss();}catch(e){}try{renderer.dispose();}catch(e){}// 5.69.3: rilascia il contesto WebGL della partita a fine match → non si accumula tra una partita e l'altra

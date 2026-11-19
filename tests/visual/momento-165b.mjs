@@ -40,7 +40,7 @@ function savePro(over = {}) {
 function saveU18(over = {}) {
   const s = 68;
   return { name: 'Guardiano Momento U18', nation: 'Italia', avatarId: 0, proStatus: 'u18', season: 1, week: 2, age: 17, ovr: 68, tutorialDone: true, position: 'Attaccante',
-    club: { id: 'milan', n: 'AC Dorvelli Primavera', a: 'ACR', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
+    club: { id: 'milan', n: 'FC Milano Sempione Primavera', a: 'MSE', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
     stats: { 'velocità': s, tecnica: s, fisico: s, 'mentalità': s, tiro: s + 2, passaggio: s, dribbling: s, posizionamento: s },
     form: 72, morale: 72, fatigue: 10, coachTrust: 60, contract: { duration: 1, wage: 200 }, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, ...over };
 }

@@ -2,6 +2,7 @@
 /* [giro 72 — collaudo 7.999.173 carriera D1, PO-171: «il diff 172→173 toglie il blocco FOTO PROFILO CH38: verificare il ritratto
    dell'eroe in tre schermate»] SONDA/GUARDIANO a 412x915, GLB ACCESO (direttiva PO 29/07), contesto nuovo per ogni schermata.
    Il ritratto dell'eroe oggi e' una FIGURINA del catalogo volti (src/01: voltoEroeId23 → _fileVolto23, file in assets/portraits/), non piu' un render CH38.
+   [giro 269] In Home il ritratto si cerca nella figurina completa aperta toccando la figurina della card dell'eroe (testata compatta, PO 02/11).
    Per ogni schermata (creazione, home della carriera, tab Carriera) si cerca nel DOM l'immagine il cui src e' il file del volto
    dell'eroe e si giudica: presente, caricata (naturalWidth > 0), visibile (box >= 24 px, dentro la viewport orizzontale).
    Si contano anche le <img> rotte della schermata e le richieste di file CH38 veri (assets/footballer… e anim-…: devono essere 0).
@@ -37,6 +38,14 @@ async function schermata(nome, rosso) {
     try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
     if (nome === 'carriera') await page.evaluate(() => window.__CPM_CAREER.goTab('profile')).catch(() => {});
     await sleep(2500);
+    /* [giro 269 — decisione PO 02/11 «Testata compatta» (DECISIONI.md, V2 tappa 2): il ritratto che stava in testata e' passato alla
+       figurina piccola della card dell'eroe in Home, che e' un pulsante (data-cpm="figurina-testata") e apre la figurina completa col
+       volto. In Home quindi il ritratto si giudica nella figurina completa aperta da quel tocco; pulsante o figurina assenti = rosso
+       (la misura resta quella di prima: immagine del volto caricata e visibile). */
+    if (nome === 'home') {
+      const t = await page.$('[data-cpm="figurina-testata"]');
+      if (t) { await t.click().catch(() => {}); await page.waitForSelector('[data-cpm="figurina-completa"]', { timeout: 8000 }).catch(() => {}); await sleep(1500); }
+    }
     if (nome === 'carriera') await page.waitForFunction(() => (document.body.innerText || '').length > 800, null, { timeout: 15000 }).catch(() => {});
   }
   const r = await page.evaluate(() => {
@@ -46,7 +55,8 @@ async function schermata(nome, rosso) {
     /* in creazione l'eroe non esiste ancora: il ritratto e' la carta grande del volto scelto (la piu' larga fra le immagini dei volti) */
     const eroe = atteso ? imgs.filter(i => (i.src || '').endsWith(atteso.replace(/^\.?\//, ''))) : volti.slice().sort((a, c) => c.getBoundingClientRect().width - a.getBoundingClientRect().width).slice(0, 1);
     const vis = eroe.map(i => { const q = i.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), x: Math.round(q.left), y: Math.round(q.top), nat: i.naturalWidth, ok: i.complete && i.naturalWidth > 0 }; });
-    return { atteso, testo: (document.body.innerText || '').length, volti: volti.length, eroe: vis, rotte: imgs.filter(i => i.complete && i.getAttribute('src') && i.naturalWidth === 0).length };
+    const tasto = !!document.querySelector('[data-cpm="figurina-testata"]'), aperta = !!document.querySelector('[data-cpm="figurina-completa"]');
+    return { tasto, aperta, atteso, testo: (document.body.innerText || '').length, volti: volti.length, eroe: vis, rotte: imgs.filter(i => i.complete && i.getAttribute('src') && i.naturalWidth === 0).length };
   });
   r.ch38 = ch38; r.errori = errs; r.voltiNegati = voltiNegati;
   await page.screenshot({ path: new URL(`./out/ritratto-171-72-${rosso ? 'rosso' : 'verde'}-${nome}.png`, import.meta.url).pathname, fullPage: false }).catch(() => {});
@@ -57,6 +67,8 @@ const buono = r => r.eroe.some(e => e.ok && e.w >= 24 && e.h >= 24 && e.x >= 0 &
 for (const [br, ro] of [['verde', false], ['rosso', true]]) for (const s of SCH) {
   const r = await schermata(s, ro);
   console.log(`${br} ${s}: volto atteso ${r.atteso} · img dei volti ${r.volti} · testo ${r.testo} · ritratto eroe ${JSON.stringify(r.eroe)} · img rotte ${r.rotte} · CH38 ${r.ch38.length} · errori ${r.errori.length}${ro ? ' · volti negati ' + r.voltiNegati : ''}`);
+  if (s === 'home') console.log(`  ${br} home: pulsante figurina ${r.tasto ? 'si' : 'NO'} · figurina completa aperta ${r.aperta ? 'si' : 'NO'}`);
+  if (!ro && s === 'home' && !(r.tasto && r.aperta)) g.push(`verde home: figurina dell'eroe non apribile dalla Home (pulsante ${r.tasto ? 'si' : 'no'}, figurina completa ${r.aperta ? 'si' : 'no'})`);
   if (!ro) { if (!buono(r)) g.push(`verde ${s}: ritratto dell'eroe assente o non caricato`); if (r.rotte) g.push(`verde ${s}: ${r.rotte} img rotte`); if (r.ch38.length) g.push(`verde ${s}: richieste CH38 ${r.ch38.join(',')}`); if (r.errori.length) g.push(`verde ${s}: errori ${r.errori.join(' | ')}`); }
   else if (buono(r)) g.push(`rosso ${s}: coi volti negati il ritratto risulta ancora buono (strumento cieco)`);
 }

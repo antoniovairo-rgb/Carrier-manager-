@@ -17,8 +17,8 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 import fs from 'fs';
 const CL = {
   lec: { id: 'lec', n: 'FC Salento', a: 'SLN', p: 62, c: '#f5c518', c2: '#dc2626', nat: '🇮🇹', lg: 'Lega A' },
-  fio: { id: 'fio', n: 'FC Brenvar', a: 'BRN', p: 77, c: '#7c3aed', c2: '#f5f5f5', nat: '🇮🇹', lg: 'Lega A' },
-  prim: { id: 'milan', n: 'AC Dorvelli Primavera', a: 'ACR', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
+  fio: { id: 'fio', n: 'FC Firenze', a: 'FRZ', p: 77, c: '#7c3aed', c2: '#f5f5f5', nat: '🇮🇹', lg: 'Lega A' },
+  prim: { id: 'milan', n: 'FC Milano Sempione Primavera', a: 'MSE', p: 78, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Primavera 1', isU18: true },
   juve: { id: 'juve', n: 'Torino Athletic', a: 'TAT', p: 95, c: '#f5f5f5', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' },
 };
 const PROFILI = {

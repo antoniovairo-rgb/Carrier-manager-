@@ -8,6 +8,8 @@ Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy sho
 
 Giro 184 (13/11, PO-374, decisione PO 12/11 «Toglierli dal repo»): gli originali CGTrader (`assets/source/cgtrader-soccer-player/originals/`: FBX, OBJ/MTL, GLB parziali; e `TEXTURES.zip`) sono tolti dal repo e dal sito il 13/11; restano nella storia git (nessun force push, decisione PO) e il PO li conserva nel suo acquisto CGTrader. Il gioco usa solo i GLB convertiti in `assets/` (verificato con grep e sulla rete del browser, rapporto `docs/sviluppo/RAPPORTO-giro184.md`). Guardiano `licenze-184`: nessun originale CGTrader/Mixamo/Rohr in `assets/`, `dist/`, `dist-web/`.
 
+Giro 233 (17/11, PO-453 «primo avvio leggero»): le quattro texture della testa del pacchetto CGTrader (`assets/hair-colors/source-textures/HEAD_hair_{brown,black,blond,auburn}.png`) hanno una copia in formato WebP in `assets/hair-colors/webp/` (stesso disegno 2048×2048, ritaglio alfa identico pixel per pixel, 9,91 → 0,85 MB), prodotta da `tools/capelli-233.py`. È un cambio di formato dello stesso file già in elenco (riga «Giocatori 3D … CGTrader»): stessa fonte, stessa licenza, nessuna risorsa nuova. I PNG restano nel repo: li usa il braccio rosso `__CPM_NO_G233`.
+
 | Risorsa | Autore | Licenza | Fonte |
 |---|---|---|---|
 | Giocatori 3D «Soccer Player - Rigged» (CGTrader) | Hisenberg | Royalty Free (standard) — dichiarata dal PO | ordine CGTrader #17876008 del 2026-09-20, foto docs/governo/foto/po238-ordine-cgtrader.jpg |
@@ -27,11 +29,16 @@ Giro 184 (13/11, PO-374, decisione PO 12/11 «Toglierli dal repo»): gli origina
 | React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6 | come da rapporto giro 15 | MIT | docs/sviluppo/RAPPORTO-giro15.md |
 | Microsoft Rocketbox: giornalista e presentatori delle cerimonie (`assets/actor-journalist.glb`, `actor-presenter.glb`, `actor-presenter-f.glb`; Female_Adult_15, Male_Adult_03, Female_Adult_11) | Microsoft (github.com/microsoft/Microsoft-Rocketbox) | MIT | docs/archivio/EXTRA-FIELD-MODELS.md (righe 5-7 e 96: «licenza MIT» dal README Rocketbox, 12/2020). Il testo dell'avviso di copyright della LICENSE non è nel repo: vedi docs/sviluppo/RAPPORTO-giro25.md, giro 25b |
 | Animazioni Mixamo (`assets/anim-*.glb`, `cgtrader-clip-mixamo.glb`, `cgtrader-clip-po*.glb`) e modello CH38 (`assets/footballer*.glb`) | Mixamo (Adobe) | «royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe) | tests/character-lab/CLIP_REGISTRY.md (tabella licenze, righe 10, 26, 53), FAQ helpx.adobe.com/creative-cloud/faq/mixamo-faq.html; CH38 «Mixamo»: docs/LIVE_MATCH_ENGINE_ANALYSIS.md riga 268 |
+| Animazioni Anderson Rohr (`assets/cgtrader-clip-rohr.glb`: 28 clip riadattate allo scheletro CGTrader; il gioco usa `rohr-clapping-hands-up`, ripiego `rohr-clap-twice-hand-up`, per il saluto della serata di presentazione — giro 240, PO-499) | Anderson Rohr | «This pack can be used for free in both personal and commercial projects. Attribution is not required […] You may not redistribute, resell, or repackage this pack as a standalone product.» | andersonrohr.gumroad.com/l/mocap_pack5 e /l/mocap_pack4 (sezione «Licensing», riletta dal giro 180b il 12/11/2026); tests/character-lab/CLIP_REGISTRY.md; registrazione completa più sotto |
 | GLTFLoader e SkeletonUtils (esempi di three@0.128.0) | three.js authors | MIT, come Three.js — «Copyright © 2010-2021 three.js authors» | src/00-head.html righe 64-65 (three@0.128.0/examples/js/...); LICENSE del pacchetto npm three 0.128.0 (devDependency di tests/visual/package.json), che contiene anche examples/js |
 | Effetti sonori sintetizzati con Web Audio | realizzati per Korward Elite | — | assets/audio/README.md (righe 6-7), src/09-audio-scout-anagrafiche.jsx |
 | Icone dell'app e grafiche dello store | realizzate per Korward Elite | — | tools/gen-pwa-icons.mjs, tools/gen-store-graphics.mjs |
 
-## Clip Anderson Rohr (giro 180b, 12/11/2026) — registrate qui, FUORI dalla tabella
+## Clip Anderson Rohr (giro 180b, 12/11/2026) — registrazione completa
+
+**Giro 256 (17/11/2026, seguito di PO-499, decisione PO «Alternarle»):** il saluto della serata usa **tutte e due** le clip indicate dal PO, una serata `rohr-clapping-hands-up` e la successiva `rohr-clap-twice-hand-up` (stesso file, stessa licenza, nessun asset nuovo).
+
+**Giro 240 (17/11/2026, PO-499, decisione PO «Posa ora, clip nella 197»):** le clip **entrano nel gioco**: il saluto della serata di presentazione usa `rohr-clapping-hands-up` (ripiego `rohr-clap-twice-hand-up`). Come deciso dalla madre nel giro 180c, la riga è ora **nella tabella** qui sopra e nella finestra Crediti del gioco (`src/17`, voce «Animazioni Anderson Rohr»; guardiano `crediti-254`), e `assets/cgtrader-clip-rohr.glb` (1.878.652 byte) **entra in `dist/`** (`tools/build-dist.mjs`, `tools/validate-dist.mjs`). Gli originali (zip, FBX) restano fuori dal repository e dal pacchetto (`licenze-184`). Il testo che segue è la registrazione del giro 180b, lasciata com'era.
 
 **Perché fuori dalla tabella:** il guardiano `crediti-254` pretende nella finestra Crediti del gioco ogni riga della tabella qui
 sopra (conta ogni riga che comincia con «|», per questo qui è un elenco); aggiungere la riga senza toccare `src/` lo renderebbe rosso, e il mandato del giro 180b vieta cambi a `src/` (le clip non

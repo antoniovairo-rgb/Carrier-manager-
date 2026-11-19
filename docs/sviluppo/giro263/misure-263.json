@@ -1,0 +1,1089 @@
+{
+ "verde": [
+  {
+   "w": 360,
+   "caso": "club",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 146.4,
+    "hA": 71.6,
+    "wS": 150.9,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Giocavs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Giocavs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "nazionale",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 145.4,
+    "hA": 71.6,
+    "wS": 151.9,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🌍 Mondialevs BelgioCoppa del Mondo · Girone · Giornata 1/3",
+    "titolo": "🌍 Mondialevs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3",
+    "tronchi": [
+     {
+      "testo": "Coppa del Mondo · Girone · Giornata 1/3",
+      "title": "Coppa del Mondo · Girone · Giornata 1/3"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 2
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "coppa",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 146.4,
+    "hA": 71.6,
+    "wS": 150.9,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Giocavs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Giocavs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [
+     {
+      "testo": "vs Real Castilla Atlético",
+      "title": "vs Real Castilla Atlético"
+     },
+     {
+      "testo": "Coppa · Ottavi di finale",
+      "title": "Coppa · Ottavi di finale"
+     }
+    ],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "settimana",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 145.4,
+    "hA": 71.6,
+    "wS": 151.9,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [
+     {
+      "testo": "allenamento, eventi e crescita",
+      "title": "allenamento, eventi e crescita"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 2
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "infortunio",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 145.4,
+    "hA": 71.6,
+    "wS": 151.9,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [
+     {
+      "testo": "3 sett. di stop rimanenti",
+      "title": "3 sett. di stop rimanenti"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "club",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 153.9,
+    "hA": 71.6,
+    "wS": 158.4,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Giocavs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Giocavs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "nazionale",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 152.9,
+    "hA": 71.6,
+    "wS": 159.4,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🌍 Mondialevs BelgioCoppa del Mondo · Girone · Giornata 1/3",
+    "titolo": "🌍 Mondialevs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3",
+    "tronchi": [
+     {
+      "testo": "Coppa del Mondo · Girone · Giornata 1/3",
+      "title": "Coppa del Mondo · Girone · Giornata 1/3"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 2
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "coppa",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 153.9,
+    "hA": 71.6,
+    "wS": 158.4,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Giocavs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Giocavs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [
+     {
+      "testo": "vs Real Castilla Atlético",
+      "title": "vs Real Castilla Atlético"
+     }
+    ],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "settimana",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 152.9,
+    "hA": 71.6,
+    "wS": 159.4,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [
+     {
+      "testo": "allenamento, eventi e crescita",
+      "title": "allenamento, eventi e crescita"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 2
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "infortunio",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 152.9,
+    "hA": 71.6,
+    "wS": 159.4,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [
+     {
+      "testo": "3 sett. di stop rimanenti",
+      "title": "3 sett. di stop rimanenti"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "club",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 170.2,
+    "hA": 71.6,
+    "wS": 174.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Giocavs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Giocavs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "nazionale",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 169.2,
+    "hA": 71.6,
+    "wS": 175.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🌍 Mondialevs BelgioCoppa del Mondo · Girone · Giornata 1/3",
+    "titolo": "🌍 Mondialevs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3",
+    "tronchi": [
+     {
+      "testo": "Coppa del Mondo · Girone · Giornata 1/3",
+      "title": "Coppa del Mondo · Girone · Giornata 1/3"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 2
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "coppa",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 170.2,
+    "hA": 71.6,
+    "wS": 174.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Giocavs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Giocavs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [
+     {
+      "testo": "vs Real Castilla Atlético",
+      "title": "vs Real Castilla Atlético"
+     }
+    ],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "settimana",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 169.2,
+    "hA": 71.6,
+    "wS": 175.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [
+     {
+      "testo": "allenamento, eventi e crescita",
+      "title": "allenamento, eventi e crescita"
+     }
+    ],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "infortunio",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 169.2,
+    "hA": 71.6,
+    "wS": 175.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "club",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 479.2,
+    "hA": 71.6,
+    "wS": 483.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Giocavs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Giocavs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "nazionale",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 478.2,
+    "hA": 71.6,
+    "wS": 484.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🌍 Mondialevs BelgioCoppa del Mondo · Girone · Giornata 1/3",
+    "titolo": "🌍 Mondialevs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "coppa",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 479.2,
+    "hA": 71.6,
+    "wS": 483.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Giocavs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Giocavs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "settimana",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 478.2,
+    "hA": 58.2,
+    "wS": 484.7,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "infortunio",
+   "ok": true,
+   "mot": "",
+   "m": {
+    "wA": 478.2,
+    "hA": 58.2,
+    "wS": 484.7,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  }
+ ],
+ "rosso": [
+  {
+   "w": 360,
+   "caso": "club",
+   "ok": false,
+   "mot": "rapporto larghezze 1.77 (189.8/107.5)",
+   "m": {
+    "wA": 189.8,
+    "hA": 71.6,
+    "wS": 107.5,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Gioca vs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Gioca vs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "nazionale",
+   "ok": false,
+   "mot": "rapporto larghezze 0.44 (91.4/205.9); titolo su 4 righe; dettaglio su 5 righe; «poi:» ripetuto nel pulsante",
+   "m": {
+    "wA": 91.4,
+    "hA": 175.6,
+    "wS": 205.9,
+    "hS": 175.6,
+    "rTit": 4,
+    "rDet": 5,
+    "testoA": "🌍 Mondiale — vs BelgioCoppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "titolo": "🌍 Mondiale — vs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": true,
+    "righeA": 9
+   }
+  },
+  {
+   "w": 360,
+   "caso": "coppa",
+   "ok": false,
+   "mot": "rapporto larghezze 1.77 (189.8/107.5)",
+   "m": {
+    "wA": 189.8,
+    "hA": 71.6,
+    "wS": 107.5,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Gioca vs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Gioca vs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 360,
+   "caso": "settimana",
+   "ok": false,
+   "mot": "rapporto larghezze 0.84 (135.8/161.5); dettaglio su 2 righe",
+   "m": {
+    "wA": 135.8,
+    "hA": 87.6,
+    "wS": 161.5,
+    "hS": 87.6,
+    "rTit": 2,
+    "rDet": 2,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 4
+   }
+  },
+  {
+   "w": 360,
+   "caso": "infortunio",
+   "ok": false,
+   "mot": "rapporto larghezze 1.57 (181.6/115.7)",
+   "m": {
+    "wA": 181.6,
+    "hA": 71.6,
+    "wS": 115.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "club",
+   "ok": false,
+   "mot": "rapporto larghezze 1.91 (204.8/107.5)",
+   "m": {
+    "wA": 204.8,
+    "hA": 71.6,
+    "wS": 107.5,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⚽ Gioca vs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Gioca vs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "nazionale",
+   "ok": false,
+   "mot": "rapporto larghezze 0.52 (106.4/205.9); titolo su 4 righe; dettaglio su 5 righe; «poi:» ripetuto nel pulsante",
+   "m": {
+    "wA": 106.4,
+    "hA": 175.6,
+    "wS": 205.9,
+    "hS": 175.6,
+    "rTit": 4,
+    "rDet": 5,
+    "testoA": "🌍 Mondiale — vs BelgioCoppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "titolo": "🌍 Mondiale — vs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": true,
+    "righeA": 9
+   }
+  },
+  {
+   "w": 375,
+   "caso": "coppa",
+   "ok": false,
+   "mot": "rapporto larghezze 1.91 (204.8/107.5)",
+   "m": {
+    "wA": 204.8,
+    "hA": 71.6,
+    "wS": 107.5,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Gioca vs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Gioca vs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 375,
+   "caso": "settimana",
+   "ok": false,
+   "mot": "rapporto larghezze 0.93 (150.8/161.5); dettaglio su 2 righe",
+   "m": {
+    "wA": 150.8,
+    "hA": 87.6,
+    "wS": 161.5,
+    "hS": 87.6,
+    "rTit": 2,
+    "rDet": 2,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 4
+   }
+  },
+  {
+   "w": 375,
+   "caso": "infortunio",
+   "ok": false,
+   "mot": "rapporto larghezze 1.70 (196.6/115.7)",
+   "m": {
+    "wA": 196.6,
+    "hA": 71.6,
+    "wS": 115.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "club",
+   "ok": false,
+   "mot": "rapporto larghezze 2.21 (237.3/107.5)",
+   "m": {
+    "wA": 237.3,
+    "hA": 58.2,
+    "wS": 107.5,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⚽ Gioca vs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Gioca vs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 412,
+   "caso": "nazionale",
+   "ok": false,
+   "mot": "rapporto larghezze 0.67 (138.9/205.9); dettaglio su 4 righe; «poi:» ripetuto nel pulsante",
+   "m": {
+    "wA": 138.9,
+    "hA": 119.6,
+    "wS": 205.9,
+    "hS": 119.6,
+    "rTit": 2,
+    "rDet": 4,
+    "testoA": "🌍 Mondiale — vs BelgioCoppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "titolo": "🌍 Mondiale — vs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": true,
+    "righeA": 6
+   }
+  },
+  {
+   "w": 412,
+   "caso": "coppa",
+   "ok": false,
+   "mot": "rapporto larghezze 2.21 (237.3/107.5)",
+   "m": {
+    "wA": 237.3,
+    "hA": 71.6,
+    "wS": 107.5,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "🏆 Gioca vs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Gioca vs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 412,
+   "caso": "settimana",
+   "ok": false,
+   "mot": "rapporto larghezze 1.13 (183.3/161.5); dettaglio su 2 righe",
+   "m": {
+    "wA": 183.3,
+    "hA": 87.6,
+    "wS": 161.5,
+    "hS": 87.6,
+    "rTit": 2,
+    "rDet": 2,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 4
+   }
+  },
+  {
+   "w": 412,
+   "caso": "infortunio",
+   "ok": false,
+   "mot": "rapporto larghezze 1.98 (229.1/115.7)",
+   "m": {
+    "wA": 229.1,
+    "hA": 71.6,
+    "wS": 115.7,
+    "hS": 71.6,
+    "rTit": 2,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 3
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "club",
+   "ok": false,
+   "mot": "rapporto larghezze 7.96 (855.3/107.5)",
+   "m": {
+    "wA": 855.3,
+    "hA": 58.2,
+    "wS": 107.5,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⚽ Gioca vs FC Lariano✈️ In trasferta",
+    "titolo": "⚽ Gioca vs FC Lariano",
+    "dettaglio": "✈️ In trasferta",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "nazionale",
+   "ok": false,
+   "mot": "rapporto larghezze 3.68 (756.9/205.9); «poi:» ripetuto nel pulsante",
+   "m": {
+    "wA": 756.9,
+    "hA": 58.2,
+    "wS": 205.9,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "🌍 Mondiale — vs BelgioCoppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "titolo": "🌍 Mondiale — vs Belgio",
+    "dettaglio": "Coppa del Mondo · Girone · Giornata 1/3 · poi: FC Lariano W.12",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima il torneo della Nazionale",
+     "px": 12,
+     "contrasto": 13.16,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": true,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "coppa",
+   "ok": false,
+   "mot": "rapporto larghezze 7.96 (855.3/107.5)",
+   "m": {
+    "wA": 855.3,
+    "hA": 58.2,
+    "wS": 107.5,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "🏆 Gioca vs Real Castilla AtléticoCoppa · Ottavi di finale",
+    "titolo": "🏆 Gioca vs Real Castilla Atlético",
+    "dettaglio": "Coppa · Ottavi di finale",
+    "tronchi": [],
+    "sDis": false,
+    "motivo": null,
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "settimana",
+   "ok": false,
+   "mot": "rapporto larghezze 4.96 (801.3/161.5)",
+   "m": {
+    "wA": 801.3,
+    "hA": 58.2,
+    "wS": 161.5,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⚡ Vivi la Settimanaallenamento, eventi e crescita",
+    "titolo": "⚡ Vivi la Settimana",
+    "dettaglio": "allenamento, eventi e crescita",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "prima vivi la settimana",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  },
+  {
+   "w": 1366,
+   "caso": "infortunio",
+   "ok": false,
+   "mot": "rapporto larghezze 7.32 (847.1/115.7)",
+   "m": {
+    "wA": 847.1,
+    "hA": 58.2,
+    "wS": 115.7,
+    "hS": 58.2,
+    "rTit": 1,
+    "rDet": 1,
+    "testoA": "⏭️ Avanza (infortunato)3 sett. di stop rimanenti",
+    "titolo": "⏭️ Avanza (infortunato)",
+    "dettaglio": "3 sett. di stop rimanenti",
+    "tronchi": [],
+    "sDis": true,
+    "motivo": {
+     "testo": "sei infortunato",
+     "px": 12,
+     "contrasto": 13.2,
+     "troncato": false,
+     "righe": 1
+    },
+    "poiNelPulsante": false,
+    "righeA": 2
+   }
+  }
+ ]
+}

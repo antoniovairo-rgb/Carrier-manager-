@@ -1,0 +1,16 @@
+== pelle-240 · 14:04:30 · memoria libera 15476 MB · disco libero 28G
+VERDE (ora night)
+  ingresso     corpi 63 · con nome 22 · con figurina 22 · senza nome 41 · capelli sbagliati 0 · viso: distanza mediana 3 massima 5 (oltre 12: 0) [prima passata: mediana 3 massima 5] · non misurati 0
+  gioco        corpi 7 · con nome 5 · con figurina 5 · senza nome 2 · capelli sbagliati 0 · viso: distanza mediana 6.2 massima 11.7 (oltre 12: 0) [prima passata: mediana 6.2 massima 11.7] · non misurati 0
+  premiazione  corpi 33 · con nome 15 · con figurina 15 · senza nome 18 · capelli sbagliati 0 · viso: distanza mediana 4.9 massima 9.7 (oltre 12: 0) [prima passata: mediana 4.9 massima 9.7] · non misurati 0
+  festa        corpi 7 · con nome 5 · con figurina 5 · senza nome 2 · capelli sbagliati 0 · viso: distanza mediana 4 massima 9.5 (oltre 12: 0) [prima passata: mediana 4 massima 9.5] · non misurati 0
+  serata       corpi 7 · con nome 6 · con figurina 6 · senza nome 1 · capelli sbagliati 0 · viso: distanza mediana 3.6 massima 5.6 (oltre 12: 0) [prima passata: mediana 14.8 massima 21.7] · non misurati 0
+  parata       corpi 8 · con nome 8 · con figurina 8 · senza nome 0 · capelli sbagliati 0 · viso: distanza mediana 3.2 massima 4.4 (oltre 12: 0) [prima passata: mediana 3.2 massima 4.4] · non misurati 0
+ROSSO (ora night)
+  ingresso     corpi 63 · con nome 22 · con figurina 22 · senza nome 41 · capelli sbagliati 15 · viso: distanza mediana 28.3 massima 46.9 (oltre 12: 22) [prima passata: mediana 28.3 massima 46.9] · non misurati 0
+  gioco        corpi 7 · con nome 5 · con figurina 5 · senza nome 2 · capelli sbagliati 3 · viso: distanza mediana 23.4 massima 28.1 (oltre 12: 5) [prima passata: mediana 23.4 massima 28.1] · non misurati 0
+  premiazione  corpi 23 · con nome 13 · con figurina 13 · senza nome 10 · capelli sbagliati 9 · viso: distanza mediana 26.9 massima 37 (oltre 12: 13) [prima passata: mediana 26.9 massima 37] · non misurati 0
+  festa        corpi 7 · con nome 5 · con figurina 5 · senza nome 2 · capelli sbagliati 4 · viso: distanza mediana 22.1 massima 31.6 (oltre 12: 5) [prima passata: mediana 22.1 massima 31.6] · non misurati 0
+  parata       corpi 8 · con nome 8 · con figurina 8 · senza nome 0 · capelli sbagliati 8 · viso: distanza mediana 40.2 massima 47 (oltre 12: 6) [prima passata: mediana 40.2 massima 47] · non misurati 0
+✅ pelle-240 verde (e il rosso si vede)
+uscita 0 · durata 8 min 8 s · 14:12:38

@@ -1,0 +1,16 @@
+  tel360 ingresso   testi 40 · contrasto min 4.93
+  tel360 partita2d  testi 23 · contrasto min 7.35
+  tel360 highlight  testi 10 · contrasto min 6.56
+  tel360 post       testi 8 · contrasto min 7.54
+  tabv   ingresso   testi 40 · contrasto min 4.93
+  tabv   partita2d  testi 23 · contrasto min 7.35
+  tabv   highlight  testi 10 · contrasto min 6.56
+  tabv   post       testi 8 · contrasto min 7.54
+  pc     ingresso   testi 40 · contrasto min 4.93
+  pc     partita2d  testi 23 · contrasto min 7.35
+  pc     highlight  testi 21 · contrasto min 6.7
+  pc     post       testi 8 · contrasto min 7.54
+  ✗ FORMA tel360:post: manca il tasto finale
+  ✗ FORMA tabv:post: manca il tasto finale
+  ✗ FORMA pc:post: manca il tasto finale
+partita-v2 ROSSO

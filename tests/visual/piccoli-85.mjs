@@ -45,7 +45,7 @@ async function giro(rosso) {
   o.B2 = await page.evaluate(async (B) => {
     const leggi = async (u) => { const d = document.createElement('div'); document.body.appendChild(d); const r = ReactDOM.createRoot(d);
       r.render(React.createElement(ProTransitionScreen, { player: { ...B, proStatus: 'u18', u18Seasons: u, season: u, club: { ...B.club, lg: 'Primavera 1' }, goals: 5, assists: 2, matches: 20 }, onChoose() {} }));
-      await new Promise(r2 => setTimeout(r2, 600)); const t = d.innerText; r.unmount(); d.remove(); return t; };
+      await new Promise(r2 => setTimeout(r2, 600)); const t = d.innerText.replace(/Stagioni in Primavera:/g, 'Stagioni Under 18:')/* [giro 236] la barra dice «Stagioni in Primavera» (PO-430 punto 6): stessa misura */; r.unmount(); d.remove(); return t; };
     const a = await leggi(1), b = await leggi(2);
     return { u1: (a.match(/Stagioni Under 18: \d di 2/) || [''])[0], u1Ultima: /ultima stagione/i.test(a) ? (a.match(/[^\n]*ultima stagione[^\n]*/i) || [''])[0] : '', u2: (b.match(/Stagioni Under 18: \d di 2/) || [''])[0], u2Limite: /Limite raggiunto/.test(b) };
   }, BASE);
@@ -53,8 +53,8 @@ async function giro(rosso) {
   const aw = { leagueYoung: { winner: { name: 'G. Giovane', club: 'FC Alfa', goals: 9, isYoungEligible: true }, isYoungEligible: true },
     leagueTopScorer: { top3: [{ name: 'A. Uno', club: 'FC Alfa', goals: 30 }, { name: 'B. Due', club: 'FC Beta', goals: 28 }, { name: 'C. Tre', club: 'FC Gamma', goals: 27 }] },
     leagueMvp: { top3: [{ name: 'A. Uno', club: 'FC Alfa', goals: 30 }, { name: 'B. Due', club: 'FC Beta', goals: 28 }, { name: 'C. Tre', club: 'FC Gamma', goals: 27 }] },
-    scarpaOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', goals: 36 }, { name: 'J. Leblanc', club: 'FC Valmora', league: 'Ligue', goals: 33 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', goals: 30 }] },
-    palloneOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', ovr: 91, goals: 29, assists: 8, trofei: 'campione' }, { name: 'J. Leblanc', club: 'FC Valmora', league: 'Ligue', ovr: 84, goals: 31, assists: 4 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', ovr: 83, goals: 29, assists: 6 }] },
+    scarpaOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', goals: 36 }, { name: 'J. Leblanc', club: 'FC Milano Brera', league: 'Ligue', goals: 33 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', goals: 30 }] },
+    palloneOro: { top3: [{ name: 'N. Mazza', club: 'AT Manzanares', league: 'Liga', ovr: 91, goals: 29, assists: 8, trofei: 'campione' }, { name: 'J. Leblanc', club: 'FC Milano Brera', league: 'Ligue', ovr: 84, goals: 31, assists: 4 }, { name: 'G. Howard', club: 'FC Gamma', league: 'Premier', ovr: 83, goals: 29, assists: 6 }] },
     seasonRecord: { beaten: false }, allTime: { beaten: false } };
   await page.evaluate((aw) => window.__CPM_CAREER.apriGala(aw), aw); await sleep(1500);
   const testo = () => page.evaluate(() => (document.querySelector('[data-cpm="gala51"]') || document.body).innerText);

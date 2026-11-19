@@ -21,6 +21,7 @@ import fs from 'fs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = process.env.CPM_ROSSO182 === '1';
+const ROSSO258 = process.env.CPM_ROSSO258 === '1'; /* [giro 258] riga del calendario come prima (__CPM_NO_G258): il guardiano DEVE uscire 1 */
 const FOTO = process.env.CPM_FOTO182 || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 const fails = [], oks = [];
@@ -112,7 +113,7 @@ async function nuovaPagina(vp) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([rosso, oss]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G182_NOMI = 1; (0, eval)('(' + oss + ')()'); }, [ROSSO, osservatore.toString()]);
+  await page.addInitScript(([rosso, oss, r258]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G182_NOMI = 1; if (r258) window.__CPM_NO_G258 = 1; (0, eval)('(' + oss + ')()'); }, [ROSSO, osservatore.toString(), ROSSO258]);
   return { page, errors };
 }
 async function raccogli(page, vp, etichetta) {
@@ -181,6 +182,51 @@ try {
       ok(sc > 5 && P.errors.length === 0, `carriera ${vp.width}: osservatore attivo (${sc} scansioni), errori di pagina ${P.errors.length} ${P.errors.slice(0, 1).join('')}`);
       if (sc > 5) percorsi++;
     } catch (e) { ok(false, `carriera ${vp.width}: non giudicato (${String(e.message).slice(0, 160)})`); }
+    await P.page.close();
+  }
+  /* [giro 258 · rapporto 254 dubbio 1] la RIGA DEL CALENDARIO con l'avversario dal nome piu' lungo nella settimana corrente
+     (la riga col ▶ e il tasto «Gioca», la piu' stretta): club dal nome piu' corto della Lega A Primavera, poi nel salvataggio
+     la gara della settimana corrente prende l'avversario della lega col nome piu' lungo. Verde: il nome passa dalla scala
+     (cal-avv-258) e ci sta; rosso (CPM_ROSSO258): il censimento deve vedere il nome tagliato. «Non giudicato» = rosso. */
+  for (const vp of [VPS[0]]) {
+    console.log(`3b) calendario a ${vp.width}px: avversario dal nome piu' lungo nella riga corrente`);
+    const P = await nuovaPagina(vp);
+    try {
+      await P.page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+      await P.page.waitForFunction(() => typeof U18_CLUBS !== 'undefined', null, { timeout: 60000 });
+      const base = () => { const club = [...U18_CLUBS].sort((a, b) => a.n.length - b.n.length)[0]; const s = 64;
+        return { name: 'Max Blond', nation: 'Italia', avatarId: 0, proStatus: 'u18', isU18: true, season: 1, week: 3, weekLived: false, age: 17, position: 'Attaccante', club,
+          stats: { 'velocità': s, tecnica: s, fisico: s, 'mentalità': s, tiro: s, passaggio: s, dribbling: s, posizionamento: s }, ovr: s, form: 70, morale: 70, fatigue: 0, coachTrust: 60, popularity: 20,
+          contract: { duration: 1, wage: 577, expiresAtSeason: 2 }, matchHistory: [], u18Seasons: 0, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, tutorialDone: true }; };
+      await P.page.evaluate((b) => { const pl = (0, eval)('(' + b + ')')(); localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl })); }, base.toString());
+      const apri = async () => { await P.page.reload({ waitUntil: 'load' });
+        await P.page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
+        try { await P.page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
+        await P.page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 25000 });
+        await P.page.evaluate(() => { try { window.__CPM_CAREER.resolveOpening(); } catch (e) {} }); await sleep(1500); };
+      await apri();
+      /* il calendario generato e salvato (si legge dall'autosave, si rimette con l'aggancio di prova patch): la gara della settimana corrente prende l'avversario col nome piu' lungo */
+      const scelto = await P.page.evaluate(() => { const sv = JSON.parse(localStorage.getItem('cpm-v3') || '{}'); const pl = sv.player; if (!pl || !Array.isArray(pl.calendar)) return null;
+        const ora = pl.calendar.find(m => m.week >= pl.week && !m.played); if (!ora) return null;
+        const lunghi = pl.calendar.filter(m => m.opponentName && m !== ora).sort((a, b) => b.opponentName.length - a.opponentName.length); if (!lunghi.length) return null;
+        const L = lunghi[0]; const oId = ora.opponentId, oN = ora.opponentName; ora.opponentId = L.opponentId; ora.opponentName = L.opponentName; L.opponentId = oId; L.opponentName = oN;
+        window.__CPM_CAREER.patch({ calendar: pl.calendar, week: ora.week }); return { nome: ora.opponentName, week: ora.week }; });
+      if (!scelto) throw new Error('calendario non trovato nel salvataggio');
+      await sleep(800);
+      await P.page.evaluate(() => window.__CPM_CAREER.goTab('calendar')); await sleep(1500);
+      const riga = await P.page.evaluate((nome) => { const r = [...document.querySelectorAll('[data-cpm="riga-cal-v2"]')].find(x => (x.innerText || '').includes('▶'));
+        if (!r) return null; const el = r.querySelector('[data-cpm="cal-avv-258"]'); const t = (r.children[1] && r.children[1].children[0] && r.children[1].children[0].innerText) || '';
+        if (!el) return { scala: false, testo: t, nome };
+        const rg = document.createRange(); rg.selectNodeContents(el); const box = el.getBoundingClientRect().width; const cs = getComputedStyle(el);
+        const pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+        return { scala: true, testo: t, nome, intero: el.getAttribute('data-intero182'), mostrato: el.innerText, liv: +el.getAttribute('data-nome182'), w: rg.getBoundingClientRect().width, box: box - pad }; }, scelto.nome);
+      await raccogli(P.page, vp, 'carriera/calendario-258');
+      if (!riga) ok(false, `calendario ${vp.width}: riga corrente non trovata (non giudicato)`);
+      else {
+        console.log(`    riga corrente «${riga.testo}» (avversario messo: ${riga.nome}, sett. ${scelto.week})${riga.scala ? ` · scala: «${riga.intero}» → «${riga.mostrato}» livello ${riga.liv}, ${riga.w.toFixed(1)}/${riga.box.toFixed(1)} px` : ' · testo semplice'}`);
+        ok(riga.scala && riga.intero === riga.nome && riga.w <= riga.box + 0.05, `calendario ${vp.width}: la riga corrente passa dalla scala dei nomi e il nome mostrato ci sta`);
+      }
+    } catch (e) { ok(false, `calendario ${vp.width}: non giudicato (${String(e.message).slice(0, 160)})`); }
     await P.page.close();
   }
 } catch (e) { ok(false, 'eccezione: ' + String(e && e.message || e).slice(0, 300)); }

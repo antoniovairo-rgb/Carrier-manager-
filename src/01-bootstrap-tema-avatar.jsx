@@ -253,6 +253,28 @@ const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e nu
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
 const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 234 PO-393 · G181-22] TESTO GRANDE: interruttore delle Opzioni (localStorage «cpm-testo-grande», preferenza del browser, non del
+   salvataggio). Porta ogni corpo della scala ×1,3 (il minimo 12 diventa 16) PRIMA del primo disegno; dalle Opzioni si applica subito
+   (applicaTesto234 + evento cpm-testo234 che ridisegna l'app, src/19). Non e' un secondo tema: i colori e i token restano quelli.
+   _g234 = le correzioni del giro 234 (zoom, nomi per i lettori di schermo, classifica ed etichette pronte al testo grande, cursori da
+   44 px, versione in Opzioni); rosso __CPM_NO_G234. Il testo grande resta acceso anche col rosso: e' la condizione della prova. */
+const _g234=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G234);
+const _tastiera234=()=>{try{return !!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches);}catch(_e){return true;}};/* PC o tablet con mouse: il tasto P esiste */
+const FS_BASE234={...FS};
+/* [giro 235 · decisione PO 17/11 sui dubbi del giro 234] DUE GRADINI: +15% e +30%. La scelta resta nella stessa chiave del browser
+   (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
+   acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
+const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+/* [giro 260 · decisioni PO 17/11 B C D] interruttore del giro: rosso window.__CPM_NO_G260 = come prima (Sostieni anche nell'app, titolo
+   grande nel contenuto di Stagione/Agente/Ufficio, «Under 18»/«U18» a schermo). */
+const _g260=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G260);
+function livelloTesto235(){try{const v=localStorage.getItem('cpm-testo-grande');if(v==='15')return _g235()?15:30;if(v==='1'||v==='30')return 30;return 0;}catch(_e){return 0;}}
+function testoGrande234(){return livelloTesto235()>0;}
+function applicaTesto234(on){const k=on===true?1.3:(on===15?1.15:on===30?1.3:1);for(const n in FS_BASE234)FS[n]=Math.round(FS_BASE234[n]*k);}
+applicaTesto234(livelloTesto235());
+/* [giro 234 PO-455 · G195-05] la colonna dei punti della classifica resta in vista: cella appiccicata al bordo destro dello scorrimento
+   orizzontale, con il fondo della sua riga sopra quello del riquadro (col testo grande la tabella e' piu' larga dello schermo) */
+const _pt234=(bg)=>_g234()?{position:"sticky",right:0,zIndex:1,background:bg?`linear-gradient(${bg},${bg}),${TH.card}`:TH.card}:{};
 /* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
    Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
    tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */
@@ -444,6 +466,9 @@ function voltoUrl(tipo,chiave,voltoId){
    che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
    finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
    riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
+/* [giro 236 · PO-430 G189-18] rifiniture per Google Play viste giocando (sei piccoli difetti del primo impatto). Interruttore unico
+   del rosso: window.__CPM_NO_G236 rimette il comportamento di prima su tutti e sei i punti. Guardiano `npm run store-236`. */
+function _g236(){return !(typeof window!=='undefined'&&window.__CPM_NO_G236);}
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,voltoId,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
   const [,_rif23]=React.useReducer(x=>x+1,0);
@@ -591,8 +616,11 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
         {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}</div>}
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
+        {_g236()&&<div aria-hidden="true" className="fig236" data-iniziali={[D.nome,D.cognome].filter(Boolean).map(x=>String(x).trim().charAt(0).toUpperCase()).join("").slice(0,2)||"·"}
+          style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:FW.black,fontSize:Math.max(10,Math.round(lato*0.36)),color:TH.muted,background:"linear-gradient(160deg,"+TH.card+","+TH.track+")"}}/>}{/* [giro 236 punto 1] «figurina vuota nella scheda di fine Primavera»: il volto si carica pigro (loading=lazy) e, finche' non e' decodificato o se la rete non lo da', il riquadro era un rettangolo scuro vuoto. Ora sotto il volto ci sono le iniziali (disegnate dal CSS, fuori da innerText): a volto caricato non si vedono */}
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
-          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
+          onError={_g236()?(e=>{try{e.currentTarget.style.visibility="hidden";}catch(_e){}}):undefined}
+          style={{position:"relative",width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
       </div>
       {usate.length>0&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,height:hPan,
         background:TH.card,borderRadius:ragF,padding:`0 ${pad}px`,boxSizing:"border-box",

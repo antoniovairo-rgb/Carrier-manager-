@@ -29,9 +29,12 @@ async function giro(rosso) {
     const cella = w => celle.find(d => (d.innerText || '').trim().split('\n')[0] === String(w));
     const g = []; for (let w = 1; w <= 5; w++) { const c = cella(w); g.push(c ? (c.innerText || '').replace(/\s+/g, ' ').trim() : null); }
     const righe = [...document.querySelectorAll('div')].filter(d => /vs Portogallo/.test(d.textContent || '') && d.children.length === 0 || (/^▶? ?vs Portogallo/.test((d.innerText || '').trim()) && getComputedStyle(d).whiteSpace === 'nowrap'));
-    const r1 = righe.find(d => getComputedStyle(d).whiteSpace === 'nowrap') || null;
-    const riga = r1 ? r1.closest('div[style*="display: flex"]') : null;
-    return { griglia: g, troncata: r1 ? r1.scrollWidth > r1.clientWidth + 1 : null, primaRiga: r1 ? (r1.innerText || '').trim() : null,
+    /* [giro 258] dal 258 l'avversario e' un elemento suo (cal-avv-258, scala dei nomi) dopo il prefisso «▶ vs»: si misura il NOME
+       (troncato = scrollWidth > clientWidth), e la riga e' riga-cal-v2. Senza il 258 (__CPM_NO_G258) resta la ricerca di prima. */
+    const n258 = [...document.querySelectorAll('[data-cpm="cal-avv-258"]')].find(d => (d.getAttribute('data-intero182') || '') === 'Portogallo') || null;
+    const r1 = n258 || righe.find(d => getComputedStyle(d).whiteSpace === 'nowrap') || null;
+    const riga = n258 ? n258.closest('[data-cpm="riga-cal-v2"]') : r1 ? r1.closest('div[style*="display: flex"]') : null;
+    return { griglia: g, troncata: r1 ? r1.scrollWidth > r1.clientWidth + 1 : null, primaRiga: r1 ? ((n258 ? n258.parentElement : r1).innerText || '').replace(/\s+/g, ' ').trim() : null,
       verde: riga ? /#006600|rgb\(0, 102, 0\)/i.test(riga.innerHTML) : null };
   });
   await page.screenshot({ path: new URL('./out/calendario-247' + (rosso ? '-rosso' : '') + '.png', import.meta.url).pathname, fullPage: true }).catch(() => {});

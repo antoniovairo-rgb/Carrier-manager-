@@ -76,10 +76,28 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
       </button>)}
     {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{_senzaDoppione068(children,momento)}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
+/* [giro 235 · PO-458 / G195-11] UNA REGOLA SOLA PER IL TASTO PRINCIPALE, scritta partendo da PO-411 (il tasto del momento, giro 194):
+   PIENO NEL COLORE DEL CLUB, scritta in carattere TV maiuscolo e nero-grassetto, l'inchiostro scelto dal contrasto (inkSu945, quindi
+   i club chiari hanno il testo scuro). Due casi della stessa regola, non due stili:
+     · il colore del club si confonde col fondo scuro della pagina (contrasto < 3:1, es. i neri #0f0f0f): il fondo resta il colore del
+       club e un filo chiaro attorno ne disegna il bordo;
+     · il tasto sta SOPRA un riquadro che e' gia' nel colore del club (la «Prossima» della Home, data-club106): il negativo crema,
+       altrimenti il tasto sparirebbe nel suo riquadro.
+   Senza club (menu iniziale, creazione, provino prima della firma) il tasto e' crema: e' il colore di marca del tema unico.
+   _TP235.c lo scrive CareerApp a ogni disegno (il club del giocatore), App lo azzera fuori dalla carriera.
+   Rosso __CPM_NO_G235: i quattro stili di prima (crema · bordeaux · verde · contorno oro). */
+const _TP235={c:null};
+function tasto235(suClub){
+  const c=_TP235.c;
+  if(!c||suClub||typeof c!=="string"||c[0]!=="#")return{bg:TINTE.testo,ink:TINTE.bg,bordo:"none"};
+  const filo=_rap944(c,TINTE.bg)<3;
+  return{bg:c,ink:inkSu945(c),bordo:filo?"1px solid "+TINTE.sec:"none"};}
+const stileTasto235=(suClub)=>{const t=tasto235(suClub);return{background:t.bg,color:t.ink,border:t.bordo,fontFamily:FONT_TV,fontWeight:FW.black,textTransform:"uppercase",letterSpacing:"0.04em"};};
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
 const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
-const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
+const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",suClub=false,...rest})=>{
+  if(_g235()&&v==="green")v="primary";/* [giro 235] «Fai girare il nome» era il quarto stile del tasto principale: ora e' il tasto principale */
   const vs={
     primary:{background:TINTE.testo,color:TINTE.bg,fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
     green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
@@ -91,6 +109,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
     festa:{background:TH.festaGrad,color:TH.festaInk,fontWeight:FW.black,boxShadow:"0 8px 30px "+TH.festaGlow},/* [giro 23 PO-251 «Oro da festa»] SOLO momenti di trofeo (festa «CAMPIONI!», coppe): oro pieno, inchiostro scuro */
   };
+  if(_g235())vs.primary={...stileTasto235(suClub),fontSize:Math.round((_BTN_SIZE[size]||_BTN_SIZE.md).fontSize*1.15),borderRadius:RAD.md};/* [giro 235] la regola unica; il carattere TV e' stretto: corpo +15% per la stessa lettura */
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
   return<button data-suono={(v==="primary"||v==="green"||v==="gold"||v==="festa")?"conferma":undefined}/* [giro 172 PO-370] il tasto pieno della vista e' la conferma importante: l'unico che suona */ onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:_tocco292()?Math.max(sz.minHeight||0,40):sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
@@ -197,9 +216,9 @@ function FiguraV2({player,w=54,grande=false}){
 const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
 function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
 /* [giro 190 · PO-396/397] due gradini in piu' fra l'intero e la sigla, nello stesso ordine «dal piu' lungo al piu' corto»:
-   (a) PO-396 «Primavera» si accorcia in «U19» (FC Valmora Primavera → FC Valmora U19) prima di ogni altra cosa;
+   (a) PO-396 «Primavera» si accorcia in «U19» (FC Nerazzurri Primavera → FC Nerazzurri U19) prima di ogni altra cosa;
    (b) PO-397 il NOME ABBREVIATO: cade la sigla societaria in testa (FC/AC/CF/AT…: 285 club su 295 cominciano cosi'),
-       «FC Valmora» → «Valmora», «FC Valmora U19» → «Valmora U19», poi «Valmora» da solo; la sigla del club resta l'ultimo gradino.
+       «FC Nerazzurri» → «Nerazzurri», «FC Nerazzurri U19» → «Nerazzurri U19», poi «Nerazzurri» da solo; la sigla del club resta l'ultimo gradino.
    Rossi: __CPM_NO_G190D toglie (a), __CPM_NO_G190E toglie (b). */
 const _PREF_SOC190=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
 function _no211(){return typeof window!=='undefined'&&!!window.__CPM_NO_G211;}
@@ -208,8 +227,8 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   const u19=_no190("D")?n:n.replace(/(^|\s)Primavera(?=$|\s)/g,"$1U19");add(u19);
   const ab=abbreviaSquadra182(u19);
   /* [giro 211 · PO-472] il NOME CORTO (senza la categoria) per i club senza sigla societaria in testa, fra il nome con la
-     categoria e la sigla: «Torino Athletic Primavera» → «Torino Athletic U19» → «Torino Athletic» → «TAT». Coi club «FC …» il
-     nome corto c'e' gia' («Valmora»). Rosso __CPM_NO_G211 = scala di prima. */
+     categoria e la sigla: «Manchester Rovers U19» → «Manchester Rovers» → «MCR» (esempio aggiornato al giro 251: era «Torino Athletic»,
+     oggi «FC Zebre»). Coi club «FC …» il nome corto c'e' gia' («Nerazzurri»). Rosso __CPM_NO_G211 = scala di prima. */
   const g211=!_no211()&&!_PREF_SOC190.test(ab);const senzaCat=(x)=>{const y=x.replace(/\s+U19$/,"");return y!==x&&y.length>=3?y:"";};
   if(g211)add(senzaCat(u19));
   add(ab);
@@ -222,6 +241,15 @@ function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182
    Rosso __CPM_NO_G203 = come prima (sigla ritagliata). */
 const ADATTA203_MIN=12;
 function _no203(){return typeof window!=='undefined'&&!!window.__CPM_NO_G203;}
+/* [giro 254 · rapporto 248 dubbio 6] «FC Lyon» usciva di 0,7 px dalla casella a 360 px: la casella e' larga 40,70 px, ma
+   clientWidth e scrollWidth sono INTERI e arrotondano entrambi a 41 → il controllo «scrollWidth>clientWidth+0.5» non vedeva il
+   taglio. Ora l'eccesso si misura sub-pixel: larghezza VERA del testo (Range) contro la casella vera (rettangolo meno padding e
+   bordi). Rosso __CPM_NO_G254 = il controllo intero di prima. */
+function _no254(){return typeof window!=='undefined'&&!!window.__CPM_NO_G254;}
+function _ecc254(el){if(_no254())return{fuori:el.scrollWidth>el.clientWidth+0.5,box:el.clientWidth,testo:el.scrollWidth};
+  try{const r=el.getBoundingClientRect();const cs=getComputedStyle(el);const pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0)+(parseFloat(cs.borderLeftWidth)||0)+(parseFloat(cs.borderRightWidth)||0);
+    const box=r.width-pad;const rg=document.createRange();rg.selectNodeContents(el);const testo=rg.getBoundingClientRect().width;
+    return{fuori:testo>box+0.05,box,testo};}catch(_e){return{fuori:el.scrollWidth>el.clientWidth+0.5,box:el.clientWidth,testo:el.scrollWidth};}}
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
@@ -231,9 +259,10 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   useEffect(()=>{setLiv(0);setFs203(0);},[key]);
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
-    else if(ad203&&liv>=cand.length-1&&el.scrollWidth>el.clientWidth+0.5){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
-      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*el.clientWidth/el.scrollWidth*10)/10);
+    const e254=_ecc254(el);
+    if(e254.fuori&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
+    else if(ad203&&liv>=cand.length-1&&e254.fuori){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
       if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);}}});
   /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
      si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
@@ -243,7 +272,7 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
       if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
-      if(el.scrollWidth>el.clientWidth+0.5)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+      if(_ecc254(el).fuori)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;
@@ -277,6 +306,20 @@ function TagV2({t,c,cpm}){return(<span data-cpm={cpm||"tag-v2"} style={{display:
 function TaccheV2({n,tot=3,col,label,w=14}){
   return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
     {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||TINTE.verde):TINTE.anello}}/>)}</span>);}
+/* [giro 235 · PO-458 / G195-13, dentro PO-391 «popolarita' e fiducia a gradini, non a barra»] LA STESSA GRANDEZZA HA SEMPRE LA STESSA
+   FORMA: fiducia del mister e popolarita' erano barre in Home e anelli in Club. Ora un solo disegno in tutte e due le schede: cinque
+   gradini (tacche), la parola del gradino e il numero piccolo. Le soglie della fiducia sono quelle del giudizio «Allenatore» del Club
+   (85/70/50/30: In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale), cosi' tacche e parole non si contraddicono; la
+   popolarita' sale per quinti (20/40/60/80). Rosso __CPM_NO_G235: barre in Home e anelli in Club. */
+const GRADINI235={fiducia:{s:[30,50,70,85],p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
+  popolarita:{s:[20,40,60,80],p:["Poco conosciuto","Conosciuto","Apprezzato","Popolare","Idolo"],col:TINTE.oro}};
+function GradiniV235({k,l,v}){
+  const g=GRADINI235[k]||GRADINI235.fiducia;const x=Math.round(+v||0);const n=1+g.s.filter(t=>x>=t).length;
+  return(<div data-gradini235={k} role="img" aria-label={l+": "+g.p[n-1]+", "+x+" su 100"} style={{background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:RAD.lg,padding:"10px 12px",display:"flex",flexDirection:"column",gap:6,minWidth:0}}>
+    <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>{l}</span>
+    <span style={{display:"flex",gap:4}}>{[1,2,3,4,5].map(i=><span key={i} style={{flex:"1 1 0",height:8,borderRadius:RAD.xs,background:i<=n?g.col:TINTE.anello}}/>)}</span>
+    <span style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:6}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TINTE.testo}}>{g.p[n-1]}</span><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TINTE.sec}}>{x}/100</span></span>
+  </div>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -327,7 +370,59 @@ function SectionHeader({children,icon,right,style={}}){
      · e' un <button> vero con aria-expanded: chi naviga da tastiera o con la voce lo trova;
      · corpo del cappello >= FS.caption (11 px, il pavimento dichiarato) e colori dai token,
        cosi' non apre un buco nel contrasto misurato dalla griglia. */
+/* [giro 235 · PO-457 / G195-09] IL PROFILO IN CINQUE GRUPPI. Venti fisarmoniche in fila, con nomi che si confondevano («Statistiche» e
+   «Statistiche carriera», «Record di carriera» e «Record personali», tre voci di premi) e due parole inglesi («Milestone», «Achievement»),
+   diventano cinque gruppi con nomi chiari: Numeri · Premi e traguardi · Storia · Persone · Contratto e attributi. Il GRUPPO e' la sola
+   cosa che si apre e si chiude (stesse regole della Fisarmonica: e' un <button> con aria-expanded, il cappello dice quante sezioni ha,
+   la scelta resta per id); dentro, ogni vecchia fisarmonica diventa una SEZIONE fissa col suo titolo (role heading, livello 3) e il
+   nome nuovo di NOMI235. Un gruppo senza sezioni (carriera giovane) non si disegna. Rosso __CPM_NO_G235: le venti fisarmoniche. */
+const GruppoCtx235=React.createContext(false);
+const NOMI235={"profilo-statistiche":"Questa stagione","s24-statistiche-carriera":"Andamento negli anni","profilo-record":"Massimi di carriera",
+  "s24-record-di-carriera":"Piazzamenti e titoli","profilo-trofei":"Bacheca dei trofei","s24-record-premi-personali":"Premi individuali",
+  "profilo-corsa-premi":"Corsa ai premi della stagione","profilo-mvp-mese":"Migliore del mese","profilo-milestone":"Traguardi","profilo-achievement":"Imprese",
+  "s24-modalita-sfida":"La tua sfida","profilo-biografia":"Biografia","profilo-timeline":"Stagione per stagione","profilo-diario":"Diario di carriera",
+  "profilo-memoria":"Memoria della carriera","profilo-match-cuore":"Partita del cuore","s24-la-citta-ti-ricorda":"La città ti ricorda",
+  "profilo-allenatori":"I tuoi allenatori","profilo-stampa":"La stampa","profilo-attributi":"Attributi","profilo-status-u18":(_g260()?"Stato Primavera":"Stato Under 18")/* [giro 260 · decisione PO D] */,
+  "profilo-contratto":"Contratto"};
+function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
+  const figli=React.Children.toArray(children).filter(Boolean);
+  const _k="cpm-gr235-"+id;const _tutteAperte=(typeof window!=='undefined'&&window.__CPM_FIS_APERTE)||false;
+  const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
+  const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
+  if(!_g235())return <>{figli}</>;
+  if(!figli.length)return null;
+  return(
+    <section data-gruppo235={titolo} aria-label={titolo} style={{display:"flex",flexDirection:"column"}}>
+      <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
+        style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"10px 13px",minHeight:_tocco292()?48:(_mouse110()?40:undefined),cursor:"pointer",
+          background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:apr?(RAD.lg+"px "+RAD.lg+"px 0 0"):(RAD.lg+"px"),fontFamily:"inherit",textAlign:"left"}}>
+        <span style={{display:"flex",flexDirection:"column",gap:2,minWidth:0,flex:1}}>
+          <span role="heading" aria-level={2} style={{...fsTV(FS.subhead,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:TINTE.testo}}>{titolo}</span>
+          {nota&&<span style={{fontSize:FS.caption,color:TINTE.sec,lineHeight:1.3}}>{nota}</span>}
+        </span>
+        <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TINTE.sec,flexShrink:0}}>{figli.length===1?"1 sezione":figli.length+" sezioni"}</span>
+        <span aria-hidden style={{fontSize:FS.subhead,color:TINTE.sec,lineHeight:1,transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
+      </button>
+      {apr&&<div style={{display:"flex",flexDirection:"column",gap:_sb(9),padding:"10px 8px 8px",border:"1px solid "+TINTE.bordo,borderTop:"none",borderRadius:"0 0 "+RAD.lg+"px "+RAD.lg+"px"}}>
+        <GruppoCtx235.Provider value={true}>{figli}</GruppoCtx235.Provider></div>}
+    </section>);
+}
+/* [giro 257 PO-496 seguito] il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
+function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
+  const _gr235=React.useContext(GruppoCtx235)&&_g235();
+  if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
+    const _suf=typeof titolo==="string"?((titolo.match(/\s\([^)]*\)$/)||[""])[0]):"";const t=NOMI235[id]?NOMI235[id]+_suf:titolo;/* «Achievement (4/34)» → «Imprese (4/34)» */
+    return(
+      <div data-sezione235={typeof t==="string"?t:id} style={{...style,marginBottom:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:RAD.xs+"px "+RAD.xs+"px 0 0"}}>
+          {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
+          <span role="heading" aria-level={3} style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{t}</span>
+          {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
+        </div>
+        <div>{children}</div>
+      </div>);
+  }
   const _k="cpm-fis-"+id;
   /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
      Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di
@@ -442,10 +537,11 @@ const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.
 const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
   useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
-  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
+  const g=_g234(),idT=React.useMemo(()=>"fin234-"+Math.random().toString(36).slice(2,8),[]);/* [giro 234 PO-459 · G195-06] ogni finestra del kit e' un dialog modale col suo titolo come nome (prima: 0 segnali di finestra aperta). Solo attributi. Rosso __CPM_NO_G234 */
+  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} {...(g?{role:"dialog","aria-modal":"true",...(title!=null?{"aria-labelledby":idT}:{"aria-label":"Finestra"})}:{})} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
+        <div data-cpm="finestra-titolo" id={g?idT:undefined} role={g?"heading":undefined} aria-level={g?2:undefined} style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
+        {dismissable&&onClose&&<button onClick={onClose} aria-label={g?"Chiudi":undefined} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
       </div>}
       <div data-cpm="finestra-corpo" style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div data-cpm="finestra-piede" style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
@@ -517,9 +613,10 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 function _mouse110(){try{return _g110(20)&&!!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches&&!window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
-  return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
+  const g=_g234();/* [giro 234 PO-455/459] la voce attiva si dichiara (aria-selected) e, col testo grande, l'icona va sopra la parola invece di tagliarla («📅Calendario −8»). Rosso __CPM_NO_G234 */
+  return(<div className="cpm-tabs40" role={g?"tablist":undefined} style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} {...(g?{role:"tab","aria-selected":act}:{})} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",...(g?{flexWrap:"wrap",rowGap:0,overflow:"visible",textOverflow:"clip"}:{})}}>{it.icon&&<span aria-hidden={g?"true":undefined}>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
@@ -1808,7 +1905,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
     const col=K46==="borgo"?_BORGO46[idx%4]:idx%3===0?_hC:idx%3===1?hLight:hDark;
     const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),stadCfg&&stadCfg.sponsor?_spMat(col,(idx>>1)%2?"k":"s"):(_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col})));
-    m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
+    m.position.set(ax,ah/2,az);m.rotation.y=rotY;m.userData.ost245='cartellone-stadio';/* [giro 245] etichetta inerte per il testimone tunnel-245 */scene.add(m);
     // Small text-like stripe on top
     const stripe=new THREE.Mesh(new THREE.BoxGeometry(aw,0.15,0.24),new THREE.MeshLambertMaterial({color:0x111111}));
     stripe.position.set(ax,ah+0.075,az);stripe.rotation.y=rotY;scene.add(stripe);
@@ -1819,7 +1916,16 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      d'angolo (stesse coordinate) → linea e bandierina risultavano «dentro» il cartellone. Ora stanno appena OLTRE
      il bordo del prato (z=±35.2, prato ±35.0): linee e bandierine restano sull'erba, i board le incorniciano. */
   const _tun46=!(typeof window!=='undefined'&&window.__CPM_NO_STADI246);/* [giro 46] il tunnel d'ingresso apre un varco nei cartelloni */
-  for(let i=-44;i<=44;i+=11){if(!(_tun46&&(i===-22||i===-33)))addAd(i,-35.2,9,1.3,0,idx);idx++;addAd(i,35.2,9,1.3,Math.PI,idx++);}
+  /* [giro 245 PO-510 «il cartellone pubblicitario all'uscita del tunnel e' di intralcio. Il tunnel dovrebbe essere proprio a
+     meta' campo tra le due panchine» — rosso __CPM_NO_G245: la disposizione di prima] LA BOCCA A META' CAMPO. Misurato prima
+     (tunnel-245, 17 stadi): bocca a x -22, cioe' all'estremita' della panchina di casa (x -20,5..-7,5), e in ogni stadio 120-135
+     fotogrammi dell'ingresso con un corpo dentro un oggetto — il cartellone LED di src/12 (x -19..-6), la striscia LED del
+     perimetro (continua, senza varco), la panca bassa di casa, le pareti del tunnel (i bambini, larghi 0,72 dal giocatore).
+     Ora la bocca e' a x 0, fra le due panchine (gia' simmetriche a ±14), larga 6 invece di 5,2; il varco nei cartelloni e'
+     quello davanti alla bocca (qui il pannello x -4,5..4,5; in src/12 il pannello LED centrale e i due segmenti centrali
+     della striscia). */
+  const _g245=!(typeof window!=='undefined'&&window.__CPM_NO_G245);
+  for(let i=-44;i<=44;i+=11){if(!(_tun46&&(_g245?(i===0):(i===-22||i===-33))))addAd(i,-35.2,9,1.3,0,idx);idx++;addAd(i,35.2,9,1.3,Math.PI,idx++);}
   for(let i=-28;i<=28;i+=12){addAd(53.2,i,9,1.3,Math.PI/2,idx++);addAd(-53.2,i,9,1.3,-Math.PI/2,idx++);}
 
   /* [7.184.2 collaudo PO «le linee del fallo laterale non sono allineate con le bandierine!»] RIMOSSE le bandierine
@@ -1832,9 +1938,12 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // [5.88.0 S2] PANCHINE + AREA TECNICA (tutti i template): due dugout ai lati del tunnel, lato Ovest
   {const _dgM=new THREE.MeshLambertMaterial({color:0x1c2430});
    const _dgGl=new THREE.MeshLambertMaterial({color:0x9fc2dd,transparent:true,opacity:0.4});
-   [[-14,-1],[14,1]].forEach(([dx])=>{
-     const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);scene.add(b1);
-     const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;scene.add(r1);
+   /* [giro 255, dubbio 4 del giro 245 — decisione PO 17/11 «Sì, toglila». Rosso __CPM_NO_G255] la panca bassa con pensilina di vetro
+      (z -34,6, a cavallo dei cartelloni) non si costruisce piu': resta la panchina vera coi panchinari di src/12 (z -38,5), una per
+      squadra ai lati del tunnel, in tutte le tipologie. */
+   if(typeof window!=='undefined'&&window.__CPM_NO_G255)[[-14,-1],[14,1]].forEach(([dx])=>{
+     const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);b1.userData.ost245='panca-stadio';scene.add(b1);
+     const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;r1.userData.ost245='pensilina-stadio';scene.add(r1);
    });}
   /* [giro 46 PO-071 — INGRESSO IN CAMPO. Rosso __CPM_NO_STADI246] LA BOCCA DEL TUNNEL. Le due squadre partono da (x -24..-16,
      z -36) — src/12 _placeRow — ma li' non c'era nulla: uscivano da un cartellone. Ora un portale nella base della Tribuna
@@ -1842,11 +1951,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      pensilina verde · arena: vetro e LED nel colore del club · gli altri: cemento con cornice del club). */
   let _tun46info=null;
   if(_tun46){try{
-    const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=-22,_w=5.2,_h=3.0;
+    const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=_g245?0:-22,_w=_g245?6.0:5.2,_h=3.0;/* [giro 245 PO-510] a meta' campo, 0,8 piu' larga: due file + bambini senza toccare pareti e pilastri */
     const _frM=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
     const _inM=new THREE.MeshBasicMaterial({color:0x07080c});
     const mouth=new THREE.Mesh(new THREE.PlaneGeometry(_w-0.6,_h-0.3),_inM);mouth.position.set(_tx,(_h-0.3)/2,_fz+0.12);/* davanti allo striscione della competizione (+0,06), che altrimenti tappa la bocca */scene.add(mouth);
-    [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);scene.add(pl);});
+    [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);pl.userData.ost245='tunnel-pilastro';scene.add(pl);});
     const lin=new THREE.Mesh(new THREE.BoxGeometry(_w+0.4,0.5,0.55),_frM);lin.position.set(_tx,_h+0.2,_fz+0.2);scene.add(lin);
     let _stile="cemento";
     if(K46==="borgo"){_stile="pensilina";
@@ -1854,7 +1963,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     else if(_L>0.6){
       const _isA=K46==="arena";_stile=_isA?"vetro":"telescopico";
       const wM=_isA?_plexiM:new THREE.MeshLambertMaterial({color:0x2a2f38});
-      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.BoxGeometry(0.16,_h,_L),wM);w.position.set(_tx+sd*_w/2,_h/2,_fz+_L/2);scene.add(w);});
+      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.BoxGeometry(0.16,_h,_L),wM);w.position.set(_tx+sd*_w/2,_h/2,_fz+_L/2);w.userData.ost245='tunnel-parete';scene.add(w);});
       const rf=new THREE.Mesh(new THREE.BoxGeometry(_w+0.5,0.3,_L),_isA?_roofDarkM:new THREE.MeshLambertMaterial({color:0x22262e}));rf.position.set(_tx,_h+0.15,_fz+_L/2);scene.add(rf);
       const band=new THREE.Mesh(new THREE.BoxGeometry(_w+0.6,0.32,0.3),_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.3)}):_frM);
       band.position.set(_tx,_h+0.05,_mz-0.1);scene.add(band);}
@@ -2010,10 +2119,74 @@ function loadGLB(url){
   //   cache → il match ri-scarica da zero. I successi restano cachati (il prefetch continua a giovare).
   if(!_glbCache[url])_glbCache[url]=new Promise((res,rej)=>{
     if(typeof THREE.GLTFLoader==='undefined'){rej(new Error('no GLTFLoader'));return;}
-    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
+    new THREE.GLTFLoader().load(url,g=>{try{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;}catch(_e233){}_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
   }).catch(e=>{try{delete _glbCache[url];}catch(_){}throw e;});
   return _glbCache[url];
 }
+/* [giro 233 · PO-453 «primo avvio leggero»] MISURATO (tests/visual/misura-233.mjs, telefono 375x667, primo avvio): entro 2,5 s dal
+   menu partivano da sole 34 richieste per 49,5 MB (corpi CGTrader lod0+lod1+lod2 27,5 MB, capelli PNG 9,9 MB, corpo «regular» x3
+   6,3 MB, clip 5,8 MB) senza che il giocatore avesse fatto nulla. E in partita (146 campioni) il livello intermedio non e' mai
+   acceso: 1 corpo a lod0 (l'eroe), 22 a lod2, 0 a lod1; nel lod0 12,3 MB su 16,4 sono immagini 2048 px.
+   Ora: (1) all'apertura del menu NON si scarica nessun modello; i modelli si chiedono quando il giocatore entra in gioco
+   (schermata di creazione → corpo dell'intro e poi corpi del provino; ingresso nella carriera e apertura della partita → corpi
+   della partita; cerimonie → al montaggio), cosi' arrivano PRIMA della prima scena 3D (PO-237/PO-241: la prima partita non deve
+   pagare il caricamento), sempre
+   con un avanzamento VISIBILE (pillola in alto, o schermata d'attesa sopra la scena finche' i corpi non ci sono); (2) su un
+   dispositivo leggero (lato corto dello schermo ≤ 500 px, o ≤ 4 GB dichiarati, o «risparmio dati») il livello piu' pesante non si
+   scarica: l'eroe usa il lod1 (12.244 triangoli, immagini 1024 px); (3) i capelli sono WebP (9,9 → 0,85 MB, ritaglio alfa identico,
+   tools/capelli-233.py); (4) le due varianti di corporatura del corpo «regular» (4,2 MB) non si scaricano nel modo CGTrader, dove
+   quel corpo non si vede mai (giro 196). Rosso __CPM_NO_G233 = tutto come nella 7.999.196. Guardiano npm run avvio-233. */
+function _g233(){return !(typeof window!=='undefined'&&window.__CPM_NO_G233);}
+function leggero233(){try{if(typeof window==='undefined')return false;const f=window.__CPM_DETT233;if(f==='alto')return false;if(f==='leggero')return true;/* solo banco di prova */
+  if(!_g233())return false;const s=Math.min((window.screen&&screen.width)||9999,(window.screen&&screen.height)||9999);const c=navigator.connection||{};
+  return s<=500||(!!navigator.deviceMemory&&navigator.deviceMemory<=4)||!!c.saveData;}catch(_e){return false;}}
+function urlLod233(liv){return './assets/cgtrader-review-'+((liv==='lod0'&&leggero233())?'lod1':liv)+'-kit-adapter.glb';}
+function urlTesta233(k){return _g233()?'./assets/hair-colors/webp/HEAD_hair_'+k+'.webp':'./assets/hair-colors/source-textures/HEAD_hair_'+k+'.png';}
+/* avanzamento (0..1) di un elenco di file: byte arrivati su byte attesi (loadGLB li annota in __CPM_GLBP196); un file senza
+   dimensione dichiarata conta come la media degli altri */
+function avanz233(urls){try{const P=(typeof window!=='undefined'&&window.__CPM_GLBP196)||{},F=(typeof window!=='undefined'&&window.__CPM_FATTI233)||{};let a=0,t=0,n=0,ign=0,fat=0;
+  urls.forEach(u=>{const p=P[u];if(F[u]){fat++;if(p&&p[1]>0){a+=p[1];t+=p[1];n++;}else ign++;}else if(p&&p[1]>0){a+=Math.min(p[0],p[1]);t+=p[1];n++;}else ign++;});
+  if(!urls.length)return 1;if(!n)return fat/urls.length;const m=t/n;return Math.max(0,Math.min(1,(a+m*urls.filter(u=>F[u]&&!(P[u]&&P[u][1]>0)).length)/(t+m*ign)));}catch(_e){return 0;}}
+function _segna233(url,pr){try{pr.then(()=>{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;},()=>{});}catch(_e){}return pr;}
+/* pillola in alto «Scarico i giocatori 3D · NN%»: visibile finche' un gruppo e' in volo e nessuna schermata d'attesa la sostituisce */
+const _vol233={gruppi:[],iv:0};
+function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_vol233.gruppi.filter(g=>!g.fine);let el=document.getElementById('cpm-avanz233');
+  const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
+  if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
+  if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
+    /* striscia sottile in cima allo schermo (larga tutto, alta 18 px + area sicura): non copre titoli ne' tasti e non prende i tocchi */
+    el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:rgba(5,8,20,0.94);color:#fff;font:700 11px/18px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);white-space:nowrap;overflow:hidden;border-bottom:1px solid rgba(245,158,11,0.45);';
+    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';document.body.appendChild(el);}
+  const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
+  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(2,p)+'%';
+  try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
+  if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
+/* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
+function prepara233(gruppo){try{if(typeof window==='undefined'||window.__CPM_GLB===false||!_g233()||window.__CPM_NO_PRE237)return null;
+  {const es=_vol233.gruppi.find(g=>g.gruppo===gruppo&&(!g.fine||g.fatti===g.urls.length));if(es)return es;}/* gia' in volo o gia' arrivato: una volta sola */
+  if((function(){try{return localStorage.getItem('cpm-glb')==='0'||/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return false;}})())return null;
+  const cg=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';let L=[];
+  if(gruppo==='intro'){if(cg&&!window.__CPM_NO_CGINTRO)L=['./assets/cgtrader-review-lod1-kit-adapter.glb'];}
+  else if(gruppo==='partita'){L=['korward-regular-player'].concat(cg?[]:['korward-regular-player-slim','korward-regular-player-stocky']).concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance','walk'].map(n=>'korward-regular-anims/regular-anim-'+n)).map(n=>'./assets/'+n+'.glb');
+    if(cg){['lod0','lod1','lod2'].forEach(l=>{const u=urlLod233(l);if(L.indexOf(u)<0)L.push(u);});L=L.concat(['./assets/cgtrader-clip-mixamo.glb','./assets/cgtrader-clip-po.glb','./assets/cgtrader-clip-po2.glb']);
+      const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};['brown','black','blond','auburn'].forEach(k=>{try{if(T[k])return;const im=new Image();im.decoding='async';im.src=urlTesta233(k);const fatto=()=>{T[k]=im;};if(im.decode)im.decode().then(fatto).catch(()=>{});else im.onload=fatto;}catch(e){}});}}
+  if(!L.length)return null;const g={gruppo,urls:L,t0:Date.now(),fine:null,fatti:0};_vol233.gruppi.push(g);
+  try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.gruppi=w.gruppi||[]).push(g);}catch(_e){}
+  const agg237=()=>{try{const G=_vol233.gruppi;window.__CPM_PRE237={fatti:G.reduce((s,x)=>s+x.fatti,0),tot:G.reduce((s,x)=>s+x.urls.length,0),t0:G[0].t0,fine:G.every(x=>x.fine)?Date.now()-G[0].t0:null};}catch(_e){}};agg237();/* lo stesso testimone delle sonde di PO-237/PO-241 */
+  let prox=0,vivi=Math.min(window.__CPM_NO_ATTESA241?1:6,L.length);const n0=vivi;const pross=()=>{const i=prox++;if(i>=L.length){if(--vivi===0){g.fine=Date.now()-g.t0;agg237();_pillola233();}return;}_segna233(L[i],loadGLB(L[i])).then(()=>{g.fatti++;agg237();},()=>{}).then(pross);};
+  for(let k=0;k<n0;k++)pross();_pillola233();return g;}catch(_e){return null;}}
+/* schermata d'attesa SOPRA una scena 3D (intro, cerimonie) finche' i suoi corpi non ci sono: opaca, con barra e percentuale.
+   Compare solo se l'attesa supera 250 ms (file gia' in memoria = nessun lampo). Ritorna la funzione che la toglie. */
+function copri233(host,urls,pr,nome){try{if(!_g233()||!host||typeof document==='undefined')return ()=>{};let el=null,iv=0,finito=false;const t0=Date.now();
+  const reg={nome:nome||'?',t0,vista:false,ms:null,esito:null};try{const w=(window.__CPM_G233=window.__CPM_G233||{});(w.coperture=w.coperture||[]).push(reg);}catch(_e){}
+  urls.forEach(u=>{try{if(_glbCache[u])_segna233(u,_glbCache[u]);}catch(_e){}});
+  let mx=0;const agg=()=>{if(!el)return;const p=mx=Math.max(mx,Math.round(avanz233(urls)*100));el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
+  const tm=setTimeout(()=>{if(finito)return;el=document.createElement('div');el.setAttribute('data-cpm','attesa233');el.setAttribute('data-scena',nome||'');el.setAttribute('role','status');
+    el.style.cssText='position:absolute;inset:0;z-index:3;background:#050814;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;text-align:center;font-family:inherit;';
+    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div style="width:min(260px,70%);height:8px;background:rgba(255,255,255,0.14);border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:#f59e0b;border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
+    try{host.appendChild(el);reg.vista=true;}catch(_e){}agg();iv=setInterval(agg,250);_pillola233();},250);
+  const via=(esito)=>{if(finito)return;finito=true;clearTimeout(tm);if(iv)clearInterval(iv);reg.ms=Date.now()-t0;reg.esito=esito||'tolta';try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(_e){}el=null;_pillola233();};
+  Promise.resolve(pr).then(()=>via('pronti'),()=>via('fallito'));return via;}catch(_e){return ()=>{};}}
 // [6.95.0 collaudo PO «a volte il CH38 non viene caricato subito, iniziano la partita i soldatini»] PREFETCH
 //   al BOOT: i 12 GLB del CH38 partono in download appena il gioco carica (cache _glbCache condivisa col match)
 //   → quando arrivi all'ingresso in campo il modello è già pronto. Rispetta la preferenza ?glb=0 / 'cpm-glb'.
@@ -2041,6 +2214,7 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pre237on=(function(){try{return localStorage.getItem('cpm-glb')!=='0'&&!/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return true;}})();
   if(_pre237on)setTimeout(function(){try{
     if(window.__CPM_NO_PRE237)return;
+    if(_g233())return;/* [giro 233 PO-453] niente modelli scaricati all'apertura del menu: li chiede prepara233 quando una scena 3D sta per servire */
     const _cg237=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';
     const idle=f=>{try{if(typeof requestIdleCallback==='function')requestIdleCallback(f,{timeout:1500});else setTimeout(f,60);}catch(e){setTimeout(f,60);}};
     const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};

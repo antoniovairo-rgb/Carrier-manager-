@@ -41,6 +41,15 @@ for (const rosso of [false, true, 'g102']) {
   R.b = [];
   for (const [gi, k, OUTC, KIND] of SCENE) {
     if (rosso === 'g102' && !(gi === 14 || gi === 16)) continue;
+    /* [giro 271] LA SCENA GIUDICATA DEV'ESSERE QUELLA SOTTO ESAME. MISURATO (10 corse, 5 sulla base senza il giro 265 e 5 con: tutte
+       verdi): su 60 consegne riuscite di gi14/gi16, 4 non sono uscite «chance» ma «assist» (il motore ha deciso il gol del compagno:
+       giocaScena, giro 93) — 3 su 20 nel braccio __CPM_NO_G102. Quella scena non e' una consegna che rimbalza in area: nel braccio
+       G102 non puo' mostrare il difetto, nel braccio rosso toglie una contraddizione. Con due scene per braccio bastano due sorteggi
+       cosi' per avere «0 su 2» (il rosso visto nel giro 265) senza che il gioco sia cambiato: il momento in cui la sonda forza la
+       scena dipende dai tempi di caricamento, e con lui lo stato del motore. RIPETIZIONE DICHIARATA: una scena della parte B che non
+       esce «chance» si rifa' su una pagina nuova, fino a 3 pagine; si giudica la prima uscita «chance». Nel verde anche le pagine
+       scartate passano dal classificatore (una contraddizione li' e' rossa lo stesso). Tre pagine senza «chance» = non giudicata = rosso. */
+    for (let tent = 1; ; tent++) {
     const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
     await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_V241 = {}; if (r === true) window.__CPM_NO_ESITI241 = 1; if (r === 'g102') window.__CPM_NO_G102 = 1; }, rosso);
     await openMatch(page, port, { skipLoadAll: true, name: 'Esiti241' });
@@ -52,21 +61,26 @@ for (const rosso of [false, true, 'g102']) {
     await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); await sleep(2500);
     await page.evaluate(([o, kd]) => { window.__CPM_FORCE_OUTCOME = o; if (kd) window.__CPM_FORCE_KIND = kd; window.__CPM_V241 = {}; window.__R241 = (window.__CPM_RES218 || []).length; }, [OUTC, KIND || null]);
     const lab = await page.evaluate(k => { const s = SITUATIONS[window.__CPM_LAST_FORCED_GI]; window.__CPM_RESOLVE(k); return s && s.actions[k] ? s.actions[k].label : null; }, k);
-    const tR = Date.now(); let s0 = null;
+    const tR = Date.now(); let s0 = null, sU = null;
     const lungo = (gi === 14 || gi === 16);/* [giro 102] sulla consegna in area il tuffo del portiere (difetto del braccio __CPM_NO_G102) arriva DOPO l'incornata: con due guardiani in parallelo 4 s di scena non bastavano a vederlo (rosso G102 0/2 sotto carico, 1/1 da solo). Finestra piu' lunga in TUTTI i bracci: il verde guarda di piu', non di meno */
-    while (Date.now() - tR < (lungo ? 90000 : 40000)) { await sleep(400); const s = await page.evaluate(() => (typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null)).catch(() => null); if (s != null) { if (s0 == null) s0 = s; if (s - s0 >= (lungo ? 7 : 4)) break; } }
+    while (Date.now() - tR < (lungo ? 90000 : 40000)) { await sleep(400); const s = await page.evaluate(() => (typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null)).catch(() => null); if (s != null) { if (s0 == null) s0 = s; sU = s; if (s - s0 >= (lungo ? 7 : 4)) break; } }
     const r = await page.evaluate(() => { const o = window.__CPM_OUTCOME || {}; const res = (window.__CPM_RES218 || []).slice(window.__R241 || 0).slice(-1)[0] || {}; const W = window.__CPM_V241 || {};
       return { ok: o.ok, outKey: o.outKey || null, outKind: o.outKind || null, overlay: o.overlay || null, text: o.text || null, ev: res.ev || [], v: (W.all || []).slice(-1)[0] || null }; });
-    r.label = lab; r.gi = gi;
+    r.label = lab; r.gi = gi; r.oss = `[osservati ${s0 == null ? '?' : (sU - s0).toFixed(1)} s di scena in ${((Date.now() - tR) / 1000).toFixed(0)} s reali]`;/* [giro 271] strumento: quanto tempo di scena ha davvero visto la finestra */
     if (KIND) { r.muro = !!(r.v && Object.keys(r.v.def || {}).length); r.contr = []; (R.c = R.c || []).push(r); } /* C: tipo forzato «blocked» — si giudica SOLO il 3D (col tipo forzato il riquadro non segue, banco-248 nota 3) */
-    else { r.contr = contraddizioni(r); R.b.push(r); }
-    await page.close();
+    else { r.contr = contraddizioni(r); r.tent = tent;
+      const sottoEsame = (r.ok && r.outKey === 'chance' && !(process.env.CPM_SCARTA271 && tent === 1))/* CPM_SCARTA271=1: prova dello strumento, la prima pagina si scarta come se non fosse «chance» */;
+      if (!sottoEsame && tent < 3) { (R.scartate = R.scartate || []).push(r); await page.close(); continue; }
+      if (!sottoEsame) r.nonGiud = `mai «chance» in ${tent} pagine (ultima ${r.outKey}/${r.outKind})`;
+      R.b.push(r); }
+    await page.close(); break; }
   }
   esito[rosso === 'g102' ? 'g102' : rosso ? 'rosso' : 'verde'] = R;
-  if (rosso === 'g102') { console.log(`ROSSO G102 (__CPM_NO_G102) B contraddizioni ${R.b.filter(x => x.contr.length).length}/${R.b.length}`); R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}»${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`)); continue; }
+  (R.scartate || []).forEach(x => console.log(`  scartata (non «chance»): gi${x.gi} ${x.outKey}/${x.outKind} «${x.overlay}»${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`));
+  if (rosso === 'g102') { console.log(`ROSSO G102 (__CPM_NO_G102) B contraddizioni ${R.b.filter(x => x.contr.length).length}/${R.b.length}`); R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}» ${x.oss}${x.tent > 1 ? ' [pagina ' + x.tent + ']' : ''}${x.nonGiud ? ' ⚠ NON GIUDICATA: ' + x.nonGiud : ''} gk:${JSON.stringify((x.v||{}).gk||null)}${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`)); continue; }
   console.log(`C muro con difensore ${(R.c || []).filter(x => x.muro).length}/${(R.c || []).length}`);
   console.log(`${rosso ? 'ROSSO' : 'VERDE'} A1 fallo cercato ${R.a1}/${R.nfc} · A2 dribbling col lessico del passaggio ${R.a2}/${R.ndr} · A3 motore ${R.a3 ? 'tiro' : 'contrasto'} (${R.a3ev}) · B contraddizioni ${R.b.filter(x => x.contr.length).length}/${R.b.length}`);
-  R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}» «${x.text}»${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`));
+  R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}» «${x.text}» ${x.oss}${x.tent > 1 ? ' [pagina ' + x.tent + ']' : ''}${x.nonGiud ? ' ⚠ NON GIUDICATA: ' + x.nonGiud : ''}${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`));
 }
 await b.close(); srv.close();
 const V = esito.verde, Ro = esito.rosso, g = [];
@@ -79,5 +93,8 @@ if (!(Ro.b.filter(x => x.contr.length).length >= 2)) g.push('rosso B: ' + Ro.b.f
 if (!((V.c || []).length === 2 && V.c.every(x => x.muro))) g.push('verde C: tiro/testa murati senza difensore nel 3D ' + (V.c || []).filter(x => !x.muro).map(x => 'gi' + x.gi).join(','));
 if (!((Ro.c || []).filter(x => x.muro).length === 0)) g.push('rosso C: il difensore c\'e\' anche spento');
 if (!(esito.g102.b.length === 2 && esito.g102.b.filter(x => x.contr.length).length >= 1)) g.push('rosso G102: ' + esito.g102.b.filter(x => x.contr.length).length + ' consegne in area col portiere in tuffo su ' + esito.g102.b.length + ' (attese >= 1)');
-if (g.length) { console.log('❌ esiti-241'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+for (const [nome, E] of [['verde', V], ['rosso', Ro], ['rosso G102', esito.g102]]) E.b.filter(x => x.nonGiud).forEach(x => g.push(`${nome} B: gi${x.gi} non giudicata (${x.nonGiud})`));/* [giro 271] */
+(V.scartate || []).filter(x => x.contr.length).forEach(x => g.push(`verde B: gi${x.gi} (pagina scartata, ${x.outKey}) ${x.contr.join('; ')}`));
+if (g.length) { console.log('❌ esiti-241'); g.forEach(x => console.log('  · ' + x)); console.log('BRACCIO ' + [...new Set(g.map(x => x.split(/ [ABC]?:| G102:/)[0]))].join('+') + ' · MOTIVO ' + g.join(' · ')); process.exit(1); }
 console.log('✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede');
+console.log('BRACCIO verde+rosso+rosso G102 · MOTIVO nessuno');

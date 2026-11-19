@@ -1,0 +1,21 @@
+A verde {"senza":{"pen":8,"penE":0,"occRig":0,"foul":1437,"foulE":188,"corner":388,"cornerE":6,"bat70":461,"bat70E":44},"con":{"pen":13,"penE":0,"occRig":13,"foul":1491,"foulE":532,"corner":387,"cornerE":24,"bat70":514,"bat70E":386},"dSenza":{"pen":10,"penE":0,"occRig":0,"foul":1441,"foulE":253,"corner":332,"cornerE":0,"bat70":539,"bat70E":97},"dCon":{"pen":11,"penE":11,"occRig":0,"foul":1456,"foulE":768,"corner":372,"cornerE":24,"bat70":618,"bat70E":594}}
+A rosso {"senza":{"pen":8,"penE":0,"occRig":0,"foul":1437,"foulE":188,"corner":388,"cornerE":6,"bat70":461,"bat70E":44},"con":{"pen":8,"penE":0,"occRig":0,"foul":1437,"foulE":188,"corner":388,"cornerE":6,"bat70":461,"bat70E":44},"dSenza":{"pen":10,"penE":0,"occRig":0,"foul":1441,"foulE":253,"corner":332,"cornerE":0,"bat70":539,"bat70E":97},"dCon":{"pen":10,"penE":0,"occRig":0,"foul":1441,"foulE":253,"corner":332,"cornerE":0,"bat70":539,"bat70E":97}}
+B verde {"premi":"{\"rig\":true,\"piaz\":true}","piazzati":5,"eroe":5,"provocate":12,"giudicate":12,"provEroe":12,"scartate":0,"nulle":0}
+B rosso {"premi":"null","piazzati":5,"eroe":1,"provocate":12,"giudicate":9,"provEroe":0,"scartate":0,"nulle":3}
+C verde {"card":["vice","voce","rig","piaz"],"bio":true,"con":61,"senza":60,"naz":"null","club":"{\"rig\":true,\"piaz\":true}","altro":"null","cap":false,"dopo":"{}"}
+C rosso {"card":null,"bio":false,"con":60,"senza":60,"naz":"null","club":"null","altro":"null","cap":false,"dopo":"{\"vice\":\"liv\",\"voce\":\"liv\",\"rig\":\"liv\",\"piaz\":\"liv\"}"}
+✅ con «piazzati» l'eroe e' il battitore designato delle punizioni dalla trequarti avversaria (motore senza scene): 594/618 (senza premi 97/539); nella partita vissuta 386/514 (senza premi 44/461: le tirabili senza scena le batte un compagno, giro 154)
+✅ angoli invariati entro il 15% (PO-065: l'eroe resta in area): senza 388 · con 387
+✅ con «rigorista» ogni rigore è suo (occasione di scena): 13/13
+✅ numero di piazzati invariato entro il 15% (PO-065): senza 1833 · con 1891
+✅ rosso __CPM_NO_G238: con i premi le punizioni dalla trequarti tornano ai compagni (97/539)
+✅ partita vera: il motore riceve i premi {"rig":true,"piaz":true}
+✅ partita vera: punizioni provocate dalla trequarti non tirabili (eroe non il piu' vicino) con l'eroe battitore designato 12/12 (provocate 12, scartate perche' l'eroe era il piu' vicino 0, nulle 0; naturali viste 5/5; meno di 4 giudicate = non giudicato = rosso)
+✅ rosso __CPM_NO_G238 partita vera: eroe battitore 0/9 punizioni provocate (le batte il compagno piu' vicino, che non e' l'eroe; naturali 1/5)
+✅ profilo: card dei premi ["vice","voce","rig","piaz"]
+✅ bio del profilo (generateBio): «vice-capitano del …» true
+✅ voce nello spogliatoio: chimica della settimana 60 → 61
+✅ durata e contesto: club {"rig":true,"piaz":true} · Nazionale null · altro club null · vice se capitano false
+✅ cambiando club i premi del club lasciato spariscono: {}
+✅ rosso __CPM_NO_G238: niente card (null), bio false, chimica 60→60, voci rimaste {"vice":"liv","voce":"liv","rig":"liv","piaz":"liv"}
+✅ patto-238 verde (e il rosso si vede)

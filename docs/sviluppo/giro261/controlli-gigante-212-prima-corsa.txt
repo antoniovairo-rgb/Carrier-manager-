@@ -1,0 +1,29 @@
+== gigante-212 · 02:13:19 · f1b2476e
+Mem:           16087         537       15021          12         766       15549
+/dev/vda        252G   13G   27G  33% /
+
+=== GIGANTE-212 · corpi nelle scene 3D === [VERDE]  statura [1.45·2.05] m (bambini [1.05·1.45]) · quota ≤ 0.6 · near vuoto
+  [02:13:19] scenario trasferta-tel
+  [02:13:32] trasferta-tel: playMatch → true
+  [02:16:33] trasferta-tel: ingresso/highlight finiti (fase hl_choose, highlight 2)
+  [02:16:47] scenario casa-pc
+  [02:16:59] casa-pc: playMatch → true
+  [02:21:00] casa-pc: ingresso/highlight finiti (fase hl_move, highlight 1)
+  [02:21:52] scenario festa-vera-tel
+  [02:25:03] festa-vera-tel: fischio finale → ended dopo 175 s
+  [02:25:03] scenario cerimonie-tel
+  ✓ trasferta-tel:ingresso             fotogrammi 209 · corpi 13167 · statura 1.23–1.83 m · quota max 1% · near 0
+  ✓ trasferta-tel:highlight            fotogrammi 76 · corpi 618 · statura 1.54–1.74 m · quota max 4% · near 0
+  ✓ trasferta-tel:festa                fotogrammi 37 · corpi 394 · statura 1.54–1.89 m · quota max 21% · near 0
+  ✓ casa-pc:ingresso                   fotogrammi 210 · corpi 13230 · statura 1.23–1.83 m · quota max 1% · near 0
+  ✓ casa-pc:highlight                  fotogrammi 38 · corpi 503 · statura 1.54–1.75 m · quota max 1% · near 0
+  ✓ casa-pc:festa                      fotogrammi 21 · corpi 190 · statura 1.54–1.89 m · quota max 1% · near 0
+  ✓ casa-pc:premiazione                fotogrammi 24 · corpi 636 · statura 1.54–1.89 m · quota max 3% · near 0
+  ✗ festa-vera-tel:festa               NON GIUDICATA (0 fotogrammi con corpi)
+  ✓ cerimonie-tel:presentazione        fotogrammi 37 · corpi 259 · statura 1.78–1.84 m · quota max 9% · near 0
+  ✓ cerimonie-tel:gala                 fotogrammi 229 · corpi 458 · statura 1.70–1.71 m · quota max 2% · near 0
+  ✓ cerimonie-tel:parata               fotogrammi 70 · corpi 560 · statura 1.77–1.87 m · quota max 1% · near 0
+  ✓ cerimonie-tel:avvio                fotogrammi 333 · corpi 666 · statura 1.81–1.81 m · quota max 15% · near 0
+
+❌ FAIL — 0 corpi fuori misura · non giudicate: festa-vera-tel:festa (0 fotogrammi)
+== uscita 1 · durata 810 s · 02:26:49

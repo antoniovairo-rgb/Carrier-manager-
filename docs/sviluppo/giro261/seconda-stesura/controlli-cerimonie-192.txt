@@ -1,0 +1,15 @@
+== cerimonie-192 · 23:11:02 · d6357b40
+Mem:           16087         982       11657          12        3748       15104
+/dev/vda        252G   13G   27G  33% /
+A verde {"passi":56,"vel":1.45,"slitt":0.014,"verso":0.164}
+A rosso {"passi":63,"vel":3.2,"slitt":0.322,"verso":8.656}
+B verde {"campioni":115,"volo":0.3,"salto":0.15,"capitano":true,"passaggio":true,"alzataMani":null}
+B rosso {"campioni":113,"volo":2.96,"salto":1.37,"capitano":true,"passaggio":true,"alzataMani":null}
+B eroe capitano {"campioni":63,"volo":0.31,"salto":0.18,"capitano":false,"passaggio":false,"alzataMani":0.441}
+B eroe capitano rosso {"campioni":110,"volo":2.96,"salto":1.37,"capitano":true,"passaggio":true,"alzataMani":null}
+D verde {"punti":82,"sat":0.792,"satRif":0.827,"tono":4.824,"lum":0.984,"coppa":6,"faccia":0,"sopra":0.297,"presa":0.128,"gomiti":177.7}
+D rosso {"punti":82,"sat":0.573,"satRif":0.827,"tono":17.959,"lum":1,"coppa":6,"faccia":0.174,"sopra":0.17,"presa":0,"gomiti":169.5}
+C verde {"uomini":7,"dipinti":0,"tifosi":13433,"spalle":-23.6,"gomiti":167.9,"manoAvanti":0.103}
+C rosso {"uomini":7,"dipinti":0,"tifosi":13433,"spalle":-35.3,"gomiti":133.9,"manoAvanti":0.143}
+✅ cerimonie-192 verde (e ogni rosso si vede) · punti A,B,C,D
+== uscita 0 · durata 520 s · 23:19:42

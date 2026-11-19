@@ -22,6 +22,7 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-194-primavera-w38.json', import.meta.url)));
+const SALTO = process.env.CPM_SALTO !== '0', SALTO_DA = +(process.env.CPM_SALTO_DA || 10), SALTO_A = +(process.env.CPM_SALTO_A || 68), SALTO_PT = (process.env.CPM_SALTO_PT || '0-1').split('-').map(Number);
 const NP = +(process.env.CPM_PARTITE || 1), SPEED = process.env.CPM_SPEED || '4', SCMS = +(process.env.CPM_SCMS || 6000), TETTO = 420000;
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function partita(i, braccio, rosso) {
@@ -43,14 +44,28 @@ async function partita(i, braccio, rosso) {
     const t1 = Date.now(); let cur = null;
     while (Date.now() - t1 < TETTO) { await sleep(400);
       const d = await page.evaluate(() => { const el = document.querySelector('[data-cpm="pop919"]'); return { ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, ck: window.__CPM_CLOCK ? window.__CPM_CLOCK() : null, sc: el ? (el.innerText || '').slice(0, 40) : null }; });
+      /* [giro 280] SCENARIO PROVOCATO (PO-311: «cio' che il gioco non produce si provoca dalla sonda»). Sulla 197 la partita di questo
+         salvataggio va 0-1 al 30' e 0-2 dal 60' e, per regola (INT259.FATTI, src/14), con due gol di scarto non nasce nessuna scheda:
+         braccio verde cieco. Ora, dopo SALTO_DA minuti di partita vera, l'orologio va a SALTO_A col punteggio SALTO_PT (eroe = home)
+         via __CPM_SALTA297 (solo ?cpmtest=1), lo stesso varco di lib/fischio-270.mjs: da 0-1 al 70' nasce «sotto_finale». Una sola
+         volta, uguale nei due bracci; nessuna riga di src/ toccata. CPM_SALTO=0 torna allo scenario del giro 44 (cieco sulla 197). */
+      if (SALTO && !out.salto && !d.sc && d.ph === 'playing' && (d.ck | 0) >= SALTO_DA) {
+        out.salto = await page.evaluate(([a, h, aw]) => { const p = window.__CPM_SCORE ? window.__CPM_SCORE() : null; const ok = window.__CPM_SALTA297 ? window.__CPM_SALTA297(a, h, aw) : false; return { prima: p, ok }; }, [SALTO_A, SALTO_PT[0], SALTO_PT[1]]).catch(e => ({ ok: false, err: String(e.message).slice(0, 80) }));
+        out.salto.daMin = d.ck; }
       if (d.sc && !cur) cur = { da: d.ck, a: d.ck, t: (d.sc || '').replace(/\s+/g, ' ') };
       else if (d.sc && cur) cur.a = d.ck;
       else if (!d.sc && cur) { out.aperte.push(cur); cur = null; }
       if (d.ph === 'ended' || d.ph === 'ceremony') { if (cur) { cur.alFischio = true; out.aperte.push(cur); cur = null; } out.finita = true; break; } }
     await sleep(1500);
     const W = await page.evaluate(() => ({ w: (window.__CPM_S259 && window.__CPM_S259.schede.length) ? { schede: window.__CPM_S259.schede, scelte: window.__CPM_S259.scelte.map(s => ({ id: s.fatto, min: s.min, auto: s.auto })) } : (window.__CPM_INT226 || { schede: [], scelte: [] }), tmr: window.__CPM_SC681_TMR | 0, fire: window.__CPM_SC681_FIRE | 0, clr: window.__CPM_SC681_CLR | 0 }));
+    out.punteggio = await page.evaluate(() => window.__CPM_SCORE ? window.__CPM_SCORE() : null).catch(() => null);
     out.schede = (W.w.schede || []).length; out.scelte = (W.w.scelte || []).map(s => s.id + '@' + s.min + (s.auto ? 'a' : '')); out.tmr = W.tmr; out.fire = W.fire;
-    out.mostrate = out.aperte.length; out.maxMin = Math.max(0, ...out.aperte.map(a => (a.a | 0) - (a.da | 0)));
+    out.mostrate = out.aperte.length; out.maxMinDom = Math.max(0, ...out.aperte.map(a => (a.a | 0) - (a.da | 0)));
+    /* [giro 280] misura ALLA SORGENTE (lezione 7.487): minuto in cui il motore fa nascere la scheda → minuto in cui la scelta arriva.
+       Il campionamento del DOM ogni 400 ms puo' vedere la scheda un minuto dopo la nascita (misurato: «71-72» nel rosso con nascita 70,
+       scelta 72): il valore giudicato e' il maggiore dei due, in tutti e due i bracci; soglia invariata (> 1). */
+    const usate = new Set(); out.maxMinMot = Math.max(0, ...(W.w.scelte || []).map(c => { const k = (W.w.schede || []).findIndex((x, j) => !usate.has(j) && x.fatto === c.id && (x.min | 0) <= (c.min | 0)); if (k < 0) return 0; usate.add(k); return (c.min | 0) - (W.w.schede[k].min | 0); }));
+    out.maxMin = Math.max(out.maxMinDom, out.maxMinMot);
   } catch (e) { out.errore = String(e.message).slice(0, 160); }
   out.errori = errs.slice(0, 3); await page.close(); return out;
 }
@@ -58,13 +73,14 @@ const R = [];
 for (const rosso of [false, true]) for (const br of ['giocatore', 'pilota']) for (let i = 0; i < NP; i++) {
   if (br === 'pilota' && (rosso || process.env.CPM_PILOTA !== '1')) continue;
   const o = await partita(i, br, rosso); R.push(o);
-  console.log((rosso ? 'ROSSO ' : 'VERDE ') + br + ' p' + i + ' · fine ' + o.finita + ' · schede a schermo ' + o.mostrate + ' · arrivate al motore ' + (o.scelte || []).length + ' ' + JSON.stringify(o.scelte) + ' · minuti a scheda aperta max ' + o.maxMin + ' · aperte ' + JSON.stringify((o.aperte || []).map(a => a.da + '-' + a.a + (a.alFischio ? ' FISCHIO' : ''))) + ' · timer armati/scaduti ' + o.tmr + '/' + o.fire + (o.errore ? ' · ERRORE ' + o.errore : '') + (o.errori.length ? ' · pageerror ' + o.errori.join(' | ') : ''));
+  console.log((rosso ? 'ROSSO ' : 'VERDE ') + br + ' p' + i + ' · fine ' + o.finita + ' · schede a schermo ' + o.mostrate + ' · arrivate al motore ' + (o.scelte || []).length + ' ' + JSON.stringify(o.scelte) + ' · minuti a scheda aperta max ' + o.maxMin + ' (schermo ' + o.maxMinDom + ' · motore ' + o.maxMinMot + ')' + ' · aperte ' + JSON.stringify((o.aperte || []).map(a => a.da + '-' + a.a + (a.alFischio ? ' FISCHIO' : ''))) + ' · timer armati/scaduti ' + o.tmr + '/' + o.fire + ' · salto ' + (o.salto ? o.salto.daMin + "'→" + SALTO_A + "' " + SALTO_PT.join('-') + (o.salto.ok ? '' : ' FALLITO') : 'no') + ' · finale ' + (o.punteggio ? o.punteggio.home + '-' + o.punteggio.away : '?') + (o.errore ? ' · ERRORE ' + o.errore : '') + (o.errori.length ? ' · pageerror ' + o.errori.join(' | ') : ''));
 }
 await b.close(); srv.close();
 const g = [], V = R.filter(o => !o.rosso && o.braccio === 'giocatore'), Ro = R.filter(o => o.rosso);
 const persa = o => (o.mostrate || 0) > (o.scelte || []).length || (o.aperte || []).some(a => a.alFischio);
 V.forEach(o => { if (!o.finita) g.push('verde p' + o.i + ': partita non finita'); if (persa(o)) g.push('verde p' + o.i + ': scheda persa (' + o.mostrate + ' a schermo, ' + (o.scelte || []).length + ' al motore)');
   if (o.maxMin > 1) g.push('verde p' + o.i + ': il cronometro corre con la scheda aperta (' + o.maxMin + ' minuti)'); if (o.errori.length) g.push('verde: errori di pagina'); });
+if (SALTO) R.forEach(o => { if (!o.salto || !o.salto.ok) g.push((o.rosso ? 'rosso' : 'verde') + ' p' + o.i + ': salto di scenario non avvenuto, non giudicato'); });
 if (!V.some(o => o.mostrate > 0)) g.push('verde: nessuna scheda comparsa, guardiano cieco');
 if (!Ro.some(o => o.maxMin > 1)) g.push('rosso: il cronometro non corre con la scheda aperta, il difetto non si vede');/* [giro 44] soglia = oltre la tolleranza del verde (1): misurato 3 minuti col rosso (71-74), 0 col verde */
 if (g.length) { console.log('❌ schede-246'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }

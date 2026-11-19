@@ -1,0 +1,1033 @@
+{
+ "R": {
+  "partite": 30,
+  "conCoreografia": 30,
+  "distinte": 14,
+  "ugualiDiFila": 0,
+  "coppie": [],
+  "cheSiMuovono": 4,
+  "conta": {
+   "8c4c1c10/1": 3,
+   "c5eaf48c/1": 3,
+   "f115e90c/1": 2,
+   "481483e1/1": 1,
+   "2352a876/1": 3,
+   "150f568c/1": 2,
+   "2ffa7b4c/1": 3,
+   "a471778e/9": 3,
+   "b1e3a8ba/1": 2,
+   "1f5b0f2c/1": 2,
+   "614090c/1": 3,
+   "88b1e76f/1": 1,
+   "63833dcb/1": 1,
+   "e93f6bd/1": 1
+  },
+  "nomi": [
+   "sigla",
+   "croce",
+   "diagonali",
+   "scritta",
+   "stemma",
+   "scacchi",
+   "gira",
+   "bandieroni",
+   "raggi",
+   "pali",
+   "scorre",
+   "srotola"
+  ],
+  "fps": {
+   "verde": 2.46,
+   "rosso": 2.53,
+   "fotogrammi": [
+    350,
+    351
+   ]
+  }
+ },
+ "S": [
+  {
+   "i": 0,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 12,
+   "avv": "new",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "8c4c1c10/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "sigla",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 1,
+   "tipo": "derby",
+   "casa": false,
+   "stagione": 12,
+   "avv": "tot",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "c5eaf48c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "croce",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 2,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 12,
+   "avv": "avl",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "f115e90c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "diagonali",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 3,
+   "tipo": "europea",
+   "casa": true,
+   "stagione": 12,
+   "avv": "mcy",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "481483e1/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scritta",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 4,
+   "tipo": "big",
+   "casa": false,
+   "stagione": 12,
+   "avv": "eve",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "2352a876/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "stemma",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 5,
+   "tipo": "finale",
+   "casa": true,
+   "stagione": 12,
+   "avv": "mun",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "8c4c1c10/1",
+   "firmaOspiti": "dac2dd9f/1",
+   "W": {
+    "id": "sigla",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": "scritta",
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 2
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 6,
+   "tipo": "derby",
+   "casa": true,
+   "stagione": 13,
+   "avv": "che",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "150f568c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scacchi",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 7,
+   "tipo": "big",
+   "casa": false,
+   "stagione": 13,
+   "avv": "ars",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "2ffa7b4c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "gira",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 8,
+   "tipo": "nazionale",
+   "casa": true,
+   "stagione": 13,
+   "avv": "whu",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "a471778e/9",
+   "firmaOspiti": null,
+   "W": {
+    "id": "bandieroni",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 9
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 9,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 13,
+   "avv": "ful",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "b1e3a8ba/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "raggi",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 10,
+   "tipo": "big",
+   "casa": false,
+   "stagione": 13,
+   "avv": "new",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "c5eaf48c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "croce",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 11,
+   "tipo": "derby",
+   "casa": true,
+   "stagione": 13,
+   "avv": "tot",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "8c4c1c10/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "sigla",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 12,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 14,
+   "avv": "avl",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "1f5b0f2c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "pali",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 13,
+   "tipo": "europea",
+   "casa": false,
+   "stagione": 14,
+   "avv": "mcy",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "2ffa7b4c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "gira",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 14,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 14,
+   "avv": "eve",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "614090c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scorre",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 15,
+   "tipo": "finale",
+   "casa": true,
+   "stagione": 14,
+   "avv": "mun",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "88b1e76f/1",
+   "firmaOspiti": "150f568c/1",
+   "W": {
+    "id": "scritta",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": "scacchi",
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 2
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 16,
+   "tipo": "derby",
+   "casa": false,
+   "stagione": 14,
+   "avv": "che",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "2352a876/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "stemma",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 17,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 14,
+   "avv": "ars",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "f115e90c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "diagonali",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 18,
+   "tipo": "nazionale",
+   "casa": true,
+   "stagione": 15,
+   "avv": "whu",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "c5eaf48c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "croce",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 19,
+   "tipo": "big",
+   "casa": false,
+   "stagione": 15,
+   "avv": "ful",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "614090c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scorre",
+    "anim": true,
+    "taglia": 2,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 20,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 15,
+   "avv": "new",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "a471778e/9",
+   "firmaOspiti": null,
+   "W": {
+    "id": "bandieroni",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 9
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 21,
+   "tipo": "derby",
+   "casa": true,
+   "stagione": 15,
+   "avv": "tot",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "63833dcb/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scritta",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 22,
+   "tipo": "big",
+   "casa": false,
+   "stagione": 15,
+   "avv": "avl",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "150f568c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scacchi",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 23,
+   "tipo": "europea",
+   "casa": true,
+   "stagione": 15,
+   "avv": "mcy",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "2352a876/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "stemma",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 24,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 16,
+   "avv": "eve",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "e93f6bd/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "srotola",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 25,
+   "tipo": "finale",
+   "casa": true,
+   "stagione": 16,
+   "avv": "mun",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "a471778e/9",
+   "firmaOspiti": "f115e90c/1",
+   "W": {
+    "id": "bandieroni",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": "diagonali",
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 10
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 26,
+   "tipo": "derby",
+   "casa": true,
+   "stagione": 16,
+   "avv": "che",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "614090c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "scorre",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 27,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 16,
+   "avv": "ars",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "1f5b0f2c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "pali",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 28,
+   "tipo": "nazionale",
+   "casa": false,
+   "stagione": 16,
+   "avv": "whu",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": false,
+   "firma": "b1e3a8ba/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "raggi",
+    "anim": false,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  },
+  {
+   "i": 29,
+   "tipo": "big",
+   "casa": true,
+   "stagione": 16,
+   "avv": "ful",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "accesa": true,
+   "simuove": true,
+   "firma": "2ffa7b4c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "gira",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": true,
+    "riaperta": false,
+    "pezzi": 1
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "err206": null,
+   "errori": []
+  }
+ ],
+ "riaperta": {
+  "firma": "2ffa7b4c/1",
+  "W": {
+   "id": "gira",
+   "anim": true,
+   "taglia": 3,
+   "ospiti": null,
+   "mem": true,
+   "riaperta": true,
+   "pezzi": 1
+  }
+ },
+ "F": {
+  "verde": {
+   "i": 1,
+   "tipo": "derby",
+   "casa": false,
+   "stagione": 12,
+   "avv": "tot",
+   "rosso": false,
+   "playMatch": true,
+   "walk": true,
+   "a": {
+    "casa": {
+     "disegno": "7bd2fd26",
+     "geo": "cabd730f",
+     "pezzi": 9,
+     "visibili": 9,
+     "op": 0.91
+    },
+    "ospiti": null
+   },
+   "accesa": true,
+   "b": {
+    "casa": {
+     "disegno": "7bd2fd26",
+     "geo": "e6dbd43d",
+     "pezzi": 9,
+     "visibili": 9,
+     "op": 0.94
+    },
+    "ospiti": null
+   },
+   "simuove": true,
+   "firma": "7bd2fd26/9",
+   "firmaOspiti": null,
+   "W": {
+    "id": "bandieroni",
+    "anim": true,
+    "taglia": 3,
+    "ospiti": null,
+    "mem": false,
+    "riaperta": false,
+    "pezzi": 9
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "fps": 2.46,
+   "fotogrammi": 350,
+   "err206": null,
+   "errori": []
+  },
+  "rosso": {
+   "i": 1,
+   "tipo": "derby",
+   "casa": false,
+   "stagione": 12,
+   "avv": "tot",
+   "rosso": true,
+   "playMatch": true,
+   "walk": true,
+   "a": {
+    "casa": {
+     "disegno": "c5eaf48c",
+     "geo": "fdd53138",
+     "pezzi": 1,
+     "visibili": 1,
+     "op": 0.91
+    },
+    "ospiti": null
+   },
+   "accesa": true,
+   "b": {
+    "casa": {
+     "disegno": "c5eaf48c",
+     "geo": "fdd53138",
+     "pezzi": 1,
+     "visibili": 1,
+     "op": 0.94
+    },
+    "ospiti": null
+   },
+   "simuove": false,
+   "firma": "c5eaf48c/1",
+   "firmaOspiti": null,
+   "W": {
+    "id": "oggi",
+    "anim": false,
+    "taglia": 0,
+    "ospiti": null
+   },
+   "tifo": {
+    "home": true,
+    "away": true
+   },
+   "fps": 2.53,
+   "fotogrammi": 351,
+   "err206": null,
+   "errori": []
+  }
+ }
+}

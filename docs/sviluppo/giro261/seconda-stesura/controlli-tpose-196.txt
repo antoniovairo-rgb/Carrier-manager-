@@ -1,0 +1,90 @@
+== tpose-196 · 23:50:50 · d6357b40
+Mem:           16087         981       11643          12        3766       15106
+/dev/vda        252G   13G   27G  33% /
+VERDE campionato-notte: {"nome":"campionato-notte","frames":{"walkout":320,"hl":29},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":343,"playing":370,"hl_intro":6,"hl_choose":1,"hl_result":7},"partita2D":false,"attesa":true,"scene":1,"pm":true,"motivi":{"regular":2,"cgtrader":11,"pronti":27},"durS":421,"ev":[{"ev":"attesa196","ms":25041,"fase":"walkout"}],"st":"ready-lineup","file":36,"mb":24.4,"errori":[]}
+VERDE coppa-notte: {"nome":"coppa-notte","frames":{"walkout":320,"hl":40},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":347,"playing":145,"hl_intro":11,"hl_choose":2,"hl_result":8},"partita2D":false,"attesa":true,"scene":2,"pm":true,"motivi":{"regular":2,"cgtrader":11,"pronti":27},"durS":302,"ev":[{"ev":"attesa196","ms":25021,"fase":"walkout"}],"st":"ready-lineup","file":35,"mb":24.4,"errori":[]}
+VERDE campionato-giorno: {"nome":"campionato-giorno","frames":{"walkout":320,"hl":27},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":335,"playing":368,"hl_intro":5,"hl_choose":1,"hl_result":7},"partita2D":false,"attesa":true,"scene":1,"pm":true,"motivi":{"regular":2,"cgtrader":11,"pronti":27},"durS":420,"ev":[{"ev":"attesa196","ms":25317,"fase":"walkout"}],"st":"ready-lineup","file":36,"mb":24.4,"errori":[]}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+browserContext.close: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /opt/pw-browsers/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,HttpsUpgrades,HttpsFirstBalancedModeAutoEnable,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,AvoidCorsURLLoaderRestartOnRedirect,TcpPortRandomizationWin,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,PreconnectToSearch,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface,SkipListAccountsWithoutGaiaCookies --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --enable-unsafe-swiftshader --edge-skip-compat-layer-relaunch --disable-stack-profiler --disable-infobars --disable-sync --do-not-de-elevate --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-gl=angle --use-angle=swiftshader --ignore-gpu-blocklist --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-pHkfpM --remote-debugging-pipe --no-startup-window
+<launched> pid=14849
+[pid=14849][err] [14849:14867:1117/235051.056570:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[pid=14849][err] [14849:14867:1117/235051.056689:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14867:1117/235051.059930:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[pid=14849][err] [14849:14867:1117/235051.059983:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[pid=14849][err] [14849:14867:1117/235051.060008:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14867:1117/235051.093627:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.107025:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14849:1117/235051.107118:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14867:1117/235051.107306:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14867:1117/235051.107314:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.123192:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14867:1117/235051.124463:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.126026:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14849:1117/235051.126040:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14867:1117/235051.126616:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[pid=14849][err] [14849:14867:1117/235051.126646:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[pid=14849][err] [14849:14867:1117/235051.126654:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.127577:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14849:1117/235051.128169:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: 
+[pid=14849][err] [14849:14849:1117/235051.128182:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14867:1117/235051.130152:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.130801:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14849:14867:1117/235051.131164:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[pid=14849][err] [14849:14849:1117/235051.131187:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[pid=14849][err] [14883:14899:1117/235051.238979:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1117/235059.415591:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14849:14870:1117/235104.563945:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14849:14870:1117/235104.589924:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
+[pid=14849][err] [14849:14870:1117/235104.592117:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
+[pid=14849][err] [14849:14870:1117/235104.592786:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
+[pid=14849][err] [14880:14880:1117/235105.875177:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x20bc06e39800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[pid=14849][err] [14880:14880:1117/235111.911533:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x20bc06e39800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[pid=14849][err] [14883:14899:1117/235117.983600:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14880:14880:1117/235128.764374:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x20bc06e39800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[pid=14849][err] [14849:14870:1117/235129.713519:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14880:14880:1117/235130.816830:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x20bc06e39800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+[pid=14849][err] [14849:14870:1117/235134.153383:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[pid=14849][err] [14849:14870:1117/235216.885265:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[pid=14849][err] [14849:14870:1117/235227.061532:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14849:14870:1117/235354.342205:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[pid=14849][err] [14849:14870:1117/235403.825303:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14883:14899:1117/235429.115254:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1117/235446.114475:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1117/235645.241050:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14849:14870:1117/235727.435408:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[pid=14849][err] [14849:14870:1117/235748.816553:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14849:14849:1117/235805.736052:ERROR:chrome/browser/ui/views/user_education/impl/browser_user_education_interface_impl.cc:186] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+[pid=14849][err] [14883:14899:1117/235805.781248:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1117/235813.292729:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1117/235832.046383:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000204.840587:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000248.772246:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14849:14870:1118/000311.334457:ERROR:google_apis/gcm/engine/connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -102
+[pid=14849][err] [14849:14849:1118/000320.918388:ERROR:chrome/browser/ui/views/user_education/impl/browser_user_education_interface_impl.cc:186] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+[pid=14849][err] [14883:14899:1118/000320.960496:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000328.779147:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14849:14870:1118/000341.581208:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[pid=14849][err] [14883:14899:1118/000347.425884:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000656.966178:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000714.448277:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/000915.419314:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14849:14849:1118/001034.811336:ERROR:chrome/browser/ui/views/user_education/impl/browser_user_education_interface_impl.cc:186] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+[pid=14849][err] [14883:14899:1118/001034.852757:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/001042.817066:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849][err] [14883:14899:1118/001101.414826:ERROR:net/socket/socket_posix.cc:121] CreatePlatformSocket() failed: Address family not supported by protocol (97)
+[pid=14849] <gracefully close start>
+[pid=14849][err] [14849:14849:1118/001135.699582:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote
+[pid=14849][err] [14849:14849:1118/001135.706924:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote
+[pid=14849][err] [14849:14849:1118/001135.717393:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote
+    at async scenario (/home/user/Carrier-manager-/tests/visual/tpose-196.mjs:88:3)
+    at async file:///home/user/Carrier-manager-/tests/visual/tpose-196.mjs:92:38 {
+  log: []
+}
+
+Node.js v22.23.5

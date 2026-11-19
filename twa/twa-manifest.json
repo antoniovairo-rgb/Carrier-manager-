@@ -21,8 +21,8 @@
     "path": "../chiavi-fuori-dal-repo/korward-upload.jks",
     "alias": "korward-upload"
   },
-  "appVersionName": "7.999.184",
-  "appVersionCode": 2000,
+  "appVersionName": "7.999.197",
+  "appVersionCode": 2001,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://antoniovairo-rgb.github.io/Carrier-manager-/twa/manifest-twa.webmanifest",
@@ -38,5 +38,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "7.999.184"
+  "appVersion": "7.999.197"
 }

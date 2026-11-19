@@ -11,6 +11,9 @@
       dal DOM: titolo con la competizione, girone o tabellone col risultato di oggi, prossima partita coerente con l'esito; mai la
       classifica del campionato su una coppa.
    R) ROSSO window.__CPM_NO_G232 (dall'avvio, stessa partita di coppa): torna la scheda del giro 224 → DEVE essere bocciato.
+   [giro 239 · PO-507b] in P anche l'ETICHETTA in basso (data-cpm titolo200): «4/4 · Tabellone» quando la scheda mostra il tabellone
+   (coppa nazionale, Europeo KO), «4/4 · Classifica» altrimenti. ROSSO window.__CPM_NO_G239 (partita di coppa): l'etichetta torna
+   «Classifica» → DEVE essere bocciato.
    «Non giudicato» (partita non finita, scheda non trovata) = rosso. Verde e rosso stampati per ultimi.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node rassegna-232.mjs   (CPM_SOLO_L=1: solo la parte L) */
 import { sleep } from './lib/harness.mjs';
@@ -71,7 +74,7 @@ async function scheda4(page) {
   return page.evaluate(() => { const q = (k) => document.querySelector(`[data-cpm="${k}"]`); const t = (k) => ((q(k) || {}).innerText || '');
     const root = q('classifica200'); const tit = root ? [...root.querySelectorAll('*')].filter(e => e.children.length === 0 && /Classifica|Tabellone|Prossima/.test(e.textContent || '')).map(e => e.textContent.trim()).slice(0, 6) : [];
     return { c: !!root, tipo: root ? root.getAttribute('data-comp232') : null, titoli: tit, girone: t('girone232'), tab: t('tabellone232'), oggi: t('tabellone232-oggi'),
-      lega: document.querySelectorAll('[data-cpm="classifica224-riga"]').length, prossima: t('prossima200'), tutto: root ? root.innerText : '' }; });
+      lega: document.querySelectorAll('[data-cpm="classifica224-riga"]').length, etichetta: t('titolo200').replace(/\s+/g, ' ').trim(), prossima: t('prossima200'), tutto: root ? root.innerText : '' }; });
 }
 async function giocaDiretto(page, avvia, seme) {
   const out = { finita: false, score: null };
@@ -129,6 +132,9 @@ function giudica(tipo, at, m, sc) {
     if (tipo === 'nationsCup') c.push(['prossima della Coppa delle Nazioni (Germania)', pr.includes('Germania')]);
     if (tipo === 'cup' && h > a) c.push(['settimana del turno ' + at.sett, pr.includes('settimana ' + at.sett)]);
   }
+  /* [giro 239 · PO-507b] l'etichetta in basso dice cosa mostra la scheda */
+  const etAtt = '4/4 · ' + (m.tipo === 'tabellone' ? 'Tabellone' : 'Classifica');
+  c.push(['etichetta «' + etAtt + '» (letta «' + m.etichetta + '»)', m.etichetta.toLowerCase() === etAtt.toLowerCase()]);
   return { giudicato: true, passa: c.every(x => x[1]), msg: c.map(x => (x[1] ? '✓' : '✗') + x[0]).join(' · ') + ` | punteggio ${h}-${a} | prossima «${pr}»` };
 }
 async function braccio(tipo, init) {
@@ -169,8 +175,16 @@ console.log('R) rosso __CPM_NO_G232 (partita di coppa, stessa del verde)');
   ok(rosso, !!(g && g.finita) && r.giudicato && !r.passa, `rosso bocciato: ${!!(g && g.finita) && r.giudicato && !r.passa} (giudicato ${!!(g && g.finita && r.giudicato)})`);
   await A.b.close(); A.srv.close();
 }
+console.log('R) rosso __CPM_NO_G239 (partita di coppa): l\'etichetta torna «Classifica»');
+{
+  const { A, at, g, m } = await braccio('cup', { __CPM_NO_G239: true });
+  const r = giudica('cup', at, m, g && g.score);
+  console.log('    ' + r.msg);
+  ok(rosso, !!(g && g.finita) && r.giudicato && !r.passa && !!m && m.tipo === 'tabellone', `rosso bocciato: ${!!(g && g.finita) && r.giudicato && !r.passa} (giudicato ${!!(g && g.finita && r.giudicato)}, etichetta «${m && m.etichetta}»)`);
+  await A.b.close(); A.srv.close();
+}
 const vOk = verde.length > 0 && verde.every(x => x[0]); const rOk = rosso.length > 0 && rosso.every(x => x[0]);
 console.log(`\nVERDE: ${verde.filter(x => x[0]).length}/${verde.length} ${vOk ? '✓' : '✗'}`);
-console.log(`ROSSO __CPM_NO_G232 bocciato: ${rOk ? '✓' : '✗'}`);
+console.log(`ROSSI __CPM_NO_G232 e __CPM_NO_G239 bocciati: ${rosso.filter(x => x[0]).length}/${rosso.length} ${rOk ? '✓' : '✗'}`);
 console.log(vOk && rOk ? '✓ rassegna-232 VERDE' : '✗ rassegna-232 ROSSO');
 process.exit(vOk && rOk ? 0 : 1);

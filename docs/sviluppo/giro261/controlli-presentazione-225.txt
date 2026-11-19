@@ -1,0 +1,70 @@
+== presentazione-225 · 01:15:07 · f1b2476e
+Mem:           16087         540       15038          12         746       15546
+/dev/vda        252G   13G   27G  33% /
+partita di notte, spalti: {"n":914,"lum":0.3209,"sat":0.1845}
+VERDE: tifo {"sagome":13433,"visibili":true,"dens":"vera","uT":10.828899999999907,"modo":"sagome","provaPx":480,"dipinti":0,"anima":true} · spalti 0.3408 · fascia tel 0/936 pc 0/807
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 203,114,79 dE 18 · capelli black · reso 223,152,111 dE 4.4
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 171,104,82 dE 14.7 · capelli auburn · reso 198,128,104 dE 7.9
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 181,103,74 dE 14 · capelli black · reso 206,132,100 dE 3.9
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 170,95,65 dE 11.5 · capelli black · reso 201,123,89 dE 3
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 189,114,89 dE 18 · capelli black · reso 216,151,122 dE 4.7
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,173,141 · 3D pelle 197,121,94 dE 20.6 · capelli black · reso 209,152,126 dE 7.9
+   piedi [[0.026,0.026],[-0.002,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[-0.002,0.028]] · percorso 4.21 slitta 0.167 avanti 2.14 · braccio {"campioni":97,"sopra":0,"gomito":[104.7,173.7],"elev":[7.3,61],"fuori":[0,9.3],"fuoriRiposo":[0,23.4],"polso":[52.2,61.9],"lato":[3.9,49.3],"busto":[23.7,34.9],"velOmero":188,"velAvambraccio":378,"manoSuMax":0.078,"fineManoSu":-0.493}
+   clip {"nome":"rohr-clapping-hands-up","dur":3.9000000953674316,"ossa":38,"cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":true}} · due braccia {"campioni":39,"mani":0.126,"busto":0.237,"testa":0.287,"alte":2.04,"battiti":9,"lato":0.039,"inAlto":0,"suMax":0.078}
+ROSSO: tifo {"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false} · spalti 0.1761 · fascia tel 261/659 pc 255/556
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 208,143,113 dE 11.7 · capelli brown · reso 220,171,146 dE 17.2
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 208,143,113 dE 6.1 · capelli blond · reso 219,170,145 dE 10.3
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 208,143,113 dE 4.7 · capelli brown · reso 216,164,142 dE 14.9
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 208,143,113 dE 9.2 · capelli brown · reso 222,173,150 dE 22.5
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 208,143,113 dE 7.1 · capelli auburn · reso 221,170,146 dE 5
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,173,141 · 3D pelle 208,143,113 dE 11.7 · capelli black · reso 221,172,148 dE 4.6
+   piedi [[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.028,0.028]] · percorso 6.71 slitta 1 avanti 4.4 · braccio {"campioni":93,"sopra":2.76,"gomito":[106.6,168.3],"elev":[8.1,143.9],"fuori":[54.2,74.8],"fuoriRiposo":[6.3,25.1],"polso":[10.8,16.9],"lato":[23.3,61.4],"busto":[25.9,50.9],"velOmero":458,"velAvambraccio":570,"manoSuMax":0.444,"fineManoSu":-0.491}
+ROSSO 240: tifo {"sagome":13433,"visibili":true,"dens":"vera","uT":11.00580000000028,"modo":"sagome","provaPx":488,"dipinti":0,"anima":true} · spalti 0.3403 · fascia tel 0/925 pc undefined/undefined
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 220,134,86 dE undefined · capelli black · reso 231,173,125 dE undefined
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 189,119,92 dE undefined · capelli auburn · reso 207,147,115 dE undefined
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 199,117,79 dE undefined · capelli black · reso 215,144,106 dE undefined
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 188,104,66 dE undefined · capelli black · reso 215,138,93 dE undefined
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 207,134,102 dE undefined · capelli black · reso 223,172,140 dE undefined
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,173,141 · 3D pelle 215,145,110 dE undefined · capelli black · reso 224,179,146 dE undefined
+   piedi [[0.026,0.026],[-0.002,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[-0.002,0.028]] · percorso 4.15 slitta 0.169 avanti 2.14 · braccio {"campioni":96,"sopra":1.74,"gomito":[83.9,173.7],"elev":[7.3,96.1],"fuori":[0,9.3],"fuoriRiposo":[0,23.4],"polso":[9.6,11.8],"lato":[27.5,59.4],"busto":[28.3,49.1],"velOmero":188,"velAvambraccio":378,"manoSuMax":0.303,"fineManoSu":-0.485}
+   clip null · difetti []
+RIPIEGO: {"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":"dipinti","provaPx":0,"dipinti":4681,"anima":false,"uomini":7,"luci":11}
+VERDE 256 prima: stagione 12 · clip {"nome":"rohr-clapping-hands-up","cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":true}}
+   braccio {"campioni":95,"sopra":0,"gomito":[104.6,173.7],"elev":[7.3,61.2],"fuori":[0,9.5],"fuoriRiposo":[0,23.4],"polso":[52.3,61.9],"lato":[4,49.3],"busto":[23.7,34.9],"velOmero":188,"velAvambraccio":378,"manoSuMax":0.079,"fineManoSu":-0.485}
+   due braccia {"campioni":39,"mani":0.126,"busto":0.237,"testa":0.287,"alte":2.04,"battiti":9,"lato":0.04,"inAlto":0,"suMax":0.079}
+   cerniera/velocita' {"piano_l":12.6,"piano_r":7.6,"scatti":{"passi":164,"max":73,"osso":"f_l","t":2.58,"vmax":415},"vel":{"rampaOmero":188,"rampaAvambraccio":378,"clipOmero":13,"clipAvambraccio":23}}
+   rallentatore {"campioni":369,"salti":{"passi":1436,"max":4.1,"osso":"f_l","t":0.29,"passoMax":7.04,"velMax":939,"dts":0.0075},"prova":{"passi":1436,"max":29.87,"osso":"u_r","t":1.46,"passoMax":30.42,"velMax":4057,"dts":0.0075}}
+VERDE 256 seconda: stagione 13 · clip {"nome":"rohr-clap-twice-hand-up","cerniera":true,"scelta":{"i":1,"nome":"rohr-clap-twice-hand-up","mem":true}}
+   braccio {"campioni":97,"sopra":0.78,"gomito":[86.7,173.7],"elev":[7.3,120.2],"fuori":[0,0],"fuoriRiposo":[0,23.4],"polso":[42.4,69.5],"lato":[5.9,49.3],"busto":[23.8,39.5],"velOmero":291,"velAvambraccio":399,"manoSuMax":0.388,"fineManoSu":-0.491}
+   due braccia {"campioni":39,"mani":0.133,"busto":0.207,"testa":0.26,"alte":1.26,"battiti":3,"lato":0.059,"inAlto":0.66,"suMax":0.385}
+   cerniera/velocita' {"piano_l":1.2,"piano_r":1.3,"scatti":{"passi":164,"max":159,"osso":"u_r","t":1.62,"vmax":528},"vel":{"rampaOmero":291,"rampaAvambraccio":399,"clipOmero":275,"clipAvambraccio":278}}
+   rallentatore {"campioni":369,"salti":{"passi":1436,"max":10.72,"osso":"f_l","t":0.26,"passoMax":13.84,"velMax":1845,"dts":0.0075},"prova":{"passi":1436,"max":29.28,"osso":"u_r","t":1.46,"passoMax":31.1,"velMax":4146,"dts":0.0075}}
+VERDE 256 riaperta: stagione 13 · clip {"nome":"rohr-clap-twice-hand-up","cerniera":true,"scelta":{"i":1,"nome":"rohr-clap-twice-hand-up","mem":true,"riaperta":true}}
+VERDE 256 terza: stagione 14 · clip {"nome":"rohr-clapping-hands-up","cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":true}}
+   memoria {"Samuelito Vairo":{"k":"liv|349648416","i":1,"n":2}}
+ROSSO 256 prima: stagione 12 · clip {"nome":"rohr-clapping-hands-up","cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":false,"rosso":true}}
+ROSSO 256 seconda: stagione 13 · clip {"nome":"rohr-clapping-hands-up","cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":false,"rosso":true}}
+ROSSO 256 forzata: stagione 13 · clip {"nome":"rohr-clap-twice-hand-up","cerniera":false,"scelta":{"i":0,"nome":"rohr-clapping-hands-up","mem":false,"rosso":true}}
+   braccio {"campioni":95,"sopra":0.78,"gomito":[86.3,173.7],"elev":[7.3,122.2],"fuori":[11,38.2],"fuoriRiposo":[0,23.4],"polso":[42.6,69.8],"lato":[5.3,49.3],"busto":[24,39.7],"velOmero":293,"velAvambraccio":401,"manoSuMax":0.393,"fineManoSu":-0.489}
+   due braccia {"campioni":39,"mani":0.12,"busto":0.209,"testa":0.262,"alte":1.32,"battiti":2,"lato":0.053,"inAlto":0.66,"suMax":0.383}
+   cerniera/velocita' {"piano_l":54.4,"piano_r":37,"scatti":{"passi":164,"max":106,"osso":"f_l","t":1.38,"vmax":512},"vel":{"rampaOmero":293,"rampaAvambraccio":401,"clipOmero":280,"clipAvambraccio":282}}
+   rallentatore undefined
+   difetti della clip forzata ["clip nuova senza risoluzione: il gomito esce dalla cerniera di 38.2 gradi (limite 25)","clip nuova senza risoluzione: avambraccio fuori dal piano della cerniera: sinistro 54.4, destro 37 gradi (limite 25)"]
+difetti visti nel rosso:
+  - tel E: 261 raggi verso il prato coperti da una struttura {"trasparente 0.8 y25":261}
+  - tel A: folla a sagome della partita assente ({"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false})
+  - pc E: 255 raggi verso il prato coperti da una struttura {"trasparente 0.8 y25":255}
+  - pc A: folla a sagome della partita assente ({"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false})
+  - B: Dylan Gray capelli della figurina «neri» ma testa 3D «brown»
+  - B: Dylan Gray viso reso nel 3D 220,171,146 contro viso della figurina 231,160,112: distanza 17.2 > 12
+  - B: Rupert Hammond capelli della figurina «rossi» ma testa 3D «blond»
+  - B: Max Stanley capelli della figurina «neri» ma testa 3D «brown»
+  - B: Max Stanley viso reso nel 3D 216,164,142 contro viso della figurina 209,140,103: distanza 14.9 > 12
+  - B: Isaac Hughes capelli della figurina «neri» ma testa 3D «brown»
+  - B: Isaac Hughes viso reso nel 3D 222,173,150 contro viso della figurina 197,125,87: distanza 22.5 > 12
+  - B: Gary Howard capelli della figurina «neri» ma testa 3D «auburn»
+  - C: scivola — piede d'appoggio/corpo 1 > 0.35
+  - D: il gomito ruota fuori dalla cerniera di 74.8 gradi > 25
+  - D: scatto del braccio — omero 458 gradi/s (limite 350), avambraccio 570 gradi/s (limite 530)
+✅ presentazione-225 verde (e il rosso si vede)
+== uscita 0 · durata 1424 s · 01:38:51

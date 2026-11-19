@@ -36,13 +36,13 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const ROOT = path.resolve(QUI, '../..');
 const NOME = process.env.CPM_G166_NOME || 'Collaudo Salienti', SEME = +(process.env.CPM_G166_SEME || 7300);
-const NOME_SORPRESA = process.env.CPM_G166_NOME_SORPRESA || 'Collaudo Sorpresa 7';/* [giro 187] nome la cui intervista a sorpresa (giro 183) esce: scelto con sonda-iv187 */
+const NOME_SORPRESA = process.env.CPM_G166_NOME_SORPRESA || 'Collaudo Sorpresa 4';/* [giro 259] il seme della sorpresa usa l'id del club avversario («kol»): «Collaudo Sorpresa 7» ora da' resto 3, «4» da' 0 (sonda-iv187) *//* [giro 187] nome la cui intervista a sorpresa (giro 183) esce: scelto con sonda-iv187 */
 
 /* ---------------- A. statico ---------------- */
 const st = []; const ok = (nome, cond, info) => st.push({ nome, ok: !!cond, info: info || '' });
 const s15 = fs.readFileSync(path.join(ROOT, 'src/15-live-match.jsx'), 'utf8'), s18 = fs.readFileSync(path.join(ROOT, 'src/18-career-app.jsx'), 'utf8');
 const lotto = (s15.match(/const _lotto166=\(\)=>\{[\s\S]*?\n    const iv=setInterval\([^\n]*/) || [''])[0];
-ok('1 un solo lotto, stesso battito in flushSync, nessun Math.random', (s15.match(/const _lotto166=/g) || []).length === 1 && (s15.match(/const _batt166=/g) || []).length === 1 && /ReactDOM\.flushSync\(_batt166\)/.test(lotto) && /setInterval\(_solo166\?_lotto166:_batt166/.test(lotto) && !/Math\.random/.test(lotto),
+ok('1 un solo lotto, stesso battito in flushSync, nessun Math.random', (s15.match(/const _lotto166=/g) || []).length === 1 && (s15.match(/const _batt166=/g) || []).length === 1 && /ReactDOM\.flushSync\(_batt166\)/.test(lotto) && /setInterval\(_solo166\?_lotto166:\(_g264\?_batt264:_batt166\),/.test(lotto)/* [giro 264] la partita intera batte lo stesso battito dentro flushSync (_batt264) */ && /const _batt264=\(\)=>\{if\(\(\(k898Ref\.current\|0\)\+1\)%_SUB898===0\)ReactDOM\.flushSync\(_batt166\);else _batt166\(\);\};/.test(lotto) && !/Math\.random/.test(lotto),
   `lotto ${lotto.length} car. · definizioni ${(s15.match(/const _lotto166=/g) || []).length}`);
 const sp = (s18.match(/const senzaPosta166=[\s\S]*?\n  const matchResumeRef/) || [''])[0];
 /* [giro 173 punto 1] la regola e' la posta allargata posta165 (giro 165); la vecchia (calcMatchWeight < 5, solo campionato) resta nel rosso __CPM_NO_G173 */
@@ -52,7 +52,7 @@ ok('2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173
 
 /* ---------------- B. prompt ---------------- */
 async function prompt(rosso) {
-  const passi = []; const init = rosso ? { __CPM_NO_G166: true, __CPM_NO_G229: true } : { __CPM_NO_G229: true };
+  const passi = []; const init = rosso ? { __CPM_NO_G166: true, __CPM_NO_G229: true, __CPM_NO_G246: true } : { __CPM_NO_G229: true, __CPM_NO_G246: true };/* [giro 246] la regola del prompt vive nel rosso __CPM_NO_G246: dal 246 il tasto c'e' solo nella pre-partita (salienti-246); la parte C apre la modalita' da li' (gioca166) */
   const A = await apriCarriera166({ init, nome: NOME });
   try {
     const a = A.W ? await A.page.evaluate(() => window.__CPM_CAREER.avv166 ? window.__CPM_CAREER.avv166() : null) : null;

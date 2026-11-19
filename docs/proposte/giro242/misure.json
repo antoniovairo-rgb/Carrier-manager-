@@ -1,0 +1,79 @@
+[
+ {
+  "clip": "change-direction",
+  "durata_s": 1.75,
+  "fotogrammi_30fps": 54,
+  "tracce": 225,
+  "bacino_percorso_m": 0,
+  "svolta_gradi": null,
+  "sotto_suolo_cm": 1,
+  "passo_piede_max_cm": 21.1,
+  "file": "assets/cgtrader-review-lod1-kit-adapter.glb"
+ },
+ {
+  "clip": "dribble",
+  "durata_s": 1.375,
+  "fotogrammi_30fps": 42,
+  "tracce": 225,
+  "bacino_percorso_m": 0,
+  "svolta_gradi": null,
+  "sotto_suolo_cm": 6.8,
+  "passo_piede_max_cm": 13.4,
+  "file": "assets/cgtrader-review-lod1-kit-adapter.glb"
+ },
+ {
+  "clip": "rohr-dribble-03",
+  "durata_s": 3.367,
+  "fotogrammi_30fps": 102,
+  "tracce": 54,
+  "bacino_percorso_m": 2.94,
+  "svolta_gradi": 37,
+  "sotto_suolo_cm": 1,
+  "passo_piede_max_cm": 19.9,
+  "file": "assets/cgtrader-clip-rohr.glb"
+ },
+ {
+  "clip": "cmu-finta-dx-va-sx",
+  "durata_s": 1.9,
+  "fotogrammi_30fps": 58,
+  "tracce": 60,
+  "bacino_percorso_m": 4.84,
+  "svolta_gradi": 50,
+  "sotto_suolo_cm": 0,
+  "passo_piede_max_cm": 35.2,
+  "file": "(cartella di prova, fuori dal repo) cmu-242.glb"
+ },
+ {
+  "clip": "cmu-scatto-dx",
+  "durata_s": 1.267,
+  "fotogrammi_30fps": 39,
+  "tracce": 50,
+  "bacino_percorso_m": 4.41,
+  "svolta_gradi": 9,
+  "sotto_suolo_cm": 0,
+  "passo_piede_max_cm": 33.9,
+  "file": "(cartella di prova, fuori dal repo) cmu-242.glb"
+ },
+ {
+  "clip": "cmu-corsa-sterza-sx",
+  "durata_s": 1.533,
+  "fotogrammi_30fps": 47,
+  "tracce": 34,
+  "bacino_percorso_m": 3.55,
+  "svolta_gradi": 30,
+  "sotto_suolo_cm": 0,
+  "passo_piede_max_cm": 19.6,
+  "file": "(cartella di prova, fuori dal repo) cmu-242.glb"
+ },
+ {
+  "clip": "cmu-corsa-sterza-dx",
+  "durata_s": 1.233,
+  "fotogrammi_30fps": 38,
+  "tracce": 31,
+  "bacino_percorso_m": 3.35,
+  "svolta_gradi": 35,
+  "sotto_suolo_cm": 0,
+  "passo_piede_max_cm": 22.1,
+  "file": "(cartella di prova, fuori dal repo) cmu-242.glb"
+ }
+]

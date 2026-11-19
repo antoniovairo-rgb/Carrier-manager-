@@ -42,7 +42,7 @@ if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 /* [giro 231] il motivo del tasto spento resta quello del 173 («Prima rispondi al rinnovo»); dal giro 198 (PO-446, «il tasto dice dove
    andare») da professionista quella riga e' un collegamento alla scheda Agente: stesso testo + « → vai all'Agente», data-g198="vai". */
 const MOT173 = "Prima rispondi al rinnovo → vai all'Agente", VAI173 = true;
-const init173 = ROSSO ? { __CPM_NO_G173: true } : {};
+const init173 = ROSSO ? { __CPM_NO_G173: true, __CPM_NO_G246: true } : { __CPM_NO_G246: true };/* [giro 246] il tasto del prompt vive nel rosso __CPM_NO_G246 (dal 246 c'e' solo nella pre-partita, guardiano salienti-246): qui si giudicano le rifiniture del 173, non il posto */
 const ROSSO182 = process.env.CPM_ROSSO182OFF === '1';/* [giro 182 punto C] braccio rosso delle offerte: __CPM_NO_G182_OFFERTE → il guardiano DEVE uscire 1 */
 
 const srv = await startServer(); const port = srv.address().port;

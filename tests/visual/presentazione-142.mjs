@@ -23,7 +23,7 @@ const SOGLIA_ASPETTI = 5, SOGLIA_TESTA = 15, SOGLIA_FERMO = 1.0;
    palmo verso la tribuna (coseno >= SOGLIA_PALMO) al culmine, poi mano giu' (sotto la spalla di 0,25 m) e corpo di nuovo in fila
    (entro 0,4 dalla fila) — sul compagno del beat 3 e sull'EROE all'ultimo beat. Soglie fissate dopo la misura (culmine +0,46…+0,49 m,
    palmo 0,97, riposo −0,36…−0,40 m). */
-const SOGLIA_MANO = 0.15, SOGLIA_SALUTO = 1.5, SOGLIA_PALMO = 0.7, LZ = 6;
+const SOGLIA_MANO = 0.15, SOGLIA_SALUTO = 1.5, SOGLIA_PALMO = 0.7, LZ = 6, SOGLIA_BATTITO = 0.20;/* [giro 240] applauso della clip: polsi a 0,12 nel battito (misura-240.mjs) */
 const PRO = { id: 'parm', n: 'FC Parmense', a: 'PAR', p: 62, c: '#facc15', c2: '#2563eb', nat: '🇮🇹', lg: 'Lega A' };
 const save = { phase: 'career', player: {
   name: 'Presenta Probe', nation: 'Italia', avatarId: 0, proStatus: 'u18', season: 1, week: 1, age: 16, ovr: 60,
@@ -59,12 +59,19 @@ for (const rosso of [false, true]) {
       for (let k = 1; k < S.length; k++) { const dtS = (S[k].t || 0) - (S[k - 1].t || 0); if (S[k].mr >= SOGLIA_MANO && dtS > 0) sopra += dtS; if (S[k].mr > picco) { picco = S[k].mr; palmo = S[k].palmo; } }
       const fine = S[S.length - 1] || {}, tFin = fine.t || 0;
       const giu = fine.mr != null && fine.mr <= -0.25, fila = fine.z ? Math.max(...fine.z.map(z => Math.abs(z - LZ))) <= 0.4 : false;
-      const r = { beat: b, eroe, avanti: S.map(x => x.avanti).filter((v, i, a) => a.indexOf(v) === i), sopra: +sopra.toFixed(2), picco: +picco.toFixed(3), palmo, tFin: +tFin.toFixed(2), giu, fila, campioni: S.length };
+      /* [giro 240 · PO-499 decisione PO «Posa ora, clip nella 197»] il saluto e' ora la CLIP Rohr «clapping hands up»: un applauso alla tribuna a mani alte, non una mano
+         alzata col palmo avanti. Quando la clip e' attiva (testimone clip240) si giudica quel gesto: tutte e due le mani all'altezza delle spalle o sopra per
+         SOGLIA_SALUTO s di scena e le mani che si incontrano (distanza <= SOGLIA_BATTITO); poi, come prima, braccio giu' e ritorno in fila entro la scena.
+         Senza clip (rossi del giro 144, rosso __CPM_NO_G240) restano i criteri del giro 144, invariati. */
+      const clip = S.some(x => x.clip); let alte = 0, mdMin = 9;
+      for (let k = 1; k < S.length; k++) { const dtS = (S[k].t || 0) - (S[k - 1].t || 0); if (S[k].mr >= 0 && S[k].ml >= 0 && dtS > 0) { alte += dtS; if (S[k].md != null && S[k].md < mdMin) mdMin = S[k].md; } }
+      const r = { beat: b, eroe, clip, avanti: S.map(x => x.avanti).filter((v, i, a) => a.indexOf(v) === i), sopra: +sopra.toFixed(2), picco: +picco.toFixed(3), palmo, alte: +alte.toFixed(2), mani: mdMin < 9 ? +mdMin.toFixed(3) : null, tFin: +tFin.toFixed(2), giu, fila, campioni: S.length };
       sal.push(r);
       const nome = eroe ? 'eroe' : 'compagno';
       if (S.length < 10 || !(tFin >= 5.5)) g.push(`non giudicato: saluto ${nome} — campioni ${S.length}, scena ${tFin}`);
       if (eroe && !S.some(x => x.avanti === H)) g.push(`ultimo beat: avanza il #${chi}, non l'eroe #${H}`);
-      if (!(sopra >= SOGLIA_SALUTO)) g.push(`saluto ${nome}: mano sopra la spalla ${r.sopra} s di scena < ${SOGLIA_SALUTO} (picco ${r.picco} m)`);
+      if (clip) { if (!(alte >= SOGLIA_SALUTO)) g.push(`saluto ${nome} (clip): mani all'altezza delle spalle o sopra ${r.alte} s di scena < ${SOGLIA_SALUTO}`); else if (!(mdMin <= SOGLIA_BATTITO)) g.push(`saluto ${nome} (clip): le mani non si incontrano (${r.mani} > ${SOGLIA_BATTITO})`); }
+      else if (!(sopra >= SOGLIA_SALUTO)) g.push(`saluto ${nome}: mano sopra la spalla ${r.sopra} s di scena < ${SOGLIA_SALUTO} (picco ${r.picco} m)`);
       else if (!(palmo >= SOGLIA_PALMO)) g.push(`saluto ${nome}: palmo ${palmo} < ${SOGLIA_PALMO}`);
       if (!giu || !fila) g.push(`saluto ${nome}: non torna in posa/fila (mano ${fine.mr} · fila ${fila})`);
     }

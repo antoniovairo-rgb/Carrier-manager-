@@ -44,9 +44,14 @@ console.log(`home raggiunta (bottoni: ${home.btns}, "Nuova carriera": ${home.has
 console.log(`richieste esterne (CDN) tentate: ${externalHits.length ? '❌ ' + externalHits.slice(0, 5).join(' ') : '✅ NESSUNA → davvero offline'}`);
 console.log(`richieste locali: ${okLocal.n} ok · ${notFound.length ? '❌ ' + notFound.length + ' fallite: ' + notFound.slice(0, 4).join(' ') : '✅ 0 fallite (nessun asset mancante)'}`);
 console.log(`errori console: ${errs.length ? '❌ ' + errs.slice(0, 4).join(' | ') : '✅ nessuno'}`);
-/* [giro 180c] le clip Rohr non le carica nessuna riga del gioco: devono restare FUORI dal pacchetto (decisione madre 180b §6.4) */
-const rohrFuori = !fs.existsSync(path.join(DIST, 'assets', 'cgtrader-clip-rohr.glb'));
-console.log(`clip Rohr non collegate fuori dal pacchetto: ${rohrFuori ? '✅' : '❌ assets/cgtrader-clip-rohr.glb presente'}`);
+/* [giro 180c] le clip Rohr non le caricava nessuna riga del gioco e restavano FUORI dal pacchetto (decisione madre 180b §6.4).
+   [giro 240 PO-499, decisione PO «Posa ora, clip nella 197»] la regola si rovescia: il saluto della serata di presentazione carica
+   assets/cgtrader-clip-rohr.glb (src/16 _salutoClip240), quindi il file DEVE stare nel pacchetto (senza, la serata ripiega sulla posa
+   del giro 225) e il sorgente deve davvero nominarlo: un file di terzi che nessuna riga carica non entra. Il peso si stampa. */
+const _rohrFile = path.join(DIST, 'assets', 'cgtrader-clip-rohr.glb');
+const _rohrC = fs.existsSync(_rohrFile), _rohrUsato = /cgtrader-clip-rohr\.glb/.test(fs.readFileSync(path.join(DIST, 'index.html'), 'utf8'));
+const rohrFuori = _rohrC === _rohrUsato && _rohrC;/* nome storico della variabile: vero = regola rispettata */
+console.log(`clip Rohr del saluto (PO-499) nel pacchetto: ${rohrFuori ? '✅ ' + (fs.statSync(_rohrFile).size / 1048576).toFixed(2) + ' MB' : '❌ file ' + (_rohrC ? 'presente' : 'assente') + ', il gioco ' + (_rohrUsato ? 'lo carica' : 'non lo carica')}`);
 console.log(WEB ? `flag build store (deve mancare nella build per il sito): ${storeFlag ? '❌ presente' : '✅ assente'}` : `flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
 const ok = rohrFuori && mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && notFound.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
 console.log(ok ? '\n✅ DIST OFFLINE FUNZIONANTE' : '\n❌ DIST da rivedere');

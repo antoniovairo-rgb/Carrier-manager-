@@ -1,0 +1,18 @@
+gi0 #1 attesa fissa · esito ko/miss_easy · apertura — · coppie 5 · salto camera scoperto 0.2
+gi0 #2 attesa fissa · esito ko/miss_easy · apertura — · coppie 7 · salto camera scoperto 8.9
+gi0 #3 attesa fissa · esito ko/miss_easy · apertura — · coppie 7 · salto camera scoperto 0.2
+gi0 #4 attesa fissa · esito ko/miss_easy · apertura — · coppie 7 · salto camera scoperto 0.2
+gi0 #5 attesa fissa · esito ko/miss_easy · apertura — · coppie 7 · salto camera scoperto 42.0 ❌ > 30
+gi0 #6 attesa fissa · esito ko/miss_easy · apertura — · coppie 7 · salto camera scoperto 0.2
+gi0 #7 attesa fissa · esito ko/miss_easy · apertura — · coppie 6 · salto camera scoperto 1.0
+gi0 #8 attesa fissa · esito ko/miss_easy · apertura — · coppie 6 · salto camera scoperto 0.2
+TOTALE attesa fissa: 1 salti > 30 su 8 prove · 0 aperture al tetto
+gi0 #1 evento · esito ko/miss_easy · apertura pallone fermo dopo 2406 ms · coppie 7 · salto camera scoperto 1.8
+gi0 #2 evento · esito ko/miss_easy · apertura pallone fermo dopo 2156 ms · coppie 7 · salto camera scoperto 1.9
+gi0 #3 evento · esito ko/miss_easy · apertura pallone fermo dopo 806 ms · coppie 6 · salto camera scoperto 1.9
+gi0 #4 evento · esito ko/miss_easy · apertura pallone fermo dopo 2596 ms · coppie 7 · salto camera scoperto 1.9
+gi0 #5 evento · esito ko/miss_easy · apertura pallone fermo dopo 2289 ms · coppie 6 · salto camera scoperto 1.9
+gi0 #6 evento · esito ko/miss_easy · apertura pallone fermo dopo 2477 ms · coppie 7 · salto camera scoperto 1.9
+gi0 #7 evento · esito ko/miss_easy · apertura pallone fermo dopo 859 ms · coppie 7 · salto camera scoperto 1.9
+gi0 #8 evento · esito ko/miss_easy · apertura pallone fermo dopo 2140 ms · coppie 6 · salto camera scoperto 1.9
+TOTALE evento: 0 salti > 30 su 8 prove · 0 aperture al tetto

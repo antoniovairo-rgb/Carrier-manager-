@@ -22,6 +22,9 @@ import { apriCarriera166, apriPrompt166, gioca166, seq166, chiudi166, sleep } fr
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const ROOT = path.resolve(QUI, '../..');
+/* [giro 246 · decisione PO 17/11] dal giro 246 il tasto c'e' SOLO nella schermata pre-partita (guardiano salienti-246): il tasto del prompt e
+   delle lobby (la regola di questo giro) vive nel rosso __CPM_NO_G246, ed e' li' che si giudica — come il 166 fa col rosso del 229. */
+const G246 = { __CPM_NO_G246: true };
 const PARTE = process.env.CPM_PARTE || 'tutto'; const NOME = 'Collaudo Salienti 229', SEME = 7300;
 
 /* A. statico */
@@ -46,7 +49,7 @@ async function inietta(page, W, tipo) {
 
 /* B. prompt */
 async function prompt(rosso) {
-  const P = []; const A = await apriCarriera166({ init: rosso ? { __CPM_NO_G229: true } : {}, nome: NOME });
+  const P = []; const A = await apriCarriera166({ init: rosso ? { __CPM_NO_G229: true, ...G246 } : { ...G246 }, nome: NOME });
   const esc = async () => { await A.page.evaluate(() => window.__CPM_CAREER.dismiss && window.__CPM_CAREER.dismiss()); await A.page.keyboard.press('Escape').catch(() => {}); await sleep(350); };
   try {
     if (!A.W) throw new Error('nessuna settimana con giornata di lega');
@@ -79,14 +82,14 @@ async function prompt(rosso) {
 
 /* C. ottavo europeo ai rigori: col tasto (verde/rosso) e intero (riferimento) */
 async function ottavo(modo, init) {
-  const A = await apriCarriera166({ init: init || {}, nome: NOME, reseed: 4242 }); const out = { modo, finita: false };
+  const A = await apriCarriera166({ init: { ...(init || {}), ...G246 }, nome: NOME, reseed: 4242 }); const out = { modo, finita: false, W: A.W, passi: A.passi };
   try {
     if (!A.W) throw new Error('nessuna settimana di lega');
     await inietta(A.page, A.W, 'euro'); await sleep(600);
     const pr = await apriPrompt166(A.page, 'euro'); out.tasto = pr.solo;
     if (modo === 'solo' && !pr.solo) { out.note = ['tasto dei momenti salienti assente: la partita non si apre a soli salienti']; throw new Error('tasto assente'); }
     const r = await gioca166(A.page, modo, { seme: SEME, rigoriAllaScena: 1 });
-    Object.assign(out, { finita: r.finita, score: r.score, lm: r.lm, velo: r.velo, rigori: !!r.rigori, forzati: r.rigoriForzati, finale: r.finale, seq: seq166(r.ev || []), scene: r.scene });
+    Object.assign(out, { finita: r.finita, score: r.score, lm: r.lm, velo: r.velo, rigori: !!r.rigori, forzati: r.rigoriForzati, finale: r.finale, classifica: r.classifica, seq: seq166(r.ev || []), scene: r.scene });
     if (r.finita) await chiudi166(A.page);
     await sleep(1500);
     const p = await A.page.evaluate(() => (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || null);
@@ -97,12 +100,14 @@ async function ottavo(modo, init) {
   out.errs = A.errs.slice(0, 3); await A.b.close(); A.srv.close(); return out;
 }
 function passiC(I, S) {
-  const g = I.finita && S.finita && I.rigori && I.carriera && S.carriera;
+  /* [giro 253] i due bracci devono partire dalla stessa settimana (passeggiata di apriCarriera166 registrata): altrimenti non e' lo stesso
+     salvataggio e il confronto non e' giudicato */
+  const g = I.finita && S.finita && I.rigori && I.carriera && S.carriera && I.W != null && I.W === S.W;
   const J = x => JSON.stringify(x);
   return [
     { nome: 'C la partita KO aperta col tasto e\' a soli salienti (testimone, velo)', ok: !!S.lm && S.lm.attiva === true && S.lm.chiesta === true && S.velo, info: `testimone ${J(S.lm || null)} · velo ${S.velo} · ${S.err || ''} ${J(S.note || [])}` },
     { nome: 'C pareggio a eliminazione diretta → rigori in entrambe, stesso risultato', ok: g && S.rigori && J(I.score) === J(S.score), info: `rigori ${I.rigori}/${S.rigori} · forzati ${J(I.forzati)} ${J(S.forzati)} · risultato ${J(I.score)} vs ${J(S.score)}${g ? '' : ' · NON GIUDICATO'}` },
-    { nome: 'C libro mastro e schermata finale identici', ok: g && I.seq.length > 5 && J(I.seq) === J(S.seq) && (I.finale || '').length > 400 && I.finale === S.finale, info: `voci ${I.seq ? I.seq.length : '—'}/${S.seq ? S.seq.length : '—'} · finale ${(I.finale || '').length}/${(S.finale || '').length} car.` },
+    { nome: 'C libro mastro e schermata finale identici', ok: g && I.seq.length > 5 && J(I.seq) === J(S.seq) && (I.finale || '').length > 400 && I.finale === S.finale, info: `voci ${I.seq ? I.seq.length : '—'}/${S.seq ? S.seq.length : '—'} · finale ${(I.finale || '').length}/${(S.finale || '').length} car. · settimana ${I.W}/${S.W}${g ? '' : ' · NON GIUDICATO'}` },
     { nome: 'C il turno si chiude come nella partita intera (calendario, stato europeo, storico, presenze)', ok: g && !!I.carriera.cal && I.carriera.cal.played && J(I.carriera.cal) === J(S.carriera.cal) && J(I.carriera.euro) === J(S.carriera.euro) && I.carriera.euro.phase !== 'r16' && J(I.carriera.voce) === J(S.carriera.voce) && I.carriera.matches === S.carriera.matches && I.carriera.week === S.carriera.week && J(I.carriera.trophies) === J(S.carriera.trophies),
       info: `intera ${J(I.carriera && { cal: I.carriera.cal, euro: I.carriera.euro, week: I.carriera.week }).slice(0, 260)} · soli ${J(S.carriera && { cal: S.carriera.cal, euro: S.carriera.euro, week: S.carriera.week }).slice(0, 260)}` },
     { nome: 'C errori di pagina', ok: !(I.errs || []).length && !(S.errs || []).length && !I.err, info: J([I.errs, S.errs, I.err || null]) }];
@@ -111,7 +116,7 @@ function passiC(I, S) {
 console.log('A. STATICO'); for (const x of st) console.log(`  ${x.ok ? '✓' : '✗'} ${x.nome} — ${x.info}`);
 let verde = null, rosso = null;
 if (PARTE !== 'rosso') {
-  const B = await prompt(false); const I = await ottavo('intera'), S = await ottavo('solo'); const C = passiC(I, S);
+  const B = await prompt(false); const I = await ottavo('intera'), S = await ottavo('solo'); if (process.env.CPM_G229_DUMP) fs.writeFileSync(process.env.CPM_G229_DUMP, JSON.stringify({ I, S }));/* [giro 246] per confrontare le due schermate finali */ const C = passiC(I, S);
   console.log('B+C. braccio VERDE'); for (const x of [...B, ...C]) console.log(`  ${x.ok ? '✓' : '✗'} ${x.nome} — ${x.info}`);
   verde = st.every(x => x.ok) && [...B, ...C].every(x => x.ok);
 }

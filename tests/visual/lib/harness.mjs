@@ -4,6 +4,7 @@
    Usata dall'orchestratore validate-situations.mjs e dai check modulari.
    ============================================================================ */
 import { chromium } from 'playwright';
+import { paginaTradotta, babelNelBrowser, annotaPagina } from './precompila-237.mjs';
 import { PNG } from 'pngjs';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -103,6 +104,13 @@ export function startServer(root = ROOT) {
       if (p === '/') p = '/CARRIER-MANAGER-AV.html';
       const fp = path.join(root, p);
       if (!fp.startsWith(root)) { res.writeHead(403); return res.end(); }
+      /* [giro 237 PO-504 B] la pagina di gioco arriva GIA' TRADOTTA (come sul sito): niente Babel nel browser a ogni pagina.
+         CPM_BABEL_BROWSER=1 torna al sorgente tradotto nel browser (braccio «prima», prova del rosso di web-237). */
+      if (path.basename(fp) === 'CARRIER-MANAGER-AV.html') {
+        const _bb = babelNelBrowser(); annotaPagina(_bb ? 'babel-browser' : 'tradotta');
+        if (!_bb) { let d; try { d = paginaTradotta(fp); } catch (e) { console.error('[precompila-237] ' + e.message); res.writeHead(500); return res.end(String(e.message)); }
+          res.writeHead(200, { 'content-type': MIME['.html'] }); return res.end(d); }
+      }
       fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'content-type': MIME[path.extname(fp).toLowerCase()] || 'application/octet-stream' }); res.end(d); });
     });
     srv.listen(0, () => resolve(srv));
@@ -228,9 +236,20 @@ export async function unfreeze(page) { await page.evaluate(() => { window.__CPM_
 /* Campiona la traiettoria del POST-HIGHLIGHT: forza gi (choose), risolve l'azione k e
    poll camera/palla/giocatori a intervalli per la finestra data. Ritorna { gi, durMs, frames }.
    Usato dai check Fase 3 (durata dinamica, fluidità camera, coerenza animazioni, movimento tattico). */
-export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollMs = 110, windowMs = 1100 } = {}) {
+export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollMs = 110, windowMs = 1100, apri = true, apriMaxMs = 6000, apriQuietMs = 600 } = {}) {
   await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
   await sleep(settle);
+  /* [giro 271] SI RISOLVE A SCENA APERTA, NON DOPO UN TEMPO FISSO. MISURATO (misura-271, pagina nuova per prova, 17 prove con esito
+     fallito su gi0): sul banco lo stacco di scena e' spento e alla forzatura l'eroe salta al suo punto mentre il pallone, se in quel
+     fotogramma non c'e' un nero vivo, ci ARRIVA VIAGGIANDO dalla scena di prima (47 u, ~1 s di scena). Dopo 600 ms reali era ancora
+     in viaggio in 10 prove su 17 (a 30-40 u dall'eroe): risolvendo li', sull'esito fallito la camera del giro 241 (dietro l'eroe
+     sulla retta pallone→eroe) va dall'altra parte del campo — stacco d'esito di 41,7-49,2 u contro 8,6-9,8 col pallone ai piedi.
+     E' il «salto camera 41,9 > 30» di post-highlight: rosso in 3 corse del gate su 6 (1 su 3 sulla base senza il giro 265, 2 su 3
+     con), sempre gi0, sempre 41,9-45,3. Nel gioco fra l'apertura e la scelta passano l'introduzione e il movimento: il giocatore non
+     puo' scegliere col pallone in viaggio. Ora si aspetta l'EVENTO (pallone fermo per `quietMs`), col tetto `apriMaxMs`; se il tetto
+     scade lo dice il campione (`aperta.ok=false`) e chi giudica lo conta come non giudicato. `apri:false` = comportamento di prima. */
+  let aperta = null;
+  if (apri) aperta = await waitBallSettle(page, { maxMs: apriMaxMs, quietMs: apriQuietMs, minMs: 0, pollMs: 110 });
   await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);
   const frames = []; const end = Date.now() + windowMs; let durMs = null;
   while (Date.now() < end) {
@@ -255,7 +274,7 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
     });
     await sleep(pollMs);
   }
-  return { gi, durMs, frames };
+  return { gi, durMs, frames, aperta };
 }
 
 /* MOTION sampler (B2): forza gi al framing interattivo (choose), SBLOCCA il render (dt>0) e campiona le

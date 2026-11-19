@@ -22,6 +22,10 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 
 ## Anderson Rohr — `assets/cgtrader-clip-rohr.glb` (giro 180b, 12/11/2026)
 
+**Giro 256 (17/11/2026, seguito di PO-499):** seconda clip Rohr **collegata al gioco**: `rohr-clap-twice-hand-up` si alterna a `rohr-clapping-hands-up` nel saluto della serata (`src/16` `saluto256Scegli`, memoria sul dispositivo `cpm-saluto256`). Per questa clip, dopo la clip e la regola delle spalle, passa `_risolvi256`: l'avambraccio usciva dal piano della cerniera del gomito fino a 54° (sinistro) e 39° (destro); la rotazione torna sull'omero e nessuna articolazione si sposta. Misure in `docs/sviluppo/RAPPORTO-giro256.md`.
+
+**Giro 240 (17/11/2026, PO-499):** prima clip Rohr **collegata al gioco**: `rohr-clapping-hands-up` è il saluto della serata di presentazione (`src/16` `_salutoClip240`: solo le braccia — clavicole, omeri, avambracci, mani, dita — sopra la posa della fila; ripiego `rohr-clap-twice-hand-up`). Misure sul corpo della serata in `docs/sviluppo/RAPPORTO-giro240.md`. Il file entra nel pacchetto di rilascio (1.878.652 byte).
+
 **Giro 184 (180d, 13/11/2026):** il file ha ora **28 clip** (3,30 MB). La correzione delle mani resta solo dove abbassa il massimo del cancello (5 clip: goal-celebration-02, juggling-02, clapping-hands-up, hands-up-looking-up, standing-selfie), spenta sulle altre; rientrano `rohr-defending-01` (28,58°), `rohr-goalkeeper-save-03` (28,34°), `rohr-dribble-03` (28,94°) e `rohr-juggling-03` (anello di 4,7 s, 24,74°); `rohr-swaying-arms` sul tratto più mosso (3,4 s). Elenco e opzioni: `tools/rohr-180/clip-184.txt`; misure per clip in `docs/sviluppo/RAPPORTO-giro184.md`. La tabella qui sotto è quella del 180c (storica).
 
 | Pacchetto | Cosa dice la licenza (citazione, riletta alla fonte il 12/11/2026) | Fonte | Esito per il gioco |

@@ -1,0 +1,50 @@
+### test:logic · 14:47:00 · mem libera 15463 MB · disco 28G
+# pass 51
+# fail 0
+    ultima riga: # duration_ms 2165.63595
+### USCITA test:logic = 0 in 2 s
+### save-compat · 14:47:02 · mem libera 15209 MB · disco 28G
+=== SAVE-COMPAT === 12 pass · 0 fail
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA save-compat = 0 in 1 s
+### design-system · 14:47:03 · mem libera 15189 MB · disco 28G
+    ultima riga: ✅ SISTEMA GRAFICO OK
+### USCITA design-system = 0 in 1 s
+### portiere-252 · 14:47:04 · mem libera 15189 MB · disco 28G
+verde: KO 0/11 · rosso: KO 3/11
+✅ portiere-252 VERDE (seme 1; rosso visto: 3 KO — gi9 fail (verso), gi13@88,14 fail (verso), gi13@88,14 saved (verso))
+BRACCIO verde+rosso · MOTIVO nessuno
+    ultima riga: BRACCIO verde+rosso · MOTIVO nessuno
+### USCITA portiere-252 = 0 in 879 s
+### portiere-223 · 15:01:43 · mem libera 15452 MB · disco 28G
+✅ VERDE — sui tiri sbagliati il pallone non attraversa il portiere, che si muove in tempo (ne' tardi ne' gia' rialzato) verso i palloni a portata e guarda uscire quelli lontani.
+❌ ROSSO (atteso: __CPM_NO_G223) — 13 difetti:
+    ultima riga:   · secondo-palo gi86 post: il pallone ATTRAVERSA il portiere (0.54u dal suo corpo a quota 0.71, +0.20s dal piano) su un tiro sbagliato
+### USCITA portiere-223 = 0 in 422 s
+### tema-unico · 15:08:45 · mem libera 15457 MB · disco 28G
+tema-unico VERDE: nessun tema alternativo nel codice, preferenza vecchia innocua, banco di prova chiuso fuori da ?cpmtest=1
+ROSSO ATTESO OK: col tema di prova armato cade P (fondo non notte)
+    ultima riga: ROSSO ATTESO OK: col tema di prova armato cade P (fondo non notte)
+### USCITA tema-unico = 0 in 17 s
+### typing-shortcuts · 15:09:02 · mem libera 15355 MB · disco 28G
+✅ PASS — chi scrive tiene la tastiera: nessuna scorciatoia gli ruba i tasti
+    ultima riga: ✅ PASS — chi scrive tiene la tastiera: nessuna scorciatoia gli ruba i tasti
+### USCITA typing-shortcuts = 0 in 15 s
+### web-237 · 15:09:17 · mem libera 15363 MB · disco 28G
+[web-237] braccio VERDE · cartella dist-web · VERDE: niente Babel, menu in 520 ms < 4000 ms, salvataggio caricato
+  ❌ il file servito contiene <script type="text/babel">
+  ❌ apertura 1: Babel ESEGUITO nella pagina (window.Babel true, script text/babel 1)
+  ❌ apertura 2: Babel ESEGUITO nella pagina (window.Babel true, script text/babel 1)
+  ❌ apertura 3: Babel ESEGUITO nella pagina (window.Babel true, script text/babel 1)
+  ❌ avvio fino al menu 8245 ms ≥ soglia 4000 ms
+[web-237] braccio ROSSO (dist-web-babel, Babel nel browser) · cartella dist-web-babel · PROVA DEL ROSSO RIUSCITA: il guardiano vede la traduzione nel browser (5 rilievi, avvio 8245 ms)
+    ultima riga: [web-237] braccio ROSSO (dist-web-babel, Babel nel browser) · cartella dist-web-babel · PROVA DEL ROSSO RIUSCITA: il guardiano vede la traduzione nel browser (5 rilievi, avvio 8245 ms)
+### USCITA web-237 = 0 in 56 s
+### parata-100 · 15:10:13 · mem libera 14932 MB · disco 27G
+VERDE parate 8 (tiro del compagno 5) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 1
+ROSSO parate 4 (tiro del compagno 1) · sul ramo cross_goal 2 · non giudicabili 0 · difetti 2
+❌ parata-100
+    ultima riga:   · verde: 1 parate senza pallone al portiere
+### USCITA parata-100 = 1 in 1800 s
+FINE

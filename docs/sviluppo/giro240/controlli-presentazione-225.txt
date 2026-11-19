@@ -1,0 +1,47 @@
+== presentazione-225 · 14:28:58 · memoria libera 15468 MB · disco libero 28G
+partita di notte, spalti: {"n":914,"lum":0.3193,"sat":0.1838}
+VERDE: tifo {"sagome":13433,"visibili":true,"dens":"vera","uT":12.391599999997764,"modo":"sagome","provaPx":446,"dipinti":0,"anima":true} · spalti 0.3378 · fascia tel 0/930 pc 0/840
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 203,114,79 dE 18 · capelli black · reso 223,151,109 dE 4.2
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 171,104,82 dE 14.7 · capelli auburn · reso 200,133,107 dE 6.3
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 181,103,74 dE 14 · capelli black · reso 205,126,96 dE 6.7
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 170,95,65 dE 11.5 · capelli black · reso 200,123,87 dE 2.3
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 189,114,89 dE 18 · capelli black · reso 217,153,124 dE 3.9
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,172,141 · 3D pelle 197,121,94 dE 20.2 · capelli black · reso 219,156,127 dE 6.7
+   piedi [[0.026,0.026],[-0.002,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[-0.002,0.028]] · percorso 4.26 slitta 0.172 avanti 2.14 · braccio {"campioni":109,"sopra":0,"gomito":[104.6,174.7],"elev":[7,61.3],"fuori":[0,9.4],"fuoriRiposo":[0,24.1],"polso":[43.8,62],"lato":[4,51.5],"busto":[23.7,37.1],"velOmero":191,"velAvambraccio":376,"manoSuMax":0.077,"fineManoSu":-0.486}
+   clip {"nome":"rohr-clapping-hands-up","dur":3.9000000953674316,"ossa":38} · due braccia {"campioni":41,"mani":0.125,"busto":0.237,"testa":0.286,"alte":2.16,"battiti":8,"lato":0.04}
+ROSSO: tifo {"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false} · spalti 0.1769 · fascia tel 273/656 pc 182/595
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 208,143,113 dE 11.7 · capelli brown · reso 220,167,143 dE 16.3
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 208,143,113 dE 6.1 · capelli blond · reso 220,168,145 dE 9.6
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 208,143,113 dE 4.7 · capelli brown · reso 220,166,141 dE 13.8
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 208,143,113 dE 9.2 · capelli brown · reso 220,171,149 dE 22.3
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 208,143,113 dE 7.1 · capelli auburn · reso 216,160,140 dE 4.4
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,172,141 · 3D pelle 208,143,113 dE 11.2 · capelli black · reso 215,163,141 dE 5.7
+   piedi [[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.028,0.028]] · percorso 7.94 slitta 1 avanti 4.4 · braccio {"campioni":102,"sopra":2.7,"gomito":[109.7,166.9],"elev":[8.8,125.7],"fuori":[46.1,74.6],"fuoriRiposo":[3.5,20],"polso":[10.5,15],"lato":[27.9,69.4],"busto":[27.9,49.5],"velOmero":538,"velAvambraccio":673,"manoSuMax":0.409,"fineManoSu":-0.489}
+ROSSO 240: tifo {"sagome":13433,"visibili":true,"dens":"vera","uT":12.143,"modo":"sagome","provaPx":448,"dipinti":0,"anima":true} · spalti 0.3379 · fascia tel 0/938 pc undefined/undefined
+   Dylan Gray · volto 706 (a, neri) viso 231,160,112 · 3D pelle 220,134,86 dE undefined · capelli black · reso 230,174,125 dE undefined
+   Rupert Hammond · volto 162 (c, rossi) viso 198,142,119 · 3D pelle 189,119,92 dE undefined · capelli auburn · reso 207,147,120 dE undefined
+   Max Stanley · volto 299 (o, neri) viso 209,140,103 · 3D pelle 199,117,79 dE undefined · capelli black · reso 219,147,106 dE undefined
+   Isaac Hughes · volto 993 (a, neri) viso 197,125,87 · 3D pelle 188,104,66 dE undefined · capelli black · reso 218,141,94 dE undefined
+   Gary Howard · volto 271 (c, neri) viso 217,160,132 · 3D pelle 207,134,102 dE undefined · capelli black · reso 224,173,143 dE undefined
+   77 SAMUELITO VAIRO! · volto 9 (c, neri) viso 225,172,141 · 3D pelle 215,145,110 dE undefined · capelli black · reso 227,184,151 dE undefined
+   piedi [[0.026,0.026],[-0.002,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[0.026,0.026],[-0.001,0.028]] · percorso 4.24 slitta 0.167 avanti 2.14 · braccio {"campioni":107,"sopra":1.7,"gomito":[84.1,174.7],"elev":[7.3,96.2],"fuori":[0,6.3],"fuoriRiposo":[0,24.2],"polso":[6.7,13.3],"lato":[28.2,59.2],"busto":[27.9,49],"velOmero":188,"velAvambraccio":376,"manoSuMax":0.303,"fineManoSu":-0.485}
+   clip null · difetti []
+RIPIEGO: {"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":"dipinti","provaPx":0,"dipinti":4681,"anima":false,"uomini":7,"luci":11}
+difetti visti nel rosso:
+  - tel E: 273 raggi verso il prato coperti da una struttura {"trasparente 0.8 y25":273}
+  - tel A: folla a sagome della partita assente ({"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false})
+  - pc E: 182 raggi verso il prato coperti da una struttura {"trasparente 0.8 y25":182}
+  - pc A: folla a sagome della partita assente ({"sagome":0,"visibili":false,"dens":null,"uT":null,"modo":null,"provaPx":null,"dipinti":4681,"anima":false})
+  - B: Dylan Gray capelli della figurina «neri» ma testa 3D «brown»
+  - B: Dylan Gray viso reso nel 3D 220,167,143 contro viso della figurina 231,160,112: distanza 16.3 > 12
+  - B: Rupert Hammond capelli della figurina «rossi» ma testa 3D «blond»
+  - B: Max Stanley capelli della figurina «neri» ma testa 3D «brown»
+  - B: Max Stanley viso reso nel 3D 220,166,141 contro viso della figurina 209,140,103: distanza 13.8 > 12
+  - B: Isaac Hughes capelli della figurina «neri» ma testa 3D «brown»
+  - B: Isaac Hughes viso reso nel 3D 220,171,149 contro viso della figurina 197,125,87: distanza 22.3 > 12
+  - B: Gary Howard capelli della figurina «neri» ma testa 3D «auburn»
+  - C: scivola — piede d'appoggio/corpo 1 > 0.35
+  - D: il gomito ruota fuori dalla cerniera di 74.6 gradi > 25
+  - D: scatto del braccio — omero 538 gradi/s (limite 350), avambraccio 673 gradi/s (limite 530)
+✅ presentazione-225 verde (e il rosso si vede)
+uscita 0 · durata 13 min 18 s · 14:42:16

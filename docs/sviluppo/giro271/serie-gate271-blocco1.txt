@@ -1,0 +1,139 @@
+### base271 corsa 1 10:29:45 mem 15471
+post-highlight gi0: maxCam 0.4 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [143ms:0.0N 141ms:8.0N 128ms:0.2N 145ms:0.3N 146ms:0.4 137ms:0.4]
+post-highlight gi2: maxCam 0.6 · coppie 7 · scartate 0 · fase iniziale hl_choose · passi [127ms:0.0>hl_result 119ms:0.4 150ms:0.5 145ms:0.6 158ms:0.6 149ms:0.6 144ms:0.6]
+post-highlight gi30: maxCam 0.5 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [191ms:0.4 163ms:0.5 169ms:0.5 170ms:0.5 160ms:0.5]
+post-highlight gi60: maxCam 1.8 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [161ms:1.8 155ms:1.8 157ms:1.7 149ms:1.6 163ms:1.5 164ms:1.4]
+post-highlight gi79: maxCam 1.9 · coppie 5 · scartate 1 · fase iniziale hl_result · passi [135ms:1.6 163ms:1.6 123ms:1.7 142ms:1.8 133ms:1.9 315ms:1.9]
+post-highlight gi120: maxCam 4.5 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [211ms:4.5 206ms:4.2 125ms:2.1 125ms:2.1 130ms:2.1 135ms:2.1]
+  ✅ initial-state    OK · 1 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ✅ post-highlight   OK
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+✅ PASS
+### USCITA base271 corsa 1 = 0 in 853 s
+### Carrier-manager- corsa 1 10:43:58 mem 15295
+post-highlight gi0: maxCam 0.4 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [130ms:7.8N 138ms:0.2N 159ms:0.3N 161ms:0.3 137ms:0.4 150ms:0.4]
+post-highlight gi2: maxCam 0.6 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [148ms:0.5 140ms:0.5 132ms:0.6 140ms:0.6 169ms:0.6 158ms:0.6]
+post-highlight gi30: maxCam 0.5 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [164ms:0.4 142ms:0.5 135ms:0.5 142ms:0.5 138ms:0.5 157ms:0.5]
+post-highlight gi60: maxCam 1.8 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [125ms:1.8 134ms:1.8 144ms:1.7 124ms:1.6 134ms:1.5 152ms:1.4 137ms:1.3]
+post-highlight gi79: maxCam 1.7 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [207ms:1.7 128ms:0.8 232ms:1.4 120ms:0.6 226ms:1.1]
+post-highlight gi120: maxCam 0.5 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [146ms:0.2 161ms:0.3 146ms:0.4 139ms:0.4 133ms:0.5 136ms:0.5]
+  ✅ initial-state    OK · 2 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 2 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ✅ post-highlight   OK
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+✅ PASS
+### USCITA Carrier-manager- corsa 1 = 0 in 869 s
+### base271 corsa 2 10:58:27 mem 15347
+post-highlight gi0: maxCam 45.3 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [137ms:0.0 181ms:45.3 186ms:0.1 171ms:0.1 168ms:0.1]
+post-highlight gi2: maxCam 0.6 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [227ms:0.8N 232ms:1.2N 138ms:0.6N 141ms:0.6 136ms:0.6 147ms:0.6]
+post-highlight gi30: maxCam 2.2 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [148ms:2.2 168ms:1.9 169ms:1.7 171ms:1.5 161ms:1.4 158ms:1.2]
+post-highlight gi60: maxCam 5.6 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [142ms:4.3 126ms:3.9 142ms:3.5 132ms:3.2 124ms:3.0 212ms:5.6]
+post-highlight gi79: maxCam 0.2 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [197ms:0.1 209ms:0.1 181ms:0.1 174ms:0.2 192ms:0.2]
+post-highlight gi120: maxCam 3.4 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [135ms:3.4 142ms:3.1 145ms:2.8 142ms:2.7 131ms:2.6 129ms:2.5 141ms:2.4]
+  ✅ initial-state    OK · 2 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ❌ post-highlight   1 issue
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+❌ FAIL — post-highlight
+### USCITA base271 corsa 2 = 1 in 852 s
+### Carrier-manager- corsa 2 11:12:39 mem 15338
+post-highlight gi0: maxCam 42.4 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [233ms:0.0 220ms:42.4 159ms:0.1 158ms:0.1 172ms:0.1]
+post-highlight gi2: maxCam 0.6 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [142ms:0.5N 122ms:0.6N 152ms:0.6N 139ms:0.6N 140ms:0.6 155ms:0.6]
+post-highlight gi30: maxCam 0.5 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [152ms:0.4 146ms:0.5 155ms:0.5 149ms:0.5 149ms:0.5 152ms:0.5]
+post-highlight gi60: maxCam 1.8 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [157ms:1.8 153ms:1.7 182ms:1.7 188ms:1.6 166ms:1.5]
+post-highlight gi79: maxCam 1.9 · coppie 4 · scartate 1 · fase iniziale hl_result · passi [149ms:1.6 148ms:1.6 248ms:3.5 144ms:1.9 158ms:1.9]
+post-highlight gi120: maxCam 2.4 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [124ms:2.4 133ms:2.2 136ms:2.1 119ms:2.1 133ms:2.1 140ms:2.1 147ms:2.1]
+  ✅ initial-state    OK · 2 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ❌ post-highlight   1 issue
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+❌ FAIL — post-highlight
+### USCITA Carrier-manager- corsa 2 = 1 in 836 s
+### base271 corsa 3 11:26:35 mem 15264
+post-highlight gi0: maxCam 0.9 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [133ms:0.0N 128ms:7.9N 142ms:0.1N 159ms:0.3N 127ms:0.3 126ms:0.4 231ms:0.9]
+post-highlight gi2: maxCam 0.6 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [139ms:0.5N 122ms:0.5N 132ms:0.6N 148ms:0.6N 140ms:0.6 150ms:0.6 156ms:0.6]
+post-highlight gi30: maxCam 0.5 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [150ms:0.4 137ms:0.5 146ms:0.5 153ms:0.5 149ms:0.5 157ms:0.5]
+post-highlight gi60: maxCam 1.8 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [131ms:1.8 117ms:1.8 125ms:1.7 145ms:1.6 139ms:1.5 148ms:1.4 155ms:1.3]
+post-highlight gi79: maxCam 1.9 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [156ms:1.6 145ms:1.6 134ms:1.7 157ms:1.8 152ms:1.9 171ms:1.9]
+post-highlight gi120: maxCam 4.2 · coppie 5 · scartate 0 · fase iniziale hl_result · passi [138ms:2.3 127ms:2.2 238ms:4.2 137ms:2.1 155ms:2.1]
+  ✅ initial-state    OK · 4 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ✅ post-highlight   OK
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+✅ PASS
+### USCITA base271 corsa 3 = 0 in 851 s
+### Carrier-manager- corsa 3 11:40:46 mem 15336
+post-highlight gi0: maxCam 41.9 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [130ms:0.0 204ms:41.9 164ms:0.1 157ms:0.1 145ms:0.1 165ms:0.1]
+post-highlight gi2: maxCam 0.6 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [122ms:0.4N 137ms:0.5N 119ms:0.5N 151ms:0.6N 152ms:0.6N 138ms:0.6 132ms:0.6]
+post-highlight gi30: maxCam 1.4 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [141ms:1.4 145ms:1.2 147ms:1.0 143ms:0.9 143ms:0.7 144ms:0.7]
+post-highlight gi60: maxCam 1.6 · coppie 7 · scartate 0 · fase iniziale hl_result · passi [131ms:1.6 130ms:1.6 133ms:1.6 140ms:1.5 136ms:1.4 138ms:1.3 131ms:1.3]
+post-highlight gi79: maxCam 3.2 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [237ms:3.2 123ms:1.7 156ms:1.8 127ms:1.9 163ms:1.9 162ms:2.0]
+post-highlight gi120: maxCam 2.4 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [123ms:2.4 124ms:2.2 148ms:2.1 146ms:2.1 162ms:2.1 134ms:2.1]
+  ✅ initial-state    OK · 6 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK
+  ✅ determinism      OK
+  ❌ post-highlight   1 issue
+  ✅ data-coherence   OK
+  ✅ timeline         OK
+  ✅ motion           OK · 1 warn
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+❌ FAIL — post-highlight
+### USCITA Carrier-manager- corsa 3 = 1 in 870 s
+FINE 1-3

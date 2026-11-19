@@ -56,19 +56,28 @@ if (!process.env.CPM_SOLO_A) {
     /* fino al pannello di fine gara (oltre la premiazione) */
     for (let i = 0; i < 20; i++) { const ok = await page.evaluate(() => /PAGELLA/.test(document.body.innerText || '') && typeof window.__CPM_VOTO79 === 'number'); if (ok) break;
       await page.getByText('Salta premiazione', { exact: false }).first().click({ timeout: 1500 }).catch(() => {}); await sleep(1500); }
-    const leggi = () => page.evaluate(() => { const T = document.body.innerText || ''; const m = T.match(/PAGELLA\s*\n\s*([0-9]+(?:[.,][0-9])?)/); const c = T.match(/\(voto ([0-9]+(?:[.,][0-9])?)\)/);
+    /* [giro 254] dal giro 200 il pannello di fine gara e' a QUATTRO SCHEDE (puntini data-cpm="puntino200"): le schede non mostrate
+       sono display:none e il loro testo non c'e' in innerText (PAGELLA e «(voto X)» non si leggevano), e le fisarmoniche che la sonda
+       cliccava per forzare un render non esistono piu' → «B rosso senza render» = cieco. Ora la sonda visita le schede una per una:
+       raccoglie il testo di tutte e, cambiando scheda, PROVOCA il render (setSk200) di cui il braccio rosso ha bisogno. */
+    const puntini = () => page.$$('[data-cpm="puntino200"]');
+    const giroSchede = async () => { const P = await puntini(); let T = ''; for (const el of P) { await el.click({ timeout: 2000 }).catch(() => {}); await sleep(350); T += '\n' + await page.evaluate(() => document.body.innerText || ''); } if (P.length) { await P[0].click({ timeout: 2000 }).catch(() => {}); await sleep(300); } return { T, n: P.length }; };
+    const leggi = async () => { const g = await giroSchede(); rec.schede = g.n; return page.evaluate((T0) => { const T = (T0 || '') + '\n' + (document.body.innerText || ''); /* [giro 254] dal giro 202 il voto sta PRIMA dell'etichetta («6.2\nPAGELLA Sufficiente»): si leggono i due ordini */
+      const m = T.match(/PAGELLA\s*\n\s*([0-9]+(?:[.,][0-9])?)\s*\n/) || T.match(/(?:^|\n)\s*([0-9]+(?:[.,][0-9])?)\s*\n\s*PAGELLA\b/); const c = T.match(/\(voto ([0-9]+(?:[.,][0-9])?)\)/);
       const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); const E = M && M.pagelle ? (M.pagelle() || []).find(p => p && p.eroe) : null;
-      return { pagellaTesto: m ? parseFloat(m[1].replace(',', '.')) : null, votoTestata: c ? parseFloat(c[1].replace(',', '.')) : null, testimone: window.__CPM_VOTO79, motore: E ? E.voto : null }; });
+      return { pagellaTesto: m ? parseFloat(m[1].replace(',', '.')) : null, votoTestata: c ? parseFloat(c[1].replace(',', '.')) : null, testimone: window.__CPM_VOTO79, motore: E ? E.voto : null }; }, g.T); };
     rec.verde = await leggi();
     await page.evaluate(() => { window.__CPM_NO_VOTO79 = 1; window.__CPM_VOTO79 = null; });
-    /* un render: si apre/chiude una sezione a fisarmonica del pannello */
-    for (const t of ['LE CONNESSIONI', 'IL TUO TABELLINO IN NUMERI', 'TABELLINO DELLA GARA', 'IL TUO TABELLINO']) { await page.getByText(t, { exact: true }).first().click({ timeout: 1500 }).catch(() => {}); await sleep(400); const v = await page.evaluate(() => window.__CPM_VOTO79); if (v != null) break; }
+    /* un render: si cambia scheda (giro 254); le fisarmoniche di prima restano come ripiego per un pannello senza schede */
     rec.rosso = await leggi();
+    if (rec.rosso.testimone == null) for (const t of ['LE CONNESSIONI', 'IL TUO TABELLINO IN NUMERI', 'TABELLINO DELLA GARA', 'IL TUO TABELLINO']) { await page.getByText(t, { exact: true }).first().click({ timeout: 1500 }).catch(() => {}); await sleep(400); const v = await page.evaluate(() => window.__CPM_VOTO79); if (v != null) break; }
+    if (rec.rosso.testimone == null) rec.rosso = await leggi();
   } catch (e) { rec.err = String(e).slice(0, 200); }
   await ctx.close();
-  console.log(`(B) k${k}: ${rec.fine || '-'} · verde ${JSON.stringify(rec.verde)} · rosso ${JSON.stringify(rec.rosso)}${rec.err ? ' ERR ' + rec.err : ''}${errori.length ? ' pageerror ' + errori.join(' | ') : ''}`);
+  console.log(`(B) k${k}: ${rec.fine || '-'} · schede ${rec.schede ?? '-'} · verde ${JSON.stringify(rec.verde)} · rosso ${JSON.stringify(rec.rosso)}${rec.err ? ' ERR ' + rec.err : ''}${errori.length ? ' pageerror ' + errori.join(' | ') : ''}`);
   const V = rec.verde || {}, R = rec.rosso || {};
-  if (rec.err || V.motore == null || V.testimone == null) fail.push('B: misura non valida');
+  /* [giro 254] «non giudicato» = rosso: anche la PAGELLA a schermo deve essere letta (prima un null passava in silenzio) */
+  if (rec.err || V.motore == null || V.testimone == null || V.pagellaTesto == null) fail.push(`B: misura non valida (motore ${V.motore} · testimone ${V.testimone} · pagella a schermo ${V.pagellaTesto})`);
   else {
     if (errori.length) fail.push('B: pageerror');
     if (V.testimone !== V.motore) fail.push(`B verde: voto delle testate ${V.testimone} ≠ pagella del motore ${V.motore}`);

@@ -20,7 +20,8 @@ export async function campionaSaluto(page, beat, durMs = 90000) {
       W('upperarm_r', va); W('upperarm_l', vb); const dx = va.clone().sub(vb); dx.y = 0; dx.normalize(); const fwd = new T.Vector3(0, 1, 0).cross(dx).normalize();
       W('hand_r', va); W('middle_01_r', vb); const a = vb.clone().sub(va); W('index_01_r', va); W('pinky_01_r', vc); const b = vc.clone().sub(va);
       const n = a.clone().cross(b).normalize();
-      S.push({ el: +(P.el - el0).toFixed(3), avanti: k, pi: P.pi144 != null ? P.pi144 : null, t: P.t144 != null ? +P.t144.toFixed(2) : null, w: P.w144 != null ? +P.w144.toFixed(2) : null, eroe: P.HERO, z, mr: +mr.toFixed(3), ml: +ml.toFixed(3), palmo: +n.dot(fwd).toFixed(2), pz: +m.position.z.toFixed(2) });
+      const md = W('hand_r', va).distanceTo(W('hand_l', vb));/* [giro 240] distanza fra le mani: l'applauso della clip */
+      S.push({ md: +md.toFixed(3), clip: !!(P.clip240 && P.clip240()), el: +(P.el - el0).toFixed(3), avanti: k, pi: P.pi144 != null ? P.pi144 : null, t: P.t144 != null ? +P.t144.toFixed(2) : null, w: P.w144 != null ? +P.w144.toFixed(2) : null, eroe: P.HERO, z, mr: +mr.toFixed(3), ml: +ml.toFixed(3), palmo: +n.dot(fwd).toFixed(2), pz: +m.position.z.toFixed(2) });
       await new Promise(r => setTimeout(r, 90));
     }
     return S;

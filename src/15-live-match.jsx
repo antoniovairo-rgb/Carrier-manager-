@@ -23,6 +23,8 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [giro 241] «Stacco sul palo lontano» (gi55): l'esito «palo» si mostra come «fuori» — misura e motivo dove viene usata (handleAction). Rosso __CPM_NO_G241. */
+function esitoPalo241(kind,label){return(kind==="post"&&/Stacco sul palo lontano/.test(String(label||""))&&!(typeof window!=='undefined'&&window.__CPM_NO_G241))?"wide":kind;}
 /* [giro 90 PO-292, collaudo PC/tablet 7.999.177 — decisione PO «Partita a tutto schermo»] ASSISTENTI DI IMPAGINAZIONE.
    Rosso __CPM_NO_LARGO292 = l'impaginazione della 177 (colonna da 1100 px, campo al 62%, tablet verticale a due colonne);
    rosso __CPM_NO_PCTAB292 = gli altri ritocchi (zone di tocco, suggerimenti da tastiera, tasti 1-3 nei rigori, Esc). Il telefono
@@ -1566,6 +1568,18 @@ function rassegnaComp232(player,ctx,es){
   return null;
 }
 if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){window.rassegnaComp232=rassegnaComp232;window.__CPM_CLUBS232=()=>CLUBS;window.__CPM_SIG232=(k)=>euroSig(k);}/* solo banco di prova */
+/* [giro 236 · PO-430 G189-18 punto 5 — rosso __CPM_NO_G236] coro «FC CREMONA CAMPIONI! 🏆» sullo 0-0 alla 7a giornata con la squadra nona.
+   I cori che proclamano il titolo (in ogni lingua dei pool) escono solo se la squadra e' davvero PRIMA in classifica con almeno una giornata
+   giocata; altrimenti si tolgono dal sorteggio (se il pool restasse vuoto, si torna al pool intero). Funzione pura. */
+const CORO_TITOLO236=/campion|champion|meister|campe[oõ]|kampioen|top of the league|win the league|glory glory|tetracampe|şampiyon|sampiyon/i;
+function primaInClassifica236(player){try{const st=(player&&player.standings)||[];const id=player&&player.club&&player.club.id;if(!id||!st.length)return false;
+  const me=st.find(r=>r&&r.id===id);if(!me||!(me.played>0))return false;
+  return !st.some(r=>r&&r.id!==id&&((r.pts||0)>(me.pts||0)||((r.pts||0)===(me.pts||0)&&((r.gd||0)>(me.gd||0)||((r.gd||0)===(me.gd||0)&&(r.gf||0)>(me.gf||0))))));}catch(e){return false;}}
+function filtraCoriTitolo236(pool,player,context,alt){if(!Array.isArray(pool)||(typeof window!=="undefined"&&window.__CPM_NO_G236))return pool;
+  const club=!/^(national|nationsCup|euroMondiale)/.test(context||"");
+  if(club&&primaInClassifica236(player))return pool;
+  const no=(a)=>(Array.isArray(a)?a:[]).filter(t=>!CORO_TITOLO236.test(String(t)));
+  const f=no(pool);if(f.length)return f;const g=no(alt);return g.length?g:pool;}/* pool fatto solo di titoli (es. «CHAMPIONS!»): si canta il tifo di casa della stessa lingua */
 function momentoPiazzato224(parola,em){return _g224x()?("⚽ Tuo gol su "+parola+" al "+em+"'"):("⚽ Tuo "+parola+" al "+em+"'");}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
@@ -1929,7 +1943,7 @@ function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
   return [c1,c2];}
 try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
-function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false,onSimula209=null}){/* [giro 209 PO-470] onSimula209: «Simula» dall'avviso «3D non caricabile» (CareerApp: stesso percorso del tasto Simula) *//* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
+function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false,onSimula209=null,prePartita246=false}){/* [giro 246 PO-508] prePartita246: il provino vero (src/17) passa dalla schermata pre-partita *//* [giro 209 PO-470] onSimula209: «Simula» dall'avviso «3D non caricabile» (CareerApp: stesso percorso del tasto Simula) *//* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -2004,6 +2018,23 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
   useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
   // Sprint 33 C7 / Sprint 118 — bench start mechanic
+  /* [giro 243 · PO-508] «Gioca solo i momenti salienti» anche dalla schermata pre-partita (MatchdayCard): ci passano TUTTE le gare
+     (campionato, coppa, Europa, Nazionale: amichevole, Coppa delle Nazioni, Europeo/Mondiale qualificazioni e fase finale), anche quelle
+     avviate dal tasto principale della home, che il giro 229 aveva lasciato senza. Scelta locale alla partita: _solo166 la legge come il
+     soloHL della carriera, la ripresa la salva in s166. Rosso __CPM_NO_G243: il tasto non c'e' e la scelta non vale. */
+  const _g243=!(typeof window!=='undefined'&&window.__CPM_NO_G243);
+  /* [giro 246 · seguito PO-508, decisione PO 17/11 «Gioca solo salienti ci deve essere in tutte le partite e deve comparire in un unico
+     punto, va standardizzato» + «Vedere sempre l'ingresso»] il tasto vive SOLO nella schermata pre-partita (via dal prompt e dalle lobby della
+     Nazionale, src/18) e c'e' in OGNI partita giocabile da titolare: anche Primavera/U18 e provino (che ora passa dalla pre-partita, prop
+     prePartita246 da src/17). Scegliendolo si vedono formazioni e ingresso in campo (saltabili come oggi), poi la partita a soli salienti.
+     Sotto ?cpmtest il provino resta dritto in campo (le sonde lo aprono cosi') salvo il gancio __CPM_PREP246. Rosso __CPM_NO_G246 = giro 243. */
+  const _g246=!(typeof window!=='undefined'&&window.__CPM_NO_G246);
+  /* [giro 253 PO-508, decisione PO 17/11 «Sì, anche dalla panchina»] il tasto «Gioca solo i momenti salienti» c'e' anche quando si parte
+     dalla panchina: la cronaca veloce scorre fino all'ingresso (si ferma al minuto d'ingresso e lascia vedere la sostituzione), poi solo
+     gli highlight; se il giocatore non entra mai, la partita finisce in cronaca veloce con un messaggio chiaro. Rosso __CPM_NO_G253. */
+  const _g253=!(typeof window!=='undefined'&&window.__CPM_NO_G253);
+  const _g264=!(typeof window!=='undefined'&&window.__CPM_NO_G264);/* [giro 264] il battito della partita intera si applica per intero prima del successivo (vedi _batt264) */
+  const [soloScelto243,setSoloScelto243]=useState(false);const soloScelto243Ref=useRef(false);/* il salvataggio della ripresa vive in un effetto montato una volta: legge il ref */
   const [onBench,setOnBench]=useState(resumeState?false:benchStart);/* [7.150.0] ripresa: sempre in campo */
   const onBenchRef=useRef(resumeState?false:benchStart);
   /* [7.38.0 Sezione 8] SOSTITUZIONE IN USCITA: minuto pre-calcolato dalla fatica d'ingresso (deterministico
@@ -2047,6 +2078,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
+  useEffect(()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(true);}catch(_z){}return()=>{try{window.__CPM_VP234&&window.__CPM_VP234.blocca(false);}catch(_z){}};},[]);/* [giro 234 PO-455] in partita lo zoom con due dita resta bloccato (classe cpm-partita234 → touch-action, src/00): fuori dalla partita e' libero */
   useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 175 · PO-372 — LA STESSA PARTITA CON LE STESSE SCELTE E' LA STESSA PARTITA. Rosso __CPM_NO_G175]
@@ -2235,7 +2267,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       let _standPos=null,_standN=null,_formStreak=null,_raceBoost=null,_oppPres=null,_midweek=false,_badHour=false;
       try{ if(context==="career"&&hClub){
         const _st=player.standings||[];
-        if(_st.length){const _sorted=[..._st].sort((x,y)=>(y.pts||0)-(x.pts||0)||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+        if(_st.length){const _sorted=ordinaClassifica259(_st,(x,y)=>(y.pts||0)-(x.pts||0)||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
           const _i=_sorted.findIndex(s=>s.id===hClub.id);if(_i>=0){_standPos=_i+1;_standN=_sorted.length;
             if((player.week||1)>26){const _topGap=_standPos-1,_botGap=_standN-_standPos;if(_topGap<=3||_botGap<=3)_raceBoost=clamp(0.5+(3-Math.min(_topGap,_botGap))*0.17,0,1);}}}
         if(isMatchHome&&hClub.id===player.club?.id){const _mh=(player.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national).slice(-5);if(_mh.length)_formStreak=clamp(_mh.reduce((s,m)=>s+(m.won?1:m.drew?0:-1),0),-5,5);}/* [7.8.1] le entry di matchHistory hanno won/drew, non result → prima _formStreak era SEMPRE 0 (modificatore affluenza da forma mai applicato) */
@@ -2296,6 +2328,11 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _homeClubObj=isMatchHome?_heroSideClub:opponent;// vera squadra di casa (per sigla {H})
   const _awayClubObj=isMatchHome?opponent:_heroSideClub;// vera squadra ospite (per sigla {A})
   const _heroSideRoster=isMatchHome?homeRoster:awayRoster;// rosa del lato dell'eroe (già nazionale in nat-ctx)
+  /* [giro 257 PO-496 seguito — rosso window.__CPM_NO_G257] il rigorista della partita (rigorista257, src/14): lo stesso della Rosa, segnato
+     nelle formazioni; al motore va l'indice nei ventidue (i compagni 0..9 sono i titolari 0..9 della rosa) col cognome che porta in campo. */
+  const rig257=(typeof rigorista257==='function')?rigorista257(player,context,_heroSideRoster):null;
+  const rig257Motore=()=>{try{if(!rig257)return null;if(rig257.eroe)return {eroe:true};const mp=(matchPlayersRef.current||[]);const q=mp[rig257.i];
+    return (q&&q.team==="home")?{i:rig257.i,cog:String(q.name||"")}:null;}catch(_e){return null;}};
   /* [7.825.0 — L'ASSIST LO FA UNO CHE E' IN CAMPO. Rosso __CPM_NO825] Playtest n°6: «Moretti segna su assist di Landi! 1-0.» e al 28' «Moretti corre ad abbracciare Scotti: il gol e' di tutti e due». Landi non gioca: i compagni dell'assist venivano da `player.teammates` (la rosa di carriera), non dall'undici in campo. Ora dall'undici; l'archetipo della carriera si recupera per nome quando c'e'. */
   const _matePool=(_isNatCtx||!(typeof window!=='undefined'&&window.__CPM_NO825))?_heroSideRoster.filter(r=>r&&r.name&&r.name!==player.name&&!/^(POR|GK|Portiere)$/i.test(String(r.pos||r.role||""))).map(r=>{const _tm=(player.teammates||[]).find(q=>q&&q.name===r.name);return {name:r.name,archetype:(_tm&&_tm.archetype)||null};}):(player.teammates||[]);// compagni per assist-link: nazionali in nat-ctx, club altrimenti
   /* [giro 112b PO-314] I MODULI DELLA PARTITA, una volta: la squadra dell'eroe (club o nazionale) e l'avversario hanno il modulo
@@ -2348,7 +2385,9 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     //   squadre REALI home/away; l'eroe è sempre reso «home» nel 3D).
     try{const _heroRoster=isMatchHome?homeRoster:awayRoster,_oppRoster=isMatchHome?awayRoster:homeRoster;
       const _surn=(r,idx)=>{const nm=((r&&r[idx]&&r[idx].name)||"").trim();const pp=nm.split(/\s+/);return (pp[pp.length-1]||"").toUpperCase();};
-      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});}catch(_e){}
+      let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});
+      /* [giro 240 PO-500] il NOME INTERO accanto al cognome: e' la chiave della figurina (pelle e capelli dei corpi 3D). Stessi indici dei cognomi. */
+      {const _nf240=(r,idx)=>String((r&&r[idx]&&r[idx].name)||"").trim();let _h2=0,_a2=0;_mp.forEach(e=>{e.nf=(e.team==="home")?_nf240(_heroRoster,_h2++):_nf240(_oppRoster,_a2++);});}}catch(_e){}
     /* [7.641.0 — F1a del piano B: I VENTUNO HANNO UN RUOLO] Decisione strategica (docs/SPRINT §B):
        l'analisi ha censito che i giocatori di sfondo non hanno campo ruolo — slot per indice e
        basta — e il motore del possesso non puo' scegliere un ricevente «da regista» o «da ala».
@@ -2459,7 +2498,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const t=setTimeout(()=>{setOnBench(false);setBenchPhase("watching");},4600);// durata cinematica (era 2000)
     return()=>clearTimeout(t);
   },[benchPhase,onBench]);
-  const [phase,setPhase]=useState(resumeState?"playing":(context==="trial"?"playing":"matchday"));/* [7.150.0] ripresa: dritto in campo, salta matchday/formations/walkout */
+  const [phase,setPhase]=useState(resumeState?"playing":(context==="trial"?((_g246&&prePartita246&&(!_CPM_TEST||(typeof window!=="undefined"&&window.__CPM_PREP246)))?"matchday"/* [giro 246] il provino passa dalla pre-partita */:"playing"):"matchday"));/* [7.150.0] ripresa: dritto in campo, salta matchday/formations/walkout */
   /* [7.179.0] zoom tipografico: OFF solo quando il canvas 3D è vivo (walkout→rigori/cerimonia) — matchday,
      formazioni e giornale (ended) sono DOM puro e restano ingranditi come il resto del gioco. */
   const _zoomDom184=!["walkout","playing","hl_intro","hl_move","hl_choose","hl_result","shootout","ceremony"].includes(phase);/* fasi DOM (matchday/formazioni/giornale) vs fasi col canvas 3D vivo */
@@ -2513,7 +2552,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         ev:(typeof MATCH_EV!=="undefined"?MATCH_EV:[]).filter(e=>e&&e.ev==="goal").slice(0,30).map(e=>({min:e.min|0,side:e.side,src:e.src||null}))};}catch(_e){return null;}};
     const _snap=()=>{try{const ph=phaseRef.current,ck=clockRef.current|0;
       const live=(ph==="playing"||ph==="hl_intro"||ph==="hl_move"||ph==="hl_choose"||ph==="hl_result");
-      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=(_no55?86:89))safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current,g117:_g117Snap(),s166:soloHL?1:0/* [giro 166] la ripresa rientra nella stessa modalita' */}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
+      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=(_no55?86:89))safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current,g117:_g117Snap(),s166:(soloHL||(_g243&&soloScelto243Ref.current))?1:0/* [giro 166] la ripresa rientra nella stessa modalita' */}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
     }catch(_e){}};
     const vh=()=>{if(document.visibilityState==="hidden")_snap();};
     document.addEventListener("visibilitychange",vh);window.addEventListener("pagehide",_snap);
@@ -3098,8 +3137,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      fluido e 34,5 s di scene (5 scene). La modalita' NON e' un secondo motore: e' lo STESSO battito della partita intera (stesso corpo,
      stessi sorteggi, stessi sotto-tick), fatto correre a lotti dentro flushSync — un render per battito, come a velocita' normale — invece
      che a orologio. Le scene (intro, scelta, esito) restano com'erano, a tempo reale. __CPM_SOLO166 e' il gancio di sola sonda. */
-  const _solo166=!!(soloHL||(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_SOLO166))&&!(typeof window!=='undefined'&&window.__CPM_NO_G166);
-  useEffect(()=>{if(typeof window!=='undefined'&&_CPM_TEST){try{window.__CPM_LM166={chiesta:!!soloHL,attiva:_solo166};}catch(_e){}}},[soloHL,_solo166]);
+  const _solo166=!!(soloHL||(_g243&&soloScelto243)||(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_SOLO166))&&!(typeof window!=='undefined'&&window.__CPM_NO_G166);
+  useEffect(()=>{if(typeof window!=='undefined'&&_CPM_TEST){try{window.__CPM_LM166={chiesta:!!soloHL,scelta243:!!soloScelto243,attiva:_solo166};}catch(_e){}}},[soloHL,soloScelto243,_solo166]);
   /* [giro 173 · PO-364, decisioni 12/11] nella partita a soli highlight: (2, PO «Breve avviso sul gol») un gol dei compagni o degli
      avversari durante il gioco veloce ferma i battiti per circa 2 s con un avviso, poi si riparte — il lotto aspetta e basta, non cambia
      nessun battito (la cronaca e' funzione pura del minuto, 7.489), quindi risultato e libro mastro restano identici; (3, madre) il tasto
@@ -3228,7 +3267,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(!c.t)c.t=Date.now();
     if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||120000)){_vai2D196(r.fallito?'fallito':'tetto');return (avviso209Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_G215))?'avviso':'2d';}/* [giro 215, rosso __CPM_NO_G215] aperto l'avviso (non il 2D) si risponde 'avviso': rispondendo '2d' la trattenuta dei corpi si toglieva e a meta' gara il cronometro correva sotto l'avviso (misurato 20'→22' in 4 s) */
     _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
-  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
+  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;window.__CPM_AVV209=null;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);
+  useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[glbTry]);/* [giro 233 PO-453] i modelli della partita si chiedono all'apertura della partita (scheda del prepartita), non all'apertura del menu; «Riprova» li richiede *//* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
   useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
     if(phase!=="walkout"||!_g196On()||modo2D196Ref.current)return;
     const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
@@ -3366,6 +3406,20 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       if(_f==="error"||Date.now()-t0>((_g196On()&&!_ris2D209())?(+window.__CPM_CAP196||120000):12000))setGlbFail(_f==="error"?"error":"slow");/* [giro 209] col nuovo avviso vale il tetto del PO (120 s), non i 12 s del 7.264 */
     },400);
     return ()=>clearInterval(iv);
+  },[phase,glbTry]);
+  React.useLayoutEffect(()=>{/* [giro 233 PO-453] (effetto di layout: l'attesa compare nello STESSO fotogramma in cui il campo entra in vista, mai uno dopo)
+     senza precaricamento all'avvio i corpi possono mancare anche quando la partita entra in gioco
+     SENZA passare dall'ingresso in campo (ripresa dopo il background, banco di prova): durante la trattenuta del fischio d'inizio
+     la schermata d'attesa del giro 196 copre la scena finche' i corpi non sono pronti. MISURATO dal guardiano avvio-233: 1 campione
+     con il campo in vista e i corpi non pronti. Rosso __CPM_NO_G233. */
+    if(phase!=="playing"||!_g196On()||modo2D196Ref.current||typeof _g233!=='function'||!_g233())return;
+    const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp)return;
+    /* il testimone dei corpi nasce con la scena 3D: finche' non c'e', i corpi non sono pronti per definizione */
+    const _c=()=>{if(typeof window.__CPM_PRONTI196!=='function'){_att196({motivo:'regular',pct:0});return false;}const e=_chk196('playing');return e!=='attesa';};
+    if(_c())return;
+    const iv=setInterval(()=>{if(_c())clearInterval(iv);},250);
+    return()=>clearInterval(iv);
   },[phase,glbTry]);
   useEffect(()=>{/* [7.999.162 PO-232] attesa dei corpi prima di aprire una scena dell'eroe */
     const _set=v=>{corpiHold232Ref.current=v;setCorpiHold232(v);};
@@ -4183,7 +4237,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
     const clubN=(typeof window!=="undefined"&&window.__CPM_NO_CORO23)?(_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra")):(_isNat?(player.nation||_natD?.n||_natD?.a||"Nazionale"):String(player.club?.n||player.club?.name||player.club?.a||"la squadra").replace(/\s+Primavera$/i,""));/* [23/09 POC — collaudo PO «nei cori non la sigla ma il nome per intero», «Primavera e' sottinteso nei cori»] rosso __CPM_NO_CORO23 */
     // [6.39.0] pool nella LINGUA giusta: per-lega/nazione → per-lingua (riempie i buchi) → base IT
-    const pool=chantPoolFor(_type,_isNat,player.nation,player.club?.lg);
+    const pool=filtraCoriTitolo236(chantPoolFor(_type,_isNat,player.nation,player.club?.lg),player,context,chantPoolFor("home",_isNat,player.nation,player.club?.lg));
     const t=pick(pool);
     const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
     /* [7.532.0 collaudo PO «i cori si accavallano con la cronaca» — rosso __CPM_NO541] I CORI AMBIENTALI
@@ -6598,7 +6652,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,..._eroeNasce175(),attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,..._eroeNasce175(),premi:(typeof premiMotore238==='function'?premiMotore238(player,context):null)/* [giro 238 PO-496] rigorista / piazzati dal patto col mister */,rig257:rig257Motore(),/* [giro 257] il rigorista segnato nella Rosa / l'eroe in Nazionale e nel provino */attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             /* [giro 117 PO-324] RIPRESA: il motore nasce nuovo, ma i gol segnati prima del riavvio tornano nel suo tabellino, nel suo registro
                e nel registro MATCH_EV — stessi numeri del tabellone ripreso. Se l'istantanea e' di prima (senza g117) i gol si ricavano dal
                punteggio salvato, al minuto della ripresa. Nessun sorteggio: si scrivono solo contatori ed elenchi di lettura. Rosso __CPM_NO_G117B. */
@@ -6720,6 +6774,19 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
             _evM870=evAcc898Ref.current.concat(_evB);}evAcc898Ref.current=[];passi966Ref.current=0;/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
+          /* [giro 249 PO-496 seguito, decisione PO 17/11 «Senza premio tira un compagno» — rosso window.__CPM_NO_G249] SENZA il premio
+             «il rigorista sei tu» il rigore della squadra lo batte un compagno (src/14): niente scelta dell'eroe, ma il rigore SI VEDE — la
+             scena di sola visione del giro 204 (cronometro fermo ~4 s, il 3D rifa' il calcio con la direzione e l'esito del motore, sopra
+             solo il racconto col nome del compagno). Con il premio nulla cambia: tira l'eroe nella sua scena interattiva. */
+          if(brain137()&&!(typeof window!=='undefined'&&(window.__CPM_NO_G249||window.__CPM_NO_G204))&&!vis204Ref.current&&String(phaseRef.current)==="playing"&&!(_M._S&&_M._S.scena)){try{
+            const _pm249=(typeof premiMotore238==='function')?premiMotore238(player,context):null;
+            const _t249=!(_pm249&&_pm249.rig)?_evM870.find(e=>e&&e.t==='tiro'&&e.intent==='penalty'&&e.chi&&e.chi.team==='home'&&!e.chi.eroe):null;
+            if(_t249){const _e=String(_t249.esito||""),_ty=(_t249.to&&_t249.to.y!=null)?+_t249.to.y:50;const _n=(vis204N.current|0);vis204N.current=_n+1;
+              const _v={key:1000+_n*10/* src/12: floor(key/2)%5!==4 -> il battitore e' un compagno */,side:"H",dir:_ty<48.5?-1:(_ty>51.5?1:0),high:false,scored:_e==="goal",wide:_e==="wide"||_e==="post",post:_e==="post",
+                nome:(_t249.chi.nome||null),esito:_e,min:(_t249.min!=null?_t249.min:nx)|0,eroe:false,compagno249:true,t0:Date.now()};
+              vis204Ref.current=_v;setVis204(_v);setCutFx({key:Date.now(),dur:520});
+              cpmEv("rigore249",{min:nx|0,esito:_e,nome:_v.nome});
+              if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_RIG249=window.__CPM_RIG249||[]).push({min:nx|0,nome:_v.nome,esito:_e,eroe:false});}}catch(_e249){}}
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
@@ -9610,13 +9677,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     let _vivo166=true;
     const _lotto166=()=>{const _t0=performance.now();let _n=0;
       if(golFino173Ref.current){if(_t0<golFino173Ref.current)return;golFino173Ref.current=0;setGolAvv173(null);}/* [giro 173] l'avviso sul gol: si aspetta, poi si riparte */
-      while(_vivo166&&phaseRef.current==="playing"&&_n<66&&(performance.now()-_t0)<12){ReactDOM.flushSync(_batt166);_n++;
+      if(_g253&&benchStart&&onBenchRef.current&&!subbedOffRef.current&&(clockRef.current|0)>=(((_CPM_TEST&&typeof window!=="undefined"&&window.__CPM_BENCH_MIN)||benchMinRef226.current)|0))return;/* [giro 253] al minuto d'ingresso la cronaca veloce aspetta la sostituzione */
+      while(_vivo166&&phaseRef.current==="playing"&&_n<66&&(performance.now()-_t0)<12&&!(_g253&&benchStart&&onBenchRef.current&&!subbedOffRef.current&&(clockRef.current|0)>=(((_CPM_TEST&&typeof window!=="undefined"&&window.__CPM_BENCH_MIN)||benchMinRef226.current)|0))){ReactDOM.flushSync(_batt166);_n++;
         if(golPend173Ref.current){const _g=golPend173Ref.current;golPend173Ref.current=null;
           if(_sh173&&phaseRef.current==="playing"){golFino173Ref.current=performance.now()+2000;setGolAvv173(_g);
             if(_CPM_TEST&&typeof window!=='undefined'){try{(window.__CPM_GOL173=window.__CPM_GOL173||[]).push({..._g,t:Math.round(performance.now())});}catch(_e){}}
             break;}}}
       if(_CPM_TEST&&typeof window!=='undefined'){try{const _w=(window.__CPM_G166=window.__CPM_G166||{battiti:0,lotti:0,ms:0});_w.battiti+=_n;_w.lotti++;_w.ms+=performance.now()-_t0;}catch(_e){}}};
-    const iv=setInterval(_solo166?_lotto166:_batt166,_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
+    /* [giro 264 — L'ORDINE FRA IL BATTITO DEL MOTORE E L'APERTURA DELLA SCENA NON DIPENDE DALL'OROLOGIO DA POLSO. Rosso __CPM_NO_G264]
+       MISURATO (sonda-264, «Collaudo Salienti», seme 7300, partita intera contro soli highlight): il battito che apre la scena chiede
+       la fase `hl_intro` con un aggiornamento di React, ma l'intervallo del metronomo si spegne solo quando React ha reso e ha
+       eseguito la pulizia dell'effetto — cioe' quando il processore ha tempo. Se nel frattempo l'intervallo batte ancora, il
+       motore riceve un passo del minuto dopo PRIMA che la scena giochi: 96 passi e 5228 estrazioni del flusso rnd a `giocaScena`
+       invece di 95 e 5169, e lo stesso passaggio esce «chance» invece di «assist». Nei soli highlight non succede per
+       costruzione: il lotto fa correre ogni battito dentro flushSync. Qui la partita intera fa lo stesso sul BATTITO DEL MINUTO
+       (quello che decide, apre le scene, fischia: l'unico che cambia fase): gira dentro flushSync, cosi' fase, cronometro e
+       spegnimento dell'intervallo sono applicati prima che il battito dopo possa partire. Stesso battito, stessi sorteggi.
+       I 21 sotto-passi fra un minuto e l'altro restano come prima (non cambiano fase). MISURATO (sonda-264v, stessa partita nei
+       tre bracci): l'intervallo reale fra due battute non cambia (rosso 128 ms, questo 131-135, tutti i battiti in flushSync 127);
+       cambia il lavoro dentro la battuta — 0,25 ms nuda, 0,46 cosi', 3,1 con ogni battito in flushSync (primo tentativo: anche lui
+       0 divergenze su 20, lasciato per il costo su un telefono). */
+    const _batt264=()=>{if(((k898Ref.current|0)+1)%_SUB898===0)ReactDOM.flushSync(_batt166);else _batt166();};
+    const iv=setInterval(_solo166?_lotto166:(_g264?_batt264:_batt166),_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>{_vivo166=false;clearInterval(iv);};
   },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166,_sh173,vis204]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
@@ -10171,6 +10253,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.999.159 PO-218, rilievo Codex ×3 e collaudatrice] FUORIGIOCO CONTRO INTERCETTO: _outKind nasce da decideExecution e puo' dire «offside» mentre il motore, che legge la chiave, registra l'intercetto: riquadro e cronaca dicevano «bandierina alzata». Con la chiave intercept il racconto segue il motore. Rosso __CPM_NO_FG218. */
     if(key==='intercept'&&_outKind==='offside'&&!(typeof window!=='undefined'&&window.__CPM_NO_FG218))_outKind='intercepted';
     if(!ok&&_g137&&_g137.fam==='tiro'){const _m137={saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito];if(_m137){_outKind=_m137;if(_m137==='post'&&!_wood)_wood='post';}}/* [7.999.137] il tipo di errore e' quello deciso dal motore */
+    /* [giro 241, dubbio 3 del giro 223 — SU «STACCO SUL PALO LONTANO» IL PALO SI MOSTRA COME FUORI. Rosso __CPM_NO_G241, guardiano camera-241]
+       MISURATO (banco misura-241-gi55, 8 esecuzioni con esito palo, GLB acceso): il colpo di testa parte da (34,7 · -16,3), quasi dalla
+       linea di fondo, e taglia tutto lo specchio. Il bersaglio di partenza cade sempre dalla parte del palo lontano (z +6..+9: il segno
+       non e' sorteggiato), e la scelta del palo del giro 223 prende gia' quello libero quando c'e' (7 su 8: pallone a 1,4-1,9 u dal
+       portiere). Quando il portiere sta piu' avanti (45,9 · -1,7: 1 su 8) NESSUNO dei due pali e' libero (margini 1,07 e 2,25 u contro i
+       2,6 richiesti) e il pallone gli passa nel corpo (0,60 u): seminare il bersaglio non lo evita, perche' non dipende dal bersaglio.
+       Decisione tecnica della sessione madre: su questa scena l'esito «palo» si mostra come «fuori» (stesso premio, stessa chiave
+       d'esito «miss»: nessuna regola cambia; il tiro fuori cerca gia' da solo un bersaglio lontano dal portiere, giro 223).
+       Chokepoint M1: 3D, riquadro e cronaca leggono _outKind. */
+    if(!ok&&esitoPalo241(_outKind,action.label)!==_outKind){_outKind=esitoPalo241(_outKind,action.label);_wood=null;}
     /* [giro 93 PO-298, PO giocando: «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] L'ASSIST ERA GIUDICATO
        SUL GOL DEL COMPAGNO. giocaScena decide due fatti: il passaggio (intercettato o arrivato) e il tiro del compagno. Qui contava solo
        il secondo: passaggio arrivato e tiro parato/fuori diventavano la chiave di fallimento dell'assist, e riquadro, 3D e motore
@@ -10490,7 +10582,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.349.0] GANCIO DI MISURA: il tipo d'esito (chance/saved/blocked…) lo decide il motore dal contesto
        — fatica, pressione, qualita' — quindi una probe non puo' riprodurre a comando quello che il PO ha
        visto in partita. Senza, l'unica alternativa e' dedurre dal codice, cioe' indovinare. Test-only. */
-    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;}
+    if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;if(esitoPalo241(_outKind,action.label)!==_outKind){key=_outKind=esitoPalo241(_outKind,action.label);_wood=null;}/* [giro 241] il palo chiesto dal collaudo passa dalla stessa regola del gioco */}
     setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,mate298:_sp298,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
@@ -10736,6 +10828,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   (ne' "ended" ne' ripresa dal centro ne' catene) — il prossimo stato arriva dal prossimo __CPM_FORCE_SIT.
     //   Prima l'auto-advance sul GOL faceva la ripresa (palla→50,50, phase→playing) MENTRE il poller final-state
     //   campionava ancora → sui run freddi il check leggeva la palla a centrocampo («goal ma palla @37»).
+    if(typeof window!=='undefined'&&window.__CPM_REC241&&(_CPM_TEST||_SIT_TEST)&&window.__CPM_FINE241==null){try{window.__CPM_FINE241=(window.__CPM_G241W||[]).length;}catch(_e241){}}/* [giro 241, solo prova] la scena forzata non avanza: qui si segna il fotogramma in cui il gioco vero l'avrebbe chiusa */
     if(typeof window!=='undefined'&&window.__CPM_FORCED_MODE&&!(window.__CPM_REVIEW&&pendingChainSitRef.current))return;/* [7.227.0 #44] in REVISIONE la CATENA si gioca: con un secondo tempo pendente il wizard può avanzarci dentro (il ramo catena ritorna prima di ogni fine-partita; _goEndOrCeremony resta comunque guardato dal force-mode) */
     // [6.76.0 LMV-L7] guardia anti-rientro: auto-timer + Enter/tap nello stesso burst chiamavano handleContinue
     //   due volte — la 1ª consumava la CATENA (pendingChainSitRef→null), la 2ª cadeva nel ramo else e poteva
@@ -10937,10 +11030,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      salvataggio (se un dato manca la riga non compare). Rosso __CPM_NO_G224 = la rassegna del giro 202. */
   const _g224=()=>_g202()&&_g224x();
   const _T200=_g224()?["Risultato e statistiche","Voto e giocate","I giornali","Classifica e prossima partita"]:["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=_g224()?["Risultato","Voto e giocate","Giornali","Classifica"]:["Risultato","Giocate","Giornali","Classifica"];
-  const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-    <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
+  /* [giro 239 · PO-507b, dal giro 232 dubbio 6 — rosso __CPM_NO_G239] dopo una gara a eliminazione diretta la scheda 4 mostra il
+     TABELLONE (rassegnaComp232 tipo "tabellone"), non una classifica: l'etichetta in basso lo dice («4/4 · Tabellone», e il puntino
+     «Tabellone e prossima partita»). Stessa chiamata pura della scheda 4, stessi argomenti. */
+  const _tab239=()=>{try{if((typeof window!=='undefined'&&window.__CPM_NO_G239)||!_g224()||!_g232x())return false;
+    const c=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});
+    return !!(c&&c.tipo==="tabellone");}catch(_e){return false;}};
+  const _nav200=()=>{const _t239=_tab239();const _T=_t239?[..._T200.slice(0,3),"Tabellone e prossima partita"]:_T200,_C=_t239?[..._C200.slice(0,3),"Tabellone"]:_C200;return(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+    <div style={{display:"flex",alignItems:"center"}}>{_T.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
       style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
-    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C200[sk200]}</div></div>);
+    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C[sk200]}</div></div>);};
 
   useEffect(()=>{
     const sit=situations[hlIdx];
@@ -11072,10 +11171,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          libero; sotto il gate la finestra resta quella fissa. Rosso __CPM_NO_G95D4. */
       try{const _gv4=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D4;
         if(_gv4&&!_avanza461._d4){const _r=revealAt95.current;
-          if(!_r){_avanza461._d4=1;const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);
-            try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
-            t2=setTimeout(_avanza461,1600);return;}
-          if(Date.now()-_r<1400){_avanza461._d4=1;t2=setTimeout(_avanza461,1400-(Date.now()-_r));return;}}}catch(_e95){}
+          /* [giro 282 — highlight-95 rosso nella 197: «esito a schermo solo 773-1188 ms prima della chiusura», sempre dalla rete qui sotto]
+             IL TEMPO DI LETTURA SI CONTA DA QUANDO L'ESITO E' A SCHERMO, NON DA QUANDO LO SI CHIEDE. MISURATO (highlight-95 con
+             CPM_G282DIAG, 51862a1e, s12/s5 semi 1234/2021): la rete chiedeva l'esito e chiudeva 1,6 s dopo la RICHIESTA; a fotogrammi
+             lenti (macchina carica, telefono lento) React porta l'esito a schermo 0,74-1,18 s dopo la richiesta, e al giocatore ne
+             restavano 1,13-1,34 s invece di 1,6 (sotto il pavimento di 1,2 s della sonda in 2 scene su 32). Ora la rete chiede una
+             volta sola, aspetta che l'esito sia davvero comparso (revealAt95, tetto 8 s di parete perche' nulla resti appeso) e da
+             li' conta i suoi 1,6 s. A fotogrammi normali la richiesta e la comparsa coincidono: percorso identico. Rosso
+             __CPM_NO_G282. __CPM_G282RIT (solo sonde, __CPM_REC): ritardo artificiale della comparsa, per il guardiano esito-282. */
+          const _g282=!window.__CPM_NO_G282;
+          if(!_r){
+            if(!_avanza461._q282){_avanza461._q282=Date.now();
+              const _ch282=()=>{const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);};
+              const _rit282=(window.__CPM_REC&&+window.__CPM_G282RIT>0)?+window.__CPM_G282RIT:0;
+              if(_rit282)fxTimeout(_ch282,_rit282);else _ch282();
+              try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
+              if(!_g282){_avanza461._d4=1;t2=setTimeout(_avanza461,1600);return;}}
+            if(_g282&&Date.now()-_avanza461._q282<8000){t2=setTimeout(_avanza461,120);return;}/* chiesto, non ancora a schermo */
+            _avanza461._d4=1;}
+          else{const _min282=(_g282&&_avanza461._q282)?1600:1400;
+            if(Date.now()-_r<_min282){_avanza461._d4=1;t2=setTimeout(_avanza461,_min282-(Date.now()-_r));return;}}}}catch(_e95){}
       handleContinue();
     };
     const t=setTimeout(()=>{
@@ -11327,7 +11442,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // item 4 (5.49.2): grafica TV pre-partita — statistiche di classifica delle due squadre (posizione/punti/V-N-P/GF-GS + forma ultime 5).
   //   Forma deterministica dal record (seed club+stagione) → coerente per tutta la partita. Dashes se la squadra non è in classifica (provino/coppa/nazionale).
   const _tvTeamStat=(team)=>{
-    const _st=(player.standings||[]);const _sorted=[..._st].sort((a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
+    const _st=(player.standings||[]);const _sorted=ordinaClassifica259(_st,(a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
     const _idx=team?_sorted.findIndex(s=>s.id===team.id):-1;const e=_idx>=0?_sorted[_idx]:null;
     const _seed=hashStr((team?.id||team?.n||"x")+"_"+(player.season||1));const w=e?e.wins:0,d=e?e.draws:0,l=e?e.losses:0,tot=w+d+l;
     // [6.79.0 collaudo PO «all'esordio il cammino delle due squadre è completamente falso»] con 0 partite
@@ -11338,11 +11453,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   Ora: (a) il PROPRIO club usa la forma REALE dalle ultime gare di LEGA (l'utente le conosce → deve
     //   combaciare); (b) gli altri usano il MULTISET ESATTO (w×W,d×D,l×L) mescolato deterministicamente → le 5
     //   mostrate sono SEMPRE un sottoinsieme reale del record (mai più sconfitte di quante ne ha).
-    let form=[];
+    let form=[],vera239=false;
     if(tot>0){
       if(team&&player.club&&team.id===player.club.id){
         form=(player.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national&&!m.friendly).slice(-5).map(m=>m.won?"W":m.drew?"D":"L");
       }
+      /* [giro 239 · PO-498 — rosso __CPM_NO_G239] le altre squadre: la forma VERA salvata in classifica (forma239, src/09); se il
+         salvataggio non la copre, nessuna striscia (resta il bilancio V/N/P delle righe sopra), mai piu' un ordine inventato */
+      if(!form.length&&!(typeof window!=='undefined'&&window.__CPM_NO_G239)){const _f239=(typeof forma239==="function")?forma239(e):null;if(_f239){form=_f239;vera239=true;}else return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form:[],vera239:false,soloBilancio239:true};}
+      else if(form.length)vera239=true;
       if(!form.length){
         const bag=[];for(let i=0;i<w;i++)bag.push("W");for(let i=0;i<d;i++)bag.push("D");for(let i=0;i<l;i++)bag.push("L");
         let s=(_seed>>>0)||1;const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
@@ -11350,7 +11469,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         form=bag.slice(-5);
       }
     }
-    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form};
+    return{name:team?.n||team?.name||"–",pos:(tot>0&&_idx>=0)?_idx+1:null,pts:e?e.pts:null,w,d,l,gf:e?e.gf:null,ga:e?e.ga:null,form,vera239};
   };
   const _tvHome=_tvTeamStat(homeTeamObj),_tvAway=_tvTeamStat(awayTeamObj);
   // [6.81.0 collaudo PO] alla PRIMA giornata (nessuna delle due ha ancora giocato) la tabella 0-0-0-0-0-0
@@ -11501,7 +11620,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _strisciaV2=(f,lato)=>({background:f.c,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 10px, rgba(255,255,255,0) 10px 20px)",alignSelf:"stretch",margin:"8px 0",padding:"0 8px",borderRadius:RAD.sm});
   const _aVal901=_so214?(isMatchHome?soState.as:soState.hs):isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
-    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column"}/* [giro 114 G184-01] il pre-partita riempie l'area utile */:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column",...((_g253&&context==="trial")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:{})}/* [giro 114 G184-01] il pre-partita riempie l'area utile *//* [giro 253] nel provino 16 px di margine (il contenitore del provino non ne ha) */:(_g253&&context==="trial"&&phase==="formations")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -11527,10 +11646,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           const _line=`${_on} — ${_st} ${_pl(_st,"stagione","stagioni")}, ${_mt} ${_pl(_mt,"presenza","presenze")} e ${_g} ${_pl(_g,"gol","gol")} con quella maglia. Quella curva non ti ha dimenticato.`;
           return{name:_on,side:_side,line:_line};
         }catch(_e){return null;}})();
-        return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
+        return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&(!benchStart||_g253)&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
@@ -11793,7 +11912,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  sul KIND: senza, il ramo «gol vero» dei piazzati non e' riproducibile — FORCE_OUTCOME forza
                  il successo ma il kind resta «chance», e il difetto del PO (SIT #51, gol dichiarato con la
                  palla ferma a 15,6u) vive proprio nel ramo che qui non si riesce a percorrere. */
-              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=window.__CPM_FORCE_KIND;}
+              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=esitoPalo241(window.__CPM_FORCE_KIND,outcome&&outcome.actionLabel);/* [giro 241] idem: il tipo forzato dal collaudo passa dalla regola di «Stacco sul palo lontano» */}
             }
           }
           /* [giro 90 PO-292, D4/D7/D11 — «Partita a tutto schermo»] con lo spazio largo (PC e tablet orizzontale) le statistiche e le pagelle della
@@ -11839,11 +11958,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 allPlayers={matchPlayers} brain={brainEvRef} castBrain={castBrainRef} homeClub={homeTeamObj} competitionLabel={_compLabel} competitionColor={_compCol} matchImportance={mw} isFinal={_isNeutralFinal} seasonPresentation={_presNight} heroNum={player.jerseyNum||10} heroName={player.name} subEntry={subEntryKey} subEntryVar={subEntryVar} subExit={subExitKey} subExitVar={subExitVar}
                 heroStandHome={isMatchHome!==false}/* [7.278.0] lato-TRIBUNA: serve alla premiazione per festeggiare sotto la PROPRIA curva */ scoreHome={isMatchHome?score.home:score.away} scoreAway={isMatchHome?score.away:score.home} homeAbbr={(homeTeamObj?.a||homeTeamObj?.n||"HOM").slice(0,3).toUpperCase()} awayAbbr={(awayTeamObj?.a||awayTeamObj?.n||"AWA").slice(0,3).toUpperCase()}
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
-                stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumAwayCol2={awayTeamObj?.c2||null}/* [giro 171] secondo colore sociale degli ospiti per bandiere e sciarpe */ stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumVenue={(function(){try{return getStadiumName(homeTeamObj)||null;}catch(_e){return null;}})()}/* [7.658.0] il NOME DELLO STADIO (es. Stadio Valmora) per il cartellone LED — precisazione PO: e' LUI il cartellone da fare piccolo e a scorrimento, non gli striscioni dei tifosi */ stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
+                stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumAwayCol2={awayTeamObj?.c2||null}/* [giro 171] secondo colore sociale degli ospiti per bandiere e sciarpe */ stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumVenue={(function(){try{return getStadiumName(homeTeamObj)||null;}catch(_e){return null;}})()}/* [7.658.0] il NOME DELLO STADIO (es. Stadio Milano Ovest) per il cartellone LED — precisazione PO: e' LUI il cartellone da fare piccolo e a scorrimento, non gli striscioni dei tifosi */ stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={_tempo143}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
-                waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7} ingresso206={_ing206}
+                waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7} ingresso206={_ing206} partita244={(player.season||1)+"|"+(player.week||1)+"|"+context+"|"+((homeTeamObj&&homeTeamObj.id)||"")+"|"+((awayTeamObj&&awayTeamObj.id)||"")}/* [giro 244] la partita, per la memoria delle coreografie */
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} heroCaptain={!!(player&&player.isCaptain)}/* [giro 192 PO-404] se l'eroe e' il capitano la coppa resta a lui */ shootout={phase==="shootout"?{kick:soFx,serie:(soState&&!(typeof window!=="undefined"&&window.__CPM_NO_G208))?{h:(isMatchHome?soState.hs:soState.as),a:(isMatchHome?soState.as:soState.hs)}:null/* [giro 208 PO-468 — rosso __CPM_NO_G208] il punteggio della SERIE al maxischermo, orientato come scoreHome/scoreAway (H = la squadra dell'eroe) */}:(vis204&&phase==="playing"?{kick:vis204,visione:true}:null)} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
@@ -12115,7 +12234,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     ))}
                     <div style={{display:"flex",alignItems:"center",padding:"7px 12px",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
-                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>— esordio stagionale</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
+                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>{_tvHome.soloBilancio239?"—":"— esordio stagionale"}</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                       <div style={{flex:1.4,fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textAlign:"center",textTransform:"uppercase",letterSpacing:0.5}}>Forma · ultime 5</div>
                       <div style={{flex:1,display:"flex",gap:3,justifyContent:"flex-end"}}>{_tvAway.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>—</span>}{_tvAway.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                     </div>
@@ -12161,12 +12280,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}</div>)}
               {/* Sprint 97 — pressure border */}
               {/* [giro 166] SOLI HIGHLIGHT: mentre il gioco fluido scorre, il campo sta dietro un velo che dice dove si sta andando. Tabellone, minuto e cronaca restano leggibili sopra. */}
-              {_solo166&&phase==="playing"&&<div data-cpm="solo-166-velo" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:SP.xs,background:TINTE.bg,opacity:0.92,textAlign:"center",padding:SP.md}}>
+              {_solo166&&phase==="playing"&&!(_g253&&onBench&&benchPhase==="entering")/* [giro 253] la sostituzione si vede */&&<div data-cpm="solo-166-velo" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:SP.xs,background:TINTE.bg,opacity:0.92,textAlign:"center",padding:SP.md}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TINTE.oro,letterSpacing:"0.16em",textTransform:"uppercase"}}>Momenti salienti</div>
                 <div style={{fontSize:FS.display,fontWeight:FW.black,color:TINTE.testo,fontFamily:FONT_TV,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{clock}'</div>
                 {golAvv173&&_sh173
                   ?<div data-cpm="gol-173" data-lato={golAvv173.lato} role="status" style={{fontSize:FS.subhead,fontWeight:FW.black,color:golAvv173.lato==="noi"?TINTE.oro:TINTE.testo,lineHeight:1.3}}>{golAvv173.lato==="noi"?("GOL! "+golAvv173.nome+" "+golAvv173.min+"'"):("Gol subito · "+golAvv173.nome+" "+golAvv173.min+"'")}</div>
-                  :<div style={{fontSize:FS.small,color:TINTE.testo}}>Si va al prossimo momento</div>}
+                  :<div data-cpm="solo-253-testo" style={{fontSize:FS.small,color:TINTE.testo}}>{(_g253&&onBench&&!subbedOff)?"Sei in panchina: la partita scorre veloce fino al tuo ingresso":"Si va al prossimo momento"}</div>}
               </div>}
               {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
               {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
@@ -12431,7 +12550,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":"Premi P o tocca per riprendere"}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
@@ -12563,7 +12682,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
                     <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:10}}>
                       <div data-cpm="aiuto" style={{fontSize:FS.small,lineHeight:1.35,fontWeight:600,color:"#cbd5e1"}}>{movesLeft>0?<>Sposta l'eroe con le frecce, poi scegli la giocata. </>:<>Scegli la giocata. </>}<span style={{fontWeight:800,color:pressureBar>0.4?"#fbbf24":pressureBar>0.2?"#fb923c":"#f87171"}}>Il marcatore sta arrivando.</span></div>
-                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+                      <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",...(_g235()?{...stileTasto235(false),fontSize:Math.round(FS.bodyLg*1.15),borderRadius:RAD.md}:{})/* [giro 235 · PO-458] «Scegli» era il bordeaux: ora la regola unica del tasto principale (src/11) */,display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
                     </div>
                   </div>
                 </div>
@@ -12587,7 +12706,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>{setPad210(false);setPhase("hl_choose");}} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",...(_g235()?{...stileTasto235(false),fontSize:Math.round(FS.bodyLg*1.15),borderRadius:RAD.md}:{})/* [giro 235 · PO-458] «Scegli» era il bordeaux: ora la regola unica del tasto principale (src/11) */,flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
@@ -13039,6 +13158,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>);})()}
           </div>
           <div data-scheda200="1" style={_v200(0)}>
+          {_g253&&_solo166&&benchStart&&onBench&&!subbedOff&&(<div data-cpm="salienti-253-mai" role="status" style={{margin:"0 0 12px",padding:"10px 12px",borderRadius:RAD.md,background:TH.bgBlue,border:"1px solid "+TH.bdBlue,color:TH.text,fontSize:FS.small,lineHeight:1.45,textAlign:"left"}}>{/* [giro 253] partita a soli salienti partita dalla panchina e mai entrato: lo si dice chiaro */}<b>Non sei entrato in campo.</b> Il mister non ti ha fatto entrare: la partita è scorsa tutta in cronaca veloce, senza momenti salienti da giocare.</div>)}
           {ceremony&&!ceremony.light&&_g202()&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 10px",padding:"8px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden",display:"flex",alignItems:"center",gap:12,textAlign:"left"}}>{/* [giro 202] la festa in una banda sola: trofeo accanto al titolo, stesse tre righe */}
             <div style={{fontSize:34,lineHeight:1,flexShrink:0,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{minWidth:0}}>
@@ -13087,7 +13207,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{display:"inline-block",marginTop:_g202()?4:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
                 {(subbedOff||benchStart)&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{/* [7.38.0 Sezione 8] minuti giocati quando non è un 90' pieno */}
-                  ⏱ {benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
+                  ⏱ {(_g253&&benchStart&&onBench&&!subbedOff)?"Non entrato · 0' giocati"/* [giro 253] mai entrato dalla panchina: la riga non puo' dire «Entrato al 60'» */:benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
                 </div>}
                 {_celebTier>=1&&<div style={{marginTop:_g202()?4:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
               </div>
@@ -13113,7 +13233,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!r.panca,ingresso:r.ingresso};const _ef=INT259.finaleEsito(_rr);
                 if(typeof window!=='undefined'){try{const _W=(window.__CPM_ESITO280=window.__CPM_ESITO280||{});_W[r.m0+"|"+r.fatto]={r:_rr,es5:r.es5||null,finale:_ef};}catch(_e){}}
                 return Object.assign({},r,{breve:_ef.breve});});}catch(_e280){}}
-            return(<div data-cpm="riep259" style={{margin:"0 0 14px",padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
+            return(<div data-cpm="riep259" style={{margin:"0 0 "+((typeof window!=='undefined'&&window.__CPM_NO_G270)?14:_sb(14))+"px",/* [giro 270] spazio fra riquadri fratelli = SP.box (regola PO-296, spazio-296: 14 px misurati sul telefono, anche su 7.999.196). Rosso __CPM_NO_G270 = 14 px */padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
               {_L.map((r,i)=>(<div key={i} style={{fontSize:FS.small,lineHeight:1.4,color:TH.text,marginTop:i?6:0}}>
                 <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
                 <span style={{color:TH.muted}}>{" \u2192 "+(r.breve||"non c'è stato il tempo di vederne l'effetto")}</span></div>))}
@@ -13162,7 +13282,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _k232=!!(_c232&&_c232.tipo!=="campionato");
             let _st=[],_io=-1,_zone=()=>null,_leg=[];
             if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
-            else if(!_isNatCtx){_st=[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            else if(!_isNatCtx){_st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
               _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
               const _lg=_cl.lg||"",N=_st.length,_ZC={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
               const _sec=typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===_lg),_yo=/^Primavera/i.test(_lg),_noRel=typeof LEAGUE_PAIRS!=="undefined"&&!LEAGUE_PAIRS.some(([u])=>u===_lg);
@@ -13185,7 +13305,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _rat=(player.matchHistory||[]).filter(m=>m&&(m.season||1)===_sn&&typeof m.rating==="number"&&isFinite(m.rating));
             const _vm=_rat.length?(Math.round(10*_rat.reduce((s,m)=>s+m.rating,0)/_rat.length)/10):null;
             const _num=[["Gol",player.goals],["Assist",player.assists],["Presenze",player.matches],["Voto medio",_vm!=null?_vm.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
-            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=[...(player.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=ordinaClassifica259(player.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
               const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
               _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_sp,_pi+1);
                 return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
@@ -13235,14 +13355,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!_k232&&<Sez210 id="post-prossima224" titolo={_c232?"Prossima partita · Campionato":"Prossima partita"}>
                 <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):((_c232&&_c232.motivo)||"Nessuna partita in calendario dopo questa.")}</div>
                 {_avS&&_avS.pos!=null&&<div data-cpm="anteprima224-pos" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Classifica</span><span className="cpm-num">{_avS.pos+"° · "+(_avS.pts|0)+" pt · "+_avS.w+"V "+_avS.d+"N "+_avS.l+"P"}</span></div>}
-                {!_g230x()&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
+                {((typeof window!=='undefined'&&window.__CPM_NO_G239)?!_g230x():!!(_avS&&_avS.vera239))/* [giro 239 · PO-498] torna la striscia, ma solo con la forma VERA */&&_avS&&_avS.form&&_avS.form.length>0&&<div data-cpm="anteprima224-forma" style={{display:"flex",alignItems:"center",gap:8,marginTop:5}}><span style={_lab}>Forma</span><span style={{display:"flex",gap:3}}>{_avS.form.map((f,i)=>(<span key={i} className="cpm-num" style={{minWidth:20,textAlign:"center",padding:"1px 0",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:f==="W"?"#15803d":f==="D"?"#b45309":"#b91c1c"}}>{f==="W"?"V":f==="D"?"N":"P"}</span>))}</span></div>}
                 {_occ&&<div data-cpm="anteprima224-occhio" style={{display:"flex",gap:8,marginTop:5,fontSize:FS.small,color:TH.text}}><span style={_lab}>Da tenere d'occhio</span><span><b>{_occ.name}</b>{" · "+_occ.goals+" gol in campionato"}</span></div>}
               </Sez210>}
             </div>);})()}
           {_g200()&&!_g224()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
               (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
             const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
-            const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            const _st=_isNatCtx?[]:ordinaClassifica259(player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
             const _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
             const _a0=Math.max(0,Math.min(_io-1,_st.length-3));const _idx=_io<0?[]:[_a0,_a0+1,_a0+2].filter(i=>i<_st.length);
             const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;

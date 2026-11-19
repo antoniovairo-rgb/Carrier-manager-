@@ -1,0 +1,15 @@
+== pelle-240 · 22:49:42 · cbba41ad
+Mem:           16087         929       11716          12        3741       15157
+/dev/vda        252G   13G   27G  33% /
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+browser.newContext: Target page, context or browser has been closed
+    at async pagina (/home/user/Carrier-manager-/tests/visual/pelle-240.mjs:37:15)
+    at async braccio (/home/user/Carrier-manager-/tests/visual/pelle-240.mjs:95:198)
+    at async file:///home/user/Carrier-manager-/tests/visual/pelle-240.mjs:117:124 {
+  log: []
+}
+
+Node.js v22.23.5

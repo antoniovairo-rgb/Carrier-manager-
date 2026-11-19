@@ -23,7 +23,11 @@ const SRC = path.join(ROOT, 'CARRIER-MANAGER-AV.html');
    feature AI e strumenti restano come nella versione sorgente. Misurato: avvio fino alla home 6,9 s → 0,3 s, memoria JS 80 → 6 MB
    (collaudo PO: «si riavvia l'app quando la metto pochi secondi in background» — Android chiude le schede che pesano). */
 const WEB = process.argv.includes('--web');
-const DIST = path.join(ROOT, WEB ? 'dist-web' : 'dist');
+/* [giro 237 PO-502] --babel-browser: ritirata DICHIARATA (e braccio rosso del guardiano web-237). Produce la pagina web SENZA
+   tradurre il JSX: tiene il blocco <script type="text/babel"> e inlina babel-standalone, cioe' come il sorgente. Scrive in
+   dist-web-babel/ (mai in dist-web/, che e' quella che il deploy pubblica). Solo con --web. */
+const BABEL_BROWSER = WEB && process.argv.includes('--babel-browser');
+const DIST = path.join(ROOT, WEB ? (BABEL_BROWSER ? 'dist-web-babel' : 'dist-web') : 'dist');
 const lib = p => fs.readFileSync(path.join(NM, p), 'utf8');
 
 const t0 = Date.now();
@@ -40,9 +44,10 @@ if (bClose <= contentStart) { console.error('FATAL: chiusura </script> del blocc
 const jsx = html.slice(contentStart, bClose);
 console.log(`JSX estratto: ${(Buffer.byteLength(jsx) / 1024) | 0} KB → transpilazione...`);
 let compiled;
-try { compiled = Babel.transform(jsx, { presets: ['react'], compact: false, comments: false, sourceMaps: false }).code; }
+if (BABEL_BROWSER) { compiled = null; console.log('--babel-browser: JSX NON tradotto (ritirata dichiarata, giro 237)'); }
+else try { compiled = Babel.transform(jsx, { presets: ['react'], compact: false, comments: false, sourceMaps: false }).code; }
 catch (e) { console.error('FATAL: transpilazione Babel fallita:', e.message); process.exit(1); }
-console.log(`JSX transpilato: ${(Buffer.byteLength(compiled) / 1024) | 0} KB`);
+if (compiled != null) console.log(`JSX transpilato: ${(Buffer.byteLength(compiled) / 1024) | 0} KB`);
 
 // ---- 1.2 — inline delle librerie locali al posto delle CDN ----
 // blocco CDN: dal commento BL-01 (riga ~60) fino al fallback babel (riga ~70). Lo sostituiamo con i bundle locali inline.
@@ -58,10 +63,11 @@ const inlined = [
   `<script>${lib('three/build/three.min.js')}</script>`,
   `<script>${lib('three/examples/js/loaders/GLTFLoader.js')}</script>`,
   `<script>${lib('three/examples/js/utils/SkeletonUtils.js')}</script>`,
+  ...(BABEL_BROWSER ? [`<script>${lib('@babel/standalone/babel.min.js')}</script>`] : []),
 ].join('\n');
 
 // ---- assembla la dist (sostituzioni dalla FINE verso l'INIZIO per non invalidare gli indici) ----
-html = html.slice(0, bStart) + '<script>\n' + compiled + '\n</script>' + html.slice(bClose + '</script>'.length);
+if (!BABEL_BROWSER) html = html.slice(0, bStart) + '<script>\n' + compiled + '\n</script>' + html.slice(bClose + '</script>'.length);
 html = html.slice(0, cdnStart) + inlined + html.slice(cdnEnd);
 // 1.6 — flag BUILD STORE: disattiva la feature AI (zero chiamate esterne, Data Safety "nessun dato").
 // 6 — STORAGE NATIVO anti-eviction: SOLO in app Capacitor nativa fornisce window.storage backed by
@@ -91,7 +97,7 @@ let _ch38Esclusi = 0;
        grep del nome; i file a nome COSTRUITO a runtime (portraits/, avatar-N, anim-*, hair-colors/, korward-regular-*) restano TUTTI.
    CPM_DIST_CON_SORGENTI=1 rimette tutto. Dopo la copia, controllo: ogni './assets/...' letterale della pagina deve esistere nella dist. */
 const CON_SORGENTI = !!process.env.CPM_DIST_CON_SORGENTI;
-const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp)|cgtrader-clip-rohr\.glb)$/;   /* [giro 180c] clip Rohr: fuori finche' il gioco non le carica (decisione madre 180b §6.4) */
+const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp))$/;   /* [giro 180c] clip Rohr: fuori finche' il gioco non le carica (decisione madre 180b §6.4) · [giro 240 PO-499, decisione PO «Posa ora, clip nella 197»] ORA IL GIOCO LE CARICA (saluto della serata di presentazione, src/16 _salutoClip240): assets/cgtrader-clip-rohr.glb ENTRA nel pacchetto. Licenza registrata in docs/governo/CREDITI-fonti.md; gli ORIGINALI Rohr restano fuori (riga _origDist qui sotto) */
 let _srcEsclusi = 0;
 /* [giro 184 — PO-374, decisione PO 12/11 «Toglierli dal repo»] gli ORIGINALI dei pacchetti di terzi (CGTrader, Mixamo, Anderson
    Rohr: FBX, OBJ/MTL, BVH, uasset, zip/7z/rar, cartella originals/, nomi *_ue5/*_iclone) non entrano MAI nel pacchetto, nemmeno con
@@ -126,5 +132,6 @@ console.log(`\n=== BUILD DIST ===`);
 console.log(`sorgente ${srcKB}KB → dist/index.html ${outKB}KB · assets copiati: ${fs.existsSync(path.join(DIST, 'assets'))} · manifest+icone: ${['manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'].every(f => fs.existsSync(path.join(DIST, f)))}`);
 console.log(`CDN residue: ${hasCDN ? '❌ ANCORA PRESENTI' : '✅ nessuna'} · Babel-in-browser: ${hasBabelTag ? '❌ ancora presente' : '✅ rimosso (JSX precompilato)'}`);
 console.log(`tempo ${((Date.now() - t0) / 1000).toFixed(1)}s`);
-if (hasCDN || hasBabelTag) process.exit(2);
+if (hasCDN || (hasBabelTag && !BABEL_BROWSER)) process.exit(2);
+if (BABEL_BROWSER) { console.log('⚠️ dist-web-babel: Babel nel browser (solo ritirata/prova del rosso, NON da pubblicare)'); process.exit(0); }
 console.log('✅ dist offline pronta per il packaging (1.3 Capacitor)');

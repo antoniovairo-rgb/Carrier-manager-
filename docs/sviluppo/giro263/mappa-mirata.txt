@@ -1,0 +1,110 @@
+VERDE home-199 234s prova 1
+ROSSO prossima-131 401s prova 1 rc 1 |   ROSSO (__CPM_NO_G134A): 6/15 rossi, casi caduti: nessuna,amichevole → NON CADE COME DEVE   ROSSO (__CPM_NO_G137W): 8/15 rossi, casi caduti: nc-finale,euro-girone,nessuna,amichevole,nc-girone → NON CADE COME DEVE 
+ROSSO prossima-131 402s prova 2 rc 1 |   ROSSO (__CPM_NO_G134A): 6/15 rossi, casi caduti: nessuna,amichevole → NON CADE COME DEVE   ROSSO (__CPM_NO_G137W): 8/15 rossi, casi caduti: nc-finale,euro-girone,nessuna,amichevole,nc-girone → NON CADE COME DEVE 
+VERDE primavera-260 94s prova 1
+VERDE podio-260 37s prova 1
+VERDE store-236 84s prova 1
+VERDE accessibilita-234 210s prova 1
+VERDE interviste-211 21s prova 1
+VERDE patto-227 86s prova 1
+VERDE salienti-229 216s prova 1
+VERDE salienti-243 266s prova 1
+VERDE calendario-218 64s prova 1
+ROSSO rosa-228 46s prova 1 rc 1 | ROSSO __CPM_NO_G228: ✓ bocciato 24 club · 576 righe · ruoli non in sigla 535 · senza ruolo intero 576 · nomi <18 tagliati 68 · nomi ≥18 tagliati 4 · es. ruolo «PORTIERE» | ruolo «DIFENSORE» | ruolo «DIFENS
+ROSSO rosa-228 47s prova 2 rc 1 | ROSSO __CPM_NO_G228: ✓ bocciato 24 club · 576 righe · ruoli non in sigla 535 · senza ruolo intero 576 · nomi <18 tagliati 68 · nomi ≥18 tagliati 4 · es. ruolo «PORTIERE» | ruolo «DIFENSORE» | ruolo «DIFENS
+ROSSO agente-198 139s prova 1 rc 1 |   ✓ rosso B2 bocciato (motivo solo testo) ❌ ROSSO — 2 controlli: verde B1: la fermata sul rinnovo dice dove andare e il tasto porta all'Agente col riquadro in vista · verde B2: il motivo «Prima rispondi al rinnov
+ROSSO agente-198 140s prova 2 rc 1 |   ✓ rosso B2 bocciato (motivo solo testo) ❌ ROSSO — 2 controlli: verde B1: la fermata sul rinnovo dice dove andare e il tasto porta all'Agente col riquadro in vista · verde B2: il motivo «Prima rispondi al rinnov
+VERDE pullman-204 214s prova 1
+VERDE svincolato-198 138s prova 1
+VERDE figurina-199 90s prova 1
+VERDE rifiniture-200 289s prova 1
+VERDE nomi-182 493s prova 1
+VERDE indice-163 48s prova 1
+VERDE salta-163 158s prova 1
+VERDE momento-165 205s prova 1
+VERDE momento-165b 188s prova 1
+VERDE momento-173 129s prova 1
+VERDE momento-185 177s prova 1
+VERDE gioca-188 30s prova 1
+VERDE patrimonio-303 180s prova 1
+--- ripresa dopo riavvio container (partita-v2 interrotto)
+ROSSO partita-v2 316s prova 1 rc 1 |   ✗ FORMA pc:post: manca il tasto finale partita-v2 ROSSO 
+ROSSO partita-v2 301s prova 2 rc 1 |   ✗ FORMA pc:post: manca il tasto finale partita-v2 ROSSO 
+ROSSO grafica-v2 107s prova 1 rc 1 |   ✗ SCH pc: club: anelli fiducia/popolarita' mancanti grafica-v2 ROSSO 
+ROSSO grafica-v2 110s prova 2 rc 1 |   ✗ SCH pc: club: anelli fiducia/popolarita' mancanti grafica-v2 ROSSO 
+VERDE simula-v2 98s prova 1
+VERDE momenti-v2 435s prova 1
+VERDE carriera3-94 215s prova 1
+OLTRE20 assist-nome-98 1200s
+ROSSO spazio-296 1064s prova 1 rc 1 |   ✗ tel post-partita: 1 distanze oltre 10 (14 div«🧠 La tua scelta al 90») spazio-296 ROSSO: 1 schermate cadute, 1 non raggiunte 
+ROSSO spazio-296 1002s prova 2 rc 1 | schermate non raggiunte: pc post-partita (niente fischio) spazio-296 ROSSO: 0 schermate cadute, 1 non raggiunte 
+VERDE schermate-97 264s prova 1
+VERDE crea-home-295 29s prova 1
+VERDE pc-tablet-292 760s prova 1
+VERDE impulsi-289 37s prova 1
+VERDE piccoli-85 60s prova 1
+VERDE trainer-288 36s prova 1
+ROSSO neutro-287 77s prova 1 rc 1 | } ❌ neutro-287: Carriera/profile cita «stile di gioco» (…Favorevole | Rapporto 74/100 | CONTRATTO E ATTRIBUTI | Attributi, stile di gioco, contratto e futuro | 3 sezioni | › | ATTRIBUTI | 8 | V…) 
+ROSSO neutro-287 76s prova 2 rc 1 | } ❌ neutro-287: Carriera/profile cita «stile di gioco» (…Favorevole | Rapporto 74/100 | CONTRATTO E ATTRIBUTI | Attributi, stile di gioco, contratto e futuro | 3 sezioni | › | ATTRIBUTI | 8 | V…) 
+VERDE livello-79 63s prova 1
+VERDE errori-168 17s prova 1
+VERDE barra-360-72 59s prova 1
+ROSSO ritratto-171-72 103s prova 1 rc 1 | ❌ ritratto-171-72   · verde home: ritratto dell'eroe assente o non caricato 
+ROSSO ritratto-171-72 102s prova 2 rc 1 | ❌ ritratto-171-72   · verde home: ritratto dell'eroe assente o non caricato 
+VERDE acquisti-281 83s prova 1
+ROSSO difficolta-156 316s prova 1 rc 1 |  ❌ CURVA FUORI BERSAGLIO 
+--- ripresa (corsa fermata al tetto di 2 h durante difficolta-156 prova 2)
+ROSSO difficolta-156 318s prova 1 rc 1 |  ❌ CURVA FUORI BERSAGLIO 
+ROSSO difficolta-156 314s prova 2 rc 1 |  ❌ CURVA FUORI BERSAGLIO 
+VERDE stile-unico-75 29s prova 1
+VERDE impulsi-memoria-154 69s prova 1
+VERDE popup-224b 56s prova 1
+VERDE nazionale-155 52s prova 1
+VERDE rinnovo-270 75s prova 1
+VERDE chip-269 44s prova 1
+VERDE simulata-272 16s prova 1
+VERDE giornata-233 31s prova 1
+ROSSO testata-209 686s prova 1 rc 1 |   · verde: scena dell'intervista n.d.   · rosso: il difetto non si vede («null») 
+ROSSO testata-209 684s prova 2 rc 1 |   · verde: scena dell'intervista n.d.   · rosso: il difetto non si vede («null») 
+VERDE popup-224 33s prova 1
+VERDE finestra-230 90s prova 1
+OLTRE20 intervista-231 1200s
+VERDE classifica-102 33s prova 1
+VERDE recupero-103 65s prova 1
+VERDE euro-attesa-181 25s prova 1
+VERDE riquadro-euro-105 35s prova 1
+VERDE avversario-106 10s prova 1
+VERDE rinvio-coppe-107 49s prova 1
+VERDE etichette-108 9s prova 1
+VERDE titolo-110 24s prova 1
+VERDE pre-188 15s prova 1
+VERDE conferenza-192 0s prova 1
+ROSSO partita-rigiocata-194 990s prova 1 rc 1 | rosso: riapertura dopo il fischio no (strada playing, informativo) ❌ partita-rigiocata-194 ROSSO 
+ROSSO partita-rigiocata-194 983s prova 2 rc 1 | rosso: riapertura dopo il fischio no (strada playing, informativo) ❌ partita-rigiocata-194 ROSSO 
+VERDE pro-rivale-176 39s prova 1
+VERDE anteprima-212 37s prova 1
+ROSSO mister-215 45s prova 1 rc 1 |   · verde: storico senza figurine per riga {"figurine":0,"icone":0,"righe":0}   · rosso: icone non si vedono {"figurine":0,"icone":0,"righe":0} 
+ROSSO mister-215 44s prova 2 rc 1 |   · verde: storico senza figurine per riga {"figurine":0,"icone":0,"righe":0}   · rosso: icone non si vedono {"figurine":0,"icone":0,"righe":0} 
+VERDE presentazione-214 47s prova 1
+VERDE toast-247 35s prova 1
+VERDE calendario-247 31s prova 1
+ROSSO coppa-prestito-245 40s prova 1 rc 1 | ❌ coppa-prestito-245   · verde: il turno di coppa non viene giocato avanzando {"A":{"settimana":30,"voce":[{"played":true,"result":null}],"risultati":2,"cup":{"active":true,"eliminated":false,"champion":false,"round":
+ROSSO coppa-prestito-245 40s prova 2 rc 1 | ❌ coppa-prestito-245   · verde: il turno di coppa non viene giocato avanzando {"A":{"settimana":30,"voce":[{"played":true,"result":null}],"risultati":2,"cup":{"active":true,"eliminated":false,"champion":false,"round":
+VERDE toast-intervista-247 60s prova 1
+VERDE festa-oro-251 38s prova 1
+VERDE procuratore-253 158s prova 1
+VERDE toast-256 69s prova 1
+VERDE backup-167 56s prova 1
+VERDE home-066 111s prova 1
+ROSSO squalifica-222 142s prova 1 rc 1 |  ✗ ROSSO squalifica-222: 2 controlli falliti 
+VERDE squalifica-222 141s prova 2
+--- ripresa (fermata al tetto di 2 h durante investimento-223)
+VERDE investimento-223 216s prova 1
+ROSSO infortunio-263 184s prova 1 rc 1 |  ✗ ROSSO infortunio-263: 5 controlli falliti 
+ROSSO infortunio-263 183s prova 2 rc 1 |  ✗ ROSSO infortunio-263: 2 controlli falliti 
+VERDE svincolato-264 132s prova 1
+VERDE meta-conto-265 57s prova 1
+VERDE via-ch38-171 115s prova 1
+VERDE stadi-071 201s prova 1
+VERDE scene-fuori-137 53s prova 1
+FINE

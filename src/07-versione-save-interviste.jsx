@@ -32,7 +32,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.196";/* [7.999.196] solo difetti nuovi: PO-484 tocco nelle scene 3D (219, Fable), PO-485 moves-budget riparato nel guardiano (220), PO-480/486/495 barra Pressione, tasti spenti, pausa che non regala tempo (221, 229), PO-481/479 guardalinee in linea e interviste dell'ultima del girone (222), PO-487 portiere sui tiri falliti (223), PO-488/490 rassegna con più spazio e scheda 4 piena, forma solo vera (224, 230), PO-489 serata di presentazione (225, Fable), PO-491 dribbling (226, Fable), PO-492 patto col mister coerente (227), PO-493 ruoli in sigla (228), PO-494 soli momenti salienti in ogni partita (229), PO-503 classifica e prossima partita della competizione (232), guardiani del rinnovo riallineati (231); giri 219-232 */ /* [7.999.195] PO-418/428 provini e scelte (giro 201), PO-461 rassegna (202), PO-460/464 sigle e clip Rohr (203), PO-450/451/468/469/477/482 piazzati, lotteria e pullman (204, 208, 214, 216), PO-465/470/478 niente ripiego 2D: avviso Riprova/Simula col parziale (205, 209, 215), PO-373/412/367 notte e ingressi (206), PO-401/471 diagonali (207, 210), PO-472/473 nomi e interviste (211), PO-474 guardalinee giganti (212), PO-475 riscontro al tocco (213), PO-483 calendario leggibile (218), guardiano piazzato-204 stabile (217); giri 197-200 */ /* [7.999.194] PO-380/396/397 testi e nomi (giro 190), PO-399/403 rigori e lotteria (giro 191), PO-402/404/406/407 cerimonie (giro 192), PO-405/410/411/431 tasto momento e convocazione (giro 194), PO-449 mai T-pose né corpi non CGTrader (giro 196) */
+const GAME_VERSION="7.999.197";/* [7.999.197] store e primo impatto: avvio leggero (233, Fable), accessibilità e testo grande (234), profilo e grafica (235), store e screenshot (236), web precompilata e controlli più veloci (237), patto e rinnovo (238), interviste, forma vera e sigle dei ruoli (239), pelle, capelli e saluto con clip (240, 256, Fable), eroe in quadro (241, Fable), soli momenti salienti in ogni partita da un unico punto (243, 246, 253), coreografie (244, 252), tunnel a metà campo e schieramento (245, 255, Fable), nomi dei club scelti dal PO (247, 248, 250, 251, 258), rigorista (249, 257, 262), sigle e voto (254), classifica (259), Primavera e podio (260), serata di presentazione (261, Fable), pulsanti proporzionati (263), battito del minuto (264, Fable), portiere sul pallone largo (265), festa sempre giudicata (266), riparazioni della verifica: colpo di testa col pallone lontano (274), scena 3D chiusa liberata (276), esito a schermo prima della chiusura (282); giri 233-283 */ /* [7.999.196] solo difetti nuovi: PO-484 tocco nelle scene 3D (219, Fable), PO-485 moves-budget riparato nel guardiano (220), PO-480/486/495 barra Pressione, tasti spenti, pausa che non regala tempo (221, 229), PO-481/479 guardalinee in linea e interviste dell'ultima del girone (222), PO-487 portiere sui tiri falliti (223), PO-488/490 rassegna con più spazio e scheda 4 piena, forma solo vera (224, 230), PO-489 serata di presentazione (225, Fable), PO-491 dribbling (226, Fable), PO-492 patto col mister coerente (227), PO-493 ruoli in sigla (228), PO-494 soli momenti salienti in ogni partita (229), PO-503 classifica e prossima partita della competizione (232), guardiani del rinnovo riallineati (231); giri 219-232 */ /* [7.999.195] PO-418/428 provini e scelte (giro 201), PO-461 rassegna (202), PO-460/464 sigle e clip Rohr (203), PO-450/451/468/469/477/482 piazzati, lotteria e pullman (204, 208, 214, 216), PO-465/470/478 niente ripiego 2D: avviso Riprova/Simula col parziale (205, 209, 215), PO-373/412/367 notte e ingressi (206), PO-401/471 diagonali (207, 210), PO-472/473 nomi e interviste (211), PO-474 guardalinee giganti (212), PO-475 riscontro al tocco (213), PO-483 calendario leggibile (218), guardiano piazzato-204 stabile (217); giri 197-200 */ /* [7.999.194] PO-380/396/397 testi e nomi (giro 190), PO-399/403 rigori e lotteria (giro 191), PO-402/404/406/407 cerimonie (giro 192), PO-405/410/411/431 tasto momento e convocazione (giro 194), PO-449 mai T-pose né corpi non CGTrader (giro 196) */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -67,7 +67,13 @@ const openPrivacy=()=>{try{window.open(PRIVACY_URL,"_blank","noopener,noreferrer
 /* [giro 134 PO-334 «Dentro l'app»] il testo dell'informativa per il pannello in Opzioni (Privacy134, src/19): NON si scrive a mano, si genera da privacy.html (fonte unica) con tools/privacy-testo.mjs; check-src.mjs blocca se diverge. La mail e' il segnaposto ["m"], ricomposto da _feedbackTo(). Rosso __CPM_NO_G134P: si torna al link fuori dall'app. */
 /*PRIVACY134-INIZIO: generato da tools/privacy-testo.mjs da privacy.html — NON modificare a mano*/const PRIVACY134=[["h1","Informativa sulla privacy"],["data","Ultimo aggiornamento: 9 novembre 2026"],["tldr",["Versione breve: l'app non raccoglie, non invia e non condivide alcun dato personale. Tutto resta sul tuo dispositivo."]],["p",["Korward Elite (\"l'app\", \"il gioco\") è un simulatore di carriera calcistica gratuito. Questa informativa spiega quali dati l'app tratta."]],["h2","1. Dati raccolti"],["p",[["b","Nessuno."]," Korward Elite non raccoglie dati personali, non richiede registrazione né account, non usa identificatori pubblicitari e non include SDK di analisi o tracciamento di terze parti."]],["h2","2. Salvataggi di gioco"],["p",["I progressi della tua carriera (giocatore, statistiche, calendario, classifiche, diario) sono salvati ",["b","esclusivamente in locale"]," sul tuo dispositivo (archiviazione del dispositivo / ",["c","localStorage"]," della WebView). Questi dati:"]],["ul",[["non lasciano mai il dispositivo;"],["non sono accessibili a noi né a terzi;"],["possono essere esportati e reimportati da te tramite la funzione \"Esporta salvataggio\" (un file JSON che gestisci tu);"],["vengono rimossi disinstallando l'app o cancellando i dati dell'app dalle impostazioni di sistema."]]],["h2","3. Permessi"],["p",["L'app non richiede permessi sensibili (niente posizione, contatti, fotocamera, microfono, archiviazione esterna). Non usa l'Advertising ID."]],["h2","4. Donazioni (facoltative)"],["p",["Se l'app mostra un pulsante \"Sostieni lo sviluppo\", questo si limita ad ",["b","aprire un link esterno"]," (es. Ko-fi / PayPal / Buy Me a Coffee) nel browser di sistema. L'eventuale donazione avviene interamente sulla piattaforma del provider esterno, secondo la sua privacy policy: ",["b","l'app non gestisce e non riceve alcun dato di pagamento"]," e non concede alcuno sblocco o vantaggio in cambio."]],["h2","5. Funzione AI (disattivata nella versione store)"],["p",["Il codice del gioco include una funzione opzionale di analisi tattica basata su AI. ",["b","Nella versione pubblicata sullo store questa funzione è disattivata"],": non viene effettuata alcuna chiamata di rete verso servizi esterni. (Nella versione web del gioco la funzione è attivabile solo dall'utente inserendo una propria chiave API; in quel caso il testo della richiesta viene inviato al fornitore AI scelto dall'utente. Questo non riguarda l'app dello store.)"]],["h2","6. Minori"],["p",["L'app è adatta a tutte le età, non raccoglie dati e non contiene pubblicità. Non vengono trattati dati di minori perché non viene trattato alcun dato personale."]],["h2","7. Modifiche"],["p",["Eventuali aggiornamenti a questa informativa saranno pubblicati a questo stesso indirizzo, con la data di aggiornamento in alto."]],["h2","8. Contatti"],["p",["Per domande sulla privacy: ",["m"]]],["piede","Korward Elite — tutti i nomi di club, leghe, competizioni e giocatori sono di fantasia."]];/*PRIVACY134-FINE*/
 const privacy134On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G134P);
-const openDonation=()=>{try{if(!DONATION_URL)return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
+/* [giro 260 · decisione PO 17/11 B «Toglierlo nell'app store»] il «Sostieni il progetto» NON compare dentro l'app (TWA com.korward.elite) e
+   resta sul sito. Criterio unico, quello del giro 120 in src/00-head.html: window.__CPM_APP_TWA, acceso se l'indirizzo porta ?app=twa
+   (start_url del manifest TWA e urlAvvio del progetto Android) oppure il referrer comincia con android-app://com.korward.elite; il segno
+   resta per la sessione della scheda (sessionStorage «cpm-app-twa»). display-mode standalone NON basta: e' vero anche per la PWA
+   installata dal sito, che non passa dallo store. Rosso: window.__CPM_NO_G260 (il pulsante torna anche nell'app). */
+const donazioneVisibile260=()=>!!DONATION_URL&&!(typeof window!=="undefined"&&window.__CPM_APP_TWA&&!window.__CPM_NO_G260);
+const openDonation=()=>{try{if(!donazioneVisibile260())return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
 // #6: indirizzo feedback OFFUSCATO (non in chiaro nel sorgente) — ricomposto a runtime dai char-code → niente scraping banale
 const _feedbackTo=()=>String.fromCharCode(107,111,114,119,97,114,100,46,100,101,118,116,101,97,109,64,103,109,97,105,108,46,99,111,109);/* [21/09 · direttiva PO: «la mail delle idee non deve essere inviata piu' alla mia mail, ma a korward.devteam@gmail.com»] La casella personale del PO esce dal gioco. Resta l'offuscamento in codici di carattere: e' li' perche' un indirizzo scritto in chiaro dentro una pagina pubblica viene raccolto dai raccoglitori di spam, e la casella nuova merita la stessa protezione della vecchia. */
 const openFeedback=()=>{try{const to=_feedbackTo();const s=encodeURIComponent("💡 Idee & Feedback — Korward Elite");
@@ -165,11 +171,43 @@ function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+
    un'eliminazione o una finale persa, niente domande che presuppongono un turno ancora da giocare (fuori222). Senza esito (intervista
    della settimana, prepartita) il rilancio e' quello di prima; se il filtro svuotasse la lista, resta la lista intera. */
 function _no222iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G222;}
+function _no239iv(){return typeof window!=='undefined'&&!!window.__CPM_NO_G239;}
 function coerenteRil222(r,es){if(!es)return true;
   if(!es.lega&&_LEGA211.test(String(r.q||"")+" "+(r.a||[]).map(x=>x&&x.txt).join(" ")))return false;
   if(r.fuori222&&(es.turno==="eliminato"||es.turno==="finale_persa"))return false;
   return true;}
-function rilancio24(tone,seed,es){let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+/* [giro 239 · PO-497] il rilancio dopo una sconfitta che qualifica: il giornalista incalza sul passaggio arrivato perdendo, non su un
+   girone «ancora aperto» ne' sulla classifica. Uno per tono della prima risposta, come RILANCIO24. */
+const RILANCIO239={
+  diretto:[
+    {q:"Hai parlato chiaro. Agli ottavi però una serata così non basterà: cosa deve cambiare?",a:[
+      {tone:"diretto",txt:"L'atteggiamento. Agli ottavi si entra in campo per vincere, non per gestire.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Poco, ma quel poco va fatto bene: attenzione per novanta minuti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Io per primo devo dare di più. Il passaggio non cancella gli errori.",ef:{m:1,p:0,t:2}}]},
+    {q:"Passare perdendo: qualcuno dirà che siete stati fortunati. Cosa gli rispondi?",a:[
+      {tone:"diretto",txt:"Che il passaggio ce lo siamo guadagnati nelle partite prima.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il girone si giudica intero, non da una sera.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Che ha un po' ragione: stasera non abbiamo meritato. Rimedieremo.",ef:{m:1,p:0,t:2}}]}],
+  umile:[
+    {q:"Ti prendi le colpe, ma la squadra è passata. Che cosa vi dite nello spogliatoio?",a:[
+      {tone:"diretto",txt:"Che siamo passati, ma che così il prossimo turno non si gioca.",ef:{m:2,p:2,t:0}},
+      {tone:"diplomatico",txt:"Ci diciamo le cose in faccia, e poi pensiamo al sorteggio.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Poche parole. Testa bassa e si lavora per la prossima.",ef:{m:1,p:0,t:2}}]},
+    {q:"Il passaggio del girone ti basta per stasera, o resta l'amaro in bocca?",a:[
+      {tone:"diretto",txt:"Resta l'amaro: perdere non mi va mai giù.",ef:{m:1,p:2,t:0}},
+      {tone:"diplomatico",txt:"Tutte e due le cose: contenti del passaggio, arrabbiati per la partita.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"L'amaro. Ma è un amaro che serve per crescere.",ef:{m:1,p:0,t:2}}]}],
+  diplomatico:[
+    {q:"Risposta equilibrata. Ma stasera, onestamente, avete rischiato di non passare il turno?",a:[
+      {tone:"diretto",txt:"No: il passaggio l'avevamo costruito nelle partite prima.",ef:{m:1,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Il calcio è fatto anche di serate storte. L'importante è esserci.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Un po' sì. È un campanello d'allarme da ascoltare.",ef:{m:1,p:0,t:2}}]},
+    {q:"Si passa, ma con una sconfitta. Che segnale arriva al prossimo avversario?",a:[
+      {tone:"diretto",txt:"Che siamo ancora qui. E che la prossima sarà un'altra partita.",ef:{m:2,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Nessun segnale: agli ottavi si riparte da zero, per tutti.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Forse che siamo battibili. Tocca a noi dimostrare il contrario.",ef:{m:1,p:0,t:2}}]}]};
+function rilancio24(tone,seed,es){if(es&&es.turno==="qualificato"&&!_no239iv()){const Q=RILANCIO239[tone]||RILANCIO239.diplomatico;const x=Q[hashIv24(seed)%Q.length];return {q:x.q,a:[...x.a,IV_NOCOMMENT24]};}
+  let L=RILANCIO24[tone]||RILANCIO24.diplomatico;if(es&&!_no222iv()){const F=L.filter(r=>coerenteRil222(r,es));if(F.length)L=F;}const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
 const PRIMA24={
   win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
   loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
@@ -288,7 +326,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Esatto. Chi ha parlato male di noi si ricreda. Il campo non mente mai.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"Non leggo le critiche. Mi concentro sul lavoro. Oggi è andato bene.",ef:{m:5,p:4,t:7}},
 ]},
-{ctx:["win"],cond:p=>{if(LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg))return false;/* [6.97.0] niente zona europea in 2ª divisione */try{const st=[...(p.standings||[])].sort((x,y)=>y.pts-x.pts||(y.gd||0)-(x.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&i<=8;}catch(e){return false;}}/* [7.161.0 M5] «vi porta in zona europea» solo se sei DAVVERO a ridosso (top 9 reale) */,q:"Vittoria che vi porta in zona europea. Ci credete davvero?",a:[
+{ctx:["win"],cond:p=>{if(LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg))return false;/* [6.97.0] niente zona europea in 2ª divisione */try{const st=ordinaClassifica259(p.standings||[],(x,y)=>y.pts-x.pts||(y.gd||0)-(x.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&i<=8;}catch(e){return false;}}/* [7.161.0 M5] «vi porta in zona europea» solo se sei DAVVERO a ridosso (top 9 reale) */,q:"Vittoria che vi porta in zona europea. Ci credete davvero?",a:[
   {tone:"diplomatico",txt:"Ci lavoriamo ogni giorno. Sarebbe un risultato enorme per tutto il club.",ef:{m:7,p:5,t:6}},
   {tone:"diretto",txt:"Non ci poniamo limiti. Siamo forti e possiamo arrivare in Europa.",ef:{m:11,p:8,t:-4}},
   {tone:"umile",txt:"È prematuro parlarne. Pensiamo partita per partita. Prima la prossima.",ef:{m:4,p:4,t:8}},
@@ -904,7 +942,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Una beffa enorme. Avevamo meritato almeno il pareggio. Non è giusto.",ef:{m:-2,p:0,t:-3}},
   {tone:"umile",txt:"Fa malissimo. Ma dobbiamo imparare a gestire meglio la pressione finale.",ef:{m:-3,p:1,t:6}},
 ]},
-{ctx:["loss"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;const st=[...(p.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&st.length>6&&i>=st.length-6;}catch(e){return false;}},/* [7.161.0 A1] solo se la classifica REALE è nella zona bassa (ultime 6) e la gara era di campionato */q:"La zona retrocessione si avvicina. Preoccupato?",a:[
+{ctx:["loss"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;const st=ordinaClassifica259(p.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const i=st.findIndex(t=>t.id===(p.club?.id)||t.n===(p.club?.n));return i>=0&&st.length>6&&i>=st.length-6;}catch(e){return false;}},/* [7.161.0 A1] solo se la classifica REALE è nella zona bassa (ultime 6) e la gara era di campionato */q:"La zona retrocessione si avvicina. Preoccupato?",a:[
   {tone:"diplomatico",txt:"Monitoriamo la classifica ma restiamo concentrati sul lavoro. Non siamo in panico.",ef:{m:-1,p:1,t:5}},
   {tone:"diretto",txt:"Non retrocederemo. Abbiamo la qualità per uscirne. Ho fiducia in questo gruppo.",ef:{m:3,p:2,t:-3}},
   {tone:"umile",txt:"È un campanello d'allarme. Dobbiamo prendere la situazione più seriamente.",ef:{m:-2,p:1,t:7}},
@@ -1484,6 +1522,12 @@ const IV_FATTI183=[
   {tone:"diretto",txt:"Rabbia. Abbiamo fatto la partita a metà e in Europa non basta.",ef:{m:-2,p:4,t:-2}},
   {tone:"umile",txt:"Una lezione. Rivediamo gli errori e torniamo più pronti.",ef:{m:-1,p:2,t:7}},
 ]},
+/* [giro 239 · PO-497] la sconfitta all'ultima giornata del girone che pero' qualifica */
+{ctx:["f_europa","f_nazionale"],g211:1,r:["loss"],e211:["qualificato"],q:"Sconfitta, ma siete passati: sollievo o preoccupazione?",a:[
+  {tone:"diplomatico",txt:"Tutte e due. Il passaggio l'abbiamo costruito nelle partite prima, stasera ci serve da lezione.",ef:{m:1,p:3,t:5}},
+  {tone:"diretto",txt:"Preoccupazione. Al turno dopo una partita così ci manda a casa.",ef:{m:-1,p:4,t:-1}},
+  {tone:"umile",txt:"Sollievo, lo ammetto. Ma adesso rivediamo gli errori: il prossimo turno non perdona.",ef:{m:0,p:2,t:6}},
+]},
 {ctx:["f_europa"],g211:1,e211:["eliminato"],q:"Fuori dall'Europa. Cosa è mancato per passare il turno?",a:[
   {tone:"diplomatico",txt:"Precisione nei momenti decisivi. Fa male, ma l'avversario ha meritato.",ef:{m:-3,p:3,t:5}},
   {tone:"diretto",txt:"La cattiveria. Un turno così non si può lasciare per strada.",ef:{m:-4,p:4,t:-3}},
@@ -1680,6 +1724,11 @@ function esitoTurno211(p,r){try{
      coppa europea → euroGroupKOPatch (src/17) sul salvataggio con questa partita aggiunta, come fa onMatchEnd; Europeo/Mondiale →
      ultima partita del girone e meno di 4 punti, come _emGroupOut in src/18. Solo l'eliminazione cambia (decisione PO): chi si
      qualifica resta «nessuno» come prima. */
+  /* [giro 239 · PO-497 — rosso __CPM_NO_G239] LA SCONFITTA CHE QUALIFICA. Prima una sconfitta all'ultima giornata del girone che
+     pero' qualificava restava «nessuno» e riceveva «Serata europea amara… il girone è ancora aperto» (girone chiuso). Ora, con la
+     stessa regola che decide l'eliminazione (euroGroupKOPatch per la coppa europea, 4 punti per Europeo/Mondiale), la sconfitta che
+     passa il girone e' l'esito «qualificato»: domanda dedicata (e211 qualificato) e rilancio dedicato (RILANCIO239). Vittorie e
+     pareggi che qualificano restano «nessuno» (decisione PO del giro 222: cambia solo questo caso). */
   if(!seme&&!_no222iv()){
     if(c==="euro_group"&&p.euro&&p.euro.phase==="group"&&typeof euroGroupKOPatch==="function"){
       const md=(p.calendar||[]).find(m=>m&&m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
@@ -1687,9 +1736,11 @@ function esitoTurno211(p,r){try{
       const cal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true}:m);
       const k=euroGroupKOPatch({...p,calendar:cal,euro:{...p.euro,groupResults:gr,pts:(p.euro.pts||0)+(r.won?3:r.drew?1:0)}});
       if(k&&k.euro&&k.euro.eliminated)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(k&&k.euro&&k.euro.qualified&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */
     }
     if(c==="euroMondiale_group"&&p.euroMondiale){const em=p.euroMondiale,n=(em.groupOpponents||[]).length;
-      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};}
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&((em.groupPts||0)+(r.won?3:r.drew?1:0))<4)return{ko:false,girone:true,turno:"eliminato",lega:false,rigori:false};
+      if(n&&((em.groupMatchIdx||0)+1)>=n&&!r.won&&!r.drew&&!_no239iv())return{ko:false,girone:true,turno:"qualificato",lega:false,rigori:false};/* [giro 239 · PO-497] */}
   }
   if(!seme)return{ko:false,turno:"nessuno",lega,rigori:false};
   const passa=!!r.won||(!!r.drew&&typeof koShootoutWin==="function"&&!!koShootoutWin(p,seme));
@@ -1737,7 +1788,11 @@ function intervista183(p,md,r){try{
   else if(/^euro/.test(c))posta="🌍 Coppa europea";
   else{try{posta=(typeof posta165==="function")?posta165(p,md||{type:c==="cup"?"cup":"league",opponentName:r.opponent}):null;}catch(e){posta=null;}}
   if(!posta&&(r.goals|0)>=3)posta="🎩 Tripletta";
-  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|sorpresa183")%8===0);
+  /* [giro 259] il seme della sorpresa usa l'ID del club avversario, stabile ai rinomini (col nome, il rinomino 248/251 di «kol»
+     accendeva e spegneva la sorpresa sulla stessa partita); fuori campionato (nessuna voce di calendario) resta il nome. Rosso
+     __CPM_NO_G259 = il nome, come prima. */
+  const _avv259=(!_no259()&&md&&md.opponentId)?md.opponentId:(r.opponent||"");
+  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+_avv259+"|sorpresa183")%8===0);
   if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
   const q=scegliPost183(p,r,posta);
   if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};

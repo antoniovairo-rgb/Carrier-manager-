@@ -1,0 +1,37 @@
+=== presentazione-142 · inizio 18:18:07 · mem libera 14974 MB · disco libero 29G
+=== presentazione-142 · uscita 1 · fine 18:21:03
+verde {"corpi":7,"aspetti":6,"testaMax":8.2,"piediKO":0,"fermoMax":1.31,"scena":4.61,"marchio":"Korward Elite","saluto":[{"beat":3,"eroe":false,"clip":true,"avanti":[0,1],"sopra":0,"picco":0.059,"palmo":-0.03,"alte":2.04,"mani":0.12,"tFin":5.98,"giu":true,"fila":true,"campioni":241},{"beat":7,"eroe"
+rosso {"corpi":7,"aspetti":1,"testaMax":35.6,"piediKO":7,"fermoMax":4.32,"scena":4.32,"marchio":"K rward Elite","saluto":[{"beat":3,"eroe":false,"clip":false,"avanti":[0,1],"sopra":0,"picco":-0.484,"palmo":-0.65,"alte":0,"mani":null,"tFin":5.97,"giu":true,"fila":true,"campioni":257},{"beat":7,"eroe"
+❌ presentazione-142 — verde con rilievi
+=== test:logic · inizio 18:21:03 · mem libera 14766 MB · disco libero 29G
+=== test:logic · uscita 0 · fine 18:21:06
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2341.196002
+=== save-compat · inizio 18:21:06 · mem libera 14744 MB · disco libero 29G
+=== save-compat · uscita 0 · fine 18:21:15
+  ℹ️  nota: 2ª migration changed=true senza nuovi campi — rigenerazione calendario/standings perché il club sintetico del test non è nel pool lega (benigno; i save reali con club valido convergono a changed=false).
+
+=== SAVE-COMPAT === 12 pass · 0 fail
+✅ PASS
+=== spalle-146 · inizio 18:21:15 · mem libera 14617 MB · disco libero 29G
+=== spalle-146 · uscita 1 · fine 18:29:03
+VERDE {"formato":"360x800","campioni":73,"eroe":{"highlight":{"SjAj":2.362,"SjH":0.237,"mano":0.086,"min":2.337},"premiazione":{"SjAj":2.338,"SjH":0.239,"mano":0.071,"min":2.338},"intro":{"SjAj":2.41,"SjH":0.244,"mano":0.075,"min":2.371},"presentazione":{"SjAj":2.34,"SjH":0.235,"mano":0.081,"min":2.
+ROSSO (__CPM_NO_G146) {"formato":"360x800","campioni":73,"eroe":{"highlight":{"SjAj":2.399,"SjH":0.239,"mano":0.085,"min":2.078},"premiazione":{"SjAj":1.216,"SjH":0.124,"mano":0.071,"min":1.216},"intro":{"SjAj":2.412,"SjH":0.244,"mano":0.075,"min":2.371},"presentazione":{"SjAj":2.124,"SjH":0.213,"ma
+ROSSO (__CPM_NO_G146B) {"formato":"360x800","campioni":73,"eroe":{"highlight":{"SjAj":2.382,"SjH":0.239,"mano":0.085,"min":2.343},"premiazione":{"SjAj":2.341,"SjH":0.239,"mano":0.071,"min":2.341},"intro":{"SjAj":2.412,"SjH":0.248,"mano":0.075,"min":2.369},"presentazione":{"SjAj":2.437,"SjH":0.245,"m
+❌ spalle-146 — verde con rilievi
+=== pelle-240 · inizio 18:29:03 · mem libera 14847 MB · disco libero 29G
+=== pelle-240 · uscita 0 · fine 18:36:40
+  premiazione  corpi 23 · con nome 13 · con figurina 13 · senza nome 10 · capelli sbagliati 9 · viso: distanza mediana 26.9 massima 36.8 (oltre 12: 13) [prima passata: mediana 26.9 massima 36.8] · non misurati 0
+  festa        corpi 7 · con nome 5 · con figurina 5 · senza nome 2 · capelli sbagliati 3 · viso: distanza mediana 22.6 massima 28.3 (oltre 12: 5) [prima passata: mediana 22.6 massima 28.3] · non misurati 0
+  parata       corpi 8 · con nome 8 · con figurina 8 · senza nome 0 · capelli sbagliati 8 · viso: distanza mediana 39.6 massima 47 (oltre 12: 6) [prima passata: mediana 39.6 massima 47] · non misurati 0
+✅ pelle-240 verde (e il rosso si vede)
+=== tpose-196 · inizio 18:36:40 · mem libera 13667 MB · disco libero 28G
+=== tpose-196 (seconda corsa: la prima fermata dal tetto di 30 minuti del comando in sottofondo, non vale) · inizio 19:07:30 · mem libera 15167 MB · disco libero 28G
+=== tpose-196 · uscita 0 · fine 19:27:54
+VERDE coppa-giorno: {"nome":"coppa-giorno","frames":{"walkout":321,"hl":35},"cattivi":{"walkout":0,"hl":0},"noCg":0,"tpose":0,"proc":0,"maxCg":57,"chi":{},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":417,"playing":60,"hl_intro":12,"hl_choose":2,"hl_result":9},"partita2D":false,"attesa
+✅ tpose-196 VERDE: 0 T-pose, 0 corpi non CGTrader, 0 procedurali su ingresso e highlight
+ROSSO campionato-notte: {"nome":"campionato-notte","frames":{"walkout":324,"hl":38},"cattivi":{"walkout":71,"hl":0},"noCg":21,"tpose":1,"proc":71,"maxCg":56,"chi":{"proc:giocatore":144,"proc:panchina":19,"proc:bambino":28},"fasi":{"undefined":1,"matchday":1,"formations":1,"walkout":341,"playing":174
+✅ tpose-196 ROSSO ATTESO: con __CPM_NO_G196 i corpi sbagliati si vedono
+TPOSE FINITO

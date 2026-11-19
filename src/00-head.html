@@ -25,8 +25,25 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#8e1f33">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<!-- [giro 234 PO-455 · G195-04] ZOOM CON DUE DITA: libero nelle schede (prima maximum-scale=1, user-scalable=no ovunque); la partita lo
+     blocca da sola finche' e' montata (LiveMatch, src/15: un doppio tocco o due dita sulle frecce non devono ingrandire) con la classe
+     cpm-partita234 → touch-action:pan-x pan-y su tutta la pagina. Misurato col gesto a due dita vero (CDP): cambiare il meta viewport
+     a pagina aperta NON blocca piu' lo zoom in Chromium (scala 5 con user-scalable=no messo dopo), touch-action si' (scala 1). theme-color =
+     il fondo del tema (#0d0f14), lo stesso dei due manifest (PO-459). Rosso __CPM_NO_G234: zoom bloccato ovunque, come prima.
+     «Riduci animazioni» (PO-393): classe cpm-riduci234 dalla preferenza cpm-riduci-anim, e matchMedia risponde «reduce» come farebbe
+     la preferenza di sistema, cosi' valgono anche i punti che la leggono da script. -->
+<script>(function(){try{var w=window,d=document,h=d.documentElement,m=d.querySelector('meta[name=viewport]');
+var B='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+w.__CPM_VP234={libero:m.content,bloccato:B,blocca:function(on){try{if(!w.__CPM_NO_G234)h.classList.toggle('cpm-partita234',!!on);}catch(e){}}};
+if(w.__CPM_NO_G234){m.content=B;return;}
+h.classList.add('cpm-g234');
+var r=false;try{r=localStorage.getItem('cpm-riduci-anim')==='1';}catch(e){}
+if(r)h.classList.add('cpm-riduci234');
+var mm=w.matchMedia&&w.matchMedia.bind(w);
+if(mm)w.matchMedia=function(q){if(/prefers-reduced-motion\s*:\s*reduce/.test(String(q))&&h.classList.contains('cpm-riduci234'))return{matches:true,media:String(q),onchange:null,addListener:function(){},removeListener:function(){},addEventListener:function(){},removeEventListener:function(){},dispatchEvent:function(){return false;}};return mm(q);};
+}catch(e){}})();</script>
 <meta name="description" content="Korward Elite: Football Career Simulator — From prospect to legend">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -308,6 +325,8 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 @keyframes cpmSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes cpmShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.cpm-int,.cpm-press{transition:none;}.cpm-int:hover,.cpm-press:active,.cpm-int:active{transform:none;}.cpm-fade,.cpm-rise{animation:none;}}
+/* [giro 236 PO-430 punto 1] iniziali del calciatore sotto il volto della figurina: disegnate dal CSS (::before) per restare fuori da innerText */
+.fig236::before{content:attr(data-iniziali);letter-spacing:.04em;}
 /* [giro 213 PO-475] riscontro al tocco uniforme (strato tocco213 in src/19): schiacciato e illuminato dal fotogramma dopo il tocco */
 html.cpm-t213 .cpm-press:active,html.cpm-t213 .cpm-int:active{transform:none;}
 html.cpm-t213 [data-premuto213]{transition:scale 0s,filter 0s!important;filter:brightness(1.16) drop-shadow(0 0 6px rgba(255,236,205,.6))!important;}
@@ -321,7 +340,15 @@ html.cpm-t213 [data-scuoti221]{animation:cpmScuoti221 .32s ease-in-out 1;}
 @media(prefers-reduced-motion:reduce){html.cpm-t213 [data-scuoti221]{animation:cpmLampo221 .4s ease-out 1;}}
 @keyframes cpmLampo221{0%,45%{color:var(--lampo221,currentColor)}100%{}}
 .cpm-rotella213{position:fixed;z-index:2147483000;pointer-events:none;box-sizing:border-box;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;opacity:.9;animation:cpmRot213 .7s linear infinite;}
-@keyframes cpmRot213{to{transform:rotate(360deg)}}</style>
+@keyframes cpmRot213{to{transform:rotate(360deg)}}
+/* [giro 234 PO-455 · G195-04] in partita niente zoom con due dita ne' doppio tocco (fuori dalla partita lo zoom e' libero) */
+html.cpm-partita234,html.cpm-partita234 body{touch-action:pan-x pan-y;}
+/* [giro 234 PO-455 · G195-07] cursori dell'audio (Opzioni e pannello in partita): area di tocco alta 44 px, il binario resta al centro */
+html.cpm-g234 input[type=range]{min-height:44px;margin:0;}
+/* [giro 234 PO-393] «Riduci animazioni» scelto a mano: lo stesso effetto della preferenza di sistema sulle animazioni dei menu */
+html.cpm-riduci234 *,html.cpm-riduci234 *::before,html.cpm-riduci234 *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+/* [giro 234 PO-459 · G195-06] testo solo per i lettori di schermo (titolo della scheda) */
+.cpm-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important;}</style>
 <!-- Ritratti statici del modello Regular, generati offline. -->
 </head>
 <body>

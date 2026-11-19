@@ -30,7 +30,7 @@ async function partita(rosso, n) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' }); const page = await ctx.newPage();/* il service worker del gioco servirebbe i .glb fuori dalla rotta: si blocca, o il ritardo non si applica (misurato: 0 file ritardati) */
   await installCdnRoutes(page);
   const ritardati = [];
-  await ctx.route(/\.glb(\?|$)|HEAD_hair_[a-z]+\.png/, async route => { const u = route.request().url(); const ms = ritardoDi(u); ritardati.push([u.split('/').pop(), ms]); await sleep(ms); try { await route.continue(); } catch (e) {} });
+  await ctx.route(/\.glb(\?|$)|HEAD_hair_[a-z]+\.(png|webp)/, async route => { const u = route.request().url(); const ms = ritardoDi(u); ritardati.push([u.split('/').pop(), ms]); await sleep(ms); try { await route.continue(); } catch (e) {} });
   const errs = []; page.on('pageerror', e => errs.push(e.message));
   await page.addInitScript(() => { setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_move') { document.dispatchEvent(new KeyboardEvent('keydown', { key: '0', bubbles: true })); window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' })); } } catch (e) {} }, 700); });
   await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_GLB232W = []; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_GLB232 = 1; }, rosso);

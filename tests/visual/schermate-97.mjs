@@ -12,8 +12,8 @@
    D14 fischio finale: nei primi secondi della cerimonia il campo 3D si vede (luminosita' media dell'area di gioco e quota di pixel neri),
        misurato a 150, 500, 1000 e 2000 ms dall'ingresso in cerimonia su una partita vera (provino) con la cerimonia LEGGERA forzata.
    ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_G97D1, __CPM_NO_G97D16, __CPM_NO_G97D17 e pretende che D1, D16 e D17 CADANO (ognuno in almeno
-   un formato). D14 non ha interruttore: la sua causa non sta nei file di questo giro (vedi la nota in fondo al rapporto del giro 97)
-   e il guardiano la DICHIARA (misura stampata, giudizio solo nel verde).
+   un formato). D14 non ha interruttore nel gioco (vedi la nota in fondo al rapporto del giro 97): dal giro 277 il suo rosso e' PROVOCATO
+   dalla sonda (un nero non dichiarato sopra la pagina: le quattro misure devono cadere). Vedi il commento [giro 277] al punto 3.
    CPM_FORMATI=tel,tabv,... per un sottoinsieme; CPM_SENZA_D14=1 salta la partita. Non prova dispositivi veri: Chromium headless. */
 import fs from 'node:fs';
 import { PNG } from 'pngjs';
@@ -127,12 +127,51 @@ if (!process.env.CPM_SENZA_D14 && SCELTI.some(f => f.k === 'tel')) {
   const f = FORMATI.tel;
   const { ctx, page } = await apri(f, {}, '?cpmtest=1').catch(e => ({}));
   if (page) { let ok = false; try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { mancanti.push('D14 apertura partita'); }
-    if (ok) { await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 90000 }).catch(() => {}); await sleep(2500);
-      await page.evaluate(() => { window.__CPM_CER_HOLD = true; return window.__CPM_FORCE_CEREMONY({ light: true, name: 'Colpo fuori casa', festa: { titolo: 'Colpo fuori casa', punteggio: '2 – 3', avversario: 'FC Prova', casa: false, voci: [{ n: 1, et: 'gol', oro: true }] } }); });
+    if (ok) { await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 90000 }).catch(() => {});
+      /* [giro 277] PRIMA: attesa fissa di 2,5 s e poi cerimonia forzata, giudicata a +150 ms dal comando. Dal giro 233 (avvio leggero,
+         unione ef7ca765) il cronometro non resta piu' fermo ~3,7 s a 0' all'avvio: il primo highlight (3') si apre a ~2,7 s invece che
+         a ~6,7 s, e l'attesa fissa cadeva DENTRO la sua apertura (pagina occupata, la fase `ceremony` arrivava dopo 120-980 ms).
+         ORA (PO-311: si aspetta un evento, mai un tempo fisso): (1) si aspetta che il cronometro batta un minuto in `playing`
+         (la partita corre davvero) e li' si forza la cerimonia, come al fischio vero che arriva dal gioco fluido; (2) si aspetta
+         l'EVENTO fase `ceremony` e le quattro misure si contano da quell'evento; (3) la sonda SA DEGLI STACCHI (regola 7.504):
+         quando la camera salta alla cerimonia il motore 3D chiede da solo uno stacco nero di 340 ms (onCutNeeded, regola 7.471:
+         regia voluta, c'e' anche sulla 196 — misurato: una foto dentro lo stacco da' luminosita' 0,4 e 99% di neri). Ogni misura
+         aspetta che il gioco dichiari finito lo stacco (__CPM_CUTLIVE, lo stesso criterio del ciclo 3D) e si rifa' se uno stacco
+         nasce durante la foto; uno stacco che non finisce in 8 s (la pagina sul banco resta occupata ~2 s all'ingresso in cerimonia), o piu' di 4 foto dentro uno stacco, e' un fallimento.
+         Soglie invariate (luminosita' 40, neri 50%). «Non giudicato» = rosso: partita non in `playing` al comando, cerimonia mai
+         partita o misura mai fuori da uno stacco sono fallimenti.
+         ROSSO di D14 (PO-311: cio' che il gioco non produce si provoca dalla sonda): con CPM_PROVA_ROSSO=1 la sonda stende sopra la
+         pagina un nero che il gioco NON dichiara come stacco: le quattro misure devono cadere tutte. */
+      const ck0 = await page.evaluate(() => window.__CPM_CLOCK ? window.__CPM_CLOCK() : null);
+      await page.waitForFunction((c) => window.__CPM_PHASE() === 'playing' && window.__CPM_CLOCK && window.__CPM_CLOCK() > c, ck0, { timeout: 30000, polling: 20 }).catch(() => {});
+      const pre = await page.evaluate(() => { const p = [window.__CPM_PHASE(), window.__CPM_CLOCK ? window.__CPM_CLOCK() : null]; window.__CPM_CER_HOLD = true; window.__CPM_T277 = performance.now(); window.__CPM_FORCE_CEREMONY({ light: true, name: 'Colpo fuori casa', festa: { titolo: 'Colpo fuori casa', punteggio: '2 – 3', avversario: 'FC Prova', casa: false, voci: [{ n: 1, et: 'gol', oro: true }] } }); return p; });
+      if (pre[0] !== 'playing') fail.D14.push(`cerimonia comandata fuori dal gioco fluido (fase ${pre[0]}, minuto ${pre[1]})`);
+      const arr = await page.waitForFunction(() => window.__CPM_PHASE() === 'ceremony' ? Math.round(performance.now() - window.__CPM_T277) : false, null, { timeout: 10000, polling: 10 }).then(h => h.jsonValue()).catch(() => null);
+      console.log(`  tel  D14 comando a fase ${pre[0]} minuto ${pre[1]} · fase ceremony dopo ${arr == null ? 'MAI (10 s)' : arr + ' ms'}`);
+      if (arr == null) fail.D14.push('la fase ceremony non e\' arrivata entro 10 s dal comando');
+      if (ROSSO) await page.evaluate(() => { const d = document.createElement('div'); d.setAttribute('data-sonda', 'nero-277'); d.style.cssText = 'position:fixed;inset:0;background:#000;z-index:2147483647;pointer-events:none'; document.body.appendChild(d); });
+      /* [giro 283, PO-539] LO STACCO DICHIARATO E' DUE SEGNALI, NON UNO. Misurato (misura-283.mjs, 4 giri): il gioco dichiara lo
+         stacco col timbro __CPM_CUTLIVE (340 ms dall'effetto) E con l'elemento nero dello stacco (il div `blackCut` di LiveMatch),
+         che resta nel DOM fino a dur+80 ms piu' il giro di React: 188-258 ms DOPO che __CPM_CUTLIVE e' tornato falso. E questa sonda
+         spegne le animazioni (`animation:none`), quindi quel div e' nero PIENO per tutta la sua vita. In piu' una foto dura 600-830
+         ms, piu' di un intero stacco: il vecchio controllo «vivo prima / vivo dopo» non vedeva uno stacco nato e finito durante la
+         foto. ORA: (1) prima della foto si aspetta che ENTRAMBI i segnali siano spenti; (2) un registro in pagina (MutationObserver
+         sull'aggiunta del div + lettura dei due segnali a ogni fotogramma e ogni 5 ms) annota l'ultimo istante in cui uno stacco
+         dichiarato era vivo: se cade dentro la finestra della foto (margine 30 ms) la foto si rifa'. Un nero NON dichiarato (il velo
+         della sonda nel braccio rosso, `data-sonda`) non accende nessuno dei due segnali e resta giudicato. Soglie invariate. */
+      await page.evaluate(() => { const SEL = 'div[style*="blackCut"]'; const segna = () => { if ((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector(SEL)) window.__S283 = performance.now(); };
+        window.__S283 = -1e9; new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1 && (n.matches(SEL) || n.querySelector(SEL))) window.__S283 = performance.now(); }).observe(document.body, { childList: true, subtree: true });
+        setInterval(segna, 5); const r = () => { segna(); requestAnimationFrame(r); }; requestAnimationFrame(r); });
       const t0 = Date.now();
       for (const ms of [150, 500, 1000, 2000]) { while (Date.now() - t0 < ms) await sleep(20); visti.D14++;
-        const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); const l = await luma(page, f);
-        console.log(`  tel  D14 cerimonia +${String(ms).padStart(4)} ms · fase ${ph} · luminosita' ${l.media.toFixed(1)} · neri ${(100 * l.neri).toFixed(0)}%`);
+        let l = null, stacchi = 0, fermo = false; const ts = Date.now();
+        for (let k = 0; k < 5 && !l; k++) { const libero = await page.waitForFunction(() => !((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector('div[style*="blackCut"]')), null, { timeout: 8000, polling: 20 }).then(() => true).catch(() => false);
+          if (!libero) { fermo = true; break; } const a = await page.evaluate(() => performance.now()); const x = await luma(page, f);
+          const toccata = await page.evaluate(a => window.__S283 >= a - 30 || !!((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector('div[style*="blackCut"]')), a);
+          if (toccata) { stacchi++; continue; } l = x; }
+        const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
+        if (!l) { console.log(`  tel  D14 cerimonia +${String(ms).padStart(4)} ms · fase ${ph} · NON MISURATO: ${fermo ? 'stacco nero vivo per piu\' di 8 s' : 'cinque foto di fila dentro uno stacco'}`); fail.D14.push(`+${ms} ms: non misurato (${fermo ? 'stacco che non finisce' : 'sempre dentro uno stacco'})`); continue; }
+        console.log(`  tel  D14 cerimonia +${String(ms).padStart(4)} ms · fase ${ph} · luminosita' ${l.media.toFixed(1)} · neri ${(100 * l.neri).toFixed(0)}% · attesa per stacchi ${Date.now() - ts} ms (${stacchi} foto rifatte)`);
         if (ph !== 'ceremony' || l.media < 40 || l.neri > 0.5) fail.D14.push(`+${ms} ms: fase ${ph}, luminosita' ${l.media.toFixed(1)}, neri ${(100 * l.neri).toFixed(0)}%`); } }
     await ctx.close(); }
 }
@@ -143,8 +182,10 @@ for (const [k, v] of Object.entries(fail)) v.forEach(s => console.log(`  ✗ ${k
 let esito;
 if (ROSSO) {
   const cadute = ['D1', 'D16', 'D17'].filter(k => fail[k].length > 0);
-  esito = cadute.length === 3;
-  console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_G97D1/D16/D17 cadono D1, D16 e D17' : `ROSSO NON RIUSCITO: cadono solo ${cadute.join(', ') || 'nessuno'}`);
+  const conD14 = !process.env.CPM_SENZA_D14 && SCELTI.some(f => f.k === 'tel');/* [giro 277] D14 ha il suo rosso: il nero non dichiarato steso dalla sonda deve far cadere le 4 misure per luminosita' */
+  const d14 = !conD14 || (visti.D14 === 4 && fail.D14.filter(x => /luminosita'/.test(x)).length === 4);
+  esito = cadute.length === 3 && d14;
+  console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_G97D1/D16/D17 cadono D1, D16 e D17' + (conD14 ? '; col nero non dichiarato cadono le 4 misure di D14' : '') : `ROSSO NON RIUSCITO: cadono solo ${cadute.join(', ') || 'nessuno'}${conD14 ? ' · D14 ' + (d14 ? 'caduto' : 'NON caduto (' + fail.D14.length + ' su ' + visti.D14 + ')') : ''}`);
 } else {
   const ciechi = Object.entries(visti).filter(([k, n]) => n === 0 && !(k === 'D14' && (process.env.CPM_SENZA_D14 || !SCELTI.some(f => f.k === 'tel')))).map(([k]) => k);
   esito = !fail.D1.length && !fail.D16.length && !fail.D17.length && !fail.D14.length && !ciechi.length && !mancanti.length && !errs.length;

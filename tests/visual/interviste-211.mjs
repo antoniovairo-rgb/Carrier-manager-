@@ -24,11 +24,14 @@
       ogni eliminazione di questi casi e dopo l'eliminazione europea agli ottavi del PO: su 300 semi per tono, nessun rilancio che parla di
       punti/classifica o dei «prossimi avversari». Infine, statico sul file di gioco: il pannello del dopo-partita porta l'esito (esito222) e
       il rilancio lo riceve. Rosso: CPM_ROSSO222=1 accende window.__CPM_NO_G222 → DEVE uscire 1.
+   6. [giro 239 · PO-497] SCONFITTA ALL'ULTIMA GIORNATA CHE QUALIFICA (coppa europea e Europeo): esito «qualificato», domanda dedicata
+      («Sconfitta, ma siete passati…»), nessuna domanda possibile col girone aperto, rilancio sul passaggio. La vittoria che qualifica
+      resta «nessuno». Rosso: CPM_ROSSO239=1 accende window.__CPM_NO_G239 → DEVE uscire 1.
    Uso: cd tests/visual && node interviste-211.mjs   (CPM_STAGIONI211=<n>, di serie 120) */
 import { startServer, launchBrowser, installCdnRoutes } from './lib/harness.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
-const ROSSO = process.env.CPM_ROSSO211 === '1', ROSSO222 = process.env.CPM_ROSSO222 === '1';
+const ROSSO = process.env.CPM_ROSSO211 === '1', ROSSO222 = process.env.CPM_ROSSO222 === '1', ROSSO239 = process.env.CPM_ROSSO239 === '1';
 const STAGIONI = +(process.env.CPM_STAGIONI211 || 120);
 const fails = [], oks = [];
 const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
@@ -40,7 +43,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([rosso, r222]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G211 = 1; if (r222) window.__CPM_NO_G222 = 1; }, [ROSSO, ROSSO222]);
+  await page.addInitScript(([rosso, r222, r239]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G211 = 1; if (r222) window.__CPM_NO_G222 = 1; if (r239) window.__CPM_NO_G239 = 1; }, [ROSSO, ROSSO222, ROSSO239]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => typeof intervista183 === 'function' && typeof koShootoutWin === 'function', null, { timeout: 60000 });
   esito = await page.evaluate(({ STAGIONI, ROSSO }) => {
@@ -127,7 +130,7 @@ try {
           calendar: [{ week: 20, type: k.comp === 'euro_ko' ? 'euro' : k.comp === 'cup' ? 'cup' : 'league', euroPhase: ph, played: false }], euro: { phase: ph, competition: 'UCL' }, cup: { active: true, eliminated: false, round: rd }, euroMondiale: { koPhase: emPh, type: 'Mondiale' } };
         const seme = k.comp === 'euro_ko' ? 'euroko|' + sn + '|' + ph : k.comp === 'cup' ? 'cupko|' + sn + '|' + rd : 'natko|' + sn + '|' + emPh;
         if (k.ris === 'draw' && koShootoutWin(p, seme) !== (k.turno === 'passa' || k.turno === 'campione')) continue;
-        const r = { context: k.comp, won: k.ris === 'win', drew: k.ris === 'draw', homeScore: k.ris === 'win' ? 2 : k.ris === 'draw' ? 0 : 0, awayScore: k.ris === 'loss' ? 1 : 0, isHome: true, goals: 0, assists: 0, rating: 6.2, opponent: 'FC Valdenau' };
+        const r = { context: k.comp, won: k.ris === 'win', drew: k.ris === 'draw', homeScore: k.ris === 'win' ? 2 : k.ris === 'draw' ? 0 : 0, awayScore: k.ris === 'loss' ? 1 : 0, isHome: true, goals: 0, assists: 0, rating: 6.2, opponent: 'FC Munchen' };
         const d = intervista183(p, { type: k.comp === 'cup' ? 'cup' : k.comp, opponentName: r.opponent }, r);
         trovato = { d, kk: { ko: true, res: k.ris, lega: false, turno: k.turno } };
       }
@@ -141,7 +144,7 @@ try {
     /* ---------- 4. [giro 222] ultima giornata del girone e rilancio ---------- */
     const gir = [];
     const club = { id: 'prova', n: 'FC Prova', a: 'PRV', lg: 'Lega A', p: 70 };
-    const opps = [{ id: 'g1', n: 'FC Valdenau', a: 'VAL', p: 75 }, { id: 'g2', n: 'Sporting Orvalle', a: 'ORV', p: 74 }, { id: 'g3', n: 'Real Montebranco', a: 'MON', p: 73 }];
+    const opps = [{ id: 'g1', n: 'FC Munchen', a: 'MUC', p: 75 }, { id: 'g2', n: 'Sporting Orvalle', a: 'ORV', p: 74 }, { id: 'g3', n: 'Real Montebranco', a: 'MON', p: 73 }];
     const APERTO = /girone è ancora aperto|ripartiamo dalla prossima/i;
     const casoEuro = (prima, ris) => { /* prima = esito delle 5 gare precedenti (W/D/L), ris = l'ultima */
       const cal = [], gr = []; let pts = 0;
@@ -187,7 +190,7 @@ try {
     }
     /* il caso del PO di PO-473 (ottavi europei, fuori) e il rilancio */
     { const p = { name: 'Collaudo Esito', season: 2, week: 20, proStatus: 'pro', ovr: 70, morale: 60, club, standings: [], matchHistory: [], history: [], calendar: [{ week: 20, type: 'euro', euroPhase: 'r16', played: false }], euro: { phase: 'r16', competition: 'UCL' } };
-      const r = { context: 'euro_ko', won: false, drew: false, homeScore: 0, awayScore: 1, isHome: true, goals: 0, assists: 0, rating: 6.0, opponent: 'FC Valdenau' };
+      const r = { context: 'euro_ko', won: false, drew: false, homeScore: 0, awayScore: 1, isHome: true, goals: 0, assists: 0, rating: 6.0, opponent: 'FC Munchen' };
       const es = esitoTurno211(p, r); const mali = []; const vis = new Set();
       for (const tone of ['diretto', 'diplomatico', 'umile']) for (let i = 0; i < 300; i++) { const rl = rilancio24(tone, 'po473|' + i, es); vis.add(rl.q); const T = rl.q + ' ' + rl.a.map(x => x && x.txt).join(' ');
         if (PUNTI.test(T)) mali.push('«' + rl.q + '»'); if (/prossimi avversari/i.test(rl.q)) mali.push('«' + rl.q + '»'); }
@@ -197,6 +200,27 @@ try {
       const es = esitoTurno211(p, r); const vis = new Set(); for (let i = 0; i < 300; i++) vis.add(rilancio24('diplomatico', 'lega|' + i, es).q);
       gir.push({ nome: 'rilancio in campionato: la classifica resta possibile', ok: [...vis].some(x => /classifica/i.test(x)), msg: 'rilanci possibili ' + vis.size }); }
     out.gir = gir;
+    /* ---------- 6. [giro 239 · PO-497] la sconfitta all'ultima giornata che QUALIFICA ---------- */
+    const q239 = [];
+    const casiQ = [casoEuro('WWWWW', 'L'), casoEuro('WWWDW', 'L'), casoNaz(4, 'L'), casoNaz(6, 'L')];
+    for (const c of casiQ) {
+      const mali = []; if (c.fuori) mali.push('caso costruito male: la classifica lo elimina');
+      const es = esitoTurno211(c.p, c.r);
+      if (!es || es.turno !== 'qualificato') mali.push('esito ' + (es && es.turno) + ' (atteso «qualificato»)');
+      const d = intervista183(c.p, { type: c.r.context, opponentName: c.r.opponent }, c.r); const q = d && d.si ? d.q : null;
+      if (!q) mali.push('nessuna intervista (' + (d && d.motivo) + ')');
+      else { const T = testo(q); if (!/siete passati/i.test(q.q)) mali.push('non e\' la domanda dedicata'); if (APERTO.test(T)) mali.push('«il girone è ancora aperto»'); if (FUORI.test(q.q)) mali.push('eliminazione dopo una qualificazione'); if (PUNTI.test(T)) mali.push('punti/classifica'); }
+      const pp = poolPost183(c.p, c.r, c.r.context === 'euro_group' ? '🌍 Coppa europea' : '🏳️ Nazionale');
+      for (const x of pp.pool) { const T = testo(x); if (APERTO.test(T)) mali.push('possibile: «' + x.q + '»'); }
+      const vis = new Set();
+      for (const tone of ['diretto', 'diplomatico', 'umile']) for (let i = 0; i < 200; i++) { const rl = rilancio24(tone, (q ? q.q : '') + '|' + i, es); vis.add(rl.q); const T = rl.q + ' ' + rl.a.map(x => x && x.txt).join(' ');
+        if (PUNTI.test(T)) mali.push('rilancio con punti/classifica: «' + rl.q + '»'); if (APERTO.test(T)) mali.push('rilancio col girone aperto: «' + rl.q + '»');
+        if (!/pass|ottavi|turno|sconfitta|perdendo/i.test(rl.q)) mali.push('rilancio che ignora il passaggio: «' + rl.q + '»'); }
+      q239.push({ nome: c.nome + ' → qualificato perdendo', ok: !mali.length, msg: (q ? '«' + q.q + '»' : '—') + ' · rilanci possibili ' + vis.size + (mali.length ? ' → ' + [...new Set(mali)].slice(0, 4).join(' · ') : '') });
+    }
+    /* la vittoria che qualifica resta «nessuno» (decisione del giro 222) */
+    { const c = casoEuro('WWWWW', 'W'); const es = esitoTurno211(c.p, c.r); q239.push({ nome: 'vittoria che qualifica: esito invariato', ok: !!es && es.turno === 'nessuno', msg: 'esito ' + (es && es.turno) }); }
+    out.q239 = q239;
     return out;
   }, { STAGIONI, ROSSO });
 } catch (e) { ok(false, 'non giudicato, eccezione: ' + String(e.message).slice(0, 300)); }
@@ -219,10 +243,13 @@ if (esito) {
   console.log('4) [giro 222] ultima giornata del girone e rilancio');
   if (!esito.gir || esito.gir.length < 10) ok(false, `non giudicato: casi del girone ${esito.gir ? esito.gir.length : 0}/10`);
   for (const x of esito.gir || []) ok(x.ok, `${x.nome}: ${x.msg}`);
+  console.log('6) [giro 239 · PO-497] sconfitta all\'ultima giornata che qualifica');
+  if (!esito.q239 || esito.q239.length < 5) ok(false, `non giudicato: casi ${esito.q239 ? esito.q239.length : 0}/5`);
+  for (const x of esito.q239 || []) ok(x.ok, `${x.nome}: ${x.msg}`);
 }
 { /* 5. statico: il pannello porta l'esito e il rilancio lo riceve (il percorso del CareerApp che la sonda non attraversa) */
   const fs = await import('node:fs'); const html = fs.readFileSync(new URL('../../CARRIER-MANAGER-AV.html', import.meta.url), 'utf8');
   ok(/esito222:\(\(\)=>\{try\{return\(typeof window!=='undefined'&&window\.__CPM_NO_G222\)\?null:esitoTurno211\(player,result\)/.test(html) && /\),_m\.esito222\)/.test(html), '5) il pannello del dopo-partita porta esito222 e il rilancio lo riceve (src/18)'); }
 ok(errors.length === 0, `nessun errore di pagina (${errors.length}${errors.length ? ': ' + errors[0] : ''})`);
-console.log(`\n${ROSSO ? '[braccio ROSSO __CPM_NO_G211] ' : ''}${ROSSO222 ? '[braccio ROSSO __CPM_NO_G222] ' : ''}interviste-211: ${fails.length ? 'ROSSO' : 'VERDE'} (${oks.length} ok · ${fails.length} ko)`);
+console.log(`\n${ROSSO ? '[braccio ROSSO __CPM_NO_G211] ' : ''}${ROSSO222 ? '[braccio ROSSO __CPM_NO_G222] ' : ''}${ROSSO239 ? '[braccio ROSSO __CPM_NO_G239] ' : ''}interviste-211: ${fails.length ? 'ROSSO' : 'VERDE'} (${oks.length} ok · ${fails.length} ko)`);
 process.exit(fails.length ? 1 : 0);

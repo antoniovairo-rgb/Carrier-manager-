@@ -1,0 +1,9 @@
+INIZIO battito-264 00:48:38 mem 15588
+USCITA battito-264 0 00:56:06
+INIZIO solo-highlight-166@1 00:56:06 mem 15513
+USCITA solo-highlight-166@1 0 01:11:32
+INIZIO solo-highlight-166@2 01:11:32 mem 15571
+USCITA solo-highlight-166@2 0 01:26:55
+INIZIO solo-highlight-166@3 01:26:55 mem 15580
+USCITA solo-highlight-166@3 0 01:42:12
+CODA-FINITA

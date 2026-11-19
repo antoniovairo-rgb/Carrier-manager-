@@ -405,7 +405,8 @@ function IntroCinematic({onDone,nome,riascolto}){
        i procedurali nascono INVISIBILI e restano tali finché il CH38 non aggancia; compaiono SOLO come ultima
        risorsa dopo 5.5s senza GLB (mai scena vuota, mai burattini nell'uso normale — il prefetch li batte). */
     hero.visible=false;gk.visible=false;
-    const _fbT=setTimeout(()=>{if(!glbOk){hero.visible=true;gk.visible=true;}},5500);
+    let _att233=false,_via233=null,_cap233=0;/* [giro 233 PO-453] l'intro aspetta il suo corpo (orologio di scena fermo, attesa con avanzamento): mai fantocci */
+    const _fbT=setTimeout(()=>{if(!glbOk&&!_att233){hero.visible=true;gk.visible=true;try{(window.__CPM_G233=window.__CPM_G233||{}).introFantocci=Date.now();}catch(_e){}}},5500);
     /* [7.32.1 collaudo PO] pallone più PICCOLO e MODERNO: texture canvas a pannelli scuri su bianco */
     const ballCv=document.createElement('canvas');ballCv.width=128;ballCv.height=64;const bg2=ballCv.getContext('2d');
     bg2.fillStyle="#fafafa";bg2.fillRect(0,0,128,64);
@@ -445,7 +446,11 @@ function IntroCinematic({onDone,nome,riascolto}){
        a tinta unita. Senza il file, si ripiega sul CH38 di prima. */
     const _cgIntro23=typeof corpoCG23==='function'&&typeof _hyperQ23==='function'&&/cgtrader/.test(_hyperQ23())&&!window.__CPM_NO_CGINTRO;
     if(_cgIntro23&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
-      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+      const _pr233=loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb');
+      if(typeof _g233==='function'&&_g233()){_att233=true;_via233=copri233(host,['./assets/cgtrader-review-lod1-kit-adapter.glb'],_pr233,'intro');try{const _b233=host.parentNode&&host.parentNode.querySelector('[data-cpm="intro-salta"]');if(_b233)_b233.style.zIndex='5';}catch(_e){}/* «Salta» resta sopra l'attesa: il video si puo' saltare anche mentre il corpo arriva */
+        const _esci233=(m)=>{if(disposed||glbOk||!_att233)return;try{(window.__CPM_G233=window.__CPM_G233||{}).introSaltata=m;}catch(_e){}try{onDone&&onDone();}catch(_e){}};/* corpo fallito o oltre il tetto (120 s come la partita): il video si chiude, si rivede dal menu */
+        _pr233.catch(()=>_esci233('fallito'));_cap233=setTimeout(()=>_esci233('tetto'),+window.__CPM_CAP196||120000);}
+      _pr233.then(pkg=>{
         if(!pkg||disposed)return;const A=n=>(pkg.animations||[]).find(c=>c&&c.name===n)||null;
         heroAv=corpoCG23(pkg,{shirt:_clb178.c,shorts:_clb178.c2,socks:_clb178.c,altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
         if(!heroAv||!gkAv)return;scene.add(heroAv);scene.add(gkAv);
@@ -456,7 +461,7 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(heroActs.lift){heroActs.lift.setLoop(THREE.LoopOnce);heroActs.lift.clampWhenFinished=true;}
         if(gkActs.dive){gkActs.dive.setLoop(THREE.LoopOnce);gkActs.dive.clampWhenFinished=true;}
         try{heroAv.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!stG.fL&&/^(ball|foot)_l$/i.test(n))stG.fL=o;if(!stG.fR&&/^(ball|foot)_r$/i.test(n))stG.fR=o;if(!stG.hd&&/^head$/i.test(n))stG.hd=o;});}catch(_e){}
-        hero.visible=false;gk.visible=false;glbOk=true;
+        hero.visible=false;gk.visible=false;glbOk=true;if(_att233){stRef.current.t0=Date.now();try{(window.__CPM_G233=window.__CPM_G233||{}).introPartita=Date.now();}catch(_e){}}if(_att233&&!riascolto){try{prepara233('partita');}catch(_e){}}/* dopo il video viene il provino: i suoi modelli si chiedono mentre il video scorre */
         try{if(!window.__CPM_STORE_BUILD){window.__CPM_INTRO_GLB=true;window.__CPM_INTRO_CG23=true;}}catch(_e){}
       }).catch(()=>{});
     }
@@ -503,6 +508,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     const camLook=new THREE.Vector3(0,1.4,-4);
     let raf=null;let netKick=0;let shakeIntro=0;
     const tick=()=>{
+      if(_att233&&!glbOk)stRef.current.t0=Date.now();/* [giro 233] finche' il corpo non c'e' la scena resta al secondo zero */
       const _raw115=(Date.now()-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
       // ---- coreografia eroe/palla [7.32.3 collaudo PO «palla ANCORA dietro · movimenti lenti e poco
       //      fluidi · post-gol troppo lungo»] traiettoria PURA posAt(t): la direzione della palla è la
@@ -662,7 +668,7 @@ function IntroCinematic({onDone,nome,riascolto}){
       raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);
-    return()=>{try{disposed=true;clearTimeout(_fbT);if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
+    return()=>{try{disposed=true;clearTimeout(_fbT);clearTimeout(_cap233);if(_via233)_via233('smontata');if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
   },[]);// eslint-disable-line
   const cap=CAPS[beat]||CAPS[0];
   const _n11=_no115("11"),_n12=_no115("12"),_n16=_no115("16");
@@ -727,14 +733,15 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
+    <div {...(_g234()?{role:"dialog","aria-modal":"true","aria-labelledby":"opzioni234"}:{})} style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
+        {_g234()?<h1 id="opzioni234" style={{margin:0,fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</h1>:<div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>}
         <button onClick={onClose} className="cpm-press" aria-label="Chiudi" style={{width:(_tocco292()||_g114())?44:34,height:(_tocco292()||_g114())?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
+        {_g234()&&<Lettura234/>}
         {strumenti&&(
           <Card style={{padding:'12px 14px'}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🧰 Strumenti</div>
@@ -754,10 +761,47 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
             :<a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>}
           </Card>)}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
+        {_g234()&&<div data-cpm="versione234" className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'0 0 10px'}}>Versione {GAME_VERSION}</div>}{/* [giro 234 PO-459 · G195-15] la versione si legge anche qui, dove la cerca chi deve segnalarla */}
       </div>
       {privacy134&&<Privacy134 onClose={()=>setPrivacy134(false)}/>}
     </div>
   );
+}
+/* [giro 234 PO-393 · G181-22 parte 1] OPZIONI DI LETTURA: «Testo grande» (i corpi del tema ×1,3, applicato subito: applicaTesto234 in
+   src/01 e un nuovo disegno di tutta l'app con l'evento cpm-testo234) e «Riduci animazioni» (lo stesso effetto della preferenza di
+   sistema, che il gioco rispetta gia' nei fogli di stile e nei punti che leggono matchMedia: classe cpm-riduci234, vedi src/00).
+   Le due scelte stanno nel browser (localStorage cpm-testo-grande / cpm-riduci-anim), non nel salvataggio: nessun SAVE bump. */
+const _nome234=(l)=>String(l||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
+function Lettura234(){
+  const[tg,setTg]=useState(()=>testoGrande234());
+  const[lv,setLv]=useState(()=>livelloTesto235());/* [giro 235] il gradino scelto: 0 · 15 · 30 */
+  const scegli235=(v)=>{try{localStorage.setItem('cpm-testo-grande',String(v));}catch(_e){}applicaTesto234(v);setLv(v);setTg(v>0);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}};
+  /* [giro 235 · decisione PO 17/11] «Testo grande» a DUE GRADINI: un gruppo di tre scelte (Normale · +15% · +30%), un pulsante-scelta
+     per gradino con aria-checked; stessa riga e stesso posto dell'interruttore di prima. Rosso __CPM_NO_G235 = l'interruttore unico ×1,3. */
+  const gradini235=()=>(
+    <div style={{marginBottom:10}}>
+      <span style={{display:'flex',flexDirection:'column',minWidth:0,marginBottom:6}}><span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔠 Testo grande</span><span style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.35}}>Ingrandisce le scritte: due gradini, +15% o +30%</span></span>
+      <div role="radiogroup" aria-label="Testo grande" data-cpm="gradini235" style={{display:'flex',gap:6}}>
+        {[[0,"Normale"],[15,"+15%"],[30,"+30%"]].map(([v,t])=>(
+          <button key={v} role="radio" aria-checked={lv===v} onClick={()=>scegli235(v)} className="cpm-press cpm-t40"
+            style={{flex:'1 1 0',minWidth:0,minHeight:40,borderRadius:RAD.md,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:FW.bold,
+              background:lv===v?TINTE.testo:TINTE.tasto,color:lv===v?TINTE.bg:TINTE.testo,border:'1px solid '+(lv===v?TINTE.testo:TINTE.bordo)}}>{t}</button>))}
+      </div>
+    </div>);
+  const[ra,setRa]=useState(()=>{try{return document.documentElement.classList.contains('cpm-riduci234');}catch(_e){return false;}});
+  const riga=(nome,nota,on,cambia)=>(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:10}}>
+      <span style={{display:'flex',flexDirection:'column',minWidth:0}}><span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{nome}</span><span style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.35}}>{nota}</span></span>
+      <button role="switch" aria-checked={!!on} aria-label={nome.replace(/^[^A-Za-zÀ-ÿ]+/,"").trim()} onClick={cambia} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+        <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
+      </button>
+    </div>);
+  return(
+    <Card data-cpm="lettura234" style={{padding:'12px 14px'}}>
+      <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>👓 Lettura</div>
+      {_g235()?gradini235():riga("🔠 Testo grande","Ingrandisce le scritte del 30%",tg,()=>{const v=!tg;try{localStorage.setItem('cpm-testo-grande',v?'1':'0');}catch(_e){}applicaTesto234(v);setTg(v);try{window.dispatchEvent(new CustomEvent('cpm-testo234'));}catch(_e){}})}
+      {riga("🐢 Riduci animazioni","Meno movimento nei menu e nelle schermate",ra,()=>{const v=!ra;try{localStorage.setItem('cpm-riduci-anim',v?'1':'0');}catch(_e){}try{document.documentElement.classList.toggle('cpm-riduci234',v);}catch(_e){}setRa(v);})}
+    </Card>);
 }
 /* [7.62.0 AUDIO] Schermata IMPOSTAZIONI AUDIO — categorie INDIPENDENTI (ON/OFF + volume), mute totale,
    preview al cambio, persistenza automatica (safeLS via AudioMgr). + pannello DEBUG audio (catalogo suonabile). */
@@ -773,8 +817,11 @@ function AudioSettings(){
   const VOL=_g172s?[{k:'crowd',label:'📣 Pubblico'},{k:'match',label:'⚽ Effetti di partita'},{k:'music',label:'🎵 Musica'},{k:'referee',label:'🟨 Arbitro'},{k:'sfx',label:'✨ Suoni dei menu'}]
     :[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
-  const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+  /* [giro 234 PO-459] i 7 interruttori e i 5 cursori dicono a un lettore di schermo cosa regolano (prima: 12 comandi senza nome);
+     l'interruttore e' un «switch» con lo stato acceso/spento. Rosso __CPM_NO_G234: senza nome e senza ruolo, come prima. */
+  const _a234=_g234();
+  const Toggle=({on,onClick,dis,nome})=>(
+    <button onClick={dis?undefined:onClick} disabled={dis} {...(_a234?{role:"switch","aria-checked":!!on,"aria-label":nome}:{})} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
@@ -786,7 +833,7 @@ function AudioSettings(){
       {/* [7.999.49 parte A] «Muto totale» era un bottone che non diceva il suo stato: ora interruttore come gli altri */}
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔇 Silenzia tutto</span>
-        <Toggle on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
+        <Toggle nome="Silenzia tutto" on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -797,12 +844,12 @@ function AudioSettings(){
               <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}</span>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
-                {!r.master&&<Toggle on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
+                {!r.master&&<Toggle nome={_nome234(r.label)+" acceso"} on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
               </div>
             </div>
             {/* [7.96.1 collaudo PO «volume generale cosa guida?»] è il MASTER: scala TUTTI i suoni insieme (le voci qui sotto sono relative a questo). */}
             {r.master&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:-2,marginBottom:4,lineHeight:1.35}}>Regola tutti i suoni insieme — musica, partite, effetti, pubblico, arbitro (le voci sotto sono relative a questo).</div>}
-            <input type="range" min="0" max="100" value={vol} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
+            <input type="range" min="0" max="100" value={vol} {...(_a234?{"aria-label":"Volume "+_nome234(r.label).toLowerCase(),"aria-valuetext":vol+"%"}:{})} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
           </div>
         );
       })}
@@ -810,7 +857,7 @@ function AudioSettings(){
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
             <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
-            <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
+            <Toggle nome={_nome234(r.label)} on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
@@ -844,16 +891,27 @@ function SettingsQuickBtn({onOpen}){
    diversi (rivedi intro, ecc)»] barra di navigazione della HOME — STESSE classi/stile della nav bar della carriera
    (.cpm-nav-bar/.cpm-nav-tabs, bottom su mobile, sidebar su desktop) con azioni proprie della home: Home (attiva) ·
    Intro (rivedi) · Importa (salvataggio .json) · Opzioni (impostazioni). Sostituisce il FAB e i bottoni sparsi. */
+/* [giro 235] la misura delle voci della barra di carriera (_NAV954, src/18), per la barra della Home */
+const _NAV235=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,fontWeight:att?FW.bold:600,letterSpacing:"0.01em",textTransform:"uppercase",lineHeight:1.2,whiteSpace:"nowrap"});
 function HomeNavBar({onImport,onSettings}){
   const fileRef=React.useRef(null);
   const cellStyle=(border)=>({flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:border?`1px solid ${TH.cardBorder}`:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,borderTop:"2px solid transparent",transition:"all .15s"});
   return(
     <div className={"cpm-nav-bar"+" cpm-v2nav"} style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
+        {_g235()?(<>{/* [giro 235 · PO-458 / G195-12] LO STESSO MENU FUORI E DENTRO LA CARRIERA: voci di solo testo nel carattere e nella misura
+            della barra di carriera (_NAV954 in src/18: Barlow Condensed, maiuscolo, voce attiva col filo), stessa altezza, la voce attiva
+            dichiarata (aria-current). Le azioni restano quelle della Home. Rosso __CPM_NO_G235: icona sopra e parola sotto, come prima. */}
+          {[["Home","Home",null,true],["Rivedi l'intro","Rivedi intro",()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}},false],
+            ["Importa salvataggio (.json)","Importa",()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}},false],
+            ["Impostazioni","Opzioni",()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();},false]].map(([ti,l,fn,act])=>(
+            <button key={l} title={ti} aria-label={l} aria-current={act?"page":undefined} data-suono={l==="Opzioni"?"apri":undefined} className={act?"cpm-tab-act":""} onClick={fn||undefined}
+              style={{flex:"1 1 auto",minWidth:0,padding:"15px 1px 14px",border:"none",background:"transparent",cursor:act?"default":"pointer",fontFamily:"inherit",color:act?TH.brandText:TH.faint,borderTop:`2px solid ${act?TH.primary:"transparent"}`,transition:"all .15s"}}>
+              <div style={_NAV235(act)}>{l}</div></button>))}</>):(<>
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
         <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
-        <button title="Impostazioni" data-suono="apri" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
+        <button title="Impostazioni" data-suono="apri" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button></>)}
       </div>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0]&&onImport)onImport(e.target.files[0]);e.target.value="";}}/>
     </div>
@@ -861,6 +919,7 @@ function HomeNavBar({onImport,onSettings}){
 }
 function App(){
   const[phase,setPhase]=useState("loading");
+  if(phase!=="career")_TP235.c=null;/* [giro 235] fuori dalla carriera il tasto principale e' crema (src/11, tasto235) */
   // [7.32.0 collaudo PO «il video deve essere anche RIVEDIBILE»] replay on-demand da qualunque schermata:
   //   i bottoni «Rivedi l'intro» (Home + Profilo) emettono l'evento 'cpm-replay-intro' → overlay sopra la fase corrente.
   const[showIntro,setShowIntro]=useState(false);
@@ -868,6 +927,8 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  const[,setTesto234]=useState(0);/* [giro 234 PO-393] «Testo grande» acceso/spento: un nuovo disegno di tutta l'app legge i corpi nuovi */
+  useEffect(()=>{const f=()=>setTesto234(n=>n+1);window.addEventListener('cpm-testo234',f);return()=>window.removeEventListener('cpm-testo234',f);},[]);
   /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» fisso in basso a destra (z 9999) copriva la barra di Home/carriera e i Crediti
      (sonda chip-269: 1.215 px² dentro il pannello a 360 px). Decisione PO 17/10: la versione va NELLA TESTATA (VersioneTestata269,
      src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */

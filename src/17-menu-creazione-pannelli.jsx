@@ -156,7 +156,8 @@ const CREDITI254=[
     {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:_c290?"Royalty Free (standard)":"Royalty Free (standard) — dichiarata dal PO"},
     {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
     {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"},
+    {n:"Animazioni Anderson Rohr",d:"Applauso dei giocatori nella serata di presentazione.",aut:"Anderson Rohr",lic:"«This pack can be used for free in both personal and commercial projects. Attribution is not required» (andersonrohr.gumroad.com)"}/* [giro 240 PO-499] le clip Rohr entrano nel gioco (saluto della serata): riga di cortesia preparata nel giro 180, decisione madre 180c */]},
   {sez:"Illustrazioni e immagini",voci:[
     {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
@@ -412,6 +413,7 @@ function LogoMark({size=32,shadow=true}){
 function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
 const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
+  React.useEffect(()=>{try{if(typeof prepara233!=='function')return;const visto=(()=>{try{return localStorage.getItem('cpm-intro-seen')==='1';}catch(_e){return true;}})();if(!visto&&!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST))prepara233('intro');prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] chi crea un calciatore sta per vedere il video iniziale e il provino: i loro corpi si chiedono qui, con la pillola d'avanzamento, mentre sceglie nome e aspetto */
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -641,6 +643,7 @@ const TRIAL_OPPONENTS=[
 /* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
 function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
+  React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] la schermata del provino chiede i modelli della partita che sta per aprirsi, se non sono gia' in volo (pillola d'avanzamento) */
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
   const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));
@@ -687,13 +690,13 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
   //   overflow:hidden) collassava a 0 e il canvas 3D veniva ritagliato → campo invisibile.
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');if(!el)return;
-    if(phase==="match"){el.style.padding="0";el.style.overflowY="hidden";}
+    if(phase==="match"){if(typeof window!=="undefined"&&window.__CPM_NO_G253){el.style.padding="0";el.style.overflowY="hidden";}else{el.style.paddingLeft="0";el.style.paddingRight="0";el.style.paddingTop="0";}/* [giro 253] lo scorrimento e il fondo li governa LiveMatch per fase (come in carriera, 7.184.3): qui li bloccava sempre e la pre-partita/formazioni del provino restavano tagliate */}
     else{el.style.padding="";el.style.overflowY="";if(!_no115("02"))el.style.paddingBottom="calc(14px + env(safe-area-inset-bottom,0px))";}/* [giro 115 G184-02] nei provini non c'e' barra di navigazione: i suoi 80 px di riserva non servono, l'azione scende in fondo */
     return()=>{el.style.padding="";el.style.overflowY="";};
   },[phase]);
   // 5.70.0 — contenitore match a ALTEZZA PIENA (come la carriera: height:100% + flex:1 attorno a LiveMatch),
   //   così il campo 3D riceve un'altezza reale invece di collassare.
-  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid "+(_no115("24")?"#bfdbfe":TH.bdBlue),fontSize:FS.caption,color:TH.brandText,fontWeight:700}} data-cpm="provino-cartellino">🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" primoProvino={trialNum===0} onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
+  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid "+(_no115("24")?"#bfdbfe":TH.bdBlue),fontSize:FS.caption,color:TH.brandText,fontWeight:700}} data-cpm="provino-cartellino">🎯 PROVINO {trialNum+1}/3</div></div><div className={(typeof window!=="undefined"&&window.__CPM_NO_G253)?undefined:"cpm-match-wrap"}/* [giro 253] LiveMatch apre la finestra nelle fasi DOM (pre-partita, formazioni) come in carriera */ style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" primoProvino={trialNum===0} prePartita246={true}/* [giro 246] il provino passa dalla schermata pre-partita */ onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
   if(phase==="post"){const last=results[results.length-1],done=trialNum>=2;
     const _r=+(last.rating||6),_g=last.goals||0,_a=last.assists||0;
     const _emoji=_r>=7.5?"🌟":_r>=6.5?"👏":_r>=5.5?"🙂":"😕";
@@ -1711,7 +1714,7 @@ const generateLeagueNews=(player)=>{
   const league=player.club?.lg;
   if(!league||(player.proStatus||"u18")==="u18")return[];
   const wk=player.week||1;if(wk<=2)return[];
-  const sd=[...(player.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+  const sd=ordinaClassifica259(player.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
   if(sd.length<4||!((sd[0].played||0)>0))return[];
   const myId=player.club?.id||player.club?.n;
   const nm=t=>t.n||t.name||t.id||"—";
@@ -1787,7 +1790,7 @@ const generateMarketNews=(player)=>{
   const sg=player.transferSaga;
   if(sg&&sg.season===ss&&sg.club)out.push({txt:`🔭 ${sg.club} ha chiesto informazioni su di te: contatti confermati dal tuo agente.`,col:"#f59e0b",personal:true});
   else if(player.transferListed)out.push({txt:`📋 Sei ufficialmente sulla lista di mercato: il tuo agente sta raccogliendo le proposte.`,col:"#f59e0b",personal:true});
-  const sd=[...(player.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+  const sd=ordinaClassifica259(player.standings||[],(a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
   if(sd.length>=6&&(sd[0].played||0)>0){
     const nm=t=>t.n||t.name||"—";
     const inWin=(wk>=1&&wk<=5)||(wk>=19&&wk<=23);
@@ -1991,6 +1994,7 @@ const generateBio=(p)=>{
   const tags=[];
   if(isBandiera)tags.push(`bandiera del ${clubN}`);
   if(isCap)tags.push(`capitano del ${clubN}`);
+  if(!isCap&&typeof premio238==="function"&&premio238(p,"vice"))tags.push(`vice-capitano del ${clubN}`);/* [giro 238 PO-496] la fascia da vice del patto col mister */
   if(oneClub)tags.push(`fedele a un solo club in ${seasons} stagioni`);
   if(tags.length)lines.push(cap1(tags.join(" · "))+".");
   // trofei (numero REALE)
@@ -2672,6 +2676,8 @@ function migratePlayer(player){
      const _clubChg=!!(newP.club&&_ncl!==newP.club.n);
      if(_clubChg||_chg(newP.standings,"n")||_chg(newP.calendar,"opponentName")||_chg(newP.matchHistory,"opponent")){
        newP={...newP,club:_clubChg?{...newP.club,n:_ncl}:newP.club,standings:newP.standings?_rnA(newP.standings,"n"):newP.standings,calendar:newP.calendar?_rnA(newP.calendar,"opponentName"):newP.calendar,matchHistory:newP.matchHistory?_rnA(newP.matchHistory,"opponent"):newP.matchHistory};changed=true;}}
+    // [giro 248 PO-511] nomi per citta' o quartiere: passata completa (testi, premi, sigle accanto ai nomi). Idempotente, senza bump SAVE.
+    {const _m248=_migraNomi248(newP);if(_m248!==newP){newP=_m248;changed=true;}}
     // Sprint 28 migrations
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     // Sprint 42 migrations
@@ -2846,7 +2852,7 @@ const DRIVER_MORALE={rivincita:-1,conferma:2,orgoglio:1,storia:2,futuro:-1,vetri
 function deriveStances(p){try{
   if(!p||(p.proStatus||"u18")!=="pro"||!p.club)return null;
   const cid=p.club.id||p.club.n;
-  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0));
+  const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0));
   const my=st.findIndex(r=>r&&r.id===cid);const pos=my>=0?my+1:null;
   const objPos=(p.seasonObjectives&&p.seasonObjectives.position)||Math.ceil((st.length||18)/2);
   let pres=null;if(pos!=null&&(p.week||1)>=6){const d=objPos-pos;pres=d>=3?"contento":d<=-4?"freddo":"neutro";}

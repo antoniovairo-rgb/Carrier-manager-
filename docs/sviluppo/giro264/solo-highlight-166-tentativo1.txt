@@ -1,0 +1,30 @@
+A. STATICO
+  ✓ 1 un solo lotto, stesso battito in flushSync, nessun Math.random — lotto 3359 car. · definizioni 1
+  ✓ 2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173: calcMatchWeight < 5), solo professionisti — regola 1670 car.
+B+C. braccio VERDE (partita «Collaudo Salienti», seme del pilota 7300)
+  ✓ 3 professionista, campionato senza posta → il bottone c'e' — settimana 2 · peso 1 · bottoni ["Gioca la partita","Gioca solo i momenti salienti","Simula e avanza la settimana","Non ora"]
+  ✓ 4 Coppa → nessun bottone dei soli highlight — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓ 5 campionato con peso >= 5 → nessun bottone — peso 5 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓ 6 Primavera (u18) → nessun bottone — peso 1 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓   errori di pagina (prompt) — []
+  ✓ 7 la partita e' in modalita' soli highlight e il velo copre il gioco fluido — testimone {"chiesta":false,"scelta243":true,"attiva":true} · velo visto true · bottone «Gioca solo i momenti salienti»
+  ✓ 8 gioco fluido saltato (<= 400 ms reali per minuto di gioco) — 136 ms/minuto (minuto raggiunto 92) · lotto {"battiti":1899,"lotti":221,"ms":2938} · intera 2704 ms/minuto
+  ✓ 9 fischio finale oltre il 90' con almeno una scena — finita=true · minuto 92 · scene 7 · 
+  ✓ 10 libro mastro e risultato identici alla partita intera — voci uguali 244/244 (soli highlight 244) · risultato {"h":3,"a":1} vs {"h":3,"a":1} · {"turn":87,"recita":61,"chronicle":61,"candidate":6,"fonte022":7,"scena":10,"esito":7,"goal":4,"fine":1}
+  ✓ 11 tabellino, pagella e statistiche identici (schermata finale e voce di carriera) — schermata finale 2502 vs 2502 car., uguale true · voce {"season":2,"week":2,"opponent":"FC Koln","oppAbbr":"KLN","oppCol":"#dc2626","homeScore":3,"awayScore":1,"goals":0,"assists":2,"rating":7.4,"won":true,"drew":false,"isHome":true,"minutesPlayed":78,"ma
+  ✓ 12 interviste uguali a quelle della partita intera, con lo stesso seme — chieste: soli highlight 0 · intera 0 · decisione soli {"si":false,"motivo":"nessuna posta","q":null} · intera {"si":false,"motivo":"nessuna posta","q":null}
+  ✓ 12b caso con intervista (sorpresa seedata, «Collaudo Sorpresa 4»): chiesta in entrambe e uguale — chieste: soli highlight 1 · intera 1 · decisione soli {"si":true,"motivo":"🎲 Sorpresa","q":"Oggi l'assist l'hai fatto tu. Ti piace di più servire o segnare?"} · intera {"si":true,"motivo":"🎲 Sorpresa","q":"Oggi l'assist l'hai fatto tu. Ti piace di più servire o segnare?"} · finite true/true · minuto 92/91
+  ✓ 13 dura meno della meta' della partita intera — soli highlight: partita 70.6 s · gioco fluido 12.5 s · scene 56.9 s · prepartita 1.2 s || intera: partita 303.5 s · gioco fluido 248.8 s · scene 53.7 s · prepartita 0.9 s
+  ✓   errori di pagina (partita) — []
+B+C. braccio ROSSO (__CPM_NO_G166: niente bottone, partita intera anche forzando la modalita')
+  ✗ 3 professionista, campionato senza posta → il bottone c'e' — settimana 2 · peso 1 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓ 4 Coppa → nessun bottone dei soli highlight — bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓ 5 campionato con peso >= 5 → nessun bottone — peso 5 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓ 6 Primavera (u18) → nessun bottone — peso 1 · bottoni ["Gioca la partita","Simula e avanza la settimana","Non ora"]
+  ✓   errori di pagina (prompt) — []
+  ✗ 7 la partita e' in modalita' soli highlight e il velo copre il gioco fluido — testimone {"chiesta":false,"scelta243":false,"attiva":false} · velo visto false · bottone «Gioca la partita»
+  ✗ 8 gioco fluido saltato (<= 400 ms reali per minuto di gioco) — 3945 ms/minuto (minuto raggiunto 20) · lotto null · intera 2704 ms/minuto
+  ✓   errori di pagina (partita) — []
+MISURA — durata reale: intera 303.5 s · soli highlight 70.6 s (7 scene) · partita 70.6 s · gioco fluido 12.5 s · scene 56.9 s · prepartita 1.2 s
+VERDE: PASSA
+ROSSO: CADE (come deve) su 3, 7 e 8

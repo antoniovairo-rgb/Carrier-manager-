@@ -26,11 +26,20 @@ export async function apriCarriera166({ vp = { width: 412, height: 915 }, init =
   try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(600);
   for (let i = 0; i < 12; i++) { const n = await page.evaluate(() => (window.__CPM_CAREER.openingPending() || []).length); if (!n) break; await page.evaluate(() => window.__CPM_CAREER.resolveOpening()); await sleep(300); }
-  let W = null;
-  for (let w = 2; w <= 20 && !W; w++) { await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w); await sleep(220);
-    const t = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd()); if (t && !t.type) W = w; }
+  let W = null; const passi = [];
+  /* [giro 253 · regola 4 di PROCESSO.md] si legge la gara della settimana quando lo STATO dice settimana w (prima: 220 ms fissi). La
+     passeggiata si registra (passi): misurato nel giro 253, in 2 corse su ~10 di salienti-229 la classifica aveva una giornata di lega in
+     piu' (noi a 6 punti, +2) — compatibile con una settimana saltata e la giornata recuperata dal gioco (recupero 7.999.103). */
+  for (let w = 2; w <= 20 && !W; w++) { await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w);
+    let t = null, wk = null;
+    for (let i = 0; i < 40; i++) { await sleep(100); const r = await page.evaluate(() => { const C = window.__CPM_CAREER; return { wk: C.snapshot().week, t: C.thisWeekMd() }; }).catch(() => null);
+      if (r && r.wk === w) { wk = r.wk; t = r.t; break; } }
+    await sleep(300); const r2 = await page.evaluate(() => { const C = window.__CPM_CAREER; return { wk: C.snapshot().week, t: C.thisWeekMd() }; }).catch(() => null);
+    if (r2 && r2.wk === w) t = r2.t;
+    passi.push({ w, wk, t: t ? (t.matchday + (t.type ? ':' + t.type : '')) : null });
+    if (t && !t.type && t.week === w) W = w; }
   if (patch) { await page.evaluate((p) => window.__CPM_CAREER.patch(p), patch); await sleep(300); }
-  return { page, ctx, b, srv, W, errs };
+  return { page, ctx, b, srv, W, errs, passi };
 }
 
 /* Apre il prompt della partita della settimana e dice quali bottoni ci sono. */
@@ -50,9 +59,14 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
      in 2 giri su 6» del rapporto 166 §4.3: una differenza dello STRUMENTO, non del gioco. */
   await page.evaluate(() => { if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); });
   if (forzaSolo) await page.evaluate(() => { window.__CPM_SOLO166 = true; });
+  /* [giro 246 · decisione PO 17/11] il tasto dei momenti salienti vive SOLO nella schermata pre-partita (data-cpm="solo-243"): se il prompt
+     non lo ha (build col giro 246), si preme «Gioca la partita» e alla pre-partita si sceglie. Perche' i due modi restino confrontabili
+     (il tasto apre formazioni e ingresso, che caricano la tattica avversaria), anche la partita intera passa da «Vedi le formazioni». */
+  const via243 = await page.evaluate(() => !!document.querySelector('[data-cpm="partita23"]') && !document.querySelector('[data-cpm="solo-166"]')).catch(() => false);
+  out.via243 = via243;
   const clic = await page.evaluate((modo) => { const B = [...document.querySelectorAll('[data-cpm="partita23"] button')];
     const b = modo === 'solo' ? document.querySelector('[data-cpm="solo-166"]') : B.find(x => /^Gioca la partita/.test((x.textContent || '').trim()));
-    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, forzaSolo ? 'intera' : modo);
+    if (!b) return null; b.click(); return (b.textContent || '').trim(); }, (forzaSolo || via243) ? 'intera' : modo);
   /* [giro 229] forzaSolo: la modalita' si accende dal gancio di sonda (__CPM_SOLO166) e si preme «Gioca» — serve a misurare la partita a soli
      salienti dove il bottone ancora non c'e' (misura prima della correzione) e nel braccio rosso */
   out.bottone = clic; if (!clic) { out.note.push('bottone non trovato'); return out; }
@@ -60,13 +74,34 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   /* fra il prompt e il campo possono esserci finestre (presentazione al club, discorso): si chiudono dalla sonda */
   let montata = false;
   for (let i = 0; i < 60 && !montata; i++) {
-    montata = await page.evaluate(() => typeof window.__CPM_PHASE === 'function' && !!window.__CPM_PHASE() && typeof window.__CPM_AUTOPLAY === 'function' && /matchday|formations|walkout|playing/.test(String(window.__CPM_PHASE()))).catch(() => false);
+    montata = await page.evaluate((v) => typeof window.__CPM_PHASE === 'function' && !!window.__CPM_PHASE() && typeof window.__CPM_AUTOPLAY === 'function' && (v ? /formations|walkout|playing/ : /matchday|formations|walkout|playing/).test(String(window.__CPM_PHASE())), via243).catch(() => false);
     if (montata) break;
+    if (via243) {/* [giro 246] alla pre-partita: «Gioca solo i momenti salienti» (solo) o «Vedi le formazioni» (intera) */
+      const pp = await page.evaluate((solo) => { if (!(typeof window.__CPM_PHASE === 'function' && window.__CPM_PHASE() === 'matchday' && document.querySelector('[data-cpm="prepartita23"]'))) return 'no';
+        const b = solo ? document.querySelector('[data-cpm="solo-243"]') : [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim()));
+        if (!b) return 'manca'; b.click(); return 'ok'; }, modo === 'solo' && !forzaSolo).catch(() => 'no');
+      if (pp === 'manca') { out.note.push(modo === 'solo' && !forzaSolo ? 'bottone dei momenti salienti assente nella pre-partita' : 'pre-partita senza «Vedi le formazioni»'); out.bottone = null; return out; }
+      if (pp === 'ok') { if (modo === 'solo' && !forzaSolo) out.bottone = 'Gioca solo i momenti salienti'; await sleep(400); continue; }
+    }
     await page.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => /^(Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim()) || (!document.querySelector('[data-cpm="partita23"]') && /^Gioca la partita$/.test((x.textContent || '').trim()))/* [giro 229] la convocazione della Nazionale ha il suo «Gioca la partita» */); if (B.length) B[B.length - 1].click(); }).catch(() => {});
     await sleep(500);
   }
   out.tPre = Date.now() - t0;
   if (!montata) { out.note.push('la partita non si e\' montata'); return out; }
+  /* [giro 253 · salienti-229 instabile, misurato] il forzamento dei rigori si fa DENTRO la pagina: un osservatore conta le scene e, nello
+     STESSO turno in cui legge la fase `hl_intro` della n-esima, chiama __CPM_SO_FORCE. Prima la sonda leggeva la fase da Node (60 ms +
+     latenza di una pagina occupata): un'introduzione di ~0,5 s sfuggiva, il forzamento arrivava a scena gia' partita (hl_move), la scena
+     proseguiva fino a `playing` e la guardia di unicita' della fine (fine977) impediva il fischio dei 90' — partita appesa per 400 s,
+     «non arrivata al fischio» (2 corse su 9 in misura-253b). Ora o si forza in hl_intro (minuto congelato, stesso nei due modi) o non si
+     forza affatto, e il controllo lo dichiara (rigoriForzati null → non giudicato). */
+  if (rigoriAllaScena) await page.evaluate((n) => { let f0 = null, k = 0; window.__G253F = null;
+    const iv = setInterval(() => { try { const f = window.__CPM_PHASE ? window.__CPM_PHASE() : null; if (f !== f0) { if (f === 'hl_intro') k++; f0 = f; }
+      if (f === 'hl_intro' && k >= n && !window.__G253F) { const m = window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null; let ok = null; const F = () => { ok = window.__CPM_SO_FORCE ? window.__CPM_SO_FORCE(90) : null; };
+        /* flushSync: il fischio si applica ADESSO (e la pulizia dell'effetto dell'intro annulla il suo timer di 2,5 s); senza, se la pagina era
+           occupata, il timer dell'intro gia' scaduto scriveva hl_move DOPO lo shootout e vinceva (misurato: intro di 32 ms, scena proseguita) */
+        if (window.ReactDOM && window.ReactDOM.flushSync) window.ReactDOM.flushSync(F); else F();
+        window.__G253F = { ok, min: m, scena: k, dopo: window.__CPM_PHASE ? window.__CPM_PHASE() : null }; clearInterval(iv); }
+      if (f === 'ended' || f === 'shootout') clearInterval(iv); } catch (e) {} }, 5); }, rigoriAllaScena);
   await page.evaluate(({ s, pilota }) => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300, ...(pilota ? { pilota } : {}) }), { s: seme, pilota });
   const tG = Date.now(); let ult = Date.now(), fase = null, minMax = 0, scene = 0, faseP = null; const fotoFatte = {}; let rigoriFatti = false;
   while (Date.now() - tG < tetto) {
@@ -76,7 +111,8 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
     if (s) { if (fase) out.fasi[fase] = (out.fasi[fase] || 0) + (ora - ult); if (s.f !== faseP) { if (s.f === 'hl_intro') scene++; faseP = s.f;
         /* [giro 229] rigoriAllaScena = n: alla n-esima scena la partita si chiude 1-1 dal gancio di collaudo (__CPM_SO_FORCE, lo stesso del
            giro 58/191): un pareggio a eliminazione diretta riproducibile nei due modi, allo stesso minuto della stessa scena */
-        if (rigoriAllaScena && !rigoriFatti && s.f === 'hl_intro' && scene >= rigoriAllaScena) { rigoriFatti = true; out.rigoriForzati = await page.evaluate(() => { const m = window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null; return window.__CPM_SO_FORCE ? { ok: window.__CPM_SO_FORCE(90), min: m } : null; }).catch(() => null); } }
+      }
+        if (rigoriAllaScena && !rigoriFatti) { const F = await page.evaluate(() => window.__G253F || null).catch(() => null); if (F) { rigoriFatti = true; out.rigoriForzati = { ok: F.ok, min: F.min }; out.forzamento = F; } }
       if (s.f === 'shootout') out.rigori = true; fase = s.f; if (s.e.length) out.ev.push(...s.e); if (s.v) out.velo = true; if (s.m != null) minMax = Math.max(minMax, s.m);
       if (foto) for (const f of foto) { if (!fotoFatte[f.nome] && f.quando(s)) { fotoFatte[f.nome] = 1; await page.screenshot({ path: f.file }).catch(() => {}); } }
       if (s.f === 'ended') { out.finita = true; break; } if (fermaAlMinuto && minMax >= fermaAlMinuto) { out.note.push('fermata al ' + minMax + '\''); break; } }
@@ -98,6 +134,8 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
   }
   await page.evaluate(() => { const d = document.querySelector('[data-cpm="puntino200"]'); if (d) d.click(); }).catch(() => {}); await sleep(300);
   out.finale = parti.join('\n');
+  /* [giro 253] l'ordine in memoria della classifica (per gli spareggi a pari punti: salienti-229 instabile su «N° ora») */
+  out.classifica = await page.evaluate(() => { try { return (window.__CPM_CAREER.snapshot().standings || []).map(r => [r.id, r.pts | 0, (r.gf | 0) - (r.ga | 0), r.gf | 0].join(':')); } catch (e) { return null; } }).catch(() => null);
   return out;
 }
 

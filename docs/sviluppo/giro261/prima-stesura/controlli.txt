@@ -1,0 +1,4 @@
+presentazione-142 uscita 0 durata 178 s
+spalle-146 uscita 0 durata 501 s
+test:logic uscita 0 durata 3 s
+save-compat uscita 0 durata 8 s

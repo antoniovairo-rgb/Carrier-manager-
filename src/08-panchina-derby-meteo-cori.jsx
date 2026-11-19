@@ -311,7 +311,7 @@ function calcMatchWeight(player,opponentId,standings,week){
   const isExClub=(player.history||[]).some(h=>h.clubId===opponentId||h.club===opponentId)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponentId);
   if(isExClub)w+=2;
   if(standings&&standings.length>0){
-    const sorted=[...standings].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+    const sorted=ordinaClassifica259(standings,(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
     const ci=player.club?.id||player.club?.n;
     const myRank=sorted.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name))+1;
     const total=sorted.length;
@@ -1078,7 +1078,7 @@ function partitaChiave163(p,md){try{
   if(md.type&&md.type!=="league")return md.type==="cup"?"🏆 Coppa":md.type==="national"?"🏳️ Nazionale":"🌍 Coppa europea";
   const d=(typeof isDerby==="function")?isDerby(p.club&&p.club.id,md.opponentId):null;
   if(d)return (d.e||"🔥")+" "+(d.name||"Derby");
-  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
+  const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
   if(!st.some(t=>(t.pts||0)>0))return null;
   const pos=(id,n)=>st.findIndex(t=>t.id===id||(n&&(t.n||t.name)===n));
   const mp=pos(p.club&&p.club.id,p.club&&(p.club.n||p.club.name)),op=pos(md.opponentId,md.opponentName);
@@ -1158,7 +1158,7 @@ function posta165(p,md){try{
   const wk=p.week||1;
   if((p.proStatus||"u18")==="pro"&&!p.loan&&!p.contractExpired&&((p.contract&&p.contract.duration)||2)<=1&&(p.renewalSeason||0)!==(p.season||1)&&wk>=28&&(p.coachTrust==null?60:p.coachTrust)<55)return "📋 Contratto in bilico";
   /* i rami di calcMatchWeight: corsa al titolo, salvezza, ultima giornata */
-  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
+  const st=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
   const conPunti=st.some(t=>(t.pts||0)>0);
   const pos=(id,n)=>st.findIndex(t=>t.id===id||(n&&(t.n||t.name)===n));
   const mp=pos(cid,cn),op=pos(oid,on);

@@ -18,6 +18,9 @@ export default {
     for (const s of (samples || [])) {
       if (s.durMs == null) { warnings.push(`gi${s.gi}: durata post-highlight non catturata`); continue; }
       durs.push(s.durMs);
+      /* [giro 271] la scena si risolve a pallone fermo (samplePostHighlight); se il pallone non si e' mai fermato entro il tetto la
+         scena e' stata risolta a meta' apertura: non e' giudicabile, e «non giudicato» e' rosso. */
+      if (s.aperta && s.aperta.settled === false) issues.push(`gi${s.gi}: scena risolta col pallone ancora in viaggio (apertura mai ferma in ${s.aperta.ms} ms) — non giudicata`);
       if (s.durMs < DUR_MIN || s.durMs > DUR_MAX) issues.push(`gi${s.gi}: durata ${s.durMs}ms fuori range [${DUR_MIN},${DUR_MAX}]`);
       /* [7.502.0] una scena i cui campioni sono quasi tutti mal spaziati non e' «senza salti»: e' non
          misurata, e va detto invece di contarla come verde. */

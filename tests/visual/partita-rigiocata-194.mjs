@@ -9,6 +9,8 @@
    ROSSO (__CPM_NO_CONF194) → si entra in campo subito e la conferenza pre-partita ricompare dopo il fischio. Uso: node partita-rigiocata-194.mjs */
 import fs from 'fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { aspettaFischio270 } from './lib/fischio-270.mjs';
+const fischio270 = [];
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-194-primavera-w38.json', import.meta.url)));
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function braccio(rosso) {
@@ -28,7 +30,10 @@ async function braccio(rosso) {
     await sleep(900); }
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 40000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 1941, policy: 'seeded', tickMs: 150 }));
-  const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }
+  /* [giro 270] niente tetto di parete di 400 s: sul banco un minuto costa 4-12 s (lib/fischio-270.mjs, misura su 7.999.196 e lavoro/197:
+     al 400° secondo la partita era al 40'-56' e il controllo leggeva «strada playing»). Si gioca la partita vera fino al 10', poi
+     l'orologio va all'85' e si aspetta il fischio NATURALE; se l'orologio resta fermo in gioco il controllo resta rosso. */
+  const _f270 = await aspettaFischio270(page, { daMin: 10, aMin: 85 }); const ph = _f270.fase; fischio270.push({ rosso, ..._f270 });
   let riaperta = false, quando = null;
   const settimana = () => page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().week; } catch (e) { return null; } });
   for (let k = 0; k < 20 && (await settimana()) !== 39; k++) { await page.keyboard.press('Enter'); await sleep(400); }/* solo per uscire da fine partita e cerimonia */
@@ -40,8 +45,8 @@ async function braccio(rosso) {
   await ctx.close(); return { pm, confPrima, fine: ph, riaperta, quando, ...sn };
 }
 const v = await braccio(false), r = await braccio(true);
-console.log('VERDE:', JSON.stringify(v)); console.log('ROSSO (__CPM_NO_CONF194):', JSON.stringify(r));
-const ok = v.pm === true && v.confPrima && !v.riaperta && v.week === 39 && v.giocata && v.alto === 2 && !r.confPrima;/* [7.999.149] il rosso si prova col difetto alla RADICE (in campo con la conferenza ancora aperta). La riapertura dopo il fischio e' una sua conseguenza che dipende dalla strada di fine gara: misurato 3 giri rossi, ricompare 1/1 passando dalla cerimonia, 0/2 da «ended» anche guardando 20 s — e le scene del Passo 6 cambiano quale strada si prende. Si stampa, non si pretende. */
+console.log('fischio (giro 270):', JSON.stringify(fischio270)); console.log('VERDE:', JSON.stringify(v)); console.log('ROSSO (__CPM_NO_CONF194):', JSON.stringify(r));
+const ok = v.pm === true && v.confPrima && (v.fine === 'ended' || v.fine === 'ceremony')/* [giro 270] il fischio e' arrivato: senza, la riapertura non e' giudicata */ && !v.riaperta && v.week === 39 && v.giocata && v.alto === 2 && !r.confPrima;/* [7.999.149] il rosso si prova col difetto alla RADICE (in campo con la conferenza ancora aperta). La riapertura dopo il fischio e' una sua conseguenza che dipende dalla strada di fine gara: misurato 3 giri rossi, ricompare 1/1 passando dalla cerimonia, 0/2 da «ended» anche guardando 20 s — e le scene del Passo 6 cambiano quale strada si prende. Si stampa, non si pretende. */
 console.log('rosso: riapertura dopo il fischio ' + (r.riaperta ? 'SI' : 'no') + ' (strada ' + r.fine + ', informativo)');
 await b.close(); srv.close();
 console.log(ok ? '✅ partita-rigiocata-194 verde (e il rosso si vede)' : '❌ partita-rigiocata-194 ROSSO'); process.exit(ok ? 0 : 1);

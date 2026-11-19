@@ -966,7 +966,7 @@ const JOURNALIST_POOL=[
   {id:"j_ferretti",name:"Marco Ferretti",paper:"Sprint Sportivo",icon:"📰",color:"#ef4444",type:"critico",desc:"Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli."},
   {id:"j_esposito",name:"Sofia Esposito",f:true,paper:"Diretta TV",icon:"📺",color:"#3b82f6",type:"fan",desc:"Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti."},
   {id:"j_neri",name:"Giovanni Neri",paper:"Cronaca di Sport",icon:"🔍",color:"#7c3aed",type:"investigativa",desc:"Caccia gli scoop. Tratta ogni risposta come un indizio."},
-  {id:"j_lombardi",name:"Anna Lombardi",f:true,paper:"Zona Mista",icon:"🎙️",color:"#f59e0b",type:"fan",desc:"Ti segue dalla U18. Ha una vera stima nei tuoi confronti."},
+  {id:"j_lombardi",name:"Anna Lombardi",f:true,paper:"Zona Mista",icon:"🎙️",color:"#f59e0b",type:"fan",desc:(_g260()?"Ti segue dalla Primavera. Ha una vera stima nei tuoi confronti.":"Ti segue dalla U18. Ha una vera stima nei tuoi confronti.")/* [giro 260 · decisione PO D «Ovunque Primavera»] */},
   {id:"j_ricci",name:"Davide Ricci",paper:"Cifre del Calcio",icon:"📊",color:"#10b981",type:"critico",desc:"Statistiche e fredda razionalità. Non mente mai — e non è sempre bello."},
   {id:"j_greco",name:"Elena Greco",f:true,paper:"Sport in Rete",icon:"🌐",color:"#8b5cf6",type:"investigativa",desc:"Interesse politico e sportivo si mescolano. Attenzione a cosa riveli."},
 ];

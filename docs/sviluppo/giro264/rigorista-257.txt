@@ -1,0 +1,27 @@
+A1 verde {"atteso":{"eroe":false,"i":9,"nome":"Sam Hall"},"eroe":"Guardiano Home","righe":24,"segnate":[{"nome":"Sam Hall","dentro":true}],"largMin":317.7,"largMax":317.7,"sw":360,"iw":360}
+A1 premio {"atteso":{"eroe":true,"nome":"Guardiano Home"},"eroe":"Guardiano Home","righe":24,"segnate":[{"nome":"Guardiano Home","dentro":true}],"largMin":317.7,"largMax":317.7,"sw":360,"iw":360}
+A1 rosso {"atteso":null,"eroe":"Guardiano Home","righe":24,"segnate":[],"largMin":317.7,"largMax":317.7,"sw":360,"iw":360}
+A2 verde {"atteso":"Carter Spencer","ph":"formations","R":["10 10 SPENCER R"]}
+A2 rosso {"atteso":null,"ph":"formations","R":[]}
+A3/B/C1 verde {"des":{"pen":13,"eroe":0,"occ":0,"batt":{"GALLI":13},"ponte":{"n":0,"eroe":0}},"naz":{"pen":13,"eroe":0,"occ":13,"batt":{"RICCI":6,"GALLI":4,"COSTA":3},"ponte":{"n":0,"eroe":0}},"ponteSenza":{"n":20,"eroe":0},"ponteNaz":{"n":20,"eroe":20},"ponteCon":{"n":20,"eroe":20},"contesti":{"national":"eroe","nationsCup":"eroe","euroMondiale_group":"eroe","euroMondiale_ko":"eroe","trial":"eroe","career":"compagno:Dieci Ala","cup":"compagno:Dieci Ala","careerPremio":"eroe"},"prov":{"min":6,"rig257":"{\"eroe\":true}","kind":"pen","eroe":true,"batt":21,"attivo":true}}
+A3/B/C1 rosso {"des":{"pen":10,"eroe":0,"occ":0,"batt":{"RICCI":10},"ponte":{"n":0,"eroe":0}},"naz":{"pen":10,"eroe":0,"occ":0,"batt":{"RICCI":10},"ponte":{"n":0,"eroe":0}},"ponteSenza":{"n":20,"eroe":20},"ponteNaz":{"n":20,"eroe":20},"ponteCon":{"n":20,"eroe":20},"contesti":{"national":"null","nationsCup":"null","euroMondiale_group":"null","euroMondiale_ko":"null","trial":"null","career":"null","cup":"null","careerPremio":"null"},"prov":{"min":6,"rig257":"null","kind":"pen","eroe":false,"batt":8,"attivo":true}}
+C2 verde {"prov":"pen:9","min":30,"rig257":{"i":9,"cog":"SPENCER"},"comp":["31' SPENCER goal"],"compNomi":["SPENCER"],"battEroe":0,"scene":0,"errs":0}
+C2 rosso {"prov":"pen:21","min":30,"rig257":null,"comp":[],"compNomi":[],"battEroe":0,"scene":1,"errs":0}
+✅ A1 Rosa a 360 px: «R» su Sam Hall (atteso Sam Hall) · righe 24 larghe 317.7-317.7 px · pagina 360/360 px
+✅ A1 Rosa col premio «il rigorista sei tu»: «R» su Guardiano Home (eroe Guardiano Home) · righe larghe 317.7-317.7 px
+✅ A1 rosso __CPM_NO_G257: «R» nella Rosa 0 (righe 24)
+✅ A2 formazioni della partita: «R» su «10 10 SPENCER R» (designato Carter Spencer, fase formations)
+✅ A2 rosso __CPM_NO_G257: «R» nelle formazioni 0 (fase formations)
+✅ A3 motore (20 partite, K=1): rigorista segnato sul centrocampista GALLI -> calcia {"GALLI":13} su 13
+✅ A3 rosso __CPM_NO_G257: {"RICCI":10} su 10 (la regola del 249, non il segnato)
+✅ B1 motore in Nazionale/provino senza premio: rigori dell'eroe 13/13
+✅ B1 rosso __CPM_NO_G257: rigori dell'eroe 0/10
+✅ B2 regola dei contesti: {"national":"eroe","nationsCup":"eroe","euroMondiale_group":"eroe","euroMondiale_ko":"eroe","trial":"eroe","career":"compagno:Dieci Ala","cup":"compagno:Dieci Ala","careerPremio":"eroe"}
+✅ B2 rosso __CPM_NO_G257: {"national":"null","nationsCup":"null","euroMondiale_group":"null","euroMondiale_ko":"null","trial":"null","career":"null","cup":"null","careerPremio":"null"}
+✅ B3 provino vero: rig257 {"eroe":true} · rigore chiesto al 6' battitore l'eroe
+✅ B3 rosso __CPM_NO_G257 provino: battitore compagno 8
+✅ C1 motore, ponte (pen batt HERO al 30'): senza premio eroe 0/20 · col premio 20/20 · Nazionale 20/20
+✅ C1 rosso __CPM_NO_G257: senza premio eroe 20/20
+✅ C2 partita vera senza premio, ponte provocato: al 30' dischetto pen:9 (designato {"i":9,"cog":"SPENCER"}) · scene del compagno 31' SPENCER goal · eroe battute 0 scene 0
+✅ C2 rosso __CPM_NO_G257: al 30' dischetto pen:21 · scene del compagno 0 · eroe battute 0 scene 1
+✅ rigorista-257 verde (e il rosso si vede)

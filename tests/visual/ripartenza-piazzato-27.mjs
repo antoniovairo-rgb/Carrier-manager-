@@ -27,6 +27,11 @@ async function giro(caso, braccio, tent) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' K' + tent;
+  /* [giro 272] dal giro 257 (decisioni PO 17/11, «il ponte non nomina l'eroe sul dischetto senza premio», dubbio 4 del 249) in carriera
+     il rigore lo tira l'eroe solo col premio del patto «il rigorista sei tu» nel club attuale (premiPatto227.rig = id del club,
+     premiMotore238): senza, il ponte nega il dischetto (misurato: conta.ponte257 = 3 su 3 richieste, scena mai aperta). La sonda mette il
+     premio nel salvataggio, cioe' chiede il rigore per la strada che il gioco consente. Soglie e rosso __CPM_NO_SCHIERA27 invariati. */
+  if (caso === 'rigore' && !process.env.CPM_SENZA_PREMIO272) pl.premiPatto227 = { ...(pl.premiPatto227 || {}), rig: pl.club.id };
   await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r === 'rosso') window.__CPM_NO_SCHIERA27 = 1; localStorage.setItem('cpm-match-speed', '1'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...sv, r: braccio });
   try {
     await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
@@ -57,7 +62,7 @@ async function giro(caso, braccio, tent) {
       await sleep(100);
     }
     const W = await page.evaluate(() => ({ ko27: (window.__CPM_KO27 || []).slice(), ko207: (window.__CPM_KO207 || []).slice() }));
-    const fine = await page.evaluate(() => ({ ph: window.__CPM_PHASE(), min: window.__CPM_CLOCK(), sc: window.__CPM_SCORE(), ev: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').map(e => e.src + '@' + e.min), oc: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind : null }));
+    const fine = await page.evaluate(() => ({ ph: window.__CPM_PHASE(), min: window.__CPM_CLOCK(), sc: window.__CPM_SCORE(), ev: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').map(e => e.src + '@' + e.min), oc: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind : null, ponte257: (() => { try { return window.__CPM_MOTORE_OBJ().stato().conta.ponte257 || 0; } catch (e) { return null; } })() }));/* [giro 272] quante volte il ponte ha negato il dischetto all'eroe (giro 257) */
     const bat = fase === 'battuta' ? (W.ko27[nKo27] || null) : null, rip = W.ko207.slice(nKo207).find(k => k.fine === 'kickoff' || k.dopo === 'kickoff') || W.ko207[W.ko207.length - 1] || null;
     return { caso, braccio, fase, fine, nChieste, stile: stile && (stile.label || stile.err), battuta: bat, ripresa: rip ? { lato: rip.lato, fine: rip.fine || rip.dopo, palla: rip.pallaFine || rip.palla } : null, errs: errs.slice(0, 2) };
   } catch (e) { return { caso, braccio, fase: 'errore ' + String(e.message || e).slice(0, 120) }; }

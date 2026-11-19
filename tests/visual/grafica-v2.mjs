@@ -13,7 +13,7 @@
    CON  contrasto WCAG del testo nei riquadri V2 e nella barra: >= 4,5:1 (>= 3:1 da 24 px, o 18,66 px in grassetto). Stampa il minimo.
    [tappa 2] TEST testata compatta (stemma, Salva e Opzioni come icone >= 44 px con aria-label), barra a 6 voci senza Opzioni,
         Simula accanto a Gioca nel riquadro della prossima partita, tre anelli (Forma, Morale, Fatica) nella card dell'eroe;
-   SCH  schede: Stagione (titolo V2 con distanza dalla vetta e forma, riga tua nel colore del club), Club (fascia del club, due anelli,
+   SCH  schede: Stagione (titolo V2 con distanza dalla vetta e forma, riga tua nel colore del club), Club (fascia del club, due gradini fiducia/popolarita' dal giro 235,
         OVR su piastrella), Agente (titolo, barra del contratto), Ufficio (titolo, tacche del trainer); contrasto, tagli, scorrimento.
    ROSSO [tappa 4]: CPM_PROVA_ROSSO=1 altera i token dal banco di prova (lib/tema-prova.mjs: __CPM_TEMA_PROVA, una notte sbiadita a basso
    contrasto) e pretende che PAL e CON cadano in ogni formato. Fino alla tappa 3 il rosso era __CPM_NO_V2 (la grafica della 178): tolto con
@@ -25,6 +25,7 @@ import { armaTemaRosso } from './lib/tema-prova.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = !!process.env.CPM_PROVA_ROSSO;
+const ROSSO269 = !!process.env.CPM_ROSSO269;/* [giro 269] braccio rosso della misura dei gradini del Club: __CPM_NO_G235 (anelli di prima) deve cadere in ogni formato */
 const FORMATI = {
   tel: { k: 'tel', w: 412, h: 915, touch: true }, tabv: { k: 'tabv', w: 820, h: 1180, touch: true },
   tabo: { k: 'tabo', w: 1180, h: 820, touch: true }, pc: { k: 'pc', w: 1440, h: 900, touch: false },
@@ -43,8 +44,11 @@ function MISURA(sel) {
     if (e instanceof SVGElement) continue;/* testo disegnato dentro uno stemma SVG: il suo fondo e' la forma dello stemma, non un colore CSS */
     const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity < 0.1) continue;
     const r = e.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
-    if (e.scrollWidth > e.clientWidth + 1 && cs.overflow !== 'visible' && cs.overflowX !== 'visible') out.tagliati.push((e.textContent || '').trim().slice(0, 30));
-    if (cs.textOverflow === 'ellipsis' && e.scrollWidth > e.clientWidth + 1) out.tagliati.push((e.textContent || '').trim().slice(0, 30));
+    /* [giro 263 · PO-514] il troncamento con «…» deciso per i pulsanti della scheda «Prossima» (data-tronca263, col testo intero nel title,
+       controllato da pulsanti-263) non e' un testo tagliato per errore */
+    const voluto263 = !!(e.closest('[data-tronca263]') && e.closest('[data-tronca263]').getAttribute('title'));
+    if (!voluto263 && e.scrollWidth > e.clientWidth + 1 && cs.overflow !== 'visible' && cs.overflowX !== 'visible') out.tagliati.push((e.textContent || '').trim().slice(0, 30));
+    if (!voluto263 && cs.textOverflow === 'ellipsis' && e.scrollWidth > e.clientWidth + 1) out.tagliati.push((e.textContent || '').trim().slice(0, 30));
     const proprio = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 0); if (!proprio) continue;
     if (/^[\p{Extended_Pictographic}\s›·]+$/u.test(e.textContent.trim())) continue;/* solo icone/emoji: non e' testo */
     const b = fondo(e), c = P(cs.color); const t = c[3] < 1 ? sopra(c, b) : c.slice(0, 3);
@@ -90,7 +94,7 @@ for (const f of SCELTI) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1 }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 120)}`));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], save: SAVE });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO269 ? ['__CPM_NO_G235'] : [], save: SAVE });
   if (ROSSO) await armaTemaRosso(page);
   await page.addInitScript(() => { try { const v = sessionStorage.getItem('v2s'); if (v) localStorage.setItem('cpm-v3', v); } catch (e) {} });
   await page.addInitScript(() => { const s = document.createElement('style'); s.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}'; document.addEventListener('DOMContentLoaded', () => document.head.appendChild(s)); });
@@ -157,14 +161,17 @@ for (const f of SCELTI) {
   if (mc.n) { conMin = Math.min(conMin, mc.min); if (mc.peggiori.length) KO('CON', f, 'carriera: ' + mc.peggiori.slice(0, 4).join(' | ')); }
   /* SCH [tappa 2]: Stagione, Club, Agente, Ufficio */
   const SCHEDE = [
-    ['standings', '[data-cpm="stagione-v2"]', () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
-      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
+    ['standings', '[data-cpm="stagione-v2"],[data-cpm="vetta-riga260"]'/* [giro 260 · decisione PO C] titolo solo in testata: la riga vetta+forma resta */, () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
+      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"],[data-cpm="vetta-riga260"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
         !r ? 'manca la riga tua' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(r).backgroundColor) ? 'riga tua non nel colore del club' : null]; }],
-    ['club', '[data-cpm="club-v2"],[data-cpm="club-anelli-v2"]', () => { const c = document.querySelector('[data-cpm="club-v2"]');
+    /* [giro 269] fiducia e popolarita' nel Club sono GRADINI dal giro 235 (decisioni PO-391 13/11 «popolarita' e fiducia a gradini, non
+       a barra» e PO-458 «fiducia e popolarita' con la stessa forma», DECISIONI.md 18/11): si pretendono i due gradini, non piu' gli anelli. */
+    ['club', '[data-cpm="club-v2"],[data-cpm="gradini235-club"]', () => { const c = document.querySelector('[data-cpm="club-v2"]');
+      const gr = [...document.querySelectorAll('[data-cpm="gradini235-club"] [data-gradini235]')].map(x => x.getAttribute('data-gradini235')).join(',');
       return [!c ? 'manca la fascia del club' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(c).backgroundColor) ? 'fascia non nel colore del club' : null,
-        document.querySelectorAll('[data-cpm="club-anelli-v2"] [data-cpm="anello-v2"]').length !== 2 ? 'anelli fiducia/popolarita\' mancanti' : null]; }],
-    ['agente', '[data-cpm="agente-v2"],[data-cpm="contratto-v2"]', () => [!document.querySelector('[data-cpm="agente-v2"]') ? 'manca il titolo Agente' : null, !document.querySelector('[data-cpm="contratto-v2"]') ? 'manca la barra del contratto' : null]],
-    ['ufficio', '[data-cpm="ufficio-v2"]', () => [!document.querySelector('[data-cpm="ufficio-v2"]') ? 'manca il titolo Ufficio' : null, document.querySelectorAll('[data-cpm="tacca-v2"]').length < 3 ? 'mancano le tacche dello staff' : null]],
+        gr !== 'fiducia,popolarita' ? 'gradini fiducia/popolarita\' mancanti (' + (gr || 'nessuno') + ')' : null]; }],
+    ['agente', '[data-cpm="agente-v2"],[data-cpm="contratto-v2"]', () => [!(document.querySelector('[data-cpm="agente-v2"]') || /^agente$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')) ? 'manca il titolo Agente' : null, !document.querySelector('[data-cpm="contratto-v2"]') ? 'manca la barra del contratto' : null]],
+    ['ufficio', '[data-cpm="ufficio-v2"],[data-cpm="tacca-v2"]', () => [!(document.querySelector('[data-cpm="ufficio-v2"]') || /^ufficio$/i.test((document.querySelector('[data-cpm=titolo235]') || {}).textContent || '')) ? 'manca il titolo Ufficio' : null, document.querySelectorAll('[data-cpm="tacca-v2"]').length < 3 ? 'mancano le tacche dello staff' : null]],
   ];
   for (const [tb, sel, giudica] of SCHEDE) {
     await page.evaluate(t => window.__CPM_CAREER.goTab(t), tb); await sleep(900); visti.SCH++;
@@ -181,7 +188,10 @@ if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 4).join(' | ')
 if (mancanti.length) console.log('non raggiunte: ' + mancanti.join(', '));
 for (const [k, v] of Object.entries(fail)) v.forEach(x => console.log(`  ✗ ${k} ${x}`));
 let esito;
-if (ROSSO) {
+if (ROSSO269) {
+  esito = SCELTI.every(f => fail.SCH.some(x => x.startsWith(f.k + ': club: gradini fiducia'))) && !errs.length;
+  console.log(esito ? 'ROSSO 269 OK: con __CPM_NO_G235 (anelli) cade la misura dei gradini del Club in ogni formato' : 'ROSSO 269 NON RIUSCITO: la misura dei gradini non cade in ogni formato');
+} else if (ROSSO) {
   const cade = k => SCELTI.every(f => fail[k].some(x => x.startsWith(f.k + ':')));
   const K = ['PAL', 'CON'];
   esito = K.every(cade) && !errs.length;

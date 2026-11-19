@@ -1,0 +1,36 @@
+### gate prima base 4 · 12:10:31 · mem libera 15466 MB · disco 28G
+post-highlight gi0: maxCam 8.0 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [145ms:0.0 139ms:8.0 163ms:0.2 157ms:0.3 150ms:0.3 156ms:0.4]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate prima base 4 = 0 in 868 s
+### gate prima attuale 4 · 12:24:59 · mem libera 15314 MB · disco 28G
+post-highlight gi0: maxCam 0.7 · coppie 5 · scartate 0 · fase iniziale hl_result · apertura attesa fissa · passi [217ms:0.0N 225ms:9.3N 118ms:0.2N 206ms:0.6 218ms:0.7]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate prima attuale 4 = 0 in 861 s
+### gate prima base 5 · 12:39:20 · mem libera 15310 MB · disco 28G
+post-highlight gi0: maxCam 0.3 · coppie 6 · scartate 0 · fase iniziale hl_result · passi [222ms:0.0N 135ms:9.2N 137ms:0.1N 140ms:0.2 136ms:0.3 147ms:0.3]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate prima base 5 = 0 in 876 s
+### gate prima attuale 5 · 12:53:56 · mem libera 15302 MB · disco 28G
+post-highlight gi0: maxCam 0.1 · coppie 4 · scartate 1 · fase iniziale hl_result · apertura attesa fissa · passi [164ms:0.0 259ms:42.2 159ms:0.1 180ms:0.1 186ms:0.1]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate prima attuale 5 = 0 in 851 s
+### gate dopo 1 · 13:08:07 · mem libera 15314 MB · disco 28G
+post-highlight gi0: maxCam 0.4 · coppie 7 · scartate 0 · fase iniziale hl_result · apertura pallone fermo dopo 956 ms · passi [131ms:0.0N 130ms:7.7N 125ms:0.2N 127ms:0.3N 140ms:0.3 121ms:0.4 118ms:0.4]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate dopo 1 = 0 in 853 s
+### gate dopo 2 · 13:22:20 · mem libera 15332 MB · disco 28G
+post-highlight gi0: maxCam 0.4 · coppie 6 · scartate 0 · fase iniziale hl_result · apertura pallone fermo dopo 1075 ms · passi [145ms:0.0N 143ms:7.6N 148ms:0.2N 143ms:0.3N 157ms:0.3 156ms:0.4]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate dopo 2 = 0 in 850 s
+### gate dopo 3 · 13:36:30 · mem libera 15306 MB · disco 28G
+post-highlight gi0: maxCam 0.7 · coppie 6 · scartate 0 · fase iniziale hl_result · apertura pallone fermo dopo 1027 ms · passi [188ms:0.0N 213ms:8.8N 215ms:0.5N 116ms:0.3 123ms:0.4 218ms:0.7]
+✅ PASS
+    ultima riga: ✅ PASS
+### USCITA gate dopo 3 = 0 in 857 s
+FINE

@@ -19,6 +19,8 @@
    Non prova dispositivi veri: e' Chromium headless alla taglia del telefono del PO e a quella del PC. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from './lib/harness.mjs';
+import { aspettaFischio270 } from './lib/fischio-270.mjs';
+const riep270 = {};
 import { SAVE, INIT } from './lib/banco-g0.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
@@ -171,9 +173,12 @@ for (const fk of SCELTI) {
     await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO174 ? ['__CPM_NO_G174_SPAZIO'] : ROSSO ? ['__CPM_NO_SPAZIO296'] : [] });
     let ok = false; try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { mancanti.push(fk + ' post-partita apertura'); }
     if (ok) { try { await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 300 })); } catch (e) {}
-      let fine = false; for (let t = 0; t < 420; t += 5) { const ph = await page.evaluate(() => { try { return window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (e) { return null; } }).catch(() => null);
-        if (ph === 'ended' || ph === 'ceremony') { fine = true; break; } await sleep(5000); }
-      if (fine) { await sleep(900); await misura(page, f, 'post-partita'); } else mancanti.push(fk + ' post-partita (niente fischio)'); }
+      /* [giro 270] niente tetto di parete di 420 s (lib/fischio-270.mjs): sul banco un minuto di gioco costa 4-12 s e il fischio non
+         arrivava piu' («niente fischio» su PC). Partita vera fino al 10', poi orologio all'85' e fischio NATURALE; orologio fermo = rosso. */
+      const _f270 = await aspettaFischio270(page, { daMin: 10, aMin: 85 }); const fine = _f270.fine; console.log(`  ${fk} fischio: ${JSON.stringify(_f270)}`);
+      if (fine) { await sleep(900); riep270[fk] = await page.evaluate(() => { const r = document.querySelector('[data-cpm="riep259"]'); return r ? (r.closest('[data-scheda200]') ? 'presente' : 'presente fuori scheda') : 'assente'; }).catch(() => 'n.d.');
+        /* [giro 270] nel provino (context trial) il post partita e' una pagina sola (niente schede del giro 200): il riepilogo della scelta (riep259), se c'e', e' gia' a schermo */
+        await misura(page, f, 'post-partita'); console.log(`  ${fk} post-partita: riepilogo della scelta ${riep270[fk]}`); } else mancanti.push(fk + ' post-partita (niente fischio)'); }
     await ctx.close(); }
 }
 

@@ -21,22 +21,56 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
-const CLUBS=[
+/* [giro 248 PO-511 — PO 17/11 «Valmora che squadra è?» · «Un minimo devono essere associabili alle squadre reali!»]
+   I 16 club del giro 6 prendono nome e sigla per citta' o quartiere, scelti dal PO (questionari del 17/11). _g248(nuovo,vecchio):
+   rosso __CPM_NO_G248 = nomi, sigle e stadi del giro 6. Migrazione dei salvataggi: CLUB_RENAME_6 in src/09. */
+const _NO_G248=typeof window!=="undefined"&&!!window.__CPM_NO_G248;
+const _g248=(nuovo,vecchio)=>_NO_G248?vecchio:nuovo;
+/* [giro 251 PO-512 — scelte definitive del PO, pagina «Nomi dei club 197», conferma 17/11 14:33]
+   TABELLA UNICA DEI NOMI: id → [nome, sigla]. E' l'unico posto dove si scrive il nome di un club rinominato: una
+   correzione futura e' UNA riga qui (le righe mkT qui sotto restano i nomi di prima, che servono alla migrazione dei
+   salvataggi in src/09). Valgono anche per le Primavera (ereditano il nome) e per record/albo (_nc251).
+   Rosso __CPM_NO_G251 = nomi di oggi (lavoro/197 col giro 248); __CPM_NO_G248 riporta tutto al giro 6. */
+const _NO_G251=typeof window!=="undefined"&&(!!window.__CPM_NO_G251||_NO_G248);
+const _g251=(nuovo,oggi)=>_NO_G251?oggi:nuovo;
+const CLUB_NOMI_251={
+  bur:["FC Burnley","BNL"],car:["FC Cardiff","CDF"],milw:["FC Bermondsey","BMD"],nor:["FC Norwich","NRW"],qpr:["FC Queensway","QUE"],shu:["FC Sheffield South","SHS"],
+  sto:["FC Stoke","SKE"],swn:["FC Swansea","SWS"],wat:["FC Hornets","HOR"],wba:["FC West Bromwich","WBR"],aug:["FC Augusta","AGS"],b04:["FC Werkstadt","WRK"],
+  bay:["FC Munchen","MUC"],ber:["FC Berlin Köpenick","BKP"],boc:["FC Bochum","BCH"],bvb:["FC Westfalen","WSF"],dsc:["FC Darmstadt","DMT"],kol:["FC Koln","KLN"],
+  wob:["FC Wolfstadt","WOL"],kaa:["FC Lautern","LTN"],mag:["FC Börde","BRD"],nub:["FC Norimberga","NRB"],s04:["FC Emscher 04","EMS"],sar:["FC Saarland","SRL"],
+  stp:["FC Hamburg Hafen","HHF"],bol:["FC Felsineo","FEL"],fio:["FC Firenze","FRZ"],inter:["FC Nerazzurri","NRZ"],juve:["FC Zebre","ZBR"],lazio:["FC Biancocelesti","BNC"],
+  milan:["FC Rossoneri","RSN"],mon2:["FC Brianzolo","BRI"],napoli:["FC Partenope","PRT"],sam:["FC Sampierdarena","SPD"],sas:["FC Sassolese","SSL"],tor:["FC Granata","GRT"],
+  ver:["FC Scaligero","SCA"],bar2:["FC Pugliese","PUG"],bres:["FC Leonessa","LNS"],cat:["FC Catanzarese","CTN"],cit:["FC Cittadino","CIT"],cos:["FC Bruzio","BRU"],
+  fro:["FC Ciociaro","CIO"],lec2:["FC Lariano","LAR"],pal:["FC Sicania","SIC"],sal:["FC Salernum 1919","SLR"],ven:["FC Laguna","LAG"],bas:["FC Istanbul Ovest","IOV"],
+  bes:["FC Boğaziçi","BGZ"],krc:["FC Brugse","BGS"],std:["FC Liegi","LGI"],stu2:["FC Sint-Truiden","SNT"],usj:["FC Bruxelles Sud","BXS"],alm:["FC Almería","FAL"],
+  bet:["FC Heliópolis","HEL"],cel:["FC Ría de Vigo","RDV"],esp:["FC Sarrià","SRR"],get:["FC Getafense","GTF"],rsoc:["FC Sociedad","SOC"],vill:["FC Submarino","SUB"],
+  cor2:["FC Cordobés","CDB"],lev:["FC València Nord","VNR"],ovi:["FC Ovetense","OVT"],vld:["FC Pucela","PUC"],zgz:["FC Maño","MAO"],aroca:["FC Arouquense","ARQ"],
+  bav:["FC Foz do Douro","FDD"],bra:["FC Bracarense","BRC"],fama:["FC Famalicense","FMC"],gviz:["FC Vicente","VIC"],por:["FC Portuense","PTN"],rioave:["FC Vila do Conde","VDC"],
+  scar:["FC Clara","CLR"],spo:["FC Lisboa Norte","LNO"],vize:["FC Vizelense","VZL"],emm:["FC Drenthe","DRT"],exc:["FC Rotterdam Kralingen","RKL"],gron:["FC Groninger","GNR"],
+  spa:["FC Rotterdam Spangen","RSP"],twe:["FC Enschede","ENS"],utr:["FC Oudegracht","ODG"],volen:["FC Waterland","WTL"],len:["FC Lensois","LSO"],mtp:["FC Montpellier","MPL"],
+  psg:["FC Paris Île-de-France","PIF"],rei:["FC Reims","RMS"],ann:["FC Annecien","ANC"],que:["FC Normandia","NMD"],val2:["FC Valenciennes","VNS"],avl:["FC Aston","AST"],
+  bre:["FC Griffin","GRI"],che:["FC Stamford","STA"],cry:["FC Croydon","CYD"],eve:["FC Goodison","GDS"],ful:["FC Craven","CRA"],lei:["FC Foxshire","FOX"],
+  mun:["Manchester Rovers","MCR"],whu:["FC Hammers","HAM"],alm2:["FC Murciano","MRC"],
+};
+const _NOMI_OGGI_251={};/* id → [nome, sigla] delle righe mkT (prima della tabella): la migrazione li porta al nome definitivo */
+const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];if(!t)return c;_NOMI_OGGI_251[c.id]=[c.n,c.a];return _NO_G251?c:{...c,n:t[0],a:t[1]};});
+const _nc251=(id,oggi)=>(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;
+const CLUBS=_nomi251([
   // -- ITALIA Lega A --
   mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
-  mkT("inter","FC Valmora","VAL",92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
-  mkT("milan","AC Dorvelli","ACR",90,"#dc2626","#0f0f0f","🇮🇹","Lega A"),
-  mkT("napoli","FC Vellamare","VEL",88,"#38bdf8","#ffffff","🇮🇹","Lega A"),
+  mkT("inter",_g248("FC Milano Brera","FC Valmora"),_g248("MBR","VAL"),92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
+  mkT("milan",_g248("FC Milano Sempione","AC Dorvelli"),_g248("MSE","ACR"),90,"#dc2626","#0f0f0f","🇮🇹","Lega A"),
+  mkT("napoli",_g248("FC Napoli Fuorigrotta","FC Vellamare"),_g248("NFG","VEL"),88,"#38bdf8","#ffffff","🇮🇹","Lega A"),
   mkT("roma","FC Capitale","CAP",84,"#b91c1c","#f59e0b","🇮🇹","Lega A"),
-  mkT("lazio","FC Alcavera","ALC",80,"#93c5fd","#ffffff","🇮🇹","Lega A"),
+  mkT("lazio",_g248("FC Flaminio","FC Alcavera"),_g248("FLM","ALC"),80,"#93c5fd","#ffffff","🇮🇹","Lega A"),
   mkT("ata","FC Bergamo","BRG",82,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
-  mkT("fio","FC Brenvar","BRN",77,"#7c3aed","#f5f5f5","🇮🇹","Lega A"),
-  mkT("tor","FC Torvelle","TRV",70,"#6c1f2e","#f5f5f5","🇮🇹","Lega A"),
+  mkT("fio",_g248("FC Firenze","FC Brenvar"),_g248("FRZ","BRN"),77,"#7c3aed","#f5f5f5","🇮🇹","Lega A"),
+  mkT("tor",_g248("FC Torino Santa Rita","FC Torvelle"),_g248("TSR","TRV"),70,"#6c1f2e","#f5f5f5","🇮🇹","Lega A"),
   mkT("bol","FC Felsineo","FEL",72,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
   mkT("udi","FC Friulano","FRI",65,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
-  mkT("sas","FC Caldoran","CAL",68,"#15803d","#0f0f0f","🇮🇹","Lega A"),
+  mkT("sas",_g248("FC Sassolese","FC Caldoran"),_g248("SSL","CAL"),68,"#15803d","#0f0f0f","🇮🇹","Lega A"),
   mkT("cag","FC Sardo","SAR",65,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
-  mkT("sam","FC Marnesi","MAR",67,"#1d4ed8","#dc2626","🇮🇹","Lega A"),
+  mkT("sam",_g248("FC Genova Ponente","FC Marnesi"),_g248("GPO","MAR"),67,"#1d4ed8","#dc2626","🇮🇹","Lega A"),
   mkT("gen","FC Genova","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
   mkT("ver","FC Scaligero","SCA",67,"#f59e0b","#1d4ed8","🇮🇹","Lega A"),
   mkT("mon2","FC Brianzolo","BRI",64,"#dc2626","#f5f5f5","🇮🇹","Lega A"),
@@ -67,20 +101,20 @@ const CLUBS=[
   mkT("sev","FC Hispalense","HIS",84,"#f5f5f5","#dc2626","🇪🇸","Liga Ibérica"),
   mkT("vill","FC Submarino","SUB",80,"#f59e0b","#1d4ed8","🇪🇸","Liga Ibérica"),
   mkT("rsoc","FC Sociedad","SOC",78,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
-  mkT("bet","FC Ventrana","VER",76,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("bet",_g248("FC Heliópolis","FC Ventrana"),_g248("HEL","VER"),76,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("val","FC Valenciano","VLN",75,"#f5f5f5","#0f0f0f","🇪🇸","Liga Ibérica"),
   mkT("osa","FC Navarro","NAV",68,"#dc2626","#1d4ed8","🇪🇸","Liga Ibérica"),
-  mkT("cel","FC Oriolan","ORI",70,"#93c5fd","#ffffff","🇪🇸","Liga Ibérica"),
+  mkT("cel",_g248("FC Vigués","FC Oriolan"),_g248("VGS","ORI"),70,"#93c5fd","#ffffff","🇪🇸","Liga Ibérica"),
   mkT("ath","FC Bilbao","BIL",74,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("ray","FC Madrid Este","MAD",66,"#f5f5f5","#dc2626","🇪🇸","Liga Ibérica"),
   mkT("gir","FC Gironí","GIR",72,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("mall","FC Balear","BAL",65,"#dc2626","#0f0f0f","🇪🇸","Liga Ibérica"),
-  mkT("get","FC Dalvora","DAL",64,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("get",_g248("FC Getafense","FC Dalvora"),_g248("GTF","DAL"),64,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("las","FC Canario","CNR",62,"#f59e0b","#1d4ed8","🇪🇸","Liga Ibérica"),
   mkT("alm","FC Indálico","IND",60,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
-  mkT("esp","FC Pelvanni","PEL",63,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("esp",_g248("FC Sarrià","FC Pelvanni"),_g248("SRR","PEL"),63,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
   // -- GERMANY 1. Liga --
-  mkT("bay","FC Valdenau","VLD",99,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
+  mkT("bay",_g248("FC Isar","FC Valdenau"),_g248("ISR","VLD"),99,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("bvb","FC Goldwald","GLW",93,"#f59e0b","#0f0f0f","🇩🇪","Deutsche Liga"),
   mkT("rbl","FC Leipzig","FLZ",88,"#f5f5f5","#dc2626","🇩🇪","Deutsche Liga"),
   mkT("b04","FC Werkstadt","WRK",89,"#dc2626","#0f0f0f","🇩🇪","Deutsche Liga"),
@@ -93,13 +127,13 @@ const CLUBS=[
   mkT("aug","FC Augsburg","AUG",66,"#15803d","#dc2626","🇩🇪","Deutsche Liga"),
   mkT("mai","FC Mainz","MAI",68,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("hof","FC Kraichgau","KRA",70,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
-  mkT("kol","FC Ravelmund","RVM",65,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
+  mkT("kol",_g248("FC Domstadt","FC Ravelmund"),_g248("DMS","RVM"),65,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("wer","FC Weser","WSR",72,"#15803d","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("dsc","FC Lilien","LLN",58,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("boc","FC Ruhrpott","RUH",60,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("ber","FC Berlin Nord","BNO",62,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   // -- FRANCE Ligue Nationale --
-  mkT("psg","FC Lumeranza","LUM",97,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("psg",_g248("FC Parigi Ovest","FC Lumeranza"),_g248("PGO","LUM"),97,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
   mkT("marse","FC Marseille","MSL",85,"#f5f5f5","#38bdf8","🇫🇷","Ligue Nationale"),
   mkT("mon","FC Monaco","MCO",82,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
   mkT("lyon","FC Lyon","LYO",80,"#f5f5f5","#1d4ed8","🇫🇷","Ligue Nationale"),
@@ -120,7 +154,7 @@ const CLUBS=[
   // -- PORTUGAL Primeira Liga --
   mkT("ben","FC Lisboa","FLS",88,"#dc2626","#f5f5f5","🇵🇹","Liga Lusitana"),
   mkT("por","FC Portomar","POR",87,"#1d4ed8","#f5f5f5","🇵🇹","Liga Lusitana"),
-  mkT("spo","FC Rendalto","RDL",85,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
+  mkT("spo",_g248("FC Lisboa Norte","FC Rendalto"),_g248("LNO","RDL"),85,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
   mkT("bra","FC Minhoto","MIN",74,"#dc2626","#ffffff","🇵🇹","Liga Lusitana"),
   mkT("vsc","FC Vimaranense","VIM",68,"#f5f5f5","#0f0f0f","🇵🇹","Liga Lusitana"),
   mkT("rioave","FC Rio Verde","RIO",65,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
@@ -288,7 +322,8 @@ const CLUBS=[
   mkT("alm2","FC Almeriense","ALE",50,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica 2"),
   mkT("cor2","FC Califal","CAL",41,"#f5f5f5","#15803d","🇪🇸","Liga Ibérica 2"),
   mkT("fer","FC Ferrolano","FER",38,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica 2"),
-];
+
+]);
 // (b04 prestige set inline above)
 
 // Primavera 1 — tutte le 18 squadre di Lega A
@@ -326,8 +361,8 @@ const LEAGUE_RECORDS={
     ]
   },
   "Liga Ibérica 2":{
-    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:"FC Pelvanni",era:"1990–2006"},
-    seasonRecord:{name:"Iker Zubiaga",goals:30,club:"FC Oriolan",season:"2012-13"},
+    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_g248("FC Sarrià","FC Pelvanni"),era:"1990–2006"},
+    seasonRecord:{name:"Iker Zubiaga",goals:30,club:_nc251("cel",_g248("FC Vigués","FC Oriolan")),season:"2012-13"},
     topScorers:[
       {name:"Andrés Cobeña",goals:208},{name:"Manolo Ledesmar",goals:182},
       {name:"PacoLedesma",goals:167},{name:"Xavi Morante",goals:150},{name:"Sergio Peñalver",goals:143},
@@ -335,7 +370,7 @@ const LEAGUE_RECORDS={
   },
   "Lega A":{
     allTimeScorer:{name:"Silvio Calabretti",goals:325,club:"FC Capitale",era:"1974–1994"},
-    seasonRecord:{name:"Roberto Macina",goals:38,club:"FC Vellamare",season:"1987-88"},
+    seasonRecord:{name:"Roberto Macina",goals:38,club:_nc251("napoli",_g248("FC Napoli Fuorigrotta","FC Vellamare")),season:"1987-88"},
     topScorers:[
       {name:"Silvio Calabretti",goals:325},{name:"Franco Melotti",goals:281},
       {name:"Dario Ferrucci",goals:248},{name:"Lorenzo Bianchi",goals:204},{name:"Marco Sabetti",goals:179},
@@ -358,15 +393,15 @@ const LEAGUE_RECORDS={
     ]
   },
   "Deutsche Liga":{
-    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:"FC Valdenau",era:"1975–1995"},
-    seasonRecord:{name:"Dieter Krüger",goals:40,club:"FC Goldwald",season:"1999-00"},
+    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),era:"1975–1995"},
+    seasonRecord:{name:"Dieter Krüger",goals:40,club:_nc251("bvb","FC Goldwald"),season:"1999-00"},
     topScorers:[
       {name:"Klaus Schreiber",goals:307},{name:"Dieter Krüger",goals:268},
       {name:"Hans Mühlbauer",goals:231},{name:"Otto Bernhard",goals:195},{name:"Rudi Fassbender",goals:163},
     ]
   },
   "Ligue Nationale":{
-    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:"FC Lumeranza",era:"1980–2002"},
+    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:_nc251("psg",_g248("FC Parigi Ovest","FC Lumeranza")),era:"1980–2002"},
     seasonRecord:{name:"Alain Mercier",goals:37,club:"FC Marseille",season:"1972-73"},
     topScorers:[
       {name:"Pierre Delacroix",goals:274},{name:"Jacques Fontaine",goals:238},
@@ -375,7 +410,7 @@ const LEAGUE_RECORDS={
   },
   "Liga Lusitana":{
     allTimeScorer:{name:"Rui Vilarinho",goals:289,club:"FC Lisboa",era:"1982–2003"},
-    seasonRecord:{name:"João Figueiredo",goals:37,club:"FC Portomar",season:"1985-86"},/* [6.74.0 QA-P0] il club era già de-brandizzato in DB (764) ma il record era sfuggito */
+    seasonRecord:{name:"João Figueiredo",goals:37,club:_nc251("por","FC Portomar"),season:"1985-86"},/* [6.74.0 QA-P0] il club era già de-brandizzato in DB (764) ma il record era sfuggito */
     topScorers:[
       {name:"Rui Vilarinho",goals:289},{name:"Pedro Carvalho",goals:251},
       {name:"Manuel Salgado",goals:214},{name:"Carlos Rebelo",goals:181},{name:"Nuno Faria",goals:149},
@@ -414,7 +449,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Championship":{
-    allTimeScorer:{name:"Dean Whitfield",goals:163,club:"FC Canaries",era:"1988–2006"},
+    allTimeScorer:{name:"Dean Whitfield",goals:163,club:_nc251("nor","FC Canaries"),era:"1988–2006"},
     seasonRecord:{name:"Billy Horton",goals:34,club:"FC Foxshire",season:"2013-14"},
     topScorers:[
       {name:"Dean Whitfield",goals:163},{name:"Gary Pemberton",goals:141},
@@ -448,7 +483,7 @@ const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2020,club:"FC Valdenau",nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2020,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[
