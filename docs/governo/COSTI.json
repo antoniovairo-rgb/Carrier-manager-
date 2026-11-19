@@ -3105,5 +3105,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia8xosAPWsHFERx4dfj",
+  "titolo": "verifica 197 · blocco V3a (highlight-95)",
+  "creata": "2026-11-18T20:01:42Z",
+  "chiusa": "2026-11-19T02:23:02Z",
+  "cost_usd": 0.86399718,
+  "output_tokens": 6283,
+  "cache_read_tokens": 3104755,
+  "worker_epoch": 3,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
