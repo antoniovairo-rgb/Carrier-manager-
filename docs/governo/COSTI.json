@@ -3287,5 +3287,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaBUkz29DBMGwHk6RpQ",
+  "titolo": "verifica 198 rapida · blocco F1",
+  "creata": "2026-11-19T13:07:01Z",
+  "chiusa": "2026-11-19T14:53:27Z",
+  "cost_usd": 2.60760362,
+  "output_tokens": 16696,
+  "cache_read_tokens": 6043774,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
