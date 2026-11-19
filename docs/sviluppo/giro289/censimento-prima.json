@@ -1,0 +1,1183 @@
+{
+ "nomi": {
+  "home": "Home fuori carriera",
+  "impostazioni": "Opzioni",
+  "creazione": "Creazione",
+  "provini": "Provini · prima del provino",
+  "offerte": "Offerte ricevute",
+  "dashboard": "Home di carriera",
+  "stagione-classifica": "Stagione · Classifica",
+  "stagione-calendario": "Stagione · Calendario",
+  "stagione-coppe": "Stagione · Coppe",
+  "club": "Club · rosa",
+  "carriera-profilo": "Carriera · Profilo",
+  "carriera-nazionale": "Carriera · Nazionale",
+  "agente": "Agente",
+  "ufficio": "Ufficio",
+  "offerta-trasferimento": "Finestra · offerta di trasferimento",
+  "mister": "Finestra · il mister ti cerca",
+  "festa-trofeo": "Cerimonia 2D · festa del trofeo",
+  "fine-stagione": "Fine stagione"
+ },
+ "dati": {
+  "home": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 220,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 528,
+      "c": 202,
+      "vuoto": 326,
+      "d": "div «K⚽rward Elite SIMULATORE DI CARRIERA CAL»"
+     }
+    ],
+    "nV": 1,
+    "L": [
+     {
+      "ch": 115,
+      "d": "p «Crea il tuo calciatore, supera i provini»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 115,
+    "P": [],
+    "nP": 0,
+    "A": [
+     {
+      "t": "NUOVA CARRIERA",
+      "gap": 556
+     }
+    ],
+    "nA": 1,
+    "C": {
+     "sx": 48,
+     "dx": 54,
+     "larg": 1045,
+     "scarto": 6
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 220,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 840,
+      "c": 202,
+      "vuoto": 638,
+      "d": "div «K⚽rward Elite SIMULATORE DI CARRIERA CAL»"
+     }
+    ],
+    "nV": 1,
+    "L": [
+     {
+      "ch": 115,
+      "d": "p «Crea il tuo calciatore, supera i provini»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 115,
+    "P": [],
+    "nP": 0,
+    "A": [
+     {
+      "t": "NUOVA CARRIERA",
+      "gap": 868
+     }
+    ],
+    "nA": 1,
+    "C": {
+     "sx": 48,
+     "dx": 54,
+     "larg": 1599,
+     "scarto": 6
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "impostazioni": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 220,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 48,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 319,
+     "dx": 319,
+     "larg": 728,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 233,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 220,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 48,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 596,
+     "dx": 596,
+     "larg": 728,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "creazione": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 72,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 179,
+     "dx": 179,
+     "larg": 1008,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 138,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 72,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 456,
+     "dx": 456,
+     "larg": 1008,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "provini": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 97,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 369,
+     "dx": 369,
+     "larg": 627,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 97,
+    "P": [],
+    "nP": 0,
+    "A": [
+     {
+      "t": "⚡ INIZIA IL PROVINO",
+      "gap": 250
+     }
+    ],
+    "nA": 1,
+    "C": {
+     "sx": 646,
+     "dx": 646,
+     "larg": 627,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "offerte": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 558,
+      "c": 79,
+      "vuoto": 479,
+      "d": "div.cpm-int «SLR FC Salernum 1919 Primavera 🇮🇹 · Pr»"
+     },
+     {
+      "h": 558,
+      "c": 79,
+      "vuoto": 479,
+      "d": "div.cpm-int «BRU FC Bruzio Primavera 🇮🇹 · Primavera»"
+     }
+    ],
+    "nV": 2,
+    "L": [
+     {
+      "ch": 231,
+      "d": "p.offerte201-motivo «2 gol e voto medio 6,8: per gli osservat»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 231,
+    "P": [
+     {
+      "t": "scegli",
+      "stili": 2
+     }
+    ],
+    "nP": 1,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1259,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 890,
+      "c": 79,
+      "vuoto": 811,
+      "d": "div.cpm-int «SLR FC Salernum 1919 Primavera 🇮🇹 · Pr»"
+     },
+     {
+      "h": 890,
+      "c": 79,
+      "vuoto": 811,
+      "d": "div.cpm-int «BRU FC Bruzio Primavera 🇮🇹 · Primavera»"
+     }
+    ],
+    "nV": 2,
+    "L": [
+     {
+      "ch": 246,
+      "d": "p.offerte201-motivo «2 gol e voto medio 6,8: per gli osservat»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 246,
+    "P": [
+     {
+      "t": "scegli",
+      "stili": 2
+     }
+    ],
+    "nP": 1,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1813,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "dashboard": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 139,
+      "d": "div «2 assist tuoi nelle ultime gare: in area»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 139,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 1078,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 139,
+      "d": "div «2 assist tuoi nelle ultime gare: in area»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 139,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 800,
+    "S": false
+   }
+  },
+  "stagione-classifica": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 109,
+      "d": "div.cpm-leggi289 «G giocate · V vinte · N pareggiate · P p»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 109,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 463,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 109,
+      "d": "div.cpm-leggi289 «G giocate · V vinte · N pareggiate · P p»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 109,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 185,
+    "S": false
+   }
+  },
+  "stagione-calendario": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 172,
+      "d": "div.cpm-leggi289 «V vinta · N pareggio · P persa (prima i »"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 172,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 506,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 172,
+      "d": "div.cpm-leggi289 «V vinta · N pareggio · P persa (prima i »"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 172,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 228,
+    "S": false
+   }
+  },
+  "stagione-coppe": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 562,
+      "c": 261,
+      "vuoto": 302,
+      "d": "div «🏆 Nessuna coppa in corso adesso Le comp»"
+     }
+    ],
+    "nV": 1,
+    "L": [
+     {
+      "ch": 168,
+      "d": "div.cpm-leggi289 «Quest'anno non sei in gara. Prossima edi»"
+     },
+     {
+      "ch": 161,
+      "d": "div.cpm-leggi289 «La Lega B non dà accesso alle coppe euro»"
+     },
+     {
+      "ch": 145,
+      "d": "div.cpm-leggi289 «Coppa delle Nazioni nelle stagioni pari,»"
+     }
+    ],
+    "nL": 3,
+    "maxCh": 168,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [
+     {
+      "h": 874,
+      "c": 220,
+      "vuoto": 654,
+      "d": "div «🏆 Nessuna coppa in corso adesso Le comp»"
+     }
+    ],
+    "nV": 1,
+    "L": [
+     {
+      "ch": 216,
+      "d": "div.cpm-leggi289 «Quest'anno non sei in gara. Prossima edi»"
+     },
+     {
+      "ch": 182,
+      "d": "div.cpm-leggi289 «La Lega B non dà accesso alle coppe euro»"
+     },
+     {
+      "ch": 145,
+      "d": "div.cpm-leggi289 «Coppa delle Nazioni nelle stagioni pari,»"
+     }
+    ],
+    "nL": 3,
+    "maxCh": 216,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "club": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 69,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 399,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 69,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 121,
+    "S": false
+   }
+  },
+  "carriera-profilo": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 187,
+      "d": "div.cpm-leggi289 «Prossimo gradino — Leader: la fascia si »"
+     },
+     {
+      "ch": 101,
+      "d": "div.cpm-leggi289 «Prossimo gradino — Leader: la fascia si »"
+     }
+    ],
+    "nL": 2,
+    "maxCh": 187,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 569,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 239,
+      "d": "div.cpm-leggi289 «Prossimo gradino — Leader: la fascia si »"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 239,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 291,
+    "S": false
+   }
+  },
+  "carriera-nazionale": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 104,
+      "d": "div.ct155 «🤝 Rapporto col CT: 54/100 — Il CT ti se»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 104,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 228,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 104,
+      "d": "div.ct155 «🤝 Rapporto col CT: 54/100 — Il CT ti se»"
+     }
+    ],
+    "nL": 1,
+    "maxCh": 104,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "agente": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 124,
+      "d": "div.cpm-leggi289 «Sei pagato sopra il mercato: al rinnovo »"
+     },
+     {
+      "ch": 106,
+      "d": "div.cpm-leggi289 ««Guarda, la tua immagine non la sta sfru»"
+     }
+    ],
+    "nL": 2,
+    "maxCh": 124,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 517,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 124,
+      "d": "div.cpm-leggi289 «Sei pagato sopra il mercato: al rinnovo »"
+     },
+     {
+      "ch": 106,
+      "d": "div.cpm-leggi289 ««Guarda, la tua immagine non la sta sfru»"
+     }
+    ],
+    "nL": 2,
+    "maxCh": 124,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 239,
+    "S": false
+   }
+  },
+  "ufficio": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 158,
+      "d": "div «Non attivo. Livello 1: Recupero fatica +»"
+     },
+     {
+      "ch": 148,
+      "d": "div «Un vivaio col tuo nome: a fine stagione »"
+     },
+     {
+      "ch": 142,
+      "d": "div.trainer288-legenda «Valore attuale · settimane medie per +1 »"
+     },
+     {
+      "ch": 123,
+      "d": "div «Non attivo. Livello 1: Pressione nelle p»"
+     }
+    ],
+    "nL": 5,
+    "maxCh": 158,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1012,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 332,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 169,
+      "d": "div «Non attivo. Livello 1: Recupero fatica +»"
+     },
+     {
+      "ch": 148,
+      "d": "div «Un vivaio col tuo nome: a fine stagione »"
+     },
+     {
+      "ch": 142,
+      "d": "div.trainer288-legenda «Valore attuale · settimane medie per +1 »"
+     },
+     {
+      "ch": 123,
+      "d": "div «Non attivo. Livello 1: Pressione nelle p»"
+     }
+    ],
+    "nL": 5,
+    "maxCh": 169,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 176,
+     "dx": 176,
+     "larg": 1322,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "offerta-trasferimento": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 50,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 423,
+     "dx": 423,
+     "larg": 520,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 262,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 50,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 700,
+     "dx": 700,
+     "larg": 520,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "mister": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 63,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 423,
+     "dx": 423,
+     "larg": 520,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 63,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 700,
+     "dx": 700,
+     "larg": 520,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "festa-trofeo": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 33,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 601,
+     "dx": 601,
+     "larg": 164,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 246,
+    "rad": "strato",
+    "V": [],
+    "nV": 0,
+    "L": [],
+    "nL": 0,
+    "maxCh": 33,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 878,
+     "dx": 878,
+     "larg": 164,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 0,
+    "S": false
+   }
+  },
+  "fine-stagione": {
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 137,
+      "d": "div.cpm-leggi289 ««Promozione! Il club fa un salto di cate»"
+     },
+     {
+      "ch": 120,
+      "d": "div.cpm-leggi289 «\"Promosso con numeri da protagonista. Ha»"
+     },
+     {
+      "ch": 118,
+      "d": "div.cpm-leggi289 «Promosso con numeri da protagonista. Hai»"
+     }
+    ],
+    "nL": 3,
+    "maxCh": 137,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1259,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 618,
+    "S": false
+   },
+   "1920": {
+    "W": 1920,
+    "H": 1080,
+    "navR": 0,
+    "rad": "pagina",
+    "V": [],
+    "nV": 0,
+    "L": [
+     {
+      "ch": 137,
+      "d": "div.cpm-leggi289 ««Promozione! Il club fa un salto di cate»"
+     },
+     {
+      "ch": 120,
+      "d": "div.cpm-leggi289 «\"Promosso con numeri da protagonista. Ha»"
+     },
+     {
+      "ch": 118,
+      "d": "div.cpm-leggi289 «Promosso con numeri da protagonista. Hai»"
+     }
+    ],
+    "nL": 3,
+    "maxCh": 137,
+    "P": [],
+    "nP": 0,
+    "A": [],
+    "nA": 0,
+    "C": {
+     "sx": 54,
+     "dx": 54,
+     "larg": 1813,
+     "scarto": 0
+    },
+    "nC": 0,
+    "ecc": 340,
+    "S": false
+   }
+  }
+ },
+ "saltate": [],
+ "errori": []
+}

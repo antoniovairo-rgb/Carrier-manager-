@@ -12661,14 +12661,14 @@ function AnteprimaSezione({icona,titolo,sotto,voci=[],nota}){
       <div style={{fontSize:FS.display,lineHeight:1}}>{icona}</div>
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textWrap:"balance"}}>{titolo}</div>
-        {sotto&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
+        {sotto&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
       </div>
     </div>
     <div style={{display:"flex",flexDirection:"column",gap:8}}>
       {voci.map(function(v,i){return(<div key={i} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm}}>
         <span style={{fontSize:FS.bodyLg,lineHeight:1.2}}>{v.e}</span>
         <div style={{flex:1,minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{v.t}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
+          <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
     </div>
     {nota&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:FW.semibold,marginTop:10}}>{nota}</div>}
   </div></Card>);
@@ -49768,13 +49768,13 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       </section>
       {/* Sprint 100: narrative + coach dialog */}
       <Card style={{marginBottom:8,padding:"12px 14px"}}>
-        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,marginBottom:_coachLine100?10:0,fontStyle:"italic"}}>{narrative}</div>
+        <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,marginBottom:_coachLine100?10:0,fontStyle:"italic"}}>{narrative}</div>
         {_coachLine100&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10}}>
           <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
             <NpcFaceCoach coachName={player.coach?.name||"Mister"} size={38}/>
             <div style={{flex:1}}>
               <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>{player.coach?.name||"Il Mister"} · fine stagione</div>
-              <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_coachLine100.txt}</div>
+              <div className="cpm-leggi289" style={{fontSize:FS.small,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_coachLine100.txt}</div>
             </div>
           </div>
         </div>}
@@ -49786,7 +49786,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           {_v23?<Figurina tipo="dirigente" chiave={"presidente-"+(player.club||"")} larg={44}/>:<div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>}
           <div style={{flex:1}}>
             <div style={{fontSize:FS.caption,color:_v23?TH.muted:"#fde68a",fontWeight:_v23?800:undefined,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
-            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
+            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}} className="cpm-leggi289">{_presLine100.txt}</div>
           </div>
         </div>
       </Card>;})()}
@@ -49865,7 +49865,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             <div style={{fontSize:FS.caption,color:TH.muted}}>{phase.desc}</div>
           </div>
         </div>
-        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}>"{narrative}"</div>
+        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}><div className="cpm-leggi289">"{narrative}"</div></div>
       </Card>
 
       {/* Momento della stagione */}
@@ -50706,6 +50706,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
   const _dk=window.innerWidth>=640;
+  /* [giro 289 · PO-548, decisione PO 19/11 «Riquadro compatto»] DA PC (>= 1024 px) i due «Scegli» avevano due stili: MISURATO, non era un
+     difetto del riquadro ma la selezione da tastiera (selIdx parte da 0, il tasto selezionato e' «primary», gli altri «secondary»), che col
+     mouse sembrava una scelta gia' fatta. Da PC tutti i «Scegli» hanno lo stesso stile; la selezione da tastiera ([1]/[2]/frecce) resta
+     visibile col contorno del riquadro. Al telefono nulla cambia. Riquadri alti quanto il contenuto, colonna e testo: regola .cpm-pc289 in src/19.
+     Rosso __CPM_NO_G289 = la 7.999.197. */
+  const _pc289=!(typeof window!=="undefined"&&window.__CPM_NO_G289)&&window.innerWidth>=1024;
   const _ass49=trialStats.reduce((a,m)=>a+(m.assists||0),0);/* [7.999.49 parte A] assist nel riepilogo in una riga */
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
   /* [giro 201 · PO-418 (G189-06)] LE OFFERTE NASCONO DAL NOME E DAI PROVINI: il rumore del sorteggio era Math.random, quindi chiudendo e
@@ -50736,10 +50742,10 @@ function OffersScreen({player,trialStats,onChoose}){
     return()=>window.removeEventListener("keydown",onKey);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */+" cpm-pc289"/* [giro 289] da PC: colonna compatta e centrata (src/19) */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
-      {!_no201&&<p data-cpm="offerte201-motivo" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
+      {!_no201&&<p data-cpm="offerte201-motivo" className="cpm-leggi289c" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
       
       <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
@@ -50755,7 +50761,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
-                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
+                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={(isSel||_pc289)?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
               </div>
@@ -62974,7 +62980,7 @@ const getThisWeekMatchday=()=>{
                 </div>;
               })}
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
+            <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
           </Card></Fisarmonica>
         </div>
       )}
@@ -63046,7 +63052,7 @@ const getThisWeekMatchday=()=>{
                 </tbody>
               </table>
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>G giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti</div>{/* [7.999.49 parte A] legenda delle sigle */}
+            <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>G giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti</div>{/* [7.999.49 parte A] legenda delle sigle */}
             <div style={{display:"flex",flexWrap:"wrap",gap:"3px 10px",marginTop:10}}>
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
@@ -63755,7 +63761,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{width:7,height:7,borderRadius:"50%",background:roleColors[role]}}/>
                 <span style={{fontSize:FS.caption,fontWeight:700,color:roleColors[role]}}>{roleLabels[role]}</span>
               </div>
-              {_next39&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
+              {_next39&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
             </div>;
           })()}
           {/* Sprint 25C — Capitano badge */}
@@ -64941,7 +64947,7 @@ const getThisWeekMatchday=()=>{
                     </div>
                     <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«{speechLine}»</div>
                     {_adv379.temi.length>0&&(
-                      <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_tema49]||"c'è qualcosa di cui parlare"}.{_tkD49?" Assegnami «"+_tkD49.l+"» questa settimana.":""}»</div>)}
+                      <div className="cpm-leggi289" style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_tema49]||"c'è qualcosa di cui parlare"}.{_tkD49?" Assegnami «"+_tkD49.l+"» questa settimana.":""}»</div>)}
                     {_tkD49&&(currentTask===_tkD49.k
                       ?<div style={{fontSize:FS.caption,color:TH.txGreen,fontWeight:700,marginBottom:7}}>✓ «{_tkD49.l}» è il compito di questa settimana</div>
                       :!currentTask&&<Btn v="ghost" style={{padding:"8px 10px",fontSize:FS.caption,marginBottom:7}} onClick={()=>{setPlayer(p=>({...p,agentTask:_tkD49.k}));notify("🤵 Compito assegnato: "+_tkD49.l,TH.primary);}}>{_tkD49.e} Assegna «{_tkD49.l}»</Btn>)}
@@ -65132,7 +65138,7 @@ const getThisWeekMatchday=()=>{
                       {isExpired49?"⛔ Contratto scaduto: serve un nuovo accordo.":isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza: assegna il compito «Prepara rinnovo».":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato: il procuratore può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto il mercato."}
                     </div>
                   )}
-                  {isOverpaid49&&<div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
+                  {isOverpaid49&&<div className="cpm-leggi289" style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
                   {/* [6.84.0 collaudo PO «il pulsante rinnova o va eliminato o portato nel Tab agente»] CTA rinnovo
                       SPOSTATA qui dal sottotab Profilo — stessa guardia (ultimo anno, entro W35, non svincolato/in prestito, non già rinnovato) */}
                   {(((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1))||(player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)/* [giro 94 D3] il messaggio «serve un nuovo accordo» deve avere il suo pulsante */))&&!player.loan&&(
@@ -65347,7 +65353,7 @@ const getThisWeekMatchday=()=>{
                 </div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>{ct.why}</div>
                 {!(typeof window!=='undefined'&&window.__CPM_NO_FIN155)&&(()=>{const r=ctRapporto155(player);const fw=natFinestre155(player).filter(w=>w>=(player.week||1));return(
-                  <div data-cpm="ct155" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginTop:6}}>🤝 Rapporto col CT: <b className="cpm-num">{r.v}/100</b> — {r.label}.{player.contractExpired?" Da svincolato il CT non ti chiama: prima serve un club.":fw.length?` Prossima finestra internazionale: settimana ${fw[0]}.`:" Finestre internazionali della stagione concluse."}</div>);})()}
+                  <div data-cpm="ct155" className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginTop:6}}>🤝 Rapporto col CT: <b className="cpm-num">{r.v}/100</b> — {r.label}.{player.contractExpired?" Da svincolato il CT non ti chiama: prima serve un club.":fw.length?` Prossima finestra internazionale: settimana ${fw[0]}.`:" Finestre internazionali della stagione concluse."}</div>);})()}
               </Card></Fisarmonica>);})()}
 
             {/* Convocazione pendente */}
@@ -67072,6 +67078,20 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G156)?'':'@media(min-width:900px){.cpm-dash-grid>*{grid-column:1/-1;}}'}/* [giro 156 PO-361 «ultime notizie, graficamente tagliato...uniforma»] la griglia a due colonne ha un figlio solo («Ultime notizie», src/18 ~9129): misurato a 1428 px 533 contro 1074 px delle altre card. Ogni card della griglia prende la riga piena, come il resto della Home. Rosso __CPM_NO_G156, guardiano home-larghezza-156 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G289)?'':`/* [giro 289 · PO-548, decisioni PO 19/11 «Censimento PC di tutte» e «Riquadro compatto»] REGOLA UNICA DA PC (>= 1024 px; telefono e tablet verticale invariati):
+           (1) un riquadro e' alto quanto il suo contenuto — la «schermata piena» del giro 114 (PO-320) non allunga piu' i riquadri da PC, dove l'altezza in piu'
+           diventava vuoto (misurato: Offerte 890 px di riquadro per 79 di contenuto, Coppe 874 per 220); (2) la colonna delle schermate senza barra laterale ha una
+           larghezza massima e sta al centro (.cpm-pc289); (3) il testo corrente ha una larghezza di lettura (.cpm-leggi289, .cpm-leggi289c centrato): 62ch, ~80
+           caratteri (misurato prima: righe fino a 246). Rosso __CPM_NO_G289, guardiano npm run pc-289. */
+        @media(min-width:1024px){
+          .cpm-leggi289{max-width:62ch;}
+          .cpm-leggi289c{max-width:62ch;margin-left:auto!important;margin-right:auto!important;}
+          .cpm-pc289{max-width:${SP.xxxl*23}px;margin-left:auto;margin-right:auto;justify-content:center;}
+          .cpm-pc289 .cpm-offers{display:flex!important;flex-direction:column;flex:0 0 auto!important;}
+          .cpm-pc289 .cpm-offers>*{flex:0 0 auto!important;}
+          [data-cpm="provino-pre"]{justify-content:center;gap:${SP.sm}px;}[data-cpm="provino-pre"]>div:first-child{flex:0 0 auto!important;}/* il tasto del provino sta sotto il contenuto, non in fondo allo schermo */
+          .cpm-career:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:0 0 auto!important;justify-content:flex-start!important;}
+        }`}
         .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}
