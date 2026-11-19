@@ -3315,5 +3315,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia8uXB1LwLh7RNP7GGB",
+  "titolo": "verifica 198 rapida · blocco D (286/291)",
+  "creata": "2026-11-19T14:21:11Z",
+  "chiusa": "2026-11-19T15:42:01Z",
+  "cost_usd": 2.01472456,
+  "output_tokens": 14380,
+  "cache_read_tokens": 3927418,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
