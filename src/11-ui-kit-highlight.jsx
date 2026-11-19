@@ -114,6 +114,15 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
   const isOff=disabled||loading;
   return<button data-suono={(v==="primary"||v==="green"||v==="gold"||v==="festa")?"conferma":undefined}/* [giro 172 PO-370] il tasto pieno della vista e' la conferma importante: l'unico che suona */ onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:_tocco292()?Math.max(sz.minHeight||0,40):sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
 };
+/* [giro 290 · PO-549, decisione PO 17/11 + risposta 19/11 «dove vuoi basta che sia in unico punto per tutte le partite»] AVVISO DEI SALIENTI.
+   Il tasto «Gioca solo i momenti salienti» resta in UN punto, la pre-partita (giro 246). Dove si preme «Gioca» PRIMA della pre-partita
+   (finestra della settimana, card «Prossima» della home, convocazione e lobby della Nazionale, provino) c'e' solo questa riga che dice
+   dove trovarlo: nessun secondo tasto, nessun cambio di percorso. Chi la mette la mostra solo dove la pre-partita che segue ha il tasto
+   (stessa condizione del giro 246: giocatore non infortunato). Rosso __CPM_NO_G290 = com'era (nessuna riga). */
+const AvvisoSalienti290=({style})=>{
+  if(typeof window!=='undefined'&&(window.__CPM_NO_G290||window.__CPM_NO_G246||window.__CPM_NO_G243||window.__CPM_NO_G166))return null;
+  return <div data-cpm="avviso-290" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.4,textAlign:"center",overflowWrap:"anywhere",...(style||{})}}>Nella pre-partita puoi giocare solo i momenti salienti</div>;
+};
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */
 const StatBar=({label,value,tone,track,height=4,mb=8})=>{
@@ -583,14 +592,14 @@ function AnteprimaSezione({icona,titolo,sotto,voci=[],nota}){
       <div style={{fontSize:FS.display,lineHeight:1}}>{icona}</div>
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textWrap:"balance"}}>{titolo}</div>
-        {sotto&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
+        {sotto&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
       </div>
     </div>
     <div style={{display:"flex",flexDirection:"column",gap:8}}>
       {voci.map(function(v,i){return(<div key={i} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm}}>
         <span style={{fontSize:FS.bodyLg,lineHeight:1.2}}>{v.e}</span>
         <div style={{flex:1,minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{v.t}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
+          <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
     </div>
     {nota&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:FW.semibold,marginTop:10}}>{nota}</div>}
   </div></Card>);

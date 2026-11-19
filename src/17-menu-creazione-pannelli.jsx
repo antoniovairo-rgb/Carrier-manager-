@@ -258,7 +258,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const hasAny=slots.some(Boolean);
   const allFull=slots.every(Boolean);// card di sovrascrittura solo quando non c'è alcuno slot vuoto
   return(
-    <div className={piena114()/* [giro 114 G184-04] menu iniziale a schermata piena */} style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-04] menu iniziale a schermata piena */+" cpm-home284"/* [giro 284 PO-542] colonna della Home da PC: regole in src/19, solo da 900 px */} style={{width:"100%"}}>
       {confirmDel!==null&&(
         <Modal open dismissable={false} width={340} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.h,marginBottom:8}}>🗑️</div>
@@ -271,7 +271,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
+      <div className="cpm-logo284" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -361,7 +361,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         </Card>
       )}
-      {_dk&&<div style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
+      {_dk&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
@@ -565,6 +565,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
   const _dk=window.innerWidth>=640;
+  /* [giro 289 · PO-548, decisione PO 19/11 «Riquadro compatto»] DA PC (>= 1024 px) i due «Scegli» avevano due stili: MISURATO, non era un
+     difetto del riquadro ma la selezione da tastiera (selIdx parte da 0, il tasto selezionato e' «primary», gli altri «secondary»), che col
+     mouse sembrava una scelta gia' fatta. Da PC tutti i «Scegli» hanno lo stesso stile; la selezione da tastiera ([1]/[2]/frecce) resta
+     visibile col contorno del riquadro. Al telefono nulla cambia. Riquadri alti quanto il contenuto, colonna e testo: regola .cpm-pc289 in src/19.
+     Rosso __CPM_NO_G289 = la 7.999.197. */
+  const _pc289=!(typeof window!=="undefined"&&window.__CPM_NO_G289)&&window.innerWidth>=1024;
   const _ass49=trialStats.reduce((a,m)=>a+(m.assists||0),0);/* [7.999.49 parte A] assist nel riepilogo in una riga */
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
   /* [giro 201 · PO-418 (G189-06)] LE OFFERTE NASCONO DAL NOME E DAI PROVINI: il rumore del sorteggio era Math.random, quindi chiudendo e
@@ -595,10 +601,10 @@ function OffersScreen({player,trialStats,onChoose}){
     return()=>window.removeEventListener("keydown",onKey);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */+" cpm-pc289"/* [giro 289] da PC: colonna compatta e centrata (src/19) */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
-      {!_no201&&<p data-cpm="offerte201-motivo" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
+      {!_no201&&<p data-cpm="offerte201-motivo" className="cpm-leggi289c" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
       
       <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
@@ -614,7 +620,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
-                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
+                    <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={(isSel||_pc289)?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
               </div>
@@ -772,6 +778,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
     </div>
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
+    {(!_CPM_TEST||(typeof window!=="undefined"&&window.__CPM_PREP246))&&<AvvisoSalienti290 style={{marginTop:8}}/>}{/* [giro 290] il provino passa dalla pre-partita (giro 246) */}
   </div>;
 }
 
@@ -910,6 +917,7 @@ function NationalCallupScreen(props){
         </div>
       </Card>
       <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+      <AvvisoSalienti290/>{/* [giro 290] */}
     </div>
   );
 }

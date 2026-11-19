@@ -46,7 +46,7 @@ export async function apriCarriera166({ vp = { width: 412, height: 915 }, init =
 export async function apriPrompt166(page, tipo, stato) {
   await page.evaluate(({ t, st }) => window.__CPM_CAREER.apriPartita(st || 'starter', t || undefined), { t: tipo || null, st: stato || null });
   await sleep(600);
-  return page.evaluate(() => { const q = [...document.querySelectorAll('[data-cpm="partita23"] button')]; return { bottoni: q.map(x => (x.textContent || '').trim()), solo: !!document.querySelector('[data-cpm="solo-166"]'),
+  return page.evaluate(() => { const q = [...document.querySelectorAll('[data-cpm="partita23"] button')]; return { bottoni: q.map(x => (c => (c.querySelectorAll('[data-cpm$="-nota"]').forEach(n => n.remove()), (c.textContent || '').trim()))(x.cloneNode(true))), solo: !!document.querySelector('[data-cpm="solo-166"]'),
     nota: ((document.querySelector('[data-cpm="solo-166-nota"]') || {}).textContent || '').trim() }; });
 }
 

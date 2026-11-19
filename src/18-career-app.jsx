@@ -7449,10 +7449,11 @@ const getThisWeekMatchday=()=>{
                 <Btn data-pesante213=""/* [giro 213] lavoro sincrono misurato 108 ms: il tasto si disegna premuto con la rotellina prima di montare la partita */ onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
                   {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
                 </Btn>)}
+              {coachDecision?.status!=="not_called"&&!player.injured&&!player.isSuspended&&!simula302&&<AvvisoSalienti290/>/* [giro 290] dove trovare i salienti */}
               {/* [giro 166 PO-364 C] terza scelta, solo senza posta e solo da titolare (dalla panchina l'attesa ha gia' il suo «salta») */}
               {coachDecision?.status==="starter"&&!player.injured&&!player.isSuspended&&!simula302&&!_g246()&&salienti229(showMatchPrompt)&&(<>
-                <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti</Btn>
-                <div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>
+                <Btn data-cpm="solo-166" data-pesante213="" onClick={()=>{soloChiesta166Ref.current=true;setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="secondary" size="lg" fw>Gioca solo i momenti salienti{_g287()&&sotto287("solo-166-nota",_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita.")}</Btn>{/* [giro 287 PO-546] nota dentro il tasto */}
+                {!_g287()&&<div data-cpm="solo-166-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_g229()?"Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.":"Partita senza posta in palio: giochi solo le tue azioni. Il risultato lo decide la stessa partita."}</div>}
               </>)}
               <Btn data-cpm="simula-conferma" data-pesante213=""/* [giro 213] 136 ms di lavoro sincrono misurati */ onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v={simula302?"primary":"secondary"} size="lg" fw>
                 {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
@@ -8350,6 +8351,7 @@ const getThisWeekMatchday=()=>{
                   {_mot&&<span data-cpm="simula-motivo" data-motivo221="" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2}}>{_mot}</span>}
                 </button>
               </div>
+              {!cs.disabled&&!player.injured&&player.weekLived&&!_sv200&&(_nz131||getThisWeekMatchday())&&<AvvisoSalienti290 style={{color:_ink,opacity:0.85}}/>/* [giro 290] «Gioca» porta alla pre-partita: la riga dice dove sono i salienti */}
                 <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:44,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer"}}>Calendario</button>
               </div>);})()}
             </div>
@@ -9971,7 +9973,7 @@ const getThisWeekMatchday=()=>{
                 </div>;
               })}
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
+            <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
           </Card></Fisarmonica>
         </div>
       )}
@@ -10043,7 +10045,7 @@ const getThisWeekMatchday=()=>{
                 </tbody>
               </table>
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>G giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti</div>{/* [7.999.49 parte A] legenda delle sigle */}
+            <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>G giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti</div>{/* [7.999.49 parte A] legenda delle sigle */}
             <div style={{display:"flex",flexWrap:"wrap",gap:"3px 10px",marginTop:10}}>
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
@@ -10752,7 +10754,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{width:7,height:7,borderRadius:"50%",background:roleColors[role]}}/>
                 <span style={{fontSize:FS.caption,fontWeight:700,color:roleColors[role]}}>{roleLabels[role]}</span>
               </div>
-              {_next39&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
+              {_next39&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
             </div>;
           })()}
           {/* Sprint 25C — Capitano badge */}
@@ -11938,7 +11940,7 @@ const getThisWeekMatchday=()=>{
                     </div>
                     <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«{speechLine}»</div>
                     {_adv379.temi.length>0&&(
-                      <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_tema49]||"c'è qualcosa di cui parlare"}.{_tkD49?" Assegnami «"+_tkD49.l+"» questa settimana.":""}»</div>)}
+                      <div className="cpm-leggi289" style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_tema49]||"c'è qualcosa di cui parlare"}.{_tkD49?" Assegnami «"+_tkD49.l+"» questa settimana.":""}»</div>)}
                     {_tkD49&&(currentTask===_tkD49.k
                       ?<div style={{fontSize:FS.caption,color:TH.txGreen,fontWeight:700,marginBottom:7}}>✓ «{_tkD49.l}» è il compito di questa settimana</div>
                       :!currentTask&&<Btn v="ghost" style={{padding:"8px 10px",fontSize:FS.caption,marginBottom:7}} onClick={()=>{setPlayer(p=>({...p,agentTask:_tkD49.k}));notify("🤵 Compito assegnato: "+_tkD49.l,TH.primary);}}>{_tkD49.e} Assegna «{_tkD49.l}»</Btn>)}
@@ -12129,7 +12131,7 @@ const getThisWeekMatchday=()=>{
                       {isExpired49?"⛔ Contratto scaduto: serve un nuovo accordo.":isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza: assegna il compito «Prepara rinnovo».":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato: il procuratore può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto il mercato."}
                     </div>
                   )}
-                  {isOverpaid49&&<div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
+                  {isOverpaid49&&<div className="cpm-leggi289" style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
                   {/* [6.84.0 collaudo PO «il pulsante rinnova o va eliminato o portato nel Tab agente»] CTA rinnovo
                       SPOSTATA qui dal sottotab Profilo — stessa guardia (ultimo anno, entro W35, non svincolato/in prestito, non già rinnovato) */}
                   {(((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1))||(player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)/* [giro 94 D3] il messaggio «serve un nuovo accordo» deve avere il suo pulsante */))&&!player.loan&&(
@@ -12344,7 +12346,7 @@ const getThisWeekMatchday=()=>{
                 </div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>{ct.why}</div>
                 {!(typeof window!=='undefined'&&window.__CPM_NO_FIN155)&&(()=>{const r=ctRapporto155(player);const fw=natFinestre155(player).filter(w=>w>=(player.week||1));return(
-                  <div data-cpm="ct155" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginTop:6}}>🤝 Rapporto col CT: <b className="cpm-num">{r.v}/100</b> — {r.label}.{player.contractExpired?" Da svincolato il CT non ti chiama: prima serve un club.":fw.length?` Prossima finestra internazionale: settimana ${fw[0]}.`:" Finestre internazionali della stagione concluse."}</div>);})()}
+                  <div data-cpm="ct155" className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginTop:6}}>🤝 Rapporto col CT: <b className="cpm-num">{r.v}/100</b> — {r.label}.{player.contractExpired?" Da svincolato il CT non ti chiama: prima serve un club.":fw.length?` Prossima finestra internazionale: settimana ${fw[0]}.`:" Finestre internazionali della stagione concluse."}</div>);})()}
               </Card></Fisarmonica>);})()}
 
             {/* Convocazione pendente */}
@@ -12467,6 +12469,7 @@ const getThisWeekMatchday=()=>{
                   <Btn v="primary" fw onClick={()=>startNationsCupMatch()} style={{flex:1}}>⚽ Gioca Partita</Btn>
                   <Btn v="ghost" onClick={simulateNationsCupMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                 </div>
+                {!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-nc" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startNationsCupMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}
@@ -12572,6 +12575,7 @@ const getThisWeekMatchday=()=>{
                     <Btn v="ghost" onClick={simulateEuroMondialeMatch} style={{flexShrink:0,whiteSpace:"nowrap"}}>⏩ Simula</Btn>
                   </div>
                 )}
+                {!em.champion&&!em.eliminated&&!em.done&&!player.injured&&<AvvisoSalienti290 style={{marginTop:6}}/>/* [giro 290] */}
                 {!em.champion&&!em.eliminated&&!em.done&&!_g246()&&_g229()&&!player.injured&&<Btn data-cpm="solo-229-em" v="secondary" fw onClick={()=>{soloChiesta166Ref.current=true;startEuroMondialeMatch();}} style={{marginTop:8}}>Gioca solo i momenti salienti</Btn>/* [giro 229] anche nei tornei della Nazionale */}
               </Card>
             )}

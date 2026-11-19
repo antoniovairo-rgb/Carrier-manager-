@@ -15,6 +15,7 @@
    Rosso window.__CPM_NO_G246 (comportamento del giro 243): il tasto torna nel prompt e nelle lobby, il tasto della pre-partita salta
    formazioni e ingresso, Primavera e provino non lo hanno, il provino non passa dalla pre-partita → DEVE cadere su ogni percorso.
    «Non giudicato» = rosso. Verde e rosso stampati per ultimi.
+   [giro 287] l'etichetta di un tasto si legge SENZA la sua nota (dal 287 la nota e' il sottotitolo DENTRO il tasto).
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node salienti-246.mjs   (CPM_PARTE=verde|rosso, CPM_SOLO=<nome percorso>) */
 import { apriCarriera166, sleep } from './lib/partita-166.mjs';
 import { startServer, launchBrowser, installCdnRoutes, clickByText } from './lib/harness.mjs';
@@ -52,7 +53,7 @@ async function alPrepartita(page, fuori) {
     const s = await page.evaluate(() => { const pp = document.querySelector('[data-cpm="prepartita23"]');
       return { pp: !!pp, f: typeof window.__CPM_PHASE === 'function' ? window.__CPM_PHASE() : null, solo: !!document.querySelector('[data-cpm="solo-243"]'),
         nota: ((document.querySelector('[data-cpm="solo-243-nota"]') || {}).textContent || '').trim(),
-        bottoni: pp ? [...pp.querySelectorAll('button')].map(x => (x.textContent || '').trim()) : [] }; }).catch(() => null);
+        bottoni: pp ? [...pp.querySelectorAll('button')].map(x => (c => (c.querySelectorAll('[data-cpm$="-nota"]').forEach(n => n.remove()), (c.textContent || '').trim()))(x.cloneNode(true))) : [] }; }).catch(() => null);
     if (s && s.pp && s.f === 'matchday') return s;
     if (s && s.f && s.f !== 'matchday') return { ...s, fuoriPre: true };
     await page.evaluate(() => {

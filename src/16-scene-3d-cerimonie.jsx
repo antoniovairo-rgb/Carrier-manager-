@@ -3591,13 +3591,13 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       </section>
       {/* Sprint 100: narrative + coach dialog */}
       <Card style={{marginBottom:8,padding:"12px 14px"}}>
-        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,marginBottom:_coachLine100?10:0,fontStyle:"italic"}}>{narrative}</div>
+        <div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,marginBottom:_coachLine100?10:0,fontStyle:"italic"}}>{narrative}</div>
         {_coachLine100&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10}}>
           <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
             <NpcFaceCoach coachName={player.coach?.name||"Mister"} size={38}/>
             <div style={{flex:1}}>
               <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>{player.coach?.name||"Il Mister"} · fine stagione</div>
-              <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_coachLine100.txt}</div>
+              <div className="cpm-leggi289" style={{fontSize:FS.small,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_coachLine100.txt}</div>
             </div>
           </div>
         </div>}
@@ -3609,7 +3609,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           {_v23?<Figurina tipo="dirigente" chiave={"presidente-"+(player.club||"")} larg={44}/>:<div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>}
           <div style={{flex:1}}>
             <div style={{fontSize:FS.caption,color:_v23?TH.muted:"#fde68a",fontWeight:_v23?800:undefined,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
-            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
+            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}} className="cpm-leggi289">{_presLine100.txt}</div>
           </div>
         </div>
       </Card>;})()}
@@ -3688,7 +3688,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             <div style={{fontSize:FS.caption,color:TH.muted}}>{phase.desc}</div>
           </div>
         </div>
-        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}>"{narrative}"</div>
+        <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}><div className="cpm-leggi289">"{narrative}"</div></div>
       </Card>
 
       {/* Momento della stagione */}

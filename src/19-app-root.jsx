@@ -1112,6 +1112,8 @@ function App(){
         .cpm-career:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;}
         .cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;}
         .cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;}
+        ${_g287()?`/* [giro 287 PO-546] da PC la pre-partita prende l'altezza dal contenuto: la testata non si allunga a riempire lo schermo (vuoti da 37 a 154 px misurati), la riga stadio/spettatori/meteo/orario va su quattro colonne e i tasti seguono la testata. Il telefono resta com'e'. */
+        @media(min-width:900px){[data-cpm="prepartita23"]{flex:0 0 auto!important;}[data-cpm="testata287"]{flex:0 0 auto!important;justify-content:flex-start!important;}[data-cpm="prepartita23"] .cpm-piena-az{margin-top:0;}[data-cpm="pp-info287"]{grid-template-columns:repeat(4,minmax(0,1fr))!important;}}`:''}
         @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G150)?'':`/* [giro 150 PO-352 «Finestra centrata col velo»] UNA REGOLA PER TUTTE LE FINESTRE in primo piano, da 768 px (PC e tablet; il telefono resta com'e'): velo scuro TH.scrimForte su tutta la pagina, finestra alta quanto il contenuto e centrata in verticale (scorre dentro se e' piu' alta dello schermo), larga almeno 520 px. Lo strato porta .cpm-velo150, il pannello .cpm-pan150 (Modal, finestre degli impulsi, momento di carriera, intervista). Dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) le misure si dividono per 1,12, altrimenti la finestra esce dallo schermo (misurato: offerta alta 774 px su 768). Con la scena della sala stampa (.cpm-scena150) la finestra si centra nello spazio SOTTO la scena (31% alto). Il foglio del giro 114 (768-899 px) resta foglio. Rosso __CPM_NO_G150. */
         @media(min-width:768px){.cpm-velo150{background:${TH.scrimForte}!important;padding:${SP.lg}px!important;overflow:hidden!important;}.cpm-velo150:not(.cpm-foglio114){align-items:center!important;}.cpm-velo150>.cpm-pan150{min-width:min(520px,100%);height:auto!important;min-height:0!important;max-height:calc(100vh - ${2*SP.lg}px)!important;overflow-y:auto!important;}.cpm-velo150:not(.cpm-foglio114)>.cpm-pan150{border-radius:${RAD.xl}px!important;}.cpm-scroll .cpm-velo150>.cpm-pan150{min-width:min(464px,100%);max-height:calc((100vh - ${2*SP.lg}px) / 1.12)!important;}.cpm-velo150.cpm-scena150{padding-top:calc(31vh + ${SP.lg}px)!important;}.cpm-velo150.cpm-scena150>.cpm-pan150{max-height:calc(69vh - ${3*SP.lg}px)!important;box-shadow:${TH.el3}!important;}}`}
@@ -1127,15 +1129,38 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G156)?'':'@media(min-width:900px){.cpm-dash-grid>*{grid-column:1/-1;}}'}/* [giro 156 PO-361 «ultime notizie, graficamente tagliato...uniforma»] la griglia a due colonne ha un figlio solo («Ultime notizie», src/18 ~9129): misurato a 1428 px 533 contro 1074 px delle altre card. Ogni card della griglia prende la riga piena, come il resto della Home. Rosso __CPM_NO_G156, guardiano home-larghezza-156 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G289)?'':`/* [giro 289 · PO-548, decisioni PO 19/11 «Censimento PC di tutte» e «Riquadro compatto»] REGOLA UNICA DA PC (>= 1024 px; telefono e tablet verticale invariati):
+           (1) un riquadro e' alto quanto il suo contenuto — la «schermata piena» del giro 114 (PO-320) non allunga piu' i riquadri da PC, dove l'altezza in piu'
+           diventava vuoto (misurato: Offerte 890 px di riquadro per 79 di contenuto, Coppe 874 per 220); (2) la colonna delle schermate senza barra laterale ha una
+           larghezza massima e sta al centro (.cpm-pc289); (3) il testo corrente ha una larghezza di lettura (.cpm-leggi289, .cpm-leggi289c centrato): 62ch, ~80
+           caratteri (misurato prima: righe fino a 246). Rosso __CPM_NO_G289, guardiano npm run pc-289. */
+        @media(min-width:1024px){
+          .cpm-leggi289{max-width:62ch;}
+          .cpm-leggi289c{max-width:62ch;margin-left:auto!important;margin-right:auto!important;}
+          .cpm-pc289{max-width:${SP.xxxl*23}px;margin-left:auto;margin-right:auto;justify-content:center;}
+          .cpm-pc289 .cpm-offers{display:flex!important;flex-direction:column;flex:0 0 auto!important;}
+          .cpm-pc289 .cpm-offers>*{flex:0 0 auto!important;}
+          .cpm-career:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]),.cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:0 0 auto!important;justify-content:flex-start!important;}
+        }`}
         .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-slots{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G284)?'':`/* [giro 284 PO-542 «da PC si vede male», scelta PO «Logo compatto, azioni in vista»] SOLO DA 900 PX (il telefono non cambia). MISURATO sulla 7.999.197: logo 69% della finestra a 1366x768 (78% a 1920x1080), «Nuova carriera» un terzo della colonna (la griglia a tre colonne dei salvataggi con un figlio solo), colonna 80 px dal menu e 54 dal bordo (il padding della .cpm-scroll e' sotto lo zoom 1,12, il menu no), tasti 1 2 3 di 22x19 px. Ora: riquadro del logo alto quanto il contenuto e almeno un terzo della finestra, colonna larga al massimo 720 (806 a schermo) e centrata nello spazio a destra del menu (220 px: il padding sinistro si divide per lo zoom), tutto centrato in verticale, «Nuova carriera» a tutta riga, tasti 1 2 3 da 44 px. Rosso __CPM_NO_G284 */
+        @media(min-width:900px){
+          .cpm-root:has(.cpm-home284) .cpm-scroll{padding-left:calc(220px / 1.12 + 24px)!important;padding-right:24px!important;}
+          .cpm-home284{max-width:720px;margin-left:auto;margin-right:auto;justify-content:center;}
+          .cpm-home284>.cpm-logo284{flex:0 0 auto!important;min-height:calc(32vh / 1.12);}
+          .cpm-slots>:only-child{grid-column:1/-1;}
+          .cpm-tasti284{display:flex;align-items:center;justify-content:center;gap:${SP.sm}px;font-size:${FS.body}px!important;}
+          .cpm-tasti284 .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 ${SP.sm}px;font-size:${FS.bodyLg}px;border-radius:${RAD.sm}px;}
+        }
+        @media(min-width:1280px){.cpm-root:has(.cpm-home284) .cpm-scroll{padding-left:calc(220px / 1.12 + 48px)!important;padding-right:48px!important;}}`}
         .cpm-create{display:flex;flex-direction:column;gap:16px;}
         @media(min-width:900px){.cpm-create{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:20px;}}
-        select option{background:#fff;}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G284)?'select option{background:#fff;}':`select option,select optgroup{background:${TINTE.sup};color:${TINTE.testo};}`}/* [giro 284 PO-543 «non si legge bene l'elenco»] le voci delle tendine prendevano il testo chiaro del tema (ereditato dal select) su un fondo bianco cablato: 1,13:1 misurato sulla nazione della creazione. Ora fondo e testo dai token del tema unico (14,9:1), anche sui gruppi (classifica). Rosso __CPM_NO_G284 */
         ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
         button:hover:not(:disabled){filter:brightness(0.96);}
