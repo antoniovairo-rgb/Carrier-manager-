@@ -43759,10 +43759,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          libero; sotto il gate la finestra resta quella fissa. Rosso __CPM_NO_G95D4. */
       try{const _gv4=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D4;
         if(_gv4&&!_avanza461._d4){const _r=revealAt95.current;
-          if(!_r){_avanza461._d4=1;const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);
-            try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
-            t2=setTimeout(_avanza461,1600);return;}
-          if(Date.now()-_r<1400){_avanza461._d4=1;t2=setTimeout(_avanza461,1400-(Date.now()-_r));return;}}}catch(_e95){}
+          /* [giro 282 — highlight-95 rosso nella 197: «esito a schermo solo 773-1188 ms prima della chiusura», sempre dalla rete qui sotto]
+             IL TEMPO DI LETTURA SI CONTA DA QUANDO L'ESITO E' A SCHERMO, NON DA QUANDO LO SI CHIEDE. MISURATO (highlight-95 con
+             CPM_G282DIAG, 51862a1e, s12/s5 semi 1234/2021): la rete chiedeva l'esito e chiudeva 1,6 s dopo la RICHIESTA; a fotogrammi
+             lenti (macchina carica, telefono lento) React porta l'esito a schermo 0,74-1,18 s dopo la richiesta, e al giocatore ne
+             restavano 1,13-1,34 s invece di 1,6 (sotto il pavimento di 1,2 s della sonda in 2 scene su 32). Ora la rete chiede una
+             volta sola, aspetta che l'esito sia davvero comparso (revealAt95, tetto 8 s di parete perche' nulla resti appeso) e da
+             li' conta i suoi 1,6 s. A fotogrammi normali la richiesta e la comparsa coincidono: percorso identico. Rosso
+             __CPM_NO_G282. __CPM_G282RIT (solo sonde, __CPM_REC): ritardo artificiale della comparsa, per il guardiano esito-282. */
+          const _g282=!window.__CPM_NO_G282;
+          if(!_r){
+            if(!_avanza461._q282){_avanza461._q282=Date.now();
+              const _ch282=()=>{const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);};
+              const _rit282=(window.__CPM_REC&&+window.__CPM_G282RIT>0)?+window.__CPM_G282RIT:0;
+              if(_rit282)fxTimeout(_ch282,_rit282);else _ch282();
+              try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
+              if(!_g282){_avanza461._d4=1;t2=setTimeout(_avanza461,1600);return;}}
+            if(_g282&&Date.now()-_avanza461._q282<8000){t2=setTimeout(_avanza461,120);return;}/* chiesto, non ancora a schermo */
+            _avanza461._d4=1;}
+          else{const _min282=(_g282&&_avanza461._q282)?1600:1400;
+            if(Date.now()-_r<_min282){_avanza461._d4=1;t2=setTimeout(_avanza461,_min282-(Date.now()-_r));return;}}}}catch(_e95){}
       handleContinue();
     };
     const t=setTimeout(()=>{

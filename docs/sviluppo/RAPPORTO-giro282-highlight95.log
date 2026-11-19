@@ -1,0 +1,108 @@
+  [g282L] s1/2021 pass scene 6 · reti D4 2 · [ritardo richiesta→schermo, schermo→chiusura] [[122,1714],[94,1876]] · tutte schermo→chiusura [1714,4058,4883,5536,3317,1876]
+  [g282L] s1/1234 pass scene 5 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[1,1833]] · tutte schermo→chiusura [4158,6512,1833,3055,4881]
+  [g282L] s1/1234 drib scene 5 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[154,1741]] · tutte schermo→chiusura [4158,6936,1741,4623,4489]
+  [g282L] s1/2021 drib scene 7 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[190,1760]] · tutte schermo→chiusura [1760,6052,4710,8026,5156,6436,4365]
+  [g282L] s1/7 drib scene 9 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [4813,8523,7390,7403,7888,4743,4646,4462,5266]
+  [g282L] s1/7 pass scene 5 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[263,1764]] · tutte schermo→chiusura [5541,1764,3724,1529,2916]
+  [g282L] s5/1234 pass scene 0 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura []
+  [g282L] s5/1234 drib scene 0 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura []
+  [g282L] s5/2021 pass scene 7 · reti D4 2 · [ritardo richiesta→schermo, schermo→chiusura] [[618,2447],[354,2378]] · tutte schermo→chiusura [2447,9697,15911,18009,16473,2378,9190]
+  [g282L] s5/2021 drib scene 6 · reti D4 2 · [ritardo richiesta→schermo, schermo→chiusura] [[244,1669],[646,1684]] · tutte schermo→chiusura [1669,28039,32677,27935,31428,1684]
+  [g282L] s5/7 pass scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [26485,27298,38064,30177,27146,24844]
+  [g282L] s5/7 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [35212,30407,37679,33230,30264,30953,13083]
+  [g282L] s12/1234 pass scene 3 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[1117,1786]] · tutte schermo→chiusura [1786,16700,28599]
+  [g282L] s12/1234 drib scene 3 · reti D4 1 · [ritardo richiesta→schermo, schermo→chiusura] [[564,2514]] · tutte schermo→chiusura [2514,16564,12452]
+  [g282L] s12/2021 pass scene 5 · reti D4 3 · [ritardo richiesta→schermo, schermo→chiusura] [[256,1876],[555,1911],[4,2119]] · tutte schermo→chiusura [1876,23447,1911,12011,2119]
+  [g282L] s12/2021 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [22163,25547,22169,14014,22856,25838,21110]
+  [g282L] s12/7 pass scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [10417,17757,19172,23001,22331,23708,7985]
+  [g282L] s12/7 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [19066,26642,18973,21421,14736,11474,10726]
+  [g282L] s12/1234 pass scene 3 · reti D4 3 · [ritardo richiesta→schermo, schermo→chiusura] [[211,2152],[170,1996],[207,2000]] · tutte schermo→chiusura [2152,1996,2000]
+verde s1 seme 1234 pass fine ceremony highlight 5 tabellone {"home":5,"away":0}
+verde s1 seme 1234 drib fine ceremony highlight 5 tabellone {"home":5,"away":0}
+verde s1 seme 2021 pass fine ended highlight 6 tabellone {"home":1,"away":0}
+verde s1 seme 2021 drib fine ended highlight 7 tabellone {"home":0,"away":0}
+verde s1 seme 7 pass fine ceremony highlight 5 tabellone {"home":4,"away":0}
+verde s1 seme 7 drib fine ended highlight 9 tabellone {"home":2,"away":1}
+verde s5 seme 1234 pass fine hl_result highlight 0 tabellone {"home":2,"away":0}
+verde s5 seme 1234 drib fine playing highlight 0 tabellone {"home":2,"away":0}
+verde s5 seme 2021 pass fine ceremony highlight 7 tabellone {"home":2,"away":0}
+verde s5 seme 2021 drib fine hl_result highlight 6 tabellone {"home":1,"away":0}
+verde s5 seme 7 pass fine hl_result highlight 6 tabellone {"home":3,"away":2}
+verde s5 seme 7 drib fine ended highlight 7 tabellone {"home":3,"away":2}
+verde s12 seme 1234 pass fine playing highlight 3 tabellone {"home":0,"away":0}
+verde s12 seme 1234 drib fine playing highlight 3 tabellone {"home":0,"away":0}
+verde s12 seme 2021 pass fine hl_result highlight 5 tabellone {"home":1,"away":3}
+verde s12 seme 2021 drib fine playing highlight 7 tabellone {"home":1,"away":1}
+verde s12 seme 7 pass fine playing highlight 7 tabellone {"home":3,"away":0}
+verde s12 seme 7 drib fine ceremony highlight 7 tabellone {"home":2,"away":2}
+verde s12 seme 1234 pass (scena senza esito) fine playing highlight 3 tabellone {"home":0,"away":0}
+  verde rivelazioni lette da un'altra scena (abbinate per indice): 16
+    ~ s1/1234 hl3: letta hl2 via scena-tiro · giusta nessuna
+    ~ s1/1234 hl4: letta hl2 via scena-tiro · giusta nessuna
+    ~ s1/1234 hl3: letta hl2 via chiusura · giusta nessuna
+    ~ s1/1234 hl4: letta hl2 via chiusura · giusta nessuna
+    ~ s1/2021 hl4: letta hl3 via scena+occupata · giusta nessuna
+    ~ s1/7 hl2: letta hl1 via chiusura · giusta nessuna
+VERDE highlight 98 · D4 senza esito 0 · passaggi 28 arrivati 89.3% gol compagno 13 assist 13 esiti {"goal/assist":13,"saved/chance":8,"intercettato/intercept":3,"blocked/chance":4} · finte 6 riuscite 33.3% {"dribble/chance/chance":2,"dribble/intercept/dispossessed":4} · falli cercati 1 · parate giudicate 18 · non giudicabili (guardia di parete) 0 · difetti 0
+  [g282L] s1/1234 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [3791,8446,9552,8778,4062,7175,6788]
+  [g282L] s1/2021 pass scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [5434,5699,7529,12282,5547,6318]
+  [g282L] s1/1234 pass scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [4127,8720,9086,9109,4422,7301,5071]
+  [g282L] s1/7 pass scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [5577,7000,9622,8885,10181,7951,7259]
+  [g282L] s1/2021 drib scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [10032,8422,7547,7697,4954,3223]
+  [g282L] s1/7 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [3860,10177,8656,8907,4975,6200,6410]
+  [g282L] s5/1234 pass scene 0 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura []
+  [g282L] s5/2021 pass scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [26440,17351,26696,25407,17185,26064,22344]
+  [g282L] s5/1234 drib scene 0 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura []
+  [g282L] s5/2021 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [54672,42112,61606,45204,15764,52171,42010]
+  [g282L] s5/7 pass scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [54407,40722,68357,60741,47901,42958]
+  [g282L] s5/7 drib scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [54496,38234,54008,45428,46021,40461]
+  [g282L] s12/1234 pass scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [41310,32600,45695,23125,32825,42748]
+  [g282L] s12/1234 drib scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [46728,34166,44623,22084,27829,35290]
+  [g282L] s12/2021 pass scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [37814,39214,36503,26077,37842,14374,41536]
+  [g282L] s12/2021 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [38508,31132,30366,22941,18551,25473,27252]
+  [g282L] s12/7 pass scene 4 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [38437,34133,11012,18990]
+  [g282L] s12/7 drib scene 7 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [34917,32750,23819,13340,29263,18796,15077]
+  [g282L] s12/1234 pass scene 6 · reti D4 0 · [ritardo richiesta→schermo, schermo→chiusura] [] · tutte schermo→chiusura [-1,-1,-1,8174,-1,-1]
+rosso s1 seme 1234 pass fine ended highlight 7 tabellone {"home":4,"away":0}
+rosso s1 seme 1234 drib fine ended highlight 7 tabellone {"home":4,"away":0}
+rosso s1 seme 2021 pass fine ended highlight 6 tabellone {"home":0,"away":2}
+rosso s1 seme 2021 drib fine ended highlight 5 tabellone {"home":1,"away":0}
+rosso s1 seme 7 pass fine ended highlight 7 tabellone {"home":1,"away":2}
+rosso s1 seme 7 drib fine ended highlight 7 tabellone {"home":1,"away":2}
+rosso s5 seme 1234 pass fine playing highlight 0 tabellone {"home":2,"away":0}
+rosso s5 seme 1234 drib fine playing highlight 0 tabellone {"home":1,"away":0}
+rosso s5 seme 2021 pass fine ended highlight 7 tabellone {"home":1,"away":1}
+rosso s5 seme 2021 drib fine playing highlight 7 tabellone {"home":1,"away":1}
+rosso s5 seme 7 pass fine hl_move highlight 6 tabellone {"home":3,"away":2}
+rosso s5 seme 7 drib fine hl_result highlight 6 tabellone {"home":3,"away":2}
+rosso s12 seme 1234 pass fine playing highlight 6 tabellone {"home":3,"away":1}
+rosso s12 seme 1234 drib fine playing highlight 6 tabellone {"home":5,"away":1}
+rosso s12 seme 2021 pass fine playing highlight 7 tabellone {"home":0,"away":0}
+rosso s12 seme 2021 drib fine ceremony highlight 7 tabellone {"home":1,"away":2}
+rosso s12 seme 7 pass fine playing highlight 4 tabellone {"home":1,"away":3}
+rosso s12 seme 7 drib fine hl_result highlight 7 tabellone {"home":3,"away":3}
+rosso s12 seme 1234 pass (scena senza esito) fine ceremony highlight 6 tabellone {"home":3,"away":1}
+  rosso rivelazioni lette da un'altra scena (abbinate per indice): 9
+    ~ s1/1234 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s1/1234 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s1/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s5/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s5/2021 hl4: letta hl3 via riserva+occupata · giusta nessuna
+    ~ s12/1234 hl3: letta hl2 via riserva+occupata · giusta nessuna
+ROSSO highlight 108 · D4 senza esito 5 · passaggi 28 arrivati 82.1% gol compagno 5 assist 4 esiti {"goal/assist":4,"blocked/intercept":6,"saved/intercept":8,"goal/chance":1,"wide/intercept":4,"intercettato/intercept":5} · finte 6 riuscite 16.7% {"pass/intercept/overhit":1,"pass/intercept/intercepted":4,"pass/chance/chance":1} · falli cercati 2 · parate giudicate 7 · non giudicabili (guardia di parete) 0 · difetti 157
+  · D3 s1/1234 «🛡️ Scivolata netta»: esito «Muro invalicabile!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.11,"sl":0.57,"bx":5.7,"ck":8.79999999999999},"rr":null}
+  · D3 s1/1234 «↗️ Palla in area»: esito «Non trova lo specchio» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.22,"sl":0.73,"bx":33.8,"ck":13.70000000000006},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato raccontato perso «Ti portano via il pallone»
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con COSTA»: esito «Ti portano via il pallone» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.12,"sl":0.69,"bx":26.8,"ck":18.850000000000133},"rr":null}
+  · D3 s1/1234 «✈️ Stacco in corsa potente»: esito «Tiro fuori di poco» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0,"sl":0.78,"bx":35,"ck":29.500000000000284},"rr":null}
+  · D3 s1/1234 «⚡ Conclusione di prima»: esito «Il gol sembrava fatto» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.22,"sl":0.73,"bx":38.5,"ck":34.85000000000016},"rr":null}
+  · D3 s1/1234 «🛡️ Scivolata netta»: esito «Muro invalicabile!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.02,"sl":0.64,"bx":6.2,"ck":9.149999999999995},"rr":null}
+  · D3 s1/1234 «↗️ Palla in area»: esito «Non trova lo specchio» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.16,"sl":0.69,"bx":33.1,"ck":14.000000000000064},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: passaggio arrivato raccontato perso «Ti portano via il pallone»
+  · D1 s1/1234 «🔁 Uno-due con COSTA»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con COSTA»: esito «Ti portano via il pallone» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.12,"sl":0.69,"bx":27.3,"ck":19.550000000000143},"rr":null}
+✅ highlight-95 verde (e il rosso si vede)
+FINE rc=0
