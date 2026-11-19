@@ -150,11 +150,25 @@ if (!process.env.CPM_SENZA_D14 && SCELTI.some(f => f.k === 'tel')) {
       console.log(`  tel  D14 comando a fase ${pre[0]} minuto ${pre[1]} · fase ceremony dopo ${arr == null ? 'MAI (10 s)' : arr + ' ms'}`);
       if (arr == null) fail.D14.push('la fase ceremony non e\' arrivata entro 10 s dal comando');
       if (ROSSO) await page.evaluate(() => { const d = document.createElement('div'); d.setAttribute('data-sonda', 'nero-277'); d.style.cssText = 'position:fixed;inset:0;background:#000;z-index:2147483647;pointer-events:none'; document.body.appendChild(d); });
-      const t0 = Date.now(); const vivo = () => page.evaluate(() => !!(window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()));
+      /* [giro 283, PO-539] LO STACCO DICHIARATO E' DUE SEGNALI, NON UNO. Misurato (misura-283.mjs, 4 giri): il gioco dichiara lo
+         stacco col timbro __CPM_CUTLIVE (340 ms dall'effetto) E con l'elemento nero dello stacco (il div `blackCut` di LiveMatch),
+         che resta nel DOM fino a dur+80 ms piu' il giro di React: 188-258 ms DOPO che __CPM_CUTLIVE e' tornato falso. E questa sonda
+         spegne le animazioni (`animation:none`), quindi quel div e' nero PIENO per tutta la sua vita. In piu' una foto dura 600-830
+         ms, piu' di un intero stacco: il vecchio controllo «vivo prima / vivo dopo» non vedeva uno stacco nato e finito durante la
+         foto. ORA: (1) prima della foto si aspetta che ENTRAMBI i segnali siano spenti; (2) un registro in pagina (MutationObserver
+         sull'aggiunta del div + lettura dei due segnali a ogni fotogramma e ogni 5 ms) annota l'ultimo istante in cui uno stacco
+         dichiarato era vivo: se cade dentro la finestra della foto (margine 30 ms) la foto si rifa'. Un nero NON dichiarato (il velo
+         della sonda nel braccio rosso, `data-sonda`) non accende nessuno dei due segnali e resta giudicato. Soglie invariate. */
+      await page.evaluate(() => { const SEL = 'div[style*="blackCut"]'; const segna = () => { if ((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector(SEL)) window.__S283 = performance.now(); };
+        window.__S283 = -1e9; new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1 && (n.matches(SEL) || n.querySelector(SEL))) window.__S283 = performance.now(); }).observe(document.body, { childList: true, subtree: true });
+        setInterval(segna, 5); const r = () => { segna(); requestAnimationFrame(r); }; requestAnimationFrame(r); });
+      const t0 = Date.now();
       for (const ms of [150, 500, 1000, 2000]) { while (Date.now() - t0 < ms) await sleep(20); visti.D14++;
         let l = null, stacchi = 0, fermo = false; const ts = Date.now();
-        for (let k = 0; k < 5 && !l; k++) { const libero = await page.waitForFunction(() => !(window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()), null, { timeout: 8000, polling: 20 }).then(() => true).catch(() => false);
-          if (!libero) { fermo = true; break; } const x = await luma(page, f); if (await vivo()) { stacchi++; continue; } l = x; }
+        for (let k = 0; k < 5 && !l; k++) { const libero = await page.waitForFunction(() => !((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector('div[style*="blackCut"]')), null, { timeout: 8000, polling: 20 }).then(() => true).catch(() => false);
+          if (!libero) { fermo = true; break; } const a = await page.evaluate(() => performance.now()); const x = await luma(page, f);
+          const toccata = await page.evaluate(a => window.__S283 >= a - 30 || !!((window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()) || document.querySelector('div[style*="blackCut"]')), a);
+          if (toccata) { stacchi++; continue; } l = x; }
         const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
         if (!l) { console.log(`  tel  D14 cerimonia +${String(ms).padStart(4)} ms · fase ${ph} · NON MISURATO: ${fermo ? 'stacco nero vivo per piu\' di 8 s' : 'cinque foto di fila dentro uno stacco'}`); fail.D14.push(`+${ms} ms: non misurato (${fermo ? 'stacco che non finisce' : 'sempre dentro uno stacco'})`); continue; }
         console.log(`  tel  D14 cerimonia +${String(ms).padStart(4)} ms · fase ${ph} · luminosita' ${l.media.toFixed(1)} · neri ${(100 * l.neri).toFixed(0)}% · attesa per stacchi ${Date.now() - ts} ms (${stacchi} foto rifatte)`);
