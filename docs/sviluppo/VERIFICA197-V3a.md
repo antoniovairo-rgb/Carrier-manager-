@@ -18,3 +18,4 @@
 - Corsa sulla 196 (worktree `../w196` a `3076a1b7`) avviata alle 23:53 UTC e **interrotta dal riavvio del container** (~00:03, uptime 0, nessun processo superstite, log vuoto): non vale, rifatta da capo alle 00:04 UTC.
 - Nota: fra 196 e 197 `highlight-95.mjs` non cambia; cambiano 7 file di `tests/visual/lib/` (fra cui `harness.mjs`, `partita-166.mjs`). La corsa sulla 196 usa i file di test della 196 stessa.
 - Seconda corsa sulla 196 (00:04 UTC) **interrotta da un secondo riavvio del container** (~00:26, uptime 0, log vuoto): non vale, terzo tentativo alle 00:27 UTC.
+- Terza corsa sulla 196 (00:27 UTC): a 01:36 il braccio verde ha già stampato «VERDE highlight 103 · D4 senza esito 0 · … difetti 0». Braccio rosso in corsa.
