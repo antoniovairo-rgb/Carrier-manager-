@@ -19,3 +19,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 7 | difesa-252 | ✅ | — | — | **verde** | `✅ difesa-252 VERDE` (reale: fermi ≥0,8 0/4 · prova 0/3, correzione attiva in 3 · rosso 3/3) |
 | 8 | tunnel-285 | ✅ | — | — | **verde** | `VERDE: fra la bocca del tunnel e la linea laterale non c'e' nessuna superficie ferma.` (verde 5 stadi 0 guasti · `ROSSO VISTO` 5/5, non giudicati 0) |
 | 9 | zero-288 | ✅ | — | — | **verde** | `zero-288: ✓ (VERDE+ROSSO)` |
+| 10 | salienti-246 | ✅ | — | — | **verde** | `VERDE: PASSA` · `ROSSO: CADE (come deve) su ogni percorso` (0 ✗ nel braccio verde; i 38 ✗/«non giudicato» sono tutti nel braccio rosso `__CPM_NO_G246`) |
