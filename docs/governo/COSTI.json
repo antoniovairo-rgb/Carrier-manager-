@@ -3077,5 +3077,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaAFzWToFM8kYta6kSs",
+  "titolo": "giro 280 · schede-246 (scenario provocato)",
+  "creata": "2026-11-19T00:25:19Z",
+  "chiusa": "2026-11-19T02:24:55Z",
+  "cost_usd": 2.6263109,
+  "output_tokens": 18739,
+  "cache_read_tokens": 6280413,
+  "worker_epoch": 1,
+  "versione": "7.999.197",
+  "tipo": "giro",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
