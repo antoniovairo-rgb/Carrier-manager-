@@ -119,7 +119,33 @@ Esito: vedi «Controlli».
 
 Eseguiti a mano, uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, sulla build finale del ramo.
 
-CONTROLLI_QUI
+| controllo | esito | misura |
+|---|---|---|
+| `intercetto-291` (nuovo) | ✅ verde (2 corse su 2) | build finale: verde 10 scene portate su 10 verso la porta avversaria, 5 famiglie · rosso 10 su 10 sbagliate. Prima corsa (build precedente, diversa solo per un campo del testimone): verde 10/10, rosso 9/9 |
+| `difesa-252` | ✅ verde | reale: fermi ≥ 0,8 0/4 · prova 0/3 (correzione attiva in 3) · rosso 3/3 |
+| `difesa-220-scena` | ❌ rosso, **già dichiarato** | verde n=15, fuori scena 0, «contrasto mai partito per l'attesa» 4 (tetto 2), troncati 2 · rosso: 9 contrasti fuori scena. Rosso anche sulla 196 (DECISIONI 18/11 22:45). Questo controllo gira senza `__CPM_CINE`: lì il vincitore dell'esito, cioè il codice toccato, è spento |
+| `frozen-mate` | ✅ verde | nessun compagno congelato |
+| `aim-latch` | ✅ verde | mediana 0 rad |
+| `ball-attended` | ❌ rosso | accudita 5,5% contro soglia 52% (638 campioni). **Non nasce da questo giro**: stessa prova sulla base `lavoro/198` prima della correzione 6,9% (668 campioni), sulla 7.999.196 43,7% (588 campioni): rosso in tutte e tre, una corsa ciascuna. Il controllo non è in nessuna catena di `ci-runner.mjs` e gira senza `__CPM_CINE` (codice toccato spento) |
+| `gesture-window` | ✅ verde | finestra unica viva |
+| `salti-274` | ✅ verde | verde col verde, rosso col rosso |
+| `portiere-265` | ✅ verde | verde col verde, rosso col rosso |
+| `test:logic` | ✅ verde | 51 su 51 |
+| `save-compat` | ✅ verde | PASS |
+| `difesa-220-giro31` (MAPPA src/12, guardiano del codice toccato) | ✅ verde | 13 scene · apertura 1,8 u · (A) 0% · (B) forti 8% · pallone di nessuno 0% · recuperate nostre a +2 s 5/5 · fallite loro 7/8 · ritorno 20% (1/5). Rosso: viola 7 soglie |
+| `rinvio-252` (MAPPA) | ✅ verde | |
+| `pressing-143` (MAPPA) | ✅ verde | il rosso si vede |
+| `conduci-242` (MAPPA) | ✅ verde | il rosso si vede |
+| `colla-103` (MAPPA) | ✅ verde | il rosso si vede |
+| `node tools/check-src.mjs` | ✅ IDENTICO byte per byte (7.874.300 byte, 21 frammenti) | |
+
+**Non eseguiti** (dichiarato): la prima riga della MAPPA di `src/12` elenca 77 guardiani; nel tetto del giro ne ho eseguiti
+i 5 più vicini al codice toccato (`difesa-220-giro31`, `rinvio-252`, `pressing-143`, `conduci-242`, `colla-103`) oltre a
+`difesa-252`, `difesa-220-scena`, `salti-274`, `portiere-265` che erano già nella lista del giro. Gli altri 67 **non sono
+stati eseguiti** (fra questi `validate-situations`, `partita-vera`, `contatto-103`, `consegna-103`, `chiusura-99`,
+`camera-252`, `reazione-252`, `buildup-sync`). `highlight-95`, `ingresso-206`, `career-critical` esclusi per regola del giro.
+`battito-264` e `solo-highlight-166` non servono: `src/15` non è stato toccato.
+
 
 ## Rapporto col giro 286 (portatore avanti e indietro PRIMA della scelta)
 
@@ -146,4 +172,9 @@ Un punto di contatto da tenere presente nell'unione: entrambi i giri possono toc
    l'elezione del vincitore dipende dalle posizioni dei compagni all'atterraggio, che fra corse non sono identiche.
 6. **Secondo tempo nelle partite vere**: verificato solo che lato e verso non cambiano (portieri, scena al 49'); nessuna
    scena riuscita con l'eroe portatore è capitata nel secondo tempo nel campione.
-7. **Sul telefono non è stato provato**: tutte le misure sono su Chromium senza scheda grafica (headless).
+7. **`ball-attended` è sceso fra la 196 e la 197**: 43,7% sulla 196, 6,9% sulla base di questo giro, 5,5% dopo (soglia 52%,
+   una corsa per build: la differenza fra 6,9 e 5,5 non è stata ripetuta). Era già sotto soglia sulla 196 e non è in nessuna
+   catena; il calo fra 196 e 197 non è stato indagato qui (fuori ambito). Da decidere se ripararlo o archiviarlo.
+8. **`difesa-220-scena`** resta rosso come dichiarato; non ho una misura della base nello stesso giorno per confrontare
+   i numeri («mai partito» 4), solo la dichiarazione del 18/11 e il fatto che il controllo non accende il codice toccato.
+9. **Sul telefono non è stato provato**: tutte le misure sono su Chromium senza scheda grafica (headless).
