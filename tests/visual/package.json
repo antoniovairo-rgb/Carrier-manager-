@@ -386,6 +386,7 @@
     "ci:grafica": "node ci-runner.mjs grafica",
     "ci:guardiani": "node ci-runner.mjs guardiani",
     "griglia-mobile": "node griglia-mobile.mjs",
+    "zero-288": "node zero-288.mjs",
     "folla": "node folla-129.mjs",
     "analisi-217": "node analisi-217.mjs",
     "home-066": "node home-066.mjs",
