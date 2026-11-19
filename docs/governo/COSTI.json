@@ -3301,5 +3301,19 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaCXo5mp11RKt1dZTb3",
+  "titolo": "verifica 198 rapida · blocco F2 (highlight-95)",
+  "creata": "2026-11-19T13:07:03Z",
+  "chiusa": "2026-11-19T15:06:14Z",
+  "cost_usd": 1.54465548,
+  "output_tokens": 7283,
+  "cache_read_tokens": 3328551,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
