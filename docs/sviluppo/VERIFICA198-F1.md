@@ -16,3 +16,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 4 | ball-owner | ✅ | — | — | **verde** | `✅ baseline F2 misurata su 2481 fotogrammi · 62 movimenti senza padrone da attribuire` (conflitti 145 = 5,8%; coppia inseguitore+addosso assente dall elenco; lanciato senza `CPM_IA_MAX`, come da elenco: è la sola misura di osservazione) |
 | 5 | frozen-mate | ✅ | — | — | **verde** | `✅ nessun compagno congelato: il gesto si rilascia sempre` (fotogrammi-orfano 0; GLB montati. Dubbio: il controllo gira solo il braccio verde e non stampa quanti gesti di compagni ha osservato) |
 | 6 | aim-latch | ✅ | — | — | **verde** | `✅ il corpo guarda dove calcia (mediana 0 rad)` (13 rilasci, p90 0.11) |
+| 7 | difesa-252 | ✅ | — | — | **verde** | `✅ difesa-252 VERDE` (reale: fermi ≥0,8 0/4 · prova 0/3, correzione attiva in 3 · rosso 3/3) |
