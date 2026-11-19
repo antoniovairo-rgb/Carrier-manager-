@@ -17,3 +17,4 @@
 - 2ª esecuzione: di nuovo rossa solo per 2 D4 del braccio verde, sempre «Uno-due» ma su casi diversi dalla 1ª (s5/2021 GÜNTHER e s12/1234 SPENCER nella 1ª; s12/1234 e s12/2021 SPENCER nella 2ª). Log: `VERIFICA197-V3a-highlight95-2.log`. Albero pulito, nessuna foto in docs/.
 - Corsa sulla 196 (worktree `../w196` a `3076a1b7`) avviata alle 23:53 UTC e **interrotta dal riavvio del container** (~00:03, uptime 0, nessun processo superstite, log vuoto): non vale, rifatta da capo alle 00:04 UTC.
 - Nota: fra 196 e 197 `highlight-95.mjs` non cambia; cambiano 7 file di `tests/visual/lib/` (fra cui `harness.mjs`, `partita-166.mjs`). La corsa sulla 196 usa i file di test della 196 stessa.
+- Seconda corsa sulla 196 (00:04 UTC) **interrotta da un secondo riavvio del container** (~00:26, uptime 0, log vuoto): non vale, terzo tentativo alle 00:27 UTC.
