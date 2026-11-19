@@ -11,3 +11,4 @@
 | colori-286 | verde (rc 0, ~16 min) | — | — | verde | `✅ PASS colori-286 (verde, e il rosso si vede)` |
 | cori-291 | verde (rc 0, <1 min) | — | — | verde | `CORI-291: ✅ VERDE` |
 | rigore-79 | verde (rc 0, <1 min) | — | — | verde | `✅ rigore-79 verde: «rigore per loro» solo sui rigori degli avversari; il rosso __CPM_NO_RIG79 la riapre sui rigori dell'eroe` |
+| pagella-75 | rosso (rc 1, ~20 min) | rosso (rc 1, ~20 min) | *in corso* | *da classificare* | `❌ pagella-75: verde: nessuna partita con un gol dell'eroe in gioco fluido (il caso non e' esercitato) · rosso: nessuna divergenza (il guardiano guarda a vuoto)` |
