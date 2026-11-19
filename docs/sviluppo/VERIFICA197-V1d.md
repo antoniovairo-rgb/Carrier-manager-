@@ -18,3 +18,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 6 | spot-266 | verde (69 s) | — | — | **verde** | `✅ spot-266 verde (e il rosso si vede)` |
 | 7 | passaggio-coppa-137 | verde (127 s) | — | — | **verde** | `✅ passaggio-coppa-137 verde (e i tre rossi si vedono)` |
 | 8 | portiere-265 | verde (284 s; braccio verde 0 difetti su 7, rosso 3/3) | — | — | **verde** | `✅ portiere-265 VERDE (verde col verde, rosso col rosso): negli highlight il portiere resta sul suo punto, davanti alla linea, fermo al calcio.` |
+| 9 | gk-miss-229 | verde (180 s; 12 tiri giudicati, 2 volée «a bruciapelo» non giudicate per regola della sonda) | — | — | **verde** | `✅ VERDE — sui tiri sbagliati il portiere si muove verso il pallone prima che lo superi, e guarda uscire quelli lontani.` |
