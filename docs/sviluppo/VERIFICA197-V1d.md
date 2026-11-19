@@ -15,3 +15,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 3 | ingresso-camminata-245 | verde (219 s) | — | — | **verde** | `✅ ingresso-camminata-245 verde (camminata, tutti al posto, clip di camminata) e il rosso si vede` |
 | 4 | difesa-252 | verde (223 s) | — | — | **verde** | `✅ difesa-252 VERDE` |
 | 5 | apertura-261 | verde (171 s) | — | — | **verde** | `✅ PASS apertura-261 (prima immagine sull'eroe 4/4, scarto max 0u, aperture vuote 0)` |
+| 6 | spot-266 | verde (69 s) | — | — | **verde** | `✅ spot-266 verde (e il rosso si vede)` |
