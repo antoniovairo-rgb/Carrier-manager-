@@ -3231,5 +3231,19 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaBat6KnS1LcjmYEfyV",
+  "titolo": "giro 285 · fascia nera davanti al tunnel (nastro della competizione)",
+  "creata": "2026-11-19T09:50:13Z",
+  "chiusa": "2026-11-19T11:34:47Z",
+  "cost_usd": 8.20480948,
+  "output_tokens": 53658,
+  "cache_read_tokens": 13896283,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-19"
  }
 ]
