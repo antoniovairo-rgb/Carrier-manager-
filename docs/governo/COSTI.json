@@ -3259,5 +3259,33 @@
   "tipo": "giro",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaCftys6jtvhZAbHCXr",
+  "titolo": "giro 286 · portatore fermo prima della scelta",
+  "creata": "2026-11-19T09:51:59Z",
+  "chiusa": "2026-11-19T12:35:50Z",
+  "cost_usd": 9.88792194,
+  "output_tokens": 60637,
+  "cache_read_tokens": 17309108,
+  "worker_epoch": 3,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia9nTJSRD23TnEhK396",
+  "titolo": "giro 291 · eroe verso la porta avversaria dopo il recupero",
+  "creata": "2026-11-19T10:05:10Z",
+  "chiusa": "2026-11-19T13:04:48Z",
+  "cost_usd": 10.61427852,
+  "output_tokens": 61551,
+  "cache_read_tokens": 15875284,
+  "worker_epoch": 1,
+  "versione": "7.999.198",
+  "tipo": "giro",
+  "modello": "claude-fable-5-2",
+  "rilevato": "2026-11-19"
  }
 ]
