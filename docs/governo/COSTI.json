@@ -3049,5 +3049,19 @@
   "tipo": "giro",
   "modello": "claude-fable-5-2",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYiaC6aGfQUhdLH8T6dwk",
+  "titolo": "verifica 197 · blocco V3e2",
+  "creata": "2026-11-18T20:01:50Z",
+  "chiusa": "2026-11-19T00:39:42Z",
+  "cost_usd": 4.30114444,
+  "output_tokens": 23060,
+  "cache_read_tokens": 13891527,
+  "worker_epoch": 3,
+  "versione": "7.999.197",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-19"
  }
 ]
