@@ -1903,3 +1903,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 20:55 (19/11) PO-570 registrato senza lavoro: marcatori della stagione in corso e storico stagioni per tutti i campionati; da fare insieme a PO-569.
 - 21:00 (19/11) PO-570 esteso alle coppe (PO «idem per le coppe»): marcatori della stagione e storico delle edizioni per tutte le coppe.
 - 21:05 (19/11) PO-570 esteso alla nazionale (PO «anche per la nazionale»).
+- 21:10 (19/11) PO-571 registrato senza lavoro: la riga «−N dalla vetta» in Home deve seguire prestigio e obiettivo del club.
