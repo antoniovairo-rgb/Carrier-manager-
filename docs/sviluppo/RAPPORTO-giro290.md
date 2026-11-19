@@ -74,7 +74,7 @@ In più c'è un caso da infortunato: nella finestra non c'è «Gioca» e quindi 
 | `griglia-mobile` | uscita 0, 14 schermate × 5 larghezze (foto di `docs/collaudo-grafico/g0` rimesse con `git checkout --`) |
 | `test:logic` | 51 pass · 0 fail |
 | `save-compat` | 12 pass · 0 fail |
-| `career-critical` | vedi riga finale qui sotto |
+| `career-critical` | uscita 0 (tutta la catena verde) |
 
 Non ho eseguito `salienti-246`, `highlight-95`, `ingresso-206` e `ci-runner`. La pre-partita e i percorsi non sono
 cambiati, e `avviso-290` arriva fino alla pre-partita sulle stesse strade del 246.
