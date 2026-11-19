@@ -92,7 +92,7 @@ function MISURA() {
 }
 /* impronta dei rettangoli (telefono): tutti gli elementi visibili, arrotondati */
 function IMPRONTA() { const out = []; for (const e of document.body.querySelectorAll('*')) { if (e.closest('svg') && e.tagName.toLowerCase() !== 'svg') continue; const r = e.getBoundingClientRect(); if (r.width <= 0 || r.height <= 0) continue; out.push(e.tagName[0] + Math.round(r.left) + ',' + Math.round(r.top) + ',' + Math.round(r.width) + ',' + Math.round(r.height)); }
-  let h = 2166136261; const s = out.join(';'); for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return { n: out.length, h: (h >>> 0).toString(16) }; }
+  let h = 2166136261; const s = out.join(';'); for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return { n: out.length, h: (h >>> 0).toString(16), l: out }; }
 
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const errori = [], saltate = [];
@@ -180,7 +180,13 @@ for (const [k, rossi] of [['verde', []], ['rosso', ['__CPM_NO_G289']]]) {
   await contesti(PC, rossi, false, async (page, id) => { if (!CORRETTE.includes(id)) return; await misuraSu(page, PC, id, async (pg, t) => { (RIS[k][id] = RIS[k][id] || {})[t.w] = await pg.evaluate(MISURA); }); });
 }
 for (const [k, rossi] of [['telV', []], ['telR', ['__CPM_NO_G289']]]) {
-  await contesti(TEL, rossi, true, async (page, id) => { if (!CORRETTE.includes(id)) return; await misuraSu(page, TEL, id, async (pg, t) => { (RIS[k][id] = RIS[k][id] || {})[t.w] = await pg.evaluate(IMPRONTA); }); });
+  await contesti(TEL, rossi, true, async (page, id) => { if (!CORRETTE.includes(id)) return;
+    /* prova del rosso del controllo telefono: CPM_289_PROVA_TEL=1 forza la regola da PC anche al telefono nel braccio verde; il confronto DEVE cadere */
+    if (process.env.CPM_289_PROVA_TEL === '1' && k === 'telV') await page.addStyleTag({ content: '.cpm-leggi289,.cpm-leggi289c{max-width:20ch!important}.cpm-pc289 .cpm-offers>*{flex:0 0 auto!important}[data-cpm="provino-pre"]>div:first-child{flex:0 0 auto!important}' });
+    await misuraSu(page, TEL, id, async (pg, t) => {
+    /* [stabilita'] l'impronta si legge finche' due letture consecutive coincidono (max 8): una lettura a meta' di un'animazione d'ingresso ha dato un falso rosso */
+    let prev = await pg.evaluate(IMPRONTA), cur = prev; for (let i = 0; i < 8; i++) { await sleep(450); await congela(pg); cur = await pg.evaluate(IMPRONTA); if (cur.h === prev.h) break; prev = cur; }
+    (RIS[k][id] = RIS[k][id] || {})[t.w] = cur; }); });
 }
 let ko = 0; const riga = (ok, s) => { if (!ok) ko++; console.log((ok ? 'ok  ' : 'KO  ') + s); };
 for (const id of CORRETTE) for (const t of PC) { const m = RIS.verde[id] && RIS.verde[id][t.w];
@@ -191,11 +197,14 @@ for (const id of CORRETTE) for (const t of PC) { const m = RIS.verde[id] && RIS.
   riga(m.nA === 0, `${id}@${t.w} verde · azioni attaccate al contenuto ${m.nA}${m.nA ? ' — ' + m.A.map(a => a.t + ' ' + a.gap + ' px').join('; ') : ''}`);
   riga(m.nC === 0, `${id}@${t.w} verde · colonna centrata (margini ${m.C ? m.C.sx + '/' + m.C.dx : '?'})`);
   riga(!m.S, `${id}@${t.w} verde · nessuno scorrimento senza motivo (eccesso ${m.ecc})`); }
-for (const t of PC) { const m = RIS.rosso.offerte && RIS.rosso.offerte[t.w]; if (!m) { riga(false, `offerte@${t.w} rosso: NON GIUDICATO`); continue; }
-  const dif = m.nV + m.nL + m.nP + m.nC + m.nA; riga(dif > 0, `offerte@${t.w} ROSSO (__CPM_NO_G289) · la sonda vede il difetto: V ${m.nV} · L ${m.nL} (max ${m.maxCh}) · P ${m.nP} · C ${m.nC}`); }
+/* rosso: su OGNI schermata corretta la sonda deve vedere il difetto di prima (somma delle due larghezze), altrimenti e' cieca su quella schermata */
+for (const id of CORRETTE) { const ms = PC.map(t => RIS.rosso[id] && RIS.rosso[id][t.w]); if (ms.some(m => !m)) { riga(false, `${id} rosso: NON GIUDICATO`); continue; }
+  const dif = ms.reduce((a, m) => a + m.nV + m.nL + m.nP + m.nC + m.nA, 0);
+  riga(dif > 0, `${id} ROSSO (__CPM_NO_G289) · la sonda vede il difetto: ` + ms.map((m, i) => `${PC[i].w}: V ${m.nV} · L ${m.nL} (max ${m.maxCh}) · P ${m.nP} · A ${m.nA} · C ${m.nC}`).join(' | ')); }
 for (const id of CORRETTE) for (const t of TEL) { const a = RIS.telV[id] && RIS.telV[id][t.w], b = RIS.telR[id] && RIS.telR[id][t.w];
   if (!a || !b) { riga(false, `${id}@${t.w} telefono: NON GIUDICATO`); continue; }
-  riga(a.h === b.h && a.n === b.n, `${id}@${t.w} telefono invariato · impronta ${a.n} elementi ${a.h} contro rosso ${b.n} ${b.h}`); }
+  const dif = a.l.map((x, i) => x !== b.l[i] ? i + ': ' + x + ' / ' + b.l[i] : null).filter(Boolean);
+  riga(a.h === b.h && a.n === b.n, `${id}@${t.w} telefono invariato · impronta ${a.n} elementi ${a.h} contro rosso ${b.n} ${b.h}${dif.length ? ' — ' + dif.length + ' diversi: ' + dif.slice(0, 4).join(' ; ') : ''}`); }
 if (saltate.length) { riga(false, 'schermate saltate: ' + saltate.join(' · ')); }
 if (errori.length) console.log('errori di pagina (informativi): ' + errori.slice(0, 5).join(' · '));
 console.log(ko ? `pc-289: ROSSO — ${ko} controlli falliti` : 'pc-289: VERDE');
