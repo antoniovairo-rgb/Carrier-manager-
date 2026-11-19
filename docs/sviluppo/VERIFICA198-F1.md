@@ -22,3 +22,4 @@ Solo verifica: nessuna correzione a gioco o sonde.
 | 10 | salienti-246 | ✅ | — | — | **verde** | `VERDE: PASSA` · `ROSSO: CADE (come deve) su ogni percorso` (0 ✗ nel braccio verde; i 38 ✗/«non giudicato» sono tutti nel braccio rosso `__CPM_NO_G246`) |
 | 11 | salienti-229 | ✅ | — | — | **verde** | `VERDE: PASSA` · `ROSSO: CADE (come deve): tasto assente fuori dal campionato senza posta, partita KO non apribile a soli salienti` |
 | 12 | typing-shortcuts | ✅ | — | — | **verde** | `✅ PASS — chi scrive tiene la tastiera: nessuna scorciatoia gli ruba i tasti` |
+| 13 | career-critical | ✅ | — | — | **verde** | `✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.` (ultimo degli 11 passi incatenati con `&&`, uscita 0; nessun ❌/FAIL nel log) |
