@@ -60,7 +60,12 @@ async function partita(i, braccio, rosso) {
     const W = await page.evaluate(() => ({ w: (window.__CPM_S259 && window.__CPM_S259.schede.length) ? { schede: window.__CPM_S259.schede, scelte: window.__CPM_S259.scelte.map(s => ({ id: s.fatto, min: s.min, auto: s.auto })) } : (window.__CPM_INT226 || { schede: [], scelte: [] }), tmr: window.__CPM_SC681_TMR | 0, fire: window.__CPM_SC681_FIRE | 0, clr: window.__CPM_SC681_CLR | 0 }));
     out.punteggio = await page.evaluate(() => window.__CPM_SCORE ? window.__CPM_SCORE() : null).catch(() => null);
     out.schede = (W.w.schede || []).length; out.scelte = (W.w.scelte || []).map(s => s.id + '@' + s.min + (s.auto ? 'a' : '')); out.tmr = W.tmr; out.fire = W.fire;
-    out.mostrate = out.aperte.length; out.maxMin = Math.max(0, ...out.aperte.map(a => (a.a | 0) - (a.da | 0)));
+    out.mostrate = out.aperte.length; out.maxMinDom = Math.max(0, ...out.aperte.map(a => (a.a | 0) - (a.da | 0)));
+    /* [giro 280] misura ALLA SORGENTE (lezione 7.487): minuto in cui il motore fa nascere la scheda → minuto in cui la scelta arriva.
+       Il campionamento del DOM ogni 400 ms puo' vedere la scheda un minuto dopo la nascita (misurato: «71-72» nel rosso con nascita 70,
+       scelta 72): il valore giudicato e' il maggiore dei due, in tutti e due i bracci; soglia invariata (> 1). */
+    const usate = new Set(); out.maxMinMot = Math.max(0, ...(W.w.scelte || []).map(c => { const k = (W.w.schede || []).findIndex((x, j) => !usate.has(j) && x.fatto === c.id && (x.min | 0) <= (c.min | 0)); if (k < 0) return 0; usate.add(k); return (c.min | 0) - (W.w.schede[k].min | 0); }));
+    out.maxMin = Math.max(out.maxMinDom, out.maxMinMot);
   } catch (e) { out.errore = String(e.message).slice(0, 160); }
   out.errori = errs.slice(0, 3); await page.close(); return out;
 }
@@ -68,7 +73,7 @@ const R = [];
 for (const rosso of [false, true]) for (const br of ['giocatore', 'pilota']) for (let i = 0; i < NP; i++) {
   if (br === 'pilota' && (rosso || process.env.CPM_PILOTA !== '1')) continue;
   const o = await partita(i, br, rosso); R.push(o);
-  console.log((rosso ? 'ROSSO ' : 'VERDE ') + br + ' p' + i + ' · fine ' + o.finita + ' · schede a schermo ' + o.mostrate + ' · arrivate al motore ' + (o.scelte || []).length + ' ' + JSON.stringify(o.scelte) + ' · minuti a scheda aperta max ' + o.maxMin + ' · aperte ' + JSON.stringify((o.aperte || []).map(a => a.da + '-' + a.a + (a.alFischio ? ' FISCHIO' : ''))) + ' · timer armati/scaduti ' + o.tmr + '/' + o.fire + ' · salto ' + (o.salto ? o.salto.daMin + "'→" + SALTO_A + "' " + SALTO_PT.join('-') + (o.salto.ok ? '' : ' FALLITO') : 'no') + ' · finale ' + (o.punteggio ? o.punteggio.home + '-' + o.punteggio.away : '?') + (o.errore ? ' · ERRORE ' + o.errore : '') + (o.errori.length ? ' · pageerror ' + o.errori.join(' | ') : ''));
+  console.log((rosso ? 'ROSSO ' : 'VERDE ') + br + ' p' + i + ' · fine ' + o.finita + ' · schede a schermo ' + o.mostrate + ' · arrivate al motore ' + (o.scelte || []).length + ' ' + JSON.stringify(o.scelte) + ' · minuti a scheda aperta max ' + o.maxMin + ' (schermo ' + o.maxMinDom + ' · motore ' + o.maxMinMot + ')' + ' · aperte ' + JSON.stringify((o.aperte || []).map(a => a.da + '-' + a.a + (a.alFischio ? ' FISCHIO' : ''))) + ' · timer armati/scaduti ' + o.tmr + '/' + o.fire + ' · salto ' + (o.salto ? o.salto.daMin + "'→" + SALTO_A + "' " + SALTO_PT.join('-') + (o.salto.ok ? '' : ' FALLITO') : 'no') + ' · finale ' + (o.punteggio ? o.punteggio.home + '-' + o.punteggio.away : '?') + (o.errore ? ' · ERRORE ' + o.errore : '') + (o.errori.length ? ' · pageerror ' + o.errori.join(' | ') : ''));
 }
 await b.close(); srv.close();
 const g = [], V = R.filter(o => !o.rosso && o.braccio === 'giocatore'), Ro = R.filter(o => o.rosso);
