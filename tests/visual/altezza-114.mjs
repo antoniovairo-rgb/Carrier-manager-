@@ -7,7 +7,7 @@
    a tocco: sul PC col mouse l'::after non c'e'), tasti del pre-partita, «Gioca ›» del calendario >= 44 px.
    Formati 360x800 · 412x915 · 1440x900. BRACCIO ROSSO: __CPM_NO_G114 (il comportamento della 7.999.183) — deve far fallire.
    Eccezioni dichiarate (scenografia, non misurate): feste, gala, presentazione, saga, intro, provini (giro 115).
-   [giro 289 · PO-548] Eccezione dichiarata per DECISIONE PO del 19/11 «Riquadro compatto»: le Offerte da PC (formato >= 1024 px, braccio verde)
+   [giro 289 · PO-548] Eccezione dichiarata per DECISIONE PO del 19/11 «Riquadro compatto» (estesa alle 12:55 a tutte le schermate da PC: «Da PC vale la compattezza», vedi riga _ecc289): le Offerte da PC (formato >= 1024 px, braccio verde)
    hanno riquadri alti quanto il contenuto, colonna centrata anche in verticale; il vuoto sotto e' voluto. Si misura e si STAMPA, non si giudica qui:
    le giudica `npm run pc-289` (riquadri, righe, pulsanti, colonna). Al telefono le Offerte restano sotto questa regola.
    Uso: C114_FORMATI=s360,s412,pc  C114_BRACCI=verde,rosso  C114_FOTO=<cartella>  C114_SOLO=<regex schermata>. Esce !=0 se un controllo e' rosso nel verde o se il rosso non fa fallire. */
@@ -78,8 +78,12 @@ for (const braccio of BRACCI) for (const f of scelti()) {
       await M(page, 'prepartita', t => /Analisi|Salta e gioca|Torna alla home|Simula|Vedi le formazioni/.test(t.t));
     } catch (e) { mancanti.push('prepartita: ' + String(e.message).slice(0, 60)); }
     await ctx.close(); }
-  const _ecc289 = r => braccio === 'verde' && f.w >= 1024 && r.sch === 'offerte';/* [giro 289] decisione PO 19/11 «Riquadro compatto» */
-  R.filter(_ecc289).forEach(r => console.log(`  · offerte: eccezione dichiarata giro 289 (decisione PO «Riquadro compatto»), non giudicata qui`));
+  /* [giro 289 · PO-548, esteso il 19/11 12:55 per decisione PO «Da PC vale la compattezza»] Da PC (>= 1024 px, braccio verde) il VUOTO in fondo
+     non si giudica qui su nessuna schermata: Home (PO-542), pre-partita (PO-546) e Offerte (PO-548) sono compatte per scelta del PO; i vuoti
+     DENTRO i riquadri, le righe lunghe e la centratura li giudica `npm run pc-289`. Restano giudicati qui i tasti sotto 44 px (anche da PC) e
+     tutto il telefono. Nessuna soglia cambiata. */
+  const _ecc289 = r => braccio === 'verde' && f.w >= 1024 && !r.ok && !r.piccoli.length;
+  R.filter(_ecc289).forEach(r => console.log(`  · ${r.sch}: vuoto in fondo da PC non giudicato qui (decisione PO 19/11 «Da PC vale la compattezza»; lo giudica pc-289)`));
   const rossi = R.filter(r => (!r.ok || r.piccoli.length) && !_ecc289(r)); esito.push({ braccio, f: f.nome, n: R.length, rossi: rossi.map(r => r.sch), mancanti, errs: errs.length });
   console.log(`  schermate ${R.length} · fuori regola ${rossi.length} · mancanti ${JSON.stringify(mancanti)} · errori pagina ${errs.length} · ${Math.round((Date.now() - t0) / 1000)} s`);
 }
