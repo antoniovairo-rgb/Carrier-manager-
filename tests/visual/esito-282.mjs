@@ -28,7 +28,7 @@ async function braccio(rosso) {
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 're', re: 'Filtrante|Uno-due|Lancio smarcante|Servi .* libero|Sponda|scarica su|Appoggio|Cross', tickMs: 150 }), SEME);
   /* si attende un evento (scene chiuse dalla rete, o fine partita), mai un tempo fisso; il tetto serve solo a non restare appesi */
-  await page.waitForFunction((n) => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const D = window.__CPM_D495 || [], V = window.__CPM_VIS95 || []; const chiuse = D.filter(d => V.some(v => v.out > d.t)).length; return ph === 'ended' || ph === 'ceremony' || chiuse >= n + 1; }, MIN_SCENE, { timeout: 540000, polling: 500 }).catch(() => {});
+  await page.waitForFunction((n) => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const D = window.__CPM_D495 || [], V = window.__CPM_VIS95 || []; const chiuse = D.filter(d => V.some(v => v.out > d.t)).length; return ph === 'ended' || ph === 'ceremony' || chiuse >= n; }, MIN_SCENE, { timeout: 540000, polling: 500 }).catch(() => {});
   const M = await page.evaluate(() => ({ d: window.__CPM_D495 || [], v: window.__CPM_VIS95 || [], ph: window.__CPM_PHASE && window.__CPM_PHASE() })).catch(() => null);
   await ctx.close(); if (!M) return { scene: [], tot: 0, ph: 'errore' };
   const scene = M.d.map(d => { const v = M.v.filter(x => x.out > d.t)[0]; return v ? { rit: v.rev ? v.rev - d.t : null, letto: v.rev ? v.out - v.rev : 0 } : null; }).filter(Boolean);
