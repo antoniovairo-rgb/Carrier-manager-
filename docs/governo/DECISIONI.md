@@ -1889,3 +1889,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 19:15 (19/11) PO-555 registrato senza lavoro (PO: «memorizza solo questi feedback»): card Prossima, manca il cammino V/N/P della propria nuova squadra. Da qui fino a lunedì i feedback del PO si registrano soltanto.
 - 19:20 (19/11) PO-556 registrato senza lavoro: all'ingresso in campo l'eroe aveva già il pallone tra i piedi (ultima partita, 7.999.198). Lunedì: misurare se è nato con la 198 (giri 285/286/291) o prima.
 - 19:25 (19/11) PO-557 registrato senza lavoro: staff personale troppo facile da comprare. Lunedì: misurare prezzi contro stipendio/conto nelle carriere simulate e chiedere al PO se riaprire l'economia (chiusa il 20/10).
+- 19:40 (19/11) PO-558 e PO-559 registrati senza lavoro: in Home un solo riquadro Classifica e un solo riquadro Notizie (oggi due ciascuno). Lunedì: chiedere al PO quale contenuto tenere nel riquadro unico.
