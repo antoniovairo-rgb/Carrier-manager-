@@ -40,10 +40,10 @@ I due verdi di fila che contano sono **c** e **d**, sulla versione finale. In tu
 | schede-246 | **verde 2 su 2** (c, d), rosso visto in tutte e due |
 | test:logic | verde (uscita 0) |
 | save-compat | verde («12 pass · 0 fail») |
-| schede-234 | ESITO_234 |
-| schede-259 | ESITO_259 |
-| schede-260 | ESITO_260 |
-| spazio-270 | ESITO_270 |
+| schede-234 | verde («✅ VERDE — schede con almeno 3 opzioni … prova del rosso riconosciuta»), corsa intera senza tetto |
+| schede-259 | **rosso** («❌ ROSSO — C verde: partite non finite o errori»): p3 «NON FINITA 0-2» in tutti e due i bracci, 3/4 finite; 0 errori di pagina. Controllo non toccato: vedi dubbio 7 |
+| schede-260 | **rosso** sul braccio rosso («la scheda non compare mai fuori dal gioco, il difetto non si vede»); braccio verde sano (0 campioni fuori dal gioco, «Prova Greco 8» con `pari_finale@90a`). Controllo non toccato: vedi dubbio 8 |
+| spazio-270 | verde (fischio al 90' in tutti e quattro i casi, scheda «81' pari_finale», 7 px verde / 14 px rosso) |
 | battito-264, solo-highlight-166 | non eseguiti: `src/15` non è stato toccato |
 | build-src / check-src | non serve: nessun file di `src/` toccato |
 
@@ -57,3 +57,5 @@ Non eseguiti, come da regola: highlight-95, ingresso-206, career-critical. `ci-r
 4. **Il campionamento ogni 400 ms dello schermo da solo non basta per il braccio rosso** (corsa b). Lo stesso limite potrebbe toccare altri controlli che misurano «minuti a scheda aperta» solo dal DOM. Non li ho guardati.
 5. **Il rosso del giro 44 ora si vede.** Era un rosso dichiarato cieco già sulla 196; è venuto «gratis» col nuovo scenario e con la misura alla sorgente. Lo segnalo perché cambia lo stato di un rosso dichiarato.
 6. Il mio primo lancio di schede-234 e schede-259 aveva un tetto di 590 s (il tetto di una chiamata): li ha interrotti a metà. Quelle corse **non valgono** e le ho rifatte da capo senza tetto (esiti in tabella).
+7. **schede-259 è rosso su questa build** (file di gioco identico a `lavoro/197`): la partita p3 non arriva al fischio entro il tetto di parete di 420 s (`TETTO`, r. 133) e resta 0-2. È il caso già scritto nel RAPPORTO-giro270 (dubbio 3: «`schede-259` (`TETTO=420000`) aspettano la partita intera con lo stesso schema»), che proponeva `lib/fischio-270.mjs`. **Non posso confermare** se sulla 196 fosse verde: non l'ho misurato. Non l'ho riparato (fuori da questo giro). Decide il PO se blocca l'uscita.
+8. **schede-260 è rosso sul braccio rosso** sulla stessa build: il difetto «scheda fuori dal gioco» non si vede (in «Prova Neri 3» la partita del rosso non finisce e non nasce nessuna scheda; in «Prova Greco 8» la scheda sta solo in gioco). Il braccio verde è sano. Non trovo nei rapporti l'esito sulla 196 o sulla 197, quindi **non posso dire** se è nato nella 197. Non l'ho toccato né indagato. Decide il PO.
