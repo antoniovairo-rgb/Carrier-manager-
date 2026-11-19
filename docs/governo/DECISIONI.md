@@ -1900,3 +1900,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 20:40 (19/11) PO-567 registrato senza lavoro: tasto audio all'ingresso in campo; da controllare anche il riquadro 3D nero della foto.
 - 20:45 (19/11) PO-568 registrato senza lavoro: eliminare il riquadro «Dagli altri campionati».
 - 20:50 (19/11) PO-569 registrato senza lavoro: Albo d'oro e Marcatori storici devono seguire il campionato selezionato.
+- 20:55 (19/11) PO-570 registrato senza lavoro: marcatori della stagione in corso e storico stagioni per tutti i campionati; da fare insieme a PO-569.
