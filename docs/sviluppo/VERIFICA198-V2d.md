@@ -14,3 +14,4 @@ Nessuna correzione: solo esiti. Base di confronto per i rossi: `lavoro/198` (b3b
 | stat-279 | VERDE (20 partite, teste distinte 19/20, numeri incoerenti 0) | — | — | 41 s, exit 0 |
 | cross-218 | VERDE (40 azioni-cross, 0 contraddizioni su 200; rosso di prova visibile) | — | — | 178 s, exit 0 |
 | ripresa-202 | VERDE (14 riprese, all'eroe 0; rosso di prova visibile) | — | — | 599 s, exit 0 |
+| interazioni-226 | ROSSO: braccio C, le due partite verdi NON FINITE entro il tetto di 300 s (p0 0-1, p1 4-2; schede, fatti e motore a posto). Bracci A (motore, 312 partite) e B (panchina 400/400) a posto | in corso | in corso | 1463 s, exit 1; anche il rosso p1 non finita |
