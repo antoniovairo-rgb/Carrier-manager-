@@ -8,5 +8,6 @@
 | controllo | esito su finale | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|
 | esito-282 | VERDE | — | — | 391 s. Braccio verde: 3 scene, esito a schermo 1722/2023/1892 ms, 0 sotto 1200 ms. Braccio rosso visto (3 su 3 sotto 1200 ms). |
+| barra-221 | VERDE | — | — | 211 s. Difetti 0, non giudicati 0; i due bracci rossi (`__CPM_NO_G221`, `__CPM_NO_G229`) bocciati come devono. |
 
 Verdetto: in corso.
