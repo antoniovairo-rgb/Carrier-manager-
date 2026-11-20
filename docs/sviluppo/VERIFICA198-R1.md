@@ -14,5 +14,6 @@
 | convocazione-190 | ✅ verde (rc 0, 1 s) | — | — | 13 ok · 0 ko; controllo di sola logica (senza browser); scelta del mister identica al braccio rosso 0/300 differenze, frasi cambiate 300 |
 | cronaca-nomi-190 | ✅ verde (rc 0, 516 s) | — | — | due partite intere fino al fischio (92′ e 92′), 125 righe di cronaca, 0 col segnaposto |
 | difesa-220 | ⛔ fermato al tetto dei 30 minuti (rc 124, 1800 s) = non giudicato = ROSSO | da eseguire in coda agli altri controlli (vedi riga aggiornata più sotto) | da stabilire | dove era: enumerazione fatta (verde 1800 azioni · 0 pressioni; rosso 1800 · 1122), braccio verde CHIUSO e buono (4 scene sui semi 7, 99, 1234, 2021 · 0 pressioni · gesti 2 scivolate + 2 affondi), braccio rosso appena iniziato: nessuna delle sue 4 partite era finita quando il tetto ha chiuso il browser |
+| gol-eroe-154 | ⛔ fermato al tetto dei 30 minuti (rc 124, 1800 s) = non giudicato = ROSSO | non eseguito per intero (vedi nota in fondo) | da stabilire | dove era: 4 partite su 10 del campione fisso (k1, k2, k3, k4, verde e rosso; mancavano k5, k6, k7, k8, k21, k22), 6-7,5 minuti a partita (338-453 s). Nelle quattro verdi finite registrato = pagella (0+0 · 1+0 · 0+0 · 1+0) e il rigore provocato al 90′ passa al compagno (g154 1→2, 0→1, 0→1, 1→2); il verdetto finale della sonda non è stato emesso |
 
-Verdetto: **in corso** (7 controlli su 10).
+Verdetto: **in corso** (8 controlli su 10).
