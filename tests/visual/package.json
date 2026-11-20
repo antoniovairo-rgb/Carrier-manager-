@@ -83,6 +83,8 @@
     "portiere-223": "node portiere-223.mjs && CPM_ROSSO=1 node portiere-223.mjs",
     "portiere-265": "node portiere-265.mjs",
     "portatore-286": "node portatore-286.mjs",
+    "portatore-293": "node portatore-293.mjs",
+    "misura-293": "node misura-293.mjs",
     "portiere": "node portiere-552.mjs",
     "camera-cut-mask": "node camera-cut-mask-test.mjs",
     "coppa-nazioni": "node coppa-nazioni-686.mjs",

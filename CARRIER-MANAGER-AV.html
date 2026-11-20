@@ -19900,7 +19900,23 @@ function ThreeMatchView(props){
            portatore) e si riaggancia se quello agganciato si allontana oltre 6u dal pallone logico. Rosso __CPM_NO_FONDO89. */
         const _no89=(typeof window!=='undefined'&&window.__CPM_NO_FONDO89);
         const _lbx89=G2X(P.ballX==null?50:P.ballX),_lbz89=G2Z(P.ballY==null?50:P.ballY);
-        if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6)_tackleCarrier=null;
+        /* [giro 293 PO-562 «continua a muoversi avanti ed indietro prima della mia scelta», ritorno di PO-545. Rosso __CPM_NO_G293]
+           MISURATO (misura-293, GLB acceso, pagina nuova, tempo di scena; gi129 3 volte su 3, gi44 2 su 2 — gi44 e' una scena di portatore-286,
+           ed e' la sua instabilita'): quando NESSUN avversario sta entro 6 u dal pallone logico, la regola del 7.999.89 sganciava il portatore
+           a OGNI fotogramma e riagganciava il piu' vicino. Con due avversari a distanza simile il piu' vicino cambia col «va e vieni»
+           dell'attesa attiva (chi NON ha il pallone si muove di 1 u, chi lo ha sta fermo: giro 286), e il pallone saltava dall'uno all'altro:
+           17-19 u a ogni scambio, 14-34 inversioni del pallone in 6 s di scena, e i due corpi fermi/in moto a turno. Ora il portatore agganciato
+           resta; si cambia solo se un altro avversario e' piu' vicino al pallone logico di almeno 3 u (piu' dell'escursione dell'attesa, 2 u). */
+        if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6){
+          if(typeof window!=='undefined'&&window.__CPM_G293W&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_G293W.lont=(window.__CPM_G293W.lont|0)+1;}catch(_e293){}}/* testimone nei due bracci: portatore agganciato oltre 6 u dal pallone logico */
+          /* nel primo mezzo secondo di scena (l'apertura: i corpi stanno ancora prendendo posto, e il primo aggancio puo' cadere su chi non e'
+             il piu' vicino — misurato su gi54: cambio di portatore a 2,2 s di scena, il nuovo portatore scatta di 0,97 u) il riaggancio resta
+             libero come prima; dopo, il portatore e' quello e resta. */
+          const _S293=(sr.current._t293&&sr.current._t293.k===P.hlSitKey)?sr.current._t293:(sr.current._t293={k:P.hlSitKey,t:0});_S293.t+=aDt;
+          if((typeof window!=='undefined'&&window.__CPM_NO_G293)||_S293.t<0.5)_tackleCarrier=null;
+          else{const _dc293=Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89);let _n293=null,_dn293=1e9;const _a293=P.allPlayers||[];
+            sr.current.players.forEach((pp,ii)=>{const s=_a293[ii];if(s&&s.team==='away'&&!s.gk&&pp.mesh!==_tackleCarrier){const d=Math.hypot(pp.mesh.position.x-_lbx89,pp.mesh.position.z-_lbz89);if(d<_dn293){_dn293=d;_n293=pp.mesh;}}});
+            if(_n293&&_dn293<_dc293-3)_tackleCarrier=_n293;}}
         {const _S31=sr.current._c31;if(_S31&&_S31.k===P.hlSitKey&&_S31.i>=0&&!(typeof window!=='undefined'&&window.__CPM_NO_POSTO31)){const _pp31=sr.current.players&&sr.current.players[_S31.i];if(_pp31&&_pp31.mesh)_tackleCarrier=_pp31.mesh;}}/* [giro 31 PO-220] il pallone sta ai piedi del portatore che il 3D mette alla distanza dichiarata (_c31) */
         if(!_tackleCarrier){let _nd=1e9;const _a2=P.allPlayers||[];const _rx89=_no89?hero.position.x:_lbx89,_rz89=_no89?hero.position.z:_lbz89;sr.current.players.forEach((pp,ii)=>{const s=_a2[ii];if(s&&s.team==='away'&&!s.gk){const d=Math.hypot(pp.mesh.position.x-_rx89,pp.mesh.position.z-_rz89);if(d<_nd){_nd=d;_tackleCarrier=pp.mesh;}}});}
       } else _tackleCarrier=null;
@@ -23450,9 +23466,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
             if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
             const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};}
+          /* [giro 293] solo banco di prova (?cpmtest=1): la sonda dichiara «il ricevente del cast e' il battitore della scena», cioe' il caso del
+             flusso vero (il motore nomina ricevente il crossatore) che le scene forzate non producono perche' non hanno il cast del motore. */
+          if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RIC293==='batt'&&S.i<0){const _ss=P.stagedSpot&&P.stagedSpot.current;if(_ss&&_ss.taker!=null&&_ss.taker!==21){S.i=_ss.taker;S.p293=1;}}
           return S.i<0?null:S;}catch(_e){return null;}})();
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[(_sw219&&_sw219[i]!=null)?_sw219[i]:i],pp=_players[i];if(!t||!pp)continue;/* [7.2.0] durante la premiazione il movimento off-ball è guidato dal blocco ceremony (giro/curva/podio) */
-          const _pt31=(_c31&&_c31.i===i)?_c31:((_r99&&_r99.i===i)?_r99:null);/* [giro 99] il ricevente nominato sul suo punto di ricezione, stesso canale del portatore difensivo */
+          /* [giro 293 PO-562 «gunther continua a muoversi avanti ed indietro prima della mia scelta». Rosso __CPM_NO_G293] MISURATO (misura-293,
+             flusso vero, GLB acceso, tempo di scena; partita «Nunez» 44', «Cross di COLOMBO: attacca il pallone», origine del motore sulla
+             fascia): il crossatore col pallone fa 62 inversioni in 7 s di scena (8,8 al secondo, 1,4 u, 59 u di strada) per TUTTA la lettura.
+             Due scrittori sullo stesso corpo: il motore nomina il crossatore anche «ricevente» del cast, quindi il punto di ricezione del
+             giro 99 (_r99, 12 u davanti all'eroe) lo tira via dal pallone con animOne e lo toglie dall'attesa di lettura; appena e' oltre 1,5 u
+             la colla del battitore (7.405) lo rimette sul pallone. Il giro 286 fermava il battitore DENTRO l'attesa di lettura: questo
+             non ci entrava. Il battitore messo in scena per questa scena sta sul pallone e non ha un punto di ricezione. */
+          const _bt293=(function(){if(!(_r99&&_r99.i===i))return false;const _ss=P.stagedSpot&&P.stagedSpot.current,_q=(P.allPlayers||[])[i];if(!(_asIfPlay&&_inRead&&_ss&&_ss.taker===i&&_q&&_q._taker402))return false;
+            if(typeof window!=='undefined'&&window.__CPM_G293W&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_G293W.batt=(window.__CPM_G293W.batt|0)+1;}catch(_e293){}}/* testimone nei due bracci: il conflitto c'e' */
+            return !(typeof window!=='undefined'&&window.__CPM_NO_G293);})();
+          const _pt31=(_c31&&_c31.i===i)?_c31:((_r99&&_r99.i===i&&!_bt293)?_r99:null);/* [giro 99] il ricevente nominato sul suo punto di ricezione, stesso canale del portatore difensivo */
           // FIX passaggio: il compagno destinatario/ricevente NON si sposta — resta fermo ad accogliere la palla (ricezione leggibile)
           if(pp.mesh===passTargetMesh||(pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0)||(pp.mesh._failRunT!=null&&pp.mesh._failRunT>=0)||pp.mesh._celT371===1||pp.mesh._carry526!=null||(sr.current._pkCol415&&pp.mesh===sr.current._pkCol415.m))continue;/* [7.618.0] anche il RACCOGLITORE e' fuori dal driver di formazione: senza questo, il driver lo tirava allo slot ogni frame e il pallone vagante restava solo (misurato: driver del raccoglitore vivo 28 frame, avversario piu' vicino fermo a 7-8u) — decima istanza di «piu' autorita' sulla stessa grandezza» *//* [7.523.0 PORTATORE] chi conduce/riceve e' fuori dal driver di formazione *//* [7.371.0] chi sta correndo a festeggiare non viene riportato in posizione dall'AI off-ball: due driver sullo stesso mesh = il difetto del 5.43.13 */
           if(sr.current._adv773&&sr.current._adv773.mesh===pp.mesh&&!(typeof window!=='undefined'&&window.__CPM_NO_REPARTO90))continue;/* [7.999.89+ PO-132 #134 codice 006/011] MISURATO (sonda _reparto90, tempo reale): l'attaccante che porta palla prima del gol subito (7.773) era guidato ANCHE da questo driver di formazione, che lo riportava al suo posto a ogni fotogramma — con la palla ai piedi restava fermo a x 21,8, oppure non raggiungeva mai il pallone a 9,6u. Pallone fermo 1,5 s, reparto fermo con lui, poi tiro da lontano. Mentre avanza, il corpo e' solo dell'avanzata. Rosso __CPM_NO_REPARTO90. */
