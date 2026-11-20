@@ -17,6 +17,7 @@
 | 7 | lessico-218 | **verde** (2s) | — | — | Ultime righe del controllo: «rosso {"n":138,"pas":138,"es":["🦵 Tiro angolato","🤸 Pallonetto","🦵 Tiro di prima","🦵 Tiro a giro","🌀 Dribbling portiere e tiro"],"cn":12,"cd":12} ✅ lessico-218 verde (0 su 138 azioni-tiro col lessico di passaggio) e il rosso si vede (138 su 138) » |
 | 8 | minuti-202 | **verde** (173s) | — | — | Ultime righe del controllo: «rosso tentativo 1 {"scene":3,"recuperati":0,"residuo":0,"aperto":0,"tentativi":1,"s":27} ✅ minuti-202 verde (e il rosso si vede) » |
 | 9 | tempo-138 | **verde** (814s) | — | — | Ultime righe del controllo: «rosso {"fase":"ceremony","pagato":190,"residuo":26,"aperto":242} ✅ tempo-138 verde (e il rosso si vede) » |
+| 10 | pressing-143 | **verde** (26s) | — | — | Ultime righe del controllo: «rosso {"lett":[{"d":0.5,"conclusione":{"p":"medium","k":"conclusione"},"fra-le-linee":{"p":"medium","k":"fra-le-linee"},"cross":{"p":"medium","k":"cross"}},{"d":2,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}},{"d":4,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}» |
 <!-- fine tabella -->
 
 ## Verdetto
