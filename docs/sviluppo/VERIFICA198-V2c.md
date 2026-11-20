@@ -20,6 +20,7 @@
 | 10 | pressing-143 | **verde** (26s) | — | — | Ultime righe del controllo: «rosso {"lett":[{"d":0.5,"conclusione":{"p":"medium","k":"conclusione"},"fra-le-linee":{"p":"medium","k":"fra-le-linee"},"cross":{"p":"medium","k":"cross"}},{"d":2,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}},{"d":4,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}» |
 | 11 | difesa-220-giro31 | **verde** (1633s) | — | — | Ultime righe del controllo: «ROSSO viola come atteso: apertura 7.8 u > 3 · apertura 7.8 lontana dalla dichiarata 1.1 · contatto 5.6 u > 3 · (A) 92% > 45 · pallone di nessuno 62% > 25 · ritorno 100% > 25 (12/12) ✅ difesa-220-giro31 VERDE » |
 | 12 | esiti-60 | **verde** (107s) | — | — | Ultime righe del controllo: «rosso {"A":{"n":8,"bad":5,"es":["gi36/0 header riuscita «✈️ Stacco di testa»: tiro:saved+rammarico","gi44/0 header riuscita «✈️ Stacco di testa deciso»: tiro:saved+rammarico","gi134/0 header riuscita «✈️ Stacco dominante»: tiro:saved+rammarico","gi136/0 cross riuscita «🛑 Blocca il cross con il corpo»: cross"]},"B":{"n":2,"bad":2,"es":["saved «Tentativo respinto» «❌ Tiro debole, para comodo» |
+| 13 | rigorista-257 | **verde** (328s) | — | — | Ultime righe del controllo: «✅ C2 rosso __CPM_NO_G257: al 30' dischetto pen:21 · scene del compagno 0 · eroe battute 0 scene 1 ✅ rigorista-257 verde (e il rosso si vede) » |
 <!-- fine tabella -->
 
 ## Verdetto
