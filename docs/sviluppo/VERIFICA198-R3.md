@@ -1,0 +1,26 @@
+# Verifica della 7.999.198 — parte R3 (residui)
+
+Ramo `sviluppo/verifica198-r3`, partito da `prova/198-finale` (0f0b13d8 = lavoro/198 + giri 293–296, 298–302).
+Controlli eseguiti uno alla volta (`CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`), tetto 30 minuti l'uno.
+Nessuna correzione: solo esiti. Base di confronto: `lavoro/198` (b3b75b9d), in un albero di lavoro separato.
+
+| controllo | esito su finale | esito sulla base | nato da quale giro | nota |
+|---|---|---|---|---|
+| corpi-073 (braccio 284f) | INSTABILE = ROSSO: 3 corse, 2 verdi e 1 rossa (corsa 3, seme 29: codice 001 in 16/16 campioni di 1 apertura su 6, battitore 8, compagno più vicino ≥ 3,7 u, «primo scatto del pallone a 35,8 u») | VERDE 3/3 | NON ATTRIBUITO: una corsa per interruttore (`__CPM_NO_G293`, 294, 295, 296, 298, 299, 300, 301, 302 — il 297 non esiste nel codice) → 9 verdi su 9 | vedi «corpi-073» sotto |
+
+## corpi-073
+
+Conto complessivo delle corse del braccio 284f (V2d + R3):
+
+| dove | corse | rosse |
+|---|---|---|
+| finale (0f0b13d8), sonda così com'è | 5 (2 della V2d + 3 di R3) | 2 |
+| finale, un interruttore `__CPM_NO_G…` acceso per corsa | 9 | 0 |
+| base lavoro/198 (b3b75b9d) | 5 (2 della V2d + 3 di R3) | 0 |
+
+- Le due corse rosse hanno la stessa firma: seme 29, una sola apertura su 6 col codice 001 in quasi tutti i campioni (14/18 nella V2d, 16/16 qui), primo scatto del pallone a 35,8 u dal punto. Nella rossa di R3 il battitore è il numero 8 e il compagno più vicino al pallone resta a 3,7 u o più; in tutte le aperture verdi il compagno più vicino è a 0,0 u.
+- Il «primo scatto lontano dal punto» (35,8 u o 74,2 u) da solo NON fa il rosso: compare in molte aperture verdi, sia su finale sia sulla base (base: 6 aperture su 18 in R3).
+- Sulla base il codice 001 non è mai uscito in 5 corse (30 aperture). Sull'unione è uscito in 2 corse su 5. Questo indica che il difetto nasce dall'unione, ma con 5 corse per lato non è una prova: resta un'indicazione.
+- Gli interruttori: nessuno dei 9, acceso da solo per una corsa, ha dato rosso. Con un rosso che esce circa 2 volte su 5, una sola corsa verde per interruttore non scagiona né accusa nessun giro: **quale giro lo causa non posso confermarlo**. Servirebbero più corse per interruttore (ordine di 5–10 l'una, circa 3 minuti a corsa).
+- Come sono stati accesi gli interruttori: la sonda non ha un comando per farlo, quindi ho usato una copia temporanea di `corpi-073.mjs` con una sola riga in più (`addInitScript` che mette a 1 la variabile indicata), non salvata nel ramo. La sonda del ramo non è stata toccata.
+- Durate: circa 165–185 s a corsa.
