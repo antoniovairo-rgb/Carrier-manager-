@@ -12,5 +12,6 @@
 | box-fischio-169 | ⚠️ instabile: corsa 1 ROSSA (rc 1, 66 s — caduta della sonda nel braccio verde: `page.screenshot: Expected options.clip.width to be greater than 0`, riga 89), corsa 2 verde (rc 0, 193 s: 54 giudicati · 0 sotto soglia · 0 non giudicati, voto 12/12, rosso riprodotto 45 sotto soglia) | stessa caduta (rc 1, 166 s): braccio verde PASS 54/0/0 e 12/12, poi la sonda cade nel braccio rosso con lo stesso errore alla riga 89 | non nasce dall’unione (presente sulla base b3b75b9d) | instabilità della sonda, non del gioco: il rettangolo del riquadro misurato ha larghezza 0 e la foto viene chiesta prima del ricontrollo di coerenza; una caduta vale «non giudicato» = rosso. Quando arriva al verdetto il contenuto è verde su entrambi i rami |
 | cerimonie-192 | ✅ verde (rc 0, 452 s) | — | — | punti A, B, C, D verdi e ogni rosso si vede (es. A slittamento 0,014 contro 0,322; B volo 0,30 contro 2,96) |
 | convocazione-190 | ✅ verde (rc 0, 1 s) | — | — | 13 ok · 0 ko; controllo di sola logica (senza browser); scelta del mister identica al braccio rosso 0/300 differenze, frasi cambiate 300 |
+| cronaca-nomi-190 | ✅ verde (rc 0, 516 s) | — | — | due partite intere fino al fischio (92′ e 92′), 125 righe di cronaca, 0 col segnaposto |
 
-Verdetto: **in corso** (5 controlli su 10).
+Verdetto: **in corso** (6 controlli su 10).
