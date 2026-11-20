@@ -16,3 +16,4 @@
 | 6 | pillola-58 | VERDE (uscita 0, 59 s) | — | — | a 915 e 740 px la pillola sta 19 px sopra la barra; nel rosso la distanza scende a 0 e −12 |
 | 7 | partita-vera | VERDE (uscita 0, 665 s) | — | — | 12 bande giudicate e tenute su 2 partite finite 2/2 (tabellone 3-2 raccontato = finale). Riga solo informativa: «portatore-stato: campioni 0», non è una banda |
 | 8 | validate-situations | VERDE (uscita 0, 886 s) | — | — | gate 14/14 su 191 situazioni, fingerprint 00001505, 0 failure; avvisi non bloccanti: initial-state 4, visual 1, movements 23, motion 1, bg-coherence 1 |
+| 9 | tetto-202 | VERDE (uscita 0, 7 s) | — | — | verde 20, e il rosso si vede |
