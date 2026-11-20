@@ -1,0 +1,113 @@
+name: Verifica guardiani (prova, giro 303)
+
+# [giro 303, PO-592 — PROVA di metodo] I guardiani di tests/visual sui runner standard di GitHub,
+# divisi in parti parallele (matrice). Parte SOLO sui rami «prova-ci/**» e a mano.
+# Cosa gira lo dice tests/visual/ci-parti-303.json; il taglio in parti lo fa tests/visual/ci-parti-303.mjs.
+# Nessun segreto, nessun runner a pagamento (solo ubuntu-latest), sola lettura sui contenuti.
+on:
+  push:
+    branches: ['prova-ci/**']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verifica-guardiani-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  piano:
+    name: Piano (taglio in parti)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrice: ${{ steps.piano.outputs.matrice }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Piano e matrice
+        id: piano
+        working-directory: tests/visual
+        run: node ci-parti-303.mjs piano
+
+  guardiani:
+    name: ${{ matrix.nome }}
+    needs: piano
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.piano.outputs.matrice) }}
+    defaults:
+      run:
+        working-directory: tests/visual
+    env:
+      CPM_CI_PAR: '0'
+      VISION_PROVIDER: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Dipendenze di tests/visual (npm install)
+        run: |
+          t0=$(date +%s)
+          npm install --no-audit --no-fund
+          echo "CPM_INSTALL_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+
+      - name: Chromium (Playwright, nel runner)
+        run: |
+          t0=$(date +%s)
+          npx playwright install --with-deps chromium
+          chrome=$(node -e "import('playwright').then(m=>console.log(m.chromium.executablePath()))")
+          test -x "$chrome"
+          echo "CPM_CHROME=$chrome" >> "$GITHUB_ENV"
+          echo "CPM_CHROMIUM_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+          echo "Chromium: $chrome"; "$chrome" --version; nproc; free -m | head -2
+
+      - name: Guardiani di questa parte
+        env:
+          CPM_PARTE: ${{ matrix.nome }}
+          CPM_ATTESI_S: ${{ matrix.attesi_s }}
+        run: node ci-parti-303.mjs esegui "${{ matrix.guardiani }}"
+
+      - name: Uscita come artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardiani-parte-${{ matrix.parte }}
+          path: |
+            tests/visual/out/
+            !tests/visual/out/.precompilata-237/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
+
+  riepilogo:
+    name: Riepilogo
+    needs: guardiani
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          path: parti
+          pattern: guardiani-parte-*
+      - name: Tabella unica (nel log, nel riepilogo e come artifact)
+        run: node tests/visual/ci-parti-303.mjs riunisci parti
+      - uses: actions/upload-artifact@v4
+        with:
+          name: riepilogo-totale
+          path: |
+            parti/riepilogo-totale.json
+            parti/riepilogo-totale.md
+          retention-days: 7
