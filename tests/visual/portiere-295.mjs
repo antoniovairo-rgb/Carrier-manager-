@@ -18,7 +18,7 @@
      nella fascia 0,25 u oltre una delle tre soglie (lato 4,5 · distanza 5,5 · quota 2,6). ✗ sul filo e nessun gesto del portiere.
      Fuori dal filo = NON GIUDICATO.
    BRACCIO 4 «parata chiusa entro la portata del portiere» (PO-530, 8 pagine «parata» col portiere ARRETRATO sulla linea, x 97, messo
-     dal gancio __CPM_GKAT119, e bersaglio dell'arco fissato a x 43,5 dal gancio __CPM_PARX295 — nel gioco e' sorteggiato, misurato da 40 a
+     dal gancio __CPM_GKAT119, e bersaglio dell'arco messo 3,5 u davanti a lui dal gancio __CPM_PARX295 (quando il tiro parte da piu' lontano) — nel gioco e' sorteggiato, misurato da 40 a
      46,9; il giro 271 ha misurato 42-43,9): dall'armo dell'arco alla fine della scena il pallone arriva a non piu' di 2 u dal corpo del portiere in
      pianta (le mani arrivano ~1,3 u oltre il centro del corpo disteso). ✗ oltre 2 u.
    Un caso senza i fotogrammi che servono e' NON GIUDICATO = rosso (mai abbassare soglie).
@@ -30,7 +30,7 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const P = (s, k) => s.split(',').filter(Boolean).map(q => { const [gi, ai, gz] = q.split(':'); return { gi: +gi, ai: +ai, k, gz: gz == null ? null : +gz }; });
 const PALO = P(process.env.CPM_PALO || '1:0,62:1,86:0,90:0,88:0,9:0,3:0,11:0', 'post');
-const PARATA = P(process.env.CPM_PARATA || '165:0,90:0,9:0,11:0,4:0,10:0,1:0,86:0', 'saved');
+const PARATA = P(process.env.CPM_PARATA || '165:0,90:0,9:0,11:0,10:0,17:2,7:0,4:0', 'saved');
 const TIPI = (process.env.CPM_TIPI || 'palo,parata').split(',');
 const SCENE = [...(TIPI.includes('palo') ? PALO : []), ...(TIPI.includes('parata') ? PARATA : [])];
 const PAR = +(process.env.CPM_PAR || 2), GLB = process.env.CPM_GLB !== '0', MISURA = !!process.env.CPM_MISURA;
@@ -40,7 +40,7 @@ const srv = await startServer(), port = srv.address().port, b = await launchBrow
 
 async function scena(sc, rosso) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(([r, glb, dietro]) => { window.__CPM_GLB = !!glb; window.__CPM_PRESENT = 1; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_G295 = 1; if (dietro) { window.__CPM_GKAT119 = { x: 97, y: 50 }; window.__CPM_PARX295 = 43.5; } }, [rosso, GLB, sc.k === 'saved']);
+  await page.addInitScript(([r, glb, dietro]) => { window.__CPM_GLB = !!glb; window.__CPM_PRESENT = 1; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_G295 = 1; if (dietro) { window.__CPM_GKAT119 = { x: 97, y: 50 }; window.__CPM_PARX295 = 3.5; } }, [rosso, GLB, sc.k === 'saved']);
   const o = { sc };
   try {
     await openMatch(page, port); await sleep(800);
@@ -63,7 +63,7 @@ async function scena(sc, rosso) {
     while (Date.now() - t0 < 300000) { await sleep(400);
       const s = await page.evaluate(() => { const R = window.__CPM_GK229 || [], L = R[R.length - 1]; let iE = -1, arm = false; for (let i = 0; i < R.length; i++) { if (R[i].ph !== 'hl_result') continue; if (R[i].at) arm = true; if (arm && !R[i].at) { iE = i; break; } } return { ck: L ? L.ck : 0, ckE: iE >= 0 ? R[iE].ck : null }; });
       if (s.ckE != null && s.ck - s.ckE > 1.0) break; }
-    const [R, G, PA] = await page.evaluate(() => [(window.__CPM_GK229 || []).slice(), (window.__CPM_G223P || []).slice(), (window.__CPM_PARATA295 || []).slice()]); await page.close();
+    const [R, G, PA, SV] = await page.evaluate(() => [(window.__CPM_GK229 || []).slice(), (window.__CPM_G223P || []).slice(), (window.__CPM_PARATA295 || []).slice(), window.__CPM_SV119 || null]); await page.close();
     o.n = R.length;
     /* braccio 1 */
     const B = R.filter(f => f.tl && f.ph === 'hl_result'), B2 = B.filter(f => f.gn >= 2);
@@ -87,7 +87,7 @@ async function scena(sc, rosso) {
       else if (esito !== 'saved' && esito !== 'save') o.b4 = { ng: 'esito ' + esito + ' invece di parata' };
       else if (R[iA].gx < 46) o.b4 = { ng: `portiere non arretrato (x ${R[iA].gx})` };
       else { let m = 99, at = null; for (let i = iA; i < R.length; i++) { const f = R[i]; if (f.ph !== 'hl_result') break; const d = Math.hypot(f.bx - f.gx, f.bz - f.gz); if (d < m) { m = d; at = f; } }
-        o.b4 = { minGB: +m.toFixed(2), bx: at.bx, bz: at.bz, gx: at.gx, gz: at.gz, atx: R[Math.min(R.length - 1, iA + 1)].atx, gesto, allungo: PA.length ? PA[PA.length - 1] : null }; } }
+        o.b4 = { minGB: +m.toFixed(2), bx: at.bx, bz: at.bz, gx: at.gx, gz: at.gz, atx: R[Math.min(R.length - 1, iA + 1)].atx, gesto, allungo: PA.length ? PA[PA.length - 1] : null, sx: SV ? SV.sx : null }; } }
   } catch (e) { try { await page.close(); } catch (_e) {} o.err = 'errore: ' + String(e.message || e).slice(0, 100); }
   return o;
 }
@@ -105,7 +105,7 @@ async function braccio(rosso) {
     if (o.sc.k === 'post') {
       if (o.b2.ng) segna(2, 0, 1, `${id}: NON GIUDICATO (${o.b2.ng})`); else segna(2, o.b2.scarto > SCIV, 0, `${id}: bersaglio spostato a ${o.b2.bers} u da lui, poi ${o.b2.dur} s di scena di lettura: scarto ${o.b2.scarto} u, strada ${o.b2.strada} u, guide ${o.b2.guide}`);
       if (o.b3.ng) segna(3, 0, 1, `${id}: NON GIUDICATO (${o.b3.ng})${o.b3.gesto !== undefined ? ' gesto ' + (o.b3.gesto || 'nessuno') : ''}`); else segna(3, !o.b3.gesto, 0, `${id}: sul filo (lato ${o.b3.lat} u, distanza ${o.b3.d}, quota ${o.b3.y}) · gesto ${o.b3.gesto || 'NESSUNO'}`); }
-    else { if (o.b4.ng) segna(4, 0, 1, `${id}: NON GIUDICATO (${o.b4.ng})`); else segna(4, o.b4.minGB > CHIUSA, 0, `${id}: minimo pallone-portiere ${o.b4.minGB} u (pallone ${o.b4.bx};${o.b4.bz} · portiere ${o.b4.gx};${o.b4.gz}) · bersaglio dell'arco x ${o.b4.atx} · gesto ${o.b4.gesto || 'nessuno'}${o.b4.allungo ? ' · arco allungato da x ' + o.b4.allungo.prima + ' a ' + o.b4.allungo.dopo : ''}`); } }
+    else { if (o.b4.ng) segna(4, 0, 1, `${id}: NON GIUDICATO (${o.b4.ng})`); else segna(4, o.b4.minGB > CHIUSA, 0, `${id}: minimo pallone-portiere ${o.b4.minGB} u (pallone ${o.b4.bx};${o.b4.bz} · portiere ${o.b4.gx};${o.b4.gz}) · tiro da x ${o.b4.sx} · bersaglio dell'arco x ${o.b4.atx} · gesto ${o.b4.gesto || 'nessuno'}${o.b4.allungo ? ' · arco allungato da x ' + o.b4.allungo.prima + ' a ' + o.b4.allungo.dopo : ''}`); } }
   const NOMI = { 1: 'una guida per fotogramma', 2: 'nessuna scivolata durante la scelta', 3: 'tuffo sempre sul filo della portata', 4: 'parata chiusa entro la portata del portiere' };
   for (const n of [1, 2, 3, 4]) { if (!A[n].t.length) continue; console.log(`  braccio ${n} «${NOMI[n]}»: giudicate ${A[n].g}, con difetto ${A[n].d}, non giudicate ${A[n].ng}`); for (const t of A[n].t) console.log('    ' + t); }
   return { A, NOMI };

@@ -6528,7 +6528,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&!_amico43&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             ballArcTgtZ=clamp(ballArcTgtZ,-3.3,3.3);
             ballArcTgtX=Math.max(ballArcTgtX,AWAY_GOAL_X-4);
-            if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_PARX295!=null)ballArcTgtX=+window.__CPM_PARX295;/* [giro 295 PO-530, SOLO SONDE ?cpmtest=1] bersaglio dell'arco della parata fissato in x: nel gioco e' sorteggiato a ogni corsa (misurato col portiere a x 47: da 40 a 46,9), e il caso «davanti al portiere arretrato» (giro 271: x 42-43,9) va provocato per essere ripetibile */
+            if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_PARX295!=null&&awayGkMesh&&ball.position.x<awayGkMesh.position.x-(+window.__CPM_PARX295)-1.5)ballArcTgtX=awayGkMesh.position.x-(+window.__CPM_PARX295);/* [giro 295 PO-530, SOLO SONDE ?cpmtest=1] bersaglio dell'arco della parata messo a <u> davanti al portiere (solo se il pallone parte almeno 1,5 u prima di quel punto): nel gioco il bersaglio e' sorteggiato a ogni corsa (misurato col portiere a x 47: da 40 a 46,9), e il caso «davanti al portiere arretrato» (giro 271: 3-5 u) va provocato per essere ripetibile */
             /* [giro 40 PO-258 «Bordata potente» parata, codice 111 portiere fuori tempo — taccuino PO 7.999.169 S.13 W.21 43'. Rosso
                __CPM_NO_PARATA258, guardiano parata-258] MISURATO (sonda del giro 27, 4 punizioni fk_power parate, GLB acceso, testimone
                __CPM_GK229): il portiere uscito a x 41 arrivava sul punto giusto in tempo (z -2,51 contro pallone a -2,36), ma l'arco della
@@ -6545,9 +6545,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  parata resta davanti a lui (morsetto qui sopra: almeno AWAY_GOAL_X-4 = 42) e il pallone muore 3-5 u prima delle sue mani. I due
                  tagli qui sotto valgono solo col portiere DAVANTI al bersaglio. Ora, col portiere DIETRO, l'arco si allunga sulla stessa retta
                  fino al suo piano (stessa convenzione del 258: mani a +0,45 u), durata scalata sulla corda, mai oltre la linea di porta. */
-              if(!(typeof window!=='undefined'&&window.__CPM_NO_G295)&&_gx258>ballArcTgtX+0.3&&_sx258<ballArcTgtX-0.5){
-                const _nx295=Math.min(_gx258,GOAL_LINE_X-0.3),_u295=(_nx295-_sx258)/(ballArcTgtX-_sx258),_px295=ballArcTgtX;
-                ballArcTgtZ=clamp(_sz258+(ballArcTgtZ-_sz258)*_u295,-3.3,3.3);ballArcTgtX=_nx295;ballArcDur=Math.max(0.2,ballArcDur*_u295);
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G295)&&_gx258>ballArcTgtX+0.3&&_sx258<_gx258-0.5){
+                const _nx295=Math.min(_gx258,GOAL_LINE_X-0.3),_dx295=ballArcTgtX-_sx258,_u295=_dx295>0.5?(_nx295-_sx258)/_dx295:0,_px295=ballArcTgtX;
+                /* tiro da lontano: stessa retta, durata scalata sulla corda. Tiro da sotto (il bersaglio e' a meno di 0,5 u dal pallone, o dietro:
+                   misurato su gi86 testa e gi4, pallone a x 44-45 col portiere a 47): non c'e' una retta da allungare, il pallone va dritto alle
+                   mani del portiere tenendo la z del bersaglio, a 32 u/s di scena (la velocita' del volo del giro 274). */
+                if(_u295>0){ballArcTgtZ=clamp(_sz258+(ballArcTgtZ-_sz258)*_u295,-3.3,3.3);ballArcDur=Math.max(0.2,ballArcDur*_u295);}
+                else ballArcDur=Math.max(ballArcDur,0.2,Math.hypot(_nx295-_sx258,ballArcTgtZ-_sz258)/32);
+                ballArcTgtX=_nx295;
                 if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA295=window.__CPM_PARATA295||[]);if(W.length<100)W.push({t,gx:+awayGkMesh.position.x.toFixed(2),prima:+_px295.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u295.toFixed(2)});}catch(_e){}}
               }
               if(ballArcTgtX>_gx258+0.3&&_sx258<_gx258-2){
