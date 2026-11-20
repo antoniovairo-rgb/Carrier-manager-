@@ -28,7 +28,19 @@ V3 pronto: **non ancora deciso** (controlli in corsa).
 
 ## 2. Guardiani della MAPPA di src/12 che leggono esito, pallone in `hl_result`, portiere
 
-Da compilare.
+Elenco, preso dalle righe di `src/12` della MAPPA di `ci-runner.mjs` (letta, non eseguita) e scelto guardando che cosa legge ogni
+sonda (portiere, esito, pallone nella finestra d'esito, canale-rete). Oltre a quelli già nel punto 1 (`esito-rete-301`,
+`portiere-295`, `portiere-265`, `gk-dive-sync`, `salti-274`, `contatto-103`, `validate-situations`, `esiti-218`):
+`gk-miss-229`, `portiere-223`, `parata-258`, `rete-252`, `portiere-252`, `parata-100`, `goal-postarc`, `esiti-241`, `po229-gi38`,
+`cross-218`, `chiusura-99`, `rinvio-252`.
+
+| controllo | esito su finale (9ec24c4f) | esito sulla base (lavoro/198) | nato da quale giro | nota |
+|---|---|---|---|---|
+| `gk-miss-229` | **verde** (uscita 0, 3 min) | non eseguito | — | 12 tiri sbagliati giudicati, 7 con gesto del portiere, 7 a portata; partenza del corpo mediana −0,49 s dal passaggio sul piano |
+| `portiere-223` | **verde del guardiano** (uscita 0, 7 min), **con 1 caso «non giudicato»** | non eseguito | non so (base non misurata) | verde: 14 tiri giudicati; rosso `__CPM_NO_G223` rivisto con 12 difetti. Nel braccio verde il guardiano stampa «volee gi1 wide: a bruciapelo (pallone sul portiere 0,13 s dopo il calcio, sotto il tempo di reazione): non giudicato». Per la regola «non giudicato = rosso» lo segnalo come **non verde pieno**; non so se lo stesso caso esce anche sulla base |
+| `parata-258` | **verde** (uscita 0, 1 min) | non eseguito | — | 4 parate su 4 col pallone sulle mani, 0 dietro il portiere |
+| `rete-252` | **verde** (uscita 0, 4 min) | non eseguito | — | verde: passo massimo 0,91 u, in rete 4 su 4 · rosso: passo massimo 4,40 u |
+| `portiere-252`, `parata-100` (instabile dichiarato), `goal-postarc`, `esiti-241`, `po229-gi38`, `cross-218`, `chiusura-99`, `rinvio-252` | **non eseguiti** | non eseguiti | | tempo finito: vedi «Non eseguito» |
 
 ## 3. `highlight-95`
 
