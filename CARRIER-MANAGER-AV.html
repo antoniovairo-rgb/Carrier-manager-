@@ -22011,6 +22011,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
             }
           }
+          /* [giro 301, SOLO COLLAUDO ?cpmtest=1] provocazione del guardiano esito-rete-301: su un'azione fallita il bersaglio dell'arco viene
+             messo DENTRO la porta (0,9 u oltre la linea, fra i pali, basso). Il gioco da solo non lo fa (misurato): serve a provare la barriera. */
+          if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RETE301&&ballArcActive&&P.hlSuccess===false&&!P.hlDef){ballArcTgtX=GOAL_LINE_X+0.9;ballArcTgtZ=clamp(ballArcTgtZ,-2.6,2.6);ballArcTgtY=0.6;try{(window.__CPM_RETE301L=window.__CPM_RETE301L||[]).push({t,kind:P.hlOutcomeKind||null,tz:+ballArcTgtZ.toFixed(2)});}catch(_e){}}
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
           /* [7.513.0 R2/2 — IL CONTATTO E' UNA PROPRIETA' DELLA TABELLA: audit «cross e passaggi partono a
              contatto zero — la palla e' gia' partita quando la gamba passa sul pallone»] Il -0,24 era un `if`
@@ -29148,6 +29151,20 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           }catch(_e96t){}}
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
+      /* [giro 301 PO-588 — «esito miss ma la palla e' finita IN RETE». Rosso __CPM_NO_G301, guardiano esito-rete-301]
+         BARRIERA DI ULTIMA ISTANZA, A FINE FOTOGRAMMA (dopo ogni scrittore del pallone, prima del disegno): durante l'esito di
+         un'azione FALLITA il pallone non sta mai oltre la linea di porta avversaria, fra i pali e sotto la traversa, se un canale-rete
+         non lo certifica (_netOk535). Il guardiano geometrico 7.530 lavora solo senza arco e senza post-arco e sposta di lato con un
+         guadagno per fotogramma: mentre un arco o una respinta sono vivi non guarda, e il pallone dentro si vede. Qui il pallone resta
+         SULLA linea (x 48,55) nel fotogramma stesso. Il caso del PO non e' stato riprodotto (0 su 44 tiri falliti misurati prima della correzione, forzati e
+         di partita vera: docs/sviluppo/RAPPORTO-giro301.md): la barriera e' provata con la provocazione di collaudo __CPM_RETE301 (bersaglio dell'arco dentro la porta).
+         Testimone __CPM_G301W (solo collaudo): chi scriveva il pallone quando la barriera e' servita. */
+      try{const _P301=propsRef.current||{};
+        if(_P301.matchPhase==="hl_result"&&_P301.hlSuccess===false&&ball&&!sr.current._netOk535&&ball.position.x>=GOAL_LINE_X-0.02&&Math.abs(ball.position.z)<3.66&&ball.position.y<2.44){
+          const _no301=!!(typeof window!=='undefined'&&window.__CPM_NO_G301);
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const _w301=(window.__CPM_G301W=window.__CPM_G301W||[]);if(_w301.length<400)_w301.push({sk:_P301.hlSitKey!=null?String(_P301.hlSitKey):null,kind:_P301.hlOutcomeKind||null,ht:_P301.hlType||null,x:+ball.position.x.toFixed(2),z:+ball.position.z.toFixed(2),y:+ball.position.y.toFixed(2),arc:!!ballArcActive,pt:hlPostArcType||null,ws:sr.current._ws524||0,fermato:!_no301});}catch(_e){}}
+          if(!_no301)ball.position.x=GOAL_LINE_X-0.05;}
+      }catch(_e301){}
       __w266c('R');
       if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
       else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196)){if(sr.current._noDis219)sr.current._noDis219=0;else if(!_pend219())renderer.render(scene,camera);/* [giro 219] un tocco in coda passa prima del disegno */}/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
