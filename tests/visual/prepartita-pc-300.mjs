@@ -107,7 +107,7 @@ async function parteBA(b, port, W, H, tipo, rosso, et) {
       const rap = (a, b) => { const x = lum(rgb(a)), y = lum(rgb(b)); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
       const colTit = tit ? getComputedStyle(tit).color : cs.color;
       return { testo: (t.textContent || '').trim().slice(0, 60), bordoPx: parseFloat(cs.borderTopWidth) || 0, bordo: cs.borderTopColor, fondo: cs.backgroundColor, fondoAltro: ca && ca.backgroundColor, bordoAltro: ca && ca.borderTopColor,
-        titolo: !!tit, colTit, contrasto: +rap(colTit, cs.backgroundColor).toFixed(2), contrastoBordo: +rap(cs.borderTopColor, cs.backgroundColor).toFixed(2), icona: /⚡/.test(tit ? tit.textContent : ''), h: Math.round(q.height),
+        titolo: !!tit, colTit, contrasto: +rap(colTit, cs.backgroundColor).toFixed(2), contrastoBordo: +rap(cs.borderTopColor, cs.backgroundColor).toFixed(2), icona: (() => { const ic = t.querySelector('[data-cpm="solo-300-icona"]'); if (!ic) return false; const c = getComputedStyle(ic, '::before'); return /⚡/.test(c.content || '') && ic.getBoundingClientRect().width > 4; })()/* l'icona e' disegnata (::before): il nome del tasto resta pulito */, nome: (() => { const c = t.cloneNode(true); c.querySelectorAll('[data-cpm$="-nota"]').forEach(n => n.remove()); return (c.textContent || '').trim(); })(), h: Math.round(q.height),
         notaDentro: !!(nota && t.contains(nota) && qn.top >= q.top - 0.5 && qn.bottom <= q.bottom + 0.5 && qn.left >= q.left - 0.5 && qn.right <= q.right + 0.5), intero: q.left >= 0 && q.right <= innerWidth + 0.5 }; });
     await foto(page, `${et}-prepartita-${W}x${H}`);
   } catch (e) { r.err = String(e.message || e); }
@@ -197,6 +197,7 @@ for (const rosso of [false, true]) {
       giu('A', a.bordoPx >= 2 && a.bordo !== a.fondo && a.bordo !== a.bordoAltro, `niente bordo d'accento (${a.bordoPx} px ${a.bordo}; altri tasti ${a.bordoAltro})`);
       giu('A', a.titolo && a.colTit === a.bordo, `il titolo non ha il colore del bordo (${a.colTit} / ${a.bordo})`);
       giu('A', a.icona, 'manca l\'icona ⚡ nel titolo');
+      if (a.nome !== 'Gioca solo i momenti salienti') ko.push(`A@${m}: il nome del tasto e' cambiato («${a.nome}»)`);
       if (a.titolo && a.contrasto < 4.5) ko.push(`A@${m}: titolo a ${a.contrasto}:1 sul fondo (min 4,5)`);
       if (a.fondo !== a.fondoAltro) ko.push(`A@${m}: il fondo del tasto non e' piu' quello scuro degli altri (${a.fondo} / ${a.fondoAltro})`);
       if (!a.notaDentro) ko.push(`A@${m}: la nota non e' dentro il tasto (giro 287)`);
