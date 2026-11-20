@@ -526,6 +526,29 @@ const CLUB_FOUNDED={sal:1919,juve:1897,inter:1908,milan:1899,nap:1926,rom:1927,l
   rma:1902,bar:1899,atm:1903,sev:1890,val:1919,bet:1907,ath:1898,liv:1892,mun:1878,mcy:1880,che:1905,ars:1886,tot:1882,new:1892,whu:1895,avl:1874,eve:1878,
   bay:1900,bvb:1909,psg:1970,marse:1899,lyon:1950,mon:1924,ben:1904,por:1893,spo:1906,ajax:1900,psv:1913,feye:1908,gal:1905,fenk:1907,bes:1903,tra:1967,and:1908,club:1891};
 const clubFoundedYear=(id)=>CLUB_FOUNDED[id]||(1897+(Math.abs(hashStr("fnd|"+String(id||"club")))%33));
+/* [giro 296 PO-535 «Nome corto apposta», decisione PO 18/11 20:30] OGNI CLUB HA ANCHE UN NOME CORTO, accanto a nome e sigla.
+   MISURA (giro 272 dubbio 3, rimisurato al 296 a 375x667): in cerimonia dopo i rigori la striscia in alto ha ~62-77 px per il nome;
+   «Salernum 1919» (71,6 px) non ci sta e la scala NomeSquadra182 scendeva alla sigla: «SLR» scritto accanto allo stemma che dice
+   gia' «SLR» (sigla doppia). Il nome corto e' l'ultimo gradino PRIMA della sigla: al massimo 10 caratteri, unico fra tutti i club.
+   Regola: il nome senza la sigla societaria in testa (FC Granata -> Granata) se e' gia' di 10 caratteri o meno; altrimenti la riga di
+   questa tabella (id -> nome corto). Una correzione del PO e' UNA riga qui. Si cerca per NOME (le Primavera/U19 ereditano quello del
+   club, i salvataggi portano nome e sigla ma non altro). Rosso __CPM_NO_G296 = la scala di prima (nessun nome corto).
+   Guardiano tests/visual/rigori-296.mjs (statico: tutti i club hanno un nome corto <= 10, unico, diverso dalla sigla). */
+const CLUB_CORTI_296={
+  lazio:"Celesti",sam:"Sampierd.",mun:"Rovers",wol:"Wolverh.",cel:"Ría Vigo",ray:"Madrid E.",mgb:"Niederrh.",ber:"Köpenick",psg:"Paris IdF",
+  mtp:"Montpell.",spo:"Lisboa N.",casa:"Lisboa O.",vsc:"Vimaran.",rioave:"Vila Conde",bav:"Foz Douro",fama:"Famalic.",spa:"Spangen",
+  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:"Salernum",shu:"Sheffield",
+  wba:"West Brom.",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
+};
+const CORTO_MAX_296=10;
+const _PREF_SOC296=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+const _CAT_296=/\s+(?:U18|U19|Primavera)$/;
+const _cortoRegola296=(n)=>{const c=String(n||"").replace(_PREF_SOC296,"");return c.length<=CORTO_MAX_296?c:"";};
+const _CORTI_NOME_296=(()=>{const m={};try{CLUBS.forEach(c=>{const k=CLUB_CORTI_296[c.id]||_cortoRegola296(c.n);if(k)m[c.n]=k;});}catch(_e){}return m;})();
+function nomeCorto296(team){if(typeof window!=='undefined'&&window.__CPM_NO_G296)return"";
+  const n=String((team&&(team.n||team.name))||"").trim();if(!n)return"";const base=n.replace(_CAT_296,"");
+  return _CORTI_NOME_296[base]||"";}
+if(typeof window!=='undefined'){window.__CPM_CORTI296=()=>CLUBS.map(c=>({id:c.id,n:c.n,a:c.a,lg:c.lg,corto:_CORTI_NOME_296[c.n]||""}));}
 function TeamBadge({team,size=40}) {
   /* [7.168.0 collaudo PO «migliora e rendi più moderni gli scudetti/stemmi di tutte le squadre»] REDESIGN:
      - 3 FORME di scudo seedate per club (classico appuntito · francese arrotondato · roundel circolare) → identità;

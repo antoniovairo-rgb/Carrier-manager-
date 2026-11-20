@@ -1731,6 +1731,29 @@ const CLUB_FOUNDED={sal:1919,juve:1897,inter:1908,milan:1899,nap:1926,rom:1927,l
   rma:1902,bar:1899,atm:1903,sev:1890,val:1919,bet:1907,ath:1898,liv:1892,mun:1878,mcy:1880,che:1905,ars:1886,tot:1882,new:1892,whu:1895,avl:1874,eve:1878,
   bay:1900,bvb:1909,psg:1970,marse:1899,lyon:1950,mon:1924,ben:1904,por:1893,spo:1906,ajax:1900,psv:1913,feye:1908,gal:1905,fenk:1907,bes:1903,tra:1967,and:1908,club:1891};
 const clubFoundedYear=(id)=>CLUB_FOUNDED[id]||(1897+(Math.abs(hashStr("fnd|"+String(id||"club")))%33));
+/* [giro 296 PO-535 «Nome corto apposta», decisione PO 18/11 20:30] OGNI CLUB HA ANCHE UN NOME CORTO, accanto a nome e sigla.
+   MISURA (giro 272 dubbio 3, rimisurato al 296 a 375x667): in cerimonia dopo i rigori la striscia in alto ha ~62-77 px per il nome;
+   «Salernum 1919» (71,6 px) non ci sta e la scala NomeSquadra182 scendeva alla sigla: «SLR» scritto accanto allo stemma che dice
+   gia' «SLR» (sigla doppia). Il nome corto e' l'ultimo gradino PRIMA della sigla: al massimo 10 caratteri, unico fra tutti i club.
+   Regola: il nome senza la sigla societaria in testa (FC Granata -> Granata) se e' gia' di 10 caratteri o meno; altrimenti la riga di
+   questa tabella (id -> nome corto). Una correzione del PO e' UNA riga qui. Si cerca per NOME (le Primavera/U19 ereditano quello del
+   club, i salvataggi portano nome e sigla ma non altro). Rosso __CPM_NO_G296 = la scala di prima (nessun nome corto).
+   Guardiano tests/visual/rigori-296.mjs (statico: tutti i club hanno un nome corto <= 10, unico, diverso dalla sigla). */
+const CLUB_CORTI_296={
+  lazio:"Celesti",sam:"Sampierd.",mun:"Rovers",wol:"Wolverh.",cel:"Ría Vigo",ray:"Madrid E.",mgb:"Niederrh.",ber:"Köpenick",psg:"Paris IdF",
+  mtp:"Montpell.",spo:"Lisboa N.",casa:"Lisboa O.",vsc:"Vimaran.",rioave:"Vila Conde",bav:"Foz Douro",fama:"Famalic.",spa:"Spangen",
+  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:"Salernum",shu:"Sheffield",
+  wba:"West Brom.",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
+};
+const CORTO_MAX_296=10;
+const _PREF_SOC296=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
+const _CAT_296=/\s+(?:U18|U19|Primavera)$/;
+const _cortoRegola296=(n)=>{const c=String(n||"").replace(_PREF_SOC296,"");return c.length<=CORTO_MAX_296?c:"";};
+const _CORTI_NOME_296=(()=>{const m={};try{CLUBS.forEach(c=>{const k=CLUB_CORTI_296[c.id]||_cortoRegola296(c.n);if(k)m[c.n]=k;});}catch(_e){}return m;})();
+function nomeCorto296(team){if(typeof window!=='undefined'&&window.__CPM_NO_G296)return"";
+  const n=String((team&&(team.n||team.name))||"").trim();if(!n)return"";const base=n.replace(_CAT_296,"");
+  return _CORTI_NOME_296[base]||"";}
+if(typeof window!=='undefined'){window.__CPM_CORTI296=()=>CLUBS.map(c=>({id:c.id,n:c.n,a:c.a,lg:c.lg,corto:_CORTI_NOME_296[c.n]||""}));}
 function TeamBadge({team,size=40}) {
   /* [7.168.0 collaudo PO «migliora e rendi più moderni gli scudetti/stemmi di tutte le squadre»] REDESIGN:
      - 3 FORME di scudo seedate per club (classico appuntito · francese arrotondato · roundel circolare) → identità;
@@ -12325,6 +12348,9 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   add(ab);
   if(g211)add(senzaCat(ab));
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  /* [giro 296 PO-535] il NOME CORTO APPOSTA del club (tabella in src/02), ultimo gradino prima della sigla. `out.corto296` = il suo posto
+     nella scala (-1 se il club non ne ha uno diverso dai gradini di prima). Rosso __CPM_NO_G296. */
+  out.corto296=-1;try{const _c296=(typeof nomeCorto296==="function")?nomeCorto296({n:n}):"";if(_c296){add(_c296);out.corto296=out.indexOf(_c296);}}catch(_e296){}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 /* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
@@ -12351,6 +12377,13 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
     const e254=_ecc254(el);
+    /* [giro 296 PO-535] con `adatta` (la striscia della partita) il NOME CORTO, prima di cedere il posto alla sigla, prova a stringere il
+       corpo fino al minimo della scala (12 px), come gia' fa la sigla dal giro 203: «mai la sigla accanto allo stemma con la stessa
+       sigla» finche' il nome corto ci sta. Se a 12 px non entra si scende alla sigla col corpo pieno. */
+    if(e254.fuori&&ad203&&cand.corto296>=0&&liv===cand.corto296&&liv<cand.length-1){
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);return;}
+      dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(0);setLiv(liv+1);return;}
     if(e254.fuori&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
     else if(ad203&&liv>=cand.length-1&&e254.fuori){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
       const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
@@ -12367,7 +12400,7 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;
-  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} data-corto296={cand.corto296>=0?cand[cand.corto296]:undefined} title={cand[0]} {...rest}
     data-corpo203={ad203&&fs203?fs203:undefined}
     style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
@@ -35268,9 +35301,15 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(phase==="ceremony"){
       if(titleStakes&&!ceremony)setCeremony({name:titleStakes.name||"TITOLO",kind:titleStakes.kind||"cup"});
       if(ceremonyEndRef.current)clearTimeout(ceremonyEndRef.current);
-      ceremonyEndRef.current=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_CER_HOLD&&/cpmtest=1/.test(String(window.location&&window.location.search)))return;/* [7.999.77+] solo sotto test: la sonda del mister tiene aperta la cerimonia per misurare e fotografare ogni beat */setPhase("ended");},(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500);/* [7.425.0 evolutiva celebrazioni] LA DURATA SEGUE LO SCRIPT: il timer fisso (CEREMONY_DUR) tagliava lo script per competizione a meta' — la coppa non arrivava al sollevamento, lo scudetto mai alla festa. Le durate coprono la somma dei beat col loro jitter (±25%) piu' un margine: coppa ~15s, promo ~17s, scudetto ~20s, internazionale ~24s. */
+      /* [giro 296 PO-534] TESTIMONE della cerimonia (nessun effetto sul gioco): quando comincia, quanto deve durare, quando finisce e CHI
+         la chiude («timer» = la sua durata, «salta» = tasto Salta / Invio / Spazio). Misurato al giro 296 su 196 e 198, PC in trasferta,
+         con l'orologio della pagina: 18,3-19,6 s, la chiude il timer. I «2-6 s» del giro 272 erano della sonda (foto a coppie durante
+         la serie: vedeva la cerimonia 7-8 s dopo che era cominciata). Guardiano tests/visual/rigori-296.mjs. */
+      try{if(typeof window!=='undefined')window.__CPM_CER296={t0:Math.round(performance.now()),previstoMs:(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500,kind:(ceremony&&ceremony.kind)||null,light:!!(ceremony&&ceremony.light),chi:null,t1:null};}catch(_e296){}
+      ceremonyEndRef.current=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_CER_HOLD&&/cpmtest=1/.test(String(window.location&&window.location.search)))return;try{const _w296=window.__CPM_CER296;if(_w296&&!_w296.chi)_w296.chi="timer";}catch(_e296){}/* [7.999.77+] solo sotto test: la sonda del mister tiene aperta la cerimonia per misurare e fotografare ogni beat */setPhase("ended");},(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500);/* [7.425.0 evolutiva celebrazioni] LA DURATA SEGUE LO SCRIPT: il timer fisso (CEREMONY_DUR) tagliava lo script per competizione a meta' — la coppa non arrivava al sollevamento, lo scudetto mai alla festa. Le durate coprono la somma dei beat col loro jitter (±25%) piu' un margine: coppa ~15s, promo ~17s, scudetto ~20s, internazionale ~24s. */
       return()=>{if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}};
     }
+    try{const _w296=typeof window!=='undefined'?window.__CPM_CER296:null;if(_w296&&_w296.t1==null){_w296.t1=Math.round(performance.now());_w296.durataMs=_w296.t1-_w296.t0;_w296.dopo=phase;if(!_w296.chi)_w296.chi="altro";}}catch(_e296){}/* [giro 296] fine della cerimonia: chi non e' ne' il timer ne' il salto resta «altro» */
   },[phase]);
   // decide a fine partita: se è stato vinto un titolo → premiazione 3D, altrimenti direttamente la card di fine gara.
   //   Hoisted (function decl) → richiamabile dai callback del clock/handleContinue definiti più sopra nel corpo.
@@ -35413,7 +35452,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     }catch(_e){}
     setPhase("ended");
   }
-  const skipCeremony=()=>{if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}setPhase("ended");};
+  const skipCeremony=()=>{try{const _w296=window.__CPM_CER296;if(_w296&&!_w296.chi)_w296.chi="salta";}catch(_e296){}if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}setPhase("ended");};
   // [7.31.0 direttiva PO «rigori 3D nelle coppe pareggiate: suspense + esito IN partita»] CALCI DI RIGORE
   //   dal dischetto al fischio finale dei turni KO pareggiati (cup/euro_ko/euroMondiale_ko). PURA PRESENTAZIONE:
   //   l'esito è quello che onMatchEnd deciderà comunque (koShootoutWin sullo STESSO seed 6.48 → coerente per
@@ -39413,8 +39452,16 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                riparte comunque DAL CENTRO, senza schieramento ne' palla tenuta, come sulla 7.999.169. Rosso __CPM_NO_RIP235 = regola
                larga della 7.999.170. */
             const _er235=!!golScena235Ref.current,_sch235=_er235||!!(typeof window!=='undefined'&&window.__CPM_NO_RIP235);if(_c207)golScena235Ref.current=0;
-            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena,eroe:_er235,sch:(_st0.scena||_sch235)};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
-              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:_sch235/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio. [giro 35] solo quello */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;try{_w207.fuori=(_M._g||[]).filter(q=>q&&!q.gk&&(q.team==='home'?q.x>51:q.x<49)).length;_w207.hold=(_M._S&&_M._S.kickoff)?(_M._S.kickoff.hold|0):null;}catch(_e235){}/* [giro 35] testimone dell'EFFETTO: giocatori di movimento nella meta' sbagliata subito dopo la ripresa (0 se schierati) */}catch(_e207){}}}}
+            /* [giro 296 PO-536, decisione PO 18/11 20:30 — rosso window.__CPM_NO_G296] ANCHE DOPO IL RIGORE SEGNATO DA UN COMPAGNO I VENTIDUE SI
+               SCHIERANO. MISURATO (braccio «compagno» di ripartenza-piazzato-27, 7.999.198 prima della correzione, 2 corse): senza il premio
+               rigorista il rigore lo tira un compagno (giro 257); dopo il suo gol si ripartiva dal centro con la palla a chi ha subito, ma
+               con 5 e 7 giocatori di movimento nella meta' sbagliata e la battuta dopo 2 passi: lo stesso difetto che il giro 27 aveva
+               tolto per il rigore dell'eroe (la regola stretta del giro 35 schiera solo dopo il gol dell'eroe in scena). Ora schiera anche
+               quando il gol della squadra dell'eroe arriva da un rigore calciato da un compagno (ultimo tiro del motore: rigore, non
+               dell'eroe, negli ultimi 3 minuti). Gli altri gol fuori scena restano come li ha lasciati il giro 35. */
+            let _rig296=false;try{if(_c207&&_l207==="away"&&!(typeof window!=='undefined'&&window.__CPM_NO_G296)){const _u296=_M&&_M._S?_M._S._ultTiro191:null;_rig296=!!(_u296&&_u296.intent==="penalty"&&_u296.lato==="home"&&!_u296.eroe&&((clockRef.current|0)-(_u296.min|0))<=3&&((clockRef.current|0)-(_u296.min|0))>=0);}}catch(_e296){}
+            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena,eroe:_er235,sch:(_st0.scena||_sch235||_rig296),rig296:_rig296};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:(_sch235||_rig296)/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio. [giro 35] solo quello */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;try{_w207.fuori=(_M._g||[]).filter(q=>q&&!q.gk&&(q.team==='home'?q.x>51:q.x<49)).length;_w207.hold=(_M._S&&_M._S.kickoff)?(_M._S.kickoff.hold|0):null;}catch(_e235){}/* [giro 35] testimone dell'EFFETTO: giocatori di movimento nella meta' sbagliata subito dopo la ripresa (0 se schierati) */}catch(_e207){}}}}
           /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
              dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
              tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
