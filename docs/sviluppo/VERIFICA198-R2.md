@@ -9,3 +9,4 @@
 |---|---|---|---|---|
 | momento-194 | VERDE (uscita 0, 104 s) | — | — | bracci A/B/C verdi, tutti i rossi bocciati |
 | nomi-190 | VERDE (uscita 0, 22 s) | — | — | 23 ok · 0 ko |
+| nomi-211 | VERDE (uscita 0, 190 s) | — | — | 22 ok · 0 ko · viste giudicate 4 su 4 |
