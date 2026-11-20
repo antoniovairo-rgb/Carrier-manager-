@@ -1904,3 +1904,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 21:00 (19/11) PO-570 esteso alle coppe (PO «idem per le coppe»): marcatori della stagione e storico delle edizioni per tutte le coppe.
 - 21:05 (19/11) PO-570 esteso alla nazionale (PO «anche per la nazionale»).
 - 21:10 (19/11) PO-571 registrato senza lavoro: la riga «−N dalla vetta» in Home deve seguire prestigio e obiettivo del club.
+- 11:00 (20/11) PO: «fatto reset Fable 5.2 ripartiamo» → ripartenza anticipata da lunedì a oggi (promemoria di lunedì cancellato). Questionario: primo blocco «Difetti in partita»; 4 giri Fable in parallelo; tutti i giri della 198 su Fable (temporaneo, finché dura il reset; la madre resta su Opus); economia PO-557/PO-424 «Misura e proponi» (si misura, le nuove tariffe solo col via del PO); 198 con tutte le 59 voci, a blocchi, rilascio unico.
+- Blocco 1 (giri 293–296, Fable): 293 portatore che oscilla (PO-562) + instabili portatore-286 e consegna-103; 294 ingresso in campo (PO-556 pallone ai piedi, PO-567 audio e riquadro nero, PO-566 Indietro dalle Formazioni); 295 portiere (PO-518, 519, 520, 530); 296 rigori e coppa (PO-534, 535, 536).
