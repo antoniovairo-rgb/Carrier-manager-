@@ -23,8 +23,17 @@
 | 13 | rigorista-257 | **verde** (328s) | — | — | Ultime righe del controllo: «✅ C2 rosso __CPM_NO_G257: al 30' dischetto pen:21 · scene del compagno 0 · eroe battute 0 scene 1 ✅ rigorista-257 verde (e il rosso si vede) » |
 | 14 | scelte-197 | **verde** (361s) | — | — | «braccio verde · difetti 0 · ESITO: VERDE» su tutti i formati (fino a 412x915): titoli non tagliati, le tre scelte dentro la scheda, riquadro che non scorre. |
 | 15 | riserva2d-205 | **verde** (408s) | — | — | «VERDE: 36/36 ✓». Ultime righe del controllo: «ROSSO __CPM_NO_G205 bocciato: ✓ ✅ riserva2d-205 superato (tutto: verde col verde, rosso col rosso) » |
+| 16 | riproduci-175 | **non giudicato = rosso**: fermato al tetto dei 30 minuti (1800 s) | **identico**: fermato al tetto dei 30 minuti (1800 s) | nessuno: non nasce dall'unione (stesso comportamento sulla base) | Il controllo stampa solo alla fine: in tutte e due le corse il registro era vuoto al momento dell'arresto, quindi non si può dire a quale braccio (A statico, B partite, C corpi 3D, rosso) fosse arrivato. Il rapporto del giro 175 dichiara una durata normale di «≈ 27 minuti»: il tetto di 30 minuti di questa verifica è a ridosso della durata propria del controllo. Nessun errore a schermo, nessun file toccato. Dopo l'arresto il processo `node riproduci-175.mjs` restava vivo ed è stato chiuso per numero di processo. Interruttori `__CPM_NO_G293…G302` non provati: la base si comporta allo stesso modo. Seconda corsa non fatta (ogni corsa costa 30 minuti e il tetto della verifica era già superato). |
 <!-- fine tabella -->
 
 ## Verdetto
 
-In corso.
+**V2c pronto: no**, per una sola voce.
+
+- 15 controlli su 16 verdi su `prova/198-finale` (`0f0b13d8`), ognuno col suo braccio rosso che cade dove il controllo lo prevede.
+- `riproduci-175` non è stato giudicato entro il tetto di 30 minuti, né sul finale né sulla base `lavoro/198` (`b3b75b9d`): per la regola «non giudicato = rosso» conta come rosso, ma **non nasce dall'unione**. Serve una corsa senza tetto (o con un tetto sopra i 27 minuti dichiarati dal giro 175) per avere il suo esito vero.
+- `accessibilita-234`: rosso solo nel clone a storia tagliata (manca `ea02adf0^`), identico sulla base; verde con la storia completa. Chi lo esegue in una sessione nuova deve prima recuperare la storia (`git fetch --deepen`).
+- Nessun rosso nato dall'unione dei giri 293–302. Nessun controllo instabile osservato (nessuno ha richiesto una seconda corsa per un esito alterno).
+- Nessuna correzione fatta, nessuna soglia toccata, `GAME_VERSION` non toccata, nessuna foto rigenerata in `docs/` (albero pulito dopo ogni controllo).
+
+Durate misurate: accessibilita-234 103 s · partita-v2 441 s · riserva-104 663 s · partita2d-297 144 s · rigore-79 25 s · tabellino-lati 5 s · lessico-218 2 s · minuti-202 173 s · tempo-138 814 s · pressing-143 26 s · difesa-220-giro31 1633 s · esiti-60 107 s · rigorista-257 328 s · scelte-197 361 s · riserva2d-205 408 s · riproduci-175 oltre 1800 s. La verifica ha superato il tetto di circa 2,5 ore (soprattutto per le due corse da 30 minuti di `riproduci-175`).
