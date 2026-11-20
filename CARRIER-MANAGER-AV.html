@@ -36937,6 +36937,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
 
   const tattica294Ref=useRef(0);
   const _indietro294=()=>{if(phaseRef.current==="formations")setPhase("matchday");};
+  /* [giro 294 PO-566] Esc da PC. MISURATO (ingresso-294): nella schermata della partita Esc e' gia' usato dalla carriera per «torna alla
+     home» (src/18, scorciatoie globali) e in gioco per la pausa. Nelle Formazioni ora fa UN passo indietro (pre-partita) e basta: si
+     ascolta in cattura e si ferma li', altrimenti lo stesso tasto riportava anche alla home (i due gestori scattavano insieme). */
+  useEffect(()=>{if(phase!=="formations"||!_g294)return;
+    const f=e=>{if(e.key!=="Escape"||_scrive386(e))return;e.preventDefault();e.stopPropagation();_indietro294();};
+    window.addEventListener("keydown",f,true);return()=>window.removeEventListener("keydown",f,true);},[phase]);// eslint-disable-line
   // Async handler: load opponent tactic then go to formations
   const handleGoToFormations=async()=>{
     cpmTimelineReset(); cpmEmit("MatchStart",{opponent:(opponent&&(opponent.n||opponent.name))||null});// LMQP-1
@@ -43780,7 +43786,6 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(phase==="hl_result"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(Date.now()-(resultShownRef.current||0)>800)_kbContinue.current();return;}// [6.76.0 LMV-L6] anche la tastiera rispetta la guardia anti-skip-accidentale del tap (rigore: score/float a 1000ms non più scavalcati da Enter immediato)
       if(phase==="ceremony"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();skipCeremony();return;}/* [7.2.0] Enter/Space salta la premiazione → card di fine gara */
       if(phase==="ended"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();_kbEnd.current();return;}
-      if(phase==="formations"&&e.key==="Escape"&&_g294){e.preventDefault();_indietro294();return;}/* [giro 294 PO-566] Esc = Indietro, come chiude i pannelli altrove */
       if((phase==="matchday"||phase==="formations")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();setPhase(p=>p==="matchday"?"formations":"walkout");return;}
       if(e.key==="0"||e.key==="Numpad0"){
         e.preventDefault();
