@@ -1941,3 +1941,10 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 23:20 (20/11) V4 conclusa: 110/134 eseguiti, nessun rosso nato dall'unione (store-236 rosso identico sulla base: versione TWA 7.999.197, lo store non fa parte dei rilasci; difficolta-156 dichiarato; avvio-233 verde dopo ritocco del controllo: maiuscole). V2b 15/16, V2d 12/16 (interazioni-226 rosso identico sulla base; corpi-073 instabile sull'unione 1/2). Lanciati residui R1 (session_01QEYiaBExXKr64Bg1ZPwoH7), R2 (session_01QEYia8V6FAFEZEyVDwsJLV), R3 con corpi-073 (session_01QEYiaBtjNrXJAM2yx1Luoz).
 - 23:25 (20/11) PO-593 nella 199: tabellone del risultato sulle curve troppo grande, copre le coreografie; dimensioni e posizione per tipologia di stadio.
 - 23:30 (20/11) PO-593: tabellone «Negli angoli» (più piccolo, fra curva e tribuna; uno solo negli stadi piccoli). PO: «se hai dubbi chiedi» → le domande restano ammesse anche di notte quando il PO è presente in chat.
+- 23:40 (20/11) PO, questionari sui dubbi aperti:
+  - GitHub Actions (PO-592, giro 303): mappa intera, parti da max 120 min, prima una corsa di taratura; il banco resta giudice finché la taratura non è fatta; avvio su push al ramo di rilascio + a mano (workflow da portare su main, senza toccare deploy e Android).
+  - Giro 301: su tiro fallito il pallone deve uscire di lato (fondo campo), non fermarsi sulla linea → nella 199 con la ricerca della causa di PO-588.
+  - Giro 299: angoli più tondi (raggio 16) ovunque: confermato.
+  - Giro 298: metà classifica sotto la salvezza → «−2 dalla salvezza» / «In zona retrocessione, −N»; seconda divisione e leghe senza retrocessione → «zona promozione»: confermato; «Sett. 28/38» → «G. 25/34 · Sett. 28» (entrambe).
+  - Giro 300: pausa da PC «Clicca per riprendere», «Tocca per riprendere» da telefono: confermato.
+  - Le modifiche nuove (riga «−2 dalla salvezza» se diversa da quanto fatto dal 298, «G. 25/34 · Sett. 28», uscita di lato del 301) vanno nel primo treno della 199 per non ritardare la 198.
