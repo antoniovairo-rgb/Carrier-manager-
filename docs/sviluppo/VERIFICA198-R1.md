@@ -9,5 +9,6 @@
 |---|---|---|---|---|
 | interviste-183 | ✅ verde (rc 0, 264 s) | — | — | verde 0% domande ripetute, rosso visibile (36,1% in Primavera) |
 | sigle-203 | ✅ verde (rc 0, 608 s) | — | — | quattro passate: telefono 18 ok · 0 ko, 1366 px 8 ok · 0 ko; i due bracci rossi (203 e 254) si vedono (5 ko e 1 ko) |
+| box-fischio-169 | ⚠️ instabile: corsa 1 ROSSA (rc 1, 66 s — caduta della sonda nel braccio verde: `page.screenshot: Expected options.clip.width to be greater than 0`, riga 89), corsa 2 verde (rc 0, 193 s: 54 giudicati · 0 sotto soglia · 0 non giudicati, voto 12/12, rosso riprodotto 45 sotto soglia) | stessa caduta (rc 1, 166 s): braccio verde PASS 54/0/0 e 12/12, poi la sonda cade nel braccio rosso con lo stesso errore alla riga 89 | non nasce dall’unione (presente sulla base b3b75b9d) | instabilità della sonda, non del gioco: il rettangolo del riquadro misurato ha larghezza 0 e la foto viene chiesta prima del ricontrollo di coerenza; una caduta vale «non giudicato» = rosso. Quando arriva al verdetto il contenuto è verde su entrambi i rami |
 
-Verdetto: **in corso** (2 controlli su 10).
+Verdetto: **in corso** (3 controlli su 10).
