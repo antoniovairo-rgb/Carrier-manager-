@@ -16,5 +16,6 @@
 | fps-249 | VERDE | — | — | 30 s. Nessuna scritta fps al giocatore in 3 campioni, misura viva (8/14/14); braccio rosso visto (scritta presente). |
 | tabellino-228 | VERDE | — | — | 398 s. Verde: tabellino, tabellone e motore coincidono (1-0, gol oltre il fischio tolto); braccio rosso visto (scarto 2-0 contro 1-0). |
 | recupero-202 | VERDE | — | — | 710 s. Verde: fischio al 93' al primo tentativo; braccio rosso visto (fischio al 90'). |
+| schede-234 | VERDE | — | — | 833 s. 8/8 schede con almeno 3 opzioni, lessico «indicazioni», 312 partite per braccio con effetti distinti (separazione minima 7,5% in attacco, 6,8% in difesa), panchina 400/400; prove del rosso riconosciute. |
 
 Verdetto: in corso.
