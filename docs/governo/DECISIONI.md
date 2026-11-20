@@ -1919,3 +1919,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 14:00 (20/11) PO-583 nella 199: simulare la carriera da bandiera di un club di seconda divisione fino all'Europa (solo misura).
 - 14:15 (20/11) PO-584 nella 199, insieme a PO-583: misurare infortuni e squalifiche in carriera simulata e proporre la taratura.
 - 14:10 (20/11) prova/198-blocco1 = lavoro/198 + giri 293, 294, 296 (7d4409c2), senza conflitti, check-src identico. Il 295 entra quando consegna; poi verifica a blocchi paralleli sull'unione.
+- 15:00 (20/11) Limite delle 5 ore raggiunto alle 13:16 UTC: giri 295, 298, 299 e verifica 294 interrotti (failed); ripristinato alle 14:50 UTC. Registrati PO-585…588 (note KE e storia) nella 199 per default (198 = blocchi 1+2); da chiedere al PO se portarli nella 198.
