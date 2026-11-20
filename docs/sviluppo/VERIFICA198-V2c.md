@@ -23,6 +23,7 @@
 | 13 | rigorista-257 | **verde** (328s) | — | — | Ultime righe del controllo: «✅ C2 rosso __CPM_NO_G257: al 30' dischetto pen:21 · scene del compagno 0 · eroe battute 0 scene 1 ✅ rigorista-257 verde (e il rosso si vede) » |
 | 14 | scelte-197 | **verde** (361s) | — | — | «braccio verde · difetti 0 · ESITO: VERDE» su tutti i formati (fino a 412x915): titoli non tagliati, le tre scelte dentro la scheda, riquadro che non scorre. |
 | 15 | riserva2d-205 | **verde** (408s) | — | — | Ultime righe del controllo: «ROSSO __CPM_NO_G205 bocciato: ✓ ✅ riserva2d-205 superato (tutto: verde col verde, rosso col rosso) » |
+| 15 | riserva2d-205 | **verde** (durata nel registro della corsa) | — | — | «VERDE: 36/36 ✓ · ROSSO __CPM_NO_G205 bocciato: ✓ · riserva2d-205 superato (tutto: verde col verde, rosso col rosso)». |
 <!-- fine tabella -->
 
 ## Verdetto
