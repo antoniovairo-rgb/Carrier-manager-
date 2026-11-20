@@ -8,5 +8,6 @@
 | controllo | esito su finale | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|
 | interviste-183 | ✅ verde (rc 0, 264 s) | — | — | verde 0% domande ripetute, rosso visibile (36,1% in Primavera) |
+| sigle-203 | ✅ verde (rc 0, 608 s) | — | — | quattro passate: telefono 18 ok · 0 ko, 1366 px 8 ok · 0 ko; i due bracci rossi (203 e 254) si vedono (5 ko e 1 ko) |
 
-Verdetto: **in corso** (1 controllo su 10).
+Verdetto: **in corso** (2 controlli su 10).
