@@ -4607,7 +4607,11 @@ function ThreeMatchView(props){
            resta; si cambia solo se un altro avversario e' piu' vicino al pallone logico di almeno 3 u (piu' dell'escursione dell'attesa, 2 u). */
         if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6){
           if(typeof window!=='undefined'&&window.__CPM_G293W&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_G293W.lont=(window.__CPM_G293W.lont|0)+1;}catch(_e293){}}/* testimone nei due bracci: portatore agganciato oltre 6 u dal pallone logico */
-          if(typeof window!=='undefined'&&window.__CPM_NO_G293)_tackleCarrier=null;
+          /* nel primo mezzo secondo di scena (l'apertura: i corpi stanno ancora prendendo posto, e il primo aggancio puo' cadere su chi non e'
+             il piu' vicino — misurato su gi54: cambio di portatore a 2,2 s di scena, il nuovo portatore scatta di 0,97 u) il riaggancio resta
+             libero come prima; dopo, il portatore e' quello e resta. */
+          const _S293=(sr.current._t293&&sr.current._t293.k===P.hlSitKey)?sr.current._t293:(sr.current._t293={k:P.hlSitKey,t:0});_S293.t+=aDt;
+          if((typeof window!=='undefined'&&window.__CPM_NO_G293)||_S293.t<0.5)_tackleCarrier=null;
           else{const _dc293=Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89);let _n293=null,_dn293=1e9;const _a293=P.allPlayers||[];
             sr.current.players.forEach((pp,ii)=>{const s=_a293[ii];if(s&&s.team==='away'&&!s.gk&&pp.mesh!==_tackleCarrier){const d=Math.hypot(pp.mesh.position.x-_lbx89,pp.mesh.position.z-_lbz89);if(d<_dn293){_dn293=d;_n293=pp.mesh;}}});
             if(_n293&&_dn293<_dc293-3)_tackleCarrier=_n293;}}
