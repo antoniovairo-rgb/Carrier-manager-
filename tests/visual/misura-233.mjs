@@ -44,7 +44,7 @@ export async function misura({ percorso = PERCORSO, rete = RETE, ozio = OZIO, fl
   await pg.addInitScript(([sv, f, p]) => { for (const k of f) window[k] = 1; if (p === 'salvato') { window.__CPM_GLB = true; window.__CPM_T196ON = 1; } if (p === 'salvato' && !sessionStorage.getItem('g233')) { sessionStorage.setItem('g233', '1'); localStorage.setItem('cpm-v3', JSON.stringify(sv)); } }, [mkSave(2, 9090), flags, percorso]);
   tNav = Date.now();
   await pg.goto(`http://localhost:${port}${file}`, { waitUntil: 'commit', timeout: 300000 });
-  await pg.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0 && /Nuova carriera|Continua/.test(document.body.innerText || ''); }, null, { timeout: 300000 });
+  await pg.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0 && /Nuova carriera|Continua/i.test(document.body.innerText || ''); }, null, { timeout: 300000 });
   T.menu = ora(); tappa = 'menu-ozio';
   if (fino === 'menu' && !ozio) { const out0 = chiudi(); await browser.close(); srv.close(); return out0; }
   await sleep(ozio); T.menuOzio = ora();
