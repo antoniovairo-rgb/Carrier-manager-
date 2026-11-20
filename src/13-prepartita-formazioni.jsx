@@ -600,6 +600,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
      gerarchia: Formazioni primario, poi secondari. Via la banda-bandiera a tutta larghezza e i box con
      gradiente. Rosso __CPM_NO_PREMATCH23: la schermata di prima. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_PREMATCH23)){
+    /* [giro 300 PO-565, scelta PO «Bordo d'accento»] il tasto dei salienti: fondo scuro come prima, bordo e titolo nel colore del club del giocatore (reso leggibile sul fondo del tasto con legCol944), icona ⚡; la nota resta dentro il tasto (giro 287). Rosso __CPM_NO_G300. */
+    const _t300=(mySide==="away"?awayTeam:homeTeam)||{};const _c300=_g300()?legCol944((typeof _t300.c==="string"&&_t300.c[0]==="#")?_t300.c:TH.primary,TINTE.tasto):null;
     const Squadra=({t,lato})=>(<div style={{textAlign:"center",minWidth:0}}>
       <div style={{display:"flex",justifyContent:"center"}}><TeamBadge team={t} size={56}/></div>
       <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
@@ -650,7 +652,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
         <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
+      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" aria-hidden="true">⚡ </span>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
       :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
       <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}

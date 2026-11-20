@@ -1103,6 +1103,8 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
         @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
         @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
+        ${_g300()?`/* [giro 300 PO-551] da PC «Inizia il provino» sta attaccato al contenuto: la schermata non si allunga a tutta altezza e il blocco del contenuto non cresce (misurato ~250 px di vuoto fra l'ultimo riquadro e il tasto). Al telefono resta la «schermata piena» del giro 115 (G184-02), col tasto in fondo. */
+        @media(min-width:900px){.cpm-provino300{min-height:0!important;}.cpm-provino300>div:first-child{flex:0 0 auto!important;}}`:''}
         ${_g114()?`/* [giro 114 PO-320] SCHERMATA PIENA: .cpm-piena e' il figlio diretto di .cpm-scroll e prende tutta l'area utile (vista meno barra e safe-area); il blocco principale cresce, .cpm-piena-az sta in fondo. Se la pagina scorre, non cambia nulla. */
         .cpm-scroll:has(>.cpm-piena){display:flex;flex-direction:column;}
         .cpm-piena{flex:1 0 auto;display:flex;flex-direction:column;width:100%;}
