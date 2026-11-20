@@ -3501,6 +3501,14 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
       setHlIdx(gi); const _sp224=ppos||getStartPos(sit)||{x:58,y:50}; setPPos(_sp224);stagedRef45.current=true;// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
       stageSitPositions(sit,_sp224);/* [7.224.0] il wizard/gate entra a hl_choose saltando hl_intro: senza questa chiamata la scena forzata NON aveva regia posizionale (attori della scena a 30-43u dall'eroe) */
+      /* [giro 305 — corpi-073 braccio 284f instabile (seme 29, codice 001 in 16/16 campioni di un'apertura). Rosso __CPM_NO_G305]
+         MISURATO (25 aperture sull'unione, registro __CPM_SNAP42): la forzatura chiama la messa in scena QUI, quindi il timbro di staging
+         arriva nel commit che apre la scena, mentre il pallone sul punto (bandierina) lo mette l'effetto «Ball attachment», un commit DOPO.
+         Il 3D ri-taglia UNA volta sul timbro (7.456): se il fotogramma del ri-taglio cade fra i due commit (1 apertura su 25) lo scatto
+         rimette il pallone sul punto VECCHIO (71,6;27,8) e da li' ci va l'inseguitore a ~13 u/s: pallone di nessuno per tutta la lettura.
+         Nel flusso vero staging e pallone nascono nello stesso giro di effetti, quindi nello stesso commit. Qui si fa uguale: il pallone
+         va sul punto dello staging nello stesso commit del timbro (stessa sorgente dell'effetto, _stagedSpotRef: nessun secondo calcolo). */
+      try{const _ss305=_stagedSpotRef.current;if(_ss305&&_ss305.sit===sit&&_ss305.x!=null&&_ss305.at!=="hero"&&_ss305.at!=="gk"&&!(typeof window!=='undefined'&&window.__CPM_NO_G305)){ballPosRef.current={x:_ss305.x,y:_ss305.y};ballTargetRef.current={x:_ss305.x,y:_ss305.y};setBallPos({x:_ss305.x,y:_ss305.y});}}catch(_e305){}
       cpmEmit("HighlightForced",{gi:gi,intent:sit.intent||null,zone:(sit.zones&&sit.zones[0])||null});// LMQP-1
       const mm=cappedMM(sit); const _dst=choose?"hl_choose":(mm===0&&!sit.lockMovement?"hl_choose":"hl_move");
       /* [7.353.0] PASSAGGIO DA `hl_intro`, OPZIONALE. La forzatura salta l'intro e va dritta alla fase di
@@ -9781,6 +9789,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            RIMETTEVA la palla sulla bandierina — misurato dopo aver armato la battuta: il pallone si
            spostava di 2,6-7,2u e veniva risucchiato indietro. Da quando la battuta e' partita, la palla
            non si ripiazza piu': la scena e' in mano a chi l'ha calciata. */
+        /* [giro 305, SOLO COLLAUDO ?cpmtest=1] __CPM_RIT305=<ms>: il piazzamento di questo effetto arriva in ritardo. Provoca, ripetibile, la
+           finestra «timbro di staging arrivato, pallone non ancora» che sul banco capita 1 volta su 25 (guardiano scatto-305). */
+        if(_CPM_TEST&&typeof window!=="undefined"&&+window.__CPM_RIT305>0&&(!_bat554||_batRef.current.done!==_kb554)){const _x305=_sp.x,_y305=_sp.y,_k305=_kb554;setTimeout(()=>{try{if(hlIdxRef.current+(_forceSeqRef.current||0)*10000===_k305&&_batRef.current.done!==_k305){ballTargetRef.current={x:_x305,y:_y305};setBallPos({x:_x305,y:_y305});}}catch(_e305){}},+window.__CPM_RIT305);}
+        else
         if(!_bat554||_batRef.current.done!==_kb554){ballTargetRef.current={x:_sp.x,y:_sp.y};setBallPos({x:_sp.x,y:_sp.y});}
         /* [7.538.0 missione «partita vera» — rosso __CPM_NO554] IL CORNER NON LO BATTEVA NESSUNO.
            Trovato censendo le scene in cui il pallone non viaggia (<3u dall'apertura all'esito): quattro

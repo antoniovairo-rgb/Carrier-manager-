@@ -34,6 +34,9 @@ async function quiete(page) {
 async function pagina(extra) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   if (extra) await page.addInitScript(extra);
+  /* [giro 305] CPM_SPENTI073=__CPM_NO_G293,__CPM_NO_G301: interruttori di ritirata accesi prima del caricamento (per misurare la frequenza di un rosso per giro) */
+  if (+process.env.CPM_RIT073 > 0) await page.addInitScript((ms) => { window.__CPM_RIT305 = ms; }, +process.env.CPM_RIT073);/* [giro 305] provocazione: il pallone della scena forzata arriva <ms> dopo il timbro di staging */
+  if (process.env.CPM_SPENTI073) await page.addInitScript((v) => { for (const k of v.split(',')) if (k) window[k] = 1; }, process.env.CPM_SPENTI073);
   await page.addInitScript(() => { window.__LT073 = []; try { new PerformanceObserver(l => l.getEntries().forEach(e => window.__LT073.push([e.startTime, e.duration]))).observe({ entryTypes: ['longtask'] }); } catch (e) {} });
   await page.addInitScript((r) => { window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) { window.__CPM_NO_TAPPETO073 = 1; window.__CPM_NO_STACCO073 = 1; window.__CPM_NO_BATT073 = 1; } }, ROSSO);
   await openMatch(page, srv.address().port, { skipLoadAll: true, name: 'Corpi073' });
