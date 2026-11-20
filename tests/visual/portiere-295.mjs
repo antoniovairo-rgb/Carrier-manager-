@@ -22,6 +22,8 @@
      46,9; il giro 271 ha misurato 42-43,9): dall'armo dell'arco alla fine della scena il pallone arriva a non piu' di 2 u dal corpo del portiere in
      pianta (le mani arrivano ~1,3 u oltre il centro del corpo disteso). ✗ oltre 2 u.
    Un caso senza i fotogrammi che servono e' NON GIUDICATO = rosso (mai abbassare soglie).
+   RIPETIZIONE DICHIARATA: una pagina «palo» in cui il gioco chiude la scelta col suo timer prima che ci siano 0,5 s di scena dopo la
+   provocazione (pagina lenta: macchina carica) si rifa' una volta sola, pagina nuova, e vale la seconda; e' stampato accanto alla scena.
    VERDE = 0 difetti e >= 8 scene giudicate per braccio. ROSSO (__CPM_NO_G295) = ogni braccio rivede il suo difetto in almeno 6 scene
    giudicate su 8 (ripetizione dichiarata: una corsa per braccio di colore; un rosso si riprova una volta sola e si dichiara).
 
@@ -95,10 +97,14 @@ async function scena(sc, rosso) {
 async function braccio(rosso) {
   console.log(`\n— braccio ${rosso ? 'ROSSO (__CPM_NO_G295)' : 'VERDE'} — ${SCENE.length} pagine, ${PAR} per volta, GLB ${GLB ? 'acceso' : 'spento'}`);
   const coda = SCENE.map((sc, i) => ({ sc, i })), ris = [];
-  await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const q = coda.shift(); ris[q.i] = await scena(q.sc, rosso); } }));
+  await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const q = coda.shift(); let o = await scena(q.sc, rosso);
+    /* RIPETIZIONE DICHIARATA: una pagina «palo» in cui il timer d'esitazione del gioco (9-16 s di parete) ha chiuso la scelta prima dei 0,5 s di
+       scena dopo la provocazione si rifa' UNA volta, pagina nuova; vale la seconda. Se anche la seconda non basta resta NON GIUDICATA = rosso. */
+    if (o.b2 && o.b2.ng && /lettura/.test(o.b2.ng)) { const p = o.b2.ng; o = await scena(q.sc, rosso); o.rip = p; }
+    ris[q.i] = o; } }));
   const A = { 1: { g: 0, d: 0, ng: 0, t: [] }, 2: { g: 0, d: 0, ng: 0, t: [] }, 3: { g: 0, d: 0, ng: 0, t: [] }, 4: { g: 0, d: 0, ng: 0, t: [] } };
   const segna = (n, dif, ng, txt) => { const a = A[n]; if (ng) { a.ng++; a.t.push('⚠ ' + txt); } else { a.g++; if (dif) a.d++; a.t.push((dif ? '✗ ' : '· ') + txt); } };
-  for (const o of ris) { const id = `gi${o.sc.gi} a${o.sc.ai} ${o.sc.k === 'post' ? 'palo' : 'parata'}`;
+  for (const o of ris) { const id = `gi${o.sc.gi} a${o.sc.ai} ${o.sc.k === 'post' ? 'palo' : 'parata'}${o.rip ? ' [pagina ripetuta 1 volta: ' + o.rip + ']' : ''}`;
     if (o.err) { segna(o.sc.k === 'post' ? 3 : 4, 0, 1, `${id}: NON GIUDICATO (${o.err})`); if (o.sc.k === 'post') segna(2, 0, 1, `${id}: NON GIUDICATO (${o.err})`); continue; }
     if (o.b1 && !o.b1.na) segna(1, o.b1.due > 0, 0, `${id}: build-up ${o.b1.bu} fotogrammi, con due guide ${o.b1.due}${o.b1.due ? ' (bersagli a ' + o.b1.dist + ' u uno dall\'altro)' : ''}`);
     else if (o.b1) A[1].t.push(`  ${id}: senza costruzione dell'azione (${o.b1.bu} fotogrammi), non si applica`);

@@ -6550,7 +6550,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 /* tiro da lontano: stessa retta, durata scalata sulla corda. Tiro da sotto (il bersaglio e' a meno di 0,5 u dal pallone, o dietro:
                    misurato su gi86 testa e gi4, pallone a x 44-45 col portiere a 47): non c'e' una retta da allungare, il pallone va dritto alle
                    mani del portiere tenendo la z del bersaglio, a 32 u/s di scena (la velocita' del volo del giro 274). */
-                if(_u295>0){ballArcTgtZ=clamp(_sz258+(ballArcTgtZ-_sz258)*_u295,-3.3,3.3);ballArcDur=Math.max(0.2,ballArcDur*_u295);}
+                /* la durata scalata sulla corda tiene la velocita' del tiro, ma mai sotto 18 u/s di scena: con un bersaglio originale a meno di 1 u dal
+                   pallone la «velocita'» e' quella di un tocco, e l'arco allungato durava 3,3 s (misurato da gk-dive-sync su gi63: tuffo finito 0,35 s
+                   prima dell'arrivo, il morsetto del tuffo e' 1,70 s). */
+                if(_u295>0){ballArcTgtZ=clamp(_sz258+(ballArcTgtZ-_sz258)*_u295,-3.3,3.3);ballArcDur=Math.max(0.2,Math.min(ballArcDur*_u295,Math.max(ballArcDur,Math.hypot(_nx295-_sx258,ballArcTgtZ-_sz258)/18)));}
                 else ballArcDur=Math.max(ballArcDur,0.2,Math.hypot(_nx295-_sx258,ballArcTgtZ-_sz258)/32);
                 ballArcTgtX=_nx295;
                 if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA295=window.__CPM_PARATA295||[]);if(W.length<100)W.push({t,gx:+awayGkMesh.position.x.toFixed(2),prima:+_px295.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u295.toFixed(2)});}catch(_e){}}

@@ -28,12 +28,12 @@ vanno invece a tempo di parete (uno ogni ~0,6 s, al più 8): nelle letture misur
 
 | | 196 (3076a1b7) | 198 rapida, prima | 198 + giro 295 (dopo) |
 |---|---|---|---|
-| partite · scene | 2 (S5 semi 7, 2021) · 14 | 4 (S5 e S1, semi 7 e 2021) · 32 | @@DOPO_PARTITE@@ |
-| **PO-518** scene con costruzione in cui il portiere riceve 2 guide nello stesso fotogramma | **6 su 7** (bersagli a 3,0–3,5 u uno dall'altro) | **11 su 13** (3,0–3,7 u) | @@DOPO_518@@ |
-| **PO-519** letture in cui il portiere si sposta (strada > 0) | **0 su 14** (strada 0 u) | **0 su 35** (strada 0 u; 27 con copione acceso + 8 senza) | @@DOPO_519@@ |
-| PO-519 a fine lettura: distanza fra il portiere fermo e il suo bersaglio | 0,0–1,5 u, sempre fra i pali | 0,0–2,8 u; 1 volta su 19 il bersaglio è fuori dai pali (z −3,81; palo a 3,35) | @@DOPO_519B@@ |
-| **PO-520** tiri con esito palo | 0 | 0 | @@DOPO_520@@ |
-| **PO-530** parate: minimo pallone–portiere in pianta | 2 parate: 0,38 · 0,22 u | 2 parate: **3,0 u** (S5/7, punizione; 3,19 nella stessa partita rigiocata senza copione) · 0,28 u (S1/7) | @@DOPO_530@@ |
+| partite · scene | 2 (S5 semi 7, 2021) · 14 | 4 (S5 e S1, semi 7 e 2021) · 32 | 4 (le stesse della 198 prima) · 27 |
+| **PO-518** scene con costruzione in cui il portiere riceve 2 guide nello stesso fotogramma | **6 su 7** (bersagli a 3,0–3,5 u uno dall'altro) | **11 su 13** (3,0–3,7 u) | **0 su 13** |
+| **PO-519** letture in cui il portiere si sposta (strada > 0) | **0 su 14** (strada 0 u) | **0 su 35** (strada 0 u; 27 con copione acceso + 8 senza) | **0 su 27** (strada 0 u) |
+| PO-519 a fine lettura: distanza fra il portiere fermo e il suo bersaglio | 0,0–1,5 u, sempre fra i pali | 0,0–2,8 u; 1 volta su 19 il bersaglio è fuori dai pali (z −3,81; palo a 3,35) | 0,0–2,7 u; 1 volta su 27 fuori dai pali (non cambiato: nessun blocco aggiunto) |
+| **PO-520** tiri con esito palo | 0 | 0 | 0 |
+| **PO-530** parate: minimo pallone–portiere in pianta | 2 parate: 0,38 · 0,22 u | 2 parate: **3,0 u** (S5/7, punizione; 3,19 nella stessa partita rigiocata senza copione) · 0,28 u (S1/7) | 2 parate: **0,36 u** (S5/7, la stessa punizione: bersaglio dell'arco portato da x 42 a x 45,45) · 0,16 u (S1/7) |
 
 Le due partite S5/7 «prima» e «dopo» sono la stessa partita (stesso seme, stesse scene): è il confronto più diretto.
 
