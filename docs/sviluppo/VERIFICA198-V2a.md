@@ -11,5 +11,6 @@
 | barra-221 | VERDE | — | — | 211 s. Difetti 0, non giudicati 0; i due bracci rossi (`__CPM_NO_G221`, `__CPM_NO_G229`) bocciati come devono. |
 | assist-298 | NON GIUDICATO = ROSSO (fermato al tetto di 30 minuti) | da fare | da stabilire | Fermato a 1800 s. Era nel braccio verde: completati 4 semi su 5 (1234: 1 scena d'assist; 2021, 7, 99: 4 scene ciascuno), seme 5 in corso; braccio rosso (`__CPM_NO_ASSIST298`) mai iniziato. Nessun verdetto stampato. |
 | chiusura-99 | NON GIUDICATO = ROSSO (fermato al tetto di 30 minuti) | da fare | da stabilire | Fermato a 1800 s. Bracci verdi passati tutti e due (D9: 6/6 gol, mediana contrasto 4,93, 0 sotto 3; RIC: servito = nominato 5/5). Braccio rosso D9 visto (mediana 1,48, 5 sotto 3). Era nel braccio rosso RIC, seme 2021 (seme 1234 fatto: 0/1). Nessun verdetto finale stampato. |
+| pc-tablet-292 | VERDE | — | — | 721 s. PC 1366 e 1920, tablet nei due versi, telefono identico con e senza interruttori; il braccio rosso (la 177) fa cadere larghezza, tocco, tasti e striscia. |
 
 Verdetto: in corso.
