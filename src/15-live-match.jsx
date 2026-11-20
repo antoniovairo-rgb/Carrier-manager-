@@ -12583,7 +12583,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":"Premi P o tocca per riprendere"}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":(_g300()?"Clicca per riprendere":"Premi P o tocca per riprendere")}{/* [giro 300 PO-553] via il nome del tasto; P funziona ancora */}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
@@ -12775,7 +12775,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           return(
                             <button key={_oi} onClick={()=>handleAction(a)}
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
-                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
+                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:"#fff",flexShrink:0,display:_g300()?"none":"flex"}} data-cpm="num-300">{_oi+1}</div>
                               <div style={{fontSize:FS.caption,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
                               {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO: condizionavano il player */}
                             </button>
@@ -12948,8 +12948,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
                     {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>}
                     <div style={{flex:1}}>
-                      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292)?" · WASD":""}</div>
-                      {!_no210&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
+                      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292&&!_g300())?" · WASD":""}</div>
+                      {!_no210&&!_g300()&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
                       {curSit.maxMoves>0&&<div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -12986,7 +12986,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
-                        {!_no210&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
+                        {!_no210&&!_g300()&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
                         <div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
                       </div>
                     </div>
@@ -13000,7 +13000,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {false&&!isAimSit(curSit)&&<div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; Enter
                   </div>}{/* [6.44.0] niente hint tastiera sui rigori/punizioni · [6.45.0 RC] via «←→»: la navigazione con le frecce non era mai stata implementata (selectedActionIdx mai aggiornato) → hint fuorviante */}
-                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>{_dito292?"💡 Muoviti col pad per cambiare le opzioni d'azione.":"💡 Muoviti (WASD) per cambiare le opzioni d'azione."}</div>}{/* [5.84.0 UX-2c] */}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>{(_dito292||_g300())?"💡 Muoviti col pad per cambiare le opzioni d'azione.":"💡 Muoviti (WASD) per cambiare le opzioni d'azione."}</div>}{/* [5.84.0 UX-2c] */}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {isAimSit(curSit)?(
                       <div>
@@ -13009,7 +13009,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           {setPieceOptions(curSit,player,pPos.x).map((o,_oi)=>(
                             <button key={o.id} onClick={()=>handleSetPiece(o)} data-sp292={_oi}/* [giro 90 PO-292 D6] indice per Invio sul pulsante col fuoco */
                               style={{padding:_dito292?"13px 12px":"9px 12px",background:TINTE.sup,border:"1px solid rgba(255,255,255,0.08)",borderRadius:RAD.md,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-                              <div style={{fontSize:FS.small,fontWeight:800}}>{(_pctab292()&&!_dito292)?<span style={{display:"inline-block",minWidth:16,marginRight:6,textAlign:"center",borderRadius:RAD.xs,background:"rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:900}}>{_oi+1}</span>:null}{o.icon} {o.label}</div>
+                              <div style={{fontSize:FS.small,fontWeight:800}}>{(_pctab292()&&!_dito292&&!_g300())?<span style={{display:"inline-block",minWidth:16,marginRight:6,textAlign:"center",borderRadius:RAD.xs,background:"rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:900}}>{_oi+1}</span>:null}{o.icon} {o.label}</div>
                               <div style={{fontSize:FS.caption,color:TINTE.sec,marginTop:2,lineHeight:1.35}}>{o.desc}</div>
                             </button>
                           ))}
@@ -13025,7 +13025,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         <button key={i} onClick={()=>handleAction(a)}
                           style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",minHeight:_g110(31)?44:undefined/* [giro 110 G180-31] sul PC le tre giocate stavano a 36-37 px */,background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>
+                            {!_g300()&&<div data-cpm="num-300" style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>}{/* [giro 300 PO-553] via il numero del tasto davanti alla giocata; i tasti 1-3 funzionano ancora */}
                             <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
                           {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}

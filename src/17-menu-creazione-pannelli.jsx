@@ -362,7 +362,8 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         </Card>
       )}
       {_dk&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
-        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
+        {_g300()?[0,1,2].map(i=><button key={i} type="button" className="kbd" data-cpm="slot-300" aria-label={slots[i]&&!slots[i].corrupted?("Apri il salvataggio "+(i+1)):("Salvataggio "+(i+1))} onClick={()=>{if(slots[i])onLoad(i);else onNew(i);}} style={{border:"none",cursor:"pointer",minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{i+1}</button>)/* [giro 300 PO-552] i tre tasti si cliccano e fanno cio' che fa il tasto della tastiera (stesso ramo di onKey) */
+        :<><span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span></>} salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
       {crediti238On()&&crediti254On()&&<div style={{marginTop:(typeof window!=='undefined'&&window.__CPM_NO_G174_SPAZIO)?SP.sm:0}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}{/* [giro 174 PO-371, spazio-296 rosso preesistente. Rosso __CPM_NO_G174_SPAZIO] MISURATO (telefono, menu e opzioni): fra «Crea il tuo calciatore» e «Crediti» 16,8 px — il margine sotto della carta (7) e quello sopra del pulsante (8) si sommavano. Ogni riquadro che lo precede (benvenuto, salvataggi, sovrascrittura, tasti) ha gia' il suo margine sotto: il pulsante non ne aggiunge un altro. */}
@@ -619,7 +620,7 @@ function OffersScreen({player,trialStats,onChoose}){
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
-                    {_dk&&<span className="kbd">{i+1}</span>}
+                    {_dk&&!_g300()&&<span className="kbd">{i+1}</span>}{/* [giro 300 PO-553] via il numero del tasto accanto a «Scegli»; i tasti 1-3 funzionano ancora */}
                     <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={(isSel||_pc289)?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
@@ -747,7 +748,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       :<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>}
     </div>;}
   const _pieno02p=!_no115("02");
-  return <div data-cpm="provino-pre" style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+  return <div data-cpm="provino-pre" className={_g300()?"cpm-provino300":undefined}/* [giro 300 PO-551] da PC il tasto segue il contenuto (regola in src/19) */ style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
     <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>

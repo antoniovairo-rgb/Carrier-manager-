@@ -720,6 +720,7 @@
     "ingresso-294": "node ingresso-294.mjs",
     "salienti-253": "node salienti-253.mjs",
     "prepartita-287": "node prepartita-287.mjs",
+    "prepartita-pc-300": "node prepartita-pc-300.mjs",
     "misura-253b": "node misura-253b.mjs",
     "misura-253c": "node misura-253c.mjs",
     "tocco3d-219": "node tocco3d-219.mjs",

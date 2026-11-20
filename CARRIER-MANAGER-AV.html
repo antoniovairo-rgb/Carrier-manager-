@@ -643,6 +643,8 @@ const piena114=()=>_g114()?"cpm-piena":"";
 /* [giro 287 · PO-546, decisione PO 19/11 «Dentro il pulsante»] la nota di un pulsante sta DENTRO il pulsante (sottotitolo piccolo), mai
    staccata sotto la pila; da PC (>= 900 px) la testata della pre-partita prende l'altezza dal contenuto (CSS in src/19). Rosso __CPM_NO_G287. */
 const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
+/* [giro 300 · PO-565/551/552/553] pre-partita e PC: tasto dei salienti col bordo d'accento, «Inizia il provino» attaccato al contenuto da PC, tasti 1 2 3 della Home cliccabili, nessun suggerimento di tasti nelle scritte (le scorciatoie restano). Rosso __CPM_NO_G300 = tutto come nella 7.999.198. */
+const _g300=()=>!(typeof window!='undefined'&&window.__CPM_NO_G300);
 const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
@@ -29827,6 +29829,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
      gerarchia: Formazioni primario, poi secondari. Via la banda-bandiera a tutta larghezza e i box con
      gradiente. Rosso __CPM_NO_PREMATCH23: la schermata di prima. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_PREMATCH23)){
+    /* [giro 300 PO-565, scelta PO «Bordo d'accento»] il tasto dei salienti: fondo scuro come prima, bordo e titolo nel colore del club del giocatore (reso leggibile sul fondo del tasto con legCol944), icona ⚡; la nota resta dentro il tasto (giro 287). Rosso __CPM_NO_G300. */
+    const _t300=(mySide==="away"?awayTeam:homeTeam)||{};const _c300=_g300()?legCol944((typeof _t300.c==="string"&&_t300.c[0]==="#")?_t300.c:TH.primary,TINTE.tasto):null;
     const Squadra=({t,lato})=>(<div style={{textAlign:"center",minWidth:0}}>
       <div style={{display:"flex",justifyContent:"center"}}><TeamBadge team={t} size={56}/></div>
       <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
@@ -29877,7 +29881,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
         <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
+      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
       :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
       <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
@@ -45360,7 +45364,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":"Premi P o tocca per riprendere"}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":(_g300()?"Clicca per riprendere":"Premi P o tocca per riprendere")}{/* [giro 300 PO-553] via il nome del tasto; P funziona ancora */}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
@@ -45552,7 +45556,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           return(
                             <button key={_oi} onClick={()=>handleAction(a)}
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
-                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
+                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:"#fff",flexShrink:0,display:_g300()?"none":"flex"}} data-cpm="num-300">{_oi+1}</div>
                               <div style={{fontSize:FS.caption,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
                               {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO: condizionavano il player */}
                             </button>
@@ -45725,8 +45729,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
                     {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>}
                     <div style={{flex:1}}>
-                      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292)?" · WASD":""}</div>
-                      {!_no210&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
+                      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292&&!_g300())?" · WASD":""}</div>
+                      {!_no210&&!_g300()&&!isNarrow&&!_dito292&&showDPad(curSit)&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:3}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] le diagonali da tastiera esistevano gia' ma nessun testo lo diceva */}
                       {curSit.maxMoves>0&&<div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -45763,7 +45767,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
-                        {!_no210&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
+                        {!_no210&&!_g300()&&!_dito292&&<div data-cpm="aiuto-diagonali" style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:2}}>Diagonali: due frecce insieme</div>}{/* [giro 210 PO-401 E] */}
                         <div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
                       </div>
                     </div>
@@ -45777,7 +45781,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {false&&!isAimSit(curSit)&&<div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; Enter
                   </div>}{/* [6.44.0] niente hint tastiera sui rigori/punizioni · [6.45.0 RC] via «←→»: la navigazione con le frecce non era mai stata implementata (selectedActionIdx mai aggiornato) → hint fuorviante */}
-                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>{_dito292?"💡 Muoviti col pad per cambiare le opzioni d'azione.":"💡 Muoviti (WASD) per cambiare le opzioni d'azione."}</div>}{/* [5.84.0 UX-2c] */}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>{(_dito292||_g300())?"💡 Muoviti col pad per cambiare le opzioni d'azione.":"💡 Muoviti (WASD) per cambiare le opzioni d'azione."}</div>}{/* [5.84.0 UX-2c] */}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {isAimSit(curSit)?(
                       <div>
@@ -45786,7 +45790,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           {setPieceOptions(curSit,player,pPos.x).map((o,_oi)=>(
                             <button key={o.id} onClick={()=>handleSetPiece(o)} data-sp292={_oi}/* [giro 90 PO-292 D6] indice per Invio sul pulsante col fuoco */
                               style={{padding:_dito292?"13px 12px":"9px 12px",background:TINTE.sup,border:"1px solid rgba(255,255,255,0.08)",borderRadius:RAD.md,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-                              <div style={{fontSize:FS.small,fontWeight:800}}>{(_pctab292()&&!_dito292)?<span style={{display:"inline-block",minWidth:16,marginRight:6,textAlign:"center",borderRadius:RAD.xs,background:"rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:900}}>{_oi+1}</span>:null}{o.icon} {o.label}</div>
+                              <div style={{fontSize:FS.small,fontWeight:800}}>{(_pctab292()&&!_dito292&&!_g300())?<span style={{display:"inline-block",minWidth:16,marginRight:6,textAlign:"center",borderRadius:RAD.xs,background:"rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:900}}>{_oi+1}</span>:null}{o.icon} {o.label}</div>
                               <div style={{fontSize:FS.caption,color:TINTE.sec,marginTop:2,lineHeight:1.35}}>{o.desc}</div>
                             </button>
                           ))}
@@ -45802,7 +45806,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         <button key={i} onClick={()=>handleAction(a)}
                           style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",minHeight:_g110(31)?44:undefined/* [giro 110 G180-31] sul PC le tre giocate stavano a 36-37 px */,background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>
+                            {!_g300()&&<div data-cpm="num-300" style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>}{/* [giro 300 PO-553] via il numero del tasto davanti alla giocata; i tasti 1-3 funzionano ancora */}
                             <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
                           {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}
@@ -50725,7 +50729,8 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         </Card>
       )}
       {_dk&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
-        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
+        {_g300()?[0,1,2].map(i=><button key={i} type="button" className="kbd" data-cpm="slot-300" aria-label={slots[i]&&!slots[i].corrupted?("Apri il salvataggio "+(i+1)):("Salvataggio "+(i+1))} onClick={()=>{if(slots[i])onLoad(i);else onNew(i);}} style={{border:"none",cursor:"pointer",minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{i+1}</button>)/* [giro 300 PO-552] i tre tasti si cliccano e fanno cio' che fa il tasto della tastiera (stesso ramo di onKey) */
+        :<><span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span></>} salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
       {crediti238On()&&crediti254On()&&<div style={{marginTop:(typeof window!=='undefined'&&window.__CPM_NO_G174_SPAZIO)?SP.sm:0}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}{/* [giro 174 PO-371, spazio-296 rosso preesistente. Rosso __CPM_NO_G174_SPAZIO] MISURATO (telefono, menu e opzioni): fra «Crea il tuo calciatore» e «Crediti» 16,8 px — il margine sotto della carta (7) e quello sopra del pulsante (8) si sommavano. Ogni riquadro che lo precede (benvenuto, salvataggi, sovrascrittura, tasti) ha gia' il suo margine sotto: il pulsante non ne aggiunge un altro. */}
@@ -50982,7 +50987,7 @@ function OffersScreen({player,trialStats,onChoose}){
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
                   {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
-                    {_dk&&<span className="kbd">{i+1}</span>}
+                    {_dk&&!_g300()&&<span className="kbd">{i+1}</span>}{/* [giro 300 PO-553] via il numero del tasto accanto a «Scegli»; i tasti 1-3 funzionano ancora */}
                     <Btn data-pesante213=""/* [giro 213] 89 ms misurati */ onClick={()=>onChoose(club)} v={(isSel||_pc289)?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
@@ -51110,7 +51115,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       :<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>}
     </div>;}
   const _pieno02p=!_no115("02");
-  return <div data-cpm="provino-pre" style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+  return <div data-cpm="provino-pre" className={_g300()?"cpm-provino300":undefined}/* [giro 300 PO-551] da PC il tasto segue il contenuto (regola in src/19) */ style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
     <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
@@ -67357,6 +67362,9 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
         @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
         @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
+        ${_g300()?`/* [giro 300 PO-551] da PC «Inizia il provino» sta attaccato al contenuto: la schermata non si allunga a tutta altezza e il blocco del contenuto non cresce (misurato ~250 px di vuoto fra l'ultimo riquadro e il tasto). Al telefono resta la «schermata piena» del giro 115 (G184-02), col tasto in fondo. */
+        [data-icona300]::before{content:attr(data-icona300);margin-right:6px;}/* [giro 300 PO-565] l'icona del tasto dei salienti e' un segno disegnato, non testo: il nome del tasto resta «Gioca solo i momenti salienti» per chi lo legge e per chi lo cerca */
+        @media(min-width:900px){.cpm-provino300{min-height:0!important;}.cpm-provino300>div:first-child{flex:0 0 auto!important;}}`:''}
         ${_g114()?`/* [giro 114 PO-320] SCHERMATA PIENA: .cpm-piena e' il figlio diretto di .cpm-scroll e prende tutta l'area utile (vista meno barra e safe-area); il blocco principale cresce, .cpm-piena-az sta in fondo. Se la pagina scorre, non cambia nulla. */
         .cpm-scroll:has(>.cpm-piena){display:flex;flex-direction:column;}
         .cpm-piena{flex:1 0 auto;display:flex;flex-direction:column;width:100%;}

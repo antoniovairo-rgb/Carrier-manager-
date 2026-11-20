@@ -1,0 +1,19 @@
+test:logic esito=0 secondi=3 :: # duration_ms 3097.372817
+save-compat esito=0 secondi=2 :: ✅ PASS
+prepartita-287 esito=0 secondi=43 :: ROSSO (__CPM_NO_G287, la schermata di prima): ✅ cade su N, S e V come deve
+avviso-290 esito=0 secondi=106 :: ROSSO: CADE (come deve) su ogni percorso
+zero-288 esito=0 secondi=17 :: zero-288: ✓ (VERDE+ROSSO)
+homepc-284 esito=0 secondi=23 :: ✅ homepc-284 VERDE
+pc-289 esito=0 secondi=188 :: pc-289: VERDE
+provini-201 esito=0 secondi=18 :: ✅ provini-201 verde
+altezza-114 esito=0 secondi=205 :: PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso
+griglia-mobile esito=0 secondi=215 :: ESITO griglia-mobile: uscita 0 · MOTIVO misura completa: 14 schermate x 5 larghezze
+solo-highlight-166 esito=0 secondi=950 :: ROSSO: CADE (come deve) su 3, 7 e 8
+battito-264 esito=0 secondi=406 :: ROSSO: CADE (come deve): la partita intera diverge dai soli highlight
+diagonali-210 esito=1 secondi=158 :: ❌ diagonali-210 ROSSO
+pc-tablet-292 esito=0 secondi=696 :: PC-TABLET-292: ✅ VERDE
+typing-shortcuts esito=0 secondi=15 :: ✅ PASS — chi scrive tiene la tastiera: nessuna scorciatoia gli ruba i tasti
+accessibilita-234 esito=1 secondi=100 :: ✗ accessibilita-234 ROSSO
+salienti-243 esito=0 secondi=215 :: ROSSO: CADE (come deve): nessun tasto nella schermata pre-partita, Mondiale e amichevole non apribili a soli salienti
+accessibilita-234 (rifatto, storia git scaricata) esito=0 :: ✓ accessibilita-234 VERDE
+BASE198 diagonali-210 esito=1
