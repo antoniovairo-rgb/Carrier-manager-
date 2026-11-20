@@ -23,8 +23,8 @@ V3 pronto: **non ancora deciso** (controlli in corsa).
 | `contatto-103` | **verde** (uscita 0, 14 min) | non eseguito | — | verde: 4 parate giudicate, 0 difetti · rosso rivisto: 3 «pallone mai al portiere» su 4 |
 | `portiere-265` | **verde** (uscita 0, 5 min) | non eseguito | — | verde 0 difetti su 7 casi · rosso `__CPM_NO_G265` 3 rientri provocati su 3. Il guardiano stampa per ogni caso «massimo dal bersaglio del suo ciclo … (non giudicato)»: è una misura che il guardiano dichiara di non giudicare per costruzione (giro 265), non un caso saltato |
 | `validate-situations` | **verde** 14/14 (uscita 0, 15 min) | non eseguito | — | 191 scene, impronta 00001505, 0 fallimenti; avvisi non bloccanti: initial-state 3 · visual 1 · movements 23 · motion 1 · bg-coherence 1 · live-smoke 1 |
-| `esito-280` (rosso dichiarato) | da eseguire | da eseguire | | |
-| `esiti-218` (rosso dichiarato) | da eseguire | da eseguire | | |
+| `esito-280` (rosso dichiarato) | **rosso** (uscita 1, 9 min) | **rosso** (uscita 1, 9 min) | precedente alla 198 (rosso già sulla base) | Parte A identica sulle due versioni: verde 0 smentite su 78, rosso 53 su 78, doppi conteggi 0 contro 14. Parte B, motivi comuni: «partite non finite» (p1 non finita su tutte e due) e «tabellino 1 su 2». **Sull'unione un motivo in più**: «B rosso non riconosciuto», perché la partita p0 del braccio rosso non è finita (sulla base è finita, 1 su 1). Una corsa sola per parte: non so dire se è instabilità o effetto dell'unione (seconda corsa non fatta, vedi «Non eseguito») |
+| `esiti-218` (rosso dichiarato) | **rosso** (uscita 1, 39 min) | in corsa | | Sull'unione: verde 17 scene, **0 contraddizioni**; rosso 20 scene, 7 contraddizioni (il rosso si vede). Unico motivo del rosso: «partite non arrivate al fischio: verde 1234 fermo in playing» |
 
 ## 2. Guardiani della MAPPA di src/12 che leggono esito, pallone in `hl_result`, portiere
 
