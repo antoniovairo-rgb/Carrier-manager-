@@ -120,7 +120,27 @@ Perché le provocazioni (tre tentativi prima di arrivarci, tutti misurati):
 Uno alla volta dentro la catena (`CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`), `npm run <nome>` da `tests/visual`.
 Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.mjs`.
 
-@@CONTROLLI@@
+Corse del 20/11 sul commit `afeb34f` (ripresa del giro: la sessione precedente si era fermata prima di questa tabella). Prima delle
+corse: memoria libera 14,1 GB su 16, disco 59 GB liberi. Nessun controllo ha rigenerato file in `docs/` (`git status` pulito a fine corse).
+
+| Controllo | Esito | Durata | Numeri |
+|---|---|---|---|
+| `portiere-295` (verde + rosso) | ✅ verde | 11 min 20 s | vedi tabella al §4: verde 0 difetti su 16/8/8/8, rosso 16/16 · 8/8 · 8/8 · 7/8, 0 non giudicate |
+| `test:logic` | ✅ verde | 3 s | 51 passati, 0 falliti |
+| `save-compat` | ✅ verde | 1 s | 12 passati, 0 falliti |
+| `portiere-265` (verde + rosso) | ✅ verde | 5 min 8 s | verde 0 difetti su 7 casi; rosso 3 rientri provocati su 3 col difetto (6 casi su 7). Nel suo elenco 8 righe portano la dicitura «non giudicato» sulla distanza dal bersaglio del ciclo: è una misura che quel guardiano dichiara di non giudicare (nota del giro 265 sulle due guide), il suo verdetto non ne dipende |
+| `gk-dive-sync` | ✅ verde | 3 min 42 s | 7 scene verdi; anticipo della distesa mediano −0,09 s, peggiore −0,10 s (gi97: arco 0,56 s, tuffo 0,88 s; gi116: arco 0,70 s, tuffo 1,04 s) |
+| `salti-274` (verde + rosso) | ✅ verde | 12 min 3 s | verde: 0 salti non spiegati in conclusione, 7 conclusioni col pallone lontano, velocità massima nel caricamento 42,8 u/s; rosso «come atteso» (testa col pallone lontano: 2 scene, 2 salti non spiegati) |
+| `contatto-103` (verde + rosso) | ✅ verde | 13 min 19 s | verde 4 parate giudicate, 0 difetti, distanza minima pallone–portiere 2,3 · 2,3 · 2,3 · 2,4 u (difetto oltre 6); rosso 3 difetti D3 su 4 parate |
+| `battito-264` (verde + rosso) | ✅ verde | 6 min 43 s | verde: 0 coppie divergenti su 3, 0 non giudicate; rosso: 1 su 1 divergente (312 battute doppie) |
+| `ball-attended` | ❌ **rosso, non nato qui** | 2 min 37 s | accudita 5,6% su 612 campioni, soglia 52%. Stessa sonda sulla base `lavoro/198` (b3b75b9), rifatta oggi in copia separata: **8,0%** su 574 campioni, rosso uguale. Una corsa per parte. Lo stesso rosso è già scritto nei rapporti dei giri 286 (5,2% sulla base) e 291 (6,9% sulla base) |
+| `buildup-sync` | ❌ **rosso, già presente sulla base** | 2 min 45 s | 5 scene rosse su 37 build-up osservati: gi40 19,6 u · gi79 43,7 u · gi83 29,5 u · gi84 23,5 u · gi96 20,5 u (salto del pallone al passaggio INGRESSO→carry); salto mediano 0,9 u. Base `lavoro/198` rifatta oggi con la stessa sonda (file identico): **6 scene rosse su 37**: gi40 19,4 · gi79 44,1 · gi83 29,5 · gi84 26,2 · gi91 24,6 · gi92 25,4; mediano 0,9 u. Quattro scene coincidono coi valori quasi uguali; gi96 compare solo nel ramo, gi91 e gi92 solo nella base: in ciascuna corsa quelle scene **non sono fra le osservate** dell'altra (nessuna riga, né verde né rossa), quindi non posso dire se gi96 sarebbe rossa anche sulla base. Una corsa per parte |
+| `parata-100` | ⚠️ **NON completato** (= da contare come rosso finché non viene eseguito) | interrotto a mano dopo 34 min | Nella corsa interrotta: le 2 scene provocate del verde sono passate (gi16 minimo pallone–portiere 1,98 u, gi42 2,04 u, entrambe «saved»); poi il controllo ha scritto «verde copertura insufficiente: secondo giro 1» ed era ancora nel braccio verde al 34° minuto. L'ho fermato per poter eseguire gli altri sei controlli dentro il tetto di tempo; a quel punto il tetto era finito. Nessuna delle 2 corse chieste è arrivata al verdetto |
+
+**Non eseguiti di proposito** (come da consegna): tutti gli altri guardiani della mappa di `src/12` in `ci-runner.mjs`, la catena `mirata`,
+`highlight-95`, `ingresso-206`, `career-critical`, il gate `validate-situations`. Li esegue la verifica dell'unione del blocco.
+
+Correzioni di `src/`: **nessuna modifica in questa ripresa** (solo il rapporto). I due rossi non nascono dal giro e non li ho toccati.
 
 ## 6. File toccati
 
@@ -169,4 +189,10 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
 12. **La base di confronto.** `3076a1b7` è la 196, ma `origin/main` oggi è già alla 198. Ho confrontato col commit indicato.
 13. **Tocco di `_readFreeze`** (lo stesso del giro 293): una condizione in più sulla riga del ciclo dei portieri, attiva solo col
     rosso. Se il giro 293 cambia quella riga, c'è un conflitto di unione da risolvere a mano.
-@@DUBBI2@@
+14. **`parata-100` non ha un verdetto.** È il controllo più vicino a PO-530 fra quelli chiesti e non l'ho portato a termine (34 minuti
+    senza uscire dal braccio verde, con un secondo giro per copertura insufficiente). Va eseguito dalla verifica dell'unione, due corse
+    come chiesto. Le due scene provocate viste prima dell'interruzione erano verdi; il resto non lo posso confermare.
+15. **`buildup-sync`, scena gi96.** È rossa nel ramo (20,5 u) e non è fra le scene osservate nella corsa sulla base: non posso confermare
+    né escludere che sia un effetto di questo giro. Il difetto misurato (salto del pallone all'ingresso del build-up) non è in un punto
+    toccato dal giro 295, ma questa è una lettura del codice, non una misura: servirebbe una corsa che forzi gi96 sulla base.
+16. **Il braccio 4 del rosso di `portiere-295` passa con 7 su 8** (soglia 6): la scena gi4 non mostra il difetto col rosso (0,54 u).
