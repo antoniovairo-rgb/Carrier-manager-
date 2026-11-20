@@ -11,11 +11,11 @@
 |---|---|---|---|---|---|
 | 1 | `ingresso-277` | ✅ verde (rc 0) | 474 s | verde: ingresso 167,5 s, velo 0 s, pulsante presente, corpi pronti a fine ingresso · salta: uscita a 10,8 s · rosso `visto` (velo 3,4 s, pulsante assente) | non serve |
 | 2 | `carriera3-94` | ✅ verde (rc 0) | 169 s | tutte le righe `ok`, nessuna `ko`; D4 possesso/passaggi scarto max 0 su 48 partite · D6 0 frasi sbagliate su 2232 · D9 titolare 8 gare su 8 | non serve |
-| 3 | `ingresso-285` | in corso | | | |
-| 4 | `portatore-293` | da fare | | | |
+| 3 | `ingresso-285` | ✅ verde (rc 0) | 375 s | verde: scena 15,95 s con 3 stacchi, passo max in quadro 2,2 u/s (tetto 2,3), residuo a fine 0 · rosso `visto` (scena 23,1 s, 0 stacchi) | non serve |
+| 4 | `portatore-293` | in corso | | | |
 | 5 | `tpose-196` | da fare | | | |
 | 6 | `analisi-217` | da fare | | | |
 
 ## Verdetto
 
-In corso (2 su 6).
+In corso (3 su 6).
