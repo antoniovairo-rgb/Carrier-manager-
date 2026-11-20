@@ -7,6 +7,7 @@ name: Verifica guardiani (prova, giro 303)
 on:
   push:
     branches: ['prova-ci/**']
+    paths-ignore: ['docs/**']   # un rapporto non fa ripartire la prova
   workflow_dispatch: {}
 
 permissions:
