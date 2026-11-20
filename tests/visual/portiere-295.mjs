@@ -4,7 +4,8 @@
    Corpi GLB accesi, pagina NUOVA per scena, stacco di scena e congelamento di lettura attivi (__CPM_PRESENT=1: come li vede il
    giocatore) e copione del build-up acceso (__CPM_CINE=1: sotto ?cpmtest=1 senza bandiera e' spento). Testimone per fotogramma
    __CPM_GK229 (esteso nel giro 295: gn = guide che muovono il portiere avversario nel fotogramma, tl = build-up acceso).
-   Ogni pagina: forza la scena, TIENE APERTA LA SCELTA per 2,1 s di scena, poi risolve con esito fallito del tipo chiesto.
+   Ogni pagina: forza la scena, tiene aperta la scelta (2,1 s di scena le pagine «palo», che servono al braccio 2; 0,3 s le «parata»),
+   poi risolve con esito fallito del tipo chiesto.
 
    BRACCIO 1 «una guida per fotogramma» (PO-518, tutte le pagine con costruzione dell'azione): nei fotogrammi di hl_result col build-up
      acceso il portiere riceve UNA guida. ✗ un fotogramma con due guide. Scena senza costruzione = non si applica (servono >= 8 giudicate).
@@ -22,8 +23,9 @@
      46,9; il giro 271 ha misurato 42-43,9): dall'armo dell'arco alla fine della scena il pallone arriva a non piu' di 2 u dal corpo del portiere in
      pianta (le mani arrivano ~1,3 u oltre il centro del corpo disteso). ✗ oltre 2 u.
    Un caso senza i fotogrammi che servono e' NON GIUDICATO = rosso (mai abbassare soglie).
-   RIPETIZIONE DICHIARATA: una pagina «palo» in cui il gioco chiude la scelta col suo timer prima che ci siano 0,5 s di scena dopo la
-   provocazione (pagina lenta: macchina carica) si rifa' una volta sola, pagina nuova, e vale la seconda; e' stampato accanto alla scena.
+   RIPETIZIONE DICHIARATA: una pagina in cui il gioco chiude la scelta col suo timer d'esitazione (9-16 s di parete) prima che la sonda
+   scelga — o prima che ci siano 0,5 s di scena dopo la provocazione — e' una pagina troppo lenta (macchina carica): si rifa' una volta
+   sola, pagina nuova, e vale la seconda; e' stampato accanto alla scena. Se anche la seconda si chiude da sola: NON GIUDICATA = rosso.
    VERDE = 0 difetti e >= 8 scene giudicate per braccio. ROSSO (__CPM_NO_G295) = ogni braccio rivede il suo difetto in almeno 6 scene
    giudicate su 8 (ripetizione dichiarata: una corsa per braccio di colore; un rosso si riprova una volta sola e si dichiara).
 
@@ -57,7 +59,8 @@ async function scena(sc, rosso) {
     while (Date.now() - t0 < 300000) { await sleep(300);
       const q = await page.evaluate(() => { const R = window.__CPM_GK229 || [], L = R.filter(f => f.ph === 'hl_intro' || f.ph === 'hl_move' || f.ph === 'hl_choose'), z = R[R.length - 1]; return { d: L.length > 1 ? L[L.length - 1].ck - L[0].ck : 0, ck: z ? z.ck : 0, fuori: !!(z && z.ph === 'hl_result'), t: (window.__CPM_GKT705 && window.__CPM_GKT705.away) || null }; });
       if (sc.k === 'post' && ckP == null && q.d >= APRE && q.t) { ckP = q.ck; await page.evaluate(g => { window.__CPM_GKAT119 = g; }, { x: q.t.x, y: q.t.y + (q.t.y > 50 ? -7.35 : 7.35) }); }
-      if (q.d >= LETT || q.fuori) break; }
+      if (q.fuori) o.chiusa = 1;/* il gioco ha chiuso la scelta col suo timer: l'azione non e' quella della sonda */
+      if (q.d >= (sc.k === 'post' ? LETT : 0.3) || q.fuori) break; }/* le pagine «parata» non servono al braccio 2: scelgono subito (0,3 s di scena), cosi' il timer d'esitazione non le raggiunge */
     if (sc.k === 'post') await page.evaluate(() => { window.__CPM_GKAT119 = null; });
     await page.evaluate(a => window.__CPM_RESOLVE(a), sc.ai);
     /* EVENTO: arco finito + 1 s di scena (tetto di parete 300 s) */
@@ -100,11 +103,12 @@ async function braccio(rosso) {
   await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const q = coda.shift(); let o = await scena(q.sc, rosso);
     /* RIPETIZIONE DICHIARATA: una pagina «palo» in cui il timer d'esitazione del gioco (9-16 s di parete) ha chiuso la scelta prima dei 0,5 s di
        scena dopo la provocazione si rifa' UNA volta, pagina nuova; vale la seconda. Se anche la seconda non basta resta NON GIUDICATA = rosso. */
-    if (o.b2 && o.b2.ng && /lettura/.test(o.b2.ng)) { const p = o.b2.ng; o = await scena(q.sc, rosso); o.rip = p; }
+    if (o.chiusa || (o.b2 && o.b2.ng && /lettura/.test(o.b2.ng))) { const p = o.chiusa ? 'scelta chiusa dal timer del gioco prima della sonda' : o.b2.ng; o = await scena(q.sc, rosso); o.rip = p; }
     ris[q.i] = o; } }));
   const A = { 1: { g: 0, d: 0, ng: 0, t: [] }, 2: { g: 0, d: 0, ng: 0, t: [] }, 3: { g: 0, d: 0, ng: 0, t: [] }, 4: { g: 0, d: 0, ng: 0, t: [] } };
   const segna = (n, dif, ng, txt) => { const a = A[n]; if (ng) { a.ng++; a.t.push('⚠ ' + txt); } else { a.g++; if (dif) a.d++; a.t.push((dif ? '✗ ' : '· ') + txt); } };
   for (const o of ris) { const id = `gi${o.sc.gi} a${o.sc.ai} ${o.sc.k === 'post' ? 'palo' : 'parata'}${o.rip ? ' [pagina ripetuta 1 volta: ' + o.rip + ']' : ''}`;
+    if (o.chiusa && !o.err) o.err = 'scelta chiusa dal timer del gioco anche alla seconda pagina';
     if (o.err) { segna(o.sc.k === 'post' ? 3 : 4, 0, 1, `${id}: NON GIUDICATO (${o.err})`); if (o.sc.k === 'post') segna(2, 0, 1, `${id}: NON GIUDICATO (${o.err})`); continue; }
     if (o.b1 && !o.b1.na) segna(1, o.b1.due > 0, 0, `${id}: build-up ${o.b1.bu} fotogrammi, con due guide ${o.b1.due}${o.b1.due ? ' (bersagli a ' + o.b1.dist + ' u uno dall\'altro)' : ''}`);
     else if (o.b1) A[1].t.push(`  ${id}: senza costruzione dell'azione (${o.b1.bu} fotogrammi), non si applica`);

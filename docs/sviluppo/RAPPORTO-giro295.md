@@ -121,4 +121,41 @@ Dopo ogni modifica a `src/`: `node tools/build-src.mjs` e `node tools/check-src.
 
 ## Dubbi per il PO
 
-@@DUBBI@@
+1. **PO-518, «Logica di gioco comanda»: la voce `GK` del copione non viene più eseguita mentre il ciclo guida il portiere.** In quasi
+   tutti i copioni quella voce lo teneva fermo a (`GX+1`; `GY`), cioè lo tirava verso il centro porta: ora sta sul punto della logica
+   (3,0–3,7 u più in là, misurato). Un solo copione lo MUOVE: «uno contro uno» (`ONE_ON_ONE`: uscita a 6 e poi 8 u dalla linea). Le scene
+   «uno contro uno» hanno già l'uscita scritta nella logica (`hlGkOut`, dal 7.248), quindi l'uscita resta; ma **non ho misurato una
+   scena «uno contro uno»** prima e dopo (non ne sono capitate nelle partite e non sono fra le scene del guardiano).
+2. **PO-519: durante la scelta il portiere non scivola, ma il suo bersaglio sì, e al rilascio lui ci va.** Misurato nel gioco vero:
+   a fine lettura il bersaglio è a 0–2,8 u da lui; 1 volta su 19 (prima) e 1 su 27 (dopo) è fuori dai pali di 0,46 u. È il motore di
+   scena che sposta i ventidue durante la lettura (al più 8 passi). La decisione dice «bloccarlo se succede» durante la scelta: lì non
+   succede e non ho bloccato nulla. Se il PO vuole il portiere fermo anche al rilascio, la strada è tenere fisso il suo bersaglio per
+   tutta la scena; ma quel bersaglio è proprio la «logica di gioco» di PO-518. È una scelta sua.
+3. **PO-519: le letture misurate sono corte in tempo di scena** (0,4–2,8 s: la pagina con i GLB fa ~2 fotogrammi al secondo). Che il
+   portiere resti fermo per tutta la lettura lo dice il codice (il congelamento vale finché dura la lettura) e lo confermano 76 letture
+   su 76 con strada 0; non ho una lettura misurata di 10 s di scena.
+4. **PO-520: il filo si è spostato, non è sparito.** Ora sul palo il portiere ci prova fino a 4,75 u di lato (prima 4,5). Fra 4,5 e 4,75
+   si tuffa sempre (8 su 8); a 4,75 c'è un nuovo filo, dove da una corsa all'altra può di nuovo tuffarsi o no. Ogni soglia ha un filo:
+   per toglierlo del tutto servirebbe decidere il gesto prima del sorteggio del punto di partenza del tiro.
+5. **PO-520: «si tuffa» può essere il riflesso col corpo.** In una scena d'esplorazione (gi10, 4,62 u di lato) il gesto è stato
+   `gk_block` (un passo e opposizione col corpo) e non il tuffo: è la regola del giro 223 quando il tuffo taglierebbe la strada al
+   pallone. Il guardiano conta «ci prova» (un gesto qualunque). Nelle 8 scene del guardiano il gesto è sempre il tuffo.
+6. **PO-520: nessun palo nelle partite vere** (0 su 46 scene prima, 0 su 27 dopo). La misura è solo quella provocata.
+7. **PO-530: poche parate nelle partite vere** (2 per versione). Il difetto è confermato in una (3,0 u → 0,36 u dopo); la misura larga
+   è quella provocata (8 scene: verde 0,03–0,52 u, rosso 2,2–5,9 u secondo il sorteggio del bersaglio).
+8. **PO-530: col portiere sulla linea il pallone della parata ora arriva fino a 0,45 u oltre il suo centro**, cioè a 0,7 u dalla linea
+   di porta (portiere a x 47, linea a 48,6). È la stessa convenzione del giro 258 («mani a +0,45 u»). Non ho guardato le foto del gesto:
+   la sonda misura distanze, non l'aspetto.
+9. **PO-530, cross «parato»:** l'atterraggio ora sta a 1 u dal portiere anche quando lui è sulla linea (prima fra x 40 e 44,5). Misurato
+   in una sola scena di cross (gi165: 0,15–0,22 u). Non ho rimisurato le uscite alte del portiere sui cross col portiere avanzato
+   (lì la regola non scatta: vale solo se il portiere è più di 1 u dietro l'atterraggio).
+10. **Durata dell'arco allungato.** Tiene la velocità del tiro ma mai sotto 18 u/s di scena: la prima stesura dava un arco di 3,3 s su
+    gi63 e `gk-dive-sync` l'ha preso (tuffo finito 0,35 s prima). Corretto e rimisurato (0,98 s). 18 u/s l'ho scelto io guardando le
+    durate degli archi del gioco (0,5–1,4 s per 15–30 u): se il PO vuole un altro passo è una costante sola.
+11. **Il guardiano usa provocazioni** (bersaglio del portiere spostato in lettura, portiere a 4,62 u di lato, bersaglio dell'arco 3,5 u
+    davanti al portiere arretrato) e **una ripetizione dichiarata**: la pagina in cui il timer d'esitazione del gioco chiude la scelta
+    prima della sonda si rifà una volta. Succede a macchina carica (visto con 4–5 pagine aperte insieme).
+12. **La base di confronto.** `3076a1b7` è la 196, ma `origin/main` oggi è già alla 198. Ho confrontato col commit indicato.
+13. **Tocco di `_readFreeze`** (lo stesso del giro 293): una condizione in più sulla riga del ciclo dei portieri, attiva solo col
+    rosso. Se il giro 293 cambia quella riga, c'è un conflitto di unione da risolvere a mano.
+@@DUBBI2@@
