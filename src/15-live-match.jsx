@@ -3084,6 +3084,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _chiudiAudio172=()=>{setAudio172(false);if(!audioPausa172.current)setPaused(false);};
   const _icoAudio172=()=>{let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}return m?"🔇":"🔊";};
   const _g172=!(typeof window!=='undefined'&&window.__CPM_NO_G172);
+  /* [giro 294 PO-567 «all'ingresso in campo non puoi accendere e spegnere l'audio». Rosso __CPM_NO_G294] MISURATO (ingresso-294): l'altoparlante
+     della barra c'era solo nelle cinque fasi di gioco; nell'ingresso e nelle cerimonie dentro la partita (premiazione, parata: fase
+     `ceremony`) la barra e' la stessa ma il tasto mancava. Ora c'e' anche li': stesso tasto, stesso pannello, stesso stato (AudioMgr →
+     'cpm-audio'), nessun secondo salvataggio. */
+  const _g294=!(typeof window!=='undefined'&&window.__CPM_NO_G294);
+  const _fasiAudio294=_g294?["playing","hl_intro","hl_move","hl_choose","hl_result","walkout","ceremony"]:["playing","hl_intro","hl_move","hl_choose","hl_result"];
   /* [7.909.0 — D7 revocata] L'interruttore «Corpi: leggeri / pieni» del menu di pausa ha finito il suo lavoro:
      serviva a far misurare al PO i due bracci sul suo telefono, la misura e' arrivata (pieni 31-32 fps, leggeri
      29-30) e ha revocato la 7.907. Via il bottone e la preferenza; il campo usa il corpo pieno e il contatore dei
@@ -3536,6 +3542,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
        dritto in `playing` (misurato: unica fase attraversata, `playing@12393`), quindi tutto cio' che vive nei
        dieci secondi e mezzo della walkout — tappeto, bambini per mano, ingresso delle squadre — non e' mai stato
        misurato da nessuno. Questo gancio ci porta, come __CPM_FORCE_CEREMONY fa con la premiazione: test-only. */
+    window.__CPM_PALLA294=(x,y)=>{try{setBallPos({x:+x,y:+y});return true;}catch(e){return false;}};/* [giro 294] test-only: il pallone LOGICO dove dice la sonda */
     window.__CPM_FORCE_WALKOUT=()=>{try{setPhase("walkout");return true;}catch(e){return false;}};
     window.__CPM_RIPBREVE=()=>{try{const _e0=+ripT0Ref.current||0;const _ms=_e0?(Date.now()-_e0):-1;return{tick:(ripTickRef.current|0),ms:_ms,breve:(_e0>0&&_ms<=4500)};}catch(e){return null;}};/* [7.590.0] la finestra BREVE, per le sonde */
     window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
@@ -4262,11 +4269,17 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     return ()=>{_alive=false;};
   },[]);// eslint-disable-line
 
+  const tattica294Ref=useRef(0);
+  const _indietro294=()=>{if(phaseRef.current==="formations")setPhase("matchday");};
   // Async handler: load opponent tactic then go to formations
   const handleGoToFormations=async()=>{
     cpmTimelineReset(); cpmEmit("MatchStart",{opponent:(opponent&&(opponent.n||opponent.name))||null});// LMQP-1
     cpmEvReset();/* [7.496.0 F1b] il libro mastro parte vuoto a ogni partita: senza, due partite di fila si sommano e il conto dei gol non torna per un motivo che non c'entra col gioco */
     matchMemRef.current={goals:0,assists:0,misses:0,gkSaves:0,corners:0,foulsWon:0,byFlank:{L:0,C:0,R:0}};// M2: azzera la memoria narrativa a inizio partita
+    /* [giro 294 PO-566 «non c'e' modo di tornare indietro»] dalle Formazioni si torna al pre-partita; rientrando, la tattica avversaria
+       NON si rigenera (con un'AI configurata la risposta potrebbe cambiare): vale quella gia' caricata, o quella ancora in arrivo. */
+    if(_g294&&tattica294Ref.current){setPhase("formations");return;}
+    tattica294Ref.current=1;
     setOppTacticLoading(true);
     setPhase("formations");
     const tactic=await generateOpponentTactic(opponent,player.stats,player.week||1);
@@ -11101,6 +11114,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(phase==="hl_result"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(Date.now()-(resultShownRef.current||0)>800)_kbContinue.current();return;}// [6.76.0 LMV-L6] anche la tastiera rispetta la guardia anti-skip-accidentale del tap (rigore: score/float a 1000ms non più scavalcati da Enter immediato)
       if(phase==="ceremony"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();skipCeremony();return;}/* [7.2.0] Enter/Space salta la premiazione → card di fine gara */
       if(phase==="ended"&&(e.key==="Enter"||e.key===" ")){e.preventDefault();_kbEnd.current();return;}
+      if(phase==="formations"&&e.key==="Escape"&&_g294){e.preventDefault();_indietro294();return;}/* [giro 294 PO-566] Esc = Indietro, come chiude i pannelli altrove */
       if((phase==="matchday"||phase==="formations")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();setPhase(p=>p==="matchday"?"formations":"walkout");return;}
       if(e.key==="0"||e.key==="Numpad0"){
         e.preventDefault();
@@ -11649,7 +11663,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&(!benchStart||_g253)&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} onBack={_g294?_indietro294:null}/* [giro 294 PO-566] */ oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
@@ -11679,7 +11693,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {paused?"▶":"⏸"}
                   </button>
                 )}
-                {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                {_g172&&_fasiAudio294.includes(phase)&&(
                   <button data-cpm="audio-partita" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.7)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -4px"}:{})}}>{_icoAudio172()}</button>
                 )}
                 {/* [7.484.0] VELOCITA' DELLA PARTITA, scelta dal giocatore. Sta accanto alla pausa perche'
@@ -11778,7 +11792,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
-                  {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                  {_g172&&_fasiAudio294.includes(phase)&&(
                     <button data-cpm="audio-partita" className="cpm-t40m" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.75)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginRight:_no108("13")?22:26}:{})}}>{_icoAudio172()}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&!_sh173/* [giro 173] */&&(

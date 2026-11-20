@@ -946,7 +946,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,onBack=null,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
   useEffect(()=>{
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -1063,7 +1063,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     <div data-cpm="formazioni23" ref={ref204} data-gap204={gap204} style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
-          <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
+          {/* [giro 294 PO-566 «non c'e' modo di tornare indietro» — rosso __CPM_NO_G294 (LiveMatch non passa onBack)] in testata, dove si guarda entrando:
+              in fondo alla pagina, su telefono, tre pulsanti in riga non ci stanno. Riporta al pre-partita; la partita resta la stessa. */}
+          {onBack&&<button data-cpm="indietro294" onClick={onBack} aria-label="Indietro: torna al pre-partita" title="Indietro (Esc)" style={{flex:"0 0 auto",minHeight:44,minWidth:44,padding:`0 ${SP.md}px`,marginLeft:-SP.sm,background:"none",border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,color:TH.text,fontSize:FS.small,fontWeight:FW.bold,fontFamily:"inherit",cursor:"pointer"}}>← Indietro</button>}
+          <span style={{flex:"1 1 auto",minWidth:0,fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>

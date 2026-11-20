@@ -7401,6 +7401,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
       const _hold74=(isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10)))||(isWalk&&typeof window!=='undefined'&&window.__CPM_ATT196===true)/* [giro 196] la schermata d'attesa dei corpi (LiveMatch) tiene le squadre al tunnel finche' tutti sono CGTrader con clip */;
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
+      /* [giro 294 PO-556 «all'ingresso in campo l'eroe aveva gia' il pallone tra i piedi». Rosso __CPM_NO_G294]
+         MISURATO (misura-294, GLB accesi, ingresso intero e ingresso saltato, 7.999.196/197/198): sul banco il pallone resta sul dischetto
+         di centrocampo per tutto l'ingresso e nessuno gli passa a meno di 3,41 u (l'eroe, ultimo della fila di casa; dalla 197 — giri
+         245+255, file a x -4/+4 — prima erano oltre 7 u); la colla dell'eroe (3,2 u, eroe in corsa) dista 0,21 u e nell'ingresso la
+         velocita' che legge (_hvx) e' 0. Il difetto del PO non si e' riprodotto: nessuno scrittore del pallone pero' sa che l'ingresso
+         e' una cerimonia (inseguitore del punto logico, colla, portatore: nessuno guarda la fase). Regola di scena, una e a valle di tutti
+         gli scrittori: durante l'ingresso il pallone sta FERMO sul dischetto di centrocampo, a terra. Lo decide la scena, non il gioco.
+         Testimone test-only __CPM_PAL294W (armato dalla sonda): pallone e corpo piu' vicino, per fotogramma, DOPO la regola. */
+      if(isWalk){if(!(typeof window!=='undefined'&&window.__CPM_NO_G294)){ball.position.x=0;ball.position.z=0;ball.position.y=0.22;if(typeof ballArcActive!=='undefined'&&ballArcActive)ballArcActive=false;}
+        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_PAL294W)&&window.__CPM_PAL294W.length<6000){try{let _d294=1e9,_w294=-1;const _bx294=ball.position.x,_bz294=ball.position.z;
+          sr.current.players.forEach((pp,i)=>{const m=pp&&pp.mesh;if(!m)return;const d=Math.hypot(m.position.x-_bx294,m.position.z-_bz294);if(d<_d294){_d294=d;_w294=i;}});
+          const _de294=hero?Math.hypot(hero.position.x-_bx294,hero.position.z-_bz294):1e9;if(_de294<_d294){_d294=_de294;_w294=-2;}
+          window.__CPM_PAL294W.push({t:+walkT.toFixed(2),b:[+_bx294.toFixed(2),+ball.position.y.toFixed(2),+_bz294.toFixed(2)],vis:ball.visible?1:0,d:+_d294.toFixed(2),w:_w294,de:+_de294.toFixed(2),h:hero?[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)]:null});}catch(_e294){}}}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){
         /* [giro 54 PO-277 «saltabile» — rosso __CPM_NO_ING277] «Salta ingresso» non taglia la fase a meta': MISURATO (sonda del
