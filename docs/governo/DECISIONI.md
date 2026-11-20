@@ -1917,3 +1917,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Piano blocco 2 (Fable, al liberarsi dei posti): 298 Home (PO-558, 559, 571, 568, 572); 299 Rosa, angoli e presentazione (PO-563, 564, parte di PO-567); 300 pre-partita e PC (PO-565, 551, 552, 553).
 - 13:45 (20/11) Giri 293 e 296 consegnati con molti guardiani della mappa non eseguiti (src/12, src/15, src/11, src/02: ~120): la verifica si farà sull'unione del blocco 1 (prova/198-blocco1) a blocchi paralleli, come per la 198 rapida. Lanciati i giri 298 (session_01QEYia9iQDawMAcUG878GYv) e 299 (session_01QEYiaAvBvMFfhsYwXAFd1s); il 300 al prossimo posto libero.
 - 14:00 (20/11) PO-583 nella 199: simulare la carriera da bandiera di un club di seconda divisione fino all'Europa (solo misura).
+- 14:15 (20/11) PO-584 nella 199, insieme a PO-583: misurare infortuni e squalifiche in carriera simulata e proporre la taratura.
