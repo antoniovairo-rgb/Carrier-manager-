@@ -22,3 +22,4 @@
 | 12 | tecnica-045 | VERDE (uscita 0, 122 s) | — | — | 45 opzioni, 0 tecniche cambiate dal motore; nel rosso ne cambiano 20 |
 | 13 | rigorista-249 | VERDE (uscita 0, 379 s) | — | — | A (motore, 20 partite): senza premio rigori dell'eroe 0/10, con premio 13/13; B (partita): senza premio il rigore lo batte il compagno, con premio l'eroe; rosso `__CPM_NO_G249` visto in A e B |
 | 14 | patto-238 | VERDE (uscita 0, 829 s) | — | — | bracci A (motore), B (partita vera: eroe battitore 12/12 punizioni provocate) e C (profilo, bio, chimica 60→61, cambio club) verdi; rosso `__CPM_NO_G238` visto in tutti e tre |
+| 15 | anteprima-230 | VERDE (uscita 0, 155 s) | — | — | verde 3/3 (bilancio mostrato = classifica, striscia forma assente); rosso `__CPM_NO_G230` + `__CPM_NO_G239` bocciato |
