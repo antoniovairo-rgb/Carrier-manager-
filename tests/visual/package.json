@@ -699,6 +699,7 @@
     "rassegna-232": "node rassegna-232.mjs",
     "classifica-259": "node classifica-259.mjs",
     "battito-264": "node battito-264.mjs",
+    "rigori-296": "node rigori-296.mjs",
     "sonda-264": "node sonda-264.mjs",
     "sonda-264s": "node sonda-264s.mjs",
     "sonda-264v": "node sonda-264v.mjs",

@@ -243,6 +243,9 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   add(ab);
   if(g211)add(senzaCat(ab));
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  /* [giro 296 PO-535] il NOME CORTO APPOSTA del club (tabella in src/02), ultimo gradino prima della sigla. `out.corto296` = il suo posto
+     nella scala (-1 se il club non ne ha uno diverso dai gradini di prima). Rosso __CPM_NO_G296. */
+  out.corto296=-1;try{const _c296=(typeof nomeCorto296==="function")?nomeCorto296({n:n}):"";if(_c296){add(_c296);out.corto296=out.indexOf(_c296);}}catch(_e296){}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 /* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
@@ -269,6 +272,13 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
     const e254=_ecc254(el);
+    /* [giro 296 PO-535] con `adatta` (la striscia della partita) il NOME CORTO, prima di cedere il posto alla sigla, prova a stringere il
+       corpo fino al minimo della scala (12 px), come gia' fa la sigla dal giro 203: «mai la sigla accanto allo stemma con la stessa
+       sigla» finche' il nome corto ci sta. Se a 12 px non entra si scende alla sigla col corpo pieno. */
+    if(e254.fuori&&ad203&&cand.corto296>=0&&liv===cand.corto296&&liv<cand.length-1){
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);return;}
+      dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(0);setLiv(liv+1);return;}
     if(e254.fuori&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
     else if(ad203&&liv>=cand.length-1&&e254.fuori){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
       const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
@@ -285,7 +295,7 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;
-  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} data-corto296={cand.corto296>=0?cand[cand.corto296]:undefined} title={cand[0]} {...rest}
     data-corpo203={ad203&&fs203?fs203:undefined}
     style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }

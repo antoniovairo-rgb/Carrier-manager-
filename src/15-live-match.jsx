@@ -2573,9 +2573,15 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(phase==="ceremony"){
       if(titleStakes&&!ceremony)setCeremony({name:titleStakes.name||"TITOLO",kind:titleStakes.kind||"cup"});
       if(ceremonyEndRef.current)clearTimeout(ceremonyEndRef.current);
-      ceremonyEndRef.current=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_CER_HOLD&&/cpmtest=1/.test(String(window.location&&window.location.search)))return;/* [7.999.77+] solo sotto test: la sonda del mister tiene aperta la cerimonia per misurare e fotografare ogni beat */setPhase("ended");},(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500);/* [7.425.0 evolutiva celebrazioni] LA DURATA SEGUE LO SCRIPT: il timer fisso (CEREMONY_DUR) tagliava lo script per competizione a meta' — la coppa non arrivava al sollevamento, lo scudetto mai alla festa. Le durate coprono la somma dei beat col loro jitter (±25%) piu' un margine: coppa ~15s, promo ~17s, scudetto ~20s, internazionale ~24s. */
+      /* [giro 296 PO-534] TESTIMONE della cerimonia (nessun effetto sul gioco): quando comincia, quanto deve durare, quando finisce e CHI
+         la chiude («timer» = la sua durata, «salta» = tasto Salta / Invio / Spazio). Misurato al giro 296 su 196 e 198, PC in trasferta,
+         con l'orologio della pagina: 18,3-19,6 s, la chiude il timer. I «2-6 s» del giro 272 erano della sonda (foto a coppie durante
+         la serie: vedeva la cerimonia 7-8 s dopo che era cominciata). Guardiano tests/visual/rigori-296.mjs. */
+      try{if(typeof window!=='undefined')window.__CPM_CER296={t0:Math.round(performance.now()),previstoMs:(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500,kind:(ceremony&&ceremony.kind)||null,light:!!(ceremony&&ceremony.light),chi:null,t1:null};}catch(_e296){}
+      ceremonyEndRef.current=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_CER_HOLD&&/cpmtest=1/.test(String(window.location&&window.location.search)))return;try{const _w296=window.__CPM_CER296;if(_w296&&!_w296.chi)_w296.chi="timer";}catch(_e296){}/* [7.999.77+] solo sotto test: la sonda del mister tiene aperta la cerimonia per misurare e fotografare ogni beat */setPhase("ended");},(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500);/* [7.425.0 evolutiva celebrazioni] LA DURATA SEGUE LO SCRIPT: il timer fisso (CEREMONY_DUR) tagliava lo script per competizione a meta' — la coppa non arrivava al sollevamento, lo scudetto mai alla festa. Le durate coprono la somma dei beat col loro jitter (±25%) piu' un margine: coppa ~15s, promo ~17s, scudetto ~20s, internazionale ~24s. */
       return()=>{if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}};
     }
+    try{const _w296=typeof window!=='undefined'?window.__CPM_CER296:null;if(_w296&&_w296.t1==null){_w296.t1=Math.round(performance.now());_w296.durataMs=_w296.t1-_w296.t0;_w296.dopo=phase;if(!_w296.chi)_w296.chi="altro";}}catch(_e296){}/* [giro 296] fine della cerimonia: chi non e' ne' il timer ne' il salto resta «altro» */
   },[phase]);
   // decide a fine partita: se è stato vinto un titolo → premiazione 3D, altrimenti direttamente la card di fine gara.
   //   Hoisted (function decl) → richiamabile dai callback del clock/handleContinue definiti più sopra nel corpo.
@@ -2718,7 +2724,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     }catch(_e){}
     setPhase("ended");
   }
-  const skipCeremony=()=>{if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}setPhase("ended");};
+  const skipCeremony=()=>{try{const _w296=window.__CPM_CER296;if(_w296&&!_w296.chi)_w296.chi="salta";}catch(_e296){}if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}setPhase("ended");};
   // [7.31.0 direttiva PO «rigori 3D nelle coppe pareggiate: suspense + esito IN partita»] CALCI DI RIGORE
   //   dal dischetto al fischio finale dei turni KO pareggiati (cup/euro_ko/euroMondiale_ko). PURA PRESENTAZIONE:
   //   l'esito è quello che onMatchEnd deciderà comunque (koShootoutWin sullo STESSO seed 6.48 → coerente per
@@ -6699,8 +6705,16 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                riparte comunque DAL CENTRO, senza schieramento ne' palla tenuta, come sulla 7.999.169. Rosso __CPM_NO_RIP235 = regola
                larga della 7.999.170. */
             const _er235=!!golScena235Ref.current,_sch235=_er235||!!(typeof window!=='undefined'&&window.__CPM_NO_RIP235);if(_c207)golScena235Ref.current=0;
-            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena,eroe:_er235,sch:(_st0.scena||_sch235)};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
-              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:_sch235/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio. [giro 35] solo quello */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;try{_w207.fuori=(_M._g||[]).filter(q=>q&&!q.gk&&(q.team==='home'?q.x>51:q.x<49)).length;_w207.hold=(_M._S&&_M._S.kickoff)?(_M._S.kickoff.hold|0):null;}catch(_e235){}/* [giro 35] testimone dell'EFFETTO: giocatori di movimento nella meta' sbagliata subito dopo la ripresa (0 se schierati) */}catch(_e207){}}}}
+            /* [giro 296 PO-536, decisione PO 18/11 20:30 — rosso window.__CPM_NO_G296] ANCHE DOPO IL RIGORE SEGNATO DA UN COMPAGNO I VENTIDUE SI
+               SCHIERANO. MISURATO (braccio «compagno» di ripartenza-piazzato-27, 7.999.198 prima della correzione, 2 corse): senza il premio
+               rigorista il rigore lo tira un compagno (giro 257); dopo il suo gol si ripartiva dal centro con la palla a chi ha subito, ma
+               con 5 e 7 giocatori di movimento nella meta' sbagliata e la battuta dopo 2 passi: lo stesso difetto che il giro 27 aveva
+               tolto per il rigore dell'eroe (la regola stretta del giro 35 schiera solo dopo il gol dell'eroe in scena). Ora schiera anche
+               quando il gol della squadra dell'eroe arriva da un rigore calciato da un compagno (ultimo tiro del motore: rigore, non
+               dell'eroe, negli ultimi 3 minuti). Gli altri gol fuori scena restano come li ha lasciati il giro 35. */
+            let _rig296=false;try{if(_c207&&_l207==="away"&&!(typeof window!=='undefined'&&window.__CPM_NO_G296)){const _u296=_M&&_M._S?_M._S._ultTiro191:null;_rig296=!!(_u296&&_u296.intent==="penalty"&&_u296.lato==="home"&&!_u296.eroe&&((clockRef.current|0)-(_u296.min|0))<=3&&((clockRef.current|0)-(_u296.min|0))>=0);}}catch(_e296){}
+            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena,eroe:_er235,sch:(_st0.scena||_sch235||_rig296),rig296:_rig296};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:(_sch235||_rig296)/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio. [giro 35] solo quello */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;try{_w207.fuori=(_M._g||[]).filter(q=>q&&!q.gk&&(q.team==='home'?q.x>51:q.x<49)).length;_w207.hold=(_M._S&&_M._S.kickoff)?(_M._S.kickoff.hold|0):null;}catch(_e235){}/* [giro 35] testimone dell'EFFETTO: giocatori di movimento nella meta' sbagliata subito dopo la ripresa (0 se schierati) */}catch(_e207){}}}}
           /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
              dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
              tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
