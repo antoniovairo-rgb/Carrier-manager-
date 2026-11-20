@@ -82,6 +82,7 @@
     "gk-miss-229": "node gk-miss-229.mjs",
     "portiere-223": "node portiere-223.mjs && CPM_ROSSO=1 node portiere-223.mjs",
     "portiere-265": "node portiere-265.mjs",
+    "portiere-295": "node portiere-295.mjs",
     "portatore-286": "node portatore-286.mjs",
     "portatore-293": "node portatore-293.mjs",
     "misura-293": "node misura-293.mjs",
