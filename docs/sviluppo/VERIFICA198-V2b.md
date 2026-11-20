@@ -9,3 +9,4 @@
 | # | controllo | esito su finale | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|---|
 | 1 | coerenza-235 | VERDE (uscita 0, 180 s) | — | — | verde + due bracci rossi (`__CPM_NO_G235`, `__CPM_NO_G260`) bocciati come atteso |
+| 2 | rassegna-200 | **ROSSO** (uscita 1, 605 s) — verde 11/14 | **ROSSO** identico (uscita 1, 608 s) — verde 11/14 | **non nasce dall'unione** (stesso rosso sulla base) | cade solo il braccio B «partita intera a velocità 2»: la partita non finisce entro il tetto di 420 s dell'aiutante `gioca166` (risultato 2-1 al tetto, sia su finale sia sulla base), quindi schede e puntini restano non giudicati = rosso. Bracci A (soli highlight), C (Simula) e il rosso `__CPM_NO_G200` passano in entrambi. Foto di `docs/sviluppo/giro200/` rigenerate dal controllo e rimesse con `git restore`. |
