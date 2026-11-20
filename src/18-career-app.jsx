@@ -241,6 +241,30 @@ function premiPulisci238(p){try{if(no238()||!p||!p.premiPatto227)return null;con
   for(const k of Object.keys(pr)){if(k==="magliaS")continue;if(pr[k]===cl)o[k]=pr[k];else cambia=true;}
   if(o.maglia&&pr.magliaS!=null)o.magliaS=pr.magliaS;return cambia?o:null;}catch(_e){return null;}}
 if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:premiMotore238,pulisci:premiPulisci238};
+/* [giro 299 PO-563, scelta PO «C e VC come la R» — rosso window.__CPM_NO_G299] CHI PORTA LA FASCIA NELLA ROSA DEL CLUB DELL'EROE.
+   MISURATO nel codice: il gioco SA il capitano solo in due casi — l'eroe (player.isCaptain, fascia guadagnata 7.5.0) e il compagno
+   dello spogliatoio con archetipo «capitano» (player.teammates, nome vero della rosa); ma lo spogliatoio pesca 3 archetipi su 4, quindi
+   in circa un club su quattro non c'e' nessun «capitano». Il VICE il gioco lo sa solo per l'eroe (premio del patto, premio238 «vice»).
+   Dove il dato manca si usa la regola piu' vicina gia' esistente, nell'ordine:
+     capitano: eroe con la fascia → compagno «capitano» → compagno «ex_capitano» (fascia tolta all'eroe: torna a chi l'aveva) →
+               fra i compagni titolari quello con l'attitudine piu' alta ricavata dal nome (stesso calcolo fisso del rigorista, giro 257);
+     vice:     eroe col premio del patto → (eroe capitano) compagno «ex_capitano» → secondo per la stessa attitudine fra i compagni titolari.
+   Nessun campo nel salvataggio, nessun sorteggio. `rosa` = la rosa mostrata (i primi 11 i titolari, l'eroe col suo nome). */
+function fascia299(p,rosa){try{if((typeof window!=="undefined"&&window.__CPM_NO_G299)||!p||!rosa||!rosa.length)return null;
+  const io=p.name||"",nomi=rosa.map(x=>x&&x.name).filter(Boolean),ha=n=>!!n&&nomi.includes(n);
+  const tm=(a)=>{const t=(p.teammates||[]).find(x=>x&&x.archetype===a);return t&&ha(t.name)&&t.name!==io?t.name:null;};
+  const att=(n)=>(typeof attitudine257==="function")?attitudine257(String(n)+"|fascia299"):0;
+  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0));
+  let cap=null,capF=null,vice=null,viceF=null;
+  if(p.isCaptain===true&&ha(io)){cap=io;capF="eroe";}
+  else if(tm("capitano")){cap=tm("capitano");capF="spogliatoio";}
+  else if(tm("ex_capitano")){cap=tm("ex_capitano");capF="ex capitano";}
+  else if(tit.length){cap=tit[0];capF="attitudine";}
+  if(cap!==io&&premio238(p,"vice")&&ha(io)){vice=io;viceF="patto";}
+  else if(cap===io&&tm("ex_capitano")){vice=tm("ex_capitano");viceF="ex capitano";}
+  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF="attitudine";}}
+  return {cap,capF,vice,viceF};}catch(_e){return null;}}
+if(typeof window!=="undefined")window.__CPM_FASCIA299=fascia299;
 /* [giro 249] rosso del giro: A (rigorista, src/14-15), C (controproposta su un'offerta gia' chiusa), D (motivo del tasto della corsa
    con «Il mister ti cerca» aperto) tornano come nel giro 238. */
 function no249(){return typeof window!=="undefined"&&!!window.__CPM_NO_G249;}
@@ -1221,6 +1245,10 @@ const getThisWeekMatchday=()=>{
   // Handler CONDIVISI card⟷wizard (una sola logica di effetti):
   /* [7.292.0 direttiva PO] LA SERATA DI PRESENTAZIONE, evento pre-campionato: stato dei beat + chiusura. */
   const[presEvent,setPresEvent]=useState(null);/* {beat} */
+  /* [giro 299 PO-567, PO 20/11 «sì, il tasto audio anche nella presentazione» — rosso window.__CPM_NO_G299] la serata di presentazione non
+     ha la barra della partita: lo stesso altoparlante (giro 172/294) sta in alto a destra e apre lo STESSO pannello (PannelloAudio172,
+     AudioMgr → 'cpm-audio', nessun secondo salvataggio). */
+  const[audio299,setAudio299]=useState(false);
   /* [7.297.0 collaudo PO «presenterei i giocatori importanti ed i nuovi acquisti!»] Chi chiami sul prato non
      puo' essere una quaterna di slot fissi (2·6·7·10): una presentazione ha senso se annuncia i NUOVI ACQUISTI
      — lo stesso diff rosa-di-quest'anno contro rosa-dell'anno-scorso del passo mercato (7.147.0) — e le facce
@@ -6508,6 +6536,8 @@ const getThisWeekMatchday=()=>{
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
       <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} nomi={[..._bs.slice(2,_n-1).map(b=>b&&b.n),null,player.name||"eroe"]/* [giro 225] chi sta in ogni posto della fila (stesse chiavi della targhetta): i chiamati nell'ordine dei battiti, poi il posto che nessun battito chiama, poi l'eroe */} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
       <PresentazioneScena2D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)} annunci={_bs.map((b,k)=>k===_n-1?{...b,eroe:true}:b)} heroChiave={player.name||"eroe"}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
+      {!(typeof window!=='undefined'&&(window.__CPM_NO_G299||window.__CPM_NO_G172))&&<button data-cpm="audio-serata299" onClick={()=>setAudio299(true)} aria-label="Audio" title="Audio" style={{position:"absolute",top:"calc(env(safe-area-inset-top, 0px) + 6px)",right:8,zIndex:2,minWidth:44,minHeight:44,background:"none",border:"none",cursor:"pointer",fontSize:FS.body,color:"rgba(255,255,255,0.7)",lineHeight:1,fontFamily:"inherit"}}>{(()=>{let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}return m?"🔇":"🔊";})()}</button>}{/* [giro 299 PO-567] stesso altoparlante della barra di partita (giro 172), stessa icona e stesso inchiostro */}
+      {audio299&&<PannelloAudio172 onClose={()=>setAudio299(false)} nota="Le scelte valgono anche nelle Impostazioni" chiudi="Chiudi" etichetta="Audio"/>}
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
           <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:_last?"#fde68a":"rgba(255,255,255,0.75)",textShadow:"0 2px 10px rgba(0,0,0,0.85)"}}>{_b.t}</div>
@@ -7578,7 +7608,7 @@ const getThisWeekMatchday=()=>{
             </Card>
             {/* Sprint 29 — MW7: agent counter-offer */}
             {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
-              <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:8,border:"1px solid "+TH.bdBlue}}>
+              <div style={{background:TH.bgBlue,borderRadius:_g299()?RAGGI299.annidato:RAD.sm/* [giro 299 PO-564] il riquadro (8) conteneva un tasto piu' tondo di lui (12): regola 1, il figlio non supera il padre */,padding:"9px 12px",marginBottom:8,border:"1px solid "+TH.bdBlue}}>
                 <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,marginBottom:4}}>🤵 Il tuo procuratore propone una controproposta:</div>
                 <div style={{fontSize:FS.caption,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
                 <button onClick={()=>setTransferOffer(o=>{if(!no249()&&(!o||o._counter))return o;/* [giro 249, dubbio 7 del 238 — rosso __CPM_NO_G249] l'offerta chiusa nello stesso fotogramma (o gia' rilanciata da un secondo tocco) resta com'e': prima o era null e CareerApp andava in crash (TypeError su o.club) */const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} data-cpm="controproposta-v2" style={{marginTop:8,minHeight:44,padding:"8px 14px",borderRadius:RAD.md,border:"1px solid "+TH.cardBorder,background:TINTE.tasto,color:TH.text,fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}/* [PO-302 tappa 2b] era bianco con testo rosa chiaro (2,13:1) e alto 27 px: tasto secondario V2, 44 px */>Fai la controproposta →</button>
@@ -10567,6 +10597,7 @@ const getThisWeekMatchday=()=>{
               const titolari=roster.slice(0,11).sort((a,b)=>((_ord49[_roleCat(_campo49(a).r)[0]]??4)-(_ord49[_roleCat(_campo49(b).r)[0]]??4))||((a.jerseyNum||0)-(b.jerseyNum||0)));
               const panchina=roster.slice(11);
               const _rig257=(typeof rigorista257==="function")?rigorista257(player,"career",roster.slice(0,11)):null;/* [giro 257 PO-496 seguito, decisione PO 17/11 «Sì, segnato nella Rosa» — rosso window.__CPM_NO_G257] il rigorista del club (o l'eroe col premio): stessa regola della partita */
+              const _fa299=fascia299(player,roster);/* [giro 299 PO-563] capitano e vice della rosa mostrata */
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
                 const _cp49=_campo49(pl);const _rc=_roleCat(_cp49.r||"");
@@ -10580,7 +10611,7 @@ const getThisWeekMatchday=()=>{
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent"),borderLeft:"3px solid "+(isMe?TH.primary:"transparent")}}>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
-                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}
+                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}{_fa299&&pl.name===_fa299.cap&&<SegnoFascia299 sigla="C"/>}{_fa299&&pl.name===_fa299.vice&&<SegnoFascia299 sigla="VC"/>/* [giro 299 PO-563] «C» e «VC» come la «R», accanto al ruolo */}
                     {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<SiglaRuolo239 testo={_cp49.r+(_cp49.tag?" · "+_cp49.tag:"")}/* [giro 239 PO-507a] fumetto al tocco */ data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</SiglaRuolo239>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>

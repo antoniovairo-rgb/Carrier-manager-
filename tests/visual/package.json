@@ -730,7 +730,9 @@
     "misura-198": "node misura-198.mjs",
     "scelte-197": "node scelte-197.mjs",
     "testi-190": "node testi-190.mjs",
-    "cronaca-nomi-190": "node cronaca-nomi-190.mjs"
+    "cronaca-nomi-190": "node cronaca-nomi-190.mjs",
+    "rosa-angoli-299": "node rosa-angoli-299.mjs",
+    "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
