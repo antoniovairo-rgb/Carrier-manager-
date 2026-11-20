@@ -19,3 +19,4 @@
 | 9 | tetto-202 | VERDE (uscita 0, 7 s) | — | — | verde 20, e il rosso si vede |
 | 10 | catalogo-022 | VERDE (uscita 0, 489 s) | — | — | 8 scene su 8 nate dal motore (100%); prova diretta sulle catene del secondo tempo passata |
 | 11 | attesa-241 | VERDE (uscita 0, 62 s) | — | — | modo `--guardiano`: attese dei corpi 8164 e 7894 ms (mediana 8164), vecchia scritta tecnica 0/2, riquadri con contenuto; il comando di `package.json` non stampa un braccio rosso |
+| 12 | tecnica-045 | VERDE (uscita 0, 122 s) | — | — | 45 opzioni, 0 tecniche cambiate dal motore; nel rosso ne cambiano 20 |
