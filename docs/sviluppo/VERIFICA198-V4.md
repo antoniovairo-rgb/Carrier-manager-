@@ -161,7 +161,7 @@ Colonna «base»: «—» = non rieseguito sulla base (verde sul finale, non ser
 
 ## Rapporti dei giri 298–302: cosa era già stato eseguito
 
-Non ho usato i verdi dei giri per saltare controlli: i giri li hanno eseguiti sui loro rami **prima** dell'unione, e l'unione ha cambiato gli stessi file (src/11, 17, 18). Li ho quindi rieseguiti sul finale. Fanno eccezione, per mancanza di tempo, due controlli che il giro 302 dichiara verdi e che qui **non** sono stati rieseguiti:
+Non ho usato i verdi dei giri per saltare controlli: i giri li hanno eseguiti sui loro rami **prima** dell'unione, e l'unione ha cambiato gli stessi file (src/11, 17, 18). Li ho quindi rieseguiti sul finale. Per mancanza di tempo tre controlli già passati dai giri **non** sono stati rieseguiti qui; riporto solo ciò che i giri dichiarano:
 
 - `griglia-mobile`: verde nel giro 302 (187 s, 14 schermate × 5 larghezze) — sul finale **non posso confermarlo**.
 - `diagonali-210`: rosso nel giro 300, «identico sulla base» — non rieseguito.
