@@ -1,22 +1,25 @@
 {
   "_": "giro 303 (PO-592): cosa gira nel workflow verifica-guardiani. `elenco` = guardiani scelti a mano; in alternativa `catena` (notte, completa, carriera, grafica, guardiani, nucleo, fumo, tutta) con `elenco` vuoto. `parti` = in quante parti parallele.",
-  "elenco": [],
-  "catena": "nucleo",
-  "parti": 3,
-  "default_s": 300,
-  "durate_note": {
-    "test:logic": 3,
-    "save-compat": 2,
-    "battito-264": 406,
-    "portiere-295": 680,
-    "home-298": 119
-  },
-  "_elenco_dei_sei": [
+  "elenco": [
     "test:logic",
     "save-compat",
     "battito-264",
     "portiere-295",
     "home-298",
     "esito-rete-301"
-  ]
+  ],
+  "catena": null,
+  "parti": 6,
+  "default_s": 300,
+  "durate_note": {
+    "test:logic": 3,
+    "save-compat": 2,
+    "battito-264": 406,
+    "portiere-295": 680,
+    "home-298": 119,
+    "esito-rete-301": 1248,
+    "web-237": 78,
+    "tema-unico": 27
+  },
+  "_durate": "durate di banco dai rapporti dei giri 295-302 e dal banco del giro 303 (esito-rete-301); web-237 e tema-unico non avevano durata: valore misurato sul runner nel giro 303"
 }
