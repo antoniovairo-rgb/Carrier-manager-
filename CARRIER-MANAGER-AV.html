@@ -53317,6 +53317,38 @@ if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:pr
 /* [giro 249] rosso del giro: A (rigorista, src/14-15), C (controproposta su un'offerta gia' chiusa), D (motivo del tasto della corsa
    con «Il mister ti cerca» aperto) tornano come nel giro 238. */
 function no249(){return typeof window!=="undefined"&&!!window.__CPM_NO_G249;}
+/* [giro 298 · blocco 2 «Pulizia Home e schermate» · DECISIONI 20/11 13:20] UN INTERRUTTORE PER TUTTO IL GIRO.
+   PO-558 nessun riquadro Classifica in Home · PO-559 un solo riquadro «Notizie» · PO-568 via «Dagli altri campionati» ·
+   PO-571 la riga sotto la testata della Classifica segue l'obiettivo del club · PO-572 via «Tempo della partita simulata».
+   Rosso __CPM_NO_G298 = tutto com'era. Guardiano `npm run home-298`. */
+const _g298=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G298);
+/* [giro 298 PO-571] LA RIGA SEGUE L'OBIETTIVO STAGIONALE DEL CLUB. Funzione pura: (player, classifica ORDINATA) → {testo, ob, usato, primo}.
+   · OBIETTIVO: e' l'obiettivo di classifica gia' nel salvataggio (seasonObjectives, type "standing", «Finisci nei primi N»,
+     generateSeasonObjectives in src/06: N=3 con prestigio ≥80, 6 con ≥65, 9 con ≥50, altrimenti 12). N≤3 → titolo · N≤6 → Europa ·
+     N≤9 → meta' classifica · oltre → salvezza. Se il salvataggio non ha l'obiettivo, la stessa formula sul prestigio del club.
+   · ZONE: le stesse regole con cui la carriera qualifica e retrocede a fine stagione (src/18, _willEuroPre e «Bottom 3»):
+     prima divisione con seconda serie (lato alto di LEAGUE_PAIRS) → Europa = prime 7, retrocessione = ultime 3 (con piu' di 6 squadre);
+     prima divisione senza seconda serie → Europa = prime 2, nessuna retrocessione; seconda divisione → niente Europa, la zona alta e'
+     la PROMOZIONE (prime 3), nessuna retrocessione; Primavera → conta solo il titolo.
+   · Dove la zona dell'obiettivo non esiste si sale alla prima zona che esiste: retrocessione → Europa/promozione → vetta. */
+function rigaObiettivo298(player,st){
+  const cid=player&&player.club&&player.club.id;const mi=(st||[]).findIndex(x=>x&&x.id===cid);if(mi<0)return null;
+  const N=st.length,P=i=>(st[i]&&st[i].pts)||0,me=P(mi),lg=(player.club&&player.club.lg)||"";
+  const giov=(player.proStatus||"u18")!=="pro"||/^Primavera/i.test(lg);
+  const seconda=LEAGUE_PAIRS.some(([u,l])=>l===lg),prima=LEAGUE_PAIRS.some(([u])=>u===lg);
+  const nAlta=giov?0:seconda?3:prima?7:2,nomeAlta=seconda?"zona promozione":"zona Europa";
+  const nRetro=(!giov&&prima&&N>6)?3:0;
+  const so=Array.isArray(player.seasonObjectives)?player.seasonObjectives.find(o=>o&&o.type==="standing"&&o.target):null;
+  const pr=(player.club&&player.club.p)||50,t=so?so.target:(pr>=80?3:pr>=65?6:pr>=50?9:12);
+  const ob=t<=3?"titolo":t<=6?"europa":t<=9?"meta":"salvezza";let usato=ob;
+  if((usato==="meta"||usato==="salvezza")&&!nRetro)usato="europa";
+  if(usato==="europa"&&(!nAlta||N<=nAlta))usato="titolo";
+  const M="\u2212";let testo;
+  if(usato==="titolo")testo=mi===0?(st[1]?("In testa, +"+(me-P(1))):"In testa"):(M+(P(0)-me)+" dalla vetta");
+  else if(usato==="europa")testo=mi<nAlta?("+"+(me-P(nAlta))+" sulla "+nomeAlta):(M+(P(nAlta-1)-me)+" dalla "+nomeAlta);
+  else testo=mi>=N-nRetro?("In zona retrocessione, "+M+(P(N-nRetro-1)-me)):("+"+(me-P(N-nRetro))+(usato==="meta"?" sulla salvezza":" sulla zona retrocessione"));
+  return{testo,ob,usato,primo:mi===0,target:t};
+}
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] entrando nella carriera (non all'apertura del menu) si chiedono i corpi della partita, con la pillola d'avanzamento: arrivano prima della prima scena 3D */
   const L=LOCALE[lang]||LOCALE.IT;
@@ -59915,7 +59947,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
           </Card>
-          {devToolsOn()&&<Card style={{padding:"7px 12px"}} shadow={false}>
+          {devToolsOn()&&!_g298()/* [giro 298 PO-572] riga «Tempo della partita simulata» tolta dagli Strumenti di collaudo */&&<Card style={{padding:"7px 12px"}} shadow={false}>
             {/* [7.999.4 passo 2] il PO misura sul SUO telefono il costo della simulazione col motore (limite scelto: 0,3 s a partita) */}
             <div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.bodyLg}}>⏱️</span>
@@ -61145,14 +61177,16 @@ const getThisWeekMatchday=()=>{
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
         const mi=st.findIndex(x=>x.id===player.club?.id);
-        const gap=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        const gap0=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        /* [giro 298 PO-571] la riga segue l'obiettivo del club (rigaObiettivo298). Finche' nessuno ha giocato resta la riga di prima: la 1ª giornata e' di PO-420 (199). Rosso __CPM_NO_G298 */
+        const r298=(_g298()&&mi>=0&&st.some(x=>(x.played||0)>0))?rigaObiettivo298(player,st):null;const gap=r298?r298.testo:gap0;
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
         if(_g260()&&_g235()){/* [giro 260 · decisione PO 17/11 C «Sì, solo in testata»] il nome della scheda sta SOLO nella testata compatta
           del giro 235: niente titolo grande qui. Distanza dalla vetta e forma restano, in una riga sotto la testata (solo in Classifica). Rosso __CPM_NO_G260 */
           return(tab==="standings"&&gap)?(<div data-cpm="vetta-riga260" style={{marginBottom:_sb(SP.md),display:"flex",justifyContent:"space-between",alignItems:"center",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
-            <span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
+            <span data-cpm="vetta-v2" data-ob298={r298?r298.ob+"/"+r298.usato:undefined} className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
         return(<div style={{marginBottom:_sb(SP.md)}}><TitoloV2 cpm="stagione-v2" occhiello={(lg?lg+" \u00b7 ":"")+"St. "+(player.season||1)} titolo={tab==="standings"?"Classifica":tab==="calendar"?"Calendario":"Coppe"}
-          destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
+          destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" data-ob298={r298?r298.ob+"/"+r298.usato:undefined} className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
         <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
@@ -62625,7 +62659,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* Sprint 62 — Notizie della Lega */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="dashboard"&&!_g298()/* [giro 298 PO-559] le notizie della settimana stanno nel riquadro unico «Notizie», in fondo alla Home */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _news=generateLeagueNews(player);
         if(!_news.length)return null;
         return(
@@ -62750,7 +62784,7 @@ const getThisWeekMatchday=()=>{
         );
       })()}
       {/* Sprint 64 — Mini Classifica nel Dashboard */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="dashboard"&&!_g298()/* [giro 298 PO-558 «Classifica non serve, e' gia' nel Tab stagione»] nessun riquadro Classifica in Home */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
         if(!_st.some(t=>t.played>0)||_st.length<4)return null;
         const _myId=player.club?.id,_myN=player.club?.n||player.club?.name;
@@ -62787,7 +62821,17 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
           {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» SPOSTATO nel Tab Club (profilo squadra) → vedi ~19300 */}
-          {(player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
+          {_g298()?(()=>{/* [giro 298 PO-559 · default del 20/11] UN SOLO RIQUADRO «Notizie»: sopra quelle della settimana (campionato, solo da professionista: in Primavera il gioco non ne produce), sotto le tue ultime, piu' recenti prima (player.log nasce gia' cosi'). Stesse voci di prima: tutte quelle della settimana e le ultime 5 tue. Rosso __CPM_NO_G298 = i due riquadri */
+            const _nw=(player.proStatus||"u18")==="pro"?generateLeagueNews(player):[];const _lg=(player.log||[]).slice(0,5);
+            if(!_nw.length&&!_lg.length)return null;
+            const _cap={fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
+            return(<Card momento="Notizie" data-cpm="notizie-298" style={{padding:"9px 12px"}}>
+              {_nw.length>0&&<div data-cpm="notizie-298-sett"><div style={_cap}>Della settimana</div>
+                {_nw.map((n,i)=>(<div key={i} data-n298="s" style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderBottom:i<_nw.length-1?`1px solid ${TH.cardBorder}`:"none"}}>
+                  <span style={{fontSize:FS.body,flexShrink:0,marginTop:1}}>{n.e}</span><span style={{fontSize:FS.caption,color:TH.text,lineHeight:"1.4"}}>{n.txt}</span></div>))}</div>}
+              {_lg.length>0&&<div data-cpm="notizie-298-tue" style={{marginTop:_nw.length?10:0}}><div style={_cap}>Le tue ultime</div>
+                {_lg.map((e,i)=><div key={i} data-n298="t" style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<_lg.length-1?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</div>}
+            </Card>);})():((player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>)}
           {/* [7.96.0 collaudo PO «la scelta chiaro/scuro deve essere fatta SOLO nelle Impostazioni»] toggle tema
               RIMOSSO da qui (ora solo nel menu ⚙️ Impostazioni). La card resta solo su desktop per le scorciatoie. */}
           {/* [7.992.0 PO «togli le scorciatoie»] card «Scorciatoie tastiera» rimossa dalla Home: i tasti restano attivi, sparisce solo il promemoria */}
@@ -63163,7 +63207,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* [6.24.0 collaudo PO] Risultati Internazionali — spostati qui dalla Home (Tab Stagione, sotto la Classifica) */}
-      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="standings"&&!_g298()/* [giro 298 PO-568] riquadro «Dagli altri campionati» eliminato */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _wr=generateWorldResults(player);
         if(!_wr.length)return null;
         const _lgs=[...new Set(_wr.map(r=>r.lg))];
