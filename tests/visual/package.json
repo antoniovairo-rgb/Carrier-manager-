@@ -739,6 +739,7 @@
     "testi-190": "node testi-190.mjs",
     "cronaca-nomi-190": "node cronaca-nomi-190.mjs",
     "rosa-angoli-299": "node rosa-angoli-299.mjs",
+    "ritocchi-302": "node ritocchi-302.mjs",
     "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs"
   },
   "dependencies": {

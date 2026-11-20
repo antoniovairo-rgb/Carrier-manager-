@@ -6,9 +6,10 @@
       scuro uguale a quello di «Salta e gioca», l'icona ⚡ nel titolo e la nota DENTRO il tasto (giro 287); tasto alto >= 44 px.
    B  (PO-551) schermata «Inizia il provino»: da PC il tasto e' attaccato al contenuto (vuoto <= ATTACCO_MAX px); al telefono resta in
       fondo (la pagina scorre, oppure sotto il tasto e la sua riga d'avviso restano <= FONDO_MAX px).
-   C  (PO-552) Home da PC con un salvataggio nello slot 1: i tre tasti «1 2 3» sono pulsanti >= 44x44; il clic su «1» apre la carriera
-      salvata, il clic su «2» (slot libero) apre la creazione; i tasti 1 e 2 della tastiera fanno lo stesso. Al telefono (< 640 px) i
-      tasti non ci sono, come prima (non c'e' tastiera): si giudica la loro assenza.
+   C  (PO-552, CAMBIATA dal PO il 20/11 «Toglierli» — giro 302) Home da PC con un salvataggio nello slot 1: la riga «1 2 3 salvataggi»
+      NON c'e' (nessun .cpm-tasti284, nessun .kbd); il tasto 1 della tastiera apre ancora la carriera salvata e il tasto 2 (slot
+      libero) la creazione. Al telefono (< 640 px) la riga non c'era e non c'e'. Nel rosso (__CPM_NO_G300 = la 7.999.198) la riga
+      torna e C cade. I tre pulsanti cliccabili del giro 300 restano solo dietro __CPM_NO_G302 (guardiano ritocchi-302).
    D  (PO-553) nessuna scritta con suggerimenti di tasti: statico su src/ (WASD · «due frecce insieme» · «Premi P» · numero accanto a
       «Scegli» nelle offerte: ogni riga che li contiene passa da _g300()) + a schermo, in tre scene vere dell'highlight (movimento ·
       scelta · piazzato) e in pausa: nessun testo visibile con quei suggerimenti e nessun numero-tasto 1-3 dentro i pulsanti.
@@ -58,17 +59,10 @@ async function parteC(b, port, W, H, tipo, rosso, et) {
   const r = { tasti: [], n284: null };
   { const { ctx, page, errs } = await nuovaPagina(b, W, H, rosso, { salva: SALVA }); await apriHome(page, port);
     Object.assign(r, await page.evaluate(() => { const z = e => { const q = e.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), tag: e.tagName, t: (e.textContent || '').trim() }; };
-      return { n284: document.querySelectorAll('.cpm-tasti284').length, tasti: [...document.querySelectorAll('.cpm-tasti284 .kbd')].map(z) }; }));
+      return { n284: document.querySelectorAll('.cpm-tasti284').length, tasti: [...document.querySelectorAll('.cpm-tasti284 .kbd')].map(z), kbd: document.querySelectorAll('.kbd').length }; }));
     await foto(page, `${et}-home-${W}x${H}`);
-    if (tipo === 'pc') {
-      const k1 = page.locator('.cpm-tasti284 .kbd').nth(0); if (await k1.count()) await k1.click({ timeout: 3000 }).catch(() => {});
-      r.clic1 = await attendi(page, inCarriera, null, 40);
-    }
     r.errs = errs.slice(); await ctx.close().catch(() => {}); }
   if (tipo === 'pc') {
-    { const { ctx, page } = await nuovaPagina(b, W, H, rosso, { salva: SALVA }); await apriHome(page, port);
-      const k2 = page.locator('.cpm-tasti284 .kbd').nth(1); if (await k2.count()) await k2.click({ timeout: 3000 }).catch(() => {});
-      r.clic2 = await attendi(page, inCreazione, null, 24); await ctx.close().catch(() => {}); }
     { const { ctx, page } = await nuovaPagina(b, W, H, rosso, { salva: SALVA }); await apriHome(page, port);
       await page.keyboard.press('1'); r.tasto1 = await attendi(page, inCarriera, null, 40); await ctx.close().catch(() => {}); }
     { const { ctx, page } = await nuovaPagina(b, W, H, rosso, { salva: SALVA }); await apriHome(page, port);
@@ -181,8 +175,7 @@ for (const rosso of [false, true]) {
     const m = `${W}x${H}`; const giu = (lettera, cond, msg) => { if (!cond) { ko.push(`${lettera}@${m}: ${msg}`); cade.add(lettera + (tipo === 'pc' ? 'pc' : 'tel')); } };
     const C = await parteC(b, port, W, H, tipo, rosso, et);
     log(`${nome} ${m} C Home: ${J(C)}`);
-    if (tipo === 'pc') { giu('C', C.tasti.length === 3 && C.tasti.every(k => k.tag === 'BUTTON' && k.w >= 44 && k.h >= 44), `i tasti 1 2 3 non sono tre pulsanti >= 44x44 (${C.tasti.map(k => k.tag + ' ' + k.w + 'x' + k.h).join(' · ') || 'non trovati: non giudicato'})`);
-      giu('C', C.clic1 === true, 'il clic su «1» non apre la carriera salvata'); giu('C', C.clic2 === true, 'il clic su «2» (slot libero) non apre la creazione');
+    if (tipo === 'pc') { giu('C', C.n284 === 0 && C.tasti.length === 0 && C.kbd === 0, `la riga «1 2 3 salvataggi» c'e' ancora (righe ${C.n284}, tasti ${C.tasti.length}, .kbd ${C.kbd}): PO-552 cambiata, va tolta`);
       if (!C.tasto1) ko.push(`C@${m}: SCORCIATOIA ROTTA, il tasto 1 non apre la carriera`); if (!C.tasto2) ko.push(`C@${m}: SCORCIATOIA ROTTA, il tasto 2 non apre la creazione`); }
     else if (C.n284 !== 0) ko.push(`C@${m}: al telefono compaiono i tasti dei salvataggi (${C.n284})`);
     if (C.errs && C.errs.length) ko.push(`C@${m}: errori di pagina ${C.errs[0]}`);

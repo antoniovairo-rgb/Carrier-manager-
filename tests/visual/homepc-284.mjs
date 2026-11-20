@@ -5,7 +5,8 @@
  *   H2 «Nuova carriera» largo >= 90% della colonna della Home
  *   H3 colonna centrata nello spazio a destra del menu laterale (|sinistra - destra| <= 8 px)
  *   H4 «Crediti» visibile senza scorrere a 1366x768 (dentro la finestra e non coperto)
- *   H5 tasti dei salvataggi «1 2 3» alti >= 44 px con testo >= 14 px a schermo
+ *   H5 [giro 302, PO-552 cambiata dal PO il 20/11 «Toglierli»] la riga dei tasti «1 2 3 salvataggi» NON c'e' piu' (prima: tasti alti
+ *      >= 44 px con testo >= 14 px). Si giudica solo nel verde: col rosso __CPM_NO_G284 la riga non torna (la toglie il giro 302).
  * PO-543 («non si legge bene l'elenco»): per ogni <select> raggiungibile (tendina della nazione nella creazione) e per
  *   una tendina di prova con <optgroup> (le regole sono globali: valgono per le tendine di classifica e del taccuino)
  *   T1 contrasto fra color e background-color delle <option>/<optgroup> (getComputedStyle) >= 4,5; un fondo trasparente
@@ -13,7 +14,7 @@
  * TELEFONO (360, 375, 412): la Home NON cambia — foto col verde e col rosso (__CPM_NO_G284 = la 7.999.197) confrontate
  *   pixel per pixel; devono essere identiche. Foto in docs/sviluppo/giro284/.
  * Uso: node homepc-284.mjs                       → verde (esce 0 solo se tutto passa)
- *      CPM_PROVA_ROSSO=1 node homepc-284.mjs      → in piu' accende __CPM_NO_G284 e pretende che H1 H2 H3 H5 T1 cadano
+ *      CPM_PROVA_ROSSO=1 node homepc-284.mjs      → in piu' accende __CPM_NO_G284 e pretende che H1 H2 H3 T1 cadano
  *        (H4 era gia' vero sulla 7.999.197, misurato: Crediti 701-746 px su 768 — si giudica solo nel verde).
  *      CPM_FOTO=prima node homepc-284.mjs         → solo foto (nome file con prefisso), nessun giudizio. */
 import fs from 'node:fs';
@@ -72,7 +73,7 @@ function giudicaPC(m, w, h) {
   ok('H2', m.nuova && m.col && m.nuova.w >= 0.90 * m.col.w, m.nuova ? `Nuova carriera ${m.nuova.w.toFixed(0)} px su colonna ${m.col.w.toFixed(0)} = ${(100 * m.nuova.w / m.col.w).toFixed(1)}% (>= 90%)` : 'Nuova carriera non trovato (non giudicato)');
   ok('H3', m.col && Math.abs(m.sx - m.dx) <= 8, m.col ? `colonna: ${m.sx.toFixed(0)} px a sinistra (dal menu a ${m.navR.toFixed(0)}), ${m.dx.toFixed(0)} a destra, scarto ${Math.abs(m.sx - m.dx).toFixed(0)} (<= 8)` : 'colonna non trovata');
   if (w === 1366) ok('H4', m.credVis, m.cred ? `Crediti ${m.cred.t.toFixed(0)}-${m.cred.b.toFixed(0)} px su finestra ${m.vh}: ${m.credVis ? 'visibile' : 'NON visibile senza scorrere'}` : 'Crediti non trovato (non giudicato)');
-  const t = m.tasti; ok('H5', t.length === 3 && t.every(k => k.h >= 44 && k.w >= 44 && k.fs >= 14), t.length ? `tasti 1 2 3: ${t.map(k => `${k.w.toFixed(0)}x${k.h.toFixed(0)} px testo ${k.fs.toFixed(1)}`).join(' · ')} (>= 44x44, testo >= 14)` : 'tasti dei salvataggi non trovati (non giudicato)');
+  const t = m.tasti; ok('H5', m.col && t.length === 0, m.col ? `riga «1 2 3 salvataggi»: ${t.length} tasti a schermo (devono essere 0, PO-552 cambiata)` : 'Home non trovata (non giudicato)');
   return out;
 }
 
@@ -146,7 +147,7 @@ if (FOTO) {
     console.log(`  ${pass ? 'OK ' : 'NO '} ${w} px: ${d.diversi < 0 ? 'misure diverse' : d.diversi + ' pixel diversi su ' + d.tot} (deve essere 0)`); }
   if (process.env.CPM_PROVA_ROSSO) {
     const rosso = await braccio(true); stampa('BRACCIO ROSSO (__CPM_NO_G284)', rosso);
-    for (const id of ['H1', 'H2', 'H3', 'H5', 'T1']) /* H4 (Crediti in vista a 1366x768) era gia' vero sulla 7.999.197: si giudica solo nel verde */ { const cade = rosso.some(e => e.id === id && !e.pass);
+    for (const id of ['H1', 'H2', 'H3', 'T1']) /* H4 (Crediti in vista a 1366x768) era gia' vero sulla 7.999.197: si giudica solo nel verde; H5 dal giro 302 e' l'assenza della riga e col rosso del 284 non cambia */ { const cade = rosso.some(e => e.id === id && !e.pass);
       console.log(`  ${cade ? 'OK ' : 'NO '} il rosso fa cadere ${id}`); if (!cade) fallito = true; }
   }
 }

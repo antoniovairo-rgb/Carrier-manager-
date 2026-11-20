@@ -361,7 +361,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         </Card>
       )}
-      {_dk&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
+      {_dk&&!(_g300()&&_g302())/* [giro 302 PO-552 cambiata, PO 20/11 «Toglierli»] la riga «1 2 3 salvataggi» non si disegna piu': restano le tre schede; i tasti 1-2-3 della tastiera aprono ancora gli slot (onKey, come PO-553). Rosso __CPM_NO_G302 = i tre pulsanti del giro 300 */&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
         {_g300()?[0,1,2].map(i=><button key={i} type="button" className="kbd" data-cpm="slot-300" aria-label={slots[i]&&!slots[i].corrupted?("Apri il salvataggio "+(i+1)):("Salvataggio "+(i+1))} onClick={()=>{if(slots[i])onLoad(i);else onNew(i);}} style={{border:"none",cursor:"pointer",minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{i+1}</button>)/* [giro 300 PO-552] i tre tasti si cliccano e fanno cio' che fa il tasto della tastiera (stesso ramo di onKey) */
         :<><span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span></>} salvataggi
       </div>}
