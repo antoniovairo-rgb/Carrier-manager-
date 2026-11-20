@@ -21259,7 +21259,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;{const _da=window.__CPM_DA304;if(Array.isArray(_da)){window.__CPM_DA304=null;hero.position.x=+_da[0];hero.position.z=+_da[1];hero._hvx=0;hero._hvz=0;hero._px=hero.position.x;hero._pz=hero.position.z;}}/* [giro 304, solo collaudo] punto di partenza dell'uscita scelto dalla sonda */hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
       if(subEntryT>=0)subEntryT+=dt;
       if(subExitT>=0)subExitT+=dt;
       if((P.ceremony||P.shootout)&&hero._benched){hero._benched=false;hero.visible=true;subExitT=-1;/* [7.127.0] un eroe uscito ricompare per premiazione/rigori (mai bloccato invisibile) */}
@@ -23758,7 +23758,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _ex0=(hero._exSx!=null?hero._exSx:hero.position.x),_ez0=(hero._exSz!=null?hero._exSz:hero.position.z);
           let _hex=_ex0+(_dx-_ex0)*_p,_hez=_ez0+(_dz-_ez0)*_p;
           if(_G255&&_ez0>_VIAZ255){const _v=_spez255(_ex0,_ez0,_dx,_VIAZ255,_dx,_dz,_p);_hex=_v.x;_hez=_v.z;}/* [giro 255] dal campo al punto davanti al varco, poi dritto fuori */
+          const _px304=hero.position.x,_pz304=hero.position.z;
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);// facing = direzione di marcia (verso il dugout) via animOne
+          /* [giro 304, rosso instabile di tunnel-245 «sost-comunale» visto dalla verifica V1 — rosso window.__CPM_NO_G304]
+             IL BORDO CAMPO DEL LATO PANCHINE E' UN MURO CON UNA PORTA. MISURATO (misura-304 + lo stesso inseguimento rifatto in node
+             su 30.805 partenze): la spezzata del giro 255 la percorre il BERSAGLIO a tempo (82% della durata della variante), ma
+             l'eroe lo insegue con la sua punta (9,2 u/s, 13 oltre 6 u di ritardo). Se parte lontano (oltre ~30 u dal varco) il
+             bersaglio ha gia' girato al punto davanti al varco ed e' sceso quando l'eroe e' ancora 3-6 u indietro: l'eroe punta
+             dritto al bersaglio, TAGLIA lo spigolo e passa dentro il nastro della competizione (giro 285, finisce a x -4,77;
+             esempio della verifica: x -4,44 · z -35,05). Succede da circa una partenza su dieci, quindi dipende da DOVE si trova
+             l'eroe quando esce, non da un giro. Far aspettare il bersaglio non regge (provato sul modello: l'eroe arriva in corsa e
+             oltrepassa il punto di slancio). Ora la fascia degli oggetti di bordo campo e' un vincolo di posizione: sotto z -33,85
+             (la striscia LED comincia a z -34,34: 0,35 del corpo + 0,14 di margine; il punto davanti al varco e' a -33,6) si scende
+             solo dentro il varco (|x| <= 4,27 = 4,77 del varco piu' stretto - 0,35 del corpo - 0,15 di margine); fuori
+             dal varco l'eroe resta sulla linea e scorre verso la porta, dentro il varco non ne esce di lato. Nessun salto: si
+             corregge solo il passo del fotogramma. Spento con __CPM_NO_G255/__CPM_NO_G245 (i loro rossi vogliono l'attraversamento). */
+          if(_G255&&!(typeof window!=='undefined'&&(window.__CPM_NO_G304||window.__CPM_NO_G245))){const _ZR=-33.85,_XR=4.27;
+            if(hero.position.z<_ZR){
+              if(_pz304>=_ZR&&Math.abs(hero.position.x)>_XR){hero.position.z=_ZR;if((hero._hvz||0)<0)hero._hvz=0;}
+              else if(Math.abs(hero.position.x)>_XR&&(_pz304>=_ZR||Math.abs(_px304)<=_XR)){hero.position.x=hero.position.x<0?-_XR:_XR;hero._hvx=0;}}}
           // gesti d'uscita (pieni sul rig procedurale; sul GLB la locomozione domina → pacing/traiettoria variano)
           if(hero._aR&&hero._aL){
             const _wk=(subExitT<_xdur*0.7)?(subExitT/(_xdur*0.7)):-1;// 0..1 durante la camminata
