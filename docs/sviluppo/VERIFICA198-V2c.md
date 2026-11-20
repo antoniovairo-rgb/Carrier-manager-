@@ -12,6 +12,7 @@
 | 2 | partita-v2 | **verde** (441 s, braccio verde + braccio rosso) | — | — | «partita-v2 VERDE: 3 formati x 5 schermate · contrasto minimo 4.93:1»; braccio rosso «ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato». |
 | 3 | riserva-104 | **verde** (663 s) | — | — | Verde: highlight 7 · scene provocate 6 · richiami altrui intercettati 6 · D3 riserva 0. Braccio rosso: richiami altrui 12 · D3 riserva 3 (bocciato come atteso). |
 | 4 | partita2d-297 | **verde** (144 s, verde + braccio rosso) | — | — | Telefono e PC 1366x768 verdi (nero fuori campo 0,1%, testata non specchiata nel 2° tempo, tribuna accesa al gol); braccio rosso «A cade · B cade · C cade». |
+| 5 | rigore-79 | **verde** (25 s) | — | — | Verde: 51 rigori della squadra dell'eroe → 0 schede «rigore per loro»; 11 rigori avversari a partita aperta → 11 schede. Rosso `__CPM_NO_RIG79`: 28 schede sui rigori dell'eroe (bocciato come atteso). |
 <!-- fine tabella -->
 
 ## Verdetto
