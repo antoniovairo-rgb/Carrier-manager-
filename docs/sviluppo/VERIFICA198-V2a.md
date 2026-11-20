@@ -22,5 +22,6 @@
 | forma-239 | VERDE | — | — | 184 s. Verde 6/6 (forma vera 18/18, grafica TV, anteprima della rassegna, zero errori di pagina); rosso `__CPM_NO_G239` bocciato 3/3. |
 | avvio-233 | ROSSO | ROSSO (identico) | non nasce dall'unione | 301 s su entrambi. Braccio verde, parte (1): `page.waitForFunction` scade a 300 s in `misura-233.mjs:47` — sulla pagina senza `?cpmtest` il menu («Nuova carriera/Continua») non compare; nessuna misura stampata, braccio rosso mai iniziato. Stesso errore, stessa riga, stessa durata su `lavoro/198` (b3b75b9d): il rosso c'è già sulla base in questo ambiente. Causa non indagata (una corsa per ramo). |
 | rassegna-224 | VERDE | — | — | 260 s. Verde 10/10 (telefono 360/375/390 e PC 1366, accordi sbagliati 0, zero errori di pagina); rosso `__CPM_NO_G224` bocciato su 3/3. Il controllo ha rigenerato le foto di `docs/sviluppo/giro224/`: rimesse con `git restore`. |
+| simula-215 | VERDE | — | — | 282 s. Verde 21/21 (titolare e panchina, errori 0); rosso `__CPM_NO_G215` bocciato. |
 
 Verdetto: in corso.
