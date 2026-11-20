@@ -1918,3 +1918,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 13:45 (20/11) Giri 293 e 296 consegnati con molti guardiani della mappa non eseguiti (src/12, src/15, src/11, src/02: ~120): la verifica si farà sull'unione del blocco 1 (prova/198-blocco1) a blocchi paralleli, come per la 198 rapida. Lanciati i giri 298 (session_01QEYia9iQDawMAcUG878GYv) e 299 (session_01QEYiaAvBvMFfhsYwXAFd1s); il 300 al prossimo posto libero.
 - 14:00 (20/11) PO-583 nella 199: simulare la carriera da bandiera di un club di seconda divisione fino all'Europa (solo misura).
 - 14:15 (20/11) PO-584 nella 199, insieme a PO-583: misurare infortuni e squalifiche in carriera simulata e proporre la taratura.
+- 14:10 (20/11) prova/198-blocco1 = lavoro/198 + giri 293, 294, 296 (7d4409c2), senza conflitti, check-src identico. Il 295 entra quando consegna; poi verifica a blocchi paralleli sull'unione.
