@@ -110,7 +110,7 @@ Limiti dichiarati:
 | `test:logic` | verde (uscita 0) |
 | `save-compat` | verde, 12 pass · 0 fail |
 | `rete-252` | verde (in rete 4 su 4 nel verde e nel rosso; passo max 0,99 u contro 4,40 u) |
-| `node tools/build-src.mjs` + `check-src.mjs` | file di gioco ricomposto e committato; `check-src` dopo la build diceva «differisce da git HEAD: c'è da committare», non l'ho rilanciato dopo il commit |
+| `node tools/build-src.mjs` + `check-src.mjs` | file di gioco ricomposto e committato; `check-src` dopo il commit: «CARRIER-MANAGER-AV.html è allineato al file in git (HEAD)» |
 
 **NON eseguiti** (tempo finito: il giro è durato circa 3 ore e un quarto, quasi tutto in misura):
 - chiesti in più dalla consegna: `esito-280`, `esiti-218`, `gk-dive-sync`, `portiere-265`, `salti-274`, `contatto-103`,
