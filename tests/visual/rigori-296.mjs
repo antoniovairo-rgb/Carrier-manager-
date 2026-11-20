@@ -9,7 +9,8 @@
        dei cambi di fase a 25 ms dentro la pagina + testimone del gioco __CPM_CER296), non su quello della sonda. Quattro corse verdi:
          B1 telefono 375x667 col tocco, in casa · B2 telefono 375x667 (finestra stretta, mouse), in trasferta ·
          B3 PC 1366x768, in casa · B4 PC 1366x768, in trasferta.
-       SOGLIE (verde): durata >= 17.000 ms (il gioco prevede 17.500), fase dopo = ended, la chiude il «timer», 0 errori di pagina.
+       SOGLIE (verde): durata >= 17.000 ms (il gioco prevede 17.500; e' quella del testimone, confermata dal registro: vedi
+       giudicaDurata), fase dopo = ended, la chiude il «timer», 0 errori di pagina.
        STRISCIA IN ALTO a 375x667 (B1, B2), letta durante la serie e in cerimonia (almeno 2 letture stabili per fase): nessun nome
        tagliato (larghezza vera del testo <= casella) e mai la SIGLA DOPPIA (il nome ridotto alla stessa sigla scritta nello stemma
        accanto).
@@ -37,7 +38,7 @@ if (PARTI.includes('A')) {
     await pg.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await pg.waitForFunction(() => typeof window.__CPM_CORTI296 === 'function' && !!window.__CPM_NOMI182, null, { timeout: 90000 });
     const r = await pg.evaluate(() => { const L = window.__CPM_CORTI296(); const cnt = {}; L.forEach(c => { cnt[c.corto] = (cnt[c.corto] || 0) + 1; });
-      return { n: L.length, vuoti: L.filter(c => !c.corto).map(c => c.n), lunghi: L.filter(c => c.corto.length > 10).map(c => c.corto), doppi: Object.keys(cnt).filter(k => k && cnt[k] > 1), siglaUguale: L.filter(c => c.corto && c.corto.toUpperCase() === String(c.a).toUpperCase()).map(c => c.n),
+      return { n: L.length, vuoti: L.filter(c => !c.corto).map(c => c.n), lunghi: L.filter(c => c.corto.length > 10).map(c => c.corto), doppi: Object.keys(cnt).filter(k => k && cnt[k] > 1), siglaUguale: L.filter(c => c.corto && c.corto.toUpperCase() === String(c.a).toUpperCase() && c.n.replace(/^[A-Z]{2}\s+/, '').toUpperCase() !== c.corto.toUpperCase()).map(c => c.n),/* «FC Pau» si chiama Pau: li' nome corto e sigla coincidono perche' il nome E' di tre lettere, non perche' la tabella abbia messo una sigla */
         nonPrima: L.filter(c => { const k = window.__CPM_NOMI182.candidati({ n: c.n, a: c.a }); const i = k.indexOf(c.corto); return !(i >= 0 && i < k.length - 1 && k[k.length - 1] === c.a); }).map(c => c.n).slice(0, 8),
         scalaSal: window.__CPM_NOMI182.candidati({ n: 'FC Salernum 1919', a: 'SLR' }), scalaU19: window.__CPM_NOMI182.candidati({ n: 'FC Salernum 1919 Primavera', a: 'SLR' }) }; });
     await pg.close();
@@ -76,13 +77,20 @@ async function corsaB(id) { const c = CORSE[id]; const vp = c.tel ? { width: 375
   const r = await pg.evaluate(() => ({ fasi: (window.__FASI296 || []).slice(-6), cer: window.__CPM_CER296 || null }));
   const i = r.fasi.findIndex(x => x[0] === 'ceremony'); const durata = (i >= 0 && r.fasi[i + 1]) ? r.fasi[i + 1][1] - r.fasi[i][1] : null;
   if (process.env.CPM_FOTO296 && c.tel) { /* foto per il rapporto: non giudicata */ }
-  const out = { id, ...c, durataMs: durata, dopo: i >= 0 && r.fasi[i + 1] ? r.fasi[i + 1][0] : null, testimone: r.cer, letture, errs: pg.__errs.slice(0, 3) };
+  const out = { id, ...c, inizioReg: i >= 0 ? r.fasi[i][1] : null, fineReg: (i >= 0 && r.fasi[i + 1]) ? r.fasi[i + 1][1] : null, durataMs: durata, dopo: i >= 0 && r.fasi[i + 1] ? r.fasi[i + 1][0] : null, testimone: r.cer, letture, errs: pg.__errs.slice(0, 3) };
   await ctx.close(); return out; }
-function giudicaDurata(r) { const p = [];
-  if (r.durataMs == null) p.push('cerimonia non vista o non finita: non giudicato');
-  else { if (r.durataMs < 17000) p.push(`cerimonia di ${r.durataMs} ms (< 17.000)`); if (r.dopo !== 'ended') p.push(`dopo la cerimonia la fase e' ${r.dopo}`); }
-  if (!r.testimone || r.testimone.t1 == null) p.push('testimone __CPM_CER296 assente o non chiuso: non giudicato');
-  else { if (r.testimone.chi !== 'timer') p.push(`la cerimonia l'ha chiusa «${r.testimone.chi}», non il timer`); if (r.testimone.previstoMs !== 17500 || r.testimone.kind !== 'cup') p.push(`durata prevista ${r.testimone.previstoMs} ms / ${r.testimone.kind}, attesa 17.500 / cup`); if (r.testimone.durataMs < 17000) p.push(`testimone: durata ${r.testimone.durataMs} ms`); }
+/* La DURATA giudicata e' quella del testimone del gioco (inizio = l'effetto React che apre la fase, lo stesso istante in cui parte il
+   timer; fine = l'effetto che la chiude). Il registro della pagina (setInterval) la CONFERMA da fuori: vede la FINE entro 1 s dal
+   testimone e l'INIZIO mai prima e al massimo 5 s dopo (misurato: 0,4-2,0 s dopo, il primo fotogramma della cerimonia e' il piu'
+   pesante e il registro aspetta che finisca; per questo la sua durata, 17,97-18,48 s, e' piu' corta di quella vera, 18,6-19,8 s). */
+function giudicaDurata(r) { const p = []; const T = r.testimone;
+  if (r.durataMs == null) p.push('cerimonia non vista o non finita nel registro della pagina: non giudicato');
+  else if (r.dopo !== 'ended') p.push(`dopo la cerimonia la fase e' ${r.dopo}`);
+  if (!T || T.t1 == null) p.push('testimone __CPM_CER296 assente o non chiuso: non giudicato');
+  else { if (T.durataMs < 17000) p.push(`cerimonia di ${T.durataMs} ms (< 17.000)`);
+    if (r.fineReg != null && Math.abs(r.fineReg - T.t1) > 1000) p.push(`registro e testimone non concordano sulla fine (${r.fineReg} contro ${T.t1})`);
+    if (r.inizioReg != null && !(r.inizioReg >= T.t0 - 50 && r.inizioReg <= T.t0 + 5000)) p.push(`registro e testimone non concordano sull'inizio (${r.inizioReg} contro ${T.t0})`);
+    if (T.chi !== 'timer') p.push(`la cerimonia l'ha chiusa «${T.chi}», non il timer`); if (T.previstoMs !== 17500 || T.kind !== 'cup') p.push(`durata prevista ${T.previstoMs} ms / ${T.kind}, attesa 17.500 / cup`); }
   if (r.errs.length) p.push('errori di pagina: ' + r.errs.join(' | ')); return p; }
 function giudicaStriscia(r) { const p = [];
   for (const f of ['shootout', 'ceremony']) { const L = r.letture[f]; if (L.length < 2) { p.push(`striscia in ${f}: ${L.length} letture stabili (< 2): non giudicato`); continue; }
@@ -94,14 +102,14 @@ if (PARTI.includes('B')) {
   const corse = (process.env.CPM_CORSE296 || 'B1,B2,B3,B4,B5,B6').split(',');
   for (const id of corse) { const r = await corsaB(id); const c = CORSE[id];
     const strTxt = c.tel ? ['shootout', 'ceremony'].map(f => f + ': ' + [...new Set(r.letture[f].map(L => L.map(x => `${x.stemma}|${x.t}${x.tagliato ? ' TAGLIATO' : ''}${x.doppia ? ' DOPPIA' : ''}`).join(' · ')))].join(' / ')).join(' — ') : '';
-    console.log(`${id} ${JSON.stringify({ tel: !!c.tel, tocco: !!c.tocco, trasferta: c.trasferta, rosso: !!c.rosso, salta: !!c.salta })}: durata ${r.durataMs} ms, dopo ${r.dopo}, testimone ${JSON.stringify(r.testimone)}${strTxt ? ' | striscia ' + strTxt : ''}`);
-    riepilogo[id] = { durataMs: r.durataMs, chi: r.testimone && r.testimone.chi, striscia: strTxt };
+    console.log(`${id} ${JSON.stringify({ tel: !!c.tel, tocco: !!c.tocco, trasferta: c.trasferta, rosso: !!c.rosso, salta: !!c.salta })}: durata ${r.testimone ? r.testimone.durataMs : null} ms (registro della pagina ${r.durataMs} ms), dopo ${r.dopo}, testimone ${JSON.stringify(r.testimone)}${strTxt ? ' | striscia ' + strTxt : ''}`);
+    riepilogo[id] = { durataMs: r.testimone ? r.testimone.durataMs : null, registroMs: r.durataMs, chi: r.testimone && r.testimone.chi, striscia: strTxt };
     const pd = giudicaDurata(r), ps = c.tel ? giudicaStriscia(r) : [];
     if (c.rosso) { /* B5: il difetto della striscia si deve vedere (sigla doppia in cerimonia); la durata resta giudicata verde */
       pd.forEach(x => g.push(`${id} (rosso della striscia): ${x}`));
       if (!ps.some(x => /sigla doppia/.test(x) && /ceremony/.test(x))) g.push(`${id} rosso: il difetto non si vede (nessuna sigla doppia in cerimonia) ${JSON.stringify(ps)}`); }
     else if (c.salta) { /* B6: la misura della durata deve cadere */
-      if (!(r.durataMs != null && r.durataMs < 17000 && r.testimone && r.testimone.chi === 'salta' && pd.length)) g.push(`${id} rosso: la cerimonia saltata a 3 s non fa cadere la misura (durata ${r.durataMs}, chi ${r.testimone && r.testimone.chi})`); }
+      if (!(r.testimone && r.testimone.durataMs != null && r.testimone.durataMs < 17000 && r.testimone.chi === 'salta' && pd.some(x => /< 17\.000/.test(x)))) g.push(`${id} rosso: la cerimonia saltata a 3 s non fa cadere la misura (durata ${r.durataMs}, chi ${r.testimone && r.testimone.chi})`); }
     else { pd.forEach(x => g.push(`${id} verde: ${x}`)); ps.forEach(x => g.push(`${id} verde: ${x}`)); }
   }
 }
