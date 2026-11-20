@@ -24,4 +24,20 @@
 | rassegna-224 | VERDE | — | — | 260 s. Verde 10/10 (telefono 360/375/390 e PC 1366, accordi sbagliati 0, zero errori di pagina); rosso `__CPM_NO_G224` bocciato su 3/3. Il controllo ha rigenerato le foto di `docs/sviluppo/giro224/`: rimesse con `git restore`. |
 | simula-215 | VERDE | — | — | 282 s. Verde 21/21 (titolare e panchina, errori 0); rosso `__CPM_NO_G215` bocciato. |
 
-Verdetto: in corso.
+## Riepilogo
+
+- Eseguiti 16 su 16, tutti presenti in `tests/visual/package.json`, uno alla volta nell'ordine dato.
+- **13 verdi**: esito-282, barra-221, pc-tablet-292, pallino-278, fps-249, tabellino-228, recupero-202, schede-234, schede-246, spot-266, forma-239, rassegna-224, simula-215.
+- **2 fermati al tetto di 30 minuti (non giudicati = rossi)**: assist-298, chiusura-99. In entrambi le parti arrivate a stampare erano verdi e nessun difetto è stato stampato; manca il verdetto perché la corsa non è finita in tempo.
+- **1 rosso**: avvio-233, identico sulla base `lavoro/198` → non nasce dall'unione.
+
+## Cosa NON è stato fatto
+
+- assist-298 e chiusura-99 **non sono stati rieseguiti sulla base**: servono altri 30 minuti ciascuno e il tetto di circa 2,5 ore era raggiunto. Non posso quindi confermare se la lentezza nasce dall'unione o c'era già; gli interruttori `__CPM_NO_G293…G302` non sono stati provati.
+- Nessun controllo è stato corso due volte sul finale: avvio-233 ha una corsa sul finale e una sulla base (stesso errore), i due fermati al tetto una sola corsa.
+- I rapporti `RAPPORTO-giro293…302.md` non sono stati letti: l'unico rosso vero c'è già sulla base.
+- Nessuna correzione al codice.
+
+## Verdetto
+
+**V2a pronto: NO.** Tre controlli su 16 non sono verdi: due senza verdetto per il tetto di tempo (da rifare con un tetto più largo, sul finale e sulla base) e avvio-233 rosso anche sulla base in questo ambiente.
