@@ -65,7 +65,7 @@ if (!PARTE || PARTE === '2') {
   const { ctx, pg, rete, errs, lenta } = await contesto({ width: 375, height: 667 }, true);
   await pg.addInitScript(f => { for (const k of f) window[k] = 1; }, FLAGS);
   await pg.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html`, { waitUntil: 'load', timeout: 120000 });
-  await pg.waitForFunction(() => /Nuova carriera/.test(document.body.innerText || ''), null, { timeout: 120000 });
+  await pg.waitForFunction(() => /Nuova carriera/i.test(document.body.innerText || ''), null, { timeout: 120000 });
   await sleep(1500); rete.tappa = 'creazione'; await lenta(0.6);/* il corpo dell'intro (7 MB) impiega ~12 s: piu' dei 5,5 s oltre i quali, prima, comparivano i fantocci */
   const cl = await clickByText(pg, 'Nuova carriera'); await sleep(900);
   await pg.evaluate(n => { const i = document.querySelector('input[type="text"],input:not([type])'); if (i) { const s = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; s.call(i, n); i.dispatchEvent(new Event('input', { bubbles: true })); } }, 'Avvio');
