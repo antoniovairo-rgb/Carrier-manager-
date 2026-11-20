@@ -6,11 +6,23 @@ Macchina: 16 GB di memoria (15,4 liberi all'avvio), 59 GB di disco liberi. Contr
 `CPM_CHROME=/opt/pw-browsers/chromium`. Tutti gli esiti qui sotto vengono da corse fatte in questa sessione (20/11/2026);
 dove un controllo non è stato eseguito è scritto.
 
-**Documento in corso: le righe «in corsa» / «da eseguire» si chiudono a mano a mano.**
+Durata: circa 4 ore e 25 minuti (18:20–22:45), **oltre il tetto di circa 3 ore**: `esiti-218` è durato 39 minuti per corsa
+(due corse) e `highlight-95` ha usato tutti i suoi 65 minuti senza finire.
 
 ## Verdetto
 
-V3 pronto: **non ancora deciso** (controlli in corsa).
+**V3 pronto: no.**
+
+- **L'unione dei giri 295 e 301 in sé non ha mostrato nessun rosso suo**: i sette controlli del punto 1 che dovevano essere verdi lo
+  sono, i due rossi dichiarati (`esito-280`, `esiti-218`) sono rossi anche sulla base. Non ho quindi dovuto usare
+  `__CPM_NO_G295`/`__CPM_NO_G301` per attribuire un rosso, e non ho corretto niente.
+- Il «no» viene da quello che manca o non è pieno, non da un difetto trovato:
+  1. `highlight-95` **non è arrivato in fondo**: braccio verde completo e pulito (0 difetti), braccio rosso interrotto dal limite
+     di tempo → il guardiano nel suo insieme è «non giudicato», cioè rosso per regola.
+  2. `esito-280` sull'unione ha **un motivo di rosso in più** rispetto alla base, visto in una corsa sola e non ricontrollato.
+  3. `portiere-223` esce verde ma dichiara **un caso «non giudicato»** nel braccio verde; la base non è misurata.
+  4. Otto guardiani del punto 2 **non eseguiti**.
+  5. La MAPPA non fa eseguire alla mirata i due guardiani nuovi (vedi «Cose trovate fuori dai controlli»).
 
 ## 1. Unione dei giri 295 e 301
 
@@ -44,7 +56,35 @@ sonda (portiere, esito, pallone nella finestra d'esito, canale-rete). Oltre a qu
 
 ## 3. `highlight-95`
 
-Da eseguire.
+| controllo | esito su finale (9ec24c4f) | esito sulla base (lavoro/198) | nato da quale giro | nota |
+|---|---|---|---|---|
+| `highlight-95` | **non giudicato (= rosso per regola)**: fermato dal limite di tempo a 65 minuti, durante il braccio rosso | non eseguito | — | vedi sotto |
+
+Dove era quando si è fermato (partito 21:37, fermato 22:42):
+- **Braccio verde: completo, 0 difetti.** 19 partite (salvataggi s1, s5, s12 × semi 1234, 2021, 7 × passaggio/dribbling, più la
+  «scena senza esito»), 94 highlight · D4 senza esito 0 · 28 passaggi, arrivati 89,3%, gol del compagno 12, assist a tabellone 12 ·
+  esiti gol/assist 12, parata/occasione 9, intercettato 3, murato/occasione 4 · finte 4, riuscite 50% · falli cercati 1 ·
+  parate giudicate 17 · non giudicabili (guardia di parete) 0 · rivelazioni lette da un'altra scena 15 (il guardiano le elenca, non
+  le conta come difetto). Il braccio verde da solo ha preso circa 63 minuti.
+- **Braccio rosso: appena iniziato.** Una partita letta (s1/1234 dribbling, 4 highlight), poi il limite di tempo ha chiuso il
+  browser: tutte le righe successive sono «Target page, context or browser has been closed». Il verdetto stampato in coda
+  («rosso: D1/D2/D3/D4 non si vede») è **l'effetto dell'arresto, non una misura**: 4 highlight letti su 19 partite.
+- Il limite di 65 minuti l'ho messo io; la corsa intera (verde + rosso) su questa macchina, con un controllo alla volta, richiede
+  a occhio circa due ore (stima dal solo braccio verde, non misurata). Il guardiano accetta `CPM_ARMI=rosso` per fare solo il
+  braccio mancante: non l'ho lanciato perché ero già un'ora e mezza oltre il tetto.
+
+## Non eseguito
+
+- `highlight-95`, braccio rosso (sopra).
+- Seconda corsa di `esito-280` sull'unione, per capire se «B rosso non riconosciuto» (partita p0 del braccio rosso non finita) è
+  instabilità o no. Nota: il motivo riguarda una partita che non arriva al fischio, come gli altri motivi già presenti sulla base;
+  nel diff dell'unione rispetto alla base c'è anche `src/15` (63 righe, blocco 2), non solo i giri 295/301. **Non so quale sia la causa.**
+- `portiere-223` sulla base (per sapere se il caso «non giudicato» c'era già).
+- Punto 2, non eseguiti: `portiere-252`, `parata-100`, `goal-postarc`, `esiti-241`, `po229-gi38`, `cross-218`, `chiusura-99`,
+  `rinvio-252`.
+- Sulla base ho eseguito solo `esito-280` ed `esiti-218` (i due confronti chiesti); gli altri sono verdi sull'unione e non
+  avevano bisogno del confronto.
+- Nessun controllo ha rigenerato foto in `docs/` (`git status` pulito dopo ogni corsa).
 
 ## Cose trovate fuori dai controlli
 
