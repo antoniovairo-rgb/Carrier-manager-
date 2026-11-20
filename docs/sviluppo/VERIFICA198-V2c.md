@@ -15,6 +15,7 @@
 | 5 | rigore-79 | **verde** (25 s) | — | — | Verde: 51 rigori della squadra dell'eroe → 0 schede «rigore per loro»; 11 rigori avversari a partita aperta → 11 schede. Rosso `__CPM_NO_RIG79`: 28 schede sui rigori dell'eroe (bocciato come atteso). |
 | 6 | tabellino-lati | **verde** (5s) | — | — | Ultime righe del controllo: «C · intestazione casa—ospite, eroe 3-0: in casa {"sx":[3,6,58],"dx":[0,2,42],"eroe":"sx"} · in trasferta {"sx":[0,2,42],"dx":[3,6,58],"eroe":"dx"} ✅ PASS tabellino-lati » |
 | 7 | lessico-218 | **verde** (2s) | — | — | Ultime righe del controllo: «rosso {"n":138,"pas":138,"es":["🦵 Tiro angolato","🤸 Pallonetto","🦵 Tiro di prima","🦵 Tiro a giro","🌀 Dribbling portiere e tiro"],"cn":12,"cd":12} ✅ lessico-218 verde (0 su 138 azioni-tiro col lessico di passaggio) e il rosso si vede (138 su 138) » |
+| 8 | minuti-202 | **verde** (173s) | — | — | Ultime righe del controllo: «rosso tentativo 1 {"scene":3,"recuperati":0,"residuo":0,"aperto":0,"tentativi":1,"s":27} ✅ minuti-202 verde (e il rosso si vede) » |
 <!-- fine tabella -->
 
 ## Verdetto
