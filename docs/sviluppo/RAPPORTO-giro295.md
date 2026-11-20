@@ -94,7 +94,18 @@ Ogni pagina: forza la scena, tiene aperta la scelta, risolve con l'esito chiesto
 
 Verde = 0 difetti, 0 non giudicate, ≥ 8 giudicate per braccio. Rosso = difetto rivisto in ≥ 6 scene su ≥ 8. «Non giudicato» = rosso.
 
-@@GUARDIANO@@
+**Esito (corsa intera del 20/11, sul commit `afeb34f`, `npm run portiere-295`: 11 min 20 s, uscita 0).** Verde col verde, rosso col rosso
+(`__CPM_NO_G295`); 16 pagine per colore, 0 non giudicate in entrambi i colori, nessuna pagina ripetuta.
+
+| Braccio | Verde (difetti / giudicate) | Numeri del verde | Rosso (difetti / giudicate) | Numeri del rosso |
+|---|---|---|---|---|
+| 1 una guida per fotogramma | 0 / 16 | nessun fotogramma con 2 guide | 16 / 16 | due guide in 6–36 fotogrammi di build-up per scena (in 12 scene su 16 in tutti i fotogrammi del build-up, nelle altre 4 in 22 su 40); i due bersagli a 1–14,19 u uno dall'altro |
+| 2 nessuna scivolata durante la scelta | 0 / 8 | bersaglio spostato a 1,25–9,45 u da lui, poi 1,55–1,75 s di scena: scarto 0 u, strada 0 u in 8 su 8 | 8 / 8 | bersaglio spostato a 1,83–14,71 u da lui, poi 1,65–1,75 s di scena: scarto 1,8–7,02 u, strada 1,8–7,17 u (soglia 0,5 u) |
+| 3 tuffo sempre sul filo | 0 / 8 | lato 4,62 u, distanza 4,62–5,22 u: gesto `gk_dive` in 8 su 8 | 8 / 8 | stesso lato 4,62 u, distanza 4,62–5,09 u: gesto NESSUNO in 8 su 8 |
+| 4 parata chiusa al portiere | 0 / 8 | minimo pallone–portiere 0,13–0,35 u; arco allungato da x 43,5 (gi4: 44,1) a 47,45 | 7 / 8 | minimo 3,5–4,15 u in 7 scene (arco fermo a x 43,5, portiere a x 47); in gi4 0,54 u (il tiro parte da x 43,5 e il bersaglio dell'arco esce a 46,46: lì il difetto non si vede) |
+
+Soglia del rosso: difetto rivisto in almeno 6 scene su almeno 8. Il braccio 4 la passa con 7 su 8, cioè con un solo punto di margine sopra
+la soglia: la scena gi4 non mostra il difetto nemmeno col rosso (lo dichiaro, non l'ho tolta dal campione).
 
 Perché le provocazioni (tre tentativi prima di arrivarci, tutti misurati):
 - braccio 3: con la sola geometria forzata la distanza di lato cambia di 0,1–0,2 u da una corsa all'altra (gi9: 4,70 poi 4,60 con il
