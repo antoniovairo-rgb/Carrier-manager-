@@ -7,3 +7,4 @@ Nessuna correzione: solo esiti. Base di confronto per i rossi: `lavoro/198` (b3b
 | controllo | esito su finale | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|
 | rassegna-232 | VERDE (27/27, rossi G232 e G239 bocciati 2/2) | — | — | 653 s, exit 0 |
+| carriera3-94 | VERDE | — | — | 161 s, exit 0 |
