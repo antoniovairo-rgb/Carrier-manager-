@@ -3,8 +3,8 @@
    «sì, il tasto audio anche nella presentazione»] GUARDIANO — `npm run rosa-angoli-299`. Rosso del giro: window.__CPM_NO_G299.
    A. ROSA (Club › Rosa, telefono 375): «C» sul capitano e «VC» sul vice, GIUSTI (confrontati con la regola letta a parte dai dati del
       salvataggio), stesso pallino della «R» (altezza, fondo, raggio, corpo del carattere), accanto al ruolo (stessa riga, a sinistra della sigla).
-      Quattro salvataggi: banco (nessun capitano nello spogliatoio → regola dell'attitudine), compagno «capitano», eroe capitano,
-      eroe vice per il premio del patto.
+      Quattro salvataggi: banco (compagno «capitano» nello spogliatoio), spogliatoio SENZA capitano (giro 302 PO-590: «C» al titolare
+      piu' anziano, «VC» al secondo), eroe capitano, eroe vice per il premio del patto.
    B. ANGOLI: sulle schermate del censimento (telefono 375x667 e 412x915, PC 1366x768) zero difetti T/D/S/Q/N (lib/angoli-299.mjs).
    C. AUDIO NELLA SERATA: il tasto c'e', apre lo stesso pannello della partita, il Muto cambia AudioMgr e localStorage 'cpm-audio'
       (una chiave sola), e l'icona del tasto cambia.
@@ -112,10 +112,17 @@ async function leggiRosa(page) { await page.evaluate(() => window.__CPM_CAREER.g
       for (const f of riga.querySelectorAll('[data-cpm="fascia299"]')) { const o = st(f); (f.getAttribute('data-fascia') === 'VC' ? out.VC : out.C).push({ nome, testo: f.textContent, ...o, accanto: Math.abs((o.top + o.h / 2) - (rr.top + rr.height / 2)) <= 6 && o.left < rr.left && rr.left - (o.left + o.w) <= 40 }); }
       const R = riga.querySelector('[data-cpm="rigorista257"]'); if (R && !out.R) out.R = st(R); }
     let pl = null; try { pl = JSON.parse(localStorage.getItem('cpm-v3')).player; } catch (_e) {}/* il salvataggio automatico: i dati veri (compagni dopo la migrazione) */ out.io = pl && pl.name; out.isCap = !!(pl && pl.isCaptain); out.tm = pl && (pl.teammates || []).map(t => t.archetype + ':' + t.name);
-    out.viceP = !!(pl && window.__CPM_PATTO238 && window.__CPM_PATTO238.premio(pl, 'vice')); return out; });
+    out.viceP = !!(pl && window.__CPM_PATTO238 && window.__CPM_PATTO238.premio(pl, 'vice'));
+    /* [giro 302 PO-590] i titolari dal piu' anziano (eta', poi anni nel club, poi alfabetico): l'ordine lo fa la sonda, il gioco da' solo l'eta' */
+    try { if (pl && window.__CPM_ETA302) { const raw = generateTeamRoster(pl.club, pl.season || 1); const T = raw.slice(0, 11).map((x, i) => ({ n: i === 10 ? pl.name : x.name, ...window.__CPM_ETA302(pl, i, x.name) })).filter(x => x.n !== pl.name);
+      T.sort((a, b) => (b.eta - a.eta) || (b.anni - a.anni) || (a.n < b.n ? -1 : a.n > b.n ? 1 : 0)); out.anziani = T.slice(0, 2).map(t => t.n); out.eta = T.slice(0, 3).map(t => t.n + ' ' + t.eta); } } catch (_e) {}
+    return out; });
 }
 async function braccioRosa(k, rossi) { const E = esiti[k]; const base = { seme: SEME, tema: 'scuro', rossi };
-  const casi = [['banco', SAVE], ['eroe capitano', { ...SAVE, player: { ...P0, isCaptain: true, captainSince: 10 } }], ['eroe vice (patto)', { ...SAVE, player: { ...P0, isCaptain: false, premiPatto227: { vice: (P0.club && P0.club.id) || '' } } }]];
+  /* [giro 302 PO-590, dubbio 2 del giro 299] il ramo «il gioco non sa chi e' il capitano»: lo stesso banco con lo spogliatoio senza
+     «capitano» (i nomi li riallinea il gioco alla rosa vera) */
+  const SENZA = { ...SAVE, player: { ...P0, isCaptain: false, teammates: [{ name: 'x', archetype: 'mentore', icon: '🧠', bond: 40 }, { name: 'y', archetype: 'amico', icon: '😄', bond: 40 }, { name: 'z', archetype: 'conflittuale', icon: '😤', bond: 40 }] } };
+  const casi = [['banco', SAVE], ['senza capitano nello spogliatoio', SENZA], ['eroe capitano', { ...SAVE, player: { ...P0, isCaptain: true, captainSince: 10 } }], ['eroe vice (patto)', { ...SAVE, player: { ...P0, isCaptain: false, premiPatto227: { vice: (P0.club && P0.club.id) || '' } } }]];
   let visti = { spog: 0, att: 0 };
   for (const [nome, save] of casi) { const page = await carriera(T375, base, save); if (!page) { E.push({ ok: false, s: `A · ${nome}: NON GIUDICATO (carriera non aperta)` }); continue; }
     const r = await leggiRosa(page);
@@ -124,17 +131,20 @@ async function braccioRosa(k, rossi) { const E = esiti[k]; const base = { seme: 
     if (!r.righe) { E.push({ ok: false, s: `A · ${nome}: NON GIUDICATO (nessuna riga della Rosa)` }); continue; }
     const capTm = (r.tm || []).find(x => /^capitano:/.test(x)), exTm = (r.tm || []).find(x => /^ex_capitano:/.test(x));
     /* l'atteso si ricava QUI dai dati, non dalla funzione del gioco: dove il dato c'e' (eroe, spogliatoio) il nome e' obbligato */
-    const attC = r.isCap ? r.io : capTm ? capTm.split(':')[1] : exTm ? exTm.split(':')[1] : null;
-    const attV = (!r.isCap && r.viceP) ? r.io : (r.isCap && exTm) ? exTm.split(':')[1] : null;
+    const noto = r.isCap || capTm || exTm; const anz = (!rossi.length && r.anziani) ? r.anziani : null;/* nel rosso del 299 non ci sono fasce: l'atteso non serve */
+    if (nome === 'senza capitano nello spogliatoio' && (noto || !r.anziani)) { E.push({ ok: false, s: `A · ${nome}: NON GIUDICATO (${noto ? 'il salvataggio ha un capitano: ' + JSON.stringify(r.tm) : 'eta\' dei titolari non leggibile'})` }); continue; }
+    const attC = r.isCap ? r.io : capTm ? capTm.split(':')[1] : exTm ? exTm.split(':')[1] : (anz ? anz[0] : null);
+    const attV = (!r.isCap && r.viceP) ? r.io : (r.isCap && exTm) ? exTm.split(':')[1] : (anz ? anz.find(n => n !== attC) : null);
+    if (nome === 'senza capitano nello spogliatoio') visti.anz = (visti.anz || 0) + 1;
     if (capTm) visti.spog++; else if (!r.isCap) visti.att++;
     const c = r.C[0], v = r.VC[0];
-    E.push({ ok: r.C.length === 1 && c.testo === 'C' && (attC == null || c.nome === attC), s: `A · ${nome}: una «C» sola e sul capitano giusto — trovate ${r.C.length}${c ? ' su «' + c.nome + '»' : ''}${attC ? ' (atteso «' + attC + '»)' : ' (dato assente: regola dell\'attitudine)'} · spogliatoio ${JSON.stringify(r.tm)}` });
+    E.push({ ok: r.C.length === 1 && c.testo === 'C' && (attC == null || c.nome === attC), s: `A · ${nome}: una «C» sola e sul capitano giusto — trovate ${r.C.length}${c ? ' su «' + c.nome + '»' : ''}${attC ? ' (atteso «' + attC + '»' + (r.eta && !noto ? ', i piu\' anziani: ' + r.eta.join(' · ') : '') + ')' : ' (dato assente)'} · spogliatoio ${JSON.stringify(r.tm)}` });
     E.push({ ok: r.VC.length === 1 && v.testo === 'VC' && (attV == null || v.nome === attV) && (!c || v.nome !== c.nome), s: `A · ${nome}: una «VC» sola, giusta e diversa dal capitano — trovate ${r.VC.length}${v ? ' su «' + v.nome + '»' : ''}${attV ? ' (atteso «' + attV + '»)' : ''}` });
     if (nome === 'banco') { const R = r.R; const pari = (a) => a && R && a.h === R.h && a.bg === R.bg && a.rad === R.rad && a.fs === R.fs && a.fw === R.fw && a.col === R.col;
       E.push({ ok: !!R && pari(c) && pari(v), s: `A · stesso pallino della «R» (altezza, fondo, raggio, carattere): R ${JSON.stringify(R)} · C ${JSON.stringify(c && { h: c.h, w: c.w, bg: c.bg, rad: c.rad, fs: c.fs })} · VC ${JSON.stringify(v && { h: v.h, w: v.w, bg: v.bg, rad: v.rad, fs: v.fs })}` });
       E.push({ ok: !!c && !!v && c.accanto && v.accanto, s: `A · «C» e «VC» accanto al ruolo (stessa riga, subito a sinistra della sigla): C ${c && c.accanto} · VC ${v && v.accanto}` }); }
   }
-  E.push({ ok: visti.spog + visti.att > 0, s: `A · casi coperti: capitano dallo spogliatoio ${visti.spog}, dalla regola dell'attitudine ${visti.att}` });
+  E.push({ ok: visti.spog > 0 && (visti.anz || 0) > 0, s: `A · casi coperti: capitano dallo spogliatoio ${visti.spog}, capitano che il gioco non sa (il piu' anziano, PO-590) ${visti.anz || 0} — servono tutti e due` });
 }
 /* B. ANGOLI */
 async function braccioAngoli(k, rossi) { const E = esiti[k]; const viste = {}; let tot = 0; const peggio = [];

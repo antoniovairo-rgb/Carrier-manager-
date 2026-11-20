@@ -250,19 +250,30 @@ if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:pr
                fra i compagni titolari quello con l'attitudine piu' alta ricavata dal nome (stesso calcolo fisso del rigorista, giro 257);
      vice:     eroe col premio del patto → (eroe capitano) compagno «ex_capitano» → secondo per la stessa attitudine fra i compagni titolari.
    Nessun campo nel salvataggio, nessun sorteggio. `rosa` = la rosa mostrata (i primi 11 i titolari, l'eroe col suo nome). */
+/* [giro 302 PO-590, PO 20/11 «capitano/vice di riserva = il piu' anziano» — rosso window.__CPM_NO_G302 = l'attitudine del giro 299]
+   MISURATO: la rosa (generateTeamRoster) porta solo nome e ruolo, il gioco NON ha un'eta' per i compagni. L'eta' si ricava qui, fissa
+   e senza campi nel salvataggio: eta' d'arrivo dal nome (18-28) + gli anni che il giocatore ha gia' passato nel suo posto in rosa (la
+   stessa fase d'ingaggio di generateTeamRoster: 0-6), quindi cresce di uno a stagione finche' resta. In Primavera 16-18 dal nome.
+   Dove il dato manca: «C» al titolare piu' anziano, «VC» al secondo; a pari eta' chi e' nel club da piu' anni, poi l'ordine alfabetico. */
+function eta302(p,slot,nome){try{const cl=(p&&p.club)||{},h=hashStr(String(nome||"")+"|eta302");
+  const anni=(Math.max(1,(p&&p.season)||1)+Math.abs(hashStr((cl.id||"x")+"_ph_"+slot))%7)%7;
+  const prim=!!cl.isU18||((p&&p.proStatus)||"u18")!=="pro";
+  return {eta:prim?(16+h%3):(18+h%11+anni),anni};}catch(_e){return {eta:0,anni:0};}}
+if(typeof window!=="undefined")window.__CPM_ETA302=eta302;
 function fascia299(p,rosa){try{if((typeof window!=="undefined"&&window.__CPM_NO_G299)||!p||!rosa||!rosa.length)return null;
   const io=p.name||"",nomi=rosa.map(x=>x&&x.name).filter(Boolean),ha=n=>!!n&&nomi.includes(n);
   const tm=(a)=>{const t=(p.teammates||[]).find(x=>x&&x.archetype===a);return t&&ha(t.name)&&t.name!==io?t.name:null;};
   const att=(n)=>(typeof attitudine257==="function")?attitudine257(String(n)+"|fascia299"):0;
-  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0));
+  const _an302=(typeof _g302==="function")&&_g302(),_e302={};if(_an302)rosa.slice(0,11).forEach((x,i)=>{if(x&&x.name)_e302[x.name]=eta302(p,i,x.name);});
+  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort(_an302?((a,b)=>(_e302[b].eta-_e302[a].eta)||(_e302[b].anni-_e302[a].anni)||(a<b?-1:a>b?1:0)):((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0)));const _F302=_an302?"anzianita'":"attitudine";
   let cap=null,capF=null,vice=null,viceF=null;
   if(p.isCaptain===true&&ha(io)){cap=io;capF="eroe";}
   else if(tm("capitano")){cap=tm("capitano");capF="spogliatoio";}
   else if(tm("ex_capitano")){cap=tm("ex_capitano");capF="ex capitano";}
-  else if(tit.length){cap=tit[0];capF="attitudine";}
+  else if(tit.length){cap=tit[0];capF=_F302;}
   if(cap!==io&&premio238(p,"vice")&&ha(io)){vice=io;viceF="patto";}
   else if(cap===io&&tm("ex_capitano")){vice=tm("ex_capitano");viceF="ex capitano";}
-  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF="attitudine";}}
+  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF=_F302;}}
   return {cap,capF,vice,viceF};}catch(_e){return null;}}
 if(typeof window!=="undefined")window.__CPM_FASCIA299=fascia299;
 /* [giro 249] rosso del giro: A (rigorista, src/14-15), C (controproposta su un'offerta gia' chiusa), D (motivo del tasto della corsa

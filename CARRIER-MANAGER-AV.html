@@ -645,6 +645,7 @@ const piena114=()=>_g114()?"cpm-piena":"";
 const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
 /* [giro 300 · PO-565/551/552/553] pre-partita e PC: tasto dei salienti col bordo d'accento, «Inizia il provino» attaccato al contenuto da PC, tasti 1 2 3 della Home cliccabili, nessun suggerimento di tasti nelle scritte (le scorciatoie restano). Rosso __CPM_NO_G300 = tutto come nella 7.999.198. */
 const _g300=()=>!(typeof window!='undefined'&&window.__CPM_NO_G300);
+const _g302=()=>!(typeof window!='undefined'&&window.__CPM_NO_G302);/* [giro 302] rosso dei tre ritocchi PO-552 (riga «1 2 3» via) · PO-589 (striscia di scarico nei colori del tema) · PO-590 (fascia al piu' anziano) */
 const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
@@ -14290,15 +14291,26 @@ function avanz233(urls){try{const P=(typeof window!=='undefined'&&window.__CPM_G
 function _segna233(url,pr){try{pr.then(()=>{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;},()=>{});}catch(_e){}return pr;}
 /* pillola in alto «Scarico i giocatori 3D · NN%»: visibile finche' un gruppo e' in volo e nessuna schermata d'attesa la sostituisce */
 const _vol233={gruppi:[],iv:0};
+/* [giro 302 PO-589, PO 20/11 «Colori del tema» — rosso window.__CPM_NO_G302] LA STRISCIA DI SCARICO PARLA COL TEMA. Prima: fondo
+   rgba(5,8,20,.94), riempimento ambra al 38% alto quanto la striscia, testo bianco da 11 px (colori scritti a mano). Ora: fondo =
+   superficie scura del tema (TINTE.sup), testo TINTE.testo da 13 px, e la barra e' un filo di 3 px in basso (binario TINTE.tasto) con la
+   sfumatura nel colore d'accento del tasto principale (tasto235: il colore del club in carriera, crema fuori; alzato da legCol944 se
+   sul fondo scuro non si vedrebbe). Il testo non sta mai sopra la barra: il contrasto e' quello testo/superficie in ogni club. La striscia e' alta 16 px (13 di riga + 3 di
+   barra; prima 19): MISURATO, i tasti in alto (Home da PC, «Salva» e «Opzioni» in carriera) cominciano a 16 px, e la striscia da 19
+   ne copriva 3 px di riquadro; a 25 px copriva anche la scritta della versione nella Home del telefono. */
+function _acc302(){try{const b=tasto235(false).bg;const c=(typeof b==='string'&&b[0]==='#')?legCol944(b,TINTE.sup):TINTE.testo;return (typeof c==='string'&&c)?c:TINTE.testo;}catch(_e){return TINTE.testo;}}
+function _sfum302(){const c=_acc302();return /^#[0-9a-f]{6}$/i.test(c)?'linear-gradient(90deg,'+c+'73,'+c+')':c;}
 function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_vol233.gruppi.filter(g=>!g.fine);let el=document.getElementById('cpm-avanz233');
   const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
   if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
   if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
     /* striscia sottile in cima allo schermo (larga tutto, alta 18 px + area sicura): non copre titoli ne' tasti e non prende i tocchi */
+    if(_g302()){el.setAttribute('data-tema302','1');el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:'+TINTE.sup+';color:'+TINTE.testo+';font:700 13px/13px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);padding-bottom:3px;white-space:nowrap;overflow:hidden;';
+      el.innerHTML='<span data-binario302 style="position:absolute;left:0;right:0;bottom:0;height:3px;background:'+TINTE.tasto+'"></span><span data-b style="position:absolute;left:0;bottom:0;height:3px;width:0;transition:width .3s linear"></span><span data-t style="position:relative;top:-1px"></span>';/* -1 px: misurato, la gamba della «g» finiva a 14 px, uno dentro la barra (che comincia a 13) */}else{
     el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:rgba(5,8,20,0.94);color:#fff;font:700 11px/18px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);white-space:nowrap;overflow:hidden;border-bottom:1px solid rgba(245,158,11,0.45);';
-    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';document.body.appendChild(el);}
+    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';}document.body.appendChild(el);}
   const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
-  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(2,p)+'%';
+  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';{const _b302=el.querySelector('[data-b]');_b302.style.width=Math.max(2,p)+'%';if(el.hasAttribute('data-tema302'))_b302.style.background=_sfum302();}/* [giro 302] il colore del club puo' arrivare a scarico in corso */
   try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
   if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
 /* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
@@ -14323,7 +14335,7 @@ function copri233(host,urls,pr,nome){try{if(!_g233()||!host||typeof document==='
   let mx=0;const agg=()=>{if(!el)return;const p=mx=Math.max(mx,Math.round(avanz233(urls)*100));el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
   const tm=setTimeout(()=>{if(finito)return;el=document.createElement('div');el.setAttribute('data-cpm','attesa233');el.setAttribute('data-scena',nome||'');el.setAttribute('role','status');
     el.style.cssText='position:absolute;inset:0;z-index:3;background:#050814;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;text-align:center;font-family:inherit;';
-    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div style="width:min(260px,70%);height:8px;background:rgba(255,255,255,0.14);border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:#f59e0b;border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
+    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div data-binario302 style="width:min(260px,70%);height:8px;background:'+(_g302()?TINTE.tasto:'rgba(255,255,255,0.14)')+';border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:'+(_g302()?_sfum302():'#f59e0b')+';border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
     try{host.appendChild(el);reg.vista=true;}catch(_e){}agg();iv=setInterval(agg,250);_pillola233();},250);
   const via=(esito)=>{if(finito)return;finito=true;clearTimeout(tm);if(iv)clearInterval(iv);reg.ms=Date.now()-t0;reg.esito=esito||'tolta';try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(_e){}el=null;_pillola233();};
   Promise.resolve(pr).then(()=>via('pronti'),()=>via('fallito'));return via;}catch(_e){return ()=>{};}}
@@ -50745,7 +50757,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         </Card>
       )}
-      {_dk&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
+      {_dk&&!(_g300()&&_g302())/* [giro 302 PO-552 cambiata, PO 20/11 «Toglierli»] la riga «1 2 3 salvataggi» non si disegna piu': restano le tre schede; i tasti 1-2-3 della tastiera aprono ancora gli slot (onKey, come PO-553). Rosso __CPM_NO_G302 = i tre pulsanti del giro 300 */&&<div className="cpm-tasti284" style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
         {_g300()?[0,1,2].map(i=><button key={i} type="button" className="kbd" data-cpm="slot-300" aria-label={slots[i]&&!slots[i].corrupted?("Apri il salvataggio "+(i+1)):("Salvataggio "+(i+1))} onClick={()=>{if(slots[i])onLoad(i);else onNew(i);}} style={{border:"none",cursor:"pointer",minWidth:44,minHeight:44,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{i+1}</button>)/* [giro 300 PO-552] i tre tasti si cliccano e fanno cio' che fa il tasto della tastiera (stesso ramo di onKey) */
         :<><span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span></>} salvataggi
       </div>}
@@ -53505,19 +53517,30 @@ if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:pr
                fra i compagni titolari quello con l'attitudine piu' alta ricavata dal nome (stesso calcolo fisso del rigorista, giro 257);
      vice:     eroe col premio del patto → (eroe capitano) compagno «ex_capitano» → secondo per la stessa attitudine fra i compagni titolari.
    Nessun campo nel salvataggio, nessun sorteggio. `rosa` = la rosa mostrata (i primi 11 i titolari, l'eroe col suo nome). */
+/* [giro 302 PO-590, PO 20/11 «capitano/vice di riserva = il piu' anziano» — rosso window.__CPM_NO_G302 = l'attitudine del giro 299]
+   MISURATO: la rosa (generateTeamRoster) porta solo nome e ruolo, il gioco NON ha un'eta' per i compagni. L'eta' si ricava qui, fissa
+   e senza campi nel salvataggio: eta' d'arrivo dal nome (18-28) + gli anni che il giocatore ha gia' passato nel suo posto in rosa (la
+   stessa fase d'ingaggio di generateTeamRoster: 0-6), quindi cresce di uno a stagione finche' resta. In Primavera 16-18 dal nome.
+   Dove il dato manca: «C» al titolare piu' anziano, «VC» al secondo; a pari eta' chi e' nel club da piu' anni, poi l'ordine alfabetico. */
+function eta302(p,slot,nome){try{const cl=(p&&p.club)||{},h=hashStr(String(nome||"")+"|eta302");
+  const anni=(Math.max(1,(p&&p.season)||1)+Math.abs(hashStr((cl.id||"x")+"_ph_"+slot))%7)%7;
+  const prim=!!cl.isU18||((p&&p.proStatus)||"u18")!=="pro";
+  return {eta:prim?(16+h%3):(18+h%11+anni),anni};}catch(_e){return {eta:0,anni:0};}}
+if(typeof window!=="undefined")window.__CPM_ETA302=eta302;
 function fascia299(p,rosa){try{if((typeof window!=="undefined"&&window.__CPM_NO_G299)||!p||!rosa||!rosa.length)return null;
   const io=p.name||"",nomi=rosa.map(x=>x&&x.name).filter(Boolean),ha=n=>!!n&&nomi.includes(n);
   const tm=(a)=>{const t=(p.teammates||[]).find(x=>x&&x.archetype===a);return t&&ha(t.name)&&t.name!==io?t.name:null;};
   const att=(n)=>(typeof attitudine257==="function")?attitudine257(String(n)+"|fascia299"):0;
-  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0));
+  const _an302=(typeof _g302==="function")&&_g302(),_e302={};if(_an302)rosa.slice(0,11).forEach((x,i)=>{if(x&&x.name)_e302[x.name]=eta302(p,i,x.name);});
+  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort(_an302?((a,b)=>(_e302[b].eta-_e302[a].eta)||(_e302[b].anni-_e302[a].anni)||(a<b?-1:a>b?1:0)):((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0)));const _F302=_an302?"anzianita'":"attitudine";
   let cap=null,capF=null,vice=null,viceF=null;
   if(p.isCaptain===true&&ha(io)){cap=io;capF="eroe";}
   else if(tm("capitano")){cap=tm("capitano");capF="spogliatoio";}
   else if(tm("ex_capitano")){cap=tm("ex_capitano");capF="ex capitano";}
-  else if(tit.length){cap=tit[0];capF="attitudine";}
+  else if(tit.length){cap=tit[0];capF=_F302;}
   if(cap!==io&&premio238(p,"vice")&&ha(io)){vice=io;viceF="patto";}
   else if(cap===io&&tm("ex_capitano")){vice=tm("ex_capitano");viceF="ex capitano";}
-  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF="attitudine";}}
+  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF=_F302;}}
   return {cap,capF,vice,viceF};}catch(_e){return null;}}
 if(typeof window!=="undefined")window.__CPM_FASCIA299=fascia299;
 /* [giro 249] rosso del giro: A (rigorista, src/14-15), C (controproposta su un'offerta gia' chiusa), D (motivo del tasto della corsa
