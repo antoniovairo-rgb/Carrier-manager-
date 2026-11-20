@@ -101,7 +101,7 @@ Quindi: **non posso confermare né escludere** un tempo di nero sul PC del PO.
 |---|---|
 | `node tools/build-src.mjs` + `node tools/check-src.mjs` | ricomposto; l'unica differenza segnalata è rispetto all'ultimo commit (poi committata) |
 | `ingresso-294` braccio A, B, C eseguiti separatamente (`CPM_SOLO`) | verdi, rossi visibili (numeri sopra) |
-| `ingresso-294` intero | vedi riga in fondo al rapporto |
+| `ingresso-294` intero (`npm run ingresso-294`) | **verde, uscita 0**; i tre rossi si vedono. Braccio A in questa corsa: verde 136 fotogrammi, 0 fuori dal dischetto, corpo più vicino 15,3 u; rosso 138 su 138 fuori, pallone a 0,05 u dall'eroe |
 | `test:logic` | verde |
 | `save-compat` | verde |
 | `prepartita-287` | verde, rosso visibile |
