@@ -8,3 +8,4 @@ Nessuna correzione: solo esiti. Base di confronto per i rossi: `lavoro/198` (b3b
 |---|---|---|---|---|
 | rassegna-232 | VERDE (27/27, rossi G232 e G239 bocciati 2/2) | — | — | 653 s, exit 0 |
 | carriera3-94 | VERDE | — | — | 161 s, exit 0 |
+| contatto-103 | VERDE (4 parate, 0 difetti; rosso di prova visibile: 2 D3 su 4) | — | — | 827 s, exit 0 |
