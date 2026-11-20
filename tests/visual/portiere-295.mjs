@@ -11,9 +11,11 @@
    BRACCIO 2 «nessuna scivolata durante la scelta» (PO-519, le 8 pagine «palo»): dai 0,6 s di scena (l'apertura non si giudica) per
      almeno 1,5 s di scena di lettura, il portiere non si sposta di piu' di 0,5 u da dove stava. Nel gioco lo tiene fermo il congelamento
      di lettura (5.49.10); il rosso lo toglie al solo portiere.
-   BRACCIO 3 «tuffo sempre sul filo della portata» (PO-520, 8 pagine «palo» con la geometria forzata dal gancio di collaudo
-     __CPM_GK229GEO): il gioco stesso scrive in __CPM_G223P la distanza di lato; la pagina e' «sul filo» se cade nella fascia 0,25 u oltre
-     una delle tre soglie (lato 4,5 · distanza 5,5 · quota 2,6). ✗ sul filo e nessun gesto del portiere. Fuori dal filo = NON GIUDICATO.
+   BRACCIO 3 «tuffo sempre sul filo della portata» (PO-520, 8 pagine «palo»: bersaglio dell'arco in z forzato da __CPM_GK229GEO e portiere
+     messo a 4,62 u di lato dal pallone dal gancio di collaudo __CPM_LAT295 — da una corsa all'altra la distanza cambia di 0,1-0,2 u e la
+     fascia di 0,25 u non si centra da sola): il gioco stesso scrive in __CPM_G223P la distanza di lato; la pagina e' «sul filo» se cade
+     nella fascia 0,25 u oltre una delle tre soglie (lato 4,5 · distanza 5,5 · quota 2,6). ✗ sul filo e nessun gesto del portiere.
+     Fuori dal filo = NON GIUDICATO.
    BRACCIO 4 «parata chiusa entro la portata del portiere» (PO-530, 8 pagine «parata» col portiere ARRETRATO sulla linea, x 97, messo
      dal gancio __CPM_GKAT119): dall'armo dell'arco alla fine della scena il pallone arriva a non piu' di 2 u dal corpo del portiere in
      pianta (le mani arrivano ~1,3 u oltre il centro del corpo disteso). ✗ oltre 2 u.
@@ -22,15 +24,16 @@
    giudicate su 8 (ripetizione dichiarata: una corsa per braccio di colore; un rosso si riprova una volta sola e si dichiara).
 
      CPM_CHROME=… node portiere-295.mjs     (CPM_SOLO=verde|rosso · CPM_TIPI=palo,parata · CPM_PAR=2 · CPM_GLB=0 · CPM_MISURA=1 stampa e basta
-                                              · CPM_PALO='1:0:-1.1,…' · CPM_PARATA='1:0,…') */
+                                              · CPM_PALO='1:0,62:1:4.7,…' (terzo campo = distanza di lato chiesta) · CPM_LATO=4.62 · CPM_PARATA='1:0,…') */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const P = (s, k) => s.split(',').filter(Boolean).map(q => { const [gi, ai, gz] = q.split(':'); return { gi: +gi, ai: +ai, k, gz: gz == null ? null : +gz }; });
-const PALO = P(process.env.CPM_PALO || '1:0:-1.1,62:1:-1.1,165:0:-1.1,17:2:-1.1,90:0:-1.1,86:0:-1.1,88:0:-1.1,9:0:-1.1', 'post');
+const PALO = P(process.env.CPM_PALO || '1:0,62:1,86:0,90:0,88:0,9:0,3:0,11:0', 'post');
 const PARATA = P(process.env.CPM_PARATA || '1:0,62:1,165:0,17:2,90:0,86:0,88:0,9:0', 'saved');
 const TIPI = (process.env.CPM_TIPI || 'palo,parata').split(',');
 const SCENE = [...(TIPI.includes('palo') ? PALO : []), ...(TIPI.includes('parata') ? PARATA : [])];
 const PAR = +(process.env.CPM_PAR || 2), GLB = process.env.CPM_GLB !== '0', MISURA = !!process.env.CPM_MISURA;
-const LETT = 2.1, APRE = 0.6, SCIV = 0.5, CHIUSA = 2.0, TZ = 3.5;
+const LATO = +(process.env.CPM_LATO || 4.62);/* distanza di lato chiesta: dentro la fascia «sul filo» (4,5 ; 4,75] */
+const LETT = +(process.env.CPM_LETT || 2.1), APRE = 0.6, SCIV = 0.5, CHIUSA = 2.0, TZ = 3.5;
 const srv = await startServer(), port = srv.address().port, b = await launchBrowser();
 
 async function scena(sc, rosso) {
@@ -41,14 +44,14 @@ async function scena(sc, rosso) {
     await openMatch(page, port); await sleep(800);
     if (!await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), sc.gi)) { await page.close(); o.err = 'force fallito'; return o; }
     await sleep(300);
-    await page.evaluate(([kk, geo]) => { window.__CPM_FROZEN = false; window.__CPM_GK229 = []; window.__CPM_G223P = []; window.__CPM_PARATA295 = []; window.__CPM_REC229 = 1; window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_FORCE_KIND = kk; if (geo) window.__CPM_GK229GEO = geo; }, [sc.k, sc.k === 'post' && sc.gz != null ? { tz: TZ, gz: sc.gz } : null]);
-    /* EVENTO: 2,1 s di SCENA nella lettura (tetto di parete 120 s) */
+    await page.evaluate(([kk, geo]) => { window.__CPM_FROZEN = false; window.__CPM_GK229 = []; window.__CPM_G223P = []; window.__CPM_PARATA295 = []; window.__CPM_REC229 = 1; window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_FORCE_KIND = kk; if (geo) { window.__CPM_GK229GEO = geo[0]; window.__CPM_LAT295 = geo[1]; } }, [sc.k, sc.k === 'post' ? [{ tz: TZ }, sc.gz != null ? sc.gz : LATO] : null]);
+    /* EVENTO: 2,1 s di SCENA nella lettura (tetto di parete 300 s) */
     let t0 = Date.now();
-    while (Date.now() - t0 < 120000) { await sleep(400); const d = await page.evaluate(() => { const R = (window.__CPM_GK229 || []).filter(f => f.ph === 'hl_intro' || f.ph === 'hl_move' || f.ph === 'hl_choose'); return R.length > 1 ? R[R.length - 1].ck - R[0].ck : 0; }); if (d >= LETT) break; }
+    while (Date.now() - t0 < 300000) { await sleep(400); const d = await page.evaluate(() => { const R = (window.__CPM_GK229 || []).filter(f => f.ph === 'hl_intro' || f.ph === 'hl_move' || f.ph === 'hl_choose'); return R.length > 1 ? R[R.length - 1].ck - R[0].ck : 0; }); if (d >= LETT) break; }
     await page.evaluate(a => window.__CPM_RESOLVE(a), sc.ai);
-    /* EVENTO: arco finito + 1 s di scena (tetto di parete 150 s) */
+    /* EVENTO: arco finito + 1 s di scena (tetto di parete 300 s) */
     t0 = Date.now();
-    while (Date.now() - t0 < 150000) { await sleep(400);
+    while (Date.now() - t0 < 300000) { await sleep(400);
       const s = await page.evaluate(() => { const R = window.__CPM_GK229 || [], L = R[R.length - 1]; let iE = -1, arm = false; for (let i = 0; i < R.length; i++) { if (R[i].ph !== 'hl_result') continue; if (R[i].at) arm = true; if (arm && !R[i].at) { iE = i; break; } } return { ck: L ? L.ck : 0, ckE: iE >= 0 ? R[iE].ck : null }; });
       if (s.ckE != null && s.ck - s.ckE > 1.0) break; }
     const [R, G, PA] = await page.evaluate(() => [(window.__CPM_GK229 || []).slice(), (window.__CPM_G223P || []).slice(), (window.__CPM_PARATA295 || []).slice()]); await page.close();

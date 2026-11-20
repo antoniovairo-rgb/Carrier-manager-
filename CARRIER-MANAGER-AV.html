@@ -22096,6 +22096,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              in z, arco che muore dx prima del suo piano) per giudicare il lato in modo deterministico — il bersaglio vero non e' seedato. */
           if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_GK229GEO&&awayGkMesh&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="post"&&!P.hlDef){try{const _G=window.__CPM_GK229GEO;
             if(_G.gz!=null)awayGkMesh.position.z=+_G.gz;if(_G.tz!=null)ballArcTgtZ=+_G.tz;if(_G.dx!=null)ballArcTgtX=Math.min(ballArcTgtX,awayGkMesh.position.x-(+_G.dx));}catch(_eG){}}
+          /* [giro 295 PO-520, SOLO SONDE ?cpmtest=1] __CPM_LAT295=<u>: mette il portiere in z alla distanza di lato chiesta dal pallone (la stessa che
+             calcola `_avv223`), per provocare il palo «sul filo della portata»: da una corsa all'altra la distanza cambia di 0,1-0,2 u (punto di
+             partenza del tiro non seedato) e con la sola geometria forzata la fascia di 0,25 u non si centra. Punto fisso, 10 passi, nessun sorteggio. */
+          if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_LAT295!=null&&awayGkMesh&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="post"&&!P.hlDef&&ballArcTgtX>ball.position.x){try{
+            const _L295=+window.__CPM_LAT295,_cu295=t==="shot"&&P.hlVariant==="shot_curled",_s295=ballArcTgtZ>=0?-1:1;let _gz295=ballArcTgtZ+_s295*_L295;
+            for(let _k=0;_k<10;_k++){const _a295=_avv223(ball.position.x,ball.position.z,ballArcTgtX,ballArcTgtZ,_cu295,awayGkMesh.position.x,_gz295);if(!(_a295.lat<1e8))break;_gz295+=_s295*(_L295-_a295.lat);}
+            awayGkMesh.position.z=_gz295;}catch(_eL295){}}
           let _zp229=ballArcTgtZ;if(awayGkMesh){const _gx=awayGkMesh.position.x,_sx=ball.position.x,_sz=ball.position.z;if(ballArcTgtX>_gx&&_sx<_gx&&(ballArcTgtX-_sx)>0.5)_zp229=_sz+(ballArcTgtZ-_sz)*((_gx-_sx)/(ballArcTgtX-_sx));}
           /* [giro 223] sul tiro a giro SBAGLIATO il punto di passaggio conta la pancia (7.231), come gia' parata e gol (PO-252/5): misurato
              (portiere-223) curled gi3/gi17/gi84 fuori, portiere FERMO col pallone che gli passa a 0,6-3,1 u perche' la stima lineare lo dava lontano. */
