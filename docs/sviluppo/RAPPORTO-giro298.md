@@ -78,7 +78,7 @@ Uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`. Le foto di altri giri ri
 | `design-system` | verde |
 | `tema-unico` | verde |
 | `accessibilita-234` | ROSSO al primo giro per un motivo della copia di lavoro: mancava il commit di confronto (storia tagliata), «non giudicato». Allungata la storia e rieseguito: VERDE |
-| `testata-209` | **ROSSO** (TESTATA_BASE) |
+| `testata-209` | **ROSSO** — identico sulla base `lavoro/198`: non nasce dal 298 |
 
 Guardiani della mappa di src/18 eseguiti e verdi (33): `home-199`, `classifica-102`, `coerenza-235`, `home-066`, `schermate-97`,
 `spazio-296`, `pc-tablet-292`, `crea-home-295`, `pulsanti-263`, `primavera-260`, `podio-260`, `titolo-110`, `etichette-108`,
@@ -89,6 +89,7 @@ Guardiani della mappa di src/18 eseguiti e verdi (33): `home-199`, `classifica-1
 `testata-209`: il primo giro è stato interrotto dal mio tetto di 9 minuti (non valido). Il secondo, completo (16 minuti), è rosso:
 «tabellino non letto o senza FC Laguna», edicola vuota, scena dell'intervista non raggiunta, e nel braccio rosso il difetto non si vede.
 In entrambi i bracci la sonda non arriva all'intervista dopo la partita.
+Rieseguito sulla base `lavoro/198` (b3b75b9d): stesso rosso, stessi quattro rilievi. Il difetto c'era prima del giro 298 e resta aperto: non l'ho indagato.
 
 ## Guardiani della mappa di src/18 NON eseguiti
 
@@ -120,4 +121,5 @@ Non eseguiti nemmeno, per regola del giro: `ingresso-206`, `career-critical`, la
    voleva dire tutto il registro, serve dirlo.
 7. **«Tempo della partita simulata».** La riga è nascosta, il codice della misura resta dietro l'interruttore rosso. Si può togliere del tutto in un giro successivo.
 8. **«Sett. 28/38».** Il numero è corretto ma si legge come «giornata 28 di 38». Possibili scritture: «Sett. 28 di 38» o mostrare la giornata («G. 25/34»). Non toccato.
-9. **DECISIONI.** In `docs/governo/DECISIONI.md` di questo ramo non c'è una voce del 20/11: le richieste le ho prese dalla consegna del giro.
+9. **`testata-209` rossa anche sulla base.** Non dipende da questo giro, ma è un guardiano della mappa di src/18 che oggi non passa: va riparato in un giro suo.
+10. **DECISIONI.** In `docs/governo/DECISIONI.md` di questo ramo non c'è una voce del 20/11: le richieste le ho prese dalla consegna del giro.
