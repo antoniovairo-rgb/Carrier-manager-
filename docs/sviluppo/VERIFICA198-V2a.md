@@ -14,5 +14,6 @@
 | pc-tablet-292 | VERDE | — | — | 721 s. PC 1366 e 1920, tablet nei due versi, telefono identico con e senza interruttori; il braccio rosso (la 177) fa cadere larghezza, tocco, tasti e striscia. |
 | pallino-278 | VERDE | — | — | 72 s. Verde: 6 misure, rapporto 0,34, grigi 0,82, 0 errori; braccio rosso (`__CPM_NO_PALL2D`) visto (rapporto 0,52). |
 | fps-249 | VERDE | — | — | 30 s. Nessuna scritta fps al giocatore in 3 campioni, misura viva (8/14/14); braccio rosso visto (scritta presente). |
+| tabellino-228 | VERDE | — | — | 398 s. Verde: tabellino, tabellone e motore coincidono (1-0, gol oltre il fischio tolto); braccio rosso visto (scarto 2-0 contro 1-0). |
 
 Verdetto: in corso.
