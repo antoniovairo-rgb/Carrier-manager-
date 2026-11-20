@@ -17,3 +17,21 @@ Nessuna correzione: solo esiti. Base di confronto per i rossi: `lavoro/198` (b3b
 | interazioni-226 | ROSSO: braccio C, le due partite verdi NON FINITE entro il tetto di 300 s (p0 0-1, p1 4-2; schede, fatti e motore a posto). Bracci A (motore, 312 partite) e B (panchina 400/400) a posto | ROSSO IDENTICO (solo braccio C, `CPM_SOLO_BROWSER=1`): verde p0 0-1 e p1 4-2 NON FINITE, stessi punteggi e stesse schede | nessuno: non nasce dall'unione (la base lo riproduce uguale) | 1463 s, exit 1 su finale; anche il rosso p1 non finita. Una sola corsa per lato: esito identico al dettaglio, non trattato come instabile |
 | conduci-242 | VERDE (saved/wide/blocked; rosso di prova visibile) | — | — | 84 s, exit 0 |
 | esiti-241 | VERDE (chance e fallo cercato concordi; rossi di prova visibili, compreso G102) | — | — | 332 s, exit 0 |
+| spazio-270 | VERDE (telefono e pc; rosso di prova visibile: 14 px) | — | — | 587 s, exit 0 |
+| camera-241 | NON ESEGUITO (tetto di tempo) | — | — | da eseguire |
+| rassegna-202 | NON ESEGUITO (tetto di tempo) | — | — | da eseguire |
+| avviso3d-209 | NON ESEGUITO (tetto di tempo) | — | — | da eseguire |
+| riproduci-187 | NON ESEGUITO (tetto di tempo) | — | — | da eseguire |
+
+## Riepilogo
+
+- Tutti i 16 nomi esistono in `tests/visual/package.json`.
+- Eseguiti 12 su 16 in circa 2 ore e 25 minuti: **10 verdi, 1 instabile (corpi-073), 1 rosso (interazioni-226)**.
+- **interazioni-226**: rosso su finale e rosso identico sulla base `lavoro/198` (stesse due partite non finite entro 300 s, stessi punteggi) → **non nasce dall'unione**. Nessun controllo oltre i 30 minuti (questo è arrivato a 24 min 23 s).
+- **corpi-073**: su finale 1 corsa rossa e 1 verde; sulla base 2 corse verdi del solo braccio 284f. Con così poche corse non si può dire se l'unione lo peggiora: l'origine resta **non attribuita** e gli interruttori `__CPM_NO_G293…G302` non sono stati provati.
+- Quattro controlli non eseguiti per il tetto di tempo: camera-241, rassegna-202, avviso3d-209, riproduci-187. «Non giudicato» = rosso.
+- Nessuna correzione fatta, nessuna soglia toccata, `GAME_VERSION` invariata. Nessuna foto di altri giri rigenerata in `docs/`.
+
+## Verdetto
+
+**V2d pronto: NO** — un rosso (già presente sulla base), un instabile da attribuire e quattro controlli ancora da eseguire.
