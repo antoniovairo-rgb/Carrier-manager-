@@ -8,9 +8,9 @@ Rosso unico delle correzioni: `window.__CPM_NO_G296`. Guardiano nuovo: `npm run 
 
 | Cosa | 7.999.196 (3076a1b7) | 198 prima (b3b75b9d) | 198 dopo (questo ramo) |
 |---|---|---|---|
-| **PO-534** durata della cerimonia della coppa dopo i rigori, PC in trasferta, orologio della pagina | 17,7 s senza carico · 18,3 s col carico di foto della sonda | 19,6 s col carico | 19,9 s (B4), la chiude il timer |
+| **PO-534** durata della cerimonia della coppa dopo i rigori, PC in trasferta, orologio della pagina | 17,7 s senza carico · 18,3 s col carico di foto della sonda | 19,6 s col carico | 19,3 s e 19,9 s (B4, due corse), la chiude il timer |
 | stessa cerimonia: quando la SONDA la vede cominciare | 8,1 s dopo l'inizio vero (col carico) | 7,1 s dopo (col carico) | non più usato: la durata si legge dal testimone del gioco |
-| cerimonia in casa / in trasferta, PC / telefono | non misurato | non misurato | 18,6 – 19,9 s nelle quattro corse (B1–B4), sempre «timer» |
+| cerimonia in casa / in trasferta, PC / telefono | non misurato | non misurato | 18,1 – 20,2 s nelle quattro corse (B1–B4, due giri), sempre «timer» |
 | **PO-535** striscia in alto a 375×667 (finestra stretta, mouse), in cerimonia, eroe in trasferta | non misurato qui (il giro 272 dice «SLR SLR» su 196 e 197) | stemma «SLR» + nome «SLR» (sigla doppia) | stemma «SLR» + nome «Salernum» |
 | stessa striscia, telefono col tocco | non misurato | «FC Salernum 1919» intero (la casella è larga 113–121 px) | invariato: intero |
 | **PO-536** dopo il rigore segnato da un compagno: giocatori nella metà sbagliata alla battuta / passi di palla ferma | non misurato (il braccio non esisteva) | 5 e 7 fuori · 2 passi (2 corse) | 0 fuori · 11 passi; col rosso 7 fuori · 2 passi |
@@ -85,12 +85,35 @@ Il tabellone «CALCI DI RIGORE» resta con le sigle (scelta del giro 216): non l
 
 ## Controlli
 
-CONTROLLI_DA_COMPILARE
+Eseguiti a mano, uno alla volta (`CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`), sul build di questo ramo. `node tools/build-src.mjs` e `node tools/check-src.mjs`: IDENTICO.
+
+| Controllo | Esito | Note |
+|---|---|---|
+| **rigori-296** (nuovo, intero: A + B + C) | **verde**, rossi visti | 17 minuti. B1–B4: 18,1 · 18,6 · 20,2 · 19,3 s, sempre «timer». B5 (rosso `__CPM_NO_G296`): «SLR» + «SLR» in cerimonia. B6 (Invio a 3 s): 3,9 s, «salta». C: verde 0 fuori · 11 passi, rosso 7 fuori · 2 passi. Una corsa precedente delle parti A + B era uscita rossa per un criterio sbagliato del guardiano (vedi sotto) |
+| ripartenza-piazzato, solo braccio «compagno» | verde, rosso visto | 2 corse dopo la correzione |
+| test:logic | verde | 51 pass · 0 fail |
+| save-compat | verde | 12 pass · 0 fail |
+| battito-264 | verde, rosso visto | 7 minuti |
+| solo-highlight-166 | verde, rosso visto (3, 7 e 8) | 14 minuti |
+| sigle-203 | verde, rossi visti | 11 minuti; è il controllo della striscia a 360/375/390/1366 |
+| nomi-182 | **rosso, identico sulla base 198** | «412px carriera · slot-club-182 · FC Biancocelesti Primavera (tagliato, 142>76 px)», 27 ok · 1 ko sia su questo ramo sia su `lavoro/198` b3b75b9d senza le mie modifiche. Non nasce da questo giro; non l'ho riparato |
+| tabellone-214 | verde, rossi visti | 9 minuti; copre striscia e tabellone durante la lotteria (A, B, D verdi; C ed E rossi) |
+| barra-221 | verde | 3,5 minuti |
+| ripartenza-piazzato intero (rigore e punizione dell'eroe + compagno) | verde, rossi visti | 6,5 minuti: i due bracci dell'eroe restano verdi dopo la correzione |
+| finale-202 · esiti-218 (rossi già dichiarati) | **non eseguiti** | erano in coda, il tempo del giro è finito prima |
+| lotteria-191 · rigore-191 · rigori-190 · ripartenza-235 · ripartenza-207 · nomi-211 · nomi-248 · nomi-251 · nomi-190 · rigorista-249 · rigorista-257 | **non eseguiti** | erano in coda; `ripartenza-235` è stato interrotto appena partito |
+
+**Correzione al guardiano prima del primo verde.** La prima corsa di A dava rosso su «FC Pau»: nome corto «Pau» uguale alla sigla «PAU». Il nome è di tre lettere, quindi il criterio «diverso dalla sigla» era sbagliato per lui: ora segnala solo un nome corto uguale alla sigla quando il nome del club è più lungo. Nella stessa occasione ho spostato la soglia dei 17 s dalla durata del registro della pagina a quella del testimone (spiegato in PO-534): la soglia non è cambiata.
+
+**Non eseguiti.** La mappa di `ci-runner.mjs` dà 73 guardiani per `src/15`, 38 per `src/11` e 33 per `src/02` (circa 120 diversi). Nel tempo del giro ne ho eseguiti quelli della tabella. Tutti gli altri **non sono stati eseguiti**, compresi `highlight-95`, `ingresso-206` e `career-critical` (esclusi dalle regole del giro). L'elenco completo si legge dalle prime righe di `src/15`, `src/1[17]` e `src/0[0-8]` della mappa.
 
 ## Dubbi per il PO
+
+0. **Controlli della coppa e dei rigori non eseguiti.** Il giro chiedeva anche `finale-202`, `esiti-218` e gli altri guardiani di coppa e rigori della mappa: ho eseguito `tabellone-214`, `sigle-203`, `barra-221`, `ripartenza-piazzato`, `battito-264`, `solo-highlight-166`; gli altri no (elenco nella tabella dei controlli). Vanno eseguiti prima di unire.
 
 1. **I 30 nomi corti li ho scelti io.** Sono nella tabella qui sopra. Per cambiarne uno basta scrivere «<club> → <nome corto>» (massimo 10 caratteri). I più discutibili: «Celesti» per FC Biancocelesti, «Hafen» per FC Hamburg Hafen, «Sheffield» per FC Sheffield South, «Rovers» per Manchester Rovers.
 2. **Sul telefono col tocco, durante la partita, resta la sigla sotto lo stemma.** A 375 px la casella del nome è larga 48 px (scelta del giro 203): «Salernum» a 12 px ci può stare, i nomi corti da 9–10 lettere no, e lì resta la sigla sotto lo stemma con la stessa sigla. Durante i rigori e in cerimonia il problema non c'è (casella da 113–121 px, nome intero). Va bene così o in partita serve altro (per esempio nascondere le lettere dentro lo stemma quando sotto c'è la sigla)?
 3. **Rigore segnato dagli avversari.** Ho schierato i ventidue solo dopo il rigore del compagno, come chiesto. Dopo un rigore segnato dagli avversari la regola del giro 35 resta quella di prima (nessuno schieramento): non l'ho misurato. Lo estendo?
-4. **PO-534 senza correzione.** La cerimonia dura 17,7–19,9 s su 196 e 198; il difetto era della sonda. Resta da guardare dal vivo solo se sul telefono vero succede altro: dal banco non lo vedo.
+4. **PO-534 senza correzione.** La cerimonia dura 17,7–20,2 s su 196 e 198; il difetto era della sonda. Resta da guardare dal vivo solo se sul telefono vero succede altro: dal banco non lo vedo.
 5. **Nazionali senza nome corto.** La decisione parla di club. Le Nazionali hanno già la loro scala («Sel. …»). Serve anche per loro?
+6. **nomi-182 rosso già sulla base.** Lo slot di salvataggio a 412 px mostra «FC Biancocelesti Primavera» tagliato (142 px in 76). È uguale su `lavoro/198` senza le mie modifiche. Non l'ho riparato perché è fuori dal giro: serve un giro dedicato?
