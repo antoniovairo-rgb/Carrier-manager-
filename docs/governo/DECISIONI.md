@@ -1934,3 +1934,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
   2. la mappa intera gira solo sull'unione, divisa in automatico in ~6 parti parallele bilanciate per durata;
   3. rilascio a orario fisso (treno serale, es. 21:00): esce ciò che è verde; ciò che non è pronto prende il treno successivo;
   4. primo giro della 199: PO-517 (verifica più corta), PO-527 (mappa unica, unione), PO-528 (leve per i controlli lunghi) per costruire sentinelle, divisione automatica e durate misurate.
+- 21:15 (20/11) PO-592: provare GitHub Actions per la mappa intera in parallelo (repo pubblico, runner standard gratuiti secondo docs.github.com); nel primo giro della 199 con PO-517/527/528.
