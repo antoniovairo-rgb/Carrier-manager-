@@ -13,3 +13,4 @@
 | 3 | riserva-103 | VERDE (uscita 0, 677 s) | — | — | casi A e B: verde 3/3 scene giudicate, rosso visto 3/3 in entrambi |
 | 4 | esiti-96 | VERDE (uscita 0, 787 s) | — | — | verde su D1, D2, D3, B15, D6, D7, D12, D15, D14; col rosso `__CPM_NO_G96B_*` cadono tutti e nove come atteso |
 | 5 | cori-291 | VERDE (uscita 0, 1 s) | — | — | 20 cori distinti, 0 ripetuti; il rosso fa ricadere i ripetuti (2 distinti, 70 ripetizioni) |
+| 6 | pillola-58 | VERDE (uscita 0, 59 s) | — | — | a 915 e 740 px la pillola sta 19 px sopra la barra; nel rosso la distanza scende a 0 e −12 |
