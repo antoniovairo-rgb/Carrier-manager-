@@ -81,7 +81,17 @@ Nessuna foto o file tracciato è stato modificato dai controlli eseguiti (contro
 
 ## Prova con gli interruttori dei giri
 
-In corso al momento di questa stesura; l'esito è aggiunto in fondo a questo paragrafo quando arriva.
+Copia temporanea del controllo (non salvata nel ramo) che accende dalla sonda, tutti insieme, `__CPM_NO_G293`, `__CPM_NO_G294`,
+`__CPM_NO_G295` e `__CPM_NO_G296`, cioè riporta l'unione al comportamento di prima dei quattro giri; solo lo scenario `sost-comunale`.
+
+- Esito: **3 corse verdi su 3** (0 fotogrammi su 196 in tutte). Una quarta corsa è stata troncata dal limite di tempo del processo
+  e non conta.
+- Lettura: è coerente con «il difetto nasce dalle modifiche dei giri» (unione 2 rosse su 4; unione con i giri spenti 0 su 3; base
+  0 su 4), ma i numeri sono pochi: se il difetto esce una volta su due, tre verdi di fila capitano per caso circa una volta su otto.
+  **Non è una prova.**
+- **Un giro alla volta: non eseguito** (tempo). È il passo che manca per dire quale giro: lo stesso scenario con un solo
+  interruttore acceso per volta, almeno 4 corse ciascuno (circa 3 minuti a corsa). I giri che toccano `src/12` sono 293, 294 e 295;
+  il 296 tocca `src/15`, che guida la partita vera dentro cui la sostituzione è provocata.
 
 ## Controlli NON eseguiti (73) — per tempo
 
@@ -109,5 +119,5 @@ Da contare come rossi finché non vengono eseguiti.
 - Prima della coda: memoria libera 14,1 GB su 16, disco libero 59 GB. `tools/check-src.mjs`: file generato identico ai frammenti.
 - La coda è stata interrotta una volta dal limite di due ore del processo in sottofondo (durante `goal-postarc`, poi rifatto da capo)
   e fermata da me al primo rosso per fare il confronto con la base nel tempo rimasto.
-- Tempo totale usato: circa 3 ore e 40 minuti (oltre il tetto di 3 ore, per chiudere il confronto di `tunnel-245` con la base).
+- Tempo totale usato: circa 4 ore (oltre il tetto di 3 ore, per chiudere il confronto di `tunnel-245` con la base e la prova con gli interruttori).
 - `test:logic` e `save-compat` non fanno parte della mappa di `src/12` e in questa parte non sono stati eseguiti.
