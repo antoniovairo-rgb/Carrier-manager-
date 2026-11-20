@@ -22719,6 +22719,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
       const _hold74=(isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10)))||(isWalk&&typeof window!=='undefined'&&window.__CPM_ATT196===true)/* [giro 196] la schermata d'attesa dei corpi (LiveMatch) tiene le squadre al tunnel finche' tutti sono CGTrader con clip */;
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
+      /* [giro 294 PO-556 «all'ingresso in campo l'eroe aveva gia' il pallone tra i piedi». Rosso __CPM_NO_G294]
+         MISURATO (misura-294, GLB accesi, ingresso intero e ingresso saltato, 7.999.196/197/198): sul banco il pallone resta sul dischetto
+         di centrocampo per tutto l'ingresso e nessuno gli passa a meno di 3,41 u (l'eroe, ultimo della fila di casa; dalla 197 — giri
+         245+255, file a x -4/+4 — prima erano oltre 7 u); la colla dell'eroe (3,2 u, eroe in corsa) dista 0,21 u e nell'ingresso la
+         velocita' che legge (_hvx) e' 0. Il difetto del PO non si e' riprodotto: nessuno scrittore del pallone pero' sa che l'ingresso
+         e' una cerimonia (inseguitore del punto logico, colla, portatore: nessuno guarda la fase). Regola di scena, una e a valle di tutti
+         gli scrittori: durante l'ingresso il pallone sta FERMO sul dischetto di centrocampo, a terra. Lo decide la scena, non il gioco.
+         Testimone test-only __CPM_PAL294W (armato dalla sonda): pallone e corpo piu' vicino, per fotogramma, DOPO la regola. */
+      if(isWalk){if(!(typeof window!=='undefined'&&window.__CPM_NO_G294)){ball.position.x=0;ball.position.z=0;ball.position.y=0.22;if(typeof ballArcActive!=='undefined'&&ballArcActive)ballArcActive=false;}
+        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_PAL294W)&&window.__CPM_PAL294W.length<6000){try{let _d294=1e9,_w294=-1;const _bx294=ball.position.x,_bz294=ball.position.z;
+          sr.current.players.forEach((pp,i)=>{const m=pp&&pp.mesh;if(!m)return;const d=Math.hypot(m.position.x-_bx294,m.position.z-_bz294);if(d<_d294){_d294=d;_w294=i;}});
+          const _de294=hero?Math.hypot(hero.position.x-_bx294,hero.position.z-_bz294):1e9;if(_de294<_d294){_d294=_de294;_w294=-2;}
+          window.__CPM_PAL294W.push({t:+walkT.toFixed(2),b:[+_bx294.toFixed(2),+ball.position.y.toFixed(2),+_bz294.toFixed(2)],vis:ball.visible?1:0,d:+_d294.toFixed(2),w:_w294,de:+_de294.toFixed(2),h:hero?[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)]:null});}catch(_e294){}}}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){
         /* [giro 54 PO-277 «saltabile» — rosso __CPM_NO_ING277] «Salta ingresso» non taglia la fase a meta': MISURATO (sonda del
@@ -30078,7 +30091,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,onBack=null,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
   useEffect(()=>{
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -30195,7 +30208,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     <div data-cpm="formazioni23" ref={ref204} data-gap204={gap204} style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
-          <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
+          {/* [giro 294 PO-566 «non c'e' modo di tornare indietro» — rosso __CPM_NO_G294 (LiveMatch non passa onBack)] in testata, dove si guarda entrando:
+              in fondo alla pagina, su telefono, tre pulsanti in riga non ci stanno. Riporta al pre-partita; la partita resta la stessa. */}
+          {onBack&&<button data-cpm="indietro294" onClick={onBack} aria-label="Indietro: torna al pre-partita" title="Indietro (Esc)" style={{flex:"0 0 auto",minHeight:44,minWidth:44,padding:`0 ${SP.md}px`,marginLeft:-SP.sm,background:"none",border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,color:TH.text,fontSize:FS.small,fontWeight:FW.bold,fontFamily:"inherit",cursor:"pointer"}}>← Indietro</button>}
+          <span style={{flex:"1 1 auto",minWidth:0,fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
@@ -35763,6 +35779,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const _chiudiAudio172=()=>{setAudio172(false);if(!audioPausa172.current)setPaused(false);};
   const _icoAudio172=()=>{let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}return m?"🔇":"🔊";};
   const _g172=!(typeof window!=='undefined'&&window.__CPM_NO_G172);
+  /* [giro 294 PO-567 «all'ingresso in campo non puoi accendere e spegnere l'audio». Rosso __CPM_NO_G294] MISURATO (ingresso-294): l'altoparlante
+     della barra c'era solo nelle cinque fasi di gioco; nell'ingresso e nelle cerimonie dentro la partita (premiazione, parata: fase
+     `ceremony`) la barra e' la stessa ma il tasto mancava. Ora c'e' anche li': stesso tasto, stesso pannello, stesso stato (AudioMgr →
+     'cpm-audio'), nessun secondo salvataggio. */
+  const _g294=!(typeof window!=='undefined'&&window.__CPM_NO_G294);
+  const _fasiAudio294=_g294?["playing","hl_intro","hl_move","hl_choose","hl_result","walkout","ceremony"]:["playing","hl_intro","hl_move","hl_choose","hl_result"];
   /* [7.909.0 — D7 revocata] L'interruttore «Corpi: leggeri / pieni» del menu di pausa ha finito il suo lavoro:
      serviva a far misurare al PO i due bracci sul suo telefono, la misura e' arrivata (pieni 31-32 fps, leggeri
      29-30) e ha revocato la 7.907. Via il bottone e la preferenza; il campo usa il corpo pieno e il contatore dei
@@ -36215,6 +36237,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
        dritto in `playing` (misurato: unica fase attraversata, `playing@12393`), quindi tutto cio' che vive nei
        dieci secondi e mezzo della walkout — tappeto, bambini per mano, ingresso delle squadre — non e' mai stato
        misurato da nessuno. Questo gancio ci porta, come __CPM_FORCE_CEREMONY fa con la premiazione: test-only. */
+    window.__CPM_PALLA294=(x,y)=>{try{setBallPos({x:+x,y:+y});return true;}catch(e){return false;}};/* [giro 294] test-only: il pallone LOGICO dove dice la sonda */
     window.__CPM_FORCE_WALKOUT=()=>{try{setPhase("walkout");return true;}catch(e){return false;}};
     window.__CPM_RIPBREVE=()=>{try{const _e0=+ripT0Ref.current||0;const _ms=_e0?(Date.now()-_e0):-1;return{tick:(ripTickRef.current|0),ms:_ms,breve:(_e0>0&&_ms<=4500)};}catch(e){return null;}};/* [7.590.0] la finestra BREVE, per le sonde */
     window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
@@ -36941,11 +36964,23 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     return ()=>{_alive=false;};
   },[]);// eslint-disable-line
 
+  const tattica294Ref=useRef(0);
+  const _indietro294=()=>{if(phaseRef.current==="formations")setPhase("matchday");};
+  /* [giro 294 PO-566] Esc da PC. MISURATO (ingresso-294): nella schermata della partita Esc e' gia' usato dalla carriera per «torna alla
+     home» (src/18, scorciatoie globali) e in gioco per la pausa. Nelle Formazioni ora fa UN passo indietro (pre-partita) e basta: si
+     ascolta in cattura e si ferma li', altrimenti lo stesso tasto riportava anche alla home (i due gestori scattavano insieme). */
+  useEffect(()=>{if(phase!=="formations"||!_g294)return;
+    const f=e=>{if(e.key!=="Escape"||_scrive386(e))return;e.preventDefault();e.stopPropagation();_indietro294();};
+    window.addEventListener("keydown",f,true);return()=>window.removeEventListener("keydown",f,true);},[phase]);// eslint-disable-line
   // Async handler: load opponent tactic then go to formations
   const handleGoToFormations=async()=>{
     cpmTimelineReset(); cpmEmit("MatchStart",{opponent:(opponent&&(opponent.n||opponent.name))||null});// LMQP-1
     cpmEvReset();/* [7.496.0 F1b] il libro mastro parte vuoto a ogni partita: senza, due partite di fila si sommano e il conto dei gol non torna per un motivo che non c'entra col gioco */
     matchMemRef.current={goals:0,assists:0,misses:0,gkSaves:0,corners:0,foulsWon:0,byFlank:{L:0,C:0,R:0}};// M2: azzera la memoria narrativa a inizio partita
+    /* [giro 294 PO-566 «non c'e' modo di tornare indietro»] dalle Formazioni si torna al pre-partita; rientrando, la tattica avversaria
+       NON si rigenera (con un'AI configurata la risposta potrebbe cambiare): vale quella gia' caricata, o quella ancora in arrivo. */
+    if(_g294&&tattica294Ref.current){setPhase("formations");return;}
+    tattica294Ref.current=1;
     setOppTacticLoading(true);
     setPhase("formations");
     const tactic=await generateOpponentTactic(opponent,player.stats,player.week||1);
@@ -44328,7 +44363,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&(!benchStart||_g253)&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} onBack={_g294?_indietro294:null}/* [giro 294 PO-566] */ oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
@@ -44358,7 +44393,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {paused?"▶":"⏸"}
                   </button>
                 )}
-                {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                {_g172&&_fasiAudio294.includes(phase)&&(
                   <button data-cpm="audio-partita" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.7)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -4px"}:{})}}>{_icoAudio172()}</button>
                 )}
                 {/* [7.484.0] VELOCITA' DELLA PARTITA, scelta dal giocatore. Sta accanto alla pausa perche'
@@ -44457,7 +44492,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
-                  {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                  {_g172&&_fasiAudio294.includes(phase)&&(
                     <button data-cpm="audio-partita" className="cpm-t40m" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.75)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginRight:_no108("13")?22:26}:{})}}>{_icoAudio172()}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&!_sh173/* [giro 173] */&&(

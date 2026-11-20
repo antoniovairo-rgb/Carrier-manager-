@@ -714,6 +714,7 @@
     "coreografie-252": "node coreografie-252.mjs && CPM_PROVA_ROSSO=1 node coreografie-252.mjs",
     "salienti-246": "node salienti-246.mjs",
     "avviso-290": "node avviso-290.mjs",
+    "ingresso-294": "node ingresso-294.mjs",
     "salienti-253": "node salienti-253.mjs",
     "prepartita-287": "node prepartita-287.mjs",
     "misura-253b": "node misura-253b.mjs",
