@@ -16,3 +16,4 @@ Nessuna correzione: solo esiti. Base di confronto per i rossi: `lavoro/198` (b3b
 | ripresa-202 | VERDE (14 riprese, all'eroe 0; rosso di prova visibile) | — | — | 599 s, exit 0 |
 | interazioni-226 | ROSSO: braccio C, le due partite verdi NON FINITE entro il tetto di 300 s (p0 0-1, p1 4-2; schede, fatti e motore a posto). Bracci A (motore, 312 partite) e B (panchina 400/400) a posto | ROSSO IDENTICO (solo braccio C, `CPM_SOLO_BROWSER=1`): verde p0 0-1 e p1 4-2 NON FINITE, stessi punteggi e stesse schede | nessuno: non nasce dall'unione (la base lo riproduce uguale) | 1463 s, exit 1 su finale; anche il rosso p1 non finita. Una sola corsa per lato: esito identico al dettaglio, non trattato come instabile |
 | conduci-242 | VERDE (saved/wide/blocked; rosso di prova visibile) | — | — | 84 s, exit 0 |
+| esiti-241 | VERDE (chance e fallo cercato concordi; rossi di prova visibili, compreso G102) | — | — | 332 s, exit 0 |
