@@ -18,5 +18,6 @@
 | recupero-202 | VERDE | — | — | 710 s. Verde: fischio al 93' al primo tentativo; braccio rosso visto (fischio al 90'). |
 | schede-234 | VERDE | — | — | 833 s. 8/8 schede con almeno 3 opzioni, lessico «indicazioni», 312 partite per braccio con effetti distinti (separazione minima 7,5% in attacco, 6,8% in difesa), panchina 400/400; prove del rosso riconosciute. |
 | schede-246 | VERDE | — | — | 343 s. Verde: la partita aspetta la scheda (0 minuti a scheda aperta), la scelta arriva al motore; braccio rosso visto (2 minuti scorsi a scheda aperta). |
+| spot-266 | VERDE | — | — | 72 s. Scene gi126 e gi64: battitore all'angolo, 0 incollati dopo; braccio rosso visto (1 incollato). |
 
 Verdetto: in corso.
