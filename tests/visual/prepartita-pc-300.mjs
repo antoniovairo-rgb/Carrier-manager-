@@ -138,7 +138,7 @@ async function parteD(b, port, W, H, tipo, rosso, et) {
       await sleep(400); const v = await page.evaluate(leggi); somma(v); await foto(page, `${et}-highlight-mossa-${W}x${H}`);
       const p0 = await eroe(); let mosso = false;
       for (const k of ['d', 'w', 'a', 's']) { await page.keyboard.press(k); for (let i = 0; i < 12 && !mosso; i++) { await sleep(200); const p1 = await eroe(); if (p0 && p1 && (Math.abs(p1[0] - p0[0]) + Math.abs(p1[1] - p0[1])) > 0.3) mosso = k; }/* l'eroe raggiunge il passo in qualche fotogramma: si attende lo spostamento, non un tempo fisso */ if (mosso || (await fase()) !== 'hl_move') break; }
-      let ph2 = await fase(); if (ph2 === 'hl_move') { const pr = page.locator('button', { hasText: 'Pronto' }).first(); if (await pr.count()) await pr.click({ timeout: 2000 }).catch(() => {}); for (let i = 0; i < 20 && (ph2 = await fase()) === 'hl_move'; i++) await sleep(120); }
+      let ph2 = await fase(); if (ph2 === 'hl_move') { const pr = page.locator('button', { hasText: /Pronto|Scegli/ }).first()/* «Pronto» da PC, «Scegli» al telefono */; if (await pr.count()) await pr.click({ timeout: 2000 }).catch(() => {}); for (let i = 0; i < 20 && (ph2 = await fase()) === 'hl_move'; i++) await sleep(120); }
       let scelta = null;
       if (ph2 === 'hl_choose') { await sleep(350); scelta = await page.evaluate(leggi); somma(scelta); await foto(page, `${et}-highlight-scelta-${W}x${H}`); await page.keyboard.press('1'); }
       let ph3 = ph2; for (let i = 0; i < 60 && (ph3 = await fase()) === 'hl_choose'; i++) await sleep(100);
@@ -147,9 +147,8 @@ async function parteD(b, port, W, H, tipo, rosso, et) {
     /* piazzato: stili senza numero, tasto 1 */
     for (let t = 0; t < Math.min(liste.aim.length, 8) && !r.scene.aim; t++) {
       const gi = liste.aim[(t * 3) % liste.aim.length]; await page.evaluate(g => window.__CPM_FORCE_SIT(g, false), gi).catch(() => {});
-      let ph = null; for (let i = 0; i < 50 && (ph = await fase()) !== 'hl_choose'; i++) { if (ph === 'hl_move' && i > 6) { const pr = page.locator('button', { hasText: 'Pronto' }).first(); if (await pr.count()) await pr.click({ timeout: 2000 }).catch(() => {}); } await sleep(150); }
+      let ph = null; for (let i = 0; i < 50 && (ph = await fase()) !== 'hl_choose'; i++) { if (ph === 'hl_move' && i > 6) { const pr = page.locator('button', { hasText: /Pronto|Scegli/ }).first()/* «Pronto» da PC, «Scegli» al telefono */; if (await pr.count()) await pr.click({ timeout: 2000 }).catch(() => {}); } await sleep(150); }
       if (ph !== 'hl_choose') continue;
-      if (!await page.evaluate(() => !!document.querySelector('button[data-sp292]')).catch(() => false)) continue;/* la scelta dello STILE, non una giocata normale */
       await sleep(400); const v = await page.evaluate(leggi); somma(v); await foto(page, `${et}-highlight-piazzato-${W}x${H}`);
       await page.keyboard.press('1'); let ph3 = ph; for (let i = 0; i < 60 && (ph3 = await fase()) === 'hl_choose'; i++) await sleep(100);
       r.scene.aim = { gi, dopo1: ph3 };
