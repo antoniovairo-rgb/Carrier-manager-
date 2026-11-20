@@ -13,5 +13,6 @@
 | cerimonie-192 | ✅ verde (rc 0, 452 s) | — | — | punti A, B, C, D verdi e ogni rosso si vede (es. A slittamento 0,014 contro 0,322; B volo 0,30 contro 2,96) |
 | convocazione-190 | ✅ verde (rc 0, 1 s) | — | — | 13 ok · 0 ko; controllo di sola logica (senza browser); scelta del mister identica al braccio rosso 0/300 differenze, frasi cambiate 300 |
 | cronaca-nomi-190 | ✅ verde (rc 0, 516 s) | — | — | due partite intere fino al fischio (92′ e 92′), 125 righe di cronaca, 0 col segnaposto |
+| difesa-220 | ⛔ fermato al tetto dei 30 minuti (rc 124, 1800 s) = non giudicato = ROSSO | da eseguire in coda agli altri controlli (vedi riga aggiornata più sotto) | da stabilire | dove era: enumerazione fatta (verde 1800 azioni · 0 pressioni; rosso 1800 · 1122), braccio verde CHIUSO e buono (4 scene sui semi 7, 99, 1234, 2021 · 0 pressioni · gesti 2 scivolate + 2 affondi), braccio rosso appena iniziato: nessuna delle sue 4 partite era finita quando il tetto ha chiuso il browser |
 
-Verdetto: **in corso** (6 controlli su 10).
+Verdetto: **in corso** (7 controlli su 10).
