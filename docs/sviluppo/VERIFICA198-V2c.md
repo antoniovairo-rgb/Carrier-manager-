@@ -18,6 +18,7 @@
 | 8 | minuti-202 | **verde** (173s) | — | — | Ultime righe del controllo: «rosso tentativo 1 {"scene":3,"recuperati":0,"residuo":0,"aperto":0,"tentativi":1,"s":27} ✅ minuti-202 verde (e il rosso si vede) » |
 | 9 | tempo-138 | **verde** (814s) | — | — | Ultime righe del controllo: «rosso {"fase":"ceremony","pagato":190,"residuo":26,"aperto":242} ✅ tempo-138 verde (e il rosso si vede) » |
 | 10 | pressing-143 | **verde** (26s) | — | — | Ultime righe del controllo: «rosso {"lett":[{"d":0.5,"conclusione":{"p":"medium","k":"conclusione"},"fra-le-linee":{"p":"medium","k":"fra-le-linee"},"cross":{"p":"medium","k":"cross"}},{"d":2,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}},{"d":4,"conclusione":{"p":"high","k":"conclusione"},"fra-le-linee":{"p":"high","k":"fra-le-linee"},"cross":{"p":"high","k":"cross"}» |
+| 11 | difesa-220-giro31 | **verde** (1633s) | — | — | Ultime righe del controllo: «ROSSO viola come atteso: apertura 7.8 u > 3 · apertura 7.8 lontana dalla dichiarata 1.1 · contatto 5.6 u > 3 · (A) 92% > 45 · pallone di nessuno 62% > 25 · ritorno 100% > 25 (12/12) ✅ difesa-220-giro31 VERDE » |
 <!-- fine tabella -->
 
 ## Verdetto
