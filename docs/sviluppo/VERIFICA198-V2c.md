@@ -11,6 +11,7 @@
 | 1 | accessibilita-234 | **verde** (103 s) con la storia git completa; rosso (113 s) nel clone con la storia tagliata | rosso identico nel clone tagliato (111 s) | nessuno: non nasce dall'unione | L'unico motivo del rosso era «sulla base prima del giro 234 (ea02adf0^): non giudicato (git)» — `fatal: invalid object name 'ea02adf0^'`: il clone della sessione era a storia tagliata. Braccio verde e braccio rosso `__CPM_NO_G234` (24 motivi) erano già a posto. Dopo `git fetch --deepen` (nessuna modifica al codice) il commit c'è e il controllo è verde: «bocciata (5 motivi)». È lo stesso rosso visto dal giro 298. |
 | 2 | partita-v2 | **verde** (441 s, braccio verde + braccio rosso) | — | — | «partita-v2 VERDE: 3 formati x 5 schermate · contrasto minimo 4.93:1»; braccio rosso «ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato». |
 | 3 | riserva-104 | **verde** (663 s) | — | — | Verde: highlight 7 · scene provocate 6 · richiami altrui intercettati 6 · D3 riserva 0. Braccio rosso: richiami altrui 12 · D3 riserva 3 (bocciato come atteso). |
+| 4 | partita2d-297 | **verde** (144 s, verde + braccio rosso) | — | — | Telefono e PC 1366x768 verdi (nero fuori campo 0,1%, testata non specchiata nel 2° tempo, tribuna accesa al gol); braccio rosso «A cade · B cade · C cade». |
 <!-- fine tabella -->
 
 ## Verdetto
