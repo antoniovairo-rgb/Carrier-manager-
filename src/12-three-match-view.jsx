@@ -8411,9 +8411,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              dal varco l'eroe resta sulla linea e scorre verso la porta, dentro il varco non ne esce di lato. Nessun salto: si
              corregge solo il passo del fotogramma. Spento con __CPM_NO_G255/__CPM_NO_G245 (i loro rossi vogliono l'attraversamento). */
           if(_G255&&!(typeof window!=='undefined'&&(window.__CPM_NO_G304||window.__CPM_NO_G245))){const _ZR=-33.85,_XR=4.27;
-            if(hero.position.z<_ZR){
-              if(_pz304>=_ZR&&Math.abs(hero.position.x)>_XR){hero.position.z=_ZR;if((hero._hvz||0)<0)hero._hvz=0;}
-              else if(Math.abs(hero.position.x)>_XR&&(_pz304>=_ZR||Math.abs(_px304)<=_XR)){hero.position.x=hero.position.x<0?-_XR:_XR;hero._hvx=0;}}}
+            /* la porta e' la CORSIA del percorso (da x -4,27 a _dx+0,4 = -3,5), non tutto il varco: MISURATO col guardiano tunnel-304,
+               l'eroe che scorre lungo la linea a 13 u/s entrava nel varco di slancio e arrivava a x -3,3 · z -35,7, dentro la parete
+               sinistra del tunnel (2 uscite provocate su 4). */
+            const _x0=-_XR,_x1=_dx+0.4,_fx=hero.position.x<_x0||hero.position.x>_x1;
+            if(hero.position.z<_ZR&&_fx){
+              if(_pz304>=_ZR){hero.position.z=_ZR;if((hero._hvz||0)<0)hero._hvz=0;}
+              else if(_px304>=_x0&&_px304<=_x1){hero.position.x=hero.position.x<_x0?_x0:_x1;hero._hvx=0;}}}
           // gesti d'uscita (pieni sul rig procedurale; sul GLB la locomozione domina → pacing/traiettoria variano)
           if(hero._aR&&hero._aL){
             const _wk=(subExitT<_xdur*0.7)?(subExitT/(_xdur*0.7)):-1;// 0..1 durante la camminata
