@@ -9,6 +9,7 @@ Nessuna correzione: solo esiti. Base di confronto: `lavoro/198` (b3b75b9d), in u
 | corpi-073 (braccio 284f) | INSTABILE = ROSSO: 3 corse, 2 verdi e 1 rossa (corsa 3, seme 29: codice 001 in 16/16 campioni di 1 apertura su 6, battitore 8, compagno più vicino ≥ 3,7 u, «primo scatto del pallone a 35,8 u») | VERDE 3/3 | NON ATTRIBUITO: una corsa per interruttore (`__CPM_NO_G293`, 294, 295, 296, 298, 299, 300, 301, 302 — il 297 non esiste nel codice) → 9 verdi su 9 | vedi «corpi-073» sotto |
 | camera-241 | VERDE (verde col verde; rosso di prova visibile: eroe fuori dal quadro della regia in 5/8 testimoni, minimo 3; non giudicate 0) | — | — | 854 s, exit 0 |
 | rassegna-202 | VERDE (9/9; rosso `__CPM_NO_G202` bocciato su 2/2 schermi) | — | — | 265 s, exit 0 |
+| avviso3d-209 | ROSSO (35/36): «pc · riprova: corpi pronti in 150,1 s» = l'attesa della sonda (150 s) scaduta senza corpi pronti dopo il tasto «riprova» a schermo da pc; a schermo da telefono lo stesso passo è verde (48,0 s). Rosso di prova `__CPM_NO_G209` bocciato | ROSSO (34/36): stesso passo «pc · riprova» scaduto a 150,4 s, più «la scena 3D si rimonta da capo: false»; telefono verde (50,1 s) | nessuno: non nasce dall'unione (la base è rossa sullo stesso passo) | 345 s su finale, 363 s sulla base, exit 1 entrambe. Una corsa per lato |
 
 ## corpi-073
 
