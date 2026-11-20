@@ -8,3 +8,4 @@
 | controllo | esito su finale | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|
 | momento-194 | VERDE (uscita 0, 104 s) | — | — | bracci A/B/C verdi, tutti i rossi bocciati |
+| nomi-190 | VERDE (uscita 0, 22 s) | — | — | 23 ok · 0 ko |
