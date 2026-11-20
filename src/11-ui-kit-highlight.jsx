@@ -428,21 +428,35 @@ function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
 }
 /* [giro 257 PO-496 seguito] il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
 function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
+/* [giro 299 PO-563, scelta PO «C e VC come la R» — rosso window.__CPM_NO_G299] lo stesso pallino della R (stessa altezza, stesso oro, stesso
+   raggio): «C» il capitano, «VC» il vice. La sigla di due lettere allarga il pallino, non lo alza. */
+function SegnoFascia299({sigla="C",size=14}){const vc=sigla==="VC";return <span data-cpm="fascia299" data-fascia={sigla} title={vc?"Vice-capitano":"Capitano"} aria-label={vc?"Vice-capitano":"Capitano"} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minWidth:size,height:size,padding:vc?"0 2px":0,boxSizing:"border-box",borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0}}>{sigla}</span>;}
+/* [giro 299 PO-564 «angoli non arrotondati correttamente, fai un check su tutti i box» — rosso window.__CPM_NO_G299]
+   REGOLA UNICA DEGLI ANGOLI DEI RIQUADRI (misurata dal censimento docs/sviluppo/giro299/CENSIMENTO-ANGOLI.md, guardiano rosa-angoli-299):
+   1. un riquadro (Card, fisarmonica, sezione) ha raggio RAD.lg; un riquadro DENTRO un altro riquadro ha raggio <= quello del padre
+      (sezione dentro un gruppo: RAD.md);
+   2. TESTATA + CORPO attaccati sono un riquadro solo: la testata e' tonda sopra e squadrata sotto, il corpo squadrato sopra e tondo
+      sotto, con lo STESSO raggio; il lato che si tocca e' squadrato da tutti e due e senza filo doppio;
+   3. la regola 2 la applica la Fisarmonica al primo e all'ultimo figlio del corpo ([data-corpo299], CSS in src/19): chi la usa non
+      deve piu' scrivere «0 0 6px 6px» sulla sua Card, e chi non l'aveva scritto (Rosa, Allenatore: la foto del PO) e' a posto lo stesso.
+   Prima: testata RAD.xs (6) e corpo a volte 6 a volte 16 con gli angoli alti tondi sotto una testata squadrata. */
+const RAGGI299={riquadro:RAD.lg,annidato:RAD.md};
+const _g299=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G299);
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const _gr235=React.useContext(GruppoCtx235)&&_g235();
   if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
     const _suf=typeof titolo==="string"?((titolo.match(/\s\([^)]*\)$/)||[""])[0]):"";const t=NOMI235[id]?NOMI235[id]+_suf:titolo;/* «Achievement (4/34)» → «Imprese (4/34)» */
     return(
       <div data-sezione235={typeof t==="string"?t:id} style={{...style,marginBottom:0}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:RAD.xs+"px "+RAD.xs+"px 0 0"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:(_g299()?RAGGI299.annidato:RAD.xs)+"px "+(_g299()?RAGGI299.annidato:RAD.xs)+"px 0 0"}}>
           {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
           <span role="heading" aria-level={3} style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{t}</span>
           {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
         </div>
-        <div>{children}</div>
+        <div data-corpo299={_g299()?"1":undefined} style={_g299()?{"--r299":RAGGI299.annidato+"px"}:undefined}>{children}</div>
       </div>);
   }
-  const _k="cpm-fis-"+id;
+  const _k="cpm-fis-"+id;const _R299=_g299()?RAGGI299.riquadro:RAD.xs;
   /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
      Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di
      quelli spariti erano difetti VERI, non risolti. Con `__CPM_FIS_APERTE` ogni fisarmonica
@@ -456,7 +470,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
     <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
       <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
         style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:(_mouse110()?36:undefined),cursor:"pointer",
-          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
+          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(_R299+"px "+_R299+"px 0 0"):(_R299+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
         <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{titolo}</span>
@@ -464,7 +478,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
         <span aria-hidden style={{marginLeft:"auto",fontSize:FS.body,color:TH.faint,lineHeight:1,
           transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
       </button>
-      {apr&&<div>{children}</div>}
+      {apr&&<div data-corpo299={_g299()?"1":undefined} style={_g299()?{"--r299":_R299+"px"}:undefined}>{children}</div>}
     </div>);
 }
 
