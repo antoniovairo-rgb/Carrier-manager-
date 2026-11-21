@@ -14,3 +14,4 @@
 | test:logic | VERDE | — | — | 51 prove su 51, 0 fallite, 3 s |
 | save-compat | VERDE | — | — | 12 passati, 0 falliti, 9 s; nota informativa dello strumento sulla seconda migrazione (dichiarata benigna dallo strumento stesso) |
 | testi-190 (2 corse) | VERDE · VERDE | — | — | entrambe 15 ok · 0 ko, 132 s e 133 s; sottotitoli letti 39 su 45 (soglia dello strumento: al più 7 mancanti), consigli tagliati 0 |
+| rosa-angoli-299 | VERDE | — | — | braccio verde: 0 controlli falliti su 24; braccio rosso: cade su A, B e C; non giudicati 0; 632 s |
