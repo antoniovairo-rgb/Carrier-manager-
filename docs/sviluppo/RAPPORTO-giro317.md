@@ -32,7 +32,14 @@ La macchina del treno (workflow, ci-treno-308, rilascio-vagone-312, trenino-317 
 - Corsa trenino, `tipo=trenino`, `base=6fb9752` (vagone del 314: src/11 + src/16 + ricomposto + guardiano serata-314, più la macchina del 317), `rilascio=prova`, ramo `prova-cd/giro317-trenino`: corsa 44952979476.
 - Corsa notte di prova, `tipo=notte`, `elenco=mappa-unica`, `rilascio=prova`, ramo `prova-cd/giro317-notte`: corsa 44952982008 (bersaglio, blocco su `prova/cd-<corsa>-blocco`, stato `treno-grande-prova`).
 
-ESITO_ACTIONS
+**Notte (prova), verificata sul runner:**
+- 1ª corsa 44952982008: bersaglio giusto (`lavoro/201` 86a7d74, «ha commit che main non ha»), ma **due difetti trovati**: il job del blocco cercava `tools/trenino-317.mjs` dopo il checkout del poc («Cannot find module»: stato `treno-grande-prova` = error, nessun blocco scritto); e il job di rilascio partiva anche sulla notte quando c'era un elenco (si è fermato da solo: «l'esito è del commit 86a7d74, non di e9e74d3»). Corretti entrambi (strumento copiato fuori prima del checkout; il rilascio guarda il tipo *chiesto*, non quello del piano).
+- 2ª corsa 44954078991 (ramo `prova-cd/giro317-notte2`): **piano 55 s → parte 98 s → riepilogo 20 s → blocco 59 s, tutti verdi; rilascio saltato**. Ha scritto `docs/governo/BLOCCO-RILASCI.json` (attivo: false) su un ramo nuovo `prova/cd-44954078991-blocco` partito dalla punta del poc (1b6d5f5), commit «Treno grande: rilasci sbloccati», e lo stato anonimo `treno-grande-prova = success «nessun rosso nuovo, rilasci liberi»` sul commit giudicato 86a7d74. Il poc vero non è stato toccato.
+- Non provato su Actions: il blocco **acceso** (un treno grande con un rosso nuovo vero) e il push con riprova sul poc vero — provati solo sul remoto finto del guardiano.
+
+**Trenino (prova), corsa 44952979476** (vagone del 314 + la macchina del 317, base 6fb9752): il piano sul runner ha scelto **137 guardiani in 7 parti (~66 min attesi ciascuna, somma 464 min = 24% dei 1940 min della mappa intera; 7 runner invece di 28)**. È rimasta in coda ~9 minuti perché il treno grande del push su lavoro/201 (20:39) occupava 20 runner; le 7 parti sono partite fra le 21:52 e le 21:56. **Alla chiusura di questo giro (22:01) erano ancora in corsa: la durata reale di parete non posso confermarla.** Attesa: 66 min sul banco, fino a ~110 min se il runner è 1,7 volte più lento (taratura del 303); il bilancio delle parti la chiude comunque prima del timeout. Il risultato (riepilogo-totale, decisione in modo prova che con base data a mano ricalcola sulla base dichiarata) si legge dalla corsa. Anche il rilascio in prova con un trenino vero, se la corsa avrà rossi nuovi, si fermerà: è atteso, i guardiani del 314 sul runner non sono mai stati tutti verdi.
+- Un vagone che tocca **solo** src/16 (+ ricomposto) sceglie **123 guardiani, 421 min attesi in somma** (calcolo locale sulle durate misurate): la riga di src/16 è larghissima, quindi su src/16 il trenino costa ~22% della mappa intera, non molto meno.
+
 
 ## Dubbi per il PO
 
@@ -42,4 +49,5 @@ ESITO_ACTIONS
 4. **Capienza dei runner**: un treno grande occupa 20 posti (il tetto del piano gratuito). Mentre la mappa intera del push su lavoro/201 delle 20:39 era in corsa, le mie due prove sono rimaste in coda: un trenino che arriva durante la notte aspetta il treno grande.
 5. **File condivisi**: oggi `tests/visual/lib/**`, `tools/build-src.mjs`, `.github/workflows/` diversi dal treno fanno girare la mappa intera. È la scelta prudente; se diventa frequente, si aggiungono righe alla MAPPA.
 6. **In modo prova** la decisione ricalcola il trenino sulla base che il trenino dichiara (per poterlo provare con una base data a mano); in modo auto la base è sempre l'ultimo rilascio e una base diversa ferma.
+8. **La riga di src/16 (e di src/11-12-13) è molto larga** (123 guardiani per src/16): il trenino là risparmia ~4/5 dei minuti ma resta un'ora e più di parete. Stringere le righe è lavoro sulla MAPPA, fuori da questo giro.
 7. Il treno del push su lavoro/201 (20:39, mappa intera del 312) userà ancora la logica del 312: il trenino vale dalla prima unione che contiene questo giro.
