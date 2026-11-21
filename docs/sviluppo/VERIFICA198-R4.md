@@ -13,9 +13,9 @@
 | 2 | `carriera3-94` | ✅ verde (rc 0) | 169 s | tutte le righe `ok`, nessuna `ko`; D4 possesso/passaggi scarto max 0 su 48 partite · D6 0 frasi sbagliate su 2232 · D9 titolare 8 gare su 8 | non serve |
 | 3 | `ingresso-285` | ✅ verde (rc 0) | 375 s | verde: scena 15,95 s con 3 stacchi, passo max in quadro 2,2 u/s (tetto 2,3), residuo a fine 0 · rosso `visto` (scena 23,1 s, 0 stacchi) | non serve |
 | 4 | `portatore-293` | ✅ verde (rc 0) | 611 s | braccio verde: 0 difetti su 14 scene · braccio rosso `__CPM_NO_G293`: difetto in 5 casi «foto» su 5 (attesi ≥ 4), pallone che cambia padrone in 2 scene difensive su 2 (attesa ≥ 1) | non serve |
-| 5 | `tpose-196` | in corso | | | |
-| 6 | `analisi-217` | da fare | | | |
+| 5 | `tpose-196` | ❌ rosso (rc 1), 1ª corsa | 1402 s | `campionato-notte` e `campionato-giorno` giudicati e puliti (0 fotogrammi cattivi, 0 pose a T) · `coppa-notte` e `coppa-giorno` **non giudicati**: 14 fotogrammi di highlight contro un minimo di 20 (ingresso 320, 0 cattivi). La prova del rosso non è partita (il primo comando è uscito ≠0). | da eseguire |
+| 6 | `analisi-217` | in corso | | | |
 
 ## Verdetto
 
-In corso (4 su 6).
+In corso (5 su 6 eseguiti, un rosso).
