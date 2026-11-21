@@ -70,6 +70,8 @@ jobs:
       CPM_TRENO_BILANCIO_S: '6600'   # 110 min per i guardiani: la parte si chiude da sola prima del timeout del job
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # alcuni bracci rossi leggono commit vecchi con `git show` (accessibilita-234: ea02adf0^); col clone corto erano rossi
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

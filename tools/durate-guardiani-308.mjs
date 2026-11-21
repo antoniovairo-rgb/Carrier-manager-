@@ -22,8 +22,10 @@ const set = new Set(Object.keys(script));
 /* banco */
 const banco = {}; for (const g of JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/governo/STABILITA.json'), 'utf8'))) for (const p of g.passi || []) if (p.s > 0 && !p.gia_verde) (banco[p.passo] ||= []).push(p.s);
 /* runner */
-const R = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/governo/misure/runner-44830113928.json'), 'utf8'));
-const runner = {}; for (const [n, s] of Object.entries(R.durate_s)) (runner[n] ||= []).push(s); for (const [n, l] of Object.entries(R.giro303_s)) (runner[n] ||= []).push(...l);
+const runner = {};/* [taratura 308] tutte le corse trascritte in docs/governo/misure/runner-*.json */
+for (const f of fs.readdirSync(path.join(ROOT, 'docs/governo/misure')).filter(f => /^runner-\d+\.json$/.test(f))) {
+  const R = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/governo/misure', f), 'utf8'));
+  for (const [n, s] of Object.entries(R.durate_s || {})) (runner[n] ||= []).push(s); for (const [n, l] of Object.entries(R.giro303_s || {})) (runner[n] ||= []).push(...l); }
 /* rapporti */
 const rami = git('branch', '-r').stdout.split('\n').map(s => s.trim()).filter(b => /^origin\/(sviluppo\/(giro(29[3-9]|30[0-7])|verifica198)|prova-ci\/giro303)/.test(b));
 const rap = {}, tetto = {}, fonti = [];

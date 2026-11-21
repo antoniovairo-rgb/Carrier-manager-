@@ -1,6 +1,6 @@
 {
  "_": "giro 308: durata di ogni guardiano (secondi). `s` = valore usato dal taglio in parti (ci-parti-303.mjs); `fonte` (in ordine di precedenza, la piu' recente prima) = rapporti (mediana delle durate scritte nei rapporti dei giri 293-307 e delle verifiche 198, 19-21/11) | runner (taratura 44830113928 + giro 303, 20/11) | banco (mediana di STABILITA.json, giri 10-11/2026) | stimata (nessuna misura: 300 s). «+tetto» = un rapporto dice che e' stato fermato al tetto dei 30 minuti. Rigenerare: node tools/durate-guardiani-308.mjs",
- "generato": "2026-11-21T07:44",
+ "generato": "2026-11-21T10:46",
  "fonti_rapporti": [
   "RAPPORTO-giro293.md",
   "RAPPORTO-giro294.md",
@@ -37,51 +37,57 @@
   "VERIFICA198-V4.md"
  ],
  "totale": {
-  "guardiani": 348,
-  "somma_s": 125880,
+  "guardiani": 349,
+  "somma_s": 115511,
   "per_fonte": {
    "rapporti": 154,
-   "banco": 89,
-   "runner": 26,
-   "stimata": 78,
-   "stimata+tetto": 1
+   "runner": 181,
+   "banco": 7,
+   "stimata": 6,
+   "runner+tetto": 1
   }
  },
  "oltre_30_minuti": [
   {
    "n": "gol-eroe-154",
    "s": 3600,
-   "runner_max": null,
+   "runner_max": 3012,
    "fonte": "rapporti"
   },
   {
    "n": "highlight-95",
    "s": 3600,
-   "runner_max": null,
+   "runner_max": 4940,
    "fonte": "rapporti"
+  },
+  {
+   "n": "ingresso-206",
+   "s": 3067,
+   "runner_max": 3067,
+   "fonte": "runner"
+  },
+  {
+   "n": "assist-nome-98",
+   "s": 2964,
+   "runner_max": 2964,
+   "fonte": "runner"
   },
   {
    "n": "nomi-219",
    "s": 2910,
-   "runner_max": null,
+   "runner_max": 2593,
    "fonte": "rapporti"
-  },
-  {
-   "n": "difesa-220-scena",
-   "s": 2431,
-   "runner_max": null,
-   "fonte": "banco"
   },
   {
    "n": "esiti-218",
    "s": 2340,
-   "runner_max": null,
+   "runner_max": 1533,
    "fonte": "rapporti"
   },
   {
    "n": "difesa-220",
    "s": 2330,
-   "runner_max": null,
+   "runner_max": 2046,
    "fonte": "rapporti"
   },
   {
@@ -93,26 +99,26 @@
   {
    "n": "chiusura-99",
    "s": 2081,
-   "runner_max": 1364,
+   "runner_max": 1372,
    "fonte": "rapporti"
   },
   {
    "n": "parata-100",
    "s": 2040,
-   "runner_max": null,
+   "runner_max": 2884,
    "fonte": "rapporti"
   },
   {
    "n": "assist-298",
-   "s": 1804,
-   "runner_max": 1804,
+   "s": 1826,
+   "runner_max": 1848,
    "fonte": "runner"
   },
   {
    "n": "riproduci-175",
    "s": 1800,
-   "runner_max": null,
-   "fonte": "stimata+tetto"
+   "runner_max": 1450,
+   "fonte": "runner+tetto"
   },
   {
    "n": "scena3d-96",
@@ -131,6 +137,9 @@
   "accessibilita-234": {
    "s": 102,
    "fonte": "rapporti",
+   "runner": [
+    100
+   ],
    "rapporti": {
     "mediana": 102,
     "n": 2,
@@ -141,27 +150,34 @@
    }
   },
   "acquisti-281": {
-   "s": 121,
-   "fonte": "banco",
+   "s": 25,
+   "fonte": "runner",
    "banco": {
     "mediana": 121,
     "n": 3
-   }
+   },
+   "runner": [
+    25
+   ]
   },
   "aereo-252": {
-   "s": 163,
+   "s": 172,
    "fonte": "runner",
    "banco": {
     "mediana": 311,
     "n": 2
    },
    "runner": [
-    163
+    163,
+    180
    ]
   },
   "agente-198": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 91,
+   "fonte": "runner",
+   "runner": [
+    91
+   ]
   },
   "analisi-217": {
    "s": 13,
@@ -171,7 +187,8 @@
     "n": 1
    },
    "runner": [
-    13
+    13,
+    14
    ],
    "rapporti": {
     "mediana": 13,
@@ -182,16 +199,22 @@
    }
   },
   "anteprima-212": {
-   "s": 41,
-   "fonte": "banco",
+   "s": 21,
+   "fonte": "runner",
    "banco": {
     "mediana": 41,
     "n": 19
-   }
+   },
+   "runner": [
+    21
+   ]
   },
   "anteprima-230": {
    "s": 155,
    "fonte": "rapporti",
+   "runner": [
+    140
+   ],
    "rapporti": {
     "mediana": 155,
     "n": 1,
@@ -201,29 +224,34 @@
    }
   },
   "apertura-261": {
-   "s": 156,
+   "s": 153,
    "fonte": "runner",
    "banco": {
     "mediana": 295,
     "n": 2
    },
    "runner": [
-    156
+    156,
+    150
    ]
   },
   "assist-298": {
-   "s": 1804,
+   "s": 1826,
    "fonte": "runner",
    "runner": [
-    1804
+    1804,
+    1848
    ],
    "tetto30": [
     "VERIFICA198-V2a.md"
    ]
   },
   "assist-nome-98": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 2964,
+   "fonte": "runner",
+   "runner": [
+    2964
+   ]
   },
   "attesa-241": {
    "s": 61,
@@ -232,6 +260,9 @@
     "mediana": 106,
     "n": 6
    },
+   "runner": [
+    58
+   ],
    "rapporti": {
     "mediana": 61,
     "n": 2,
@@ -242,8 +273,11 @@
    }
   },
   "attesa-difesa": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 37,
+   "fonte": "runner",
+   "runner": [
+    37
+   ]
   },
   "avversario-106": {
    "s": 13,
@@ -251,13 +285,17 @@
    "banco": {
     "mediana": 13,
     "n": 20
-   }
+   },
+   "runner": [
+    3
+   ]
   },
   "avvicinamento-61": {
    "s": 84,
    "fonte": "rapporti",
    "runner": [
-    84
+    84,
+    92
    ],
    "rapporti": {
     "mediana": 84,
@@ -271,6 +309,7 @@
    "s": 113,
    "fonte": "rapporti",
    "runner": [
+    1,
     1
    ],
    "rapporti": {
@@ -285,6 +324,9 @@
   "avviso3d-209": {
    "s": 150,
    "fonte": "rapporti",
+   "runner": [
+    228
+   ],
    "rapporti": {
     "mediana": 150,
     "n": 2,
@@ -294,46 +336,57 @@
    }
   },
   "backup-167": {
-   "s": 83,
-   "fonte": "banco",
+   "s": 25,
+   "fonte": "runner",
    "banco": {
     "mediana": 83,
     "n": 6
-   }
+   },
+   "runner": [
+    25
+   ]
   },
   "badge-255": {
-   "s": 84,
-   "fonte": "banco",
+   "s": 46,
+   "fonte": "runner",
    "banco": {
     "mediana": 84,
     "n": 5
-   }
+   },
+   "runner": [
+    46
+   ]
   },
   "bambini-236": {
-   "s": 1317,
+   "s": 1318,
    "fonte": "runner",
    "banco": {
     "mediana": 1363,
     "n": 13
    },
    "runner": [
-    1317
+    1317,
+    1318
    ]
   },
   "bambini-294": {
-   "s": 352,
+   "s": 392,
    "fonte": "runner",
    "banco": {
     "mediana": 538,
     "n": 1
    },
    "runner": [
-    352
+    352,
+    432
    ]
   },
   "barra-221": {
    "s": 211,
    "fonte": "rapporti",
+   "runner": [
+    206
+   ],
    "rapporti": {
     "mediana": 211,
     "n": 1,
@@ -343,15 +396,19 @@
    }
   },
   "barra-360-72": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
   },
   "battito-264": {
    "s": 360,
    "fonte": "rapporti",
    "runner": [
     321,
-    330
+    330,
+    313
    ],
    "rapporti": {
     "mediana": 360,
@@ -367,6 +424,9 @@
   "box-fischio-169": {
    "s": 66,
    "fonte": "rapporti",
+   "runner": [
+    160
+   ],
    "rapporti": {
     "mediana": 66,
     "n": 1,
@@ -376,12 +436,15 @@
    }
   },
   "brain-202": {
-   "s": 434,
-   "fonte": "banco",
+   "s": 447,
+   "fonte": "runner",
    "banco": {
     "mediana": 434,
     "n": 17
-   }
+   },
+   "runner": [
+    447
+   ]
   },
   "brusio-238": {
    "s": 14,
@@ -389,7 +452,10 @@
    "banco": {
     "mediana": 14,
     "n": 5
-   }
+   },
+   "runner": [
+    4
+   ]
   },
   "buildup-sync": {
    "s": 120,
@@ -398,6 +464,9 @@
     "mediana": 170,
     "n": 3
    },
+   "runner": [
+    163
+   ],
    "rapporti": {
     "mediana": 120,
     "n": 1,
@@ -407,38 +476,54 @@
    }
   },
   "busta-199": {
-   "s": 82,
-   "fonte": "banco",
+   "s": 60,
+   "fonte": "runner",
    "banco": {
     "mediana": 82,
     "n": 1
-   }
+   },
+   "runner": [
+    60
+   ]
   },
   "calendario-218": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 33,
+   "fonte": "runner",
+   "runner": [
+    33
+   ]
   },
   "calendario-247": {
-   "s": 36,
-   "fonte": "banco",
+   "s": 14,
+   "fonte": "runner",
    "banco": {
     "mediana": 36,
     "n": 4
-   }
+   },
+   "runner": [
+    14
+   ]
   },
   "calendario-nazionale": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 31,
+   "fonte": "runner",
+   "runner": [
+    31
+   ]
   },
   "calendario-offerte-195": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 24,
+   "fonte": "runner",
+   "runner": [
+    24
+   ]
   },
   "camera-241": {
    "s": 854,
    "fonte": "rapporti",
    "runner": [
-    571
+    571,
+    996
    ],
    "rapporti": {
     "mediana": 854,
@@ -449,14 +534,15 @@
    }
   },
   "camera-252": {
-   "s": 249,
+   "s": 247,
    "fonte": "runner",
    "banco": {
     "mediana": 439,
     "n": 3
    },
    "runner": [
-    249
+    249,
+    245
    ]
   },
   "career-critical": {
@@ -467,7 +553,8 @@
     "n": 37
    },
    "runner": [
-    565
+    565,
+    396
    ],
    "rapporti": {
     "mediana": 565,
@@ -478,14 +565,18 @@
    }
   },
   "career-nat-sim": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 14,
+   "fonte": "runner",
+   "runner": [
+    14
+   ]
   },
   "carriera3-94": {
    "s": 165,
    "fonte": "rapporti",
    "runner": [
-    159
+    159,
+    169
    ],
    "rapporti": {
     "mediana": 165,
@@ -503,6 +594,9 @@
     "mediana": 270,
     "n": 2
    },
+   "runner": [
+    266
+   ],
    "rapporti": {
     "mediana": 489,
     "n": 1,
@@ -512,19 +606,23 @@
    }
   },
   "cerimonie": {
-   "s": 32,
+   "s": 35,
    "fonte": "runner",
    "banco": {
     "mediana": 41,
     "n": 1
    },
    "runner": [
-    32
+    32,
+    37
    ]
   },
   "cerimonie-192": {
    "s": 452,
    "fonte": "rapporti",
+   "runner": [
+    556
+   ],
    "rapporti": {
     "mediana": 452,
     "n": 1,
@@ -534,18 +632,22 @@
    }
   },
   "chip-269": {
-   "s": 46,
-   "fonte": "banco",
+   "s": 11,
+   "fonte": "runner",
    "banco": {
     "mediana": 46,
     "n": 2
-   }
+   },
+   "runner": [
+    11
+   ]
   },
   "chiusura-99": {
    "s": 2081,
    "fonte": "rapporti",
    "runner": [
-    1364
+    1364,
+    1372
    ],
    "rapporti": {
     "mediana": 2081,
@@ -562,32 +664,47 @@
    ]
   },
   "classifica-102": {
-   "s": 42,
-   "fonte": "banco",
+   "s": 9,
+   "fonte": "runner",
    "banco": {
     "mediana": 42,
     "n": 20
-   }
+   },
+   "runner": [
+    9
+   ]
   },
   "classifica-194": {
-   "s": 254,
-   "fonte": "banco",
+   "s": 256,
+   "fonte": "runner",
    "banco": {
     "mediana": 254,
     "n": 2
-   }
+   },
+   "runner": [
+    256
+   ]
   },
   "classifica-259": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 134,
+   "fonte": "runner",
+   "runner": [
+    134
+   ]
   },
   "clip-180": {
    "s": 300,
-   "fonte": "stimata"
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
   },
   "coerenza-235": {
    "s": 180,
    "fonte": "rapporti",
+   "runner": [
+    178
+   ],
    "rapporti": {
     "mediana": 180,
     "n": 1,
@@ -600,7 +717,8 @@
    "s": 240,
    "fonte": "rapporti",
    "runner": [
-    344
+    344,
+    330
    ],
    "rapporti": {
     "mediana": 240,
@@ -613,6 +731,9 @@
   "colori-286": {
    "s": 882,
    "fonte": "rapporti",
+   "runner": [
+    508
+   ],
    "rapporti": {
     "mediana": 882,
     "n": 1,
@@ -629,7 +750,8 @@
     "n": 3
    },
    "runner": [
-    86
+    86,
+    111
    ],
    "rapporti": {
     "mediana": 84,
@@ -641,13 +763,17 @@
   },
   "conferenza-192": {
    "s": 300,
-   "fonte": "stimata"
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
   },
   "consegna-103": {
    "s": 1260,
    "fonte": "rapporti",
    "runner": [
-    1617
+    1617,
+    1008
    ],
    "rapporti": {
     "mediana": 1260,
@@ -661,7 +787,8 @@
    "s": 804,
    "fonte": "rapporti",
    "runner": [
-    576
+    576,
+    660
    ],
    "rapporti": {
     "mediana": 804,
@@ -677,6 +804,9 @@
   "convocazione-190": {
    "s": 1,
    "fonte": "rapporti",
+   "runner": [
+    1
+   ],
    "rapporti": {
     "mediana": 1,
     "n": 1,
@@ -686,30 +816,40 @@
    }
   },
   "convocazione-235": {
-   "s": 93,
-   "fonte": "banco",
+   "s": 22,
+   "fonte": "runner",
    "banco": {
     "mediana": 93,
     "n": 7
-   }
+   },
+   "runner": [
+    22
+   ]
   },
   "coppa-mani-191": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
   },
   "coppa-prestito-245": {
-   "s": 47,
-   "fonte": "banco",
+   "s": 23,
+   "fonte": "runner",
    "banco": {
     "mediana": 47,
     "n": 5
-   }
+   },
+   "runner": [
+    23
+   ]
   },
   "coreografie-244": {
    "s": 2295,
    "fonte": "rapporti",
    "runner": [
-    1934
+    1934,
+    1500
    ],
    "rapporti": {
     "mediana": 2295,
@@ -723,15 +863,19 @@
    ]
   },
   "coreografie-252": {
-   "s": 1410,
+   "s": 1583,
    "fonte": "runner",
    "runner": [
-    1410
+    1410,
+    1755
    ]
   },
   "cori-291": {
    "s": 1,
    "fonte": "rapporti",
+   "runner": [
+    3
+   ],
    "rapporti": {
     "mediana": 1,
     "n": 1,
@@ -748,7 +892,8 @@
     "n": 3
    },
    "runner": [
-    484
+    484,
+    485
    ],
    "rapporti": {
     "mediana": 433,
@@ -761,24 +906,33 @@
    }
   },
   "crea-home-295": {
-   "s": 46,
-   "fonte": "banco",
+   "s": 8,
+   "fonte": "runner",
    "banco": {
     "mediana": 46,
     "n": 1
-   }
+   },
+   "runner": [
+    8
+   ]
   },
   "crediti-254": {
-   "s": 28,
-   "fonte": "banco",
+   "s": 7,
+   "fonte": "runner",
    "banco": {
     "mediana": 28,
     "n": 5
-   }
+   },
+   "runner": [
+    7
+   ]
   },
   "cronaca-nomi-190": {
    "s": 516,
    "fonte": "rapporti",
+   "runner": [
+    255
+   ],
    "rapporti": {
     "mediana": 516,
     "n": 1,
@@ -795,7 +949,8 @@
     "n": 15
    },
    "runner": [
-    174
+    174,
+    188
    ],
    "rapporti": {
     "mediana": 178,
@@ -806,8 +961,11 @@
    }
   },
   "cross-origine": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
   },
   "debito-190": {
    "s": 1,
@@ -815,7 +973,10 @@
    "banco": {
     "mediana": 1,
     "n": 14
-   }
+   },
+   "runner": [
+    1
+   ]
   },
   "design-system": {
    "s": 1,
@@ -825,7 +986,8 @@
     "n": 19
    },
    "runner": [
-    1
+    1,
+    0
    ],
    "rapporti": {
     "mediana": 1,
@@ -838,6 +1000,9 @@
   "diagonali-210": {
    "s": 158,
    "fonte": "rapporti",
+   "runner": [
+    125
+   ],
    "rapporti": {
     "mediana": 158,
     "n": 1,
@@ -853,6 +1018,9 @@
     "mediana": 2201,
     "n": 24
    },
+   "runner": [
+    2046
+   ],
    "rapporti": {
     "mediana": 2330,
     "n": 3,
@@ -873,7 +1041,8 @@
     "n": 3
    },
    "runner": [
-    1351
+    1351,
+    1355
    ],
    "rapporti": {
     "mediana": 1633,
@@ -884,27 +1053,34 @@
    }
   },
   "difesa-220-scena": {
-   "s": 2431,
-   "fonte": "banco",
+   "s": 1604,
+   "fonte": "runner",
    "banco": {
     "mediana": 2431,
     "n": 12
-   }
+   },
+   "runner": [
+    1604
+   ]
   },
   "difesa-252": {
-   "s": 225,
+   "s": 250,
    "fonte": "runner",
    "banco": {
     "mediana": 366,
     "n": 4
    },
    "runner": [
-    225
+    225,
+    274
    ]
   },
   "difficolta-156": {
    "s": 151,
    "fonte": "rapporti",
+   "runner": [
+    369
+   ],
    "rapporti": {
     "mediana": 151,
     "n": 1,
@@ -914,31 +1090,41 @@
    }
   },
   "disappunto": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 35,
+   "fonte": "runner",
+   "runner": [
+    35
+   ]
   },
   "doppio-gesto-148": {
-   "s": 358,
-   "fonte": "banco",
+   "s": 342,
+   "fonte": "runner",
    "banco": {
     "mediana": 358,
     "n": 1
-   }
+   },
+   "runner": [
+    342
+   ]
   },
   "dribbling-226": {
-   "s": 710,
+   "s": 811,
    "fonte": "runner",
    "runner": [
-    710
+    710,
+    911
    ]
   },
   "errori-168": {
-   "s": 26,
-   "fonte": "banco",
+   "s": 10,
+   "fonte": "runner",
    "banco": {
     "mediana": 26,
     "n": 3
-   }
+   },
+   "runner": [
+    10
+   ]
   },
   "esiti-218": {
    "s": 2340,
@@ -947,6 +1133,9 @@
     "mediana": 1106,
     "n": 26
    },
+   "runner": [
+    1533
+   ],
    "rapporti": {
     "mediana": 2340,
     "n": 1,
@@ -963,7 +1152,8 @@
     "n": 3
    },
    "runner": [
-    319
+    319,
+    450
    ],
    "rapporti": {
     "mediana": 332,
@@ -980,6 +1170,9 @@
     "mediana": 236,
     "n": 4
    },
+   "runner": [
+    124
+   ],
    "rapporti": {
     "mediana": 107,
     "n": 1,
@@ -991,6 +1184,9 @@
   "esiti-96": {
    "s": 787,
    "fonte": "rapporti",
+   "runner": [
+    687
+   ],
    "rapporti": {
     "mediana": 787,
     "n": 1,
@@ -1006,6 +1202,9 @@
     "mediana": 345,
     "n": 1
    },
+   "runner": [
+    326
+   ],
    "rapporti": {
     "mediana": 540,
     "n": 2,
@@ -1018,6 +1217,9 @@
   "esito-282": {
    "s": 391,
    "fonte": "rapporti",
+   "runner": [
+    343
+   ],
    "rapporti": {
     "mediana": 391,
     "n": 1,
@@ -1032,7 +1234,8 @@
    "runner": [
     1320,
     955,
-    1616
+    1616,
+    1620
    ],
    "rapporti": {
     "mediana": 1138,
@@ -1045,8 +1248,11 @@
    }
   },
   "esultanza-braccia": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 36,
+   "fonte": "runner",
+   "runner": [
+    36
+   ]
   },
   "etichette-108": {
    "s": 13,
@@ -1054,47 +1260,71 @@
    "banco": {
     "mediana": 13,
     "n": 20
-   }
+   },
+   "runner": [
+    2
+   ]
   },
   "etichette-95": {
    "s": 300,
-   "fonte": "stimata"
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
   },
   "euro-attesa-181": {
-   "s": 32,
-   "fonte": "banco",
+   "s": 10,
+   "fonte": "runner",
    "banco": {
     "mediana": 32,
     "n": 20
-   }
+   },
+   "runner": [
+    10
+   ]
   },
   "fallo-cercato": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 59,
+   "fonte": "runner",
+   "runner": [
+    59
+   ]
   },
   "festa-oro-251": {
-   "s": 43,
-   "fonte": "banco",
+   "s": 22,
+   "fonte": "runner",
    "banco": {
     "mediana": 43,
     "n": 4
-   }
+   },
+   "runner": [
+    22
+   ]
   },
   "figurina-199": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 51,
+   "fonte": "runner",
+   "runner": [
+    51
+   ]
   },
   "figurine-208": {
-   "s": 42,
-   "fonte": "banco",
+   "s": 27,
+   "fonte": "runner",
    "banco": {
     "mediana": 42,
     "n": 1
-   }
+   },
+   "runner": [
+    27
+   ]
   },
   "fila-206": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 391,
+   "fonte": "runner",
+   "runner": [
+    391
+   ]
   },
   "fila-227": {
    "s": 384,
@@ -1104,7 +1334,8 @@
     "n": 15
    },
    "runner": [
-    401
+    401,
+    389
    ],
    "rapporti": {
     "mediana": 384,
@@ -1115,8 +1346,11 @@
    }
   },
   "filtrante-intercetto": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 39,
+   "fonte": "runner",
+   "runner": [
+    39
+   ]
   },
   "finale-202": {
    "s": 11,
@@ -1124,19 +1358,28 @@
    "banco": {
     "mediana": 11,
     "n": 18
-   }
+   },
+   "runner": [
+    0
+   ]
   },
   "finestra-230": {
-   "s": 109,
-   "fonte": "banco",
+   "s": 45,
+   "fonte": "runner",
    "banco": {
     "mediana": 109,
     "n": 14
-   }
+   },
+   "runner": [
+    45
+   ]
   },
   "forma-239": {
    "s": 184,
    "fonte": "rapporti",
+   "runner": [
+    192
+   ],
    "rapporti": {
     "mediana": 184,
     "n": 1,
@@ -1146,18 +1389,22 @@
    }
   },
   "formazioni-204": {
-   "s": 53,
-   "fonte": "banco",
+   "s": 35,
+   "fonte": "runner",
    "banco": {
     "mediana": 53,
     "n": 1
-   }
+   },
+   "runner": [
+    35
+   ]
   },
   "formazioni-262": {
    "s": 42,
    "fonte": "rapporti",
    "runner": [
-    42
+    42,
+    51
    ],
    "rapporti": {
     "mediana": 42,
@@ -1174,6 +1421,9 @@
     "mediana": 45,
     "n": 4
    },
+   "runner": [
+    31
+   ],
    "rapporti": {
     "mediana": 30,
     "n": 1,
@@ -1183,48 +1433,69 @@
    }
   },
   "gesti-copertura-96": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
   },
   "gesti-motore-068": {
-   "s": 16,
-   "fonte": "banco",
+   "s": 7,
+   "fonte": "runner",
    "banco": {
     "mediana": 16,
     "n": 1
-   }
+   },
+   "runner": [
+    7
+   ]
   },
   "gesti-scena-p1b": {
-   "s": 656,
-   "fonte": "banco",
+   "s": 613,
+   "fonte": "runner",
    "banco": {
     "mediana": 656,
     "n": 1
-   }
+   },
+   "runner": [
+    613
+   ]
   },
   "gigante-212": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 758,
+   "fonte": "runner",
+   "runner": [
+    758
+   ]
   },
   "gioca-188": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 28,
+   "fonte": "runner",
+   "runner": [
+    28
+   ]
   },
   "giornale-244": {
-   "s": 834,
-   "fonte": "banco",
+   "s": 827,
+   "fonte": "runner",
    "banco": {
     "mediana": 834,
     "n": 3
-   }
+   },
+   "runner": [
+    827
+   ]
   },
   "giornata-233": {
-   "s": 39,
-   "fonte": "banco",
+   "s": 16,
+   "fonte": "runner",
    "banco": {
     "mediana": 39,
     "n": 11
-   }
+   },
+   "runner": [
+    16
+   ]
   },
   "gk-dive-sync": {
    "s": 180,
@@ -1234,7 +1505,8 @@
     "n": 20
    },
    "runner": [
-    186
+    186,
+    150
    ],
    "rapporti": {
     "mediana": 180,
@@ -1254,7 +1526,8 @@
     "n": 18
    },
    "runner": [
-    171
+    171,
+    235
    ],
    "rapporti": {
     "mediana": 180,
@@ -1275,7 +1548,8 @@
     "n": 22
    },
    "runner": [
-    296
+    296,
+    308
    ],
    "rapporti": {
     "mediana": 631,
@@ -1293,6 +1567,9 @@
     "mediana": 1,
     "n": 1
    },
+   "runner": [
+    3012
+   ],
    "rapporti": {
     "mediana": 3600,
     "n": 4,
@@ -1307,12 +1584,18 @@
    ]
   },
   "goleade": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 19,
+   "fonte": "runner",
+   "runner": [
+    19
+   ]
   },
   "grafica-168": {
    "s": 160,
    "fonte": "rapporti",
+   "runner": [
+    173
+   ],
    "rapporti": {
     "mediana": 160,
     "n": 1,
@@ -1322,8 +1605,11 @@
    }
   },
   "grafica-v2": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 121,
+   "fonte": "runner",
+   "runner": [
+    121
+   ]
   },
   "griglia-mobile": {
    "s": 187,
@@ -1332,6 +1618,9 @@
     "mediana": 204,
     "n": 5
    },
+   "runner": [
+    182
+   ],
    "rapporti": {
     "mediana": 187,
     "n": 4,
@@ -1344,18 +1633,22 @@
    }
   },
   "guanti-201": {
-   "s": 66,
-   "fonte": "banco",
+   "s": 57,
+   "fonte": "runner",
    "banco": {
     "mediana": 66,
     "n": 1
-   }
+   },
+   "runner": [
+    57
+   ]
   },
   "guardalinee-222": {
    "s": 414,
    "fonte": "rapporti",
    "runner": [
-    255
+    255,
+    267
    ],
    "rapporti": {
     "mediana": 414,
@@ -1368,6 +1661,9 @@
   "highlight-95": {
    "s": 3600,
    "fonte": "rapporti",
+   "runner": [
+    4940
+   ],
    "rapporti": {
     "mediana": 3600,
     "n": 3,
@@ -1377,23 +1673,30 @@
    }
   },
   "home-066": {
-   "s": 115,
-   "fonte": "banco",
+   "s": 55,
+   "fonte": "runner",
    "banco": {
     "mediana": 115,
     "n": 4
-   }
+   },
+   "runner": [
+    55
+   ]
   },
   "home-199": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 128,
+   "fonte": "runner",
+   "runner": [
+    128
+   ]
   },
   "home-298": {
    "s": 126,
    "fonte": "rapporti",
    "runner": [
     130,
-    129
+    129,
+    123
    ],
    "rapporti": {
     "mediana": 126,
@@ -1406,40 +1709,61 @@
    }
   },
   "home-riquadri": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 7,
+   "fonte": "runner",
+   "runner": [
+    7
+   ]
   },
   "impulsi-289": {
-   "s": 51,
-   "fonte": "banco",
+   "s": 20,
+   "fonte": "runner",
    "banco": {
     "mediana": 51,
     "n": 1
-   }
+   },
+   "runner": [
+    20
+   ]
   },
   "impulsi-contesto": {
    "s": 300,
-   "fonte": "stimata"
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
   },
   "impulsi-memoria-154": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 41,
+   "fonte": "runner",
+   "runner": [
+    41
+   ]
   },
   "indice-163": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 22,
+   "fonte": "runner",
+   "runner": [
+    22
+   ]
   },
   "infortunio-263": {
-   "s": 246,
-   "fonte": "banco",
+   "s": 87,
+   "fonte": "runner",
    "banco": {
     "mediana": 246,
     "n": 6
-   }
+   },
+   "runner": [
+    87
+   ]
   },
   "ingresso-206": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 3067,
+   "fonte": "runner",
+   "runner": [
+    3067
+   ]
   },
   "ingresso-245": {
    "s": 132,
@@ -1449,7 +1773,8 @@
     "n": 1
    },
    "runner": [
-    132
+    132,
+    172
    ],
    "rapporti": {
     "mediana": 132,
@@ -1460,10 +1785,11 @@
    }
   },
   "ingresso-276": {
-   "s": 176,
+   "s": 250,
    "fonte": "runner",
    "runner": [
-    176
+    176,
+    324
    ]
   },
   "ingresso-277": {
@@ -1474,7 +1800,8 @@
     "n": 1
    },
    "runner": [
-    402
+    402,
+    484
    ],
    "rapporti": {
     "mediana": 417,
@@ -1489,7 +1816,8 @@
    "s": 335,
    "fonte": "rapporti",
    "runner": [
-    307
+    307,
+    214
    ],
    "rapporti": {
     "mediana": 335,
@@ -1508,7 +1836,8 @@
     "n": 2
    },
    "runner": [
-    212
+    212,
+    269
    ],
    "rapporti": {
     "mediana": 238,
@@ -1522,7 +1851,8 @@
    "s": 661,
    "fonte": "rapporti",
    "runner": [
-    477
+    477,
+    424
    ],
    "rapporti": {
     "mediana": 661,
@@ -1539,6 +1869,9 @@
     "mediana": 1123,
     "n": 4
    },
+   "runner": [
+    1073
+   ],
    "rapporti": {
     "mediana": 300,
     "n": 2,
@@ -1548,23 +1881,30 @@
    }
   },
   "intercetto-291": {
-   "s": 665,
+   "s": 717,
    "fonte": "runner",
    "runner": [
-    665
+    665,
+    769
    ]
   },
   "intervista-231": {
-   "s": 895,
-   "fonte": "banco",
+   "s": 867,
+   "fonte": "runner",
    "banco": {
     "mediana": 895,
     "n": 25
-   }
+   },
+   "runner": [
+    867
+   ]
   },
   "interviste-183": {
    "s": 264,
    "fonte": "rapporti",
+   "runner": [
+    256
+   ],
    "rapporti": {
     "mediana": 264,
     "n": 1,
@@ -1574,12 +1914,18 @@
    }
   },
   "interviste-211": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
   },
   "intro-292": {
    "s": 84,
    "fonte": "rapporti",
+   "runner": [
+    84
+   ],
    "rapporti": {
     "mediana": 84,
     "n": 1,
@@ -1589,31 +1935,38 @@
    }
   },
   "investimento-223": {
-   "s": 305,
-   "fonte": "banco",
+   "s": 147,
+   "fonte": "runner",
    "banco": {
     "mediana": 305,
     "n": 5
-   }
+   },
+   "runner": [
+    147
+   ]
   },
   "kit-061": {
-   "s": 32,
+   "s": 30,
    "fonte": "runner",
    "banco": {
     "mediana": 28,
     "n": 1
    },
    "runner": [
-    32
+    32,
+    28
    ]
   },
   "l7-schermate": {
-   "s": 47,
-   "fonte": "banco",
+   "s": 22,
+   "fonte": "runner",
    "banco": {
     "mediana": 47,
     "n": 1
-   }
+   },
+   "runner": [
+    22
+   ]
   },
   "lessico-218": {
    "s": 2,
@@ -1622,6 +1975,9 @@
     "mediana": 23,
     "n": 16
    },
+   "runner": [
+    3
+   ],
    "rapporti": {
     "mediana": 2,
     "n": 1,
@@ -1631,29 +1987,37 @@
    }
   },
   "licenze-184": {
-   "s": 300,
-   "fonte": "stimata"
-  },
-  "linee-61": {
-   "s": 685,
+   "s": 110,
    "fonte": "runner",
    "runner": [
-    685
+    110
+   ]
+  },
+  "linee-61": {
+   "s": 696,
+   "fonte": "runner",
+   "runner": [
+    685,
+    707
    ]
   },
   "livello-79": {
-   "s": 80,
-   "fonte": "banco",
+   "s": 33,
+   "fonte": "runner",
    "banco": {
     "mediana": 80,
     "n": 2
-   }
+   },
+   "runner": [
+    33
+   ]
   },
   "lotteria-191": {
    "s": 252,
    "fonte": "rapporti",
    "runner": [
-    236
+    236,
+    255
    ],
    "rapporti": {
     "mediana": 252,
@@ -1670,6 +2034,9 @@
     "mediana": 6,
     "n": 18
    },
+   "runner": [
+    4
+   ],
    "rapporti": {
     "mediana": 5,
     "n": 1,
@@ -1678,11 +2045,19 @@
     ]
    }
   },
+  "mappa-unica": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
   "memoria-275": {
    "s": 459,
    "fonte": "rapporti",
    "runner": [
-    353
+    353,
+    349
    ],
    "rapporti": {
     "mediana": 459,
@@ -1693,20 +2068,26 @@
    }
   },
   "meta-conto-265": {
-   "s": 86,
-   "fonte": "banco",
+   "s": 29,
+   "fonte": "runner",
    "banco": {
     "mediana": 86,
     "n": 5
-   }
+   },
+   "runner": [
+    29
+   ]
   },
   "migrazione-194": {
-   "s": 89,
-   "fonte": "banco",
+   "s": 24,
+   "fonte": "runner",
    "banco": {
     "mediana": 89,
     "n": 7
-   }
+   },
+   "runner": [
+    24
+   ]
   },
   "minuti-202": {
    "s": 173,
@@ -1715,6 +2096,9 @@
     "mediana": 196,
     "n": 19
    },
+   "runner": [
+    169
+   ],
    "rapporti": {
     "mediana": 173,
     "n": 1,
@@ -1724,28 +2108,43 @@
    }
   },
   "mister-215": {
-   "s": 42,
-   "fonte": "banco",
+   "s": 30,
+   "fonte": "runner",
    "banco": {
     "mediana": 42,
     "n": 20
-   }
+   },
+   "runner": [
+    30
+   ]
   },
   "momenti-v2": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 155,
+   "fonte": "runner",
+   "runner": [
+    155
+   ]
   },
   "momento-165": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 176,
+   "fonte": "runner",
+   "runner": [
+    176
+   ]
   },
   "momento-165b": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 167,
+   "fonte": "runner",
+   "runner": [
+    167
+   ]
   },
   "momento-173": {
    "s": 95,
    "fonte": "rapporti",
+   "runner": [
+    97
+   ],
    "rapporti": {
     "mediana": 95,
     "n": 1,
@@ -1755,12 +2154,18 @@
    }
   },
   "momento-185": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 164,
+   "fonte": "runner",
+   "runner": [
+    164
+   ]
   },
   "momento-194": {
    "s": 104,
    "fonte": "rapporti",
+   "runner": [
+    98
+   ],
    "rapporti": {
     "mediana": 104,
     "n": 1,
@@ -1770,40 +2175,58 @@
    }
   },
   "moves-budget": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 138,
+   "fonte": "runner",
+   "runner": [
+    138
+   ]
   },
   "movimento-147": {
-   "s": 645,
-   "fonte": "banco",
+   "s": 620,
+   "fonte": "runner",
    "banco": {
     "mediana": 645,
     "n": 1
-   }
+   },
+   "runner": [
+    620
+   ]
   },
   "nazionale-155": {
-   "s": 29,
-   "fonte": "banco",
+   "s": 44,
+   "fonte": "runner",
    "banco": {
     "mediana": 29,
     "n": 1
-   }
+   },
+   "runner": [
+    44
+   ]
   },
   "neutro-287": {
-   "s": 111,
-   "fonte": "banco",
+   "s": 40,
+   "fonte": "runner",
    "banco": {
     "mediana": 111,
     "n": 2
-   }
+   },
+   "runner": [
+    40
+   ]
   },
   "nomi-182": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 277,
+   "fonte": "runner",
+   "runner": [
+    277
+   ]
   },
   "nomi-190": {
    "s": 22,
    "fonte": "rapporti",
+   "runner": [
+    22
+   ],
    "rapporti": {
     "mediana": 22,
     "n": 1,
@@ -1815,6 +2238,9 @@
   "nomi-211": {
    "s": 190,
    "fonte": "rapporti",
+   "runner": [
+    240
+   ],
    "rapporti": {
     "mediana": 190,
     "n": 1,
@@ -1830,6 +2256,9 @@
     "mediana": 3284,
     "n": 25
    },
+   "runner": [
+    2593
+   ],
    "rapporti": {
     "mediana": 2910,
     "n": 4,
@@ -1844,20 +2273,32 @@
    ]
   },
   "nomi-248": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 50,
+   "fonte": "runner",
+   "runner": [
+    50
+   ]
   },
   "nomi-251": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 48,
+   "fonte": "runner",
+   "runner": [
+    48
+   ]
   },
   "nomi-51": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 33,
+   "fonte": "runner",
+   "runner": [
+    33
+   ]
   },
   "nomi-salvati-190": {
    "s": 36,
    "fonte": "rapporti",
+   "runner": [
+    39
+   ],
    "rapporti": {
     "mediana": 36,
     "n": 1,
@@ -1867,47 +2308,69 @@
    }
   },
   "notte-206": {
-   "s": 155,
+   "s": 168,
    "fonte": "runner",
    "runner": [
-    155
+    155,
+    180
    ]
   },
   "numeri-home": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 12,
+   "fonte": "runner",
+   "runner": [
+    12
+   ]
   },
   "occasioni-dinamiche": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 55,
+   "fonte": "runner",
+   "runner": [
+    55
+   ]
   },
   "occasioni-squadra": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 61,
+   "fonte": "runner",
+   "runner": [
+    61
+   ]
   },
   "offerta-249": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 27,
+   "fonte": "runner",
+   "runner": [
+    27
+   ]
   },
   "pagella-75": {
-   "s": 874,
-   "fonte": "banco",
+   "s": 834,
+   "fonte": "runner",
    "banco": {
     "mediana": 874,
     "n": 2
-   }
+   },
+   "runner": [
+    834
+   ]
   },
   "palco-corpi-191": {
-   "s": 121,
-   "fonte": "banco",
+   "s": 105,
+   "fonte": "runner",
    "banco": {
     "mediana": 121,
     "n": 1
-   }
+   },
+   "runner": [
+    105
+   ]
   },
   "pallino-278": {
    "s": 72,
    "fonte": "rapporti",
+   "runner": [
+    82
+   ],
    "rapporti": {
     "mediana": 72,
     "n": 1,
@@ -1917,17 +2380,19 @@
    }
   },
   "pallone-278": {
-   "s": 127,
+   "s": 134,
    "fonte": "runner",
    "runner": [
-    127
+    127,
+    141
    ]
   },
   "panchina-293": {
    "s": 220,
    "fonte": "rapporti",
    "runner": [
-    220
+    220,
+    230
    ],
    "rapporti": {
     "mediana": 220,
@@ -1940,6 +2405,9 @@
   "parata-100": {
    "s": 2040,
    "fonte": "rapporti",
+   "runner": [
+    2884
+   ],
    "rapporti": {
     "mediana": 2040,
     "n": 1,
@@ -1949,12 +2417,15 @@
    }
   },
   "parata-198": {
-   "s": 33,
-   "fonte": "banco",
+   "s": 41,
+   "fonte": "runner",
    "banco": {
     "mediana": 33,
     "n": 1
-   }
+   },
+   "runner": [
+    41
+   ]
   },
   "parata-258": {
    "s": 60,
@@ -1964,7 +2435,8 @@
     "n": 3
    },
    "runner": [
-    83
+    83,
+    99
    ],
    "rapporti": {
     "mediana": 60,
@@ -1977,16 +2449,22 @@
    }
   },
   "partita-rigiocata-194": {
-   "s": 545,
-   "fonte": "banco",
+   "s": 243,
+   "fonte": "runner",
    "banco": {
     "mediana": 545,
     "n": 20
-   }
+   },
+   "runner": [
+    243
+   ]
   },
   "partita-v2": {
    "s": 441,
    "fonte": "rapporti",
+   "runner": [
+    367
+   ],
    "rapporti": {
     "mediana": 441,
     "n": 1,
@@ -2003,7 +2481,8 @@
     "n": 27
    },
    "runner": [
-    395
+    395,
+    390
    ],
    "rapporti": {
     "mediana": 665,
@@ -2016,6 +2495,9 @@
   "partita2d-297": {
    "s": 144,
    "fonte": "rapporti",
+   "runner": [
+    156
+   ],
    "rapporti": {
     "mediana": 144,
     "n": 1,
@@ -2031,6 +2513,9 @@
     "mediana": 121,
     "n": 4
    },
+   "runner": [
+    73
+   ],
    "rapporti": {
     "mediana": 71,
     "n": 1,
@@ -2047,7 +2532,8 @@
     "n": 1
    },
    "runner": [
-    134
+    134,
+    138
    ],
    "rapporti": {
     "mediana": 130,
@@ -2058,20 +2544,32 @@
    }
   },
   "passo-velocita": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 81,
+   "fonte": "runner",
+   "runner": [
+    81
+   ]
   },
   "patrimonio-303": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
   },
   "patto-227": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 43,
+   "fonte": "runner",
+   "runner": [
+    43
+   ]
   },
   "patto-238": {
    "s": 829,
    "fonte": "rapporti",
+   "runner": [
+    709
+   ],
    "rapporti": {
     "mediana": 829,
     "n": 1,
@@ -2084,7 +2582,8 @@
    "s": 696,
    "fonte": "rapporti",
    "runner": [
-    716
+    716,
+    622
    ],
    "rapporti": {
     "mediana": 696,
@@ -2097,21 +2596,26 @@
    }
   },
   "pelle-240": {
-   "s": 400,
+   "s": 386,
    "fonte": "runner",
    "runner": [
-    400
+    400,
+    372
    ]
   },
   "piazzati-eroe": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 25,
+   "fonte": "runner",
+   "runner": [
+    25
+   ]
   },
   "piazzato-204": {
    "s": 456,
    "fonte": "rapporti",
    "runner": [
-    364
+    364,
+    360
    ],
    "rapporti": {
     "mediana": 456,
@@ -2122,32 +2626,44 @@
    }
   },
   "piccoli-85": {
-   "s": 63,
-   "fonte": "banco",
+   "s": 30,
+   "fonte": "runner",
    "banco": {
     "mediana": 63,
     "n": 1
-   }
+   },
+   "runner": [
+    30
+   ]
   },
   "piede-cross-p1b2": {
-   "s": 299,
-   "fonte": "banco",
+   "s": 265,
+   "fonte": "runner",
    "banco": {
     "mediana": 299,
     "n": 1
-   }
+   },
+   "runner": [
+    265
+   ]
   },
   "piede-preferito": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 89,
+   "fonte": "runner",
+   "runner": [
+    89
+   ]
   },
   "piedi-203": {
-   "s": 638,
-   "fonte": "banco",
+   "s": 622,
+   "fonte": "runner",
    "banco": {
     "mediana": 638,
     "n": 1
-   }
+   },
+   "runner": [
+    622
+   ]
   },
   "piedi-252": {
    "s": 212,
@@ -2157,7 +2673,8 @@
     "n": 3
    },
    "runner": [
-    216
+    216,
+    166
    ],
    "rapporti": {
     "mediana": 212,
@@ -2170,6 +2687,9 @@
   "pillola-58": {
    "s": 59,
    "fonte": "rapporti",
+   "runner": [
+    76
+   ],
    "rapporti": {
     "mediana": 59,
     "n": 1,
@@ -2186,6 +2706,7 @@
     "n": 3
    },
    "runner": [
+    31,
     31
    ],
    "rapporti": {
@@ -2197,26 +2718,36 @@
    }
   },
   "podio-260": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 24,
+   "fonte": "runner",
+   "runner": [
+    24
+   ]
   },
   "popup-224": {
-   "s": 40,
-   "fonte": "banco",
+   "s": 15,
+   "fonte": "runner",
    "banco": {
     "mediana": 40,
     "n": 20
-   }
+   },
+   "runner": [
+    15
+   ]
   },
   "popup-224b": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 39,
+   "fonte": "runner",
+   "runner": [
+    39
+   ]
   },
   "portatore-286": {
    "s": 360,
    "fonte": "rapporti",
    "runner": [
-    319
+    319,
+    315
    ],
    "rapporti": {
     "mediana": 360,
@@ -2230,7 +2761,8 @@
    "s": 540,
    "fonte": "rapporti",
    "runner": [
-    534
+    534,
+    633
    ],
    "rapporti": {
     "mediana": 540,
@@ -2248,7 +2780,8 @@
    "s": 360,
    "fonte": "rapporti",
    "runner": [
-    512
+    512,
+    487
    ],
    "rapporti": {
     "mediana": 360,
@@ -2268,7 +2801,8 @@
     "n": 5
    },
    "runner": [
-    857
+    857,
+    945
    ],
    "rapporti": {
     "mediana": 845,
@@ -2282,7 +2816,8 @@
    "s": 300,
    "fonte": "rapporti",
    "runner": [
-    274
+    274,
+    373
    ],
    "rapporti": {
     "mediana": 300,
@@ -2300,7 +2835,8 @@
    "runner": [
     539,
     948,
-    626
+    626,
+    965
    ],
    "rapporti": {
     "mediana": 660,
@@ -2315,46 +2851,62 @@
    }
   },
   "posa-sollevamento-191": {
-   "s": 81,
-   "fonte": "banco",
+   "s": 66,
+   "fonte": "runner",
    "banco": {
     "mediana": 81,
     "n": 1
-   }
+   },
+   "runner": [
+    66
+   ]
   },
   "possesso-209": {
-   "s": 593,
-   "fonte": "banco",
+   "s": 533,
+   "fonte": "runner",
    "banco": {
     "mediana": 593,
     "n": 17
-   }
+   },
+   "runner": [
+    533
+   ]
   },
   "post-210": {
-   "s": 515,
-   "fonte": "banco",
+   "s": 491,
+   "fonte": "runner",
    "banco": {
     "mediana": 515,
     "n": 1
-   }
+   },
+   "runner": [
+    491
+   ]
   },
   "pre-188": {
-   "s": 21,
-   "fonte": "banco",
+   "s": 8,
+   "fonte": "runner",
    "banco": {
     "mediana": 21,
     "n": 20
-   }
+   },
+   "runner": [
+    8
+   ]
   },
   "premiazione-palco-191": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
   },
   "prepartita-287": {
    "s": 43,
    "fonte": "rapporti",
    "runner": [
-    49
+    49,
+    42
    ],
    "rapporti": {
     "mediana": 43,
@@ -2365,24 +2917,33 @@
    }
   },
   "presentazione-200": {
-   "s": 48,
-   "fonte": "banco",
+   "s": 40,
+   "fonte": "runner",
    "banco": {
     "mediana": 48,
     "n": 1
-   }
+   },
+   "runner": [
+    40
+   ]
   },
   "presentazione-214": {
-   "s": 54,
-   "fonte": "banco",
+   "s": 31,
+   "fonte": "runner",
    "banco": {
     "mediana": 54,
     "n": 20
-   }
+   },
+   "runner": [
+    31
+   ]
   },
   "presentazione-225": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 1040,
+   "fonte": "runner",
+   "runner": [
+    1040
+   ]
   },
   "pressing-143": {
    "s": 26,
@@ -2392,6 +2953,7 @@
     "n": 2
    },
    "runner": [
+    26,
     26
    ],
    "rapporti": {
@@ -2409,6 +2971,9 @@
     "mediana": 225,
     "n": 5
    },
+   "runner": [
+    208
+   ],
    "rapporti": {
     "mediana": 502,
     "n": 1,
@@ -2418,28 +2983,40 @@
    }
   },
   "primavera-260": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
   },
   "pro-rivale-176": {
-   "s": 46,
-   "fonte": "banco",
+   "s": 23,
+   "fonte": "runner",
    "banco": {
     "mediana": 46,
     "n": 20
-   }
+   },
+   "runner": [
+    23
+   ]
   },
   "procuratore-253": {
-   "s": 189,
-   "fonte": "banco",
+   "s": 79,
+   "fonte": "runner",
    "banco": {
     "mediana": 189,
     "n": 5
-   }
+   },
+   "runner": [
+    79
+   ]
   },
   "provini-201": {
    "s": 18,
    "fonte": "rapporti",
+   "runner": [
+    19
+   ],
    "rapporti": {
     "mediana": 18,
     "n": 1,
@@ -2449,19 +3026,26 @@
    }
   },
   "pullman-204": {
-   "s": 173,
+   "s": 153,
    "fonte": "runner",
    "runner": [
-    173
+    173,
+    133
    ]
   },
   "pulsanti-263": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 141,
+   "fonte": "runner",
+   "runner": [
+    141
+   ]
   },
   "rassegna-200": {
    "s": 605,
    "fonte": "rapporti",
+   "runner": [
+    296
+   ],
    "rapporti": {
     "mediana": 605,
     "n": 1,
@@ -2473,6 +3057,9 @@
   "rassegna-202": {
    "s": 265,
    "fonte": "rapporti",
+   "runner": [
+    250
+   ],
    "rapporti": {
     "mediana": 265,
     "n": 1,
@@ -2484,6 +3071,9 @@
   "rassegna-224": {
    "s": 260,
    "fonte": "rapporti",
+   "runner": [
+    240
+   ],
    "rapporti": {
     "mediana": 260,
     "n": 1,
@@ -2495,6 +3085,9 @@
   "rassegna-232": {
    "s": 653,
    "fonte": "rapporti",
+   "runner": [
+    590
+   ],
    "rapporti": {
     "mediana": 653,
     "n": 1,
@@ -2504,23 +3097,27 @@
    }
   },
   "reazione-252": {
-   "s": 205,
+   "s": 186,
    "fonte": "runner",
    "banco": {
     "mediana": 381,
     "n": 1
    },
    "runner": [
-    205
+    205,
+    167
    ]
   },
   "recupero-103": {
-   "s": 82,
-   "fonte": "banco",
+   "s": 26,
+   "fonte": "runner",
    "banco": {
     "mediana": 82,
     "n": 19
-   }
+   },
+   "runner": [
+    26
+   ]
   },
   "recupero-202": {
    "s": 710,
@@ -2529,6 +3126,9 @@
     "mediana": 498,
     "n": 20
    },
+   "runner": [
+    467
+   ],
    "rapporti": {
     "mediana": 710,
     "n": 1,
@@ -2541,16 +3141,20 @@
    "s": 44,
    "fonte": "runner",
    "runner": [
+    44,
     44
    ]
   },
   "replay": {
-   "s": 56,
-   "fonte": "banco",
+   "s": 31,
+   "fonte": "runner",
    "banco": {
     "mediana": 56,
     "n": 29
-   }
+   },
+   "runner": [
+    31
+   ]
   },
   "rete-252": {
    "s": 236,
@@ -2560,7 +3164,8 @@
     "n": 2
    },
    "runner": [
-    197
+    197,
+    269
    ],
    "rapporti": {
     "mediana": 236,
@@ -2572,12 +3177,18 @@
    }
   },
   "rifiniture-200": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 172,
+   "fonte": "runner",
+   "runner": [
+    172
+   ]
   },
   "rigore-191": {
    "s": 360,
    "fonte": "rapporti",
+   "runner": [
+    236
+   ],
    "rapporti": {
     "mediana": 360,
     "n": 1,
@@ -2593,6 +3204,9 @@
     "mediana": 35,
     "n": 2
    },
+   "runner": [
+    28
+   ],
    "rapporti": {
     "mediana": 25,
     "n": 1,
@@ -2602,16 +3216,22 @@
    }
   },
   "rigori-190": {
-   "s": 14,
-   "fonte": "banco",
+   "s": 7,
+   "fonte": "runner",
    "banco": {
     "mediana": 14,
     "n": 15
-   }
+   },
+   "runner": [
+    7
+   ]
   },
   "rigori-296": {
    "s": 20,
    "fonte": "rapporti",
+   "runner": [
+    686
+   ],
    "rapporti": {
     "mediana": 20,
     "n": 3,
@@ -2625,6 +3245,9 @@
   "rigorista-249": {
    "s": 379,
    "fonte": "rapporti",
+   "runner": [
+    242
+   ],
    "rapporti": {
     "mediana": 379,
     "n": 1,
@@ -2637,7 +3260,8 @@
    "s": 319,
    "fonte": "rapporti",
    "runner": [
-    213
+    213,
+    211
    ],
    "rapporti": {
     "mediana": 319,
@@ -2649,32 +3273,44 @@
    }
   },
   "rimbalzo-189": {
-   "s": 62,
-   "fonte": "banco",
+   "s": 49,
+   "fonte": "runner",
    "banco": {
     "mediana": 62,
     "n": 15
-   }
+   },
+   "runner": [
+    49
+   ]
   },
   "rincorsa-144": {
-   "s": 238,
-   "fonte": "banco",
+   "s": 228,
+   "fonte": "runner",
    "banco": {
     "mediana": 238,
     "n": 1
-   }
+   },
+   "runner": [
+    228
+   ]
   },
   "rinnovo-238": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 210,
+   "fonte": "runner",
+   "runner": [
+    210
+   ]
   },
   "rinnovo-270": {
-   "s": 82,
-   "fonte": "banco",
+   "s": 33,
+   "fonte": "runner",
    "banco": {
     "mediana": 82,
     "n": 3
-   }
+   },
+   "runner": [
+    33
+   ]
   },
   "rinvio-252": {
    "s": 222,
@@ -2684,7 +3320,8 @@
     "n": 4
    },
    "runner": [
-    260
+    260,
+    256
    ],
    "rapporti": {
     "mediana": 222,
@@ -2695,12 +3332,15 @@
    }
   },
   "rinvio-coppe-107": {
-   "s": 61,
-   "fonte": "banco",
+   "s": 17,
+   "fonte": "runner",
    "banco": {
     "mediana": 61,
     "n": 20
-   }
+   },
+   "runner": [
+    17
+   ]
   },
   "ripartenza-207": {
    "s": 204,
@@ -2709,6 +3349,9 @@
     "mediana": 477,
     "n": 19
    },
+   "runner": [
+    204
+   ],
    "rapporti": {
     "mediana": 204,
     "n": 1,
@@ -2724,6 +3367,9 @@
     "mediana": 478,
     "n": 5
    },
+   "runner": [
+    238
+   ],
    "rapporti": {
     "mediana": 252,
     "n": 1,
@@ -2739,6 +3385,9 @@
     "mediana": 378,
     "n": 19
    },
+   "runner": [
+    462
+   ],
    "rapporti": {
     "mediana": 599,
     "n": 1,
@@ -2749,7 +3398,10 @@
   },
   "riproduci-175": {
    "s": 1800,
-   "fonte": "stimata+tetto",
+   "fonte": "runner+tetto",
+   "runner": [
+    1450
+   ],
    "tetto30": [
     "VERIFICA198-V2c.md"
    ]
@@ -2757,6 +3409,9 @@
   "riproduci-187": {
    "s": 209,
    "fonte": "rapporti",
+   "runner": [
+    161
+   ],
    "rapporti": {
     "mediana": 209,
     "n": 1,
@@ -2766,16 +3421,22 @@
    }
   },
   "riquadro-euro-105": {
-   "s": 44,
-   "fonte": "banco",
+   "s": 11,
+   "fonte": "runner",
    "banco": {
     "mediana": 44,
     "n": 19
-   }
+   },
+   "runner": [
+    11
+   ]
   },
   "riserva-103": {
    "s": 677,
    "fonte": "rapporti",
+   "runner": [
+    758
+   ],
    "rapporti": {
     "mediana": 677,
     "n": 1,
@@ -2787,6 +3448,9 @@
   "riserva-104": {
    "s": 663,
    "fonte": "rapporti",
+   "runner": [
+    382
+   ],
    "rapporti": {
     "mediana": 663,
     "n": 1,
@@ -2798,6 +3462,9 @@
   "riserva2d-205": {
    "s": 408,
    "fonte": "rapporti",
+   "runner": [
+    425
+   ],
    "rapporti": {
     "mediana": 408,
     "n": 1,
@@ -2809,6 +3476,9 @@
   "ritocchi-302": {
    "s": 59,
    "fonte": "rapporti",
+   "runner": [
+    69
+   ],
    "rapporti": {
     "mediana": 59,
     "n": 2,
@@ -2819,16 +3489,25 @@
    }
   },
   "ritratto-171-72": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
   },
   "rosa-228": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 59,
+   "fonte": "runner",
+   "runner": [
+    59
+   ]
   },
   "rosa-angoli-299": {
    "s": 604,
    "fonte": "rapporti",
+   "runner": [
+    649
+   ],
    "rapporti": {
     "mediana": 604,
     "n": 3,
@@ -2840,12 +3519,18 @@
    }
   },
   "ruleta": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
   },
   "salienti-229": {
    "s": 168,
    "fonte": "rapporti",
+   "runner": [
+    155
+   ],
    "rapporti": {
     "mediana": 168,
     "n": 1,
@@ -2858,7 +3543,8 @@
    "s": 213,
    "fonte": "rapporti",
    "runner": [
-    203
+    203,
+    211
    ],
    "rapporti": {
     "mediana": 213,
@@ -2873,7 +3559,8 @@
    "s": 846,
    "fonte": "rapporti",
    "runner": [
-    769
+    769,
+    776
    ],
    "rapporti": {
     "mediana": 846,
@@ -2886,6 +3573,9 @@
   "salienti-253": {
    "s": 132,
    "fonte": "rapporti",
+   "runner": [
+    129
+   ],
    "rapporti": {
     "mediana": 132,
     "n": 1,
@@ -2895,14 +3585,18 @@
    }
   },
   "salta-163": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 120,
+   "fonte": "runner",
+   "runner": [
+    120
+   ]
   },
   "salti-274": {
    "s": 660,
    "fonte": "rapporti",
    "runner": [
-    433
+    433,
+    465
    ],
    "rapporti": {
     "mediana": 660,
@@ -2925,7 +3619,8 @@
    "runner": [
     8,
     9,
-    10
+    10,
+    2
    ],
    "rapporti": {
     "mediana": 5,
@@ -2942,6 +3637,9 @@
   "scatto-305": {
    "s": 119,
    "fonte": "rapporti",
+   "runner": [
+    100
+   ],
    "rapporti": {
     "mediana": 119,
     "n": 1,
@@ -2953,6 +3651,9 @@
   "scelte-197": {
    "s": 361,
    "fonte": "rapporti",
+   "runner": [
+    191
+   ],
    "rapporti": {
     "mediana": 361,
     "n": 1,
@@ -2962,8 +3663,11 @@
    }
   },
   "scelte-201": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 478,
+   "fonte": "runner",
+   "runner": [
+    478
+   ]
   },
   "scena-motore-147": {
    "s": 2,
@@ -2972,6 +3676,9 @@
     "mediana": 1096,
     "n": 21
    },
+   "runner": [
+    948
+   ],
    "rapporti": {
     "mediana": 2,
     "n": 1,
@@ -2984,7 +3691,8 @@
    "s": 1403,
    "fonte": "rapporti",
    "runner": [
-    1903
+    1903,
+    1785
    ],
    "rapporti": {
     "mediana": 1403,
@@ -3000,27 +3708,39 @@
    "banco": {
     "mediana": 1,
     "n": 15
-   }
+   },
+   "runner": [
+    0
+   ]
   },
   "scene-221": {
-   "s": 1643,
-   "fonte": "banco",
+   "s": 1556,
+   "fonte": "runner",
    "banco": {
     "mediana": 1643,
     "n": 29
-   }
+   },
+   "runner": [
+    1556
+   ]
   },
   "scene-disegnabili": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
   },
   "scene-fuori-137": {
-   "s": 60,
-   "fonte": "banco",
+   "s": 21,
+   "fonte": "runner",
    "banco": {
     "mediana": 60,
     "n": 4
-   }
+   },
+   "runner": [
+    21
+   ]
   },
   "schede-234": {
    "s": 833,
@@ -3029,6 +3749,9 @@
     "mediana": 583,
     "n": 14
    },
+   "runner": [
+    548
+   ],
    "rapporti": {
     "mediana": 833,
     "n": 1,
@@ -3044,6 +3767,9 @@
     "mediana": 557,
     "n": 9
    },
+   "runner": [
+    303
+   ],
    "rapporti": {
     "mediana": 343,
     "n": 1,
@@ -3053,32 +3779,47 @@
    }
   },
   "schede-259": {
-   "s": 766,
-   "fonte": "banco",
+   "s": 736,
+   "fonte": "runner",
    "banco": {
     "mediana": 766,
     "n": 10
-   }
+   },
+   "runner": [
+    736
+   ]
   },
   "schede-260": {
-   "s": 1181,
-   "fonte": "banco",
+   "s": 1178,
+   "fonte": "runner",
    "banco": {
     "mediana": 1181,
     "n": 5
-   }
+   },
+   "runner": [
+    1178
+   ]
   },
   "schermate-97": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 141,
+   "fonte": "runner",
+   "runner": [
+    141
+   ]
   },
   "serata-261": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 394,
+   "fonte": "runner",
+   "runner": [
+    394
+   ]
   },
   "sigle-203": {
    "s": 608,
    "fonte": "rapporti",
+   "runner": [
+    606
+   ],
    "rapporti": {
     "mediana": 608,
     "n": 1,
@@ -3090,6 +3831,9 @@
   "simula-215": {
    "s": 282,
    "fonte": "rapporti",
+   "runner": [
+    258
+   ],
    "rapporti": {
     "mediana": 282,
     "n": 1,
@@ -3099,20 +3843,29 @@
    }
   },
   "simula-v2": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
   },
   "simulata-272": {
-   "s": 20,
-   "fonte": "banco",
+   "s": 9,
+   "fonte": "runner",
    "banco": {
     "mediana": 20,
     "n": 3
-   }
+   },
+   "runner": [
+    9
+   ]
   },
   "solo-highlight-166": {
    "s": 913,
    "fonte": "rapporti",
+   "runner": [
+    625
+   ],
    "rapporti": {
     "mediana": 913,
     "n": 2,
@@ -3125,6 +3878,9 @@
   "spazio-270": {
    "s": 587,
    "fonte": "rapporti",
+   "runner": [
+    559
+   ],
    "rapporti": {
     "mediana": 587,
     "n": 1,
@@ -3134,15 +3890,19 @@
    }
   },
   "spazio-296": {
-   "s": 463,
+   "s": 468,
    "fonte": "runner",
    "runner": [
-    463
+    463,
+    473
    ]
   },
   "spogliatoio-182": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 16,
+   "fonte": "runner",
+   "runner": [
+    16
+   ]
   },
   "spot-266": {
    "s": 72,
@@ -3152,7 +3912,8 @@
     "n": 3
    },
    "runner": [
-    61
+    61,
+    63
    ],
    "rapporti": {
     "mediana": 72,
@@ -3163,34 +3924,42 @@
    }
   },
   "squalifica-222": {
-   "s": 183,
-   "fonte": "banco",
+   "s": 54,
+   "fonte": "runner",
    "banco": {
     "mediana": 183,
     "n": 6
-   }
+   },
+   "runner": [
+    54
+   ]
   },
   "stadi-064": {
-   "s": 25,
+   "s": 23,
    "fonte": "runner",
    "runner": [
-    25
+    25,
+    21
    ]
   },
   "stadi-071": {
-   "s": 86,
+   "s": 87,
    "fonte": "runner",
    "banco": {
     "mediana": 211,
     "n": 4
    },
    "runner": [
-    86
+    86,
+    87
    ]
   },
   "stat-279": {
    "s": 41,
    "fonte": "rapporti",
+   "runner": [
+    41
+   ],
    "rapporti": {
     "mediana": 41,
     "n": 1,
@@ -3206,6 +3975,9 @@
     "mediana": 146,
     "n": 5
    },
+   "runner": [
+    252
+   ],
    "rapporti": {
     "mediana": 128,
     "n": 1,
@@ -3215,24 +3987,36 @@
    }
   },
   "stile-unico-75": {
-   "s": 42,
-   "fonte": "banco",
+   "s": 11,
+   "fonte": "runner",
    "banco": {
     "mediana": 42,
     "n": 2
-   }
+   },
+   "runner": [
+    11
+   ]
   },
   "stili-098": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 15,
+   "fonte": "runner",
+   "runner": [
+    15
+   ]
   },
   "stili-098-migrazione": {
    "s": 300,
-   "fonte": "stimata"
+   "fonte": "stimata",
+   "runner": [
+    2
+   ]
   },
   "store-236": {
    "s": 24,
    "fonte": "rapporti",
+   "runner": [
+    24
+   ],
    "rapporti": {
     "mediana": 24,
     "n": 1,
@@ -3242,31 +4026,41 @@
    }
   },
   "strisce-corpo": {
-   "s": 23,
+   "s": 26,
    "fonte": "runner",
    "runner": [
-    23
+    23,
+    29
    ]
   },
   "svincolato-198": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
   },
   "svincolato-264": {
-   "s": 175,
-   "fonte": "banco",
+   "s": 63,
+   "fonte": "runner",
    "banco": {
     "mediana": 175,
     "n": 6
-   }
+   },
+   "runner": [
+    63
+   ]
   },
   "tabellino-216": {
-   "s": 543,
-   "fonte": "banco",
+   "s": 492,
+   "fonte": "runner",
    "banco": {
     "mediana": 543,
     "n": 16
-   }
+   },
+   "runner": [
+    492
+   ]
   },
   "tabellino-228": {
    "s": 398,
@@ -3275,6 +4069,9 @@
     "mediana": 317,
     "n": 22
    },
+   "runner": [
+    302
+   ],
    "rapporti": {
     "mediana": 398,
     "n": 1,
@@ -3286,6 +4083,9 @@
   "tabellino-lati": {
    "s": 5,
    "fonte": "rapporti",
+   "runner": [
+    8
+   ],
    "rapporti": {
     "mediana": 5,
     "n": 1,
@@ -3297,6 +4097,9 @@
   "tabellone-214": {
    "s": 516,
    "fonte": "rapporti",
+   "runner": [
+    412
+   ],
    "rapporti": {
     "mediana": 516,
     "n": 1,
@@ -3312,6 +4115,9 @@
     "mediana": 103,
     "n": 4
    },
+   "runner": [
+    79
+   ],
    "rapporti": {
     "mediana": 122,
     "n": 1,
@@ -3324,7 +4130,8 @@
    "s": 17,
    "fonte": "rapporti",
    "runner": [
-    27
+    27,
+    20
    ],
    "rapporti": {
     "mediana": 17,
@@ -3341,6 +4148,9 @@
     "mediana": 540,
     "n": 20
    },
+   "runner": [
+    506
+   ],
    "rapporti": {
     "mediana": 814,
     "n": 1,
@@ -3359,7 +4169,8 @@
    "runner": [
     3,
     2,
-    4
+    4,
+    3
    ],
    "rapporti": {
     "mediana": 3,
@@ -3379,42 +4190,58 @@
    "banco": {
     "mediana": 2,
     "n": 18
-   }
+   },
+   "runner": [
+    2
+   ]
   },
   "testa-143": {
-   "s": 263,
+   "s": 252,
    "fonte": "runner",
    "banco": {
     "mediana": 1290,
     "n": 3
    },
    "runner": [
-    263
+    263,
+    240
    ]
   },
   "testa-146": {
-   "s": 371,
-   "fonte": "banco",
+   "s": 324,
+   "fonte": "runner",
    "banco": {
     "mediana": 371,
     "n": 1
-   }
+   },
+   "runner": [
+    324
+   ]
   },
   "testa-tempismo": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 457,
+   "fonte": "runner",
+   "runner": [
+    457
+   ]
   },
   "testata-209": {
-   "s": 562,
-   "fonte": "banco",
+   "s": 529,
+   "fonte": "runner",
    "banco": {
     "mediana": 562,
     "n": 16
-   }
+   },
+   "runner": [
+    529
+   ]
   },
   "testi-190": {
    "s": 136,
    "fonte": "rapporti",
+   "runner": [
+    112
+   ],
    "rapporti": {
     "mediana": 136,
     "n": 2,
@@ -3431,6 +4258,9 @@
     "mediana": 8,
     "n": 19
    },
+   "runner": [
+    7
+   ],
    "rapporti": {
     "mediana": 7,
     "n": 1,
@@ -3440,54 +4270,76 @@
    }
   },
   "tiro-caricato": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 223,
+   "fonte": "runner",
+   "runner": [
+    223
+   ]
   },
   "titolo-110": {
-   "s": 30,
-   "fonte": "banco",
+   "s": 9,
+   "fonte": "runner",
    "banco": {
     "mediana": 30,
     "n": 19
-   }
+   },
+   "runner": [
+    9
+   ]
   },
   "toast-247": {
-   "s": 43,
-   "fonte": "banco",
+   "s": 21,
+   "fonte": "runner",
    "banco": {
     "mediana": 43,
     "n": 4
-   }
+   },
+   "runner": [
+    21
+   ]
   },
   "toast-256": {
-   "s": 79,
-   "fonte": "banco",
+   "s": 37,
+   "fonte": "runner",
    "banco": {
     "mediana": 79,
     "n": 5
-   }
+   },
+   "runner": [
+    37
+   ]
   },
   "toast-intervista-247": {
-   "s": 67,
-   "fonte": "banco",
+   "s": 43,
+   "fonte": "runner",
    "banco": {
     "mediana": 67,
     "n": 4
-   }
+   },
+   "runner": [
+    43
+   ]
   },
   "tocco-213": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 255,
+   "fonte": "runner",
+   "runner": [
+    255
+   ]
   },
   "tocco3d-219": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 397,
+   "fonte": "runner",
+   "runner": [
+    397
+   ]
   },
   "tpose-196": {
    "s": 1402,
    "fonte": "rapporti",
    "runner": [
-    1256
+    1256,
+    1016
    ],
    "rapporti": {
     "mediana": 1402,
@@ -3498,18 +4350,22 @@
    }
   },
   "trainer-288": {
-   "s": 54,
-   "fonte": "banco",
+   "s": 13,
+   "fonte": "runner",
    "banco": {
     "mediana": 54,
     "n": 2
-   }
+   },
+   "runner": [
+    13
+   ]
   },
   "tunnel-245": {
    "s": 1260,
    "fonte": "rapporti",
    "runner": [
-    1929
+    1929,
+    1459
    ],
    "rapporti": {
     "mediana": 1260,
@@ -3526,7 +4382,8 @@
    "s": 273,
    "fonte": "rapporti",
    "runner": [
-    243
+    243,
+    300
    ],
    "rapporti": {
     "mediana": 273,
@@ -3540,6 +4397,9 @@
   "tunnel-304": {
    "s": 323,
    "fonte": "rapporti",
+   "runner": [
+    800
+   ],
    "rapporti": {
     "mediana": 323,
     "n": 1,
@@ -3556,7 +4416,8 @@
     "n": 23
    },
    "runner": [
-    12
+    12,
+    10
    ],
    "rapporti": {
     "mediana": 15,
@@ -3574,7 +4435,8 @@
     "n": 21
    },
    "runner": [
-    612
+    612,
+    643
    ],
    "rapporti": {
     "mediana": 886,
@@ -3587,35 +4449,48 @@
    }
   },
   "via-ch38-171": {
-   "s": 112,
-   "fonte": "banco",
+   "s": 77,
+   "fonte": "runner",
    "banco": {
     "mediana": 112,
     "n": 3
-   }
+   },
+   "runner": [
+    77
+   ]
   },
   "voto-79": {
-   "s": 346,
-   "fonte": "banco",
+   "s": 332,
+   "fonte": "runner",
    "banco": {
     "mediana": 346,
     "n": 2
-   }
+   },
+   "runner": [
+    332
+   ]
   },
   "walkout-fermi-197": {
-   "s": 300,
-   "fonte": "stimata"
-  },
-  "web-237": {
-   "s": 78,
+   "s": 213,
    "fonte": "runner",
    "runner": [
-    78
+    213
+   ]
+  },
+  "web-237": {
+   "s": 75,
+   "fonte": "runner",
+   "runner": [
+    78,
+    71
    ]
   },
   "witness-frameskip": {
-   "s": 300,
-   "fonte": "stimata"
+   "s": 15,
+   "fonte": "runner",
+   "runner": [
+    15
+   ]
   }
  }
 }

@@ -9,8 +9,7 @@
    Braccio rosso: lo stesso controllo sulla mappa VECCHIA (ci-runner.mjs di lavoro/200, 1cbc414b) deve fallire.
    Uso: node mappa-unica-308.mjs            → verde sul file attuale E rosso sulla mappa vecchia (esce 0 solo se entrambi)
         node mappa-unica-308.mjs <file>     → giudica solo quel file */
-import fs from 'node:fs'; import path from 'node:path'; import vm from 'node:vm'; import { spawnSync } from 'node:child_process';
-const QUI = path.dirname(new URL(import.meta.url).pathname), ROOT = path.resolve(QUI, '../..');
+import fs from 'node:fs'; import path from 'node:path'; import vm from 'node:vm'; const QUI = path.dirname(new URL(import.meta.url).pathname), ROOT = path.resolve(QUI, '../..');
 const script = JSON.parse(fs.readFileSync(path.join(QUI, 'package.json'), 'utf8')).scripts;
 function giudica(testo) {
   const L = testo.split('\n'), dif = [];
@@ -44,9 +43,10 @@ const stampa = (titolo, dif) => { console.log(`${dif.length ? '❌' : '✅'} ${t
 if (process.argv[2]) { const d = giudica(fs.readFileSync(process.argv[2], 'utf8')); stampa(process.argv[2], d); process.exit(d.length ? 1 : 0); }
 const verde = giudica(fs.readFileSync(path.join(QUI, 'ci-runner.mjs'), 'utf8'));
 stampa('verde — ci-runner.mjs attuale', verde);
-const vecchio = spawnSync('git', ['show', '1cbc414b:tests/visual/ci-runner.mjs'], { cwd: ROOT, encoding: 'utf8' });
-let rosso = null;
-if (vecchio.status === 0) { rosso = giudica(vecchio.stdout); stampa('rosso — mappa vecchia (1cbc414b, 7.999.199) [atteso ❌]', rosso); }
-else console.log('⚠️ braccio rosso non giudicato: commit 1cbc414b non disponibile (clone corto?) — vale come rosso del guardiano');
+/* il braccio rosso legge la copia ferma della mappa vecchia (fixtures/), non la storia git: sul runner il clone e' corto (taratura
+   44882036931: «commit 1cbc414b non disponibile») e lo sono anche le sessioni cloud. */
+let rosso = null; const FIX = path.join(QUI, 'fixtures/ci-runner-1cbc414b.mjs.txt');
+if (fs.existsSync(FIX)) { rosso = giudica(fs.readFileSync(FIX, 'utf8')); stampa('rosso — mappa vecchia (1cbc414b, 7.999.199) [atteso ❌]', rosso); }
+else console.log('⚠️ braccio rosso non giudicato: manca ' + FIX + ' — vale come rosso del guardiano');
 const ok = !verde.length && rosso && rosso.length > 0;
 console.log(ok ? '✅ mappa-unica: verde col verde, rosso con la mappa vecchia' : '❌ mappa-unica'); process.exit(ok ? 0 : 1);

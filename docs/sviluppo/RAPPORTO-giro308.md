@@ -68,7 +68,7 @@ rapporti è automatica e prende la prima durata della riga: è una buona stima, 
 
 ## 3. PO-517 — sentinelle e modalità `giro`
 
-`CATENE.sentinelle` (17 voci, **2751 s ≈ 46 min** sul banco secondo il file delle durate):
+`CATENE.sentinelle` (17 voci, **≈ 50 min** col file delle durate rigenerato dopo la taratura; 46 min con quello di prima):
 
 | area | sentinelle | s | perché |
 |---|---|---|---|
@@ -78,11 +78,11 @@ rapporti è automatica e prende la prima durata della riga: è una buona stima, 
 | carriera | `career-critical` | 565 | competizioni, salvataggi monotoni, doppio tocco (la catena carriera del gate) |
 | motore e partita | `battito-264` · `partita-vera` | 360 · 665 | un battito solo fra partita intera e solo-highlight; partita vera fino al fischio |
 | scena 3D | `render-3d-023` · `tunnel-285` · `gk-dive-sync` | 44 · 273 · 180 | disegno 3D, bordo campo, tuffo del portiere |
-| schermate PC/telefono | `home-298` · `accessibilita-234` · `web-237` | 126 · 102 · 78 | Home, accessibilità delle schermate, pagina web già tradotta |
+| schermate PC/telefono | `home-298` · `schermate-97` · `web-237` | 126 · 141 · 78 | Home, schermate a 360/412 px, pagina web già tradotta |
 
 Criteri di stabilità: nessuno sopra i 15 minuti; nessuno fra i rossi dichiarati o i rossi «solo runner»; su STABILITA.json
 `career-critical` e `replay` hanno **un** «instabile» ciascuno su 60 e 52 giri, gli altri zero; esclusi gli instabili noti
-(`box-fischio-169`, `corpi-073` 2 rossi su 17, `gk-miss-229`). `validate-situations` e `typing-shortcuts` non ci sono perché li
+(`box-fischio-169`, `corpi-073` 2 rossi su 17, `gk-miss-229`). **Tutte le 17 sentinelle sono verdi nella taratura 308.** La prima scelta aveva `accessibilita-234`: rosso sul runner **e sul banco di questa sessione** (rc 1, 100 s) per la stessa ragione — il suo braccio rosso fa `git show ea02adf0^`, che in un clone corto non esiste («non giudicato (git)») — quindi rosso in ogni sessione cloud: sostituito con `schermate-97`. `validate-situations` e `typing-shortcuts` non ci sono perché li
 esegue già il workflow `validate-situations.yml` a ogni push.
 
 Uso: `node ci-runner.mjs giro <guardiano-del-giro> [altri]` = guardiani del giro + sentinelle, senza doppioni, un rosso si riprova
@@ -133,7 +133,55 @@ una piccola estensione di `ci-treno-308.mjs` (non fatta: fuori ambito, e va prim
 
 ## 6. La corsa di taratura
 
-<!-- TARATURA -->
+Corsa **[44882036931](https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/44882036931)**, ramo `prova/308-taratura`
+(commit `f6f443b`, mappa intera), 21/11 07:49 → 10:43 UTC. Esito della corsa: **success** (33 job su 33 verdi come job: nessuna
+mail «Run failed»), mentre i guardiani rossi stanno nel riepilogo. Letta dal log del job «Riepilogo» (riga `RIEPILOGO_JSON` e
+tabella; trascritta in `docs/governo/misure/runner-44882036931.json`); gli artifact non li ho scaricati.
+
+| misura | valore |
+|---|---|
+| guardiani / parti | 349 in 31 parti (tutte arrivate) |
+| verdi | **318 / 349** |
+| a parete (primo inizio → ultima fine) | **10.311 s ≈ 2 h 52 min** (corsa intera 2 h 54 min) |
+| somma delle durate | 110.692 s ≈ 30,7 h (stima del piano 35 h: il runner è stato in media più veloce delle stime) |
+| parti insieme | **20 al massimo** (le altre 11 in coda: limite di job contemporanei misurato) |
+| durata di una parte | min 36 · mediana 58 · max 110 min (una sola al bilancio: parte 08) |
+| costo | non misurato in questo giro (il giro 303 ha misurato `billable` 0 sullo stesso tipo di runner) |
+
+**Rossi, per classe** (classe calcolata dal treno contro `ROSSI-DICHIARATI.json`):
+
+- **noti** (2): `store-236` (versione TWA 7.999.197), `difficolta-156` — come sul banco.
+- **noti del runner** (2): `portatore-293`, `avvio-233` (caduto in 1 s anche nella 198) — come nella taratura 198.
+- **non giudicato** (1): `scena-motore-147`, fermato al bilancio dei 110 min nella parte 08 (che conteneva anche `assist-nome-98`,
+  2964 s). È un rosso dichiarato sul banco.
+- **dichiarati rossi ma verdi sul runner** (10): `coreografie-244`, `nomi-219` (sul banco oltre il tetto dei 30 min, qui entro
+  il bilancio), `prima-partita-237`, `rassegna-200`, `box-fischio-169`, `interazioni-226`, `tpose-196`; e dei «solo runner» della
+  198 `piedi-252`, `salti-274`, `chiusura-99` stavolta verdi.
+- **«nuovi» (26)** — nuovi rispetto all'elenco dichiarato, **non** necessariamente regressioni: la verifica della 199 ha
+  eseguito i guardiani della mappa dei file toccati, non tutti i 349, quindi per molti di questi non esiste un verdetto di banco
+  sulla 7.999.199 con cui confrontare. Per tipo:
+  - **difetti del mio strumento, già corretti in questo giro** (2): `mappa-unica` (braccio rosso via `git show 1cbc414b`, clone
+    corto → ora legge `tests/visual/fixtures/ci-runner-1cbc414b.mjs.txt`) e `accessibilita-234` (`git show ea02adf0^`, rosso anche
+    sul banco di questa sessione → il workflow ora fa `fetch-depth: 0` sulle parti);
+  - **cadute dello strumento, non verdetti sul gioco** (3): `occasioni-dinamiche` e `scena-motore-147` (eccezione di Node),
+    `finale-202` («ancora della simulazione non trovata», 0 s: la sonda cerca un testo nel sorgente che non c'è più);
+  - **guardiani di carriera/schermate di catene vecchie** (`guardiani`, `grafica`), mai nella mappa dei giri 293–307:
+    `l7-schermate` (dashboard tagliata a 375/412), `numeri-home` (cifre a 32 px dove ne ammette 24), `home-riquadri`,
+    `calendario-nazionale`, `busta-199`, `giornale-244`, `schede-260`, `accessibilita-234`, `pagella-75`, `possesso-209`,
+    `assist-nome-98` («Chiudi la stagione» non raggiunto) — diversi toccano schermate cambiate dalla 198 (Home ripulita PO-558/559/571,
+    angoli PO-563/564): **probabili guardiani da aggiornare dopo un cambio voluto**, da confermare sul banco;
+  - **partita/motore** (`attesa-difesa`, `cross-origine`, `filtrante-intercetto`, `ruleta`, `movimento-147`, `scatto-305`,
+    `guanti-201`, `panchina-293`, `parata-100`, `riproduci-175`, `difesa-220-giro31`, `difesa-220-scena`): da rifare sul banco
+    uno alla volta prima di chiamarli difetti — `scatto-305` e `panchina-293` sono dei giri 305/293 e sul banco della 199 erano verdi.
+
+**Runner ↔ banco.** Sui guardiani con un verdetto di banco noto le differenze sono le stesse della 198 (`portatore-293`,
+`avvio-233` rossi solo sul runner) più 10 dichiarati rossi che qui sono verdi; due rossi nuovi sono strumento puro (clone corto).
+Le durate del runner, dove c'erano entrambe, sono dello stesso ordine del banco (giro 303: rapporto 0,66–1,69). **Il banco resta
+il giudice**: i 26 «nuovi» vanno rieseguiti sul banco (non l'ho fatto: oltre il tetto del giro e il limite settimanale), e solo
+dopo si scrive `ROSSI-DICHIARATI.json` per la 7.999.200.
+
+Il file delle durate è stato rigenerato includendo questa corsa (181 voci ora da runner, 6 ancora stimate): il piano scende a
+**28 parti** a parità di obiettivo.
 
 ## 7. Come si usa il treno serale
 
