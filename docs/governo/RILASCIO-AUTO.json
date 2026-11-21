@@ -1,0 +1,6 @@
+{
+ "_": "giro 312 (PO-600): INTERRUTTORE del rilascio automatico dei vagoni. Lo legge il job «Rilascio del vagone» del treno (.github/workflows/verifica-guardiani.yml) dal ramo poc/marioprada-character-system: si rilascia da solo SOLO con \"attivo\": true. Spento = il treno gira e dice l'esito, ma non rilascia. Spegnimento d'emergenza senza commit: variabile di repository CPM_RILASCIO_AUTO=spento (Settings → Secrets and variables → Actions → Variables).",
+ "attivo": true,
+ "acceso_da": "PO (questionario 21/11: «Subito»)",
+ "quando": "2026-11-21T22:00+01:00"
+}
