@@ -979,7 +979,17 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   let _base158=null;
   if(_pag158&&isFinite(+_pag158.voto)){const _b158=(+_pag158.voto)-_ga158(_pag158.gol,_pag158.assist),_qq158=(_q156!=null)?_q156:1;
     _base158=Math.round(clamp(6+(_b158-6)*(0.3+0.7*_qq158),4.0,9.5)*10)/10;_simRating=_base158;}
+  /* [giro 310 · decisione PO 21/11 «+0,3», rosso __CPM_NO_G310F] IL VOTO SIMULATO DI CHI E' ANCORA SOTTO 72. Misurato al giro 309: simulato
+     6,22-6,32 sotto OVR 72 contro 6,60 dal vivo in Primavera (giro 156); anche il motore coi parametri del live da' ~6,35, perche' il voto
+     alto del vivo viene dagli highlight scelti dal giocatore. +0,3 alla base del voto (pagella del motore o formula), una volta sola, prima
+     dei gol e degli assist del tabellino (votoSimEroe). Sopra 72 nulla cambia. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G310F)&&(playerOvr||65)<72){
+    if(_base158!=null)_base158=Math.round(clamp(_base158+0.3,4.0,9.5)*10)/10;
+    _simRating=Math.round(clamp(_simRating+0.3,4.0,9.5)*10)/10;}
   const _res158={homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156,eta156:+opz.giocatore.age||24}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  /* [giro 310 · rosso __CPM_NO_G310E] i cartellini dell'eroe dalla STESSA esecuzione del motore (pagella: amm/esp), prima buttati: li conta
+     cartellini310 (src/18) per la squalifica. Non enumerabile come base158: la forma del risultato non cambia. */
+  if(_pag158){try{Object.defineProperty(_res158,'cart310',{value:{y:(+_pag158.amm|0),r:(+_pag158.esp|0)>0},enumerable:false});}catch(_e){}}
   if(_base158!=null){try{Object.defineProperty(_res158,'base158',{value:_base158,enumerable:false});Object.defineProperty(_res158,'pag158',{value:_pag158,enumerable:false});}catch(_e){}}/* non enumerabili: la forma del risultato non cambia (sim-motore A) */
   return _res158;
 }
