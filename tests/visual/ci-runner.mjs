@@ -3,7 +3,9 @@
    completa (quella di CLAUDE.md e del workflow GitHub + partita-vera e design-system); `ci:carriera`, `ci:grafica`, `ci:guardiani`
    le altre. Ogni passo gira in sequenza; il giro si registra in docs/governo/STABILITA.json (ultimi 60 giri: data, versione del
    gioco, catena, per passo esito e durata) da cui la pagina di governo calcola gli indicatori. Esce != 0 se un passo fallisce,
-   ma esegue comunque TUTTI i passi (CPM_CI_STOP=1 per fermarsi al primo rosso). Uso: node ci-runner.mjs [completa|carriera|grafica|guardiani]. */
+   ma esegue comunque TUTTI i passi (CPM_CI_STOP=1 per fermarsi al primo rosso). Uso: node ci-runner.mjs [completa|carriera|grafica|guardiani].
+   [giro 308] Un giro: node ci-runner.mjs giro <guardiano-del-giro> (= il suo guardiano + le sentinelle). La mappa intera la gira il treno
+   (.github/workflows/verifica-guardiani.yml, tests/visual/ci-treno-308.mjs) sui rami lavoro/** e prova/**. */
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {/* [giro 79] rigore-79 (scheda «Rigore per loro», node ~30 s), voto-79 (Enfant + voto delle testate, una partita k12), livello-79 (Ufficio a 360 px) */
   fumo: ['test:logic', 'design-system', 'lessico-218'],/* [7.999.159] prova rapida dell'esecutore */
