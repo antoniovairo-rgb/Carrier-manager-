@@ -5,7 +5,7 @@ Base di confronto: `lavoro/198` (b3b75b9d), in una copia separata. `GAME_VERSION
 nessuna correzione: solo misure. Controlli uno alla volta (`CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`).
 Macchina: 16 GB di memoria (15,4 liberi all'avvio), 59 GB di disco liberi. Inizio 22:55 del 20/11/2026.
 
-Durata: circa 3 ore e 20 minuti (22:55–02:15), **oltre il tetto di circa 2,5 ore**: `highlight-95` da solo ha preso 117 minuti.
+Durata: circa 3 ore e 10 minuti (22:55–02:06), **oltre il tetto di circa 2,5 ore**: `highlight-95` da solo ha preso 117 minuti.
 
 ## Verdetto
 
