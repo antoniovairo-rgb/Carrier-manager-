@@ -1631,7 +1631,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          dopo i primi fotogrammi una prova di disegno (lo strato da solo su una tela 64x64) conta i pixel lasciati dalle istanze; se sono
          zero — il caso del telefono del giro 192, mai riprodotto qui — lo stadio si rifa' con la folla dipinta. Rosso __CPM_NO_G225. */
       const _sag225=_g225();
-      _cfg={..._cfg,noFolla129:_g192c&&!_sag225,cnt192:_cnt192};
+      _cfg={..._cfg,noFolla129:_g192c&&!_sag225,cnt192:_cnt192,soloCasa314:!(typeof window!=='undefined'&&window.__CPM_NO_G314)};/* [giro 314 · PO-601] la serata e' la festa del club: nessun settore ospiti, tutti i settori coi colori di casa e pieni come gli altri (src/11 buildStadium). Rosso __CPM_NO_G314 = la serata della 7.999.200. Guardiano npm run serata-314 */
       const _n0=scene.children.length;
       let _stad=buildStadium(scene,homeHex,awayHex,_cfg);
       t225.folla=(_stad&&_stad.folla129)||null;t225.modo=t225.folla?'sagome':'dipinti';

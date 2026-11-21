@@ -514,6 +514,7 @@
     "presentazione-200": "node presentazione-200.mjs",
     "presentazione-225": "node presentazione-225.mjs",
     "serata-261": "node serata-261.mjs",
+    "serata-314": "node serata-314.mjs",
     "misura-261": "node misura-261.mjs",
     "pelle-240": "node pelle-240.mjs",
     "cerimonie-192": "node cerimonie-192.mjs",
