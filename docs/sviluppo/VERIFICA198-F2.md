@@ -19,3 +19,4 @@
 | home-298 | VERDE | — | — | verde sulle 3 risoluzioni; rosso con `__CPM_NO_G298`: tornano tutti e cinque i difetti (63 rilievi); 121 s |
 | prepartita-pc-300 | VERDE | — | — | braccio verde verde; braccio rosso: cade su Apc, Atel, Bpc, Cpc, Dpc, Dtel (15 rilievi); 130 s |
 | rigori-296 | VERDE | — | — | parti A + B + C verdi, i rossi si vedono; cerimonie chiuse dal timer a 18,5–20,2 s (previsto 17,5 s), «salta» 3,8 s; 1014 s. Nella parte C il braccio rosso «compagno» ha avuto bisogno di più tentativi interni allo strumento (dichiarati nel registro) |
+| portatore-293 | VERDE | — | — | braccio verde: 0 difetti su 14 scene; braccio rosso: casi «foto» col difetto 5 su 5 (attesi almeno 4), scene difensive col pallone che cambia padrone 2 su 2; 530 s |
