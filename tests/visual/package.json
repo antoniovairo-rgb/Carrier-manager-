@@ -415,6 +415,7 @@
     "squalifica-222": "node squalifica-222.mjs",
     "investimento-223": "node investimento-223.mjs",
     "infortunio-263": "node infortunio-263.mjs",
+    "bilancio-310": "node bilancio-310.mjs",
     "svincolato-264": "node svincolato-264.mjs",
     "meta-conto-265": "node meta-conto-265.mjs",
     "acquisti-281": "CPM_PROVA_ROSSO=1 node acquisti-281.mjs",

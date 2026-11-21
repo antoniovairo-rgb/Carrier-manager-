@@ -12,7 +12,7 @@ const R = await page.evaluate(N => {
     for (let i = 0; i < N; i++) { const o = L[i % L.length], home = i % 2 === 0, sd = (standingsSeed(c.id, 2 + Math.floor(i / 34), 1 + (i % 38)) + (i % 34) * 31 + 1) >>> 0;
       const m = window.__CPM_SIM_MOTORE({ dettaglio: true, seed: (sd ^ 0x5a17) >>> 0, forzaH: c.p, forzaA: o.p, stadio: home ? 'home' : 'away', ovr: 70 });
       const e = (m.pag || []).find(x => x && x.eroe) || {}; const g = +e.amm || 0, r = (+e.esp || 0) > 0 ? 1 : 0; gE += g; rE += r; seq.push([g, r]);
-      const th = m.tab.home || {}, ta = m.tab.away || {}; gH += +(th.gialli ?? 0) || 0; rH += +(th.rossi ?? 0) || 0; gA += +(ta.gialli ?? 0) || 0; rA += +(ta.rossi ?? 0) || 0; }
+      const th = m.tab.home || {}, ta = m.tab.away || {}; gH += +(th.ammonizioni ?? 0) || 0; rH += +(th.espulsioni ?? 0) || 0; gA += +(ta.ammonizioni ?? 0) || 0; rA += +(ta.espulsioni ?? 0) || 0; }
     const sq = []; const soglia = rosso ? 3 : 5;/* rosso: com'era (3 gialli dal vivo, nessuna nelle simulate); verde: la regola nuova */
     for (let s = 0; s + 34 <= seq.length; s += 34) { let y = 0, q = 0, salta = false; for (let k = s; k < s + 34; k++) { if (salta) { salta = false; continue; }
       if (seq[k][1]) { q++; y = 0; salta = true; } else { y += seq[k][0]; if (y >= soglia) { q++; y = 0; salta = true; } } } sq.push(q); }

@@ -6689,7 +6689,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                squadre leggono gli spostamenti di prestigio (stesso clamp 30-99 di simulateMatch). Il bonus OVR dell'eroe (_fz156) resta SOLO nella
                simulata: dal vivo l'eroe c'e' davvero. Nessun sorteggio in piu': cambia solo il numero passato al motore. Nazionali escluse (nessuno
                spostamento per le nazioni). */
-            const _forza310=(hp)=>{const _a0=oppPrestige||65;if((typeof window!=='undefined'&&window.__CPM_NO_G310B)||/^(national|nationsCup|euroMondiale)/.test(context||""))return{home:hp,away:_a0};
+            const _forza310=(hp)=>{const _a0=oppPrestige||65;if(typeof window!=='undefined'){try{window.__CPM_FORZA310_BASE={home:hp,away:_a0};}catch(_e){}}/* testimone del guardiano bilancio-310 */if((typeof window!=='undefined'&&window.__CPM_NO_G310B)||/^(national|nationsCup|euroMondiale)/.test(context||""))return{home:hp,away:_a0};
               const _sh=(player&&player.clubPrestigeShifts)||{};const _hk=player.club&&(player.club.id||player.club.n),_ak=opponent&&(opponent.id||opponent.n);
               const _r={home:clamp(hp+((_hk!=null&&+_sh[_hk])||0),30,99),away:clamp(_a0+((_ak!=null&&+_sh[_ak])||0),30,99)};
               if(typeof window!=='undefined'){try{window.__CPM_FORZA310=_r;}catch(_e){}}return _r;};

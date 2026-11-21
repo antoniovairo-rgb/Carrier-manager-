@@ -31732,12 +31732,12 @@ function creaMotorePossesso(cfg){
     if(rnd()>=_p)return;
     /* [giro 310 · decisione PO 21/11, rosso __CPM_NO_G310E] L'EROE NON E' IL PARAFULMINE DELL'ARBITRO. Misurato al giro 309: l'eroe prendeva
        0,275 gialli a partita contro ~0,15 di un giocatore medio (2,07 a squadra su ~14), perche' il motore lo cerca e lo mette spesso nel
-       duello. Ora il suo PRIMO giallo resta suo con probabilita' 0,545 (= 0,15/0,275); altrimenti il cartellino va al compagno di
+       duello. Ora il suo PRIMO giallo resta suo con probabilita' 0,413 (tarata: 0,15/0,275 = 0,545 dopo i passaggi che non trovano un compagno libero, misurati al 22%); altrimenti il cartellino va al compagno di
        movimento piu' vicino ancora senza ammonizioni (il fallo l'ha fatto il reparto). Il totale della squadra non cambia, e nessun
        sorteggio in piu': la scelta viene da un hash di seme e passo, non da rnd(). */
     if(W.eroe&&_st.g===0&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G310E)){
       const _h310=(((cfg.seed>>>0)^Math.imul(((S.tick|0)+1)>>>0,2654435761))>>>0)%1000;
-      if(_h310>=545){const T=piuVicino(W.x,W.y,W.team,{noGk:true,escl:W.i});
+      if(_h310>=413){const T=piuVicino(W.x,W.y,W.team,{noGk:true,escl:W.i});
         if(T&&T.p){const _s2=S.cartellini[T.p.i]||(S.cartellini[T.p.i]={g:0,r:false});if(_s2.g===0&&!_s2.r){W=T.p;_st=_s2;}}}}
     _st.g++;
     if(_st.g>=2&&_calma115){_st.g=1;ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});}
@@ -39563,7 +39563,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                squadre leggono gli spostamenti di prestigio (stesso clamp 30-99 di simulateMatch). Il bonus OVR dell'eroe (_fz156) resta SOLO nella
                simulata: dal vivo l'eroe c'e' davvero. Nessun sorteggio in piu': cambia solo il numero passato al motore. Nazionali escluse (nessuno
                spostamento per le nazioni). */
-            const _forza310=(hp)=>{const _a0=oppPrestige||65;if((typeof window!=='undefined'&&window.__CPM_NO_G310B)||/^(national|nationsCup|euroMondiale)/.test(context||""))return{home:hp,away:_a0};
+            const _forza310=(hp)=>{const _a0=oppPrestige||65;if(typeof window!=='undefined'){try{window.__CPM_FORZA310_BASE={home:hp,away:_a0};}catch(_e){}}/* testimone del guardiano bilancio-310 */if((typeof window!=='undefined'&&window.__CPM_NO_G310B)||/^(national|nationsCup|euroMondiale)/.test(context||""))return{home:hp,away:_a0};
               const _sh=(player&&player.clubPrestigeShifts)||{};const _hk=player.club&&(player.club.id||player.club.n),_ak=opponent&&(opponent.id||opponent.n);
               const _r={home:clamp(hp+((_hk!=null&&+_sh[_hk])||0),30,99),away:clamp(_a0+((_ak!=null&&+_sh[_ak])||0),30,99)};
               if(typeof window!=='undefined'){try{window.__CPM_FORZA310=_r;}catch(_e){}}return _r;};
@@ -55340,7 +55340,7 @@ const getThisWeekMatchday=()=>{
       weeklyStaffRel:(p)=>{try{return weeklyStaffRel(p);}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sonda reazioni dei beni */
       chiudiInvestimenti:(r,p)=>{try{return chiudiInvestimenti281(r,p);}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sonda chiusura unica */
       scegli:(i)=>{try{const c=weekLiveModal&&weekLiveModal.choices&&weekLiveModal.choices[i|0];if(!c)return "nessuna";handleImpulseChoice(c);return weekLiveModal.cat||"?";}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sceglie davvero (stesso gestore del bottone) */
-      weeklyGrowthFields:(p,b)=>{try{return weeklyGrowthFields(p,b||{});}catch(e){return "error:"+(e&&e.message);}},simInjuryRoll:(p,seed)=>{try{return simInjuryRoll(p,seed);}catch(e){return "error:"+(e&&e.message);}},/* [7.989.0 F1] sonda staff24 */investRate24:(p,se,pr)=>{try{return investRate24(p,se,pr);}catch(e){return "error:"+(e&&e.message);}},/* [7.991.0 F3] */ // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
+      weeklyGrowthFields:(p,b)=>{try{return weeklyGrowthFields(p,b||{});}catch(e){return "error:"+(e&&e.message);}},simInjuryRoll:(p,seed,q)=>{try{return simInjuryRoll(p,seed,q);}catch(e){return "error:"+(e&&e.message);}},cartellini310:(p,sim,g)=>{try{return cartellini310(p,sim,g);}catch(e){return "error:"+(e&&e.message);}},/* [giro 310] sonda bilancio-310 *//* [7.989.0 F1] sonda staff24 */investRate24:(p,se,pr)=>{try{return investRate24(p,se,pr);}catch(e){return "error:"+(e&&e.message);}},/* [7.991.0 F3] */ // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
       euroGroupKOPatch:(p)=>{try{return euroGroupKOPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] espone la transizione girone→KO per la probe euro-ko-zombie
       euro:()=>{try{const e=player.euro;return e?{active:!!e.active,phase:e.phase,pts:e.pts||0,gr:(e.groupResults||[]).length,koCal:(player.calendar||[]).filter(m=>m.type==="euro"&&!m.played).map(m=>({ph:m.euroPhase,w:m.week,opp:m.opponentId,home:!!m.isHome})),egCal:(player.calendar||[]).filter(m=>m.type==="euro_group").map(m=>({w:m.week,played:!!m.played}))}:null;}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] stato euro per la probe
       forceMoment:(id)=>{try{const m=CAREER_MOMENTS.find(x=>x.id===id);if(m)setCareerMomentModal(m);return !!m;}catch(e){return "error:"+(e&&e.message);}}, // [7.159.0] apre il modal di un career moment per lo screenshot/probe

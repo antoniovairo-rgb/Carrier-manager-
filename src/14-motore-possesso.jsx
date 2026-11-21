@@ -765,12 +765,12 @@ function creaMotorePossesso(cfg){
     if(rnd()>=_p)return;
     /* [giro 310 · decisione PO 21/11, rosso __CPM_NO_G310E] L'EROE NON E' IL PARAFULMINE DELL'ARBITRO. Misurato al giro 309: l'eroe prendeva
        0,275 gialli a partita contro ~0,15 di un giocatore medio (2,07 a squadra su ~14), perche' il motore lo cerca e lo mette spesso nel
-       duello. Ora il suo PRIMO giallo resta suo con probabilita' 0,545 (= 0,15/0,275); altrimenti il cartellino va al compagno di
+       duello. Ora il suo PRIMO giallo resta suo con probabilita' 0,413 (tarata: 0,15/0,275 = 0,545 dopo i passaggi che non trovano un compagno libero, misurati al 22%); altrimenti il cartellino va al compagno di
        movimento piu' vicino ancora senza ammonizioni (il fallo l'ha fatto il reparto). Il totale della squadra non cambia, e nessun
        sorteggio in piu': la scelta viene da un hash di seme e passo, non da rnd(). */
     if(W.eroe&&_st.g===0&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G310E)){
       const _h310=(((cfg.seed>>>0)^Math.imul(((S.tick|0)+1)>>>0,2654435761))>>>0)%1000;
-      if(_h310>=545){const T=piuVicino(W.x,W.y,W.team,{noGk:true,escl:W.i});
+      if(_h310>=413){const T=piuVicino(W.x,W.y,W.team,{noGk:true,escl:W.i});
         if(T&&T.p){const _s2=S.cartellini[T.p.i]||(S.cartellini[T.p.i]={g:0,r:false});if(_s2.g===0&&!_s2.r){W=T.p;_st=_s2;}}}}
     _st.g++;
     if(_st.g>=2&&_calma115){_st.g=1;ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});}
