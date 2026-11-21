@@ -28,7 +28,7 @@ Foto (deviceScaleFactor 2): `docs/sviluppo/giro318/verde-finestra-settimana.png`
 
 ## Controlli
 - `node tools/build-src.mjs` + `node tools/check-src.mjs` → IDENTICO BYTE PER BYTE.
-- `node ci-runner.mjs giro testi-318` (guardiano + sentinelle): ESITO_GIRO
+- `node ci-runner.mjs giro testi-318` (guardiano + sentinelle): **18/18 verdi** (catena su build 7.999.200 di GAME_VERSION, non toccata). `battito-264` (sentinella del motore di partita, non toccato qui) è risultato instabile: rosso alla prima prova (divergenti 1 su 3 coppie), verde alla seconda; registro in `tests/visual/out/ci-rossi/`.
 - `avviso-290` (8 percorsi × verde/rosso): non eseguito in questo giro per il tetto di tempo; lo esegue il treno (riga della mappa). Ho cambiato soltanto la stringa attesa, e la stessa riga, col testo nuovo, è misurata da `testi-318`.
 
 ## Dubbi per il PO
