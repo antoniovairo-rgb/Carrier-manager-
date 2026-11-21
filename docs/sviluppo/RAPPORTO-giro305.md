@@ -108,16 +108,16 @@ misurandolo in partita vera: vedi «Dubbi per il PO».
 
 | controllo | esito |
 |---|---|
-| `corpi-073 284f`, tre semi, 10 corse di fila | ESITO_DIECI |
-| `corpi-073` intero (282, 283, 284f) | ESITO_INTERO |
+| `corpi-073 284f`, tre semi, 10 corse di fila | VERDE 10 su 10 (60 aperture, 0 col codice 001; primo scatto lontano dal punto 0 su 60; 161–177 s a corsa) |
+| `corpi-073` intero (282, 283, 284f) | NON ESEGUITO (tetto di tempo): i bracci 282 e 283 non sono stati rieseguiti dopo la correzione |
 | `scatto-305` | VERDE (rosso di prova visibile) |
-| `portatore-293` | ESITO_293 |
-| `test:logic` | ESITO_LOGIC |
-| `save-compat` | ESITO_SAVE |
+| `portatore-293` | VERDE (verde 0 difetti su 14 scene; rosso visibile: 5 su 5 e 1 su 2) — 556 s |
+| `test:logic` | VERDE 51 su 51 |
+| `save-compat` | VERDE 12 su 12 |
 | `node tools/build-src.mjs` + `node tools/check-src.mjs` | IDENTICO BYTE PER BYTE |
 
 Non eseguiti (per regola del giro): `highlight-95`, `ingresso-206`, `career-critical`, `ci-runner mirata`. Non eseguiti per tempo:
-gate 14/14 (`validate-situations`), `esito-rete-301`, `ingresso-294`, `portiere-295`. «Non giudicato» = rosso.
+gate 14/14 (`validate-situations`), `corpi-073` bracci 282 e 283, `esito-rete-301`, `ingresso-294`, `portiere-295`. «Non giudicato» = rosso.
 
 ## Dubbi per il PO
 

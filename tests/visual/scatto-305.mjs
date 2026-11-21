@@ -1,5 +1,5 @@
 /* [giro 305] GUARDIANO «nella scena forzata il pallone nasce sul punto dello staging nello stesso commit del timbro».
-   Il difetto (corpi-073 braccio 284f, seme 29: codice 001 in tutti i campioni di un'apertura) sul banco capita circa 1 volta su 25:
+   Il difetto (corpi-073 braccio 284f, seme 29: codice 001 in tutti i campioni di un'apertura) sul banco capita circa 1 volta su 20:
    qui si PROVOCA con __CPM_RIT305 (il piazzamento dell'effetto «Ball attachment» arriva 400 ms dopo il timbro di staging).
    · braccio VERDE: provocazione accesa, correzione accesa → corpi-073 284f verde (0 aperture col codice 001).
    · braccio ROSSO: provocazione accesa, window.__CPM_NO_G305 → corpi-073 284f rosso col codice 001.
