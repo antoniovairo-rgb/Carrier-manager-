@@ -17,3 +17,4 @@
 | rosa-angoli-299 | VERDE | — | — | braccio verde: 0 controlli falliti su 24; braccio rosso: cade su A, B e C; non giudicati 0; 632 s |
 | ritocchi-302 | VERDE | — | — | verde: A, B (contrasto 14,79), C 756/756; rosso: cade su A (1), B (31), C (7); 62 s. Ha rigenerato foto in `docs/sviluppo/giro302/`: rimesse con `git restore` |
 | home-298 | VERDE | — | — | verde sulle 3 risoluzioni; rosso con `__CPM_NO_G298`: tornano tutti e cinque i difetti (63 rilievi); 121 s |
+| prepartita-pc-300 | VERDE | — | — | braccio verde verde; braccio rosso: cade su Apc, Atel, Bpc, Cpc, Dpc, Dtel (15 rilievi); 130 s |
