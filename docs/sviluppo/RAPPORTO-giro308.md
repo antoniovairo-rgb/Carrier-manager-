@@ -156,4 +156,30 @@ Un guardiano nuovo entra nella riga della MAPPA che esiste già per i suoi file 
 
 ## 8. Dubbi per il PO
 
-<!-- DUBBI -->
+1. **Avvio a mano.** Il workflow ha `workflow_dispatch`, ma per quanto so il pulsante «Run workflow» (e la chiamata API) vuole il
+   file sul ramo predefinito `main`. Non posso confermarlo da qui; non ho toccato `main` (non autorizzato in questo giro). La
+   decisione del 23:40 dice «workflow da portare su main»: va fatto dalla madre insieme al rilascio.
+2. **Venti job alla volta (misurato).** Nella taratura 20 parti in corsa e 11 in coda: i 31 pezzi da ~68 min vanno in due ondate.
+   Alternativa: obiettivo 100 min → ~21 parti, quasi un'ondata sola, ma un runner lento (×1,7 nel giro 303) porterebbe qualche
+   parte al bilancio di 110 min con guardiani «non partiti». Ho scelto la prudenza (70); si cambia con `obiettivo_min` o
+   `CPM_TRENO_OBIETTIVO_S`.
+3. **Un ramo nuovo creato su un commit già spinto non fa partire il treno (osservato):** la creazione di `prova/308-taratura` sullo
+   stesso commit del ramo di sviluppo non ha prodotto nessuna corsa; il push successivo, con un file di `tests/` cambiato, sì.
+   Per un ramo di rilascio appena creato serve un commit che tocchi qualcosa fuori da `docs/`, oppure l'avvio a mano.
+4. **`cancel-in-progress`:** un secondo push sullo stesso ramo `lavoro/**` annulla il treno in corsa (la stessa scelta del giro
+   303). Non so se una corsa annullata manda la mail: non posso confermarlo. Se il PO preferisce che il treno finisca sempre,
+   basta `cancel-in-progress: false`.
+5. **79 durate sono stimate** (300 s): il piano le tratta come medie. Dopo la taratura le loro durate vere sono nel log del job
+   «Riepilogo»: vanno trascritte in `docs/governo/misure/` e il file delle durate rigenerato (non l'ho fatto per i guardiani della
+   taratura 308 oltre a quanto scritto al §6).
+6. **Il brief cita `tpose-196` fra le cinque parti fallite della 198:** nel log della corsa 44830113928 `tpose-196` è **verde**
+   (1256 s, parte 6); la parte 6 è rossa per `portatore-293`. Ho tenuto `tpose-196` nei rossi del banco (riga ROADMAP del 21/11) e
+   annotato che sul runner era verde.
+7. **`validate-situations` gira due volte** (workflow del gate e treno): il treno lo tiene perché è nella catena `completa`. Si può
+   togliere dal treno se il PO preferisce risparmiare ~15 min di una parte.
+8. **La mirata si allunga** dove due espressioni della MAPPA si sovrappongono (§1.1): è l'unione voluta, ma un rilascio delle 08/16
+   su `src/03` o `src/04` ora gioca anche la riga `src/0[0-8]`.
+9. **Riga di ROADMAP:** non scritta, perché questo vagone non è un rilascio (resta su `sviluppo/giro308-metodo`); la scrive la
+   madre quando il treno 7.999.200 parte.
+10. **Ramo `prova/308-taratura`:** l'ho lasciato (contiene solo i commit di questo giro). Ogni push su di lui fa ripartire il treno:
+    se non serve più, va cancellato dalla madre.
