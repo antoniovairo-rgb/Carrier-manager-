@@ -107,11 +107,11 @@ Eseguiti uno alla volta, `CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`.
 | `tema-unico` (verde + rosso atteso) | VERDE |
 | `design-system` | VERDE |
 | `griglia-mobile` | VERDE (uscita 0, 14 schermate × 5 larghezze) |
-| `rosa-angoli-299` | @@ROSA@@ |
-| `ritocchi-302` | @@RITOCCHI@@ |
+| `rosa-angoli-299` | VERDE (verde: 0 falliti su 24 · rosso: cade su A, B, C · non giudicati 0) — 10 min 26 s |
+| `ritocchi-302` | VERDE (rosso atteso: cade su A, B, C) |
 
-`build-src` / `check-src` non eseguiti: `src/` non è stato toccato. Le foto di `docs/collaudo-grafico/` rigenerate da
-`griglia-mobile` sono state rimesse con `git restore`.
+`build-src` / `check-src` non eseguiti: `src/` non è stato toccato. Le foto di `docs/collaudo-grafico/` e di `docs/sviluppo/giro302/` rigenerate da
+`griglia-mobile` e `ritocchi-302` sono state rimesse con `git restore`.
 
 ## Dubbi per il PO
 
