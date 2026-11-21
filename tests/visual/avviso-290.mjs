@@ -2,7 +2,7 @@
 /* [giro 290 · PO-549] GUARDIANO avviso-290 — `npm run avviso-290`.
    Foto del PO (finestra della settimana «GIOCA LA PARTITA / Simula e avanza la settimana / Non ora»): «non c'è il gioco solo azioni salienti».
    Decisione PO 17/11 + 19/11: il tasto «Gioca solo i momenti salienti» sta in UN SOLO punto, la pre-partita. Dove si preme «Gioca» PRIMA
-   della pre-partita c'e' solo la riga «Nella pre-partita puoi giocare solo i momenti salienti» (data-cpm="avviso-290").
+   della pre-partita c'e' solo la riga «Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita» (giro 318) (data-cpm="avviso-290").
    Gioca, non legge il sorgente. Telefono 360x800. Per ogni percorso:
      1. RIGA: nella schermata d'ingresso (finestra della settimana da titolare e dalla panchina, card «Prossima» della home, convocazione
         della Nazionale, lobby Coppa delle Nazioni e Mondiale, provino) la riga c'e', visibile, col testo esatto, sotto il «Gioca»;
@@ -19,7 +19,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const PARTE = process.env.CPM_PARTE || 'tutto'; const SOLO = process.env.CPM_SOLO || null; const FOTO = process.env.CPM_FOTO || null;
 const NOME = 'Collaudo Avviso 290'; const VP = { width: 360, height: 800 }; const J = x => JSON.stringify(x);
-const TESTO = 'Nella pre-partita puoi giocare solo i momenti salienti';
+const TESTO = 'Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita';/* [giro 318 · PO-605] testo nuovo del PO */
 
 /* stato della schermata: la riga (visibile, intera), i tasti dei salienti fuori dalla pre-partita, lo scorrimento orizzontale */
 const leggi = page => page.evaluate((T) => {

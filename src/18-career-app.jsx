@@ -6634,7 +6634,7 @@ const getThisWeekMatchday=()=>{
       <div style={{position:"absolute",left:0,right:0,bottom:"7%",display:"flex",flexDirection:"column",alignItems:"center",gap:8,padding:"0 18px"}}>
         <div style={{display:"flex",gap:5}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:RAD.xs,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
         <div style={{display:"flex",gap:8,width:"100%",maxWidth:400}}>
-          <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?"🎉 Che la stagione cominci →":"Avanti →"}</Btn>
+          <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?(window.__CPM_NO_G318?"🎉 Che la stagione cominci →":"🎉 Si comincia! →"/* [giro 318 · PO-605] decisione PO «Si comincia!»; rosso __CPM_NO_G318 = il testo vecchio */):"Avanti →"}</Btn>
           {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:_g110(23)?"rgba(13,15,20,0.72)":"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
         </div>
       </div>
