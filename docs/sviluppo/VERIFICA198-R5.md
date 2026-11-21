@@ -21,8 +21,8 @@
 | ingresso-camminata-245 | **verde** (rc 0, 238 s) | non eseguito (verde) | — | Verde: 11+11 al posto, velocità massima 2,21, clip di camminata letta. Il rosso si vede (velocità massima 6,52, nessuna clip di camminata). |
 | coreografie-244 | **non finito in 30 minuti = rosso** (fermato a 1800 s, rc 124) | da eseguire | da stabilire | Dove era: le 30 partite del braccio verde erano finite (30/30 con coreografia, 14 distinte su 8 richieste, 0 uguali di fila, 4 che si muovono su 3 richieste) e stava misurando gli fps: braccio «verde» misurato (2,32 fps su 350 fotogrammi), braccio «rosso» degli fps ancora in corso. La seconda metà del controllo (`CPM_PROVA_ROSSO=1`, 8 partite) non è mai partita. La riga «❌ fps non misurati» stampata dopo il taglio è effetto del mio arresto, non un giudizio del guardiano. |
 | memoria-275 | **verde** (rc 0, 459 s) | non eseguito (verde) | — | Scene 1 · renderer 2→2 · corpi animati 869→883 · memoria dopo la pulizia 194 MB · errori di pagina 0. Prima di togliere gli agganci di collaudo la seconda apertura tiene due scene (300 MB): è la misura dichiarata dal guardiano, che giudica dopo averli tolti. |
-| rigorista-257 | in corso | — | — | — |
-| parata-258 | da eseguire | — | — | — |
+| rigorista-257 | **verde** (rc 0, 309 s) | non eseguito (verde) | — | Tutti i punti A1–A3, B1–B3, C1–C2 verdi col verde e rossi col rosso (`__CPM_NO_G257`, `__CPM_NO_G262`). |
+| parata-258 | in corso | — | — | — |
 
 ## Verdetto
 
