@@ -256,10 +256,10 @@ jobs:
               else testo=`${E.VERSIONE} su main, ma deploy=${E.DEPLOY||"?"} sito=${E.SITO||"?"}`; }
             const esito={...d, esito:{stato, testo, sha, preparazione:E.PREP||null, push:E.PUB||null, deploy:E.DEPLOY||null, deploy_corsa:E.DEPLOY_CORSA||null, sito:E.SITO||null}};
             fs.writeFileSync("esito-rilascio.json", JSON.stringify(esito,null,1)+"\n");
-            fs.writeFileSync("stato.env", `STATO=${stato}\nSHA=${sha}\nTESTO=${testo.replace(/\n/g," ").slice(0,138)}\n`);
+            fs.writeFileSync("stato-stato.txt", stato); fs.writeFileSync("stato-sha.txt", sha); fs.writeFileSync("stato-testo.txt", testo.replace(/\n/g," ").slice(0,138));
             fs.appendFileSync(E.GITHUB_STEP_SUMMARY, `\n### Esito del rilascio: ${stato==="success"?"✅":"⛔"} ${testo}\n`);
             console.log(JSON.stringify(esito.esito));'
-          set -a; . ./stato.env; set +a
+          STATO=$(cat stato-stato.txt); SHA=$(cat stato-sha.txt); TESTO=$(cat stato-testo.txt)
           ctx="rilascio-vagone"; [ "$MODO" = "prova" ] && ctx="rilascio-vagone-prova"
           gh api "repos/$GITHUB_REPOSITORY/statuses/$SHA" -f state="$STATO" -f context="$ctx" -f description="$TESTO" -f target_url="$CPM_CORSA_URL" > /dev/null || echo "::warning::stato del commit non scritto"
       - uses: actions/upload-artifact@v4

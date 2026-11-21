@@ -64,6 +64,19 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    o a mano (`verifica-guardiani.yml`, parti bilanciate su `docs/governo/DURATE-GUARDIANI.json`); la corsa non fallisce mai, l'esito
    e' nel riepilogo (rosso nuovo / noto da `docs/governo/ROSSI-DICHIARATI.json` / non giudicato). Un guardiano nuovo entra nella riga
    della MAPPA che esiste gia'. Finche' la taratura non e' chiusa, un rosso del runner si rifa' sul banco, che resta il giudice.
+   📌 **RILASCIO AUTOMATICO DEL VAGONE (decisione PO 21/11 17:25, giro 312, PO-600).** Il job «Rilascio del vagone» in coda al treno
+   (`verifica-guardiani.yml`, logica `tools/rilascio-vagone-312.mjs decidi|prepara|pubblica`) rilascia DA SOLO quando: interruttore
+   acceso (`docs/governo/RILASCIO-AUTO.json` **sul poc** con `"attivo": true`; la variabile di repository `CPM_RILASCIO_AUTO=spento` lo
+   spegne senza commit), ramo `lavoro/**`, mappa intera, tutte le parti arrivate, **nessun rosso nuovo e nessun non giudicato** (solo
+   rossi di `ROSSI-DICHIARATI.json`), commit provato ancora in punta, almeno un'unione «Unione sviluppo/… in lavoro/…» dopo il poc.
+   Fa: GAME_VERSION +1 con nota dai titoli delle unioni → build-src + check-src IDENTICO → commit sul lavoro → `--no-ff` nel poc
+   (conflitti in `docs/governo` → poc; altri → fermo) → main in fast-forward → tag annotato `v<versione>` → **un solo `git push --atomic`,
+   mai force** → deploy di Pages avviato con `workflow_dispatch` (un push col GITHUB_TOKEN non fa partire `on:push`) → controllo che il
+   sito serva la versione. Tracce senza credenziali: tag, `docs/governo/ULTIMO-RILASCIO.json` su main, stato del commit
+   `rilascio-vagone` (anche quando si ferma), artifact `esito-rilascio`. Quindi: **un giro non tocca GAME_VERSION** se il rilascio
+   automatico e' acceso; il titolo dell'unione e' la nota di versione, scriverlo bene. Prova senza toccare main/poc: avvio a mano con
+   `rilascio=prova` (rami `prova/cd-<corsa>-*`, niente deploy; `rosso_finto=true` deve fermarlo). Guardiano `npm run rilascio-312`
+   (remoto finto), rosso `CPM_NO_G312=1`.
    ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
    lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
    a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle
