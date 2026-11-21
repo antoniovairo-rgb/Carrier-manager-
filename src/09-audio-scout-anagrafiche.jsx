@@ -1907,7 +1907,30 @@ function legaDopoTrasferimento212(p,club,ov){
   const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
   const currentWeek=p.week||1;
   const _pastR74={};
-  newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
+  /* [giro 310 · PO-597, decisione PO 21/11 «motore della simulazione»] LE GIORNATE PASSATE SI GIOCANO, NON SI INVENTANO. Prima lo
+     «stampo» qui sotto dava tre soli punteggi (2-0/1-1/0-1) scelti da un hash quasi lineare nella giornata: sette «N 1-1» di fila,
+     poi otto «V 2-0», e in trasferta il risultato scritto al rovescio (misurato al giro 309: striscia di esiti identici media 10,1
+     contro 3,4 attesi, 7.041 vittorie su 14.035 mostrate «V 0-2»). Ora ogni giornata gia' passata la gioca il motore della
+     simulazione con lo stesso seme della Simula (standingsSeed(club,stagione,settimana)+giornata·31+1), senza l'eroe (non c'era:
+     nessun bonus OVR), con homeScore = gol del club come ovunque; la classifica usa quei risultati e il seme di lega del gioco.
+     L'anteprima dell'offerta (PO-212) chiama questa stessa funzione: per non rigiocare 17 partite a ogni disegno il risultato si
+     tiene in una piccola memoria per (club, lega, stagione, settimana, spostamenti di prestigio). Rosso __CPM_NO_G310A = lo stampo. */
+  const _g310A=!(typeof window!=='undefined'&&window.__CPM_NO_G310A);
+  if(_g310A){
+    const _sh=p.clubPrestigeShifts||{};const _ck310=[newClub.id||newClub.n,_lgEffAT,p.season||1,currentWeek,JSON.stringify(_sh)].join("|");
+    const _M=(legaDopoTrasferimento212._m310=legaDopoTrasferimento212._m310||new Map());
+    let _hit=_M.get(_ck310);
+    if(!_hit){const _t0=(typeof performance!=='undefined')?performance.now():0;const _R={};
+      newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
+        const _opp=lcs.find(c=>c.id===e.opponentId)||{id:e.opponentId,n:e.opponentName,p:65};
+        const _sd=(standingsSeed(newClub.id||newClub.n,p.season,e.week)+(e.matchday||0)*31+1)>>>0;
+        const _sm=simulateMatch(newClub,_opp,65,e.isHome!==false,_sd,_sh,{motore:true});
+        _R[e.matchday]={won:_sm.won,drew:_sm.drew,homeScore:_sm.homeScore,awayScore:_sm.awayScore};}});
+      _hit={R:_R,ms:Math.round(((typeof performance!=='undefined')?performance.now():0)-_t0)};_M.set(_ck310,_hit);if(_M.size>12)_M.delete(_M.keys().next().value);
+      if(typeof window!=='undefined'){try{window.__CPM_G310A_MS=_hit.ms;}catch(_e){}}}
+    Object.assign(_pastR74,_hit.R);
+  }
+  if(!_g310A)newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
     const _pOpp=lcs.find(c=>c.id===e.opponentId)||{p:65};
     const _diff=(newClub.p||70)-(_pOpp.p||65);
     const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
@@ -1917,7 +1940,7 @@ function legaDopoTrasferimento212(p,club,ov){
   const newCalendar=newCalendarFull.map(e=>{
     if(e.week>=currentWeek)return e;
     const _r=_pastR74[e.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-    const _disp=e.isHome?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};
+    const _disp=(e.isHome||_g310A)?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};/* [giro 310] col motore homeScore e' gia' il club: mai rovesciato */
     return{...e,played:true,result:{..._disp,simulated:true}};
   });
   let newStandings=initStandings(lcs);
@@ -1925,7 +1948,7 @@ function legaDopoTrasferimento212(p,club,ov){
     const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
     for(const _pmd of _pastMds){
       const _simR=_pastR74[_pmd.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-      newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
+      newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:_g310A?standingsSeed(newClub.id||newClub.n,p.season,_pmd.week):(hashStr(String(seed)+"_"+_pmd.matchday)>>>0)});/* [giro 310] il seme di lega del gioco */
     }
   }
   return{lgEff:_lgEffAT,newClub,lcs,seed,newCalendarFull,newCalendar,newStandings,pastR:_pastR74};
