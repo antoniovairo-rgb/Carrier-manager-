@@ -167,7 +167,7 @@ tabella; trascritta in `docs/governo/misure/runner-44882036931.json`); gli artif
     `finale-202` («ancora della simulazione non trovata», 0 s: la sonda cerca un testo nel sorgente che non c'è più);
   - **guardiani di carriera/schermate di catene vecchie** (`guardiani`, `grafica`), mai nella mappa dei giri 293–307:
     `l7-schermate` (dashboard tagliata a 375/412), `numeri-home` (cifre a 32 px dove ne ammette 24), `home-riquadri`,
-    `calendario-nazionale`, `busta-199`, `giornale-244`, `schede-260`, `accessibilita-234`, `pagella-75`, `possesso-209`,
+    `calendario-nazionale`, `busta-199`, `giornale-244`, `schede-260`, `pagella-75`, `possesso-209`,
     `assist-nome-98` («Chiudi la stagione» non raggiunto) — diversi toccano schermate cambiate dalla 198 (Home ripulita PO-558/559/571,
     angoli PO-563/564): **probabili guardiani da aggiornare dopo un cambio voluto**, da confermare sul banco;
   - **partita/motore** (`attesa-difesa`, `cross-origine`, `filtrante-intercetto`, `ruleta`, `movimento-147`, `scatto-305`,
@@ -229,5 +229,8 @@ Un guardiano nuovo entra nella riga della MAPPA che esiste già per i suoi file 
    su `src/03` o `src/04` ora gioca anche la riga `src/0[0-8]`.
 9. **Riga di ROADMAP:** non scritta, perché questo vagone non è un rilascio (resta su `sviluppo/giro308-metodo`); la scrive la
    madre quando il treno 7.999.200 parte.
-10. **Ramo `prova/308-taratura`:** l'ho lasciato (contiene solo i commit di questo giro). Ogni push su di lui fa ripartire il treno:
+10. **Le due correzioni nate dalla taratura** (`fetch-depth: 0`, braccio rosso di `mappa-unica` da `fixtures/`) sono provate
+    sul banco (`npm run mappa-unica` verde col verde e rosso con la mappa vecchia) ma **non da una seconda corsa del treno**: non
+    l'ho lanciata per il limite settimanale. La prima corsa sul ramo di rilascio le collauda.
+11. **Ramo `prova/308-taratura`:** l'ho lasciato (contiene solo i commit di questo giro). Ogni push su di lui fa ripartire il treno:
     se non serve più, va cancellato dalla madre.
