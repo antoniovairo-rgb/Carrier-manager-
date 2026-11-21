@@ -16,7 +16,7 @@ La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
 ## Voci aperte o parziali (109)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.197 2 · 7.999.200 | 31 · 7.999.201 | 7 · 7.999.197 | 13 · 7.999.194 | 2 · — 19 · 7.999.201 25.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.197 2 · 7.999.200 | 31 · 7.999.201 | 7 · 7.999.197 | 13 · 7.999.194 | 2 · — 18 · 7.999.201 26.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
