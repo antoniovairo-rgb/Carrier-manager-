@@ -88,19 +88,44 @@ cambiato**.
 **Rosso col rosso**: `CPM_NO_G312=1` (la decisione ignora rossi nuovi e non giudicati) → 4 controlli rossi (rosso nuovo, non
 giudicato, rosso finto, B1 che rilascerebbe), uscita 1.
 
-### 4.2 Su GitHub Actions (modo prova)
+### 4.2 Su GitHub Actions (modo prova, avvio a mano, `elenco = "mappa-unica rilascio-312"`)
 
-_(vedi §4.3, scritto con le corse vere)_
+Sorgenti finte: `prova-cd/lavoro-312` e `prova-cd/lavoro-312b` = `lavoro/200` + unione «Unione sviluppo/giro312-rilascio-automatico
+in lavoro/prova-312» (nomi fuori da `prova/**` apposta: un mio push lì avrebbe fatto partire la mappa intera). Main e poc veri
+**non toccati**.
+
+| corsa | rosso finto | esito |
+|---|---|---|
+| 44927256188 | sì | decisione FERMO («rossi nuovi (1): finto-312»), prepara/pubblica saltati; passo finale rosso per un mio difetto (sotto) |
+| 44927374634 | no | **pubblicato** su `prova/cd-44927374634-{lavoro,poc,main}` + tag `prova-v7.999.201-44927374634`; passo finale rosso (stesso difetto) |
+| 44932863088 | sì | FERMO; stato del commit provato `rilascio-vagone-prova = failure — «fermo: rossi nuovi (1): finto-312»`; job verde |
+| 44932865472 | no | **pubblicato** su `prova/cd-44932865472-*` + tag; stato del commit del poc `success — «prova: 7.999.201 su … deploy saltato»`; job verde |
+
+Controllato da me sul remoto dopo la corsa 44927374634 (e uguale sulla 44932865472): lavoro = commit provato + 1 commit del bot ·
+poc = main = tag annotato (messaggio con la nota) · poc = unione `--no-ff` del bot · main vero antenato del main finto (fast-forward)
+· `GAME_VERSION="7.999.201"` nel gioco ricomposto con la nota dai titoli delle unioni · **check-src IDENTICO byte per byte** sul main
+finto (7.948.414 byte da 21 frammenti) · `docs/governo/ULTIMO-RILASCIO.json` presente · stati del commit letti con l'**API anonima**.
+I due guardiani della parte (mappa-unica, rilascio-312) erano verdi sul runner: con un rosso la decisione si sarebbe fermata.
+
+**Difetto trovato provando** (corse 44927256188/44927374634): il passo «Esito leggibile» leggeva il testo dello stato con
+`. stato.env` e il testo con gli spazi diventava un comando (`7.999.201: command not found`). Corretto (valori da file separati);
+le corse 44932863088/44932865472 sono verdi.
+
+### 4.3 Cosa resta da provare sul runner (solo col primo rilascio vero)
+
+- push atomico che AGGIORNA `main` e il poc esistenti (provato solo su rami nuovi);
+- avvio del deploy con `gh workflow run deploy-pages.yml --ref main`, ricerca e attesa della corsa, controllo che il sito serva la
+  versione nuova (il modo prova lo salta, come chiesto);
+- lettura dell'interruttore dal poc vero quando sarà acceso (provato solo nel guardiano, sul remoto finto);
+- il treno pieno sulla mappa intera in modo auto (le prove usavano un elenco, che in auto il rilascio rifiuta).
 
 ## 5. Dubbi per il PO
 
-1. **Push dei file di workflow col GITHUB_TOKEN.** GitHub rifiuta (ne sono quasi certo, non l'ho potuto provare su main) un push
-   fatto col GITHUB_TOKEN che *modifica file in `.github/workflows/`* su un ramo: il token non può avere il permesso `workflows`.
-   Il primo vagone che contiene questo giro cambia `verifica-guardiani.yml` rispetto a main, quindi **il suo rilascio automatico
-   probabilmente verrebbe rifiutato** (push atomico: nessun ramo cambia, stato `failure`). Proposta: unire e pubblicare a mano
-   questo giro come si è fatto finora; dai vagoni successivi (che di solito non toccano i workflow) il rilascio automatico funziona.
-   Un vagone che tocca i workflow si fermerà sempre al push: per quei casi o si rilascia a mano, o si dà al workflow un token con
-   permesso `workflows` (un PAT/App del PO, segreto di repository) — **non l'ho fatto**, è una scelta sua.
+1. **Push dei file di workflow col GITHUB_TOKEN.** Temevo che GitHub rifiutasse un push del bot che porta modifiche a
+   `.github/workflows/` (il GITHUB_TOKEN non ha il permesso `workflows`). **Misurato sulla corsa 44927374634: accettato** — i rami
+   nuovi `prova/cd-44927374634-poc/-main` contengono l'unione del bot che cambia `verifica-guardiani.yml` rispetto al poc, e il
+   push atomico è passato. Non posso confermare che valga uguale per l'AGGIORNAMENTO di `main`/poc esistenti (non li ho toccati,
+   come chiesto): se fosse rifiutato, il push atomico non cambia niente e lo stato del commit lo dice.
 2. **Protezioni dei rami.** Non vedo dalla sessione se `main` o il poc hanno regole che vietano i push del bot: se ci sono, il push
    atomico si ferma e lo stato lo dice. Va controllato una volta in Settings → Rules.
 3. **Il deploy si avvia con `workflow_dispatch`.** È l'eccezione documentata di GitHub (il GITHUB_TOKEN non fa partire `on:push` ma
