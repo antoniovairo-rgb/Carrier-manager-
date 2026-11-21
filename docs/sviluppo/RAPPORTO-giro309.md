@@ -174,8 +174,109 @@ Cosa resta, e dove:
 
 ## 4. PO-583 — carriera da bandiera dalla seconda divisione
 
+`misura-309-carriera.mjs`: FC Ciociaro (Lega B, prestigio 47, mediana della lega), eroe attaccante di 20 anni che non
+cambia mai club (contratto rinnovato d'ufficio a ogni stagione, offerte mai accettate), settimane avanzate con gli
+handler veri (`__CPM_CAREER.step`: settimana vissuta + Simula). Cinque carriere con fatica gestita (OVR iniziale 68,
+stagione di partenza 1, 4, 10, 13; una con OVR 78 dalla 7) e una con fatica trascurata. 14 stagioni ciascuna (la 15ª
+cade al ritiro dei 34 anni ed è esclusa). I «semi» diversi sono le stagioni di partenza: il seme di ogni partita
+dipende da club, stagione e settimana, **non dal nome dell'eroe** (`standingsSeed`, `src/09` r.1848), quindi due
+carriere nello stesso club e nella stessa stagione danno gli stessi risultati salvo l'effetto dell'eroe.
+
+Per stagione: lega+posizione · prestigio effettivo (base 47 + `clubPrestigeShifts`) · coppa europea giocata (`!` = vinta).
+
+| carriera | percorso | promozione (stagione) | prima Europa | primo trofeo di club |
+|---|---|---|---|---|
+| partenza 1 | B7·47 B3·48 **A18·56** B3·50 A12·56 A11·57 A14·58 A14·55 A8·52 A12·55 A10·54 A17·56 B7·48 B1·47 | 2ª | mai | 14ª (Lega B + Coppa) |
+| partenza 4 | B9·47 B7·59 B1·59 A17·64 B5·57 B1·58 A5·63 A6·69·UEL A5·74·UEL A6·76·UEL A3·80·**UEL!** A3·88·UCL A1·88·UCL A1·88·UCL | 3ª | 8ª | 2ª (Coppa) |
+| partenza 10 | B4·47 B4·50 B4·53 B3·53 A18·56 B8·49 B2·49 A16·56 B9·50 B8·49 B3·48 A15·56 A18·54 B14·48 | 4ª | mai | mai |
+| partenza 13 | B5·47 B4·50 B4·52 B5·54 B4·56 B2·57 A13·61 A12·59 A11·61·UEL A9·65·UEL A9·66 A11·65 A5·64 A8·67·UEL | 6ª | 9ª | 8ª |
+| OVR 78, partenza 7 | B1·47 A15·56 A16·53 B1·47 A15·56 A17·55·UEL B1·51 A9·59 A9·60 A11·60 A10·59 A8·59 A10·60 A11·59 | 1ª | 6ª | 1ª (Lega B) |
+
+**Numeri.** Promozione: 1–6 stagioni (mediana 3). Prima Europa: 3 carriere su 5, dopo 6–9 stagioni; 2 su 5 mai in 14.
+Primo trofeo di club: 1–14 stagioni, una carriera mai. Trofeo europeo: 1 carriera su 5 (UEL alla 11ª).
+Retrocessione subito dopo la promozione: **6 volte su 11 promozioni**.
+
+**Il prestigio cresce davvero, ma con due motori diversi:**
+
+- Alla promozione il club sale d'ufficio a 56 effettivi («ultima della classe», `src/18` r.~5846-5852,
+  `_need200`, tetto +12). Poi la deriva normale (attese contro piazzamento, decadimento 8%, tetto ±24 che l'albo d'oro
+  allarga fino a +50, `src/18` r.5815-5835) **lo riporta giù** se il club non sta stabilmente sopra il suo rango: la
+  carriera «partenza 10» resta fra 47 e 56 per 14 anni, con 3 promozioni e 3 retrocessioni.
+- **Ciò che fa davvero la differenza è l'OVR dell'eroe**, non la rosa: nella simulata la squadra riceve
+  `(OVR−70)·quota minuti`, fino a +15 (`src/10` r.952). Con l'eroe a 84–87 il club gioca come se avesse 12–15 punti di
+  prestigio in più; quando il club arriva in Europa e vince, i bonus europei (+3/+5/+8, `src/18` r.~5786) e il tetto
+  allargato innescano la salita (carriera «partenza 4»: da 47 a 88 effettivi, tre titoli di Lega A di fila).
+- **La rosa non ha valori.** `generateTeamRoster` (`src/09` r.1321-1352) produce solo nomi e ruoli (la rosa cambia ~3
+  nomi a stagione); non esiste un OVR dei compagni che possa crescere. La forza del club è solo prestigio + spostamenti
+  (+ eroe nelle simulate).
+- **Le traiettorie divergono moltissimo** con la sola stagione di partenza: da «mai in Europa in 14 anni» a «UEL vinta
+  e tre scudetti». Con 5 carriere i numeri qui sopra sono un ordine di grandezza, non una media.
+
 ## 5. PO-584 — infortuni e squalifiche
+
+**Infortuni dell'eroe.** Due sole regole, uguali nella simulata (`simInjuryRoll`, `src/18` r.2238-2251) e nella
+giocata (`src/18` r.4338-4340): infortunio solo se la fatica DI PARTITA supera 68 (3%) o 82 (7%). La fatica di partita è
+quella della settimana + 12…22 (simulata) o + 8…14 (giocata). Con la settimana vissuta normale la fatica sta a ~38
+(misurata, media di stagione 37–41 in tutte le carriere gestite) → fatica di partita 50–60 → **probabilità zero**.
+
+| | stagioni | infortuni dell'eroe | settimane fuori | squalifiche |
+|---|---|---|---|---|
+| fatica gestita (5 carriere) | 70 | **6** (0,09 a stagione) | 23 | **0** |
+| fatica trascurata (fatica forzata a 78 prima di ogni settimana) | 8 | **13** (1,6 a stagione) | 65 | **0** |
+
+Con la fatica trascurata l'OVR resta fermo (72→73 in 8 stagioni, contro 74→85 delle carriere gestite) e il voto cade a
+5,1–6,7. Riferimento reale: nei club professionistici europei un giocatore subisce in media **2,0 infortuni a stagione**
+e l'incidenza in partita è **27,5 per 1.000 ore** (≈4% per partita giocata) — UEFA Injury Study, Ekstrand et al.,
+[BJSM 2011](https://bjsm.bmj.com/content/45/7/553.long); la meta-analisi 2023 su 44 studi dà 36/1.000 h in partita
+([PMC9929604](https://pmc.ncbi.nlm.nih.gov/articles/PMC9929604)). Sono infortuni con perdita di tempo, molti di pochi
+giorni: il confronto è sull'ordine di grandezza, non sulla durata.
+
+**Infortuni dei compagni: non esistono.** La rosa non ha stato fisico (§4); nessuna riga del gioco infortuna un compagno.
+
+**Squalifiche: nelle simulate non possono esistere.** Il motore senza grafica produce già i cartellini per tutti
+(`_cart913`, `src/14` r.747-769, tarati sul calcio vero): misurato su 680 partite (`misura-309-cartellini.mjs`) l'eroe
+prende **0,275 gialli a partita** e 0,004 rossi; la squadra 2,20 gialli e 0,075 rossi, l'avversario 2,08 e 0,068
+(Bundesliga 2023/24: 1.269 gialli in 306 partite = 2,07 a squadra, fonte: DFB datencenter via
+[Wikipedia](https://en.wikipedia.org/wiki/2023%E2%80%9324_Bundesliga)). Ma `simulateMatch` legge solo i gol e la
+pagella: **i cartellini delle simulate si buttano**. Nella giocata la squalifica nasce solo dal rosso vero dell'eroe
+(`src/15` r.10448-10466); non c'è squalifica per somma di gialli in nessun percorso (cercata, non trovata).
+⚠️ L'eroe prende quasi il doppio dei gialli di un giocatore medio (2,07 a squadra divisi su ~14 giocatori ≈ 0,15):
+è un dato del motore, da tenere presente prima di introdurre una regola sui gialli.
 
 ## 6. Proposte di taratura (nessuna applicata)
 
+| # | dove | proposta | effetto atteso, misurato |
+|---|---|---|---|
+| T1 · PO-596 | `legaDopoTrasferimento212`, `src/09` r.1912-1922 | Le giornate passate si **simulano** invece di inventarle: `simulateMatch(club, avv, ovr, isHome, standingsSeed(club,stagione,settimana)+giornata·31+1, shifts, {motore:true})`, cioè lo stesso seme della Simula; risultato salvato con `homeScore` = gol del club (mai rovesciato in trasferta). Ripiego senza costo: il Poisson di `updateStandings` con le stesse forze | Percorso A di §1b: 36 punteggi distinti invece di 5, punteggio più frequente 14% invece di 27%, striscia di punteggio identico media 2,15 invece di 10,1; FC Augusta stagione 1, giornate 1–17: **10 punti** invece dei 35 inventati. Costo misurato: 58 ms a partita in headless (17 giornate ≈ 1 s alla firma; sul telefono da misurare). Il Poisson storico: 48 punteggi distinti, costo nullo. Va riparato anche il seme delle altre giornate della classifica (`seed:hashStr(...)`) |
+| T2 · PO-596 | nessuna | Le strisce **non** si correggono: il motore è in linea col riferimento indipendente (§2) | — |
+| T3 · PO-596/560 | `src/15` r.6686 oppure `src/10` r.926/956 | Una sola forza per la stessa partita: o il live legge anche `clubPrestigeShifts` e `_fz156`, o la simulata smette di aggiungerli | Non misurato sul live (servono partite 3D). A parità di semi, la differenza fra A e V sulla squadra con `_fz156` acceso vale fino a +0,5 punti a partita a OVR 84 (§3) |
+| T4 · PO-560 | `votoSimEroe`/base 158, `src/10` r.975-990 | Nessun ritocco alla squadra. Sul voto: spostare la base di +0,3 vale lo scarto rispetto al vivo misurato in Primavera | Voto simulato sotto OVR 72: 6,22–6,32 → 6,52–6,62 (6,60 dal vivo, giro 156); in prima squadra resta −0,3/−0,6 dal vivo (7,20). Calcolo diretto sulla tabella di §3 |
+| T5 · PO-584 | `simInjuryRoll` `src/18` r.2238 e r.4340 | Rischio di base per partita giocata **1,0% + 0,04% per punto** di fatica di partita sopra 40, più il +3% sopra 82 di oggi | `misura-309-proposte.mjs` (10.000 stagioni da 38 partite): fatica 38 → **0,59 infortuni a stagione** (oggi 0), il 54% delle stagioni senza; fatica 78 → 2,02 (oggi 2,24). La variante «1,5% + 0,05%» dà 0,81 e 2,31 |
+| T6 · PO-584 | `simulateMatch` `src/10` + chiamanti `src/18` | Leggere `amm`/`esp` della pagella dell'eroe (già calcolati) e contarli: 5 gialli = 1 giornata, rosso = 1 giornata, anche nella giocata | `misura-309-cartellini.mjs`, 20 stagioni da 34: **1,70 squalifiche a stagione** (min 1, max 3). Con un giallo-eroe allineato al medio (0,15) sarebbe circa la metà: dipende da cosa decide il PO sul tasso |
+| T7 · PO-584 | rosa (`src/09` r.1321) | Infortuni dei compagni (con lo stesso rischio di T5 su 11 titolari) | Calcolo diretto: 11 × 38 × ~1,5% ≈ 6 infortuni di compagni a stagione. Serve prima uno stato per giocatore della rosa: oggi non c'è |
+
 ## 7. Dubbi per il PO
+
+1. **Lo stampo va sostituito col motore (coerente, ~1 s alla firma) o col Poisson (immediato)?** Con il motore la classifica
+   che trovi arrivando è fatta come le partite che simuli dopo; col Poisson è come quella delle altre squadre.
+2. **Una forza o due?** Oggi giocare e simulare la stessa partita usa forze diverse (§1c). Se l'OVR dell'eroe deve
+   alzare la squadra anche dal vivo, va aggiunto al live; se no, va tolto dalla simulata — e allora la carriera da
+   bandiera (§4) diventa molto più lenta, perché è proprio quel bonus che porta il club in alto.
+3. **Ritmo della bandiera.** Oggi: promozione in ~3 stagioni, Europa in 6–9 per 3 carriere su 5, e 6 promosse su 11
+   tornano giù l'anno dopo. È il ritmo voluto? Lo «yo-yo» nasce dal salto d'ufficio a 56 che poi la deriva riassorbe.
+4. **Quanti infortuni vuoi vedere?** Il riferimento reale (~2 a stagione, molti di pochi giorni) è più del doppio di
+   quanto proporrei per un gioco; T5 dà ~0,6 con la fatica curata.
+5. **Squalifiche per somma di gialli**: la regola (5 gialli = 1 giornata) è una mia proposta, non verificata sul
+   regolamento di una lega precisa in questo giro. E il tasso di gialli dell'eroe (quasi doppio del medio) va prima
+   deciso.
+6. **La foto delle 8 sconfitte**: quelle partite le hai giocate tu (momenti salienti). Il motore dice 0,9% per quella
+   sequenza; le tue scelte negli highlight non le posso rifare senza grafica. Se vuoi una prova sul dispositivo, il
+   salvataggio di quella stagione permetterebbe di rigiocare le stesse giornate.
+
+## 8. Limiti dichiarati
+
+- Nessuna partita 3D: il percorso «giocato» è il motore coi parametri del live, non le scelte di un giocatore.
+- Campioni: 4.080 partite per i punteggi; 150 partite per OVR (stessi semi fra OVR) e 680 per lo scarto; 5 carriere da
+  14 stagioni per PO-583 (ordine di grandezza); 8 stagioni con fatica trascurata.
+- La fatica «trascurata» è forzata a 78 prima di ogni settimana: un caso limite, non un giocatore reale.
+- `ci-runner`, gate e guardiani non eseguiti: nessun file del gioco è stato modificato.
