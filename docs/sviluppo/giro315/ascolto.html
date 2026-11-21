@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Musica della serata</title>
+<style>
+:root{--bg:#f6f5f2;--card:#ffffff;--ink:#1d1d1f;--mute:#5f6168;--line:#e2e0da;--acc:#1f5fbf;--tag:#eef3fb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121316;--card:#1c1d21;--ink:#ececef;--mute:#a3a6ae;--line:#2c2e34;--acc:#7fb0ff;--tag:#1f2a3b}}
+:root[data-theme="dark"]{--bg:#121316;--card:#1c1d21;--ink:#ececef;--mute:#a3a6ae;--line:#2c2e34;--acc:#7fb0ff;--tag:#1f2a3b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 6px}
+p.lead{color:var(--mute);margin:0 0 20px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.l{font-weight:700;color:var(--acc);font-size:1.25rem;min-width:1.2em}
+.t{font-weight:600}
+.m{color:var(--mute);font-size:.88rem;margin:4px 0 8px}
+.d{margin:0 0 10px}
+.tag{display:inline-block;background:var(--tag);color:var(--acc);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:600}
+audio{width:100%}
+footer{color:var(--mute);font-size:.85rem;margin-top:24px}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>Musica della serata di presentazione</h1>
+<p class="lead">Giro 315 (PO-602). «A» è il brano che il gioco usa oggi. B, C, D ed E sono i candidati. Tutti sono normalizzati a −18,4 LUFS, quindi il volume è lo stesso e si confronta solo la musica. Sono tutti CC0 (pubblico dominio), letti sulla pagina OpenGameArt il 21/11/2026.</p>
+
+<section class="c"><div class="h"><span class="l">A</span><span class="t">Il mondo è nostro (attuale)</span><span class="tag">riferimento</span></div>
+<div class="m">Zane Little Music · «The World Is Ours» · 48 s · picco −0,5 dBFS</div>
+<p class="d">Il brano di oggi. L'autore lo descrive come «allegro e brioso, per momenti trionfali».</p>
+<audio controls preload="none" src="A-il-mondo-e-nostro.mp3"></audio></section>
+
+<section class="c"><div class="h"><span class="l">B</span><span class="t">A Legend Will Rise</span></div>
+<div class="m">CodeManu · 70 s · picco −5,7 dBFS · <a href="https://opengameart.org/content/a-legend-will-rise-orchestral">pagina</a></div>
+<p class="d">Breve brano orchestrale, solenne. Il volume resta costante dall'inizio alla fine.</p>
+<audio controls preload="none" src="B-a-legend-will-rise.mp3"></audio></section>
+
+<section class="c"><div class="h"><span class="l">C</span><span class="t">The Storm Chasers</span></div>
+<div class="m">Eldritch Grim · 85 s · picco −7,0 dBFS · <a href="https://opengameart.org/content/storm-chasers">pagina</a></div>
+<p class="d">Epico in stile trailer. Parte piano, cresce entro 15 s e resta pieno fino alla fine.</p>
+<audio controls preload="none" src="C-storm-chasers.mp3"></audio></section>
+
+<section class="c"><div class="h"><span class="l">D</span><span class="t">Epic Endgame</span></div>
+<div class="m">cynicmusic · 91 s · picco −5,3 dBFS · <a href="https://opengameart.org/content/epic-endgame-cinematic">pagina</a></div>
+<p class="d">Tema cinematografico con voce femminile, ottoni e bassi profondi. Più cupo e drammatico degli altri.</p>
+<audio controls preload="none" src="D-epic-endgame.mp3"></audio></section>
+
+<section class="c"><div class="h"><span class="l">E</span><span class="t">Inevitable (tagliato)</span></div>
+<div class="m">vitalezzz · originale 195 s, qui i primi 105 s con sfumatura finale · picco −3,5 dBFS · <a href="https://opengameart.org/content/inevitable">pagina</a></div>
+<p class="d">Elettronica e orchestra insieme: il più «moderno» dei quattro. Introduzione tranquilla di circa 35 s, poi entra la parte piena.</p>
+<audio controls preload="none" src="E-inevitable-taglio.mp3"></audio></section>
+
+<footer>Mp3 a 128 kbps, stereo. Ho scelto i brani dalle descrizioni degli autori e dalle misure (durata, volume nel tempo), non ascoltandoli: decide l'orecchio. Rapporto: docs/sviluppo/RAPPORTO-giro315.md.</footer>
+</main>
+</body>
+</html>
