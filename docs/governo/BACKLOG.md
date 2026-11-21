@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (103)
+## Voci aperte o parziali (104)
 
-Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 36.
+Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 37.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -123,6 +123,7 @@ Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-608 | 22/11 00:05 | PO (foto docs/collaudo-po/200-prepartita-tasti.png, pre-partita FC Berlin–FC Augusta, 7.999.200): «non si capisce che per giocare ‹normalmente› bisogna premere su vedi formazioni!» — tasti oggi: «VEDI LE FORMAZIONI» (verde, primario), «Analisi dell'avversario», «Salta e gioca», riquadro «Gioca solo i momenti salienti», «Torna alla home». Da rendere chiaro che le due strade sono «Gioca la partita» (intera) e «Gioca solo i momenti salienti», con formazioni/analisi come passi o voci secondarie; chiarire anche «Salta e gioca». Si lega a PO-605 (avviso dei salienti) e PO-454 (meno finestre prima del calcio d'inizio) | UI (pre-partita) | IN CODA — 201 | 7.999.201 | — | — | foto PO 22/11 |
 | PO-609 | 22/11 00:10 | PO (foto docs/collaudo-po/200-classifica-fine-partita.png, fine partita FC Augusta, giornata 5): «la classifica deve essere già aggiornata, non quella della settimana prima...» — oggi il riquadro Classifica dice «Prima dei risultati degli altri campi · questa partita: +1 punto» e mostra Augusta 17° a 0 pt; anche «I tuoi numeri di stagione» è «Prima di questa partita». Da mostrare la classifica e i numeri DOPO la giornata (partita appena giocata + altri campi della stessa giornata, coerente con quella che si vedrà in Home). Nota a margine dalla stessa foto: obiettivo «Finisci nei primi 6» per un club al 17° con 0 pt (vedi PO-606, ambizione) | UI/carriera (fine partita, classifica) | IN CODA — 201 | 7.999.201 | — | — | foto PO 22/11 |
 | PO-610 | 22/11 00:20 | Madre (regola PO sugli instabili): movimento-147 rosso nel treno della 199 (taratura 44882036931), verde nel treno della 200 (44926206097), rosso nel treno della 201 (44947424529): instabile visto due volte → si ripara | controlli (instabile) | IN CODA — 201 | 7.999.201 | — | movimento-147 | treni 21/11 |
+| PO-611 | 22/11 00:30 | PO (foto docs/collaudo-po/200-punizione-in-area.webp, 7.999.200, FC Augusta–FC Kraichgau 0-0, 9'): «punizione in area!» — highlight di punizione con il pallone dentro l'area avversaria (oltre la linea dei 16 m), senza barriera: nel calcio un fallo da punizione diretta in area è un rigore (in area esiste solo la punizione indiretta). Da misurare: in quali scene/posizioni il punto di battuta della punizione cade in area (piazzati, src/12 e motore dei piazzati del giro 204) e correggere: punizione sempre fuori area con barriera, oppure rigore se il fallo è in area | difetto (partita, piazzati, regole) | IN CODA — 201 | 7.999.201 | — | piazzato-204 | foto PO 22/11 |
 
 ## Storico — voci chiuse (507)
 
