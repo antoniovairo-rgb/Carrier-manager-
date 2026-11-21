@@ -1987,3 +1987,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 22:20 (21/11) PO: ramo poc → «Togliere poc dopo il 1° rilascio» (PO-603): si semplifica su main solo dopo che il rilascio automatico ha funzionato una volta; poc resta come copia ferma.
 - 22:35 (21/11) PO: «trenini» (PO-604) → «Trenino + treno grande di notte»; rosso nuovo di notte → «Rilasci fermi finché non si ripara». Giro 317 (Opus) sul metodo.
 - 23:35 (21/11) PO, testi (PO-605): serata «Che la stagione cominci» → «Si comincia!»; avviso dei salienti → «Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita» (testo del PO, «nel pre-partita»). Giro 318.
+- 23:45 (21/11) PO-606 scheda Club: «Riquadro "La stagione" in cima»; ambizione «stessa regola della Home» (giro 298). Giro 319.
