@@ -194,7 +194,7 @@ Per stagione: lega+posizione · prestigio effettivo (base 47 + `clubPrestigeShif
 
 **Numeri.** Promozione: 1–6 stagioni (mediana 3). Prima Europa: 3 carriere su 5, dopo 6–9 stagioni; 2 su 5 mai in 14.
 Primo trofeo di club: 1–14 stagioni, una carriera mai. Trofeo europeo: 1 carriera su 5 (UEL alla 11ª).
-Retrocessione subito dopo la promozione: **6 volte su 11 promozioni**.
+Retrocessione subito dopo la promozione: **4 volte su 11 promozioni**, entro due stagioni 7 su 11.
 
 **Il prestigio cresce davvero, ma con due motori diversi:**
 
@@ -205,12 +205,12 @@ Retrocessione subito dopo la promozione: **6 volte su 11 promozioni**.
 - **Ciò che fa davvero la differenza è l'OVR dell'eroe**, non la rosa: nella simulata la squadra riceve
   `(OVR−70)·quota minuti`, fino a +15 (`src/10` r.952). Con l'eroe a 84–87 il club gioca come se avesse 12–15 punti di
   prestigio in più; quando il club arriva in Europa e vince, i bonus europei (+3/+5/+8, `src/18` r.~5786) e il tetto
-  allargato innescano la salita (carriera «partenza 4»: da 47 a 88 effettivi, tre titoli di Lega A di fila).
+  allargato innescano la salita (carriera «partenza 4»: da 47 a 88 effettivi, due titoli di Lega A di fila).
 - **La rosa non ha valori.** `generateTeamRoster` (`src/09` r.1321-1352) produce solo nomi e ruoli (la rosa cambia ~3
   nomi a stagione); non esiste un OVR dei compagni che possa crescere. La forza del club è solo prestigio + spostamenti
   (+ eroe nelle simulate).
 - **Le traiettorie divergono moltissimo** con la sola stagione di partenza: da «mai in Europa in 14 anni» a «UEL vinta
-  e tre scudetti». Con 5 carriere i numeri qui sopra sono un ordine di grandezza, non una media.
+  e due titoli di Lega A». Con 5 carriere i numeri qui sopra sono un ordine di grandezza, non una media.
 
 ## 5. PO-584 — infortuni e squalifiche
 
@@ -262,8 +262,8 @@ pagella: **i cartellini delle simulate si buttano**. Nella giocata la squalifica
 2. **Una forza o due?** Oggi giocare e simulare la stessa partita usa forze diverse (§1c). Se l'OVR dell'eroe deve
    alzare la squadra anche dal vivo, va aggiunto al live; se no, va tolto dalla simulata — e allora la carriera da
    bandiera (§4) diventa molto più lenta, perché è proprio quel bonus che porta il club in alto.
-3. **Ritmo della bandiera.** Oggi: promozione in ~3 stagioni, Europa in 6–9 per 3 carriere su 5, e 6 promosse su 11
-   tornano giù l'anno dopo. È il ritmo voluto? Lo «yo-yo» nasce dal salto d'ufficio a 56 che poi la deriva riassorbe.
+3. **Ritmo della bandiera.** Oggi: promozione in ~3 stagioni, Europa in 6–9 per 3 carriere su 5, e 4 promosse su 11 tornano giù
+   l'anno dopo (7 entro due anni). È il ritmo voluto? Lo «yo-yo» nasce dal salto d'ufficio a 56 che poi la deriva riassorbe.
 4. **Quanti infortuni vuoi vedere?** Il riferimento reale (~2 a stagione, molti di pochi giorni) è più del doppio di
    quanto proporrei per un gioco; T5 dà ~0,6 con la fatica curata.
 5. **Squalifiche per somma di gialli**: la regola (5 gialli = 1 giornata) è una mia proposta, non verificata sul
