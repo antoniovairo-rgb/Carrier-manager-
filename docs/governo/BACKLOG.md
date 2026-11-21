@@ -132,9 +132,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-601 | 21/11 19:40 | PO (foto docs/collaudo-po/200-serata-tifosi-ospiti.webp, «Serata di presentazione · Stagione 2», 7.999.200): «nella serata di presentazione non ci devono essere tifosi ospiti» — una tribuna coi colori dell'altra squadra. Il PO non ha scelto fra le varianti: si applica la consigliata, tutti i settori coi colori del club, stadio pieno | grafica 3D (serata, folla) | DA FARE — 201 | 7.999.201 | — | — | foto PO 21/11 |
 | PO-602 | 21/11 19:42 | PO: «la musica della presentazione è terribile» — oggi la serata (e la fine stagione) suona `music.cerimonia` = assets/audio/music/ceremony/il-mondo-e-nostro (CC0, 48 s, giro 161). Da fare: 3-4 brani CC0 candidati su una pagina d'ascolto, sceglie il PO | audio (cerimonie) | DA FARE — 201 | 7.999.201 | — | — | richiesta PO 21/11 |
 
-## 
-
-Storico — voci chiuse (491)
+## Storico — voci chiuse (491)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
