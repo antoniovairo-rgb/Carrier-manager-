@@ -1972,3 +1972,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
   - compagni infortunati → vagone successivo (PO-598);
   - voto simulato → **+0,3** sotto OVR 72.
 - Vagone 3 = correzioni di bilanciamento (giro 310).
+- 12:30 (21/11) Lanciato giro 310 (Opus, session_01QEYia9qzNNdNW5u8abR2FY) dal ramo del 309: le sei correzioni decise (stampo, forza unica, meno yo-yo, infortuni, squalifiche, voto), un rosso per ciascuna, guardiano bilancio-310. Giro 309 archiviato.
