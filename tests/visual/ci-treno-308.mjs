@@ -122,7 +122,9 @@ if (cmd === 'piano') {
   console.log(md); console.log('RIEPILOGO_JSON ' + JSON.stringify(tot));
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'riepilogo-totale.json'), JSON.stringify({ totale: tot, passi, parti: tutti }, null, 1) + '\n');
-  fs.writeFileSync(path.join(dir, 'esito-treno.json'), JSON.stringify({ commit: process.env.GITHUB_SHA || null, ramo: process.env.GITHUB_REF_NAME || null, corsa: process.env.GITHUB_RUN_ID || null, ...tot,
+  fs.writeFileSync(path.join(dir, 'esito-treno.json'), JSON.stringify({ commit: process.env.GITHUB_SHA || null, ramo: process.env.GITHUB_REF_NAME || null, corsa: process.env.GITHUB_RUN_ID || null,
+    /* [giro 312] il rilascio automatico pretende la mappa INTERA: un elenco dato a mano non rilascia mai */
+    mappa_intera: !String(process.env.CPM_TRENO_ELENCO || '').trim(), ...tot,
     per_guardiano: Object.fromEntries(passi.map(x => [x.guardiano, { classe: x.classe, s: x.s || 0, parte: x.parte }])) }, null, 1) + '\n');
   fs.writeFileSync(path.join(dir, 'riepilogo-totale.md'), md);
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
