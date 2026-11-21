@@ -16,6 +16,7 @@
 | `corpi-073` (2 corse) | **verde 2/2** (uscita 0; 447 s e 467 s) | — | — | `✅ corpi-073 verde (282,283,284f)` in entrambe; nessuna riga ✗ / ROSSO / «non giudicato» nei due log. Lo script gira i bracci 282, 283 e 284f; `284f primo scatto del pallone lontano dal punto in 0/6 aperture` è dichiarata dalla sonda «misura, non verdetto» |
 | `scatto-305` | **verde** (uscita 0, 119 s) | — | — | `✅ scatto-305 verde (rosso di prova visibile)`: verde 2 aperture, col codice 001 0; rosso `__CPM_NO_G305` 2/2 aperture col codice 001 (primo scatto a 35,8 u e 74,2 u dal punto). Nota: nel braccio verde una delle due aperture stampa `001 in 1/19` campioni; la sonda conta un'apertura «col codice 001» solo da 4 campioni in su e con almeno il 75% dei campioni (riga 13 di `scatto-305.mjs`), quindi 1/19 non conta: è la regola scritta nella sonda, non una soglia toccata qui |
 | `ingresso-294` | **verde** (uscita 0, 294 s) | — | — | A verde: 68 provocazioni, pallone fuori dal dischetto 0/132; A rosso 125/125. B verde: tasto audio in ingresso, in partita e in cerimonia; B rosso: tasto assente. C verde su 412×915, 375×667, 1366×768 (Indietro ed Esc tornano, partita identica); C rosso: tasto assente. `i tre rossi si vedono` |
+| `portiere-295` | **verde** (uscita 0, 658 s) | — | — | verde: bracci 1–4 con 0 difetti su 16/8/8/8 giudicate, 0 non giudicate; rosso `__CPM_NO_G295`: difetto rivisto in 16/16, 8/8, 8/8, 8/8. Nota: la sonda apre da sé le pagine «2 per volta» (è scritto nella sonda, `CPM_CI_PAR=0` non la cambia) |
 
 ## Verdetto
 
