@@ -95,8 +95,8 @@ Gancio di collaudo aggiunto (solo `?cpmtest=1`): `window.__CPM_DA304=[x,z]` mett
   `CPM_PROVA_ROSSO=255` sul solo `sost-comunale`: lì il guardiano vede ancora l'eroe dentro un oggetto (entra 80/168, esce 3/214,
   «1/1»), quindi la correzione non lo acceca; il comando da solo esce 1 perché senza gli altri scenari non ha schieramenti da giudicare.
 - **Braccio rosso di `tunnel-285`, `ingresso-294`, `rigori-296`, `portatore-293`**: non eseguiti. La correzione vive solo nel ramo
-  dell'uscita per sostituzione; nessuno di quei tre giri è risultato colpevole, quindi per la consegna («secondo il caso») non erano dovuti,
-  ma restano non eseguiti su questo ramo.
+  dell'uscita per sostituzione e non tocca il codice di quei giri, ma siccome il giro colpevole non è stato cercato non posso dire
+  quale di questi controlli fosse dovuto: restano tutti non eseguiti su questo ramo.
 - **Nessuna foto prima/dopo**: le prove sono coi corpi 3D spenti, come il guardiano.
 - **Tempo**: circa 3 ore e 15 minuti, oltre il tetto di 2 ore. Lo sforamento viene dalle tre versioni della correzione (ognuna ha
   richiesto di rifare le corse) e dalle due corse intere da 20 minuti.
