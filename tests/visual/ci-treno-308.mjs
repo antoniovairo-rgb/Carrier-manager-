@@ -37,10 +37,24 @@ function leggiCatene() {
 /* script che lanciano a loro volta una catena (o il gate pesante gia' coperto da validate-situations.yml): fuori dal treno */
 const FUORI = /^ci(:|$)/;
 
+/* [giro 317 PO-604] TIPO del treno (CPM_TRENO_TIPO): «trenino» = guardiani delle righe della mappa toccate dal vagone + sentinelle
+   (tools/trenino-317.mjs scegli: diff fra l'ultimo rilascio e la punta; un file non coperto lo fa diventare «completo» = mappa intera);
+   «mappa» / «notte» = mappa intera; un elenco dato a mano (CPM_TRENO_ELENCO) e' sempre «elenco» e non rilascia mai. */
+async function scelta317() {
+  const tipo = process.env.CPM_TRENO_ELENCO ? 'elenco' : (process.env.CPM_TRENO_TIPO || 'mappa');
+  if (tipo === 'trenino' && process.env.CPM_NO_G317 === '1') return { tipo: 'mappa' };/* rosso del guardiano trenino-317: comportamento del giro 312 */
+  if (tipo !== 'trenino') return { tipo };
+  const T = await import(path.join(ROOT, 'tools/trenino-317.mjs'));
+  const sha = process.env.CPM_TRENO_SHA || process.env.GITHUB_SHA || 'HEAD';
+  const s = T.sceltaDaGit(ROOT, sha, process.env.CPM_TRENO_BASE || null);
+  return { tipo: s.tipo, guardiani: s.guardiani, scelta: { base: s.base.sha, base_come: s.base.come, merge_base: s.base.merge_base, toccati: s.toccati.length, scoperti: s.scoperti, motivo: s.motivo } };
+}
+const S317 = cmd === 'piano' ? await scelta317() : null;
 function piano() {
   const { CATENE, MAPPA } = leggiCatene();
   const script = leggiJSON(path.join(QUI, 'package.json'), {}).scripts || {};
   let nomi = process.env.CPM_TRENO_ELENCO ? process.env.CPM_TRENO_ELENCO.split(/\s+/).filter(Boolean)
+    : S317 && S317.tipo === 'trenino' ? S317.guardiani
     : [...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])];
   nomi = [...new Set(nomi)].filter(n => !FUORI.test(n));
   const senza = nomi.filter(n => !script[n]); nomi = nomi.filter(n => script[n]);
@@ -56,6 +70,7 @@ function piano() {
   while (N < Math.min(voci.length, 256) && parti.some(p => p.attesi_s > OB && p.guardiani.length > 1)) parti = taglia(++N);
   const nome = p => `parte ${String(p.parte).padStart(2, '0')} di ${N} (${p.guardiani.length} guardiani, ~${Math.round(p.attesi_s / 60)} min)`;
   return {
+    tipo: S317 ? S317.tipo : 'mappa', scelta: S317 ? S317.scelta || null : null,
     riassunto: { guardiani: voci.length, parti: N, obiettivo_s: OB, somma_s: tot, parte_piu_lunga_s: Math.max(...parti.map(p => p.attesi_s)), parte_piu_corta_s: Math.min(...parti.map(p => p.attesi_s)),
       per_fonte: voci.reduce((o, v) => (o[v.fonte] = (o[v.fonte] || 0) + 1, o), {}), senza_script_npm: senza },
     matrice: { include: parti.map(p => ({ parte: p.parte, nome: nome(p), guardiani: p.guardiani.join(' '), attesi_s: p.attesi_s })) },
@@ -65,8 +80,11 @@ function piano() {
 if (cmd === 'piano') {
   const p = piano();
   console.log(JSON.stringify(p, null, 1));
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrice=' + JSON.stringify(p.matrice) + '\n');
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrice=' + JSON.stringify(p.matrice) + '\n'
+    + 'tipo=' + p.tipo + '\n' + 'scelta=' + JSON.stringify(p.scelta) + '\n');
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+    (p.tipo === 'trenino' ? `### TRENINO (giro 317): ${p.scelta.motivo}\n\nultimo rilascio ${p.scelta.base_come} · antenato comune ${p.scelta.merge_base.slice(0, 8)}\n\n`
+      : p.tipo === 'completo' ? `### TRENO COMPLETO al posto del trenino (giro 317): ${p.scelta.motivo}\n\n` : '') +
     `### Piano del treno: ${p.riassunto.guardiani} guardiani in ${p.riassunto.parti} parti\n\nsomma attesa ${Math.round(p.riassunto.somma_s / 60)} min · parte piu' lunga ~${Math.round(p.riassunto.parte_piu_lunga_s / 60)} min · obiettivo ${Math.round(p.riassunto.obiettivo_s / 60)} min · durate: ${JSON.stringify(p.riassunto.per_fonte)}\n`);
 } else if (cmd === 'esegui') {
   const nomi = (process.argv[3] || '').split(/\s+/).filter(Boolean);
@@ -115,16 +133,19 @@ if (cmd === 'piano') {
     somma_guardiani_s: passi.reduce((a, x) => a + (x.s || 0), 0), dal_primo_inizio_all_ultima_fine_s: Math.round((t1 - t0) / 1000), parti_insieme_max: insieme,
     verdetto: per('rosso_nuovo').length || per('non_giudicato').length ? 'DA GUARDARE: rossi nuovi o non giudicati' : 'nessun rosso nuovo' };
   const sim = { verde: '✅', rosso_nuovo: '❌ NUOVO', rosso_noto: '🟧 noto', rosso_noto_runner: '🟨 noto runner', non_giudicato: '⛔ non giudicato' };
-  const md = `## Treno — riepilogo della mappa intera\n\n**${tot.verdetto}** · ${tot.verdi}/${tot.guardiani} verdi in ${tot.parti_arrivate}${tot.parti_attese ? '/' + tot.parti_attese : ''} parti · a parete ${Math.round(tot.dal_primo_inizio_all_ultima_fine_s / 60)} min · somma ${Math.round(tot.somma_guardiani_s / 60)} min · parti insieme (max) ${insieme}\n\n`
+  const md = `## Treno — riepilogo (${process.env.CPM_TRENO_TIPO || 'mappa'})\n\n**${tot.verdetto}** · ${tot.verdi}/${tot.guardiani} verdi in ${tot.parti_arrivate}${tot.parti_attese ? '/' + tot.parti_attese : ''} parti · a parete ${Math.round(tot.dal_primo_inizio_all_ultima_fine_s / 60)} min · somma ${Math.round(tot.somma_guardiani_s / 60)} min · parti insieme (max) ${insieme}\n\n`
     + `- rossi NUOVI (${tot.rossi_nuovi.length}): ${tot.rossi_nuovi.join(', ') || '—'}\n- non giudicati (tetto, non partiti, parte mancante) (${tot.non_giudicati.length}): ${tot.non_giudicati.join(', ') || '—'}\n- rossi noti (${tot.rossi_noti.length}): ${tot.rossi_noti.join(', ') || '—'}\n- rossi noti del runner (${tot.rossi_noti_runner.length}): ${tot.rossi_noti_runner.join(', ') || '—'}\n- dichiarati rossi ma verdi qui: ${tot.noti_tornati_verdi.join(', ') || '—'}\n\n`
     + `| parte | guardiano | esito | durata | coda |\n|---|---|---|---|---|\n`
     + passi.map(x => `| ${x.parte} | \`${x.guardiano}\` | ${sim[x.classe]} | ${x.s || 0} s | ${x.ok ? '' : String(x.coda || '').replace(/\|/g, '/').slice(0, 160)} |`).join('\n') + '\n';
   console.log(md); console.log('RIEPILOGO_JSON ' + JSON.stringify(tot));
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'riepilogo-totale.json'), JSON.stringify({ totale: tot, passi, parti: tutti }, null, 1) + '\n');
-  fs.writeFileSync(path.join(dir, 'esito-treno.json'), JSON.stringify({ commit: process.env.GITHUB_SHA || null, ramo: process.env.GITHUB_REF_NAME || null, corsa: process.env.GITHUB_RUN_ID || null,
-    /* [giro 312] il rilascio automatico pretende la mappa INTERA: un elenco dato a mano non rilascia mai */
-    mappa_intera: !String(process.env.CPM_TRENO_ELENCO || '').trim(), ...tot,
+  /* [giro 317] tipo e scelta vengono dal piano (CPM_TRENO_TIPO / CPM_TRENO_SCELTA): il rilascio ricalcola la scelta da se' e la confronta */
+  const tipo = String(process.env.CPM_TRENO_ELENCO || '').trim() ? 'elenco' : (process.env.CPM_TRENO_TIPO || 'mappa');
+  const scelta = (() => { try { return JSON.parse(process.env.CPM_TRENO_SCELTA || 'null'); } catch { return null; } })();
+  fs.writeFileSync(path.join(dir, 'esito-treno.json'), JSON.stringify({ commit: process.env.CPM_TRENO_SHA || process.env.GITHUB_SHA || null, ramo: process.env.CPM_TRENO_RAMO || process.env.GITHUB_REF_NAME || null, corsa: process.env.GITHUB_RUN_ID || null,
+    /* [giro 312] il rilascio automatico pretende la mappa INTERA: un elenco dato a mano non rilascia mai. [giro 317] o un trenino verificato */
+    tipo, scelta, mappa_intera: ['mappa', 'notte', 'completo'].includes(tipo), ...tot,
     per_guardiano: Object.fromEntries(passi.map(x => [x.guardiano, { classe: x.classe, s: x.s || 0, parte: x.parte }])) }, null, 1) + '\n');
   fs.writeFileSync(path.join(dir, 'riepilogo-totale.md'), md);
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
