@@ -1,0 +1,4496 @@
+{
+ "_": "giro 308: durata di ogni guardiano (secondi). `s` = valore usato dal taglio in parti (ci-parti-303.mjs); `fonte` (in ordine di precedenza, la piu' recente prima) = rapporti (mediana delle durate scritte nei rapporti dei giri 293-307 e delle verifiche 198, 19-21/11) | runner (taratura 44830113928 + giro 303, 20/11) | banco (mediana di STABILITA.json, giri 10-11/2026) | stimata (nessuna misura: 300 s). «+tetto» = un rapporto dice che e' stato fermato al tetto dei 30 minuti. Rigenerare: node tools/durate-guardiani-308.mjs",
+ "generato": "2026-11-21T10:46",
+ "fonti_rapporti": [
+  "RAPPORTO-giro293.md",
+  "RAPPORTO-giro294.md",
+  "RAPPORTO-giro295.md",
+  "RAPPORTO-giro296.md",
+  "RAPPORTO-giro298.md",
+  "RAPPORTO-giro299.md",
+  "RAPPORTO-giro300.md",
+  "RAPPORTO-giro301.md",
+  "RAPPORTO-giro302.md",
+  "RAPPORTO-giro303.md",
+  "RAPPORTO-giro304.md",
+  "RAPPORTO-giro305.md",
+  "RAPPORTO-giro306.md",
+  "RAPPORTO-giro307.md",
+  "VERIFICA198-B1-V1.md",
+  "VERIFICA198-D.md",
+  "VERIFICA198-F1.md",
+  "VERIFICA198-F2.md",
+  "VERIFICA198-R1.md",
+  "VERIFICA198-R2.md",
+  "VERIFICA198-R3.md",
+  "VERIFICA198-R4.md",
+  "VERIFICA198-R5.md",
+  "VERIFICA198-R6.md",
+  "VERIFICA198-R7.md",
+  "VERIFICA198-V2.md",
+  "VERIFICA198-V2a.md",
+  "VERIFICA198-V2b.md",
+  "VERIFICA198-V2c.md",
+  "VERIFICA198-V2d.md",
+  "VERIFICA198-V3.md",
+  "VERIFICA198-V3b.md",
+  "VERIFICA198-V4.md"
+ ],
+ "totale": {
+  "guardiani": 349,
+  "somma_s": 115511,
+  "per_fonte": {
+   "rapporti": 154,
+   "runner": 181,
+   "banco": 7,
+   "stimata": 6,
+   "runner+tetto": 1
+  }
+ },
+ "oltre_30_minuti": [
+  {
+   "n": "gol-eroe-154",
+   "s": 3600,
+   "runner_max": 3012,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "highlight-95",
+   "s": 3600,
+   "runner_max": 4940,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "ingresso-206",
+   "s": 3067,
+   "runner_max": 3067,
+   "fonte": "runner"
+  },
+  {
+   "n": "assist-nome-98",
+   "s": 2964,
+   "runner_max": 2964,
+   "fonte": "runner"
+  },
+  {
+   "n": "nomi-219",
+   "s": 2910,
+   "runner_max": 2593,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "esiti-218",
+   "s": 2340,
+   "runner_max": 1533,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "difesa-220",
+   "s": 2330,
+   "runner_max": 2046,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "coreografie-244",
+   "s": 2295,
+   "runner_max": 1934,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "chiusura-99",
+   "s": 2081,
+   "runner_max": 1372,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "parata-100",
+   "s": 2040,
+   "runner_max": 2884,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "assist-298",
+   "s": 1826,
+   "runner_max": 1848,
+   "fonte": "runner"
+  },
+  {
+   "n": "riproduci-175",
+   "s": 1800,
+   "runner_max": 1450,
+   "fonte": "runner+tetto"
+  },
+  {
+   "n": "scena3d-96",
+   "s": 1403,
+   "runner_max": 1903,
+   "fonte": "rapporti"
+  },
+  {
+   "n": "tunnel-245",
+   "s": 1260,
+   "runner_max": 1929,
+   "fonte": "rapporti"
+  }
+ ],
+ "voci": {
+  "accessibilita-234": {
+   "s": 102,
+   "fonte": "rapporti",
+   "runner": [
+    100
+   ],
+   "rapporti": {
+    "mediana": 102,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro300.md",
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "acquisti-281": {
+   "s": 25,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 121,
+    "n": 3
+   },
+   "runner": [
+    25
+   ]
+  },
+  "aereo-252": {
+   "s": 172,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 311,
+    "n": 2
+   },
+   "runner": [
+    163,
+    180
+   ]
+  },
+  "agente-198": {
+   "s": 91,
+   "fonte": "runner",
+   "runner": [
+    91
+   ]
+  },
+  "analisi-217": {
+   "s": 13,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 28,
+    "n": 1
+   },
+   "runner": [
+    13,
+    14
+   ],
+   "rapporti": {
+    "mediana": 13,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R4.md"
+    ]
+   }
+  },
+  "anteprima-212": {
+   "s": 21,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 41,
+    "n": 19
+   },
+   "runner": [
+    21
+   ]
+  },
+  "anteprima-230": {
+   "s": 155,
+   "fonte": "rapporti",
+   "runner": [
+    140
+   ],
+   "rapporti": {
+    "mediana": 155,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "apertura-261": {
+   "s": 153,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 295,
+    "n": 2
+   },
+   "runner": [
+    156,
+    150
+   ]
+  },
+  "assist-298": {
+   "s": 1826,
+   "fonte": "runner",
+   "runner": [
+    1804,
+    1848
+   ],
+   "tetto30": [
+    "VERIFICA198-V2a.md"
+   ]
+  },
+  "assist-nome-98": {
+   "s": 2964,
+   "fonte": "runner",
+   "runner": [
+    2964
+   ]
+  },
+  "attesa-241": {
+   "s": 61,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 106,
+    "n": 6
+   },
+   "runner": [
+    58
+   ],
+   "rapporti": {
+    "mediana": 61,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro302.md",
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "attesa-difesa": {
+   "s": 37,
+   "fonte": "runner",
+   "runner": [
+    37
+   ]
+  },
+  "avversario-106": {
+   "s": 13,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 13,
+    "n": 20
+   },
+   "runner": [
+    3
+   ]
+  },
+  "avvicinamento-61": {
+   "s": 84,
+   "fonte": "rapporti",
+   "runner": [
+    84,
+    92
+   ],
+   "rapporti": {
+    "mediana": 84,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "avvio-233": {
+   "s": 113,
+   "fonte": "rapporti",
+   "runner": [
+    1,
+    1
+   ],
+   "rapporti": {
+    "mediana": 113,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro302.md",
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "avviso3d-209": {
+   "s": 150,
+   "fonte": "rapporti",
+   "runner": [
+    228
+   ],
+   "rapporti": {
+    "mediana": 150,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R3.md"
+    ]
+   }
+  },
+  "backup-167": {
+   "s": 25,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 83,
+    "n": 6
+   },
+   "runner": [
+    25
+   ]
+  },
+  "badge-255": {
+   "s": 46,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 84,
+    "n": 5
+   },
+   "runner": [
+    46
+   ]
+  },
+  "bambini-236": {
+   "s": 1318,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 1363,
+    "n": 13
+   },
+   "runner": [
+    1317,
+    1318
+   ]
+  },
+  "bambini-294": {
+   "s": 392,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 538,
+    "n": 1
+   },
+   "runner": [
+    352,
+    432
+   ]
+  },
+  "barra-221": {
+   "s": 211,
+   "fonte": "rapporti",
+   "runner": [
+    206
+   ],
+   "rapporti": {
+    "mediana": 211,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "barra-360-72": {
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
+  },
+  "battito-264": {
+   "s": 360,
+   "fonte": "rapporti",
+   "runner": [
+    321,
+    330,
+    313
+   ],
+   "rapporti": {
+    "mediana": 360,
+    "n": 5,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "RAPPORTO-giro300.md",
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "box-fischio-169": {
+   "s": 66,
+   "fonte": "rapporti",
+   "runner": [
+    160
+   ],
+   "rapporti": {
+    "mediana": 66,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "brain-202": {
+   "s": 447,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 434,
+    "n": 17
+   },
+   "runner": [
+    447
+   ]
+  },
+  "brusio-238": {
+   "s": 14,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 14,
+    "n": 5
+   },
+   "runner": [
+    4
+   ]
+  },
+  "buildup-sync": {
+   "s": 120,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 170,
+    "n": 3
+   },
+   "runner": [
+    163
+   ],
+   "rapporti": {
+    "mediana": 120,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro295.md"
+    ]
+   }
+  },
+  "busta-199": {
+   "s": 60,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 82,
+    "n": 1
+   },
+   "runner": [
+    60
+   ]
+  },
+  "calendario-218": {
+   "s": 33,
+   "fonte": "runner",
+   "runner": [
+    33
+   ]
+  },
+  "calendario-247": {
+   "s": 14,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 36,
+    "n": 4
+   },
+   "runner": [
+    14
+   ]
+  },
+  "calendario-nazionale": {
+   "s": 31,
+   "fonte": "runner",
+   "runner": [
+    31
+   ]
+  },
+  "calendario-offerte-195": {
+   "s": 24,
+   "fonte": "runner",
+   "runner": [
+    24
+   ]
+  },
+  "camera-241": {
+   "s": 854,
+   "fonte": "rapporti",
+   "runner": [
+    571,
+    996
+   ],
+   "rapporti": {
+    "mediana": 854,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R3.md"
+    ]
+   }
+  },
+  "camera-252": {
+   "s": 247,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 439,
+    "n": 3
+   },
+   "runner": [
+    249,
+    245
+   ]
+  },
+  "career-critical": {
+   "s": 565,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 809,
+    "n": 37
+   },
+   "runner": [
+    565,
+    396
+   ],
+   "rapporti": {
+    "mediana": 565,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro303.md"
+    ]
+   }
+  },
+  "career-nat-sim": {
+   "s": 14,
+   "fonte": "runner",
+   "runner": [
+    14
+   ]
+  },
+  "carriera3-94": {
+   "s": 165,
+   "fonte": "rapporti",
+   "runner": [
+    159,
+    169
+   ],
+   "rapporti": {
+    "mediana": 165,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R4.md",
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "catalogo-022": {
+   "s": 489,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 270,
+    "n": 2
+   },
+   "runner": [
+    266
+   ],
+   "rapporti": {
+    "mediana": 489,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "cerimonie": {
+   "s": 35,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 41,
+    "n": 1
+   },
+   "runner": [
+    32,
+    37
+   ]
+  },
+  "cerimonie-192": {
+   "s": 452,
+   "fonte": "rapporti",
+   "runner": [
+    556
+   ],
+   "rapporti": {
+    "mediana": 452,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "chip-269": {
+   "s": 11,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 46,
+    "n": 2
+   },
+   "runner": [
+    11
+   ]
+  },
+  "chiusura-99": {
+   "s": 2081,
+   "fonte": "rapporti",
+   "runner": [
+    1364,
+    1372
+   ],
+   "rapporti": {
+    "mediana": 2081,
+    "n": 5,
+    "da": [
+     "VERIFICA198-F1.md",
+     "VERIFICA198-R6.md",
+     "VERIFICA198-R7.md",
+     "VERIFICA198-V3b.md"
+    ]
+   },
+   "tetto30": [
+    "VERIFICA198-V2a.md"
+   ]
+  },
+  "classifica-102": {
+   "s": 9,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 42,
+    "n": 20
+   },
+   "runner": [
+    9
+   ]
+  },
+  "classifica-194": {
+   "s": 256,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 254,
+    "n": 2
+   },
+   "runner": [
+    256
+   ]
+  },
+  "classifica-259": {
+   "s": 134,
+   "fonte": "runner",
+   "runner": [
+    134
+   ]
+  },
+  "clip-180": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
+  "coerenza-235": {
+   "s": 180,
+   "fonte": "rapporti",
+   "runner": [
+    178
+   ],
+   "rapporti": {
+    "mediana": 180,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "colla-103": {
+   "s": 240,
+   "fonte": "rapporti",
+   "runner": [
+    344,
+    330
+   ],
+   "rapporti": {
+    "mediana": 240,
+    "n": 1,
+    "da": [
+     "VERIFICA198-B1-V1.md"
+    ]
+   }
+  },
+  "colori-286": {
+   "s": 882,
+   "fonte": "rapporti",
+   "runner": [
+    508
+   ],
+   "rapporti": {
+    "mediana": 882,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "conduci-242": {
+   "s": 84,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 159,
+    "n": 3
+   },
+   "runner": [
+    86,
+    111
+   ],
+   "rapporti": {
+    "mediana": 84,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "conferenza-192": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
+  "consegna-103": {
+   "s": 1260,
+   "fonte": "rapporti",
+   "runner": [
+    1617,
+    1008
+   ],
+   "rapporti": {
+    "mediana": 1260,
+    "n": 1,
+    "da": [
+     "VERIFICA198-B1-V1.md"
+    ]
+   }
+  },
+  "contatto-103": {
+   "s": 804,
+   "fonte": "rapporti",
+   "runner": [
+    576,
+    660
+   ],
+   "rapporti": {
+    "mediana": 804,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V2d.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "convocazione-190": {
+   "s": 1,
+   "fonte": "rapporti",
+   "runner": [
+    1
+   ],
+   "rapporti": {
+    "mediana": 1,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "convocazione-235": {
+   "s": 22,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 93,
+    "n": 7
+   },
+   "runner": [
+    22
+   ]
+  },
+  "coppa-mani-191": {
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
+  },
+  "coppa-prestito-245": {
+   "s": 23,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 47,
+    "n": 5
+   },
+   "runner": [
+    23
+   ]
+  },
+  "coreografie-244": {
+   "s": 2295,
+   "fonte": "rapporti",
+   "runner": [
+    1934,
+    1500
+   ],
+   "rapporti": {
+    "mediana": 2295,
+    "n": 2,
+    "da": [
+     "VERIFICA198-F2.md"
+    ]
+   },
+   "tetto30": [
+    "VERIFICA198-R5.md"
+   ]
+  },
+  "coreografie-252": {
+   "s": 1583,
+   "fonte": "runner",
+   "runner": [
+    1410,
+    1755
+   ]
+  },
+  "cori-291": {
+   "s": 1,
+   "fonte": "rapporti",
+   "runner": [
+    3
+   ],
+   "rapporti": {
+    "mediana": 1,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "corpi-073": {
+   "s": 433,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1935,
+    "n": 3
+   },
+   "runner": [
+    484,
+    485
+   ],
+   "rapporti": {
+    "mediana": 433,
+    "n": 3,
+    "da": [
+     "RAPPORTO-giro305.md",
+     "VERIFICA198-F1.md",
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "crea-home-295": {
+   "s": 8,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 46,
+    "n": 1
+   },
+   "runner": [
+    8
+   ]
+  },
+  "crediti-254": {
+   "s": 7,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 28,
+    "n": 5
+   },
+   "runner": [
+    7
+   ]
+  },
+  "cronaca-nomi-190": {
+   "s": 516,
+   "fonte": "rapporti",
+   "runner": [
+    255
+   ],
+   "rapporti": {
+    "mediana": 516,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "cross-218": {
+   "s": 178,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 236,
+    "n": 15
+   },
+   "runner": [
+    174,
+    188
+   ],
+   "rapporti": {
+    "mediana": 178,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "cross-origine": {
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
+  },
+  "debito-190": {
+   "s": 1,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 1,
+    "n": 14
+   },
+   "runner": [
+    1
+   ]
+  },
+  "design-system": {
+   "s": 1,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1,
+    "n": 19
+   },
+   "runner": [
+    1,
+    0
+   ],
+   "rapporti": {
+    "mediana": 1,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro302.md"
+    ]
+   }
+  },
+  "diagonali-210": {
+   "s": 158,
+   "fonte": "rapporti",
+   "runner": [
+    125
+   ],
+   "rapporti": {
+    "mediana": 158,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro300.md"
+    ]
+   }
+  },
+  "difesa-220": {
+   "s": 2330,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 2201,
+    "n": 24
+   },
+   "runner": [
+    2046
+   ],
+   "rapporti": {
+    "mediana": 2330,
+    "n": 3,
+    "da": [
+     "VERIFICA198-R1.md",
+     "VERIFICA198-R6.md"
+    ]
+   },
+   "tetto30": [
+    "VERIFICA198-R1.md"
+   ]
+  },
+  "difesa-220-giro31": {
+   "s": 1633,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1411,
+    "n": 3
+   },
+   "runner": [
+    1351,
+    1355
+   ],
+   "rapporti": {
+    "mediana": 1633,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "difesa-220-scena": {
+   "s": 1604,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 2431,
+    "n": 12
+   },
+   "runner": [
+    1604
+   ]
+  },
+  "difesa-252": {
+   "s": 250,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 366,
+    "n": 4
+   },
+   "runner": [
+    225,
+    274
+   ]
+  },
+  "difficolta-156": {
+   "s": 151,
+   "fonte": "rapporti",
+   "runner": [
+    369
+   ],
+   "rapporti": {
+    "mediana": 151,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V4.md"
+    ]
+   }
+  },
+  "disappunto": {
+   "s": 35,
+   "fonte": "runner",
+   "runner": [
+    35
+   ]
+  },
+  "doppio-gesto-148": {
+   "s": 342,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 358,
+    "n": 1
+   },
+   "runner": [
+    342
+   ]
+  },
+  "dribbling-226": {
+   "s": 811,
+   "fonte": "runner",
+   "runner": [
+    710,
+    911
+   ]
+  },
+  "errori-168": {
+   "s": 10,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 26,
+    "n": 3
+   },
+   "runner": [
+    10
+   ]
+  },
+  "esiti-218": {
+   "s": 2340,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1106,
+    "n": 26
+   },
+   "runner": [
+    1533
+   ],
+   "rapporti": {
+    "mediana": 2340,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "esiti-241": {
+   "s": 332,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 449,
+    "n": 3
+   },
+   "runner": [
+    319,
+    450
+   ],
+   "rapporti": {
+    "mediana": 332,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "esiti-60": {
+   "s": 107,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 236,
+    "n": 4
+   },
+   "runner": [
+    124
+   ],
+   "rapporti": {
+    "mediana": 107,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "esiti-96": {
+   "s": 787,
+   "fonte": "rapporti",
+   "runner": [
+    687
+   ],
+   "rapporti": {
+    "mediana": 787,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "esito-280": {
+   "s": 540,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 345,
+    "n": 1
+   },
+   "runner": [
+    326
+   ],
+   "rapporti": {
+    "mediana": 540,
+    "n": 2,
+    "da": [
+     "VERIFICA198-V3.md",
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "esito-282": {
+   "s": 391,
+   "fonte": "rapporti",
+   "runner": [
+    343
+   ],
+   "rapporti": {
+    "mediana": 391,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "esito-rete-301": {
+   "s": 1138,
+   "fonte": "rapporti",
+   "runner": [
+    1320,
+    955,
+    1616,
+    1620
+   ],
+   "rapporti": {
+    "mediana": 1138,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-F1.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "esultanza-braccia": {
+   "s": 36,
+   "fonte": "runner",
+   "runner": [
+    36
+   ]
+  },
+  "etichette-108": {
+   "s": 13,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 13,
+    "n": 20
+   },
+   "runner": [
+    2
+   ]
+  },
+  "etichette-95": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
+  "euro-attesa-181": {
+   "s": 10,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 32,
+    "n": 20
+   },
+   "runner": [
+    10
+   ]
+  },
+  "fallo-cercato": {
+   "s": 59,
+   "fonte": "runner",
+   "runner": [
+    59
+   ]
+  },
+  "festa-oro-251": {
+   "s": 22,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 43,
+    "n": 4
+   },
+   "runner": [
+    22
+   ]
+  },
+  "figurina-199": {
+   "s": 51,
+   "fonte": "runner",
+   "runner": [
+    51
+   ]
+  },
+  "figurine-208": {
+   "s": 27,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 42,
+    "n": 1
+   },
+   "runner": [
+    27
+   ]
+  },
+  "fila-206": {
+   "s": 391,
+   "fonte": "runner",
+   "runner": [
+    391
+   ]
+  },
+  "fila-227": {
+   "s": 384,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 332,
+    "n": 15
+   },
+   "runner": [
+    401,
+    389
+   ],
+   "rapporti": {
+    "mediana": 384,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R6.md"
+    ]
+   }
+  },
+  "filtrante-intercetto": {
+   "s": 39,
+   "fonte": "runner",
+   "runner": [
+    39
+   ]
+  },
+  "finale-202": {
+   "s": 11,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 11,
+    "n": 18
+   },
+   "runner": [
+    0
+   ]
+  },
+  "finestra-230": {
+   "s": 45,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 109,
+    "n": 14
+   },
+   "runner": [
+    45
+   ]
+  },
+  "forma-239": {
+   "s": 184,
+   "fonte": "rapporti",
+   "runner": [
+    192
+   ],
+   "rapporti": {
+    "mediana": 184,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "formazioni-204": {
+   "s": 35,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 53,
+    "n": 1
+   },
+   "runner": [
+    35
+   ]
+  },
+  "formazioni-262": {
+   "s": 42,
+   "fonte": "rapporti",
+   "runner": [
+    42,
+    51
+   ],
+   "rapporti": {
+    "mediana": 42,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "fps-249": {
+   "s": 30,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 45,
+    "n": 4
+   },
+   "runner": [
+    31
+   ],
+   "rapporti": {
+    "mediana": 30,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "gesti-copertura-96": {
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
+  },
+  "gesti-motore-068": {
+   "s": 7,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 16,
+    "n": 1
+   },
+   "runner": [
+    7
+   ]
+  },
+  "gesti-scena-p1b": {
+   "s": 613,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 656,
+    "n": 1
+   },
+   "runner": [
+    613
+   ]
+  },
+  "gigante-212": {
+   "s": 758,
+   "fonte": "runner",
+   "runner": [
+    758
+   ]
+  },
+  "gioca-188": {
+   "s": 28,
+   "fonte": "runner",
+   "runner": [
+    28
+   ]
+  },
+  "giornale-244": {
+   "s": 827,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 834,
+    "n": 3
+   },
+   "runner": [
+    827
+   ]
+  },
+  "giornata-233": {
+   "s": 16,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 39,
+    "n": 11
+   },
+   "runner": [
+    16
+   ]
+  },
+  "gk-dive-sync": {
+   "s": 180,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 233,
+    "n": 20
+   },
+   "runner": [
+    186,
+    150
+   ],
+   "rapporti": {
+    "mediana": 180,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "gk-miss-229": {
+   "s": 180,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 418,
+    "n": 18
+   },
+   "runner": [
+    171,
+    235
+   ],
+   "rapporti": {
+    "mediana": 180,
+    "n": 4,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F1.md",
+     "VERIFICA198-V3.md",
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "goal-postarc": {
+   "s": 631,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 282,
+    "n": 22
+   },
+   "runner": [
+    296,
+    308
+   ],
+   "rapporti": {
+    "mediana": 631,
+    "n": 2,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "gol-eroe-154": {
+   "s": 3600,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1,
+    "n": 1
+   },
+   "runner": [
+    3012
+   ],
+   "rapporti": {
+    "mediana": 3600,
+    "n": 4,
+    "da": [
+     "VERIFICA198-R1.md",
+     "VERIFICA198-R6.md",
+     "VERIFICA198-R7.md"
+    ]
+   },
+   "tetto30": [
+    "VERIFICA198-R1.md"
+   ]
+  },
+  "goleade": {
+   "s": 19,
+   "fonte": "runner",
+   "runner": [
+    19
+   ]
+  },
+  "grafica-168": {
+   "s": 160,
+   "fonte": "rapporti",
+   "runner": [
+    173
+   ],
+   "rapporti": {
+    "mediana": 160,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "grafica-v2": {
+   "s": 121,
+   "fonte": "runner",
+   "runner": [
+    121
+   ]
+  },
+  "griglia-mobile": {
+   "s": 187,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 204,
+    "n": 5
+   },
+   "runner": [
+    182
+   ],
+   "rapporti": {
+    "mediana": 187,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro294.md",
+     "RAPPORTO-giro300.md",
+     "RAPPORTO-giro302.md",
+     "VERIFICA198-V4.md"
+    ]
+   }
+  },
+  "guanti-201": {
+   "s": 57,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 66,
+    "n": 1
+   },
+   "runner": [
+    57
+   ]
+  },
+  "guardalinee-222": {
+   "s": 414,
+   "fonte": "rapporti",
+   "runner": [
+    255,
+    267
+   ],
+   "rapporti": {
+    "mediana": 414,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "highlight-95": {
+   "s": 3600,
+   "fonte": "rapporti",
+   "runner": [
+    4940
+   ],
+   "rapporti": {
+    "mediana": 3600,
+    "n": 3,
+    "da": [
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "home-066": {
+   "s": 55,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 115,
+    "n": 4
+   },
+   "runner": [
+    55
+   ]
+  },
+  "home-199": {
+   "s": 128,
+   "fonte": "runner",
+   "runner": [
+    128
+   ]
+  },
+  "home-298": {
+   "s": 126,
+   "fonte": "rapporti",
+   "runner": [
+    130,
+    129,
+    123
+   ],
+   "rapporti": {
+    "mediana": 126,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro302.md",
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-F2.md"
+    ]
+   }
+  },
+  "home-riquadri": {
+   "s": 7,
+   "fonte": "runner",
+   "runner": [
+    7
+   ]
+  },
+  "impulsi-289": {
+   "s": 20,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 51,
+    "n": 1
+   },
+   "runner": [
+    20
+   ]
+  },
+  "impulsi-contesto": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
+  "impulsi-memoria-154": {
+   "s": 41,
+   "fonte": "runner",
+   "runner": [
+    41
+   ]
+  },
+  "indice-163": {
+   "s": 22,
+   "fonte": "runner",
+   "runner": [
+    22
+   ]
+  },
+  "infortunio-263": {
+   "s": 87,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 246,
+    "n": 6
+   },
+   "runner": [
+    87
+   ]
+  },
+  "ingresso-206": {
+   "s": 3067,
+   "fonte": "runner",
+   "runner": [
+    3067
+   ]
+  },
+  "ingresso-245": {
+   "s": 132,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 155,
+    "n": 1
+   },
+   "runner": [
+    132,
+    172
+   ],
+   "rapporti": {
+    "mediana": 132,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "ingresso-276": {
+   "s": 250,
+   "fonte": "runner",
+   "runner": [
+    176,
+    324
+   ]
+  },
+  "ingresso-277": {
+   "s": 417,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 704,
+    "n": 1
+   },
+   "runner": [
+    402,
+    484
+   ],
+   "rapporti": {
+    "mediana": 417,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R4.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "ingresso-285": {
+   "s": 335,
+   "fonte": "rapporti",
+   "runner": [
+    307,
+    214
+   ],
+   "rapporti": {
+    "mediana": 335,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R4.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "ingresso-camminata-245": {
+   "s": 238,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 350,
+    "n": 2
+   },
+   "runner": [
+    212,
+    269
+   ],
+   "rapporti": {
+    "mediana": 238,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "inquadra-273": {
+   "s": 661,
+   "fonte": "rapporti",
+   "runner": [
+    477,
+    424
+   ],
+   "rapporti": {
+    "mediana": 661,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R6.md"
+    ]
+   }
+  },
+  "interazioni-226": {
+   "s": 300,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1123,
+    "n": 4
+   },
+   "runner": [
+    1073
+   ],
+   "rapporti": {
+    "mediana": 300,
+    "n": 2,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "intercetto-291": {
+   "s": 717,
+   "fonte": "runner",
+   "runner": [
+    665,
+    769
+   ]
+  },
+  "intervista-231": {
+   "s": 867,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 895,
+    "n": 25
+   },
+   "runner": [
+    867
+   ]
+  },
+  "interviste-183": {
+   "s": 264,
+   "fonte": "rapporti",
+   "runner": [
+    256
+   ],
+   "rapporti": {
+    "mediana": 264,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "interviste-211": {
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
+  },
+  "intro-292": {
+   "s": 84,
+   "fonte": "rapporti",
+   "runner": [
+    84
+   ],
+   "rapporti": {
+    "mediana": 84,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "investimento-223": {
+   "s": 147,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 305,
+    "n": 5
+   },
+   "runner": [
+    147
+   ]
+  },
+  "kit-061": {
+   "s": 30,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 28,
+    "n": 1
+   },
+   "runner": [
+    32,
+    28
+   ]
+  },
+  "l7-schermate": {
+   "s": 22,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 47,
+    "n": 1
+   },
+   "runner": [
+    22
+   ]
+  },
+  "lessico-218": {
+   "s": 2,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 23,
+    "n": 16
+   },
+   "runner": [
+    3
+   ],
+   "rapporti": {
+    "mediana": 2,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "licenze-184": {
+   "s": 110,
+   "fonte": "runner",
+   "runner": [
+    110
+   ]
+  },
+  "linee-61": {
+   "s": 696,
+   "fonte": "runner",
+   "runner": [
+    685,
+    707
+   ]
+  },
+  "livello-79": {
+   "s": 33,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 80,
+    "n": 2
+   },
+   "runner": [
+    33
+   ]
+  },
+  "lotteria-191": {
+   "s": 252,
+   "fonte": "rapporti",
+   "runner": [
+    236,
+    255
+   ],
+   "rapporti": {
+    "mediana": 252,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "manovre-150": {
+   "s": 5,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 6,
+    "n": 18
+   },
+   "runner": [
+    4
+   ],
+   "rapporti": {
+    "mediana": 5,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "mappa-unica": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    0
+   ]
+  },
+  "memoria-275": {
+   "s": 459,
+   "fonte": "rapporti",
+   "runner": [
+    353,
+    349
+   ],
+   "rapporti": {
+    "mediana": 459,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "meta-conto-265": {
+   "s": 29,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 86,
+    "n": 5
+   },
+   "runner": [
+    29
+   ]
+  },
+  "migrazione-194": {
+   "s": 24,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 89,
+    "n": 7
+   },
+   "runner": [
+    24
+   ]
+  },
+  "minuti-202": {
+   "s": 173,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 196,
+    "n": 19
+   },
+   "runner": [
+    169
+   ],
+   "rapporti": {
+    "mediana": 173,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "mister-215": {
+   "s": 30,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 42,
+    "n": 20
+   },
+   "runner": [
+    30
+   ]
+  },
+  "momenti-v2": {
+   "s": 155,
+   "fonte": "runner",
+   "runner": [
+    155
+   ]
+  },
+  "momento-165": {
+   "s": 176,
+   "fonte": "runner",
+   "runner": [
+    176
+   ]
+  },
+  "momento-165b": {
+   "s": 167,
+   "fonte": "runner",
+   "runner": [
+    167
+   ]
+  },
+  "momento-173": {
+   "s": 95,
+   "fonte": "rapporti",
+   "runner": [
+    97
+   ],
+   "rapporti": {
+    "mediana": 95,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "momento-185": {
+   "s": 164,
+   "fonte": "runner",
+   "runner": [
+    164
+   ]
+  },
+  "momento-194": {
+   "s": 104,
+   "fonte": "rapporti",
+   "runner": [
+    98
+   ],
+   "rapporti": {
+    "mediana": 104,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "moves-budget": {
+   "s": 138,
+   "fonte": "runner",
+   "runner": [
+    138
+   ]
+  },
+  "movimento-147": {
+   "s": 620,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 645,
+    "n": 1
+   },
+   "runner": [
+    620
+   ]
+  },
+  "nazionale-155": {
+   "s": 44,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 29,
+    "n": 1
+   },
+   "runner": [
+    44
+   ]
+  },
+  "neutro-287": {
+   "s": 40,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 111,
+    "n": 2
+   },
+   "runner": [
+    40
+   ]
+  },
+  "nomi-182": {
+   "s": 277,
+   "fonte": "runner",
+   "runner": [
+    277
+   ]
+  },
+  "nomi-190": {
+   "s": 22,
+   "fonte": "rapporti",
+   "runner": [
+    22
+   ],
+   "rapporti": {
+    "mediana": 22,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "nomi-211": {
+   "s": 190,
+   "fonte": "rapporti",
+   "runner": [
+    240
+   ],
+   "rapporti": {
+    "mediana": 190,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "nomi-219": {
+   "s": 2910,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 3284,
+    "n": 25
+   },
+   "runner": [
+    2593
+   ],
+   "rapporti": {
+    "mediana": 2910,
+    "n": 4,
+    "da": [
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-F2.md"
+    ]
+   },
+   "tetto30": [
+    "VERIFICA198-R2.md",
+    "VERIFICA198-R2.md"
+   ]
+  },
+  "nomi-248": {
+   "s": 50,
+   "fonte": "runner",
+   "runner": [
+    50
+   ]
+  },
+  "nomi-251": {
+   "s": 48,
+   "fonte": "runner",
+   "runner": [
+    48
+   ]
+  },
+  "nomi-51": {
+   "s": 33,
+   "fonte": "runner",
+   "runner": [
+    33
+   ]
+  },
+  "nomi-salvati-190": {
+   "s": 36,
+   "fonte": "rapporti",
+   "runner": [
+    39
+   ],
+   "rapporti": {
+    "mediana": 36,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "notte-206": {
+   "s": 168,
+   "fonte": "runner",
+   "runner": [
+    155,
+    180
+   ]
+  },
+  "numeri-home": {
+   "s": 12,
+   "fonte": "runner",
+   "runner": [
+    12
+   ]
+  },
+  "occasioni-dinamiche": {
+   "s": 55,
+   "fonte": "runner",
+   "runner": [
+    55
+   ]
+  },
+  "occasioni-squadra": {
+   "s": 61,
+   "fonte": "runner",
+   "runner": [
+    61
+   ]
+  },
+  "offerta-249": {
+   "s": 27,
+   "fonte": "runner",
+   "runner": [
+    27
+   ]
+  },
+  "pagella-75": {
+   "s": 834,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 874,
+    "n": 2
+   },
+   "runner": [
+    834
+   ]
+  },
+  "palco-corpi-191": {
+   "s": 105,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 121,
+    "n": 1
+   },
+   "runner": [
+    105
+   ]
+  },
+  "pallino-278": {
+   "s": 72,
+   "fonte": "rapporti",
+   "runner": [
+    82
+   ],
+   "rapporti": {
+    "mediana": 72,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "pallone-278": {
+   "s": 134,
+   "fonte": "runner",
+   "runner": [
+    127,
+    141
+   ]
+  },
+  "panchina-293": {
+   "s": 220,
+   "fonte": "rapporti",
+   "runner": [
+    220,
+    230
+   ],
+   "rapporti": {
+    "mediana": 220,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "parata-100": {
+   "s": 2040,
+   "fonte": "rapporti",
+   "runner": [
+    2884
+   ],
+   "rapporti": {
+    "mediana": 2040,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro295.md"
+    ]
+   }
+  },
+  "parata-198": {
+   "s": 41,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 33,
+    "n": 1
+   },
+   "runner": [
+    41
+   ]
+  },
+  "parata-258": {
+   "s": 60,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 209,
+    "n": 3
+   },
+   "runner": [
+    83,
+    99
+   ],
+   "rapporti": {
+    "mediana": 60,
+    "n": 3,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-R5.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "partita-rigiocata-194": {
+   "s": 243,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 545,
+    "n": 20
+   },
+   "runner": [
+    243
+   ]
+  },
+  "partita-v2": {
+   "s": 441,
+   "fonte": "rapporti",
+   "runner": [
+    367
+   ],
+   "rapporti": {
+    "mediana": 441,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "partita-vera": {
+   "s": 665,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 518,
+    "n": 27
+   },
+   "runner": [
+    395,
+    390
+   ],
+   "rapporti": {
+    "mediana": 665,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "partita2d-297": {
+   "s": 144,
+   "fonte": "rapporti",
+   "runner": [
+    156
+   ],
+   "rapporti": {
+    "mediana": 144,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "passaggi-228": {
+   "s": 71,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 121,
+    "n": 4
+   },
+   "runner": [
+    73
+   ],
+   "rapporti": {
+    "mediana": 71,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "passaggio-coppa-137": {
+   "s": 130,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 154,
+    "n": 1
+   },
+   "runner": [
+    134,
+    138
+   ],
+   "rapporti": {
+    "mediana": 130,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "passo-velocita": {
+   "s": 81,
+   "fonte": "runner",
+   "runner": [
+    81
+   ]
+  },
+  "patrimonio-303": {
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
+  },
+  "patto-227": {
+   "s": 43,
+   "fonte": "runner",
+   "runner": [
+    43
+   ]
+  },
+  "patto-238": {
+   "s": 829,
+   "fonte": "rapporti",
+   "runner": [
+    709
+   ],
+   "rapporti": {
+    "mediana": 829,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "pc-tablet-292": {
+   "s": 696,
+   "fonte": "rapporti",
+   "runner": [
+    716,
+    622
+   ],
+   "rapporti": {
+    "mediana": 696,
+    "n": 3,
+    "da": [
+     "RAPPORTO-giro300.md",
+     "VERIFICA198-R5.md",
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "pelle-240": {
+   "s": 386,
+   "fonte": "runner",
+   "runner": [
+    400,
+    372
+   ]
+  },
+  "piazzati-eroe": {
+   "s": 25,
+   "fonte": "runner",
+   "runner": [
+    25
+   ]
+  },
+  "piazzato-204": {
+   "s": 456,
+   "fonte": "rapporti",
+   "runner": [
+    364,
+    360
+   ],
+   "rapporti": {
+    "mediana": 456,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "piccoli-85": {
+   "s": 30,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 63,
+    "n": 1
+   },
+   "runner": [
+    30
+   ]
+  },
+  "piede-cross-p1b2": {
+   "s": 265,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 299,
+    "n": 1
+   },
+   "runner": [
+    265
+   ]
+  },
+  "piede-preferito": {
+   "s": 89,
+   "fonte": "runner",
+   "runner": [
+    89
+   ]
+  },
+  "piedi-203": {
+   "s": 622,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 638,
+    "n": 1
+   },
+   "runner": [
+    622
+   ]
+  },
+  "piedi-252": {
+   "s": 212,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 478,
+    "n": 3
+   },
+   "runner": [
+    216,
+    166
+   ],
+   "rapporti": {
+    "mediana": 212,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "pillola-58": {
+   "s": 59,
+   "fonte": "rapporti",
+   "runner": [
+    76
+   ],
+   "rapporti": {
+    "mediana": 59,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "po229-gi38": {
+   "s": 33,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 42,
+    "n": 3
+   },
+   "runner": [
+    31,
+    31
+   ],
+   "rapporti": {
+    "mediana": 33,
+    "n": 1,
+    "da": [
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "podio-260": {
+   "s": 24,
+   "fonte": "runner",
+   "runner": [
+    24
+   ]
+  },
+  "popup-224": {
+   "s": 15,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 40,
+    "n": 20
+   },
+   "runner": [
+    15
+   ]
+  },
+  "popup-224b": {
+   "s": 39,
+   "fonte": "runner",
+   "runner": [
+    39
+   ]
+  },
+  "portatore-286": {
+   "s": 360,
+   "fonte": "rapporti",
+   "runner": [
+    319,
+    315
+   ],
+   "rapporti": {
+    "mediana": 360,
+    "n": 1,
+    "da": [
+     "VERIFICA198-B1-V1.md"
+    ]
+   }
+  },
+  "portatore-293": {
+   "s": 540,
+   "fonte": "rapporti",
+   "runner": [
+    534,
+    633
+   ],
+   "rapporti": {
+    "mediana": 540,
+    "n": 5,
+    "da": [
+     "RAPPORTO-giro293.md",
+     "RAPPORTO-giro305.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F2.md",
+     "VERIFICA198-R4.md"
+    ]
+   }
+  },
+  "portiere-223": {
+   "s": 360,
+   "fonte": "rapporti",
+   "runner": [
+    512,
+    487
+   ],
+   "rapporti": {
+    "mediana": 360,
+    "n": 3,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V3.md",
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "portiere-252": {
+   "s": 845,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 798,
+    "n": 5
+   },
+   "runner": [
+    857,
+    945
+   ],
+   "rapporti": {
+    "mediana": 845,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "portiere-265": {
+   "s": 300,
+   "fonte": "rapporti",
+   "runner": [
+    274,
+    373
+   ],
+   "rapporti": {
+    "mediana": 300,
+    "n": 3,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "portiere-295": {
+   "s": 660,
+   "fonte": "rapporti",
+   "runner": [
+    539,
+    948,
+    626,
+    965
+   ],
+   "rapporti": {
+    "mediana": 660,
+    "n": 7,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F1.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "posa-sollevamento-191": {
+   "s": 66,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 81,
+    "n": 1
+   },
+   "runner": [
+    66
+   ]
+  },
+  "possesso-209": {
+   "s": 533,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 593,
+    "n": 17
+   },
+   "runner": [
+    533
+   ]
+  },
+  "post-210": {
+   "s": 491,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 515,
+    "n": 1
+   },
+   "runner": [
+    491
+   ]
+  },
+  "pre-188": {
+   "s": 8,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 21,
+    "n": 20
+   },
+   "runner": [
+    8
+   ]
+  },
+  "premiazione-palco-191": {
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
+  },
+  "prepartita-287": {
+   "s": 43,
+   "fonte": "rapporti",
+   "runner": [
+    49,
+    42
+   ],
+   "rapporti": {
+    "mediana": 43,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro300.md"
+    ]
+   }
+  },
+  "presentazione-200": {
+   "s": 40,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 48,
+    "n": 1
+   },
+   "runner": [
+    40
+   ]
+  },
+  "presentazione-214": {
+   "s": 31,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 54,
+    "n": 20
+   },
+   "runner": [
+    31
+   ]
+  },
+  "presentazione-225": {
+   "s": 1040,
+   "fonte": "runner",
+   "runner": [
+    1040
+   ]
+  },
+  "pressing-143": {
+   "s": 26,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 64,
+    "n": 2
+   },
+   "runner": [
+    26,
+    26
+   ],
+   "rapporti": {
+    "mediana": 26,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "prima-partita-237": {
+   "s": 502,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 225,
+    "n": 5
+   },
+   "runner": [
+    208
+   ],
+   "rapporti": {
+    "mediana": 502,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "primavera-260": {
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
+  },
+  "pro-rivale-176": {
+   "s": 23,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 46,
+    "n": 20
+   },
+   "runner": [
+    23
+   ]
+  },
+  "procuratore-253": {
+   "s": 79,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 189,
+    "n": 5
+   },
+   "runner": [
+    79
+   ]
+  },
+  "provini-201": {
+   "s": 18,
+   "fonte": "rapporti",
+   "runner": [
+    19
+   ],
+   "rapporti": {
+    "mediana": 18,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro300.md"
+    ]
+   }
+  },
+  "pullman-204": {
+   "s": 153,
+   "fonte": "runner",
+   "runner": [
+    173,
+    133
+   ]
+  },
+  "pulsanti-263": {
+   "s": 141,
+   "fonte": "runner",
+   "runner": [
+    141
+   ]
+  },
+  "rassegna-200": {
+   "s": 605,
+   "fonte": "rapporti",
+   "runner": [
+    296
+   ],
+   "rapporti": {
+    "mediana": 605,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "rassegna-202": {
+   "s": 265,
+   "fonte": "rapporti",
+   "runner": [
+    250
+   ],
+   "rapporti": {
+    "mediana": 265,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R3.md"
+    ]
+   }
+  },
+  "rassegna-224": {
+   "s": 260,
+   "fonte": "rapporti",
+   "runner": [
+    240
+   ],
+   "rapporti": {
+    "mediana": 260,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "rassegna-232": {
+   "s": 653,
+   "fonte": "rapporti",
+   "runner": [
+    590
+   ],
+   "rapporti": {
+    "mediana": 653,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "reazione-252": {
+   "s": 186,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 381,
+    "n": 1
+   },
+   "runner": [
+    205,
+    167
+   ]
+  },
+  "recupero-103": {
+   "s": 26,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 82,
+    "n": 19
+   },
+   "runner": [
+    26
+   ]
+  },
+  "recupero-202": {
+   "s": 710,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 498,
+    "n": 20
+   },
+   "runner": [
+    467
+   ],
+   "rapporti": {
+    "mediana": 710,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "render-3d-023": {
+   "s": 44,
+   "fonte": "runner",
+   "runner": [
+    44,
+    44
+   ]
+  },
+  "replay": {
+   "s": 31,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 56,
+    "n": 29
+   },
+   "runner": [
+    31
+   ]
+  },
+  "rete-252": {
+   "s": 236,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 331,
+    "n": 2
+   },
+   "runner": [
+    197,
+    269
+   ],
+   "rapporti": {
+    "mediana": 236,
+    "n": 2,
+    "da": [
+     "VERIFICA198-F1.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "rifiniture-200": {
+   "s": 172,
+   "fonte": "runner",
+   "runner": [
+    172
+   ]
+  },
+  "rigore-191": {
+   "s": 360,
+   "fonte": "rapporti",
+   "runner": [
+    236
+   ],
+   "rapporti": {
+    "mediana": 360,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "rigore-79": {
+   "s": 25,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 35,
+    "n": 2
+   },
+   "runner": [
+    28
+   ],
+   "rapporti": {
+    "mediana": 25,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "rigori-190": {
+   "s": 7,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 14,
+    "n": 15
+   },
+   "runner": [
+    7
+   ]
+  },
+  "rigori-296": {
+   "s": 20,
+   "fonte": "rapporti",
+   "runner": [
+    686
+   ],
+   "rapporti": {
+    "mediana": 20,
+    "n": 3,
+    "da": [
+     "RAPPORTO-giro296.md",
+     "VERIFICA198-F2.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "rigorista-249": {
+   "s": 379,
+   "fonte": "rapporti",
+   "runner": [
+    242
+   ],
+   "rapporti": {
+    "mediana": 379,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "rigorista-257": {
+   "s": 319,
+   "fonte": "rapporti",
+   "runner": [
+    213,
+    211
+   ],
+   "rapporti": {
+    "mediana": 319,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R5.md",
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "rimbalzo-189": {
+   "s": 49,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 62,
+    "n": 15
+   },
+   "runner": [
+    49
+   ]
+  },
+  "rincorsa-144": {
+   "s": 228,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 238,
+    "n": 1
+   },
+   "runner": [
+    228
+   ]
+  },
+  "rinnovo-238": {
+   "s": 210,
+   "fonte": "runner",
+   "runner": [
+    210
+   ]
+  },
+  "rinnovo-270": {
+   "s": 33,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 82,
+    "n": 3
+   },
+   "runner": [
+    33
+   ]
+  },
+  "rinvio-252": {
+   "s": 222,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 429,
+    "n": 4
+   },
+   "runner": [
+    260,
+    256
+   ],
+   "rapporti": {
+    "mediana": 222,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R6.md"
+    ]
+   }
+  },
+  "rinvio-coppe-107": {
+   "s": 17,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 61,
+    "n": 20
+   },
+   "runner": [
+    17
+   ]
+  },
+  "ripartenza-207": {
+   "s": 204,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 477,
+    "n": 19
+   },
+   "runner": [
+    204
+   ],
+   "rapporti": {
+    "mediana": 204,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "ripartenza-235": {
+   "s": 252,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 478,
+    "n": 5
+   },
+   "runner": [
+    238
+   ],
+   "rapporti": {
+    "mediana": 252,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "ripresa-202": {
+   "s": 599,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 378,
+    "n": 19
+   },
+   "runner": [
+    462
+   ],
+   "rapporti": {
+    "mediana": 599,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "riproduci-175": {
+   "s": 1800,
+   "fonte": "runner+tetto",
+   "runner": [
+    1450
+   ],
+   "tetto30": [
+    "VERIFICA198-V2c.md"
+   ]
+  },
+  "riproduci-187": {
+   "s": 209,
+   "fonte": "rapporti",
+   "runner": [
+    161
+   ],
+   "rapporti": {
+    "mediana": 209,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R3.md"
+    ]
+   }
+  },
+  "riquadro-euro-105": {
+   "s": 11,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 44,
+    "n": 19
+   },
+   "runner": [
+    11
+   ]
+  },
+  "riserva-103": {
+   "s": 677,
+   "fonte": "rapporti",
+   "runner": [
+    758
+   ],
+   "rapporti": {
+    "mediana": 677,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "riserva-104": {
+   "s": 663,
+   "fonte": "rapporti",
+   "runner": [
+    382
+   ],
+   "rapporti": {
+    "mediana": 663,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "riserva2d-205": {
+   "s": 408,
+   "fonte": "rapporti",
+   "runner": [
+    425
+   ],
+   "rapporti": {
+    "mediana": 408,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "ritocchi-302": {
+   "s": 59,
+   "fonte": "rapporti",
+   "runner": [
+    69
+   ],
+   "rapporti": {
+    "mediana": 59,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro302.md",
+     "VERIFICA198-F2.md"
+    ]
+   }
+  },
+  "ritratto-171-72": {
+   "s": 56,
+   "fonte": "runner",
+   "runner": [
+    56
+   ]
+  },
+  "rosa-228": {
+   "s": 59,
+   "fonte": "runner",
+   "runner": [
+    59
+   ]
+  },
+  "rosa-angoli-299": {
+   "s": 604,
+   "fonte": "rapporti",
+   "runner": [
+    649
+   ],
+   "rapporti": {
+    "mediana": 604,
+    "n": 3,
+    "da": [
+     "RAPPORTO-giro302.md",
+     "RAPPORTO-giro306.md",
+     "VERIFICA198-F2.md"
+    ]
+   }
+  },
+  "ruleta": {
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
+  },
+  "salienti-229": {
+   "s": 168,
+   "fonte": "rapporti",
+   "runner": [
+    155
+   ],
+   "rapporti": {
+    "mediana": 168,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "salienti-243": {
+   "s": 213,
+   "fonte": "rapporti",
+   "runner": [
+    203,
+    211
+   ],
+   "rapporti": {
+    "mediana": 213,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro300.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "salienti-246": {
+   "s": 846,
+   "fonte": "rapporti",
+   "runner": [
+    769,
+    776
+   ],
+   "rapporti": {
+    "mediana": 846,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "salienti-253": {
+   "s": 132,
+   "fonte": "rapporti",
+   "runner": [
+    129
+   ],
+   "rapporti": {
+    "mediana": 132,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "salta-163": {
+   "s": 120,
+   "fonte": "runner",
+   "runner": [
+    120
+   ]
+  },
+  "salti-274": {
+   "s": 660,
+   "fonte": "rapporti",
+   "runner": [
+    433,
+    465
+   ],
+   "rapporti": {
+    "mediana": 660,
+    "n": 5,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V3.md",
+     "VERIFICA198-V3b.md"
+    ]
+   }
+  },
+  "save-compat": {
+   "s": 5,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 13,
+    "n": 32
+   },
+   "runner": [
+    8,
+    9,
+    10,
+    2
+   ],
+   "rapporti": {
+    "mediana": 5,
+    "n": 6,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "RAPPORTO-giro300.md",
+     "RAPPORTO-giro302.md",
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-F2.md"
+    ]
+   }
+  },
+  "scatto-305": {
+   "s": 119,
+   "fonte": "rapporti",
+   "runner": [
+    100
+   ],
+   "rapporti": {
+    "mediana": 119,
+    "n": 1,
+    "da": [
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "scelte-197": {
+   "s": 361,
+   "fonte": "rapporti",
+   "runner": [
+    191
+   ],
+   "rapporti": {
+    "mediana": 361,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "scelte-201": {
+   "s": 478,
+   "fonte": "runner",
+   "runner": [
+    478
+   ]
+  },
+  "scena-motore-147": {
+   "s": 2,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 1096,
+    "n": 21
+   },
+   "runner": [
+    948
+   ],
+   "rapporti": {
+    "mediana": 2,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "scena3d-96": {
+   "s": 1403,
+   "fonte": "rapporti",
+   "runner": [
+    1903,
+    1785
+   ],
+   "rapporti": {
+    "mediana": 1403,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R5.md"
+    ]
+   }
+  },
+  "scene-190": {
+   "s": 1,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 1,
+    "n": 15
+   },
+   "runner": [
+    0
+   ]
+  },
+  "scene-221": {
+   "s": 1556,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 1643,
+    "n": 29
+   },
+   "runner": [
+    1556
+   ]
+  },
+  "scene-disegnabili": {
+   "s": 8,
+   "fonte": "runner",
+   "runner": [
+    8
+   ]
+  },
+  "scene-fuori-137": {
+   "s": 21,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 60,
+    "n": 4
+   },
+   "runner": [
+    21
+   ]
+  },
+  "schede-234": {
+   "s": 833,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 583,
+    "n": 14
+   },
+   "runner": [
+    548
+   ],
+   "rapporti": {
+    "mediana": 833,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "schede-246": {
+   "s": 343,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 557,
+    "n": 9
+   },
+   "runner": [
+    303
+   ],
+   "rapporti": {
+    "mediana": 343,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "schede-259": {
+   "s": 736,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 766,
+    "n": 10
+   },
+   "runner": [
+    736
+   ]
+  },
+  "schede-260": {
+   "s": 1178,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 1181,
+    "n": 5
+   },
+   "runner": [
+    1178
+   ]
+  },
+  "schermate-97": {
+   "s": 141,
+   "fonte": "runner",
+   "runner": [
+    141
+   ]
+  },
+  "serata-261": {
+   "s": 394,
+   "fonte": "runner",
+   "runner": [
+    394
+   ]
+  },
+  "sigle-203": {
+   "s": 608,
+   "fonte": "rapporti",
+   "runner": [
+    606
+   ],
+   "rapporti": {
+    "mediana": 608,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R1.md"
+    ]
+   }
+  },
+  "simula-215": {
+   "s": 282,
+   "fonte": "rapporti",
+   "runner": [
+    258
+   ],
+   "rapporti": {
+    "mediana": 282,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "simula-v2": {
+   "s": 30,
+   "fonte": "runner",
+   "runner": [
+    30
+   ]
+  },
+  "simulata-272": {
+   "s": 9,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 20,
+    "n": 3
+   },
+   "runner": [
+    9
+   ]
+  },
+  "solo-highlight-166": {
+   "s": 913,
+   "fonte": "rapporti",
+   "runner": [
+    625
+   ],
+   "rapporti": {
+    "mediana": 913,
+    "n": 2,
+    "da": [
+     "RAPPORTO-giro300.md",
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "spazio-270": {
+   "s": 587,
+   "fonte": "rapporti",
+   "runner": [
+    559
+   ],
+   "rapporti": {
+    "mediana": 587,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "spazio-296": {
+   "s": 468,
+   "fonte": "runner",
+   "runner": [
+    463,
+    473
+   ]
+  },
+  "spogliatoio-182": {
+   "s": 16,
+   "fonte": "runner",
+   "runner": [
+    16
+   ]
+  },
+  "spot-266": {
+   "s": 72,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 396,
+    "n": 3
+   },
+   "runner": [
+    61,
+    63
+   ],
+   "rapporti": {
+    "mediana": 72,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "squalifica-222": {
+   "s": 54,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 183,
+    "n": 6
+   },
+   "runner": [
+    54
+   ]
+  },
+  "stadi-064": {
+   "s": 23,
+   "fonte": "runner",
+   "runner": [
+    25,
+    21
+   ]
+  },
+  "stadi-071": {
+   "s": 87,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 211,
+    "n": 4
+   },
+   "runner": [
+    86,
+    87
+   ]
+  },
+  "stat-279": {
+   "s": 41,
+   "fonte": "rapporti",
+   "runner": [
+    41
+   ],
+   "rapporti": {
+    "mediana": 41,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2d.md"
+    ]
+   }
+  },
+  "statistiche-228": {
+   "s": 128,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 146,
+    "n": 5
+   },
+   "runner": [
+    252
+   ],
+   "rapporti": {
+    "mediana": 128,
+    "n": 1,
+    "da": [
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "stile-unico-75": {
+   "s": 11,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 42,
+    "n": 2
+   },
+   "runner": [
+    11
+   ]
+  },
+  "stili-098": {
+   "s": 15,
+   "fonte": "runner",
+   "runner": [
+    15
+   ]
+  },
+  "stili-098-migrazione": {
+   "s": 300,
+   "fonte": "stimata",
+   "runner": [
+    2
+   ]
+  },
+  "store-236": {
+   "s": 24,
+   "fonte": "rapporti",
+   "runner": [
+    24
+   ],
+   "rapporti": {
+    "mediana": 24,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V4.md"
+    ]
+   }
+  },
+  "strisce-corpo": {
+   "s": 26,
+   "fonte": "runner",
+   "runner": [
+    23,
+    29
+   ]
+  },
+  "svincolato-198": {
+   "s": 66,
+   "fonte": "runner",
+   "runner": [
+    66
+   ]
+  },
+  "svincolato-264": {
+   "s": 63,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 175,
+    "n": 6
+   },
+   "runner": [
+    63
+   ]
+  },
+  "tabellino-216": {
+   "s": 492,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 543,
+    "n": 16
+   },
+   "runner": [
+    492
+   ]
+  },
+  "tabellino-228": {
+   "s": 398,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 317,
+    "n": 22
+   },
+   "runner": [
+    302
+   ],
+   "rapporti": {
+    "mediana": 398,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2a.md"
+    ]
+   }
+  },
+  "tabellino-lati": {
+   "s": 5,
+   "fonte": "rapporti",
+   "runner": [
+    8
+   ],
+   "rapporti": {
+    "mediana": 5,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "tabellone-214": {
+   "s": 516,
+   "fonte": "rapporti",
+   "runner": [
+    412
+   ],
+   "rapporti": {
+    "mediana": 516,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2.md"
+    ]
+   }
+  },
+  "tecnica-045": {
+   "s": 122,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 103,
+    "n": 4
+   },
+   "runner": [
+    79
+   ],
+   "rapporti": {
+    "mediana": 122,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "tema-unico": {
+   "s": 17,
+   "fonte": "rapporti",
+   "runner": [
+    27,
+    20
+   ],
+   "rapporti": {
+    "mediana": 17,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro302.md"
+    ]
+   }
+  },
+  "tempo-138": {
+   "s": 814,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 540,
+    "n": 20
+   },
+   "runner": [
+    506
+   ],
+   "rapporti": {
+    "mediana": 814,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2c.md"
+    ]
+   }
+  },
+  "test:logic": {
+   "s": 3,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 4,
+    "n": 33
+   },
+   "runner": [
+    3,
+    2,
+    4,
+    3
+   ],
+   "rapporti": {
+    "mediana": 3,
+    "n": 6,
+    "da": [
+     "RAPPORTO-giro295.md",
+     "RAPPORTO-giro300.md",
+     "RAPPORTO-giro302.md",
+     "RAPPORTO-giro303.md",
+     "VERIFICA198-F2.md"
+    ]
+   }
+  },
+  "test:vision": {
+   "s": 2,
+   "fonte": "banco",
+   "banco": {
+    "mediana": 2,
+    "n": 18
+   },
+   "runner": [
+    2
+   ]
+  },
+  "testa-143": {
+   "s": 252,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 1290,
+    "n": 3
+   },
+   "runner": [
+    263,
+    240
+   ]
+  },
+  "testa-146": {
+   "s": 324,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 371,
+    "n": 1
+   },
+   "runner": [
+    324
+   ]
+  },
+  "testa-tempismo": {
+   "s": 457,
+   "fonte": "runner",
+   "runner": [
+    457
+   ]
+  },
+  "testata-209": {
+   "s": 529,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 562,
+    "n": 16
+   },
+   "runner": [
+    529
+   ]
+  },
+  "testi-190": {
+   "s": 136,
+   "fonte": "rapporti",
+   "runner": [
+    112
+   ],
+   "rapporti": {
+    "mediana": 136,
+    "n": 2,
+    "da": [
+     "VERIFICA198-F2.md",
+     "VERIFICA198-R2.md"
+    ]
+   }
+  },
+  "tetto-202": {
+   "s": 7,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 8,
+    "n": 19
+   },
+   "runner": [
+    7
+   ],
+   "rapporti": {
+    "mediana": 7,
+    "n": 1,
+    "da": [
+     "VERIFICA198-V2b.md"
+    ]
+   }
+  },
+  "tiro-caricato": {
+   "s": 223,
+   "fonte": "runner",
+   "runner": [
+    223
+   ]
+  },
+  "titolo-110": {
+   "s": 9,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 30,
+    "n": 19
+   },
+   "runner": [
+    9
+   ]
+  },
+  "toast-247": {
+   "s": 21,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 43,
+    "n": 4
+   },
+   "runner": [
+    21
+   ]
+  },
+  "toast-256": {
+   "s": 37,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 79,
+    "n": 5
+   },
+   "runner": [
+    37
+   ]
+  },
+  "toast-intervista-247": {
+   "s": 43,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 67,
+    "n": 4
+   },
+   "runner": [
+    43
+   ]
+  },
+  "tocco-213": {
+   "s": 255,
+   "fonte": "runner",
+   "runner": [
+    255
+   ]
+  },
+  "tocco3d-219": {
+   "s": 397,
+   "fonte": "runner",
+   "runner": [
+    397
+   ]
+  },
+  "tpose-196": {
+   "s": 1402,
+   "fonte": "rapporti",
+   "runner": [
+    1256,
+    1016
+   ],
+   "rapporti": {
+    "mediana": 1402,
+    "n": 2,
+    "da": [
+     "VERIFICA198-R4.md"
+    ]
+   }
+  },
+  "trainer-288": {
+   "s": 13,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 54,
+    "n": 2
+   },
+   "runner": [
+    13
+   ]
+  },
+  "tunnel-245": {
+   "s": 1260,
+   "fonte": "rapporti",
+   "runner": [
+    1929,
+    1459
+   ],
+   "rapporti": {
+    "mediana": 1260,
+    "n": 5,
+    "da": [
+     "RAPPORTO-giro304.md",
+     "RAPPORTO-giro307.md",
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "tunnel-285": {
+   "s": 273,
+   "fonte": "rapporti",
+   "runner": [
+    243,
+    300
+   ],
+   "rapporti": {
+    "mediana": 273,
+    "n": 2,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "tunnel-304": {
+   "s": 323,
+   "fonte": "rapporti",
+   "runner": [
+    800
+   ],
+   "rapporti": {
+    "mediana": 323,
+    "n": 1,
+    "da": [
+     "VERIFICA198-F1.md"
+    ]
+   }
+  },
+  "typing-shortcuts": {
+   "s": 15,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 23,
+    "n": 23
+   },
+   "runner": [
+    12,
+    10
+   ],
+   "rapporti": {
+    "mediana": 15,
+    "n": 1,
+    "da": [
+     "RAPPORTO-giro300.md"
+    ]
+   }
+  },
+  "validate-situations": {
+   "s": 886,
+   "fonte": "rapporti",
+   "banco": {
+    "mediana": 724,
+    "n": 21
+   },
+   "runner": [
+    612,
+    643
+   ],
+   "rapporti": {
+    "mediana": 886,
+    "n": 3,
+    "da": [
+     "VERIFICA198-B1-V1.md",
+     "VERIFICA198-V2b.md",
+     "VERIFICA198-V3.md"
+    ]
+   }
+  },
+  "via-ch38-171": {
+   "s": 77,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 112,
+    "n": 3
+   },
+   "runner": [
+    77
+   ]
+  },
+  "voto-79": {
+   "s": 332,
+   "fonte": "runner",
+   "banco": {
+    "mediana": 346,
+    "n": 2
+   },
+   "runner": [
+    332
+   ]
+  },
+  "walkout-fermi-197": {
+   "s": 213,
+   "fonte": "runner",
+   "runner": [
+    213
+   ]
+  },
+  "web-237": {
+   "s": 75,
+   "fonte": "runner",
+   "runner": [
+    78,
+    71
+   ]
+  },
+  "witness-frameskip": {
+   "s": 15,
+   "fonte": "runner",
+   "runner": [
+    15
+   ]
+  }
+ }
+}

@@ -1973,3 +1973,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
   - voto simulato → **+0,3** sotto OVR 72.
 - Vagone 3 = correzioni di bilanciamento (giro 310).
 - 12:30 (21/11) Lanciato giro 310 (Opus, session_01QEYia9qzNNdNW5u8abR2FY) dal ramo del 309: le sei correzioni decise (stampo, forza unica, meno yo-yo, infortuni, squalifiche, voto), un rosso per ciascuna, guardiano bilancio-310. Giro 309 archiviato.
+- 13:35 (21/11) PO: treno su main «Sì, ora»; 26 rossi «nuovi» della taratura da rifare sul banco lunedì dopo le 13:00; cancel-in-progress «Sì, vale l'ultima». Giro 308 unito in lavoro/200 (22da01a3) e portato su poc/main: workflow «Treno — mappa intera dei guardiani» (lavoro/**, prova/**, a mano), sentinelle (17, ~50 min), mappa unica, durate misurate, ROSSI-DICHIARATI.json. Gioco invariato (7.999.199). Taratura 44882036931: 349 guardiani in 31 parti, 2 h 52 min a parete, 318 verdi, job tutti verdi (nessuna mail).

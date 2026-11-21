@@ -743,7 +743,9 @@
     "cronaca-nomi-190": "node cronaca-nomi-190.mjs",
     "rosa-angoli-299": "node rosa-angoli-299.mjs",
     "ritocchi-302": "node ritocchi-302.mjs",
-    "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs"
+    "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs",
+    "mappa-unica": "node mappa-unica-308.mjs",
+    "ci:sentinelle": "node ci-runner.mjs sentinelle"
   },
   "dependencies": {
     "playwright": "^1.48.0",
