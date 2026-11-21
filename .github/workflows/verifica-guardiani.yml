@@ -1,0 +1,136 @@
+name: Treno — mappa intera dei guardiani
+
+# [giro 308, PO-592/517/527 — decisioni PO 20/11 21:05 «Treno + controlli a livelli» e 23:40 «mappa intera, parti da max 120 minuti,
+# avvio su push al ramo di rilascio + a mano»]. Base: workflow di prova del giro 303 (ramo prova-ci/giro303-actions).
+# Cosa gira: ogni guardiano nominato in CATENE e nella MAPPA di tests/visual/ci-runner.mjs (o l'elenco dato a mano).
+# Come si taglia: tests/visual/ci-treno-308.mjs piano — parti bilanciate sulle durate misurate (docs/governo/DURATE-GUARDIANI.json).
+# LA CORSA NON FALLISCE MAI PER UN GUARDIANO ROSSO (ogni corsa rossa = una mail «Run failed» al PO): l'esito sta nel riepilogo
+# della corsa, nell'artifact «riepilogo-totale» (riepilogo-totale.json/.md + esito-treno.json) e distingue rosso nuovo / rosso noto
+# (docs/governo/ROSSI-DICHIARATI.json) / non giudicato. Finche' la taratura non e' chiusa il giudice resta il banco.
+# Solo runner standard ubuntu-latest, sola lettura sui contenuti, nessun segreto.
+on:
+  push:
+    branches: ['lavoro/**', 'prova/**']
+    paths-ignore: ['docs/**', '**/*.md']
+  workflow_dispatch:
+    inputs:
+      elenco:
+        description: 'Guardiani separati da spazio (vuoto = mappa intera)'
+        required: false
+        default: ''
+      obiettivo_min:
+        description: 'Durata attesa massima di una parte, in minuti (il job ha comunque il tetto di 120)'
+        required: false
+        default: '70'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: treno-guardiani-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  piano:
+    name: Piano (taglio in parti)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrice: ${{ steps.piano.outputs.matrice }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Piano e matrice
+        id: piano
+        working-directory: tests/visual
+        env:
+          CPM_TRENO_ELENCO: ${{ github.event.inputs.elenco }}
+          CPM_TRENO_OBIETTIVO_MIN: ${{ github.event.inputs.obiettivo_min }}
+        run: |
+          if [ -n "$CPM_TRENO_OBIETTIVO_MIN" ]; then export CPM_TRENO_OBIETTIVO_S=$(( CPM_TRENO_OBIETTIVO_MIN * 60 )); fi
+          node ci-treno-308.mjs piano
+
+  guardiani:
+    name: ${{ matrix.nome }}
+    needs: piano
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    continue-on-error: true   # un job caduto non fa fallire la corsa: se manca il suo riepilogo, il Riepilogo lo dichiara «non giudicato»
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.piano.outputs.matrice) }}
+    defaults:
+      run:
+        working-directory: tests/visual
+    env:
+      CPM_CI_PAR: '0'
+      VISION_PROVIDER: none
+      CPM_TRENO_BILANCIO_S: '6600'   # 110 min per i guardiani: la parte si chiude da sola prima del timeout del job
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Dipendenze di tests/visual (npm install)
+        run: |
+          t0=$(date +%s)
+          npm install --no-audit --no-fund
+          echo "CPM_INSTALL_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+      - name: Chromium (Playwright, nel runner)
+        run: |
+          t0=$(date +%s)
+          npx playwright install --with-deps chromium
+          chrome=$(node -e "import('playwright').then(m=>console.log(m.chromium.executablePath()))")
+          test -x "$chrome"
+          echo "CPM_CHROME=$chrome" >> "$GITHUB_ENV"
+          echo "CPM_CHROMIUM_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+          "$chrome" --version; nproc; free -m | head -2
+      - name: Guardiani di questa parte (esce sempre 0)
+        env:
+          CPM_PARTE: ${{ matrix.nome }}
+          CPM_ATTESI_S: ${{ matrix.attesi_s }}
+        run: node ci-treno-308.mjs esegui "${{ matrix.guardiani }}"
+      - name: Uscita come artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardiani-parte-${{ matrix.parte }}
+          path: |
+            tests/visual/out/
+            !tests/visual/out/.precompilata-237/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
+
+  riepilogo:
+    name: Riepilogo
+    needs: [piano, guardiani]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          path: parti
+          pattern: guardiani-parte-*
+      - name: Tabella unica e classificazione dei rossi (nel log, nel riepilogo e come artifact)
+        env:
+          CPM_TRENO_MATRICE: ${{ needs.piano.outputs.matrice }}
+        run: node tests/visual/ci-treno-308.mjs riunisci parti || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: riepilogo-totale
+          path: |
+            parti/riepilogo-totale.json
+            parti/riepilogo-totale.md
+            parti/esito-treno.json
+          if-no-files-found: warn
+          retention-days: 14

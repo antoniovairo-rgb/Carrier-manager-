@@ -26,7 +26,7 @@ CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
    docs/governo/DURATE-GUARDIANI.json) che ogni giro esegue insieme al SUO guardiano; la mappa intera gira solo sull'unione (treno, workflow
    verifica-guardiani su GitHub Actions). Scelte per copertura e stabilita' (niente instabili noti, nessuno sopra i 15 minuti):
    logica e salvataggi · grafica e telefono · carriera · motore e partita · scena 3D · schermate PC/telefono e pagina pubblicata. */
-CATENE.sentinelle = ['test:logic', 'save-compat', 'replay', 'migrazione-194',/* logica, determinismo, salvataggi */
+CATENE.sentinelle = ['mappa-unica', 'test:logic', 'save-compat', 'replay', 'migrazione-194',/* mappa unica (statico), logica, determinismo, salvataggi */
   'design-system', 'tema-unico', 'griglia-mobile',/* grafica: token, tema unico, telefono 412 px */
   'career-critical',/* carriera: competizioni, salvataggi monotoni, doppio tocco */
   'battito-264', 'partita-vera',/* motore: un battito solo, partita vera fino al fischio */
