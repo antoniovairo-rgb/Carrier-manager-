@@ -129,8 +129,12 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-598 | 21/11 11:30 | Dal giro 309 (§5, T7), PO: «Sì, in un vagone dopo» — infortuni dei compagni: serve prima uno stato fisico per ogni giocatore della rosa (oggi `generateTeamRoster` src/09 ~1321 produce solo nomi e ruoli); poi stesso rischio dell'eroe sugli 11 titolari (~6 infortuni di compagni a stagione) e formazione che cambia | funzione (rosa, infortuni) | DA FARE nella 201 | 7.999.201 | — | — | questionario PO 21/11 |
 | PO-599 | 21/11 14:40 | Dal giro 310 (dubbio 1), PO: «Tarare i gol del motore» — il motore della simulazione segna 2,2-2,4 gol a partita contro 3,2 della Bundesliga 2023/24 (rapporto giro 309); con i gialli dell'eroe ridotti `sim-motore` è rosso di un soffio (2,29 contro soglia 2,3, dichiarato fino alla taratura). Vagone successivo: portare i gol del motore verso 2,6-2,9 a partita senza alterare forza relativa, strisce (giro 309) e determinismo; misura prima/dopo con sim-motore, partita-vera, match-sequence | bilanciamento (motore, gol) | DA FARE nella 201 | 7.999.201 | — | sim-motore | questionario PO 21/11 |
 | PO-600 | 21/11 15:00 | PO: rilascio «stile DevOps» — ogni vagone con treno senza rossi nuovi (oltre ROSSI-DICHIARATI) va in produzione da solo: numero di versione, nota, merge in main, deploy Pages, controllo del deploy e avviso al PO automatici; i casi dubbi restano al PO. Prerequisito: sistemazione dei 26 rossi della taratura (lunedì 23/11) | metodo di rilascio (treno, CD) | DA FARE nella 201 (PO 21/11: «iniziamo già», giro 312) | 7.999.201 | — | verifica-guardiani | richiesta PO 21/11 |
+| PO-601 | 21/11 19:40 | PO (foto docs/collaudo-po/200-serata-tifosi-ospiti.webp, «Serata di presentazione · Stagione 2», 7.999.200): «nella serata di presentazione non ci devono essere tifosi ospiti» — una tribuna coi colori dell'altra squadra. Il PO non ha scelto fra le varianti: si applica la consigliata, tutti i settori coi colori del club, stadio pieno | grafica 3D (serata, folla) | DA FARE — 201 | 7.999.201 | — | — | foto PO 21/11 |
+| PO-602 | 21/11 19:42 | PO: «la musica della presentazione è terribile» — oggi la serata (e la fine stagione) suona `music.cerimonia` = assets/audio/music/ceremony/il-mondo-e-nostro (CC0, 48 s, giro 161). Da fare: 3-4 brani CC0 candidati su una pagina d'ascolto, sceglie il PO | audio (cerimonie) | DA FARE — 201 | 7.999.201 | — | — | richiesta PO 21/11 |
 
-## Storico — voci chiuse (491)
+## 
+
+Storico — voci chiuse (491)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
