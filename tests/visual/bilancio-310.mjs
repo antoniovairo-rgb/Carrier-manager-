@@ -45,15 +45,20 @@ if (SOLO.includes('A')) for (const rosso of [false, true]) { await flag('__CPM_N
 await flag('__CPM_NO_G310A', false);
 
 /* D — infortuni: funzione vera, 1500 stagioni da 38 partite, fatica curata 38 */
-if (SOLO.includes('D')) for (const rosso of [false, true]) { await flag('__CPM_NO_G310D', rosso);
+if (SOLO.includes('D')) for (const braccio of ['verde', 'rosso', 'rosso311']) { const rosso = braccio !== 'verde'; await flag('__CPM_NO_G310D', braccio === 'rosso'); await flag('__CPM_NO_G311D', braccio === 'rosso311');
   const m = await page.evaluate(() => { const C = window.__CPM_CAREER; if (!C || !C.simInjuryRoll) return { cieco: true }; const P0 = C.snapshot(); let t = 0, q0 = 0;
     for (let s = 0; s < 1500; s++) { let ass = 0; for (let k = 0; k < 38; k++) { if (ass > 0) { ass--; continue; } const r = C.simInjuryRoll({ ...P0, injured: false, fatigue: 38 }, (s * 977 + k * 31 + 1) >>> 0); if (r && r.injured) { t++; ass = r.injuryWeeks; } } }
     for (let s = 0; s < 3000; s++) { const r = C.simInjuryRoll({ ...P0, injured: false, fatigue: 60 }, (s * 131 + 7) >>> 0, 0); if (r && r.injured) q0++; }
     return { infortuniStagione: +(t / 1500).toFixed(3), senzaMinuti: q0 }; });
-  if (m.cieco) { metti('D', rosso ? 'rosso' : 'verde', false, 'non giudicato: sonda simInjuryRoll assente', m); continue; }
-  if (!rosso) { const ok = m.infortuniStagione >= 0.45 && m.infortuniStagione <= 0.80 && m.senzaMinuti === 0; metti('D', 'verde', ok, ok ? '~0,6 infortuni a stagione con fatica curata, nessuno senza minuti' : 'fuori banda 0,45-0,80', m); }
+  if (m.cieco) { metti('D', braccio, false, 'non giudicato: sonda simInjuryRoll assente', m); continue; }
+  /* [giro 311, decisione PO «~0,6 IN CARRIERA»] base 1,0% -> 2,5%. Qui si misura la funzione a 90' pieni e fatica 38: con la base del
+     310 dava 0,60, che in carriera (minuti scalati dal mister, settimane fuori) diventava 0,30. Ora la carriera da' 0,63 (44 in 70
+     stagioni, misura-310-carriera) e la funzione a 90' pieni sta piu' in alto: banda 0,85-1,30 (attesa ~1,0). Il braccio rosso311
+     (__CPM_NO_G311D = base del 310) deve tornare sotto 0,85; il rosso del 310 (__CPM_NO_G310D) sotto 0,45. */
+  if (braccio === 'verde') { const ok = m.infortuniStagione >= 0.85 && m.infortuniStagione <= 1.30 && m.senzaMinuti === 0; metti('D', 'verde', ok, ok ? '~1,0 a 90\' pieni con fatica curata (= ~0,6 in carriera), nessuno senza minuti' : 'fuori banda 0,85-1,30', m); }
+  else if (braccio === 'rosso311') { const cade = m.infortuniStagione < 0.85; metti('D', 'rosso311', cade, cade ? 'con la base del 310 torna ~0,6 a 90\' pieni (0,30 in carriera)' : 'il rosso 311 non fa cadere il controllo', m); }
   else { const cade = m.infortuniStagione < 0.45; metti('D', 'rosso', cade, cade ? 'col rosso la fatica curata non si infortuna mai' : 'il rosso non fa cadere il controllo', m); } }
-await flag('__CPM_NO_G310D', false);
+await flag('__CPM_NO_G310D', false); await flag('__CPM_NO_G311D', false);
 
 /* E — cartellini: (1) gialli dell'eroe nel motore e totale di squadra, (2) regola 5 gialli / rosso nella simulata */
 if (SOLO.includes('E')) { const mis = {};
@@ -131,6 +136,6 @@ if (SOLO.includes('B')) { const SAVE = JSON.parse(fs.readFileSync(new URL('./fix
 
 await browser.close(); srv.close();
 fs.mkdirSync('out/bilancio-310', { recursive: true }); fs.writeFileSync('out/bilancio-310/esito.json', JSON.stringify({ esiti, errors }, null, 1));
-const attesi = SOLO.length * 2; const ok = esiti.filter(e => e.ok).length;
+const attesi = SOLO.length * 2 + (SOLO.includes('D') ? 1 : 0);/* [giro 311] D ha tre bracci (verde, rosso, rosso311) */ const ok = esiti.filter(e => e.ok).length;
 console.log(`bilancio-310: ${ok}/${attesi} bracci con l'esito atteso${errors.length ? ' · errori pagina: ' + errors.slice(0, 3).join(' | ') : ''}`);
 process.exit(ok === attesi && esiti.length === attesi && !errors.length ? 0 : 1);
