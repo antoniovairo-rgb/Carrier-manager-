@@ -1,0 +1,24 @@
+  passo 0: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 1 di 6 — 🏕️ Ritiro pre-campi»
+  passo 1: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 2 di 6 — 🏛️ Il Presidente ti»
+  passo 2: avanzato RIPIEGO su «Benvenuti ai nuovi →» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 3 di 6 — 📰 Presentazione del»
+  passo 3: avanzato RIPIEGO su «🔥 «Puntiamo in alto — parlo d» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 4 di 6 — 🎙️ Conferenza stamp»
+  passo 4: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 5 di 6 — 👕 Numero di maglia »
+  passo 5: avanzato RIPIEGO su «🏟️ Vai allo stadio» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 6 di 6 — 🏟️ Presentazione de»
+  passo 6: avanzato RIPIEGO su «🔊» {audio-serata299} · «🔊 BUONASERA E BENVENUTI ALLO Stadio Salernum 🏟️ SERATA DI PRESENTAZI»
+  passo 7: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 8: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 9: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 10: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 11: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 12: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+  passo 13: avanzato RIPIEGO su «🔊» {audio-serata299} · «Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anc»
+strati fissi a tutto schermo dopo l'apertura: [{"cpm":"DIV","z":"9997","t":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazion"},{"cpm":"audio-pannello","z":"9000","t":"🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85"}]
+scheda dashboard: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+scheda carriera: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+scheda profile: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+scheda agente: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+scheda ufficio: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+scheda club: {"c":false,"v2":0,"testo":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica "}
+impulso wi_dieta_ferrea aperto true {"chiave":"🥗 La seguo alla l","tasti":0,"tasto":null,"testoTrovatoIn":["SCRIPT < BODY < HTML"],"pagina":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85% 🎵 Musica 30% Chiudi SIGNORE E SIGNORI… ECCO A VOI IL VOSTRO FC SALERN"}
+strati fissi con l'impulso: [{"cpm":"DIV","z":"9997","t":"Korward Elite SLR FC Salernum 1919 🔊 🔊 Audio ✕ Le scelte valgono anche nelle Impostazion"},{"cpm":"audio-pannello","z":"9000","t":"🔊 Audio ✕ Le scelte valgono anche nelle Impostazioni 🔇 Muto 📣 Pubblico 85% ⚽ Effetti 85"}]
+errori di pagina 0 
