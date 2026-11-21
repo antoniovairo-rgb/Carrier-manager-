@@ -68,6 +68,7 @@ jobs:
     outputs:
       matrice: ${{ steps.piano.outputs.matrice }}
       tipo: ${{ steps.piano.outputs.tipo }}
+      chiesto: ${{ steps.bers.outputs.tipo_chiesto }}
       scelta: ${{ steps.piano.outputs.scelta }}
       sha: ${{ steps.bers.outputs.sha }}
       ramo: ${{ steps.bers.outputs.ramo }}
@@ -248,10 +249,12 @@ jobs:
           F=docs/governo/BLOCCO-RILASCI.json; dest="$POC"; [ "$MODO" = "prova" ] && dest="prova/cd-$CPM_CORSA-blocco"
           git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           scritto=no
+          # lo strumento vive sul ramo della corsa, non sul poc: si copia fuori prima di passare al poc (prova 44952982008: «Cannot find module»)
+          cp tools/trenino-317.mjs /tmp/trenino-317.mjs
           for i in 1 2 3 4; do
             git fetch -q origin "+refs/heads/$POC:refs/remotes/origin/$POC"
             git checkout -q -B blocco-317 "origin/$POC"
-            node tools/trenino-317.mjs blocco --esito esito/esito-treno.json --prec "$F" --uscita /tmp/nuovo.json --ramo "$RAMO_GIUDICATO"
+            node /tmp/trenino-317.mjs blocco --esito esito/esito-treno.json --prec "$F" --uscita /tmp/nuovo.json --ramo "$RAMO_GIUDICATO"
             prima=$(node -e 'try{const b=require(process.argv[1]);console.log(JSON.stringify((b.rossi||[]).map(x=>x.guardiano).sort()))}catch{console.log("nessuno")}' "$PWD/$F")
             dopo=$(node -e 'const b=require("/tmp/nuovo.json");console.log(JSON.stringify((b.rossi||[]).map(x=>x.guardiano).sort()))')
             attivo=$(node -p 'require("/tmp/nuovo.json").attivo')
@@ -287,7 +290,7 @@ jobs:
     name: Rilascio del vagone
     needs: [piano, riepilogo]
     # [giro 317] la notte NON rilascia: scrive solo il blocco (dubbio per il PO nel RAPPORTO-giro317)
-    if: always() && needs.piano.outputs.tipo != 'notte' && github.event_name != 'schedule' && (github.event_name == 'push' || github.event.inputs.rilascio != 'no')
+    if: always() && needs.piano.outputs.chiesto != 'notte' && github.event_name != 'schedule' && (github.event_name == 'push' || github.event.inputs.rilascio != 'no')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     continue-on-error: true
