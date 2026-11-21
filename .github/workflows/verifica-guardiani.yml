@@ -22,6 +22,17 @@ on:
         description: 'Durata attesa massima di una parte, in minuti (il job ha comunque il tetto di 120)'
         required: false
         default: '70'
+      rilascio:
+        description: 'Rilascio a treno pulito (giro 312): auto = segue l interruttore, prova = rami prova/cd-<corsa>-* senza deploy, no = niente'
+        required: false
+        type: choice
+        options: ['auto', 'prova', 'no']
+        default: 'auto'
+      rosso_finto:
+        description: 'Solo col modo prova: aggiunge un rosso nuovo finto (il rilascio deve fermarsi)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -126,6 +137,7 @@ jobs:
       - name: Tabella unica e classificazione dei rossi (nel log, nel riepilogo e come artifact)
         env:
           CPM_TRENO_MATRICE: ${{ needs.piano.outputs.matrice }}
+          CPM_TRENO_ELENCO: ${{ github.event.inputs.elenco }}
         run: node tests/visual/ci-treno-308.mjs riunisci parti || true
       - uses: actions/upload-artifact@v4
         with:
@@ -136,3 +148,126 @@ jobs:
             parti/esito-treno.json
           if-no-files-found: warn
           retention-days: 14
+
+  # [giro 312, PO-600 — decisioni PO 21/11 17:25] RILASCIO AUTOMATICO DEL VAGONE a treno pulito.
+  # Si rilascia SOLO se: interruttore acceso (docs/governo/RILASCIO-AUTO.json sul poc con "attivo": true, e la variabile di
+  # repository CPM_RILASCIO_AUTO diversa da «spento»), ramo lavoro/**, mappa intera, tutte le parti arrivate, NESSUN rosso nuovo
+  # e NESSUN non giudicato (solo rossi di ROSSI-DICHIARATI), commit provato ancora in punta, almeno un'unione «Unione sviluppo/...».
+  # Poi: GAME_VERSION +1 con la nota, build-src + check-src IDENTICO, commit sul lavoro, unione --no-ff nel poc (conflitti in
+  # docs/governo -> poc), main in fast-forward, tag annotato, UN push --atomic senza force, deploy di Pages avviato a mano
+  # (un push col GITHUB_TOKEN non fa partire on:push) e controllo che il sito serva la versione nuova.
+  # Tracce leggibili senza credenziali: tag v<versione>, docs/governo/ULTIMO-RILASCIO.json su main, stato del commit
+  # «rilascio-vagone» (anche quando si ferma, sul commit provato), artifact «esito-rilascio». Il job non fa MAI fallire la corsa.
+  # Modo prova (avvio a mano, rilascio=prova): rami nuovi prova/cd-<corsa>-{lavoro,poc,main}, tag prova-v<versione>-<corsa>, niente deploy.
+  # Logica: tools/rilascio-vagone-312.mjs · guardiano: npm run rilascio-312 (rosso CPM_NO_G312=1).
+  rilascio:
+    name: Rilascio del vagone
+    needs: [piano, riepilogo]
+    if: always() && (github.event_name == 'push' || github.event.inputs.rilascio != 'no')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    continue-on-error: true
+    concurrency:
+      group: rilascio-vagone
+      cancel-in-progress: false
+    permissions:
+      contents: write   # commit, unione, tag e push atomico
+      actions: write    # avviare «Deploy to GitHub Pages» (workflow_dispatch) e seguirne la corsa
+      statuses: write   # stato del commit «rilascio-vagone», leggibile senza credenziali
+      pages: read       # indirizzo del sito
+    env:
+      MODO: ${{ github.event.inputs.rilascio || 'auto' }}
+      CPM_RILASCIO_AUTO: ${{ vars.CPM_RILASCIO_AUTO }}
+      CPM_CORSA: ${{ github.run_id }}
+      CPM_CORSA_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: riepilogo-totale
+          path: esito
+      - name: Decisione (esce sempre 0)
+        id: dec
+        env:
+          ROSSO_FINTO: ${{ github.event.inputs.rosso_finto }}
+        run: |
+          rf=""; [ "$ROSSO_FINTO" = "true" ] && rf="--rosso-finto"
+          node tools/rilascio-vagone-312.mjs decidi --esito esito/esito-treno.json --modo "$MODO" --ramo "$GITHUB_REF_NAME" --sha "$GITHUB_SHA" $rf --uscita decisione.json || echo "rilascia=false" >> "$GITHUB_OUTPUT"
+      - name: Prepara (versione, build, check, commit, unione, tag)
+        id: prep
+        if: steps.dec.outputs.rilascia == 'true'
+        run: node tools/rilascio-vagone-312.mjs prepara --decisione decisione.json
+      - name: Pubblica (un push atomico, mai force)
+        id: pub
+        if: steps.dec.outputs.rilascia == 'true' && steps.prep.outcome == 'success'
+        run: node tools/rilascio-vagone-312.mjs pubblica --decisione decisione.json
+      - name: Deploy di Pages e controllo del sito
+        id: dep
+        if: steps.pub.outcome == 'success' && env.MODO == 'auto'
+        env:
+          VERSIONE: ${{ steps.dec.outputs.versione }}
+        run: |
+          t0=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          gh workflow run deploy-pages.yml --ref main -R "$GITHUB_REPOSITORY" || { echo "deploy=non_avviato" >> "$GITHUB_OUTPUT"; exit 0; }
+          id=""
+          for i in $(seq 1 30); do sleep 10
+            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow deploy-pages.yml --event workflow_dispatch --limit 10 --json databaseId,createdAt \
+                 --jq "[.[] | select(.createdAt >= \"$t0\")] | last | .databaseId // empty")
+            [ -n "$id" ] && break
+          done
+          [ -n "$id" ] || { echo "deploy=non_trovato" >> "$GITHUB_OUTPUT"; exit 0; }
+          echo "deploy_corsa=$id" >> "$GITHUB_OUTPUT"
+          if gh run watch "$id" -R "$GITHUB_REPOSITORY" --exit-status --interval 30 > /dev/null; then echo "deploy=verde" >> "$GITHUB_OUTPUT"; else echo "deploy=rosso" >> "$GITHUB_OUTPUT"; exit 0; fi
+          url=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .html_url 2>/dev/null || true)
+          [ -n "$url" ] || url="https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}/"
+          echo "sito_url=$url" >> "$GITHUB_OUTPUT"
+          for i in $(seq 1 12); do
+            if curl -fsSL -H 'Cache-Control: no-cache' "${url%/}/index.html?v=$VERSIONE-$i" | grep -qF "$VERSIONE"; then echo "sito=verde" >> "$GITHUB_OUTPUT"; exit 0; fi
+            sleep 20
+          done
+          echo "sito=rosso" >> "$GITHUB_OUTPUT"
+      - name: Esito leggibile (stato del commit, riepilogo, artifact)
+        if: always()
+        env:
+          RILASCIA: ${{ steps.dec.outputs.rilascia }}
+          VERSIONE: ${{ steps.dec.outputs.versione }}
+          PREP: ${{ steps.prep.outcome }}
+          PUB: ${{ steps.pub.outcome }}
+          DEPLOY: ${{ steps.dep.outputs.deploy }}
+          SITO: ${{ steps.dep.outputs.sito }}
+          DEPLOY_CORSA: ${{ steps.dep.outputs.deploy_corsa }}
+        run: |
+          node -e '
+            const fs=require("fs"); let d={}; try{d=JSON.parse(fs.readFileSync("decisione.json","utf8"))}catch{}
+            const E=process.env, prova=E.MODO==="prova"; let stato="failure", testo, sha=E.GITHUB_SHA;
+            if(E.RILASCIA!=="true") testo="fermo: "+((d.motivi||[])[0]||"decisione non arrivata");
+            else if(E.PREP!=="success") testo="fermo in preparazione (versione/build/check/unione): vedi la corsa";
+            else if(E.PUB!=="success") testo="fermo: push atomico rifiutato, nessun ramo cambiato";
+            else { sha=d.commit_poc||sha;
+              if(prova){ stato="success"; testo=`prova: ${E.VERSIONE} su ${d.dest.poc} e ${d.dest.main}, deploy saltato`; }
+              else if(E.DEPLOY==="verde"&&E.SITO==="verde"){ stato="success"; testo=`${E.VERSIONE} pubblicata: deploy verde, il sito serve ${E.VERSIONE}`; }
+              else testo=`${E.VERSIONE} su main, ma deploy=${E.DEPLOY||"?"} sito=${E.SITO||"?"}`; }
+            const esito={...d, esito:{stato, testo, sha, preparazione:E.PREP||null, push:E.PUB||null, deploy:E.DEPLOY||null, deploy_corsa:E.DEPLOY_CORSA||null, sito:E.SITO||null}};
+            fs.writeFileSync("esito-rilascio.json", JSON.stringify(esito,null,1)+"\n");
+            fs.writeFileSync("stato-stato.txt", stato); fs.writeFileSync("stato-sha.txt", sha); fs.writeFileSync("stato-testo.txt", testo.replace(/\n/g," ").slice(0,138));
+            fs.appendFileSync(E.GITHUB_STEP_SUMMARY, `\n### Esito del rilascio: ${stato==="success"?"✅":"⛔"} ${testo}\n`);
+            console.log(JSON.stringify(esito.esito));'
+          STATO=$(cat stato-stato.txt); SHA=$(cat stato-sha.txt); TESTO=$(cat stato-testo.txt)
+          ctx="rilascio-vagone"; [ "$MODO" = "prova" ] && ctx="rilascio-vagone-prova"
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$SHA" -f state="$STATO" -f context="$ctx" -f description="$TESTO" -f target_url="$CPM_CORSA_URL" > /dev/null || echo "::warning::stato del commit non scritto"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: esito-rilascio
+          path: |
+            decisione.json
+            esito-rilascio.json
+          if-no-files-found: warn
+          retention-days: 30
