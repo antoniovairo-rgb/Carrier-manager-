@@ -68,8 +68,8 @@ if (SOLO.includes('E')) { const mis = {};
       const r3 = C && C.cartellini310 ? C.cartellini310({ ...P0, yellAccum: 3, isSuspended: false }, Object.defineProperty({}, 'cart310', { value: { y: 1, r: false } }), true) : 'cieco';
       return { eroe: +(gE / N).toFixed(3), squadra: +(gH / N).toFixed(3), avversari: +(gA / N).toFixed(3), quintoGiallo: r1, rosso: r2, quartoGiallo: r3 }; }); }
   const v = mis.verde, r = mis.rosso; const cieco = typeof v.quintoGiallo === 'string';
-  const okV = !cieco && v.eroe <= 0.20 && Math.abs(v.squadra - r.squadra) <= 0.03 && v.avversari === r.avversari && v.quintoGiallo.isSuspended === true && v.quintoGiallo.yellAccum === 0 && v.rosso.isSuspended === true && v.quartoGiallo.isSuspended === false && v.quartoGiallo.yellAccum === 4;
-  metti('E', 'verde', okV, cieco ? 'non giudicato: sonda cartellini310 assente' : okV ? 'eroe vicino al medio, squadra invariata (±0,03: il compagno ammonito al posto dell\'eroe gioca poi col suo giallo), 5° giallo e rosso squalificano' : 'regola o tasso fuori', v);
+  const okV = !cieco && v.eroe <= 0.20 && Math.abs(v.squadra - r.squadra) <= 0.03 && v.avversari === r.avversari && v.quintoGiallo.isSuspended === true && v.quintoGiallo.yellAccum === 0 && v.rosso.isSuspended === true && v.rosso.yellAccum === 2 /* giro 311: il rosso NON azzera i gialli */ && v.quartoGiallo.isSuspended === false && v.quartoGiallo.yellAccum === 4;
+  metti('E', 'verde', okV, cieco ? 'non giudicato: sonda cartellini310 assente' : okV ? 'eroe vicino al medio, squadra invariata (±0,03: il compagno ammonito al posto dell\'eroe gioca poi col suo giallo), 5° giallo e rosso squalificano, il rosso tiene il conto dei gialli (giro 311)' : 'regola o tasso fuori', v);
   const cade = !cieco && (r.eroe > 0.22 && Object.keys(r.quintoGiallo || {}).length === 0); metti('E', 'rosso', cade, cade ? 'col rosso l\'eroe torna parafulmine e le simulate non squalificano' : 'il rosso non fa cadere il controllo', r); }
 await flag('__CPM_NO_G310E', false);
 

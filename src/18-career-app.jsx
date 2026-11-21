@@ -2238,20 +2238,22 @@ const getThisWeekMatchday=()=>{
      senza grafica li dava gia' all'eroe (pagella amm/esp, src/14 _cart913) ma simulateMatch leggeva solo gol e voto: nelle simulate non
      poteva esistere una squalifica (giro 309). Ora una partita simulata GIOCATA dall'eroe aggiorna gli stessi campi della giocata
      (yellAccum, isSuspended, seasonCards: gia' nel salvataggio, nessun bump): 5 gialli = 1 giornata (conto azzerato dopo la squalifica),
-     rosso = 1 giornata (e, come dal vivo, il rosso azzera il conto dei gialli). La squalifica si sconta alla gara di club successiva. */
+     rosso = 1 giornata (giro 311, decisione PO: il rosso NON azzera il conto dei gialli, ne' qui ne' dal vivo). La squalifica si sconta alla gara di club successiva. */
   const _g310E=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G310E);
   const SOGLIA310=5;
   const cartellini310=(p,sim,gioca)=>{try{
     if(!_g310E()||!gioca||!sim||!sim.cart310)return {};const y=sim.cart310.y|0,r=!!sim.cart310.r;if(!y&&!r)return {};
     const sc=p.seasonCards||{y:0,r:0};let acc=(p.yellAccum||0),susp=!!p.isSuspended,perGialli=false;
-    if(r){susp=true;acc=0;}else{acc+=y;if(acc>=SOGLIA310){susp=true;acc=0;perGialli=true;}}
+    if(r){susp=true;/* [giro 311 · decisione PO 21/11 «il rosso NON azzera i gialli»] il conto resta; i gialli della partita dell'espulsione non si sommano (sono assorbiti dal rosso) */}else{acc+=y;if(acc>=SOGLIA310){susp=true;acc=0;perGialli=true;}}
     if(susp&&!p.isSuspended){try{setTimeout(()=>notify(r?"🟥 Espulso nella simulata: salti la prossima partita.":`⛔ ${SOGLIA310}° giallo nella simulata: SQUALIFICATO per la prossima partita.`,"#dc2626"),2000);}catch(_e){}}
     if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_CART310=window.__CPM_CART310||[]).push({s:p.season||1,w:p.week||1,y,r,acc,susp,perGialli});}catch(_e){}}
     return{yellAccum:acc,isSuspended:susp,seasonCards:{y:(sc.y||0)+(r?0:y),r:(sc.r||0)+(r?1:0)}};}catch(_e){return {};}};
   const _cartA310=(p,sim,sq)=>sq?{isSuspended:false}:cartellini310(p,sim,!p.injured&&!p.contractExpired);
   const _q310=(sim)=>(_g310D()&&sim&&sim.quota156!=null)?sim.quota156:null;/* quota di minuti decisa dal mister nella simulata (giro 69) */
   const _g310D=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G310D);
-  const rischio310=(mf,fx,quota)=>{const q=(quota==null||!isFinite(+quota))?1:clamp(+quota,0,1);return (0.010+0.0004*Math.max(0,mf-40)+(mf>82?0.03:0))*fx*q;};
+  /* [giro 311 · decisione PO 21/11 «~0,6 a stagione IN CARRIERA»] base 1,0% -> 2,5%: con 1,0% le carriere davano 0,30 a stagione (l'eroe non gioca sempre 90'). Rosso __CPM_NO_G310D (regola di prima del 310) o __CPM_NO_G311D (base del 310). */
+  const _g311D=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G311D);
+  const rischio310=(mf,fx,quota)=>{const q=(quota==null||!isFinite(+quota))?1:clamp(+quota,0,1);return ((_g311D()?0.025:0.010)+0.0004*Math.max(0,mf-40)+(mf>82?0.03:0))*fx*q;};
   // [7.9.0 direttiva PO «estendi gli infortuni ai path simulati»] roll infortunio SEEDATO per le partite di
   //   club SIMULATE (Simula/Avanza): prima gli infortuni nascevano SOLO giocando dal vivo → chi simulava non
   //   si infortunava mai (vantaggio implicito + violazione «nulla è casuale/asimmetrico»). Stesse bande del
@@ -3867,7 +3869,7 @@ const getThisWeekMatchday=()=>{
         }
         const _psEK61=(isInjured||p.contractExpired||_out222)?{goals:0,assists:0}:_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng(hashStr("psim|ek|"+_aSd)>>>0));const _ratEK61=votoSimEroe(sim,_psEK61)/* [giro 158] pagella del motore + gol/assist registrati, una volta sola */;/* [7.261.0] anche il KO euro simulato hardcodava 0 */
         notify(`🌍 ${euroSig(md2.competition)} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n} — ${won?"✅ PASSA":"❌ ELIMINATO"}${p.contractExpired?" — 🚫 svincolato: non schierato":_out222?(_sq222?" — 🟥 squalificato: in tribuna":" — ⛔ non convocato: in tribuna"):((isInjured||p.contractExpired)?"":_heroSimLine(_psEK61,_ratEK61))}`,won?TH.success:TH.danger,{prio:true});
-        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_psEK61.goals,assists:_psEK61.assists,rating:_ratEK61,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase,...(isInjured?{injured:true,rating:null}:_sv264?{svincolato:true,rating:null}:_mk222||{})}].slice(-200),goals:(p.goals||0)+_psEK61.goals,totalGoals:(p.totalGoals||0)+_psEK61.goals,assists:(p.assists||0)+_psEK61.assists,totalAssists:(p.totalAssists||0)+_psEK61.assists,/* [7.261.0] G/A eroe sul KO euro simulato */...(isInjured&&!_pendingSim?injBase:{})/* [7.114.0 audit carriera · fix INJ-1] scala la settimana d'infortunio SOLO quando la settimana AVANZA: sui rami «pending» (2ª gara nella stessa settimana) la settimana non avanza → injBase qui raddoppiava il decremento e, a injuryWeeks=1, faceva recuperare l'infortunato PRIMA della 2ª gara accreditandogli una presenza da sano */,/* [7.8.28 QA] idem KO europeo simulato da infortunato */matches:(p.matches||0)+((isInjured||p.contractExpired||_out222)?0:1),totalMatches:(p.totalMatches||0)+((isInjured||p.contractExpired||_out222)?0:1),/* [7.419.0] niente presenza da svincolato */...(function(){const _fatE=clamp((p.fatigue||0)-14,0,100),_formE=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0),30,95),_moE=clamp((p.morale||70)+(won?5:sim.drew?1:-3),0,100);const g=(_pendingSim||isInjured)?null:weeklyGrowthFields(p,{stats:p.stats,morale:_moE,fatigue:_fatE,form:_formE,matchHistory:p.matchHistory});return{morale:g?g.morale:_moE,...(g?{stats:g.stats,ovr:g.ovr,value:g.value,trainingStreak:((p.sessionsThisWeek||0)>0||g.didTrain)?(p.trainingStreak||0)+(g.didTrain?1:0):0}:{}),...(!_pendingSim?{fatigue:clamp(_fatE+(g?g.fatigueDelta:0),0,100),form:_formE}:{})};})(),/* [7.9.0 direttiva PO] crescita/declino anche sul KO euro SIMULATO */...(!_pendingSim?weeklyEconomyFields(p):{}),...(!_pendingSim?{fitnessCoachRel:weeklyStaffRel(p).fitnessCoachRel}:{})/* [7.162.0 ECO-F5] parità live/sim */,/* [6.35.0 STAB-7] · [6.43.0] relazioni · [6.45.0 RC] +totalMatches + recupero fatica/forma (KO euro simulato) */week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,koRound:newKR.length,champion:isChamp,eliminated:!won},trophies:newTr,returnPenaltyWeeks:_pendingSim?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),...(!_pendingSim?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
+        return{...p,...(_g310E()&&_sq222?{isSuspended:false}:cartellini310(p,sim,!(isInjured||p.contractExpired||_out222)))/* [giro 311, punto E] anche il KO europeo simulato conta i cartellini */,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_psEK61.goals,assists:_psEK61.assists,rating:_ratEK61,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase,...(isInjured?{injured:true,rating:null}:_sv264?{svincolato:true,rating:null}:_mk222||{})}].slice(-200),goals:(p.goals||0)+_psEK61.goals,totalGoals:(p.totalGoals||0)+_psEK61.goals,assists:(p.assists||0)+_psEK61.assists,totalAssists:(p.totalAssists||0)+_psEK61.assists,/* [7.261.0] G/A eroe sul KO euro simulato */...(isInjured&&!_pendingSim?injBase:{})/* [7.114.0 audit carriera · fix INJ-1] scala la settimana d'infortunio SOLO quando la settimana AVANZA: sui rami «pending» (2ª gara nella stessa settimana) la settimana non avanza → injBase qui raddoppiava il decremento e, a injuryWeeks=1, faceva recuperare l'infortunato PRIMA della 2ª gara accreditandogli una presenza da sano */,/* [7.8.28 QA] idem KO europeo simulato da infortunato */matches:(p.matches||0)+((isInjured||p.contractExpired||_out222)?0:1),totalMatches:(p.totalMatches||0)+((isInjured||p.contractExpired||_out222)?0:1),/* [7.419.0] niente presenza da svincolato */...(function(){const _fatE=clamp((p.fatigue||0)-14,0,100),_formE=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0),30,95),_moE=clamp((p.morale||70)+(won?5:sim.drew?1:-3),0,100);const g=(_pendingSim||isInjured)?null:weeklyGrowthFields(p,{stats:p.stats,morale:_moE,fatigue:_fatE,form:_formE,matchHistory:p.matchHistory});return{morale:g?g.morale:_moE,...(g?{stats:g.stats,ovr:g.ovr,value:g.value,trainingStreak:((p.sessionsThisWeek||0)>0||g.didTrain)?(p.trainingStreak||0)+(g.didTrain?1:0):0}:{}),...(!_pendingSim?{fatigue:clamp(_fatE+(g?g.fatigueDelta:0),0,100),form:_formE}:{})};})(),/* [7.9.0 direttiva PO] crescita/declino anche sul KO euro SIMULATO */...(!_pendingSim?weeklyEconomyFields(p):{}),...(!_pendingSim?{fitnessCoachRel:weeklyStaffRel(p).fitnessCoachRel}:{})/* [7.162.0 ECO-F5] parità live/sim */,/* [6.35.0 STAB-7] · [6.43.0] relazioni · [6.45.0 RC] +totalMatches + recupero fatica/forma (KO euro simulato) */week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,koRound:newKR.length,champion:isChamp,eliminated:!won},trophies:newTr,returnPenaltyWeeks:_pendingSim?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),...(!_pendingSim?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       // [6.74.0 QA-1] Cup match — la SIMULA di una gara di Coppa cadeva nel ramo lega: updateStandings committava
       // il risultato in CLASSIFICA (giornata fantasma per tutti → guardia 6.3.3 scartava l'ultima giornata reale)
@@ -4409,7 +4411,7 @@ const getThisWeekMatchday=()=>{
     const _redCard75=!!result.redCard;
     const _newYellCards75=result.yellowCards||0;
     const _yellowCard75=_newYellCards75>0&&!_redCard75;/* [7.137.0] giallo REALE preso in questa gara (non rosso) — per milestone/notifiche/conteggio stagione */
-    const _newYellAccum75=_redCard75?0:((player.yellAccum||0)+_newYellCards75);/* il rosso azzera l'accumulo gialli (già scontato con la squalifica) */
+    const _newYellAccum75=_redCard75?(_g310E()?(player.yellAccum||0):0):((player.yellAccum||0)+_newYellCards75);/* [giro 311] il rosso NON azzera l'accumulo gialli (decisione PO 21/11, come nel calcio vero); col rosso __CPM_NO_G310E lo azzera come prima */
     const _sg75=_g310E()?SOGLIA310:3;/* [giro 310] 5 gialli = 1 giornata anche dal vivo (era 3), rosso __CPM_NO_G310E */
     const _susp75=_redCard75||_newYellAccum75>=_sg75;
     setPlayer(p=>{
@@ -5385,7 +5387,7 @@ const getThisWeekMatchday=()=>{
       if(_weekMds.length>1){
         let _sCal=[...(updP.calendar||p.calendar||[])];
         let _xSt=[...(updP.standings||p.standings||[])];
-        let _xg=0,_xa=0,_xm=0,_xH=[];
+        let _xg=0,_xa=0,_xm=0,_xH=[];let _xc={};/* [giro 311, punto E] cartellini e squalifica attraverso le partite extra della settimana */
         _weekMds.slice(1).forEach(xmd=>{
           if(_sCal.find(m=>m.matchday===xmd.matchday&&m.played))return;
           if(xmd.type==="cup"||xmd.type==="euro_group"||xmd.type==="euro"||xmd.type==="national"){/* [6.81.0] anche l'amichevole nazionale: rimandata di 1 settimana, sarà primaria nel suo ramo */
@@ -5403,14 +5405,16 @@ const getThisWeekMatchday=()=>{
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
             const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,giocatore:p.contractExpired?null:p,/* [giro 69 PO-156] */stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
-            const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
+            const _xcur={...updP,..._xc},_xsq=_g310E()&&!!_xcur.isSuspended;/* [giro 311] squalificato: salta questa partita extra e sconta */
+            if(_xsq)_xc={..._xc,isSuspended:false};else _xc={..._xc,...cartellini310(_xcur,_xs,!(p.contractExpired||_xcur.injured))};
+            const _xps=(p.contractExpired||_xsq)?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}
-            _xg+=_xps.goals;_xa+=_xps.assists;_xm++;
-            _xH.push({week:p.week||1,opponent:_xopp.n,oppAbbr:_xopp.a,oppCol:_xopp.c,homeScore:_xs.homeScore,awayScore:_xs.awayScore,goals:_xps.goals,assists:_xps.assists,rating:(_xs.base158!=null?votoSimEroe(_xs,_xps):_xs.rating),won:_xs.won,drew:_xs.drew,simulated:true});
+            _xg+=_xps.goals;_xa+=_xps.assists;if(!_xsq)_xm++;
+            _xH.push({...(_xsq?{squalificato:true}:{}),week:p.week||1,opponent:_xopp.n,oppAbbr:_xopp.a,oppCol:_xopp.c,homeScore:_xs.homeScore,awayScore:_xs.awayScore,goals:_xps.goals,assists:_xps.assists,rating:(_xs.base158!=null?votoSimEroe(_xs,_xps):_xs.rating),won:_xs.won,drew:_xs.drew,simulated:true});
           }
         });
-        updP={...updP,calendar:_sCal,standings:_xSt,goals:(updP.goals||0)+_xg,totalGoals:(updP.totalGoals||0)+_xg,assists:(updP.assists||0)+_xa,totalAssists:(updP.totalAssists||0)+_xa,matches:(updP.matches||0)+_xm,totalMatches:(updP.totalMatches||0)+_xm,/* [6.44.0 RC] presenze di carriera anche per le partite EXTRA auto-simulate (prima assenti dai totali) */matchHistory:[...(updP.matchHistory||p.matchHistory||[]),..._xH].slice(-200)};
+        updP={...updP,..._xc,calendar:_sCal,standings:_xSt,goals:(updP.goals||0)+_xg,totalGoals:(updP.totalGoals||0)+_xg,assists:(updP.assists||0)+_xa,totalAssists:(updP.totalAssists||0)+_xa,matches:(updP.matches||0)+_xm,totalMatches:(updP.totalMatches||0)+_xm,/* [6.44.0 RC] presenze di carriera anche per le partite EXTRA auto-simulate (prima assenti dai totali) */matchHistory:[...(updP.matchHistory||p.matchHistory||[]),..._xH].slice(-200)};
       }
       const baseForm=updP.form||p.form||70;
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
