@@ -59,15 +59,17 @@ const stato = (page) => page.evaluate(() => {
     ultima: u && { cup: !!u.cup, nc: !!u.nonConvocato, sq: !!u.squalificato, svinc: !!u.svincolato, rating: u.rating } };
 });
 
-// settimane: il tiro seedato (replica di simInjuryRoll a fatica 90, perkFisio assente) e il calendario vero della stagione 2
+// settimane: il tiro seedato (replica di simInjuryRoll a fatica 90, perkFisio assente). [giro 310] col rischio nuovo (rischio310: 6,4% a
+//   fatica di partita 100, scalato dalla quota di minuti del mister) si scelgono solo i tiri sotto 0,02, che scattano anche a un terzo di
+//   partita; col rosso __CPM_NO_G310D la regola di prima (0,07) e il calendario vero della stagione 2
 let WI = null, W0 = null, WC = null, SC = 2;
 const tiroDi = (page, s) => page.evaluate((s) => { const t = {}; for (let w = 1; w <= 38; w++) for (const k of [7, 11]) {
     const r = seededRng(((standingsSeed('b04', s, w) + k) >>> 0) || 1); const mf = Math.min(100, 90 + 12 + Math.round(r() * 10)); const roll = r();
-    t[w + '|' + k] = (mf > 82 && roll < 0.07); } return t; }, s);
+    t[w + '|' + k] = (mf > 82 && roll < (window.__CPM_NO_G310D ? 0.07 : 0.02)); } return t; }, s);
 { const { ctx, page } = await apri(baseSave({}));
   const tiro = await page.evaluate(() => { const t = {}; for (let w = 1; w <= 38; w++) for (const k of [7, 11]) {
     const r = seededRng(((standingsSeed('b04', 2, w) + k) >>> 0) || 1); const mf = Math.min(100, 90 + 12 + Math.round(r() * 10)); const roll = r();
-    t[w + '|' + k] = (mf > 82 && roll < 0.07); } return t; });
+    t[w + '|' + k] = (mf > 82 && roll < (window.__CPM_NO_G310D ? 0.07 : 0.02)); } return t; });
   for (let w = 2; w <= 36; w++) {
     await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w); await sleep(220);
     const t = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
