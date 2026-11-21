@@ -19,8 +19,8 @@
 | passaggio-coppa-137 | **verde** (rc 0, 130 s) | non eseguito (verde) | — | Verde col verde; i tre rossi (capitano che alza, passaggio, festa) si vedono tutti. |
 | piedi-252 | **verde** in due corse (rc 0; 212 s e 217 s) | non eseguito (verde) | — | Margini stretti: mediana verde 0,386 e 0,371 contro il tetto 0,4; mediana rossa 0,467 e 0,482 contro il minimo «verde + 0,08» (0,466 e 0,451). Alla prima corsa il braccio rosso passa per 0,001: su una macchina più lenta è un candidato a cadere. Seconda corsa fatta per questo. |
 | ingresso-camminata-245 | **verde** (rc 0, 238 s) | non eseguito (verde) | — | Verde: 11+11 al posto, velocità massima 2,21, clip di camminata letta. Il rosso si vede (velocità massima 6,52, nessuna clip di camminata). |
-| coreografie-244 | in corso | — | — | — |
-| memoria-275 | da eseguire | — | — | — |
+| coreografie-244 | **non finito in 30 minuti = rosso** (fermato a 1800 s, rc 124) | da eseguire | da stabilire | Dove era: le 30 partite del braccio verde erano finite (30/30 con coreografia, 14 distinte su 8 richieste, 0 uguali di fila, 4 che si muovono su 3 richieste) e stava misurando gli fps: braccio «verde» misurato (2,32 fps su 350 fotogrammi), braccio «rosso» degli fps ancora in corso. La seconda metà del controllo (`CPM_PROVA_ROSSO=1`, 8 partite) non è mai partita. La riga «❌ fps non misurati» stampata dopo il taglio è effetto del mio arresto, non un giudizio del guardiano. |
+| memoria-275 | in corso | — | — | — |
 | rigorista-257 | da eseguire | — | — | — |
 | parata-258 | da eseguire | — | — | — |
 
