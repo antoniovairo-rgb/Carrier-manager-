@@ -16,7 +16,8 @@ Macchina: 16 GB di memoria (15,4 liberi all'avvio), 59 GB di disco liberi. Inizi
 | controllo | esito su finale (0f0b13d8) | esito sulla base (b3b75b9d) | nato da quale giro | nota |
 |---|---|---|---|---|
 | `highlight-95` braccio verde | **verde**, 0 difetti (60 min) | non eseguito | — | 19 partite, 96 highlight · D4 senza esito 0 · passaggi 28, arrivati 89,3% · gol del compagno 13 = assist 13 · finte 6, riuscite 33,3% · falli cercati 1 · parate giudicate 17 · non giudicabili (guardia di parete) 0 · rivelazioni lette da un'altra scena 16 (elencate dal guardiano, non contate come difetto) |
-| `highlight-95` braccio rosso | in corso | | | |
+| `highlight-95` braccio rosso | **rosso come atteso** (57 min): 157 difetti | non eseguito | — | 19 partite, 105 highlight · il guardiano ne elenca solo le prime 14 (D1 6, D3 8); dal riepilogo: D4 senza esito 5, finte giocate con famiglia «pass» 5 su 6 (D2) · passaggi arrivati 82,1% · finte riuscite 16,7% |
+| `highlight-95` **intero** | **verde**: ultima riga «✅ highlight-95 verde (e il rosso si vede)» (117 min in tutto, 22:57–00:54) | non eseguito | — | Per arrivare in fondo ho tolto il limite dei 90 minuti a corsa in corso (a 60 minuti, finito il braccio verde, ho chiuso il solo processo `timeout`, non il guardiano): il tetto dato era 90 minuti e la corsa ne ha presi 117. Per questo **il codice d'uscita del guardiano non è stato raccolto**: l'esito viene dalla riga finale stampata. |
 
 ## Corsa 44830113928 su GitHub Actions, parte 9 di 16 (letta dal registro, non rieseguita)
 
