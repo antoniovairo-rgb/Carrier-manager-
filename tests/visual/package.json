@@ -542,6 +542,7 @@
     "catalogo-022": "node catalogo-022.mjs",
     "gesti-motore-068": "node gesti-motore-068.mjs",
     "corpi-073": "node corpi-073.mjs",
+    "scatto-305": "node scatto-305.mjs",
     "corpi-073-rosso": "CPM_ROSSO073=1 node corpi-073.mjs",
     "tecnica-045": "node tecnica-045.mjs",
     "gesti-firme-045": "node gesti-firme-045.mjs",
