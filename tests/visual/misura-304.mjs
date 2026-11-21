@@ -10,9 +10,9 @@ import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const GUARD = process.env.CPM_GUARDIANO === '1', ROSSO = !!process.env.CPM_PROVA_ROSSO;
-const NO = (process.env.CPM_NO || (ROSSO ? '304' : '')).split(',').filter(Boolean), PART = GUARD ? [[-40, -20, 0], [15, -30, 3], [-35, -10, 1], [-38, -22, 0]] : process.env.CPM_PARTENZE ? process.env.CPM_PARTENZE.split(';').map(a => a.split(',').map(Number)) : null;
+const NO = (process.env.CPM_NO || (ROSSO ? '304' : '')).split(',').filter(Boolean), PART = GUARD ? [[-40, -20, 0], [-30, -25, 0], [-25, -28, 0], [-30, -20, 3], [-25, -25, 1], [18, -25, 3], [-35, -10, 1], [-38, -22, 0]] : process.env.CPM_PARTENZE ? process.env.CPM_PARTENZE.split(';').map(a => a.split(',').map(Number)) : null;
 const NUSC = PART ? PART.length : +(process.env.CPM_USCITE || 0);
-const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
+const T00 = Date.now(); const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx);
 const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
 await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_TOD = 'night'; window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; window.__CPM_G245W = []; window.__CPM_G255W = [];
@@ -35,10 +35,12 @@ const fine = async (v, n0) => { const t1 = Date.now(); let last = -1, fermo = 0;
 const DUR = [4.6, 4.0, 4.4, 5.2, 5.0], SX = -3.9, VZ = -33.6, DZ = -36.2;
 const bers = (x0, z0, t, V) => { const r = Math.min(1, t / (DUR[V] * 0.82)), pp = r * r * (3 - 2 * r); if (z0 <= VZ) return [x0 + (SX - x0) * pp, z0 + (DZ - z0) * pp];
   const d1 = Math.hypot(SX - x0, VZ - z0), d2 = Math.abs(DZ - VZ), q = d1 / (d1 + d2); if (pp < q) { const k = pp / q; return [x0 + (SX - x0) * k, z0 + (VZ - z0) * k]; } const k = (pp - q) / (1 - q); return [SX, VZ + (DZ - VZ) * k]; };
-const uscite = []; let rosse = 0;
+const uscite = []; let rosse = 0, interrotte = 0, finita = null;
 for (const [verso, gancio] of [['entra', '__CPM_FORCE_SUBENTRY'], ['esce', '__CPM_FORCE_SUBEXIT']]) { let buone = 0;
   for (let k = 0, giro = 0; k < (verso === 'esce' && NUSC ? NUSC : 5) && (buone < 2 || (verso === 'esce' && NUSC)); k++) { const n0 = await conta(verso); const V = PART && PART[k] && PART[k][2] != null ? PART[k][2] : (k % 2 ? 3 : 0);
-    if (verso === 'esce' && NUSC && (k > 0 || giro > 0)) { const m0 = await conta('entra'); await page.evaluate(() => { window.__CPM_FORCE_SUBENTRY = 0; }); await fine('entra', m0); }/* rimette l'eroe in campo prima di un'altra uscita */
+    if (verso === 'esce' && NUSC && !PART && (k > 0 || giro > 0)) { const m0 = await conta('entra'); await page.evaluate(() => { window.__CPM_FORCE_SUBENTRY = 0; }); await fine('entra', m0); }/* rimette l'eroe in campo prima di un'altra uscita */
+    if (verso === 'esce' && GUARD) { const f = await ph(); if (f === 'ceremony' || f === 'ended' || f == null) { finita = f || 'chiusa'; console.log(`  (partita finita, fase «${finita}», prima dell'uscita ${k}: mi fermo qui)`); break; } }/* [giro 307] a partita finita l'uscita non si puo' piu' provare */
+    if (verso === 'esce' && GUARD) { const ta = Date.now(); while (Date.now() - ta < 40000 && !/^hl_(intro|move|choose)$/.test(await ph() || '')) await sleep(300); }/* [giro 307] MISURATO: le uscite interrotte finiscono tutte in gioco fluido («playing»), quelle intere dentro un highlight: si aspetta un highlight (al massimo 40 s, poi si prova comunque) */
     if (verso === 'esce' && PART) await page.evaluate(d => { window.__CPM_DA304 = d; }, PART[k]);
     await page.evaluate(a => { window[a[0]] = a[1]; }, [gancio, V]); await fine(verso, n0);
     const F = await page.evaluate(a => (window.__CPM_G255W || []).filter(e => e.sub === a[0]).slice(a[1]), [verso, n0]).catch(() => []);
@@ -47,15 +49,20 @@ for (const [verso, gancio] of [['entra', '__CPM_FORCE_SUBENTRY'], ['esce', '__CP
     if (verso === 'esce' && F.length) { const f0 = F[0]; let lag = 0, dmin = 99, pen = 0, es = null, vmax = 0;
       F.forEach((e, i) => { if (!e.vis) return; const B = bers(f0.x, f0.z, e.t, V); lag = Math.max(lag, Math.hypot(B[0] - e.x, B[1] - e.z)); dmin = Math.min(dmin, Math.hypot(Math.max(0, e.x - -4.77), Math.max(-35.175 - e.z, 0, e.z - -34.625))); if (e.pen.length) { pen++; if (!es) es = [e.x, e.z, e.t, e.pen[0]]; }
         if (i) { const a = F[i - 1], dt = e.t - a.t; if (dt > 0) vmax = Math.max(vmax, Math.hypot(e.x - a.x, e.z - a.z) / dt); } });
-      const u = { k, V, da: [f0.x, f0.z], zmin: Math.min(...Z), fr: F.filter(e => e.vis).length, pen, es, dmin: +dmin.toFixed(2), lagMax: +lag.toFixed(2), vmax: +vmax.toFixed(1), fase: await ph(), tr: process.env.CPM_TRACCIA ? F.map(e => [e.t, e.x, e.z]) : undefined };
-      if (GUARD && u.fr < 40 && giro < 2) { giro++; k--; console.log(`  (uscita ${u.k} interrotta dalla partita dopo ${u.fr} fotogrammi: riprovo, tentativo ${giro + 1} di 3)`); continue; }/* cio' che la partita interrompe si riprova, al massimo 3 volte per partenza */
+      const u = { k, V, s: Math.round((Date.now() - T00) / 1000), da: [f0.x, f0.z], zmin: Math.min(...Z), tfin: Math.max(...F.filter(e => e.vis).map(e => e.t)), fr: F.filter(e => e.vis).length, pen, es, dmin: +dmin.toFixed(2), lagMax: +lag.toFixed(2), vmax: +vmax.toFixed(1), fase: await ph(), tr: process.env.CPM_TRACCIA ? F.map(e => [e.t, e.x, e.z]) : undefined };
+      u.intera = u.tfin >= DUR[V] - 0.1;/* [giro 307] INTERA = il tempo dell'uscita e' arrivato alla durata della variante. MISURATO: la partita vera interrompe un'uscita forzata anche dopo 42-64 fotogrammi (tempo finale 2,1 · 2,25 · 3,2 s su 4,6-5,2), non solo nei primi 40: quelle uscite restavano a z -28…-31 ed erano contate come «non arrivate» */
+      if (GUARD && !u.intera) { interrotte++; if (giro < 3) { giro++; k--; console.log(`  (uscita ${u.k} interrotta dalla partita a ${u.tfin} s su ${DUR[V]}, ${u.fr} fotogrammi, z minima ${u.zmin}: riprovo, tentativo ${giro + 1} di 4)`); continue; } console.log(`  (uscita ${u.k} interrotta 4 volte su 4: non giudicata)`); }/* cio' che la partita interrompe si riprova, al massimo 4 volte per partenza */
       giro = 0; if (pen) rosse++; uscite.push(u); console.log(JSON.stringify(u)); } } }
-console.log(`ESITO no=[${NO.join(',')}] uscite ${uscite.length} · con l'eroe dentro un oggetto ${rosse} · errori ${JSON.stringify(errs.slice(0, 2))}`);
+console.log(`ESITO no=[${NO.join(',')}] uscite ${uscite.length} · interruzioni della partita ${interrotte}${finita ? ' · partita finita (' + finita + ')' : ''} · con l'eroe dentro un oggetto ${rosse} · errori ${JSON.stringify(errs.slice(0, 2))}`);
 await ctx.close(); await b.close(); srv.close();
 if (!GUARD) process.exit(0);
 /* GUARDIANO (npm run tunnel-304): partenze provocate dal lato da cui l'eroe tagliava lo spigolo. Giudicata = l'uscita non e' stata interrotta (almeno 40 fotogrammi) ed e' arrivata alla
-   linea della fascia degli oggetti (z <= -33,7: il punto davanti al varco e' a -33,6, la striscia LED a -34,4); ne servono almeno 2, altrimenti «non giudicato» = rosso. */
-const G = uscite.filter(u => u.fr >= 40 && u.zmin <= -33.7), dentro = G.filter(u => u.pen).length;
-if (G.length < 2) { console.log(`non giudicato: ${G.length} uscite arrivate alla fascia degli oggetti (minimo 2)`); console.log(ROSSO ? 'ROSSO NON VISTO: guardiano cieco.' : 'ROSSO: non giudicato'); process.exit(1); }
-if (ROSSO) { console.log(`BRACCIO ROSSO (__CPM_NO_G304) — uscite giudicate ${G.length} · con l'eroe dentro un oggetto ${dentro}`); console.log(dentro ? 'ROSSO VISTO: senza il vincolo l\'eroe taglia lo spigolo dentro gli oggetti di bordo campo.' : 'ROSSO NON VISTO: guardiano cieco.'); process.exit(dentro ? 0 : 1); }
+   linea della fascia degli oggetti (z <= -33,7: il punto davanti al varco e' a -33,6, la striscia LED a -34,4); altrimenti «non giudicato» = rosso.
+   [giro 307, sonda instabile 2 volte su 2 nella verifica F1] 8 partenze invece di 4 (scelte fra quelle che col 304 spento finiscono dentro un oggetto: misurato 4-5 su 5 intere);
+   un'uscita che la partita interrompe a meta' (tempo finale sotto la durata della variante) si riprova fino a 4 volte e non e' mai giudicata; fra un'uscita e l'altra niente
+   ingresso forzato (il gancio __CPM_DA304 rimette gia' l'eroe in campo: un'uscita costa ~10 s invece di ~90, e la partita non finisce prima delle 8). Soglie ALZATE, mai
+   abbassate: servono almeno 4 uscite giudicate (erano 2) e, nel braccio rosso, almeno 2 con l'eroe dentro un oggetto (era 1). */
+const MIN = 4, MINR = 2, G = uscite.filter(u => u.intera && u.fr >= 40 && u.zmin <= -33.7), dentro = G.filter(u => u.pen).length;
+if (G.length < MIN) { console.log(`non giudicato: ${G.length} uscite intere arrivate alla fascia degli oggetti su ${PART.length} partenze (minimo ${MIN})`); console.log(ROSSO ? 'ROSSO NON VISTO: guardiano cieco.' : 'ROSSO: non giudicato'); process.exit(1); }
+if (ROSSO) { console.log(`BRACCIO ROSSO (__CPM_NO_G304) — uscite giudicate ${G.length} · con l'eroe dentro un oggetto ${dentro}`); console.log(dentro >= MINR ? 'ROSSO VISTO: senza il vincolo l\'eroe taglia lo spigolo dentro gli oggetti di bordo campo.' : `ROSSO NON VISTO (servono almeno ${MINR} uscite dentro un oggetto): guardiano cieco.`); process.exit(dentro >= MINR ? 0 : 1); }
 console.log(`BRACCIO VERDE — uscite giudicate ${G.length} · con l'eroe dentro un oggetto ${dentro}`); console.log(!dentro && !errs.length ? 'VERDE: uscendo da lontano l\'eroe passa dal varco senza toccare nastro, striscia LED e cartelloni.' : 'ROSSO: ' + (dentro ? `${dentro} uscite con l'eroe dentro un oggetto` : 'errori di pagina ' + JSON.stringify(errs.slice(0, 2)))); process.exit(!dentro && !errs.length ? 0 : 1);
