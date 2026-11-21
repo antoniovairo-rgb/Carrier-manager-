@@ -44,8 +44,13 @@ Non ho scritto codice nuovo per la dissolvenza: il brano usa la stessa `musicSta
   5. con `ceremony('presentazione')` il brano è `music.presentazione`, con `ceremony('finestagione')` è `music.cerimonia`, e all'uscita la musica è spenta.
 - **Esito:** verde ✓ 1-5. Col rosso `__CPM_NO_G316` cadono il 4 (`music.presentazione:0/1`) e il 5 (la serata chiede `music.cerimonia`). Uscita 0.
 
-## Controlli
-I controlli sono partiti in sottofondo **dentro questo turno**. Gli esiti sono nella sezione «Esiti dei controlli», aggiunta quando sono arrivati.
+## Esiti dei controlli (tutti eseguiti in questo turno, sul build di questo ramo)
+- `node ci-runner.mjs giro musica-316` (con `CPM_CI_PAR=0`): **18/18 verdi** su 7.999.200. Comprende il guardiano, le 17 sentinelle e partita-vera.
+- `npm run audio-161`, cioè il guardiano audio esistente: **verde**. Il rosso `__CPM_NO_G161` cade su 4-8, e la sequenza della partita resta identica (278 voci, 3-1).
+- `crediti-254`: **verde** (25 voci, nessuna «fonte da completare»).
+- `node tools/audit-copyright.mjs`: **OK**, 0 riferimenti al mondo reale.
+- `mappa-unica`: verde.
+- La catena ha rigenerato le foto di `docs/collaudo-grafico/g0/`, che appartengono a un altro giro: le ho rimesse com'erano con `git restore` e `git clean`.
 
 ## Dubbi per il PO
 1. **Durata della scena.** Il brano dura 84,8 s. Non ho misurato quanto dura la serata nel gioco vero. Se la serata finisce prima, il brano sfuma all'uscita. Se dura di più, dopo 84,8 s resta il silenzio, come già succedeva col brano di 48 s: non ho aggiunto un loop, perché l'autore non dichiara il brano «loopable».
