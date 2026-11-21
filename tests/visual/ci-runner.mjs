@@ -52,6 +52,9 @@ const MAPPA = [/* [giro 308 PO-527] MAPPA UNICA: una riga per gruppo di file (le
   [/src\/04-/, ['highlight-95', 'assist-nome-98', 'esiti-96', 'catalogo-022', 'gesti-motore-068', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],
   /* [PO-167 giro 29] storage vive in src/08 */
   [/src\/0[0-8]-/, ['rigori-296'/* [giro 296 PO-534/535/536] cerimonia della coppa dopo i rigori >= 17 s (casa/trasferta, PC/telefono), nome corto nella striscia, ripartenza dopo il rigore del compagno (rosso __CPM_NO_G296) */, 'nomi-248', 'nomi-251', 'accessibilita-234', 'interviste-211', 'spogliatoio-182', 'indice-163', 'salta-163', 'momento-165', 'momento-165b', 'momento-173', 'momento-185', 'tema-unico', 'grafica-v2', 'momenti-v2', 'carriera3-94', 'highlight-95', 'spazio-296', 'crea-home-295', 'impulsi-289', 'piccoli-85', 'trainer-288', 'acquisti-281', 'difficolta-156', 'stili-098', 'stili-098-migrazione', 'stile-unico-75', 'neutro-287', 'classifica-102', 'partita-rigiocata-194', 'save-compat', 'backup-167', 'errori-168', 'via-ch38-171', 'coerenza-235', 'interviste-183', 'intervista-231']],
+  /* [giro 317 PO-604] la MACCHINA del treno (workflow, piano/riepilogo, rilascio, trenino): un vagone che la tocca gioca i suoi due guardiani
+     statici invece del treno completo. Fuori da src/: la mirata non la legge (diff su src/ soltanto). */
+  [/^\.github\/workflows\/verifica-guardiani\.yml$|^tools\/(rilascio-vagone-312|trenino-317)\.mjs$|^tests\/visual\/(ci-treno-308|rilascio-312|trenino-317)\.mjs$/, ['rilascio-312', 'trenino-317']],
 ];
 if (process.argv[2] === 'mirata') {
   const R0 = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'); let base = process.argv[3];
