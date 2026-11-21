@@ -19,6 +19,7 @@
 | `portiere-295` | **verde** (uscita 0, 658 s) | — | — | verde: bracci 1–4 con 0 difetti su 16/8/8/8 giudicate, 0 non giudicate; rosso `__CPM_NO_G295`: difetto rivisto in 16/16, 8/8, 8/8, 8/8. Nota: la sonda apre da sé le pagine «2 per volta» (è scritto nella sonda, `CPM_CI_PAR=0` non la cambia) |
 | `esito-rete-301` | **verde** (uscita 0, 1332 s) | — | — | braccio A (gioco com'è): 32 tiri non-gol giudicati, IN RETE 0, non giudicati 0; braccio B provocato: 8 giudicati, IN RETE 0, barriera intervenuta in 8; controprova: 6 gol su 6 entrano; rosso `__CPM_NO_G301`: IN RETE 7 su 8 |
 | `goal-postarc` | **verde** (uscita 0, 661 s) | — | — | flusso vero, 2 partite: gol dichiarati 6 · in porta 6 · fuori 0; classi A, B e C tutte a 0. Lo script lancia solo il braccio verde (nessuna prova del rosso in questa corsa) |
+| `po229-gi38` | **verde** (uscita 0, 33 s) | — | — | gi38 «Dai e vai preciso»: restituzione sì · servizio al compagno sì · conclusione sì; post-arco `onetwo_back → assist_recv → assist_shot → in_net`. Una scena, solo braccio verde |
 
 ## Verdetto
 
