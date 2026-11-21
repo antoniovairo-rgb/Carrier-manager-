@@ -43,6 +43,12 @@ const rRows = reg.rows.map(([ora, passo, num]) => {
   const m = passo.match(/^\*\*(\d+\.\d+(?:\.\d+)?)/);
   return [ora, m ? m[1] : '', passo, num];
 });
+// Registro in ordine cronologico decrescente (PO 21/11): data gg/mm [hh:mm], poi versione, poi ordine di scrittura (piu' recente prima)
+const _chiaveReg = (r, i) => { const d = String(r[0]).match(/(\d{2})\/(\d{2})(?:\s+(\d{2}):(\d{2}))?/);
+  const v = (r[1] || '').split('.').map(Number); while (v.length < 3) v.push(0);
+  return d ? [+d[2], +d[1], d[3] ? +d[3] : -1, d[4] ? +d[4] : -1, ...v, i] : [-1, -1, -1, -1, ...v, i]; };
+const _k = new Map(rRows.map((r, i) => [r, _chiaveReg(r, i)]));
+rRows.sort((a, b) => { const x = _k.get(a), y = _k.get(b); for (let j = 0; j < x.length; j++) if (x[j] !== y[j]) return y[j] - x[j]; return 0; });
 
 // [PO-163] STABILITA': dagli esiti registrati da tests/visual/ci-runner.mjs (docs/governo/STABILITA.json)
 const COPRE = {
