@@ -12967,7 +12967,7 @@ function makeCrowdTex(spec){
       const occ=vip?true:(_isAisle(_u)?false:rnd()<_pc);
       _prevOcc=occ;if(F129&&_isAisle(_u))_fresh129=true;
       if(!occ){seats.push({empty:true,aisle:!vip&&_isAisle(_u),bx,by,cW,rH,col:cl,ri:_ri129,band,seatCol:_shade(seatBase,(0.72+rnd()*0.2)*dk)});continue;}
-      const isAwayFan=spec.isAway||inWedge;
+      const isAwayFan=!spec.soloCasa314&&(spec.isAway||inWedge);/* [giro 314] nella serata nessun tifoso e' ospite */
       const teamCol=isAwayFan?awayHex:homeHex;
       const team=rnd()<(S.team!=null?S.team:0.6);
       const clBase=vip?"#23262e":(team?teamCol:CLOTHES[(rnd()*CLOTHES.length)|0]);
@@ -13465,7 +13465,13 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Curva Sud (x=+sideX, LATO TABELLONE) SOLO casa/ultras · Curva Nord (x=-sideX) SOLO ospiti (riempita
   // da awayFill: derby=piena, provino=vuota) · Tribuna Est (z=+endZ) casa+famiglie+spicchio ospiti ·
   // Tribuna Ovest (z=-endZ) casa/famiglie/VIP. Mai gruppi ospiti fuori da Nord+spicchio Est.
-  const crowd=stadCfg.crowd||{fill:0.9,awayFill:0.5,intensity:0.6,tier:"league",seed:1};
+  const _crowd314=stadCfg.crowd||{fill:0.9,awayFill:0.5,intensity:0.6,tier:"league",seed:1};
+  /* [giro 314 · PO-601 «nella serata di presentazione non ci devono essere tifosi ospiti»] MISURATO: la serata chiamava buildStadium col
+     secondo colore del club al posto del colore ospite e senza pubblico dichiarato, quindi la Curva Nord e lo spicchio della Tribuna Est
+     uscivano come settore OSPITI (colore c2, riempimento 0,5). Con stadCfg.soloCasa314 (lo chiede SOLO la serata) non esiste tifoso
+     ospite: ogni settore ha il colore di casa e il riempimento di casa. La partita e le altre scene non passano la voce e restano uguali. */
+  const _g314=!!stadCfg.soloCasa314;if(_g314)awayHex=homeHex;
+  const crowd=_g314?{..._crowd314,awayFill:_crowd314.fill}:_crowd314;
   const isMob=!stadCfg.isDesktop;
   const SEC=CROWD_CFG.sectors;
   /* [7.187.0 direttiva PO «rendi realistica la COMPATTEZZA del tifo»] finora OGNI settore usava lo stesso fill:
@@ -13484,7 +13490,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
     return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
   const _f129Planes=[];
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,soloCasa314:_g314,cnt192:stadCfg.cnt192||null,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -48149,7 +48155,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          dopo i primi fotogrammi una prova di disegno (lo strato da solo su una tela 64x64) conta i pixel lasciati dalle istanze; se sono
          zero — il caso del telefono del giro 192, mai riprodotto qui — lo stadio si rifa' con la folla dipinta. Rosso __CPM_NO_G225. */
       const _sag225=_g225();
-      _cfg={..._cfg,noFolla129:_g192c&&!_sag225,cnt192:_cnt192};
+      _cfg={..._cfg,noFolla129:_g192c&&!_sag225,cnt192:_cnt192,soloCasa314:!(typeof window!=='undefined'&&window.__CPM_NO_G314)};/* [giro 314 · PO-601] la serata e' la festa del club: nessun settore ospiti, tutti i settori coi colori di casa e pieni come gli altri (src/11 buildStadium). Rosso __CPM_NO_G314 = la serata della 7.999.200. Guardiano npm run serata-314 */
       const _n0=scene.children.length;
       let _stad=buildStadium(scene,homeHex,awayHex,_cfg);
       t225.folla=(_stad&&_stad.folla129)||null;t225.modo=t225.folla?'sagome':'dipinti';
