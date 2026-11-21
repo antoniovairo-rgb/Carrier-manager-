@@ -63,7 +63,7 @@ la seconda 4. La partenza −20·−30 non è nella lista perché col 304 spento
 | `tunnel-304`, braccio rosso (`__CPM_NO_G304`), 4 corse di fila | — | **rosso visto 4 su 4**: 6 uscite giudicate, 6 con l'eroe dentro un oggetto, in ognuna |
 | Interruzioni della partita per corsa | non contate | 4 in ogni corsa (tutte riprovate con successo al 2° tentativo, tranne l'ultima a partita finita) |
 | Durata | F1: corse chiuse rosse in 323 s e 704 s | 7 min 7 s – 7 min 21 s per braccio |
-| `tunnel-245` (braccio verde intero) | verde 2 su 2 nella F1 | **vedi sotto** |
+| `tunnel-245` (braccio verde intero) | verde 2 su 2 nella F1 | **verde 1 su 1**, 20 stadi, 0 guasti |
 
 Oggetti toccati nel braccio rosso (uguali nelle corse): `striscia-led`, `tunnel-parete`, `nastro-competizione`.
 
@@ -80,7 +80,9 @@ numeri: non la conto fra le 4.
 
 ### `tunnel-245`
 
-In corsa al momento di questo commit: esito nel commit successivo.
+Braccio verde intero (`node tunnel-245.mjs`), una corsa sul codice finale: **verde**, 20 stadi, 0 guasti, 21 min 25 s.
+Sostituzioni: `sost-comunale` entra 0/168 · esce 0/196; `sost-inglese` entra 0/194 · esce 0/103; `sost-borgo` entra 0/168 · esce 0/217.
+I due bracci rossi non sono stati eseguiti.
 
 ## Cosa non è stato fatto
 
