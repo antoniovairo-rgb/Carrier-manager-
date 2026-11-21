@@ -1963,3 +1963,12 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 08:50 (21/11) PO-596 nella 200: striscia di 7 sconfitte e risultati a stampo nel calendario (7 × N 1-1, V 2-0 / V 0-2 ripetuti); da misurare insieme a PO-560/583/584 nel vagone «misure di carriera».
 - 09:55 (21/11) PO: le prime partite della stagione erano simulate (eroe in Primavera), da metà campionato giocate con «solo i momenti salienti»; offre l'export del salvataggio. Questionario: misura del bilanciamento «Sì, subito» → giro 309 (Opus, session_01QEYiaC1CZWwYapLZqGNSVH), sola misura: PO-596, 560, 583, 584. Il salvataggio del PO, se arriva, lo analizza la madre localmente e NON va nel repo pubblico senza OK del PO.
 - 10:05 (21/11) Salvataggio del PO analizzato in locale: le giornate 1–18 sono a stampo (src/09 legaDopoTrasferimento212: tre punteggi fissi scelti da hash correlato) → PO-597; le 8 sconfitte sono partite giocate coi salienti (eroe titolare, morale 100). PO: «il gioco deve assolutamente realistico e bilanciato!» → il bilanciamento diventa priorità dei prossimi vagoni, dopo la misura del giro 309.
+- 11:30 (21/11) Giro 309 consegnato (sola misura; rapporto docs/sviluppo/RAPPORTO-giro309.md sul ramo sviluppo/giro309-bilanciamento): stampo confermato e riprodotto (5 punteggi possibili, hash quasi lineare, orientamento rovesciato in trasferta); 8 sconfitte di fila = 4,3% per FC Augusta, nessun effetto a cascata; squadra simulata non più severa del live, voto simulato −0,3 sotto OVR 72; bandiera: promozione ~3 stagioni, Europa 6–9 (3 su 5), yo-yo 4 su 11; infortuni 0 con fatica curata; squalifiche impossibili nelle simulate (cartellini buttati). PO, questionari:
+  - stampo → **motore della simulazione** con lo stesso seme della Simula, orientamento corretto;
+  - forza → **crescita del club ovunque**: anche dal vivo la squadra usa prestigio + clubPrestigeShifts; il bonus OVR dell'eroe resta solo nella simulata;
+  - bandiera → **meno yo-yo**: riassorbimento del prestigio più lento dopo la promozione, misura prima/dopo sulle stesse 5 carriere;
+  - infortuni dell'eroe → **~0,6 a stagione** (1% di base + 0,04% per punto di fatica sopra 40, +3% sopra 82);
+  - squalifiche → **5 gialli = 1 giornata, rosso = 1**, in simulate e giocate, dopo aver portato i gialli dell'eroe vicino a un giocatore medio;
+  - compagni infortunati → vagone successivo (PO-598);
+  - voto simulato → **+0,3** sotto OVR 72.
+- Vagone 3 = correzioni di bilanciamento (giro 310).
