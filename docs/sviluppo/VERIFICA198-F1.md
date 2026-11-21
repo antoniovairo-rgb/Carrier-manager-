@@ -21,10 +21,34 @@
 | `goal-postarc` | **verde** (uscita 0, 661 s) | — | — | flusso vero, 2 partite: gol dichiarati 6 · in porta 6 · fuori 0; classi A, B e C tutte a 0. Lo script lancia solo il braccio verde (nessuna prova del rosso in questa corsa) |
 | `po229-gi38` | **verde** (uscita 0, 33 s) | — | — | gi38 «Dai e vai preciso»: restituzione sì · servizio al compagno sì · conclusione sì; post-arco `onetwo_back → assist_recv → assist_shot → in_net`. Una scena, solo braccio verde |
 | `rete-252` | **verde** (uscita 0, 231 s) | — | — | verde: passo massimo a ridosso della porta 0,94 u, in rete 4/4; rosso: passo massimo 3,26 u, in rete 4/4 (gi0, gi66, gi113, gi9) |
+| `gk-miss-229` | **verde** (uscita 0, 190 s) | — | — | 12 tiri sbagliati giudicati · 7 con un gesto del portiere · 7 a portata; partenza del corpo − passaggio sul piano: mediano −0,51 s · min −0,77 · max −0,12 (sempre prima del pallone). Solo braccio verde |
+| `tunnel-245` corsa 2 | **non eseguita → rosso per regola** («non giudicato») | — | — | Fermata dal tetto di tempo: a fine `gk-miss-229` erano passate circa 2 h 15 dall'inizio e una corsa intera dura 34 minuti (2043 s misurati). La corsa 1 è verde piena; la stabilità su due corse **non è stata misurata** |
 
 ## Verdetto
 
-In corso.
+**F1 pronto: NO.**
+
+Motivi, in ordine di peso:
+
+1. **`tunnel-304` rosso 2 corse su 2**, sempre per «non giudicato» (copertura: 1 sola uscita arrivata alla fascia degli oggetti dove la sonda ne pretende 2). Nella corsa 2 il braccio verde è stato giudicato ed è verde, ma il braccio rosso non è stato giudicato e la sonda ha stampato `ROSSO NON VISTO: guardiano cieco`. Il confronto sulla base `b3b75b9d` non si può fare: la sonda `misura-304.mjs` nasce col giro 304 e sulla base non esiste. Quindi il rosso **nasce dall'unione, dal giro 304**, ed è un rosso della **sonda** (copertura instabile), non un difetto di gioco osservato: con la correzione accesa l'eroe non è mai finito dentro un oggetto (0 su 8 uscite nelle due corse). Non posso confermare né escludere il difetto di gioco con questa sonda finché la sua copertura non è stabile.
+2. **`tunnel-245` seconda corsa non eseguita** per il tetto di tempo: per regola vale rosso.
+
+Tutto il resto è verde alla prima corsa (e `corpi-073` 2 su 2): `tunnel-245` corsa 1, `tunnel-285`, `corpi-073`, `scatto-305`, `ingresso-294`, `portiere-295`, `esito-rete-301`, `goal-postarc`, `po229-gi38`, `rete-252`, `gk-miss-229`. Nessuno di questi ha chiesto la prova sulla base e nessun interruttore `__CPM_NO_G293…G306` è stato usato a mano (solo quelli che i guardiani armano da sé nei loro bracci rossi).
+
+## Cosa resta da fare (non fatto qui: solo rapporto)
+
+- Rendere stabile la copertura di `tunnel-304` (le uscite k=1,2,3 a volte si fermano a z −26…−32 e non arrivano alla fascia) e rieseguirlo: è l'unico rosso vero di questo blocco.
+- Seconda corsa intera di `tunnel-245` (34 minuti).
+
+## Note di metodo
+
+- Ordine d'esecuzione: quello dell'elenco, salvo la seconda corsa di `tunnel-245` rinviata in coda per coprire prima tutti i controlli distinti; poi non eseguita per il tetto.
+- Tempi misurati (secondi): tunnel-245 2043 · tunnel-304 323 e 704 · tunnel-285 305 · corpi-073 447 e 467 · scatto-305 119 · ingresso-294 294 · portiere-295 658 · esito-rete-301 1332 · goal-postarc 661 · po229-gi38 33 · rete-252 231 · gk-miss-229 190. Nessun controllo ha superato i 40 minuti.
+- Nessun controllo ha lasciato file modificati o nuovi nel repo (`git status` pulito dopo ognuno): nessun `git restore` è servito.
+- `goal-postarc`, `po229-gi38` e `gk-miss-229` così come sono in `package.json` girano solo il braccio verde: la loro prova del rosso non fa parte di questa verifica.
+- `GAME_VERSION` non toccata. Nessuna sonda e nessun file di gioco modificati: rispetto a `6b79812c` questo ramo aggiunge solo questo rapporto.
+- Il ramo remoto `sviluppo/verifica198-f1` esisteva già con un rapporto F1 più vecchio (build `086cdba9`): l'ho unito senza forzare e conservato in appendice.
+- I log completi stanno nello scratchpad della sessione, non nel repo.
 
 ---
 
