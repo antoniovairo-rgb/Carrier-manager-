@@ -18,3 +18,4 @@
 | ritocchi-302 | VERDE | — | — | verde: A, B (contrasto 14,79), C 756/756; rosso: cade su A (1), B (31), C (7); 62 s. Ha rigenerato foto in `docs/sviluppo/giro302/`: rimesse con `git restore` |
 | home-298 | VERDE | — | — | verde sulle 3 risoluzioni; rosso con `__CPM_NO_G298`: tornano tutti e cinque i difetti (63 rilievi); 121 s |
 | prepartita-pc-300 | VERDE | — | — | braccio verde verde; braccio rosso: cade su Apc, Atel, Bpc, Cpc, Dpc, Dtel (15 rilievi); 130 s |
+| rigori-296 | VERDE | — | — | parti A + B + C verdi, i rossi si vedono; cerimonie chiuse dal timer a 18,5–20,2 s (previsto 17,5 s), «salta» 3,8 s; 1014 s. Nella parte C il braccio rosso «compagno» ha avuto bisogno di più tentativi interni allo strumento (dichiarati nel registro) |
