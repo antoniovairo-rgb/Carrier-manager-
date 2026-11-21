@@ -170,9 +170,9 @@ Tutti uno alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, dopo `node tools/b
 | `simula-v2` | verde + rosso atteso |
 | `partita-v2` | verde + rosso atteso |
 | `sim-motore` | **ROSSO**: B «gol a partita 2,29 fuori da 2,3-3,5» (vedi sotto) |
-| `solo-highlight-166` | _in corso alla stesura, vedi coda_ |
-| `partita-vera` | _vedi coda_ |
-| `match-sequence` | _vedi coda_ |
+| `solo-highlight-166` | verde «PASSA», rosso «CADE su 3, 7 e 8» |
+| `partita-vera` | verde, 12 bande su 12, partite finite 2/2 |
+| `match-sequence` | verde («le tre velocità raccontano la stessa partita») |
 | catena «sentinelle» | **non eseguita**: il giro 308 non è unito in `lavoro/200` (`1cbc414`, la catena sta solo su `sviluppo/giro308-metodo`) |
 | `career-critical`, `highlight-95`, `ingresso-206` | non eseguiti, come richiesto |
 
