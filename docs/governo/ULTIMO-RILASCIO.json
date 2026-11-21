@@ -1,0 +1,27 @@
+{
+ "versione": "7.999.201",
+ "precedente": "7.999.200",
+ "quando": "2026-11-21T17:55:26.223Z",
+ "tag": "prova-v7.999.201-44927374634",
+ "modo": "prova",
+ "ramo_lavoro": "prova-cd/lavoro-312b",
+ "commit_provato": "d2e79a5baf8bb6ddba15fcd592bf1e887b228e3c",
+ "commit_lavoro": "0d828190056b8d7a72f9971a714c6127818cfca5",
+ "corsa_treno": "44927374634",
+ "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/44927374634",
+ "unioni": [
+  "Unione sviluppo/giro312-rilascio-automatico in lavoro/prova-312"
+ ],
+ "nota": "[7.999.201] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 44927374634): Unione sviluppo/giro312-rilascio-automatico in lavoro/prova-312. Rossi dichiarati: quelli della 7.999.200.",
+ "treno": {
+  "guardiani": 2,
+  "verdi": 2,
+  "parti": "1/1",
+  "mappa_intera": false,
+  "rossi_nuovi": [],
+  "non_giudicati": [],
+  "rossi_noti": [],
+  "rossi_noti_runner": []
+ },
+ "deploy": "saltato (modo prova)"
+}
