@@ -12,3 +12,4 @@
 | controllo | esito | esito sulla base (se rosso) | nato da quale giro | nota |
 |---|---|---|---|---|
 | test:logic | VERDE | — | — | 51 prove su 51, 0 fallite, 3 s |
+| save-compat | VERDE | — | — | 12 passati, 0 falliti, 9 s; nota informativa dello strumento sulla seconda migrazione (dichiarata benigna dallo strumento stesso) |
