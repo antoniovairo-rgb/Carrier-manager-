@@ -12,8 +12,8 @@
 
 | controllo | esito su finale | esito sulla base | nato da quale giro | nota |
 |---|---|---|---|---|
-| portiere-252 | in corso | — | — | — |
-| guardalinee-222 | da eseguire | — | — | — |
+| portiere-252 | **verde** (rc 0, 845 s; verde KO 0/11, rosso KO 2/11) | non eseguito (verde) | — | Il guardiano dichiara «n.g. (bruciapelo < 0,2 s)» 3 scene su 11 per braccio (gi16, gi1, gi1@88,86) e resta verde: è una sua esclusione scritta, non l'ho rigiudicata. |
+| guardalinee-222 | in corso | — | — | — |
 | pc-tablet-292 | da eseguire | — | — | — |
 | scena3d-96 | da eseguire | — | — | — |
 | passaggio-coppa-137 | da eseguire | — | — | — |
