@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (99)
+## Voci aperte o parziali (100)
 
-Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 32.
+Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 33.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -119,6 +119,7 @@ Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-604 | 21/11 22:35 | PO: «sarebbe meglio fare trenini e quindi far scattare solo i controlli strettamente necessari e velocemente». Questionario: «Trenino + treno grande di notte» — a ogni unione in lavoro/** solo i guardiani delle righe della mappa unica toccate dal vagone + le 17 sentinelle, in parallelo su Actions (stima 20-40 min, da misurare); trenino pulito → rilascio automatico; la mappa intera gira ogni notte. Rosso nuovo del treno di notte → «Rilasci fermi finché non si ripara» (si apre la voce e un giro di correzione; ripartono a rosso riparato o dichiarato dal PO) | metodo di rilascio (trenino, CD) | DA FARE — 201 (giro 317) | 7.999.201 | — | rilascio-312 | questionario PO 21/11 |
 | PO-605 | 21/11 23:35 | PO (due foto in chat): testi che non convincono. (1) tasto finale della serata di presentazione «🎉 Che la stagione cominci →» (src/18 ~6637) → PO: «Si comincia!»; (2) riga AvvisoSalienti290 «Nella pre-partita puoi giocare solo i momenti salienti» (src/11 ~124, letta come un limite) → PO: «Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita» | testi (UI) | DA FARE — 201 (giro 318) | 7.999.201 | — | avviso-290 | richiesta PO 21/11 |
 | PO-606 | 21/11 23:45 | PO (foto docs/collaudo-po/200-club-obiettivi.png, scheda Club FC Augusta, St. 2): «gli obiettivi della stagione e l'ambizione non è chiara!» — la testata dice solo «Progetto solido» (andamento del club). Questionario: riquadro «La stagione» in cima sotto la testata: ambizione del club, obiettivo di classifica, posizione attuale rispetto all'obiettivo (verde/rosso), obiettivi personali con avanzamento; ambizione con la STESSA regola della riga della Home (giro 298, obiettivo per prestigio/storia), una fonte sola per Home, Club e presidente | UI (Club, obiettivi) | IN CODA — 201 (giro 319 fermato su regola PO 21/11: richieste in coda per ordine di arrivo; ramo sviluppo/giro319-club-obiettivi conservato) | 7.999.201 | — | — | foto PO 21/11 |
+| PO-607 | 22/11 00:00 | PO (foto docs/collaudo-po/200-offerta-hannover.png, 7.999.200, FC Augusta St. 2 Sett. 5): «queste offerte sono ridicole» — offerta ufficiale di FC Hannover (Deutsche Liga 2, prestigio 50 contro 66, 12° su 18) come prestito con diritto di riscatto: durata 1 st. contro 4, ruolo Riserva contro «In rotazione», minutaggio 40%, ma presentata col tono di un'offerta vantaggiosa (+16 morale, +8% crescita). Da misurare: quanto spesso arrivano offerte peggiorative (lega inferiore, prestigio più basso, ruolo peggiore) a un giocatore titolare/in rotazione in un club migliore; regole del mercato da rendere credibili (un club più debole non offre prestito-riserva; le offerte devono essere un passo avanti o laterale per qualcosa: minuti, stipendio, ambizione) | bilanciamento (mercato, offerte) | IN CODA — 201 | 7.999.201 | — | — | foto PO 22/11 |
 
 ## Storico — voci chiuse (507)
 
