@@ -7,14 +7,19 @@
    CPM_MIN volte (al massimo CPM_GIRI blocchi), e lo dichiara.
      verde: in ogni ingresso nella consegna lo scalino del pallone e' sotto 3u (soglia D11) e scena3d non segna salti;
      rosso __CPM_NO_G103B: almeno un ingresso con lo scalino oltre 3u.
-   Uso: node consegna-103.mjs  [CPM_ARMI=verde,rosso] [CPM_N=4] [CPM_MIN=2] [CPM_GIRI=4] */
+   Uso: node consegna-103.mjs  [CPM_ARMI=verde,rosso] [CPM_N=4] [CPM_MIN=2] [CPM_GIRI=8] */
 import { spawnSync } from 'node:child_process';
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
-const N = +(process.env.CPM_N || 4), MIN = +(process.env.CPM_MIN || 2), GIRI = +(process.env.CPM_GIRI || 4);
+const N = +(process.env.CPM_N || 4), MIN = +(process.env.CPM_MIN || 2), GIRI = +(process.env.CPM_GIRI || 8);
 const esito = {};
 for (const arm of ARMI) {
   const T = { scene: 0, cg: 0, oltre: 0, max: 0, salti: 0 };
-  for (let g = 0; g < GIRI && T.cg < MIN; g++) {
+  /* [giro 293] RIPETIZIONE DICHIARATA, soglie invariate (scalino 3u, pavimento MIN ingressi). Misurato in questo giro: il percorso esce in 3 scene
+     su 24 (non una su tre), quindi con 4 blocchi il verde restava «cieco» (meno di MIN ingressi) circa una corsa su tredici e il rosso poteva
+     fermarsi a MIN ingressi senza aver ancora visto lo scalino. Ora: fino a 8 blocchi; il verde si ferma a MIN ingressi come prima; il rosso
+     continua finche' il difetto si vede (un ingresso oltre 3u, una sospensione oltre 3u o un salto D11). */
+  const visto = () => arm === 'rosso' ? !!(T.oltre || T.soOltre || T.salti) : T.cg >= MIN;
+  for (let g = 0; g < GIRI && !visto(); g++) {
     const env = { ...process.env, CPM_G96_FORMATI: 'pc,tel',/* la sospensione sull'incornata (ricevente-cross) si vede sul telefono */ CPM_G96_LISTA: Array(N).fill('18:riesce').join(','), CPM_G96_PER: String(N) };
     delete env.CPM_FLAG; if (arm === 'rosso') env.CPM_FLAG = '__CPM_NO_G103B';
     const r = spawnSync(process.execPath, ['scena3d-96.mjs'], { env, encoding: 'utf8', cwd: new URL('.', import.meta.url).pathname, maxBuffer: 1 << 26 });

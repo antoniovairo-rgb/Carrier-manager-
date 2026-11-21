@@ -3988,6 +3988,7 @@ function ThreeMatchView(props){
       else{mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;mesh.position.y*=0.8;mesh._idle=(mesh._idle||0)+dt*1.5;mesh.rotation.z=Math.sin(mesh._idle)*0.02;}
     };
     const animOne=(mesh,tx,tz,dt,k,bx,bz)=>{
+      if(mesh===awayGkMesh&&sr.current._w295){const _q295=sr.current._w295;_q295.n++;if(_q295.n===1){_q295.x1=tx;_q295.z1=tz;}else{_q295.x2=tx;_q295.z2=tz;}}/* [giro 295, solo testimone con __CPM_REC229] quante guide muovono il portiere avversario in questo fotogramma, e verso dove */
       const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
       // Step C — MOVIMENTO: l'EROE resta CRISP (lerp diretto); gli off-ball usano bersaglio COMMESSO smussato + modello a VELOCITÀ con inerzia
       //   (accel/decel, momentum) → niente più inseguimento per-frame/zig-zag/micro-correzioni. Deterministico (nessun random).
@@ -4598,7 +4599,23 @@ function ThreeMatchView(props){
            portatore) e si riaggancia se quello agganciato si allontana oltre 6u dal pallone logico. Rosso __CPM_NO_FONDO89. */
         const _no89=(typeof window!=='undefined'&&window.__CPM_NO_FONDO89);
         const _lbx89=G2X(P.ballX==null?50:P.ballX),_lbz89=G2Z(P.ballY==null?50:P.ballY);
-        if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6)_tackleCarrier=null;
+        /* [giro 293 PO-562 «continua a muoversi avanti ed indietro prima della mia scelta», ritorno di PO-545. Rosso __CPM_NO_G293]
+           MISURATO (misura-293, GLB acceso, pagina nuova, tempo di scena; gi129 3 volte su 3, gi44 2 su 2 — gi44 e' una scena di portatore-286,
+           ed e' la sua instabilita'): quando NESSUN avversario sta entro 6 u dal pallone logico, la regola del 7.999.89 sganciava il portatore
+           a OGNI fotogramma e riagganciava il piu' vicino. Con due avversari a distanza simile il piu' vicino cambia col «va e vieni»
+           dell'attesa attiva (chi NON ha il pallone si muove di 1 u, chi lo ha sta fermo: giro 286), e il pallone saltava dall'uno all'altro:
+           17-19 u a ogni scambio, 14-34 inversioni del pallone in 6 s di scena, e i due corpi fermi/in moto a turno. Ora il portatore agganciato
+           resta; si cambia solo se un altro avversario e' piu' vicino al pallone logico di almeno 3 u (piu' dell'escursione dell'attesa, 2 u). */
+        if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6){
+          if(typeof window!=='undefined'&&window.__CPM_G293W&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_G293W.lont=(window.__CPM_G293W.lont|0)+1;}catch(_e293){}}/* testimone nei due bracci: portatore agganciato oltre 6 u dal pallone logico */
+          /* nel primo mezzo secondo di scena (l'apertura: i corpi stanno ancora prendendo posto, e il primo aggancio puo' cadere su chi non e'
+             il piu' vicino — misurato su gi54: cambio di portatore a 2,2 s di scena, il nuovo portatore scatta di 0,97 u) il riaggancio resta
+             libero come prima; dopo, il portatore e' quello e resta. */
+          const _S293=(sr.current._t293&&sr.current._t293.k===P.hlSitKey)?sr.current._t293:(sr.current._t293={k:P.hlSitKey,t:0});_S293.t+=aDt;
+          if((typeof window!=='undefined'&&window.__CPM_NO_G293)||_S293.t<0.5)_tackleCarrier=null;
+          else{const _dc293=Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89);let _n293=null,_dn293=1e9;const _a293=P.allPlayers||[];
+            sr.current.players.forEach((pp,ii)=>{const s=_a293[ii];if(s&&s.team==='away'&&!s.gk&&pp.mesh!==_tackleCarrier){const d=Math.hypot(pp.mesh.position.x-_lbx89,pp.mesh.position.z-_lbz89);if(d<_dn293){_dn293=d;_n293=pp.mesh;}}});
+            if(_n293&&_dn293<_dc293-3)_tackleCarrier=_n293;}}
         {const _S31=sr.current._c31;if(_S31&&_S31.k===P.hlSitKey&&_S31.i>=0&&!(typeof window!=='undefined'&&window.__CPM_NO_POSTO31)){const _pp31=sr.current.players&&sr.current.players[_S31.i];if(_pp31&&_pp31.mesh)_tackleCarrier=_pp31.mesh;}}/* [giro 31 PO-220] il pallone sta ai piedi del portatore che il 3D mette alla distanza dichiarata (_c31) */
         if(!_tackleCarrier){let _nd=1e9;const _a2=P.allPlayers||[];const _rx89=_no89?hero.position.x:_lbx89,_rz89=_no89?hero.position.z:_lbz89;sr.current.players.forEach((pp,ii)=>{const s=_a2[ii];if(s&&s.team==='away'&&!s.gk){const d=Math.hypot(pp.mesh.position.x-_rx89,pp.mesh.position.z-_rz89);if(d<_nd){_nd=d;_tackleCarrier=pp.mesh;}}});}
       } else _tackleCarrier=null;
@@ -5879,7 +5896,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(_SUBX255,0,_z127);hero._px=_SUBX255;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;{const _da=window.__CPM_DA304;if(Array.isArray(_da)){window.__CPM_DA304=null;hero.position.x=+_da[0];hero.position.z=+_da[1];hero._hvx=0;hero._hvz=0;hero._px=hero.position.x;hero._pz=hero.position.z;}}/* [giro 304, solo collaudo] punto di partenza dell'uscita scelto dalla sonda */hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
       if(subEntryT>=0)subEntryT+=dt;
       if(subExitT>=0)subExitT+=dt;
       if((P.ceremony||P.shootout)&&hero._benched){hero._benched=false;hero.visible=true;subExitT=-1;/* [7.127.0] un eroe uscito ricompare per premiazione/rigori (mai bloccato invisibile) */}
@@ -6527,6 +6544,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&!_amico43&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             ballArcTgtZ=clamp(ballArcTgtZ,-3.3,3.3);
             ballArcTgtX=Math.max(ballArcTgtX,AWAY_GOAL_X-4);
+            if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_PARX295!=null&&awayGkMesh&&ball.position.x<awayGkMesh.position.x-(+window.__CPM_PARX295)-1.5)ballArcTgtX=awayGkMesh.position.x-(+window.__CPM_PARX295);/* [giro 295 PO-530, SOLO SONDE ?cpmtest=1] bersaglio dell'arco della parata messo a <u> davanti al portiere (solo se il pallone parte almeno 1,5 u prima di quel punto): nel gioco il bersaglio e' sorteggiato a ogni corsa (misurato col portiere a x 47: da 40 a 46,9), e il caso «davanti al portiere arretrato» (giro 271: 3-5 u) va provocato per essere ripetibile */
             /* [giro 40 PO-258 «Bordata potente» parata, codice 111 portiere fuori tempo — taccuino PO 7.999.169 S.13 W.21 43'. Rosso
                __CPM_NO_PARATA258, guardiano parata-258] MISURATO (sonda del giro 27, 4 punizioni fk_power parate, GLB acceso, testimone
                __CPM_GK229): il portiere uscito a x 41 arrivava sul punto giusto in tempo (z -2,51 contro pallone a -2,36), ma l'arco della
@@ -6538,6 +6556,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_PARATA258)){
               const _gx258=awayGkMesh.position.x+0.45,_sx258=ball.position.x,_sz258=ball.position.z;
               if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_SV119={k:String(P.hlSitKey),v:P.hlVariant||null,gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),sx:+_sx258.toFixed(2),sz:+_sz258.toFixed(2),tx:+ballArcTgtX.toFixed(2),tz:+ballArcTgtZ.toFixed(2),hx:+hero.position.x.toFixed(2),hz:+hero.position.z.toFixed(2),aT:+(ballArcT||0).toFixed(2)};}catch(_e){}}/* [giro 119 strumento, solo __CPM_REC] la geometria della parata all'armo dell'arco, in ENTRAMBI i rami (applicato o no il taglio 258) */
+              /* [giro 295 PO-530 «parata col pallone che si ferma 3-5 u davanti al portiere», decisione PO 18/11. Rosso __CPM_NO_G295, guardiano
+                 portiere-295 braccio 4] MISURATO (misura-295 e giro 271): col portiere ARRETRATO (x 47, nato a x 97) il bersaglio dell'arco della
+                 parata resta davanti a lui (morsetto qui sopra: almeno AWAY_GOAL_X-4 = 42) e il pallone muore 3-5 u prima delle sue mani. I due
+                 tagli qui sotto valgono solo col portiere DAVANTI al bersaglio. Ora, col portiere DIETRO, l'arco si allunga sulla stessa retta
+                 fino al suo piano (stessa convenzione del 258: mani a +0,45 u), durata scalata sulla corda, mai oltre la linea di porta. */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G295)&&_gx258>ballArcTgtX+0.3&&_sx258<_gx258-0.5){
+                const _nx295=Math.min(_gx258,GOAL_LINE_X-0.3),_dx295=ballArcTgtX-_sx258,_u295=_dx295>0.5?(_nx295-_sx258)/_dx295:0,_px295=ballArcTgtX;
+                /* tiro da lontano: stessa retta, durata scalata sulla corda. Tiro da sotto (il bersaglio e' a meno di 0,5 u dal pallone, o dietro:
+                   misurato su gi86 testa e gi4, pallone a x 44-45 col portiere a 47): non c'e' una retta da allungare, il pallone va dritto alle
+                   mani del portiere tenendo la z del bersaglio, a 32 u/s di scena (la velocita' del volo del giro 274). */
+                /* la durata scalata sulla corda tiene la velocita' del tiro, ma mai sotto 18 u/s di scena: con un bersaglio originale a meno di 1 u dal
+                   pallone la «velocita'» e' quella di un tocco, e l'arco allungato durava 3,3 s (misurato da gk-dive-sync su gi63: tuffo finito 0,35 s
+                   prima dell'arrivo, il morsetto del tuffo e' 1,70 s). */
+                if(_u295>0){ballArcTgtZ=clamp(_sz258+(ballArcTgtZ-_sz258)*_u295,-3.3,3.3);ballArcDur=Math.max(0.2,Math.min(ballArcDur*_u295,Math.max(ballArcDur,Math.hypot(_nx295-_sx258,ballArcTgtZ-_sz258)/18)));}
+                else ballArcDur=Math.max(ballArcDur,0.2,Math.hypot(_nx295-_sx258,ballArcTgtZ-_sz258)/32);
+                ballArcTgtX=_nx295;
+                if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA295=window.__CPM_PARATA295||[]);if(W.length<100)W.push({t,gx:+awayGkMesh.position.x.toFixed(2),prima:+_px295.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u295.toFixed(2)});}catch(_e){}}
+              }
               if(ballArcTgtX>_gx258+0.3&&_sx258<_gx258-2){
                 const _u258=(_gx258-_sx258)/(ballArcTgtX-_sx258),_px258=ballArcTgtX;
                 ballArcTgtZ=_sz258+(ballArcTgtZ-_sz258)*_u258;ballArcTgtX=_gx258;ballArcDur=Math.max(0.2,ballArcDur*_u258);
@@ -6597,7 +6633,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              verso un pallone che fino alla linea gli passa a 5,4-7,3 u. Gioco e guardiano ora guardano lo stesso pezzo di traiettoria. */
           const _xl265=(typeof window!=='undefined'&&window.__CPM_NO_G265)?1e9:GOAL_LINE_X-1.2;
           const _avv223=(sx,sz,tx,tz,curl,gx,gz)=>{let m=1e9,lat=1e9,yy=0;_curva223(sx,sz,tx,tz,curl,(x,z,i,y)=>{if(Math.hypot(x-sx,z-sz)<1.5||x>_xl265)return false;const d=Math.hypot(x-gx,z-gz);if(d<m){m=d;lat=Math.abs(z-gz);yy=y;}return false;});return{m,lat,y:yy};};
-          const _portata223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz);if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223P=window.__CPM_G223P||[]);if(W.length<60)W.push({d:+a.m.toFixed(2),lat:+a.lat.toFixed(2),y:+a.y.toFixed(2),H:+(+ballArcH).toFixed(2),tz:+tz.toFixed(1),gx:+gx.toFixed(1),gz:+gz.toFixed(1)});}catch(_e){}}return a.lat<=4.5&&a.m<=5.5&&a.y<=2.6;};
+          const _portata223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz);if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223P=window.__CPM_G223P||[]);if(W.length<60)W.push({d:+a.m.toFixed(2),lat:+a.lat.toFixed(2),y:+a.y.toFixed(2),H:+(+ballArcH).toFixed(2),tz:+tz.toFixed(1),gx:+gx.toFixed(1),gz:+gz.toFixed(1)});}catch(_e){}}/* [giro 295 PO-520 «Si tuffa sempre», decisione PO 18/11. Rosso __CPM_NO_G295, guardiano portiere-295 braccio 3] sul PALO il bersaglio e' il palo e non si puo' spostare: sul filo della portata (entro 0,25 u oltre una delle tre soglie, la stessa fascia di `_ambiguo223`) il verdetto cambiava con lo scarto della stima (misurato nel giro 265: 4,52-4,54 u contro 4,5) e il portiere a volte ci provava e a volte no. Sul palo la fascia sul filo conta come «a portata»: si tuffa sempre. */const _b295=(P.hlOutcomeKind==="post"&&!(typeof window!=='undefined'&&window.__CPM_NO_G295))?0.25:0;return a.lat<=4.5+_b295&&a.m<=5.5+_b295&&a.y<=2.6+_b295;};
           /* sul bordo della portata (entro 0,25 u da una delle tre soglie) il verdetto dipenderebbe dallo scarto della stima: il fuori sceglie un bersaglio che non ci cada */
           const _ambiguo223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz),B=0.25,lat=a.lat<=4.5+B,d=a.m<=5.5+B,y=a.y<=2.6+B;
             return lat&&d&&y&&(Math.abs(a.lat-4.5)<B||Math.abs(a.m-5.5)<B||Math.abs(a.y-2.6)<B);};
@@ -6624,6 +6660,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
             }
           }
+          /* [giro 301, SOLO COLLAUDO ?cpmtest=1] provocazione del guardiano esito-rete-301: su un'azione fallita il bersaglio dell'arco viene
+             messo DENTRO la porta (0,9 u oltre la linea, fra i pali, basso). Il gioco da solo non lo fa (misurato): serve a provare la barriera. */
+          if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RETE301&&ballArcActive&&P.hlSuccess===false&&!P.hlDef){ballArcTgtX=GOAL_LINE_X+0.9;ballArcTgtZ=clamp(ballArcTgtZ,-2.6,2.6);ballArcTgtY=0.6;try{(window.__CPM_RETE301L=window.__CPM_RETE301L||[]).push({t,kind:P.hlOutcomeKind||null,tz:+ballArcTgtZ.toFixed(2)});}catch(_e){}}
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
           /* [7.513.0 R2/2 — IL CONTATTO E' UNA PROPRIETA' DELLA TABELLA: audit «cross e passaggi partono a
              contatto zero — la palla e' gia' partita quando la gamba passa sul pallone»] Il -0,24 era un `if`
@@ -6783,6 +6822,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              in z, arco che muore dx prima del suo piano) per giudicare il lato in modo deterministico — il bersaglio vero non e' seedato. */
           if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_GK229GEO&&awayGkMesh&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="post"&&!P.hlDef){try{const _G=window.__CPM_GK229GEO;
             if(_G.gz!=null)awayGkMesh.position.z=+_G.gz;if(_G.tz!=null)ballArcTgtZ=+_G.tz;if(_G.dx!=null)ballArcTgtX=Math.min(ballArcTgtX,awayGkMesh.position.x-(+_G.dx));}catch(_eG){}}
+          /* [giro 295 PO-520, SOLO SONDE ?cpmtest=1] __CPM_LAT295=<u>: mette il portiere in z alla distanza di lato chiesta dal pallone (la stessa che
+             calcola `_avv223`), per provocare il palo «sul filo della portata»: da una corsa all'altra la distanza cambia di 0,1-0,2 u (punto di
+             partenza del tiro non seedato) e con la sola geometria forzata la fascia di 0,25 u non si centra. Punto fisso, 10 passi, nessun sorteggio. */
+          if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_LAT295!=null&&awayGkMesh&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="post"&&!P.hlDef&&ballArcTgtX>ball.position.x){try{
+            const _L295=+window.__CPM_LAT295,_cu295=t==="shot"&&P.hlVariant==="shot_curled",_s295=ballArcTgtZ>=0?-1:1;let _gz295=ballArcTgtZ+_s295*_L295;
+            for(let _k=0;_k<10;_k++){const _a295=_avv223(ball.position.x,ball.position.z,ballArcTgtX,ballArcTgtZ,_cu295,awayGkMesh.position.x,_gz295);if(!(_a295.lat<1e8))break;_gz295+=_s295*(_L295-_a295.lat);}
+            awayGkMesh.position.z=_gz295;}catch(_eL295){}}
           let _zp229=ballArcTgtZ;if(awayGkMesh){const _gx=awayGkMesh.position.x,_sx=ball.position.x,_sz=ball.position.z;if(ballArcTgtX>_gx&&_sx<_gx&&(ballArcTgtX-_sx)>0.5)_zp229=_sz+(ballArcTgtZ-_sz)*((_gx-_sx)/(ballArcTgtX-_sx));}
           /* [giro 223] sul tiro a giro SBAGLIATO il punto di passaggio conta la pancia (7.231), come gia' parata e gol (PO-252/5): misurato
              (portiere-223) curled gi3/gi17/gi84 fuori, portiere FERMO col pallone che gli passa a 0,6-3,1 u perche' la stima lineare lo dava lontano. */
@@ -6797,6 +6843,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             //   mentre il cross atterrava fino a z=±18 → presa a vuoto a 4-13u dalla palla. Ora l'arco converge sul GK.
             ballArcTgtZ=clamp(ballArcTgtZ,oppMesh.position.z-3.5,oppMesh.position.z+3.5);
             ballArcTgtX=clamp(ballArcTgtX,40,44.5);
+            /* [giro 295 PO-530] anche il cross «parato» si chiude AL portiere: col portiere arretrato (x 47) l'atterraggio a x 40-44,5 restava 2,5-7 u davanti alle sue mani. Entro 1 u davanti a lui. Rosso __CPM_NO_G295 */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G295)&&oppMesh.position.x-ballArcTgtX>1)ballArcTgtX=Math.min(oppMesh.position.x-1,GOAL_LINE_X-0.3);
           } else if((t==="shot"||t==="penalty"||t==="header"||t==="freekick")&&awayGkMesh&&!P.hlDef&&!(P.hlOutcomeKind==="post"&&_dG223===0)/* [giro 223] sul PALO fuori dalla portata del portiere lui guarda: misurato tiri da posizione defilata sul palo con il pallone a 7-10 u, portiere disteso verso il nulla */&&!(P.hlOutcomeKind==="chance"&&P.hlReward==="assist"&&!(typeof window!=="undefined"&&(window.__CPM_NO_GKCH241||window.__CPM_NO_ESITI241)))/* [giro 41 PO-250/PO-218] la punizione «palla in area» (chance, premio assist) e' una CONSEGNA al compagno, non un tiro in porta: il portiere si tuffava su un pallone che andava a un compagno, e il riquadro poteva dire «murato» o «filtrante» sopra una parata (censimento esiti-241: gi13/gi14 punizione-cross, gk_dive 3 su 3). Rosso __CPM_NO_GKCH241 */&&(((t==="penalty"||(t==="freekick"&&Math.abs(ballArcTgtZ)<7.5))&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&!(typeof window!=="undefined"&&window.__CPM_NO_FKGK62))/* [7.999.62 taccuino PO #78 «punizione fuori: il portiere non si tuffa». Rosso __CPM_NO_FKGK62] sul piazzato che esce DI POCO (entro 7,5u dal centro, i pali sono a 3,35) e sul rigore fuori il portiere si tuffa lo stesso, corto: sul rigore sceglie il lato prima del calcio, sulla punizione vicina al palo ci prova */||(!(typeof window!=="undefined"&&window.__CPM_NO_GK229M)&&(t==="shot"||t==="header")&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&(((_dG223==null)?(Math.abs(ballArcTgtZ)<=4.85||Math.abs(_zp229-awayGkMesh.position.z)<=4.5):_dG223===1)))/* [giro 223] col fuori che ora arriva sulla linea e passa lontano dal corpo, il portiere ci prova quando il pallone gli passa A PORTATA (definizione del 229: 4,5 u di lato e 5,5 in pianta nel punto di massimo avvicinamento, lungo la traiettoria disegnata), qualunque sia il bersaglio: misurato tiro a giro defilato fuori sul primo palo con bersaglio a 4,4 (dentro il vecchio «esce di poco») e pallone a 9,4 u da lui — si distendeva verso il nulla; e tiro di prima a 5,4 u con bersaglio a 4,86, appena oltre, fermo *//* [7.999.162 PO-229] tiro che esce DI POCO (arco che finisce entro 1,5u dal palo) o che passa A PORTATA del portiere (entro 4,5u sul suo piano, anche quando il portiere e' uscito incontro al tiratore): lui ci prova — vedi la nota sotto */||!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner"||P.hlOutcomeKind==="blocked"||P.hlOutcomeKind==="wall_blocked"||P.hlOutcomeKind==="intercepted"))){/* [7.197.0 S4] niente tuffo sul tiro MURATO: la conclusione muore sul muro a 5 metri dal tiratore, il portiere non c'entra nulla — prima si tuffava su un pallone che non gli arrivava mai */// 5.49.11: niente tuffo su azione difensiva · [6.4.1 R2.2] niente tuffo sul corner (palla fuori) · [6.76.0 LMV-B1] anche la PUNIZIONE parata/in porta fa tuffare il GK (prima "parata dal nulla": deflect+posa senza tuffo)
             /* [7.203.0 direttiva PO «sembra davvero una partita di calcio»] IL PORTIERE NON SI TUFFA SU TUTTO.
                Ogni conclusione nello specchio faceva partire un tuffo a corpo disteso, anche su un pallone
@@ -7401,6 +7449,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
       const _hold74=(isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10)))||(isWalk&&typeof window!=='undefined'&&window.__CPM_ATT196===true)/* [giro 196] la schermata d'attesa dei corpi (LiveMatch) tiene le squadre al tunnel finche' tutti sono CGTrader con clip */;
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
+      /* [giro 294 PO-556 «all'ingresso in campo l'eroe aveva gia' il pallone tra i piedi». Rosso __CPM_NO_G294]
+         MISURATO (misura-294, GLB accesi, ingresso intero e ingresso saltato, 7.999.196/197/198): sul banco il pallone resta sul dischetto
+         di centrocampo per tutto l'ingresso e nessuno gli passa a meno di 3,41 u (l'eroe, ultimo della fila di casa; dalla 197 — giri
+         245+255, file a x -4/+4 — prima erano oltre 7 u); la colla dell'eroe (3,2 u, eroe in corsa) dista 0,21 u e nell'ingresso la
+         velocita' che legge (_hvx) e' 0. Il difetto del PO non si e' riprodotto: nessuno scrittore del pallone pero' sa che l'ingresso
+         e' una cerimonia (inseguitore del punto logico, colla, portatore: nessuno guarda la fase). Regola di scena, una e a valle di tutti
+         gli scrittori: durante l'ingresso il pallone sta FERMO sul dischetto di centrocampo, a terra. Lo decide la scena, non il gioco.
+         Testimone test-only __CPM_PAL294W (armato dalla sonda): pallone e corpo piu' vicino, per fotogramma, DOPO la regola. */
+      if(isWalk){if(!(typeof window!=='undefined'&&window.__CPM_NO_G294)){ball.position.x=0;ball.position.z=0;ball.position.y=0.22;if(typeof ballArcActive!=='undefined'&&ballArcActive)ballArcActive=false;}
+        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_PAL294W)&&window.__CPM_PAL294W.length<6000){try{let _d294=1e9,_w294=-1;const _bx294=ball.position.x,_bz294=ball.position.z;
+          sr.current.players.forEach((pp,i)=>{const m=pp&&pp.mesh;if(!m)return;const d=Math.hypot(m.position.x-_bx294,m.position.z-_bz294);if(d<_d294){_d294=d;_w294=i;}});
+          const _de294=hero?Math.hypot(hero.position.x-_bx294,hero.position.z-_bz294):1e9;if(_de294<_d294){_d294=_de294;_w294=-2;}
+          window.__CPM_PAL294W.push({t:+walkT.toFixed(2),b:[+_bx294.toFixed(2),+ball.position.y.toFixed(2),+_bz294.toFixed(2)],vis:ball.visible?1:0,d:+_d294.toFixed(2),w:_w294,de:+_de294.toFixed(2),h:hero?[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)]:null});}catch(_e294){}}}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){
         /* [giro 54 PO-277 «saltabile» — rosso __CPM_NO_ING277] «Salta ingresso» non taglia la fase a meta': MISURATO (sonda del
@@ -8148,9 +8209,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
             if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
             const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};}
+          /* [giro 293] solo banco di prova (?cpmtest=1): la sonda dichiara «il ricevente del cast e' il battitore della scena», cioe' il caso del
+             flusso vero (il motore nomina ricevente il crossatore) che le scene forzate non producono perche' non hanno il cast del motore. */
+          if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RIC293==='batt'&&S.i<0){const _ss=P.stagedSpot&&P.stagedSpot.current;if(_ss&&_ss.taker!=null&&_ss.taker!==21){S.i=_ss.taker;S.p293=1;}}
           return S.i<0?null:S;}catch(_e){return null;}})();
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[(_sw219&&_sw219[i]!=null)?_sw219[i]:i],pp=_players[i];if(!t||!pp)continue;/* [7.2.0] durante la premiazione il movimento off-ball è guidato dal blocco ceremony (giro/curva/podio) */
-          const _pt31=(_c31&&_c31.i===i)?_c31:((_r99&&_r99.i===i)?_r99:null);/* [giro 99] il ricevente nominato sul suo punto di ricezione, stesso canale del portatore difensivo */
+          /* [giro 293 PO-562 «gunther continua a muoversi avanti ed indietro prima della mia scelta». Rosso __CPM_NO_G293] MISURATO (misura-293,
+             flusso vero, GLB acceso, tempo di scena; partita «Nunez» 44', «Cross di COLOMBO: attacca il pallone», origine del motore sulla
+             fascia): il crossatore col pallone fa 62 inversioni in 7 s di scena (8,8 al secondo, 1,4 u, 59 u di strada) per TUTTA la lettura.
+             Due scrittori sullo stesso corpo: il motore nomina il crossatore anche «ricevente» del cast, quindi il punto di ricezione del
+             giro 99 (_r99, 12 u davanti all'eroe) lo tira via dal pallone con animOne e lo toglie dall'attesa di lettura; appena e' oltre 1,5 u
+             la colla del battitore (7.405) lo rimette sul pallone. Il giro 286 fermava il battitore DENTRO l'attesa di lettura: questo
+             non ci entrava. Il battitore messo in scena per questa scena sta sul pallone e non ha un punto di ricezione. */
+          const _bt293=(function(){if(!(_r99&&_r99.i===i))return false;const _ss=P.stagedSpot&&P.stagedSpot.current,_q=(P.allPlayers||[])[i];if(!(_asIfPlay&&_inRead&&_ss&&_ss.taker===i&&_q&&_q._taker402))return false;
+            if(typeof window!=='undefined'&&window.__CPM_G293W&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_G293W.batt=(window.__CPM_G293W.batt|0)+1;}catch(_e293){}}/* testimone nei due bracci: il conflitto c'e' */
+            return !(typeof window!=='undefined'&&window.__CPM_NO_G293);})();
+          const _pt31=(_c31&&_c31.i===i)?_c31:((_r99&&_r99.i===i&&!_bt293)?_r99:null);/* [giro 99] il ricevente nominato sul suo punto di ricezione, stesso canale del portatore difensivo */
           // FIX passaggio: il compagno destinatario/ricevente NON si sposta — resta fermo ad accogliere la palla (ricezione leggibile)
           if(pp.mesh===passTargetMesh||(pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0)||(pp.mesh._failRunT!=null&&pp.mesh._failRunT>=0)||pp.mesh._celT371===1||pp.mesh._carry526!=null||(sr.current._pkCol415&&pp.mesh===sr.current._pkCol415.m))continue;/* [7.618.0] anche il RACCOGLITORE e' fuori dal driver di formazione: senza questo, il driver lo tirava allo slot ogni frame e il pallone vagante restava solo (misurato: driver del raccoglitore vivo 28 frame, avversario piu' vicino fermo a 7-8u) — decima istanza di «piu' autorita' sulla stessa grandezza» *//* [7.523.0 PORTATORE] chi conduce/riceve e' fuori dal driver di formazione *//* [7.371.0] chi sta correndo a festeggiare non viene riportato in posizione dall'AI off-ball: due driver sullo stesso mesh = il difetto del 5.43.13 */
           if(sr.current._adv773&&sr.current._adv773.mesh===pp.mesh&&!(typeof window!=='undefined'&&window.__CPM_NO_REPARTO90))continue;/* [7.999.89+ PO-132 #134 codice 006/011] MISURATO (sonda _reparto90, tempo reale): l'attaccante che porta palla prima del gol subito (7.773) era guidato ANCHE da questo driver di formazione, che lo riportava al suo posto a ogni fotogramma — con la palla ai piedi restava fermo a x 21,8, oppure non raggiungeva mai il pallone a 9,6u. Pallone fermo 1,5 s, reparto fermo con lui, poi tiro da lontano. Mentre avanza, il corpo e' solo dell'avanzata. Rosso __CPM_NO_REPARTO90. */
@@ -8321,7 +8395,29 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _ex0=(hero._exSx!=null?hero._exSx:hero.position.x),_ez0=(hero._exSz!=null?hero._exSz:hero.position.z);
           let _hex=_ex0+(_dx-_ex0)*_p,_hez=_ez0+(_dz-_ez0)*_p;
           if(_G255&&_ez0>_VIAZ255){const _v=_spez255(_ex0,_ez0,_dx,_VIAZ255,_dx,_dz,_p);_hex=_v.x;_hez=_v.z;}/* [giro 255] dal campo al punto davanti al varco, poi dritto fuori */
+          const _px304=hero.position.x,_pz304=hero.position.z;
           animOne(hero,_hex,_hez,aDt,ak,bx,bz);// facing = direzione di marcia (verso il dugout) via animOne
+          /* [giro 304, rosso instabile di tunnel-245 «sost-comunale» visto dalla verifica V1 — rosso window.__CPM_NO_G304]
+             IL BORDO CAMPO DEL LATO PANCHINE E' UN MURO CON UNA PORTA. MISURATO (misura-304 + lo stesso inseguimento rifatto in node
+             su 30.805 partenze): la spezzata del giro 255 la percorre il BERSAGLIO a tempo (82% della durata della variante), ma
+             l'eroe lo insegue con la sua punta (9,2 u/s, 13 oltre 6 u di ritardo). Se parte lontano (oltre ~30 u dal varco) il
+             bersaglio ha gia' girato al punto davanti al varco ed e' sceso quando l'eroe e' ancora 3-6 u indietro: l'eroe punta
+             dritto al bersaglio, TAGLIA lo spigolo e passa dentro il nastro della competizione (giro 285, finisce a x -4,77;
+             esempio della verifica: x -4,44 · z -35,05). Succede da circa una partenza su dieci, quindi dipende da DOVE si trova
+             l'eroe quando esce, non da un giro. Far aspettare il bersaglio non regge (provato sul modello: l'eroe arriva in corsa e
+             oltrepassa il punto di slancio). Ora la fascia degli oggetti di bordo campo e' un vincolo di posizione: sotto z -33,85
+             (la striscia LED comincia a z -34,34: 0,35 del corpo + 0,14 di margine; il punto davanti al varco e' a -33,6) si scende
+             solo dentro il varco (|x| <= 4,27 = 4,77 del varco piu' stretto - 0,35 del corpo - 0,15 di margine); fuori
+             dal varco l'eroe resta sulla linea e scorre verso la porta, dentro il varco non ne esce di lato. Nessun salto: si
+             corregge solo il passo del fotogramma. Spento con __CPM_NO_G255/__CPM_NO_G245 (i loro rossi vogliono l'attraversamento). */
+          if(_G255&&!(typeof window!=='undefined'&&(window.__CPM_NO_G304||window.__CPM_NO_G245))){const _ZR=-33.85,_XR=4.27;
+            /* la porta e' la CORSIA del percorso (da x -4,27 a _dx+0,4 = -3,5), non tutto il varco: MISURATO col guardiano tunnel-304,
+               l'eroe che scorre lungo la linea a 13 u/s entrava nel varco di slancio e arrivava a x -3,3 · z -35,7, dentro la parete
+               sinistra del tunnel (2 uscite provocate su 4). */
+            const _x0=-_XR,_x1=_dx+0.4,_fx=hero.position.x<_x0||hero.position.x>_x1;
+            if(hero.position.z<_ZR&&_fx){
+              if(_pz304>=_ZR){hero.position.z=_ZR;if((hero._hvz||0)<0)hero._hvz=0;}
+              else if(_px304>=_x0&&_px304<=_x1){hero.position.x=hero.position.x<_x0?_x0:_x1;hero._hvx=0;}}}
           // gesti d'uscita (pieni sul rig procedurale; sul GLB la locomozione domina → pacing/traiettoria variano)
           if(hero._aR&&hero._aL){
             const _wk=(subExitT<_xdur*0.7)?(subExitT/(_xdur*0.7)):-1;// 0..1 durante la camminata
@@ -8528,12 +8624,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   poi SOVRASCRIVO le gambe/braccia in posa di pronto (gambe divaricate, leggera flessione, braccia pronte) → il portiere
         //   NON fa più la "corsa sul posto" (il run-cycle delle gambe è annullato). Il tuffo (gk_dive) lo controlla quando attivo.
         __w266c('G');
+        sr.current._fr295=(sr.current._fr295|0)+1;/* [giro 295 PO-518] contatore di fotogramma: chi ha gia' guidato il portiere in QUESTO fotogramma */
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[i],pp=_players[i];if(!t||!pp||!t.gk)continue;if(oppActType&&pp.mesh===oppMesh)continue;/* [7.2.0] portieri fermi ai pali durante la premiazione */
           const gm=pp.mesh;const _gx=G2X(clamp(t.x,2,98)),_gz=G2Z(clamp(t.y,2,98));
           // 5.49.10: il PORTIERE è freezato come gli altri all'avvio dell'highlight — SNAP in posizione poi FERMO durante la fase di lettura,
           //   in attesa dei 2 eventi (conclusione movimenti eroe + scelta). La posa di pronto resta applicata. Sotto cpmtest il freeze è off (gate).
-          if(_doSnap){gm.position.x=_gx;gm.position.z=_gz;gm._ctx=_gx;gm._ctz=_gz;gm._vx=0;gm._vz=0;gm._px=_gx;gm._pz=_gz;if(gm===awayGkMesh)sr.current._snap265=1;}
-          else if(!_readFreeze){gm._g265=isHL&&!(typeof window!=='undefined'&&window.__CPM_NO_G265);animOne(gm,_gx,_gz,aDt,ak,bx,bz);gm._g265=false;/* [giro 265] la regola vale per QUESTA guida (il punto del portiere); il copione del build-up, che lo chiama dopo nello stesso fotogramma, resta com'era */}
+          if(_doSnap){gm.position.x=_gx;gm.position.z=_gz;gm._ctx=_gx;gm._ctz=_gz;gm._vx=0;gm._vz=0;gm._px=_gx;gm._pz=_gz;if(gm===awayGkMesh)sr.current._snap265=1;gm._gd295=sr.current._fr295;}
+          else if(!_readFreeze||(typeof window!=='undefined'&&window.__CPM_NO_G295&&isHL))/* [giro 295 PO-519] MISURATO nel gioco vero (misura-295, stacco e congelamento attivi): nella lettura il portiere non riceve nessuna guida (strada 0 u): lo tiene fermo il congelamento del 5.49.10, e non serve altro. Il rosso __CPM_NO_G295 toglie il congelamento AL SOLO PORTIERE, per provare che il guardiano portiere-295 (braccio 2) vede la scivolata */{gm._gd295=sr.current._fr295;gm._g265=isHL&&!(typeof window!=='undefined'&&window.__CPM_NO_G265);animOne(gm,_gx,_gz,aDt,ak,bx,bz);gm._g265=false;/* [giro 265] la regola vale per QUESTA guida (il punto del portiere); il copione del build-up, che lo chiama dopo nello stesso fotogramma, resta com'era */}
           gm._runB=0;// azzera il blend di corsa → niente pompaggio gambe
           if(gm._lL){gm._lL.rotation.x=0.18;gm._lL.rotation.z=-0.14;}if(gm._lR){gm._lR.rotation.x=0.18;gm._lR.rotation.z=0.14;}// gambe divaricate, leggera flessione (pronto)
           if(gm._aL){gm._aL.rotation.x=0.55;gm._aL.rotation.z=-0.45;}if(gm._aR){gm._aR.rotation.x=0.55;gm._aR.rotation.z=0.45;}// braccia avanti/aperte (pronto a parare)
@@ -8804,7 +8901,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 if(!_morde&&_du226.bx==null){_du226.gx=clamp(_hx6+2.3,2,97);_du226.gy=clamp(_hy6+_du226.sd*0.6,3,97);}
                 else{if(_du226.bx==null){_du226.bx=clamp(m.position.x+50-0.3,2,97);_du226.by=clamp(_hy6+_du226.sd*4.6,3,97);}_du226.gx=_du226.bx;_du226.gy=_du226.by;}
                 _du226.fr=(S6._fr226|0);}}
-            if(tlMap)Object.keys(sg.before).forEach(id=>{const m=tlMap[id];if(!m)return;const a=sg.before[id],b2=sg.after[id];
+            /* [giro 295 PO-518 «Logica di gioco comanda», decisione PO 18/11. Rosso __CPM_NO_G295, guardiano portiere-295 braccio 1]
+               MISURATO (misura-295, partite vere, GLB acceso): durante la costruzione dell'azione il portiere avversario riceveva DUE guide nello
+               stesso fotogramma — il suo ciclo (punto della logica di gioco) e questo copione (voce GK della timeline) — e restava fra i due
+               punti. Ora nel fotogramma in cui il suo ciclo lo ha gia' guidato il copione non lo tocca: una guida sola, quella della logica. */
+            const _fr295=sr.current._fr295,_una295=!(typeof window!=='undefined'&&window.__CPM_NO_G295);
+            if(tlMap)Object.keys(sg.before).forEach(id=>{const m=tlMap[id];if(!m)return;if(_una295&&m===awayGkMesh&&m!==hero&&m._gd295===_fr295)return;const a=sg.before[id],b2=sg.after[id];
               let _ax390=a[0]+(b2[0]-a[0])*p,_ay390=a[1]+(b2[1]-a[1])*p;
               if(_du226&&!_du226.ai&&m===_du226.m&&id!=='HERO'){_ax390=_du226.gx;_ay390=_du226.gy;
                 m._ctx=G2X(_ax390);m._ctz=G2Z(_ay390);/* niente attesa di reazione: chi marca il portatore lo guarda gia' */}
@@ -9002,7 +9104,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(typeof window!=='undefined'&&window.__CPM_REC229&&(_CPM_TEST||_SIT_TEST)){try{const _R=(window.__CPM_GK229=window.__CPM_GK229||[]);sr.current._ck229=(sr.current._ck229||0)+aDt;
           if(_R.length<3000&&awayGkMesh)_R.push({ck:+sr.current._ck229.toFixed(3),ph:P.matchPhase||null,ok:P.hlOutcomeKind||null,at:ballArcActive?1:0,aT:+(+ballArcT).toFixed(3),aD:+(+ballArcDur).toFixed(2),
             bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gy:+awayGkMesh.position.y.toFixed(2),
-            op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null,/* [giro 265, solo testimone] bersaglio commesso, velocita' e stacco di scena: chi porta il portiere lontano dal suo punto */cx:awayGkMesh._ctx==null?null:+(+awayGkMesh._ctx).toFixed(2),cz:awayGkMesh._ctz==null?null:+(+awayGkMesh._ctz).toFixed(2),vx:+(+(awayGkMesh._vx||0)).toFixed(2),vz:+(+(awayGkMesh._vz||0)).toFixed(2),sn:sr.current._snap265|0,sk:P.hlSitKey,ex:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+(window.__CPM_GKT705.away.x-50).toFixed(2):null,ez:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+((window.__CPM_GKT705.away.y-50)*0.68).toFixed(2):null/* bersaglio del portiere in coordinate di mondo (da __CPM_GKT705, solo con __CPM_REC) */});sr.current._snap265=0;}catch(_e229){}}
+            op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null,/* [giro 295, solo testimone] guide del portiere nel fotogramma (gn) coi loro bersagli, build-up acceso, bersaglio dell'arco, post-arco */gn:sr.current._w295?sr.current._w295.n:null,g1x:(sr.current._w295&&sr.current._w295.n>0)?+sr.current._w295.x1.toFixed(2):null,g1z:(sr.current._w295&&sr.current._w295.n>0)?+sr.current._w295.z1.toFixed(2):null,g2x:(sr.current._w295&&sr.current._w295.n>1)?+sr.current._w295.x2.toFixed(2):null,g2z:(sr.current._w295&&sr.current._w295.n>1)?+sr.current._w295.z2.toFixed(2):null,tl:tlOn?1:0,atx:+(+ballArcTgtX).toFixed(2),atz:+(+ballArcTgtZ).toFixed(2),pa:hlPostArcType||null,hk:P.hlSitKey,ht:P.hlType||null,/* [giro 265, solo testimone] bersaglio commesso, velocita' e stacco di scena: chi porta il portiere lontano dal suo punto */cx:awayGkMesh._ctx==null?null:+(+awayGkMesh._ctx).toFixed(2),cz:awayGkMesh._ctz==null?null:+(+awayGkMesh._ctz).toFixed(2),vx:+(+(awayGkMesh._vx||0)).toFixed(2),vz:+(+(awayGkMesh._vz||0)).toFixed(2),sn:sr.current._snap265|0,sk:P.hlSitKey,ex:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+(window.__CPM_GKT705.away.x-50).toFixed(2):null,ez:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+((window.__CPM_GKT705.away.y-50)*0.68).toFixed(2):null/* bersaglio del portiere in coordinate di mondo (da __CPM_GKT705, solo con __CPM_REC) */});sr.current._snap265=0;sr.current._w295={n:0};}catch(_e229){}}
         sr.current._pk96=!!(oppActType&&/^gk_/.test(String(oppActType))&&oppMesh&&oppMesh===awayGkMesh&&ballArcActive&&ballArcT<0&&(P.hlType==='penalty'||P.hlType==='freekick')&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D4));/* [giro 96a D4] portiere fermo finche' il piazzato non e' calciato */
         if(oppActType&&oppMesh){
           /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
@@ -13720,6 +13822,20 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           }catch(_e96t){}}
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
+      /* [giro 301 PO-588 — «esito miss ma la palla e' finita IN RETE». Rosso __CPM_NO_G301, guardiano esito-rete-301]
+         BARRIERA DI ULTIMA ISTANZA, A FINE FOTOGRAMMA (dopo ogni scrittore del pallone, prima del disegno): durante l'esito di
+         un'azione FALLITA il pallone non sta mai oltre la linea di porta avversaria, fra i pali e sotto la traversa, se un canale-rete
+         non lo certifica (_netOk535). Il guardiano geometrico 7.530 lavora solo senza arco e senza post-arco e sposta di lato con un
+         guadagno per fotogramma: mentre un arco o una respinta sono vivi non guarda, e il pallone dentro si vede. Qui il pallone resta
+         SULLA linea (x 48,55) nel fotogramma stesso. Il caso del PO non e' stato riprodotto (0 su 44 tiri falliti misurati prima della correzione, forzati e
+         di partita vera: docs/sviluppo/RAPPORTO-giro301.md): la barriera e' provata con la provocazione di collaudo __CPM_RETE301 (bersaglio dell'arco dentro la porta).
+         Testimone __CPM_G301W (solo collaudo): chi scriveva il pallone quando la barriera e' servita. */
+      try{const _P301=propsRef.current||{};
+        if(_P301.matchPhase==="hl_result"&&_P301.hlSuccess===false&&ball&&!sr.current._netOk535&&ball.position.x>=GOAL_LINE_X-0.02&&Math.abs(ball.position.z)<3.66&&ball.position.y<2.44){
+          const _no301=!!(typeof window!=='undefined'&&window.__CPM_NO_G301);
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const _w301=(window.__CPM_G301W=window.__CPM_G301W||[]);if(_w301.length<400)_w301.push({sk:_P301.hlSitKey!=null?String(_P301.hlSitKey):null,kind:_P301.hlOutcomeKind||null,ht:_P301.hlType||null,x:+ball.position.x.toFixed(2),z:+ball.position.z.toFixed(2),y:+ball.position.y.toFixed(2),arc:!!ballArcActive,pt:hlPostArcType||null,ws:sr.current._ws524||0,fermato:!_no301});}catch(_e){}}
+          if(!_no301)ball.position.x=GOAL_LINE_X-0.05;}
+      }catch(_e301){}
       __w266c('R');
       if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
       else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196)){if(sr.current._noDis219)sr.current._noDis219=0;else if(!_pend219())renderer.render(scene,camera);/* [giro 219] un tocco in coda passa prima del disegno */}/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */

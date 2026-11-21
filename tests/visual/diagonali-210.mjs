@@ -142,7 +142,7 @@ async function schermo(w, rosso) {
     const f = await forza(H, lista, k, !tel); if (!f) nonG.push('PC: nessuna scena per il pad dopo la prima mossa'); else { k = f.k + 1;
       const t = f.s.tasti.find(x => x.lab === '▲'); if (t) { await H.page.mouse.click(t.x + t.w / 2, t.y + t.h / 2); await sleep(800); }
       const s1 = await stato(H.page); if (!s1 || s1.moves < 1 || s1.tasti.length < 4) D.push(`PC: pad assente dopo la prima mossa (mosse ${s1 && s1.moves})`);
-      if (!s1 || !s1.aiutoDiag) D.push('K: riga «Diagonali: due frecce insieme» assente');
+      if (s1 && s1.aiutoDiag) D.push('K: riga «Diagonali: due frecce insieme» presente');/* [giro 300 PO-553] il PO ha tolto i suggerimenti di tasti dalle scritte: la riga d'aiuto del giro 210 (PO-401 E) non deve piu' esserci; l'accordo da tastiera resta e si misura qui sotto. Requisito cambiato, nessuna soglia toccata. */
       note.push(`PC dopo la prima mossa: fase ${s1 && s1.ph} · mosse ${s1 && s1.moves} · tasti ${s1 && s1.tasti.length} · aiuto diagonali ${s1 && s1.aiutoDiag}`); }
     /* K: tastiera — accordo di due frecce con 0/20/40 ms fra l'una e l'altra, e una freccia sola */
     let tot = 0, buoni = 0;

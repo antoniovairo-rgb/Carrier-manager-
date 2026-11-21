@@ -1,0 +1,944 @@
+{
+ "nomi": {
+  "home": "Home fuori carriera",
+  "impostazioni": "Opzioni",
+  "creazione": "Creazione",
+  "provini": "Provini · prima del provino",
+  "offerte": "Offerte ricevute",
+  "audio-serata": "Serata · pannello audio",
+  "dashboard": "Home di carriera",
+  "stagione-classifica": "Stagione · Classifica",
+  "stagione-calendario": "Stagione · Calendario",
+  "stagione-coppe": "Stagione · Coppe",
+  "club": "Club · rosa",
+  "carriera-profilo": "Carriera · Profilo",
+  "carriera-nazionale": "Carriera · Nazionale",
+  "agente": "Agente",
+  "ufficio": "Ufficio",
+  "offerta-trasferimento": "Finestra · offerta di trasferimento",
+  "mister": "Finestra · il mister ti cerca",
+  "prepartita": "Finestra · prima della partita",
+  "settimana": "Finestra · settimana vissuta",
+  "festa-trofeo": "Cerimonia 2D · festa del trofeo",
+  "serata": "Serata di presentazione",
+  "fine-stagione": "Fine stagione",
+  "gala": "Premiazioni di fine stagione",
+  "fine-carriera": "Fine carriera"
+ },
+ "dati": {
+  "home": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 7,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 7,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 9,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "impostazioni": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 9,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 9,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 9,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "creazione": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 269,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 269,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 269,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "provini": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "offerte": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 4,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 4,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 4,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "dashboard": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 35,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "stagione-classifica": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 22,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 22,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 21,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "stagione-calendario": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 88,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 88,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 87,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "stagione-coppe": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 13,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 13,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 12,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "club": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 53,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 53,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 52,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "carriera-profilo": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 102,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 102,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 103,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "carriera-nazionale": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 28,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 28,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 27,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "agente": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 35,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "ufficio": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 36,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 35,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "offerta-trasferimento": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 15,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 15,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 15,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "mister": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "prepartita": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 5,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "settimana": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 8,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 8,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 8,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "festa-trofeo": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 1,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 1,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 1,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "serata": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "audio-serata": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "fine-stagione": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 34,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 34,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 34,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "gala": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "strato",
+    "riquadri": 3,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  },
+  "fine-carriera": {
+   "375": {
+    "W": 375,
+    "H": 667,
+    "rad": "pagina",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "412": {
+    "W": 412,
+    "H": 915,
+    "rad": "pagina",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   },
+   "1366": {
+    "W": 1366,
+    "H": 768,
+    "rad": "pagina",
+    "riquadri": 2,
+    "T": [],
+    "D": [],
+    "S": [],
+    "Q": [],
+    "N": [],
+    "tot": 0
+   }
+  }
+ },
+ "saltate": [],
+ "errori": []
+}

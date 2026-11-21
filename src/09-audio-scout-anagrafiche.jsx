@@ -646,19 +646,19 @@ const AudioMgr=(function(){
    pallone, parate, pali), Musica (bus music) — e Muto. Sono le STESSE impostazioni della schermata generale (AudioMgr.setVol /
    toggleMute → localStorage 'cpm-audio'): nessun secondo salvataggio. La partita resta in pausa finche' e' aperto (LiveMatch). */
 const AUDIO172_VOCI=[{k:'crowd',l:'Pubblico',i:'📣'},{k:'match',l:'Effetti',i:'⚽'},{k:'music',l:'Musica',i:'🎵'}];
-function PannelloAudio172({onClose}){
+function PannelloAudio172({onClose,nota,chiudi,etichetta}){/* [giro 299 PO-567] nota/chiudi/etichetta: fuori dalla partita (serata di presentazione) il pannello non dice «partita in pausa»; senza, i testi di sempre */
   const[cfg,setCfg]=useState(()=>{try{return AudioMgr.getCfg();}catch(_e){return null;}});
   if(!cfg)return null;
   const rinfresca=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
   const muto=!!cfg.mute;
-  return(<div data-cpm="audio-pannello" role="dialog" aria-modal="true" aria-label="Audio della partita" onClick={onClose}
+  return(<div data-cpm="audio-pannello" role="dialog" aria-modal="true" aria-label={etichetta||"Audio della partita"} onClick={onClose}
       style={{position:'fixed',inset:0,zIndex:9000,background:'rgba(5,8,20,0.74)',display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
     <div onClick={e=>e.stopPropagation()} style={{width:'min(340px,100%)',background:TINTE.sup,border:'1px solid '+TINTE.bordo,borderRadius:RAD.lg,padding:'14px 16px 16px',color:TINTE.testo,boxShadow:'0 12px 40px rgba(0,0,0,.55)'}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
         <div style={{fontSize:FS.body,fontWeight:800}}>{muto?'🔇':'🔊'} Audio</div>
         <button data-cpm="audio-chiudi-x" aria-label="Chiudi" onClick={onClose} style={{background:'none',border:'none',color:TINTE.sec,fontSize:FS.body,cursor:'pointer',padding:'8px 10px',margin:'-8px -10px',fontFamily:'inherit'}}>✕</button>
       </div>
-      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:12}}>Partita in pausa · le scelte valgono anche nelle Impostazioni</div>
+      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:12}}>{nota||"Partita in pausa · le scelte valgono anche nelle Impostazioni"}</div>
       <label style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 0',borderBottom:'1px solid '+TINTE.bordo,marginBottom:10,cursor:'pointer'}}>
         <span style={{fontSize:FS.small,fontWeight:700}}>🔇 Muto</span>
         <input data-cpm="audio-muto" type="checkbox" checked={muto} onChange={()=>{try{AudioMgr.toggleMute();}catch(_e){}rinfresca();}} style={{width:22,height:22,accentColor:TINTE.oro}}/>
@@ -670,7 +670,7 @@ function PannelloAudio172({onClose}){
             onChange={e=>{const v=(+e.target.value)/100;try{AudioMgr.setVol(r.k,v);if(v>0&&!cfg.on[r.k])AudioMgr.setOn(r.k,true);}catch(_x){}rinfresca();}}
             style={{width:'100%',height:28,accentColor:TINTE.oro,cursor:'pointer'}}/>
         </div>);})}
-      <button data-cpm="audio-chiudi" onClick={onClose} style={{width:'100%',marginTop:4,minHeight:44,borderRadius:RAD.sm,border:'none',background:TINTE.testo,color:TINTE.bg,fontWeight:800,fontSize:FS.small,cursor:'pointer',fontFamily:'inherit'}}>Riprendi la partita</button>
+      <button data-cpm="audio-chiudi" onClick={onClose} style={{width:'100%',marginTop:4,minHeight:44,borderRadius:RAD.sm,border:'none',background:TINTE.testo,color:TINTE.bg,fontWeight:800,fontSize:FS.small,cursor:'pointer',fontFamily:'inherit'}}>{chiudi||"Riprendi la partita"}</button>
     </div>
   </div>);
 }
