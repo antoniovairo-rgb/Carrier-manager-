@@ -749,7 +749,7 @@ function creaMotorePossesso(cfg){
   const _cart913=(W,P,adv)=>{try{
     if(typeof window!=='undefined'&&window&&window.__CPM_NO913)return;
     if(!W||W.gk)return;/* il portiere prende cartellini troppo di rado perche' valga la pena */
-    S.cartellini=S.cartellini||{};const _k=W.i;const _st=S.cartellini[_k]||(S.cartellini[_k]={g:0,r:false});
+    S.cartellini=S.cartellini||{};const _k=W.i;let _st=S.cartellini[_k]||(S.cartellini[_k]={g:0,r:false});
     if(_st.r)return;
     /* La prima misura dava gialli 1,45 (vero 2,4) e rossi 0,38 (vero 0,11): troppi pochi cartellini e troppe
        espulsioni, perche' i falli si concentrano sugli stessi difensori e il secondo giallo arrivava subito.
@@ -763,6 +763,15 @@ function creaMotorePossesso(cfg){
     const _calma115=(cfg.calmaRossi|0)>0&&(S.min|0)<(cfg.calmaRossi|0);
     if(V2&&rnd()<K2.rossoDiretto){if(_calma115)return;_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
     if(rnd()>=_p)return;
+    /* [giro 310 · decisione PO 21/11, rosso __CPM_NO_G310E] L'EROE NON E' IL PARAFULMINE DELL'ARBITRO. Misurato al giro 309: l'eroe prendeva
+       0,275 gialli a partita contro ~0,15 di un giocatore medio (2,07 a squadra su ~14), perche' il motore lo cerca e lo mette spesso nel
+       duello. Ora il suo PRIMO giallo resta suo con probabilita' 0,545 (= 0,15/0,275); altrimenti il cartellino va al compagno di
+       movimento piu' vicino ancora senza ammonizioni (il fallo l'ha fatto il reparto). Il totale della squadra non cambia, e nessun
+       sorteggio in piu': la scelta viene da un hash di seme e passo, non da rnd(). */
+    if(W.eroe&&_st.g===0&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G310E)){
+      const _h310=(((cfg.seed>>>0)^Math.imul(((S.tick|0)+1)>>>0,2654435761))>>>0)%1000;
+      if(_h310>=545){const T=piuVicino(W.x,W.y,W.team,{noGk:true,escl:W.i});
+        if(T&&T.p){const _s2=S.cartellini[T.p.i]||(S.cartellini[T.p.i]={g:0,r:false});if(_s2.g===0&&!_s2.r){W=T.p;_st=_s2;}}}}
     _st.g++;
     if(_st.g>=2&&_calma115){_st.g=1;ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});}
     else if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
