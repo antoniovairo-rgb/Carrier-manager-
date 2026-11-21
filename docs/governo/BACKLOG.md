@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (96)
+## Voci aperte o parziali (97)
 
-Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 29.
+Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.201 30.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -116,6 +116,7 @@ Per lotto: 7.999.197 2 · 7.999.201 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-601 | 21/11 19:40 | PO (foto docs/collaudo-po/200-serata-tifosi-ospiti.webp, «Serata di presentazione · Stagione 2», 7.999.200): «nella serata di presentazione non ci devono essere tifosi ospiti» — una tribuna coi colori dell'altra squadra. Il PO non ha scelto fra le varianti: si applica la consigliata, tutti i settori coi colori del club, stadio pieno | grafica 3D (serata, folla) | DA FARE — 201 (giro 314 consegnato e unito in lavoro/201 il 21/11: tifosi ospiti 1.504 → 0) | 7.999.201 | — | — | foto PO 21/11 |
 | PO-602 | 21/11 19:42 | PO: «la musica della presentazione è terribile» — oggi la serata (e la fine stagione) suona `music.cerimonia` = assets/audio/music/ceremony/il-mondo-e-nostro (CC0, 48 s, giro 161). Da fare: 3-4 brani CC0 candidati su una pagina d'ascolto, sceglie il PO | audio (cerimonie) | DA FARE — 201 (giro 315: 4 candidati CC0 da ascoltare, sceglie il PO) | 7.999.201 | — | — | richiesta PO 21/11 |
 | PO-603 | 21/11 22:20 | PO: «poc serve ancora a qualcosa?» — poc/marioprada-character-system è identico a main (stesso commit, spinti insieme); serve solo come casa del governo e come ramo letto/unito dal rilascio automatico. PO: «Togliere poc dopo il 1° rilascio» → dopo il primo rilascio automatico riuscito, giro piccolo che porta tutto su main (tools/rilascio-vagone-312.mjs, verifica-guardiani.yml, CLAUDE.md, istruzioni dei giri, attività programmate); poc resta come copia ferma, non si cancella | metodo di rilascio (rami) | DA FARE — 201 (dopo il 1° rilascio automatico) | 7.999.201 | — | rilascio-312 | domanda PO 21/11 |
+| PO-604 | 21/11 22:35 | PO: «sarebbe meglio fare trenini e quindi far scattare solo i controlli strettamente necessari e velocemente». Questionario: «Trenino + treno grande di notte» — a ogni unione in lavoro/** solo i guardiani delle righe della mappa unica toccate dal vagone + le 17 sentinelle, in parallelo su Actions (stima 20-40 min, da misurare); trenino pulito → rilascio automatico; la mappa intera gira ogni notte. Rosso nuovo del treno di notte → «Rilasci fermi finché non si ripara» (si apre la voce e un giro di correzione; ripartono a rosso riparato o dichiarato dal PO) | metodo di rilascio (trenino, CD) | DA FARE — 201 (giro 317) | 7.999.201 | — | rilascio-312 | questionario PO 21/11 |
 
 ## Storico — voci chiuse (507)
 
