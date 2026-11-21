@@ -1,0 +1,21 @@
+  passo 0: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 1 di 6 — 🏕️ Ritiro pre-campi»
+  passo 1: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 2 di 6 — 🏛️ Il Presidente ti»
+  passo 2: avanzato RIPIEGO su «Benvenuti ai nuovi →» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 3 di 6 — 📰 Presentazione del»
+  passo 3: avanzato RIPIEGO su «🔥 «Puntiamo in alto — parlo d» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 4 di 6 — 🎙️ Conferenza stamp»
+  passo 4: avanzato tasto col nome atteso · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 5 di 6 — 👕 Numero di maglia »
+  passo 5: avanzato RIPIEGO su «🏟️ Vai allo stadio» {} · «SETTIMANA DI APERTURA · STAGIONE 6 Passo 6 di 6 — 🏟️ Presentazione de»
+  passo 6: avanzato RIPIEGO su «Avanti →» {} · «🔊 BUONASERA E BENVENUTI ALLO Stadio Salernum 🏟️ SERATA DI PRESENTAZI»
+  passo 7: avanzato RIPIEGO su «Avanti →» {} · «Jacopo Rosi Korward Elite SLR FC Salernum 1919 🔊 NUOVO ACQUISTO · DIF»
+  passo 8: avanzato RIPIEGO su «Avanti →» {} · «Luigi Bernardi Korward Elite SLR FC Salernum 1919 🔊 IL MENTORE · UNDE»
+  passo 9: avanzato RIPIEGO su «🎉 Che la stagione cominci →» {} · «Marco Sala Korward Elite SLR FC Salernum 1919 🔊 IL CAPITANO · DIFENSO»
+  passo 10: avanzato false · «SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 HOME salvato 01:46 v »
+strati fissi a tutto schermo dopo l'apertura: []
+scheda dashboard: {"c":false,"v2":8,"testo":"SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 HOME salvato 01:46 v 7.999.198 Home ⏩ VAI AL PROSSIMO MOMENTO fino a fine stagione PROSSIMA"}
+scheda carriera: {"c":false,"v2":1,"testo":"SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 CARRIERA salvato 01:46 v 7.999.198 Carriera ☕ Sostieni il progetto 💡 Idee e feedback HOME "}
+scheda profile: {"c":false,"v2":3,"testo":"SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 PROFILO salvato 01:46 v 7.999.198 Carriera: profilo 👤 Profilo 🌍 Nazionale 78 ATT ITA UNO "}
+scheda agente: {"c":true,"w":365,"h":29,"disp":"flex","vis":"visible","op":"1","ov":"visible","txt":"Contratto in corso · scade a fine St. 9 3 stagioni","tc":"Contratto in corso · scade a fine St. 93 stagioni","tagli":[],"sopra":"se stessa"}
+scheda ufficio: {"c":false,"v2":10,"testo":"SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 UFFICIO salvato 01:46 v 7.999.198 Ufficio PATRIMONIO › Patrimonio: €0 Lo storico del patrim"}
+scheda club: {"c":false,"v2":2,"testo":"SLR FC SALERNUM 1919 Lega B · St. 6 · Sett. 1/38 CLUB salvato 01:46 v 7.999.198 Club SLR FC SALERNUM 1919 🇮🇹 Lega B 55 PRESTIGIO /100 🏛️ "}
+impulso wi_dieta_ferrea aperto true {"chiave":"🥗 La seguo alla l","tasti":1,"tasto":{"w":365,"h":54,"sopra":"se stesso"},"testoTrovatoIn":["SPAN < BUTTON < DIV < DIV < DIV{settimana23}","SCRIPT < BODY < HTML"],"pagina":"SETTIMANA 1 · FC SALERNUM 1919 ⚡ Impulso della settimana Scelta Il nutrizionista del club propone una settimana di dieta ferrea per arrivare tirato alla prossima gara. 🥗 La seguo alla lettera 🍕 Uno "}
+strati fissi con l'impulso: [{"cpm":"cpm-fade cpm-velo150 cpm-foglio114","z":"9998","t":"SETTIMANA 1 · FC SALERNUM 1919 ⚡ Impulso della settimana Scelta Il nutrizionista del club "}]
+errori di pagina 0 
