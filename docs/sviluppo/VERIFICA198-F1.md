@@ -12,6 +12,7 @@
 |---|---|---|---|---|
 | `tunnel-245` corsa 1 | **verde** (uscita 0, 2043 s) | — | — | braccio verde 20 stadi · 0 guasti; rosso `__CPM_NO_G245` visto 3/3 (bocca fuori centro e corpi dentro oggetti); rosso 255 visto (schieramento 2/2, panca bassa 2/2, sostituzione 1/1) |
 | `tunnel-304` (2 corse) | **rosso 2/2** («non giudicato») — corsa 1: uscita 1 in 323 s; corsa 2: uscita 1 in 704 s | non eseguibile: `misura-304.mjs` e lo script `tunnel-304` non esistono su `b3b75b9d` | giro **304** (la sonda nasce col 304; il rosso è della sonda, non un corpo dentro un oggetto) | La sonda pretende almeno 2 uscite «arrivate alla fascia degli oggetti» su 4; le uscite k=1,2,3 a volte si fermano prima (z minima −26…−32) e ne resta 1 sola. Corsa 1: braccio verde `non giudicato: 1 uscite … (minimo 2)`. Corsa 2: braccio verde giudicato e **verde** (2 uscite, 0 con l'eroe dentro un oggetto), ma braccio rosso `__CPM_NO_G304` → `ESITO no=[304] … con l'eroe dentro un oggetto 1` e poi `non giudicato … ROSSO NON VISTO: guardiano cieco`. In nessuna delle 3 passate verdi/tentate l'eroe è finito dentro un oggetto col 304 acceso (pen 0 su 8 uscite); l'unica penetrazione vista (striscia LED, 11 fotogrammi) è col 304 spento. Conclusione misurata: copertura della sonda instabile; il difetto di gioco non è stato osservato. |
+| `tunnel-285` | **verde** (uscita 0, 305 s) | — | — | braccio verde 5 stadi (notte) · 0 guasti; rosso `__CPM_NO_G285` visto 5/5, non giudicati 0 |
 
 ## Verdetto
 
