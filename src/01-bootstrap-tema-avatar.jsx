@@ -293,6 +293,9 @@ const piena114=()=>_g114()?"cpm-piena":"";
 /* [giro 287 · PO-546, decisione PO 19/11 «Dentro il pulsante»] la nota di un pulsante sta DENTRO il pulsante (sottotitolo piccolo), mai
    staccata sotto la pila; da PC (>= 900 px) la testata della pre-partita prende l'altezza dal contenuto (CSS in src/19). Rosso __CPM_NO_G287. */
 const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
+/* [giro 300 · PO-565/551/552/553] pre-partita e PC: tasto dei salienti col bordo d'accento, «Inizia il provino» attaccato al contenuto da PC, tasti 1 2 3 della Home cliccabili, nessun suggerimento di tasti nelle scritte (le scorciatoie restano). Rosso __CPM_NO_G300 = tutto come nella 7.999.198. */
+const _g300=()=>!(typeof window!='undefined'&&window.__CPM_NO_G300);
+const _g302=()=>!(typeof window!='undefined'&&window.__CPM_NO_G302);/* [giro 302] rosso dei tre ritocchi PO-552 (riga «1 2 3» via) · PO-589 (striscia di scarico nei colori del tema) · PO-590 (fascia al piu' anziano) */
 const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,

@@ -162,7 +162,7 @@ for (const f of SCELTI) {
   /* SCH [tappa 2]: Stagione, Club, Agente, Ufficio */
   const SCHEDE = [
     ['standings', '[data-cpm="stagione-v2"],[data-cpm="vetta-riga260"]'/* [giro 260 · decisione PO C] titolo solo in testata: la riga vetta+forma resta */, () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
-      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"],[data-cpm="vetta-riga260"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
+      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda|^In testa|(sulla|dalla) zona (Europa|promozione|retrocessione)$|sulla salvezza$|^In zona retrocessione, /i.test(v.textContent.trim())/* [giro 298 PO-571] la riga segue l'obiettivo del club: oltre alla vetta valgono SOLO le forme decise dal PO il 20/11 (il testo esatto lo giudica home-298) */ ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"],[data-cpm="vetta-riga260"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
         !r ? 'manca la riga tua' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(r).backgroundColor) ? 'riga tua non nel colore del club' : null]; }],
     /* [giro 269] fiducia e popolarita' nel Club sono GRADINI dal giro 235 (decisioni PO-391 13/11 «popolarita' e fiducia a gradini, non
        a barra» e PO-458 «fiducia e popolarita' con la stessa forma», DECISIONI.md 18/11): si pretendono i due gradini, non piu' gli anelli. */

@@ -241,9 +241,76 @@ function premiPulisci238(p){try{if(no238()||!p||!p.premiPatto227)return null;con
   for(const k of Object.keys(pr)){if(k==="magliaS")continue;if(pr[k]===cl)o[k]=pr[k];else cambia=true;}
   if(o.maglia&&pr.magliaS!=null)o.magliaS=pr.magliaS;return cambia?o:null;}catch(_e){return null;}}
 if(typeof window!=="undefined")window.__CPM_PATTO238={premio:premio238,motore:premiMotore238,pulisci:premiPulisci238};
+/* [giro 299 PO-563, scelta PO «C e VC come la R» — rosso window.__CPM_NO_G299] CHI PORTA LA FASCIA NELLA ROSA DEL CLUB DELL'EROE.
+   MISURATO nel codice: il gioco SA il capitano solo in due casi — l'eroe (player.isCaptain, fascia guadagnata 7.5.0) e il compagno
+   dello spogliatoio con archetipo «capitano» (player.teammates, nome vero della rosa); ma lo spogliatoio pesca 3 archetipi su 4, quindi
+   in circa un club su quattro non c'e' nessun «capitano». Il VICE il gioco lo sa solo per l'eroe (premio del patto, premio238 «vice»).
+   Dove il dato manca si usa la regola piu' vicina gia' esistente, nell'ordine:
+     capitano: eroe con la fascia → compagno «capitano» → compagno «ex_capitano» (fascia tolta all'eroe: torna a chi l'aveva) →
+               fra i compagni titolari quello con l'attitudine piu' alta ricavata dal nome (stesso calcolo fisso del rigorista, giro 257);
+     vice:     eroe col premio del patto → (eroe capitano) compagno «ex_capitano» → secondo per la stessa attitudine fra i compagni titolari.
+   Nessun campo nel salvataggio, nessun sorteggio. `rosa` = la rosa mostrata (i primi 11 i titolari, l'eroe col suo nome). */
+/* [giro 302 PO-590, PO 20/11 «capitano/vice di riserva = il piu' anziano» — rosso window.__CPM_NO_G302 = l'attitudine del giro 299]
+   MISURATO: la rosa (generateTeamRoster) porta solo nome e ruolo, il gioco NON ha un'eta' per i compagni. L'eta' si ricava qui, fissa
+   e senza campi nel salvataggio: eta' d'arrivo dal nome (18-28) + gli anni che il giocatore ha gia' passato nel suo posto in rosa (la
+   stessa fase d'ingaggio di generateTeamRoster: 0-6), quindi cresce di uno a stagione finche' resta. In Primavera 16-18 dal nome.
+   Dove il dato manca: «C» al titolare piu' anziano, «VC» al secondo; a pari eta' chi e' nel club da piu' anni, poi l'ordine alfabetico. */
+function eta302(p,slot,nome){try{const cl=(p&&p.club)||{},h=hashStr(String(nome||"")+"|eta302");
+  const anni=(Math.max(1,(p&&p.season)||1)+Math.abs(hashStr((cl.id||"x")+"_ph_"+slot))%7)%7;
+  const prim=!!cl.isU18||((p&&p.proStatus)||"u18")!=="pro";
+  return {eta:prim?(16+h%3):(18+h%11+anni),anni};}catch(_e){return {eta:0,anni:0};}}
+if(typeof window!=="undefined")window.__CPM_ETA302=eta302;
+function fascia299(p,rosa){try{if((typeof window!=="undefined"&&window.__CPM_NO_G299)||!p||!rosa||!rosa.length)return null;
+  const io=p.name||"",nomi=rosa.map(x=>x&&x.name).filter(Boolean),ha=n=>!!n&&nomi.includes(n);
+  const tm=(a)=>{const t=(p.teammates||[]).find(x=>x&&x.archetype===a);return t&&ha(t.name)&&t.name!==io?t.name:null;};
+  const att=(n)=>(typeof attitudine257==="function")?attitudine257(String(n)+"|fascia299"):0;
+  const _an302=(typeof _g302==="function")&&_g302(),_e302={};if(_an302)rosa.slice(0,11).forEach((x,i)=>{if(x&&x.name)_e302[x.name]=eta302(p,i,x.name);});
+  const tit=rosa.slice(0,11).map(x=>x&&x.name).filter(n=>n&&n!==io).sort(_an302?((a,b)=>(_e302[b].eta-_e302[a].eta)||(_e302[b].anni-_e302[a].anni)||(a<b?-1:a>b?1:0)):((a,b)=>(att(b)-att(a))||(a<b?-1:a>b?1:0)));const _F302=_an302?"anzianita'":"attitudine";
+  let cap=null,capF=null,vice=null,viceF=null;
+  if(p.isCaptain===true&&ha(io)){cap=io;capF="eroe";}
+  else if(tm("capitano")){cap=tm("capitano");capF="spogliatoio";}
+  else if(tm("ex_capitano")){cap=tm("ex_capitano");capF="ex capitano";}
+  else if(tit.length){cap=tit[0];capF=_F302;}
+  if(cap!==io&&premio238(p,"vice")&&ha(io)){vice=io;viceF="patto";}
+  else if(cap===io&&tm("ex_capitano")){vice=tm("ex_capitano");viceF="ex capitano";}
+  else{const v=tit.find(n=>n!==cap);if(v){vice=v;viceF=_F302;}}
+  return {cap,capF,vice,viceF};}catch(_e){return null;}}
+if(typeof window!=="undefined")window.__CPM_FASCIA299=fascia299;
 /* [giro 249] rosso del giro: A (rigorista, src/14-15), C (controproposta su un'offerta gia' chiusa), D (motivo del tasto della corsa
    con «Il mister ti cerca» aperto) tornano come nel giro 238. */
 function no249(){return typeof window!=="undefined"&&!!window.__CPM_NO_G249;}
+/* [giro 298 · blocco 2 «Pulizia Home e schermate» · DECISIONI 20/11 13:20] UN INTERRUTTORE PER TUTTO IL GIRO.
+   PO-558 nessun riquadro Classifica in Home · PO-559 un solo riquadro «Notizie» · PO-568 via «Dagli altri campionati» ·
+   PO-571 la riga sotto la testata della Classifica segue l'obiettivo del club · PO-572 via «Tempo della partita simulata».
+   Rosso __CPM_NO_G298 = tutto com'era. Guardiano `npm run home-298`. */
+const _g298=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G298);
+/* [giro 298 PO-571] LA RIGA SEGUE L'OBIETTIVO STAGIONALE DEL CLUB. Funzione pura: (player, classifica ORDINATA) → {testo, ob, usato, primo}.
+   · OBIETTIVO: e' l'obiettivo di classifica gia' nel salvataggio (seasonObjectives, type "standing", «Finisci nei primi N»,
+     generateSeasonObjectives in src/06: N=3 con prestigio ≥80, 6 con ≥65, 9 con ≥50, altrimenti 12). N≤3 → titolo · N≤6 → Europa ·
+     N≤9 → meta' classifica · oltre → salvezza. Se il salvataggio non ha l'obiettivo, la stessa formula sul prestigio del club.
+   · ZONE: le stesse regole con cui la carriera qualifica e retrocede a fine stagione (src/18, _willEuroPre e «Bottom 3»):
+     prima divisione con seconda serie (lato alto di LEAGUE_PAIRS) → Europa = prime 7, retrocessione = ultime 3 (con piu' di 6 squadre);
+     prima divisione senza seconda serie → Europa = prime 2, nessuna retrocessione; seconda divisione → niente Europa, la zona alta e'
+     la PROMOZIONE (prime 3), nessuna retrocessione; Primavera → conta solo il titolo.
+   · Dove la zona dell'obiettivo non esiste si sale alla prima zona che esiste: retrocessione → Europa/promozione → vetta. */
+function rigaObiettivo298(player,st){
+  const cid=player&&player.club&&player.club.id;const mi=(st||[]).findIndex(x=>x&&x.id===cid);if(mi<0)return null;
+  const N=st.length,P=i=>(st[i]&&st[i].pts)||0,me=P(mi),lg=(player.club&&player.club.lg)||"";
+  const giov=(player.proStatus||"u18")!=="pro"||/^Primavera/i.test(lg);
+  const seconda=LEAGUE_PAIRS.some(([u,l])=>l===lg),prima=LEAGUE_PAIRS.some(([u])=>u===lg);
+  const nAlta=giov?0:seconda?3:prima?7:2,nomeAlta=seconda?"zona promozione":"zona Europa";
+  const nRetro=(!giov&&prima&&N>6)?3:0;
+  const so=Array.isArray(player.seasonObjectives)?player.seasonObjectives.find(o=>o&&o.type==="standing"&&o.target):null;
+  const pr=(player.club&&player.club.p)||50,t=so?so.target:(pr>=80?3:pr>=65?6:pr>=50?9:12);
+  const ob=t<=3?"titolo":t<=6?"europa":t<=9?"meta":"salvezza";let usato=ob;
+  if((usato==="meta"||usato==="salvezza")&&!nRetro)usato="europa";
+  if(usato==="europa"&&(!nAlta||N<=nAlta))usato="titolo";
+  const M="\u2212";let testo;
+  if(usato==="titolo")testo=mi===0?(st[1]?("In testa, +"+(me-P(1))):"In testa"):(M+(P(0)-me)+" dalla vetta");
+  else if(usato==="europa")testo=mi<nAlta?("+"+(me-P(nAlta))+" sulla "+nomeAlta):(M+(P(nAlta-1)-me)+" dalla "+nomeAlta);
+  else testo=mi>=N-nRetro?("In zona retrocessione, "+M+(P(N-nRetro-1)-me)):("+"+(me-P(N-nRetro))+(usato==="meta"?" sulla salvezza":" sulla zona retrocessione"));
+  return{testo,ob,usato,primo:mi===0,target:t};
+}
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   React.useEffect(()=>{try{if(typeof prepara233==='function')prepara233('partita');}catch(_e){}},[]);/* [giro 233 PO-453] entrando nella carriera (non all'apertura del menu) si chiedono i corpi della partita, con la pillola d'avanzamento: arrivano prima della prima scena 3D */
   const L=LOCALE[lang]||LOCALE.IT;
@@ -1221,6 +1288,10 @@ const getThisWeekMatchday=()=>{
   // Handler CONDIVISI card⟷wizard (una sola logica di effetti):
   /* [7.292.0 direttiva PO] LA SERATA DI PRESENTAZIONE, evento pre-campionato: stato dei beat + chiusura. */
   const[presEvent,setPresEvent]=useState(null);/* {beat} */
+  /* [giro 299 PO-567, PO 20/11 «sì, il tasto audio anche nella presentazione» — rosso window.__CPM_NO_G299] la serata di presentazione non
+     ha la barra della partita: lo stesso altoparlante (giro 172/294) sta in alto a destra e apre lo STESSO pannello (PannelloAudio172,
+     AudioMgr → 'cpm-audio', nessun secondo salvataggio). */
+  const[audio299,setAudio299]=useState(false);
   /* [7.297.0 collaudo PO «presenterei i giocatori importanti ed i nuovi acquisti!»] Chi chiami sul prato non
      puo' essere una quaterna di slot fissi (2·6·7·10): una presentazione ha senso se annuncia i NUOVI ACQUISTI
      — lo stesso diff rosa-di-quest'anno contro rosa-dell'anno-scorso del passo mercato (7.147.0) — e le facce
@@ -6508,6 +6579,8 @@ const getThisWeekMatchday=()=>{
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
       <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} nomi={[..._bs.slice(2,_n-1).map(b=>b&&b.n),null,player.name||"eroe"]/* [giro 225] chi sta in ogni posto della fila (stesse chiavi della targhetta): i chiamati nell'ordine dei battiti, poi il posto che nessun battito chiama, poi l'eroe */} senzaCorpi={!!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)&&!(typeof window!=='undefined'&&window.__CPM_NO947)}/>{/* [7.999.124 PO-200] corpi CGTrader accesi; rosso __CPM_NO_PRES200 */}
       <PresentazioneScena2D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)} annunci={_bs.map((b,k)=>k===_n-1?{...b,eroe:true}:b)} heroChiave={player.name||"eroe"}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
+      {!(typeof window!=='undefined'&&(window.__CPM_NO_G299||window.__CPM_NO_G172))&&<button data-cpm="audio-serata299" onClick={()=>setAudio299(true)} aria-label="Audio" title="Audio" style={{position:"absolute",top:"calc(env(safe-area-inset-top, 0px) + 6px)",right:8,zIndex:2,minWidth:44,minHeight:44,background:"none",border:"none",cursor:"pointer",fontSize:FS.body,color:"rgba(255,255,255,0.7)",lineHeight:1,fontFamily:"inherit"}}>{(()=>{let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}return m?"🔇":"🔊";})()}</button>}{/* [giro 299 PO-567] stesso altoparlante della barra di partita (giro 172), stessa icona e stesso inchiostro */}
+      {audio299&&<PannelloAudio172 onClose={()=>setAudio299(false)} nota="Le scelte valgono anche nelle Impostazioni" chiudi="Chiudi" etichetta="Audio"/>}
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
           <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:_last?"#fde68a":"rgba(255,255,255,0.75)",textShadow:"0 2px 10px rgba(0,0,0,0.85)"}}>{_b.t}</div>
@@ -6842,7 +6915,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
           </Card>
-          {devToolsOn()&&<Card style={{padding:"7px 12px"}} shadow={false}>
+          {devToolsOn()&&!_g298()/* [giro 298 PO-572] riga «Tempo della partita simulata» tolta dagli Strumenti di collaudo */&&<Card style={{padding:"7px 12px"}} shadow={false}>
             {/* [7.999.4 passo 2] il PO misura sul SUO telefono il costo della simulazione col motore (limite scelto: 0,3 s a partita) */}
             <div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.bodyLg}}>⏱️</span>
@@ -7578,7 +7651,7 @@ const getThisWeekMatchday=()=>{
             </Card>
             {/* Sprint 29 — MW7: agent counter-offer */}
             {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
-              <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:8,border:"1px solid "+TH.bdBlue}}>
+              <div style={{background:TH.bgBlue,borderRadius:_g299()?RAGGI299.annidato:RAD.sm/* [giro 299 PO-564] il riquadro (8) conteneva un tasto piu' tondo di lui (12): regola 1, il figlio non supera il padre */,padding:"9px 12px",marginBottom:8,border:"1px solid "+TH.bdBlue}}>
                 <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,marginBottom:4}}>🤵 Il tuo procuratore propone una controproposta:</div>
                 <div style={{fontSize:FS.caption,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
                 <button onClick={()=>setTransferOffer(o=>{if(!no249()&&(!o||o._counter))return o;/* [giro 249, dubbio 7 del 238 — rosso __CPM_NO_G249] l'offerta chiusa nello stesso fotogramma (o gia' rilanciata da un secondo tocco) resta com'e': prima o era null e CareerApp andava in crash (TypeError su o.club) */const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} data-cpm="controproposta-v2" style={{marginTop:8,minHeight:44,padding:"8px 14px",borderRadius:RAD.md,border:"1px solid "+TH.cardBorder,background:TINTE.tasto,color:TH.text,fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}/* [PO-302 tappa 2b] era bianco con testo rosa chiaro (2,13:1) e alto 27 px: tasto secondario V2, 44 px */>Fai la controproposta →</button>
@@ -8072,14 +8145,16 @@ const getThisWeekMatchday=()=>{
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
         const mi=st.findIndex(x=>x.id===player.club?.id);
-        const gap=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        const gap0=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        /* [giro 298 PO-571] la riga segue l'obiettivo del club (rigaObiettivo298). Finche' nessuno ha giocato resta la riga di prima: la 1ª giornata e' di PO-420 (199). Rosso __CPM_NO_G298 */
+        const r298=(_g298()&&mi>=0&&st.some(x=>(x.played||0)>0))?rigaObiettivo298(player,st):null;const gap=r298?r298.testo:gap0;
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
         if(_g260()&&_g235()){/* [giro 260 · decisione PO 17/11 C «Sì, solo in testata»] il nome della scheda sta SOLO nella testata compatta
           del giro 235: niente titolo grande qui. Distanza dalla vetta e forma restano, in una riga sotto la testata (solo in Classifica). Rosso __CPM_NO_G260 */
           return(tab==="standings"&&gap)?(<div data-cpm="vetta-riga260" style={{marginBottom:_sb(SP.md),display:"flex",justifyContent:"space-between",alignItems:"center",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
-            <span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
+            <span data-cpm="vetta-v2" data-ob298={r298?r298.ob+"/"+r298.usato:undefined} className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>):null;}
         return(<div style={{marginBottom:_sb(SP.md)}}><TitoloV2 cpm="stagione-v2" occhiello={(lg?lg+" \u00b7 ":"")+"St. "+(player.season||1)} titolo={tab==="standings"?"Classifica":tab==="calendar"?"Calendario":"Coppe"}
-          destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
+          destra={tab==="standings"&&gap?<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}><span data-cpm="vetta-v2" data-ob298={r298?r298.ob+"/"+r298.usato:undefined} className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:mi===0?TINTE.oro:TINTE.testo,textTransform:"uppercase"}}>{gap}</span><FormaV2 lista={player.matchHistory} lato={20}/></div>:null}/></div>);})()}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
         <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
@@ -9552,7 +9627,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* Sprint 62 — Notizie della Lega */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="dashboard"&&!_g298()/* [giro 298 PO-559] le notizie della settimana stanno nel riquadro unico «Notizie», in fondo alla Home */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _news=generateLeagueNews(player);
         if(!_news.length)return null;
         return(
@@ -9677,7 +9752,7 @@ const getThisWeekMatchday=()=>{
         );
       })()}
       {/* Sprint 64 — Mini Classifica nel Dashboard */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="dashboard"&&!_g298()/* [giro 298 PO-558 «Classifica non serve, e' gia' nel Tab stagione»] nessun riquadro Classifica in Home */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
         if(!_st.some(t=>t.played>0)||_st.length<4)return null;
         const _myId=player.club?.id,_myN=player.club?.n||player.club?.name;
@@ -9714,7 +9789,17 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
           {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» SPOSTATO nel Tab Club (profilo squadra) → vedi ~19300 */}
-          {(player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
+          {_g298()?(()=>{/* [giro 298 PO-559 · default del 20/11] UN SOLO RIQUADRO «Notizie»: sopra quelle della settimana (campionato, solo da professionista: in Primavera il gioco non ne produce), sotto le tue ultime, piu' recenti prima (player.log nasce gia' cosi'). Stesse voci di prima: tutte quelle della settimana e le ultime 5 tue. Rosso __CPM_NO_G298 = i due riquadri */
+            const _nw=(player.proStatus||"u18")==="pro"?generateLeagueNews(player):[];const _lg=(player.log||[]).slice(0,5);
+            if(!_nw.length&&!_lg.length)return null;
+            const _cap={fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
+            return(<Card momento="Notizie" data-cpm="notizie-298" style={{padding:"9px 12px"}}>
+              {_nw.length>0&&<div data-cpm="notizie-298-sett"><div style={_cap}>Della settimana</div>
+                {_nw.map((n,i)=>(<div key={i} data-n298="s" style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderBottom:i<_nw.length-1?`1px solid ${TH.cardBorder}`:"none"}}>
+                  <span style={{fontSize:FS.body,flexShrink:0,marginTop:1}}>{n.e}</span><span style={{fontSize:FS.caption,color:TH.text,lineHeight:"1.4"}}>{n.txt}</span></div>))}</div>}
+              {_lg.length>0&&<div data-cpm="notizie-298-tue" style={{marginTop:_nw.length?10:0}}><div style={_cap}>Le tue ultime</div>
+                {_lg.map((e,i)=><div key={i} data-n298="t" style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<_lg.length-1?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</div>}
+            </Card>);})():((player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>)}
           {/* [7.96.0 collaudo PO «la scelta chiaro/scuro deve essere fatta SOLO nelle Impostazioni»] toggle tema
               RIMOSSO da qui (ora solo nel menu ⚙️ Impostazioni). La card resta solo su desktop per le scorciatoie. */}
           {/* [7.992.0 PO «togli le scorciatoie»] card «Scorciatoie tastiera» rimossa dalla Home: i tasti restano attivi, sparisce solo il promemoria */}
@@ -10090,7 +10175,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* [6.24.0 collaudo PO] Risultati Internazionali — spostati qui dalla Home (Tab Stagione, sotto la Classifica) */}
-      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {tab==="standings"&&!_g298()/* [giro 298 PO-568] riquadro «Dagli altri campionati» eliminato */&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _wr=generateWorldResults(player);
         if(!_wr.length)return null;
         const _lgs=[...new Set(_wr.map(r=>r.lg))];
@@ -10567,6 +10652,7 @@ const getThisWeekMatchday=()=>{
               const titolari=roster.slice(0,11).sort((a,b)=>((_ord49[_roleCat(_campo49(a).r)[0]]??4)-(_ord49[_roleCat(_campo49(b).r)[0]]??4))||((a.jerseyNum||0)-(b.jerseyNum||0)));
               const panchina=roster.slice(11);
               const _rig257=(typeof rigorista257==="function")?rigorista257(player,"career",roster.slice(0,11)):null;/* [giro 257 PO-496 seguito, decisione PO 17/11 «Sì, segnato nella Rosa» — rosso window.__CPM_NO_G257] il rigorista del club (o l'eroe col premio): stessa regola della partita */
+              const _fa299=fascia299(player,roster);/* [giro 299 PO-563] capitano e vice della rosa mostrata */
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
                 const _cp49=_campo49(pl);const _rc=_roleCat(_cp49.r||"");
@@ -10580,7 +10666,7 @@ const getThisWeekMatchday=()=>{
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent"),borderLeft:"3px solid "+(isMe?TH.primary:"transparent")}}>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
-                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}
+                    <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>{_rig257&&offset===0&&pl.name===_rig257.nome&&<SegnoR257/>/* [giro 257] «R» nella riga, fuori dal nome che va coi puntini */}{_fa299&&pl.name===_fa299.cap&&<SegnoFascia299 sigla="C"/>}{_fa299&&pl.name===_fa299.vice&&<SegnoFascia299 sigla="VC"/>/* [giro 299 PO-563] «C» e «VC» come la «R», accanto al ruolo */}
                     {/* [giro 228 PO-493] ruolo in sigla a tre lettere (siglaRuolo228), ruolo intero in title/aria-label; rosso __CPM_NO_G228 */}<SiglaRuolo239 testo={_cp49.r+(_cp49.tag?" · "+_cp49.tag:"")}/* [giro 239 PO-507a] fumetto al tocco */ data-cpm="rosa-ruolo228" title={_no228()?undefined:(_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} aria-label={_no228()?undefined:("Ruolo: "+_cp49.r+(_cp49.tag?" · "+_cp49.tag:""))} style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap",...(_no228()?{}:{flexShrink:0})}}>{_no228()?_cp49.r:siglaRuolo228(_cp49.r)}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</SiglaRuolo239>
                     <span className="cpm-num" data-cpm={ov>=85?"ovr-oro-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.black,color:(ov>=85?TINTE.bg:TINTE.testo),minWidth:22,textAlign:"right",background:ov>=85?TINTE.oro:TINTE.tasto,borderRadius:RAD.xs,padding:"2px 6px",fontFamily:FONT_TV}}>{ov}</span>{/* [PO-302 tappa 2 · V2Club] OVR su piastrella, in oro da 85 */}
                   </div>

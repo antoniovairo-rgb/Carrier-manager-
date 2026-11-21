@@ -600,6 +600,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
      gerarchia: Formazioni primario, poi secondari. Via la banda-bandiera a tutta larghezza e i box con
      gradiente. Rosso __CPM_NO_PREMATCH23: la schermata di prima. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_PREMATCH23)){
+    /* [giro 300 PO-565, scelta PO «Bordo d'accento»] il tasto dei salienti: fondo scuro come prima, bordo e titolo nel colore del club del giocatore (reso leggibile sul fondo del tasto con legCol944), icona ⚡; la nota resta dentro il tasto (giro 287). Rosso __CPM_NO_G300. */
+    const _t300=(mySide==="away"?awayTeam:homeTeam)||{};const _c300=_g300()?legCol944((typeof _t300.c==="string"&&_t300.c[0]==="#")?_t300.c:TH.primary,TINTE.tasto):null;
     const Squadra=({t,lato})=>(<div style={{textAlign:"center",minWidth:0}}>
       <div style={{display:"flex",justifyContent:"center"}}><TeamBadge team={t} size={56}/></div>
       <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
@@ -650,7 +652,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
         <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
+      {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
       :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
       <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
@@ -946,7 +948,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,onBack=null,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null,rig257=null,rigLato257=null}){/* [giro 257] rig257: nome del rigorista (src/14 rigorista257) · rigLato257: "home"/"away", la squadra dell'eroe */
   useEffect(()=>{
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -1063,7 +1065,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     <div data-cpm="formazioni23" ref={ref204} data-gap204={gap204} style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
-          <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
+          {/* [giro 294 PO-566 «non c'e' modo di tornare indietro» — rosso __CPM_NO_G294 (LiveMatch non passa onBack)] in testata, dove si guarda entrando:
+              in fondo alla pagina, su telefono, tre pulsanti in riga non ci stanno. Riporta al pre-partita; la partita resta la stessa. */}
+          {onBack&&<button data-cpm="indietro294" onClick={onBack} aria-label="Indietro: torna al pre-partita" title="Indietro (Esc)" style={{flex:"0 0 auto",minHeight:44,minWidth:44,padding:`0 ${SP.md}px`,marginLeft:-SP.sm,background:"none",border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,color:TH.text,fontSize:FS.small,fontWeight:FW.bold,fontFamily:"inherit",cursor:"pointer"}}>← Indietro</button>}
+          <span style={{flex:"1 1 auto",minWidth:0,fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>

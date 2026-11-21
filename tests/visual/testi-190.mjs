@@ -61,14 +61,28 @@ try {
       if (/numero di maglia|Tieni #/i.test(t)) { maglia = true; if (FOTO && !fs.existsSync(`${FOTO}/maglia-${ROSSO ? 'prima' : 'dopo'}.png`)) await page.screenshot({ path: `${FOTO}/maglia-${ROSSO ? 'prima' : 'dopo'}.png` }); }
       let av = false;
       for (const re of [/^\W*Avanza/i, /Salta il racconto/i, /^\W*Tieni #/i, /^\W*Capito/i, /^\W*(Avanti|Prosegui|Continua)/i]) {
-        try { const L = page.getByRole('button', { name: re }); if (await L.count()) { await L.last().click({ timeout: 2000 }); av = true; break; } } catch (e) {} }
-      if (!av) av = await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.getBoundingClientRect().width > 0);
+        try { const L = page.getByRole('button', { name: re }); if (await L.count()) { await L.last().click({ timeout: 2000 }); av = true; break; } } catch (e) { if (process.env.CPM_DEBUG) console.log('    [debug] passo', i, 'clic su', String(re), 'fallito:', String(e.message).replace(/\s+/g, ' ').slice(0, 260)); } }
+      /* [giro 306] IL RIPIEGO NON TOCCA I COMANDI CHE NON FANNO AVANZARE. Dal giro 299 la serata ha un tasto audio in alto a destra
+         (data-cpm audio-serata299), che nell'ordine della pagina viene PRIMA di «Avanti»: il ripiego «primo tasto con del testo» lo
+         prendeva, apriva il pannello dell'audio e ci restava per tutti i passi (misurato con misura-306.mjs: serata mai chiusa, quindi
+         nessuna scheda e nessun impulso sotto). Il giocatore non ha il problema (tocchi veri: il pannello si apre, «Chiudi» lo chiude,
+         la serata arriva in fondo). Qui: un pannello dell'audio rimasto aperto si chiude dal suo tasto, e i tasti dell'audio non
+         sono candidati. */
+      if (!av) av = await page.evaluate(() => { const pa = document.querySelector('[data-cpm="audio-pannello"]');
+        if (pa) { const ch = [...pa.querySelectorAll('button')].find(b => /^Chiudi$/i.test((b.textContent || '').trim())); if (ch) ch.click(); }
+        const bs = [...document.querySelectorAll('button')].filter(b => b.getBoundingClientRect().width > 0 && !b.closest('[data-cpm="audio-pannello"]') && !/^audio-/.test(b.getAttribute('data-cpm') || ''));
         const fine = bs.findIndex(b => /Vai al prossimo momento|Chiudi — riprendi/i.test(b.textContent)); const c = bs.slice(0, fine < 0 ? bs.length : fine).find(b => (b.textContent || '').trim() && !/Chiudi|Parti per/i.test(b.textContent));
-        if (!c) return false; c.click(); return true; });
+        if (!c) return false; c.click(); return 'ripiego: «' + (c.textContent || '').trim().slice(0, 40) + '»'; });
+      if (process.env.CPM_DEBUG && typeof av === 'string') console.log('    [debug] passo', i, av);
       if (!av && process.env.CPM_DEBUG) console.log('    [debug] bottoni:', (await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.getBoundingClientRect().width > 0).map(b => b.textContent.trim().slice(0, 30)))).join(' | '));
       if (!av) { if (process.env.CPM_DEBUG) console.log('    [debug] nessun avanza:', t.replace(/\s+/g, ' ').slice(0, 300)); break; } await sleep(900);
     }
     ok(maglia, `apertura: passo della maglia visto (${passi} passi letti)`);
+    /* [giro 306] L'APERTURA E' FINITA DAVVERO? Se la serata (o un suo pannello) resta sopra, le voci sotto non giudicherebbero le schede
+       ma lo strato che le copre: lo si dice qui, con il suo nome, invece di scoprirlo da una scheda «vuota». */
+    const sopra = await page.evaluate(() => { const o = []; if (document.querySelector('[data-cpm="audio-serata299"]')) o.push('serata di presentazione'); if (document.querySelector('[data-cpm="audio-pannello"]')) o.push('pannello dell\'audio');
+      if (/Passo \d di \d/.test(document.body.innerText || '')) o.push('settimana di apertura'); return o; });
+    ok(sopra.length === 0, `apertura conclusa, niente resta sopra le schede: ${sopra.join(' + ') || 'libero'}`);
     let contratto = null;
     for (const t of ['dashboard', 'carriera', 'profile', 'agente', 'ufficio', 'club']) {
       try { await page.evaluate((t) => window.__CPM_CAREER.goTab(t), t); } catch (e) {}

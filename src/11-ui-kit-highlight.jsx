@@ -243,6 +243,9 @@ function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))
   add(ab);
   if(g211)add(senzaCat(ab));
   if(!_no190("E")){const corto=ab.replace(_PREF_SOC190,"");if(corto!==ab){add(corto);const nudo=corto.replace(/\s+U19$/,"");if(nudo!==corto&&nudo.length>=3)add(nudo);}}
+  /* [giro 296 PO-535] il NOME CORTO APPOSTA del club (tabella in src/02), ultimo gradino prima della sigla. `out.corto296` = il suo posto
+     nella scala (-1 se il club non ne ha uno diverso dai gradini di prima). Rosso __CPM_NO_G296. */
+  out.corto296=-1;try{const _c296=(typeof nomeCorto296==="function")?nomeCorto296({n:n}):"";if(_c296){add(_c296);out.corto296=out.indexOf(_c296);}}catch(_e296){}
   const sg=team&&(team.a||team.abbr);if(sg)add(sg);return out;}
 function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
 /* [giro 203 · PO-460] prop `adatta`: quando anche l'ULTIMO gradino (la sigla) non entra, il corpo del testo scende fino a
@@ -269,6 +272,13 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
   /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
     const e254=_ecc254(el);
+    /* [giro 296 PO-535] con `adatta` (la striscia della partita) il NOME CORTO, prima di cedere il posto alla sigla, prova a stringere il
+       corpo fino al minimo della scala (12 px), come gia' fa la sigla dal giro 203: «mai la sigla accanto allo stemma con la stessa
+       sigla» finche' il nome corto ci sta. Se a 12 px non entra si scende alla sigla col corpo pieno. */
+    if(e254.fuori&&ad203&&cand.corto296>=0&&liv===cand.corto296&&liv<cand.length-1){
+      const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
+      if(nuovo<cur-0.05){if(!dec.current)dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(nuovo);return;}
+      dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setFs203(0);setLiv(liv+1);return;}
     if(e254.fuori&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}
     else if(ad203&&liv>=cand.length-1&&e254.fuori){/* [giro 203] ultimo gradino che non entra: si riduce il corpo, mai sotto il minimo */
       const cur=parseFloat(getComputedStyle(el).fontSize)||13;const nuovo=Math.max(ADATTA203_MIN,Math.floor(cur*e254.box/e254.testo*10)/10);
@@ -285,7 +295,7 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;
-  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} data-corto296={cand.corto296>=0?cand[cand.corto296]:undefined} title={cand[0]} {...rest}
     data-corpo203={ad203&&fs203?fs203:undefined}
     style={{...style,...(ad203&&fs203?{fontSize:fs203}:{}),overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
@@ -418,21 +428,35 @@ function GruppoProfilo235({id,titolo,nota,aperta=false,children}){
 }
 /* [giro 257 PO-496 seguito] il segno: «R» piccola a fianco del nome, posizione assoluta dove serve (le righe della Rosa non si allargano) */
 function SegnoR257({abs=false,size=14}){return <span data-cpm="rigorista257" title="Rigorista" aria-label="Rigorista" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0,...(abs?{position:"absolute",top:-3,right:-3,boxShadow:"0 0 0 1px "+TINTE.bg}:{})}}>R</span>;}
+/* [giro 299 PO-563, scelta PO «C e VC come la R» — rosso window.__CPM_NO_G299] lo stesso pallino della R (stessa altezza, stesso oro, stesso
+   raggio): «C» il capitano, «VC» il vice. La sigla di due lettere allarga il pallino, non lo alza. */
+function SegnoFascia299({sigla="C",size=14}){const vc=sigla==="VC";return <span data-cpm="fascia299" data-fascia={sigla} title={vc?"Vice-capitano":"Capitano"} aria-label={vc?"Vice-capitano":"Capitano"} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minWidth:size,height:size,padding:vc?"0 2px":0,boxSizing:"border-box",borderRadius:RAD.xs,background:TINTE.oro,color:TINTE.bg,fontSize:Math.round(size*0.72),fontWeight:FW.black,lineHeight:1,flexShrink:0}}>{sigla}</span>;}
+/* [giro 299 PO-564 «angoli non arrotondati correttamente, fai un check su tutti i box» — rosso window.__CPM_NO_G299]
+   REGOLA UNICA DEGLI ANGOLI DEI RIQUADRI (misurata dal censimento docs/sviluppo/giro299/CENSIMENTO-ANGOLI.md, guardiano rosa-angoli-299):
+   1. un riquadro (Card, fisarmonica, sezione) ha raggio RAD.lg; un riquadro DENTRO un altro riquadro ha raggio <= quello del padre
+      (sezione dentro un gruppo: RAD.md);
+   2. TESTATA + CORPO attaccati sono un riquadro solo: la testata e' tonda sopra e squadrata sotto, il corpo squadrato sopra e tondo
+      sotto, con lo STESSO raggio; il lato che si tocca e' squadrato da tutti e due e senza filo doppio;
+   3. la regola 2 la applica la Fisarmonica al primo e all'ultimo figlio del corpo ([data-corpo299], CSS in src/19): chi la usa non
+      deve piu' scrivere «0 0 6px 6px» sulla sua Card, e chi non l'aveva scritto (Rosa, Allenatore: la foto del PO) e' a posto lo stesso.
+   Prima: testata RAD.xs (6) e corpo a volte 6 a volte 16 con gli angoli alti tondi sotto una testata squadrata. */
+const RAGGI299={riquadro:RAD.lg,annidato:RAD.md};
+const _g299=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G299);
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const _gr235=React.useContext(GruppoCtx235)&&_g235();
   if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
     const _suf=typeof titolo==="string"?((titolo.match(/\s\([^)]*\)$/)||[""])[0]):"";const t=NOMI235[id]?NOMI235[id]+_suf:titolo;/* «Achievement (4/34)» → «Imprese (4/34)» */
     return(
       <div data-sezione235={typeof t==="string"?t:id} style={{...style,marginBottom:0}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:RAD.xs+"px "+RAD.xs+"px 0 0"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:(_g299()?RAGGI299.annidato:RAD.xs)+"px "+(_g299()?RAGGI299.annidato:RAD.xs)+"px 0 0"}}>
           {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
           <span role="heading" aria-level={3} style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{t}</span>
           {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
         </div>
-        <div>{children}</div>
+        <div data-corpo299={_g299()?"1":undefined} style={_g299()?{"--r299":RAGGI299.annidato+"px"}:undefined}>{children}</div>
       </div>);
   }
-  const _k="cpm-fis-"+id;
+  const _k="cpm-fis-"+id;const _R299=_g299()?RAGGI299.riquadro:RAD.xs;
   /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
      Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di
      quelli spariti erano difetti VERI, non risolti. Con `__CPM_FIS_APERTE` ogni fisarmonica
@@ -446,7 +470,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
     <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
       <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
         style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:(_mouse110()?36:undefined),cursor:"pointer",
-          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
+          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(_R299+"px "+_R299+"px 0 0"):(_R299+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
         <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{titolo}</span>
@@ -454,7 +478,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
         <span aria-hidden style={{marginLeft:"auto",fontSize:FS.body,color:TH.faint,lineHeight:1,
           transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
       </button>
-      {apr&&<div>{children}</div>}
+      {apr&&<div data-corpo299={_g299()?"1":undefined} style={_g299()?{"--r299":_R299+"px"}:undefined}>{children}</div>}
     </div>);
 }
 
@@ -2159,15 +2183,26 @@ function avanz233(urls){try{const P=(typeof window!=='undefined'&&window.__CPM_G
 function _segna233(url,pr){try{pr.then(()=>{(window.__CPM_FATTI233=window.__CPM_FATTI233||{})[url]=1;},()=>{});}catch(_e){}return pr;}
 /* pillola in alto «Scarico i giocatori 3D · NN%»: visibile finche' un gruppo e' in volo e nessuna schermata d'attesa la sostituisce */
 const _vol233={gruppi:[],iv:0};
+/* [giro 302 PO-589, PO 20/11 «Colori del tema» — rosso window.__CPM_NO_G302] LA STRISCIA DI SCARICO PARLA COL TEMA. Prima: fondo
+   rgba(5,8,20,.94), riempimento ambra al 38% alto quanto la striscia, testo bianco da 11 px (colori scritti a mano). Ora: fondo =
+   superficie scura del tema (TINTE.sup), testo TINTE.testo da 13 px, e la barra e' un filo di 3 px in basso (binario TINTE.tasto) con la
+   sfumatura nel colore d'accento del tasto principale (tasto235: il colore del club in carriera, crema fuori; alzato da legCol944 se
+   sul fondo scuro non si vedrebbe). Il testo non sta mai sopra la barra: il contrasto e' quello testo/superficie in ogni club. La striscia e' alta 16 px (13 di riga + 3 di
+   barra; prima 19): MISURATO, i tasti in alto (Home da PC, «Salva» e «Opzioni» in carriera) cominciano a 16 px, e la striscia da 19
+   ne copriva 3 px di riquadro; a 25 px copriva anche la scritta della versione nella Home del telefono. */
+function _acc302(){try{const b=tasto235(false).bg;const c=(typeof b==='string'&&b[0]==='#')?legCol944(b,TINTE.sup):TINTE.testo;return (typeof c==='string'&&c)?c:TINTE.testo;}catch(_e){return TINTE.testo;}}
+function _sfum302(){const c=_acc302();return /^#[0-9a-f]{6}$/i.test(c)?'linear-gradient(90deg,'+c+'73,'+c+')':c;}
 function _pillola233(){try{if(typeof document==='undefined')return;const vivi=_vol233.gruppi.filter(g=>!g.fine);let el=document.getElementById('cpm-avanz233');
   const coperta=!!document.querySelector('[data-cpm="attesa196"],[data-cpm="attesa233"]');
   if(!vivi.length){_vol233.max=0;if(el)el.remove();if(_vol233.iv){clearInterval(_vol233.iv);_vol233.iv=0;}return;}
   if(!el){el=document.createElement('div');el.id='cpm-avanz233';el.setAttribute('data-cpm','avanzamento233');el.setAttribute('role','status');
     /* striscia sottile in cima allo schermo (larga tutto, alta 18 px + area sicura): non copre titoli ne' tasti e non prende i tocchi */
+    if(_g302()){el.setAttribute('data-tema302','1');el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:'+TINTE.sup+';color:'+TINTE.testo+';font:700 13px/13px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);padding-bottom:3px;white-space:nowrap;overflow:hidden;';
+      el.innerHTML='<span data-binario302 style="position:absolute;left:0;right:0;bottom:0;height:3px;background:'+TINTE.tasto+'"></span><span data-b style="position:absolute;left:0;bottom:0;height:3px;width:0;transition:width .3s linear"></span><span data-t style="position:relative;top:-1px"></span>';/* -1 px: misurato, la gamba della «g» finiva a 14 px, uno dentro la barra (che comincia a 13) */}else{
     el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9000;pointer-events:none;background:rgba(5,8,20,0.94);color:#fff;font:700 11px/18px system-ui,sans-serif;text-align:center;padding-top:env(safe-area-inset-top, 0px);white-space:nowrap;overflow:hidden;border-bottom:1px solid rgba(245,158,11,0.45);';
-    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';document.body.appendChild(el);}
+    el.innerHTML='<span data-b style="position:absolute;left:0;bottom:0;height:18px;width:0;background:rgba(245,158,11,0.38);transition:width .3s linear"></span><span data-t style="position:relative"></span>';}document.body.appendChild(el);}
   const U=[];vivi.forEach(g=>g.urls.forEach(u=>{if(U.indexOf(u)<0)U.push(u);}));const p=_vol233.max=Math.max(_vol233.max|0,Math.round(avanz233(U)*100));/* mai all'indietro: la dimensione di un file si conosce solo quando comincia ad arrivare */
-  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';el.querySelector('[data-b]').style.width=Math.max(2,p)+'%';
+  el.style.display=coperta?'none':'block';el.setAttribute('data-pct',String(p));el.querySelector('[data-t]').textContent='Scarico i giocatori 3D · '+p+'%';{const _b302=el.querySelector('[data-b]');_b302.style.width=Math.max(2,p)+'%';if(el.hasAttribute('data-tema302'))_b302.style.background=_sfum302();}/* [giro 302] il colore del club puo' arrivare a scarico in corso */
   try{(window.__CPM_G233=window.__CPM_G233||{}).pillola={pct:p,visibile:!coperta,t:Date.now()};}catch(_e){}
   if(!_vol233.iv)_vol233.iv=setInterval(_pillola233,250);}catch(_e){}}
 /* chiede un gruppo di modelli (stesse URL esatte delle scene, cosi' _glbCache le riconosce), sei in volo insieme (PO-241) */
@@ -2192,7 +2227,7 @@ function copri233(host,urls,pr,nome){try{if(!_g233()||!host||typeof document==='
   let mx=0;const agg=()=>{if(!el)return;const p=mx=Math.max(mx,Math.round(avanz233(urls)*100));el.setAttribute('data-pct',String(p));el.querySelector('[data-b]').style.width=Math.max(4,p)+'%';el.querySelector('[data-p]').textContent=p+'%';};
   const tm=setTimeout(()=>{if(finito)return;el=document.createElement('div');el.setAttribute('data-cpm','attesa233');el.setAttribute('data-scena',nome||'');el.setAttribute('role','status');
     el.style.cssText='position:absolute;inset:0;z-index:3;background:#050814;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;text-align:center;font-family:inherit;';
-    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div style="width:min(260px,70%);height:8px;background:rgba(255,255,255,0.14);border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:#f59e0b;border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
+    el.innerHTML='<div style="font-size:34px;margin-bottom:8px">🏟️</div><div style="font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px">Caricamento dei giocatori</div><div style="font-size:13px;color:rgba(255,255,255,0.78);line-height:1.5;max-width:320px;margin-bottom:14px">Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo.</div><div data-binario302 style="width:min(260px,70%);height:8px;background:'+(_g302()?TINTE.tasto:'rgba(255,255,255,0.14)')+';border-radius:999px;overflow:hidden"><div data-b style="height:100%;width:4%;background:'+(_g302()?_sfum302():'#f59e0b')+';border-radius:999px;transition:width .3s linear"></div></div><div data-p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.6);font-variant-numeric:tabular-nums">0%</div>';
     try{host.appendChild(el);reg.vista=true;}catch(_e){}agg();iv=setInterval(agg,250);_pillola233();},250);
   const via=(esito)=>{if(finito)return;finito=true;clearTimeout(tm);if(iv)clearInterval(iv);reg.ms=Date.now()-t0;reg.esito=esito||'tolta';try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(_e){}el=null;_pillola233();};
   Promise.resolve(pr).then(()=>via('pronti'),()=>via('fallito'));return via;}catch(_e){return ()=>{};}}
