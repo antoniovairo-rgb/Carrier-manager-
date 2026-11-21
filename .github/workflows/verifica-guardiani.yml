@@ -1,4 +1,11 @@
-name: Treno — mappa intera dei guardiani
+name: Treno — trenino a ogni unione, treno grande di notte
+
+# [giro 317, PO-604 — decisioni PO 21/11 22:35 «Trenino + treno grande di notte», «Rilasci fermi finche' non si ripara»]
+# push su lavoro/**|prova/** → TRENINO: solo i guardiani delle righe della mappa toccate dal vagone (diff fra l'ultimo rilascio — tag v*
+#   o punta di main — e la punta) + le 17 sentinelle (tools/trenino-317.mjs scegli). Un file che nessuna riga copre → TRENO COMPLETO, dichiarato.
+# schedule (01:07 UTC = 02:07 a Roma d'inverno, 03:07 con l'ora legale) → TRENO GRANDE: mappa intera sulla punta del lavoro corrente
+#   (lavoro/<numero piu' alto>) o di main se il lavoro e' gia' tutto rilasciato; scrive docs/governo/BLOCCO-RILASCI.json sul poc.
+# a mano → tipo mappa (treno grande, default) | trenino | notte (stesso percorso della notte).
 
 # [giro 308, PO-592/517/527 — decisioni PO 20/11 21:05 «Treno + controlli a livelli» e 23:40 «mappa intera, parti da max 120 minuti,
 # avvio su push al ramo di rilascio + a mano»]. Base: workflow di prova del giro 303 (ramo prova-ci/giro303-actions).
@@ -12,8 +19,20 @@ on:
   push:
     branches: ['lavoro/**', 'prova/**']
     paths-ignore: ['docs/**', '**/*.md']
+  schedule:
+    - cron: '7 1 * * *'
   workflow_dispatch:
     inputs:
+      tipo:
+        description: 'mappa = treno grande sul ramo scelto · trenino = solo le righe toccate dal vagone + sentinelle · notte = come la corsa notturna (bersaglio e blocco)'
+        required: false
+        type: choice
+        options: ['mappa', 'trenino', 'notte']
+        default: 'mappa'
+      base:
+        description: 'Solo trenino in modo prova: base del vagone al posto dell ultimo rilascio (vuoto = ultimo rilascio)'
+        required: false
+        default: ''
       elenco:
         description: 'Guardiani separati da spazio (vuoto = mappa intera)'
         required: false
@@ -48,17 +67,51 @@ jobs:
     timeout-minutes: 5
     outputs:
       matrice: ${{ steps.piano.outputs.matrice }}
+      tipo: ${{ steps.piano.outputs.tipo }}
+      scelta: ${{ steps.piano.outputs.scelta }}
+      sha: ${{ steps.bers.outputs.sha }}
+      ramo: ${{ steps.bers.outputs.ramo }}
+      grande: ${{ steps.bers.outputs.grande }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # [giro 317] il trenino calcola il diff dall'ultimo rilascio (tag o main): serve la storia
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Tipo e bersaglio (giro 317)
+        id: bers
+        env:
+          EVENTO: ${{ github.event_name }}
+          TIPO_MANO: ${{ github.event.inputs.tipo }}
+          ELENCO: ${{ github.event.inputs.elenco }}
+          RILASCIO: ${{ github.event.inputs.rilascio }}
+        run: |
+          tipo="mappa"
+          [ "$EVENTO" = "push" ] && tipo="trenino"
+          [ "$EVENTO" = "schedule" ] && tipo="notte"
+          [ "$EVENTO" = "workflow_dispatch" ] && [ -n "$TIPO_MANO" ] && tipo="$TIPO_MANO"
+          if [ "$tipo" = "notte" ]; then
+            node tools/trenino-317.mjs bersaglio --uscita bersaglio.json
+            sha=$(node -p 'require("./bersaglio.json").sha'); ramo=$(node -p 'require("./bersaglio.json").ramo')
+            git checkout -q "$sha"
+          else sha="$GITHUB_SHA"; ramo="$GITHUB_REF_NAME"; fi
+          # il treno grande (notte, o mappa intera a mano su lavoro/** o main) scrive il blocco dei rilasci
+          grande=false
+          if [ -z "$ELENCO" ] && { [ "$tipo" = "notte" ] || { [ "$tipo" = "mappa" ] && [[ "$ramo" == lavoro/* || "$ramo" == main ]]; }; }; then grande=true; fi
+          # in modo prova la notte si puo' provare con un elenco corto: il blocco va su un ramo prova/cd-<corsa>-blocco, mai sul poc
+          if [ "$tipo" = "notte" ] && [ "$RILASCIO" = "prova" ]; then grande=true; fi
+          echo "tipo_chiesto=$tipo" >> "$GITHUB_OUTPUT"; echo "sha=$sha" >> "$GITHUB_OUTPUT"; echo "ramo=$ramo" >> "$GITHUB_OUTPUT"; echo "grande=$grande" >> "$GITHUB_OUTPUT"
+          echo "tipo $tipo · bersaglio $ramo $sha · treno grande $grande"
       - name: Piano e matrice
         id: piano
         working-directory: tests/visual
         env:
           CPM_TRENO_ELENCO: ${{ github.event.inputs.elenco }}
           CPM_TRENO_OBIETTIVO_MIN: ${{ github.event.inputs.obiettivo_min }}
+          CPM_TRENO_TIPO: ${{ steps.bers.outputs.tipo_chiesto }}
+          CPM_TRENO_SHA: ${{ steps.bers.outputs.sha }}
+          CPM_TRENO_BASE: ${{ github.event.inputs.rilascio == 'prova' && github.event.inputs.base || '' }}
         run: |
           if [ -n "$CPM_TRENO_OBIETTIVO_MIN" ]; then export CPM_TRENO_OBIETTIVO_S=$(( CPM_TRENO_OBIETTIVO_MIN * 60 )); fi
           node ci-treno-308.mjs piano
@@ -82,6 +135,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ needs.piano.outputs.sha }}   # [giro 317] di notte il bersaglio non e' il ramo dell'evento
           fetch-depth: 0   # alcuni bracci rossi leggono commit vecchi con `git show` (accessibilita-234: ea02adf0^); col clone corto erano rossi
       - uses: actions/setup-node@v4
         with:
@@ -138,6 +192,10 @@ jobs:
         env:
           CPM_TRENO_MATRICE: ${{ needs.piano.outputs.matrice }}
           CPM_TRENO_ELENCO: ${{ github.event.inputs.elenco }}
+          CPM_TRENO_TIPO: ${{ needs.piano.outputs.tipo }}
+          CPM_TRENO_SCELTA: ${{ needs.piano.outputs.scelta }}
+          CPM_TRENO_SHA: ${{ needs.piano.outputs.sha }}
+          CPM_TRENO_RAMO: ${{ needs.piano.outputs.ramo }}
         run: node tests/visual/ci-treno-308.mjs riunisci parti || true
       - uses: actions/upload-artifact@v4
         with:
@@ -148,6 +206,71 @@ jobs:
             parti/esito-treno.json
           if-no-files-found: warn
           retention-days: 14
+
+  # [giro 317, PO-604] BLOCCO DEI RILASCI dal treno grande (notte, o mappa intera a mano su lavoro/** o main).
+  # Scrive docs/governo/BLOCCO-RILASCI.json sul poc SOLO quando cambia l'insieme dei guardiani bloccanti (niente commit ogni notte):
+  # rossi nuovi e non giudicati della corsa = blocco acceso; un treno grande senza quei rossi = blocco spento (sbloccati).
+  # Push senza force sulla punta del poc (riprova fino a 4 volte rileggendo il poc). Modo prova: ramo nuovo prova/cd-<corsa>-blocco.
+  # Traccia anonima: stato «treno-grande» sul commit giudicato. Il job non fa mai fallire la corsa.
+  blocco:
+    name: Blocco dei rilasci (treno grande)
+    needs: [piano, riepilogo]
+    if: always() && needs.piano.outputs.grande == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    permissions:
+      contents: write
+      statuses: write
+    env:
+      MODO: ${{ github.event.inputs.rilascio || 'auto' }}
+      CPM_CORSA: ${{ github.run_id }}
+      CPM_CORSA_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      GH_TOKEN: ${{ github.token }}
+      POC: poc/marioprada-character-system
+      SHA_GIUDICATO: ${{ needs.piano.outputs.sha }}
+      RAMO_GIUDICATO: ${{ needs.piano.outputs.ramo }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: riepilogo-totale
+          path: esito
+      - name: Nuovo blocco e scrittura sul poc
+        run: |
+          set -e
+          F=docs/governo/BLOCCO-RILASCI.json; dest="$POC"; [ "$MODO" = "prova" ] && dest="prova/cd-$CPM_CORSA-blocco"
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          scritto=no
+          for i in 1 2 3 4; do
+            git fetch -q origin "+refs/heads/$POC:refs/remotes/origin/$POC"
+            git checkout -q -B blocco-317 "origin/$POC"
+            node tools/trenino-317.mjs blocco --esito esito/esito-treno.json --prec "$F" --uscita /tmp/nuovo.json --ramo "$RAMO_GIUDICATO"
+            prima=$(node -e 'try{const b=require(process.argv[1]);console.log(JSON.stringify((b.rossi||[]).map(x=>x.guardiano).sort()))}catch{console.log("nessuno")}' "$PWD/$F")
+            dopo=$(node -e 'const b=require("/tmp/nuovo.json");console.log(JSON.stringify((b.rossi||[]).map(x=>x.guardiano).sort()))')
+            attivo=$(node -p 'require("/tmp/nuovo.json").attivo')
+            echo "attivo=$attivo" > /tmp/blocco-stato.txt
+            if [ "$MODO" != "prova" ] && { [ "$prima" = "$dopo" ] || { [ "$prima" = "nessuno" ] && [ "$attivo" = "false" ]; }; }; then echo "blocco invariato ($dopo): nessun commit"; scritto=invariato; break; fi
+            cp /tmp/nuovo.json "$F"; git add "$F"
+            git commit -q -m "Treno grande: rilasci $([ "$attivo" = true ] && echo BLOCCATI || echo sbloccati) (corsa $CPM_CORSA)" -m "Bloccanti: $dopo · prima: $prima · commit giudicato $SHA_GIUDICATO su $RAMO_GIUDICATO · $CPM_CORSA_URL"
+            if git push -q origin "HEAD:refs/heads/$dest"; then scritto=si; break; fi
+            echo "push rifiutato (il poc si e' mosso): rileggo e riprovo"; sleep $((i * 5))
+          done
+          echo "scritto=$scritto dest=$dest" | tee -a /tmp/blocco-stato.txt
+          echo "### Blocco dei rilasci: $(cat /tmp/blocco-stato.txt | tr '\n' ' ') · bloccanti $dopo" >> "$GITHUB_STEP_SUMMARY"
+      - name: Stato del commit giudicato (leggibile senza credenziali)
+        if: always()
+        run: |
+          a=$(grep -o 'attivo=[a-z]*' /tmp/blocco-stato.txt 2>/dev/null | cut -d= -f2)
+          if [ "$a" = "false" ]; then st=success; t="treno grande: nessun rosso nuovo, rilasci liberi"; elif [ "$a" = "true" ]; then st=failure; t="treno grande: rilasci BLOCCATI ($(node -p 'require("/tmp/nuovo.json").rossi.map(x=>x.guardiano).join(", ")' | cut -c1-90))"; else st=error; t="treno grande: blocco non calcolato"; fi
+          ctx="treno-grande"; [ "$MODO" = "prova" ] && ctx="treno-grande-prova"
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$SHA_GIUDICATO" -f state="$st" -f context="$ctx" -f description="$t" -f target_url="$CPM_CORSA_URL" > /dev/null || echo "::warning::stato del commit non scritto"
 
   # [giro 312, PO-600 — decisioni PO 21/11 17:25] RILASCIO AUTOMATICO DEL VAGONE a treno pulito.
   # Si rilascia SOLO se: interruttore acceso (docs/governo/RILASCIO-AUTO.json sul poc con "attivo": true, e la variabile di
@@ -163,7 +286,8 @@ jobs:
   rilascio:
     name: Rilascio del vagone
     needs: [piano, riepilogo]
-    if: always() && (github.event_name == 'push' || github.event.inputs.rilascio != 'no')
+    # [giro 317] la notte NON rilascia: scrive solo il blocco (dubbio per il PO nel RAPPORTO-giro317)
+    if: always() && needs.piano.outputs.tipo != 'notte' && github.event_name != 'schedule' && (github.event_name == 'push' || github.event.inputs.rilascio != 'no')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     continue-on-error: true

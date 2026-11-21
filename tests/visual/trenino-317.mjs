@@ -86,7 +86,7 @@ const casi = [
   ['blocco spento (attivo=false, rossi vuoti)', ctx({ blocco: { attivo: false, rossi: [], sbloccati: ['difesa-220'] } }), true],
 ];
 for (const [n, c, atteso] of casi) { const d = R.decidi(c); ok(d.rilascia === atteso, `${n}: ${d.rilascia ? 'rilascia' : 'fermo'} (atteso ${atteso ? 'rilascia' : 'fermo'})${d.motivi.length ? ' — ' + d.motivi[0].slice(0, 140) : ''}`); }
-const r1 = R.decidi({ ...casi[0][1], senza317: true }), r2 = R.decidi({ ...casi[7][1], senza317: true });
+const r1 = R.decidi({ ...casi[0][1], senza317: true }), r2 = R.decidi({ ...casi[7][1], esito: esitoT(e => { e.tipo = 'mappa'; e.mappa_intera = true; }), senza317: true });
 ok(r1.rilascia === false && r2.rilascia === true, `braccio rosso interno (comportamento 312): trenino pulito ${r1.rilascia ? 'rilascia' : 'fermo'} (atteso fermo), blocco ${r2.rilascia ? 'ignorato' : 'letto'} (atteso ignorato)`);
 
 /* ---------------------------------------------------------------- C. blocco e bersaglio */
