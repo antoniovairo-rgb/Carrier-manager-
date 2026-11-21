@@ -18,8 +18,8 @@
 | scena3d-96 | **verde** (rc 0, 1403 s; scene giudicate 31/31, errori di pagina 0) | non eseguito (verde) | — | Telefono, PC, tablet nei due versi; ingresso in campo verde su telefono e PC. Il controllo più lungo finora (23 minuti). |
 | passaggio-coppa-137 | **verde** (rc 0, 130 s) | non eseguito (verde) | — | Verde col verde; i tre rossi (capitano che alza, passaggio, festa) si vedono tutti. |
 | piedi-252 | **verde** in due corse (rc 0; 212 s e 217 s) | non eseguito (verde) | — | Margini stretti: mediana verde 0,386 e 0,371 contro il tetto 0,4; mediana rossa 0,467 e 0,482 contro il minimo «verde + 0,08» (0,466 e 0,451). Alla prima corsa il braccio rosso passa per 0,001: su una macchina più lenta è un candidato a cadere. Seconda corsa fatta per questo. |
-| ingresso-camminata-245 | in corso | — | — | — |
-| coreografie-244 | da eseguire | — | — | — |
+| ingresso-camminata-245 | **verde** (rc 0, 238 s) | non eseguito (verde) | — | Verde: 11+11 al posto, velocità massima 2,21, clip di camminata letta. Il rosso si vede (velocità massima 6,52, nessuna clip di camminata). |
+| coreografie-244 | in corso | — | — | — |
 | memoria-275 | da eseguire | — | — | — |
 | rigorista-257 | da eseguire | — | — | — |
 | parata-258 | da eseguire | — | — | — |
