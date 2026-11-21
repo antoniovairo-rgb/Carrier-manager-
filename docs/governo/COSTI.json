@@ -3329,5 +3329,31 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-19"
+ },
+ {
+  "sessione": "session_01QEYia9qzNNdNW5u8abR2FY",
+  "titolo": "giro 310 bilanciamento",
+  "creata": "2026-11-21T11:27:19Z",
+  "chiusa": "2026-11-21T13:31:05Z",
+  "cost_usd": 12.23634266,
+  "output_tokens": 94225,
+  "cache_read_tokens": 39542061,
+  "versione": "7.999.200",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-21"
+ },
+ {
+  "sessione": "session_01QEYia8sLxJR5kTh1uszeWj",
+  "titolo": "giro 311 ritocchi",
+  "creata": "2026-11-21T14:17:12Z",
+  "chiusa": "2026-11-21T14:43:46Z",
+  "cost_usd": 3.3938451,
+  "output_tokens": 24151,
+  "cache_read_tokens": 8667464,
+  "versione": "7.999.200",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-21"
  }
 ]
