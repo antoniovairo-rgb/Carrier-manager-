@@ -56,9 +56,15 @@ on:
 permissions:
   contents: read
 
+# [giro 329, PO-621 — decisione PO 22/11 19:40 «trenini fino a 15 macchine»] UNA concorrenza per TUTTE le corse del treno (trenino,
+# treno grande, mappa a mano, su qualunque ramo): una alla volta, senza annullare quella in corsa. Con trenino 15 e treno grande 15 due
+# corse insieme prenderebbero 30 macchine su 20; cosi' il treno ne usa al massimo 15 (+ il deploy che avvia il rilascio) e restano
+# sempre posti liberi per «Deploy to GitHub Pages». Prima (giro 317) il gruppo era per ramo con cancel-in-progress: un push nuovo sullo
+# stesso lavoro annullava il trenino in corsa. Limite di GitHub: nel gruppo stanno UNA corsa in corso e UNA in attesa; una terza
+# corsa in coda sostituisce (annulla) quella in attesa, non quella in corsa. Guardiano: npm run deploy-326 (sezione C).
 concurrency:
-  group: treno-guardiani-${{ github.ref }}
-  cancel-in-progress: true
+  group: treno-guardiani
+  cancel-in-progress: false
 
 jobs:
   piano:
@@ -126,7 +132,8 @@ jobs:
     continue-on-error: true   # un job caduto non fa fallire la corsa: se manca il suo riepilogo, il Riepilogo lo dichiara «non giudicato»
     strategy:
       fail-fast: false
-      # [giro 326, PO-624] mai tutte e 20 le macchine dell'account: treno grande 15, trenino 4 (ci-treno-308.mjs, TETTO_*).
+      # [giro 326, PO-624] mai tutte e 20 le macchine dell'account: treno grande 15, trenino 15 dal giro 329 (ci-treno-308.mjs, TETTO_*),
+      # una corsa del treno alla volta (concurrency in testa al file).
       # Restano posti per il deploy del gioco, che il 22/11 e' rimasto in coda dietro al treno fino all'annullo a mano.
       max-parallel: ${{ fromJSON(needs.piano.outputs.paralleli || '15') }}
       matrix: ${{ fromJSON(needs.piano.outputs.matrice) }}
