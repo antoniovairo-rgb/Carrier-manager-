@@ -15,6 +15,11 @@
       → guardiano dichiarato → decidi (rilascia) → blocco spento da un treno grande pulito → decidi → prepara → pubblica: main = poc =
       tag v7.999.201; bersaglio notturno lavoro/317 prima, main dopo.
 
+   E. [giro 328, PO-621] src/16 ha la sua riga (piu' corta di src/18); ogni guardiano delle catene ha una riga; una sonda che nessuno
+      nomina e' neutra, una catena di sonde neutre pure, una sonda importata da un guardiano gioca quel guardiano, una nominata da una
+      lib/ resta non coperta; un trenino piu' lento della mappa intera (tetto 4 contro 15) diventa treno completo. Rosso: CPM_NO_G328=1
+      (regole spente + mappa di prima del giro, fixtures/ci-runner-lavoro201-prima328.mjs.txt) → il guardiano DEVE uscire rosso.
+
    Verde col verde e rosso col rosso: con CPM_NO_G317=1 decisione e piano tornano al giro 312 (mappa intera pretesa, blocco ignorato,
    niente trenino) e il guardiano DEVE uscire rosso (`CPM_NO_G317=1 npm run trenino-317` → uscita 1). Braccio rosso interno sempre
    giocato: lo stesso trenino pulito con senza317 non rilascia, lo stesso blocco con senza317 rilascia.
@@ -68,6 +73,39 @@ ok(sent.length === 17, `sentinelle lette dalla mappa: ${sent.length} (attese 17)
   let j = null; try { j = JSON.parse(p.stdout); } catch {}
   const m = j && (j.tipo === 'trenino' || j.tipo === 'completo') ? j : null;
   ok(!!m && m.scelta && m.scelta.merge_base, `piano di ci-treno-308 con CPM_TRENO_TIPO=trenino: tipo ${j ? j.tipo : '?'}${j && j.scelta ? `, ${j.riassunto.guardiani} guardiani in ${j.riassunto.parti} parti (${j.scelta.motivo.slice(0, 80)})` : ''}`); }
+
+/* ---------------------------------------------------------------- E. giro 328 (PO-621): trenini piu' corti */
+{ const NO8 = process.env.CPM_NO_G328 === '1';
+  console.log(`\n== E. giro 328: riga di src/16, sonde neutre, trenino piu' lento della mappa intera${NO8 ? ' (CPM_NO_G328=1: regole spente e mappa di prima del giro, atteso ROSSO)' : ''} ==`);
+  /* col rosso si giudica la mappa di prima del giro 328 (copia ferma: sul runner il clone e' corto) */
+  const m8 = NO8 ? T.leggiMappa(fs.readFileSync(path.join(QUI, 'fixtures/ci-runner-lavoro201-prima328.mjs.txt'), 'utf8')) : mappa;
+  const riga8 = f => [...new Set(m8.MAPPA.filter(([re]) => re.test(f)).flatMap(r => r[1]))];
+  const r16 = riga8('src/16-x.jsx'), r18 = riga8('src/18-x.jsx');
+  ok(r16.length < r18.length && !r16.includes('calendario-218') && r18.includes('calendario-218') && r16.includes('serata-314') && r16.includes('presentazione-225'),
+    `src/16 ha la sua riga: ${r16.length} guardiani contro ${r18.length} di src/18 (calendario-218 solo su src/18; serata-314 e presentazione-225 su src/16)`);
+  const inMappa = new Set(m8.MAPPA.flatMap(r => r[1])), via = Object.entries(m8.CATENE).filter(([k]) => !['nucleo', 'sentinelle'].includes(k)).flatMap(([, l]) => l).filter(n => !/^ci(:|$)/.test(n) && !inMappa.has(n));
+  ok(!via.length, `ogni guardiano delle catene ha almeno una riga della mappa${via.length ? ` (senza: ${via.slice(0, 5).join(', ')})` : ''}`);
+  const sc8 = (toccati, o = {}) => T.scegli({ toccati, mappa: m8, mappaBase: m8, pkg, pkgBase: pkg, ...o });
+  { const s = sc8(['src/09-x.jsx', 'tests/visual/misura-999.mjs', 'tests/visual/archivio/vecchia-999.mjs'], { riferimenti: { 'tests/visual/misura-999.mjs': [], 'tests/visual/archivio/vecchia-999.mjs': [] } });
+    ok(s.tipo === 'trenino' && /sonda non eseguita/.test(s.perFile['tests/visual/misura-999.mjs'] || ''), `sonda che nessuno nomina: neutra (${s.tipo})`); }
+  { const s = sc8(['tests/visual/misura-998.mjs', 'tests/visual/misura-997.mjs'], { riferimenti: { 'tests/visual/misura-998.mjs': ['tests/visual/misura-997.mjs'], 'tests/visual/misura-997.mjs': [] } });
+    ok(s.tipo === 'trenino' && s.perFile['tests/visual/misura-998.mjs'] === s.perFile['tests/visual/misura-997.mjs'], `catena di sonde neutre del vagone: entrambe neutre (${s.tipo})`); }
+  { const s = sc8(['tests/visual/misura-996.mjs'], { riferimenti: { 'tests/visual/misura-996.mjs': ['tests/visual/serata-314.mjs'] } });
+    ok(s.tipo === 'trenino' && JSON.stringify(s.perFile['tests/visual/misura-996.mjs']) === '["serata-314"]', `sonda importata da un guardiano: si gioca il guardiano (${JSON.stringify(s.perFile['tests/visual/misura-996.mjs'])})`); }
+  { const s = sc8(['tests/visual/misura-995.mjs'], { riferimenti: { 'tests/visual/misura-995.mjs': ['tests/visual/lib/harness.mjs'] } });
+    ok(s.tipo === 'completo' && s.scoperti.includes('tests/visual/misura-995.mjs'), `sonda nominata da una lib/: resta non coperta → completo (anche col rosso)`); }
+  { const s = sc8(['tests/visual/misura-994.mjs']);
+    ok(s.tipo === 'completo', `senza elenco dei riferimenti la regola non vale: completo (anche col rosso)`); }
+  { const r = T.riferimentiDaGit(ROOT, 'HEAD', ['tests/visual/misura-309-sonda.mjs']);
+    ok(T.SONDA328.test('tests/visual/misura-309-sonda.mjs') && !T.SONDA328.test('tests/visual/lib/x.mjs') && !T.SONDA328.test('tests/visual/fixtures/x.json') && (r['tests/visual/misura-309-sonda.mjs'] || []).includes('tests/visual/bilancio-310.mjs'),
+      `riferimenti da git: misura-309-sonda e' nominata da bilancio-310 (${(r['tests/visual/misura-309-sonda.mjs'] || []).length} file)`); }
+  { const dur = Object.fromEntries([...new Set([...Object.values(m8.CATENE).flat(), ...m8.MAPPA.flatMap(r => r[1])])].map(n => [n, { s: 300 }]));
+    const grande = sc8(['src/19-x.jsx'], { durate: dur }), piccolo = sc8(['src/09-x.jsx'], { durate: dur });
+    ok(grande.tipo === 'completo' && /piu' lento della mappa intera/.test(grande.motivo) && piccolo.tipo === 'trenino',
+      `trenino piu' lento della mappa intera → completo (src/19: ${grande.tipo}${grande.piu_lento ? `, ~${Math.round(grande.piu_lento.trenino.parete_s / 60)} contro ~${Math.round(grande.piu_lento.mappa.parete_s / 60)} min` : ''}); src/09 resta trenino (${piccolo.tipo})`);
+    const t308 = fs.readFileSync(path.join(QUI, 'ci-treno-308.mjs'), 'utf8').match(/TETTO_GRANDE = (\d+), TETTO_TRENINO = (\d+)/);
+    ok(t308 && +t308[1] === T.TETTI_328.grande && +t308[2] === T.TETTI_328.trenino, `tetti del confronto = tetti di ci-treno-308 (${t308 ? t308.slice(1).join('/') : '?'})`); }
+}
 
 /* ---------------------------------------------------------------- B. decisione */
 console.log('\n== B. decisione con l\'esito del trenino ==');
@@ -204,5 +242,5 @@ try {
 } catch (err) { ok(false, 'percorso D interrotto: ' + (err.stderr || err.message).toString().slice(-600)); }
 finally { try { fs.rmSync(TMP, { recursive: true, force: true }); } catch {} }
 
-console.log(`\n${fall ? `❌ ROSSO: ${fall} controlli falliti` : '✅ VERDE'}${NO ? ' (CPM_NO_G317=1: atteso ROSSO)' : ''}`);
+console.log(`\n${fall ? `❌ ROSSO: ${fall} controlli falliti` : '✅ VERDE'}${NO ? ' (CPM_NO_G317=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G328 === '1' ? ' (CPM_NO_G328=1: atteso ROSSO)' : ''}`);
 process.exit(fall ? 1 : 0);

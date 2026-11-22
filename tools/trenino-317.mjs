@@ -23,6 +23,11 @@
      d. tests/visual/package.json: se cambiano SOLO gli script, si giocano gli script cambiati/aggiunti; altro (dipendenze) → completo;
      e. tests/visual/ci-runner.mjs: mappa-unica + i guardiani entrati in CATENE/MAPPA rispetto alla base;
      f. un file sotto tests/visual/ o tools/ che uno script npm nomina (`node <file>`) → quegli script;
+     f2. [giro 328] una SONDA (script .mjs/.js/.cjs/.py/.sh sotto tests/visual/ fuori da lib/ checks/ fixtures/, o sotto tools/) che
+        nessuno script npm nomina: si guarda chi la nomina per nome alla punta (tests/visual, tools, .github, src, package.json,
+        ricomposto). Nessuno, o solo altre sonde neutre del vagone → neutra (il treno non la esegue); solo file eseguiti da script npm
+        → quegli script; altro → non coperta (misurato: 3 vagoni su 8 del 20-22/11 diventavano treno completo per sonde misura-309-*,
+        foto-320, archivio/*). Rosso: CPM_NO_G328=1;
      g. tutto il resto → NON COPERTO → treno completo.
 
    Comandi (escono 0 se hanno scritto il risultato; il workflow legge GITHUB_OUTPUT):
@@ -44,6 +49,8 @@ export const FILE_BLOCCO = 'docs/governo/BLOCCO-RILASCI.json';
 export const FILE_RUNNER = 'tests/visual/ci-runner.mjs';
 export const FILE_PKG = 'tests/visual/package.json';
 const FUORI = /^ci(:|$)/;
+/* [giro 328] file che possono essere una sonda (vedi regola f2) */
+export const SONDA328 = /^(?:tests\/visual\/(?!lib\/|checks\/|fixtures\/)[^\s]+|tools\/[^\s]+)\.(?:mjs|js|cjs|py|sh)$/;
 
 const gitProva = (cwd, args) => spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 1 << 28 });
 const git = (cwd, args) => { const r = gitProva(cwd, args); if (r.status !== 0) throw new Error(`git ${args.join(' ')}: ${r.stderr.trim()}`); return r.stdout.trim(); };
@@ -78,9 +85,21 @@ export function scriptChePrendono(file, scripts) {
  * pkg/pkgBase: package.json di tests/visual alla punta e alla base (oggetti).
  * → { tipo:'trenino'|'completo', guardiani:[], sentinelle:[], perFile:{file:[...]|'neutro'}, scoperti:[], motivo }
  */
-export function scegli({ toccati, mappa, mappaBase, pkg, pkgBase }) {
+/** [giro 328] parete attesa di un elenco: stesso taglio in parti di ci-treno-308 piano() (obiettivo 4200 s, il piu' lungo nella parte
+ *  piu' leggera, parti in piu' finche' una parte con piu' d'un guardiano sfora) e `tetto` macchine che prendono le parti in ordine.
+ *  Durate da docs/governo/DURATE-GUARDIANI.json (300 s se manca). E' un CONFRONTO fra due piani, non l'orologio del runner. */
+export const TETTI_328 = { trenino: 4, grande: 15 };/* = TETTO_TRENINO / TETTO_GRANDE di ci-treno-308 (il guardiano lo controlla) */
+export function pareteAttesa(nomi, durate, tetto) {
+  const v = nomi.map(n => (durate[n] && durate[n].s) || 300), tot = v.reduce((a, b) => a + b, 0), OB = 4200;
+  if (!v.length) return { parti: 0, somma_s: 0, parete_s: 0 };
+  const taglia = N => { const p = Array.from({ length: N }, () => ({ s: 0, k: 0 })); for (const x of [...v].sort((a, b) => b - a)) { const q = p.reduce((m, y) => (y.s < m.s ? y : m), p[0]); q.s += x; q.k++; } return p; };
+  let N = Math.max(1, Math.min(v.length, Math.ceil(tot / OB))), p = taglia(N); while (N < Math.min(v.length, 256) && p.some(y => y.s > OB && y.k > 1)) p = taglia(++N);
+  const mac = Array(Math.max(1, Math.min(tetto, N))).fill(0); for (const y of p) { const i = mac.indexOf(Math.min(...mac)); mac[i] += y.s; }
+  return { parti: N, somma_s: tot, parete_s: Math.max(...mac) };
+}
+export function scegli({ toccati, mappa, mappaBase, pkg, pkgBase, riferimenti, durate }) {
   const { CATENE, MAPPA } = mappa, scripts = (pkg && pkg.scripts) || {}, scriptsBase = (pkgBase && pkgBase.scripts) || {};
-  const perFile = {}, scoperti = [], scelti = [];
+  const perFile = {}, scoperti = [], scelti = [], sonde = [];
   const tocca = (f, l) => { perFile[f] = l; scelti.push(...l); };
   const srcToccato = toccati.some(f => f.startsWith('src/'));
   for (const f of toccati) {
@@ -103,13 +122,36 @@ export function scegli({ toccati, mappa, mappaBase, pkg, pkgBase }) {
       const s = scriptChePrendono(f, scripts);
       if (s.length) { tocca(f, s); continue; }
     }
+    /* [giro 328] f2: sonda. `riferimenti[f]` = file di codice che la nominano alla punta (sceltaDaGit); senza l'elenco (chiamate pure
+       di prova che non lo passano) la regola non vale: si resta prudenti. Si decide dopo il giro, tutte insieme (vedi sotto). */
+    if (process.env.CPM_NO_G328 !== '1' && SONDA328.test(f) && riferimenti && Array.isArray(riferimenti[f])) { sonde.push(f); continue; }
     scoperti.push(f);
   }
+  /* [giro 328] f2, punto fisso sulle sonde del vagone: chi la nomina e' (a) un'altra sonda del vagone gia' neutra → non conta;
+     (b) un file che uno script npm esegue → si giocano quegli script (es. misura-309-sonda importata dal guardiano bilancio-310);
+     (c) altro (una lib/, una sonda fuori dal vagone, un workflow) → resta non coperta. Nessuno → neutra. */
+  const neutre = new Set(); let ancora = true;
+  while (ancora) { ancora = false;
+    for (const f of sonde) { if (f in perFile) continue;
+      const altri = riferimenti[f].filter(x => !neutre.has(x)), chi = altri.map(x => scriptChePrendono(x, scripts));
+      if (chi.some(c => !c.length)) continue;
+      if (!altri.length) { neutre.add(f); perFile[f] = 'sonda non eseguita dal treno (nessuno script npm, nessun file di codice la nomina)'; }
+      else tocca(f, [...new Set(chi.flat())]);
+      ancora = true; } }
+  scoperti.push(...sonde.filter(f => !(f in perFile)));
   const sentinelle = [...(CATENE.sentinelle || [])];
   if (scoperti.length) return { tipo: 'completo', guardiani: [], sentinelle, perFile, scoperti,
     motivo: `file non coperti da nessuna riga della mappa: ${scoperti.join(', ')} → TRENO COMPLETO (mappa intera)` };
   const guardiani = [...new Set([...scelti, ...sentinelle])].filter(n => !FUORI.test(n) && scripts[n]);
   const senzaScript = [...new Set([...scelti, ...sentinelle])].filter(n => !FUORI.test(n) && !scripts[n]);
+  /* [giro 328] un trenino che con il suo tetto di macchine finirebbe DOPO la mappa intera col tetto grande non e' un trenino corto:
+     si gira la mappa intera (stesso percorso del «completo», che il rilascio gia' accetta). Solo se le durate sono date (sceltaDaGit). */
+  if (durate && process.env.CPM_NO_G328 !== '1') {
+    const tutti = [...new Set([...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])])].filter(n => !FUORI.test(n) && scripts[n]);
+    const t = pareteAttesa(guardiani, durate, TETTI_328.trenino), m = pareteAttesa(tutti, durate, TETTI_328.grande);
+    if (t.parete_s > m.parete_s) return { tipo: 'completo', guardiani: [], sentinelle, perFile, scoperti: [], piu_lento: { trenino: t, mappa: m },
+      motivo: `trenino di ${guardiani.length} guardiani piu' lento della mappa intera (~${Math.round(t.parete_s / 60)} min su ${TETTI_328.trenino} macchine contro ~${Math.round(m.parete_s / 60)} su ${TETTI_328.grande}) → TRENO COMPLETO (mappa intera)` };
+  }
   return { tipo: 'trenino', guardiani, sentinelle, perFile, scoperti, senza_script: senzaScript,
     motivo: `${toccati.length} file toccati, ${guardiani.length} guardiani (${sentinelle.length} sentinelle comprese)` };
 }
@@ -153,6 +195,16 @@ export function ultimoRilascio(cwd, remoto = process.env.CPM_REMOTO || 'origin',
   if (r.status === 0) return { ref: `${remoto}/${main}`, sha: r.stdout.trim(), come: `nessun tag v*: punta di ${remoto}/${main}` };
   return { ref: main, sha: git(cwd, ['rev-parse', main]), come: `nessun tag v*: punta di ${main} locale` };
 }
+/** [giro 328] per ogni possibile sonda: i file di codice che alla punta ne nominano il nome (git grep, escluso il file stesso) */
+export function riferimentiDaGit(cwd, sha, files) {
+  const out = {};
+  for (const f of files.filter(x => SONDA328.test(x))) {
+    const r = gitProva(cwd, ['grep', '-l', '-F', '-e', path.posix.basename(f), sha, '--', 'tests/visual', 'tools', '.github', 'src', 'package.json', 'CARRIER-MANAGER-AV.html']);
+    if (r.status > 1) continue;/* errore di git: niente elenco, la regola non vale */
+    out[f] = r.stdout.split('\n').filter(Boolean).map(l => l.slice(l.indexOf(':') + 1)).filter(x => x !== f && !/(^|\/)package-lock\.json$/.test(x));
+  }
+  return out;
+}
 const pkgDa = (cwd, ref) => { const t = leggiDa(cwd, ref, FILE_PKG); try { return t ? JSON.parse(t) : null; } catch { return null; } };
 /** Scelta dal repository: diff fra l'ultimo rilascio e sha (dal loro antenato comune). */
 export function sceltaDaGit(cwd, sha, baseRef) {
@@ -161,7 +213,8 @@ export function sceltaDaGit(cwd, sha, baseRef) {
   const toccati = git(cwd, ['diff', '--name-only', mb, sha]).split('\n').filter(Boolean);
   const mappa = leggiMappa(leggiDa(cwd, sha, FILE_RUNNER));
   let mappaBase = null; try { mappaBase = leggiMappa(leggiDa(cwd, mb, FILE_RUNNER)); } catch {}
-  const s = scegli({ toccati, mappa, mappaBase, pkg: pkgDa(cwd, sha), pkgBase: pkgDa(cwd, mb) });
+  let durate = null; try { durate = JSON.parse(leggiDa(cwd, sha, 'docs/governo/DURATE-GUARDIANI.json')).voci || null; } catch {}
+  const s = scegli({ toccati, mappa, mappaBase, pkg: pkgDa(cwd, sha), pkgBase: pkgDa(cwd, mb), riferimenti: riferimentiDaGit(cwd, sha, toccati), durate });
   return { ...s, sha, base: { ...ult, merge_base: mb }, toccati };
 }
 
