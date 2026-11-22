@@ -748,6 +748,7 @@
     "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs",
     "mappa-unica": "node mappa-unica-308.mjs",
     "rilascio-312": "node rilascio-312.mjs",
+    "trenino-317": "node trenino-317.mjs",
     "ci:sentinelle": "node ci-runner.mjs sentinelle"
   },
   "dependencies": {
