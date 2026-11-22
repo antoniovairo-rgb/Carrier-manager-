@@ -47,7 +47,10 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    bocciata proprio da `design-system` («164 raggi scritti a mano che HANNO GIA' un token»), che nella
    catena grafica c'e'.
 
-   ⚠️ **IL GATE NON E' LA CI.** Il workflow `validate-situations.yml` esegue **sette** passi in due job, e
+   📌 **«VALIDATE SITUATIONS» SOLO A MANO (decisione PO 22/11, giro 327).** `validate-situations.yml` non parte piu' a ogni push
+   (main/staging/claude/**) ne' sulle pull request: solo `workflow_dispatch` («Run workflow» da Actions). I push li giudica il treno.
+   Guardiano `npm run deploy-326` (sezione E), rosso `CPM_NO_G326=1`.
+   ⚠️ **IL GATE NON E' LA CI.** Il workflow `validate-situations.yml` (avviato a mano) esegue **sette** passi in due job, e
    `npm run validate-situations` e' **uno solo**. Verificare quello e dichiarare «verde» ha prodotto nove
    release consecutive promosse su `main` con la CI rossa, scoperte solo perche' il PO ha mostrato la
    casella di posta piena di «Run failed». Prima di ogni push, dalla cartella `tests/visual`:
