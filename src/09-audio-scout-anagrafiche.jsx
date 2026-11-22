@@ -1153,7 +1153,12 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
 const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
 //   (i pool restano ricchi di nomi comuni; è la COPPIA a essere bloccata, in generazione e in audit).
-const _CR_FULLNAMES=new Set(["thomas müller","timo werner","manuel neuer","marco reus","toni kroos","leon goretzka","joshua kimmich","sergio ramos","marcos alonso","david silva","fernando torres","marcos llorente","nacho fernández","sergio busquets","jordan henderson","kyle walker","luke shaw","aaron ramsey","dean henderson","harry kane","jack grealish","cenk tosun","nuri sahin","hamit altintop","altay bayindir","salih ucan","mert gunok","yusuf yazici","hakan calhanoglu","mark van bommel","steven berghuis","luuk de jong","vincent janssen","memphis depay","frenkie de jong","virgil van dijk","bruno fernandes","rúben dias","bernardo silva","rafael leão","nuno mendes","andré silva","joão félix","diogo jota","kevin de bruyne","eden hazard","romelu lukaku","kylian mbappé","antoine griezmann","olivier giroud","lautaro martínez","julián álvarez","lisandro martínez","emiliano martínez","gabriel jesus","vinícius júnior"]);
+/* [giro 320 PO-619] l'eroe di ripiego dell'intro ha un nome di FANTASIA scelto dal PO («Gabriel Ferreyro», maglia FERREYRO n. 9):
+   «Giovanni Pisano» e' un ex attaccante vero ed entra nelle coppie bloccate; l'audit guarda anche il nome dell'intro e il suggerimento
+   del campo Nome. Rosso __CPM_NO_G320 = testi della 7.999.201. */
+const _NO_G320=typeof window!=="undefined"&&!!window.__CPM_NO_G320;
+const EROE_INTRO_320=_NO_G320?{nome:"Giovanni Pisano",cog:"PISANO"}:{nome:"Gabriel Ferreyro",cog:"FERREYRO"};
+const _CR_FULLNAMES=new Set(["giovanni pisano","thomas müller","timo werner","manuel neuer","marco reus","toni kroos","leon goretzka","joshua kimmich","sergio ramos","marcos alonso","david silva","fernando torres","marcos llorente","nacho fernández","sergio busquets","jordan henderson","kyle walker","luke shaw","aaron ramsey","dean henderson","harry kane","jack grealish","cenk tosun","nuri sahin","hamit altintop","altay bayindir","salih ucan","mert gunok","yusuf yazici","hakan calhanoglu","mark van bommel","steven berghuis","luuk de jong","vincent janssen","memphis depay","frenkie de jong","virgil van dijk","bruno fernandes","rúben dias","bernardo silva","rafael leão","nuno mendes","andré silva","joão félix","diogo jota","kevin de bruyne","eden hazard","romelu lukaku","kylian mbappé","antoine griezmann","olivier giroud","lautaro martínez","julián álvarez","lisandro martínez","emiliano martínez","gabriel jesus","vinícius júnior"]);
 // [giro 6, decisione PO 11/10] club con nomi reali rinominati: vecchio → nuovo. Serve alla migration di CareerApp
 // (il nome del club si salva in player.club.n, player.standings[].n, calendar[].opponentName, matchHistory[].opponent).
 // I derby NON si salvano (isDerby li ricalcola dagli id) → nessuna migration per loro.
@@ -1224,6 +1229,9 @@ function _auditCopyrightSafety(){
      CLUBS.forEach(c=>{const ab=_nrm(c.a),nm=_nrm(c.n);let i=0,ok=!!ab;
        for(const ch of ab){i=nm.indexOf(ch,i);if(i<0){ok=false;break;}i++;}
        if(!ok)hits.push("SIGLA: \""+(c.a||"")+"\" non deriva dal nome mostrato \""+(c.n||"")+"\"");});}
+    /* [giro 320] il nome dell'eroe dell'intro (didascalia, maglia, suggerimento del campo Nome) non e' mai un calciatore vero */
+    {const _n320=String(EROE_INTRO_320.nome||"");if(_CR_FULLNAMES.has(_n320.toLowerCase()))hits.push("INTRO-EROE: \""+_n320+"\"");
+     if(_CR_PLAYERS.some(w=>_n320.split(/\s+/).indexOf(w)>=0))hits.push("INTRO-EROE: \""+_n320+"\" ~ nome reale");}
     if(typeof _CR_FULLNAMES!=="undefined"&&typeof generateTeamRoster==="function"){
       CLUBS.forEach(c=>{for(let se=1;se<=2;se++){generateTeamRoster(c,se).forEach(pl=>{if(_CR_FULLNAMES.has(pl.name.toLowerCase()))hits.push("ROSTER-FULLNAME ("+c.id+" S"+se+"): \""+pl.name+"\"");});}});
     }

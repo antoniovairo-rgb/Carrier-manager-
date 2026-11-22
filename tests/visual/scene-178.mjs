@@ -45,7 +45,7 @@ const SAVE_U18 = (club) => ({ phase: 'career', player: { name: 'Giro Centosettan
 const SAVE_PRO = { phase: 'career', player: { name: 'Marco Carrasco', nation: 'Italia', avatarId: 3, proStatus: 'pro', season: 11, week: 39, age: 28, ovr: 93, club: { id: 'mer', n: 'FC Merseyside', a: 'MER', p: 88, c: '#8e1f33', c2: '#f0b33a', nat: '🏴', lg: 'Premier Division' },
   stats: { 'velocità': 92, tecnica: 93, fisico: 88, 'mentalità': 92, tiro: 94, passaggio: 90, dribbling: 92, posizionamento: 93 }, form: 95, morale: 100, fatigue: 37, popularity: 90, value: 120, bankBalance: 2000000, contract: { duration: 3, wage: 120000, expiresAtSeason: 14 } } };
 const SAVE_190 = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-/* il club dell'intro: e' quello della maglia dell'eroe (granata, «Giovanni Pisano numero 9»), non il club del giocatore */
+/* il club dell'intro: e' quello della maglia dell'eroe (granata, «Gabriel Ferreyro numero 9»), non il club del giocatore */
 const INTRO178 = { k: 'intro', c: '#8e1f33', c2: '#f2f2f2' };
 const clubDi = (C) => ({ id: 'g178' + C.k, n: 'FC Prova ' + C.k, a: 'PRV', p: 66, c: C.c, c2: C.c2, nat: '🇮🇹', lg: 'Lega A' });
 
