@@ -6,8 +6,9 @@
    Riedel. Misurato qui: quando la riga nasce dal narratore del motore (narra870) il nome e' gia' nel testo, ma le altre voci
    prendevano l'ultima battuta di un piano o un sorteggio dalla rosa.
 
-   COSA MISURA. Partite VERE (nomi diversi = partite diverse; autoplay a seme fisso), tre su quattro a soli highlight (il modo del PO,
-   quello con l'avviso) e una su quattro intera. Per ogni gol ambientale il testimone __CPM_M325 da', alla sorgente: la riga risolta,
+   COSA MISURA. Partite VERE (nomi diversi = partite diverse; autoplay a seme fisso), giocate a soli highlight (il modo del PO, quello
+   con l'avviso: stesso battito e stesso gestore dei gol della partita intera, che sul banco non arriva al fischio in 300 s —
+   misurato 2 su 2; CPM_INTERE=1 CPM_TETTO=600000 ne gioca una su quattro intera). Per ogni gol ambientale il testimone __CPM_M325 da', alla sorgente: la riga risolta,
    il testo dato a badge / momenti chiave / avviso, e marcatore e assist decisi dal motore. Discordanza =
      a) il motore ha deciso un marcatore e una voce ne nomina un altro;
      b) la riga nomina qualcuno della rosa ma non il nome di badge/avviso;
@@ -23,6 +24,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch } from './lib/h
 
 const PARTITE = +(process.env.CPM_PARTITE || 8);
 const TETTO_MS = +(process.env.CPM_TETTO || 300000);
+const INTERE = !!process.env.CPM_INTERE;
 const BRACCI = process.env.CPM_BRACCIO ? [process.env.CPM_BRACCIO] : ['verde', 'rosso'];
 const MIN_GOL = +(process.env.CPM_MIN_GOL || 6), MIN_MOTORE = +(process.env.CPM_MIN_MOTORE || 3);
 
@@ -31,7 +33,7 @@ const b = await launchBrowser();
 const N = (s) => String(s || '').trim().toUpperCase();
 
 async function partita(i, rosso) {
-  const solo = i % 4 !== 3; const t0 = Date.now();/* tre a soli highlight (il modo del PO, con l'avviso), una intera */
+  const solo = !(INTERE && i % 4 === 3); const t0 = Date.now();
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
