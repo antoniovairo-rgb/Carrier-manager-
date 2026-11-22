@@ -25,6 +25,12 @@ import { execFileSync, spawnSync } from 'node:child_process';
 const QUI = path.dirname(new URL(import.meta.url).pathname), ROOT = path.resolve(QUI, '../..');
 const TT = path.join(ROOT, 'tools/trenino-317.mjs'), TR = path.join(ROOT, 'tools/rilascio-vagone-312.mjs');
 const T = await import(TT), R = await import(TR);
+/* [madre 22/11] versioni attese calcolate dalla base reale (prima scritte a mano 7.999.201/202: diventavano false appena main
+   passava alla 7.999.201). Base = la piu' alta fra il gioco del ramo e quello di origin/main. */
+const _vBase = [R.leggiVersione(fs.readFileSync(path.join(ROOT, R.FILE_VERSIONE), 'utf8'))];
+try { _vBase.push(R.leggiVersione(execFileSync('git', ['show', 'origin/main:' + R.FILE_VERSIONE], { cwd: ROOT, encoding: 'utf8' }))); } catch {}
+const V1 = R.prossimaVersione(_vBase.filter(Boolean)), V2 = R.prossimaVersione([V1]);
+
 const NO = process.env.CPM_NO_G317 === '1';
 let fall = 0; const ok = (c, m) => { console.log(`${c ? '✅' : '❌'} ${m}`); if (!c) fall++; };
 
@@ -185,16 +191,16 @@ try {
   x = node(W, TR, 'pubblica', '--decisione', dec); ok(x.status === 0, 'D7 pubblica' + (x.status ? ': ' + (x.stderr || '').slice(-400) : ''));
   const rm = r => g(REM, 'rev-parse', r);
   const mainN = rm('refs/heads/main'), pocN = rm('refs/heads/poc/marioprada-character-system');
-  ok(mainN === pocN && rm('refs/tags/v7.999.201^{commit}') === pocN, 'D7 rilascio con l\'esito del trenino: main = poc = tag v7.999.201');
+  ok(mainN === pocN && rm('refs/tags/v' + V1 + '^{commit}') === pocN, 'D7 rilascio con l\'esito del trenino: main = poc = tag v' + V1 + '');
   const C = path.join(TMP, 'controllo'); g(TMP, 'clone', '-q', '--shared', '-b', 'main', REM, C);
   const u = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ULTIMO), 'utf8'));
-  ok(u.versione === '7.999.201' && u.treno && u.treno.tipo === 'trenino', `D7 ULTIMO-RILASCIO.json dichiara il tipo del treno: ${u.treno && u.treno.tipo}`);
+  ok(u.versione === V1 && u.treno && u.treno.tipo === 'trenino', `D7 ULTIMO-RILASCIO.json dichiara il tipo del treno: ${u.treno && u.treno.tipo}`);
   ok(fs.existsSync(path.join(C, T.FILE_BLOCCO)) && JSON.parse(fs.readFileSync(path.join(C, T.FILE_BLOCCO), 'utf8')).attivo === false, 'D7 il blocco spento arriva su main con l\'unione del poc');
   g(W, 'fetch', '-q', 'origin', '--tags'); x = node(W, TT, 'bersaglio'); bj = null; try { bj = JSON.parse(x.stdout.trim().split('\n').at(-1)); } catch {}
   ok(bj && bj.ramo === 'main', `D8 bersaglio della notte dopo il rilascio: ${bj ? bj.ramo + ' — ' + bj.perche : x.stderr.slice(-200)}`);
   /* dopo il rilascio l'ultimo rilascio e' il tag: un trenino sulla stessa punta del lavoro non ha piu' niente da giocare oltre le sentinelle */
   x = node(W, TT, 'scegli', '--sha', rm('refs/heads/lavoro/317'), '--uscita', SC); const s2 = JSON.parse(fs.readFileSync(SC, 'utf8'));
-  ok(/tag v7\.999\.201/.test(s2.base.come) && s2.tipo === 'trenino', `D9 dopo il rilascio la base e' il tag: ${s2.base.come} · toccati ${s2.toccati.join(', ') || 'nessuno'} · ${s2.guardiani.length} guardiani`);
+  ok(s2.base.come.includes('tag v' + V1) && s2.tipo === 'trenino', `D9 dopo il rilascio la base e' il tag: ${s2.base.come} · toccati ${s2.toccati.join(', ') || 'nessuno'} · ${s2.guardiani.length} guardiani`);
 } catch (err) { ok(false, 'percorso D interrotto: ' + (err.stderr || err.message).toString().slice(-600)); }
 finally { try { fs.rmSync(TMP, { recursive: true, force: true }); } catch {} }
 

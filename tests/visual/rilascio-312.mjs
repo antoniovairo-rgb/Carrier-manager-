@@ -19,6 +19,12 @@ import { execFileSync, spawnSync } from 'node:child_process';
 const QUI = path.dirname(new URL(import.meta.url).pathname), ROOT = path.resolve(QUI, '../..');
 const T = path.join(ROOT, 'tools/rilascio-vagone-312.mjs');
 const R = await import(T);
+/* [madre 22/11] versioni attese calcolate dalla base reale (prima scritte a mano 7.999.201/202: diventavano false appena main
+   passava alla 7.999.201). Base = la piu' alta fra il gioco del ramo e quello di origin/main. */
+const _vBase = [R.leggiVersione(fs.readFileSync(path.join(ROOT, R.FILE_VERSIONE), 'utf8'))];
+try { _vBase.push(R.leggiVersione(execFileSync('git', ['show', 'origin/main:' + R.FILE_VERSIONE], { cwd: ROOT, encoding: 'utf8' }))); } catch {}
+const V1 = R.prossimaVersione(_vBase.filter(Boolean)), V2 = R.prossimaVersione([V1]);
+
 const NO = process.env.CPM_NO_G312 === '1';
 let fall = 0; const ok = (c, m) => { console.log(`${c ? '✅' : '❌'} ${m}`); if (!c) fall++; };
 
@@ -98,23 +104,23 @@ try {
   /* B2. soli rossi dichiarati: rilascia davvero */
   x = node(W, 'decidi', '--esito', esito(), '--modo', 'auto', '--ramo', 'lavoro/prova-312', '--sha', sha, '--uscita', dec);
   d = JSON.parse(fs.readFileSync(dec, 'utf8'));
-  ok(d.rilascia === true && d.versione === '7.999.201', `B2 soli rossi dichiarati: ${d.rilascia ? 'rilascia' : 'fermo'} ${d.versione} — ${d.motivi.join(' | ')}`);
+  ok(d.rilascia === true && d.versione === V1, `B2 soli rossi dichiarati: ${d.rilascia ? 'rilascia' : 'fermo'} ${d.versione} — ${d.motivi.join(' | ')}`);
   ok(d.unioni.length === 1 && /giro312/.test(d.nota), `B2 nota dai titoli delle unioni: «${(d.nota || '').slice(0, 120)}…»`);
   x = node(W, 'prepara', '--decisione', dec); ok(x.status === 0, 'B2 prepara' + (x.status ? ': ' + (x.stderr || x.stdout).slice(-400) : ''));
   ok(/docs\/governo\/ROSSI-DICHIARATI\.json/.test(x.stdout), 'B2 conflitto in docs/governo risolto con la versione del poc');
   x = node(W, 'pubblica', '--decisione', dec); ok(x.status === 0, 'B2 pubblica' + (x.status ? ': ' + (x.stderr || '').slice(-400) : ''));
   const rm = r => g(REM, 'rev-parse', r);
   const mainN = rm('refs/heads/main'), pocN = rm('refs/heads/poc/marioprada-character-system'), lavN = rm('refs/heads/lavoro/prova-312');
-  ok(mainN === pocN && rm('refs/tags/v7.999.201^{commit}') === pocN, 'B2 main = poc = tag v7.999.201');
-  ok(g(REM, 'cat-file', '-t', 'refs/tags/v7.999.201') === 'tag', 'B2 tag annotato (messaggio leggibile senza credenziali)');
+  ok(mainN === pocN && rm('refs/tags/v' + V1 + '^{commit}') === pocN, 'B2 main = poc = tag v' + V1 + '');
+  ok(g(REM, 'cat-file', '-t', 'refs/tags/v' + V1 + '') === 'tag', 'B2 tag annotato (messaggio leggibile senza credenziali)');
   ok(g(REM, 'rev-parse', lavN + '^') === sha && g(REM, 'rev-list', '--count', `${sha}..${lavN}`) === '1', 'B2 lavoro avanzato di UN commit sopra quello provato');
   ok(g(REM, 'rev-parse', pocN + '^1') === poc1 && g(REM, 'rev-parse', pocN + '^2') === lavN, 'B2 poc = unione --no-ff (poc precedente + lavoro)');
   ok(g(REM, 'merge-base', '--is-ancestor', main0, mainN) === '' , 'B2 main avanzato in fast-forward');
   const C = path.join(TMP, 'controllo'); g(TMP, 'clone', '-q', '--shared', '-b', 'main', REM, C);
-  ok(R.leggiVersione(fs.readFileSync(path.join(C, 'CARRIER-MANAGER-AV.html'), 'utf8')) === '7.999.201', 'B2 il main pubblicato porta GAME_VERSION 7.999.201 nel gioco');
+  ok(R.leggiVersione(fs.readFileSync(path.join(C, 'CARRIER-MANAGER-AV.html'), 'utf8')) === V1, 'B2 il main pubblicato porta GAME_VERSION ' + V1 + ' nel gioco');
   const ck = spawnSync('node', ['tools/check-src.mjs'], { cwd: C, encoding: 'utf8' }); ok(ck.status === 0, 'B2 check-src IDENTICO sul main pubblicato');
-  const u = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ULTIMO), 'utf8')); ok(u.versione === '7.999.201' && u.tag === 'v7.999.201' && u.commit_provato === sha, 'B2 ULTIMO-RILASCIO.json sul main');
-  const rr = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ROSSI), 'utf8')); ok(rr.versione === '7.999.201' && /modificato sul poc/.test(rr._), 'B2 ROSSI-DICHIARATI: versione 7.999.201, resto del poc');
+  const u = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ULTIMO), 'utf8')); ok(u.versione === V1 && u.tag === 'v' + V1 + '' && u.commit_provato === sha, 'B2 ULTIMO-RILASCIO.json sul main');
+  const rr = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ROSSI), 'utf8')); ok(rr.versione === V1 && /modificato sul poc/.test(rr._), 'B2 ROSSI-DICHIARATI: versione ' + V1 + ', resto del poc');
   ok(fs.existsSync(path.join(C, R.FILE_INTERRUTTORE)), 'B2 interruttore del poc conservato');
 
   /* B3. ramo mosso dopo la decisione: il push atomico deve essere rifiutato e nessun ramo cambia */
@@ -124,7 +130,7 @@ try {
   g(W, ...chi, 'merge', '-q', '--no-ff', 'svil2', '-m', 'Unione sviluppo/giro312-bis in lavoro/prova-312');
   const sha2 = g(W, 'rev-parse', 'HEAD'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/lavoro/prova-312');
   x = node(W, 'decidi', '--esito', (() => { const p = esito(); const e = JSON.parse(fs.readFileSync(p)); e.commit = sha2; fs.writeFileSync(p, JSON.stringify(e)); return p; })(), '--modo', 'auto', '--ramo', 'lavoro/prova-312', '--sha', sha2, '--uscita', dec);
-  d = JSON.parse(fs.readFileSync(dec, 'utf8')); ok(d.rilascia === true && d.versione === '7.999.202', `B3 secondo vagone: ${d.versione}`);
+  d = JSON.parse(fs.readFileSync(dec, 'utf8')); ok(d.rilascia === true && d.versione === V2, `B3 secondo vagone: ${d.versione}`);
   x = node(W, 'prepara', '--decisione', dec); ok(x.status === 0, 'B3 prepara');
   g(W, 'checkout', '-q', '-B', 'intruso', sha2); fs.writeFileSync(path.join(W, 'intruso.txt'), 'x\n'); g(W, 'add', 'intruso.txt'); g(W, ...chi, 'commit', '-q', '-m', 'commit arrivato durante il rilascio');
   g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/lavoro/prova-312');
