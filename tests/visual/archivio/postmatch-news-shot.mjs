@@ -12,7 +12,7 @@ const errs = []; page.on('pageerror', e => errs.push('PE:' + e.message));
 await installCdnRoutes(page);
 await page.addInitScript(() => {
   window.__CPM_GLB = false;
-  const save = { phase: 'career', player: { name: 'Giovanni Pisano', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 3, week: 6, age: 24, ovr: 79,
+  const save = { phase: 'career', player: { name: 'Gabriel Ferreyro', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 3, week: 6, age: 24, ovr: 79,
     tutorialDone: true, club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 55, c: '#6c1f2e', c2: '#f0b33a', nat: '🇮🇹', lg: 'Lega A' },
     stats: { 'velocità': 80, tecnica: 79, fisico: 77, 'mentalità': 79, tiro: 82, passaggio: 78, dribbling: 80, posizionamento: 80 },
     form: 78, morale: 80, fatigue: 6, contract: { duration: 3, wage: 12000, expiresAtSeason: 6 } } };
