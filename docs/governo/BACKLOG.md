@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (113)
+## Voci aperte o parziali (114)
 
-Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 43 · 7.999.203 3.
+Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 43 · 7.999.203 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -133,6 +133,7 @@ Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-620 | 22/11 11:10 | Madre (regola PO sugli instabili, verifica 202 docs/sviluppo/VERIFICA202-ROSSI.md): controlli da riparare, dichiarati per ora in ROSSI-DICHIARATI: walkout-fermi-197 (campionamento: verde a ridosso della soglia, rosso sul runner), rigori-296 parte C (braccio rosso «compagno» di ripartenza-piazzato-27 che non mostra il difetto), diagonali-210 (invio dei tasti dipendente dalla velocità della macchina). Più scene-178 rosso sul banco anche su lavoro/201 (giro 320) | controlli (instabili) | IN CODA — 203 | 7.999.203 | — | walkout-fermi-197, rigori-296, diagonali-210, scene-178 | verifica 202 22/11 |
 | PO-621 | 22/11 11:20 | PO: «ok metti in coda» — accorciare i trenini: le righe della mappa unica per src/16 (e src/11-12-13) scelgono 120+ guardiani (giro 317: vagone su src/16 = 123 guardiani, ~1 ora di parete). Da fare: misurare quali guardiani guardano davvero ciascun file (per esempio dai simboli/sezioni toccati o dagli esiti storici) e stringere le righe senza perdere copertura; il treno grande notturno resta la rete di sicurezza. Obiettivo misurato: durata del trenino tipico prima/dopo | metodo di rilascio (trenino, mappa) | IN CODA — 203 | 7.999.203 | — | mappa-unica, trenino-317 | richiesta PO 22/11 |
 | PO-622 | 22/11 11:25 | PO (foto docs/collaudo-po/202-personal-trainer-consigliato.png, staff → Personal trainer livello 3/3, scelta dell'attributo): «consigliato è sbagliato, magari punto di forza» — l'etichetta «★ consigliato» sotto tecnica 68 e tiro 72 (legenda: «★ pesa di più nel giudizio ed è ancora basso») non è la parola giusta; proposta del PO: «punto di forza». Al momento del giro: allineare etichetta e legenda (se l'etichetta diventa «punto di forza», la legenda va riscritta di conseguenza: oggi segna gli attributi che pesano di più nel ruolo) PO 11:30: «consigliato deve essere sui punti deboli!» → la stella «consigliato» va sugli attributi più deboli da allenare (nella foto passaggio 55, velocità 59, mentalità 59), non su tecnica 68 e tiro 72 come oggi; l'eventuale «punto di forza» resta un'indicazione diversa per gli attributi alti | logica + testo (UI, staff) | IN CODA — 203 | 7.999.203 | — | — | foto PO 22/11 |
+| PO-623 | 22/11 11:45 | PO (foto docs/collaudo-po/202-home-due-tasti-rossi.jpg, Home al telefono, FC Merseyside St. 17 Sett. 23): «I due pulsanti rossi con le frecce sono molto simili e fanno un po' a cazzotti tra di loro» — «⏭ AVANZA SETTIMANA W.23 → W.24» e «⏩ VAI AL PROSSIMO MOMENTO fino alla partita chiave · sett. 26» uno sotto l'altro, stesso colore pieno e icone quasi uguali. Da proporre al PO: un solo tasto primario (l'altro secondario, o unificati in un tasto con scelta), gerarchia visiva chiara, icone distinte. Collegate: PO-384/400/405/410/411/446 (tasto momento), PO-615 (decisioni in sospeso nella Home) | UI (Home, tasti) | IN CODA — 203 | 7.999.203 | — | — | foto PO 22/11 |
 
 ## Storico — voci chiuse (509)
 
