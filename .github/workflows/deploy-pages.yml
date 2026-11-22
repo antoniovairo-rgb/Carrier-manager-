@@ -7,6 +7,15 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
+    # [giro 326, PO-624] un push di SOLI documenti di governo o di .md non cambia niente del sito (nessun .md e niente di
+    # docs/governo va online: lo vieta la «Guardia» qui sotto) e non deve prendere una macchina ne' mettersi in coda nel
+    # gruppo «pages». Basta un file fuori da questi percorsi (src/, assets/, docs/sviluppo/giro149 ...) e il deploy parte.
+    # Il rilascio automatico avvia comunque il deploy con workflow_dispatch, che non guarda i percorsi.
+    paths-ignore:
+      - 'docs/governo/**'
+      - 'docs/collaudo-po/**'        # foto e video del collaudo del PO (dal 20/11: 30 push su 91)
+      - 'docs/collaudo-grafico/**'
+      - '**/*.md'
   workflow_dispatch: {}
 
 permissions:
@@ -23,7 +32,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment2.outputs.page_url || steps.deployment3.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -123,6 +132,39 @@ jobs:
         with:
           path: '_site'
 
+      # [giro 326, PO-624] NUOVI TENTATIVI. Undici deploy falliti dal 20 al 22/11: nove con «No artifacts named github-pages
+      # were found for this workflow run» mezzo secondo dopo un caricamento riuscito (l'artefatto appena caricato non e' ancora
+      # visibile all'API: corse 45011839594, 44965736526, 44952019086, 44947465519, 44881369408, 44881288955, 44872934649,
+      # 44809496280, 45041697914) e uno con «Failed to create deployment (status: 502)» (45026223795). Sono di GitHub, e il
+      # messaggio stesso dice di riprovare: si aspetta prima del primo tentativo e si riprova due volte, poi si fallisce davvero.
+      - name: Attesa che l'artefatto sia visibile
+        run: sleep 15
+
       - name: Deploy to GitHub Pages
         id: deployment
+        continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Pausa prima del secondo tentativo
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 45
+
+      - name: Deploy to GitHub Pages (secondo tentativo)
+        id: deployment2
+        if: steps.deployment.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Pausa prima del terzo tentativo
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        run: sleep 120
+
+      - name: Deploy to GitHub Pages (terzo tentativo)
+        id: deployment3
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+
+      - name: Esito del deploy
+        run: |
+          echo "tentativi: 1=${{ steps.deployment.outcome }} 2=${{ steps.deployment2.outcome }} 3=${{ steps.deployment3.outcome }}"
+          echo "### Deploy: 1° ${{ steps.deployment.outcome }} · 2° ${{ steps.deployment2.outcome }} · 3° ${{ steps.deployment3.outcome }}" >> "$GITHUB_STEP_SUMMARY"

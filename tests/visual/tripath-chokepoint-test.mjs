@@ -53,6 +53,7 @@ const REQUIRED = [
   { label: 'crescita/declino',      tokens: ['weeklyGrowthFields'] },
   { label: 'relazioni staff',       tokens: ['weeklyStaffRel'] },
   { label: 'trigger tornei Nazionali', tokens: ['natTournamentPatch', 'applyNatTournamentTrigger'] },
+  { label: 'salto a gennaio (giro 323)', tokens: ['applySaltoGennaio323'] },
 ];
 
 function findStart(re) {

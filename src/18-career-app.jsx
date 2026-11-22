@@ -1559,6 +1559,10 @@ const getThisWeekMatchday=()=>{
     const q=player.nationsCupQueue;if(q&&q.active&&!q.done)return;
     _tryNatCallup(W,true);
   }catch(_e){}},[player.season,player.week]);// eslint-disable-line
+  /* [giro 323] l'offerta di gennaio resta aperta finche' il giocatore non decide (anche dopo un ricarico), fino alla chiusura della finestra (W23) */
+  useEffect(()=>{try{const x=player.salto323;if(!_g323()||!x||!x.aperta||x.accettato||transferOffer)return;
+    if((player.proStatus||"u18")!=="u18"||x.s!==(player.season||1)||(player.week||1)>23||_offAtt201(player))return;
+    setTransferOffer(x.aperta);}catch(_e){}},[player.salto323,player.week,transferOffer]);// eslint-disable-line
   const _mktDoneRef=useRef(null);
   const _mktWkRef=useRef(null);
   useEffect(()=>{
@@ -1898,6 +1902,7 @@ const getThisWeekMatchday=()=>{
       critPool:()=>{try{const _ids=["wi_opinionista","wi_polemica","wi_fan_aggression","wi_intervista_scomoda"];return WEEKLY_IMPULSES.filter(im=>_ids.indexOf(im.id)>=0&&(!im.cond||im.cond(player))).map(im=>im.id);}catch(e){return "error:"+(e&&e.message);}},/* [7.472.0 collaudo PO «dopo una vittoria con gol e' strano»] la sonda della famiglia CRITICA: quali impulsi «ti criticano» sono pescabili per il giocatore corrente */
       mktPool:()=>{try{const _t=/mercato|estero|cession|offerte|ceduto|trasferiment|vali di più/i;return{ev:WEEKLY_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,rnd:WEEKLY_RANDOM_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,imp:WEEKLY_IMPULSES.filter(im=>(im.id==="wi_procuratore_push"||im.id==="wi_giornalista_mercato")&&(!im.cond||im.cond(player))).length};}catch(e){return "error:"+(e&&e.message);}},/* [collaudo PO «assurdo a poche settimane dal ritiro»] la sonda della famiglia mercato: quanti item a tema mercato/cessione sono ancora pescabili per il giocatore corrente */
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
+      salto323:(q,w)=>{try{return saltoGennaio323(q||player,w||((q||player).week||1));}catch(e){return "error:"+(e&&e.message);}},/* [giro 323] la regola pura del salto a gennaio */
       ip153:(q)=>{try{return indicePrimavera(q||player);}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] l'Indice Primavera, la stessa funzione della barra */
       chiudi163:()=>{try{setInterviewModal(null);setMilestoneModal(null);setCareerMomentModal(null);setMonthlyReviewModal(null);return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] solo il banco salta-163: chiude le finestre che il tasto non chiude da solo, come il giocatore che le legge */
       chiave163:(md)=>{try{return _chiave165(player,md||getThisWeekMatchday());}catch(e){return "error:"+(e&&e.message);}},/* [giro 165] da professionista e' la posta allargata */
@@ -2109,6 +2114,19 @@ const getThisWeekMatchday=()=>{
     }
     return null;
   };
+  /* [giro 323 · PO-356 B] IL SALTO A GENNAIO, chokepoint dei tre percorsi settimana (come applyNatTournamentTrigger): valuta la
+     settimana che si CHIUDE (basePlayer.week) con la regola pura saltoGennaio323 (src/08), registra la decisione in p.salto323
+     (una per finestra, idempotente) e apre l'offerta (la promozione per prima, l'esterna in coda). Rosso __CPM_NO_G323. */
+  const applySaltoGennaio323=(basePlayer)=>{try{
+    const d=saltoGennaio323(basePlayer,basePlayer.week||1);
+    if(!d)return false;
+    const off=d.offerte||[];
+    const rec={s:d.s,w:d.w,ip:d.ip,esordi:d.esordi,P:Math.round((d.P||0)*1000)/1000,u:d.u,esito:d.esito,aperta:off[0]||null,coda:off.slice(1)};/* l'offerta aperta vive nel salvataggio finche' non si decide (un setTimeout si perdeva: misurato, comparsa alla W28 invece della W20) */
+    setPlayer(q=>(q.salto323&&q.salto323.s===d.s&&(q.salto323.w===d.w||q.salto323.accettato))?q:{...q,salto323:rec,
+      ...(off.length?{log:[off[0].salto323.tipo==="promozione"?"📩 Mercato di gennaio: la prima squadra ti vuole con se' da subito.":`📩 Mercato di gennaio: ${off[0].club.n} ti offre un contratto da professionista.`,...(q.log||[])].slice(0,60)}:{})});
+    if(off.length)setTimeout(()=>notify(off[0].salto323.tipo==="promozione"?"📩 Mercato di gennaio: promozione in prima squadra!":`📩 Mercato di gennaio: ${off[0].club.n} ti vuole!`,"#22c55e"),700);
+    return off.length>0;
+  }catch(_e){return false;}};
   const applyNatTournamentTrigger=(basePlayer)=>{
     const ntp=natTournamentPatch(basePlayer);
     if(!ntp)return false;
@@ -3931,6 +3949,7 @@ const getThisWeekMatchday=()=>{
     // [6.32.0 STAB-2] SIMULANDO la partita di W20 la settimana avanza qui (fuori da doAdvanceWeek) → il
     // torneo Nazionale non partiva mai. Ora il trigger condiviso scatta anche su questo path (idempotente).
     applyNatTournamentTrigger(player);
+    applySaltoGennaio323(player);/* [giro 323] salto a gennaio: stesso chokepoint dei tre percorsi */
   };
 
   /* [giro 131 · PO-331, decisione PO 09/11 «Finale in primo piano»] UNA SOLA FONTE per la prossima gara della
@@ -4575,6 +4594,7 @@ const getThisWeekMatchday=()=>{
     // Coppa delle Nazioni → l'Europeo/Mondiale non partiva mai giocando la partita di lega di W20. Ora usa
     // l'helper condiviso natTournamentPatch (Coppa Nazioni + Euro/Mondiale), idempotente.
     applyNatTournamentTrigger(player);
+    applySaltoGennaio323(player);/* [giro 323] salto a gennaio: stesso chokepoint dei tre percorsi */
   };
 
   // Sprint 24 — apply impulse/spogliatoio choice effects (called from weekLiveModal choice buttons)
@@ -5124,6 +5144,7 @@ const getThisWeekMatchday=()=>{
     // dall'helper condiviso natTournamentPatch (stesso identico patch delle vecchie due blocchi inline,
     // seed/opponenti invariati), così doAdvanceWeek / onMatchEnd / simulateAndAdvance usano UNA sola logica.
     applyNatTournamentTrigger(player);
+    applySaltoGennaio323(player);/* [giro 323] salto a gennaio: stesso chokepoint dei tre percorsi */
     // W24: se qualificazioni completate → transizione a fase gironi (o eliminazione)
     if(!isInU18&&weekVal===24&&player.euroMondiale?.active&&player.euroMondiale?.phase==="qualificazioni"){
       if(player.euroMondiale.qualDone){
@@ -5287,7 +5308,7 @@ const getThisWeekMatchday=()=>{
       const _outgrowth=Math.max(0,(p.ovr||60)-(p.club?.p||60));
       const _outB=Math.min(0.22,Math.max(0,(_outgrowth-6)*0.013));
       const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.52,0.12+agentSearchBoost+_outB)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));/* [5.98.0 EC-8] fuori finestra: solo un rivolo (7% listed / 4% task) — le stelle firmano nelle finestre */
-      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&!_offAtt201(p)&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
+      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&!_offAtt201(p)&&!(_g323()&&(p.proStatus||"u18")==="u18")/* [giro 323] in Primavera il mercato lo decide il merito (saltoGennaio323), non il dado */&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
         /* [7.17.0 SAGA DEL MERCATO — backlog favola] l'offerta non piomba più dal nulla: diventa una STORIA a
            3 episodi (indiscrezione → pressing dei media → offerta ufficiale), card sul dashboard derivate da
            p.transferSaga (offerta VERA conservata verbatim, consegnata dall'episodio 3). A ridosso della
@@ -6314,6 +6335,10 @@ const getThisWeekMatchday=()=>{
      dalla popolarità (che curvaView già legge), e la migration bonifica i salvataggi già corrotti. */
   const declineTransferOffer=()=>{
     const o=transferOffer;setTransferOffer(null);if(!o||o.isRenewal)return;
+    if(o.salto323){/* [giro 323] rifiutata un'offerta di gennaio: se in coda c'e' l'altra (l'esterna dopo la promozione) si apre quella */
+      const _c=(player.salto323&&player.salto323.coda)||[];
+      setPlayer(p=>({...p,salto323:p.salto323?{...p.salto323,aperta:_c[0]||null,coda:_c.slice(1),rifiutate:[...(p.salto323.rifiutate||[]),o.salto323.tipo]}:p.salto323}));
+    }
     const ec=(typeof refuseEcho==="function")?refuseEcho(player,o):null;
     setPlayer(p=>{
       if(!ec)return p;
@@ -6570,7 +6595,15 @@ const getThisWeekMatchday=()=>{
            gare del VECCHIO club come risultati di stagione corrente e le guardie anti-doppione ci inciampavano. */
         matchHistory:[],seasonCarry:_carry293,
         contract:_newContract98,coach:_newCoach98,coachTrust:50,...((()=>{/* [giro 94 D9 — rosso __CPM_NO_C3D9] la promessa dell'offerta entra in squadra: ruolo e fiducia del mister coerenti col minutaggio stimato che il giocatore ha letto prima di firmare */if(typeof window!=='undefined'&&window.__CPM_NO_C3D9)return {};const _m94=+tc.minutaggio||0;if(!(_m94>0))return {};const _r94=_m94>=70?'titolare':_m94>=45?'rotazione':'riserva';return {coachTrust:_r94==='titolare'?74:_r94==='rotazione'?60:50,squadRole:_r94,ruoloPromesso94:{r:_r94,s:p.season||1,min:_m94}};})()),loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
-        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),growthBoost:(tc.growthBonus>0?{pct:tc.growthBonus,until:p.season||1}:p.growthBoost||null),/* [7.999.50] crescita dell'offerta fino a fine stagione */offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
+        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),growthBoost:(tc.growthBonus>0?{pct:tc.growthBonus,until:p.season||1}:p.growthBoost||null),/* [7.999.50] crescita dell'offerta fino a fine stagione */offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],...((tc.salto323&&(p.proStatus||"u18")==="u18")?{/* [giro 323] salto a gennaio: riga di diario, Primavera contata a parte, decisione chiusa */
+          diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"🚀",headline:"Promosso a gennaio",body:tc.salto323.tipo==="promozione"?`La prima squadra ti chiama a meta' stagione: lasci la Primavera dopo ${p.matches||0} presenze e ${p.goals||0} gol.`:`${tc.club.n} ti porta tra i professionisti a meta' stagione: lasci la Primavera dopo ${p.matches||0} presenze e ${p.goals||0} gol.`,color:TH.goldText}]),
+          primavera323:{s:p.season||1,club:(p.club&&p.club.n)||"",presenze:p.matches||0,gol:p.goals||0,assist:p.assists||0},
+          /* la mezza stagione di Primavera e' una riga di storia GIOVANILE (club «… Primavera»: proCareerOf la scorpora) e i contatori
+             della stagione ripartono da zero col club senior, cosi' la riga da professionista di fine stagione conta solo i grandi */
+          history:[...(p.history||[]),{season:p.season||1,club:(p.club&&(p.club.name||p.club.n))||"Primavera",clubId:p.club&&p.club.id,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr,league:(p.club&&p.club.lg)||"Primavera",youthHalf323:true}],
+          u18Goals:(p.u18Goals||0)+(p.goals||0),u18Assists:(p.u18Assists||0)+(p.assists||0),u18Matches:(p.u18Matches||0)+(p.matches||0),
+          goals:0,assists:0,matches:0,
+          salto323:{...(p.salto323||{s:p.season||1,w:tc.salto323.w}),accettato:true,tipo:tc.salto323.tipo,club:tc.club.n,aperta:null,coda:[]}}:{}),log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});

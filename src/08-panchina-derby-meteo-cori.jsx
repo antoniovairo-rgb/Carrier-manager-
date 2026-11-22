@@ -1069,6 +1069,51 @@ function indicePrimavera(p){try{
   const tacca=Math.max(0,Math.min(4,Math.floor(valore/20)));
   return{pronto:true,valore,tacca,etichetta:IP153_TACCHE[tacca],partite:lega.length,parti};
 }catch(_e){return null;}}
+/* [giro 323 · PO-356 proposta B, decisioni PO 22/11] IL SALTO A GENNAIO PER MERITO. Sostituisce, per la Primavera, il tiro
+   casuale del mercato (Math.random()<offerProb in doAdvanceWeek): una regola sola, seedata e legata all'Indice Primavera,
+   valutata UNA volta alla chiusura della settimana 19 (seconda occasione alla 22 solo con un esordio in prima squadra, che
+   arrivera' col giro A: oggi `p.ps153` non esiste, quindi la 22 non scatta mai). Esiti: promozione nella prima squadra del
+   club madre (Indice alto E almeno un esordio, mostrata per prima) oppure offerta di un club senior esterno (Indice alto,
+   anche senza esordio). Niente prestito. Funzione PURA: stesso giocatore, stessa stagione, stessa settimana → stesso esito
+   su ogni percorso e dopo un ricarico. Probabilita' = curva logistica sull'Indice (SALTO323), zero sotto la soglia minima.
+   Rosso __CPM_NO_G323 = comportamento 7.999.202 (torna il tiro casuale). */
+const SALTO323={min:60,ip50:66.4,k:2.0,max:0.92};/* taratura sui profili della sonda misura-323 (Indice alla settimana 19: OVR 58 ≈ 41-42 · 66 ≈ 62 · 74 ≈ 66): bersagli del progetto 0% / ~10% / ~45% */
+function _g323(){return !(typeof window!=='undefined'&&window.__CPM_NO_G323);}
+function probSalto323(ip){if(!(ip>=SALTO323.min))return 0;return Math.min(SALTO323.max,1/(1+Math.exp(-(ip-SALTO323.ip50)/SALTO323.k)));}
+function offertaSalto323(p,tipo,w){try{
+  const sn=p.season||1,ovr=p.ovr||60;
+  const r=seededRng((hashStr("ps153|salto-club|"+(p.name||"?")+"|"+(p.nation||"")+"|"+sn+"|"+w+"|"+tipo)>>>0)||1);
+  let club=null;
+  if(tipo==="promozione"){club=(typeof CLUBS!=="undefined"&&p.club)?CLUBS.find(c=>c&&c.id===p.club.id&&!c.isU18)||null:null;}
+  else{
+    const maxP=sn<=1?70:80,minP=Math.max(40,Math.min(maxP-12,ovr-16));
+    const pool=CLUBS.filter(c=>c&&!c.isU18&&c.id!==(p.club&&p.club.id)&&(c.p||0)>=minP&&(c.p||0)<=maxP);
+    club=pool.length?pool[Math.floor(r()*pool.length)%pool.length]:null;
+  }
+  if(!club)return null;
+  const wage=Math.round(Math.max(400,Math.min(500000,_ovrToWageWeekly133(ovr,club.p||60)*(0.95+r()*0.1)))*(p.hasAgent?1.15:1));
+  const promo=tipo==="promozione";
+  return{club,type:promo?"promozione in prima squadra":"trasferimento definitivo",minutaggio:promo?45:60,moralBonus:promo?14:10,growthBonus:promo?15:12,
+    prestigeRatio:(club.p||60)/Math.max(1,(p.club&&p.club.p)||60),wage,duration:2+Math.floor(r()*2),salto323:{tipo,w,s:sn}};
+}catch(_e){return null;}}
+function saltoGennaio323(p,w){try{
+  if(!_g323())return null;
+  if(!p||(p.proStatus||"u18")!=="u18")return null;
+  const sn=p.season||1;
+  const esordi=(p.ps153&&(p.ps153.s||sn)===sn&&(p.ps153.presenze|0))||0;/* giro A (esordio in prima squadra): campo assente oggi → 0 */
+  if(w!==19&&!(w===22&&esordi>=1))return null;
+  const x=p.salto323;if(x&&x.s===sn&&(x.w===w||x.accettato))return null;/* una valutazione per finestra */
+  const ip=indicePrimavera(p);
+  const base={s:sn,w,ip:(ip&&ip.pronto)?ip.valore:null,esordi};
+  if(!ip||!ip.pronto)return{...base,esito:"nessuno",P:0,u:null,offerte:[]};
+  const u=(Math.abs(hashStr("ps153|salto|"+(p.name||"?")+"|"+(p.nation||"")+"|"+sn+"|"+w))%1000)/1000;
+  const P=probSalto323(ip.valore);
+  if(!(u<P))return{...base,esito:"nessuno",P,u,offerte:[]};
+  const offerte=[];
+  if(esordi>=1){const o=offertaSalto323(p,"promozione",w);if(o)offerte.push(o);}/* la promozione si mostra per prima */
+  {const o=offertaSalto323(p,"esterna",w);if(o)offerte.push(o);}
+  return{...base,esito:offerte.length?(offerte[0].salto323.tipo):"nessuno",P,u,offerte};
+}catch(_e){return null;}}
 /* [giro 163 · PO-356 idea 3, decisione PO 11/11 «solo sui momenti importanti»] LA PARTITA CHIAVE, una regola sola: e' la
    stessa del riquadro «Prossima» della home (derby · scontro al vertice · sfida a una delle prime tre), piu' ogni gara che
    non sia di campionato. Le posizioni contano solo quando in classifica c'e' almeno un punto (alla prima giornata l'ordine
