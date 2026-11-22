@@ -16,9 +16,9 @@ La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
 > **Priorità del PO (22/11 17:20, DECISIONI):** 1) velocità dei rilasci: PO-624 → 621 → 620+610 → 603; 2) chiarezza delle schermate: PO-623 → 608 → 609 → 606+617 → 615 → 614+595 → 616+569+570 → 618 → 622; 3) difetti in partita e carriera (più visibili prima); 4) idee nuove dei questionari di novembre, per data di arrivo.
 
-## Voci aperte o parziali (114)
+## Voci aperte o parziali (115)
 
-Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.205 48.
+Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.205 49.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -136,6 +136,7 @@ Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-626 | 22/11 22:05 | Dal giro 329, PO (questionario 22/11): 1) il treno grande di notte controlla se c'è già una corsa e si rimette in coda da solo (oggi con la concorrenza unica può saltare); 2) margine del 10% prima di passare al treno completo (oggi basta un minuto in più); 3) i 4 guardiani della catena «carriera» tornano nei trenini di giorno (via da SOLO_NOTTE_329) | metodo di rilascio (treno) | IN CODA — 205 | 7.999.205 | — | — | giro 329 22/11 |
 | PO-627 | 22/11 22:05 | Dal giro 325, PO (questionario 22/11): event-ledger non arriva al fischio in 240 s sul banco → partita della sonda più veloce, soglia invariata; nello stesso giro la partita intera sul banco, così marcatore-325 copre anche quella | controlli (velocità sonde) | IN CODA — 205 | 7.999.205 | — | event-ledger, marcatore-325 | giro 325 22/11 |
 | PO-628 | 22/11 22:05 | Dal giro 325, PO (questionario 22/11): sui gol dell'eroe in scena lo stesso confronto voce per voce (riga «X segna su assist di Y» contro pagella e momenti chiave), allargando marcatore-325. L'assist nell'avviso del gol: «Lascia così» | controlli (coerenza gol eroe) | IN CODA — 205 | 7.999.205 | — | marcatore-325 | giro 325 22/11 |
+| PO-629 | 22/11 23:35 | PO: «le azioni da colpi testa vanno riviste, non c'è il sincronismo ed il movimento non è naturale» (highlight 3D, nessuna foto). Precedenti chiusi: PO-077 (sincronia col cross, FATTO 7.999.109), PO-056, PO-283, PO-328; da rimisurare sulla 7.999.204: arrivo del pallone alla testa contro stacco e animazione del corpo | difetto (highlight 3D, colpi di testa) | IN CODA — 205 | 7.999.205 | — | — | — |
 
 ## Storico — voci chiuse (514)
 
