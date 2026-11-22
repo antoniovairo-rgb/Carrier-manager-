@@ -50,7 +50,8 @@ async function scelta317() {
   return { tipo: s.tipo, guardiani: s.guardiani, scelta: { base: s.base.sha, base_come: s.base.come, merge_base: s.base.merge_base, toccati: s.toccati.length, scoperti: s.scoperti, motivo: s.motivo } };
 }
 const S317 = cmd === 'piano' ? await scelta317() : null;
-export const TETTO_GRANDE = 15, TETTO_TRENINO = 4, MACCHINE_ACCOUNT = 20;   /* [giro 326] vedi piano() */
+export const TETTO_GRANDE = 15, TETTO_TRENINO = 15, MACCHINE_ACCOUNT = 20;   /* [giro 326] vedi piano(). [giro 329, decisione PO 22/11 19:40] trenino 4 → 15:
+   due corse da 15 non stanno nelle 20, quindi il workflow ha UNA concorrenza per tutte le corse del treno (una alla volta, senza annullare) */
 function piano() {
   const { CATENE, MAPPA } = leggiCatene();
   const script = leggiJSON(path.join(QUI, 'package.json'), {}).scripts || {};

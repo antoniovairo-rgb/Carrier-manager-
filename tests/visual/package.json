@@ -203,6 +203,7 @@
     "parata-legibility": "node parata-legibility-test.mjs",
     "jumbotron-anchor": "node jumbotron-anchor-test.mjs",
     "event-ledger": "node event-ledger-test.mjs",
+    "marcatore-325": "node marcatore-325.mjs",
     "motore-unico": "node motore-unico-test.mjs",
     "risolvi-eroe": "node risolvi-eroe-test.mjs",
     "sim-motore": "node sim-motore-test.mjs",

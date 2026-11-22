@@ -15,9 +15,12 @@
       tutto, la corsa e' rossa davvero).
    C. TETTO DI MACCHINE: il job dei guardiani del treno ha max-parallel dal piano; il piano della mappa intera chiede al massimo
       TETTO_GRANDE, il trenino TETTO_TRENINO; treno grande + trenino + un posto per il passo di servizio di ciascuno + il deploy
-      stanno nelle 20 macchine. Il tetto non allunga il treno (stesso numero di ondate del tetto 20).
+      stanno nelle 20 macchine. [giro 329] Col trenino a 15 due corse insieme non ci stanno: il workflow del treno deve avere una
+      concorrenza UNICA senza annullare (una corsa alla volta) e allora 15 + deploy lascia sempre posti liberi. Il tetto non allunga il treno (stesso numero di ondate del tetto 20).
    D. CODA SIMULATA (prima/dopo): sul piano vero della mappa intera, un deploy che arriva a treno appena partito aspetta
       (senza tetto) quanto la parte piu' corta, (col tetto) zero.
+
+   E. [giro 327] validate-situations.yml parte solo a mano (unico evento workflow_dispatch).
 
    Verde col verde, rosso col rosso: con CPM_NO_G326=1 i tre file si leggono dalla base del giro (c0dd9cf, 7.999.203) e il
    guardiano DEVE uscire rosso.   npm run deploy-326   (≈ 2 s) */
@@ -87,8 +90,18 @@ ok(/'paralleli=' \+ p\.paralleli/.test(PIANO), 'ci-treno-308.mjs piano scrive pa
 const tG = +((PIANO.match(/TETTO_GRANDE\s*=\s*(\d+)/) || [])[1] || MACCHINE), tT = +((PIANO.match(/TETTO_TRENINO\s*=\s*(\d+)/) || [])[1] || MACCHINE);
 /* caso peggiore dichiarato: treno grande + un trenino nello stesso momento + il deploy. Una corsa e' o nei passi di servizio
    (piano/riepilogo/blocco/rilascio: uno alla volta, needs in fila) o nei guardiani: occupa al massimo max(tetto, 1) macchine. */
-const peggio = Math.max(tG, 1) + Math.max(tT, 1) + 1;
-ok(peggio <= MACCHINE, `treno grande ${tG} + trenino ${tT} + deploy = ${peggio} ≤ ${MACCHINE}`);
+/* [giro 329, decisione PO 22/11 19:40] trenino fino a 15: due corse del treno insieme (treno grande + trenino, o due trenini su rami
+   diversi) non stanno piu' nelle 20. Il caso peggiore dipende dalla concorrenza del workflow: un gruppo UNICO (che non dipende dal ramo
+   ne' dall'evento) senza annullare → una corsa del treno alla volta; altrimenti due corse insieme (il gruppo per ramo del giro 317
+   lasciava correre insieme treno grande su main e trenino su lavoro/**, o due lavoro/**). */
+const capienza = (wf, g, t) => { const c = (wf.match(/^concurrency:\s*\n\s+group:\s*([^\n#]+?)\s*\n\s+cancel-in-progress:\s*(\S+)/m) || []);
+  const unica = !!c[1] && !/\$\{\{/.test(c[1]) && c[2] === 'false';
+  return { unica, gruppo: c[1] || 'nessuno', peggio: (unica ? Math.max(g, t, 1) : Math.max(g, 1) + Math.max(t, 1)) + 1 }; };
+const cap = capienza(TRENO, tG, tT);
+ok(cap.peggio <= MACCHINE - 1 || (!cap.unica && cap.peggio <= MACCHINE), `${cap.unica ? `una corsa del treno alla volta (gruppo «${cap.gruppo}», senza annullare): ${Math.max(tG, tT)}` : `gruppo «${cap.gruppo}»: treno grande ${tG} + trenino ${tT}`} + deploy = ${cap.peggio} ≤ ${MACCHINE}${cap.unica ? ' con almeno 1 posto ancora libero' : ''}`);
+/* braccio rosso interno, sempre giocato: gli stessi tetti col gruppo per ramo del giro 317 sforano se il trenino e' alzato */
+{ const vecchio = capienza('concurrency:\n  group: treno-guardiani-${{ github.ref }}\n  cancel-in-progress: true\n', tG, tT);
+  ok(tT <= 4 || (!vecchio.unica && vecchio.peggio > MACCHINE), `braccio rosso interno: col gruppo per ramo del giro 317 i tetti ${tG}/${tT} farebbero ${vecchio.peggio} macchine (${vecchio.peggio > MACCHINE ? 'oltre le 20: serve la concorrenza unica' : 'nelle 20'})`); }
 let pianoVero = null;
 try { pianoVero = JSON.parse(execFileSync('node', ['ci-treno-308.mjs', 'piano'], { cwd: QUI, encoding: 'utf8', env: { ...process.env, CPM_TRENO_ELENCO: '', CPM_TRENO_TIPO: 'mappa', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '' }, stdio: ['ignore', 'pipe', 'ignore'] })); } catch (e) { }
 ok(!!pianoVero, 'piano della mappa intera calcolato');
@@ -105,6 +118,13 @@ if (pianoVero) {
   console.log(`   senza tetto: ${Math.round(prima)} s di coda · col tetto ${P}: ${Math.round(dopo)} s (misurati il 22/11 senza tetto: 3.080 e 3.886 s)`);
   ok(dopo === 0, `col tetto il deploy trova una macchina libera subito (attesa simulata ${Math.round(dopo)} s)`);
 }
+
+/* ------------------------------------------------ E. [giro 327, decisione PO 22/11] il gate pesante parte solo a mano */
+{ console.log('\n== E. «Validate Situations» solo a mano (giro 327) ==');
+  const VS = leggi('.github/workflows/validate-situations.yml');
+  const r = VS.split('\n'), a = r.findIndex(l => /^on:\s*$/.test(l)); const z = r.findIndex((l, i) => i > a && /^\S/.test(l));
+  const ev = a < 0 ? [] : r.slice(a + 1, z < 0 ? undefined : z).filter(l => /^  [a-z_]+:/.test(l)).map(l => l.trim().split(':')[0]);
+  ok(ev.length === 1 && ev[0] === 'workflow_dispatch', `eventi di validate-situations.yml: ${JSON.stringify(ev)} (atteso solo workflow_dispatch: niente push, niente pull_request)`); }
 
 console.log(`\n${fall ? '❌ ROSSO' : '✅ VERDE'} — deploy-326: ${fall} controlli falliti${NO ? ' (braccio rosso: atteso ROSSO)' : ''}`);
 process.exit(fall ? 1 : 0);
