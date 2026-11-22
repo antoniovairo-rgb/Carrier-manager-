@@ -62,8 +62,18 @@ const stato = (page) => page.evaluate(() => {
 let W = null, WC = null, WE = null;
 { const { ctx, page } = await apri(baseSave({}));
   for (let w = 1; w <= 38 && !(W && (WC || WE)); w++) {
-    await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w); await sleep(250);
-    const t = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
+    await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w);
+    /* [verifica 202 bis] si attende l'EVENTO «settimana applicata», non 250 ms fissi: snapshot() e thisWeekMd() leggono lo stesso
+       player del render, quindi si leggono insieme e solo quando snapshot().week === w. Sul runner (treno 45010544455) la lettura a
+       250 ms trovava la settimana PRECEDENTE: la «settimana senza partita» usciva 10 invece di 9, la coppa veniva iniettata sopra una
+       partita di lega e i bracci coppa restavano «non giudicati». Tetto 10 s: oltre, la scansione e' cieca e il guardiano esce rosso. */
+    let t;
+    { let letta = null; for (let t0 = Date.now(); Date.now() - t0 < 10000;) {
+        letta = await page.evaluate((w) => { const C = window.__CPM_CAREER, p = C.snapshot() || {};
+          return p.week === w ? { md: C.thisWeekMd() } : null; }, w);
+        if (letta) break; await sleep(50); }
+      if (!letta) { console.log('✗ settimana ' + w + ' mai applicata entro 10 s: scansione cieca (non giudicato)'); process.exit(1); }
+      t = letta.md; }
     if (t && !t.type && !W) W = w;
     if (t && t.type === 'cup' && !WC) WC = w;
     if (!t && !WE && w > 2) WE = w;
@@ -78,7 +88,14 @@ async function braccio(id, extra, via, sett) {
       C.patch({ week: w, weekLived: false, cup: { active: true, round: 1, results: [], bracket: [], eliminated: false },
         calendar: [...(p.calendar || []), { matchday: 991, week: w, opponentId: 'b07', opponentName: 'SV Rheinau', isHome: true, played: false, result: null,
           type: 'cup', competition: 'Coppa Nazionale', cupRound: 1, cupRoundName: 'Ottavi di Finale' }] }); }, WE);
-    await sleep(600);
+    /* [verifica 202 bis] si attende che la coppa iniettata sia QUELLA della settimana (evento), non 600 ms fissi; se in WE resta una
+       partita di lega la scelta della settimana e' sbagliata e il braccio non si giudica (rosso) */
+    let mdC = null;
+    for (let t0 = Date.now(); Date.now() - t0 < 10000;) {
+      mdC = await page.evaluate((w) => { const C = window.__CPM_CAREER, p = C.snapshot() || {};
+        return p.week === w && (p.calendar || []).some(m => m.matchday === 991) ? C.thisWeekMd() : null; }, WE);
+      if (mdC) break; await sleep(50); }
+    if (!mdC || mdC.type !== 'cup') { console.log('✗ ' + id + ': in W' + WE + ' la partita della settimana non e\' la coppa iniettata (' + JSON.stringify(mdC) + '): non giudicato'); process.exit(1); }
   }
   const prima = await stato(page);
   const suspVivo = await page.evaluate(() => !!(window.__CPM_CAREER.snapshot() || {}).isSuspended);
