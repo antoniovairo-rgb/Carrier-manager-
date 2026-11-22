@@ -109,7 +109,7 @@ export function proponi(MAPPA) {
 
 /** PRIMA/DOPO su vagoni reali: per ogni commit d'unione m, il vagone e' `git diff m^1 m`; la scelta e' scegli() del trenino (stessa
  *  funzione del treno) sulla mappa PRIMA (commit dato) e DOPO (file di lavoro); i minuti col taglio in parti di ci-treno-308 (durate
- *  di docs/governo/DURATE-GUARDIANI.json, obiettivo 4200 s per parte, tetto 4 parti alla volta per il trenino). */
+ *  di docs/governo/DURATE-GUARDIANI.json, obiettivo 4200 s per parte, tetti di TETTI_328 del trenino). */
 export async function confronta(prima, unioni) {
   const T = await import('./trenino-317.mjs');
   const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/governo/DURATE-GUARDIANI.json'), 'utf8')).voci || {};
@@ -119,7 +119,7 @@ export async function confronta(prima, unioni) {
     /* stesso taglio di ci-treno-308 piano(): il piu' lungo nella parte piu' leggera; parti in piu' finche' una parte con piu' d'un guardiano sfora */
     const taglia = N => { const p = Array.from({ length: N }, () => ({ s: 0, k: 0 })); for (const x of [...v].sort((a, b) => b - a)) { const q = p.reduce((m, y) => (y.s < m.s ? y : m), p[0]); q.s += x; q.k++; } return p; };
     let N = Math.max(1, Math.min(v.length, Math.ceil(tot / OB))), p = taglia(N); while (N < Math.min(v.length, 256) && p.some(y => y.s > OB && y.k > 1)) p = taglia(++N);
-    const mx = Math.max(...p.map(y => y.s)), tetto = tipo === 'trenino' ? 4 : 15;
+    const mx = Math.max(...p.map(y => y.s)), tetto = tipo === 'trenino' ? T.TETTI_328.trenino : T.TETTI_328.grande;/* [giro 329] dai tetti del trenino (erano 4/15 scritti qui) */
     /* parete attesa: `tetto` macchine, le parti partono nell'ordine della matrice appena una macchina e' libera (max-parallel di Actions);
        durate del banco, senza installazione ne' code: e' un confronto fra due mappe, non una previsione dell'orologio del runner */
     const mac = Array(Math.min(tetto, N)).fill(0); for (const y of p) { const i = mac.indexOf(Math.min(...mac)); mac[i] += y.s; }

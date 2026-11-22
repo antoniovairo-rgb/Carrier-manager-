@@ -64,8 +64,9 @@ export function leggiMappa(testo) {
   const z = L.findIndex((l, i) => i > m && l.startsWith('];'));
   if (a < 0 || m < 0 || z < 0) throw new Error('ci-runner.mjs: non trovo CATENE/MAPPA');
   const ctx = {}; vm.createContext(ctx);
-  vm.runInContext(L.slice(a, z + 1).join('\n').replace('const CATENE', 'var CATENE').replace('const MAPPA', 'var MAPPA'), ctx);
-  return { CATENE: ctx.CATENE, MAPPA: ctx.MAPPA };
+  vm.runInContext(L.slice(a, z + 1).join('\n').replace('const CATENE', 'var CATENE').replace('const MAPPA', 'var MAPPA').replace('const SOLO_NOTTE_329', 'var SOLO_NOTTE_329'), ctx);
+  /* [giro 329] SOLO_NOTTE_329: guardiani dichiarati solo del treno grande notturno (nessuna riga; [] nelle mappe di prima del giro) */
+  return { CATENE: ctx.CATENE, MAPPA: ctx.MAPPA, SOLO_NOTTE: ctx.SOLO_NOTTE_329 || [] };
 }
 const nomiDi = ({ CATENE, MAPPA }) => new Set([...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])]);
 
@@ -88,7 +89,7 @@ export function scriptChePrendono(file, scripts) {
 /** [giro 328] parete attesa di un elenco: stesso taglio in parti di ci-treno-308 piano() (obiettivo 4200 s, il piu' lungo nella parte
  *  piu' leggera, parti in piu' finche' una parte con piu' d'un guardiano sfora) e `tetto` macchine che prendono le parti in ordine.
  *  Durate da docs/governo/DURATE-GUARDIANI.json (300 s se manca). E' un CONFRONTO fra due piani, non l'orologio del runner. */
-export const TETTI_328 = { trenino: 4, grande: 15 };/* = TETTO_TRENINO / TETTO_GRANDE di ci-treno-308 (il guardiano lo controlla) */
+export const TETTI_328 = { trenino: 15, grande: 15 };/* [giro 329, decisione PO 22/11 19:40] trenino 4 → 15 *//* = TETTO_TRENINO / TETTO_GRANDE di ci-treno-308 (il guardiano lo controlla) */
 export function pareteAttesa(nomi, durate, tetto) {
   const v = nomi.map(n => (durate[n] && durate[n].s) || 300), tot = v.reduce((a, b) => a + b, 0), OB = 4200;
   if (!v.length) return { parti: 0, somma_s: 0, parete_s: 0 };

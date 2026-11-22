@@ -84,17 +84,18 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    mappa-unica + guardiani entrati; file di un guardiano → il suo script; la macchina del treno ha la sua riga nella MAPPA; **un file che
    nessuno copre → TRENO COMPLETO** (dichiarato nel riepilogo). Chi aggiunge un file condiviso (lib/, tools/) sa che fa girare la mappa
    intera finche' non ha una riga. **Giro 328 (PO-621):** una sonda (script in tests/visual fuori da lib/checks/fixtures, o in tools/) che
-   nessuno script npm ne' file di codice nomina e' neutra; una importata da un guardiano gioca quel guardiano; un trenino che col tetto di 4
-   macchine finirebbe dopo la mappa intera (tetto 15) diventa treno completo; src/16 ha la sua riga (`node tools/mappa-stretta-328.mjs`
-   misura le prove per file; rosso `CPM_NO_G328=1`). Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
+   nessuno script npm ne' file di codice nomina e' neutra; una importata da un guardiano gioca quel guardiano; un trenino che col suo tetto
+   finirebbe dopo la mappa intera diventa treno completo; src/16 ha la sua riga (`node tools/mappa-stretta-328.mjs`
+   misura le prove per file; rosso `CPM_NO_G328=1`). **Giro 329:** i 50 guardiani senza riga stanno SOLO nel treno grande notturno,
+   elenco dichiarato `SOLO_NOTTE_329` in ci-runner.mjs (chi da' loro una riga li toglie da li'; rosso `CPM_NO_G329=1`). Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
    base, ogni guardiano scelto giudicato): un `elenco` a mano non rilascia mai. Il **treno grande** gira ogni notte (cron 01:07 UTC) e a
    mano (`tipo=mappa|notte`) sulla punta di `lavoro/<numero piu' alto>` o di main se e' tutto rilasciato; NON rilascia, scrive
    `docs/governo/BLOCCO-RILASCI.json` sul poc (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
    e non giudicati del treno grande **fermano tutti i rilasci** finche' un treno grande successivo non li ha piu', o il PO li mette in
    `ROSSI-DICHIARATI`. Guardiano `npm run trenino-317` (remoto finto), rosso `CPM_NO_G317=1` (= comportamento del 312).
    📌 **IL DEPLOY DEL GIOCO NON STA MAI DIETRO AL TRENO (giro 326, PO-624).** L'account ha 20 macchine: una corsa del treno ne usa al
-   massimo 15 (treno grande/mappa/completo) o 4 (trenino) — `max-parallel` dal piano (`ci-treno-308.mjs`, `TETTO_GRANDE`/`TETTO_TRENINO`),
-   cosi' treno grande + trenino + deploy stanno nelle 20 (con 29 parti il tetto 15 fa due ondate come il 20: il treno non si allunga).
+   massimo 15 (treno grande/mappa/completo e, dal giro 329, anche il trenino) — `max-parallel` dal piano (`ci-treno-308.mjs`, `TETTO_GRANDE`/`TETTO_TRENINO`)
+   e UNA corsa del treno alla volta (concurrency unica `treno-guardiani`, senza annullare: 15 + deploy nelle 20) (con 29 parti il tetto 15 fa due ondate come il 20: il treno non si allunga).
    «Deploy to GitHub Pages» non parte per push di soli `docs/governo/**`, `docs/collaudo-po/**`, `docs/collaudo-grafico/**` o `*.md` (84 dei 91 push su main dal 20/11) (`paths-ignore`; il rilascio lo avvia con
    `workflow_dispatch`, che non guarda i percorsi) e il passo di pubblicazione aspetta 15 s e riprova due volte; il piano non apre mai piu' parti che guardiani: 10 fallimenti su 11
    (20-22/11) erano guasti passeggeri di GitHub («No artifacts named github-pages» mezzo secondo dopo il caricamento · 502). Chi alza un
