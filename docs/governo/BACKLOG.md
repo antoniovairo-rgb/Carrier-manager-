@@ -14,6 +14,8 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
+> **Priorità del PO (22/11 17:20, DECISIONI):** 1) velocità dei rilasci: PO-624 → 621 → 620+610 → 603; 2) chiarezza delle schermate: PO-623 → 608 → 609 → 606+617 → 615 → 614+595 → 616+569+570 → 618 → 622; 3) difetti in partita e carriera (più visibili prima); 4) idee nuove dei questionari di novembre, per data di arrivo.
+
 ## Voci aperte o parziali (110)
 
 Per lotto: 7.999.197 1 · 7.999.204 | 38 · 7.999.197 | 13 · — 14 · 7.999.204 44.
