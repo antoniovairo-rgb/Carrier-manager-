@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (107)
+## Voci aperte o parziali (108)
 
-Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 40.
+Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 41.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -127,6 +127,7 @@ Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-614 | 22/11 08:35 | PO (foto docs/collaudo-po/201-formazioni-maglia-eroe.png, schermata Formazioni prima dell'ingresso): «l'eroe non deve avere una maglia diversa» — la maglietta dell'eroe (90 NUNEZ) è disegnata diversa dalle altre (senza le maniche del secondo colore); deve essere la stessa divisa dei compagni. PO 08:40: «ed il quadrato intorno è brutto, lo toglierei» → via anche il riquadro bianco: l'eroe resta riconoscibile solo dal nome in evidenza (giallo) | UI (formazioni) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
 | PO-615 | 22/11 08:45 | PO (foto docs/collaudo-po/201-home-box-sponsor.png, Home: «Patto col mister 0/2 assist» e «Offerta di sponsor · Nexon Worldwide» con «Firmo l'accordo / Non ora»): «questi box all'occorrenza si perdono nella home ed il player potrebbe non accorgersene». Le decisioni in sospeso (offerte, sponsor, scelte) devono farsi notare: da proporre come metterle in evidenza (in cima, nel contatore «Da decidere», o come finestra al momento giusto). Nota: tocca lo stesso tema di PO-224 (finestre al posto dei riquadri), chiusa il 21/11 su decisione del PO; questa è una richiesta nuova e più precisa | UI (Home, decisioni in sospeso) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
 | PO-616 | 22/11 08:50 | PO (foto docs/collaudo-po/201-albo-tuoi-titoli.jpg, Stagione → «Albo d'oro — storico campioni», telefono): «Nell'albo storico campioni i miei titoli non c'entrano nulla» — il riquadro «I tuoi titoli» (campionati, coppe, coppe europee vinte dall'eroe) sta in cima all'albo dei campioni della lega; va tolto da lì e tenuto nel posto dei trofei personali (Carriera / bacheca), lasciando nell'albo solo la storia della competizione. PO 08:55 (foto docs/collaudo-po/201-albo-leghe-della-carriera.jpg: sotto compaiono le sezioni «Lega A 2 stag.», «Liga Oranje 4 stag.», cioè le leghe in cui ha giocato l'eroe, con le sue stagioni): «Anche sta roba deve sparire. Deve mostrare solo lo storico / almanacco della lega selezionata in quel momento» → l'albo mostra solo la lega selezionata nel selettore, con tutte le sue stagioni, senza sezioni per le leghe della carriera dell'eroe. Si fa insieme a PO-569 (stessa schermata) | UI (Albo d'oro) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
+| PO-617 | 22/11 08:55 | PO (foto docs/collaudo-po/201-club-contratto.jpg, scheda Club FC Merseyside, telefono): «Contratto nella schermata club non ha senso» — la riga «Contratto: scade a fine stagione 20 (3 stagioni) · Dettagli in Agente ›» va tolta dalla scheda Club: il contratto è dell'eroe e vive in Agente. Si fa insieme a PO-606 (riquadro «La stagione» nella stessa scheda) | UI (Club) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
 
 ## Storico — voci chiuse (509)
 
