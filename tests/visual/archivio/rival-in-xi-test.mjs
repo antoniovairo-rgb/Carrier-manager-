@@ -1,5 +1,5 @@
 /* [7.173.0] PROBE: (1) il RIVALE di carriera gioca nella gara contro il suo club — il suo nome è nell'XI
-   avversario della schermata Formazioni; (2) cognomi suffisso-aware: eroe «... jr» → maglia «PISANO JR»,
+   avversario della schermata Formazioni; (2) cognomi suffisso-aware: eroe «... jr» → maglia «FERREYRO JR»,
    mai «JR» nudo. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port;
@@ -8,7 +8,7 @@ const issues = [];
 const page = await browser.newPage({ viewport: { width: 480, height: 950 } });
 await installCdnRoutes(page);
 page.on('pageerror', e => issues.push('pageerror: ' + String(e.message).slice(0, 150)));
-const save = { phase: 'career', player: { name: 'Giovanni Pisano jr', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 4, week: 6, weekLived: true, age: 24, ovr: 80, tutorialDone: true, campDone: true, jerseyNum: 20, presidentModalSeason: 4, drawSeen: 4, mercatoSeen: 4, jerseyNumSeason: 4, seasonPledge: { season: 4, tone: 'equilibrato' },
+const save = { phase: 'career', player: { name: 'Gabriel Ferreyro jr', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 4, week: 6, weekLived: true, age: 24, ovr: 80, tutorialDone: true, campDone: true, jerseyNum: 20, presidentModalSeason: 4, drawSeen: 4, mercatoSeen: 4, jerseyNumSeason: 4, seasonPledge: { season: 4, tone: 'equilibrato' },
   club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 62, c: '#6c1f2e', c2: '#f2f1ec', nat: '🇮🇹', lg: 'Lega A' },
   leagueOverrides: { sal: 'Lega A' },
   rival: { name: 'Pablo Bernard', club: { id: 'milan', n: 'AC Rossoneri' }, totalGoals: 30 },
@@ -27,11 +27,11 @@ await click('Gioca la partita'); await sleep(1500);
 console.log('nav:', await click('Formazioni|Vai al campo')); await sleep(1600);
 const body = await page.evaluate(() => document.body.innerText);
 const hasRival = /BERNARD/i.test(body);
-const hasJr = /PISANO JR/i.test(body);
+const hasJr = /FERREYRO JR/i.test(body);
 const bareJr = /(^|\s)JR(\s|$)/.test(body.split('\n').find(l => /^JR$/.test(l.trim())) || '');
-console.log('XI avversario con BERNARD:', hasRival, '· maglia eroe PISANO JR:', hasJr);
+console.log('XI avversario con BERNARD:', hasRival, '· maglia eroe FERREYRO JR:', hasJr);
 if (!hasRival) issues.push('il rivale Pablo Bernard NON è nell\'XI avversario (Formazioni)');
-if (!hasJr) issues.push('la maglia dell\'eroe non mostra «PISANO JR» (suffisso non gestito)');
+if (!hasJr) issues.push('la maglia dell\'eroe non mostra «FERREYRO JR» (suffisso non gestito)');
 if (bareJr) issues.push('trovata etichetta «JR» nuda');
 await page.screenshot({ path: 'out/rival-in-xi.png' });
 await browser.close(); srv.close();

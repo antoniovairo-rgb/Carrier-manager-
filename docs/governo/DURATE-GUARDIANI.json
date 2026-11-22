@@ -1659,10 +1659,11 @@
    }
   },
   "highlight-95": {
-   "s": 3600,
-   "fonte": "rapporti",
+   "s": 6016,
+   "fonte": "runner",
    "runner": [
-    4940
+    4940,
+    6016
    ],
    "rapporti": {
     "mediana": 3600,
@@ -1670,7 +1671,8 @@
     "da": [
      "VERIFICA198-V3b.md"
     ]
-   }
+   },
+   "nota": "22/11 madre (verifica 202 bis): misurato 6.016 s sul runner nella corsa 45010544455; il valore stimato 3.600 faceva esaurire il bilancio della parte e lasciava non giudicati i guardiani brevi dietro"
   },
   "home-066": {
    "s": 55,

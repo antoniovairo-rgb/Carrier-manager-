@@ -89,6 +89,9 @@ USCITE = [
   # [giro 161 — decisione PO 11/11: fuori partita la musica suona SOLO nelle cerimonie] brani suonati una volta, non in loop
   ('music.premiazioni', 'music/awards/trionfo', 'oga-triumphant', None, None, '', .55),
   ('music.cerimonia', 'music/ceremony/il-mondo-e-nostro', 'oga-world-is-ours', None, [(0, 48.0)], '', .55),
+  # [giro 316 — PO-602, scelta del PO dalla pagina d'ascolto del giro 315: candidato C] la SERATA DI PRESENTAZIONE ha il suo brano,
+  #   intero (84,8 s, nessun taglio: se la scena finisce prima sfuma all'uscita come oggi). La fine stagione resta music.cerimonia.
+  ('music.presentazione', 'music/ceremony/cacciatori-di-tempeste', 'oga-storm-chasers', None, None, '', .55),
   # [giro 172 — PO-369 «l'audio del pubblico e' terribile»: finto/sporco, troppo forte, sempre uguale] il LETTO della folla diventa la
   #   registrazione CC0 vera dello Stade de France (Romainbehar, la stessa dell'«ohh»), tolto l'«ohh» (31-35 s): due strati che il gioco
   #   alterna a grani seedati (mai la stessa porzione due volte di fila). Taglio d'ascolto NON fatto: scelto sulle misure (inviluppo,

@@ -14,6 +14,7 @@
     "twa-120": "node twa-120.mjs",
     "audio-149": "node audio-149.mjs",
     "audio-161": "node audio-161.mjs",
+    "musica-316": "node musica-316.mjs",
     "audio-161b": "node audio-161b.mjs",
     "audio-172": "node audio-172.mjs",
     "misura-172": "node misura-172.mjs",
@@ -722,6 +723,7 @@
     "coreografie-252": "node coreografie-252.mjs && CPM_PROVA_ROSSO=1 node coreografie-252.mjs",
     "salienti-246": "node salienti-246.mjs",
     "avviso-290": "node avviso-290.mjs",
+    "testi-318": "node testi-318.mjs",
     "ingresso-294": "node ingresso-294.mjs",
     "salienti-253": "node salienti-253.mjs",
     "prepartita-287": "node prepartita-287.mjs",
@@ -748,6 +750,7 @@
     "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs",
     "mappa-unica": "node mappa-unica-308.mjs",
     "rilascio-312": "node rilascio-312.mjs",
+    "trenino-317": "node trenino-317.mjs",
     "ci:sentinelle": "node ci-runner.mjs sentinelle"
   },
   "dependencies": {

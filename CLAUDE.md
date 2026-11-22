@@ -77,6 +77,18 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    automatico e' acceso; il titolo dell'unione e' la nota di versione, scriverlo bene. Prova senza toccare main/poc: avvio a mano con
    `rilascio=prova` (rami `prova/cd-<corsa>-*`, niente deploy; `rosso_finto=true` deve fermarlo). Guardiano `npm run rilascio-312`
    (remoto finto), rosso `CPM_NO_G312=1`.
+   📌 **TRENINO, TRENO GRANDE DI NOTTE, BLOCCO (decisioni PO 21/11 22:35, giro 317, PO-604).** Il push su `lavoro/**` NON gira piu' la
+   mappa intera: gira il **trenino** = i guardiani delle righe della MAPPA toccate dal vagone (diff dall'antenato comune fra l'ultimo
+   rilascio — tag `v*` piu' alto, altrimenti la punta di main — e la punta) + le 17 sentinelle (`tools/trenino-317.mjs scegli`).
+   Regole: docs/*.md neutri; il ricomposto HTML conta solo con src/; package.json solo-script → gli script cambiati; ci-runner.mjs →
+   mappa-unica + guardiani entrati; file di un guardiano → il suo script; la macchina del treno ha la sua riga nella MAPPA; **un file che
+   nessuno copre → TRENO COMPLETO** (dichiarato nel riepilogo). Chi aggiunge un file condiviso (lib/, tools/) sa che fa girare la mappa
+   intera finche' non ha una riga. Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
+   base, ogni guardiano scelto giudicato): un `elenco` a mano non rilascia mai. Il **treno grande** gira ogni notte (cron 01:07 UTC) e a
+   mano (`tipo=mappa|notte`) sulla punta di `lavoro/<numero piu' alto>` o di main se e' tutto rilasciato; NON rilascia, scrive
+   `docs/governo/BLOCCO-RILASCI.json` sul poc (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
+   e non giudicati del treno grande **fermano tutti i rilasci** finche' un treno grande successivo non li ha piu', o il PO li mette in
+   `ROSSI-DICHIARATI`. Guardiano `npm run trenino-317` (remoto finto), rosso `CPM_NO_G317=1` (= comportamento del 312).
    ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
    lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
    a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle

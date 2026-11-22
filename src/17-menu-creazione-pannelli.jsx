@@ -186,7 +186,10 @@ const CREDITI254=[
     ...((typeof window!=='undefined'&&window.__CPM_NO_G161)?[]:[
     {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:((typeof window!=='undefined'&&window.__CPM_NO_G172)?"«Ohh» del pubblico":"Brusio e «ohh» del pubblico")/* [giro 172] il letto della folla viene da questa registrazione */+". Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Triumphant»",d:"Musica delle premiazioni. Fonte: opengameart.org",aut:"Emma_MA",lic:"CC0 1.0 (pubblico dominio)"},
-    {n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}])]),
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G316)?[{n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}]:[
+    /* [giro 316 PO-602] la serata di presentazione ha il suo brano (CC0, attribuzione non richiesta: voce di cortesia). Rosso __CPM_NO_G316 → voce di prima */
+    {n:"«The World Is Ours»",d:"Musica di fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«The Storm Chasers»",d:"Musica della serata di presentazione. Fonte: opengameart.org",aut:"Eldritch Grim",lic:"CC0 1.0 (pubblico dominio)"}])])]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
     {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
@@ -478,7 +481,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
             {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" className="cpm-t40" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name"
+          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder={"Es. "+EROE_INTRO_320.nome} maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name"
             enterKeyHint={_no115("31")?undefined:"next"}
             onKeyDown={e=>{if(e.key!=="Enter")return;if(_no115("31")){go();return;}e.preventDefault();try{const n=document.querySelector('[data-cpm="crea-nazione"]');if(n){n.focus();}else e.target.blur();}catch(_e){}}}
             onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>

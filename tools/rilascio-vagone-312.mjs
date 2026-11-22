@@ -43,6 +43,7 @@ export const FILE_VERSIONE = 'src/07-versione-save-interviste.jsx';
 export const FILE_ROSSI = 'docs/governo/ROSSI-DICHIARATI.json';
 export const FILE_INTERRUTTORE = 'docs/governo/RILASCIO-AUTO.json';
 export const FILE_ULTIMO = 'docs/governo/ULTIMO-RILASCIO.json';
+const FILE_BLOCCO_317 = 'docs/governo/BLOCCO-RILASCI.json';
 const CLASSI_BUONE = new Set(['verde', 'rosso_noto', 'rosso_noto_runner']);
 const RE_UNIONE = /^Unione sviluppo\/\S+ in (lavoro|prova)\/\S+/;
 
@@ -81,7 +82,11 @@ export function alzaVersione(testo, versione, nota) {
 }
 
 /** LA DECISIONE. Tutto cio' che ferma il rilascio finisce in `motivi`; si rilascia solo con `motivi` vuoto. */
-export function decidi({ esito, modo, ramo, sha, punta, interruttore, variabile, unioni, rossoFinto, senzaGuardia }) {
+/* [giro 317, PO-604] la decisione accetta anche l'esito di un TRENINO, ma solo se coincide con la scelta che il rilascio RICALCOLA da
+   se' (sceltaAttesa = tools/trenino-317.mjs sceltaDaGit sul commit provato: stessa base, ogni guardiano scelto giudicato): mai un
+   elenco dato a mano. E si ferma se il BLOCCO del treno grande (docs/governo/BLOCCO-RILASCI.json sul poc) ha un guardiano che non sta
+   in ROSSI-DICHIARATI. senza317 (CPM_NO_G317=1) = comportamento del giro 312: pretende la mappa intera e non legge il blocco. */
+export function decidi({ esito, modo, ramo, sha, punta, interruttore, variabile, unioni, rossoFinto, senzaGuardia, sceltaAttesa, blocco, rossiDich, senza317, bloccanti }) {
   const motivi = [], note = [];
   if (!['auto', 'prova'].includes(modo)) motivi.push(`modo sconosciuto «${modo}»`);
   /* interruttore: la variabile «spento» ferma sempre; il file sul poc deve dire attivo:true (in prova si riporta e basta) */
@@ -102,7 +107,17 @@ export function decidi({ esito, modo, ramo, sha, punta, interruttore, variabile,
     if (e.commit && sha && e.commit !== sha) motivi.push(`l'esito e' del commit ${e.commit}, non di ${sha}`);
     if (!(e.guardiani > 0)) motivi.push('il treno non ha giudicato nessun guardiano');
     if (e.parti_attese == null || e.parti_arrivate !== e.parti_attese) motivi.push(`parti arrivate ${e.parti_arrivate} su ${e.parti_attese ?? '?'}`);
-    if (modo === 'auto' && e.mappa_intera !== true) motivi.push("il treno non ha girato la mappa intera (elenco dato a mano)");
+    if (senza317) { if (modo === 'auto' && e.mappa_intera !== true) motivi.push("il treno non ha girato la mappa intera (elenco dato a mano)"); }
+    else if (e.tipo === 'trenino') {
+      const a = sceltaAttesa;
+      if (!a) motivi.push('trenino: la scelta attesa non si e\' potuta ricalcolare');
+      else if (a.tipo !== 'trenino') motivi.push(`trenino non valido: il vagone tocca file non coperti, serve il treno completo (${(a.scoperti || []).join(', ')})`);
+      else {
+        if (modo === 'auto' && (!e.scelta || e.scelta.merge_base !== a.base.merge_base)) motivi.push(`trenino su una base diversa dall'ultimo rilascio: ${e.scelta ? e.scelta.merge_base : '?'} invece di ${a.base.merge_base}`);
+        const mancano = a.guardiani.filter(g => !(e.per_guardiano || {})[g]);
+        if (mancano.length) motivi.push(`trenino incompleto: ${mancano.length} guardiani scelti non giudicati (${mancano.slice(0, 6).join(', ')})`);
+      }
+    } else if (modo === 'auto' && e.mappa_intera !== true) motivi.push(`il treno non e' ne' la mappa intera ne' un trenino (tipo ${e.tipo || '?'}: elenco dato a mano)`);
     if (!senzaGuardia) {
       const nuovi = e.rossi_nuovi || [], ng = e.non_giudicati || [];
       const altri = Object.entries(e.per_guardiano || {}).filter(([, v]) => !CLASSI_BUONE.has(v.classe)).map(([g, v]) => `${g} (${v.classe})`);
@@ -110,6 +125,10 @@ export function decidi({ esito, modo, ramo, sha, punta, interruttore, variabile,
       if (ng.length) motivi.push(`non giudicati (${ng.length}): ${ng.join(', ')}`);
       if (altri.length && !nuovi.length && !ng.length) motivi.push(`guardiani fuori classe: ${altri.join(', ')}`);
     }
+  }
+  if (!senza317) {
+    const b = (bloccanti || (() => []))(blocco, rossiDich);
+    if (b.length) motivi.push(`rilasci BLOCCATI dal treno grande (${FILE_BLOCCO_317}, corsa ${blocco.corsa || '?'}): ${b.join(', ')} — si sblocca con un treno grande senza quel rosso o col guardiano in ROSSI-DICHIARATI`);
   }
   if (!unioni || !unioni.length) motivi.push("nessuna unione «Unione sviluppo/... in lavoro/...» dal rilascio precedente: non c'e' un vagone da rilasciare");
   return { rilascia: motivi.length === 0, motivi, note };
@@ -142,15 +161,25 @@ function args() {
 const scriviOutput = (k, v) => { if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${k}=${v}\n`); };
 const riassunto = t => { if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, t + '\n'); };
 
-function cmdDecidi(o, cwd) {
+async function cmdDecidi(o, cwd) {
   const c = contesto(cwd), modo = o.modo || 'auto', ramo = o.ramo, sha = o.sha;
   let esito = null; try { esito = JSON.parse(fs.readFileSync(o.esito, 'utf8')); } catch {}
   const punte = punteRemote(c, [ramo, c.poc, c.main].filter(Boolean));
   const basePoc = `refs/remotes/${c.remoto}/${c.poc}`;
   let unioni = []; try { unioni = sha ? unioniDal(cwd, basePoc, sha) : []; } catch {}
   const interruttore = jsonDa(cwd, basePoc, FILE_INTERRUTTORE);
+  /* [giro 317] scelta del trenino ricalcolata da qui (mai presa dall'esito) + blocco e rossi dichiarati dal poc */
+  const T = await import(path.join(cwd, 'tools/trenino-317.mjs')).catch(() => import('./trenino-317.mjs'));
+  let sceltaAttesa = null;
+  if (esito && esito.tipo === 'trenino' && sha) { try {
+    sceltaAttesa = T.sceltaDaGit(cwd, sha, modo === 'prova' && esito.scelta ? esito.scelta.merge_base : null);
+  } catch (err) { console.error('scelta attesa: ' + err.message); } }
+  const refBlocco = process.env.CPM_REF_BLOCCO || basePoc;
+  const blocco = jsonDa(cwd, refBlocco, FILE_BLOCCO_317), rossiDich = jsonDa(cwd, basePoc, FILE_ROSSI);
   const d = decidi({ esito, modo, ramo, sha, punta: punte[ramo], interruttore, variabile: process.env.CPM_RILASCIO_AUTO, unioni,
-    rossoFinto: !!o['rosso-finto'], senzaGuardia: process.env.CPM_NO_G312 === '1' });
+    rossoFinto: !!o['rosso-finto'], senzaGuardia: process.env.CPM_NO_G312 === '1', sceltaAttesa, blocco, rossiDich, bloccanti: T.bloccanti,
+    senza317: process.env.CPM_NO_G317 === '1' });
+  if (sceltaAttesa && modo === 'prova') d.note.push(`prova: il trenino e' ricalcolato sulla base che dichiara (${sceltaAttesa.base.merge_base.slice(0, 8)}), non sull'ultimo rilascio`);
   /* versione e nota si calcolano anche quando ci si ferma: l'esito dice cosa SAREBBE uscito */
   const corsa = process.env.CPM_CORSA || '';
   const vLav = sha ? leggiVersione(leggiDa(cwd, sha, FILE_VERSIONE) || '') : null;
@@ -165,7 +194,9 @@ function cmdDecidi(o, cwd) {
     : { lavoro: ramo, poc: c.poc, main: c.main };
   const out = { quando: new Date().toISOString(), modo, ramo, sha, corsa, corsa_url: process.env.CPM_CORSA_URL || null, ...d,
     versione, precedente: vPoc, versione_lavoro: vLav, nota, tag, dest, basi: { lavoro: sha, poc: punte[c.poc], main: punte[c.main] }, unioni,
-    treno: esito ? { guardiani: esito.guardiani, verdi: esito.verdi, parti: `${esito.parti_arrivate}/${esito.parti_attese}`, mappa_intera: esito.mappa_intera,
+    blocco: blocco ? { attivo: !!blocco.attivo, rossi: (blocco.rossi || []).map(x => x.guardiano), corsa: blocco.corsa || null } : null,
+    trenino: sceltaAttesa ? { tipo: sceltaAttesa.tipo, guardiani: sceltaAttesa.guardiani.length, merge_base: sceltaAttesa.base.merge_base, base: sceltaAttesa.base.come } : null,
+    treno: esito ? { tipo: esito.tipo || null, guardiani: esito.guardiani, verdi: esito.verdi, parti: `${esito.parti_arrivate}/${esito.parti_attese}`, mappa_intera: esito.mappa_intera,
       rossi_nuovi: esito.rossi_nuovi, non_giudicati: esito.non_giudicati, rossi_noti: esito.rossi_noti, rossi_noti_runner: esito.rossi_noti_runner } : null };
   if (o.uscita) fs.writeFileSync(o.uscita, JSON.stringify(out, null, 1) + '\n');
   console.log(JSON.stringify(out, null, 1));
@@ -247,7 +278,7 @@ function cmdPubblica(o, cwd) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const cmd = process.argv[2], o = args(), cwd = path.resolve(o.cwd || ROOT_DEF);
   try {
-    if (cmd === 'decidi') cmdDecidi(o, cwd);
+    if (cmd === 'decidi') await cmdDecidi(o, cwd);
     else if (cmd === 'prepara') cmdPrepara(o, cwd);
     else if (cmd === 'pubblica') cmdPubblica(o, cwd);
     else { console.error('uso: node tools/rilascio-vagone-312.mjs decidi|prepara|pubblica [--opzioni]'); process.exit(2); }

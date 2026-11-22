@@ -234,7 +234,7 @@ function IntroCinematic({onDone,nome,riascolto}){
      17 · l'eroe dell'intro ha il nome del giocatore quando esiste (decisione PO 7.37: eroe con un nome). */
   const _n10=_no115("10"),_n15=_no115("15"),_n17=_no115("17");
   const _nm17=(!_n17&&nome&&String(nome).trim())?String(nome).trim():null;
-  const _cog17=_nm17?(_nm17.split(/\s+/).slice(-1)[0]||_nm17).toUpperCase():"PISANO";
+  const _cog17=_nm17?(_nm17.split(/\s+/).slice(-1)[0]||_nm17).toUpperCase():EROE_INTRO_320.cog;
   /* orologio di scena: reale fino a 6,3 s; 6,3→8,0 di scena in 5,5 s reali (ralenti del tutorial); poi reale con 3,8 s di ritardo */
   const _RS115=6.3,_SS115=1.7,_RR115=5.5;
   const _el115=(raw)=>{if(_n10||raw<_RS115)return raw;if(raw<_RS115+_RR115)return _RS115+(raw-_RS115)*_SS115/_RR115;return raw-(_RR115-_SS115);};
@@ -246,7 +246,7 @@ function IntroCinematic({onDone,nome,riascolto}){
   const stRef=React.useRef({t0:0});
   const CAPS=[
     {t:0,   big:"KORWARD ELITE",sub:"La tua storia comincia stanotte."},
-    {t:4,   big:null,sub:_nm17?(_nm17+". Una carriera vera, una settimana alla volta."):"Giovanni Pisano. Numero 9. Una carriera vera, una settimana alla volta."},/* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
+    {t:4,   big:null,sub:_nm17?(_nm17+". Una carriera vera, una settimana alla volta."):(EROE_INTRO_320.nome+". Numero 9. Una carriera vera, una settimana alla volta.")},/* [giro 320 PO-619] nome di fantasia *//* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
     {t:6.3, big:null,sub:"Il live match, come lo giocherai davvero:",chips:["⏱️ 1 · Tieniti pronto: arriva l'highlight","🕹️ 2 · Effettua i movimenti negli spazi","👆 3 · Scegli l'azione — anche su rigori e punizioni"]},
     {t:8.4,big:null,sub:null},
     {t:9.6,big:"⚽ GOOOL DI "+_cog17+"!",sub:"Vivi il momento — in 3D, azione per azione."},
