@@ -84,7 +84,7 @@ occasione alla W22 non scatta mai**; esce solo l'offerta esterna. Il guardiano p
 | `save-compat` | ✅ 12/0 |
 | `salta-163` | ✅ 19 verdi |
 | `node tools/build-src.mjs` + `check-src.mjs` | ✅ IDENTICO |
-| `node ci-runner.mjs giro salto-323` | vedi §8 |
+| `node ci-runner.mjs giro salto-323` (guardiano + 17 sentinelle, `CPM_CI_PAR=0`) | ✅ **18/18 verdi** (fra cui career-critical 300 s, partita-vera 621 s, griglia-mobile, replay, migrazione-194; foto rigenerate in `docs/collaudo-grafico` rimesse con `git restore`) |
 
 ## 7. Dubbi per il PO
 
