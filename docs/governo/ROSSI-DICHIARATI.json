@@ -39,7 +39,9 @@
   "barra-221": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "schede-260": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "giornale-244": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
-  "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)"
+  "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
+  "diagonali-210": "rosso sul banco anche sulla 7.999.201 (verifica 202, 22/11): dipende dalla velocità della macchina, da riparare",
+  "rigori-296": "parte C (ripartenza-piazzato-27, braccio rosso «compagno») rossa anche sulla 7.999.201 (verifica 202, 22/11): da riparare"
  },
  "solo_runner": {
   "salti-274": "runner 62,6 contro soglia 60 (taratura 44830113928, parte 9); verde sul banco",
@@ -47,6 +49,7 @@
   "avvio-233": "caduto in 1 s sul runner (parte 8), verde sul banco",
   "chiusura-99": "contrasto 2,29 sul runner (parte 13), verde sul banco",
   "piedi-252": "rosso sul runner (parte 12), verde sul banco",
-  "momento-173": "rosso solo sul runner (treno 44947424529), verde 6/6 sul banco su 200 e 201 (verifica 201, 22/11)"
+  "momento-173": "rosso solo sul runner (treno 44947424529), verde 6/6 sul banco su 200 e 201 (verifica 201, 22/11)",
+  "walkout-fermi-197": "instabile: verde sul banco su 201 e 202, rosso sul runner (somma 8 contro soglia 7) (verifica 202, 22/11): campionamento da riparare"
  }
 }
