@@ -121,7 +121,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
    (stessa condizione del giro 246: giocatore non infortunato). Rosso __CPM_NO_G290 = com'era (nessuna riga). */
 const AvvisoSalienti290=({style})=>{
   if(typeof window!=='undefined'&&(window.__CPM_NO_G290||window.__CPM_NO_G246||window.__CPM_NO_G243||window.__CPM_NO_G166))return null;
-  return <div data-cpm="avviso-290" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.4,textAlign:"center",overflowWrap:"anywhere",...(style||{})}}>Nella pre-partita puoi giocare solo i momenti salienti</div>;
+  return <div data-cpm="avviso-290" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.4,textAlign:"center",overflowWrap:"anywhere",...(style||{})}}>{/* [giro 318 · PO-605] testo del PO; rosso __CPM_NO_G318 = il testo vecchio */}{typeof window!=='undefined'&&window.__CPM_NO_G318?"Nella pre-partita puoi giocare solo i momenti salienti":"Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita"}</div>;
 };
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */
