@@ -3433,5 +3433,83 @@
   "tipo": "verifica",
   "modello": "claude-opus-5-5",
   "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYiaBisYp7czA8JEY2FPP",
+  "titolo": "giro 316 musica serata",
+  "creata": "2026-11-21T20:40:54Z",
+  "chiusa": "2026-11-21T21:43:16Z",
+  "cost_usd": 3.42738262,
+  "output_tokens": 24012,
+  "cache_read_tokens": 8741970,
+  "versione": "7.999.202",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYiaBV1cn26GVpEghkUnv",
+  "titolo": "giro 317 trenini",
+  "creata": "2026-11-21T21:31:59Z",
+  "chiusa": "2026-11-21T22:01:19Z",
+  "cost_usd": 5.51166764,
+  "output_tokens": 71311,
+  "cache_read_tokens": 11823728,
+  "versione": "7.999.202",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYiaBuTXu7eknFwPCUyYh",
+  "titolo": "giro 318 testi",
+  "creata": "2026-11-21T22:32:08Z",
+  "chiusa": "2026-11-21T23:24:12Z",
+  "cost_usd": 2.01640728,
+  "output_tokens": 13411,
+  "cache_read_tokens": 4191695,
+  "versione": "7.999.202",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYia94QyA5dZQBH9GAjV3",
+  "titolo": "giro 320 nome intro",
+  "creata": "2026-11-22T08:50:49Z",
+  "chiusa": "2026-11-22T09:46:57Z",
+  "cost_usd": 2.49203798,
+  "output_tokens": 15692,
+  "cache_read_tokens": 5732145,
+  "versione": "7.999.202",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYia8kkKxycMUPUa1jcxy",
+  "titolo": "verifica 202 rossi",
+  "creata": "2026-11-22T08:41:37Z",
+  "chiusa": "2026-11-22T09:19:53Z",
+  "cost_usd": 3.2300802,
+  "output_tokens": 20461,
+  "cache_read_tokens": 7752834,
+  "versione": "7.999.202",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
+ },
+ {
+  "sessione": "session_01QEYiaAuAesmaYg2wNWuSh8",
+  "titolo": "verifica 202 bis rossi",
+  "creata": "2026-11-22T12:33:04Z",
+  "chiusa": "2026-11-22T13:00:17Z",
+  "cost_usd": 4.90196256,
+  "output_tokens": 33437,
+  "cache_read_tokens": 12682403,
+  "versione": "7.999.202",
+  "tipo": "verifica",
+  "modello": "claude-opus-5-5",
+  "rilevato": "2026-11-22"
  }
 ]
