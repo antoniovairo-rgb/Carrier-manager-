@@ -60,7 +60,25 @@ Guardiano: `npm run marcatore-325` (due bracci nello stesso giro; «non giudicat
 
 ## Controlli
 
-CONTROLLI_DA_COMPILARE
+Tutti sul ricomposto di questo ramo, `CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`.
+
+| controllo | esito |
+|---|---|
+| `node tools/build-src.mjs` + `node tools/check-src.mjs` | ricomposto dai 21 frammenti; differisce da HEAD solo per la modifica del giro |
+| `node ci-runner.mjs giro marcatore-325` | **18/18 verdi** (marcatore-325 789 s · mappa-unica · test:logic · save-compat · replay 78 s · migrazione-194 · design-system · tema-unico · griglia-mobile · career-critical · battito-264 · partita-vera 628 s · render-3d-023 · tunnel-285 · gk-dive-sync · home-298 · schermate-97 · web-237) |
+| `npm run match-sequence` | verde («le tre velocità raccontano la stessa partita») |
+| `npm run bg-name-role` | verde (35/35 nomi coerenti con la zona) |
+| `npm run event-ledger` (default, tetto 240 s) | **ROSSO: «cieco», 0/3 partite arrivate al fischio**; i gol del libro mastro coincidono col tabellone in tutte e tre (0/0 · 3/3 · 2/2) |
+| `CPM_PARTITE=1 CPM_TETTO=540000 node event-ledger-test.mjs` | verde (1/1 al fischio, gol 2 contro tabellone 2) |
+
+Nota su `event-ledger`: il rosso è «partita non arrivata al fischio entro 240 s», lo stesso tempo di banco che ha fermato
+le mie partite intere a 300 s. Con 540 s la partita arriva al fischio e la misura è verde. **Non ho rigirato
+`event-ledger` sulla base 7.999.203**, quindi non posso confermare con una misura che fosse rosso anche prima: lo
+segnalo come rosso da verificare, non come verde.
+
+`career-critical` è stato eseguito dal runner come sentinella del giro (non l'ho lanciato a parte). Le foto di
+`docs/collaudo-grafico/` rigenerate dalle sentinelle sono state rimesse com'erano; `docs/governo/STABILITA.json`
+porta la riga del giro scritta dal runner.
 
 ## Limiti dichiarati
 
@@ -79,5 +97,7 @@ CONTROLLI_DA_COMPILARE
    Non c'è quindi un secondo assistman che possa discordare; se si vuole l'assist anche nell'avviso, è una voce nuova.
 2. Vuole un giro dedicato alla partita intera sul banco (perché non arriva al fischio in 300 s) così il guardiano può
    coprire anche quella?
-3. Sui gol dell'eroe in scena vuole lo stesso confronto voce per voce (riga «X segna su assist di Y» contro pagella e
+3. `event-ledger` col tetto di 240 s non arriva al fischio su questo banco (0/3): alzare il tetto è cambiare una soglia
+   di un guardiano, quindi non l'ho toccato. Decide lei se va riparato (tetto o velocità della partita nella sonda).
+4. Sui gol dell'eroe in scena vuole lo stesso confronto voce per voce (riga «X segna su assist di Y» contro pagella e
    momenti chiave)?
