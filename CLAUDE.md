@@ -64,6 +64,19 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    o a mano (`verifica-guardiani.yml`, parti bilanciate su `docs/governo/DURATE-GUARDIANI.json`); la corsa non fallisce mai, l'esito
    e' nel riepilogo (rosso nuovo / noto da `docs/governo/ROSSI-DICHIARATI.json` / non giudicato). Un guardiano nuovo entra nella riga
    della MAPPA che esiste gia'. Finche' la taratura non e' chiusa, un rosso del runner si rifa' sul banco, che resta il giudice.
+   📌 **RILASCIO AUTOMATICO DEL VAGONE (decisione PO 21/11 17:25, giro 312, PO-600).** Il job «Rilascio del vagone» in coda al treno
+   (`verifica-guardiani.yml`, logica `tools/rilascio-vagone-312.mjs decidi|prepara|pubblica`) rilascia DA SOLO quando: interruttore
+   acceso (`docs/governo/RILASCIO-AUTO.json` **sul poc** con `"attivo": true`; la variabile di repository `CPM_RILASCIO_AUTO=spento` lo
+   spegne senza commit), ramo `lavoro/**`, mappa intera, tutte le parti arrivate, **nessun rosso nuovo e nessun non giudicato** (solo
+   rossi di `ROSSI-DICHIARATI.json`), commit provato ancora in punta, almeno un'unione «Unione sviluppo/… in lavoro/…» dopo il poc.
+   Fa: GAME_VERSION +1 con nota dai titoli delle unioni → build-src + check-src IDENTICO → commit sul lavoro → `--no-ff` nel poc
+   (conflitti in `docs/governo` → poc; altri → fermo) → main in fast-forward → tag annotato `v<versione>` → **un solo `git push --atomic`,
+   mai force** → deploy di Pages avviato con `workflow_dispatch` (un push col GITHUB_TOKEN non fa partire `on:push`) → controllo che il
+   sito serva la versione. Tracce senza credenziali: tag, `docs/governo/ULTIMO-RILASCIO.json` su main, stato del commit
+   `rilascio-vagone` (anche quando si ferma), artifact `esito-rilascio`. Quindi: **un giro non tocca GAME_VERSION** se il rilascio
+   automatico e' acceso; il titolo dell'unione e' la nota di versione, scriverlo bene. Prova senza toccare main/poc: avvio a mano con
+   `rilascio=prova` (rami `prova/cd-<corsa>-*`, niente deploy; `rosso_finto=true` deve fermarlo). Guardiano `npm run rilascio-312`
+   (remoto finto), rosso `CPM_NO_G312=1`.
    ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
    lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
    a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle
@@ -396,6 +409,8 @@ paragrafo. È così che questo file è arrivato a 343 KB.
 **Invariante «dal tunnel alla linea laterale la strada e' libera» (giro 245, PO-510):** la bocca del tunnel sta a meta' campo (x 0) sul lato panchine, fra le due panchine simmetriche (±14); davanti alla bocca c'e' un varco in TUTTI gli strati di bordo campo (pannelli di `buildStadium` in src/11, cartelloni LED e striscia LED in src/12). Chi aggiunge un oggetto fermo sul lato panchine lo etichetta `userData.ost245` (il testimone lo misura contro i corpi) e non lo mette fra x -4,77 e 4,77 (il varco piu' stretto, quello della striscia LED); il guardalinee di quel lato aspetta a x 7,5 durante l'ingresso. Guardiano `npm run tunnel-245`, rosso `__CPM_NO_G245`.
 
 **Invariante «dopo la regola delle spalle non si scrive una posa che resta» (giro 261):** in una scena con la clip in PAUSA il mixer non riscrive un osso che non cambia: chi scrive un osso DOPO `_spalle146` (come `_posa192` sulle clavicole) lo deve riscrivere in assoluto dalla base a ogni fotogramma (nella serata: `base261` dentro `vita142`), altrimenti regola e posa si inseguono e il corpo deriva col tempo (misurato: spalle da +0,016·H a −0,004·H in 5 s, dal giro 192). Un controllo su una scena ferma si misura in PIU' momenti, non in uno. Se la regola entra a scena in corso (saluto), entra in rampa (`_spalleRampa261`): i quaternioni che scrive NON sono unitari, si mescolano direzione e norma a parte. Guardiano `npm run serata-261` (anche la vita della fila: velocita' mediana delle ossa, non una finestra di 4 s), rosso `__CPM_NO_G261`.
+
+**Invariante «la serata di presentazione non ha tifosi ospiti» (giro 314, PO-601):** la serata chiama `buildStadium` con `soloCasa314` (src/11): colore e riempimento di casa in ogni settore, nessuna sagoma «ospite»; mai passare il secondo colore del club come colore ospite a una scena senza avversario. Guardiano `npm run serata-314`, rosso `__CPM_NO_G314`.
 
 **Invariante «pelle e capelli dalla figurina in ogni scena» (giro 240, PO-500):** un corpo CGTrader che rappresenta un giocatore con un nome prende capelli e pelle dalla figurina di quel nome (`aspettoFigurina225` + `_pelle225`; in partita `_aspetto240` sul nome intero `nf`, nelle cerimonie `figurina240`), scrive `userData.chi240` e la sua scena chiama `misuraPelle240` dopo il disegno. La tinta della pelle non tocca i capelli (maschera della calotta, `_maschera240`); ogni scena ha la sua compensazione delle luci misurata (`RESA240`, mai a occhio). Guardiano `npm run pelle-240` (di notte; `CPM_TOD=day|dusk` per le altre ore), rosso `__CPM_NO_G240`. ⚠️ Il primo piano del testimone non e' l'inquadratura del gioco: misura il corpo sotto le luci della scena, senza cio' che gli sta davanti.
 

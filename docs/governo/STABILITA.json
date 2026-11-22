@@ -1,5 +1,112 @@
 [
  {
+  "data": "2026-11-21 18:46",
+  "versione": "7.999.200",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "serata-314",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "serata-261",
+    "ok": true,
+    "s": 442
+   },
+   {
+    "passo": "pelle-240",
+    "ok": true,
+    "s": 325
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 206
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 357
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 409
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 622
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 290
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 211
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 132
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 55
+   }
+  ]
+ },
+ {
   "data": "2026-11-12 15:40",
   "versione": "7.999.190",
   "catena": "grafica",
@@ -22139,180 +22246,6 @@
     "passo": "tabellino-216",
     "ok": true,
     "s": 540
-   }
-  ]
- },
- {
-  "data": "2026-10-10 06:52",
-  "versione": "7.999.156",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 66
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 782
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 81
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 59
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 30
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 61
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 545
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 318
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 9
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 203
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 767
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": false,
-    "s": 945,
-    "coda": "{\"verde\":{\"ripartenze\":0,\"alCentro\":0,\"gol\":1,\"tentativi\":2,\"fine\":{\"f\":\"ceremony\",\"sc\":{\"home\":1,\"away\":0}},\"s\":191},\"rosso\":{\"ripartenze\":0,\"alCentro\":0,\"gol\":1,\"tentativi\":2,\"fine\":{\"f\":\"playing\",\"sc\":{\"home\":1,\"away\":0}},\"s\":131}} | ❌ r"
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 585
-   },
-   {
-    "passo": "brain-202",
-    "ok": false,
-    "s": 434,
-    "coda": "B rosso {\"fase\":\"ended\",\"scene\":0,\"decise\":0,\"esiti\":[]} | ❌ brain-202 |   · A: il talento non alza i gol dell'eroe (verde 0.558, rosso 0.467)"
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 538
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 546
    }
   ]
  }
