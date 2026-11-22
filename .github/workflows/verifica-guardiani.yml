@@ -67,6 +67,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       matrice: ${{ steps.piano.outputs.matrice }}
+      paralleli: ${{ steps.piano.outputs.paralleli }}   # [giro 326] tetto di parti alla volta (ci-treno-308.mjs piano)
       tipo: ${{ steps.piano.outputs.tipo }}
       chiesto: ${{ steps.bers.outputs.tipo_chiesto }}
       scelta: ${{ steps.piano.outputs.scelta }}
@@ -125,6 +126,9 @@ jobs:
     continue-on-error: true   # un job caduto non fa fallire la corsa: se manca il suo riepilogo, il Riepilogo lo dichiara «non giudicato»
     strategy:
       fail-fast: false
+      # [giro 326, PO-624] mai tutte e 20 le macchine dell'account: treno grande 15, trenino 4 (ci-treno-308.mjs, TETTO_*).
+      # Restano posti per il deploy del gioco, che il 22/11 e' rimasto in coda dietro al treno fino all'annullo a mano.
+      max-parallel: ${{ fromJSON(needs.piano.outputs.paralleli || '15') }}
       matrix: ${{ fromJSON(needs.piano.outputs.matrice) }}
     defaults:
       run:
