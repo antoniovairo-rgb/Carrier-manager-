@@ -15,7 +15,7 @@
 import { startServer, launchBrowser, installCdnRoutes } from './lib/harness.mjs';
 import fs from 'fs';
 
-const ROSSO = process.env.CPM_ROSSO323 === '1';
+const ROSSO = process.env.CPM_ROSSO323 === '1', ROSSO327 = process.env.CPM_ROSSO327 === '1';/* [giro 327] CPM_ROSSO327=1 accende __CPM_NO_G327 (curva del giro 323) */
 const fails = [], oks = [];
 const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
 
@@ -39,7 +39,7 @@ async function apri(player, { rnd0 = false } = {}) {
   const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([pl, rosso]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G323 = 1; if (!sessionStorage.getItem('g323')) { sessionStorage.setItem('g323', '1'); localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl })); } }, [player, ROSSO]);/* al ricarico il salvataggio NON si riscrive */
+  await page.addInitScript(([pl, rosso, rosso327]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G323 = 1; if (rosso327) window.__CPM_NO_G327 = 1; if (!sessionStorage.getItem('g323')) { sessionStorage.setItem('g323', '1'); localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl })); } }, [player, ROSSO, ROSSO327]);/* al ricarico il salvataggio NON si riscrive */
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 60000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 60000 });
   try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
@@ -75,6 +75,8 @@ try {
     r.w22senza = C.salto323(hi, 22); r.w22con = C.salto323({ ...hi, ps153: { s: 1, presenze: 1 } }, 22); r.w20 = C.salto323(hi, 20);
     r.pro = C.salto323({ ...hi, proStatus: 'pro' }, 19);
     r.gia = C.salto323({ ...hi, salto323: { s: 1, w: 19 } }, 19);
+    /* [giro 327, decisione PO 22/11] la curva: meta' a 69, pendenza 3, zero sotto 60, tetto 0,92 */
+    r.curva = typeof C.prob323 === 'function' ? [59.9, 60, 62, 67, 69, 75, 90].map(x => +C.prob323(x).toFixed(4)) : null;
     r.puro = JSON.stringify(C.snapshot()) === JSON.stringify(base);
     /* il nome del flusso B: il primo seme con salto */
     r.nomeSalto = nomi.find((n, i) => v[i] && v[i].esito === 'esterna') || null;
@@ -90,6 +92,8 @@ try {
     ok(A.promoN >= 12 && A.promoPrima, `con un esordio: promozione nel club madre per prima, l'esterna in coda (${A.promoN} salti)`);
     ok(A.w22senza === null && A.w22con && A.w22con.w === 22 && A.w20 === null, 'settimana 22 solo con esordio, fuori finestra nulla');
     ok(A.pro === null && A.gia === null, 'da professionista e a finestra gia\' valutata: nulla');
+    { const L = x => Math.min(0.92, 1 / (1 + Math.exp(-(x - 69) / 3))), att = [0, L(60), L(62), L(67), L(69), L(75), 0.92];
+      ok(!!A.curva && A.curva.every((v, i) => Math.abs(v - att[i]) < 0.002), `curva del salto (giro 327): P a 59,9/60/62/67/69/75/90 = ${JSON.stringify(A.curva)} (attesi ${att.map(v => v.toFixed(3)).join('/')})`); }
     ok(A.puro, 'la regola non modifica il salvataggio');
   }
   await page.close();
@@ -158,6 +162,6 @@ try {
   }
 } catch (e) { ok(false, 'eccezione: ' + (e && e.message)); }
 await browser.close(); srv.close();
-console.log(`\n${fails.length ? '❌ ROSSO' : '✅ VERDE'} salto-323${ROSSO ? ' (braccio rosso __CPM_NO_G323)' : ''}: ${oks.length} ok · ${fails.length} ko`);
+console.log(`\n${fails.length ? '❌ ROSSO' : '✅ VERDE'} salto-323${ROSSO ? ' (braccio rosso __CPM_NO_G323)' : ''}${ROSSO327 ? ' (braccio rosso __CPM_NO_G327)' : ''}: ${oks.length} ok · ${fails.length} ko`);
 if (fails.length) { console.log('  falliti: ' + fails.join(' | ')); process.exit(1); }
 process.exit(0);

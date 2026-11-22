@@ -1077,9 +1077,9 @@ function indicePrimavera(p){try{
    anche senza esordio). Niente prestito. Funzione PURA: stesso giocatore, stessa stagione, stessa settimana → stesso esito
    su ogni percorso e dopo un ricarico. Probabilita' = curva logistica sull'Indice (SALTO323), zero sotto la soglia minima.
    Rosso __CPM_NO_G323 = comportamento 7.999.202 (torna il tiro casuale). */
-const SALTO323={min:60,ip50:66.4,k:2.0,max:0.92};/* taratura sui profili della sonda misura-323 (Indice alla settimana 19: OVR 58 ≈ 41-42 · 66 ≈ 62 · 74 ≈ 66): bersagli del progetto 0% / ~10% / ~45% */
+const SALTO323={min:60,ip50:69,k:3,max:0.92};/* [giro 327, decisione PO 22/11 «Addolcisci subito»] meta' a 69 di Indice, pendenza 3: ~9% a 62 · ~34% a 67 · ~88% a 75 (giro 323: meta' 66,4, pendenza 2) */
 function _g323(){return !(typeof window!=='undefined'&&window.__CPM_NO_G323);}
-function probSalto323(ip){if(!(ip>=SALTO323.min))return 0;return Math.min(SALTO323.max,1/(1+Math.exp(-(ip-SALTO323.ip50)/SALTO323.k)));}
+function probSalto323(ip){if(!(ip>=SALTO323.min))return 0;const c=(typeof window!=='undefined'&&window.__CPM_NO_G327)?{ip50:66.4,k:2}:SALTO323;/* rosso __CPM_NO_G327 = curva del giro 323 */return Math.min(SALTO323.max,1/(1+Math.exp(-(ip-c.ip50)/c.k)));}
 function offertaSalto323(p,tipo,w){try{
   const sn=p.season||1,ovr=p.ovr||60;
   const r=seededRng((hashStr("ps153|salto-club|"+(p.name||"?")+"|"+(p.nation||"")+"|"+sn+"|"+w+"|"+tipo)>>>0)||1);

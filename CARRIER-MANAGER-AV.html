@@ -9033,9 +9033,9 @@ function indicePrimavera(p){try{
    anche senza esordio). Niente prestito. Funzione PURA: stesso giocatore, stessa stagione, stessa settimana → stesso esito
    su ogni percorso e dopo un ricarico. Probabilita' = curva logistica sull'Indice (SALTO323), zero sotto la soglia minima.
    Rosso __CPM_NO_G323 = comportamento 7.999.202 (torna il tiro casuale). */
-const SALTO323={min:60,ip50:66.4,k:2.0,max:0.92};/* taratura sui profili della sonda misura-323 (Indice alla settimana 19: OVR 58 ≈ 41-42 · 66 ≈ 62 · 74 ≈ 66): bersagli del progetto 0% / ~10% / ~45% */
+const SALTO323={min:60,ip50:69,k:3,max:0.92};/* [giro 327, decisione PO 22/11 «Addolcisci subito»] meta' a 69 di Indice, pendenza 3: ~9% a 62 · ~34% a 67 · ~88% a 75 (giro 323: meta' 66,4, pendenza 2) */
 function _g323(){return !(typeof window!=='undefined'&&window.__CPM_NO_G323);}
-function probSalto323(ip){if(!(ip>=SALTO323.min))return 0;return Math.min(SALTO323.max,1/(1+Math.exp(-(ip-SALTO323.ip50)/SALTO323.k)));}
+function probSalto323(ip){if(!(ip>=SALTO323.min))return 0;const c=(typeof window!=='undefined'&&window.__CPM_NO_G327)?{ip50:66.4,k:2}:SALTO323;/* rosso __CPM_NO_G327 = curva del giro 323 */return Math.min(SALTO323.max,1/(1+Math.exp(-(ip-c.ip50)/c.k)));}
 function offertaSalto323(p,tipo,w){try{
   const sn=p.season||1,ovr=p.ovr||60;
   const r=seededRng((hashStr("ps153|salto-club|"+(p.name||"?")+"|"+(p.nation||"")+"|"+sn+"|"+w+"|"+tipo)>>>0)||1);
@@ -55334,6 +55334,7 @@ const getThisWeekMatchday=()=>{
       critPool:()=>{try{const _ids=["wi_opinionista","wi_polemica","wi_fan_aggression","wi_intervista_scomoda"];return WEEKLY_IMPULSES.filter(im=>_ids.indexOf(im.id)>=0&&(!im.cond||im.cond(player))).map(im=>im.id);}catch(e){return "error:"+(e&&e.message);}},/* [7.472.0 collaudo PO «dopo una vittoria con gol e' strano»] la sonda della famiglia CRITICA: quali impulsi «ti criticano» sono pescabili per il giocatore corrente */
       mktPool:()=>{try{const _t=/mercato|estero|cession|offerte|ceduto|trasferiment|vali di più/i;return{ev:WEEKLY_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,rnd:WEEKLY_RANDOM_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,imp:WEEKLY_IMPULSES.filter(im=>(im.id==="wi_procuratore_push"||im.id==="wi_giornalista_mercato")&&(!im.cond||im.cond(player))).length};}catch(e){return "error:"+(e&&e.message);}},/* [collaudo PO «assurdo a poche settimane dal ritiro»] la sonda della famiglia mercato: quanti item a tema mercato/cessione sono ancora pescabili per il giocatore corrente */
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
+      prob323:ip=>probSalto323(ip),/* [giro 327] la curva del salto, per il guardiano */
       salto323:(q,w)=>{try{return saltoGennaio323(q||player,w||((q||player).week||1));}catch(e){return "error:"+(e&&e.message);}},/* [giro 323] la regola pura del salto a gennaio */
       ip153:(q)=>{try{return indicePrimavera(q||player);}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] l'Indice Primavera, la stessa funzione della barra */
       chiudi163:()=>{try{setInterviewModal(null);setMilestoneModal(null);setCareerMomentModal(null);setMonthlyReviewModal(null);return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] solo il banco salta-163: chiude le finestre che il tasto non chiude da solo, come il giocatore che le legge */
