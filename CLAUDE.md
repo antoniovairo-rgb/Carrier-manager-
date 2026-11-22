@@ -83,7 +83,10 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    Regole: docs/*.md neutri; il ricomposto HTML conta solo con src/; package.json solo-script → gli script cambiati; ci-runner.mjs →
    mappa-unica + guardiani entrati; file di un guardiano → il suo script; la macchina del treno ha la sua riga nella MAPPA; **un file che
    nessuno copre → TRENO COMPLETO** (dichiarato nel riepilogo). Chi aggiunge un file condiviso (lib/, tools/) sa che fa girare la mappa
-   intera finche' non ha una riga. Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
+   intera finche' non ha una riga. **Giro 328 (PO-621):** una sonda (script in tests/visual fuori da lib/checks/fixtures, o in tools/) che
+   nessuno script npm ne' file di codice nomina e' neutra; una importata da un guardiano gioca quel guardiano; un trenino che col tetto di 4
+   macchine finirebbe dopo la mappa intera (tetto 15) diventa treno completo; src/16 ha la sua riga (`node tools/mappa-stretta-328.mjs`
+   misura le prove per file; rosso `CPM_NO_G328=1`). Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
    base, ogni guardiano scelto giudicato): un `elenco` a mano non rilascia mai. Il **treno grande** gira ogni notte (cron 01:07 UTC) e a
    mano (`tipo=mappa|notte`) sulla punta di `lavoro/<numero piu' alto>` o di main se e' tutto rilasciato; NON rilascia, scrive
    `docs/governo/BLOCCO-RILASCI.json` sul poc (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
