@@ -31,7 +31,7 @@ async function apri(vp, rosso, touch) {
   const ctx = await browser.newContext({ viewport: vp, serviceWorkers: 'block', hasTouch: !!touch, isMobile: !!touch });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
+  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; window.__KU210 = []; document.addEventListener('keyup', e => { window.__KU210.push([e.key, Math.round(performance.now())]); }, true); document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
   await openMatch(page, port); await sleep(800);
   return { ctx, page, errs };
 }
@@ -147,9 +147,35 @@ async function schermo(w, rosso) {
     /* K: tastiera — accordo di due frecce con 0/20/40 ms fra l'una e l'altra, e una freccia sola */
     let tot = 0, buoni = 0;
     for (const delta of (rosso ? [0] : [0, 20, 40])) for (const [a, b2, sx, sy] of ACCORDI) {
-      const f3 = await forza(H, lista, k, !tel); if (!f3) { nonG.push(`K ${a}+${b2} ${delta}ms: nessuna scena`); continue; } k = f3.k + 1; tot++;
-      await H.page.keyboard.down(a); if (delta) await sleep(delta); await H.page.keyboard.down(b2); await sleep(220); await H.page.keyboard.up(a); await H.page.keyboard.up(b2);
-      await sleep(600); const s1 = await stato(H.page);
+      /* [giro 332 · PO-620] L'ACCORDO DEVE ARRIVARE ALLA PAGINA COME E' STATO CHIESTO. Prima: keyboard.down(a) ATTESO, poi
+         keyboard.down(b): Playwright aspetta che il renderer abbia elaborato il primo tasto prima di spedire il secondo, quindi su una
+         macchina lenta i due tasti arrivavano alla pagina a ~400 ms l'uno dall'altro (VERIFICA202: «tasti visti dalla pagina») — cioe'
+         due frecce premute a 400 ms, per le quali il passo cardinale e' il comportamento giusto (finestra d'accordo 70 ms). Ora il
+         secondo tasto parte dopo `delta` ms di parete SENZA aspettare la risposta del primo, e l'intervallo VISTO DALLA PAGINA (keydown,
+         performance.now) si legge: se supera delta+20 ms l'accordo non e' quello chiesto e si ritenta su un'altra scena (fino a 3
+         volte); se non arriva mai, «non giudicato» (= rosso). Nessuna soglia del gioco ne' del guardiano cambiata. */
+      let f3 = null, gapVisto = null, ritenti = 0;
+      for (; ritenti < 4; ritenti++) {
+        f3 = await forza(H, lista, k, !tel); if (!f3) break; k = f3.k + 1;
+        const kd0 = await H.page.evaluate(() => window.__KD210.length);
+        const ku0 = await H.page.evaluate(() => window.__KU210.length);
+        /* anche il RILASCIO parte senza aspettare: tenendo i tasti per «220 ms + la risposta del renderer» su una macchina lenta la
+           pagina li vedeva premuti oltre i 400 ms della pausa fra due passi da tastiera, e il secondo passo partiva (2 passi, 2 mosse). */
+        const p1 = H.page.keyboard.down(a); if (delta) await sleep(delta); const p2 = H.page.keyboard.down(b2);
+        await sleep(220); const p3 = H.page.keyboard.up(a), p4 = H.page.keyboard.up(b2); await Promise.all([p1, p2, p3, p4]);
+        await sleep(600);
+        const vis = await H.page.evaluate(([kd0, ku0, a, b2]) => { const L = window.__KD210.slice(kd0), U = window.__KU210.slice(ku0); const ta = L.find(x => x[0] === a), tb = L.find(x => x[0] === b2);
+          const ua = U.find(x => x[0] === a), ub = U.find(x => x[0] === b2); return { gap: ta && tb ? tb[1] - ta[1] : null, tenuta: ta && ua && ub ? Math.max(ua[1], ub[1]) - ta[1] : null }; }, [kd0, ku0, a, b2]);
+        gapVisto = vis.gap;
+        /* consegnato come chiesto: secondo tasto entro delta+20 ms dal primo e tasti rilasciati prima della pausa di 400 ms fra due passi */
+        if (gapVisto != null && gapVisto >= 0 && gapVisto <= delta + 20 && vis.tenuta != null && vis.tenuta < 400) break;
+        note.push(`K ${a}+${b2} a ${delta} ms: la pagina ha visto i tasti a ${gapVisto} ms e tenuti ${vis.tenuta} ms, accordo non consegnato come chiesto: si ritenta`);
+        gapVisto = null;
+      }
+      if (!f3) { nonG.push(`K ${a}+${b2} ${delta}ms: nessuna scena`); continue; }
+      if (gapVisto == null) { nonG.push(`K ${a}+${b2} ${delta}ms: accordo mai consegnato alla pagina come chiesto (entro ${delta + 20} ms, tenuto meno di 400 ms)`); continue; }
+      tot++;
+      const s1 = await stato(H.page);
       const nuovi = s1 ? s1.nP - f3.s.nP : 0; const u = s1 && s1.ultimo;
       const ok = nuovi === 1 && u && u.src === 'tasti' && Math.sign(u.dx) === sx && Math.sign(u.dy) === sy && Math.abs(u.len - 2.5) < 0.01 && f3.s.moves - s1.moves === 1;
       if (ok) buoni++; else D.push(`K ${a}+${b2} a ${delta} ms: ${nuovi} passi, ultimo ${u ? '(' + u.dx + ',' + u.dy + ') ' + u.len + 'u' : '—'}, mosse ${f3.s.moves}→${s1 && s1.moves} (fase ${f3.s.ph}→${s1 && s1.ph}, gi${f3.sc.gi}, pagina ${H.aperture}, tasti visti dalla pagina ${JSON.stringify(await H.page.evaluate(() => (window.__KD210 || []).slice(-4)).catch(() => null))})`);

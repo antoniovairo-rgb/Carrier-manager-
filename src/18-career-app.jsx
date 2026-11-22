@@ -648,13 +648,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      finestra con dati non serializzabili non si salva (e il guardiano scelte-201 lo vede). Rosso __CPM_NO_G201 = come prima. */
   const _g201=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G201);
   const _rest201=useRef(false);
+  /* [giro 332 · PO-620] L'INTERVISTA SI SALVA SEMPRE. Il rosso del treno 45050383306 («intervista: aperta · dopo il ricaricamento NON
+     TORNA», verde sul banco sullo stesso commit) non era il runner: e' il sorteggio. MISURATO (sonda CPM_FN332, salvataggio del
+     guardiano scelte-201, 600 estrazioni di pickInterviewByCtx): 53 domande su 600 (8,8 %) portano la condizione `cond` (una
+     funzione: «voci di mercato», «Nazionale», «capitano», «leadership», «pressione»…), _j201 la vede e scarta TUTTA la finestra, e
+     chi chiude l'app durante quella intervista non la rivede piu'. La condizione serve solo a scegliere la domanda (src/07): nella
+     copia salvata si toglie, il resto e' identico. Rosso window.__CPM_NO_G332 = come prima. */
+  const _iv332=(m)=>{if(!m||(typeof window!=='undefined'&&window.__CPM_NO_G332))return m;try{return JSON.parse(JSON.stringify(m,(k,x)=>k==="cond"&&typeof x==="function"?undefined:x));}catch(_e){return m;}};
   const _SC201=[
     ["offerta",transferOffer,setTransferOffer],
     ["richiamo",richiamo198,setRichiamo198],
     ["svincolato",svinc198,setSvinc198],
     ["rinnovo",negoModal,setNegoModal],
     ["settimana",weekLiveModal,setWeekLiveModal],
-    ["intervista",interviewModal,setInterviewModal],
+    ["intervista",_iv332(interviewModal),setInterviewModal],
     ["verifica",monthlyReviewModal,setMonthlyReviewModal],
     ["momento",careerMomentModal&&careerMomentModal.id?{id:careerMomentModal.id}:null,(v)=>{const m=(CAREER_MOMENTS||[]).find(x=>x&&x.id===(v&&v.id));if(m)setCareerMomentModal(m);}],
     ["procuratore",agentIntro,setAgentIntro],

@@ -79,13 +79,20 @@ async function giro(caso, braccio, tent) {
     const W = await page.evaluate(() => ({ ko27: (window.__CPM_KO27 || []).slice(), ko207: (window.__CPM_KO207 || []).slice() }));
     const fine = await page.evaluate(() => ({ ph: window.__CPM_PHASE(), min: window.__CPM_CLOCK(), sc: window.__CPM_SCORE(), ev: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').map(e => e.src + '@' + e.min), oc: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind : null, provocato296: window.__CPM_PROV296 || null, ponte257: (() => { try { return window.__CPM_MOTORE_OBJ().stato().conta.ponte257 || 0; } catch (e) { return null; } })() }));/* [giro 272] quante volte il ponte ha negato il dischetto all'eroe (giro 257) */
     const bat = fase === 'battuta' ? (W.ko27[nKo27] || null) : null, rip = W.ko207.slice(nKo207).find(k => k.fine === 'kickoff' || k.dopo === 'kickoff') || W.ko207[W.ko207.length - 1] || null;
-    return { caso, braccio, fase, fine, nChieste, tiro296, stile: stile && (stile.label || stile.err), battuta: bat, ripresa: rip ? { lato: rip.lato, fine: rip.fine || rip.dopo, palla: rip.pallaFine || rip.palla } : null, errs: errs.slice(0, 2) };
+    return { caso, braccio, fase, fine, nChieste, tiro296, stile: stile && (stile.label || stile.err), battuta: bat, ripresa: rip ? { lato: rip.lato, fine: rip.fine || rip.dopo, palla: rip.pallaFine || rip.palla, sch: rip.sch, eroe: rip.eroe, scena: rip.scena, rig296: rip.rig296, min: rip.min } : null, ko207: W.ko207.slice(nKo207).map(k => ({ min: k.min, sch: k.sch, scena: k.scena, eroe: k.eroe, rig: k.rig296, fine: k.fine || k.dopo })), errs: errs.slice(0, 2) };
   } catch (e) { return { caso, braccio, fase: 'errore ' + String(e.message || e).slice(0, 120) }; }
   finally { await ctx.close(); }
 }
 
 for (const caso of casi) for (const br of bracci) {
-  let r = null; for (let t = 0; t < (CASI[caso].compagno ? 5 : 3); t++) { r = await giro(caso, br, t); console.log(`${caso} ${br} tentativo ${t + 1}: ${JSON.stringify(r)}`); if (r.battuta) break; }
+  /* [giro 332 · PO-620] il caso «compagno» si giudica SOLO se il gol del compagno e' caduto FUORI dalla scena e senza un gol dell'eroe in
+     scena da smaltire (testimone __CPM_KO207: scena false, eroe false). MISURATO (3+3 corse del rosso, 22/11): quando il rigore del compagno
+     entra mentre il motore e' ancora in scena, la ripresa schiera i ventidue per la regola del giro 27 (`sch` da `scena`) in ENTRAMBI i
+     bracci: il rosso usciva «fuori 0» (il difetto non si vede) e il verde passava senza aver esercitato la correzione del 296. Quella corsa
+     ora e' «non valida» e si ritenta con il tentativo successivo, come gia' si faceva col rigore parato. Nessuna soglia cambiata. */
+  const valida = (r) => !!(r && r.battuta && (!CASI[caso].compagno || (r.ripresa && r.ripresa.scena === false && r.ripresa.eroe === false)));
+  let r = null; for (let t = 0; t < (CASI[caso].compagno ? 6 : 3); t++) { r = await giro(caso, br, t); console.log(`${caso} ${br} tentativo ${t + 1}: ${JSON.stringify(r)}`); if (valida(r)) break;
+    if (r && r.battuta) { console.log(`  (tentativo ${t + 1} non valido: gol del compagno caduto in scena o dopo un gol dell'eroe in scena — si ritenta)`); r = { ...r, battuta: null, fase: 'non valido (gol in scena)' }; } }
   esito[caso + '/' + br] = r;
 }
 await b.close(); srv.close();
@@ -93,7 +100,8 @@ const g = [];
 for (const caso of casi) {
   const V = esito[caso + '/verde'], R = esito[caso + '/rosso'];
   if (V) { if (!V.battuta) g.push(`${caso} verde: nessuna battuta dopo il gol (fase ${V.fase}): misura cieca`);
-    else { if (CASI[caso].compagno && !(V.tiro296 && V.tiro296.eroe === false && V.fine.ponte257 >= 1)) g.push(`${caso} verde: il rigore non l'ha tirato un compagno (${JSON.stringify(V.tiro296)}, ponte257 ${V.fine.ponte257}): non giudicato`); if (!(V.ripresa && V.ripresa.fine === 'kickoff' && V.ripresa.palla && V.ripresa.palla[0] === 50 && V.ripresa.palla[1] === 50 && V.ripresa.lato === 'away')) g.push(`${caso} verde: la ripresa non e' dal centro con la palla a chi ha subito ${JSON.stringify(V.ripresa)}`);
+    else { if (CASI[caso].compagno && !(V.ripresa && V.ripresa.rig296 === true)) g.push(`${caso} verde: la ripresa non e' passata dalla regola del giro 296 (rig296 ${V.ripresa && V.ripresa.rig296}): non giudicato`);
+      if (CASI[caso].compagno && !(V.tiro296 && V.tiro296.eroe === false && V.fine.ponte257 >= 1)) g.push(`${caso} verde: il rigore non l'ha tirato un compagno (${JSON.stringify(V.tiro296)}, ponte257 ${V.fine.ponte257}): non giudicato`); if (!(V.ripresa && V.ripresa.fine === 'kickoff' && V.ripresa.palla && V.ripresa.palla[0] === 50 && V.ripresa.palla[1] === 50 && V.ripresa.lato === 'away')) g.push(`${caso} verde: la ripresa non e' dal centro con la palla a chi ha subito ${JSON.stringify(V.ripresa)}`);
       if (V.battuta.fuori > 2) g.push(`${caso} verde: ${V.battuta.fuori} giocatori nella meta' sbagliata alla battuta`);
       if (V.battuta.hold < 8) g.push(`${caso} verde: palla ferma al centro solo ${V.battuta.hold} passi`);
       if (V.errs && V.errs.length) g.push(`${caso} verde: errori di pagina ${V.errs.join(' | ')}`); } }
