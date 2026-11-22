@@ -1,0 +1,28 @@
+{
+ "versione": "7.999.203",
+ "precedente": "7.999.202",
+ "quando": "2026-11-22T15:36:14.538Z",
+ "tag": "v7.999.203",
+ "modo": "auto",
+ "ramo_lavoro": "lavoro/201",
+ "commit_provato": "df2a3594ce5a02359b210fc7c9bec6bca7e02e46",
+ "commit_lavoro": "c0dd9cf9da666e2c9e8f52ee1212c3dd20949b97",
+ "corsa_treno": "45033490326",
+ "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45033490326",
+ "unioni": [
+  "Unione sviluppo/giro321-salvataggio-giornata in lavoro/201"
+ ],
+ "nota": "[7.999.203] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45033490326): Unione sviluppo/giro321-salvataggio-giornata in lavoro/201. Rossi dichiarati: quelli della 7.999.202.",
+ "treno": {
+  "tipo": "trenino",
+  "guardiani": 35,
+  "verdi": 35,
+  "parti": "3/3",
+  "mappa_intera": false,
+  "rossi_nuovi": [],
+  "non_giudicati": [],
+  "rossi_noti": [],
+  "rossi_noti_runner": []
+ },
+ "deploy": "avviato dopo il push: esito nello stato del commit «rilascio-vagone» e nella corsa"
+}

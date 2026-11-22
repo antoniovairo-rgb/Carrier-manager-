@@ -6205,7 +6205,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.202";/* [7.999.202] musica della serata di presentazione «The Storm Chasers» (Eldritch Grim, CC0; fine stagione invariata) (giro 316, PO-602); testi «🎉 Si comincia! →» e «Vuoi giocare solo i momenti salienti? Lo scegli nel pre-partita» (giro 318, PO-605); eroe di ripiego dell'intro «Gabriel Ferreyro», maglia FERREYRO n. 9, al posto di un nome reale, che entra nella lista dei nomi vietati (giro 320, PO-619); trenini e treno grande notturno (giro 317, PO-604, nessun effetto nel gioco). Pubblicata a mano (PO 22/11) dopo il treno completo 45010544455 e due verifiche sul banco: nessuna regressione; sonde instabili corrette (svincolato-264, squalifica-222, attesa-difesa). */
+const GAME_VERSION="7.999.203";/* [7.999.203] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45033490326): Unione sviluppo/giro321-salvataggio-giornata in lavoro/201. Rossi dichiarati: quelli della 7.999.202. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -11103,6 +11103,18 @@ function recuperaGiornateMancate(p,isStale){try{
   const daMe=m=>H.some(h=>(h.week||0)===(m.week||0)&&h.opponent===m.opponentName);
   const cand=(p.calendar||[]).filter(m=>m&&!m.type&&m.matchday!=null&&(m.week||0)<wk&&!m.result&&!daMe(m)&&(m.played?!!m.healed418:!(isStale&&isStale(p,m)))).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
   if(!cand.length)return null;
+  /* [giro 321 PO-349, trovato dal giro 145] UNA GIORNATA NON SI CONTA DUE VOLTE. Con la classifica avanti rispetto al calendario
+     (calendario assente e rigenerato dalla migrazione, o giornate contate ma mai segnate) la regola (H) di _isStaleMd ritira le
+     giornate «gia' contate» (healed418) e qui venivano risimulate e contate di nuovo: misurato 10 → 20 giocate alla settimana 12 di
+     un girone da 34, e poi la (H) ritirava anche la giornata 11 mai giocata. Le giornate da recuperare sono al massimo quelle passate
+     (settimana < corrente) che la classifica dell'eroe non conta ancora. Testimone window.__CPM_G321. Rosso __CPM_NO_G321 = 7.999.202. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G321)){
+    const _me321=(p.standings||[]).find(r=>r&&(r.id===myId||r.n===p.club.n));
+    const _pas321=(p.calendar||[]).filter(m=>m&&!m.type&&m.matchday!=null&&(m.week||0)<wk).length;
+    const _max321=Math.max(0,_pas321-((_me321&&_me321.played)|0));
+    try{if(typeof window!=='undefined')window.__CPM_G321={cand:cand.length,passate:_pas321,contate:(_me321&&_me321.played)|0,max:_max321};}catch(_e){}
+    if(cand.length>_max321)cand.splice(_max321);
+    if(!cand.length)return null;}
   const sh=p.clubPrestigeShifts||{};let st=p.standings;const ris={};const voci=[];
   for(const m of cand){
     const opp=(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.id===m.opponentId))||(p.standings||[]).find(r=>r&&r.id===m.opponentId)||(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.n===m.opponentName));

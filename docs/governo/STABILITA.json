@@ -1,5 +1,102 @@
 [
  {
+  "data": "2026-11-22 13:24",
+  "versione": "7.999.202",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "salvataggio-321",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 54
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 184
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 298
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 391
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 631
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 284
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 172
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 119
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 115
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 48
+   }
+  ]
+ },
+ {
   "data": "2026-11-22 08:53",
   "versione": "7.999.201",
   "catena": "giro",
@@ -22073,112 +22170,5 @@
   ],
   "composto": true,
   "nota_composto": "passi gia' verdi prima del riavvio del container (cigraf-parte1.log): box-fischio-169, grafica-168, grafica-v2, simula-v2, momenti-v2, partita-v2, patrimonio-303, intro-292, tema-unico, partita2d-297, spazio-296, pc-tablet-292, panchina-293, cori-291, colori-286, livello-79, barra-360-72, pallone-278, griglia-mobile, design-system, career-critical, test:logic, save-compat, titolo-110, pre-188, rimbalzo-189, calendario-offerte-195, walkout-fermi-197, fila-206, premiazione-palco-191, coppa-mani-191"
- },
- {
-  "data": "2026-11-21 18:46",
-  "versione": "7.999.200",
-  "catena": "giro",
-  "passi": [
-   {
-    "passo": "serata-314",
-    "ok": true,
-    "s": 29
-   },
-   {
-    "passo": "serata-261",
-    "ok": true,
-    "s": 442
-   },
-   {
-    "passo": "pelle-240",
-    "ok": true,
-    "s": 325
-   },
-   {
-    "passo": "mappa-unica",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "migrazione-194",
-    "ok": true,
-    "s": 26
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "tema-unico",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 206
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 357
-   },
-   {
-    "passo": "battito-264",
-    "ok": true,
-    "s": 409
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 622
-   },
-   {
-    "passo": "render-3d-023",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "tunnel-285",
-    "ok": true,
-    "s": 290
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 211
-   },
-   {
-    "passo": "home-298",
-    "ok": true,
-    "s": 121
-   },
-   {
-    "passo": "schermate-97",
-    "ok": true,
-    "s": 132
-   },
-   {
-    "passo": "web-237",
-    "ok": true,
-    "s": 55
-   }
-  ]
  }
 ]
