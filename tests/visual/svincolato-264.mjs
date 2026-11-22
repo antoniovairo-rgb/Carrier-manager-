@@ -58,7 +58,11 @@ let WE = null, WL = null, OPP = null;
 { const { ctx, page } = await apri(baseSave({}));
   OPP = await page.evaluate(() => { const c = CLUBS.find(c => c.lg !== 'Deutsche Liga' && !c.isU18 && c.p >= 70 && c.p <= 82); return c && { id: c.id, n: c.n }; });
   for (let w = 3; w <= 36 && !(WE && WL); w++) {
-    await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w); await sleep(220);
+    await page.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false }), w);
+    /* [verifica 202] si aspetta che la pagina abbia applicato la settimana (l'harness si registra a ogni render: snapshot e thisWeekMd
+       vengono dallo stesso oggetto), non 220 ms fissi: sotto carico la lettura restava indietro di una settimana, la W9 libera
+       veniva saltata e si iniettava la gara nella W10 che ha gia' la sua di lega (due gare simulate, «0→2»). */
+    await page.waitForFunction((w) => { try { return window.__CPM_CAREER.snapshot().week === w; } catch (e) { return false; } }, w, { timeout: 10000 }); await sleep(120);
     const t = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
     if (!t && !WE) WE = w; if (t && !t.type && !WL) WL = w;
   }
