@@ -1,0 +1,89 @@
+s1 seme 5 (fine, 645 s, 92') scene 4
+  21' difesa        x 68 y 43 | 🔥 BIANCHI esce palla al piede: aggredisci!
+  37' punizione     x 78.4 y 38.1 | 📐 Punizione dal limite, 26 metri: tocca a te!
+  41' spalle        x 80.9 y 36 | CATTANEO ti è addosso: spalle alla porta!
+  55' conclusione   x 83.1 y 36.7 | 🎯 Palla in area, BIANCHI addosso!
+s1 seme 4 (fine, 774 s, 90') scene 7
+   5' fra-le-linee  x 77.6 y 46.9 | 🧠 Ricevi fra le linee: hai spazio!
+  12' difesa        x 63.6 y 39.3 | 🔥 QUATTROCCHI esce palla al piede: aggredisci!
+  24' fascia        x 65 y 27.3 F1 F2 | ↗️ Palla sulla fascia: metti in mezzo?
+  43' fra-le-linee  x 73.7 y 42.8 | 🧠 Fra le linee, BIANCHI esce in ritardo!
+  58' fra-le-linee  x 73.8 y 46.6 | 🧠 Ricevi fra le linee: hai spazio!
+  78' fra-le-linee  x 73.6 y 38.3 | 🧠 Fra le linee, BIANCHI esce in ritardo!
+  90' punizione     x 80.6 y 38.5 | 📐 Punizione a 23 metri: RIZZI sistema la barriera!
+s1 seme 3 (fine, 837 s, 92') scene 2
+  19' difesa        x 53.4 y 65.8 | 🛡️ Ripiegamento: LUCA prova a ripartire!
+  28' conclusione   x 83.6 y 62.3 | 💥 Spazio per il tiro dal limite!
+s1 seme 2 (fine, 840 s, 92') scene 4
+  10' difesa        x 59.6 y 42.9 | 🛡️ QUATTROCCHI ti punta a centrocampo: fermalo!
+  20' punizione     x 81.1 y 39.1 | 📐 Punizione a 22 metri: RIZZI sistema la barriera!
+  20' scheda        x 82 y 53 | 🎯 La palla rimbalza al limite!
+  35' fra-le-linee  x 73.8 y 65.4 | 🧠 Fra le linee, CATTANEO esce in ritardo!
+s5 seme 2 (tetto, 900 s, 90') scene 6
+  10' difesa        x 49.1 y 43.4 | 🛡️ Ripiegamento: HERZOG prova a ripartire!
+  23' fra-le-linee  x 73.5 y 45.4 | 🧠 Fra le linee, HERZOG esce in ritardo!
+  60' spalle        x 83.5 y 42.5 | 🧱 Spalle alla porta, marcatura stretta!
+  66' punizione     x 79.3 y 45.2 | 📐 Punizione dal limite, 20 metri: tocca a te!
+  73' conclusione   x 85 y 42.7 | 💥 Palla buona al limite dell'area!
+  90' fra-le-linee  x 78 y 42.6 | 🧠 Ricevi fra le linee: hai spazio!
+s5 seme 3 (fine, 863 s, 92') scene 6
+   5' fra-le-linee  x 73.5 y 50.2 | 🧠 Fra le linee, NITZSCHE esce in ritardo!
+   9' difesa        x 80.5 y 43 | 🔥 JUNG esce palla al piede: aggredisci!
+  13' punizione     x 81.2 y 46.4 | 📐 Punizione a 18 metri: WEISS sistema la barriera!
+  20' conclusione   x 92.3 y 53.3 | 🎯 In area con il marcatore alle costole!
+  56' conclusione   x 79.8 y 37.4 | 💥 Palla buona al limite dell'area!
+  81' fra-le-linee  x 73.7 y 41.8 | 🧠 Fra le linee, JUNG esce in ritardo!
+s5 seme 4 (tetto, 900 s, 82') scene 6
+  10' difesa        x 59.7 y 66.2 | 🔥 Pressing alto su HERZOG: riconquista palla!
+  31' fra-le-linee  x 73.5 y 51.9 | 🧠 Fra le linee, MÜLLER esce in ritardo!
+  53' fra-le-linee  x 73.8 y 43.9 | 🧠 Fra le linee, JUNG esce in ritardo!
+  53' scheda        x 77.2 y 46 | ⚡ JUNG è saltato: campo aperto davanti a te!
+  68' punizione     x 79.7 y 32 | 📐 Punizione a 27 metri: WEISS sistema la barriera!
+  72' conclusione   x 80.4 y 36 | 💥 Spazio per il tiro dal limite!
+s5 seme 5 (tetto, 901 s, 72') scene 6
+   5' fra-le-linee  x 77.5 y 57.5 | 🧠 Fra le linee, HERZOG esce in ritardo!
+  10' difesa        x 71 y 49.4 | 🔥 Pressing alto su HERZOG: riconquista palla!
+  19' punizione     x 78.8 y 44.2 | 📐 Punizione dal limite, 21 metri: tocca a te!
+  50' angolo        x 85 y 41.3 F3 | 🚩 Calcio d'angolo: il pallone spiove in area!
+  66' cross         x 85 y 35 F3 | ✈️ Il cross di GÜNTHER arriva alto in area!
+  72' conclusione   x 80.6 y 37.3 | 💥 Palla buona al limite dell'area!
+s12 seme 2 (tetto, 900 s, 80') scene 6
+   3' fra-le-linee  x 74.1 y 38 | 🧠 Ricevi fra le linee: hai spazio!
+   7' difesa        x 80.1 y 35.7 | 🔥 Pressing alto su BAILEY: riconquista palla!
+  18' fra-le-linee  x 73.6 y 40.3 | 🧠 Fra le linee, BAILEY esce in ritardo!
+  30' angolo        x 87.6 y 41 F3 | 🚩 Calcio d'angolo: il pallone spiove in area!
+  38' fra-le-linee  x 73.7 y 43.8 | 🧠 Fra le linee, LANE esce in ritardo!
+  79' fra-le-linee  x 73.6 y 44.5 | 🧠 Fra le linee, MITCHELL esce in ritardo!
+s12 seme 3 (tetto, 900 s, 80') scene 7
+   2' fra-le-linee  x 74 y 38.4 | 🧠 Ricevi fra le linee: hai spazio!
+  12' difesa        x 73 y 38.4 | 🔥 Pressing alto su ROSS: riconquista palla!
+  26' fra-le-linee  x 73.5 y 37.7 | 🧠 Fra le linee, BAILEY esce in ritardo!
+  45' fra-le-linee  x 73.5 y 36.9 | 🧠 Ricevi fra le linee: hai spazio!
+  52' punizione     x 78.4 y 63.9 | 📐 Punizione dal limite, 27 metri: tocca a te!
+  59' conclusione   x 80.2 y 50.3 | 💥 Palla buona al limite dell'area!
+  70' angolo        x 87.6 y 48.7 F3 | 🚩 Calcio d'angolo: il pallone spiove in area!
+s12 seme 4 (tetto, 900 s, 77') scene 7
+   2' fra-le-linee  x 73.7 y 37.3 | 🧠 Fra le linee, BAILEY esce in ritardo!
+   7' difesa        x 62.8 y 39 | 🔥 Pressing alto su BAILEY: riconquista palla!
+  19' fra-le-linee  x 73.5 y 38 | 🧠 Fra le linee, BAILEY esce in ritardo!
+  35' fra-le-linee  x 77.6 y 41.6 | 🧠 Fra le linee, BAILEY esce in ritardo!
+  52' fra-le-linee  x 77.6 y 42 | 🧠 Ricevi fra le linee: hai spazio!
+  61' cross         x 91.8 y 35.3 F3 | ✈️ Cross di THORNTON: attacca il pallone in area!
+  64' conclusione   x 96 y 35 | 🎯 Palla in area, MARSHALL addosso!
+s12 seme 5 (tetto, 900 s, 79') scene 5
+   2' fra-le-linee  x 74.1 y 37 | 🧠 Fra le linee, BAILEY esce in ritardo!
+   7' difesa        x 66.5 y 37.9 | 🔥 Pressing alto su BAILEY: riconquista palla!
+  50' angolo        x 85 y 40.3 F3 | 🚩 Calcio d'angolo di SPENCER: attacca il pallone!
+  52' fra-le-linee  x 63.9 y 37.3 | 🧠 Ricevi fra le linee: hai spazio!
+  73' fra-le-linee  x 74.1 y 46.9 | 🧠 Ricevi fra le linee: hai spazio!
+
+misura-324 verde
+s1       partite 4 (finite 4) · scene 17 (4.3/partita) · F1 tipo fascia 1 (5.9%) · F2 eroe largo 1 (5.9%) · F3 cross/angolo verso l'eroe 0 (0.0%) · partite con almeno una scena F1/F2: 1/4
+         tipi: fra-le-linee 5 · difesa 4 · punizione 3 · conclusione 2 · scheda 1 · fascia 1 · spalle 1
+s5       partite 4 (finite 1) · scene 24 (6.0/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 2 (8.3%) · partite con almeno una scena F1/F2: 0/4
+         tipi: fra-le-linee 7 · conclusione 5 · difesa 4 · punizione 4 · spalle 1 · scheda 1 · angolo 1 · cross 1
+s12      partite 4 (finite 0) · scene 25 (6.3/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 4 (16.0%) · partite con almeno una scena F1/F2: 0/4
+         tipi: fra-le-linee 14 · difesa 4 · angolo 3 · conclusione 2 · punizione 1 · cross 1
+TUTTE    partite 12 (finite 5) · scene 66 (5.5/partita) · F1 tipo fascia 1 (1.5%) · F2 eroe largo 1 (1.5%) · F3 cross/angolo verso l'eroe 6 (9.1%) · partite con almeno una scena F1/F2: 1/12
+         tipi: fra-le-linee 26 · difesa 12 · conclusione 9 · punizione 8 · angolo 4 · scheda 2 · spalle 2 · cross 2 · fascia 1
+ATTENZIONE: 7 partite non finite (non contano come misura piena)
