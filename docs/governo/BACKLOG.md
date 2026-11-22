@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (110)
+## Voci aperte o parziali (111)
 
-Per lotto: 7.999.197 2 · 7.999.203 | 38 · 7.999.197 | 13 · — 14 · 7.999.203 43.
+Per lotto: 7.999.197 2 · 7.999.203 | 38 · 7.999.197 | 13 · — 14 · 7.999.203 44.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -130,6 +130,7 @@ Per lotto: 7.999.197 2 · 7.999.203 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-621 | 22/11 11:20 | PO: «ok metti in coda» — accorciare i trenini: le righe della mappa unica per src/16 (e src/11-12-13) scelgono 120+ guardiani (giro 317: vagone su src/16 = 123 guardiani, ~1 ora di parete). Da fare: misurare quali guardiani guardano davvero ciascun file (per esempio dai simboli/sezioni toccati o dagli esiti storici) e stringere le righe senza perdere copertura; il treno grande notturno resta la rete di sicurezza. Obiettivo misurato: durata del trenino tipico prima/dopo | metodo di rilascio (trenino, mappa) | IN CODA — 203 | 7.999.203 | — | mappa-unica, trenino-317 | richiesta PO 22/11 |
 | PO-622 | 22/11 11:25 | PO (foto docs/collaudo-po/202-personal-trainer-consigliato.png, staff → Personal trainer livello 3/3, scelta dell'attributo): «consigliato è sbagliato, magari punto di forza» — l'etichetta «★ consigliato» sotto tecnica 68 e tiro 72 (legenda: «★ pesa di più nel giudizio ed è ancora basso») non è la parola giusta; proposta del PO: «punto di forza». Al momento del giro: allineare etichetta e legenda (se l'etichetta diventa «punto di forza», la legenda va riscritta di conseguenza: oggi segna gli attributi che pesano di più nel ruolo) PO 11:30: «consigliato deve essere sui punti deboli!» → la stella «consigliato» va sugli attributi più deboli da allenare (nella foto passaggio 55, velocità 59, mentalità 59), non su tecnica 68 e tiro 72 come oggi; l'eventuale «punto di forza» resta un'indicazione diversa per gli attributi alti | logica + testo (UI, staff) | IN CODA — 203 | 7.999.203 | — | — | foto PO 22/11 |
 | PO-623 | 22/11 11:45 | PO (foto docs/collaudo-po/202-home-due-tasti-rossi.jpg, Home al telefono, FC Merseyside St. 17 Sett. 23): «I due pulsanti rossi con le frecce sono molto simili e fanno un po' a cazzotti tra di loro» — «⏭ AVANZA SETTIMANA W.23 → W.24» e «⏩ VAI AL PROSSIMO MOMENTO fino alla partita chiave · sett. 26» uno sotto l'altro, stesso colore pieno e icone quasi uguali. Da proporre al PO: un solo tasto primario (l'altro secondario, o unificati in un tasto con scelta), gerarchia visiva chiara, icone distinte. Collegate: PO-384/400/405/410/411/446 (tasto momento), PO-615 (decisioni in sospeso nella Home) | UI (Home, tasti) | IN CODA — 203 | 7.999.203 | — | — | foto PO 22/11 |
+| PO-624 | 22/11 14:35 | Madre (difetto del metodo, 22/11): dopo la pubblicazione a mano della 7.999.202 il treno di controllo rimasto in corsa occupava le 20 macchine di GitHub e il deploy del sito è rimasto in coda ~15 minuti finché il PO non ha annullato la corsa a mano; in più i deploy dei soli documenti falliscono spesso nel passo «Deploy to GitHub Pages» (11:06 e 13:12 del 22/11, 20/11). Da fare: il deploy del gioco non deve mai aspettare dietro a un treno (priorità o treno che cede il posto, oppure niente deploy per i soli documenti) e capire i fallimenti del passo di pubblicazione | metodo di rilascio (deploy) | IN CODA — 203 | 7.999.203 | — | — | 22/11 |
 
 ## Storico — voci chiuse (513)
 
