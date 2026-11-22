@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (105)
+## Voci aperte o parziali (106)
 
-Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 38.
+Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 39.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -125,6 +125,7 @@ Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-612 | 22/11 00:40 | PO: «È possibile riprovare a rivedere capigliatura e viso dei giocatori 3D in linea con le relative figurine?» — seguito di PO-500 (giro 240, 7.999.197: tinta di pelle e capelli dalla figurina). Restano diversi: forma/taglio dei capelli e tratti del viso (barba, lineamenti), che sui corpi 3D attuali sono fissi nel modello (limite già dichiarato per CH38: volto/occhi/barba non variabili). Prima: misura di quanto 3D e figurina divergono (taglio, lunghezza, barba, carnagione) su un campione di giocatori e le opzioni possibili (calotte di capelli intercambiabili, barba come strato, texture del volto per carnagione), con peso in MB e licenze; poi proposta al PO | richiesta (3D, coerenza figurine) | IN CODA — 202 | 7.999.202 | — | pelle-240 | richiesta PO 22/11 |
 | PO-613 | 22/11 08:30 | PO (foto docs/collaudo-po/201-evento-scarpini-veterano.jpg, telefono, FC Merseyside St. 17 Sett. 20): «Fuori luogo per l'età dell'eroe, ha oltre 30 anni!» — evento settimanale «Trovi gli scarpini appesi alla traversa. Il veterano fischietta innocente… domani tocca a te scegliere la vittima» (scherzo al giovane) a un eroe trentenne, che nello spogliatoio è lui il veterano. Da fare: censire gli eventi settimanali che presuppongono un'età o un'anzianità (giovane/nuovo arrivato/veterano) e legarli all'età e agli anni nel club dell'eroe; per i trentenni le varianti dal lato del veterano. Collegate: PO-436 (settimane da trentenne), PO-586 («da anni» al primo anno) | testo/eventi (età) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
 | PO-614 | 22/11 08:35 | PO (foto docs/collaudo-po/201-formazioni-maglia-eroe.png, schermata Formazioni prima dell'ingresso): «l'eroe non deve avere una maglia diversa» — la maglietta dell'eroe (90 NUNEZ) è disegnata diversa dalle altre (senza le maniche del secondo colore); deve essere la stessa divisa dei compagni. PO 08:40: «ed il quadrato intorno è brutto, lo toglierei» → via anche il riquadro bianco: l'eroe resta riconoscibile solo dal nome in evidenza (giallo) | UI (formazioni) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
+| PO-615 | 22/11 08:45 | PO (foto docs/collaudo-po/201-home-box-sponsor.png, Home: «Patto col mister 0/2 assist» e «Offerta di sponsor · Nexon Worldwide» con «Firmo l'accordo / Non ora»): «questi box all'occorrenza si perdono nella home ed il player potrebbe non accorgersene». Le decisioni in sospeso (offerte, sponsor, scelte) devono farsi notare: da proporre come metterle in evidenza (in cima, nel contatore «Da decidere», o come finestra al momento giusto). Nota: tocca lo stesso tema di PO-224 (finestre al posto dei riquadri), chiusa il 21/11 su decisione del PO; questa è una richiesta nuova e più precisa | UI (Home, decisioni in sospeso) | IN CODA — 202 | 7.999.202 | — | — | foto PO 22/11 |
 
 ## Storico — voci chiuse (509)
 
