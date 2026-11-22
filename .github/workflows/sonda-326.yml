@@ -1,0 +1,14 @@
+name: Sonda 326 (attesa di una macchina)
+# [giro 326, PO-624] solo sui rami prova-cd/giro326-sonda-*: un job minimo che misura quanto aspetta una macchina libera
+# mentre gira un treno (al posto del deploy, che non si puo' provare senza pubblicare il sito).
+on:
+  push:
+    branches: ['prova-cd/giro326-sonda-**']
+permissions:
+  contents: read
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo "macchina trovata $(date -u +%FT%TZ)"
