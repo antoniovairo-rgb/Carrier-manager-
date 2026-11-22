@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (112)
+## Voci aperte o parziali (113)
 
-Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 43 · 7.999.203 2.
+Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.202 43 · 7.999.203 3.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -132,6 +132,7 @@ Per lotto: 7.999.197 2 · 7.999.202 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-619 | 22/11 09:50 | PO: «Rivedi l'intro, il nome del calciatore non deve essere Giovanni Pisano (ex attaccante vero) ma un nome di fantasia». BUG GRAVE (nome di persona reale; controllo copyright bloccante per lo store) → fuori coda. Punti: src/19 intro (didascalia «Giovanni Pisano. Numero 9…» e cognome sulla maglia «PISANO»), src/17 esempio del campo Nome («Es. Giovanni Pisano»), commento in tests/visual/scene-178.mjs. PO sceglie «Gabriel Ferreyra», che risulta un calciatore reale (Franco Gabriel Ferreyra, Wikipedia) → PO: «Gabriel Ferreyro» (nessun calciatore trovato con questo nome, ricerca 22/11). Aggiungere «Giovanni Pisano» alla blocklist _CR_PLAYERS dell'audit copyright | difetto grave (nomi, copyright) | DA FARE — 202 (giro 320, bug grave: sale sul vagone in viaggio, PO 22/11 «Eccetto bug gravi») | 7.999.202 | — | audit-copyright | richiesta PO 22/11 |
 | PO-620 | 22/11 11:10 | Madre (regola PO sugli instabili, verifica 202 docs/sviluppo/VERIFICA202-ROSSI.md): controlli da riparare, dichiarati per ora in ROSSI-DICHIARATI: walkout-fermi-197 (campionamento: verde a ridosso della soglia, rosso sul runner), rigori-296 parte C (braccio rosso «compagno» di ripartenza-piazzato-27 che non mostra il difetto), diagonali-210 (invio dei tasti dipendente dalla velocità della macchina). Più scene-178 rosso sul banco anche su lavoro/201 (giro 320) | controlli (instabili) | IN CODA — 203 | 7.999.203 | — | walkout-fermi-197, rigori-296, diagonali-210, scene-178 | verifica 202 22/11 |
 | PO-621 | 22/11 11:20 | PO: «ok metti in coda» — accorciare i trenini: le righe della mappa unica per src/16 (e src/11-12-13) scelgono 120+ guardiani (giro 317: vagone su src/16 = 123 guardiani, ~1 ora di parete). Da fare: misurare quali guardiani guardano davvero ciascun file (per esempio dai simboli/sezioni toccati o dagli esiti storici) e stringere le righe senza perdere copertura; il treno grande notturno resta la rete di sicurezza. Obiettivo misurato: durata del trenino tipico prima/dopo | metodo di rilascio (trenino, mappa) | IN CODA — 203 | 7.999.203 | — | mappa-unica, trenino-317 | richiesta PO 22/11 |
+| PO-622 | 22/11 11:25 | PO (foto docs/collaudo-po/202-personal-trainer-consigliato.png, staff → Personal trainer livello 3/3, scelta dell'attributo): «consigliato è sbagliato, magari punto di forza» — l'etichetta «★ consigliato» sotto tecnica 68 e tiro 72 (legenda: «★ pesa di più nel giudizio ed è ancora basso») non è la parola giusta; proposta del PO: «punto di forza». Al momento del giro: allineare etichetta e legenda (se l'etichetta diventa «punto di forza», la legenda va riscritta di conseguenza: oggi segna gli attributi che pesano di più nel ruolo) | testo (UI, staff) | IN CODA — 203 | 7.999.203 | — | — | foto PO 22/11 |
 
 ## Storico — voci chiuse (509)
 
