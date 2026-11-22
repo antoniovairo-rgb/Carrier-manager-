@@ -50,6 +50,7 @@ async function scelta317() {
   return { tipo: s.tipo, guardiani: s.guardiani, scelta: { base: s.base.sha, base_come: s.base.come, merge_base: s.base.merge_base, toccati: s.toccati.length, scoperti: s.scoperti, motivo: s.motivo } };
 }
 const S317 = cmd === 'piano' ? await scelta317() : null;
+export const TETTO_GRANDE = 15, TETTO_TRENINO = 4, MACCHINE_ACCOUNT = 20;   /* [giro 326] vedi piano() */
 function piano() {
   const { CATENE, MAPPA } = leggiCatene();
   const script = leggiJSON(path.join(QUI, 'package.json'), {}).scripts || {};
@@ -66,10 +67,20 @@ function piano() {
   const taglia = N => { const parti = Array.from({ length: N }, (_, i) => ({ parte: i + 1, guardiani: [], attesi_s: 0 }));
     for (const v of [...voci].sort((x, y) => y.s - x.s || (x.n < y.n ? -1 : 1))) { const p = parti.reduce((m, q) => (q.attesi_s < m.attesi_s ? q : m), parti[0]); p.guardiani.push(v.n); p.attesi_s += v.s; }
     return parti; };
-  let N = Math.max(1, Math.ceil(tot / OB)), parti = taglia(N);
+  /* [giro 326] mai piu' parti che guardiani: con un obiettivo corto (obiettivo_min=1) il piano apriva parti VUOTE (85 per 22 guardiani,
+     misurato nella prova del giro 326), ognuna una macchina che installa Chromium per niente */
+  let N = Math.max(1, Math.min(voci.length, Math.ceil(tot / OB))), parti = taglia(N);
   while (N < Math.min(voci.length, 256) && parti.some(p => p.attesi_s > OB && p.guardiani.length > 1)) parti = taglia(++N);
   const nome = p => `parte ${String(p.parte).padStart(2, '0')} di ${N} (${p.guardiani.length} guardiani, ~${Math.round(p.attesi_s / 60)} min)`;
+  /* [giro 326, PO-624] TETTO DI MACCHINE. L'account ha 20 macchine in tutto: il treno grande (29 parti) le prendeva tutte e il deploy
+     del gioco restava in coda (misurato il 22/11: 3.080 s e 3.886 s di attesa, fino all'annullo a mano del treno). Una corsa del treno
+     usa al massimo TETTO_GRANDE parti alla volta (trenino: TETTO_TRENINO), cosi' treno grande + trenino + deploy stanno nelle 20.
+     Con 29 parti il tetto 15 fa due ondate come il tetto 20 (15+14 contro 20+9): il treno non si allunga. */
+  const tipoT = S317 ? S317.tipo : 'mappa';
+  const tetto = +process.env.CPM_TRENO_PARALLELI || (tipoT === 'trenino' ? TETTO_TRENINO : TETTO_GRANDE);
+  const paralleli = Math.max(1, Math.min(N, tetto));
   return {
+    paralleli,
     tipo: S317 ? S317.tipo : 'mappa', scelta: S317 ? S317.scelta || null : null,
     riassunto: { guardiani: voci.length, parti: N, obiettivo_s: OB, somma_s: tot, parte_piu_lunga_s: Math.max(...parti.map(p => p.attesi_s)), parte_piu_corta_s: Math.min(...parti.map(p => p.attesi_s)),
       per_fonte: voci.reduce((o, v) => (o[v.fonte] = (o[v.fonte] || 0) + 1, o), {}), senza_script_npm: senza },
@@ -80,12 +91,12 @@ function piano() {
 if (cmd === 'piano') {
   const p = piano();
   console.log(JSON.stringify(p, null, 1));
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrice=' + JSON.stringify(p.matrice) + '\n'
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrice=' + JSON.stringify(p.matrice) + '\n' + 'paralleli=' + p.paralleli + '\n'
     + 'tipo=' + p.tipo + '\n' + 'scelta=' + JSON.stringify(p.scelta) + '\n');
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
     (p.tipo === 'trenino' ? `### TRENINO (giro 317): ${p.scelta.motivo}\n\nultimo rilascio ${p.scelta.base_come} · antenato comune ${p.scelta.merge_base.slice(0, 8)}\n\n`
       : p.tipo === 'completo' ? `### TRENO COMPLETO al posto del trenino (giro 317): ${p.scelta.motivo}\n\n` : '') +
-    `### Piano del treno: ${p.riassunto.guardiani} guardiani in ${p.riassunto.parti} parti\n\nsomma attesa ${Math.round(p.riassunto.somma_s / 60)} min · parte piu' lunga ~${Math.round(p.riassunto.parte_piu_lunga_s / 60)} min · obiettivo ${Math.round(p.riassunto.obiettivo_s / 60)} min · durate: ${JSON.stringify(p.riassunto.per_fonte)}\n`);
+    `### Piano del treno: ${p.riassunto.guardiani} guardiani in ${p.riassunto.parti} parti, al massimo ${p.paralleli} alla volta (giro 326)\n\nsomma attesa ${Math.round(p.riassunto.somma_s / 60)} min · parte piu' lunga ~${Math.round(p.riassunto.parte_piu_lunga_s / 60)} min · obiettivo ${Math.round(p.riassunto.obiettivo_s / 60)} min · durate: ${JSON.stringify(p.riassunto.per_fonte)}\n`);
 } else if (cmd === 'esegui') {
   const nomi = (process.argv[3] || '').split(/\s+/).filter(Boolean);
   const OUT = path.join(QUI, 'out/ci-parte'); fs.mkdirSync(OUT, { recursive: true });
