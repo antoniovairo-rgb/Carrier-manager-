@@ -186,7 +186,10 @@ const CREDITI254=[
     ...((typeof window!=='undefined'&&window.__CPM_NO_G161)?[]:[
     {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:((typeof window!=='undefined'&&window.__CPM_NO_G172)?"«Ohh» del pubblico":"Brusio e «ohh» del pubblico")/* [giro 172] il letto della folla viene da questa registrazione */+". Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Triumphant»",d:"Musica delle premiazioni. Fonte: opengameart.org",aut:"Emma_MA",lic:"CC0 1.0 (pubblico dominio)"},
-    {n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}])]),
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G316)?[{n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}]:[
+    /* [giro 316 PO-602] la serata di presentazione ha il suo brano (CC0, attribuzione non richiesta: voce di cortesia). Rosso __CPM_NO_G316 → voce di prima */
+    {n:"«The World Is Ours»",d:"Musica di fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«The Storm Chasers»",d:"Musica della serata di presentazione. Fonte: opengameart.org",aut:"Eldritch Grim",lic:"CC0 1.0 (pubblico dominio)"}])])]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
     {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[

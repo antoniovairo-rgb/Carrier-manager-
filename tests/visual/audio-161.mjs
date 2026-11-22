@@ -87,18 +87,18 @@ async function sito(rosso) {
     let a = P('crowd.boo'), g = A().golSubiti; AudioMgr.event({ type: 'GoalAgainst' }); o.fischi = P('crowd.boo') - a; o.golSubiti = A().golSubiti - g;
     a = P('crowd.ohh'); AudioMgr.event({ type: 'CoherenceCheck', outKind: 'post' }); AudioMgr.event({ type: 'CoherenceCheck', outKind: 'wide' }); o.ohh = P('crowd.ohh') - a;
     const mus = []; const passo = async (cosa, fn) => { fn(); await new Promise(z => setTimeout(z, 300)); mus.push([cosa, A().musica]); };
-    const pm = P('music.premiazioni'), pc = P('music.cerimonia');
+    const pm = P('music.premiazioni'), pc = P('music.cerimonia'), pp = P('music.presentazione');
     await passo('home', () => AudioMgr.scene('home')); await passo('carriera', () => AudioMgr.scene('career'));
     await passo('premiazioni', () => AudioMgr.ceremony('premiazioni')); await passo('fine', () => AudioMgr.ceremony(null));
     await passo('finestagione', () => AudioMgr.ceremony('finestagione')); await passo('presentazione', () => AudioMgr.ceremony('presentazione'));
     await passo('fine2', () => AudioMgr.ceremony(null)); await passo('carriera2', () => AudioMgr.scene('career'));
-    o.mus = mus; o.brani = { premiazioni: P('music.premiazioni') - pm, cerimonia: P('music.cerimonia') - pc };
+    o.mus = mus; o.brani = { premiazioni: P('music.premiazioni') - pm, cerimonia: P('music.cerimonia') - pc, presentazione: P('music.presentazione') - pp }; /* [giro 316] la serata ha il suo brano (music.presentazione): il controllo del brano per cerimonia e' in musica-316 */
     return o;
   }).catch(e => ({ sonda: false, err: String(e).slice(0, 100) })) : { sonda: false };
   passi.push({ nome: '5 gol subito → fischi della curva da file', ok: r.sonda && r.fischi === 1 && r.golSubiti === 1, info: `sonda=${r.sonda} · fischi da file ${r.fischi} · contatore ${r.golSubiti}` });
   passi.push({ nome: '6 palo e tiro fuori → «ohh» registrato da file', ok: r.sonda && r.ohh === 2, info: `ohh da file ${r.ohh}` });
   const M = Object.fromEntries((r.mus || []).map(([k, v]) => [k, v]));
-  const musOk = r.sonda && M.home == null && M.carriera == null && M.premiazioni === 'cer:premiazioni' && M.fine == null && M.finestagione === 'cer:finestagione' && M.presentazione === 'cer:presentazione' && M.fine2 == null && M.carriera2 == null && r.brani && r.brani.premiazioni === 1 && r.brani.cerimonia === 2;
+  const musOk = r.sonda && M.home == null && M.carriera == null && M.premiazioni === 'cer:premiazioni' && M.fine == null && M.finestagione === 'cer:finestagione' && M.presentazione === 'cer:presentazione' && M.fine2 == null && M.carriera2 == null && r.brani && r.brani.premiazioni === 1 && r.brani.cerimonia + r.brani.presentazione === 2;
   passi.push({ nome: '7 musica SOLO nelle cerimonie, il brano giusto, spenta all\'uscita', ok: musOk, info: `${JSON.stringify(r.mus || [])} · brani avviati ${JSON.stringify(r.brani || {})}` });
   passi.push({ nome: '  errori di pagina (sito)', ok: errs.length === 0, info: JSON.stringify(errs.slice(0, 3)) });
   await b.close(); return passi;

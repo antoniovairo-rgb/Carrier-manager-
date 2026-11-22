@@ -1,5 +1,102 @@
 [
  {
+  "data": "2026-11-21 20:58",
+  "versione": "7.999.200",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "musica-316",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 222
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 326
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 410
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 664
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 307
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 170
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 135
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 53
+   }
+  ]
+ },
+ {
   "data": "2026-11-21 18:46",
   "versione": "7.999.200",
   "catena": "giro",
@@ -22074,178 +22171,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-10 10:10",
-  "versione": "7.999.156",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 64
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 815
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 83
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 44
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 62
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 30
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 21
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 64
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 554
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 390
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 204
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 775
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 313
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 53
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 610
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 428
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 543
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 540
    }
   ]
  }
