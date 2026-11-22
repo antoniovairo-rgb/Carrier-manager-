@@ -16,9 +16,9 @@ La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
 > **Priorità del PO (22/11 17:20, DECISIONI):** 1) velocità dei rilasci: PO-624 → 621 → 620+610 → 603; 2) chiarezza delle schermate: PO-623 → 608 → 609 → 606+617 → 615 → 614+595 → 616+569+570 → 618 → 622; 3) difetti in partita e carriera (più visibili prima); 4) idee nuove dei questionari di novembre, per data di arrivo.
 
-## Voci aperte o parziali (111)
+## Voci aperte o parziali (114)
 
-Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.205 45.
+Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.205 48.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -133,6 +133,9 @@ Per lotto: 7.999.197 1 · 7.999.205 | 38 · 7.999.197 | 13 · — 14 · 7.999.20
 | PO-623 | 22/11 11:45 | PO (foto docs/collaudo-po/202-home-due-tasti-rossi.jpg, Home al telefono, FC Merseyside St. 17 Sett. 23): «I due pulsanti rossi con le frecce sono molto simili e fanno un po' a cazzotti tra di loro» — «⏭ AVANZA SETTIMANA W.23 → W.24» e «⏩ VAI AL PROSSIMO MOMENTO fino alla partita chiave · sett. 26» uno sotto l'altro, stesso colore pieno e icone quasi uguali. Da proporre al PO: un solo tasto primario (l'altro secondario, o unificati in un tasto con scelta), gerarchia visiva chiara, icone distinte. Collegate: PO-384/400/405/410/411/446 (tasto momento), PO-615 (decisioni in sospeso nella Home) | UI (Home, tasti) | IN CODA — 205 | 7.999.205 | — | — | foto PO 22/11 |
 | PO-624 | 22/11 14:35 | Madre (difetto del metodo, 22/11): dopo la pubblicazione a mano della 7.999.202 il treno di controllo rimasto in corsa occupava le 20 macchine di GitHub e il deploy del sito è rimasto in coda ~15 minuti finché il PO non ha annullato la corsa a mano; in più i deploy dei soli documenti falliscono spesso nel passo «Deploy to GitHub Pages» (11:06 e 13:12 del 22/11, 20/11). Da fare: il deploy del gioco non deve mai aspettare dietro a un treno (priorità o treno che cede il posto, oppure niente deploy per i soli documenti) e capire i fallimenti del passo di pubblicazione | metodo di rilascio (deploy) | PARZIALE — deploy che non aspetta il treno FATTO nella 7.999.204 (giro 326); resta per la 205: Validate Situations solo a mano (giro 327) e caricamento dei risultati delle parti più robusto (treno 45050383306: la parte 03 tutta verde ha perso l'artifact per un timeout di GitHub, 5 tentativi, e il rilascio automatico si è fermato; serve un nuovo tentativo del job o il riepilogo letto dai log) | 7.999.205 | — | — | 22/11 |
 | PO-625 | 22/11 18:55 | Dal giro 323 (dubbio 4), PO «Va bene così»: «Resto in Primavera» del progetto 153 §6.2 (rifiutare il salto di gennaio: morale −2, fiducia +4, offerta di giugno garantita con Indice ≥ 75) non è fatto; oggi il rifiuto usa la reazione di sempre | funzione (Primavera) | IN CODA — 205 | 7.999.205 | — | salto-323 | giro 323 22/11 |
+| PO-626 | 22/11 22:05 | Dal giro 329, PO (questionario 22/11): 1) il treno grande di notte controlla se c'è già una corsa e si rimette in coda da solo (oggi con la concorrenza unica può saltare); 2) margine del 10% prima di passare al treno completo (oggi basta un minuto in più); 3) i 4 guardiani della catena «carriera» tornano nei trenini di giorno (via da SOLO_NOTTE_329) | metodo di rilascio (treno) | IN CODA — 205 | 7.999.205 | — | — | giro 329 22/11 |
+| PO-627 | 22/11 22:05 | Dal giro 325, PO (questionario 22/11): event-ledger non arriva al fischio in 240 s sul banco → partita della sonda più veloce, soglia invariata; nello stesso giro la partita intera sul banco, così marcatore-325 copre anche quella | controlli (velocità sonde) | IN CODA — 205 | 7.999.205 | — | event-ledger, marcatore-325 | giro 325 22/11 |
+| PO-628 | 22/11 22:05 | Dal giro 325, PO (questionario 22/11): sui gol dell'eroe in scena lo stesso confronto voce per voce (riga «X segna su assist di Y» contro pagella e momenti chiave), allargando marcatore-325. L'assist nell'avviso del gol: «Lascia così» | controlli (coerenza gol eroe) | IN CODA — 205 | 7.999.205 | — | marcatore-325 | giro 325 22/11 |
 
 ## Storico — voci chiuse (514)
 
