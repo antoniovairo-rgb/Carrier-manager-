@@ -12,8 +12,27 @@ await page.addInitScript(r => { window.__CPM_PRESENT = 1; if (r) window.__CPM_NO
 await openMatch(page, port, { name: 'Attesa32' }); await sleep(1500);
 await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, { timeout: 60000 }).catch(() => {});
 const G = await page.evaluate(() => { const S = window.__CPM_SITS || []; let at = -1, df = -1; for (let i = 0; i < S.length; i++) { const s = S[i]; if (!s) continue; if (at < 0 && !s.def && s.type !== 'def') at = i; if (df < 0 && (s.def || s.type === 'def')) df = i; if (at >= 0 && df >= 0) break; } return { at, df }; });
-const misura = async (gi) => { await page.evaluate(g => { window.__CPM_ATTESA32 = null; window.__CPM_FORCE_SIT(g, true); }, gi); await sleep(9000); return page.evaluate(() => window.__CPM_ATTESA32 || null); };
-const A = await misura(G.at), D = await misura(G.df);
+/* [verifica 202 bis] si misura su EVENTI, non su 9 s fissi (PROCESSO.md, controlli instabili, regola 4). La dissolvenza della posa
+   (src/12 _attesa32, passo aDt*3 con aDt tappato) dura un numero di FOTOGRAMMI, non di secondi: sul runner lento (treno 45010544455)
+   9 s davano pochi campioni e la coda della scena precedente (20 campioni = ~10 corpi x 2 fotogrammi) superava il 3% ammesso; sul banco
+   una finestra capitata mentre i corpi correvano dava 12 campioni contro i 20 chiesti. Ora: (1) la coda si ESCLUDE — il testimone si
+   azzera dopo 0,5 s E almeno 12 fotogrammi di scena (campioni >= 12 x corpi), quando la dissolvenza (<= 3 fotogrammi) e' finita;
+   (2) si osserva almeno 9 s come prima e poi fino a quando la soglia della squadra che deve aspettare e' raggiunta, tetto 40 s.
+   Soglie invariate (20 campioni, coda <= 3%). Il rosso (__CPM_NO_ATTESA32) non raggiunge mai la soglia e resta rosso al tetto. */
+const misura = async (gi, chi) => {
+  await page.evaluate(g => { window.__CPM_ATTESA32 = null; window.__CPM_FORCE_SIT(g, true); }, gi);
+  const t0 = Date.now(); let corpi = 0;
+  for (; Date.now() - t0 < 15000; await sleep(100)) {
+    const w = await page.evaluate(() => { const W = window.__CPM_ATTESA32; return W ? W.campioni : 0; });
+    if (!corpi && w) { await sleep(150); corpi = await page.evaluate(() => { const W = window.__CPM_ATTESA32; return W ? W.campioni : 0; }); }
+    if (Date.now() - t0 >= 500 && w >= 12 * 22) break; }
+  await page.evaluate(() => { window.__CPM_ATTESA32 = null; });
+  const t1 = Date.now(); let W = null;
+  for (; Date.now() - t1 < 40000; await sleep(250)) {
+    W = await page.evaluate(() => window.__CPM_ATTESA32 || null);
+    if (Date.now() - t1 >= 9000 && W && (W[chi] | 0) >= 20) break; }
+  return W; };
+const A = await misura(G.at, 'away'), D = await misura(G.df, 'home');
 await b.close(); srv.close();
 console.log('attacco gi' + G.at, JSON.stringify(A)); console.log('difesa gi' + G.df, JSON.stringify(D));
 const err = []; const ok = (c, m) => { if (!c) err.push(m); console.log((c ? 'ok   ' : 'NO   ') + m); };
