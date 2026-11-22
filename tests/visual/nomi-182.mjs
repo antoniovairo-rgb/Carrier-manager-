@@ -77,7 +77,15 @@ function osservatore() {
       if (tagliato && (n = dentro(t))) perche = 'tagliato';
       else if (tagliato && cs.textOverflow === 'ellipsis' && (n = puntini(t + '…') || null)) perche = 'puntini (ellissi CSS)';
       else if ((n = puntini(t))) perche = 'puntini nel testo';
-      if (perche && visibile(el)) { const k = via(el) + '|' + n + '|' + innerWidth; if (!N.tagli[k]) N.tagli[k] = { via: via(el), nome: n, testo: t, w: el.clientWidth, sw: el.scrollWidth, perche, fase: f, vw: innerWidth }; }
+      /* [giro 332 · PO-620] un taglio conta se SOPRAVVIVE a un passo di disegno. Il campione gira in un compito (setInterval) e forza
+         il layout: puo' cadere fra un cambio del DOM e il passo di disegno in cui il ResizeObserver della scala lo corregge, cioe' su uno
+         stato che lo schermo non mostra mai (misurato sul banco carico: «FC Biancocelesti Primavera» 142>76 px letto a t+0 ms, corretto
+         dal ResizeObserver a t+2 ms prima del disegno). Si riguarda lo stesso elemento dopo il fotogramma successivo (requestAnimationFrame
+         + compito): se e' ancora tagliato col suo testo, e' a schermo. Il lampo di UN fotogramma lo giudica la parte 4, provocato. */
+      if (perche && visibile(el)) { const k = via(el) + '|' + n + '|' + innerWidth; if (!N.tagli[k] && !(N.attesa || (N.attesa = {}))[k]) { N.attesa[k] = 1; const dati = { via: via(el), nome: n, testo: t, w: el.clientWidth, sw: el.scrollWidth, perche, fase: f, vw: innerWidth };
+        requestAnimationFrame(() => setTimeout(() => { delete N.attesa[k]; const t2 = (el.innerText || '').trim(); const cs2 = getComputedStyle(el);
+          const ancora = el.isConnected && visibile(el) && t2 === t && (perche !== 'tagliato' || ((cs2.overflow.includes('hidden') || cs2.overflowX === 'hidden' || cs2.overflow.includes('clip')) && el.scrollWidth > el.clientWidth + 1));
+          if (ancora) N.tagli[k] = dati; else N.transitori = (N.transitori || 0) + 1; }, 0)); } }
     }
   }, 250);
 }
@@ -121,7 +129,7 @@ async function nuovaPagina(vp) {
 async function raccogli(page, vp, etichetta) {
   const N = await page.evaluate(() => window.__N182);
   if (!N || !N.scan) return 0;
-  Object.assign(raccolta.tagli, N.tagli); Object.assign(raccolta.nomi, N.nomi);
+  Object.assign(raccolta.tagli, N.tagli); Object.assign(raccolta.nomi, N.nomi); (raccolta.trPag || (raccolta.trPag = new Map())).set(page, N.transitori || 0);
   for (const x of await tuttiIClub(page)) { const k = x.cpm + '|' + vp.width; if (!raccolta.club[k] || raccolta.club[k].nNessuno < x.nNessuno) raccolta.club[k] = { ...x, vw: vp.width, dove: etichetta }; }
   return N.scan;
 }
@@ -283,7 +291,7 @@ if (ROSSO332) { console.log(`\n[braccio ROSSO __CPM_NO_G332] nomi-182: ${fails.l
 console.log('\n— censimento —');
 const T = Object.values(raccolta.tagli);
 for (const t of T) console.log(`    ✗ ${t.vw}px ${t.fase} · ${t.via} · «${t.testo}» (${t.perche}, ${t.sw}>${t.w}px, nome ${t.nome})`);
-ok(T.length === 0, `nomi di squadra tagliati o coi puntini: ${T.length}`);
+ok(T.length === 0, `nomi di squadra tagliati o coi puntini (ancora a schermo dopo un fotogramma): ${T.length} · stati transitori mai disegnati: ${[...(raccolta.trPag || new Map()).values()].reduce((x, y) => x + y, 0)}`);
 const Nm = Object.values(raccolta.nomi);
 const scesi = Nm.filter(x => x.liv > 0), stretti = Nm.filter(x => x.sw > x.w + 1);
 for (const x of scesi) console.log(`    · ${x.cpm} «${x.intero}» → «${x.mostrato}» (livello ${x.liv}, ${x.w}px)`);
