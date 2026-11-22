@@ -19,6 +19,8 @@
    D. CODA SIMULATA (prima/dopo): sul piano vero della mappa intera, un deploy che arriva a treno appena partito aspetta
       (senza tetto) quanto la parte piu' corta, (col tetto) zero.
 
+   E. [giro 327] validate-situations.yml parte solo a mano (unico evento workflow_dispatch).
+
    Verde col verde, rosso col rosso: con CPM_NO_G326=1 i tre file si leggono dalla base del giro (c0dd9cf, 7.999.203) e il
    guardiano DEVE uscire rosso.   npm run deploy-326   (≈ 2 s) */
 import fs from 'node:fs'; import path from 'node:path';
@@ -105,6 +107,13 @@ if (pianoVero) {
   console.log(`   senza tetto: ${Math.round(prima)} s di coda · col tetto ${P}: ${Math.round(dopo)} s (misurati il 22/11 senza tetto: 3.080 e 3.886 s)`);
   ok(dopo === 0, `col tetto il deploy trova una macchina libera subito (attesa simulata ${Math.round(dopo)} s)`);
 }
+
+/* ------------------------------------------------ E. [giro 327, decisione PO 22/11] il gate pesante parte solo a mano */
+{ console.log('\n== E. «Validate Situations» solo a mano (giro 327) ==');
+  const VS = leggi('.github/workflows/validate-situations.yml');
+  const r = VS.split('\n'), a = r.findIndex(l => /^on:\s*$/.test(l)); const z = r.findIndex((l, i) => i > a && /^\S/.test(l));
+  const ev = a < 0 ? [] : r.slice(a + 1, z < 0 ? undefined : z).filter(l => /^  [a-z_]+:/.test(l)).map(l => l.trim().split(':')[0]);
+  ok(ev.length === 1 && ev[0] === 'workflow_dispatch', `eventi di validate-situations.yml: ${JSON.stringify(ev)} (atteso solo workflow_dispatch: niente push, niente pull_request)`); }
 
 console.log(`\n${fall ? '❌ ROSSO' : '✅ VERDE'} — deploy-326: ${fall} controlli falliti${NO ? ' (braccio rosso: atteso ROSSO)' : ''}`);
 process.exit(fall ? 1 : 0);

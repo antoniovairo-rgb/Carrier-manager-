@@ -2,18 +2,11 @@ name: Validate Situations (quality gate)
 
 # Quality gate del motore Situations: gira l'intera suite di validazione
 # (determinismo, stato iniziale/finale, movimenti, orientamento, visivo, golden,
-# coerenza dati) su ogni push e PR. Fallisce il workflow se un solo check hard fallisce.
+# coerenza dati). Fallisce il workflow se un solo check hard fallisce.
+# [giro 327, decisione PO 22/11] SOLO A MANO: non parte piu' a ogni push (main, staging,
+# claude/**) ne' sulle pull request; si avvia da Actions con «Run workflow». I controlli
+# automatici dei push stanno nel treno (verifica-guardiani.yml). Guardiano: deploy-326 (sezione E).
 on:
-  push:
-    branches: ['main', 'staging', 'claude/**']
-    paths:
-      - 'CARRIER-MANAGER-AV.html'
-      - 'tests/**'
-      - '.github/workflows/validate-situations.yml'
-  pull_request:
-    paths:
-      - 'CARRIER-MANAGER-AV.html'
-      - 'tests/**'
   workflow_dispatch: {}
 
 # [security audit 2026-08-13] MINIMO PRIVILEGIO. Questo workflow non dichiarava alcun
