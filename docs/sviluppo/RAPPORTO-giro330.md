@@ -142,4 +142,11 @@ Catena del giro: `node ci-runner.mjs giro treno-330 rilascio-312 trenino-317 dep
 
 ## 6. Esito della catena
 
-(scritto a catena finita, sotto)
+`node ci-runner.mjs giro treno-330 rilascio-312 trenino-317 deploy-326` su 7.999.205, eseguita dentro il turno:
+**21/21 verdi** al primo colpo, nessun passo instabile, uscita 0, ~42 minuti di guardiani in fila (registrata in
+`docs/governo/STABILITA.json`). I 4 del giro più le 17 sentinelle (tra cui partita-vera 654 s, career-critical 346 s, battito-264 397 s).
+
+Le fotografie che `griglia-mobile`/`home-298` scrivono in `docs/collaudo-grafico/g0/` durante la catena non sono committate: sono
+prodotti del banco, non lavoro del giro.
+
+Da fare fuori da questo ramo (vive sul poc, che un giro non tocca): la riga di roadmap e lo stato di PO-624 e PO-626 nel BACKLOG.
