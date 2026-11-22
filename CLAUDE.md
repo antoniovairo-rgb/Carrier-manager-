@@ -89,6 +89,14 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    `docs/governo/BLOCCO-RILASCI.json` sul poc (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
    e non giudicati del treno grande **fermano tutti i rilasci** finche' un treno grande successivo non li ha piu', o il PO li mette in
    `ROSSI-DICHIARATI`. Guardiano `npm run trenino-317` (remoto finto), rosso `CPM_NO_G317=1` (= comportamento del 312).
+   📌 **IL DEPLOY DEL GIOCO NON STA MAI DIETRO AL TRENO (giro 326, PO-624).** L'account ha 20 macchine: una corsa del treno ne usa al
+   massimo 15 (treno grande/mappa/completo) o 4 (trenino) — `max-parallel` dal piano (`ci-treno-308.mjs`, `TETTO_GRANDE`/`TETTO_TRENINO`),
+   cosi' treno grande + trenino + deploy stanno nelle 20 (con 29 parti il tetto 15 fa due ondate come il 20: il treno non si allunga).
+   «Deploy to GitHub Pages» non parte per push di soli `docs/governo/**` o `*.md` (`paths-ignore`; il rilascio lo avvia con
+   `workflow_dispatch`, che non guarda i percorsi) e il passo di pubblicazione aspetta 15 s e riprova due volte: 10 fallimenti su 11
+   (20-22/11) erano guasti passeggeri di GitHub («No artifacts named github-pages» mezzo secondo dopo il caricamento · 502). Chi alza un
+   tetto o aggiunge al sito un file sotto `docs/governo` o un `.md` fa diventare rosso il guardiano `npm run deploy-326` (statico, ~2 s;
+   rosso `CPM_NO_G326=1` = workflow della base c0dd9cf).
    ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
    lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
    a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle

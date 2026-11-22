@@ -67,7 +67,9 @@ function piano() {
   const taglia = N => { const parti = Array.from({ length: N }, (_, i) => ({ parte: i + 1, guardiani: [], attesi_s: 0 }));
     for (const v of [...voci].sort((x, y) => y.s - x.s || (x.n < y.n ? -1 : 1))) { const p = parti.reduce((m, q) => (q.attesi_s < m.attesi_s ? q : m), parti[0]); p.guardiani.push(v.n); p.attesi_s += v.s; }
     return parti; };
-  let N = Math.max(1, Math.ceil(tot / OB)), parti = taglia(N);
+  /* [giro 326] mai piu' parti che guardiani: con un obiettivo corto (obiettivo_min=1) il piano apriva parti VUOTE (85 per 22 guardiani,
+     misurato nella prova del giro 326), ognuna una macchina che installa Chromium per niente */
+  let N = Math.max(1, Math.min(voci.length, Math.ceil(tot / OB))), parti = taglia(N);
   while (N < Math.min(voci.length, 256) && parti.some(p => p.attesi_s > OB && p.guardiani.length > 1)) parti = taglia(++N);
   const nome = p => `parte ${String(p.parte).padStart(2, '0')} di ${N} (${p.guardiani.length} guardiani, ~${Math.round(p.attesi_s / 60)} min)`;
   /* [giro 326, PO-624] TETTO DI MACCHINE. L'account ha 20 macchine in tutto: il treno grande (29 parti) le prendeva tutte e il deploy
