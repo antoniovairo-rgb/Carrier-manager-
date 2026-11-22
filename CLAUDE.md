@@ -92,8 +92,8 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    📌 **IL DEPLOY DEL GIOCO NON STA MAI DIETRO AL TRENO (giro 326, PO-624).** L'account ha 20 macchine: una corsa del treno ne usa al
    massimo 15 (treno grande/mappa/completo) o 4 (trenino) — `max-parallel` dal piano (`ci-treno-308.mjs`, `TETTO_GRANDE`/`TETTO_TRENINO`),
    cosi' treno grande + trenino + deploy stanno nelle 20 (con 29 parti il tetto 15 fa due ondate come il 20: il treno non si allunga).
-   «Deploy to GitHub Pages» non parte per push di soli `docs/governo/**` o `*.md` (`paths-ignore`; il rilascio lo avvia con
-   `workflow_dispatch`, che non guarda i percorsi) e il passo di pubblicazione aspetta 15 s e riprova due volte: 10 fallimenti su 11
+   «Deploy to GitHub Pages» non parte per push di soli `docs/governo/**`, `docs/collaudo-po/**`, `docs/collaudo-grafico/**` o `*.md` (84 dei 91 push su main dal 20/11) (`paths-ignore`; il rilascio lo avvia con
+   `workflow_dispatch`, che non guarda i percorsi) e il passo di pubblicazione aspetta 15 s e riprova due volte; il piano non apre mai piu' parti che guardiani: 10 fallimenti su 11
    (20-22/11) erano guasti passeggeri di GitHub («No artifacts named github-pages» mezzo secondo dopo il caricamento · 502). Chi alza un
    tetto o aggiunge al sito un file sotto `docs/governo` o un `.md` fa diventare rosso il guardiano `npm run deploy-326` (statico, ~2 s;
    rosso `CPM_NO_G326=1` = workflow della base c0dd9cf).

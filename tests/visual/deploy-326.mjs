@@ -35,7 +35,7 @@ const DEP = leggi('.github/workflows/deploy-pages.yml'), TRENO = leggi('.github/
 console.log('\n== A. il deploy non parte per soli documenti, parte sempre per il gioco ==');
 const blocco = (txt, chiave) => { const r = txt.split('\n'), i = r.findIndex(l => l.trim() === chiave + ':'); if (i < 0) return [];
   const ind = r[i].search(/\S/), v = []; for (let k = i + 1; k < r.length; k++) { const l = r[k]; if (!l.trim() || l.trim().startsWith('#')) continue;
-    if (l.search(/\S/) <= ind) break; const m = l.match(/^\s*-\s*['"]?([^'"#]+?)['"]?\s*$/); if (m) v.push(m[1]); } return v; };
+    if (l.search(/\S/) <= ind) break; const m = l.replace(/\s+#.*$/, '').match(/^\s*-\s*['"]?([^'"#]+?)['"]?\s*$/); if (m) v.push(m[1]); } return v; };
 const pushSez = (() => { const r = DEP.split('\n'), a = r.findIndex(l => /^  push:/.test(l)); const z = r.findIndex((l, i) => i > a && /^  \S/.test(l)); return r.slice(a, z < 0 ? undefined : z).join('\n'); })();
 const ignora = blocco(pushSez, 'paths-ignore');
 const glob = g => new RegExp('^' + g.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*\//g, '\u0001').replace(/\*\*/g, '\u0002').replace(/\*/g, '[^/]*')
@@ -46,6 +46,8 @@ ok(ignora.length > 0, `paths-ignore sul push di main: ${JSON.stringify(ignora)}`
 const casi = [
   [['docs/governo/ROADMAP.md', 'docs/governo/BACKLOG.md', 'docs/governo/DECISIONI.md'], false, 'solo documenti di governo (il 90% dei push su main)'],
   [['docs/governo/STABILITA.json'], false, 'solo un json di governo'],
+  [['docs/governo/BACKLOG.md', 'docs/collaudo-po/202-home-due-tasti-rossi.jpg'], false, 'governo + foto del collaudo del PO'],
+  [['docs/sviluppo/giro149/misure.json'], true, 'pagina d\'ascolto pubblicata (docs/sviluppo)'],
   [['CLAUDE.md', 'docs/sviluppo/RAPPORTO-giro326.md'], false, 'solo .md'],
   [['src/12-three-match-view.jsx', 'CARRIER-MANAGER-AV.html', 'docs/governo/ROADMAP.md'], true, 'rilascio: gioco + governo'],
   [['src/07-versione-save-interviste.jsx'], true, 'solo un frammento del gioco'],

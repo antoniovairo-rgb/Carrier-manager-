@@ -13,6 +13,8 @@ on:
     # Il rilascio automatico avvia comunque il deploy con workflow_dispatch, che non guarda i percorsi.
     paths-ignore:
       - 'docs/governo/**'
+      - 'docs/collaudo-po/**'        # foto e video del collaudo del PO (dal 20/11: 30 push su 91)
+      - 'docs/collaudo-grafico/**'
       - '**/*.md'
   workflow_dispatch: {}
 
