@@ -31,7 +31,7 @@ async function apri(vp, rosso, touch) {
   const ctx = await browser.newContext({ viewport: vp, serviceWorkers: 'block', hasTouch: !!touch, isMobile: !!touch });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
+  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; window.__KU210 = []; window.__RAF210 = []; const _rf = () => { const R = window.__RAF210; R.push(Math.round(performance.now())); if (R.length > 400) R.splice(0, 200); requestAnimationFrame(_rf); }; requestAnimationFrame(_rf); document.addEventListener('keyup', e => { window.__KU210.push([e.key, Math.round(performance.now())]); }, true); document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
   await openMatch(page, port); await sleep(800);
   return { ctx, page, errs };
 }
@@ -96,12 +96,26 @@ async function schermo(w, rosso) {
     const pr = await H.page.evaluate(([dx, dy]) => { const m = window.__CPM_MARKER && window.__CPM_MARKER(); return { g: window.__CPM_MOVEGAIN ? window.__CPM_MOVEGAIN(dx, dy) : null, mk: m ? { x: m.x, y: m.y } : null }; }, [edx, edy]);
     const atteso = pr.g;
     const cx = t.x + t.w / 2, cy = t.y + t.h / 2;
+    const tTap = Date.now();
     if (tel) await H.page.touchscreen.tap(cx, cy); else await H.page.mouse.click(cx, cy);
-    await sleep(700); const s1 = await stato(H.page);
+    /* [giro 332 · PO-620] lo spostamento dell'eroe si misura sul SUO passo: punto dell'eroe dichiarato dal testimone nell'istante del
+       passo (mk.hx/hy) contro il punto logico letto appena il passo e' arrivato a schermo (evento: testimone cresciuto e punto cambiato),
+       non piu' contro una lettura fatta prima del tocco e una 700 ms di parete dopo. MISURATO (corsa 2 del 23/11, 375 px, ◣): 19,51u
+       «invece di 2,5u» con passo, direzione e mosse giusti — fra le due letture la scena forzata stava ancora sistemando l'eroe. */
+    let htDopo = null;
+    for (let i = 0; i < 60; i++) { const q = await H.page.evaluate((n0) => { const P = window.__CPM_PASSO210 || []; const s = window.__CPM_STATE && window.__CPM_STATE(); const u = P[P.length - 1];
+        if (P.length <= n0 || !u || !u.mk || !s || !s.heroTarget) return null; const ht = s.heroTarget; return (Math.abs(ht.x - u.mk.hx) > 1e-3 || Math.abs(ht.y - u.mk.hy) > 1e-3) ? { x: ht.x, y: ht.y } : null; }, s0.nP).catch(() => null);
+      if (q) { htDopo = q; break; } await sleep(50); }
+    const rest = 700 - (Date.now() - tTap); if (rest > 0) await sleep(rest);
+    /* sul telefono il passaggio a hl_choose arriva da un timer del gioco dopo il passo: si aspetta l'evento (tetto 3 s dal tocco), non
+       un tempo fisso; a tetto scaduto la fase letta resta quella e il controllo T la giudica */
+    if (tel) for (let i = 0; i < 60 && Date.now() - tTap < 3000 && (await fase(H.page)) === 'hl_move'; i++) await sleep(50);
+    const s1 = await stato(H.page);
     if (!s1 || s1.nP <= s0.nP || !s1.ultimo) { D.push(`P ${lab}: nessun passo registrato`); continue; }
     const u = s1.ultimo; const fatti = s1.nP - s0.nP;
     const okDir = Math.abs(u.dx - edx) < 0.01 && Math.abs(u.dy - edy) < 0.01;
-    const lung = Math.hypot(s1.ht.x - s0.ht.x, s1.ht.y - s0.ht.y);
+    if (!htDopo || !u.mk) { nonG.push(`P ${lab}: punto dell'eroe dopo il passo non letto (testimone ${!!u.mk})`); continue; }
+    const lung = Math.hypot(htDopo.x - u.mk.hx, htDopo.y - u.mk.hy);
     if (!okDir) D.push(`P ${lab}: passo (${u.dx},${u.dy}) invece di (${edx.toFixed(3)},${edy.toFixed(3)})`);
     if (Math.abs(u.len - 2.5) > 0.01) D.push(`P ${lab}: passo lungo ${u.len}u invece di 2,5u`);
     if (Math.abs(lung - 2.5) > 0.2) D.push(`P ${lab}: l'eroe si e' spostato di ${lung.toFixed(2)}u invece di 2,5u`);
@@ -147,9 +161,43 @@ async function schermo(w, rosso) {
     /* K: tastiera — accordo di due frecce con 0/20/40 ms fra l'una e l'altra, e una freccia sola */
     let tot = 0, buoni = 0;
     for (const delta of (rosso ? [0] : [0, 20, 40])) for (const [a, b2, sx, sy] of ACCORDI) {
-      const f3 = await forza(H, lista, k, !tel); if (!f3) { nonG.push(`K ${a}+${b2} ${delta}ms: nessuna scena`); continue; } k = f3.k + 1; tot++;
-      await H.page.keyboard.down(a); if (delta) await sleep(delta); await H.page.keyboard.down(b2); await sleep(220); await H.page.keyboard.up(a); await H.page.keyboard.up(b2);
-      await sleep(600); const s1 = await stato(H.page);
+      /* [giro 332 · PO-620] L'ACCORDO DEVE ARRIVARE ALLA PAGINA COME E' STATO CHIESTO. Prima: keyboard.down(a) ATTESO, poi
+         keyboard.down(b): Playwright aspetta che il renderer abbia elaborato il primo tasto prima di spedire il secondo, quindi su una
+         macchina lenta i due tasti arrivavano alla pagina a ~400 ms l'uno dall'altro (VERIFICA202: «tasti visti dalla pagina») — cioe'
+         due frecce premute a 400 ms, per le quali il passo cardinale e' il comportamento giusto (finestra d'accordo 70 ms). Ora il
+         secondo tasto parte dopo `delta` ms di parete SENZA aspettare la risposta del primo, e l'intervallo VISTO DALLA PAGINA (keydown,
+         performance.now) si legge: se supera delta+20 ms l'accordo non e' quello chiesto e si ritenta su un'altra scena (fino a 3
+         volte); se non arriva mai, «non giudicato» (= rosso). Nessuna soglia del gioco ne' del guardiano cambiata. */
+      let f3 = null, gapVisto = null, ritenti = 0;
+      for (; ritenti < 4; ritenti++) {
+        f3 = await forza(H, lista, k, !tel); if (!f3) break; k = f3.k + 1;
+        const kd0 = await H.page.evaluate(() => window.__KD210.length);
+        /* [giro 332] L'ACCORDO SI SUONA NELLA PAGINA, sul suo orologio. Via CDP (keyboard.down/up di Playwright) ogni tasto passa dal
+           ciclo dei fotogrammi del renderer: su un banco con fotogrammi da ~400-500 ms (misurato col contatore rAF __RAF210) il secondo
+           tasto arrivava 300-450 ms dopo il primo e il rilascio solo al fotogramma successivo, quindi «due frecce insieme, rilasciate
+           subito» non era consegnabile (2 passi in 12 accordi su 12, oppure «non giudicato» a ogni ritentativo). Qui i due keydown partono
+           dalla pagina a `delta` ms di performance.now (setTimeout nella pagina), restano premuti per il primo fotogramma completo dopo il
+           secondo (rAF, poi compito) e si rilasciano prima del fotogramma dopo: la pressione breve, uguale a ogni velocita' di macchina.
+           Gli stessi gestori del gioco (document keydown/keyup, ciclo del passo) li ricevono; cambia solo chi preme. Vedi dubbio 3. */
+        const vis = await H.page.evaluate(([a, b2, delta]) => new Promise((ok) => {
+          const ev = (t, k) => document.dispatchEvent(new KeyboardEvent(t, { key: k, bubbles: true }));
+          /* delta misurato sull'orologio della pagina dentro un solo compito (un setTimeout nella pagina slittava di 300-1100 ms: il
+             filo principale e' occupato dai fotogrammi); il rilascio sta nel rAF del primo fotogramma dopo i due tasti, registrato DOPO il
+             ciclo del passo del gioco (che si riregistra a ogni fotogramma): il ciclo li vede in quel fotogramma, il successivo no */
+          const t0 = performance.now(); ev('keydown', a); while (performance.now() - t0 < delta) { /* attesa attiva: delta ms di pagina */ }
+          const t1 = performance.now(); ev('keydown', b2);
+          requestAnimationFrame(() => { const t2 = performance.now(); ev('keyup', a); ev('keyup', b2); ok({ gap: Math.round(t1 - t0), tenuta: Math.round(t2 - t0) }); });
+        }), [a, b2, delta]);
+        await sleep(600);
+        gapVisto = vis.gap;
+        if (gapVisto != null && gapVisto >= 0 && gapVisto <= delta + 20) break;
+        note.push(`K ${a}+${b2} a ${delta} ms: la pagina ha suonato i tasti a ${gapVisto} ms (tenuti ${vis.tenuta} ms): accordo non consegnato come chiesto, si ritenta`);
+        gapVisto = null;
+      }
+      if (!f3) { nonG.push(`K ${a}+${b2} ${delta}ms: nessuna scena`); continue; }
+      if (gapVisto == null) { nonG.push(`K ${a}+${b2} ${delta}ms: accordo mai consegnato alla pagina come chiesto (entro ${delta + 20} ms sull'orologio della pagina)`); continue; }
+      tot++;
+      const s1 = await stato(H.page);
       const nuovi = s1 ? s1.nP - f3.s.nP : 0; const u = s1 && s1.ultimo;
       const ok = nuovi === 1 && u && u.src === 'tasti' && Math.sign(u.dx) === sx && Math.sign(u.dy) === sy && Math.abs(u.len - 2.5) < 0.01 && f3.s.moves - s1.moves === 1;
       if (ok) buoni++; else D.push(`K ${a}+${b2} a ${delta} ms: ${nuovi} passi, ultimo ${u ? '(' + u.dx + ',' + u.dy + ') ' + u.len + 'u' : '—'}, mosse ${f3.s.moves}→${s1 && s1.moves} (fase ${f3.s.ph}→${s1 && s1.ph}, gi${f3.sc.gi}, pagina ${H.aperture}, tasti visti dalla pagina ${JSON.stringify(await H.page.evaluate(() => (window.__KD210 || []).slice(-4)).catch(() => null))})`);
