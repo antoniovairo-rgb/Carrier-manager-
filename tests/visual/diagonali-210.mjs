@@ -96,12 +96,23 @@ async function schermo(w, rosso) {
     const pr = await H.page.evaluate(([dx, dy]) => { const m = window.__CPM_MARKER && window.__CPM_MARKER(); return { g: window.__CPM_MOVEGAIN ? window.__CPM_MOVEGAIN(dx, dy) : null, mk: m ? { x: m.x, y: m.y } : null }; }, [edx, edy]);
     const atteso = pr.g;
     const cx = t.x + t.w / 2, cy = t.y + t.h / 2;
+    const tTap = Date.now();
     if (tel) await H.page.touchscreen.tap(cx, cy); else await H.page.mouse.click(cx, cy);
-    await sleep(700); const s1 = await stato(H.page);
+    /* [giro 332 · PO-620] lo spostamento dell'eroe si misura sul SUO passo: punto dell'eroe dichiarato dal testimone nell'istante del
+       passo (mk.hx/hy) contro il punto logico letto appena il passo e' arrivato a schermo (evento: testimone cresciuto e punto cambiato),
+       non piu' contro una lettura fatta prima del tocco e una 700 ms di parete dopo. MISURATO (corsa 2 del 23/11, 375 px, ◣): 19,51u
+       «invece di 2,5u» con passo, direzione e mosse giusti — fra le due letture la scena forzata stava ancora sistemando l'eroe. */
+    let htDopo = null;
+    for (let i = 0; i < 60; i++) { const q = await H.page.evaluate((n0) => { const P = window.__CPM_PASSO210 || []; const s = window.__CPM_STATE && window.__CPM_STATE(); const u = P[P.length - 1];
+        if (P.length <= n0 || !u || !u.mk || !s || !s.heroTarget) return null; const ht = s.heroTarget; return (Math.abs(ht.x - u.mk.hx) > 1e-3 || Math.abs(ht.y - u.mk.hy) > 1e-3) ? { x: ht.x, y: ht.y } : null; }, s0.nP).catch(() => null);
+      if (q) { htDopo = q; break; } await sleep(50); }
+    const rest = 700 - (Date.now() - tTap); if (rest > 0) await sleep(rest);
+    const s1 = await stato(H.page);
     if (!s1 || s1.nP <= s0.nP || !s1.ultimo) { D.push(`P ${lab}: nessun passo registrato`); continue; }
     const u = s1.ultimo; const fatti = s1.nP - s0.nP;
     const okDir = Math.abs(u.dx - edx) < 0.01 && Math.abs(u.dy - edy) < 0.01;
-    const lung = Math.hypot(s1.ht.x - s0.ht.x, s1.ht.y - s0.ht.y);
+    if (!htDopo || !u.mk) { nonG.push(`P ${lab}: punto dell'eroe dopo il passo non letto (testimone ${!!u.mk})`); continue; }
+    const lung = Math.hypot(htDopo.x - u.mk.hx, htDopo.y - u.mk.hy);
     if (!okDir) D.push(`P ${lab}: passo (${u.dx},${u.dy}) invece di (${edx.toFixed(3)},${edy.toFixed(3)})`);
     if (Math.abs(u.len - 2.5) > 0.01) D.push(`P ${lab}: passo lungo ${u.len}u invece di 2,5u`);
     if (Math.abs(lung - 2.5) > 0.2) D.push(`P ${lab}: l'eroe si e' spostato di ${lung.toFixed(2)}u invece di 2,5u`);
