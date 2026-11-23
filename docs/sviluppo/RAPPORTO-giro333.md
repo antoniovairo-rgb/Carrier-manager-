@@ -112,4 +112,8 @@ rilasci invece scrive solo quando cambia). Serve perché la pagina sappia che *s
 3. Niente file: la pagina legge le corse dall'API pubblica quando viene aperta (dipende dalla rete di chi la apre).
 
 ## 5. Esito del giro
-(compilato a fine giro)
+`node ci-runner.mjs giro notte-333` (notte-333 + 17 sentinelle) su 7.999.206 + questo ramo, 23/11: **18/18 verdi**, nessun passo
+instabile. Durate principali: notte-333 11 s · replay 57 s · griglia-mobile 191 s · tunnel-285 262 s · career-critical 354 s ·
+battito-264 414 s · partita-vera 707 s · gk-dive-sync 236 s · schermate-97 118 s. Fuori dal giro, a mano: rilascio-312,
+trenino-317, deploy-326, treno-330, mappa-unica verdi; notte-333 con `CPM_NO_G333=1` rosso (19 controlli).
+La registrazione del giro in `docs/governo/STABILITA.json` non è committata su questo ramo (i documenti di governo vivono sul poc).
