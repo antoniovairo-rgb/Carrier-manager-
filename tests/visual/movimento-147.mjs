@@ -14,6 +14,8 @@
        frazione dell'orologio diversa da macchina a macchina (banco 0,5-0,8). Stesse partite, stesso codice: compagni fermi 21% a rapporto
        0,5 e 27-30% a rapporto 1; nel braccio rosso 57-77% e 65-86%. A rapporto 1 la misura e' quella che vede chi gioca a 20 fotogrammi
        al secondo o piu', e non dipende dalla macchina.
+   ✅ GIRO 334 (PO-610, «Ellisse d'attesa»): l'attesa attiva e' un piccolo giro che non passa da fermo. A velocita' reale, braccio verde
+   in 6 corse: compagni 6,7-18,0%, avversari 10,7-13,2% (tetto 25); rosso 88,9% / 86,3%. Tolto dai rossi dichiarati.
    ⚠️ ESITO DEL GIRO 331: con lo strumento riparato il braccio verde sta a 27-30% di compagni fermi contro il tetto 25 (avversari 19-21%):
    un moto avanti-e-indietro passa dallo zero di velocita' due volte per giro e sta sotto 0,5 m/s per circa il 22% del tempo PER COSTRUZIONE.
    Non e' piu' un guardiano instabile: e' un rosso vero e ripetibile, dichiarato in ROSSI-DICHIARATI e portato al PO (RAPPORTO-giro331).
