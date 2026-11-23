@@ -31,7 +31,7 @@ async function apri(vp, rosso, touch) {
   const ctx = await browser.newContext({ viewport: vp, serviceWorkers: 'block', hasTouch: !!touch, isMobile: !!touch });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; window.__KU210 = []; document.addEventListener('keyup', e => { window.__KU210.push([e.key, Math.round(performance.now())]); }, true); document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
+  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_G210 = 1; window.__KD210 = []; window.__KU210 = []; window.__RAF210 = []; const _rf = () => { const R = window.__RAF210; R.push(Math.round(performance.now())); if (R.length > 400) R.splice(0, 200); requestAnimationFrame(_rf); }; requestAnimationFrame(_rf); document.addEventListener('keyup', e => { window.__KU210.push([e.key, Math.round(performance.now())]); }, true); document.addEventListener('keydown', e => { if (!e.repeat) window.__KD210.push([e.key, Math.round(performance.now()), window.__CPM_PHASE && window.__CPM_PHASE()]); }, true); }, rosso);
   await openMatch(page, port); await sleep(800);
   return { ctx, page, errs };
 }
@@ -172,22 +172,30 @@ async function schermo(w, rosso) {
       for (; ritenti < 4; ritenti++) {
         f3 = await forza(H, lista, k, !tel); if (!f3) break; k = f3.k + 1;
         const kd0 = await H.page.evaluate(() => window.__KD210.length);
-        const ku0 = await H.page.evaluate(() => window.__KU210.length);
-        /* anche il RILASCIO parte senza aspettare: tenendo i tasti per «220 ms + la risposta del renderer» su una macchina lenta la
-           pagina li vedeva premuti oltre i 400 ms della pausa fra due passi da tastiera, e il secondo passo partiva (2 passi, 2 mosse). */
-        const p1 = H.page.keyboard.down(a); if (delta) await sleep(delta); const p2 = H.page.keyboard.down(b2);
-        await sleep(220); const p3 = H.page.keyboard.up(a), p4 = H.page.keyboard.up(b2); await Promise.all([p1, p2, p3, p4]);
+        /* [giro 332] L'ACCORDO SI SUONA NELLA PAGINA, sul suo orologio. Via CDP (keyboard.down/up di Playwright) ogni tasto passa dal
+           ciclo dei fotogrammi del renderer: su un banco con fotogrammi da ~400-500 ms (misurato col contatore rAF __RAF210) il secondo
+           tasto arrivava 300-450 ms dopo il primo e il rilascio solo al fotogramma successivo, quindi «due frecce insieme, rilasciate
+           subito» non era consegnabile (2 passi in 12 accordi su 12, oppure «non giudicato» a ogni ritentativo). Qui i due keydown partono
+           dalla pagina a `delta` ms di performance.now (setTimeout nella pagina), restano premuti per il primo fotogramma completo dopo il
+           secondo (rAF, poi compito) e si rilasciano prima del fotogramma dopo: la pressione breve, uguale a ogni velocita' di macchina.
+           Gli stessi gestori del gioco (document keydown/keyup, ciclo del passo) li ricevono; cambia solo chi preme. Vedi dubbio 3. */
+        const vis = await H.page.evaluate(([a, b2, delta]) => new Promise((ok) => {
+          const ev = (t, k) => document.dispatchEvent(new KeyboardEvent(t, { key: k, bubbles: true }));
+          /* delta misurato sull'orologio della pagina dentro un solo compito (un setTimeout nella pagina slittava di 300-1100 ms: il
+             filo principale e' occupato dai fotogrammi); il rilascio sta nel rAF del primo fotogramma dopo i due tasti, registrato DOPO il
+             ciclo del passo del gioco (che si riregistra a ogni fotogramma): il ciclo li vede in quel fotogramma, il successivo no */
+          const t0 = performance.now(); ev('keydown', a); while (performance.now() - t0 < delta) { /* attesa attiva: delta ms di pagina */ }
+          const t1 = performance.now(); ev('keydown', b2);
+          requestAnimationFrame(() => { const t2 = performance.now(); ev('keyup', a); ev('keyup', b2); ok({ gap: Math.round(t1 - t0), tenuta: Math.round(t2 - t0) }); });
+        }), [a, b2, delta]);
         await sleep(600);
-        const vis = await H.page.evaluate(([kd0, ku0, a, b2]) => { const L = window.__KD210.slice(kd0), U = window.__KU210.slice(ku0); const ta = L.find(x => x[0] === a), tb = L.find(x => x[0] === b2);
-          const ua = U.find(x => x[0] === a), ub = U.find(x => x[0] === b2); return { gap: ta && tb ? tb[1] - ta[1] : null, tenuta: ta && ua && ub ? Math.max(ua[1], ub[1]) - ta[1] : null }; }, [kd0, ku0, a, b2]);
         gapVisto = vis.gap;
-        /* consegnato come chiesto: secondo tasto entro delta+20 ms dal primo e tasti rilasciati prima della pausa di 400 ms fra due passi */
-        if (gapVisto != null && gapVisto >= 0 && gapVisto <= delta + 20 && vis.tenuta != null && vis.tenuta < 400) break;
-        note.push(`K ${a}+${b2} a ${delta} ms: la pagina ha visto i tasti a ${gapVisto} ms e tenuti ${vis.tenuta} ms, accordo non consegnato come chiesto: si ritenta`);
+        if (gapVisto != null && gapVisto >= 0 && gapVisto <= delta + 20) break;
+        note.push(`K ${a}+${b2} a ${delta} ms: la pagina ha suonato i tasti a ${gapVisto} ms (tenuti ${vis.tenuta} ms): accordo non consegnato come chiesto, si ritenta`);
         gapVisto = null;
       }
       if (!f3) { nonG.push(`K ${a}+${b2} ${delta}ms: nessuna scena`); continue; }
-      if (gapVisto == null) { nonG.push(`K ${a}+${b2} ${delta}ms: accordo mai consegnato alla pagina come chiesto (entro ${delta + 20} ms, tenuto meno di 400 ms)`); continue; }
+      if (gapVisto == null) { nonG.push(`K ${a}+${b2} ${delta}ms: accordo mai consegnato alla pagina come chiesto (entro ${delta + 20} ms sull'orologio della pagina)`); continue; }
       tot++;
       const s1 = await stato(H.page);
       const nuovi = s1 ? s1.nP - f3.s.nP : 0; const u = s1 && s1.ultimo;
