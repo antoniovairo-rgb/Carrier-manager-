@@ -824,7 +824,7 @@ const kitPatternFor=(club)=>{
 };
 const _SHIRT_PATH="M16 11 C20 7.6 32 7.6 36 11 L41 13.5 L49 24.5 L42.6 31 L38 26.4 L38 49 L14 49 L14 26.4 L9.4 31 L3 24.5 L11 13.5 Z";
 /* Jersey icon — shirt SVG with number and player name */
-function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=null,color2=null,labelW=null}){
+function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=null,color2=null,labelW=null,divisa339=false}){/* [giro 339 PO-614] divisa339: l'eroe veste la divisa intera dei compagni (disegno + secondo colore) */
   // [6.5.4] maglia SVG ridisegnata — silhouette moderna (spalle morbide, maniche raglan, colletto a giro,
   //   volume via highlight/ombra, orlo con accento, numero con ombra). Look pulito da broadcast.
   // [7.8.0] pattern-aware: se `pattern` (da KIT_PATTERN) e `color2` sono definiti e distinti, sovrappone
@@ -839,10 +839,11 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
   const S=size;
   const _uid=React.useId();
   const _cid="kp"+_uid.replace(/:/g,"");
-  const pat=(!isPlayer&&pattern&&color2&&_c2low&&_c2low!==_low)?pattern:null;
+  const _np339=!isPlayer||divisa339;
+  const pat=(_np339&&pattern&&color2&&_c2low&&_c2low!==_low)?pattern:null;
   // [7.8.2 collaudo PO «la Roma non ha inserti gialli»] i kit TINTA UNITA con un 2° colore sociale distinto
   //   mostrano il c2 come RIFINITURA (colletto/polsini/orlo) → Roma giallo-oro, Napoli bianco, ecc. (non l'eroe).
-  const _trim=(!isPlayer&&!pat&&color2&&_c2low&&_c2low!==_low)?color2:null;
+  const _trim=(_np339&&!pat&&color2&&_c2low&&_c2low!==_low)?color2:null;
   const patG=(()=>{
     if(!pat)return null;const R=[];
     if(pat==="stripes"){for(let x=3;x<49;x+=12)R.push(<rect key={"s"+x} x={x+6} y="7" width="6" height="42" fill={color2}/>);}
@@ -868,7 +869,7 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
     return R;
   })();
   return(
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"default"}}>
+    <div data-maglia339={isPlayer?"eroe":"altro"} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"default"}}>
       <svg width={S} height={Math.round(S*1.02)} viewBox="0 0 52 53" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 2px 2px rgba(0,0,0,0.35))"}}>
         {/* [7.168.0 collaudo PO «maglie più moderne»] defs SEMPRE: gradiente tessuto + clip per pattern/gloss */}
         <defs>
@@ -1056,6 +1057,11 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     /* [giro 262 PO-513 — rosso window.__CPM_NO_G262] decisione PO 17/11: «Il rigorista nelle formazioni prima dell'ingresso in campo non deve
        essere specificato, al piu' il capitano». La «R» resta nella Rosa (src/18) e il motore continua a far calciare il designato (rig257 del live). */
     const _R257=(rr,pl)=>!!(typeof window!=='undefined'&&window.__CPM_NO_G262)&&!!rig257&&!!pl&&pl.name===rig257&&rr===(rigLato257==="away"?_awayNums:_homeNums);/* [giro 257] la «R» sul rigorista, solo nella squadra dell'eroe */
+    /* [giro 339 PO-614/PO-595 — rosso window.__CPM_NO_G339 = schermata del 22/11] PO: «l'eroe non deve avere una maglia diversa» ·
+       «il quadrato intorno è brutto, lo toglierei» · «la scritta formazioni + lega deve essere centrale». L'eroe veste la divisa
+       dei compagni (disegno e secondo colore) e lo distingue solo il nome in giallo; la testata mette il titolo al centro
+       (Indietro a sinistra, giornata sotto il titolo). Guardiano npm run formazioni-339. */
+    const _g339=!(typeof window!=='undefined'&&window.__CPM_NO_G339);
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
@@ -1066,7 +1072,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2,padding:gap204?`${Math.floor(gap204/2)}px 0 ${Math.ceil(gap204/2)}px`:0}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;const _r=_R257(rr,pl);return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1,position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/>{_r&&<SegnoR257 abs/>}</div>
+              _g339?(<div key={pi} data-cpm="eroe339" style={{position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} divisa339={true} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>{_r&&<SegnoR257 abs/>}</div>):
+              <div key={pi} data-cpm="eroe339" style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1,position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/>{_r&&<SegnoR257 abs/>}</div>
             ):_r?(<div key={pi} style={{position:"relative"}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/><SegnoR257 abs/></div>)
             :(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
@@ -1076,13 +1083,23 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     return(
     <div data-cpm="formazioni23" ref={ref204} data-gap204={gap204} style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        {/* le due colonne laterali hanno la stessa larghezza minima (a destra un gemello invisibile del tasto): il titolo resta al
+            centro della testata e, se non ci sta, va a capo invece di passare sotto «Indietro» (etichette lunghe delle coppe a 360 px) */}
+        {_g339?(<div data-cpm="testata339" style={{display:"grid",gridTemplateColumns:"minmax(max-content,1fr) minmax(0,auto) minmax(max-content,1fr)",alignItems:"center",gap:SP.xs}}>
+          <div style={{display:"flex",justifyContent:"flex-start"}}>{onBack&&<button data-cpm="indietro294" onClick={onBack} aria-label="Indietro: torna al pre-partita" title="Indietro (Esc)" style={{flex:"0 0 auto",minHeight:44,minWidth:44,padding:`0 ${SP.sm}px`,marginLeft:-SP.sm,background:"none",border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,color:TH.text,fontSize:FS.small,fontWeight:FW.bold,fontFamily:"inherit",cursor:"pointer",whiteSpace:"nowrap"}}>← Indietro</button>}</div>
+          <div style={{minWidth:0,maxWidth:"100%",textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+            <span data-cpm="titolo339" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,textAlign:"center"}}>Formazioni · {_lbl}</span>
+            {euroRound&&<span data-cpm="giornata339" style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,textAlign:"center"}}>{euroRound}</span>}
+          </div>
+          <div aria-hidden="true" style={{display:"flex",justifyContent:"flex-end"}}>{onBack&&<span style={{visibility:"hidden",display:"inline-flex",alignItems:"center",minHeight:44,minWidth:44,padding:`0 ${SP.sm}px`,marginRight:-SP.sm,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,fontSize:FS.small,fontWeight:FW.bold,whiteSpace:"nowrap"}}>← Indietro</span>}</div>
+        </div>):(
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
           {/* [giro 294 PO-566 «non c'e' modo di tornare indietro» — rosso __CPM_NO_G294 (LiveMatch non passa onBack)] in testata, dove si guarda entrando:
               in fondo alla pagina, su telefono, tre pulsanti in riga non ci stanno. Riporta al pre-partita; la partita resta la stessa. */}
           {onBack&&<button data-cpm="indietro294" onClick={onBack} aria-label="Indietro: torna al pre-partita" title="Indietro (Esc)" style={{flex:"0 0 auto",minHeight:44,minWidth:44,padding:`0 ${SP.md}px`,marginLeft:-SP.sm,background:"none",border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,color:TH.text,fontSize:FS.small,fontWeight:FW.bold,fontFamily:"inherit",cursor:"pointer"}}>← Indietro</button>}
           <span style={{flex:"1 1 auto",minWidth:0,fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
-        </div>
+        </div>)}
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
           <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><NomeSquadra182 as="span" team={homeTeam} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}/></div>
           <span style={{fontSize:FS.body,fontWeight:FW.black,color:TH.faint}}>VS</span>
