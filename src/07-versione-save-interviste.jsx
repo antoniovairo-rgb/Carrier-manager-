@@ -32,7 +32,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.205";/* [7.999.205] vagone pubblicato a mano (corsa 45066026690, mappa intera 29/29 parti, 357 guardiani): giro 325 marcatore unico fra cronaca e avviso del gol (PO-377), giro 327 curva del salto a gennaio piu' morbida e Validate Situations solo a mano, giro 329 trenini fino a 15 macchine. Unico rosso nuovo nomi-182 solo sul runner, verde sul banco. */
+const GAME_VERSION="7.999.206";/* [7.999.206] vagone pubblicato a mano (corsa 45103228762, mappa intera 29/29, 358 guardiani): giro 330 risultati delle parti ricostruiti dal log se manca l'artifact, treno notturno che si rimette in coda, margine 10% per il treno completo, guardiani carriera di giorno (PO-624, PO-626); giro 332 quattro guardiani instabili resi stabili e due difetti veri corretti (PO-620). Rossi nuovi tocco-213 e apertura-261 solo sul runner, verdi sul banco. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
