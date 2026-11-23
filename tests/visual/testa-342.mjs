@@ -4,7 +4,9 @@
    CENSIMENTO E GUARDIANO DI TUTTA LA FAMIGLIA DEI COLPI DI TESTA. GLB acceso (direttiva PO 29/07), una pagina nuova per scena (7.483),
    teatro acceso (__CPM_PRESENT + __CPM_CINE), testimone __CPM_G342W (src/12: una riga per fotogramma in hl_result).
    Due orologi:  --passo=60   il tempo di scena avanza di 1/60 s per fotogramma (aritmetica del telefono, «al rallentatore» sul banco)
-                 --passo=reale il tempo di scena segue quello vero (pochi fotogrammi, «a velocita' reale»)
+                 --passo=reale il tempo di scena segue quello vero (sul banco 3-4 fotogrammi al secondo: 0,26-0,30 s a fotogramma,
+                               15-20 fotogrammi per scena — MISURATO: verde e rosso ugualmente fuori, la grandezza qui non si misura)
+                 --passo=nativo il passo del gioco senza ganci (morsetto 0,05 s a fotogramma: un telefono a 20 fps)
    Modi:   node testa-342.mjs                    censimento di tutte le azioni di testa (riuscite e fallite) → out/giro342/<etichetta>.json
            node testa-342.mjs --guardiano        scene fisse per tipo, soglie qui sotto, uscita 0/1
            CPM_ROSSO=__CPM_NO_G342 …             braccio rosso (comportamento di prima del giro 342): il guardiano DEVE uscire 0 solo
@@ -125,7 +127,7 @@ export function giudica(r) {
 
 async function scena(b, port, gi, k, esito, opt = {}) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: opt.foto ? 2 : 1 }); await installCdnRoutes(page);
-  await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
+  await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else if (passo !== 'nativo') window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
   let W = null; const foto = [];
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Testa 342' }); await sleep(1200);
