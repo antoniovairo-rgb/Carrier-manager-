@@ -50,4 +50,7 @@ rosso 10/10** · testa-146 **verde, rosso visto** · passaggi-228 a N=6000 **ver
 **verde** · ellisse-334 **verde** (da sola).
 
 Catena del giro (`node ci-runner.mjs giro testa-146 difesa-220-giro31 gk-miss-229 passaggi-228 classifica-259 ellisse-334
-rifiniture-200 testa-342 difesa-343 career-critical`, + 17 sentinelle, 26 passi): **ESITO_CATENA**
+rifiniture-200 testa-342 difesa-343 career-critical`, + 17 sentinelle, 26 passi): **26/26 verdi** (testa-146 426 s · difesa-220-giro31
+1641 s · passaggi-228 182 s a N=6000 · ellisse-334 360 s · gk-miss-229 216 s · classifica-259 155 s · rifiniture-200 167 s ·
+testa-342 e difesa-343 verdi · career-critical 348 s · le 17 sentinelle verdi, partita-vera compresa). Esito registrato in
+`docs/governo/STABILITA.json`. Prova del rosso di passaggi-228 a N=6000 (`CPM_ROSSO=1`): passaggi +0,0 % → **esce 1, come deve**.
