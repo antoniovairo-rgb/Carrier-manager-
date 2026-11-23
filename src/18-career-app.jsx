@@ -378,6 +378,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   },[screen]);
   /* [7.179.0 collaudo PO «il font doveva essere ingrandito in TUTTE le schermate!»] lo zoom base vive ora nel router App (copre anche home/provini/prepartita); LiveMatch lo spegne SOLO nelle fasi col 3D vivo. */
   const[standingsLg,setStandingsLg]=useState(null); // null = use player's own league
+  const[coppa340,setCoppa340]=useState(null);/* [giro 340 PO-570] coppa scelta nello storico delle coppe (null = la coppa nazionale) */
   const[matchOpp,setMatchOpp]=useState(null);
   const[matchIsHome,setMatchIsHome]=useState(true);
   // [6.73.0] RETE DI SICUREZZA anti-loop «stessa partita»: traccia i matchday REALMENTE committati questa sessione.
@@ -6114,7 +6115,7 @@ const getThisWeekMatchday=()=>{
         // lockout permanente di Europei/Mondiali. La voce resta per display/albo; worldMemory tiene il record.
         euroMondiale:p.euroMondiale?{...p.euroMondiale,active:false}:p.euroMondiale,
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
-        coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,/* [7.114.0 audit carriera · fix PROG-2] reset dello stato training-settimana al rollover: se la stagione finiva con sessionsThisWeek=3 la W1 nuova restava con l'auto-training congelato (guardia <3 + allDone), stessa classe del fix live 7.8.28 */...(captainReset?{isCaptain:false}:{})}; return chiudiInvestimenti281(academySeason24(_ret24,p),p);/* [7.991.0 F3] e chiude l'investimento della stagione *//* [7.990.0 Patrimonio F2] il vivaio col tuo nome consegna il suo ragazzo */ // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
+        coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,...(function(){/* [giro 340 PO-569/570] almanacco di TUTTE le leghe e delle coppe della stagione che si chiude (campi facoltativi, ultime 30 stagioni) */const _s=p.season||1,_keep=x=>x&&(+x.s||0)>_s-30;const _l=fotoLeghe340(p,sortedForShifts);const _c=fotoCoppe340(p);return{albo340:[...(p.albo340||[]).filter(x=>_keep(x)&&x.s!==_s),..._l],alboCoppe340:[...(p.alboCoppe340||[]).filter(x=>_keep(x)&&x.s!==_s),...(_c?[_c]:[])]};})(),coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,/* [7.114.0 audit carriera · fix PROG-2] reset dello stato training-settimana al rollover: se la stagione finiva con sessionsThisWeek=3 la W1 nuova restava con l'auto-training congelato (guardia <3 + allDone), stessa classe del fix live 7.8.28 */...(captainReset?{isCaptain:false}:{})}; return chiudiInvestimenti281(academySeason24(_ret24,p),p);/* [7.991.0 F3] e chiude l'investimento della stagione *//* [7.990.0 Patrimonio F2] il vivaio col tuo nome consegna il suo ragazzo */ // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
     {const _sd=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -10270,13 +10271,13 @@ const getThisWeekMatchday=()=>{
             </div>
           </Card></Fisarmonica>
           {/* Sprint 59 — Capocannonieri (solo lega del giocatore) */}
-          {selLg===myLeague&&(()=>{
-            const scorers=generateLeagueScorers(player);
+          {(selLg===myLeague||!(typeof window!=='undefined'&&window.__CPM_NO_G340))&&(()=>{/* [giro 340 PO-570] marcatori della stagione per OGNI lega della tendina (rosso __CPM_NO_G340: solo la tua) */
+            const scorers=selLg===myLeague?generateLeagueScorers(player):marcatoriLega340(player,selLg);
             if(!scorers.length)return null;
             const playerPos=scorers.findIndex(s=>s.isPlayer);
             return(
-              <Fisarmonica id="s24-capocannonieri-s-w-38" titolo={<>⚽ Capocannonieri</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginTop:8}}>
-                <div style={{display:"flex",flexDirection:"column",gap:0}}>
+              <Fisarmonica id="s24-capocannonieri-s-w-38" titolo={<>⚽ Capocannonieri{selLg!==myLeague?" — "+selLg:""}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginTop:8}}>
+                <div data-cpm="marcatori340" data-lega={selLg} style={{display:"flex",flexDirection:"column",gap:0}}>
                   {scorers.map((s,i)=>{
                     const isMe=s.isPlayer;
                     const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":null;
@@ -10327,7 +10328,65 @@ const getThisWeekMatchday=()=>{
 
       {/* RECORD DI CARRIERA — Sprint 103 · [7.8.17 collaudo tester «il box record carriera deve essere spostato nel Tab carriera»] tab standings → profile */}
       {/* LEAGUE ARCHIVE — standings tab */}
-      {tab==="standings"&&(()=>{
+      {tab==="standings"&&!(typeof window!=='undefined'&&window.__CPM_NO_G340)&&(()=>{
+        /* [giro 340 PO-616/569/570] ALBO D'ORO DELLA LEGA SELEZIONATA. PO 22/11: «Nell'albo storico campioni i miei titoli non c'entrano
+           nulla» e «Deve mostrare solo lo storico / almanacco della lega selezionata in quel momento». Via il riquadro «I tuoi titoli»
+           (i trofei dell'eroe restano in Carriera/bacheca) e via le sezioni per le leghe della carriera: una lega sola, quella della
+           tendina «Lega» in cima alla scheda. Per ogni stagione chiusa: campione, podio, capocannoniere (player.albo340, scritto al
+           rollover per TUTTE le leghe); per le stagioni chiuse prima di questa versione il gioco conservava solo il campionato
+           dell'eroe (leagueArchive: campione e retrocesse) e lo dice. In cima la stagione in corso. Rosso __CPM_NO_G340 = albo di prima. */
+        const myLg=player.club?.lg||(player.proStatus==="u18"?"Primavera 1":"Lega A");
+        const lg=standingsLg||myLg;const cur=player.season||1;const ov=player.leagueOverrides||{};
+        const _mio=(n)=>!!(n&&player.club&&n===player.club.n);
+        const _corso=(()=>{try{
+          const st=lg===myLg?ordinaClassifica259(player.standings||[],null):calcWorldStandings(lg,cur,player.week||1,ov);
+          if(!st||!st.length||!(st[0].played>0))return null;
+          const sc=marcatoriLega340(player,lg,{fullClub:true});
+          return{s:cur,podio:st.slice(0,3).map(t=>t.n||t.name||""),cap:sc&&sc[0]?[sc[0].name,sc[0].club,sc[0].goals|0,sc[0].isPlayer?1:0]:null,inProgress:true};
+        }catch(_e){return null;}})();
+        const alb=(player.albo340||[]).filter(x=>x&&x.lg===lg);
+        const leg=(player.leagueArchive||[]).filter(e=>e&&e.league===lg);
+        const perS={};
+        leg.forEach(e=>{perS[e.season]={s:e.season,podio:[e.champion].filter(Boolean),cap:null,relegated:e.relegated||[],solo:true};});
+        alb.forEach(x=>{const r=perS[x.s];perS[x.s]={s:x.s,podio:x.podio||[],cap:x.cap||null,relegated:r?r.relegated:[],solo:false};});
+        const chiuse=Object.values(perS).filter(x=>(+x.s||0)<cur).sort((a,b)=>b.s-a.s);
+        const rows=_corso?[_corso,...chiuse]:chiuse;
+        const tc={};chiuse.forEach(x=>{const c=x.podio&&x.podio[0];if(c&&c!=="–")tc[c]=(tc[c]||0)+1;});
+        const top=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3);
+        const mancanti=Math.max(0,(cur-1)-chiuse.length);
+        const nota=chiuse.some(x=>x.solo)||mancanti>0;
+        return(
+          <Card momento="Albo d'oro — storico campioni" style={{marginTop:8,padding:"9px 12px"}}>
+            <div data-cpm="albo340" data-lega={lg}>
+              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Albo d'oro — {lg}</div>
+              {top.length>0&&<div data-cpm="albo340-etichette" style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
+                {top.map(([club,n],i)=>(
+                  <div key={club} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 9px",borderRadius:RAD.pill,background:i===0?TH.bgAmber:TH.surface2,border:"1px solid "+(i===0?TH.bdAmber:TH.divider),fontSize:FS.caption}}>
+                    <span>{i===0?"👑":i===1?"🥈":"🥉"}</span>
+                    <span style={{fontWeight:FW.bold,color:i===0?TH.goldText:TH.text}}>{club}</span>
+                    <span className="cpm-num" style={{color:TH.muted}}>×{n}</span>
+                  </div>))}
+              </div>}
+              {!rows.length&&<div style={{fontSize:FS.caption,color:TH.muted,padding:"4px 0"}}>Nessuna stagione giocata ancora in questa lega: l'albo si scrive a fine stagione.</div>}
+              {rows.map((e,i)=>(
+                <div key={e.s+(e.inProgress?"c":"")} data-cpm="albo340-stagione" style={{display:"flex",alignItems:"flex-start",gap:8,padding:"6px 4px",borderTop:i>0?"1px solid "+TH.divider:"none"}}>
+                  <div className="cpm-num" style={{minWidth:28,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted}}>S.{e.s}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:e.inProgress?TH.text:TH.goldText}}>{e.inProgress?"🔴 In testa: ":"🏆 "}{e.podio[0]||"–"}{_mio(e.podio[0])?" ⭐":""}</span>
+                      {e.inProgress&&<span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:0.5,padding:"1px 6px",borderRadius:RAD.pill,background:TH.surface2,border:"1px solid "+TH.divider,color:TH.muted}}>IN CORSO</span>}
+                    </div>
+                    {e.podio.length>1&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{e.podio.slice(1).map((c,k)=>(k+2)+"° "+c+(_mio(c)?" ⭐":"")).join(" · ")}</div>}
+                    {e.cap&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>⚽ {e.inProgress?"Capocannoniere ora":"Capocannoniere"}: {e.cap[0]}{e.cap[3]?" ⭐":""} ({e.cap[1]}) · <span className="cpm-num">{e.cap[2]}</span> gol</div>}
+                    {(e.relegated||[]).length>0&&<div style={{fontSize:FS.caption,color:TH.txRed,marginTop:1}}>⬇ {e.relegated.slice(0,3).join(", ")}</div>}
+                  </div>
+                </div>))}
+              {nota&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>Podio e capocannoniere sono registrati per ogni lega dalle stagioni chiuse con questa versione: delle stagioni precedenti il gioco conservava solo il campione del campionato in cui giocavi{mancanti>0?` (${mancanti} ${mancanti===1?"stagione":"stagioni"} di questa lega senza dati)`:""}.</div>}
+            </div>
+          </Card>
+        );
+      })()}
+      {tab==="standings"&&!!(typeof window!=='undefined'&&window.__CPM_NO_G340)&&(()=>{
         const arch=[...(player.leagueArchive||[])].reverse();
         /* [7.296.0 collaudo PO «albo d'oro non c'è la serie A»] L'albo si scriveva SOLO al rollover, quindi il
            campionato che stai giocando non compariva: chi era passato in Lega A a stagione in corso vedeva
@@ -10464,27 +10523,31 @@ const getThisWeekMatchday=()=>{
 
       {/* Sprint 51 — All-Time Scorer Ranking */}
       {tab==="standings"&&(()=>{
-        const lg=player.club?.lg;
+        /* [giro 340 PO-569] i marcatori storici seguono la lega della tendina; l'eroe compare solo nella sua lega attuale. Rosso __CPM_NO_G340 */
+        const _g340=!(typeof window!=='undefined'&&window.__CPM_NO_G340);
+        const _myLg=player.club?.lg;
+        const lg=_g340?(standingsLg||_myLg||(player.proStatus==="u18"?"Primavera 1":"Lega A")):_myLg;
         const lr=LEAGUE_RECORDS[lg]||null;
         if(!lr)return null;
         const totalG=player.totalGoals||0;
+        const _conMe=!_g340||lg===_myLg;
         const myEntry={name:player.name,goals:totalG,isPlayer:true};
-        const allScorers=[...lr.topScorers,myEntry].sort((a,b)=>b.goals-a.goals);
+        const allScorers=[...lr.topScorers,...(_conMe?[myEntry]:[])].sort((a,b)=>b.goals-a.goals);
         const myIdx=allScorers.findIndex(s=>s.isPlayer);
         const nextTarget=myIdx>0?allScorers[myIdx-1]:null;
         const toNext=nextTarget?nextTarget.goals-totalG:0;
         return(
           <Card momento="Marcatori storici" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{marginTop:8}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Marcatori Storici — {lg}</div>
-            <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:8,background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 12px",border:"1px solid #f59e0b"}}>
+            {_conMe&&<div style={{display:"flex",gap:8,alignItems:"center",marginBottom:8,background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 12px",border:"1px solid #f59e0b"}}>
               <div style={{fontSize:FS.title,fontWeight:900,color:TH.txAmber,minWidth:32}}>#{myIdx+1}</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.small,fontWeight:800,color:TH.txAmber}}>{player.name}</div>
                 <div style={{fontSize:FS.caption,color:TH.txAmber}}>{totalG} gol in carriera</div>
               </div>
               {myIdx===0&&totalG>0&&<div style={{fontSize:FS.bodyLg}}>👑</div>}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:3}}>
+            </div>}
+            <div data-cpm={_g340?"storici340":undefined} data-lega={lg} style={{display:"flex",flexDirection:"column",gap:3}}>
               {allScorers.slice(0,6).map((s,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:RAD.sm,background:s.isPlayer?TH.bgAmber:"transparent",border:s.isPlayer?"1px solid #fde68a":"none"}}>
                   <div style={{minWidth:20,fontSize:FS.caption,fontWeight:700,color:i===0?TH.goldText:TH.faint}}>#{i+1}</div>
@@ -10493,8 +10556,8 @@ const getThisWeekMatchday=()=>{
                 </div>
               ))}
             </div>
-            {toNext>0&&nextTarget&&<div style={{marginTop:8,padding:"6px 10px",background:TH.bgGreen,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.txGreen}}>🎯 {toNext} gol per superare {nextTarget.name} (#{myIdx})</div>}
-            {myIdx===0&&totalG>0&&<div style={{marginTop:8,padding:"6px 10px",background:"linear-gradient(135deg,#fef3c7,#fde68a)",borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:700,color:TH.txAmber,textAlign:"center"}}>👑 Sei il miglior marcatore storico della {lg}!</div>}
+            {_conMe&&toNext>0&&nextTarget&&<div style={{marginTop:8,padding:"6px 10px",background:TH.bgGreen,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.txGreen}}>🎯 {toNext} gol per superare {nextTarget.name} (#{myIdx})</div>}
+            {_conMe&&myIdx===0&&totalG>0&&<div style={{marginTop:8,padding:"6px 10px",background:"linear-gradient(135deg,#fef3c7,#fde68a)",borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:700,color:TH.txAmber,textAlign:"center"}}>👑 Sei il miglior marcatore storico della {lg}!</div>}
           </Card>
         );
       })()}
@@ -13147,6 +13210,65 @@ const getThisWeekMatchday=()=>{
                 {myi>=0&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.muted,textAlign:"center"}}>{myi===0?"👑 Re dei Bomber d'Europa!":`Sei #${myi+1} in classifica marcatori europea`}</div>}
               </Card></Fisarmonica>
             );})()}
+            {/* [giro 340 PO-570 «idem per le coppe»] STORICO DELLE COPPE con la sua tendina: per ogni coppa le edizioni chiuse (vincitore,
+                finale, capocannoniere) e i marcatori dell'edizione in corso. Dati: player.alboCoppe340, scritto al rollover; prima di questa
+                versione il gioco conservava solo i trofei dell'eroe (leagueArchive) e, per le europee, il vincitore derivato che il Tab mostra
+                gia' in «Ultimi vincitori». Le coppe nazionali delle ALTRE leghe non sono simulate: non compaiono. Rosso __CPM_NO_G340 = nessuno storico. */}
+            {_isPro&&!(typeof window!=='undefined'&&window.__CPM_NO_G340)&&(()=>{
+              const cur=player.season||1;const rec=player.alboCoppe340||[];const arch=player.leagueArchive||[];
+              const nomeEC={UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"};
+              const lgCup=player.club?.lg||"";
+              const scelte=[["cup","Coppa nazionale"+(lgCup?" — "+lgCup:"")],["UCL",nomeEC.UCL],["UEL",nomeEC.UEL],["UECL",nomeEC.UECL]];
+              const k=coppa340&&scelte.some(x=>x[0]===coppa340)?coppa340:"cup";
+              const edizioni=[];
+              for(let sv=cur-1;sv>=Math.max(1,cur-30);sv--){
+                const r=rec.find(x=>x&&x.s===sv);const a=arch.find(x=>x&&x.season===sv);
+                if(k==="cup"){
+                  if(r&&r.cup&&(!r.cup.lg||r.cup.lg===lgCup))edizioni.push({s:sv,w:r.cup.w,f:r.cup.f,cap:r.cup.cap});
+                  else if(!r&&a&&a.isPlayerCupChamp&&a.league===lgCup)edizioni.push({s:sv,w:a.playerClub,f:null,cap:null,solo:true});
+                }else{
+                  if(r&&r.eu&&r.eu[k])edizioni.push({s:sv,w:r.eu[k].w,f:r.eu[k].f,cap:r.eu[k].cap});
+                  else{const w=(a&&a.euroComp===k)?a.playerClub:vincitoreEuro340(k,sv);if(w)edizioni.push({s:sv,w,f:null,cap:null,solo:true});}
+                }
+              }
+              const inCorso=k==="cup"?(cup&&!_cupEx?generateCupScorers(player,"cup"):[]):(eu&&eu.active&&eu.competition===k?generateCupScorers(player,"euro"):[]);
+              const giocata=k==="cup"?!!(cup&&!_cupEx):!!(eu&&eu.active&&eu.competition===k);
+              const _mio=(n)=>!!(n&&player.club&&n===player.club.n);
+              return(
+                <Fisarmonica id="coppe340-storico" titolo={<>📜 Storico delle coppe</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                  <div data-cpm="coppe340" data-coppa={k}>
+                    <label style={{display:"flex",alignItems:"center",gap:SP.sm,border:"1px solid "+TH.cardBorder,borderRadius:RAD.md,padding:`0 ${SP.md}px`,marginBottom:8,position:"relative"}}>
+                      <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,whiteSpace:"nowrap"}}>Coppa</span>
+                      <select data-cpm="coppa340" value={k} onChange={e=>{setCoppa340(e.target.value);try{e.target.blur();}catch(_e){}}}
+                        style={{flex:1,minWidth:0,appearance:"none",WebkitAppearance:"none",border:"none",background:"transparent",fontFamily:"inherit",fontSize:FS.body,fontWeight:FW.bold,color:TH.text,padding:"12px 24px 12px 0",cursor:"pointer",outline:"none"}}>
+                        {scelte.map(([v,t])=><option key={v} value={v}>{t}</option>)}
+                      </select>
+                      <span aria-hidden="true" style={{position:"absolute",right:SP.md,pointerEvents:"none",color:TH.muted,fontSize:FS.bodyLg,transform:"rotate(90deg)"}}>›</span>
+                    </label>
+                    <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Marcatori dell'edizione in corso</div>
+                    {inCorso.length>0?inCorso.slice(0,5).map((x,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 4px",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                        <span className="cpm-num" style={{width:16,fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textAlign:"center"}}>{i+1}</span>
+                        <span style={{flex:1,minWidth:0,fontSize:FS.caption,color:x.isPlayer?TH.brandText:TH.text,fontWeight:x.isPlayer?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.isPlayer?" ⭐":""} <span style={{color:TH.muted}}>{x.club}</span></span>
+                        <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text}}>{x.goals}</span>
+                      </div>)):
+                      <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>{giocata?"Torneo non ancora iniziato.":"Questa coppa non la stai giocando: il gioco ne simula solo il vincitore, non i marcatori."}</div>}
+                    <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1,margin:"10px 0 4px"}}>Edizioni passate</div>
+                    {!edizioni.length&&<div style={{fontSize:FS.caption,color:TH.muted}}>Nessuna edizione registrata ancora: lo storico si scrive a fine stagione.</div>}
+                    {edizioni.map((e,i)=>(
+                      <div key={e.s} data-cpm="coppe340-edizione" style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 4px",borderTop:i>0?"1px solid "+TH.divider:"none"}}>
+                        <div className="cpm-num" style={{minWidth:28,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted}}>S.{e.s}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.goldText}}>🏆 {e.w||"–"}{_mio(e.w)?" ⭐":""}</div>
+                          {e.f&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>Finale: {e.f[0]} <span className="cpm-num">{e.f[2]}–{e.f[3]}</span> {e.f[1]}</div>}
+                          {e.cap&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>⚽ Capocannoniere: {e.cap[0]}{e.cap[3]?" ⭐":""} ({e.cap[1]}) · <span className="cpm-num">{e.cap[2]}</span> gol</div>}
+                        </div>
+                      </div>))}
+                    {edizioni.some(e=>e.solo)&&<div className="cpm-leggi289" style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>Finale e capocannoniere sono registrati dalle edizioni chiuse con questa versione; delle precedenti resta solo il vincitore{k==="cup"?" quando era la tua squadra":""}.</div>}
+                  </div>
+                </Card></Fisarmonica>
+              );
+            })()}
             {/* EUROPEO / MONDIALE */}
             {_isPro&&em?.active&&(
               <Fisarmonica id="s24-s" titolo={<>{em.type||"Europeo"} — S.{em.season||player.season||1}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid #a5f3fc"}}>
