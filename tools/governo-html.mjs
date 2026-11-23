@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { tabella as tabellaCosti } from './costi-sessioni.mjs';
+import { statoNotte, FILE_NOTTE } from './notte-333.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const leggi = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -73,6 +74,10 @@ const ultimoGiro = stab[0] ? `${stab[0].catena} su ${stab[0].versione} (${stab[0
 const TIPI = ['bloccante', 'difetto', 'miglioramento', 'nuova funzione', 'debito tecnico', 'processo', 'ricerca', 'conflitto'];
 const nonSmistate = [...aperte.rows, ...chiuse.rows].filter(r => !TIPI.includes(r[3])).map(r => r[0] + ' («' + r[3] + '»)');
 if (nonSmistate.length) console.warn('⚠ voci con tipo fuori dallo smistamento: ' + nonSmistate.join(', '));
+// [giro 333, PO-631] treno grande di stanotte: dal record del custode (docs/governo/TRENO-NOTTE.json, scritto sul poc). Senza record
+// dopo la scadenza della notte = «non partito» (il cron non e' scattato). CPM_NOTTE_FILE / CPM_ADESSO solo per il guardiano notte-333.
+let notteRec = null; try { notteRec = JSON.parse(fs.readFileSync(process.env.CPM_NOTTE_FILE || path.join(ROOT, FILE_NOTTE), 'utf8')); } catch {}
+const notte = statoNotte(notteRec, process.env.CPM_ADESSO || new Date().toISOString());
 const wCols = ['Voce', 'Valore'];
 const wRows = [
   ['Settimana', `dal ${new Date(oggi - 6 * 864e5).toISOString().slice(0, 10)} al ${oggi.toISOString().slice(0, 10)}`],
@@ -82,6 +87,7 @@ const wRows = [
   ['In attesa di collaudo (Codex)', `${attesaCodex.length}: ${attesaCodex.join(', ')}`],
   ['Decisioni PO della settimana', `${decSett.length}: ${decSett.join(' · ')}`],
   ['Ultimo giro della suite', ultimoGiro],
+  ...(notte ? [['Treno grande di stanotte', notte.testo]] : []),
   ['Voci non smistate (tipo fuori dalle categorie)', nonSmistate.length ? `${nonSmistate.length}: ${nonSmistate.join(', ')}` : '0'],
   ['Rischi ad alta probabilità o impatto', `${rischiAlti.length}: ${rischiAlti.join(' · ')}`],
 ];
@@ -95,7 +101,7 @@ const ver = (leggi('src/07-versione-save-interviste.jsx').match(/const GAME_VERS
 const quando = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 
 const DATI = {
-  meta: { ver, commit, quando },
+  meta: { ver, commit, quando, notte },
   tabs: [
     { id: 'backlog', nome: 'Backlog', cols: bCols, rows: bRows, ordine: [0, 6, 1],
       menu: ['Sezione', 'Tipo', 'Stato', 'Lotto'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
@@ -163,6 +169,7 @@ code{font:500 12.5px var(--f-mono);background:color-mix(in srgb,var(--ink) 7%,tr
   <header>
     <h1>Governo Korward Elite</h1>
     <span class="meta" id="meta"></span>
+    <span class="chip" id="notte" hidden></span>
   </header>
   <nav role="tablist" id="tabs"></nav>
   <div class="barra">
@@ -215,10 +222,11 @@ $('#t').addEventListener('input',e=>{const c=e.target.dataset.c;if(c==null)retur
 $('#t').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;const c=+b.dataset.s;ord=ord&&ord.c===c?(ord.d>0?{c,d:-1}:null):{c,d:1};disegna();});
 $('#cerca').addEventListener('input',righe);
 $('#azzera').addEventListener('click',()=>{for(const k in F)delete F[k];$('#cerca').value='';ord=null;disegna();});
+if(DATI.meta.notte){const n=$('#notte');n.hidden=false;n.className='chip '+DATI.meta.notte.cls;n.textContent=DATI.meta.notte.testo;}
 $('#meta').textContent='CPM '+DATI.meta.ver+' · commit '+DATI.meta.commit+' · generata '+DATI.meta.quando;
 disegna();
 </script>
 `;
-const out = path.join(ROOT, 'docs/governo/governo.html');
+const out = process.env.CPM_GOVERNO_OUT || path.join(ROOT, 'docs/governo/governo.html');
 fs.writeFileSync(out, html);
 console.log(`governo.html: backlog ${bRows.length} (aperte ${aperte.rows.length}, chiuse ${chiuse.rows.length}) · lotti ${lotti.rows.length} · registro ${rRows.length} · ${Math.round(html.length / 1024)} KB`);
