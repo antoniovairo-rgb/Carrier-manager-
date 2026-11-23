@@ -103,7 +103,7 @@ function DiarioSfoglia({diary,DTYPE}){
       <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textAlign:"center"}}>Stagione {cur}<span style={{color:TH.faint,fontWeight:FW.regular}}> · {voci.length} {voci.length===1?"voce":"voci"}</span></div>
       <button aria-label="Stagione successiva" disabled={ix>=stag.length-1} onClick={()=>ix<stag.length-1&&setSel(stag[ix+1])} style={btn(ix<stag.length-1)}>▶</button>
     </div>}
-    <div style={{maxHeight:440,overflowY:"auto",WebkitOverflowScrolling:"touch",paddingRight:2}}>
+    <div data-scorri341="1" style={{..._scorri341(440),paddingRight:2}}>
     <div style={{position:"relative",paddingLeft:4}}>
       <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:RAD.pill}}/>
       {voci.map((entry,i)=>{const meta=DTYPE[entry.type]||{e:"⭐",color:TH.muted};
@@ -11214,7 +11214,7 @@ const getThisWeekMatchday=()=>{
           {(player.mvpMonthAwards||[]).length>0&&(
             <Fisarmonica id="profilo-mvp-mese" titolo="MVP del Mese" quante={(player.mvpMonthAwards||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               
-              <div style={{maxHeight:360,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>{/* [7.999.54 censimento riquadri: il titolo contava tutti i premi, la lista ne mostrava 8] tutti, con scroll interno */}
+              <div data-scorri341="1" style={{..._scorri341(360)}}>{/* [7.999.54 censimento riquadri: il titolo contava tutti i premi, la lista ne mostrava 8] tutti, con scroll interno */}
               {[...(player.mvpMonthAwards||[])].reverse().map((a,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.mvpMonthAwards||[]).length-1?"1px solid "+TH.cardBorder:"none"}}>
                   <span style={{fontSize:FS.subhead,flexShrink:0}}>⭐</span>
@@ -11383,7 +11383,7 @@ const getThisWeekMatchday=()=>{
           {(player.history||[]).length>0&&(
             <Fisarmonica id="profilo-timeline" titolo={L.careerHistory||"Timeline Stagioni"} quante={(player.history||[]).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               
-              <div style={{maxHeight:520,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>{/* [7.999.54 censimento riquadri] una scheda a stagione: scroll interno */}
+              <div data-scorri341="1" style={{..._scorri341(520)}}>{/* [7.999.54 censimento riquadri] una scheda a stagione: scroll interno */}
               {[...(player.history||[])].reverse().map((h,i,arr)=>{
                 const _sTr84=(player.trophies||[]).filter(t=>t&&t.season===h.season);/* [7.184.0 collaudo PO «campione di cosa, specifica!»] i trofei VERI della stagione → badge specifici */
                 const isChamp=_sTr84.length>0;
@@ -11458,7 +11458,7 @@ const getThisWeekMatchday=()=>{
             return(
               <Fisarmonica id="profilo-memoria" titolo="Memoria della Carriera" quante={entries.length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 
-                <div style={{display:"flex",flexDirection:"column",gap:6,maxHeight:360,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+                <div data-scorri341="1" style={{display:"flex",flexDirection:"column",gap:6,..._scorri341(360)}}>
                   {entries.map((m,i)=>{
                     const meta=MEM_META[m.type];
                     return(
@@ -11970,12 +11970,12 @@ const getThisWeekMatchday=()=>{
                           <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} data-cpm="tacca-v2" style={{width:18,height:6,borderRadius:3,background:i<=lv?TINTE.oro:TINTE.anello}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
-                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
+                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"}{_g341()?" · ★ consigliato = i tuoi punti deboli: gli attributi più bassi fra quelli che contano nel giudizio":" · ★ pesa di più nel giudizio ed è ancora basso"}</div>;})()}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
                             style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
                               <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
-                              {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
+                              {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title={_g341()?"Punto debole: è fra i tuoi attributi più bassi e conta nel giudizio":"Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più"} style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
                       <div className="cpm-gap40" style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>

@@ -422,6 +422,7 @@
     "meta-conto-265": "node meta-conto-265.mjs",
     "acquisti-281": "CPM_PROVA_ROSSO=1 node acquisti-281.mjs",
     "trainer-288": "CPM_PROVA_ROSSO=1 node trainer-288.mjs",
+    "fisarmonica-341": "node fisarmonica-341.mjs",
     "carriera3-94": "node carriera3-94.mjs",
     "impulsi-289": "CPM_PROVA_ROSSO=1 node impulsi-289.mjs",
     "piccoli-85": "CPM_PROVA_ROSSO=1 node piccoli-85.mjs",

@@ -3,7 +3,8 @@
  * Ufficio › Staff privato, personal trainer con livello >= 1. Sui pulsanti-piano:
  *   V  ogni pulsante mostra il valore uguale a player.stats (e «generale» il giudizio calcOvr)
  *   R  le settimane per +1 coincidono con Math.round(1/trainerQuota281(...)) della pagina (stessa funzione del motore); «generale» mostra +10/15/20%
- *   C  «consigliato» compare su 1-2 caratteristiche e coincide con la regola: peso OVR x (99 - valore), solo valori < 85, primi 2
+ *   C  «consigliato» compare su 1-3 caratteristiche e coincide con la regola del giro 341 (PO-622): le due piu' basse fra quelle che
+ *      pesano nel giudizio, sotto 85, + pari merito con la seconda (tetto 3). Fino al giro 340: peso OVR x (99 - valore), primi 2
  *   L  a 400 px nessun overflow orizzontale e i pulsanti vanno a capo (piu' di una riga)
  *   B  il pulsante attivo e il testo trainerFx281 restano
  * Rosso: __CPM_NO_PT288 = la schermata di 7.999.176 (nessun valore/resa/consigliato) -> V, R, C devono cadere.
@@ -54,13 +55,16 @@ async function giro(rosso, w, foto) {
     await sleep(300); await page.screenshot({ path: foto }); }
   await ctx.close();
   // attesi indipendenti dalla pagina
-  const att = ATTR.filter(a => r.stats[a] < 85).map(a => ({ a, s: PESI[a] * (99 - r.stats[a]) })).sort((x, y) => y.s - x.s || ATTR.indexOf(x.a) - ATTR.indexOf(y.a)).slice(0, 2).map(x => x.a);
+  /* [giro 341 · PO-622 «consigliato deve essere sui punti deboli!»] regola nuova: le due piu' basse fra quelle che pesano (+ pari merito, tetto 3) */
+  const _c341 = ATTR.filter(a => r.stats[a] < 85 && PESI[a] >= 1).sort((x, y) => r.stats[x] - r.stats[y] || PESI[y] - PESI[x] || ATTR.indexOf(x) - ATTR.indexOf(y));
+  const _s341 = _c341.length >= 2 ? r.stats[_c341[1]] : (_c341.length ? r.stats[_c341[0]] : -1);
+  const att = _c341.filter(a => r.stats[a] <= _s341).slice(0, 3);
   const cons = ATTR.filter(a => r.attr[a].cons);
   const num = (t) => t ? (t.match(/\d+/g) || []).map(Number) : [];
   const ok = {
     V: ATTR.every(a => r.attr[a].val && r.attr[a].val.includes(a) && num(r.attr[a].val).pop() === r.stats[a]) && !!r.gen.val && num(r.gen.val).pop() === r.gen.ovr,
     R: ATTR.every(a => r.attr[a].resa && r.attr[a].attesoSett != null && num(r.attr[a].resa).pop() === r.attr[a].attesoSett) && !!r.gen.resa && num(r.gen.resa)[0] === 15,
-    C: cons.length >= 1 && cons.length <= 2 && JSON.stringify(cons.slice().sort()) === JSON.stringify(att.slice().sort()),
+    C: cons.length >= 1 && cons.length <= 3 && JSON.stringify(cons.slice().sort()) === JSON.stringify(att.slice().sort()),
     L: r.overflowX <= 0 && r.sbordo === 0 && (w > 500 || r.righe > 1),
     B: r.attivoTiro !== r.generaleBg && r.fxInPagina && r.nBtn === 9,
   };
