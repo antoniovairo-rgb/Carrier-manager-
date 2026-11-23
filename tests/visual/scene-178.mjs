@@ -8,6 +8,7 @@
      CPM_FASE=prima CPM_SCENE=intro,presentazione,parata,gala,partita node scene-178.mjs     → misura e foto (docs/sviluppo/giro178/)
      npm run scene-178                       → GUARDIANO: verde se le soglie (dichiarate PRIMA della correzione) reggono
      CPM_ROSSO=1 npm run scene-178           → prova del rosso: accende __CPM_NO_G178_COLORE e __CPM_NO_G178_INTRO, deve uscire ≠0
+     CPM_ROSSO=331 CPM_SCENE=intro CPM_INTRO_FMT=tel,tel412 node scene-178.mjs → [giro 331] prova del rosso della camera d'apertura (__CPM_NO_G331): rosso SOLO per S3
    SOGLIE (dichiarate nel rapporto prima di correggere, mai abbassate):
      S1  ΔE2000(campione piatto della scena, campione piatto della partita) ≤ 2,0 per ogni club e ogni scena fuori partita;
      S2  intro: ΔE2000(bandiere a schermo, campione piatto dell'intro dello stesso esadecimale) ≤ 6,0 e almeno 200 pixel di bandiera;
@@ -23,6 +24,7 @@ import { INIT178, dE, hexRGB, CLUB178 } from './lib/colore178.mjs';
 const FASE = process.env.CPM_FASE || '';
 const GIUDICA = !FASE;
 const ROSSO = process.env.CPM_ROSSO === '1';
+const ROSSO331 = process.env.CPM_ROSSO === '331';/* [giro 331] terzo braccio: solo __CPM_NO_G331 (la camera dell'intro che nasce a terra a centrocampo). Deve uscire rosso per S3 nei primi fotogrammi */
 const SCENE = (process.env.CPM_SCENE || 'intro,presentazione,parata,gala,partita').split(',');
 /* club per cui si apre una pagina (maglie vere): tutti e quattro in misura; nel guardiano uno solo (saturo), perche' i CAMPIONI dei quattro
    esadecimali si leggono tutti nella stessa pagina e sono loro a decidere S1 */
@@ -32,7 +34,7 @@ const OUT = path.join(ROOT, 'docs/sviluppo/giro178'); fs.mkdirSync(OUT, { recurs
 const FOTO = !!FASE;
 const FMT = { tel: { width: 375, height: 812 }, tel412: { width: 412, height: 915 }, pc: { width: 1440, height: 900 } };
 const INTRO_FMT = (process.env.CPM_INTRO_FMT || 'tel,tel412,pc').split(',');
-const ris = { fase: FASE || (ROSSO ? 'guardiano-rosso' : 'guardiano'), quando: new Date().toISOString(), scene: {} };
+const ris = { fase: FASE || (ROSSO ? 'guardiano-rosso' : ROSSO331 ? 'guardiano-rosso331' : 'guardiano'), quando: new Date().toISOString(), scene: {} };
 /* in misura le scene si accumulano nello stesso file della fase (la partita si misura in una corsa a parte: e' lunga) */
 if (FASE) { try { const prev = JSON.parse(fs.readFileSync(path.join(OUT, `misure-${FASE}.json`))); for (const [k, v] of Object.entries(prev.scene || {})) if (!SCENE.includes(k)) ris.scene[k] = v; } catch (e) {} }
 
@@ -52,8 +54,8 @@ const clubDi = (C) => ({ id: 'g178' + C.k, n: 'FC Prova ' + C.k, a: 'PRV', p: 66
 async function pagina(fmt, save, extra) { const ctx = await b.newContext({ viewport: FMT[fmt], deviceScaleFactor: fmt === 'pc' ? 1 : 2, serviceWorkers: 'block' }); await installCdnRoutes(ctx); const page = await ctx.newPage();
   page.on('pageerror', e => console.log('  ⚠ pageerror', String(e.message || e).slice(0, 160)));
   await page.addInitScript(INIT178);
-  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (o.rosso) { window.__CPM_NO_G178_COLORE = true; window.__CPM_NO_G178_INTRO = true; } if (o.extra) Object.assign(window, o.extra); if (o.luce) window.__CPM_G178_LUCE = o.luce;
-    try { localStorage.setItem('cpm-intro-seen', '1'); if (o.s) localStorage.setItem('cpm-v3', JSON.stringify(o.s)); } catch (e) {} }, { s: save || null, rosso: ROSSO, extra: extra || null, luce: process.env.CPM_LUCE ? JSON.parse(process.env.CPM_LUCE) : null });
+  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (o.rosso) { window.__CPM_NO_G178_COLORE = true; window.__CPM_NO_G178_INTRO = true; } if (o.rosso331) window.__CPM_NO_G331 = 1; if (o.extra) Object.assign(window, o.extra); if (o.luce) window.__CPM_G178_LUCE = o.luce;
+    try { localStorage.setItem('cpm-intro-seen', '1'); if (o.s) localStorage.setItem('cpm-v3', JSON.stringify(o.s)); } catch (e) {} }, { s: save || null, rosso: ROSSO, rosso331: ROSSO331, extra: extra || null, luce: process.env.CPM_LUCE ? JSON.parse(process.env.CPM_LUCE) : null });
   await page.goto(URL0, { waitUntil: 'load', timeout: 120000 }); await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200); page._ctx = ctx; return page; }
 async function carriera(fmt, save) { const page = await pagina(fmt, save); try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 6000 }); } catch (e) {}
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(1200); try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {} return page; }
@@ -146,4 +148,6 @@ console.log('\n' + tab + '\n'); console.log('quadro intro', JSON.stringify(Q || 
 if (rossi.length) { console.log('\n🔴 scene-178 ROSSO (' + rossi.length + '):\n - ' + rossi.join('\n - ')); }
 else console.log('\n🟢 scene-178 VERDE: S1 campione ≤ 2,0 su ogni club e scena · S2 bandiere intro ≤ 6,0 · S3 eroe dentro il quadro in ogni fotogramma (tel) · S4 folla a sagome');
 if (GIUDICA && ROSSO) { console.log(rossi.length ? '\n✅ prova del rosso riuscita: con __CPM_NO_G178_COLORE + __CPM_NO_G178_INTRO il guardiano e\' ROSSO' : '\n❌ prova del rosso FALLITA: coi rossi accesi il guardiano resta verde'); process.exit(rossi.length ? 0 : 1); }
+if (GIUDICA && ROSSO331) { const s3 = rossi.filter(x => /S3 \d+\/\d+ fotogrammi/.test(x)); const altri = rossi.filter(x => !s3.includes(x));
+  const ok = s3.length > 0 && !altri.length; console.log(ok ? '\n✅ prova del rosso 331 riuscita: con __CPM_NO_G331 l\'eroe esce dal quadro in apertura (' + s3.join(' · ') + ')' : '\n❌ prova del rosso 331 FALLITA: ' + (altri.length ? 'rossi estranei: ' + altri.slice(0, 2).join(' · ') : 'con __CPM_NO_G331 nessun fotogramma con l\'eroe fuori (S3 verde)')); process.exit(ok ? 0 : 1); }
 process.exit(GIUDICA ? (rossi.length ? 1 : 0) : 0);

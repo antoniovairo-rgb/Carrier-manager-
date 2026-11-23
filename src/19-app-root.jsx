@@ -660,6 +660,12 @@ function IntroCinematic({onDone,nome,riascolto}){
         else{lx=hpx;lz=hpz-1.2;ly=Math.min(ly,1.9);}}
       if(shakeIntro>0.01){cx+=Math.sin(el*70)*shakeIntro*0.5;cy+=Math.cos(el*60)*shakeIntro*0.3;shakeIntro*=0.86;}/* colpo di cannone → micro-shake */
       {const _ck=1-Math.exp(-_dtI*5.2),_lk=1-Math.exp(-_dtI*((_g178i&&cam.aspect<0.62&&el>=9.6&&el<13)?14:6.8));/* [giro 178] in verticale, dal gol all'arrivo sotto la curva, lo sguardo insegue l'eroe in ~0,07 s invece di ~0,15 *//* [7.32.7] smoothing camera DT-CORRETTO (il fattore fisso per-frame era frame-rate-dependent → rubber-banding a fps bassi) */
+       /* [giro 331 · PO-620, rosso stabile di scene-178] LA CAMERA DELL'INTRO PARTE DAL SUO PUNTO. MISURATO (scene-178, 375x812 e 412x915, 3 corse su 3
+          anche sulla base lavoro/201): nei primi 0,35 s 4 fotogrammi con lo 0% delle ossa dell'eroe nel quadro. Causa: la camera nasce in (0,0,0),
+          cioe' a terra a centrocampo, e raggiunge l'orbita d'apertura con lo smorzamento (~0,2 s di costante): dal giro 233 l'orologio parte coi corpi
+          gia' pronti, quindi quel volo da terra si vede, con l'eroe alle spalle. Al primo fotogramma camera e sguardo si mettono sul bersaglio; lo
+          smorzamento lavora dal secondo. Rosso __CPM_NO_G331. */
+       if(!stG._c331&&!window.__CPM_NO_G331){stG._c331=1;cam.position.set(cx,cy,cz);camLook.set(lx,ly,lz);}
        cam.position.x+=(cx-cam.position.x)*_ck;cam.position.y+=(cy-cam.position.y)*_ck;cam.position.z+=(cz-cam.position.z)*_ck;
        camLook.x+=(lx-camLook.x)*_lk;camLook.y+=(ly-camLook.y)*_lk;camLook.z+=(lz-camLook.z)*_lk;}
       cam.lookAt(camLook);

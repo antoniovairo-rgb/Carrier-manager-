@@ -1,5 +1,119 @@
 [
  {
+  "data": "2026-11-23 02:20",
+  "versione": "7.999.205",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "scene-178",
+    "ok": true,
+    "s": 419
+   },
+   {
+    "passo": "pelle-240",
+    "ok": true,
+    "s": 386
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 217
+   },
+   {
+    "passo": "movimento-147",
+    "ok": false,
+    "s": 2220,
+    "coda": "verde {\"compagniFermi\":27,\"avversariFermi\":26,\"campioniCompagni\":233,\"campioniAvversari\":447,\"scenaSuReale\":1.03,\"partite\":3,\"esiti\":\"0:fischio/368s 1:fischio/350s 2:fischio/367s\"} | rosso {\"compagniFermi\":92.4,\"avversariFermi\":90,\"campioni | log out/ci-rossi/movimento-147-2026-11-23T03-15-02-140Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 186
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 258
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 343
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 394
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 647
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 190
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 114
+   }
+  ]
+ },
+ {
   "data": "2026-11-23 01:35",
   "versione": "7.999.205",
   "catena": "giro",
