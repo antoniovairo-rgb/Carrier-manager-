@@ -12,7 +12,7 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 - **Vagone (carrozza):** un pezzo del treno = un giro unito in `lavoro/**` («Unione sviluppo/giroNNN …»). Un giro = un vagone.
 - **Treno:** la corsa dei controlli su GitHub che porta uno o più vagoni verso una versione (es. «il treno della 7.999.208 con 6 vagoni: giri 331, 333, 335, 336, 337, 338»). Mai «il vagone della 208» per dire l'insieme.
 - **Trenino:** un treno con pochi vagoni, che gira solo i controlli toccati da quei vagoni (più le sentinelle).
-- **Quanti vagoni (PO 23/11 17:55):** un treno porta **da 4 a 6 vagoni**, mai di più: con 13 vagoni un rosso fa ripartire tutto da capo. Se ci sono più vagoni pronti, il resto aspetta il treno dopo.
+- **Quanti vagoni (PO 23/11 17:55):** un treno porta **al massimo 6 vagoni** e parte appena ce n'è uno pronto, senza aspettare di riempirlo (PO 23/11 20:55: «Meglio poco alla volta ma rapidamente»): con 13 vagoni un rosso fa ripartire tutto da capo. Se ci sono più vagoni pronti, il resto aspetta il treno dopo.
 - **Treno completo / treno grande:** gira la mappa intera; il treno grande è quello di notte.
 
 ## Smistamento (triage) — entro la risposta successiva
