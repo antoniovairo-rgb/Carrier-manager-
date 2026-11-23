@@ -23802,7 +23802,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _dB147=Math.hypot(bx-_F685.x,bz-_F685.z),_s147=(P.allPlayers||[])[i]||{};
               if(!(typeof window!=='undefined'&&window.__CPM_NO_ATTIVI147)&&_dB147<35&&!_s147.gk){
                 let _ux=1,_uz=0;if(_s147.team==='home'){_ux=0.8;_uz=((pp.mesh._mIdx!=null?pp.mesh._mIdx:i)%2)?0.6:-0.6;}else{_ux=(bx-_F685.x)/(_dB147||1);_uz=(bz-_F685.z)/(_dB147||1);}
-                const _sn147=Math.sin((now*0.0016)+_F685.ph)*_k286;pp.mesh.position.x=_F685.x+_ux*1.0*_sn147;pp.mesh.position.z=_F685.z+_uz*1.0*_sn147;}
+                /* [giro 334 PO-610, decisione PO 23/11 «Ellisse d'attesa». Rosso __CPM_NO_G334 = l'avanti-e-indietro di prima] MISURATO dal giro 331
+                   (movimento-147 a velocita' reale): compagni fermi 25-32% contro il tetto 25, perche' un avanti-e-indietro passa dallo zero di
+                   velocita' due volte per giro (1,6·|cos| sotto 0,5 per il 20% del tempo, per costruzione). Ora il punto fa un piccolo GIRO:
+                   asse lungo 1 u sulla direzione di prima, asse corto 0,5 u di traverso; la velocita' sta fra 0,8 e 1,6 u/s e non passa mai da
+                   zero. Verso del giro alternato per indice. Stessa regola del 685 (base fissa + offset(t), niente deriva) e del 286: tutto
+                   moltiplicato per _k286, chi ha il pallone resta fermo. */
+                const _f147=(now*0.0016)+_F685.ph,_sn147=Math.sin(_f147)*_k286;
+                const _cs334=(typeof window!=='undefined'&&window.__CPM_NO_G334)?0:Math.cos(_f147)*0.5*_k286*((i%2)?1:-1);
+                pp.mesh.position.x=_F685.x+_ux*1.0*_sn147-_uz*_cs334;pp.mesh.position.z=_F685.z+_uz*1.0*_sn147+_ux*_cs334;}
               else{
               pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30*_k286;
               pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22*_k286;}
