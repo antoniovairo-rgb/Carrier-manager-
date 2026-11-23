@@ -90,4 +90,16 @@ preesistente, da decidere se mostrare «in linea» invece di ✅ finché la stag
 
 ## 6. Esito della catena
 
-_(compilato a fine catena)_
+Commit provato: `c15a85a`. **23/23 verdi**, nessun instabile:
+
+partita-336 ✅ 118 s · salvataggio-321 ✅ · testi-318 ✅ · prepartita-287 ✅ · career-critical ✅ 346 s · tocco-213 ✅ 272 s · rassegna-224 ✅ 295 s ·
+sentinelle (mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico, griglia-mobile, render-3d-023,
+tunnel-285, home-298, web-237, battito-264, partita-vera 780 s, gk-dive-sync, schermate-97) ✅.
+
+**Rosso trovato dalla catena e riparato:** al primo giro `prepartita-287` era rosso: il suo braccio rosso (`__CPM_NO_G287`) non vedeva più
+il difetto, perché la nuova pila metteva la nota dei salienti sempre dentro il tasto. Ora, con `__CPM_NO_G287`, la nota torna staccata
+come prima del giro 287 (il guardiano cade di nuovo su N, S e V). Catena rifatta da capo sul build corretto.
+
+Limite dichiarato: il guardiano confronta la classifica della rassegna con quella salvata appena tornati alla carriera (la sorgente della
+Home, invariante `standings` = `player.standings`); misurato su una partita (pareggio 1-1, giornata 2, seme 7304). Non avanza alla
+settimana dopo, dove la giornata successiva cambia la classifica di suo.
