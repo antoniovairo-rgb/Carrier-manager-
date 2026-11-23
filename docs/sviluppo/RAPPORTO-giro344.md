@@ -12,12 +12,12 @@ aggiungere** (non c'è una correzione del gioco da spegnere; ogni guardiano aggi
 
 | guardiano | punta fd2b9334 | d6819779 | causa | correzione |
 |---|---|---|---|---|
-| patto-227 | verde (52 s) | verde (53 s) | nessuna sul banco: censimento 3000 carriere/765 capitani, 0 incoerenti; flusso UI ok su entrambi. Rosso solo sul runner | riga `solo_runner` in `docs/governo/ROSSI-DICHIARATI.json` |
+| patto-227 | verde (52 s) | verde (53 s) | censimento sempre pulito (3000 carriere/765 capitani, 0 incoerenti). Nella catena `ci-runner` (due passi in parallelo, carico 8) il braccio verde è caduto 2 su 2 sul flusso della **riserva**: «Una stretta di mano» non visibile in 8 s (il verdetto esce dalla coda delle finestre `_pop224`). Da solo e con 3 copie in parallelo: verde 7/7. Causa esatta **non misurata** (nessuna finestra davanti nelle prove riuscite) | la sonda chiude ciò che sta davanti al verdetto fino a 6 volte e lo stampa («davanti al verdetto: …»), poi preme; il giudizio non cambia. Riga `solo_runner` in ROSSI-DICHIARATI |
 | anteprima-230 | **rosso** 2/3 («3V 2N **6P**» contro «5P» atteso) | verde | giro 336 · PO-609: la rassegna mostra la classifica **dopo** la giornata (l'avversario ha già giocato la sua); il guardiano la confrontava con la classifica salvata **prima** del ritorno in carriera | il riferimento diventa la riga dell'avversario nella classifica che il gioco **salva** tornando alla carriera (`chiudi166`, come `partita-336` F5). Uguaglianza esatta invariata. Ora **3/3 verde, rosso `__CPM_NO_G230` bocciato** |
 | forma-239 | **rosso** 5/6 (striscia «V N P V P» contro forma salvata «V V N P V») | verde | stessa decisione PO-609: la striscia include il risultato della giornata (la stessa forma scalata di uno) | parte A: forma attesa = `f239` salvata al ritorno in carriera; il braccio rosso giudica la striscia sparita contro la forma messa dal banco. Ora **6/6 verde, rosso 3/3 bocciato** |
 | coerenza-235 | **rosso** (C: «nessun rimando al contratto in club», 375 e 1366) | verde | giro 337 · PO-617: «il contratto è dell'eroe: vive in Agente, non nella scheda Club» — la riga-rimando in Club è stata tolta apposta | il controllo C si **rovescia**, non si allenta: in Profilo il rimando resta obbligatorio, in Club un rimando rimasto è un rosso, scheda Club non letta = non giudicato. Ora **verde, rossi `__CPM_NO_G235`/`__CPM_NO_G260` bocciati** |
 | nomi-248 | **rosso** 17 ok · 3 ko (D: partita ferma in `formations`) | verde | giro 336 · PO-608: il primo tasto della pre-partita è «Gioca la partita» (→ formazioni); la sonda premeva il primo tasto con /Gioca/i, che prima era «Salta e gioca» | la sonda preme `data-cpm="salta-336"` («Salta formazioni e ingresso», stesso gestore `onSkip` del vecchio «Salta e gioca»). Ora **verde 20/20, rosso `CPM_ROSSO248` 20/20 come deve** |
-| intervista-231 | rosso: **non giudicato** (le 4 partite ferme fra 65' e 83' al tetto di 400 s) | rosso identico (non giudicato) | non è dei giri 335-338: la sonda chiede `cpm-match-speed` = '4', che dal 7.484 non esiste (velocità 1 · 1,5 · 2) e il gioco riscrive a 1× → sul banco la partita non arriva al fischio. Sul runner arrivava (diceva solo «nazionale rosso: il difetto non si vede»). In più premeva «Salta e gioca» (rinominato dal 336) | velocità '2' (la massima che il giocatore può scegliere) + «Salta formazioni e ingresso» nella regex. Esito della rigiocata: vedi sotto |
+| intervista-231 | rosso: **non giudicato** (le 4 partite ferme fra 65' e 86' al tetto di 400 s, a 1× e anche a 2×) | rosso identico (non giudicato, anche a 2×) | non è dei giri 335-338: la sonda chiede `cpm-match-speed` = '4', che dal 7.484 non esiste (velocità 1 · 1,5 · 2) e il gioco riscrive a 1× → sul banco la partita non arriva al fischio. Sul runner arrivava (diceva solo «nazionale rosso: il difetto non si vede»). In più premeva «Salta e gioca» (rinominato dal 336) | velocità '2' (la massima che il giocatore può scegliere) + «Salta formazioni e ingresso» nella regex. Sul banco resta non giudicato (identico alla base): riga `banco` in ROSSI-DICHIARATI. **Non posso confermare** che il rosso del runner sparisca: lì la causa più probabile è la strada diversa presa nella Nazionale dopo il rename del 336, da rileggere al prossimo treno |
 | panchina-293 | verde (244 s) | rosso (228 s) | già dichiarato «banco» su main (fps del braccio verde sotto il pavimento headless 3, instabile) | confermato, nessuna modifica |
 
 ## Decisioni del PO a cui i guardiani sono stati allineati
@@ -40,4 +40,14 @@ Non le ho cambiate senza una misura.
 
 ## Rigiocata dopo le correzioni
 
-(compilata a fine giro)
+Banco, punta del ramo (fd2b9334 + guardiani del giro 344):
+
+- `npm run` singoli: anteprima-230 **3/3 verde, rosso bocciato** · forma-239 **6/6 verde, rosso 3/3 bocciato** · coerenza-235
+  **verde, rossi bocciati** · nomi-248 **verde 20/20, rosso 20/20 come deve** · patto-227 (rinforzato) **verde 4/4**, anche in coppia
+  con anteprima-230 come all'avvio della catena · intervista-231 non giudicato, identico su d6819779 (vedi tabella).
+- `node ci-runner.mjs giro patto-227 anteprima-230 forma-239 nomi-248 coerenza-235 panchina-293 home-335 partita-336 club-337
+  career-critical` (+17 sentinelle, 26 passi): **25/26 verdi**. L'unico rosso è patto-227 nella versione **prima** della
+  rinforzatura (verde caduto sul flusso della riserva, 3 su 3 nella catena) — è il motivo del commit 6735b21. intervista-231 è stato
+  giocato fuori catena sui due commit (31 minuti l'uno). Esito registrato in `docs/governo/STABILITA.json`.
+
+Nessuna riga di `src/` toccata, `GAME_VERSION` invariato.

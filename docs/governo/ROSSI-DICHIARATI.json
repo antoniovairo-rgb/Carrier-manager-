@@ -41,6 +41,7 @@
   "giornale-244": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "pelle-240": "instabile (verifica 204, 22/11): serata di presentazione, un viso tra 6 e 17,7 di distanza fra una corsa e l'altra sullo stesso commit; anche la 7.999.203 sta a 11,9 su soglia 12. Codice della serata identico fra 203 e 204: non e' una regressione, la misura va resa stabile",
+  "intervista-231": "giro 344 (23/11): sul banco NON GIUDICATO identico su fd2b9334 e d6819779 (le quattro partite si fermano fra 65' e 86' al tetto di 400 s, anche a 2x). Sul runner del treno 45139940995 arrivava al fischio e diceva «nazionale rosso: il difetto non si vede»: la sonda premeva «Salta e gioca», tolto dal giro 336 (PO-608), e nella Nazionale prendeva un'altra strada; il giro 344 la fa premere «Salta formazioni e ingresso» (stesso gestore) e la velocita' '4' (inesistente dal 7.484) diventa '2'. Esito sul runner da rileggere al prossimo treno",
   "panchina-293": "fps del braccio verde sotto il pavimento assoluto 3 (CPM_FPS_ABS) anche sul banco, sia su d6819779 (2/3 rosse: 3,16 verde · 2,73 · 2,75) sia sulla 7.999.206 (2/2 rosse: 2,51 · 2,88); il rapporto col rosso regge. Non regressione del giro 331 (treno 45120411083 su d6819779, verifica 207, 23/11): pavimento headless da tarare"
  },
  "solo_runner": {
