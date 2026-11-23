@@ -78,7 +78,7 @@ export async function gioca166(page, modo, { seme = 7300, tetto = 420000, foto =
     if (montata) break;
     if (via243) {/* [giro 246] alla pre-partita: «Gioca solo i momenti salienti» (solo) o «Vedi le formazioni» (intera) */
       const pp = await page.evaluate((solo) => { if (!(typeof window.__CPM_PHASE === 'function' && window.__CPM_PHASE() === 'matchday' && document.querySelector('[data-cpm="prepartita23"]'))) return 'no';
-        const b = solo ? document.querySelector('[data-cpm="solo-243"]') : [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim()));
+        const b = solo ? document.querySelector('[data-cpm="solo-243"]') : [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^(?:Vedi le formazioni|Gioca la partita)/.test((x.textContent || '').trim()));
         if (!b) return 'manca'; b.click(); return 'ok'; }, modo === 'solo' && !forzaSolo).catch(() => 'no');
       if (pp === 'manca') { out.note.push(modo === 'solo' && !forzaSolo ? 'bottone dei momenti salienti assente nella pre-partita' : 'pre-partita senza «Vedi le formazioni»'); out.bottone = null; return out; }
       if (pp === 'ok') { if (modo === 'solo' && !forzaSolo) out.bottone = 'Gioca solo i momenti salienti'; await sleep(400); continue; }
