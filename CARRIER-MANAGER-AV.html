@@ -60421,9 +60421,48 @@ const getThisWeekMatchday=()=>{
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
         </Card>
       ))||null;
+  /* [giro 335 · PO-615, PO «questi box all'occorrenza si perdono nella home ed il player potrebbe non accorgersene»] l'offerta di
+     sponsor e' una SCELTA (Firmo / Non ora) che non passa dalla finestra _pop224: sale nel blocco «Da decidere», aperta (niente
+     fisarmonica chiusa in cima). Stesso riquadro, stessi pulsanti, stesso stato. Rosso __CPM_NO_G335 = resta dov'era. */
+  const _g335=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G335);
+  const _sponsorCard335=(aperto)=>{      const sp=sponsorView(player);if(!sp)return null;
+        return(
+        <Card data-cpm="sponsor335" momentoAperto={aperto} momento={`Offerta di sponsor · ${sp.brand}`}/* [7.999.49 parte A] era un secondo «Il tuo procuratore»: il titolo ora dice cosa c'e' dentro */ momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#101b2a,#14243a)",TH.card),border:_n30("1px solid #2a4a7a","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
+          <div style={{display:"flex",gap:8}}>
+            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsors:[...(p.sponsors||[]),{tier:sp.tier,brand:sp.brand,weekly:sp.weekly,season:p.season||1}],...ledgerPush(p,{t:"sponsor",who:sp.brand,what:`accordo ${sp.label} da ${sp.weekly}€/settimana`}),log:[`${sp.e} Accordo con ${sp.brand} (${sp.label}): +${sp.weekly.toLocaleString("it-IT")}€/settimana.`,...(p.log||[])].slice(0,60)}))}>✍️ Firmo l’accordo</Btn>
+            <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,sponsorDecl:{tier:sp.tier,season:p.season||1},log:[`💬 Offerta di ${sp.brand} declinata: ora conta solo il campo.`,...(p.log||[])].slice(0,60)}))}>Non ora</Btn>
+          </div>
+        </Card>);};
+  _sc199.sponsor=(tab==="dashboard"&&_g335()&&_sponsorCard335(true))||null;
   const _sc199ok={saga:(()=>{const sg=player.transferSaga;if(!sg||sg.delivered||sg.season!==(player.season||1))return false;const d=(player.week||1)-(sg.week||1);return (d===1&&!sg.tone)||d>=2;})(),
-    shooting:true,riconquista:true,allenamento:true,rinnovo:true};
+    shooting:true,riconquista:true,allenamento:true,rinnovo:true,sponsor:true};
   const _sc199N=Object.keys(_sc199ok).filter(k=>_sc199ok[k]&&_sc199[k]);
+  /* [giro 335 · PO-615] «Sei svincolato» + «Da decidere» come un pezzo solo: col verde sta SOPRA il tasto principale, col rosso
+     __CPM_NO_G335 dove l'aveva messo il giro 198/199 (sotto il tasto). _cimaN335 = c'e' qualcosa sopra il tasto. */
+  const _cima335=(<>
+      {/* [giro 198 · PO-432 c] DA SVINCOLATO LA HOME LO DICE PER PRIMA COSA: lo stesso riquadro del giro 94 (rinnova · cerca una
+          squadra), portato sopra il tasto del momento e la prossima partita del club, con la frase che spiega perche' non giochi. */}
+      {tab==="dashboard"&&_g198()&&player.contractExpired&&(player.proStatus||"u18")==="pro"&&(
+        <Card data-cpm="svincolato198-home" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"10px 12px"}}>
+          <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.txAmber,marginBottom:4}}>⛔ Sei svincolato</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.9,1),lineHeight:1.45,marginBottom:8}}>Il contratto con {player.club?.n||"il club"} è scaduto: le sue partite si giocano senza di te finché non firmi. Rinnova con il club o cerca una nuova squadra.</div>
+          <Btn data-cpm="svincolato198-home-tratta" onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
+          {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn data-cpm="svincolato198-home-agente" onClick={_vaiAgente198} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Agente)</Btn>}
+        </Card>
+      )}
+      {tab==="dashboard"&&_g199()&&_sc199N.length>0&&(
+        <section data-cpm="scelte199" aria-label="Da decidere" data-n={_sc199N.length} style={{marginBottom:_sb(9)}}>
+          <div data-cpm="scelta199-segno" style={{display:"flex",alignItems:"center",gap:SP.sm,marginBottom:SP.sm}}>
+            <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.12em",textTransform:"uppercase",color:TINTE.oro}}>⚡ Da decidere</span>
+            <span className="cpm-num" style={{...fsTV(FS.caption,FW.bold),minWidth:20,textAlign:"center",padding:"1px 6px",borderRadius:RAD.pill,background:TINTE.oro,color:TINTE.bg}}>{_sc199N.length}</span>
+          </div>
+          {_sc199N.map(k=>(<div key={k} data-cpm={"scelta199-"+k}>{_sc199[k]}</div>))}
+        </section>
+      )}
+  </>);
+  const _cimaN335=_g335()&&tab==="dashboard"&&((_g199()&&_sc199N.length>0)||(_g198()&&player.contractExpired&&(player.proStatus||"u18")==="pro"));
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
@@ -61702,6 +61741,7 @@ const getThisWeekMatchday=()=>{
         <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
 
+      {_g335()&&_cima335}{/* [giro 335 · PO-615, decisione PO: le decisioni in sospeso in un'unica sezione in cima alla Home, sotto la testata e sopra i tasti] */}
       {/* [6.5.4 collaudo PO] CTA PRIMARIA STICKY in cima al dashboard — «vivi settimana / gioca / avanza» sempre
           visibile senza scorrere (prima era in fondo alla prima card, sotto stats/forma → serviva scorrere). */}
       {tab==="dashboard"&&(()=>{
@@ -61709,7 +61749,7 @@ const getThisWeekMatchday=()=>{
         {let _md302=null;try{_md302=getThisWeekMatchday();}catch(_e){_md302=null;}if(_md302)return null;}/* [PO-302 V2] con la partita della settimana il comando vive nel riquadro della prossima partita (stesso handler, stesso data-cpm) */
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
-            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-"+_sb(10)+"px 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:(_cimaN335?"0":"-"+_sb(10)+"px")+" 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [giro 335] con «Da decidere» sopra il tasto non risale sul blocco */}{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
             sporgeva di 12 px per lato oltre le card, con un'ombra che ne disegnava il bordo: ora ha la stessa larghezza
             delle card e nessun bordo visibile. Rosso __CPM_NO_CTA23 */}
             {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
@@ -61769,25 +61809,7 @@ const getThisWeekMatchday=()=>{
             <Btn v="outline" fw onClick={_festeggia} style={{background:_n30("rgba(0,0,0,0.32)","transparent"),border:`1px solid ${_n30(_oro[2],_oro[1])}`,color:_n30("#fff",TH.text),fontWeight:800}}>🎉 Festeggia con la squadra</Btn>
           </Card>
         </>);})()}
-      {/* [giro 198 · PO-432 c] DA SVINCOLATO LA HOME LO DICE PER PRIMA COSA: lo stesso riquadro del giro 94 (rinnova · cerca una
-          squadra), portato sopra il tasto del momento e la prossima partita del club, con la frase che spiega perche' non giochi. */}
-      {tab==="dashboard"&&_g198()&&player.contractExpired&&(player.proStatus||"u18")==="pro"&&(
-        <Card data-cpm="svincolato198-home" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"10px 12px"}}>
-          <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.txAmber,marginBottom:4}}>⛔ Sei svincolato</div>
-          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.9,1),lineHeight:1.45,marginBottom:8}}>Il contratto con {player.club?.n||"il club"} è scaduto: le sue partite si giocano senza di te finché non firmi. Rinnova con il club o cerca una nuova squadra.</div>
-          <Btn data-cpm="svincolato198-home-tratta" onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
-          {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn data-cpm="svincolato198-home-agente" onClick={_vaiAgente198} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Agente)</Btn>}
-        </Card>
-      )}
-      {tab==="dashboard"&&_g199()&&_sc199N.length>0&&(
-        <section data-cpm="scelte199" aria-label="Da decidere" data-n={_sc199N.length} style={{marginBottom:_sb(9)}}>
-          <div data-cpm="scelta199-segno" style={{display:"flex",alignItems:"center",gap:SP.sm,marginBottom:SP.sm}}>
-            <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.12em",textTransform:"uppercase",color:TINTE.oro}}>⚡ Da decidere</span>
-            <span className="cpm-num" style={{...fsTV(FS.caption,FW.bold),minWidth:20,textAlign:"center",padding:"1px 6px",borderRadius:RAD.pill,background:TINTE.oro,color:TINTE.bg}}>{_sc199N.length}</span>
-          </div>
-          {_sc199N.map(k=>(<div key={k} data-cpm={"scelta199-"+k}>{_sc199[k]}</div>))}
-        </section>
-      )}
+      {!_g335()&&_cima335}{/* [giro 335 · PO-615] «Sei svincolato» e «Da decidere» stanno sopra i tasti (rosso __CPM_NO_G335: qui, come prima) */}
       {/* [giro 163 · PO-356 F + idea 3] CORSA ALLA PRIMA SQUADRA: la barra dell'Indice Primavera (5 tacche, mai il numero; rosso
           __CPM_NO_IP153 = barra assente) e il tasto «Vai al prossimo momento importante» (rosso __CPM_NO_SALTA153 = tasto assente).
           Solo in Primavera. Il tasto prima chiede (pannello), poi corre sui percorsi veri, poi dice dove si e' fermato e perche'. */}
@@ -61803,7 +61825,7 @@ const getThisWeekMatchday=()=>{
         const _MOT={"partita chiave":"⚽ Partita chiave","mercato":"📩 Mercato","chiamata":"🏳️ Chiamata","momento importante":"⭐ Momento importante","intervista":"🎙️ Intervista","infortunio":"🩹 Infortunio","fine stagione":"🏁 Fine stagione","scelta da fare":"⚡ Scelta da fare","hai cambiato schermata":"⏸️ Interrotto","nessun progresso":"⏸️ Fermo","apertura di stagione":"🏁 Apertura di stagione","fuori dalla Primavera":"🌱 Fuori dalla Primavera","errore":"⏸️ Fermo","spento":"⏸️ Fermo","fermato da te":"⏸️ Fermato da te","rinnovo":"📋 Rinnovo","cambio di stato":"⏸️ Fermo"};
         const fn=saltaFine163;
         return(
-        <Card data-cpm="corsa163" data-g165={_isPro?"pro":"primavera"} style={{marginBottom:_sb(9),padding:16,borderRadius:RAD.md,boxShadow:TH.el2}}>
+        <Card data-cpm="corsa163" data-g165={_isPro?"pro":"primavera"} {...((_g335()&&_noIP)?{bg:"transparent",border:"transparent",shadow:false}:{})} style={(_g335()&&_noIP)?{marginBottom:_sb(9),padding:0,borderRadius:RAD.md,boxShadow:"none"}:{marginBottom:_sb(9),padding:16,borderRadius:RAD.md,boxShadow:TH.el2}}>{/* [giro 335 · PO-623] da professionista la cornice intorno al solo tasto secondario sparisce: il tasto non sembra un secondo blocco */}
           {!_noIP&&(<div data-cpm="ip163" data-ip163={ip&&ip.pronto?ip.tacca:"-"} style={{marginBottom:_noSa?0:SP.md}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:SP.sm,marginBottom:SP.xs}}>
               {_lab("Corsa alla prima squadra")}
@@ -61824,6 +61846,21 @@ const getThisWeekMatchday=()=>{
                 const _rin=_rinnAperto173(player),_off=!!_mot&&!_rin;
                 const _cc=(player.club&&player.club.c)||TH.primary,_bg=_off?TH.track:_cc,_ink=_off?TH.faint:inkSu945(_cc);
                 let _dove="";if(!_mot){const _pv=_saltaPrev163(player);_dove=_pv.chiave?("fino alla partita chiave · sett. "+_pv.chiave.w):"fino a fine stagione";}
+                if(_g335()){/* [giro 335 · PO-623, PO «I due pulsanti rossi con le frecce sono molto simili e fanno un po' a cazzotti tra di loro»]
+                  UN SOLO TASTO PIENO nella Home: «Avanza settimana». Questo diventa il tasto SECONDARIO: fondo trasparente, filo del tema
+                  (TINTE.sec), inchiostro TINTE.testo, icona diversa (🎯, non piu' ⏩ accanto a ⏭), testo a sinistra in caratteri normali (il titolo resta «Vai al
+                  prossimo momento»: lo cercano otto sonde) e una riga breve che dice cosa salta. Stesso tocco, stesso pannello di conferma. Rosso __CPM_NO_G335 = il tasto pieno del giro 194. */
+                  let _salta="";if(!_mot){const _pv=_saltaPrev163(player);const _n=_pv.routine||0;_salta=_pv.chiave?((_n?("salta "+_n+" partit"+(_n===1?"a":"e")+" di routine · "):"")+"stop alla partita chiave, sett. "+_pv.chiave.w):"salta fino a fine stagione";}
+                  return(<button data-cpm="salta163-tasto" data-g335="secondario" data-g173={_rin?"rinnovo":undefined} disabled={_off} aria-disabled={_mot?"true":undefined} className={_off?"":"cpm-press"}
+                    onClick={_rin?openNegoModal:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}
+                    style={{width:"100%",minHeight:52,borderRadius:RAD.md,border:"1px solid "+(_off?TINTE.bordo:TINTE.sec),background:"transparent",color:_off?TH.faint:TINTE.testo,opacity:_rin?0.55:1,cursor:_off?"not-allowed":"pointer",display:"flex",alignItems:"center",gap:SP.sm,padding:"8px 12px",fontFamily:"inherit",textAlign:"left"}}>
+                    <span aria-hidden="true" style={{fontSize:FS.subhead,lineHeight:1}}>🎯</span>
+                    <span style={{display:"flex",flexDirection:"column",gap:2,flex:1,minWidth:0}}>
+                      <span data-cpm="salta163-titolo" style={{fontSize:FS.body,fontWeight:FW.bold,lineHeight:1.2,color:_off?TH.faint:TINTE.testo}}>{_isPro?"Vai al prossimo momento":"Vai al prossimo momento importante"}</span>
+                      {_salta&&<span data-cpm="salta163-dove" className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,lineHeight:1.25,color:TINTE.sec}}>{_salta}</span>}
+                    </span>
+                    <span aria-hidden="true" style={{fontSize:FS.subhead,color:TINTE.sec}}>›</span>
+                  </button>);}
                 return(<button data-cpm="salta163-tasto" data-g194={_cc} data-g173={_rin?"rinnovo":undefined} disabled={_off} aria-disabled={_mot?"true":undefined} className={_off?"":"cpm-press"}
                   onClick={_rin?openNegoModal/* [giro 173 punto 6] */:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}
                   style={{width:"100%",minHeight:56,borderRadius:RAD.md,border:(_g235()&&!_off)?tasto235(false).bordo/* [giro 235] il filo chiaro quando il colore del club si confonde col fondo */:"none",background:_bg,color:_ink,opacity:_rin?0.55:1,cursor:_off?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"8px 12px",fontFamily:"inherit"}}>
@@ -62338,17 +62375,7 @@ const getThisWeekMatchday=()=>{
           <Btn v={_up?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{const _ds=deriveStances(p)||{cid:p.club&&(p.club.id||p.club.n)};const fx=ss.fx||{};return{...p,stanceSeen:_ds,morale:clamp((p.morale||70)+(fx.morale||0),0,100),popularity:clamp((p.popularity||30)+(fx.popularity||0),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ss.e,headline:`${ss.label}: cambio di clima`,body:ss.t,color:_n30(_up?TH.txGreen:"#dc2626",_up?TH.txGreen:semTesto945("#dc2626"))}]),log:[`${ss.e} ${ss.label}: ${ss.t}`,...(p.log||[])].slice(0,60)};})}>{_up?"Me lo tengo stretto →":"Rispondo sul campo →"}</Btn>
         </Card>);})()}
       {/* [7.29.0 ONDA 4 — §S10] SPONSOR — offerta a fascia di fama */}
-      {tab==="dashboard"&&(()=>{
-        const sp=sponsorView(player);if(!sp)return null;
-        return(
-        <Card momento={`Offerta di sponsor · ${sp.brand}`}/* [7.999.49 parte A] era un secondo «Il tuo procuratore»: il titolo ora dice cosa c'e' dentro */ momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#101b2a,#14243a)",TH.card),border:_n30("1px solid #2a4a7a","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
-          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
-          <div style={{display:"flex",gap:8}}>
-            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsors:[...(p.sponsors||[]),{tier:sp.tier,brand:sp.brand,weekly:sp.weekly,season:p.season||1}],...ledgerPush(p,{t:"sponsor",who:sp.brand,what:`accordo ${sp.label} da ${sp.weekly}€/settimana`}),log:[`${sp.e} Accordo con ${sp.brand} (${sp.label}): +${sp.weekly.toLocaleString("it-IT")}€/settimana.`,...(p.log||[])].slice(0,60)}))}>✍️ Firmo l’accordo</Btn>
-            <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,sponsorDecl:{tier:sp.tier,season:p.season||1},log:[`💬 Offerta di ${sp.brand} declinata: ora conta solo il campo.`,...(p.log||[])].slice(0,60)}))}>Non ora</Btn>
-          </div>
-        </Card>);})()}
+      {tab==="dashboard"&&(!_g199()||!_g335())&&_sponsorCard335(false)}{/* [giro 335 · PO-615] con il blocco «Da decidere» acceso l'offerta sale li' (rosso __CPM_NO_G335: resta qui) */}
       {/* [7.29.0 ONDA 4 — §S10] il bivio dello SHOOTING nella settimana calda */}
       {(!_g199()||!_sc199ok.shooting)&&_sc199.shooting}{/* [giro 199 · PO-408] con la scelta aperta questo riquadro sale nel blocco «Da decidere» in cima alla Home (rosso __CPM_NO_G199: resta qui) */}
       {/* [7.29.0 ONDA 4 — §S14] VITA PRIVATA — l'arco lento (incontro → matrimonio → genitore) */}
