@@ -93,7 +93,10 @@ custodisce quella schermata come rosso del 340 (verde+rosso, rieseguito: verde).
 
 `node ci-runner.mjs giro albo-340 career-critical save-compat design-system` (= i quattro + 17 sentinelle, 18 passi):
 
-ESITO_CATENA
+**18/18 verdi su 7.999.206, nessun passo ripetuto** (registrato in `docs/governo/STABILITA.json`):
+albo-340 35 s · save-compat 2 s · design-system 1 s · mappa-unica · test:logic · replay 63 s · migrazione-194 · tema-unico ·
+griglia-mobile 212 s · render-3d-023 · tunnel-285 · home-298 · web-237 · career-critical 446 s · battito-264 · partita-vera 697 s ·
+gk-dive-sync · schermate-97. Anche `albo-122` rieseguito a parte: verde+rosso.
 
 ## Dubbi per il PO
 
