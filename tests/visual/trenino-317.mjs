@@ -11,9 +11,10 @@
       guardiano dichiarato dal PO → rilascia.
    C. BLOCCO: un treno grande con un rosso nuovo (o un non giudicato) accende il blocco; il treno grande dopo, senza quel rosso, lo
       spegne (sbloccato); rossi noti non bloccano; esito mancante accende (non giudicato = rosso). Bersaglio della notte.
-   D. PERCORSO VERO su un remoto finto: vagone che tocca src/16 → scegli → decidi (rilascia) → blocco scritto sul poc → decidi (fermo)
-      → guardiano dichiarato → decidi (rilascia) → blocco spento da un treno grande pulito → decidi → prepara → pubblica: main = poc =
-      tag v7.999.201; bersaglio notturno lavoro/317 prima, main dopo.
+   D. PERCORSO VERO su un remoto finto [giro 338: SENZA ramo di appoggio, tutto su main]: vagone che tocca src/16 → scegli → decidi
+      (rilascia) → blocco scritto su main → decidi (fermo) → guardiano dichiarato su main → decidi (rilascia) → blocco spento da un
+      treno grande pulito → decidi → prepara → pubblica: main = unione --no-ff = tag v<versione>, nessun ramo nuovo; bersaglio notturno
+      lavoro/317 prima, main dopo. Con CPM_NO_G338=1 (percorso col ramo di appoggio) il guardiano DEVE uscire rosso.
 
    E. [giro 328, PO-621] src/16 ha la sua riga (piu' corta di src/18); ogni guardiano delle catene ha una riga; una sonda che nessuno
       nomina e' neutra, una catena di sonde neutre pure, una sonda importata da un guardiano gioca quel guardiano, una nominata da una
@@ -176,15 +177,16 @@ const envN = { ...process.env, CPM_RILASCIO_AUTO: '', CPM_CORSA: 'p317', GITHUB_
 const node = (cwd, file, ...a) => spawnSync('node', [file, ...a, '--cwd', cwd], { cwd, encoding: 'utf8', env: envN });
 try {
   const REM = path.join(TMP, 'remoto.git'), W = path.join(TMP, 'lavoro');
-  const HEAD = g(ROOT, 'rev-parse', 'HEAD'), poc0 = g(ROOT, 'rev-parse', 'origin/poc/marioprada-character-system');
+  const HEAD = g(ROOT, 'rev-parse', 'HEAD');
   g(TMP, 'init', '-q', '--bare', REM);
   fs.writeFileSync(path.join(REM, 'objects/info/alternates'), path.join(ROOT, '.git/objects') + '\n');
   /* ultimo rilascio = main = HEAD (nessun tag v*): il vagone e' solo cio' che si aggiunge sopra */
-  for (const [r, s] of [['poc/marioprada-character-system', poc0], ['main', HEAD], ['lavoro/317', HEAD]]) g(REM, 'update-ref', `refs/heads/${r}`, s);
+  for (const [r, s] of [['main', HEAD], ['lavoro/317', HEAD]]) g(REM, 'update-ref', `refs/heads/${r}`, s);
   g(TMP, 'clone', '-q', '--shared', REM, W);
-  g(W, 'checkout', '-q', '-B', 'poc', 'origin/poc/marioprada-character-system');
+  const rami0 = g(REM, 'for-each-ref', '--format=%(refname)', 'refs/heads');
+  g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
   fs.writeFileSync(path.join(W, R.FILE_INTERRUTTORE), JSON.stringify({ attivo: true }) + '\n');
-  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova 317)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/poc/marioprada-character-system');
+  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova 317)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
   /* il vagone: un ritocco di src/16 (commento) + ricomposto, unito in lavoro/317 come fa la madre */
   g(W, 'checkout', '-q', '-B', 'svil', HEAD);
   const f16 = path.join(W, 'src/16-scene-3d-cerimonie.jsx'); fs.appendFileSync(f16, '\n/* [prova trenino-317] vagone finto */\n');
@@ -215,25 +217,25 @@ try {
   ok(d.rilascia === false, `D2 stesso esito dichiarato come elenco a mano: ${d.rilascia ? 'RILASCIA' : 'fermo'} — ${(d.motivi[0] || '').slice(0, 120)}`);
   d = decidi(e => { delete e.per_guardiano[s.guardiani[0]]; });
   ok(d.rilascia === false, `D3 trenino a cui manca ${s.guardiani[0]}: ${d.rilascia ? 'RILASCIA' : 'fermo'}`);
-  /* il treno grande di notte trova un rosso nuovo: scrive il blocco sul poc */
+  /* il treno grande di notte trova un rosso nuovo: scrive il blocco su main (giro 338) */
   const nP = path.join(TMP, 'notte.json'), bP = path.join(TMP, 'blocco.json');
   const scriviBlocco = (cl, msg) => {
     fs.writeFileSync(nP, JSON.stringify({ commit: sha, ramo: 'lavoro/317', tipo: 'notte', mappa_intera: true, guardiani: 2, verdi: 1, parti_attese: 1, parti_arrivate: 1, per_guardiano: { a: { classe: 'verde' }, ...cl } }));
-    g(W, 'fetch', '-q', 'origin'); g(W, 'checkout', '-q', '-B', 'poc', 'origin/poc/marioprada-character-system');
+    g(W, 'fetch', '-q', 'origin'); g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
     const prec = path.join(W, T.FILE_BLOCCO); x = node(W, TT, 'blocco', '--esito', nP, '--prec', prec, '--uscita', bP);
-    fs.copyFileSync(bP, prec); g(W, 'add', T.FILE_BLOCCO); g(W, ...chi, 'commit', '-q', '-m', msg); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/poc/marioprada-character-system');
+    fs.copyFileSync(bP, prec); g(W, 'add', T.FILE_BLOCCO); g(W, ...chi, 'commit', '-q', '-m', msg); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
     return JSON.parse(fs.readFileSync(bP, 'utf8'));
   };
   let b = scriviBlocco({ 'difesa-220': { classe: 'rosso_nuovo' } }, 'Treno grande: rilasci bloccati (difesa-220)');
   d = decidi();
-  ok(b.attivo && d.rilascia === false && /BLOCCATI/.test(d.motivi.join()), `D4 blocco del treno grande sul poc: ${d.rilascia ? 'RILASCIA' : 'fermo'} — ${(d.motivi.find(m => /BLOCC/.test(m)) || '').slice(0, 120)}`);
+  ok(b.attivo && d.rilascia === false && /BLOCCATI/.test(d.motivi.join()), `D4 blocco del treno grande su main: ${d.rilascia ? 'RILASCIA' : 'fermo'} — ${(d.motivi.find(m => /BLOCC/.test(m)) || '').slice(0, 120)}`);
   /* il PO dichiara difesa-220: si sblocca senza aspettare la notte */
-  g(W, 'checkout', '-q', '-B', 'poc', 'origin/poc/marioprada-character-system');
+  g(W, 'fetch', '-q', 'origin'); g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
   const fr = path.join(W, R.FILE_ROSSI), jr = JSON.parse(fs.readFileSync(fr, 'utf8')); const jr0 = JSON.stringify(jr, null, 1) + '\n';
   jr.banco['difesa-220'] = 'dichiarato dal PO (prova 317)'; fs.writeFileSync(fr, JSON.stringify(jr, null, 1) + '\n');
-  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: difesa-220 dichiarato'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/poc/marioprada-character-system');
+  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: difesa-220 dichiarato'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
   d = decidi(); ok(d.rilascia === true, `D5 guardiano del blocco dichiarato dal PO: ${d.rilascia ? 'rilascia' : 'fermo'} — ${d.motivi.join(' | ').slice(0, 160)}`);
-  fs.writeFileSync(fr, jr0); g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: difesa-220 tolto'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/poc/marioprada-character-system');
+  fs.writeFileSync(fr, jr0); g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: difesa-220 tolto'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
   d = decidi(); ok(d.rilascia === false, `D6 dichiarazione tolta: di nuovo fermo (${d.rilascia ? 'RILASCIA' : 'fermo'})`);
   /* treno grande dopo, senza quel rosso: blocco spento → rilascio vero */
   b = scriviBlocco({ 'difesa-220': { classe: 'verde' } }, 'Treno grande: rilasci sbloccati');
@@ -242,12 +244,13 @@ try {
   x = node(W, TR, 'prepara', '--decisione', dec); ok(x.status === 0, 'D7 prepara' + (x.status ? ': ' + (x.stderr || x.stdout).slice(-400) : ''));
   x = node(W, TR, 'pubblica', '--decisione', dec); ok(x.status === 0, 'D7 pubblica' + (x.status ? ': ' + (x.stderr || '').slice(-400) : ''));
   const rm = r => g(REM, 'rev-parse', r);
-  const mainN = rm('refs/heads/main'), pocN = rm('refs/heads/poc/marioprada-character-system');
-  ok(mainN === pocN && rm('refs/tags/v' + V1 + '^{commit}') === pocN, 'D7 rilascio con l\'esito del trenino: main = poc = tag v' + V1 + '');
+  const mainN = rm('refs/heads/main');
+  ok(rm('refs/tags/v' + V1 + '^{commit}') === mainN && rm(mainN + '^2') === rm('refs/heads/lavoro/317'), 'D7 rilascio con l\'esito del trenino: main = unione --no-ff del lavoro = tag v' + V1 + '');
+  ok(g(REM, 'for-each-ref', '--format=%(refname)', 'refs/heads') === rami0, 'D7 [338] sul remoto nessun ramo nuovo: solo lavoro e main');
   const C = path.join(TMP, 'controllo'); g(TMP, 'clone', '-q', '--shared', '-b', 'main', REM, C);
   const u = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ULTIMO), 'utf8'));
   ok(u.versione === V1 && u.treno && u.treno.tipo === 'trenino', `D7 ULTIMO-RILASCIO.json dichiara il tipo del treno: ${u.treno && u.treno.tipo}`);
-  ok(fs.existsSync(path.join(C, T.FILE_BLOCCO)) && JSON.parse(fs.readFileSync(path.join(C, T.FILE_BLOCCO), 'utf8')).attivo === false, 'D7 il blocco spento arriva su main con l\'unione del poc');
+  ok(fs.existsSync(path.join(C, T.FILE_BLOCCO)) && JSON.parse(fs.readFileSync(path.join(C, T.FILE_BLOCCO), 'utf8')).attivo === false, 'D7 il blocco spento resta su main dopo l\'unione (giro 338)');
   g(W, 'fetch', '-q', 'origin', '--tags'); x = node(W, TT, 'bersaglio'); bj = null; try { bj = JSON.parse(x.stdout.trim().split('\n').at(-1)); } catch {}
   ok(bj && bj.ramo === 'main', `D8 bersaglio della notte dopo il rilascio: ${bj ? bj.ramo + ' — ' + bj.perche : x.stderr.slice(-200)}`);
   /* dopo il rilascio l'ultimo rilascio e' il tag: un trenino sulla stessa punta del lavoro non ha piu' niente da giocare oltre le sentinelle */

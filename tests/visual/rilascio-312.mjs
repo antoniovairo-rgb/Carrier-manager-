@@ -3,10 +3,11 @@
 
    A. la DECISIONE su esiti finti: rilascia con soli rossi dichiarati; NON rilascia con un rosso nuovo, un non giudicato,
       una parte mancante, la mappa non intera, l'interruttore spento (file o variabile), il ramo mosso, nessuna unione.
-   B. il PERCORSO VERO su un remoto finto (clone locale --shared, rami lavoro/prova-312, poc, main): decidi → prepara →
-      pubblica. Si giudica cio' che arriva sul remoto: GAME_VERSION +1 con la nota, check-src IDENTICO sul main pubblicato,
-      main = poc = tag annotato, lavoro avanzato di un solo commit, ROSSI-DICHIARATI.versione, ULTIMO-RILASCIO.json,
-      conflitto in docs/governo risolto col poc. Poi: un rosso nuovo NON tocca il remoto; un ramo mosso dopo la decisione
+   B. il PERCORSO VERO su un remoto finto (clone locale --shared, rami lavoro/prova-312 e main, [giro 338] NESSUN ramo di
+      appoggio): decidi → prepara → pubblica. Si giudica cio' che arriva sul remoto: GAME_VERSION +1 con la nota, check-src
+      IDENTICO sul main pubblicato, main = unione --no-ff (main precedente + lavoro) = tag annotato, lavoro avanzato di un solo
+      commit, ROSSI-DICHIARATI.versione, ULTIMO-RILASCIO.json, conflitto in docs/governo risolto con main, nessun ramo nuovo.
+      [giro 338] Con CPM_NO_G338=1 (percorso di prima, che pretende il ramo di appoggio) il guardiano DEVE uscire rosso. Poi: un rosso nuovo NON tocca il remoto; un ramo mosso dopo la decisione
       fa rifiutare il push atomico (nessun ramo cambia).
 
    Verde col verde e rosso col rosso: il caso «rosso nuovo» si gioca anche con la guardia spenta (senzaGuardia) e DEVE
@@ -62,6 +63,12 @@ ok(R.prossimaVersione(['7.999.200', '7.999.201']) === '7.999.202', 'prossima ver
 const nota = R.componiNota({ versione: '7.999.201', precedente: '7.999.200', unioni: ['Unione sviluppo/a in lavoro/201', 'Unione */ x\ny in lavoro/201'], corsa: '9' });
 ok(!nota.includes('*/') && !nota.includes('\n') && nota.includes('Unione sviluppo/a in lavoro/201'), 'nota su una riga, senza «*/», coi titoli delle unioni');
 
+/* [giro 338] ripiego dichiarato: un file di governo che main non ha si legge dal ramo di appoggio, solo se esiste ancora */
+{ const tab = { 'M:a': 1, 'P:a': 2, 'P:b': 3 }, leggi = (r, f) => tab[`${r}:${f}`] ?? null;
+  const x1 = R.leggiConRipiego338(leggi, 'a', 'M', 'P'), x2 = R.leggiConRipiego338(leggi, 'b', 'M', 'P'), x3 = R.leggiConRipiego338(leggi, 'b', 'M', null), x4 = R.leggiConRipiego338(leggi, 'c', 'M', 'P');
+  ok(x1.valore === 1 && x1.da === 'main' && x2.valore === 3 && x2.da === 'ripiego 338' && x3.valore === null && x4.valore === null,
+    `[338] ripiego: main vince (${x1.da}) · manca su main → appoggio (${x2.da}) · appoggio cancellato → niente (${x3.valore}) · manca ovunque → niente (${x4.valore})`); }
+
 /* ---------------------------------------------------------------- B. percorso vero su un remoto finto */
 console.log('\n== B. percorso vero su un remoto finto ==');
 const TMP = fs.mkdtempSync(path.join(process.env.CPM_TMP || os.tmpdir(), 'rilascio-312-'));
@@ -71,19 +78,21 @@ const node = (cwd, ...a) => spawnSync('node', [T, ...a, '--cwd', cwd], { cwd, en
 try {
   const REM = path.join(TMP, 'remoto.git'), W = path.join(TMP, 'lavoro');
   const HEAD = g(ROOT, 'rev-parse', 'HEAD');
-  const poc0 = g(ROOT, 'rev-parse', 'origin/poc/marioprada-character-system'), main0 = g(ROOT, 'rev-parse', 'origin/main');
-  const lav0 = g(ROOT, 'rev-parse', 'origin/lavoro/200');
+  const main0 = g(ROOT, 'rev-parse', 'origin/main');
+  /* [giro 338] il lavoro finto parte da main (prima da origin/lavoro/200, che una sessione non ha sempre in locale) */
+  const lav0 = main0;
   g(TMP, 'init', '-q', '--bare', REM);
   fs.writeFileSync(path.join(REM, 'objects/info/alternates'), path.join(ROOT, '.git/objects') + '\n');
-  for (const [r, s] of [['poc/marioprada-character-system', poc0], ['main', main0], ['lavoro/prova-312', lav0]]) g(REM, 'update-ref', `refs/heads/${r}`, s);
+  for (const [r, s] of [['main', main0], ['lavoro/prova-312', lav0]]) g(REM, 'update-ref', `refs/heads/${r}`, s);
   g(TMP, 'clone', '-q', '--shared', REM, W);
-  /* poc: interruttore acceso + una modifica in docs/governo che va in conflitto col campo versione del lavoro */
-  g(W, 'checkout', '-q', '-B', 'poc', 'origin/poc/marioprada-character-system');
+  const rami0 = g(REM, 'for-each-ref', '--format=%(refname)', 'refs/heads');
+  /* [giro 338] main: interruttore acceso + una modifica in docs/governo che va in conflitto col campo versione del lavoro */
+  g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
   fs.writeFileSync(path.join(W, R.FILE_INTERRUTTORE), JSON.stringify({ attivo: true }) + '\n');
-  const fr = path.join(W, R.FILE_ROSSI), jr = JSON.parse(fs.readFileSync(fr, 'utf8')); jr._ = jr._ + ' (modificato sul poc)'; jr.versione = '7.999.200-poc'; fs.writeFileSync(fr, JSON.stringify(jr, null, 1) + '\n');
-  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/poc/marioprada-character-system');
-  const poc1 = g(W, 'rev-parse', 'HEAD');
-  /* main resta indietro rispetto al poc (come succede quando il poc ha commit di governo): deve avanzare in fast-forward */
+  const fr = path.join(W, R.FILE_ROSSI), jr = JSON.parse(fs.readFileSync(fr, 'utf8')); jr._ = jr._ + ' (modificato su main)'; jr.versione = '7.999.200-main'; fs.writeFileSync(fr, JSON.stringify(jr, null, 1) + '\n');
+  g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
+  const main1 = g(W, 'rev-parse', 'HEAD');
+  /* main ha un commit di governo che il lavoro non ha: l'unione --no-ff lo deve conservare */
   /* lavoro: unione del ramo di sviluppo, come la fa la sessione madre */
   g(W, 'checkout', '-q', '-B', 'lav', 'origin/lavoro/prova-312');
   g(W, ...chi, 'merge', '-q', '--no-ff', HEAD, '-m', 'Unione sviluppo/giro312-rilascio-automatico in lavoro/prova-312');
@@ -107,21 +116,22 @@ try {
   ok(d.rilascia === true && d.versione === V1, `B2 soli rossi dichiarati: ${d.rilascia ? 'rilascia' : 'fermo'} ${d.versione} — ${d.motivi.join(' | ')}`);
   ok(d.unioni.length === 1 && /giro312/.test(d.nota), `B2 nota dai titoli delle unioni: «${(d.nota || '').slice(0, 120)}…»`);
   x = node(W, 'prepara', '--decisione', dec); ok(x.status === 0, 'B2 prepara' + (x.status ? ': ' + (x.stderr || x.stdout).slice(-400) : ''));
-  ok(/docs\/governo\/ROSSI-DICHIARATI\.json/.test(x.stdout), 'B2 conflitto in docs/governo risolto con la versione del poc');
+  ok(/docs\/governo\/ROSSI-DICHIARATI\.json/.test(x.stdout), 'B2 conflitto in docs/governo risolto con la versione di main');
   x = node(W, 'pubblica', '--decisione', dec); ok(x.status === 0, 'B2 pubblica' + (x.status ? ': ' + (x.stderr || '').slice(-400) : ''));
   const rm = r => g(REM, 'rev-parse', r);
-  const mainN = rm('refs/heads/main'), pocN = rm('refs/heads/poc/marioprada-character-system'), lavN = rm('refs/heads/lavoro/prova-312');
-  ok(mainN === pocN && rm('refs/tags/v' + V1 + '^{commit}') === pocN, 'B2 main = poc = tag v' + V1 + '');
+  const mainN = rm('refs/heads/main'), lavN = rm('refs/heads/lavoro/prova-312');
+  ok(rm('refs/tags/v' + V1 + '^{commit}') === mainN, 'B2 main = tag v' + V1 + '');
+  ok(g(REM, 'for-each-ref', '--format=%(refname)', 'refs/heads') === rami0, 'B2 [338] sul remoto nessun ramo nuovo: solo lavoro e main (niente ramo di appoggio)');
   ok(g(REM, 'cat-file', '-t', 'refs/tags/v' + V1 + '') === 'tag', 'B2 tag annotato (messaggio leggibile senza credenziali)');
   ok(g(REM, 'rev-parse', lavN + '^') === sha && g(REM, 'rev-list', '--count', `${sha}..${lavN}`) === '1', 'B2 lavoro avanzato di UN commit sopra quello provato');
-  ok(g(REM, 'rev-parse', pocN + '^1') === poc1 && g(REM, 'rev-parse', pocN + '^2') === lavN, 'B2 poc = unione --no-ff (poc precedente + lavoro)');
+  ok(g(REM, 'rev-parse', mainN + '^1') === main1 && g(REM, 'rev-parse', mainN + '^2') === lavN, 'B2 [338] main = unione --no-ff (main precedente + lavoro)');
   ok(g(REM, 'merge-base', '--is-ancestor', main0, mainN) === '' , 'B2 main avanzato in fast-forward');
   const C = path.join(TMP, 'controllo'); g(TMP, 'clone', '-q', '--shared', '-b', 'main', REM, C);
   ok(R.leggiVersione(fs.readFileSync(path.join(C, 'CARRIER-MANAGER-AV.html'), 'utf8')) === V1, 'B2 il main pubblicato porta GAME_VERSION ' + V1 + ' nel gioco');
   const ck = spawnSync('node', ['tools/check-src.mjs'], { cwd: C, encoding: 'utf8' }); ok(ck.status === 0, 'B2 check-src IDENTICO sul main pubblicato');
   const u = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ULTIMO), 'utf8')); ok(u.versione === V1 && u.tag === 'v' + V1 + '' && u.commit_provato === sha, 'B2 ULTIMO-RILASCIO.json sul main');
-  const rr = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ROSSI), 'utf8')); ok(rr.versione === V1 && /modificato sul poc/.test(rr._), 'B2 ROSSI-DICHIARATI: versione ' + V1 + ', resto del poc');
-  ok(fs.existsSync(path.join(C, R.FILE_INTERRUTTORE)), 'B2 interruttore del poc conservato');
+  const rr = JSON.parse(fs.readFileSync(path.join(C, R.FILE_ROSSI), 'utf8')); ok(rr.versione === V1 && /modificato su main/.test(rr._), 'B2 ROSSI-DICHIARATI: versione ' + V1 + ', resto di main');
+  ok(fs.existsSync(path.join(C, R.FILE_INTERRUTTORE)), 'B2 interruttore di main conservato');
 
   /* B3. ramo mosso dopo la decisione: il push atomico deve essere rifiutato e nessun ramo cambia */
   g(W, 'fetch', '-q', 'origin');
