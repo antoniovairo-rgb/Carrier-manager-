@@ -688,6 +688,7 @@
     "svincolato-198": "node svincolato-198.mjs",
     "home-199": "node home-199.mjs",
     "home-298": "node home-298.mjs && CPM_ROSSO=1 node home-298.mjs",
+    "club-337": "node club-337.mjs && CPM_ROSSO=1 node club-337.mjs",
     "pulsanti-263": "node pulsanti-263.mjs",
     "patto-227": "node patto-227.mjs",
     "patto-238": "node patto-238.mjs",

@@ -53748,9 +53748,12 @@ const _g298=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G298);
      prima divisione senza seconda serie → Europa = prime 2, nessuna retrocessione; seconda divisione → niente Europa, la zona alta e'
      la PROMOZIONE (prime 3), nessuna retrocessione; Primavera → conta solo il titolo.
    · Dove la zona dell'obiettivo non esiste si sale alla prima zona che esiste: retrocessione → Europa/promozione → vetta. */
-function rigaObiettivo298(player,st){
-  const cid=player&&player.club&&player.club.id;const mi=(st||[]).findIndex(x=>x&&x.id===cid);if(mi<0)return null;
-  const N=st.length,P=i=>(st[i]&&st[i].pts)||0,me=P(mi),lg=(player.club&&player.club.lg)||"";
+/* [giro 337 · PO-606] L'AMBIZIONE DEL CLUB HA UNA FONTE SOLA. Questa funzione pura e' la regola del giro 298 tirata fuori da
+   rigaObiettivo298 (che ora la chiama, senza cambiare un risultato): obiettivo di classifica dal salvataggio (o dal prestigio, stessa
+   formula di generateSeasonObjectives), zone della lega, zona effettivamente usata. La leggono la riga della Classifica, il riquadro
+   «La stagione» della scheda Club, il riquadro obiettivi della Home e il presidente. N = squadre della lega (dalla classifica). */
+function ambizione337(player,N){
+  const lg=(player&&player.club&&player.club.lg)||"";
   const giov=(player.proStatus||"u18")!=="pro"||/^Primavera/i.test(lg);
   const seconda=LEAGUE_PAIRS.some(([u,l])=>l===lg),prima=LEAGUE_PAIRS.some(([u])=>u===lg);
   const nAlta=giov?0:seconda?3:prima?7:2,nomeAlta=seconda?"zona promozione":"zona Europa";
@@ -53760,6 +53763,16 @@ function rigaObiettivo298(player,st){
   const ob=t<=3?"titolo":t<=6?"europa":t<=9?"meta":"salvezza";let usato=ob;
   if((usato==="meta"||usato==="salvezza")&&!nRetro)usato="europa";
   if(usato==="europa"&&(!nAlta||N<=nAlta))usato="titolo";
+  const nome=usato==="titolo"?"Vincere il campionato":usato==="europa"?(seconda?"Salire di categoria":"Qualificarsi in Europa"):usato==="meta"?"Una stagione tranquilla":"Salvarsi";
+  const e=usato==="titolo"?"🏆":usato==="europa"?(seconda?"⬆️":"🌍"):usato==="meta"?"⚖️":"🛡️";
+  return{t,ob,usato,nome,e,nAlta,nomeAlta,nRetro,seconda,label:so?so.label:("Finisci nei primi "+t)};
+}
+if(typeof window!=="undefined")window.__CPM_AMB337=ambizione337;
+const _g337=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G337);
+function rigaObiettivo298(player,st){
+  const cid=player&&player.club&&player.club.id;const mi=(st||[]).findIndex(x=>x&&x.id===cid);if(mi<0)return null;
+  const N=st.length,P=i=>(st[i]&&st[i].pts)||0,me=P(mi);
+  const{t,ob,usato,nAlta,nomeAlta,nRetro}=ambizione337(player,N);
   const M="\u2212";let testo;
   if(usato==="titolo")testo=mi===0?(st[1]?("In testa, +"+(me-P(1))):"In testa"):(M+(P(0)-me)+" dalla vetta");
   else if(usato==="europa")testo=mi<nAlta?("+"+(me-P(nAlta))+" sulla "+nomeAlta):(M+(P(nAlta-1)-me)+" dalla "+nomeAlta);
@@ -61418,6 +61431,8 @@ const getThisWeekMatchday=()=>{
             {k==="presidente"&&(<div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>🏛️ Il Presidente ti convoca nel suo ufficio: gli obiettivi della stagione.</div>
               <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic",marginBottom:8,paddingLeft:8,borderLeft:`3px solid ${TH.accent}`}}>{getPresidentOpeningQuote(player)}</div>
+              {_g337()&&(player.proStatus||"u18")==="pro"&&(()=>{const am=ambizione337(player,(player.standings||[]).length);/* [giro 337 · PO-606] il presidente dichiara la stessa ambizione */
+                return(<div data-cpm="pres-ambizione337" data-amb337={am.usato} style={{fontSize:FS.caption,color:TH.text,marginBottom:6}}>Ambizione del club: <b>{am.e} {am.nome}</b></div>);})()}
               <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:9}}>
                 {(player.seasonObjectives||[]).map((obj,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,color:TH.text}}><span>🎯</span><span>{obj.label}</span></div>))}
               </div>
@@ -63096,6 +63111,8 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.seasonObjectives||[]).length>0&&(
         <Card momento="Obiettivi della stagione" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"7px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi Stagione {season}</div>
+          {_g337()&&(player.proStatus||"u18")==="pro"&&(()=>{const am=ambizione337(player,(player.standings||[]).length);/* [giro 337 · PO-606] la stessa ambizione della scheda Club e del presidente */
+            return(<div data-cpm="home-ambizione337" data-amb337={am.usato} data-t337={am.t} style={{fontSize:FS.caption,color:TH.text,marginBottom:8}}>Ambizione del club: <b>{am.e} {am.nome}</b></div>);})()}
           {(player.seasonObjectives||[]).map((obj,i)=>{
             let _pos=99;
             if(obj.type==="standing"){const ss=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));_pos=pi>=0?pi+1:99;}
@@ -64007,6 +64024,31 @@ const getThisWeekMatchday=()=>{
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>{l}</span>
                   </div>))}
               </div>}</>);})()}
+            {_g337()&&(player.proStatus||"u18")==="pro"&&(()=>{/* [giro 337 · PO-606] RIQUADRO «LA STAGIONE», in cima sotto la testata: ambizione del club
+                (ambizione337, la stessa regola della riga della Classifica, della Home e del presidente), obiettivo di classifica, dove sei
+                rispetto all'obiettivo (verde se lo stai centrando, rosso se no; la riga sotto e' quella della Classifica) e i tuoi obiettivi
+                con l'avanzamento. Rosso __CPM_NO_G337 = scheda di prima. Guardiano `npm run club-337` */
+              const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
+              const am=ambizione337(player,st.length);const mi=st.findIndex(x=>x.id===club.id);
+              const giocato=mi>=0&&st.some(x=>(x.played||0)>0);const r298=giocato?rigaObiettivo298(player,st):null;
+              const centra=giocato&&mi+1<=am.t;const colPos=!giocato?TINTE.sec:centra?TINTE.verde:TINTE.rosso;
+              const _sp=_objSpent(player),tot={g:player.goals||0,a:player.assists||0,m:player.matches||0};
+              const tuoi=[...objs.filter(o=>o&&o.type!=="standing").map(o=>{const cur=objCurrent(o,tot,_sp,99);return{k:"c"+o.type,label:o.label,cur,target:o.target,done:objDone(o,cur),txt:cur+" / "+o.target};}),
+                ...((persGoals(player)||[]).map(g=>({k:"p"+g.k,label:g.label,cur:g.k==="voto"?(g.cur||0):(g.cur||0),target:g.target,done:g.done,txt:g.k==="voto"?(g.cur!=null?g.cur+" ("+g.n+" gare)":"—"):(g.cur+" / "+g.target)})))];
+              const riga={display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:10};
+              return(<section data-cpm="stagione337" data-amb337={am.usato} data-t337={am.t} style={{background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:RAD.lg,padding:"12px 14px",display:"flex",flexDirection:"column",gap:8}}>
+                <div style={{fontSize:FS.small,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>La stagione {player.season||1}</div>
+                <div style={riga}><span style={{fontSize:FS.small,color:TINTE.sec}}>Ambizione del club</span><span data-cpm="ambizione337" style={{fontSize:FS.body,fontWeight:FW.bold,color:TINTE.testo,textAlign:"right"}}>{am.e} {am.nome}</span></div>
+                <div style={riga}><span style={{fontSize:FS.small,color:TINTE.sec}}>Obiettivo</span><span data-cpm="obiettivo337" style={{fontSize:FS.body,fontWeight:FW.semibold,color:TINTE.testo,textAlign:"right"}}>{am.label}</span></div>
+                <div style={riga}><span style={{fontSize:FS.small,color:TINTE.sec}}>Adesso</span><span data-cpm="posizione337" data-esito337={!giocato?"attesa":centra?"si":"no"} className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.bold,color:colPos,textAlign:"right"}}>{!giocato?"Si parte alla 1ª giornata":(mi+1)+"° · "+(centra?"in linea":"sotto l'obiettivo")}{r298?<span data-cpm="riga337" style={{display:"block",fontSize:FS.small,fontWeight:FW.semibold,color:TINTE.sec}}>{r298.testo}</span>:null}</span></div>
+                {tuoi.length>0&&<div data-cpm="tuoi337" style={{display:"flex",flexDirection:"column",gap:7,borderTop:"1px solid "+TINTE.bordo,paddingTop:8}}>
+                  <div style={{fontSize:FS.small,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>I tuoi obiettivi</div>
+                  {tuoi.map(o=>{const pct=Math.max(0,Math.min(100,Math.round((o.cur/Math.max(0.01,o.target))*100)));return(<div key={o.k}>
+                    <div style={{...riga,marginBottom:3}}><span style={{fontSize:FS.small,color:o.done?TINTE.verde:TINTE.testo,minWidth:0}}>{o.done?"✅ ":""}{o.label}</span><span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TINTE.sec,flexShrink:0}}>{o.txt}</span></div>
+                    <div style={{height:5,background:TINTE.anello,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:pct+"%",background:o.done?TINTE.verde:TINTE.oro,borderRadius:RAD.pill}}/></div>
+                  </div>);})}
+                </div>}
+              </section>);})()}
             {/* Header Club */}
 
             {/* Stadio */}
@@ -64124,7 +64166,7 @@ const getThisWeekMatchday=()=>{
               </Card></Fisarmonica>);})()}
 
             {/* Contratto — [7.999.49 parte A] per esteso solo nel Procuratore (dove si decide il rinnovo): qui una riga breve */}
-            {(()=>{const _c49=_contratto49(player);if(!_c49)return null;return(
+            {(()=>{const _c49=_contratto49(player);if(!_c49||_g337()/* [giro 337 · PO-617] il contratto e' dell'eroe: vive in Agente, non nella scheda Club */)return null;return(
               <button data-rimando235="club" onClick={()=>setTab("agente")} className="cpm-press cpm-t40 cpm-t40h" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
                 <span style={{flex:1,minWidth:0,fontSize:FS.caption,color:_c49.scaduto||_c49.left<=0?TH.txRed:TH.muted}}><b style={{color:TH.text}}>Contratto:</b> {_c49.scaduto?"scaduto":_c49.breve.charAt(0).toLowerCase()+_c49.breve.slice(1)}</span>
                 <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.brandText,flexShrink:0}}>{_g235()?"Dettagli in Agente ›":"Procuratore ›"}</span>
