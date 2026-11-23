@@ -20474,7 +20474,14 @@ function ThreeMatchView(props){
               /* testimone in ENTRAMBI i bracci: ogni colpo di testa armato col pallone lontano e la velocita' di scena massima del pallone nell'attesa */
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TESTA274=window.__CPM_TESTA274||[]);if(W.length<100){S._v274t.w={k:String(P.hlSitKey),t0:Math.round(performance.now()),d0:+_d146.toFixed(1),D:+S._v274t.D.toFixed(2),vmax:0,arrivo:null,rosso:_no274t?1:0};W.push(S._v274t.w);}}catch(_e){}}}}
           const _Vt=S._v274t;const _vola274t=!!(_Vt&&_Vt.on&&_Vt.f<_Vt.D&&_Vt.tr<6);
-          if(!S._l146&&!_vola274t&&((_Vt&&_Vt.on)/* volo finito (arrivato o al tetto): il colpo parte da dove il pallone e', nessun trascinamento */||!(_d146>0.9&&S._w146<0.8))){S._l146=true;if(_Vt&&_Vt.w&&_Vt.w.arrivo==null)_Vt.w.arrivo=+_d146.toFixed(2);}/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
+          if(!S._l146&&!_vola274t&&((_Vt&&_Vt.on)/* volo finito (arrivato o al tetto): il colpo parte da dove il pallone e', nessun trascinamento */||!(_d146>0.9&&S._w146<0.8))){S._l146=true;if(_Vt&&_Vt.w&&_Vt.w.arrivo==null)_Vt.w.arrivo=+_d146.toFixed(2);}
+          /* [giro 342 PO-629] IL COLPO DI TESTA PARTE DALLA TESTA. MISURATO (testa-342, gi108 spizzata): il pallone arriva a 0,06-0,11 u dalla
+             testa, poi nel fotogramma dell'armo una scrittura non identificata ne abbassa la quota di 0,35 u (1,93 → 1,58: x e z fermi) e il colpo
+             parte a 0,41-0,47 u, sotto il mento. Al lancio, col pallone gia' entro 0,9 u, il pallone si appoggia alla fronte (0,22 u: raggio +
+             pelle) dalla parte da cui arriva: lo spostamento e' quello che l'attesa TESTA146 farebbe in piu' fotogrammi. */
+          if(S._l146&&S._l342!==P.hlSitKey&&_g342On()&&_hb&&_d146<=0.9&&_d146>0.22){S._l342=P.hlSitKey;const _k=0.22/_d146;
+            ball.position.x=_hp.x+(ball.position.x-_hp.x)*_k;ball.position.y=_hp.y+(ball.position.y-_hp.y)*_k;ball.position.z=_hp.z+(ball.position.z-_hp.z)*_k;ballArcY0=ball.position.y;
+            if(S._bj0){S._bj0.src='testa342';S._bj0.srcs.push('testa342');}}/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
           if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */const _px274t=ball.position.x,_pz274t=ball.position.z;
             if(_vola274t){_Vt.f+=aDt;_Vt.tr+=(S._dtReal708||aDt);const _u274t=Math.min(_Vt.f/_Vt.D,1);
               ball.position.x=_Vt.sx+(_hp.x-_Vt.sx)*_u274t;ball.position.z=_Vt.sz+(_hp.z-_Vt.sz)*_u274t;ball.position.y=_Vt.sy+(_hp.y-_Vt.sy)*_u274t+_Vt.H*Math.sin(_u274t*Math.PI);
@@ -24182,7 +24189,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _rem33=_end342-tlT,_PRE33=0.5*gwOf('header','vita');
             if(_rem33<=_PRE33){const S33=sr.current;
               if(!S33._pre33||S33._pre33.k!==P.hlSitKey){let _hs=1.67;try{const _hav=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hav&&_findBone904(_hav.visualRoot||_hav.root,/^(head|(mixamorig:?)?Head)$/i);if(_hb){const _v=new THREE.Vector3();_hb.getWorldPosition(_v);_hs=_v.y-(hero.position.y||0);}}catch(_e){}
-                S33._pre33={k:P.hlSitKey,t:0,rem0:Math.max(0.12,_rem33),H:_tuffo109?clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,_g342On()?0:0.15,0.45)/* [giro 342] il tuffo non sale sopra la quota del pallone: MISURATO gi171, minimo 0,15 = testa a 1,82 col pallone a 1,35 (0,47 u al contatto) */:clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.25,0.9)};}
+                S33._pre33={k:P.hlSitKey,t:0,rem0:Math.max(0.12,_rem33),H:_tuffo109?clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,_g342On()?0.08:0.15,0.45)/* [giro 342] il tuffo sale appena: MISURATO gi171, minimo 0,15 = testa a 1,82 col pallone a 1,35 (0,47 u al contatto); minimo 0 = corpo mai staccato e piedi che pattinano 1,5-1,7 u sotto la clip. 0,08: si stacca, testa sul pallone */:clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.25,0.9)};}
               S33._pre33.t+=aDt;S33._pre33.rem=_rem33;
               if(_on342){const _L342=clamp(Math.sqrt(2*S33._pre33.H/9.8),0.16,0.42);S33._pre33.L=_L342;S33._pre33.lead=_L342;/* la clip entra con lo stacco: prima di staccare l'eroe corre con la sua corsa (MISURATO: montata 0,59 s prima, i piedi a terra scivolavano 1,3-1,6 u sotto una clip da fermo) */
                 hero.position.y=(_rem33<_L342)?S33._pre33.H*(1-(_rem33/_L342)*(_rem33/_L342)):0;/* [giro 342] stacco balistico: la testa arriva all'apice quando arriva il pallone */}
@@ -24371,6 +24378,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(typeof window!=='undefined'&&window.__CPM_BV613!==undefined){try{const _a613=window.__CPM_BV613;
               if(_a613.length<3000)_a613.push({t:Math.round(performance.now()),bi,k:sg.kind||null,p:+p.toFixed(3),x:+_bxg.toFixed(2),y:+_byg.toFixed(2),fx:+_f0387[0].toFixed(1),tx:+sg.to[0].toFixed(1),rm:sr.current._rm613?1:0,bx0:_pre613?_pre613.x:null,by0:_pre613?_pre613.y:null,fu:(_f0387===sg.from)?0:1});sr.current._rm613=0;}catch(_e){}}
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
+            /* [giro 342 PO-629] l'ultimo tratto prima di un colpo di testa porta il pallone ALLA quota del colpo senza gobba: MISURATO (gi108
+               spizzata) col seno di 0,35 sul tratto di controllo il pallone passava sopra la testa (0,15 u a -0,04 s), poi scendeva sotto e il
+               colpo partiva a 0,41-0,46 u; e sui cross il pallone «galleggiava» accanto alla testa (velocita' minima 0-0,4 u/s). */
+            const _ult342=_g342On()&&_aerTL!=null&&P.hlType==='header'&&bi===tlBuildN-1&&sg.tag!=="orig26"&&(sg.kind==='carry'||sg.kind==='control');
+            if(_ult342&&(sr.current._u342k!==P.hlSitKey+'|'+bi)){sr.current._u342k=P.hlSitKey+'|'+bi;sr.current._u342y=ball.position.y;}
+            if(_ult342)ball.position.y=sr.current._u342y+(_aerTL-sr.current._u342y)*p;else
             ball.position.y=(sg.tag==="orig26")?((_aerTL!=null?(0.22+(_aerTL-0.22)*p):((P.hlType==='shot'&&!(typeof window!=='undefined'&&window.__CPM_NO_BANDIERINA60))?(0.22+0.33*p)/* [7.999.60] tiro di prima su cross/angolo: il pallone arriva all'altezza del collo del piede, non rimbalza a terra davanti all'eroe */:0.22))+Math.sin(p*Math.PI)*_arcH):(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.22+Math.sin(p*Math.PI)*_arcH);/* [7.999.26] il cross dal crossatore parte dall'erba e arriva alla quota del colpo *//* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             /* [7.390.0 collaudo PO «si porta solo la palla avanti e fine» · «durante i movimenti si muove
                solo il pallone e non l'eroe»] UNA RICEZIONE DEVE SEMBRARE UNA RICEZIONE.
