@@ -79,8 +79,9 @@ try {
   const REM = path.join(TMP, 'remoto.git'), W = path.join(TMP, 'lavoro');
   const HEAD = g(ROOT, 'rev-parse', 'HEAD');
   const main0 = g(ROOT, 'rev-parse', 'origin/main');
-  /* [giro 338] il lavoro finto parte da main (prima da origin/lavoro/200, che una sessione non ha sempre in locale) */
-  const lav0 = main0;
+  /* [giro 338] il lavoro finto parte dall'antenato comune fra HEAD e main (prima origin/lavoro/200, che una sessione non ha sempre in
+     locale): main ha commit di governo che il lavoro non ha, e partire da main faceva andare in conflitto il MONTAGGIO della prova */
+  const lav0 = g(ROOT, 'merge-base', HEAD, main0);
   g(TMP, 'init', '-q', '--bare', REM);
   fs.writeFileSync(path.join(REM, 'objects/info/alternates'), path.join(ROOT, '.git/objects') + '\n');
   for (const [r, s] of [['main', main0], ['lavoro/prova-312', lav0]]) g(REM, 'update-ref', `refs/heads/${r}`, s);
