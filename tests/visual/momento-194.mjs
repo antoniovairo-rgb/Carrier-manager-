@@ -42,7 +42,7 @@ async function apri(player, flag, w = 412) {
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
   await page.addInitScript(([pl, f]) => {
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (f) window[f] = 1;
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; for (const x of [].concat(f || [])) window[x] = 1;/* [giro 335] uno o piu' interruttori */
     localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl }));
   }, [player, flag]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 60000 });
@@ -129,7 +129,9 @@ try {
   if (fai('C')) {
     console.log('C) PO-411 · tasto pieno nel colore del club, contrasto misurato (375 px)');
     for (const [nome, club] of [['chiaro', CLUB.chiaro], ['scuro', CLUB.scuro], ['merseyside', CLUB.mer]]) {
-      for (const [flag, rosso] of [[null, false], ['__CPM_NO_G194C', true]]) {
+      /* [giro 335 · PO-623, decisione PO] il tasto del momento non e' piu' pieno nel colore del club (un solo tasto primario nella
+         Home, guardiano home-335): il C del giro 194 giudica il tasto pieno sul ramo che lo disegna ancora, cioe' col rosso __CPM_NO_G335. */
+      for (const [flag, rosso] of [['__CPM_NO_G335', false], [['__CPM_NO_G335', '__CPM_NO_G194C'], true]]) {
         const { page, errors } = await apri(salva({ club }), flag, 375);
         const m = await page.evaluate(() => {
           const rgb = (s) => { const m = String(s).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(x => +x); return { r: p[0], g: p[1], b: p[2], a: p[3] == null ? 1 : p[3] }; };

@@ -18,6 +18,9 @@ import { salva, apri, accendi, misuraHome } from './misura-199.mjs';
 
 const FOTO = path.join(ROOT, 'docs', 'sviluppo', 'giro199'); fs.mkdirSync(FOTO, { recursive: true });
 const fails = [];
+/* [giro 335 · PO-615] l'offerta di sponsor e' ora una decisione del blocco: il caso del giro 199 conta le SUE tre scelte, quindi l'offerta
+   (popolarita' 40 → fascia «locale») e' declinata per la stagione nel salvataggio. Il blocco con l'offerta lo giudica home-335. */
+const _S335 = { sponsorDecl: { tier: 'locale', season: 3 } };
 const ok = (c, m) => { if (!c) fails.push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
 const NOMI = ['saga', 'shooting', 'fisio'];
 /* giudizio di un caso: true/false + motivo; «non giudicato» (manca un elemento) = false */
@@ -40,10 +43,10 @@ const browser = await launchBrowser();
 try {
   console.log('A) verde: scelte in cima, segno, nessuna finestra');
   for (const [w, h] of [[375, 667], [390, 844], [1366, 768]]) {
-    const z = await apri(browser, port, salva(), [], w, h); await accendi(z.page, 0); const m0 = await misuraHome(z.page);
+    const z = await apri(browser, port, salva(_S335), [], w, h); await accendi(z.page, 0); const m0 = await misuraHome(z.page);
     ok(!m0.blocco && m0.segni === 0 && !z.errors.length, `${w}x${h} 0 scelte: nessun blocco ne' segno (finestre ${m0.finestre})`); await z.page.close();
     for (const n of [1, 2, 3]) {
-      const a = await apri(browser, port, salva(), [], w, h); await accendi(a.page, n); const m = await misuraHome(a.page);
+      const a = await apri(browser, port, salva(_S335), [], w, h); await accendi(a.page, n); const m = await misuraHome(a.page);
       const testoSegno = await a.page.evaluate(() => { const e = document.querySelector('[data-cpm="scelta199-segno"]'); return e ? e.innerText.replace(/\s+/g, ' ') : null; });
       if (w === 375 && n === 3) await a.page.screenshot({ path: path.join(FOTO, 'dopo-home-3-scelte-375.png') });
       if (w === 1366 && n === 3) await a.page.screenshot({ path: path.join(FOTO, 'dopo-home-3-scelte-pc.png') });
@@ -54,7 +57,7 @@ try {
     }
   }
   console.log('B) verde da svincolato: svincolato → scelte → tasto del momento');
-  { const a = await apri(browser, port, salva(), [], 375, 667); await accendi(a.page, 2);
+  { const a = await apri(browser, port, salva(_S335), [], 375, 667); await accendi(a.page, 2);
     await a.page.evaluate(() => window.__CPM_CAREER.patch({ contractExpired: true })); await sleep(900);
     await a.page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} }); await sleep(400);
     const m = await misuraHome(a.page); await a.page.screenshot({ path: path.join(FOTO, 'dopo-home-svincolato-375.png') });
@@ -62,7 +65,7 @@ try {
     ok(v && !!m.svincolato && !a.errors.length, `svincolato@${m.svincolato?.top} · blocco@${m.blocco?.top} · momento@${m.momento?.top} · ${mot}`); await a.page.close(); }
   console.log('C) rosso __CPM_NO_G199: deve essere bocciato');
   for (const [w, h, n] of [[375, 667, 3], [1366, 768, 2]]) {
-    const a = await apri(browser, port, salva(), ['__CPM_NO_G199'], w, h); await accendi(a.page, n); const m = await misuraHome(a.page);
+    const a = await apri(browser, port, salva(_S335), ['__CPM_NO_G199'], w, h); await accendi(a.page, n); const m = await misuraHome(a.page);
     if (w === 375) await a.page.screenshot({ path: path.join(FOTO, 'prima-home-3-scelte-375.png') });
     const [v, mot] = giudica(m, n, 0);
     const trovate = NOMI.slice(0, n).every(k => m.scelte[k]);
