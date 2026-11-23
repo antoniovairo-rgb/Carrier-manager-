@@ -57,7 +57,7 @@ async function leggiTV(page) {
       if (tv && /Forma · ultime 5/i.test(tv.innerText || '')) { const riga = [...tv.querySelectorAll('div')].find(d => /^Forma · ultime 5$/i.test((d.textContent || '').trim()));
         const r = riga ? riga.parentElement : null; const lati = r ? [...r.children] : [];
         return { f, fatto: true, casa: lati[0] ? [...lati[0].querySelectorAll('span')].map(x => x.textContent.trim()).join(' ') : null, ospite: lati[2] ? [...lati[2].querySelectorAll('span')].map(x => x.textContent.trim()).join(' ') : null }; }
-      if (f === 'matchday') { const b = [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim())); if (b) b.click(); }
+      if (f === 'matchday') { const b = [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^(?:Vedi le formazioni|Gioca la partita)/.test((x.textContent || '').trim())); if (b) b.click(); }
       else if (f) {
         const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null && /^(Ingresso in campo|Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim())); if (B[0] && f !== 'walkout') B[0].click(); }
       return { f, fatto: false, bb: [...document.querySelectorAll("button")].filter(x => x.offsetParent).map(x => x.textContent.trim().slice(0, 30)).slice(0, 8) };

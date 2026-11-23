@@ -646,6 +646,9 @@ const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
 /* [giro 300 · PO-565/551/552/553] pre-partita e PC: tasto dei salienti col bordo d'accento, «Inizia il provino» attaccato al contenuto da PC, tasti 1 2 3 della Home cliccabili, nessun suggerimento di tasti nelle scritte (le scorciatoie restano). Rosso __CPM_NO_G300 = tutto come nella 7.999.198. */
 const _g300=()=>!(typeof window!='undefined'&&window.__CPM_NO_G300);
 const _g302=()=>!(typeof window!='undefined'&&window.__CPM_NO_G302);/* [giro 302] rosso dei tre ritocchi PO-552 (riga «1 2 3» via) · PO-589 (striscia di scarico nei colori del tema) · PO-590 (fascia al piu' anziano) */
+/* [giro 336 · PO-608/609] pre-partita a due strade parallele («Gioca la partita» · «Gioca solo i momenti salienti», formazioni/analisi
+   secondarie) e rassegna di fine partita con classifica e numeri DOPO la giornata. Rosso __CPM_NO_G336 = la 7.999.208. */
+const _g336=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G336);
 const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
@@ -30042,6 +30045,17 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         </Card>)}
       {/* [7.999.49 parte A] etichette che dicono la differenza fra i tre bottoni */}
       <div className={_g114()?"cpm-piena-az":undefined} style={_g114()?undefined:{display:"contents"}}>{/* [giro 114 G184-01/35] azioni ancorate in fondo, tasti a 44 px */}
+      {_g336()?(<>{/* [giro 336 · PO-608] DUE STRADE PARALLELE: «Gioca la partita» (intera: formazioni → ingresso → 90') e, sotto, «Gioca solo i
+          momenti salienti». Stessi gestori di prima (onContinue / onSolo243): cambia come si sceglie, non cosa succede dopo. Analisi e
+          «Salta formazioni e ingresso» (= il vecchio «Salta e gioca», partita intera senza i due passi) diventano voci secondarie. */}
+      <Btn data-cpm="gioca-336" onClick={onContinue} v="primary" size="lg" fw>Gioca la partita{<span data-cpm="gioca-336-nota" style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none",opacity:.9}}>Vedi le formazioni, entri in campo e giochi tutti i 90 minuti.</span>}</Btn>
+      {onSolo243&&!_g287()&&<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
+      <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>}{/* [giro 336] col rosso __CPM_NO_G287 la nota torna staccata come prima del giro 287 */}
+      {onSolo243&&_g287()&&<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>}
+      <div data-cpm="secondarie-336" style={{display:"flex",gap:SP.sm}}>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
+        <Btn data-cpm="salta-336" onClick={onSkip} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Salta formazioni e ingresso</Btn>
+      </div></>):(<>
       <Btn onClick={onContinue} v="primary" size="lg" fw>Vedi le formazioni</Btn>
       <div style={{display:"flex",gap:SP.sm}}>
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
@@ -30050,6 +30064,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
       {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
       :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
       <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
+      </>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
       {onBack&&<Btn onClick={onBack} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Torna alla home</Btn>}
       </div>
@@ -44469,8 +44484,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   try{if(_CPM_TEST&&typeof window!=='undefined')window.__CPM_TIPOVERO206={tipo:_ing206,context,finale:!!_isNeutralFinal,derby:!!drby,naz:!!isNatCtx,mw};}catch(_e206){}
   // item 4 (5.49.2): grafica TV pre-partita — statistiche di classifica delle due squadre (posizione/punti/V-N-P/GF-GS + forma ultime 5).
   //   Forma deterministica dal record (seed club+stagione) → coerente per tutta la partita. Dashes se la squadra non è in classifica (provino/coppa/nazionale).
-  const _tvTeamStat=(team)=>{
-    const _st=(player.standings||[]);const _sorted=ordinaClassifica259(_st,(a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
+  const _tvTeamStat=(team,_st336)=>{/* [giro 336 · PO-609] _st336: classifica da usare al posto di quella salvata (la rassegna passa quella DOPO la giornata) */
+    const _st=(_st336||player.standings||[]);const _sorted=ordinaClassifica259(_st,(a,b)=>(b.pts-a.pts)||(b.gd-a.gd)||(b.gf-a.gf));
     const _idx=team?_sorted.findIndex(s=>s.id===team.id):-1;const e=_idx>=0?_sorted[_idx]:null;
     const _seed=hashStr((team?.id||team?.n||"x")+"_"+(player.season||1));const w=e?e.wins:0,d=e?e.draws:0,l=e?e.losses:0,tot=w+d+l;
     // [6.79.0 collaudo PO «all'esordio il cammino delle due squadre è completamente falso»] con 0 partite
@@ -46309,8 +46324,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             let _c232=null;if(_g232x()){try{_c232=rassegnaComp232(player,context,{mg:score.home|0,og:score.away|0,vinta:winning||(_drawShootout&&_shootoutWon),rig:_drawShootout,fase:mdEuroPhase,avv:(opponent&&(opponent.n||opponent.name))||""});}catch(_e){_c232=null;}}
             const _k232=!!(_c232&&_c232.tipo!=="campionato");
             let _st=[],_io=-1,_zone=()=>null,_leg=[];
+            /* [giro 336 · PO-609, PO «la classifica deve essere già aggiornata, non quella della settimana prima»] in campionato la classifica
+               e' quella DOPO la giornata: la stessa chiamata che CareerApp fa tornando alla carriera (src/18, onMatchEnd: updateStandings con
+               standingsSeed(club,stagione,settimana) e l'avversario della giornata servita) → partita appena giocata + altri campi, numeri identici
+               a quelli che la Home mostrera'. Solo lettura: nulla si salva qui, quindi nessun doppio conteggio. Rosso __CPM_NO_G336. */
+            let _dopo336=null,_res336=null;
+            if(_g336()&&context==="career"&&!_isEG&&!_isNatCtx&&!_k232&&typeof updateStandings==="function"&&typeof standingsSeed==="function"){try{
+              const _cid=_cl.id||_cl.n;const _wk0=player.week||1;const _sc0=(scoreRef&&scoreRef.current)?scoreRef.current:score;
+              const _md0=(player.calendar||[]).find(m=>m&&(m.week|0)===_wk0&&!m.played&&!m.type)||null;
+              const _h0=_sc0.home|0,_a0=_sc0.away|0;
+              _dopo336=updateStandings(player.standings||initStandings(getLeagueClubs(player)),_cid,{homeScore:_h0,awayScore:_a0,won:_h0>_a0,drew:_h0===_a0},player.clubPrestigeShifts||{},{opponentId:(_md0&&_md0.opponentId)||(opponent&&(opponent.id||opponent.n||opponent.name))||null,seed:standingsSeed(_cid,player.season,_wk0)});
+              if(!Array.isArray(_dopo336)||!_dopo336.length)_dopo336=null;}catch(_e){_dopo336=null;}
+              try{_res336=_buildEndResult();}catch(_e){_res336=null;}}
+            try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_DOPO336=_dopo336?_dopo336.map(r=>({id:r.id,n:r.n,pts:r.pts|0,played:r.played|0,gf:r.gf|0,ga:r.ga|0})):null;}catch(_e){}
             if(_isEG){try{_st=euroGroupTable(player.euro,_cl)||[];}catch(_e){_st=[];}_io=_st.findIndex(r=>r&&r.isPlayer);}
-            else if(!_isNatCtx){_st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            else if(!_isNatCtx){_st=ordinaClassifica259(_dopo336||player.standings||[],(a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
               _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
               const _lg=_cl.lg||"",N=_st.length,_ZC={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
               const _sec=typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===_lg),_yo=/^Primavera/i.test(_lg),_noRel=typeof LEAGUE_PAIRS!=="undefined"&&!LEAGUE_PAIRS.some(([u])=>u===_lg);
@@ -46332,16 +46360,22 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             /* (b) numeri di stagione */
             const _rat=(player.matchHistory||[]).filter(m=>m&&(m.season||1)===_sn&&typeof m.rating==="number"&&isFinite(m.rating));
             const _vm=_rat.length?(Math.round(10*_rat.reduce((s,m)=>s+m.rating,0)/_rat.length)/10):null;
-            const _num=[["Gol",player.goals],["Assist",player.assists],["Presenze",player.matches],["Voto medio",_vm!=null?_vm.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
-            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=ordinaClassifica259(player.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
+            /* [giro 336 · PO-609] i numeri di stagione CON questa partita: gli stessi incrementi di onMatchEnd (goals/assists +result, matches +1,
+               voto nello storico di stagione) */
+            const _g336n=_g336()&&!!_res336;
+            const _gN=_g336n?((player.goals||0)+(_res336.goals|0)):player.goals,_aN=_g336n?((player.assists||0)+(_res336.assists|0)):player.assists,_mN=_g336n?((player.matches||0)+1):player.matches;
+            const _rat336=_g336n&&typeof _res336.rating==="number"&&isFinite(_res336.rating)?[..._rat.map(m=>m.rating),_res336.rating]:_rat.map(m=>m.rating);
+            const _vmN=_g336n?(_rat336.length?(Math.round(10*_rat336.reduce((s,v)=>s+v,0)/_rat336.length)/10):null):_vm;
+            const _num=[["Gol",_gN],["Assist",_aN],["Presenze",_mN],["Voto medio",_vmN!=null?_vmN.toFixed(1):null]].filter(x=>x[1]!=null&&x[1]!=="");
+            let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=ordinaClassifica259(_dopo336||player.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
               const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
-              _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_sp,_pi+1);
+              _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:_gN||0,a:_aN||0,m:_mN||0},_sp,_pi+1);
                 return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
             const _oggi=[mStats.goals>0?(mStats.goals+" gol"):null,mStats.assists>0?(mStats.assists+" assist"):null].filter(Boolean);
             /* (c) anteprima della prossima */
             let _av=null,_avS=null,_occ=null;
             if(_nx){_av=(typeof CLUBS!=="undefined"?CLUBS.find(c=>c.id===_nx.opponentId):null)||null;
-              try{if(_av)_avS=_tvTeamStat(_av);}catch(_e){_avS=null;}
+              try{if(_av)_avS=_tvTeamStat(_av,_dopo336||undefined);}catch(_e){_avS=null;}
               try{if(_av&&!_nx.type&&_av.lg===_cl.lg&&typeof generateLeagueScorers==="function"){const _sc=generateLeagueScorers(player,{all:true,fullClub:true})||[];const _o=_sc.find(x=>x&&!x.isPlayer&&x.club===(_av.n||_av.a)&&(x.goals|0)>0);if(_o)_occ=_o;}}catch(_e){_occ=null;}}
             const _lab={fontSize:FS.caption,color:TH.muted,fontWeight:FW.bold};
             const _E232={V:TH.success,N:TH.warning,P:TH.danger};
@@ -46363,13 +46397,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {!r.riep&&<span className="cpm-num" style={{flex:"0 0 auto",minWidth:20,textAlign:"center",borderRadius:RAD.xs,fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:_E232[r.e]||TH.muted}}>{r.e}</span>}</div>))}</div>
               </Sez210>}
               {!_k232&&_io>=0&&<Sez210 id="post-classifica200" titolo={_isEG?"Classifica del girone":"Classifica"}>
-                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
+                <div data-cpm="classifica336-nota" data-dopo336={_dopo336?"si":"no"} style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{_dopo336?("Dopo la giornata, con i risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")):"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
                 <div data-cpm="classifica224" style={{display:"flex",flexDirection:"column",gap:1}}>{_idx.map(_riga)}</div>
                 {_leg.length>0&&<div data-cpm="zone224" style={{display:"flex",flexWrap:"wrap",columnGap:10,rowGap:0,marginTop:4,fontSize:FS.caption,color:TH.muted}}>{_leg.map(([c,l])=>(<span key={l} style={{display:"inline-flex",alignItems:"center",gap:4}}><span style={{width:8,height:8,borderRadius:2,background:c}}/>{l}</span>))}</div>}
               </Sez210>}
               {context!=="trial"&&_num.length>0&&<Sez210 id="post-stagione224" titolo="I tuoi numeri di stagione">
                 <div data-cpm="stagione224">
-                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima di questa partita"+(_oggi.length?(" · oggi: "+_oggi.join(" e ")):"")}</div>
+                  <div data-cpm="stagione336-nota" style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(_g336n?"Con questa partita":"Prima di questa partita")+(_oggi.length?(" · oggi: "+_oggi.join(" e ")):"")}</div>
                   <div style={{display:"grid",gridTemplateColumns:"repeat("+_num.length+",1fr)",gap:6}}>{_num.map(([l,v])=>(<div key={l} style={{textAlign:"center",padding:"4px 2px",background:TH.surface2,borderRadius:RAD.sm}}>
                     <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
                   {_obj.map((o,k)=>(<div key={k} data-cpm="obiettivo224" style={{display:"flex",alignItems:"baseline",gap:8,marginTop:k?2:6,fontSize:FS.small,color:TH.text}}>

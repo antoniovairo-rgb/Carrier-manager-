@@ -86,7 +86,7 @@ async function finoA(p, voluta, salta) {
   const t0 = Date.now();
   while (Date.now() - t0 < 300000) { const f = await fase(p); if (f === voluta) return true; if (voluta === 'walkout' && f === 'playing') return false;
     if (f === 'walkout' && voluta === 'playing') { if (salta) await p.evaluate(() => { const b = document.querySelector('[data-cpm="salta-ingresso-v2"]'); if (b && !window.__s219) { window.__s219 = 1; b.click(); } }); await sleep(500); continue; }
-    await p.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent && /^(Vedi le formazioni|Ingresso in campo|Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok|Siamo pronti)/i.test((x.textContent || '').trim()) && !/Salta/i.test(x.textContent || '')); if (B.length) B[B.length - 1].click(); }).catch(() => {});
+    await p.evaluate(() => { try { const C = window.__CPM_CAREER; if (C && C.dismiss) C.dismiss(); } catch (e) {} const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent && /^(Vedi le formazioni|Gioca la partita|Ingresso in campo|Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok|Siamo pronti)/i.test((x.textContent || '').trim()) && !/Salta/i.test(x.textContent || '')); if (B.length) B[B.length - 1].click(); }).catch(() => {});
     await sleep(600); }
   return false;
 }

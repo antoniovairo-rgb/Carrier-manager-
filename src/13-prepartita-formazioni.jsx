@@ -647,6 +647,17 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
         </Card>)}
       {/* [7.999.49 parte A] etichette che dicono la differenza fra i tre bottoni */}
       <div className={_g114()?"cpm-piena-az":undefined} style={_g114()?undefined:{display:"contents"}}>{/* [giro 114 G184-01/35] azioni ancorate in fondo, tasti a 44 px */}
+      {_g336()?(<>{/* [giro 336 · PO-608] DUE STRADE PARALLELE: «Gioca la partita» (intera: formazioni → ingresso → 90') e, sotto, «Gioca solo i
+          momenti salienti». Stessi gestori di prima (onContinue / onSolo243): cambia come si sceglie, non cosa succede dopo. Analisi e
+          «Salta formazioni e ingresso» (= il vecchio «Salta e gioca», partita intera senza i due passi) diventano voci secondarie. */}
+      <Btn data-cpm="gioca-336" onClick={onContinue} v="primary" size="lg" fw>Gioca la partita{<span data-cpm="gioca-336-nota" style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none",opacity:.9}}>Vedi le formazioni, entri in campo e giochi tutti i 90 minuti.</span>}</Btn>
+      {onSolo243&&!_g287()&&<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
+      <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>}{/* [giro 336] col rosso __CPM_NO_G287 la nota torna staccata come prima del giro 287 */}
+      {onSolo243&&_g287()&&<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>}
+      <div data-cpm="secondarie-336" style={{display:"flex",gap:SP.sm}}>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
+        <Btn data-cpm="salta-336" onClick={onSkip} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Salta formazioni e ingresso</Btn>
+      </div></>):(<>
       <Btn onClick={onContinue} v="primary" size="lg" fw>Vedi le formazioni</Btn>
       <div style={{display:"flex",gap:SP.sm}}>
         {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
@@ -655,6 +666,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
       {onSolo243&&(_g287()?<Btn data-cpm="solo-243" data-pesante213="" data-g300={_c300?_c300:undefined} onClick={onSolo243} v="secondary" fw style={{...(_g114()?{minHeight:44}:{}),...(_c300?{border:"2px solid "+_c300,borderRadius:RAD.md,padding:"12px 18px"}:{})}}>{_c300?<span data-cpm="solo-300-titolo" style={{display:"block",color:_c300,fontWeight:FW.black,fontSize:FS.bodyLg}}><span data-cpm="solo-300-icona" data-icona300="⚡" aria-hidden="true"/>Gioca solo i momenti salienti</span>:"Gioca solo i momenti salienti"}{sotto287("solo-243-nota","Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.")}</Btn>/* [giro 287 PO-546] la nota e' il sottotitolo del suo tasto */
       :<><Btn data-cpm="solo-243" data-pesante213="" onClick={onSolo243} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Gioca solo i momenti salienti</Btn>
       <div data-cpm="solo-243-nota" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>Giochi solo le tue azioni, il resto della partita scorre veloce. Il risultato lo decide la stessa partita.</div></>)}
+      </>)}
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
       {onBack&&<Btn onClick={onBack} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Torna alla home</Btn>}
       </div>
