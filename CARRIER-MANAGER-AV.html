@@ -4364,8 +4364,13 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo,ancora)
   /* [giro 126 PO-328] l'ancora la puo' spostare solo lo strato, DOPO la scelta delle opzioni (nessun sorteggio in piu' o in meno):
      serve a sapere se la scena offre davvero una conclusione. Senza «ancora» il costruttore e' identico a prima. */
   if(typeof ancora==='function'){const _a126=ancora(scelte,occ);if(_a126)occ={...occ,x:_a126.x,y:_a126.y,_g126:{x:+occ.x,y:+occ.y}};}
+  /* [giro 343 PO-611 — rosso __CPM_NO_G343] LA SCENA DI PUNIZIONE NASCE SUL PUNTO DEL FALLO, FUORI AREA. La zona di partenza era il
+     punto del fallo ±2 in profondita' e ±3 di lato, e il punto veniva sorteggiato li' dentro: un fallo a 83,5 apriva la scena col
+     pallone fino a 85,5 (3,4 unita' dentro l'area disegnata: e' la foto del PO). Ora, per la sola punizione, il punto esce dall'area
+     (fuoriArea343, src/14) e la zona di partenza e' quel punto esatto: il titolo dice gia' la distanza da li'. */
+  if(tipo==='punizione'&&typeof fuoriArea343==='function'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343)){const _f343=fuoriArea343(+occ.x,+occ.y);if(_f343.sp>0)occ={...occ,x:_f343.adv,y:_f343.y};}
   const x=+occ.x,y=+occ.y;
-  const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
+  const sz=(tipo==='punizione'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343))?{x:[x,x],y:[y,y]}:{x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
@@ -19225,6 +19230,19 @@ function ThreeMatchView(props){
        pallonetto e volée. Ora la stessa clip coi passi d'appoggio serve anche lancio lungo, cross, pallonetto e volée; il passaggio
        corto, il cross arretrato (cutback), la rabona e la rovesciata restano coi loro gesti. */
     const _rinc144=()=>!(typeof window!=='undefined'&&window.__CPM_NO_RINC144);
+    /* [giro 343 PO-587 — rosso __CPM_NO_G343] L'INTERVENTO DEL DIFENSORE PARTE AL CONTATTO DEL TIRO, MAI PRIMA. Nota PO: «il difensore
+       scivola prima dell'effettiva giocata». MISURATO (difesa-343, GLB acceso): la reazione di reparto (7.519) e il muro (giro 41)
+       si armavano nel fotogramma in cui l'arco si ARMA, ma il pallone parte dopo il caricamento del gesto (GESTURE_WIN.pre, clip
+       caricata 7.999.34, contatto della clip giro 177, voli 274): la scivolata partiva da 0,24 a oltre 1 s di scena prima del piede
+       sul pallone. Ora la richiesta resta in coda (sr.current._pend343, chiave di scena) e si esegue nel fotogramma del contatto
+       (arco da <=0 a >0, lo stesso del testimone CONT121). Testimone __CPM_DIF343 (in entrambi i bracci): req = richiesta, int =
+       intervento partito, cont = contatto, g = clip chiesta dal corpo GLB; tempi di SCENA. */
+    const _dif343=(P,chi,t,fn)=>{const S=sr.current;
+      const w=(typeof window!=='undefined'&&window.__CPM_DIF343!==undefined)?{k:String(P.hlSitKey),t:t,chi:chi,req:+(S._clk343||0).toFixed(3),int:null,cont:null,g:null}:null;
+      if(w){try{if(window.__CPM_DIF343.length<400)window.__CPM_DIF343.push(w);}catch(_e){}}
+      const run=()=>{let m=null;try{m=fn();}catch(_e){}if(w){w.int=+(S._clk343||0).toFixed(3);if(m)m.w343=w;}};
+      if(typeof window!=='undefined'&&window.__CPM_NO_G343){run();return;}
+      if(!(S._pend343&&S._pend343.k===P.hlSitKey))S._pend343={k:P.hlSitKey,q:[]};S._pend343.q.push(run);};
     const _tiro34Arma=(P,t)=>{try{sr.current._t34=null;if(P.hlDef||(typeof window!=='undefined'&&window.__CPM_NO_TIRO34))return null;
       const _v144=String(P.hlVariant||'');const _alt144=_rinc144()&&((t==='cross'&&_v144!=='cross_cutback'&&_v144!=='cross_rabona')||(t==='pass'&&/^(pass_lofted|long_pass|chip_pass)$/.test(_v144)));
       if(t!=='shot'&&!_alt144&&!(t==='freekick'&&_g177Pun()&&hero&&hero._glbDriven))return null;/* [giro 177, solo con __CPM_SI_PUN177] punizione col tiro in corsa */
@@ -20489,6 +20507,9 @@ function ThreeMatchView(props){
             const _ox=(_arcSrcX!=null)?_arcSrcX:ball.position.x,_oz=(_arcSrcZ!=null)?_arcSrcZ:ball.position.z;
             const L=(window.__CPM_CONT121=window.__CPM_CONT121||[]);L.push({sk:_P121.hlSitKey!=null?+_P121.hlSitKey:-1,i:S._n121,tipo:_P121.hlType||null,act:actType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a121,
               db:+Math.hypot(_ox-hero.position.x,(_oz-hero.position.z)/0.68).toFixed(2),dbm:+Math.hypot(ball.position.x-hero.position.x,(ball.position.z-hero.position.z)/0.68).toFixed(2),by:+ball.position.y.toFixed(2),gx:+(48.6-hero.position.x).toFixed(1),bg:ballArcIsBG?1:0,tx:+(+ballArcTgtX).toFixed(1),tz:+(+ballArcTgtZ).toFixed(1),at:(function(){let d=Math.abs(_ry-Math.atan2(ballArcTgtX-hero.position.x,ballArcTgtZ-hero.position.z))%(2*Math.PI);if(d>Math.PI)d=2*Math.PI-d;return Math.round(d*180/Math.PI);})(),pre:+(+_preT74).toFixed(3),dt:+(+aDt).toFixed(3)});if(L.length>40)L.shift();}}catch(_e121){}}
+        {const S343=sr.current;S343._clk343=(S343._clk343||0)+aDt;const _q343=S343._pend343;/* [giro 343 PO-587] la coda degli interventi difensivi si esegue al contatto */
+          if(_q343){if(_q343.k!==P.hlSitKey)S343._pend343=null;else if(ballArcT>0&&isResult){S343._pend343=null;for(let _i343=0;_i343<_q343.q.length;_i343++)_q343.q[_i343]();}}
+          if(_preT74<=0&&ballArcT>0&&isResult&&typeof window!=='undefined'&&window.__CPM_DIF343!==undefined){try{const _k343=String(P.hlSitKey);for(const _w343 of window.__CPM_DIF343){if(_w343.k===_k343&&_w343.cont==null)_w343.cont=+S343._clk343.toFixed(3);}}catch(_e343){}}}
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
         /* [7.534.0 MP-1] LA PANCIA HA UN PROFILO: «tesa» = sin^0.7 (spalle larghe, il tiro sale presto e
@@ -21978,7 +21999,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               {const _c519=_castDif23(_bm519,_px519,_pz519,9);if(_c519&&_c519!==_bm519){_bm519=_c519;_bd519=Math.hypot(_c519.position.x-_px519,_c519.position.z-_pz519);}}/* [23/09 POC] chi reagisce e' il difensore del brain, se e' li' */
               if(!(_bm519&&_bd519<9)&&typeof window!=='undefined'&&window.__CPM_REA42N!==undefined){try{window.__CPM_REA42N.push({f:_fam519,d:_bm519?+_bd519.toFixed(1):null,k:P.hlOutcomeKind||null});}catch(_e){}}/* [giro 42 testimone] perche' nessun gesto */
               if(_bm519&&_bd519<9){
-                sr.current._mateFx={mesh:_bm519,name:_fam519==="tiro"?"tackle":"header",t:_fam519==="tiro"?0.9:0.8};
+                _dif343(P,"519",t,()=>(sr.current._mateFx={mesh:_bm519,name:_fam519==="tiro"?"tackle":"header",t:_fam519==="tiro"?0.9:0.8}));/* [giro 343] al contatto, non all'armo */
                 if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1)});}catch(_e){}}
               }
               /* [PO-252/8 giro 42 — OLTRE I 9u IL DIFENSORE SI MUOVE, NON GESTICOLA. Rosso __CPM_NO_REAZ252, guardiano reazione-252]
@@ -22002,8 +22023,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let _bm241=null,_bd241=1e9;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='away'||src.gk)return;const _m=pp.mesh;if(!_m)return;const _d=Math.hypot(_m.position.x-ballArcTgtX,_m.position.z-ballArcTgtZ);if(_d<_bd241){_bd241=_d;_bm241=_m;}});
             {const _c241=_castDif23(_bm241,ballArcTgtX,ballArcTgtZ,18);if(_c241&&_c241!==_bm241){_bm241=_c241;_bd241=Math.hypot(_c241.position.x-ballArcTgtX,_c241.position.z-ballArcTgtZ);}}
-            if(_bm241&&_bd241<18){oppActType="opp_tackle";oppActT=0;oppMesh=_bm241;oppMesh._divePz=_bm241.position.z;oppDiveDir=_bm241.position.z>=0?1:-1;oppMesh._slideToX=ballArcTgtX+0.6;oppMesh._slideToZ=ballArcTgtZ;
-              oppMesh._slideSpd10={v:Math.max(2.5,_bd241/Math.max(0.2,ballArcDur-0.05)),sk:P.hlSitKey};sr.current._mateFx={mesh:_bm241,name:"tackle",t:0.9};}
+            if(_bm241&&_bd241<18){_dif343(P,"muro",t,()=>{const _d343=Math.hypot(_bm241.position.x-ballArcTgtX,_bm241.position.z-ballArcTgtZ);/* [giro 343] il muro parte al contatto: il passo si calcola da dove l'uomo e' in quel fotogramma, e arriva col pallone */
+              oppActType="opp_tackle";oppActT=0;oppMesh=_bm241;oppMesh._divePz=_bm241.position.z;oppDiveDir=_bm241.position.z>=0?1:-1;oppMesh._slideToX=ballArcTgtX+0.6;oppMesh._slideToZ=ballArcTgtZ;
+              oppMesh._slideSpd10={v:Math.max(2.5,_d343/Math.max(0.2,ballArcDur-0.05)),sk:P.hlSitKey};return (sr.current._mateFx={mesh:_bm241,name:"tackle",t:0.9});});}
           }
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=="undefined"){try{window.__CPM_ARC={t,ok:P.hlSuccess,kind:P.hlOutcomeKind||null,on:!!ballArcActive,tx:+(+ballArcTgtX).toFixed(1),tz:+(+ballArcTgtZ).toFixed(1),h:+(+ballArcH).toFixed(2),dur:+(+ballArcDur).toFixed(2)};}catch(_e){}}/* [7.341.0] osservabilità del BERSAGLIO dell'arco (test-only): il setaccio delle azioni misurava «dove finisce la palla» e doveva dedurre dove il motore la stesse mandando */
           // [6.74.0 3D-2] ESITO GOL della famiglia tiro/testa: il punto d'atterraggio dell'ARCO deve stare
@@ -23096,6 +23118,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            pallone (nessun gesto in corso: il gesto del calcio scrive lui la rotazione), il corpo ruota in modo
            graduale verso la porta avversaria. Nessun effetto su traiettoria, esito o posizione → puramente
            postura. */
+        /* [giro 343 PO-611, strumento di sola lettura] DOVE SI BATTE LA PUNIZIONE. Una riga per scena di punizione (non rigore), riscritta
+           finche' la scena e' in lettura: pallone nel mondo, «in area» (oltre la linea dei 16,5 disegnata: x >= 48,6-16,5 e |z| <= 20,16),
+           uomini di barriera (bersagli mur72 della scena) e distanza del piu' vicino dal pallone, misurata sui CORPI. */
+        if(isHL&&!isResult&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")&&typeof window!=='undefined'&&window.__CPM_PUN343!==undefined){try{const _W343=window.__CPM_PUN343,_k343=String(P.hlSitKey);let _w343=_W343.find(q=>q.k===_k343);if(!_w343&&_W343.length<80){_w343={k:_k343};_W343.push(_w343);}
+          if(_w343){_w343.x=+ball.position.x.toFixed(2);_w343.z=+ball.position.z.toFixed(2);_w343.area=(ball.position.x>=32.1&&Math.abs(ball.position.z)<=20.16)?1:0;let _n343=0,_md343=null;(sr.current._w72||[]).forEach((q,i)=>{if(!q||q.k!==P.hlSitKey)return;const _pm=sr.current.players[i]&&sr.current.players[i].mesh;if(!_pm)return;_n343++;const d=Math.hypot(_pm.position.x-ball.position.x,_pm.position.z-ball.position.z);if(_md343==null||d<_md343)_md343=d;});_w343.n=_n343;_w343.muro=_md343==null?null:+_md343.toFixed(2);_w343.ph=String(P.matchPhase||'');}}catch(_e343){}}
         if(_setPiece&&hero&&actType==null&&heroPostT<0){
           const _spY=Math.atan2(AWAY_GOAL_X-hero.position.x,-hero.position.z);
           let _spD=((_spY-hero.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
@@ -28375,6 +28402,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           const _bg23=(sr.current._brainOn&&_a.proc&&_a.proc._brainG&&_a.gestures)?_a.proc._brainG:null;
           const _brainWant=_bg23?(_bg23.nomi.find(n=>_a.gestures[n])||null):null;/* [23/09 POC] il primo gesto della riga che QUESTO corpo possiede */
           const _mateWant=(_mfx&&_mfx.mesh===_a.proc&&_mfx.t>0)?_mfx.name:_brainWant;
+          if(_mfx&&_mfx.w343&&_mfx.w343.g==null&&_mfx.mesh===_a.proc&&_mfx.t>0)_mfx.w343.g=+(sr.current._clk343||0).toFixed(3);/* [giro 343] testimone: il corpo GLB ha chiesto la clip dell'intervento */
           /* [7.516.0 R3/1 — IL RILASCIO NON DIPENDE DALLA CONDIZIONE D'INGRESSO: audit critica «il compagno
              resta deformato per il resto della partita»] Il decadimento del peso del gesto (righe _gw piu'
              sotto) vive DENTRO questo ramo: quando il timer _mateFx scadeva, il compagno non entrava piu' e
@@ -31298,6 +31326,20 @@ function rigorista257(player,context,xi){if(no257()||!player)return null;
   try{const pr=(typeof premiMotore238==="function")?premiMotore238(player,context):null;if(pr&&pr.rig)return {eroe:true,nome:player.name||""};}catch(_e){}
   const k=rigoristaXI257(xi);return k>=0?{eroe:false,i:k,nome:String(xi[k].name||"")}:null;}
 if(typeof window!=='undefined')window.__CPM_RIG257={rigorista:rigorista257,xi:rigoristaXI257,att:attitudine257};
+/* [giro 343 PO-611 — rosso __CPM_NO_G343] LA PUNIZIONE SI BATTE FUORI DALL'AREA. PO (foto 200-punizione-in-area): «punizione in area!».
+   L'area DISEGNATA dal 3D (src/12: linea di porta 48,6, profondita' 16,5, mezza larghezza 20,16 di mondo) in unita' di gioco e'
+   avanzamento >= 82,1 e |y-50| <= 29,65; la regola del rigore del motore (fallo()) e' piu' stretta: avanzamento >= 84 e |y-50| <= 20.
+   Nella cornice fra le due il fallo era una punizione col pallone dentro l'area disegnata (banco 192 partite: 208 falli su 5.031).
+   Qui il punto di battuta di una punizione che cadrebbe nell'area avversaria esce dal lato piu' vicino, 1,6 unita' fuori dalla linea
+   (dal limite: avanzamento 80,5; di fianco: |y-50| 31,25). La regola del rigore NON cambia (decisione PO-190 sui rigori a partita).
+   Funzione pura, senza sorteggi: stesso flusso del generatore nei due bracci. */
+const AREA343={adv:82.1,hy:20.16/0.68,m:1.6,riga:0.3};/* riga: la linea fa parte dell'area (un pallone entro 0,3 dalla linea e' sulla linea) */
+function fuoriArea343(adv,y){adv=+adv;y=+y;const dy=Math.abs(y-50);
+  if(!(adv>=AREA343.adv-AREA343.riga&&dy<=AREA343.hy+AREA343.riga)||(typeof window!=='undefined'&&window&&window.__CPM_NO_G343))return{adv:adv,y:y,sp:0};
+  const cx=adv-(AREA343.adv-AREA343.m),cy=(AREA343.hy+AREA343.m)-dy;
+  if(cy<cx)return{adv:adv,y:50+(y>=50?1:-1)*(AREA343.hy+AREA343.m),sp:+cy.toFixed(2)};
+  return{adv:AREA343.adv-AREA343.m,y:y,sp:+cx.toFixed(2)};}
+if(typeof window!=='undefined'){try{window.__CPM_FUORI343=fuoriArea343;}catch(_e){}}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -31552,6 +31594,7 @@ function creaMotorePossesso(cfg){
      (il pallone DEVE uscire: e' calcio) ma accorciare la pausa: una rimessa laterale e un rinvio si
      battono in un tick, angolo e rigore restano a 3 perche' la squadra si deve schierare. */
   const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};
+    if(kind==="foul"){const _f343=fuoriArea343(advDi(clamp(x,0,100),lato),clamp(y,0,100));if(_f343.sp>0){x=xDa(_f343.adv,lato);y=_f343.y;S.conta.fuori343=(S.conta.fuori343|0)+1;}}/* [giro 343 PO-611] la punizione si batte fuori dall'area avversaria */
     /* [7.881 v2] e anche la PUNIZIONE lontana dalla porta si batte in fretta: nel calcio vero si riparte
        subito, la barriera si forma solo vicino all'area. Misurato sulla scheda n° 12: a Vairo i 20 minuti
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
