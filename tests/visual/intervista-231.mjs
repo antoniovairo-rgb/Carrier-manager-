@@ -10,7 +10,7 @@ const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.j
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function braccio(rosso, naz) {
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; if (r === 1) window.__CPM_NO_IV231 = 1; if (r === 2) window.__CPM_NO_IV243 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s));
+  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; if (r === 1) window.__CPM_NO_IV231 = 1; if (r === 2) window.__CPM_NO_IV243 = 1; localStorage.setItem('cpm-match-speed', '2');/* [giro 344] '4' non esiste piu' dal 7.484 (velocita' 1/1,5/2): il gioco lo riscriveva a 1x e sul banco la partita non arrivava al fischio nel tetto di 400 s (non giudicato, identico su d6819779). 2x = la massima che il giocatore puo' scegliere */ localStorage.setItem('cpm-v3', JSON.stringify(s));
     window.__IV231 = null; const os = () => { if (window.__IV231) return; const el = document.querySelector('[data-cpm="intervista231"]'); if (el) window.__IV231 = { ctx: el.getAttribute('data-ctx') }; };
     document.addEventListener('DOMContentLoaded', () => { new MutationObserver(os).observe(document.body, { childList: true, subtree: true }); }); }, [save, rosso ? (naz ? 2 : 1) : 0]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
