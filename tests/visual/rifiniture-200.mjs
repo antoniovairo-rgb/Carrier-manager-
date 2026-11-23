@@ -29,6 +29,14 @@ const testo = (page, sel) => page.evaluate((s) => { const e = s ? document.query
 const vai = async (page, t) => { await page.evaluate((t) => window.__CPM_CAREER.goTab(t), t); await sleep(900); await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} }); await sleep(300); };
 const patch = async (page, o) => { await page.evaluate((o) => window.__CPM_CAREER.patch(o), o); await sleep(700); };
 const FL = ['__CPM_FIS_APERTE'];
+/* [giro 348] il bilancio di fine stagione si raggiunge come lo raggiunge il giocatore. Il salvataggio di prova non porta la classifica:
+   la ricostruisce il gioco col motore rapido, e dal giro 343 (PO-611, punizione fuori area) la stessa stagione esce diversa: il club
+   dell'eroe e' primo e il fine stagione si apre con la parata «CAMPIONI!» davanti al bilancio (misurato: con __CPM_NO_G343 di nuovo 4°,
+   niente parata). Si preme «Continua» finche' il bilancio non e' a schermo (al massimo 8 volte, poi la riga cercata manca = rosso). */
+const fineStagione = async (p) => { await p.evaluate(() => window.__CPM_CAREER.apriFine302('stagione')); await sleep(1500);
+  for (let k = 0; k < 8; k++) { const t = await testo(p); if (/pt nel girone|Contratto attivo|Ultimo anno di contratto|Contratto scaduto|Ultima stagione/.test(t || '')) break;
+    await p.evaluate(() => { const B = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null && /Continua/i.test(b.innerText || '')); if (B[0]) B[0].click(); }); await sleep(900); }
+  return testo(p); };
 
 /* ogni caso: {id, w, h, pl (salvataggio), fai(page) -> fatti, giudica(fatti) -> [ok, motivo]} */
 const CASI = [
@@ -39,11 +47,11 @@ const CASI = [
     giudica: (f) => !f.riga ? [false, 'scheda della coppa non trovata'] : (/Campioni/.test(f.riga) && /7\/9/.test(f.riga) && !/Eliminati/.test(f.riga) && !/10\/9/.test(f.riga)) ? [true, f.riga] : [false, f.riga] },
   { id: 'P2', pl: { euro: { active: true, competition: 'UCL', phase: 'eliminated', eliminated: true, champion: false, pts: 12,
       groupResults: [1, 2, 3, 4, 5, 6].map(i => ({ opp: 'Club ' + i, won: i <= 4, drew: false, hs: 2, as: i <= 4 ? 0 : 1 })), koResults: [{ phase: 'r16', won: false }] } },
-    fai: async (p) => { await p.evaluate(() => window.__CPM_CAREER.apriFine302('stagione')); await sleep(1500); const t = await testo(p); const i = t.search(/pt nel girone/); return { riga: i < 0 ? null : t.slice(Math.max(0, i - 60), i + 14).replace(/\n/g, ' | '), schermo: await p.evaluate(() => window.__CPM_CAREER.screen()) }; },
+    fai: async (p) => { const t = await fineStagione(p); const i = t.search(/pt nel girone/); return { riga: i < 0 ? null : t.slice(Math.max(0, i - 60), i + 14).replace(/\n/g, ' | '), schermo: await p.evaluate(() => window.__CPM_CAREER.screen()) }; },
     giudica: (f) => !f.riga ? [false, 'riga della coppa europea non trovata (' + f.schermo + ')'] : /Eliminat[oi] agli ottavi/i.test(f.riga) ? [true, f.riga] : [false, f.riga] },
   { id: 'P3', pl: { contract: { duration: 3, wage: 9000, expiresAtSeason: 5 } },
-    fai: async (p) => { await p.evaluate(() => window.__CPM_CAREER.apriFine302('stagione')); await sleep(1500); const a = await testo(p);
-      await p.evaluate(() => { window.__CPM_CAREER.goTab('dashboard'); }); await sleep(500); await patch(p, { retireAnnounced: 3 }); await p.evaluate(() => window.__CPM_CAREER.apriFine302('stagione')); await sleep(1500); const b = await testo(p);
+    fai: async (p) => { const a = await fineStagione(p);
+      await p.evaluate(() => { window.__CPM_CAREER.goTab('dashboard'); }); await sleep(500); await patch(p, { retireAnnounced: 3 }); const b = await fineStagione(p);
       const r = (t) => { const m = (t || '').match(/Contratto attivo[^\n]*|Ultimo anno di contratto[^\n]*|Contratto scaduto[^\n]*|Ultima stagione[^\n]*ritiro[^\n]*/); return m ? m[0] : null; };
       return { normale: r(a), addio: r(b) }; },
     giudica: (f) => (f.normale && /2 anni rimanenti/.test(f.normale) && f.addio && !/Contratto attivo/.test(f.addio) && /ritiro/i.test(f.addio)) ? [true, `«${f.normale}» · addio «${f.addio}»`] : [false, `«${f.normale}» · addio «${f.addio}»`] },

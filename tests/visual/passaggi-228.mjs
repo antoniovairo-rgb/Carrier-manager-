@@ -10,7 +10,12 @@
      della differenza · cross entro ±5 % · dribbling tentati entro ±6 % · occasioni dell'eroe entro ±5 % · possesso della squadra
      dell'eroe entro ±1,5 punti · simulazione rapida (brainLive spento) identica nei due bracci.
    Il rosso si prova con CPM_ROSSO=1: entrambi i bracci col motore di prima -> passaggi +0 % -> esce 1.
-   Uso: node passaggi-228.mjs            (N=2000, quattro processi, ~2 minuti)
+   [giro 348] N di default 2000 → 6000 (stessi semi: le prime 2000 partite sono le stesse). Il giro 343 (PO-611, punizione fuori
+   area) cambia la partita da quel fallo in poi, quindi cambia QUALE campione si estrae: lo scarto di xG verde/rosso misurato sui
+   semi 1000 · 777 · 31337 (N=2000) e' +3,9 · +1,8 · +1,0 % col 343 e +2,1 · +0,9 · +1,8 % senza — nessuno spostamento sistematico,
+   ma a N=2000 l'xG oscilla di ±1,5 punti attorno al +2 % e il tetto ±3 % (che, a differenza dei gol, non ha margine di errore
+   statistico) cade dentro l'oscillazione. A N=6000 (semi da 1000): +2,0 % col 343, +1,8 % senza. Soglie invariate.
+   Uso: node passaggi-228.mjs            (N=6000, quattro processi, ~5-8 minuti)
         CPM_ROSSO=1 node passaggi-228.mjs (deve uscire 1)
         N=4000 SEED0=777 node passaggi-228.mjs */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
@@ -47,7 +52,7 @@ if (!isMainThread) {
   parentPort.postMessage(S);
 } else {
   const ROSSO = process.env.CPM_ROSSO === '1';
-  const N = Math.max(40, +(process.env.N || 2000)); const SEED0 = +(process.env.SEED0 || 1000); const PAR = 4;
+  const N = Math.max(40, +(process.env.N || 6000)); const SEED0 = +(process.env.SEED0 || 1000); const PAR = 4;
   const braccio = (rosso) => Promise.all(Array.from({ length: PAR }, (_, w) => new Promise((ok, ko) => {
     const ks = []; for (let k = w; k < N; k += PAR) ks.push(k);
     const wk = new Worker(fileURLToPath(import.meta.url), { workerData: { rosso, ks, seed0: SEED0 } }); wk.on('message', ok); wk.on('error', ko);
