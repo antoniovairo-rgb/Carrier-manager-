@@ -111,4 +111,15 @@ non vale, ho tolto la sua riga da `STABILITA.json`, fatto `npm install` e rifatt
 
 ## 6. Esito del giro
 
-(scritto a fine corsa, sotto)
+`node ci-runner.mjs giro via-poc-338 rilascio-312 trenino-317 deploy-326 treno-330` (GAME_VERSION 7.999.206, non toccata):
+
+- **Corsa 1:** non valida. 15 sentinelle cadute in 0 s per `node_modules` mancanti. Riga tolta da `STABILITA.json`, `npm install`.
+- **Corsa 2:** 21/22. L'unico rosso era **rilascio-312, ed era un rosso vero**: il montaggio della prova univa il ramo in `main`, e la mia
+  modifica a `docs/governo/RILASCIO-AUTO.json` andava in conflitto con il file su main. Ho corretto due cose: il file di governo non lo
+  tocco più (§1), e il lavoro finto parte dall'antenato comune fra HEAD e main (`git merge-base`), come faceva prima con `lavoro/200`.
+  Il conflitto in docs/governo **del rilascio** resta provato: B2 «risolto con la versione di main».
+- **Corsa 3, rifatta da capo sul build finale (`170270d`): ✅ 22/22 verdi.** via-poc-338 0 s · rilascio-312 13 s · trenino-317 17 s ·
+  deploy-326 0 s · treno-330 1 s · mappa-unica · le 17 sentinelle (partita-vera 716 s, career-critical 383 s, battito-264 437 s …).
+- I bracci rossi li ho provati a mano, fuori dal runner: `CPM_NO_G338=1` → rilascio-312 uscita 1, trenino-317 uscita 1, via-poc-338 uscita 1.
+
+Le schermate che lascia `griglia-mobile` in `docs/collaudo-grafico/g0/` sono output del controllo: non le ho messe nel commit.
