@@ -7,6 +7,13 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 ## Ogni risposta al PO comincia con
 `Lotto in corso: … · Voci toccate: PO-… · Richieste nuove registrate: PO-…`
 
+## Parole del treno (PO 23/11)
+
+- **Vagone (carrozza):** un pezzo del treno = un giro unito in `lavoro/**` («Unione sviluppo/giroNNN …»). Un giro = un vagone.
+- **Treno:** la corsa dei controlli su GitHub che porta uno o più vagoni verso una versione (es. «il treno della 7.999.208 con 6 vagoni: giri 331, 333, 335, 336, 337, 338»). Mai «il vagone della 208» per dire l'insieme.
+- **Trenino:** un treno con pochi vagoni, che gira solo i controlli toccati da quei vagoni (più le sentinelle).
+- **Treno completo / treno grande:** gira la mappa intera; il treno grande è quello di notte.
+
 ## Smistamento (triage) — entro la risposta successiva
 
 Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglioramento · nuova funzione · debito tecnico · processo · ricerca · conflitto. Un'incertezza («da verificare», «da decidere») va nello **Stato**, non nel tipo. `node tools/governo-html.mjs` avvisa delle voci fuori categoria e la scheda «Stato settimanale» le conta (PO-159, 01/10). Ogni risposta al PO apre con «Richieste nuove registrate: PO-…»: è la prova che lo smistamento è avvenuto nel turno.
