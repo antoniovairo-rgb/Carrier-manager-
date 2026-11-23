@@ -265,6 +265,11 @@ const FS_BASE234={...FS};
    (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
    acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
 const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+/* [giro 341 · PO-618 «Non riesco a richiudere questo box»] le sezioni dentro un gruppo del Profilo si aprono e chiudono dalla testata
+   (stessa freccia della Fisarmonica) e non hanno piu' scorrimento interno: la pagina scorre tutta, il telefono non resta intrappolato.
+   Rosso window.__CPM_NO_G341 = sezioni fisse senza freccia + liste con maxHeight/overflow (comportamento di prima). */
+const _g341=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G341);
+const _scorri341=(h)=>_g341()?{}:{maxHeight:h,overflowY:"auto",WebkitOverflowScrolling:"touch"};
 /* [giro 260 · decisioni PO 17/11 B C D] interruttore del giro: rosso window.__CPM_NO_G260 = come prima (Sostieni anche nell'app, titolo
    grande nel contenuto di Stagione/Agente/Ufficio, «Under 18»/«U18» a schermo). */
 const _g260=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G260);

@@ -450,8 +450,26 @@ const RAGGI299={riquadro:RAD.lg,annidato:RAD.md};
 const _g299=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G299);
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const _gr235=React.useContext(GruppoCtx235)&&_g235();
-  if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione fissa, col nome nuovo */
+  if(_gr235){/* [giro 235] dentro un gruppo del Profilo: sezione col nome nuovo. [giro 341 PO-618] si chiude dalla testata */
     const _suf=typeof titolo==="string"?((titolo.match(/\s\([^)]*\)$/)||[""])[0]):"";const t=NOMI235[id]?NOMI235[id]+_suf:titolo;/* «Achievement (4/34)» → «Imprese (4/34)» */
+    const _k341="cpm-sez341-"+id;
+    const[apr341,setApr341]=useState(()=>{try{if(typeof window!=='undefined'&&window.__CPM_FIS_APERTE)return true;const v=safeLS.get(_k341);return v==null?true:v==="1";}catch(_e){return true;}});
+    if(_g341()){const _ra=_g299()?RAGGI299.annidato:RAD.xs;
+      const cambia341=()=>{setApr341(p=>{const n=!p;try{safeLS.set(_k341,n?"1":"0");}catch(_e){}return n;});};
+      return(
+      <div data-sezione235={typeof t==="string"?t:id} data-sez341={id} style={{...style,marginBottom:0}}>
+        <button onClick={cambia341} aria-expanded={apr341} className="cpm-press cpm-t40 cpm-t40h"
+          style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:(_mouse110()?36:undefined),cursor:"pointer",
+            background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr341?(_ra+"px "+_ra+"px 0 0"):(_ra+"px"),
+            borderBottom:apr341?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
+          {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
+          <span role="heading" aria-level={3} style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{t}</span>
+          {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
+          <span aria-hidden data-freccia341="1" style={{marginLeft:"auto",fontSize:FS.body,color:TH.faint,lineHeight:1,
+            transform:apr341?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
+        </button>
+        {apr341&&<div data-corpo299={_g299()?"1":undefined} style={_g299()?{"--r299":_ra+"px"}:undefined}>{children}</div>}
+      </div>);}
     return(
       <div data-sezione235={typeof t==="string"?t:id} style={{...style,marginBottom:0}}>
         <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:TH.card,border:"1px solid "+TH.cardBorder,borderBottom:"none",borderRadius:(_g299()?RAGGI299.annidato:RAD.xs)+"px "+(_g299()?RAGGI299.annidato:RAD.xs)+"px 0 0"}}>
