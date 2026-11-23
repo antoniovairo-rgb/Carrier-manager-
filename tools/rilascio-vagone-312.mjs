@@ -2,7 +2,7 @@
 /* ============================================================================
    rilascio-vagone-312.mjs — IL RILASCIO AUTOMATICO DI UN VAGONE (giro 312, PO-600)
 
-   Decisioni PO del 21/11 17:25 (docs/governo/DECISIONI.md sul ramo poc):
+   Decisioni PO del 21/11 17:25 (docs/governo/DECISIONI.md):
      1. un vagone va in produzione da solo quando il treno sulla sua unione in lavoro/** finisce con NESSUN ROSSO NUOVO
         (solo rossi di docs/governo/ROSSI-DICHIARATI.json); un rosso nuovo o un «non giudicato» ferma tutto;
      2. numero +1 a ogni vagone (7.999.201, 202, ...), nota scritta in automatico dai titoli delle unioni
@@ -14,24 +14,32 @@
    tests/visual/rilascio-312.mjs su un remoto finto):
 
      decidi    --esito esito-treno.json --modo auto|prova --ramo R --sha S [--rosso-finto] --uscita decisione.json
-               legge l'esito del treno, l'interruttore (docs/governo/RILASCIO-AUTO.json sul ramo poc + variabile
+               legge l'esito del treno, l'interruttore (docs/governo/RILASCIO-AUTO.json su main + variabile
                CPM_RILASCIO_AUTO), la punta del ramo sul remoto e le unioni dal rilascio precedente; scrive la decisione.
                Esce SEMPRE 0: chi legge la decisione e' il workflow (rilascia=true|false in GITHUB_OUTPUT).
      prepara   --decisione decisione.json
                in locale: alza GAME_VERSION con la nota (src/07), build-src, check-src IDENTICO, commit sul lavoro,
-               unione --no-ff nel poc (conflitti in docs/governo -> versione del poc, altri conflitti -> FERMO),
-               ROSSI-DICHIARATI.versione e ULTIMO-RILASCIO.json, controllo che main sia antenato (fast-forward), tag annotato.
+               unione --no-ff DIRETTAMENTE in main (conflitti in docs/governo -> versione di main, altri conflitti -> FERMO),
+               ROSSI-DICHIARATI.versione e ULTIMO-RILASCIO.json, tag annotato.
      pubblica  --decisione decisione.json
-               UN SOLO push --atomic (lavoro, poc, main, tag): o entrano tutti o nessuno; MAI force, un ramo che non
+               UN SOLO push --atomic (lavoro, main, tag): o entrano tutti o nessuno; MAI force, un ramo che non
                avanza in fast-forward fa rifiutare l'intero push.
 
-   Modo «prova»: stessi passi, ma i rami di destinazione sono rami nuovi prova/cd-<corsa>-{lavoro,poc,main} creati dalle
-   stesse basi (lavoro provato, origin/poc, origin/main), il tag si chiama prova-v<versione>-<corsa> e il deploy si salta.
+   Modo «prova»: stessi passi, ma i rami di destinazione sono rami nuovi prova/cd-<corsa>-{lavoro,main} creati dalle
+   stesse basi (lavoro provato, origin/main), il tag si chiama prova-v<versione>-<corsa> e il deploy si salta.
+
+   [giro 338, decisione PO 23/11 08:00 «elimina il ramo poc, non serve a nulla. Crea solo rumore»] Niente piu' ramo di appoggio:
+   interruttore, rossi dichiarati e blocco si leggono da main, il vagone si unisce --no-ff in main. Restano due cose dichiarate,
+   marcate «338» (il guardiano statico npm run via-poc-338 non ne accetta altre):
+     - RIPIEGO 338 (da togliere quando la madre ha cancellato il ramo): se main NON ha uno dei tre file di governo lo si legge dal
+       ramo di appoggio di prima, se esiste ancora (serve nella transizione: il treno grande notturno gira col workflow di main, che
+       fino al primo rilascio senza appoggio scrive ancora il blocco li'). Un ramo che non c'e' piu' non e' un errore.
+     - ROSSO 338: CPM_NO_G338=1 = il percorso di prima (unione nel ramo di appoggio, main in fast-forward, push di tre rami); i
+       guardiani rilascio-312 e trenino-317 girano su un remoto finto SENZA quel ramo e devono uscire rossi.
    L'interruttore in prova si legge e si riporta ma non ferma (la prova e' un avvio a mano esplicito).
 
    Rosso del guardiano: CPM_NO_G312=1 fa ignorare a «decidi» i rossi nuovi e i non giudicati (il difetto che il guardiano
-   deve vedere). Variabili: CPM_REMOTO (default origin), CPM_RAMO_POC (default poc/marioprada-character-system),
-   CPM_RAMO_MAIN (default main), CPM_RILASCIO_AUTO (variabile di repository; «spento» ferma sempre), CPM_CORSA, CPM_CORSA_URL.
+   deve vedere). Variabili: CPM_REMOTO (default origin), CPM_RAMO_MAIN (default main), CPM_RAMO_POC (solo ripiego/rosso 338), CPM_RILASCIO_AUTO (variabile di repository; «spento» ferma sempre), CPM_CORSA, CPM_CORSA_URL.
    ============================================================================ */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -53,7 +61,7 @@ export function confrontaVersioni(a, b) {
   for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (x[i] || 0) - (y[i] || 0); if (d) return d; }
   return 0;
 }
-/** +1 sull'ultima cifra della versione PIU' ALTA fra quelle viste (lavoro, poc, ultimo tag). */
+/** +1 sull'ultima cifra della versione PIU' ALTA fra quelle viste (lavoro, main, ultimo tag). */
 export function prossimaVersione(viste) {
   const ok = viste.filter(v => /^\d+(\.\d+)+$/.test(String(v || '')));
   if (!ok.length) throw new Error('nessuna versione leggibile');
@@ -84,15 +92,15 @@ export function alzaVersione(testo, versione, nota) {
 /** LA DECISIONE. Tutto cio' che ferma il rilascio finisce in `motivi`; si rilascia solo con `motivi` vuoto. */
 /* [giro 317, PO-604] la decisione accetta anche l'esito di un TRENINO, ma solo se coincide con la scelta che il rilascio RICALCOLA da
    se' (sceltaAttesa = tools/trenino-317.mjs sceltaDaGit sul commit provato: stessa base, ogni guardiano scelto giudicato): mai un
-   elenco dato a mano. E si ferma se il BLOCCO del treno grande (docs/governo/BLOCCO-RILASCI.json sul poc) ha un guardiano che non sta
+   elenco dato a mano. E si ferma se il BLOCCO del treno grande (docs/governo/BLOCCO-RILASCI.json su main) ha un guardiano che non sta
    in ROSSI-DICHIARATI. senza317 (CPM_NO_G317=1) = comportamento del giro 312: pretende la mappa intera e non legge il blocco. */
 export function decidi({ esito, modo, ramo, sha, punta, interruttore, variabile, unioni, rossoFinto, senzaGuardia, sceltaAttesa, blocco, rossiDich, senza317, bloccanti }) {
   const motivi = [], note = [];
   if (!['auto', 'prova'].includes(modo)) motivi.push(`modo sconosciuto «${modo}»`);
-  /* interruttore: la variabile «spento» ferma sempre; il file sul poc deve dire attivo:true (in prova si riporta e basta) */
+  /* interruttore: la variabile «spento» ferma sempre; il file su main deve dire attivo:true (in prova si riporta e basta) */
   if (String(variabile || '').trim().toLowerCase() === 'spento') motivi.push('interruttore: variabile di repository CPM_RILASCIO_AUTO=spento');
   const acceso = !!(interruttore && interruttore.attivo === true);
-  if (!acceso) (modo === 'prova' ? note : motivi).push(`interruttore: ${FILE_INTERRUTTORE} sul poc ${interruttore ? 'dice attivo=' + JSON.stringify(interruttore.attivo) : 'manca'}${modo === 'prova' ? ' (in prova non ferma)' : ''}`);
+  if (!acceso) (modo === 'prova' ? note : motivi).push(`interruttore: ${FILE_INTERRUTTORE} su main ${interruttore ? 'dice attivo=' + JSON.stringify(interruttore.attivo) : 'manca'}${modo === 'prova' ? ' (in prova non ferma)' : ''}`);
   if (modo === 'auto' && !/^lavoro\//.test(ramo || '')) motivi.push(`il ramo «${ramo}» non e' un ramo lavoro/**`);
   if (!sha) motivi.push('commit provato sconosciuto');
   else if (punta !== sha) motivi.push(`il ramo si e' mosso: punta ${punta || 'non trovata'} invece del commit provato ${sha}`);
@@ -142,11 +150,26 @@ const jsonDa = (cwd, ref, file) => { const t = leggiDa(cwd, ref, file); try { re
 
 function contesto(cwd) {
   const remoto = process.env.CPM_REMOTO || 'origin';
-  return { cwd, remoto, poc: process.env.CPM_RAMO_POC || 'poc/marioprada-character-system', main: process.env.CPM_RAMO_MAIN || 'main' };
+  const appoggio = process.env.CPM_RAMO_POC || 'poc/marioprada-character-system'; /* [ripiego 338 + rosso 338] unico nome del ramo di appoggio */
+  const viaPoc = process.env.CPM_NO_G338 === '1'; /* [rosso 338] percorso di prima */
+  return { cwd, remoto, main: process.env.CPM_RAMO_MAIN || 'main', appoggio, viaPoc, base: viaPoc ? appoggio : (process.env.CPM_RAMO_MAIN || 'main') };
 }
 function punteRemote(c, rami) {
   git(c.cwd, ['fetch', '-q', c.remoto, ...rami.map(r => `+refs/heads/${r}:refs/remotes/${c.remoto}/${r}`), '--tags']);
   return Object.fromEntries(rami.map(r => { const x = gitProva(c.cwd, ['rev-parse', '-q', '--verify', `refs/remotes/${c.remoto}/${r}`]); return [r, x.status === 0 ? x.stdout.trim() : null]; }));
+}
+/* [ripiego 338] il ramo di appoggio si legge solo se esiste ancora: fetch tollerante, mai un errore se e' stato cancellato */
+function refAppoggio338(c) {
+  const r = gitProva(c.cwd, ['fetch', '-q', c.remoto, `+refs/heads/${c.appoggio}:refs/remotes/${c.remoto}/${c.appoggio}`]);
+  if (r.status !== 0) { gitProva(c.cwd, ['update-ref', '-d', `refs/remotes/${c.remoto}/${c.appoggio}`]); return null; }
+  return `refs/remotes/${c.remoto}/${c.appoggio}`;
+}
+/** [ripiego 338] un file di governo da main; se main non ce l'ha, dal ramo di appoggio (dichiarato nelle note). Pura: la prova il guardiano. */
+export function leggiConRipiego338(leggi, file, refMain, refAppoggio) {
+  const m = leggi(refMain, file);
+  if (m != null || !refAppoggio) return { valore: m, da: m != null ? 'main' : null };
+  const a = leggi(refAppoggio, file);
+  return { valore: a, da: a != null ? 'ripiego 338' : null };
 }
 export function unioniDal(cwd, base, sha) {
   const out = git(cwd, ['log', '--merges', '--first-parent', '--reverse', '--format=%s', `${base}..${sha}`]);
@@ -164,36 +187,40 @@ const riassunto = t => { if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(
 async function cmdDecidi(o, cwd) {
   const c = contesto(cwd), modo = o.modo || 'auto', ramo = o.ramo, sha = o.sha;
   let esito = null; try { esito = JSON.parse(fs.readFileSync(o.esito, 'utf8')); } catch {}
-  const punte = punteRemote(c, [ramo, c.poc, c.main].filter(Boolean));
-  const basePoc = `refs/remotes/${c.remoto}/${c.poc}`;
-  let unioni = []; try { unioni = sha ? unioniDal(cwd, basePoc, sha) : []; } catch {}
-  const interruttore = jsonDa(cwd, basePoc, FILE_INTERRUTTORE);
-  /* [giro 317] scelta del trenino ricalcolata da qui (mai presa dall'esito) + blocco e rossi dichiarati dal poc */
+  const punte = punteRemote(c, [ramo, c.base, c.main].filter((r, i, a) => r && a.indexOf(r) === i));
+  const baseRil = `refs/remotes/${c.remoto}/${c.base}`; /* [giro 338] main (col rosso 338: il ramo di appoggio) */
+  const refRip = c.viaPoc ? null : refAppoggio338(c); /* [ripiego 338] */
+  const daGoverno = (file, ref = baseRil) => { const r = leggiConRipiego338((rf, f) => jsonDa(cwd, rf, f), file, ref, refRip); if (r.da === 'ripiego 338') noteRip.push(`ripiego 338: ${file} manca su main, letto dal ramo di appoggio`); return r.valore; };
+  const noteRip = [];
+  let unioni = []; try { unioni = sha ? unioniDal(cwd, baseRil, sha) : []; } catch {}
+  const interruttore = daGoverno(FILE_INTERRUTTORE);
+  /* [giro 317] scelta del trenino ricalcolata da qui (mai presa dall'esito) + blocco e rossi dichiarati da main */
   const T = await import(path.join(cwd, 'tools/trenino-317.mjs')).catch(() => import('./trenino-317.mjs'));
   let sceltaAttesa = null;
   if (esito && esito.tipo === 'trenino' && sha) { try {
     sceltaAttesa = T.sceltaDaGit(cwd, sha, modo === 'prova' && esito.scelta ? esito.scelta.merge_base : null);
   } catch (err) { console.error('scelta attesa: ' + err.message); } }
-  const refBlocco = process.env.CPM_REF_BLOCCO || basePoc;
-  const blocco = jsonDa(cwd, refBlocco, FILE_BLOCCO_317), rossiDich = jsonDa(cwd, basePoc, FILE_ROSSI);
+  const refBlocco = process.env.CPM_REF_BLOCCO || baseRil;
+  const blocco = daGoverno(FILE_BLOCCO_317, refBlocco), rossiDich = daGoverno(FILE_ROSSI);
   const d = decidi({ esito, modo, ramo, sha, punta: punte[ramo], interruttore, variabile: process.env.CPM_RILASCIO_AUTO, unioni,
     rossoFinto: !!o['rosso-finto'], senzaGuardia: process.env.CPM_NO_G312 === '1', sceltaAttesa, blocco, rossiDich, bloccanti: T.bloccanti,
     senza317: process.env.CPM_NO_G317 === '1' });
+  d.note.push(...noteRip);
   if (sceltaAttesa && modo === 'prova') d.note.push(`prova: il trenino e' ricalcolato sulla base che dichiara (${sceltaAttesa.base.merge_base.slice(0, 8)}), non sull'ultimo rilascio`);
   /* versione e nota si calcolano anche quando ci si ferma: l'esito dice cosa SAREBBE uscito */
   const corsa = process.env.CPM_CORSA || '';
   const vLav = sha ? leggiVersione(leggiDa(cwd, sha, FILE_VERSIONE) || '') : null;
-  const vPoc = leggiVersione(leggiDa(cwd, basePoc, FILE_VERSIONE) || '');
+  const vBase = leggiVersione(leggiDa(cwd, baseRil, FILE_VERSIONE) || '');
   const tags = git(cwd, ['tag', '--list', 'v*']).split('\n').filter(Boolean).map(t => t.slice(1));
-  let versione = null, nota = null; try { versione = prossimaVersione([vLav, vPoc, ...tags]); nota = componiNota({ versione, precedente: vPoc || vLav, unioni, corsa }); } catch (err) { d.rilascia = false; d.motivi.push('versione: ' + err.message); }
+  let versione = null, nota = null; try { versione = prossimaVersione([vLav, vBase, ...tags]); nota = componiNota({ versione, precedente: vBase || vLav, unioni, corsa }); } catch (err) { d.rilascia = false; d.motivi.push('versione: ' + err.message); }
   const tag = modo === 'prova' ? `prova-v${versione}-${corsa || 'locale'}` : `v${versione}`;
   if (versione && gitProva(cwd, ['rev-parse', '-q', '--verify', `refs/tags/${tag}`]).status === 0) { d.rilascia = false; d.motivi.push(`il tag ${tag} esiste gia'`); }
   const suff = corsa || 'locale';
   const dest = modo === 'prova'
-    ? { lavoro: `prova/cd-${suff}-lavoro`, poc: `prova/cd-${suff}-poc`, main: `prova/cd-${suff}-main` }
-    : { lavoro: ramo, poc: c.poc, main: c.main };
+    ? { lavoro: `prova/cd-${suff}-lavoro`, main: `prova/cd-${suff}-main`, ...(c.viaPoc ? { poc: `prova/cd-${suff}-poc` } : {}) /* [rosso 338] */ }
+    : { lavoro: ramo, main: c.main, ...(c.viaPoc ? { poc: c.appoggio } : {}) /* [rosso 338] */ };
   const out = { quando: new Date().toISOString(), modo, ramo, sha, corsa, corsa_url: process.env.CPM_CORSA_URL || null, ...d,
-    versione, precedente: vPoc, versione_lavoro: vLav, nota, tag, dest, basi: { lavoro: sha, poc: punte[c.poc], main: punte[c.main] }, unioni,
+    versione, precedente: vBase, versione_lavoro: vLav, nota, tag, dest, basi: { lavoro: sha, main: punte[c.main], ...(c.viaPoc ? { poc: punte[c.base] } : {}) /* [rosso 338] */ }, unioni,
     blocco: blocco ? { attivo: !!blocco.attivo, rossi: (blocco.rossi || []).map(x => x.guardiano), corsa: blocco.corsa || null } : null,
     trenino: sceltaAttesa ? { tipo: sceltaAttesa.tipo, guardiani: sceltaAttesa.guardiani.length, merge_base: sceltaAttesa.base.merge_base, base: sceltaAttesa.base.come } : null,
     treno: esito ? { tipo: esito.tipo || null, guardiani: esito.guardiani, verdi: esito.verdi, parti: `${esito.parti_arrivate}/${esito.parti_attese}`, mappa_intera: esito.mappa_intera,
@@ -230,18 +257,21 @@ function cmdPrepara(o, cwd) {
   git(cwd, ['add', FILE_VERSIONE, 'CARRIER-MANAGER-AV.html', ...(fs.existsSync(path.join(cwd, FILE_ROSSI)) ? [FILE_ROSSI] : [])]);
   git(cwd, [...chi, 'commit', '-q', '-m', `${d.versione}: GAME_VERSION e nota (rilascio automatico del vagone)`, '-m', `${d.nota}\n\nTreno: ${d.corsa_url || d.corsa || 'locale'}`]);
   const lav = git(cwd, ['rev-parse', 'HEAD']);
-  /* 2. sul poc: unione --no-ff; conflitti in docs/governo -> versione del poc; altri -> FERMO */
-  git(cwd, ['checkout', '-q', '-B', 'rilascio-312/poc', d.basi.poc]);
+  /* 2. [giro 338] su main: unione --no-ff; conflitti in docs/governo -> versione di main; altri -> FERMO
+        (col rosso 338 la base era il ramo di appoggio, e main lo seguiva in fast-forward) */
+  const viaPoc = !!d.basi.poc; /* [rosso 338] */
+  const nomeBase = viaPoc ? 'il ramo di appoggio' : 'main'; /* [rosso 338] */
+  git(cwd, ['checkout', '-q', '-B', 'rilascio-312/main', viaPoc ? d.basi.poc : d.basi.main]); /* [rosso 338] */
   const m = gitProva(cwd, [...chi, 'merge', '--no-ff', '--no-commit', 'rilascio-312/lavoro']);
   if (m.status !== 0) {
     const conf = git(cwd, ['diff', '--name-only', '--diff-filter=U']).split('\n').filter(Boolean);
     const altri = conf.filter(f => !f.startsWith('docs/governo/'));
-    if (!conf.length || altri.length) { gitProva(cwd, ['merge', '--abort']); throw new Error(`unione nel poc con conflitti fuori da docs/governo: ${altri.join(', ') || m.stderr}`); }
+    if (!conf.length || altri.length) { gitProva(cwd, ['merge', '--abort']); throw new Error(`unione in ${nomeBase} con conflitti fuori da docs/governo: ${altri.join(', ') || m.stderr}`); }
     for (const f of conf) {
       if (gitProva(cwd, ['cat-file', '-e', `HEAD:${f}`]).status === 0) git(cwd, ['checkout', '--ours', '--', f]), git(cwd, ['add', f]);
       else git(cwd, ['rm', '-q', '--', f]);
     }
-    console.log(`conflitti risolti con la versione del poc: ${conf.join(', ')}`);
+    console.log(`conflitti risolti con la versione di ${nomeBase}: ${conf.join(', ')}`);
   }
   if (sostituisciCampoVersione(cwd, d.versione)) git(cwd, ['add', FILE_ROSSI]);
   const ultimo = { versione: d.versione, precedente: d.precedente, quando: new Date().toISOString(), tag: d.tag, modo: d.modo,
@@ -252,23 +282,23 @@ function cmdPrepara(o, cwd) {
   git(cwd, ['add', FILE_ULTIMO]);
   const titoloLav = d.ramo;
   git(cwd, [...chi, 'commit', '-q', '-m', `${d.versione}: unione di ${titoloLav} (rilascio automatico del vagone)`, '-m', `${d.nota}\n\nTreno: ${d.corsa_url || d.corsa || 'locale'}`]);
-  const poc = git(cwd, ['rev-parse', 'HEAD']);
-  /* 3. main deve avanzare in fast-forward fino al nuovo poc */
-  if (d.basi.main && gitProva(cwd, ['merge-base', '--is-ancestor', d.basi.main, poc]).status !== 0) throw new Error(`main (${d.basi.main}) non e' antenato del nuovo poc: niente fast-forward, mi fermo`);
+  const nuovo = git(cwd, ['rev-parse', 'HEAD']);
+  /* 3. main deve avanzare in fast-forward fino al commit nuovo (senza appoggio lo e' per costruzione: e' la sua base) */
+  if (d.basi.main && gitProva(cwd, ['merge-base', '--is-ancestor', d.basi.main, nuovo]).status !== 0) throw new Error(`main (${d.basi.main}) non e' antenato del commit nuovo: niente fast-forward, mi fermo`);
   /* 4. tag annotato: il messaggio e' leggibile senza credenziali (API git/tags) */
-  git(cwd, [...chi, 'tag', '-a', d.tag, poc, '-m', `${d.versione} — rilascio automatico del vagone\n\n${d.nota}\n\nTreno: ${d.corsa_url || d.corsa || 'locale'} · ${d.treno ? `${d.treno.verdi}/${d.treno.guardiani} verdi, rossi noti ${(d.treno.rossi_noti || []).length}, noti del runner ${(d.treno.rossi_noti_runner || []).length}` : ''}`]);
-  const r = { ...d, commit_lavoro: lav, commit_poc: poc };
+  git(cwd, [...chi, 'tag', '-a', d.tag, nuovo, '-m', `${d.versione} — rilascio automatico del vagone\n\n${d.nota}\n\nTreno: ${d.corsa_url || d.corsa || 'locale'} · ${d.treno ? `${d.treno.verdi}/${d.treno.guardiani} verdi, rossi noti ${(d.treno.rossi_noti || []).length}, noti del runner ${(d.treno.rossi_noti_runner || []).length}` : ''}`]);
+  const r = { ...d, commit_lavoro: lav, commit_main: nuovo, ...(viaPoc ? { commit_poc: nuovo } : {}) /* [rosso 338] */ };
   fs.writeFileSync(o.decisione, JSON.stringify(r, null, 1) + '\n');
-  console.log(`pronto: lavoro ${lav} · poc=main ${poc} · tag ${d.tag}`);
-  scriviOutput('commit_poc', poc);
+  console.log(`pronto: lavoro ${lav} · main ${nuovo} · tag ${d.tag}`);
+  scriviOutput('commit_main', nuovo);
   return r;
 }
 
 function cmdPubblica(o, cwd) {
   const d = JSON.parse(fs.readFileSync(o.decisione, 'utf8')), c = contesto(cwd);
-  if (!d.commit_poc || !d.commit_lavoro) throw new Error('prima «prepara»');
-  /* UN push atomico, senza force: se un ramo non avanza in fast-forward il server rifiuta TUTTO */
-  const refs = [`${d.commit_lavoro}:refs/heads/${d.dest.lavoro}`, `${d.commit_poc}:refs/heads/${d.dest.poc}`, `${d.commit_poc}:refs/heads/${d.dest.main}`, `refs/tags/${d.tag}:refs/tags/${d.tag}`];
+  if (!d.commit_main || !d.commit_lavoro) throw new Error('prima «prepara»');
+  /* UN push atomico, senza force: se un ramo non avanza in fast-forward il server rifiuta TUTTO. [giro 338] lavoro + main + tag */
+  const refs = [`${d.commit_lavoro}:refs/heads/${d.dest.lavoro}`, ...(d.dest.poc ? [`${d.commit_main}:refs/heads/${d.dest.poc}`] : []) /* [rosso 338] */, `${d.commit_main}:refs/heads/${d.dest.main}`, `refs/tags/${d.tag}:refs/tags/${d.tag}`];
   const r = spawnSync('git', ['push', '--atomic', '--porcelain', c.remoto, ...refs], { cwd, encoding: 'utf8' });
   process.stdout.write(r.stdout || ''); process.stderr.write(r.stderr || '');
   if (r.status !== 0) throw new Error('push atomico rifiutato (niente e\' stato pubblicato)');

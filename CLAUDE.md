@@ -69,17 +69,22 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    della MAPPA che esiste gia'. Finche' la taratura non e' chiusa, un rosso del runner si rifa' sul banco, che resta il giudice.
    📌 **RILASCIO AUTOMATICO DEL VAGONE (decisione PO 21/11 17:25, giro 312, PO-600).** Il job «Rilascio del vagone» in coda al treno
    (`verifica-guardiani.yml`, logica `tools/rilascio-vagone-312.mjs decidi|prepara|pubblica`) rilascia DA SOLO quando: interruttore
-   acceso (`docs/governo/RILASCIO-AUTO.json` **sul poc** con `"attivo": true`; la variabile di repository `CPM_RILASCIO_AUTO=spento` lo
+   acceso (`docs/governo/RILASCIO-AUTO.json` **su main** con `"attivo": true`; la variabile di repository `CPM_RILASCIO_AUTO=spento` lo
    spegne senza commit), ramo `lavoro/**`, mappa intera, tutte le parti arrivate, **nessun rosso nuovo e nessun non giudicato** (solo
-   rossi di `ROSSI-DICHIARATI.json`), commit provato ancora in punta, almeno un'unione «Unione sviluppo/… in lavoro/…» dopo il poc.
-   Fa: GAME_VERSION +1 con nota dai titoli delle unioni → build-src + check-src IDENTICO → commit sul lavoro → `--no-ff` nel poc
-   (conflitti in `docs/governo` → poc; altri → fermo) → main in fast-forward → tag annotato `v<versione>` → **un solo `git push --atomic`,
+   rossi di `ROSSI-DICHIARATI.json`), commit provato ancora in punta, almeno un'unione «Unione sviluppo/… in lavoro/…» dopo main.
+   Fa: GAME_VERSION +1 con nota dai titoli delle unioni → build-src + check-src IDENTICO → commit sul lavoro → `--no-ff` **direttamente in main**
+   (conflitti in `docs/governo` → main; altri → fermo) → tag annotato `v<versione>` → **un solo `git push --atomic`,
    mai force** → deploy di Pages avviato con `workflow_dispatch` (un push col GITHUB_TOKEN non fa partire `on:push`) → controllo che il
    sito serva la versione. Tracce senza credenziali: tag, `docs/governo/ULTIMO-RILASCIO.json` su main, stato del commit
    `rilascio-vagone` (anche quando si ferma), artifact `esito-rilascio`. Quindi: **un giro non tocca GAME_VERSION** se il rilascio
-   automatico e' acceso; il titolo dell'unione e' la nota di versione, scriverlo bene. Prova senza toccare main/poc: avvio a mano con
+   automatico e' acceso; il titolo dell'unione e' la nota di versione, scriverlo bene. Prova senza toccare main: avvio a mano con
    `rilascio=prova` (rami `prova/cd-<corsa>-*`, niente deploy; `rosso_finto=true` deve fermarlo). Guardiano `npm run rilascio-312`
    (remoto finto), rosso `CPM_NO_G312=1`.
+   📌 **NIENTE RAMO DI APPOGGIO (decisione PO 23/11 08:00, giro 338):** interruttore, rossi dichiarati e blocco si leggono da main, il vagone
+   si unisce in main, il push atomico porta lavoro + main + tag. Unica eccezione dichiarata: il «ripiego 338» (un file di governo che main
+   non ha si legge dal vecchio ramo, se esiste ancora) — da togliere dopo la cancellazione del ramo. Guardiano statico `npm run via-poc-338`
+   (nessun riferimento al vecchio ramo fuori dalle righe marcate «338»); rosso `CPM_NO_G338=1` (percorso di prima: rilascio-312 e trenino-317
+   girano su un remoto finto senza quel ramo e devono uscire rossi).
    📌 **TRENINO, TRENO GRANDE DI NOTTE, BLOCCO (decisioni PO 21/11 22:35, giro 317, PO-604).** Il push su `lavoro/**` NON gira piu' la
    mappa intera: gira il **trenino** = i guardiani delle righe della MAPPA toccate dal vagone (diff dall'antenato comune fra l'ultimo
    rilascio — tag `v*` piu' alto, altrimenti la punta di main — e la punta) + le 17 sentinelle (`tools/trenino-317.mjs scegli`).
@@ -93,7 +98,7 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    elenco dichiarato `SOLO_NOTTE_329` in ci-runner.mjs (chi da' loro una riga li toglie da li'; rosso `CPM_NO_G329=1`). Il rilascio accetta l'esito del trenino solo se coincide con la scelta che **ricalcola da se'** (stessa
    base, ogni guardiano scelto giudicato): un `elenco` a mano non rilascia mai. Il **treno grande** gira ogni notte (cron 01:07 UTC) e a
    mano (`tipo=mappa|notte`) sulla punta di `lavoro/<numero piu' alto>` o di main se e' tutto rilasciato; NON rilascia, scrive
-   `docs/governo/BLOCCO-RILASCI.json` sul poc (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
+   `docs/governo/BLOCCO-RILASCI.json` su main (solo quando cambia l'insieme) e lo stato `treno-grande` sul commit giudicato. Rossi nuovi
    e non giudicati del treno grande **fermano tutti i rilasci** finche' un treno grande successivo non li ha piu', o il PO li mette in
    `ROSSI-DICHIARATI`. Guardiano `npm run trenino-317` (remoto finto), rosso `CPM_NO_G317=1` (= comportamento del 312).
    📌 **LA NOTTE HA DUE ORARI E LASCIA UNA TRACCIA (giro 333, PO-630/631).** Il cron sta SOLO nel custode `treno-notte-330.yml` (01:07 e 02:43 UTC, mai al minuto 0/30: GitHub dichiara che uno schedule puo' essere perso sotto carico); la notte finisce per tutti alle 05:47 UTC; l'esito va in `docs/governo/TRENO-NOTTE.json` sul poc e la pagina di governo dice «treno grande di stanotte: partito / non partito» (nessun record dopo la scadenza = non partito). ⚠️ Il cron del giro 317 e' arrivato su main col push del BOT (rilascio automatico, `GITHUB_TOKEN`) e non e' mai scattato: causa non confermata, vedi `docs/sviluppo/RAPPORTO-giro333.md`. Guardiano `npm run notte-333` (GitHub finto), rosso `CPM_NO_G333=1`.
