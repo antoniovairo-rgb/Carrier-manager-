@@ -485,6 +485,7 @@
     "volee-d3-119": "CPM_GUARDIANO=1 node volee-d3-119.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
+    "fasce-345": "node fasce-345.mjs",
     "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",
     "statistiche-228-vivo": "node statistiche-228-vivo.mjs",
     "difesa-220-misura": "node difesa-220-misura.mjs",

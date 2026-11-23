@@ -1,0 +1,74 @@
+s1 seme 2 (fine, 716 s, 96') scene 7
+   5' fra-le-linee  x 62.4 y 43.3 | 🧠 Ricevi fra le linee: hai spazio!
+   5' scheda        x 76 y 45.2 | ⚡ Dribbling riuscito, BERNARDI resta indietro!
+  33' difesa        x 55 y 43.6 | 🛡️ Ripiegamento: BIANCHI prova a ripartire!
+  40' fra-le-linee  x 65 y 39.1 | 🧠 Ricevi fra le linee: hai spazio!
+  54' conclusione   x 74.7 y 42.9 | 💥 Palla buona al limite dell'area!
+  86' angolo        x 67.9 y 52.7 F3 | 🚩 Calcio d'angolo: il pallone spiove in area!
+  92' fra-le-linee  x 63.2 y 52.2 | 🧠 Fra le linee, CATTANEO esce in ritardo!
+s1 seme 4 (fine, 731 s, 90') scene 6
+   6' fra-le-linee  x 67.5 y 48.2 | 🧠 Ricevi fra le linee: hai spazio!
+  11' difesa        x 62.3 y 56.3 | 🔥 Pressing alto su BERNARDI: riconquista palla!
+  20' cross         x 69.7 y 54.5 F3 | ✈️ Cross di LUZI: attacca il pallone in area!
+  44' cross         x 67.4 y 59.4 F3 | ✈️ Cross di LUZI: attacca il pallone in area!
+  72' conclusione   x 76.2 y 46.7 | 💥 Palla buona al limite dell'area!
+  90' fra-le-linee  x 67.2 y 54 | 🧠 Fra le linee, LUCA esce in ritardo!
+s1 seme 3 (fine, 855 s, 92') scene 3
+  13' difesa        x 52.9 y 57.1 | 🛡️ BERNARDI ti punta a centrocampo: fermalo!
+  36' fra-le-linee  x 62.3 y 61.5 | 🧠 Fra le linee, BERNARDI esce in ritardo!
+  64' fra-le-linee  x 62.9 y 48.3 | 🧠 Fra le linee, BIANCHI esce in ritardo!
+s1 seme 5 (fine, 865 s, 92') scene 2
+  29' punizione     x 77.8 y 68.1 | 📐 Punizione a 26 metri: RIZZI sistema la barriera!
+  36' difesa        x 75.5 y 68.3 | 🔥 Pressing alto su CATTANEO: riconquista palla!
+s5 seme 2 (tetto, 902 s, 77') scene 2
+  28' angolo        x 67 y 51.9 F3 | 🚩 Calcio d'angolo di ROTH: attacca il pallone!
+  37' difesa        x 55.8 y 37.9 | 🛡️ Ripiegamento: NITZSCHE prova a ripartire!
+s5 seme 3 (tetto, 901 s, 84') scene 3
+   9' fra-le-linee  x 67.6 y 44.1 | 🧠 Fra le linee, NITZSCHE esce in ritardo!
+  23' difesa        x 50 y 44 | 🛡️ NITZSCHE ti punta a centrocampo: fermalo!
+  38' fra-le-linee  x 71.5 y 40.5 | 🧠 Ricevi fra le linee: hai spazio!
+s5 seme 4 (tetto, 900 s, 87') scene 6
+   5' fra-le-linee  x 63 y 63.2 | 🧠 Ricevi fra le linee: hai spazio!
+  16' punizione     x 76.5 y 57 | 📐 Punizione a 23 metri: WEISS sistema la barriera!
+  21' conclusione   x 76.6 y 58.7 | 💥 Spazio per il tiro dal limite!
+  28' cross         x 91.7 y 62.8 F3 | ✈️ Il cross di GÜNTHER arriva alto in area!
+  63' angolo        x 64.6 y 58.6 F3 | 🚩 Calcio d'angolo di ROTH: attacca il pallone!
+  81' conclusione   x 76.7 y 59.6 | 💥 Palla buona al limite dell'area!
+s5 seme 5 (tetto, 900 s, 68') scene 0
+s12 seme 2 (tetto, 901 s, 85') scene 7
+   3' fra-le-linee  x 67.4 y 41.7 | 🧠 Ricevi fra le linee: hai spazio!
+  20' conclusione   x 79.7 y 57.7 | 💥 Spazio per il tiro dal limite!
+  22' cross         x 71.6 y 56.1 F3 | ✈️ Cross di SPENCER: attacca il pallone in area!
+  29' punizione     x 79.3 y 43.9 | 📐 Punizione a 22 metri: CARR sistema la barriera!
+  36' angolo        x 70.9 y 46.7 F3 | 🚩 Calcio d'angolo di THORNTON: attacca il pallone!
+  47' cross         x 77.1 y 49.7 F3 | ✈️ Il cross di HAMMOND arriva alto in area!
+  52' difesa        x 76.7 y 51.3 | 🔥 MARSHALL esce palla al piede: aggredisci!
+s12 seme 3 (tetto, 900 s, 82') scene 6
+   3' fra-le-linee  x 64.4 y 40.9 | 🧠 Fra le linee, QUINN esce in ritardo!
+   7' difesa        x 73.6 y 47.1 | 🔥 BAILEY esce palla al piede: aggredisci!
+  21' fra-le-linee  x 65.1 y 58.8 | 🧠 Ricevi fra le linee: hai spazio!
+  30' cross         x 78.9 y 53 F3 | ✈️ Cross di HAMMOND: attacca il pallone in area!
+  37' spalle        x 79.2 y 55.6 | 🧱 Spalle alla porta, marcatura stretta!
+  53' cross         x 71.9 y 60.5 F3 | ✈️ Cross di HAMMOND: attacca il pallone in area!
+s12 seme 4 (tetto, 900 s, 77') scene 3
+   3' fra-le-linee  x 63.1 y 37.4 | 🧠 Ricevi fra le linee: hai spazio!
+  10' difesa        x 74.2 y 49.4 | 🔥 Pressing alto su BAILEY: riconquista palla!
+  19' scheda        x 76 y 60.1 | ⚡ Dribbling riuscito, BAILEY resta indietro!
+s12 seme 5 (tetto, 900 s, 92') scene 6
+   3' fra-le-linee  x 66.5 y 42.1 | 🧠 Fra le linee, QUINN esce in ritardo!
+  19' conclusione   x 69.5 y 63.6 | 💥 Spazio per il tiro dal limite!
+  26' cross         x 68.3 y 69.1 F3 | ✈️ Il cross di SPENCER arriva alto in area!
+  37' punizione     x 83.3 y 45.5 | 📐 Punizione a 18 metri: CARR sistema la barriera!
+  60' spalle        x 75.6 y 50.7 | 🧱 Spalle alla porta, marcatura stretta!
+  62' cross         x 72.8 y 46.2 F3 | ✈️ Il cross di SPENCER arriva alto in area!
+
+misura-324 verde
+s1       partite 4 (finite 4) · scene 18 (4.5/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 3 (16.7%) · partite con almeno una scena F1/F2: 0/4
+         tipi: fra-le-linee 7 · difesa 4 · conclusione 2 · cross 2 · scheda 1 · angolo 1 · punizione 1
+s5       partite 4 (finite 0) · scene 11 (2.8/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 3 (27.3%) · partite con almeno una scena F1/F2: 0/4
+         tipi: fra-le-linee 3 · angolo 2 · difesa 2 · conclusione 2 · punizione 1 · cross 1
+s12      partite 4 (finite 0) · scene 22 (5.5/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 7 (31.8%) · partite con almeno una scena F1/F2: 0/4
+         tipi: cross 6 · fra-le-linee 5 · difesa 3 · conclusione 2 · punizione 2 · spalle 2 · angolo 1 · scheda 1
+TUTTE    partite 12 (finite 4) · scene 51 (4.3/partita) · F1 tipo fascia 0 (0.0%) · F2 eroe largo 0 (0.0%) · F3 cross/angolo verso l'eroe 13 (25.5%) · partite con almeno una scena F1/F2: 0/12
+         tipi: fra-le-linee 15 · difesa 9 · cross 9 · conclusione 6 · angolo 4 · punizione 4 · scheda 2 · spalle 2
+ATTENZIONE: 8 partite non finite (non contano come misura piena)
