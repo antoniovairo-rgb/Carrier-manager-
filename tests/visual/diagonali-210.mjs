@@ -107,6 +107,9 @@ async function schermo(w, rosso) {
         if (P.length <= n0 || !u || !u.mk || !s || !s.heroTarget) return null; const ht = s.heroTarget; return (Math.abs(ht.x - u.mk.hx) > 1e-3 || Math.abs(ht.y - u.mk.hy) > 1e-3) ? { x: ht.x, y: ht.y } : null; }, s0.nP).catch(() => null);
       if (q) { htDopo = q; break; } await sleep(50); }
     const rest = 700 - (Date.now() - tTap); if (rest > 0) await sleep(rest);
+    /* sul telefono il passaggio a hl_choose arriva da un timer del gioco dopo il passo: si aspetta l'evento (tetto 3 s dal tocco), non
+       un tempo fisso; a tetto scaduto la fase letta resta quella e il controllo T la giudica */
+    if (tel) for (let i = 0; i < 60 && Date.now() - tTap < 3000 && (await fase(H.page)) === 'hl_move'; i++) await sleep(50);
     const s1 = await stato(H.page);
     if (!s1 || s1.nP <= s0.nP || !s1.ultimo) { D.push(`P ${lab}: nessun passo registrato`); continue; }
     const u = s1.ultimo; const fatti = s1.nP - s0.nP;
