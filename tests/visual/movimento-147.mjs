@@ -14,6 +14,8 @@
        frazione dell'orologio diversa da macchina a macchina (banco 0,5-0,8). Stesse partite, stesso codice: compagni fermi 21% a rapporto
        0,5 e 27-30% a rapporto 1; nel braccio rosso 57-77% e 65-86%. A rapporto 1 la misura e' quella che vede chi gioca a 20 fotogrammi
        al secondo o piu', e non dipende dalla macchina.
+   ✅ GIRO 334 (PO-610, «Ellisse d'attesa»): l'attesa attiva e' un piccolo giro che non passa da fermo. A velocita' reale, braccio verde
+   in 6 corse: compagni 6,7-18,0%, avversari 10,7-13,2% (tetto 25); rosso 88,9% / 86,3%. Tolto dai rossi dichiarati.
    ⚠️ ESITO DEL GIRO 331: con lo strumento riparato il braccio verde sta a 27-30% di compagni fermi contro il tetto 25 (avversari 19-21%):
    un moto avanti-e-indietro passa dallo zero di velocita' due volte per giro e sta sotto 0,5 m/s per circa il 22% del tempo PER COSTRUZIONE.
    Non e' piu' un guardiano instabile: e' un rosso vero e ripetibile, dichiarato in ROSSI-DICHIARATI e portato al PO (RAPPORTO-giro331).
@@ -27,15 +29,17 @@ const xf = promisify(execFile);
 const CAMPIONI = +(process.env.CPM_CAMPIONI || 180), MINIMO = 100, MAX_PARTITE = +(process.env.CPM_MAX_PARTITE || 4), BASE = process.env.CPM_BASE || '0.3';
 const SOLO = process.env.CPM_SOLO || '';
 fs.mkdirSync('out', { recursive: true });
-async function braccio(rosso) { const nome = rosso ? 'rosso' : 'verde', files = []; let a = null, partite = [];
+async function braccio(rosso, nome = rosso ? 'rosso' : 'verde', gancio = rosso ? '__CPM_NO_ATTIVI147' : '') { const files = []; let a = null, partite = [];
   for (let k = 0; k < MAX_PARTITE; k++) { const out = `out/movimento-147-${nome}-${k}.json`;
-    try { await xf(process.execPath, ['hl-credibilita.mjs'], { env: { ...process.env, CPM_PARTITE: '1', CPM_K0: String(k), CPM_OUT: out, CPM_IN_PAGINA: '1', CPM_FINO_FINE: '1', CPM_DTREAL: process.env.CPM_SENZA_DTREAL ? '' : '1', CPM_MS: '600000', CPM_ROSSO: rosso ? '__CPM_NO_ATTIVI147' : '' }, timeout: 700000, maxBuffer: 1 << 24 }); }
+    try { await xf(process.execPath, ['hl-credibilita.mjs'], { env: { ...process.env, CPM_PARTITE: '1', CPM_K0: String(k), CPM_OUT: out, CPM_IN_PAGINA: '1', CPM_FINO_FINE: '1', CPM_DTREAL: process.env.CPM_SENZA_DTREAL ? '' : '1', CPM_MS: '600000', CPM_ROSSO: gancio }, timeout: 700000, maxBuffer: 1 << 24 }); }
     catch (e) { partite.push({ k, errore: String(e && e.message || e).slice(0, 120) }); continue; }
     files.push(out); try { partite.push(JSON.parse(fs.readFileSync(out + '.esiti.json'))[0]); } catch (e) {}
     a = JSON.parse((await xf(process.execPath, ['hl-credibilita-analisi.mjs', ...files], { env: { ...process.env, CPM_BASE_SCENA: BASE }, maxBuffer: 1 << 26 })).stdout).primaAzione;
     console.log(`  ${nome} dopo ${files.length} partite: ${JSON.stringify(a)}`);
     if (a.campioniCompagni >= CAMPIONI && a.campioniAvversari >= CAMPIONI) break; }
   return { ...(a || { compagniFermi: null, avversariFermi: null, campioniCompagni: 0, campioniAvversari: 0 }), partite: files.length, esiti: partite.map(p => p.errore ? `${p.k}:errore` : `${p.k}:${p.fine}/${p.s}s`).join(' ') }; }
+/* [giro 334] CPM_SOLO=prima334: misura il braccio «avanti-e-indietro di prima» (__CPM_NO_G334) accanto al verde, senza giudicare */
+if (SOLO === 'prima334') { const [a, b] = await Promise.all([braccio(false), braccio(false, 'prima334', '__CPM_NO_G334')]); console.log('verde ' + JSON.stringify(a)); console.log('prima334 ' + JSON.stringify(b)); process.exit(0); }
 const [V, R] = await Promise.all([SOLO === 'rosso' ? null : braccio(false), SOLO === 'verde' ? null : braccio(true)]);
 if (V) console.log('verde ' + JSON.stringify(V)); if (R) console.log('rosso ' + JSON.stringify(R));
 if (SOLO) process.exit(0);
