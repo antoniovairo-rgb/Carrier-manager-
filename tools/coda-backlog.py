@@ -8,26 +8,29 @@ diventa «in coda». La versione compare solo quando un giro ci lavora («IN COR
 Ordine (priorita' del PO, DECISIONI 22/11 17:20):
   1. velocita' dei rilasci, nell'ordine dichiarato;
   2. chiarezza delle schermate, nell'ordine dichiarato;
-  3. difetti in partita e carriera e il resto (provvisoriamente per ordine di arrivo, finche' il PO non conferma
-     l'ordine «prima le piu' visibili» proposto dalla madre);
-  4. le idee dei questionari di novembre (PO-381…PO-447), per ordine di arrivo.
+  3. difetti nell'ordine AREA3 confermato dal PO il 23/11 (A partita, B carriera, C Primavera, D scene 3D);
+  4. il resto per ordine di arrivo;
+  5. le idee dei questionari di novembre (PO-381…PO-447), per ordine di arrivo.
 Non toccate: IN CORSO e PARZIALE con un giro in corso. Idempotente: si rilancia dopo ogni modifica del BACKLOG.
 Uso: python3 tools/coda-backlog.py
 """
 import re, pathlib
 
 P = pathlib.Path(__file__).resolve().parent.parent / 'docs/governo/BACKLOG.md'
-AREA1 = [624, 621, 620, 610, 603]
+AREA1 = [630, 624, 621, 620, 610, 603]
 AREA2 = [623, 608, 609, 606, 617, 615, 614, 595, 616, 569, 570, 618, 622]
 IDEE = range(381, 448)
+# area 3, ordine confermato dal PO il 23/11 07:10 («A, B, C, D»): A partita · B carriera · C Primavera · D scene 3D
+AREA3 = [629, 587, 611, 585, 376, 561, 599, 607, 613, 522, 557, 586, 463, 462, 356, 625, 612, 531, 526, 533, 593, 591, 554, 505, 525]
 TESTA = re.compile(r'^(?:IN CODA · n° \d+|(?:DA FARE|IN CODA|DA DECIDERE|DA VERIFICARE|DA MISURARE)(?: — \d+)?)\s*(?:—\s*)?')
 
 
 def rango(n):
     if n in AREA1: return (1, AREA1.index(n))
     if n in AREA2: return (2, AREA2.index(n))
-    if n in IDEE: return (4, n)
-    return (3, n)
+    if n in AREA3: return (3, AREA3.index(n))
+    if n in IDEE: return (5, n)
+    return (4, n)
 
 
 def main():
