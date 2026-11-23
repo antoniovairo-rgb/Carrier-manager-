@@ -14,7 +14,7 @@
    «Non giudicato» (partita non finita, scheda 4 o anteprima non trovate, avversario non in classifica) = rosso.
    Verde e rosso stampati per ultimi. Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node anteprima-230.mjs */
 import { sleep } from './lib/harness.mjs';
-import { apriCarriera166, apriPrompt166, gioca166 } from './lib/partita-166.mjs';
+import { apriCarriera166, apriPrompt166, gioca166, chiudi166 } from './lib/partita-166.mjs';
 import { festa } from './misura-202.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 const SEME = 7304;
@@ -34,17 +34,28 @@ async function misura(page) {
   return page.evaluate(() => {
     const s = JSON.parse(localStorage.getItem('cpm-v3') || '{}'); const p = s.player || {};
     const wk = p.week || 1; const nx = [...(p.calendar || [])].filter(m => m && !m.played && (m.week | 0) > wk).sort((a, b) => (a.week | 0) - (b.week | 0))[0] || null;
-    const ord = [...(p.standings || [])].sort((a, b) => (b.pts - a.pts) || (b.gd - a.gd) || (b.gf - a.gf));
-    const i = nx ? ord.findIndex(r => r.id === nx.opponentId) : -1; const r = i >= 0 ? ord[i] : null;
     const q = (k) => document.querySelector(`[data-cpm="${k}"]`);
-    return { scheda: !!q('prossima200'), avv: nx ? nx.opponentName : null, attesa: r ? `${i + 1}° · ${r.pts | 0} pt · ${r.wins}V ${r.draws}N ${r.losses}P` : null,
+    return { scheda: !!q('prossima200'), avv: nx ? nx.opponentName : null, avvId: nx ? nx.opponentId : null, attesa: null,
       pos: (q('anteprima224-pos') || {}).innerText || '', forma: !!q('anteprima224-forma'), formaTesto: (q('anteprima224-forma') || {}).innerText || '' };
   });
+}
+/* [giro 344] DECISIONE PO-609 (giro 336, «la classifica deve essere già aggiornata, non quella della settimana prima»): la rassegna mostra
+   la classifica DOPO la giornata. Il riferimento non e' piu' la classifica salvata PRIMA del ritorno alla carriera (che non ha ancora la
+   giornata), ma quella che il gioco SALVA tornando alla carriera (stessa scelta di partita-336 F5): si chiude la partita e si legge la
+   riga dell'avversario dalla classifica della Home. Soglie invariate (uguaglianza esatta). */
+async function attesaDopo(page, m) {
+  if (!m || !m.avvId) return m;
+  await chiudi166(page); await sleep(1500);
+  m.attesa = await page.evaluate((id) => { const p = window.__CPM_CAREER.snapshot();
+    const ord = [...(p.standings || [])].sort((a, b) => (b.pts - a.pts) || (b.gd - a.gd) || (b.gf - a.gf));
+    const i = ord.findIndex(r => r.id === id); const r = i >= 0 ? ord[i] : null;
+    return r ? `${i + 1}° · ${r.pts | 0} pt · ${r.wins}V ${r.draws}N ${r.losses}P` : null; }, m.avvId);
+  return m;
 }
 async function braccio(init) {
   const A = await apriCarriera166({ vp: { width: 375, height: 667 }, mobile: true, init, nome: 'Collaudo Salienti' });
   await apriPrompt166(A.page); const g = await gioca166(A.page, 'solo', { seme: SEME }); await sleep(1200);
-  let n = 0, m = null; if (g.finita) { n = await riempi(A.page); await sleep(600); await festa(A.page); m = await misura(A.page); }
+  let n = 0, m = null; if (g.finita) { n = await riempi(A.page); await sleep(600); await festa(A.page); m = await attesaDopo(A.page, await misura(A.page)); }
   return { A, g, n, m };
 }
 const pulito = (t) => String(t || '').replace(/\s+/g, ' ').trim();

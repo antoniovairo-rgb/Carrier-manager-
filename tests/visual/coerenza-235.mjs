@@ -12,7 +12,7 @@
         (l'altezza vera della barra di carriera cresce di qualche px quando una voce porta un segnale: si confronta la misura dichiarata).
      P  PROFILO in 4-5 gruppi (data-gruppo235), nessuna fisarmonica rimasta fuori dai gruppi, nessuna parola inglese nei titoli
         (Milestone, Achievement, Timeline, Status, MVP...).
-     C  CONTRATTO per intero (stipendio + durata/scadenza) solo in Agente; in Profilo e Club un rimando (data-rimando235).
+     C  CONTRATTO per intero (stipendio + durata/scadenza) solo in Agente; in Profilo un rimando (data-rimando235); in Club niente (giro 337 · PO-617, aggiornato al giro 344).
      F  FIDUCIA e POPOLARITA' con la stessa forma in Home e in Club, a gradini (PO-391).
      G  TESTO GRANDE a due gradini: in Opzioni › Lettura un gruppo «Testo grande» con tre scelte (Normale · +15% · +30%); corpo minimo
         della Classifica a 375: +15% fra 13,5 e il +30% (escluso), +30% >= 15,5; il vecchio valore «1» del giro 234 = +30%.
@@ -80,7 +80,11 @@ async function braccio(b, port, rosso, flags = rosso ? ['__CPM_NO_G235'] : [], l
     num['contratto' + w] = pieni.join(',') || 'nessuna';
     if (!pieni.includes('agente')) no('C', `${w}: contratto per intero assente in Agente`);
     const altrove = pieni.filter(t => t !== 'agente'); if (altrove.length) no('C', `${w}: contratto per intero anche in ${altrove.join(',')}`);
-    for (const t of ['profile', 'club']) if (!R.schede[t] || !R.schede[t].contratto.rimando.length) no('C', `${w}: nessun rimando al contratto in ${t}`);
+    if (!R.schede.profile || !R.schede.profile.contratto.rimando.length) no('C', `${w}: nessun rimando al contratto in profile`);
+    /* [giro 344] DECISIONE PO-617 (giro 337, «il contratto e' dell'eroe: vive in Agente, non nella scheda Club»): nella scheda Club non
+       c'e' piu' nemmeno il rimando. Il controllo si rovescia, non si allenta: un rimando (o il contratto) rimasto in Club e' un rosso. */
+    if (!R.schede.club) no('C', `${w}: scheda club non letta (non giudicato)`);
+    else if (R.schede.club.contratto.rimando.length) no('C', `${w}: rimando al contratto ancora in club (PO-617 lo ha tolto)`);
     /* F */
     const fh = R.schede.dashboard.forma || {}, fc = R.schede.club.forma || {};
     num['forma' + w] = `Home ${fh['Fiducia del mister']}/${fh['Popolarit']} · Club ${fc['Fiducia del mister']}/${fc['Popolarit']}`;

@@ -27,7 +27,7 @@
   "scena3d-96": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "occasioni-dinamiche": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "piazzato-204": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
-  "movimento-147": "giro 331 (PO-610): strumento riparato (raccolta a evento, tempo di scena agganciato all'orologio), non piu' instabile ma ROSSO VERO e ripetibile: a velocita' reale i compagni fermi prima dell'azione sono 27-31% contro il tetto 25 (avversari 19-21%), perche' il moto avanti-e-indietro passa dallo zero di velocita'. In attesa della decisione del PO (docs/sviluppo/RAPPORTO-giro331.md, dubbio 1)",
+  "movimento-147": "instabile visto due volte (199 rosso, 200 verde, 201 rosso): da riparare, PO-610",
   "rigore-191": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "filtrante-intercetto": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "ruleta": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
@@ -39,18 +39,27 @@
   "barra-221": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "schede-260": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "giornale-244": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
-  "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)"
+  "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
+  "pelle-240": "instabile (verifica 204, 22/11): serata di presentazione, un viso tra 6 e 17,7 di distanza fra una corsa e l'altra sullo stesso commit; anche la 7.999.203 sta a 11,9 su soglia 12. Codice della serata identico fra 203 e 204: non e' una regressione, la misura va resa stabile",
+  "intervista-231": "giro 344 (23/11): sul banco NON GIUDICATO identico su fd2b9334 e d6819779 (le quattro partite si fermano fra 65' e 86' al tetto di 400 s, anche a 2x). Sul runner del treno 45139940995 arrivava al fischio e diceva «nazionale rosso: il difetto non si vede»: la sonda premeva «Salta e gioca», tolto dal giro 336 (PO-608), e nella Nazionale prendeva un'altra strada; il giro 344 la fa premere «Salta formazioni e ingresso» (stesso gestore) e la velocita' '4' (inesistente dal 7.484) diventa '2'. Esito sul runner da rileggere al prossimo treno",
+  "panchina-293": "fps del braccio verde sotto il pavimento assoluto 3 (CPM_FPS_ABS) anche sul banco, sia su d6819779 (2/3 rosse: 3,16 verde · 2,73 · 2,75) sia sulla 7.999.206 (2/2 rosse: 2,51 · 2,88); il rapporto col rosso regge. Non regressione del giro 331 (treno 45120411083 su d6819779, verifica 207, 23/11): pavimento headless da tarare"
  },
  "solo_runner": {
+  "patto-227": "giro 344 (23/11): rosso sul runner del treno 45139940995 («verde: BOCCIATO · rosso BOCCIATO come deve»), verde sul banco sia sulla punta fd2b9334 sia su d6819779 (censimento 3000/765 capitani, 0 incoerenti, flusso UI ok): nessuna regressione dei giri 335-338",
   "salti-274": "runner 62,6 contro soglia 60 (taratura 44830113928, parte 9); verde sul banco",
   "portatore-293": "rosso sul runner (parte 6), verde sul banco",
   "avvio-233": "caduto in 1 s sul runner (parte 8), verde sul banco",
   "chiusura-99": "contrasto 2,29 sul runner (parte 13), verde sul banco",
   "piedi-252": "rosso sul runner (parte 12), verde sul banco",
   "momento-173": "rosso solo sul runner (treno 44947424529), verde 6/6 sul banco su 200 e 201 (verifica 201, 22/11)",
-  "walkout-fermi-197": "giro 331 (PO-620): riparato, misura su tutti i fotogrammi; 5 corse di fila identiche sul banco (verde somma 4,3 contro limite 6,2). Resta qui finche' il PO non decide come leggere «al massimo 2 per campione» (docs/sviluppo/RAPPORTO-giro331.md, dubbio 2) e finche' un treno non lo conferma sul runner",
+  "walkout-fermi-197": "instabile: verde sul banco su 201 e 202, rosso sul runner (somma 8 contro soglia 7) (verifica 202, 22/11): campionamento da riparare",
   "tocco-213": "rosso sul runner (braccio verde: «pc offerta (scegli club)» riscontro 115 ms > 50, schermata lenta del runner), verde sul banco sia sulla punta 3c742a73 sia sulla 7.999.205 (verifica 206, 23/11): da guardare",
-  "apertura-261": "rosso sul runner (1 apertura vuota, quota 10,3%), verde sul banco 4/4 senza aperture vuote sia sulla punta 3c742a73 sia sulla 7.999.205 (verifica 206, 23/11): da guardare"
+  "apertura-261": "rosso sul runner (1 apertura vuota, quota 10,3%), verde sul banco 4/4 senza aperture vuote sia sulla punta 3c742a73 sia sulla 7.999.205 (verifica 206, 23/11): da guardare",
+  "cross-origine": "rosso sul runner (pallone a 99 u dal crossatore in scelta, treno 45120411083 su d6819779), verde 2/2 sul banco su d6819779 (distanza 0, parabola 4,9-5,2) (verifica 207, 23/11)",
+  "diagonali-210": "rosso sul runner (accordo a 0 ms: 1 passo, treno 45120411083 su d6819779), verde 2/2 sul banco su d6819779 (0 difetti, 0 non giudicati) (verifica 207, 23/11): torna dopo la riparazione del giro 332",
+  "passo-velocita": "rosso sul runner (scarto x1,18 su soglia x1,15, treno 45120411083 su d6819779), verde 2/2 sul banco su d6819779 (x1,05 · x1,03) (verifica 207, 23/11)",
+  "pressing-143": "rosso sul runner (treno 45120411083 su d6819779), verde 2/2 sul banco su d6819779 col rosso che si vede (verifica 207, 23/11)",
+  "portiere-295": "rosso sul runner (braccio 3 verde con 1 non giudicata, treno 45120411083 su d6819779), verde 2/2 sul banco su d6819779 (0 non giudicate su 4 bracci; rosso 4/4 bracci rivisti) (verifica 207, 23/11)"
  },
  "_giro332": "giro 332 (PO-620, 23/11): tolti diagonali-210, rigori-296 (banco), scelte-201, nomi-182 (solo_runner) — riparati e stabili 5/5 sul banco col rosso rosso, rapporto docs/sviluppo/RAPPORTO-giro332.md"
 }

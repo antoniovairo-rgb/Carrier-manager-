@@ -117,7 +117,10 @@ try {
       if (fase === 'playing') { await sleep(1500); gioco = await testo();
         barra = await page.evaluate(() => [...document.querySelectorAll('[data-cpm="barra"],[data-cpm^="tabellone"],[data-cpm^="barra286"]')].map(e => e.innerText).join(' ¦ '));
         if (FOTO) await page.screenshot({ path: `${FOTO}/partita-tabellone-360${ROSSO ? '-prima' : ''}.png` }); break; }
-      await page.evaluate(() => { const x = [...document.querySelectorAll('button')].filter(e => e.offsetParent && /Avanti|Continua|Inizia|Entra|Scendi|Calcio d|GIOCA|Gioca|Pronti|Vai/i.test(e.textContent)); if (x[0]) x[0].click(); });
+      /* [giro 344] dal giro 336 (PO-608) il primo tasto «Gioca la partita» porta alle formazioni; il vecchio «Salta e gioca» (che
+         questa sonda premeva col /Gioca/i) si chiama «Salta formazioni e ingresso» (data-cpm salta-336): stessa strada di prima. */
+      await page.evaluate(() => { const s336 = document.querySelector('[data-cpm="salta-336"]'); if (s336 && s336.offsetParent) { s336.click(); return; }
+        const x = [...document.querySelectorAll('button')].filter(e => e.offsetParent && /Avanti|Continua|Inizia|Entra|Scendi|Calcio d|GIOCA|Gioca|Pronti|Vai/i.test(e.textContent)); if (x[0]) x[0].click(); });
     }
     note.push(`playMatch=${pm} · fase finale ${fase}`);
     ok(!!anteprima && fase === 'playing', `D · partita aperta: anteprima ${anteprima ? 'letta' : 'NON letta'}, fase ${fase} (altrimenti non giudicato)`);

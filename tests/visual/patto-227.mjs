@@ -91,6 +91,18 @@ async function flusso(browser, port, over, flags) {
     await page.evaluate(([mh]) => { window.__CPM_CAREER.patch({ matchHistory: mh, week: mh[mh.length - 1].week + 1 }); window.__CPM_CAREER.goTab('dashboard'); }, [mh]);
     await sleep(900);
     try { await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} }); } catch (e) {}
+    /* [giro 344] il verdetto esce dalla coda delle finestre (_pop224): sotto carico (catena a due a due, runner del treno) un'altra
+       finestra della settimana poteva arrivare DOPO l'unico dismiss e restare davanti per tutti gli 8 s (misurato: 2 rossi su 2 nella
+       catena, verde 4/4 da solo, identico su d6819779). Si chiude cio' che sta davanti finche' il verdetto non e' visibile (al massimo
+       6 volte) e si scrive cosa c'era: il giudizio non cambia, un verdetto che non arriva resta «flusso interrotto» = rosso. */
+    res.davanti = [];
+    for (let k = 0; k < 6; k++) {
+      const vis = await page.getByText('Una stretta di mano', { exact: false }).first().isVisible().catch(() => false); if (vis) break;
+      res.davanti.push(await page.evaluate(() => (document.body.innerText || '').replace(/\s+/g, ' ').slice(0, 80)).catch(() => '?'));
+      await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (e) {} try { window.__CPM_CAREER.goTab('dashboard'); } catch (e) {} }).catch(() => {});
+      await sleep(1200);
+    }
+    if (res.davanti.length) console.log('    davanti al verdetto: ' + res.davanti.length + ' volte · ' + res.davanti[0]);
     await page.getByText('Una stretta di mano', { exact: false }).first().click({ timeout: 8000 });
     await sleep(700);
     const s2 = await page.evaluate(() => window.__CPM_CAREER.snapshot());
