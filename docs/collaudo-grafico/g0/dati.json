@@ -10127,7 +10127,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
@@ -10135,7 +10135,7 @@
     "nMisurati": 79,
     "nSotto": 0,
     "nGradiente": 16,
-    "nEmoji": 12,
+    "nEmoji": 14,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -10170,7 +10170,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(1)>button.cpm-press.cpm-t40>span.cpm-num",
       "esempio": "6"
      },
      {
@@ -10344,8 +10344,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1737,
-    "schermate": 1.9,
+    "altezzaPx": 1750,
+    "schermate": 1.91,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10395,7 +10395,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
@@ -10403,7 +10403,7 @@
     "nMisurati": 79,
     "nSotto": 0,
     "nGradiente": 16,
-    "nEmoji": 12,
+    "nEmoji": 14,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -10438,7 +10438,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(1)>button.cpm-press.cpm-t40>span.cpm-num",
       "esempio": "6"
      },
      {
@@ -10612,8 +10612,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1714,
-    "schermate": 1.87,
+    "altezzaPx": 1727,
+    "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10663,7 +10663,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
@@ -10671,7 +10671,7 @@
     "nMisurati": 79,
     "nSotto": 0,
     "nGradiente": 16,
-    "nEmoji": 12,
+    "nEmoji": 14,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -10706,7 +10706,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(1)>button.cpm-press.cpm-t40>span.cpm-num",
       "esempio": "6"
      },
      {
@@ -10880,8 +10880,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1698,
-    "schermate": 1.86,
+    "altezzaPx": 1712,
+    "schermate": 1.87,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10931,7 +10931,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
@@ -10939,7 +10939,7 @@
     "nMisurati": 79,
     "nSotto": 0,
     "nGradiente": 16,
-    "nEmoji": 12,
+    "nEmoji": 14,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -10974,7 +10974,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(1)>button.cpm-press.cpm-t40>span.cpm-num",
       "esempio": "6"
      },
      {
@@ -11148,8 +11148,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1669,
-    "schermate": 1.82,
+    "altezzaPx": 1683,
+    "schermate": 1.84,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11199,7 +11199,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
@@ -11207,7 +11207,7 @@
     "nMisurati": 79,
     "nSotto": 0,
     "nGradiente": 16,
-    "nEmoji": 12,
+    "nEmoji": 14,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -11242,7 +11242,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(1)>button.cpm-press.cpm-t40>span.cpm-num",
       "esempio": "6"
      },
      {
@@ -11416,8 +11416,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1651,
-    "schermate": 1.8,
+    "altezzaPx": 1665,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13769,12 +13769,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 140,
+    "nTesto": 141,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 110,
+    "nMisurati": 111,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 31,
@@ -13863,7 +13863,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 101
+      "n": 102
      },
      {
       "f": "Barlow Condensed",
@@ -13901,7 +13901,7 @@
      },
      {
       "c": "#4ade80",
-      "n": 2,
+      "n": 3,
       "fs": 12,
       "esempio": "★ consigliato"
      },
@@ -13927,7 +13927,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 105,
+      "n": 106,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -13951,8 +13951,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1798,
-    "schermate": 1.97,
+    "altezzaPx": 1827,
+    "schermate": 2,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13962,6 +13962,7 @@
      "Fatica": 3,
      "Valore": 1,
      "Fiducia": 4,
+     "Punti": 1,
      "Stagione": 3,
      "Settimana": 8
     },
@@ -14002,12 +14003,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 140,
+    "nTesto": 141,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 110,
+    "nMisurati": 111,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 31,
@@ -14096,7 +14097,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 101
+      "n": 102
      },
      {
       "f": "Barlow Condensed",
@@ -14134,7 +14135,7 @@
      },
      {
       "c": "#4ade80",
-      "n": 2,
+      "n": 3,
       "fs": 12,
       "esempio": "★ consigliato"
      },
@@ -14160,7 +14161,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 105,
+      "n": 106,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -14184,8 +14185,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1684,
-    "schermate": 1.84,
+    "altezzaPx": 1713,
+    "schermate": 1.87,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14195,6 +14196,7 @@
      "Fatica": 3,
      "Valore": 1,
      "Fiducia": 4,
+     "Punti": 1,
      "Stagione": 3,
      "Settimana": 8
     },
@@ -14235,12 +14237,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 140,
+    "nTesto": 141,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 110,
+    "nMisurati": 111,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 31,
@@ -14330,7 +14332,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 101
+      "n": 102
      },
      {
       "f": "Barlow Condensed",
@@ -14368,7 +14370,7 @@
      },
      {
       "c": "#4ade80",
-      "n": 2,
+      "n": 3,
       "fs": 12,
       "esempio": "★ consigliato"
      },
@@ -14394,7 +14396,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 105,
+      "n": 106,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -14418,8 +14420,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1654,
-    "schermate": 1.81,
+    "altezzaPx": 1668,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14429,6 +14431,7 @@
      "Fatica": 3,
      "Valore": 1,
      "Fiducia": 4,
+     "Punti": 1,
      "Stagione": 3,
      "Settimana": 8
     },
@@ -14469,12 +14472,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 140,
+    "nTesto": 141,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 110,
+    "nMisurati": 111,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 31,
@@ -14564,7 +14567,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 101
+      "n": 102
      },
      {
       "f": "Barlow Condensed",
@@ -14602,7 +14605,7 @@
      },
      {
       "c": "#4ade80",
-      "n": 2,
+      "n": 3,
       "fs": 12,
       "esempio": "★ consigliato"
      },
@@ -14628,7 +14631,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 105,
+      "n": 106,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -14652,8 +14655,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1589,
-    "schermate": 1.74,
+    "altezzaPx": 1604,
+    "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14663,6 +14666,7 @@
      "Fatica": 3,
      "Valore": 1,
      "Fiducia": 4,
+     "Punti": 1,
      "Stagione": 3,
      "Settimana": 8
     },
@@ -14703,12 +14707,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 140,
+    "nTesto": 141,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 110,
+    "nMisurati": 111,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 31,
@@ -14798,7 +14802,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 101
+      "n": 102
      },
      {
       "f": "Barlow Condensed",
@@ -14836,7 +14840,7 @@
      },
      {
       "c": "#4ade80",
-      "n": 2,
+      "n": 3,
       "fs": 12,
       "esempio": "★ consigliato"
      },
@@ -14862,7 +14866,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 105,
+      "n": 106,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -14886,8 +14890,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1544,
-    "schermate": 1.69,
+    "altezzaPx": 1559,
+    "schermate": 1.7,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14897,6 +14901,7 @@
      "Fatica": 3,
      "Valore": 1,
      "Fiducia": 4,
+     "Punti": 1,
      "Stagione": 3,
      "Settimana": 8
     },
