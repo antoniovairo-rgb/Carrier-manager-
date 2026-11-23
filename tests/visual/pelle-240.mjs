@@ -27,6 +27,12 @@ const QUOTA_MOV = 0.75, MOVIMENTO = ['gioco', 'premiazione', 'festa'];
 const DE_PELLE = 12, MIN = { ingresso: 22, gioco: 3, premiazione: 8, festa: 3, serata: 6, parata: 8 };/* corpi con figurina attesi: all'ingresso i ventidue sono tutti in scena; in gioco, premiazione e festa il gioco tiene visibili solo quelli della scena (misurati: 5, 15, 5) */
 const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const SOLO = (process.env.CPM_SOLO || 'verde,rosso').split(','), SCENE = (process.env.CPM_SCENE || 'partita,serata,parata').split(','), TOD = process.env.CPM_TOD || 'night', FOTO = process.env.CPM_FOTO || '', MISURA = !!process.env.CPM_MISURA;
+/* [giro 331 · PO-610] IL RIQUADRO DEL VISO. Il primo piano del testimone punta 7 cm sopra l'osso della testa (la bocca) e leggeva un riquadro
+   di lato 10% dell'altezza: con la testa che si muove (saluto della serata) il riquadro cadeva ora sulle labbra ora sulla guancia, e lo stesso
+   viso stava a 2,4 o a 27 dalla figurina fra due passate (misura-331-pelle.mjs; nel treno «Rupert Hammond 12,3» due volte). Il guardiano chiede
+   un riquadro di lato 36% (raggio 0,18): la mediana e' della pelle del viso e fra una passata e l'altra si muove di 2 su 255.
+   Soglia e criterio invariati. CPM_RAGGIO=0.05 = la misura di prima (solo confronto). */
+const RAGGIO = +(process.env.CPM_RAGGIO || 0.18);
 const RESA = process.env.CPM_RESA ? process.env.CPM_RESA.split(',').map(Number) : null;/* solo taratura */
 const VAR = { neri: 'black', castani: 'brown', biondi: 'blond', rossi: 'auburn' };
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -47,7 +53,7 @@ async function carriera(p) {
 }
 /* arma il testimone e aspetta l'esito; poi completa ogni corpo con la figurina (indice + immagine) */
 async function misura(p, scena, fotoMax, attesa) {
-  await p.evaluate(([s, fm]) => { window.__CPM_G240W = { chiedi: true, scena: s || '', esiti: [], foto: fm ? [] : null, fotoMax: fm || 0 }; }, [scena || '', fotoMax || 0]);
+  await p.evaluate(([s, fm, rg]) => { window.__CPM_G240W = { chiedi: true, scena: s || '', esiti: [], foto: fm ? [] : null, fotoMax: fm || 0, raggio: rg }; }, [scena || '', fotoMax || 0, RAGGIO]);
   await p.waitForFunction(() => { const W = window.__CPM_G240W; return W && (W.esiti.length > 0 || W.errore); }, null, { timeout: attesa || 60000 }).catch(() => {});
   return p.evaluate(async () => { const W = window.__CPM_G240W; if (!W || !W.esiti.length) return { errore: (W && W.errore) || 'il testimone non ha risposto' }; const E = W.esiti[0]; const cache = window.__c240 || (window.__c240 = {});
     for (const c of E.corpi) { if (!c.nome) continue; const fg = window.__CPM_FIG240 ? window.__CPM_FIG240(c.nome) : null; if (!fg) continue; c.fig = { n: fg.n, k: fg.k, h: fg.h, p: fg.p };
@@ -68,6 +74,7 @@ async function scena(p, etichetta, filtro, giri, fotoNome) { let base = null; co
   for (let g = 0; g < (cer ? PASSATE_CER : PASSATE); g++) { const r = await misura(p, filtro, g === 0 && FOTO ? 4 : 0, giri === 'breve' ? 20000 : 0); if (r.errore) { if (!base) base = r; if (giri === 'breve' && g === 0) break; await sleep(600); continue; } if (g === 0) salvaFoto(r, fotoNome || etichetta);
     r.corpi.forEach(c => { if (c.viso && c.reso) { c.dE = +dE(c.viso, c.reso).toFixed(1); c.dE1 = c.dE; c.storia = [c.reso.join(',')]; } });
     if (!base || base.errore) base = r; else r.corpi.forEach(c => { if (!c.nome) return; const o = base.corpi.find(x => x.nome === c.nome); if (!o) { base.corpi.push(c); return; } if (c.reso) (o.storia = o.storia || []).push(c.reso.join(',')); if (c.reso && c.dE != null && (o.dE == null || c.dE < o.dE)) { o.reso = c.reso; o.px = c.px; o.dE = c.dE; } });
+    if (process.env.CPM_PASSATE_TUTTE) { await sleep(cer ? 1200 : 700); continue; }/* [giro 331] solo misura: tutte le passate, nessuna uscita anticipata */
     if (base && !base.errore && base.corpi.filter(c => c.nome && c.viso).every(c => c.dE != null && c.dE <= DE_PELLE)) break;
     if (base && !base.errore && MOVIMENTO.includes(etichetta)) { const L = base.corpi.filter(c => c.nome && c.viso); if (L.length && L.every(c => c.dE != null)) { const v = L.map(c => c.dE).sort((a, c) => a - c); if (v[v.length >> 1] <= DE_PELLE && v.filter(x => x <= DE_PELLE).length / v.length >= QUOTA_MOV) break; } }/* scena in movimento gia' verde: altre passate potrebbero solo migliorare i singoli corpi */
     if (base && !base.errore && base.corpi.some(c => c.nome && c.fig && VAR[c.fig.h] !== c.capelli)) break;/* una testa coi capelli sbagliati non cambia fra una passata e l'altra: la scena e' gia' rossa */ await sleep(cer ? 1200 : 700); }

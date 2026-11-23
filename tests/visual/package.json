@@ -521,7 +521,7 @@
     "misura-261": "node misura-261.mjs",
     "pelle-240": "node pelle-240.mjs",
     "cerimonie-192": "node cerimonie-192.mjs",
-    "scene-178": "node scene-178.mjs && CPM_ROSSO=1 node scene-178.mjs",
+    "scene-178": "node scene-178.mjs && CPM_ROSSO=1 node scene-178.mjs && CPM_ROSSO=331 CPM_SCENE=intro CPM_INTRO_FMT=tel,tel412 node scene-178.mjs",
     "guanti-201": "node guanti-201.mjs",
     "formazioni-204": "node formazioni-204.mjs",
     "moduli-112": "node moduli-112.mjs",
