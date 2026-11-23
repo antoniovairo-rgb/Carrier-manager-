@@ -90,6 +90,8 @@ export function scriptChePrendono(file, scripts) {
  *  piu' leggera, parti in piu' finche' una parte con piu' d'un guardiano sfora) e `tetto` macchine che prendono le parti in ordine.
  *  Durate da docs/governo/DURATE-GUARDIANI.json (300 s se manca). E' un CONFRONTO fra due piani, non l'orologio del runner. */
 export const TETTI_328 = { trenino: 15, grande: 15 };/* [giro 329, decisione PO 22/11 19:40] trenino 4 → 15 *//* = TETTO_TRENINO / TETTO_GRANDE di ci-treno-308 (il guardiano lo controlla) */
+/** [giro 330, PO-626 b] margine prima del completo: il trenino deve essere piu' lento della mappa intera di almeno questa frazione */
+export const MARGINE_330 = 0.10;
 export function pareteAttesa(nomi, durate, tetto) {
   const v = nomi.map(n => (durate[n] && durate[n].s) || 300), tot = v.reduce((a, b) => a + b, 0), OB = 4200;
   if (!v.length) return { parti: 0, somma_s: 0, parete_s: 0 };
@@ -150,8 +152,12 @@ export function scegli({ toccati, mappa, mappaBase, pkg, pkgBase, riferimenti, d
   if (durate && process.env.CPM_NO_G328 !== '1') {
     const tutti = [...new Set([...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])])].filter(n => !FUORI.test(n) && scripts[n]);
     const t = pareteAttesa(guardiani, durate, TETTI_328.trenino), m = pareteAttesa(tutti, durate, TETTI_328.grande);
-    if (t.parete_s > m.parete_s) return { tipo: 'completo', guardiani: [], sentinelle, perFile, scoperti: [], piu_lento: { trenino: t, mappa: m },
-      motivo: `trenino di ${guardiani.length} guardiani piu' lento della mappa intera (~${Math.round(t.parete_s / 60)} min su ${TETTI_328.trenino} macchine contro ~${Math.round(m.parete_s / 60)} su ${TETTI_328.grande}) → TRENO COMPLETO (mappa intera)` };
+    /* [giro 330, PO-626 b — decisione PO 22/11] MARGINE: si passa al completo solo se il trenino e' piu' lento della mappa intera di
+       ALMENO il 10% (prima bastava un secondo: il 311 diventava completo per 3 minuti su 133, raddoppiando le macchine).
+       Rosso del guardiano treno-330: CPM_NO_G330=1 = regola del giro 328 (basta essere piu' lento). */
+    const soglia = process.env.CPM_NO_G330 === '1' ? m.parete_s : m.parete_s * (1 + MARGINE_330);
+    if (process.env.CPM_NO_G330 === '1' ? t.parete_s > soglia : t.parete_s >= soglia) return { tipo: 'completo', guardiani: [], sentinelle, perFile, scoperti: [], piu_lento: { trenino: t, mappa: m, margine: process.env.CPM_NO_G330 === '1' ? 0 : MARGINE_330 },
+      motivo: `trenino di ${guardiani.length} guardiani piu' lento della mappa intera di almeno il ${Math.round(MARGINE_330 * 100)}% (~${Math.round(t.parete_s / 60)} min su ${TETTI_328.trenino} macchine contro ~${Math.round(m.parete_s / 60)} su ${TETTI_328.grande}) → TRENO COMPLETO (mappa intera)` };
   }
   return { tipo: 'trenino', guardiani, sentinelle, perFile, scoperti, senza_script: senzaScript,
     motivo: `${toccati.length} file toccati, ${guardiani.length} guardiani (${sentinelle.length} sentinelle comprese)` };
