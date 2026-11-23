@@ -2026,3 +2026,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
   - Giro 330: custode che non si accoda → «Riga in pagina» (PO-631); finestra di corsa < 1 s → «Accettarla»; parte ricostruita dal log → «Sì, rilascia».
   - Giro 331: movimento-147 → «Ellisse d'attesa» (PO-610); walkout-fermi-197 media sulla finestra peggiore e ritaratura di RESA240.parata → «Media e ritaratura» (PO-632).
   - Giro 332: nomi-182 «Tenere così»; rigori-296 C «Fuori dal giudizio»; diagonali-210 «Ritentativo».
+- 07:45 (23/11) PO: «spingi il più possibile fino alle 13:00» (33% di utilizzo settimanale rimasto fino al reset). Lanciati in ordine di coda: giro 334 (PO-610 ellisse d'attesa, Fable), 335 (PO-623 + PO-615 Home), 336 (PO-608 pre-partita + PO-609 classifica a fine partita), 337 (PO-606 + PO-617 scheda Club), accanto al 333 (PO-630/631). PO-603 (togliere poc) aspetta: tocca gli stessi strumenti di rilascio del 333. Vagone successivo: 7.999.208.
