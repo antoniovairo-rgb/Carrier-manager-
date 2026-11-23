@@ -11,7 +11,7 @@ I numeri dei treni vengono dai log di GitHub Actions (corse 44947424529, 4501054
 | `pelle-240` | strumento | serata: lo stesso viso fra 2,4 e 27 fra due passate; nel treno 12,3 su soglia 12 | serata massima 8,3-8,5 | **5 verdi su 5** | rosso 5 su 5 | **tolto** |
 | `walkout-fermi-197` | strumento | verde «somma» 6 sul banco, 8 nel treno, soglia 7 | verde somma 4,3 (limite 6,2), identico al decimale | **5 verdi su 5** | rosso 5 su 5 (somma 18,6) | resta, in attesa del dubbio 2 |
 | `scene-178` | **difetto vero del gioco** | rosso 3 su 3 anche sulla base (4 fotogrammi con l'eroe fuori dal quadro) | corretto in `src/19` (rosso `__CPM_NO_G331`) | vedi sotto | due bracci rossi | non c'era |
-| `movimento-147` | strumento **e** difetto vero | rosso per cecità (28-77 campioni su 100) | strumento riparato; a velocità reale il verde sta a 25-32% su tetto 25 | **0 verdi su 3**: non è stabile-verde, è rosso vero | rosso 3 su 3 (86-94%) | resta, con il motivo nuovo (dubbio 1) |
+| `movimento-147` | strumento **e** difetto vero | rosso per cecità (28-77 campioni su 100) | strumento riparato; a velocità reale il verde sta a 25-32% su tetto 25 | **0 verdi su 5**: non è stabile-verde, è rosso vero | rosso sempre evidente (86-94%) | resta, con il motivo nuovo (dubbio 1) |
 
 ## pelle-240 — il riquadro cadeva sulle labbra
 
@@ -104,8 +104,9 @@ scena agganciato all'orologio (`__CPM_DTREAL`, rapporto stampato). Soglie invari
 | misura (2 partite) | 30,0% / 20,6% (190 / 316) | 85,6% / 81,8% | rosso |
 | 1 (3 partite) | 25,1% / 25,1% (275 / 509) | 91,2% / 87,6% | rosso |
 | 2 (3 partite) | 31,9% / 27,3% (317 / 604) | 94,2% / 91,1% | rosso |
+| catena del giro (seconda prova del runner, 3 partite) | 27,0% / 26,0% (233 / 447) | 92,4% / 90… (riga troncata dal runner) | rosso |
 
-Il braccio verde sta fra 25 e 32% contro il tetto 25: **0 corse verdi su 3**. Non è rumore: un moto avanti-e-indietro
+Il braccio verde sta fra 25 e 32% contro il tetto 25: **0 corse verdi su 5** (le quattro della tabella più la prima prova del runner nella catena, anch'essa rossa). Non è rumore: un moto avanti-e-indietro
 (1 unità, 1,6 rad/s) passa dallo zero di velocità due volte per giro e sta sotto 0,5 m/s per circa il 22% del tempo per costruzione;
 a questo si sommano i corpi tenuti fermi vicino al pallone (giro 286). Il verde di prima (10-12%) veniva dalla macchina lenta, che
 gonfiava le velocità. La differenza fra i due bracci resta netta (25-32% contro 86-94%).
@@ -147,10 +148,17 @@ Ho dovuto scegliere una lettura per far funzionare il guardiano; è provvisoria 
 
 ## Catena del giro
 
-CATENA_ESITO
+`node ci-runner.mjs giro scene-178 pelle-240 walkout-fermi-197 movimento-147` sul commit del ramo: **20 verdi su 21**.
+- Guardiani del giro: `scene-178` verde (419 s), `pelle-240` verde (386 s), `walkout-fermi-197` verde (217 s),
+  `movimento-147` **rosso** in tutte e due le prove del runner (2220 s in tutto): è il rosso dichiarato sopra.
+- Sentinelle, 17 su 17 verdi: mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico,
+  griglia-mobile, render-3d-023, tunnel-285, home-298, web-237, career-critical, battito-264, partita-vera, gk-dive-sync, schermate-97.
+- `build-src` + `check-src`: il ricomposto è allineato ai frammenti.
+- Le foto di `docs/collaudo-grafico/g0` rigenerate da una sentinella sono state rimesse com'erano.
 
 ## Che cosa non è stato verificato
 
 - Nessuno dei quattro è stato rigirato sul runner di GitHub: la stabilità è dimostrata sul banco.
 - Sul telefono non ho guardato l'apertura dell'intro corretta: la misura è del guardiano (ossa dell'eroe nel quadro).
-- Per `movimento-147` tre misure, non cinque: ogni corsa dura 18 minuti e l'esito era già rosso tre volte su tre.
+- `movimento-147` dura 18 minuti a corsa e il runner lo riprova: nella catena pesa 37 minuti finché resta rosso.
+- Gli altri guardiani che coprono `src/16` e `src/19` (oltre alle sentinelle) non li ho girati: li gira il treno al push dell'unione.
