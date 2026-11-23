@@ -5378,7 +5378,21 @@ function ThreeMatchView(props){
         else if(hlPostArcType==="post_rebound"){// CINE-3: palla rimbalza via dal palo
           hlPostVY-=aDt*20;ball.position.y+=hlPostVY*aDt;
           if(ball.position.y<=0.22&&hlPostVY<0){ball.position.y=0.22;hlPostVY*=-0.22;contactFlashT=0;}
-          ball.position.x+=(34-ball.position.x)*aDt*1.8;// torna indietro dal palo
+          /* [giro 346 PO-585 «c'e' uno scambio con un compagno di squadra invisibile» — nota 7.999.198, «Ricevi fra le linee» → «Tiro da
+             fuori» → miss, bozza: codice 012 pallone tornato INDIETRO di 19,0 u, scrittore 16 (= questo blocco d'esito). Rosso __CPM_NO_G346A]
+             MISURATO (misura-346, 7 pali su 7 da quattro posizioni): dal legno il pallone tornava SEMPRE a x 34 — un punto fisso del campo,
+             13,8-14,2 u indietro — cioe' ai piedi di chi ha tirato da fuori (eroe a x 33,9, pallone fermo a x 34,1): va, torna, e nessuno
+             lo ha toccato. Ora il rimbalzo ricade in area, 5-8 u dalla linea (frazione deterministica di bersaglio e durata del volo, come
+             la respinta 7.514), e lo va a prendere l'avversario di movimento piu' vicino (il raccoglitore del 7.618, che il palo non armava):
+             il pallone va a un uomo, non a un punto. */
+          const _g346=!(typeof window!=='undefined'&&window.__CPM_NO_G346A);
+          if(_g346&&(!sr.current._reb346||sr.current._reb346.k!==P.hlSitKey))sr.current._reb346={k:P.hlSitKey,x:GOAL_LINE_X-(5+3*((Math.abs((ballArcTgtZ||0)*7.13)+Math.max(ballArcDur||0.5,0.2)*11.7)%1))};
+          ball.position.x+=((_g346?sr.current._reb346.x:34)-ball.position.x)*aDt*1.8;// torna indietro dal palo
+          if(_g346&&!P.hlDef&&!sr.current._pkCol415&&hlPostArcT>0.5&&!(typeof window!=='undefined'&&window.__CPM_NO618)){let _cm346=null,_cd346=1e9;
+            sr.current.players.forEach((pp,ii)=>{const _s6=(P.allPlayers||[])[ii];if(!_s6||_s6.team!=='away'||_s6.gk||!pp.mesh)return;
+              const _d6=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(_d6<_cd346){_cd346=_d6;_cm346=pp.mesh;}});
+            if(_cm346&&_cd346<26)sr.current._pkCol415={m:_cm346,k:P.hlSitKey};}
+          if(typeof window!=='undefined'&&window.__CPM_G346W&&window.__CPM_G346W.length<400){try{window.__CPM_G346W.push({k:P.hlSitKey,tx:+(_g346?sr.current._reb346.x:34).toFixed(2),bx:+ball.position.x.toFixed(2),col:sr.current._pkCol415?1:0});}catch(_e){}}
           if((sr.current._ws524=6)&&sr.current._bj0)(sr.current._bj0.src='palo',sr.current._bj0.srcs.push('palo'));/* [7.515.0 R2/4] firma */
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*2.2);
           if(hlPostVX){ball.position.x+=hlPostVX*aDt;hlPostVX*=(1-aDt*2.2);if(ball.position.x<G2X(3))ball.position.x=G2X(3);}/* [7.514.0] la respinta rientra in campo, con lo stesso smorzamento della z */
