@@ -23,7 +23,7 @@ async function braccio(rosso, naz) {
   const pm = await page.evaluate(n => { try { return n ? window.__CPM_CAREER.apriNC243() : window.__CPM_CAREER.playMatch(); } catch (e) { return 'err ' + e.message; } }, naz);
   for (let k = 0; k < 14; k++) { const ph0 = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph0 === 'playing') break;
     await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null);
-      const x = bs.find(b => /Diplomatico|Siamo pronti|Continua|Chiudi|Prosegui|Avanti|Salta e gioca/i.test(b.textContent || '') && !/Chiudi la stagione|Vivi la Settimana/i.test(b.textContent || '')); if (x) x.click(); });
+      const x = bs.find(b => /Diplomatico|Siamo pronti|Continua|Chiudi|Prosegui|Avanti|Salta e gioca|Salta formazioni e ingresso/i.test(b.textContent || '') && !/Chiudi la stagione|Vivi la Settimana/i.test(b.textContent || '')); if (x) x.click(); });/* [giro 344] dal giro 336 (PO-608) «Salta e gioca» si chiama «Salta formazioni e ingresso» */
     await sleep(900); }
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 40000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 2311, policy: 'seeded', tickMs: 150 }));
