@@ -41,7 +41,12 @@ const SC = [6, 7, 55];
    spenti) → almeno 2 su 3 >= 2,5. Il rosso naturale resta stampato, non giudicato. */
 const BR = [['gioco', [], [6, 44], x => x <= 1.0], ['rete', ['__CPM_NO_TESTA76'], [6, 7], x => x <= 1.0],
   ['provoc', ['__CPM_TESTA174_LONTANO', '__CPM_NO_TESTA76'], SC, x => x <= 1.0],
-  ['rosso', ['__CPM_TESTA174_LONTANO', '__CPM_NO_TESTA76', '__CPM_NO_TESTA146'], SC, x => x >= 2.5],
+  /* [giro 348] il rosso spegne anche il giro 342 (PO-629, correzione 5: «la clip di testa finita non si ri-arma nella stessa scena»).
+     MISURATO sulla punta 8e76ba0f: col pallone lontano e il 146 spento la clip si chiude PRIMA che l'arco parta e non si rimonta piu',
+     quindi il testimone __CPM_P1B2 (scrive solo con un gesto montato) non ha la riga del lancio: 3 scene su 3 «null» = non giudicato.
+     Con __CPM_NO_G342 in piu' il difetto si rivede: gi6 4,19 · gi7 3,66 · gi55 3,14 u. Il rosso e' «il gioco di prima del 146 e del 342»;
+     i tre bracci verdi restano col 342 acceso e le soglie (<= 1,0 · >= 2,5) non cambiano. */
+  ['rosso', ['__CPM_TESTA174_LONTANO', '__CPM_NO_TESTA76', '__CPM_NO_TESTA146', '__CPM_NO_G342'], SC, x => x >= 2.5],
   ['info', ['__CPM_NO_TESTA76', '__CPM_NO_TESTA146'], SC, null]];
 const g = [];
 for (const [nome, fl, scene, ok] of BR) {
