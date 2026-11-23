@@ -7,7 +7,7 @@
      1. SCADENZA ASSOLUTA del custode: il custode parte da due orari (rete di riserva se il primo non scatta), ma la notte finisce
         per tutti alla stessa ora (default 05:47 UTC = 01:07 + 280 min). Un custode di riserva partito alle 02:43 non veglia fino
         alle 07:23, e uno partito dopo la scadenza non accoda nulla.
-     2. PO-631: il custode scrive l'esito della notte in docs/governo/TRENO-NOTTE.json sul poc; la pagina di governo
+     2. PO-631: il custode scrive l'esito della notte in docs/governo/TRENO-NOTTE.json su main; la pagina di governo
         (tools/governo-html.mjs) mostra «treno grande di stanotte: partito / non partito». Se il custode non scrive affatto (il
         cron non e' scattato), la pagina lo deduce dall'assenza del record dopo la scadenza: anche quello e' «non partito».
 
@@ -50,7 +50,7 @@ export function registra(prec, nuovo) {
   const storia = [{ notte: nuovo.notte, esito: nuovo.esito, treno: nuovo.treno ?? null },
     ...((prec && prec.storia) || []).filter(s => s.notte !== nuovo.notte)].slice(0, 14);
   return {
-    _: 'giro 333 (PO-631): esito del treno grande di notte, scritto dal custode (.github/workflows/treno-notte-330.yml) sul poc. Lo legge tools/governo-html.mjs. «non_partito» = il custode non e\' riuscito ad accodarsi entro la scadenza; un record che manca dopo la scadenza vuol dire che il custode non e\' nemmeno partito.',
+    _: 'giro 333 (PO-631): esito del treno grande di notte, scritto dal custode (.github/workflows/treno-notte-330.yml) su main. Lo legge tools/governo-html.mjs. «non_partito» = il custode non e\' riuscito ad accodarsi entro la scadenza; un record che manca dopo la scadenza vuol dire che il custode non e\' nemmeno partito.',
     notte: nuovo.notte, esito: nuovo.esito, perche: nuovo.perche || '', treno: nuovo.treno ?? null,
     custode: nuovo.custode ?? null, url: nuovo.url || '', scritto: nuovo.scritto || new Date().toISOString(), storia,
   };

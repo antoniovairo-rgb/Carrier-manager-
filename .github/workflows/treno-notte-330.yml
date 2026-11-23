@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # [giro 333, PO-631] scrivere docs/governo/TRENO-NOTTE.json sul poc (push senza force)
+  contents: write   # [giro 333, PO-631] scrivere docs/governo/TRENO-NOTTE.json su main (push senza force)
   actions: write   # leggere le corse del treno e avviare verifica-guardiani.yml (workflow_dispatch)
 
 concurrency:
@@ -42,14 +42,14 @@ jobs:
           # [giro 333] di notte la veglia finisce alle 05:47 UTC per tutti i custodi; avviato a mano conta solo la scadenza relativa
           CPM_ENTRO_NOTTE: ${{ github.event_name == 'schedule' && '05:47' || '' }}
         run: node tools/custode-notte-330.mjs veglia --scadenza-min 280 --passo-s 60 --ref "${{ github.event.repository.default_branch }}" --esito /tmp/esito-notte.json
-      # [giro 333, PO-631] l'esito della notte (partito / non partito) va in docs/governo/TRENO-NOTTE.json sul poc, dove lo legge la
+      # [giro 333, PO-631] l'esito della notte (partito / non partito) va in docs/governo/TRENO-NOTTE.json su main, dove lo legge la
       # pagina di governo. Solo per le corse del cron; un record gia' presente per la stessa notte non si riscrive (niente commit inutili).
-      # Push senza force sulla punta del poc, riprova fino a 4 volte rileggendolo. Non fa mai fallire la corsa.
-      - name: Esito della notte sul poc (PO-631)
+      # Push senza force sulla punta di main, riprova fino a 4 volte rileggendolo. Non fa mai fallire la corsa.
+      - name: Esito della notte su main (PO-631)
         if: always() && github.event_name == 'schedule'
         continue-on-error: true
         env:
-          POC: poc/marioprada-character-system
+          RAMO: main  # [giro 338] il ramo di appoggio non esiste piu': l'esito della notte va su main (solo docs/governo: nessun deploy)
         run: |
           F=docs/governo/TRENO-NOTTE.json
           [ -f /tmp/esito-notte.json ] || node --input-type=module -e 'import { notteDi } from "./tools/notte-333.mjs"; import fs from "node:fs"; fs.writeFileSync("/tmp/esito-notte.json", JSON.stringify({ notte: notteDi(Date.now()), esito: "non_partito", perche: "il custode si e fermato senza scrivere un esito" }))'
@@ -57,13 +57,13 @@ jobs:
           git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git sparse-checkout set tools docs/governo
           for i in 1 2 3 4; do
-            git fetch -q --depth 1 origin "+refs/heads/$POC:refs/remotes/origin/$POC"
-            git checkout -q -B notte-333 "origin/$POC"
+            git fetch -q --depth 1 origin "+refs/heads/$RAMO:refs/remotes/origin/$RAMO"
+            git checkout -q -B notte-333 "origin/$RAMO"
             rm -f /tmp/nuovo-notte.json
             node /tmp/notte-333.mjs registra --esito /tmp/esito-notte.json --prec "$F" --uscita /tmp/nuovo-notte.json
             [ -f /tmp/nuovo-notte.json ] || { echo "### Esito della notte: gia' registrato, nessun commit" >> "$GITHUB_STEP_SUMMARY"; break; }
             cp /tmp/nuovo-notte.json "$F"; git add "$F"
             git commit -q -m "Treno grande di notte: $(node -p 'const j=require("/tmp/nuovo-notte.json");j.notte+" "+j.esito') (custode $GITHUB_RUN_ID)"
-            if git push -q origin "HEAD:refs/heads/$POC"; then echo "### Esito della notte scritto su $POC: $(node -p 'require("/tmp/nuovo-notte.json").esito')" >> "$GITHUB_STEP_SUMMARY"; break; fi
-            echo "push rifiutato (il poc si e' mosso): rileggo e riprovo"; sleep $((i * 5))
+            if git push -q origin "HEAD:refs/heads/$RAMO"; then echo "### Esito della notte scritto su $RAMO: $(node -p 'require("/tmp/nuovo-notte.json").esito')" >> "$GITHUB_STEP_SUMMARY"; break; fi
+            echo "push rifiutato (main si e' mosso): rileggo e riprovo"; sleep $((i * 5))
           done

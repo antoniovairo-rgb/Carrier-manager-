@@ -4,7 +4,7 @@
    PO-630: il cron delle 01:07 non ha mai prodotto una corsa «schedule» (prove in docs/sviluppo/RAPPORTO-giro333.md). GitHub dichiara
    che uno schedule puo' essere ritardato e, sotto carico, PERSO: un solo orario non basta.
    A. WORKFLOW: il cron sta solo nel custode (treno-notte-330.yml), con DUE orari, nessuno al minuto 0 o 30; il custode puo' avviare il
-      treno (actions: write) e scrivere l'esito sul poc (contents: write, push senza force, solo per le corse del cron).
+      treno (actions: write) e scrivere l'esito su main (giro 338) (contents: write, push senza force, solo per le corse del cron).
    B. SCADENZA ASSOLUTA: la notte finisce alle 05:47 UTC per tutti i custodi (01:07 + 280 min); il custode di riserva delle 02:43 non
       veglia fino alle 07:23; avviato a mano conta solo la scadenza relativa; la scadenza si guarda PRIMA di accodare.
    C. REGISTRO (PO-631): docs/governo/TRENO-NOTTE.json — un esito per notte, un «partito» non si sovrascrive, nessun commit doppio.
@@ -37,10 +37,10 @@ console.log('\n== A. il cron sta nel custode, con due orari fuori dall\'inizio d
   ok(cron.length >= 2 && cron.includes('7 1 * * *'), `custode: ${cron.length} orari (${cron.join(' · ') || 'nessuno'}), atteso 01:07 + almeno una riserva`);
   const affollati = cron.filter(c => /^(0|30) /.test(c));
   ok(cron.length && !affollati.length && cron.every(c => /^\d+ \d+ \* \* \*$/.test(c)), `nessun orario al minuto 0 o 30 (GitHub: «High load times include the start of every hour»): ${affollati.join(', ') || 'nessuno'}`);
-  ok(/actions: write/.test(CU) && /contents: write/.test(CU), 'permessi: actions: write (avvia il treno) e contents: write (esito sul poc)');
-  const passo = CU.split('Esito della notte sul poc')[1] || '';
-  ok(passo && /if: always\(\) && github\.event_name == 'schedule'/.test(passo) && /notte-333\.mjs registra/.test(passo) && /git push -q origin "HEAD:refs\/heads\/\$POC"/.test(passo) && !/--force|push -f|\+HEAD/.test(passo),
-    'passo «Esito della notte sul poc»: solo per il cron, anche se la veglia cade, registra e spinge senza force');
+  ok(/actions: write/.test(CU) && /contents: write/.test(CU), 'permessi: actions: write (avvia il treno) e contents: write (esito su main)');
+  const passo = CU.split('Esito della notte su main')[1] || '';
+  ok(passo && /if: always\(\) && github\.event_name == 'schedule'/.test(passo) && /notte-333\.mjs registra/.test(passo) && /git push -q origin "HEAD:refs\/heads\/\$RAMO"/.test(passo) && !/--force|push -f|\+HEAD/.test(passo),
+    'passo «Esito della notte su main» (giro 338): solo per il cron, anche se la veglia cade, registra e spinge senza force');
   ok(/--esito \/tmp\/esito-notte\.json/.test(CU) && /CPM_ENTRO_NOTTE: \$\{\{ github\.event_name == 'schedule' && '05:47' \|\| '' \}\}/.test(CU), 'la veglia scrive l\'esito e di notte finisce alle 05:47 UTC');
 }
 

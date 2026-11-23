@@ -74,7 +74,7 @@ const ultimoGiro = stab[0] ? `${stab[0].catena} su ${stab[0].versione} (${stab[0
 const TIPI = ['bloccante', 'difetto', 'miglioramento', 'nuova funzione', 'debito tecnico', 'processo', 'ricerca', 'conflitto'];
 const nonSmistate = [...aperte.rows, ...chiuse.rows].filter(r => !TIPI.includes(r[3])).map(r => r[0] + ' («' + r[3] + '»)');
 if (nonSmistate.length) console.warn('⚠ voci con tipo fuori dallo smistamento: ' + nonSmistate.join(', '));
-// [giro 333, PO-631] treno grande di stanotte: dal record del custode (docs/governo/TRENO-NOTTE.json, scritto sul poc). Senza record
+// [giro 333, PO-631] treno grande di stanotte: dal record del custode (docs/governo/TRENO-NOTTE.json, scritto su main). Senza record
 // dopo la scadenza della notte = «non partito» (il cron non e' scattato). CPM_NOTTE_FILE / CPM_ADESSO solo per il guardiano notte-333.
 let notteRec = null; try { notteRec = JSON.parse(fs.readFileSync(process.env.CPM_NOTTE_FILE || path.join(ROOT, FILE_NOTTE), 'utf8')); } catch {}
 const notte = statoNotte(notteRec, process.env.CPM_ADESSO || new Date().toISOString());
