@@ -91,7 +91,8 @@ ok(sent.length === 17, `sentinelle lette dalla mappa: ${sent.length} (attese 17)
      dichiarato SOLO_NOTTE_329 in ci-runner.mjs. Ogni guardiano delle catene sta in una riga O nell'elenco; nessuno dell'elenco in una riga. */
   const notte = new Set(m8.SOLO_NOTTE || []), senza = via.filter(n => !notte.has(n)), inRiga = [...notte].filter(n => inMappa.has(n));
   ok(!senza.length, `ogni guardiano delle catene ha una riga della mappa o e' dichiarato solo notturno (${notte.size} dichiarati)${senza.length ? ` (senza nessuna delle due: ${senza.slice(0, 5).join(', ')})` : ''}`);
-  ok(notte.size === 50 && !inRiga.length, `i 50 guardiani solo notturni non stanno in nessuna riga (dichiarati ${notte.size}${inRiga.length ? `, in una riga: ${inRiga.length}, es. ${inRiga.slice(0, 3).join(', ')}` : ''})`);
+  /* [giro 330, PO-626 c] i 4 della catena carriera tornano nelle righe: restano 46 */
+  ok(notte.size === 46 && !inRiga.length, `i 46 guardiani solo notturni non stanno in nessuna riga (dichiarati ${notte.size}${inRiga.length ? `, in una riga: ${inRiga.length}, es. ${inRiga.slice(0, 3).join(', ')}` : ''})`);
   { const tutti = new Set(Object.values(m8.CATENE).flat()); ok([...notte].every(n => tutti.has(n)), `i solo notturni girano nel treno grande (stanno tutti in CATENE, che la mappa intera esegue)`); }
   const sc8 = (toccati, o = {}) => T.scegli({ toccati, mappa: m8, mappaBase: m8, pkg, pkgBase: pkg, ...o });
   { const s = sc8(['src/09-x.jsx', 'tests/visual/misura-999.mjs', 'tests/visual/archivio/vecchia-999.mjs'], { riferimenti: { 'tests/visual/misura-999.mjs': [], 'tests/visual/archivio/vecchia-999.mjs': [] } });

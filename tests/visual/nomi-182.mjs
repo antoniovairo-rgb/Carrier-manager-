@@ -22,6 +22,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = process.env.CPM_ROSSO182 === '1';
 const ROSSO258 = process.env.CPM_ROSSO258 === '1'; /* [giro 258] riga del calendario come prima (__CPM_NO_G258): il guardiano DEVE uscire 1 */
+const ROSSO332 = process.env.CPM_ROSSO332 === '1'; /* [giro 332] solo la parte 4 col rosso __CPM_NO_G332 (discesa della scala fuori dal fotogramma): il guardiano DEVE uscire 1 */
 const FOTO = process.env.CPM_FOTO182 || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 const fails = [], oks = [];
@@ -76,7 +77,15 @@ function osservatore() {
       if (tagliato && (n = dentro(t))) perche = 'tagliato';
       else if (tagliato && cs.textOverflow === 'ellipsis' && (n = puntini(t + '…') || null)) perche = 'puntini (ellissi CSS)';
       else if ((n = puntini(t))) perche = 'puntini nel testo';
-      if (perche && visibile(el)) { const k = via(el) + '|' + n + '|' + innerWidth; if (!N.tagli[k]) N.tagli[k] = { via: via(el), nome: n, testo: t, w: el.clientWidth, sw: el.scrollWidth, perche, fase: f, vw: innerWidth }; }
+      /* [giro 332 · PO-620] un taglio conta se SOPRAVVIVE a un passo di disegno. Il campione gira in un compito (setInterval) e forza
+         il layout: puo' cadere fra un cambio del DOM e il passo di disegno in cui il ResizeObserver della scala lo corregge, cioe' su uno
+         stato che lo schermo non mostra mai (misurato sul banco carico: «FC Biancocelesti Primavera» 142>76 px letto a t+0 ms, corretto
+         dal ResizeObserver a t+2 ms prima del disegno). Si riguarda lo stesso elemento dopo il fotogramma successivo (requestAnimationFrame
+         + compito): se e' ancora tagliato col suo testo, e' a schermo. Il lampo di UN fotogramma lo giudica la parte 4, provocato. */
+      if (perche && visibile(el)) { const k = via(el) + '|' + n + '|' + innerWidth; if (!N.tagli[k] && !(N.attesa || (N.attesa = {}))[k]) { N.attesa[k] = 1; const dati = { via: via(el), nome: n, testo: t, w: el.clientWidth, sw: el.scrollWidth, perche, fase: f, vw: innerWidth };
+        requestAnimationFrame(() => setTimeout(() => { delete N.attesa[k]; const t2 = (el.innerText || '').trim(); const cs2 = getComputedStyle(el);
+          const ancora = el.isConnected && visibile(el) && t2 === t && (perche !== 'tagliato' || ((cs2.overflow.includes('hidden') || cs2.overflowX === 'hidden' || cs2.overflow.includes('clip')) && el.scrollWidth > el.clientWidth + 1));
+          if (ancora) N.tagli[k] = dati; else N.transitori = (N.transitori || 0) + 1; }, 0)); } }
     }
   }, 250);
 }
@@ -113,17 +122,19 @@ async function nuovaPagina(vp) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([rosso, oss, r258]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G182_NOMI = 1; if (r258) window.__CPM_NO_G258 = 1; (0, eval)('(' + oss + ')()'); }, [ROSSO, osservatore.toString(), ROSSO258]);
+  await page.addInitScript(([rosso, oss, r258, r332]) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G182_NOMI = 1; if (r258) window.__CPM_NO_G258 = 1; if (r332) window.__CPM_NO_G332 = 1; (0, eval)('(' + oss + ')()'); }, [ROSSO, osservatore.toString(), ROSSO258, ROSSO332]);
+  if (+process.env.CPM_CPU > 1) { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [giro 332] banco lento simulato */
   return { page, errors };
 }
 async function raccogli(page, vp, etichetta) {
   const N = await page.evaluate(() => window.__N182);
   if (!N || !N.scan) return 0;
-  Object.assign(raccolta.tagli, N.tagli); Object.assign(raccolta.nomi, N.nomi);
+  Object.assign(raccolta.tagli, N.tagli); Object.assign(raccolta.nomi, N.nomi); (raccolta.trPag || (raccolta.trPag = new Map())).set(page, N.transitori || 0);
   for (const x of await tuttiIClub(page)) { const k = x.cpm + '|' + vp.width; if (!raccolta.club[k] || raccolta.club[k].nNessuno < x.nNessuno) raccolta.club[k] = { ...x, vw: vp.width, dove: etichetta }; }
   return N.scan;
 }
 try {
+  if (!ROSSO332) {
   console.log('1) dizionario (funzione unica)');
   {
     const { page } = await nuovaPagina(VPS[1]);
@@ -229,13 +240,58 @@ try {
     } catch (e) { ok(false, `calendario ${vp.width}: non giudicato (${String(e.message).slice(0, 160)})`); }
     await P.page.close();
   }
+  }
+  /* [giro 332 · PO-620] 4) IL NOME SI ACCORCIA PRIMA DEL DISEGNO. Il rosso del runner (treno 45066026690: 412 px, slot-club-182
+     «FC Biancocelesti Primavera» tagliato 142>75 px, poi «Biancocelesti» livello 3) era un fotogramma: quando la riga si stringe dopo il
+     montaggio, il ResizeObserver della scala chiedeva un nuovo giro a React in un compito successivo e il fotogramma veniva disegnato
+     col nome intero tagliato. Sul banco veloce il compito arrivava prima del campione dell'osservatore (ogni 250 ms), sul runner no.
+     Qui il caso si PROVOCA (regola 7 di PROCESSO.md), senza dipendere dalla velocita' della macchina: la riga del salvataggio della Home
+     si allarga (la scala risale all'intero), poi si stringe a 75 px; un secondo ResizeObserver creato DOPO quello della scala (i
+     callback partono in ordine di creazione, prima del disegno) legge testo e larghezze nello stesso fotogramma. Verde: gia' sceso al
+     gradino che ci sta. Rosso __CPM_NO_G332 (CPM_ROSSO332=1): nome intero tagliato. 3 ripetizioni, tutte devono dare lo stesso esito. */
+  {
+    const vp = VPS[1]; console.log(`4) Home a ${vp.width}px: la riga del salvataggio si stringe, il nome scende prima del disegno${ROSSO332 ? ' [rosso __CPM_NO_G332]' : ''}`);
+    const P = await nuovaPagina(vp);
+    try {
+      await P.page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+      await P.page.waitForFunction(() => typeof U18_CLUBS !== 'undefined', null, { timeout: 60000 });
+      await P.page.evaluate(() => { const club = [...U18_CLUBS, ...U18_CLUBS_P2].sort((a, b) => b.n.length - a.n.length)[0]; const s = 64;
+        localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: { name: 'Max Blond', nation: 'Italia', avatarId: 0, proStatus: 'u18', isU18: true, season: 1, week: 3, age: 17, position: 'Attaccante', club,
+          stats: { 'velocità': s, tecnica: s, fisico: s, 'mentalità': s, tiro: s, passaggio: s, dribbling: s, posizionamento: s }, ovr: s, form: 70, morale: 70, matchHistory: [], tutorialDone: true } })); });
+      await P.page.reload({ waitUntil: 'load' });
+      await P.page.waitForFunction(() => { const e = document.querySelector('[data-cpm="slot-club-182"]'); return e && e.getBoundingClientRect().width > 2; }, null, { timeout: 60000 });
+      const esiti = [];
+      for (let rip = 0; rip < 3; rip++) {
+        const r = await P.page.evaluate(async () => {
+          const el = document.querySelector('[data-cpm="slot-club-182"]'); const pe = el.parentElement; const raf = () => new Promise(r => requestAnimationFrame(() => r()));
+          pe.style.width = '2000px'; pe.style.maxWidth = 'none';
+          for (let i = 0; i < 40 && +el.getAttribute('data-nome182') !== 0; i++) await raf();
+          const largo = { liv: +el.getAttribute('data-nome182'), testo: el.textContent };
+          const letto = await new Promise((res) => { let fatto = false;
+            const ro = new ResizeObserver(() => { if (fatto) return; const w = el.getBoundingClientRect().width; if (w > 100) return; fatto = true; ro.disconnect();
+              const rg = document.createRange(); rg.selectNodeContents(el); res({ liv: +el.getAttribute('data-nome182'), testo: el.textContent, testoPx: rg.getBoundingClientRect().width, box: w, intero: el.getAttribute('data-intero182') }); });
+            ro.observe(el); const sib = [...pe.children].filter(c => c !== el).reduce((t, c) => t + c.getBoundingClientRect().width, 0); requestAnimationFrame(() => { pe.style.width = (sib + 75) + 'px'; }); setTimeout(() => { if (!fatto) { fatto = true; ro.disconnect(); res(null); } }, 8000); });
+          pe.style.width = ''; pe.style.maxWidth = ''; for (let i = 0; i < 4; i++) await raf();
+          return { largo, letto };
+        });
+        esiti.push(r);
+        console.log(`    ripetizione ${rip + 1}: larga «${r.largo.testo}» (livello ${r.largo.liv}) · nello stesso fotogramma a 75 px: ${r.letto ? `«${r.letto.testo}» livello ${r.letto.liv}, ${r.letto.testoPx.toFixed(1)}/${r.letto.box.toFixed(1)} px` : 'non letto'}`);
+      }
+      const giud = esiti.filter(r => r.largo.liv === 0 && r.letto);
+      const bene = giud.filter(r => r.letto.testoPx <= r.letto.box + 0.05 && r.letto.liv > 0);
+      if (giud.length < 3) ok(false, `Home 412: non giudicato (${giud.length}/3 ripetizioni con la riga larga al nome intero e la lettura nel fotogramma)`);
+      else ok(bene.length === 3, `Home 412: la riga che si stringe mostra gia' il gradino che ci sta nel fotogramma stesso (${bene.length}/3)`);
+    } catch (e) { ok(false, `Home 412: non giudicato (${String(e.message).slice(0, 160)})`); }
+    await P.page.close();
+  }
 } catch (e) { ok(false, 'eccezione: ' + String(e && e.message || e).slice(0, 300)); }
 await browser.close(); srv.close();
 
+if (ROSSO332) { console.log(`\n[braccio ROSSO __CPM_NO_G332] nomi-182: ${fails.length ? 'ROSSO' : 'VERDE'} (${oks.length} ok · ${fails.length} ko)`); process.exit(fails.length ? 1 : 0); }
 console.log('\n— censimento —');
 const T = Object.values(raccolta.tagli);
 for (const t of T) console.log(`    ✗ ${t.vw}px ${t.fase} · ${t.via} · «${t.testo}» (${t.perche}, ${t.sw}>${t.w}px, nome ${t.nome})`);
-ok(T.length === 0, `nomi di squadra tagliati o coi puntini: ${T.length}`);
+ok(T.length === 0, `nomi di squadra tagliati o coi puntini (ancora a schermo dopo un fotogramma): ${T.length} · stati transitori mai disegnati: ${[...(raccolta.trPag || new Map()).values()].reduce((x, y) => x + y, 0)}`);
 const Nm = Object.values(raccolta.nomi);
 const scesi = Nm.filter(x => x.liv > 0), stretti = Nm.filter(x => x.sw > x.w + 1);
 for (const x of scesi) console.log(`    · ${x.cpm} «${x.intero}» → «${x.mostrato}» (livello ${x.liv}, ${x.w}px)`);

@@ -3,7 +3,7 @@ name: Treno — trenino a ogni unione, treno grande di notte
 # [giro 317, PO-604 — decisioni PO 21/11 22:35 «Trenino + treno grande di notte», «Rilasci fermi finche' non si ripara»]
 # push su lavoro/**|prova/** → TRENINO: solo i guardiani delle righe della mappa toccate dal vagone (diff fra l'ultimo rilascio — tag v*
 #   o punta di main — e la punta) + le 17 sentinelle (tools/trenino-317.mjs scegli). Un file che nessuna riga copre → TRENO COMPLETO, dichiarato.
-# schedule (01:07 UTC = 02:07 a Roma d'inverno, 03:07 con l'ora legale) → TRENO GRANDE: mappa intera sulla punta del lavoro corrente
+# notte (dal giro 330 avviata dal custode treno-notte-330.yml alle 01:07 UTC, tipo=notte) → TRENO GRANDE: mappa intera sulla punta del lavoro corrente
 #   (lavoro/<numero piu' alto>) o di main se il lavoro e' gia' tutto rilasciato; scrive docs/governo/BLOCCO-RILASCI.json sul poc.
 # a mano → tipo mappa (treno grande, default) | trenino | notte (stesso percorso della notte).
 
@@ -19,8 +19,8 @@ on:
   push:
     branches: ['lavoro/**', 'prova/**']
     paths-ignore: ['docs/**', '**/*.md']
-  schedule:
-    - cron: '7 1 * * *'
+  # [giro 330, PO-626 a] niente piu' schedule qui: il cron delle 01:07 sta in treno-notte-330.yml (custode della coda), che avvia
+  # questo workflow con tipo=notte quando il posto in attesa della concorrenza e' libero e si rimette in coda se viene scalzato.
   workflow_dispatch:
     inputs:
       tipo:
@@ -171,11 +171,33 @@ jobs:
           CPM_PARTE: ${{ matrix.nome }}
           CPM_ATTESI_S: ${{ matrix.attesi_s }}
         run: node ci-treno-308.mjs esegui "${{ matrix.guardiani }}"
+      # [giro 330, PO-624] il caricamento puo' cadere per un guasto di GitHub (treno 45050383306, parte 03: 21 guardiani verdi,
+      # «Failed to CreateArtifact ... Request timeout» dopo 5 tentativi interni, rilascio fermo). Due difese indipendenti:
+      # (1) un secondo caricamento dopo 90 s, che sovrascrive l'eventuale artifact a meta'; (2) se manca lo stesso, il Riepilogo
+      # ricostruisce la parte dalla riga CPM_PARTE330 stampata nel log da `esegui` (ci-treno-308.mjs) e lo dichiara.
       - name: Uscita come artifact
+        id: up1
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: guardiani-parte-${{ matrix.parte }}
+          path: |
+            tests/visual/out/
+            !tests/visual/out/.precompilata-237/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Attesa prima del secondo caricamento (giro 330)
+        if: always() && steps.up1.outcome == 'failure'
+        run: sleep 90
+      - name: Uscita come artifact, secondo tentativo (giro 330)
+        if: always() && steps.up1.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardiani-parte-${{ matrix.parte }}
+          overwrite: true
           path: |
             tests/visual/out/
             !tests/visual/out/.precompilata-237/
@@ -190,6 +212,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     continue-on-error: true
+    permissions:
+      contents: read
+      actions: read   # [giro 330, PO-624] leggere i log delle parti senza artifact (ricostruzione dalla riga CPM_PARTE330)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -208,10 +233,27 @@ jobs:
           CPM_TRENO_SCELTA: ${{ needs.piano.outputs.scelta }}
           CPM_TRENO_SHA: ${{ needs.piano.outputs.sha }}
           CPM_TRENO_RAMO: ${{ needs.piano.outputs.ramo }}
+          GH_TOKEN: ${{ github.token }}
         run: node tests/visual/ci-treno-308.mjs riunisci parti || true
       - uses: actions/upload-artifact@v4
+        id: upr1
+        continue-on-error: true
         with:
           name: riepilogo-totale
+          path: |
+            parti/riepilogo-totale.json
+            parti/riepilogo-totale.md
+            parti/esito-treno.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Attesa prima del secondo caricamento del riepilogo (giro 330)
+        if: steps.upr1.outcome == 'failure'
+        run: sleep 60
+      - uses: actions/upload-artifact@v4
+        if: steps.upr1.outcome == 'failure'
+        with:
+          name: riepilogo-totale
+          overwrite: true
           path: |
             parti/riepilogo-totale.json
             parti/riepilogo-totale.md

@@ -1,0 +1,38 @@
+name: Treno grande di notte — custode della coda (giro 330)
+
+# [giro 330, PO-626 a — decisione PO 22/11] Il cron non lancia piu' il treno grande dentro verifica-guardiani.yml: li' la concorrenza
+# unica «treno-guardiani» (giro 329) tiene UNA corsa in corso e UNA in attesa, e un push arrivato dopo annullava il treno grande in
+# attesa (quella notte niente blocco dei rilasci). Il custode sta FUORI da quel gruppo: aspetta che il posto in attesa sia libero,
+# avvia verifica-guardiani.yml con tipo=notte (workflow_dispatch, stesso percorso del cron di prima: bersaglio, mappa intera, blocco,
+# nessun rilascio) e, se il suo treno grande viene annullato prima di partire, si rimette in coda da solo. Logica:
+# tools/custode-notte-330.mjs (guardiano npm run treno-330, rosso CPM_NO_G330=1). Occupa UNA macchina mentre aspetta: treno 15 +
+# custode 1 + deploy 1 + Validate Situations a mano 2 = 19 su 20. La corsa non fallisce mai: l'esito sta nel riepilogo.
+on:
+  schedule:
+    - cron: '7 1 * * *'   # 01:07 UTC = 02:07 a Roma d'inverno, come il cron del giro 317
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write   # leggere le corse del treno e avviare verifica-guardiani.yml (workflow_dispatch)
+
+concurrency:
+  group: custode-notte
+  cancel-in-progress: false
+
+jobs:
+  custode:
+    name: Custode della coda notturna
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Veglia (si accoda quando il posto in attesa e' libero, si rimette in coda se scalzato)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/custode-notte-330.mjs veglia --scadenza-min 280 --passo-s 60 --ref "${{ github.event.repository.default_branch }}"

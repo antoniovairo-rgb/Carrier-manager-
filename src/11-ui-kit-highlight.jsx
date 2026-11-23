@@ -289,9 +289,15 @@ function NomeSquadra182({team,fb,testo,style={},as="div",cpm,adatta,...rest}){
     const azzera=()=>{dec.current=0;setLiv(0);setFs203(0);setGiro(g=>g+1);};
     let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
     let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
+    /* [giro 332 · PO-620] il ResizeObserver gira DOPO il layout e PRIMA del disegno: un setState da qui finiva in un compito successivo,
+       quindi il fotogramma veniva disegnato col nome intero tagliato e la scala scendeva solo dopo. MISURATO sul runner del treno
+       45066026690 (412 px, «FC Biancocelesti Primavera» 142>75 px nella riga del salvataggio della Home, poi «Biancocelesti»): un lampo
+       che il banco veloce non vedeva e un telefono lento si'. Ora la discesa si fa dentro il callback con flushSync: la scala arriva al
+       gradino giusto prima che il fotogramma venga disegnato. Rosso window.__CPM_NO_G332 = come prima. */
+    const _sub332=(f)=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_G332)&&ReactDOM&&ReactDOM.flushSync){try{ReactDOM.flushSync(f);return;}catch(_e332){}}f();};
     let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
-      if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
-      if(_ecc254(el).fuori)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+      if(dec.current&&pe&&pe.clientWidth>dec.current+1){_sub332(azzera);return;}
+      if(_ecc254(el).fuori)_sub332(()=>setGiro(g=>g+1));});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
     return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;

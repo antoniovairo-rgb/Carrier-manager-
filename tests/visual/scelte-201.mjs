@@ -14,8 +14,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 
-const SOLO = (process.env.CPM_SOLO201 || '').split(',').filter(Boolean);
-const BRACCI = (process.env.CPM_BRACCI || 'verde,rosso').split(',');
+const ROSSO332 = process.env.CPM_ROSSO332 === '1'; /* [giro 332] braccio rosso della correzione dell'intervista: __CPM_NO_G332 sul VERDE del caso intervista-cond → DEVE uscire 1 */
+const SOLO = ROSSO332 ? ['intervista-cond'] : (process.env.CPM_SOLO201 || '').split(',').filter(Boolean);
+const BRACCI = ROSSO332 ? ['verde'] : (process.env.CPM_BRACCI || 'verde,rosso').split(',');
 const FOTO = path.join(ROOT, 'docs', 'sviluppo', 'giro201'); fs.mkdirSync(FOTO, { recursive: true });
 const fails = [];
 const ok = (c, m) => { if (!c) fails.push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
@@ -37,6 +38,8 @@ const SCAD = { contract: { duration: 1, wage: 9000, expiresAtSeason: 3 } };
 const sel = (s) => (page) => page.evaluate((s) => { const e = document.querySelector(s); return e ? e.innerText.replace(/\s+/g, ' ').slice(0, 90) : null; }, s);
 const txt = (re) => (page) => page.evaluate((src) => { const r = new RegExp(src, 'i'); const t = document.getElementById('root').innerText; const m = t.match(r); return m ? m[0] : null; }, re);
 const ev = (f, a) => (page) => page.evaluate(f, a);
+const ivCond = (page) => page.evaluate(() => { const e = document.querySelector('[data-cpm="intervista231"]'); if (!e) return null; const t = e.innerText.replace(/\s+/g, ' ');
+  const q = INTERVIEW_QS.find(q => q.cond && typeof q.q === 'string' && t.includes(q.q.slice(0, 40))); return q ? 'domanda condizionata: ' + q.q.slice(0, 50) : null; });
 async function avanza(page) { const w0 = await page.evaluate(() => window.__CPM_CAREER.snapshot().week); for (let i = 0; i < 4; i++) { await page.evaluate(() => window.__CPM_CAREER.step()); await sleep(900); const w = await page.evaluate(() => window.__CPM_CAREER.snapshot().week); if (w !== w0) return w; } return null; }
 const CASI = [
   { id: 'saga-tono', nome: 'Saga di mercato, episodio 2 (cosa rispondi ai media)', save: salva(),
@@ -61,6 +64,11 @@ const CASI = [
     apri: ev(() => window.__CPM_CAREER.apriSettimana('spogliatoio')), vedi: sel('[data-cpm="settimana23"]') },
   { id: 'intervista', nome: 'Intervista', save: salva(),
     apri: ev(() => window.__CPM_CAREER.forceInterview('win')), vedi: sel('[data-cpm="intervista231"]') },
+  /* [giro 332 · PO-620] l'intervista con una domanda CONDIZIONATA (q.cond e' una funzione: 8,8 % delle estrazioni sul salvataggio del
+     guardiano). Era la causa del rosso del treno 45050383306: qui il caso si provoca invece di aspettarlo dal sorteggio. */
+  { id: 'intervista-cond', nome: 'Intervista con domanda condizionata (voci di mercato, Nazionale, capitano…)', save: salva(),
+    apri: async (page) => { for (let i = 0; i < 120; i++) { await page.evaluate(() => window.__CPM_CAREER.forceInterview('win')); await sleep(120); if (await ivCond(page)) return; } },
+    vedi: (page) => ivCond(page) },
   { id: 'verifica', nome: 'Verifica trimestrale del mister (sett. 8)', save: salva({ week: 8, weekLived: false, lastMonthlyReview: 0 }),
     apri: async (page) => { await page.evaluate(() => window.__CPM_CAREER.step()); await sleep(900); }, vedi: txt('Verifica Trimestrale[^\\n]{0,20}') },
   { id: 'momento', nome: 'Momento di carriera (finestra)', save: salva(),
@@ -83,6 +91,7 @@ const browser = await launchBrowser();
 async function apriPagina(player, flag) {
   const page = await browser.newPage({ viewport: { width: 375, height: 667 }, deviceScaleFactor: 2 });
   await installCdnRoutes(page);
+  if (+process.env.CPM_CPU > 1) { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [giro 332] banco lento simulato */
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
   await page.addInitScript(([pl, f]) => { window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (f) window[f] = 1;
     if (!sessionStorage.getItem('g201')) { localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl })); sessionStorage.setItem('g201', '1'); } }, [player, flag]);
@@ -97,21 +106,39 @@ async function entra(page) {
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 25000 });
   await sleep(1500);
 }
-async function ricarica(page) { await sleep(1500); await page.reload({ waitUntil: 'load', timeout: 60000 }); await entra(page); }
+/* [giro 332 · PO-620] RICARICA SOLO A SALVATAGGIO ARRIVATO. Prima: 1,5 s fissi e poi il ricaricamento (regola 4 violata). Sul runner
+   conteso l'autosave (debounce 600 ms + coda asincrona di storage) poteva non essere ancora sul disco: la scelta «non tornava» per
+   colpa della sonda, non del gioco (rosso del treno 45050383306, intervista). Ora si aspetta che i campi che portano le scelte siano
+   UGUALI in memoria e nello slot salvato, per due letture a 800 ms l'una dall'altra (oltre il debounce). Tetto 25 s: se scade si
+   ricarica comunque e lo si dichiara (il controllo che segue giudica). */
+const CAMPI332 = ['season', 'week', 'scelte201', 'transferSaga', 'calendar', 'offerta201', 'coachPact', 'contract', 'richiamo198', 'hasAgent'];
+async function salvato(page) {
+  const t0 = Date.now(); let prec = null;
+  while (Date.now() - t0 < 25000) {
+    const r = await page.evaluate((campi) => { try { const m = window.__CPM_CAREER.snapshot(); const raw = localStorage.getItem('cpm-v3'); const d = raw ? JSON.parse(raw).player : null;
+      const pick = (o) => JSON.stringify(campi.map(k => o ? (o[k] === undefined ? null : o[k]) : '∅')); const a = pick(m), b = pick(d); return a === b ? a : null; } catch (e) { return null; } }, CAMPI332);
+    if (r && prec === r) return Date.now() - t0;
+    prec = r; await sleep(800);
+  }
+  console.log('    (salvataggio non allineato alla memoria entro 25 s: si ricarica comunque)'); return null;
+}
+/* dopo il ricaricamento si aspetta la scelta (evento), con tetto: niente piu' «1,5 s e poi guardo» */
+async function attendi(page, vedi, tetto) { const t0 = Date.now(); let v = null; while (Date.now() - t0 < tetto) { v = await vedi(page).catch(() => null); if (v) return v; await sleep(250); } return v; }
+async function ricarica(page) { if (process.env.CPM_SUBITO332) await sleep(+process.env.CPM_SUBITO332); else await salvato(page);/* CPM_SUBITO332=<ms>: misura della causa (ricarica dopo un tempo fisso, come prima) */ await page.reload({ waitUntil: 'load', timeout: 60000 }); await entra(page); }
 
 const tabella = {};
 try {
   for (const braccio of BRACCI) {
-    const flag = braccio === 'rosso' ? '__CPM_NO_G201' : null;
+    const flag = braccio === 'rosso' ? '__CPM_NO_G201' : (ROSSO332 ? '__CPM_NO_G332' : null);
     console.log(`A) ${braccio}: apri la scelta, ricarica senza rispondere, guarda se torna`);
     let tornate = 0, aperte = 0;
     for (const c of CASI) {
       const { page, errors } = await apriPagina(c.save, flag);
-      await c.apri(page); await sleep(900);
-      const prima = await c.vedi(page);
+      await c.apri(page);
+      const prima = await attendi(page, c.vedi, 8000);
       if (prima && braccio === 'verde') await page.screenshot({ path: path.join(FOTO, `aperta-${c.id}-375.png`) });
       await ricarica(page);
-      const dopo = await c.vedi(page);
+      const dopo = await attendi(page, c.vedi, 8000);
       if (braccio === 'verde' && prima) await page.screenshot({ path: path.join(FOTO, `dopo-ricarica-${c.id}-375.png`) });
       if (braccio === 'rosso' && prima) await page.screenshot({ path: path.join(FOTO, `prima-ricarica-${c.id}-375.png`) });
       (tabella[c.id] ||= { nome: c.nome })[braccio] = { aperta: !!prima, torna: !!dopo, dopo, err: errors.length };
@@ -175,5 +202,5 @@ try {
 console.log('\nTABELLA');
 console.log('| Scelta | Aperta | Torna dopo il ricaricamento (rosso = prima) | Torna (verde = dopo) |');
 for (const [id, r] of Object.entries(tabella)) console.log(`| ${r.nome} | ${(r.verde || r.rosso || {}).aperta ? 'sì' : 'no'} | ${r.rosso ? (r.rosso.torna ? 'sì' : 'NO') : '—'} | ${r.verde ? (r.verde.torna ? 'sì' : 'NO') + (r.verde.err ? ' (errori)' : '') : '—'} |`);
-if (fails.length) { console.log(`\n❌ scelte-201: ${fails.length} controlli falliti`); process.exit(1); }
+if (fails.length) { console.log(`\n❌ scelte-201${ROSSO332 ? ' [braccio rosso __CPM_NO_G332]' : ''}: ${fails.length} controlli falliti · ${fails.slice(0, 2).join(' · ')}`); process.exit(1); }
 console.log('\n✅ scelte-201 verde'); process.exit(0);

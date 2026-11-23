@@ -1,6 +1,6 @@
 {
  "_": "giro 308 (PO-592): rossi DICHIARATI della versione pubblicata. Il riepilogo del treno (tests/visual/ci-treno-308.mjs riunisci) separa «rosso noto» (in `banco`: rosso anche sul banco, identico alla base) e «rosso noto del runner» (in `solo_runner`: rosso sul runner, verde sul banco) dal «rosso nuovo» (tutto il resto). Si aggiorna a ogni rilascio dalla riga della ROADMAP. Un guardiano tolto da qui torna a contare come rosso nuovo.",
- "versione": "7.999.205",
+ "versione": "7.999.206",
  "fonte": "docs/governo/ROADMAP.md (ramo poc/marioprada-character-system), riga del 21/11: «Rossi dichiarati identici alla base: prima-partita-237, scena-motore-147, tpose-196, interazioni-226, rassegna-200, store-236, difficolta-156, box-fischio-169, coreografie-244 e nomi-219 oltre tetto (braccio verde verde)»; solo_runner: taratura 44830113928 («5 parti fallite tutte verdi sul banco») · 22/11: rossi del treno della 201 (44947424529) dichiarati «da verificare» per scelta del PO",
  "banco": {
   "prima-partita-237": "rosso identico alla base",
@@ -40,8 +40,6 @@
   "schede-260": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "giornale-244": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
   "numeri-home": "già rosso nel treno della 7.999.200 (44926206097): da verificare lunedì 23/11 (PO 22/11)",
-  "diagonali-210": "rosso sul banco anche sulla 7.999.201 (verifica 202, 22/11): dipende dalla velocità della macchina, da riparare",
-  "rigori-296": "parte C (ripartenza-piazzato-27, braccio rosso «compagno») rossa anche sulla 7.999.201 (verifica 202, 22/11): da riparare",
   "pelle-240": "instabile (verifica 204, 22/11): serata di presentazione, un viso tra 6 e 17,7 di distanza fra una corsa e l'altra sullo stesso commit; anche la 7.999.203 sta a 11,9 su soglia 12. Codice della serata identico fra 203 e 204: non e' una regressione, la misura va resa stabile"
  },
  "solo_runner": {
@@ -52,7 +50,8 @@
   "piedi-252": "rosso sul runner (parte 12), verde sul banco",
   "momento-173": "rosso solo sul runner (treno 44947424529), verde 6/6 sul banco su 200 e 201 (verifica 201, 22/11)",
   "walkout-fermi-197": "instabile: verde sul banco su 201 e 202, rosso sul runner (somma 8 contro soglia 7) (verifica 202, 22/11): campionamento da riparare",
-  "scelte-201": "rosso sul runner (intervista che non torna dopo il ricaricamento), verde sul banco sullo stesso commit 3cb166af (verifica 204, 22/11): instabile, da guardare",
-  "nomi-182": "rosso sul runner (412px, «FC Biancocelesti Primavera» tagliato nello slot del club), verde sul banco 28/28 sia sulla punta 89ddcae8 sia sulla 7.999.203 (verifica 205, 22/11): instabile del runner, da guardare"
- }
+  "tocco-213": "rosso sul runner (braccio verde: «pc offerta (scegli club)» riscontro 115 ms > 50, schermata lenta del runner), verde sul banco sia sulla punta 3c742a73 sia sulla 7.999.205 (verifica 206, 23/11): da guardare",
+  "apertura-261": "rosso sul runner (1 apertura vuota, quota 10,3%), verde sul banco 4/4 senza aperture vuote sia sulla punta 3c742a73 sia sulla 7.999.205 (verifica 206, 23/11): da guardare"
+ },
+ "_giro332": "giro 332 (PO-620, 23/11): tolti diagonali-210, rigori-296 (banco), scelte-201, nomi-182 (solo_runner) — riparati e stabili 5/5 sul banco col rosso rosso, rapporto docs/sviluppo/RAPPORTO-giro332.md"
 }
