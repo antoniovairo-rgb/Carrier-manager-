@@ -23,6 +23,20 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [giro 352 · PO-613, foto PO «Fuori luogo per l'età dell'eroe, ha oltre 30 anni!»] L'ETA' E GLI ANNI NEL CLUB DELL'EROE.
+   Lo scherzo del veterano al giovane usciva a un trentatreenne, che nello spogliatoio e' lui il veterano: 13 eventi
+   settimanali presupponevano un'eta' o un'anzianita' senza guardarla (misura del guardiano eta-352: 154 estrazioni
+   vere di vita su 2.032 fuori eta' in 16 carriere). Ora ognuno e' legato a queste regole condivise, e dove serve c'e'
+   la variante dal lato del veterano. anniClub352 = stagioni CHIUSE di fila nel club attuale (lo storico ha clubId;
+   la Primavera dello stesso club conta). Rosso: window.__CPM_NO_G352 = condizioni e testi di prima. */
+const no352=()=>{try{return typeof window!=="undefined"&&!!window.__CPM_NO_G352;}catch(_e){return false;}};
+const eta352=(p)=>(p&&p.age)||18;
+const anniClub352=(p)=>{try{const c=p&&p.club;if(!c)return 0;const h=(p.history)||[];let n=0;
+  for(let i=h.length-1;i>=0;i--){const x=h[i];if(x&&((x.clubId!=null)?x.clubId===c.id:(x.club&&(x.club===c.n||x.club===c.name))))n++;else break;}return n;}catch(_e){return 0;}};
+const giovane352=(p)=>eta352(p)<=25;
+const veterano352=(p)=>eta352(p)>=30;
+const nuovo352=(p)=>anniClub352(p)===0;
+const primiAnni352=(p)=>{try{if((p.proStatus||"u18")==="pro"&&typeof p.proSeason==="number")return ((p.season||1)-p.proSeason)<=1;return eta352(p)<=21;}catch(_e){return false;}};
 const WEEKLY_EVENTS=[
   // ── TRAINING — POSITIVE ──────────────────────────────────────────────────
   {w:12,txt:"💪 Allenamento eccellente! Il mister ti nota.",ef:{morale:10,form:6,coachTrust:8,fatigue:-6}},
@@ -64,8 +78,8 @@ const WEEKLY_EVENTS=[
   {w:3,txt:"🤩 Un tuo fan ti ferma per strada. Ti senti una star.",ef:{morale:9,popularity:5}},
   {w:3,txt:"🏆 Citato in una top list di giovani europei.",ef:{popularity:12,value:0.2,morale:9},cond:p=>(p.age||18)<=23/* [7.161.0 A5] */},
   // ── TEAM / CLUB — POSITIVE ───────────────────────────────────────────────
-  {w:5,txt:"🍽️ Cena col presidente. Ti promette un futuro da titolare.",ef:{morale:12,coachTrust:6,popularity:5},cond:p=>(p.squadRole||"rotazione")!=="titolare"&&!p.isCaptain/* [7.161.0 M1] non «prometti la titolarità» al titolare/capitano */},
-  {w:4,txt:"💬 Il capitano ti porta in giro per la città. Amicizia solida.",ef:{morale:10,coachTrust:5}},
+  {w:5,txt:"🍽️ Cena col presidente. Ti promette un futuro da titolare.",ef:{morale:12,coachTrust:6,popularity:5},cond:p=>(p.squadRole||"rotazione")!=="titolare"&&!p.isCaptain/* [7.161.0 M1] non «prometti la titolarità» al titolare/capitano */&&(no352()||eta352(p)<=27)/* [giro 352] il «futuro» si promette a chi ce l'ha davanti */},
+  {w:4,txt:"💬 Il capitano ti porta in giro per la città. Amicizia solida.",ef:{morale:10,coachTrust:5},cond:p=>no352()||(nuovo352(p)&&!p.isCaptain)/* [giro 352] la citta' si mostra a chi e' appena arrivato */},
   {w:4,txt:"🌄 Ritiro pre-campionato fantastico. Gruppo unito come mai.",ef:{morale:11,form:7,fatigue:-8},cond:p=>(p.week||1)<=3},
   {w:4,txt:"🏠 Ambiente familiare sereno. Testa libera, gambe leggere.",ef:{morale:9,fatigue:-10,form:6}},
   {w:3,txt:"⭐ Il club annuncia bonus se raggiungi 10 gol. Motivazione!",ef:{morale:14,form:8},cond:p=>(p.goals||0)<10},
@@ -106,7 +120,8 @@ const WEEKLY_EVENTS=[
   {w:4,cond:_mktOk,txt:"📰 I media parlano di interesse dall'estero per te. Voci di mercato.",ef:{popularity:8,morale:5,value:0.05}},
   {w:3,txt:"🎉 Un gruppo di tifosi ha fondato un fan club ufficiale a tuo nome.",ef:{popularity:14,morale:10}},
   {w:4,txt:"🌍 Voci di un osservatore della nazionale in tribuna per osservarti.",ef:{morale:8,form:5,popularity:6}},
-  {w:6,txt:"🎙️ Un veterano dello spogliatoio ti svela segreti del mestiere. Lezione preziosa.",ef:{form:5,coachTrust:6,morale:7}},
+  {w:6,txt:"🎙️ Un veterano dello spogliatoio ti svela segreti del mestiere. Lezione preziosa.",ef:{form:5,coachTrust:6,morale:7},cond:p=>no352()||giovane352(p)/* [giro 352] */},
+  {w:6,txt:"🎙️ Un ragazzo dello spogliatoio ti chiede i segreti del mestiere. Glieli racconti come li avevano raccontati a te.",ef:{form:2,coachTrust:6,morale:7},cond:p=>!no352()&&veterano352(p)/* [giro 352 PO-613] la stessa scena dal lato del veterano */},
   {w:5,cond:p=>{try{const h=(p.matchHistory||[]);const m=h[h.length-1];return !!(m&&(m.won===false||(parseFloat(m.rating)||6.5)<=5.8));}catch(e){return false;}}/* [7.161.0 A5] «brutta partita» = sconfitta o voto basso REALI (classe 7.35.2) */,txt:"💚 Settimana di recupero mentale dopo una brutta partita. Il mister ti supporta.",ef:{morale:9,form:4,coachTrust:5}},
   {w:5,txt:"🩹 Fastidio muscolare in allenamento. Nulla di grave — ma un campanello d'allarme.",ef:{fatigue:10,form:-4,morale:-3}},
   // ── MERCATO & TRASFERIMENTI ──────────────────────────────────────────────
@@ -127,14 +142,14 @@ const WEEKLY_EVENTS=[
   {w:3,txt:"🏆 Il presidente promette un mercato di gennaio ambizioso. Clima eccitante.",ef:{morale:10,form:5},cond:p=>(p.week||1)>=15&&(p.week||1)<=22&&(p.proStatus||"u18")==="pro"},
   // ── NAZIONALE & PALCOSCENICO INTERNAZIONALE ───────────────────────────────
   {w:6,txt:"🌍 Il ct della nazionale ti segue da vicino: sei nella lista dei pre-convocati.",ef:{morale:12,popularity:11,form:6},cond:p=>p.proStatus==="pro"&&p.ovr>=70},
-  {w:5,txt:"📺 Il tuo nome appare per la prima volta in una lista ufficiale della nazionale.",ef:{popularity:14,morale:11,value:0.2},cond:p=>p.proStatus==="pro"&&p.ovr>=68},
+  {w:5,txt:"📺 Il tuo nome appare per la prima volta in una lista ufficiale della nazionale.",ef:{popularity:14,morale:11,value:0.2},cond:p=>p.proStatus==="pro"&&p.ovr>=68&&(no352()||(p.nationalCaps||0)===0)/* [giro 352] «per la prima volta»: solo a chi non ha ancora presenze in Nazionale */},
   {w:4,cond:p=>(p.age||18)<=23/* [7.161.0 A5] claim d'età esplicito */,txt:"🌐 Feature su un portale europeo: 'Uno dei migliori under-23 del continente'.",ef:{popularity:15,value:0.25,morale:9}},
   {w:4,txt:"🥇 Candidato al premio miglior giovane della lega. Vota il pubblico.",ef:{popularity:13,morale:10,value:0.15},cond:p=>(p.season||1)<=4&&p.ovr>=65},
   {w:3,txt:"🏅 La federazione ti invita a un evento con le leggende del calcio nazionale.",ef:{morale:14,popularity:12,coachTrust:4}},
   // ── VITA DA CALCIATORE ────────────────────────────────────────────────────
-  {w:5,txt:"🏠 Trovi casa vicino al centro sportivo. Meno stress, più sonno: forma in crescita.",ef:{fatigue:-15,form:7,morale:8}},
+  {w:5,txt:"🏠 Trovi casa vicino al centro sportivo. Meno stress, più sonno: forma in crescita.",ef:{fatigue:-15,form:7,morale:8},cond:p=>no352()||nuovo352(p)/* [giro 352] la casa la cerca chi e' appena arrivato */},
   {w:5,txt:"👨‍👩‍👦 Visita della famiglia allo stadio. Ispirazione pura: vuoi stupirli.",ef:{morale:14,form:8}},
-  {w:4,txt:"📚 Inizi a studiare la lingua locale. I compagni apprezzano: integrazione perfetta.",ef:{morale:9,coachTrust:5,popularity:5}},
+  {w:4,txt:"📚 Inizi a studiare la lingua locale. I compagni apprezzano: integrazione perfetta.",ef:{morale:9,coachTrust:5,popularity:5},cond:p=>no352()||nuovo352(p)/* [giro 352] «inizi»: il primo anno nel club */},
   {w:4,cond:p=>(p.proStatus||"u18")==="pro"&&(p.age||18)<=23/* [7.161.0 M1] «primo contratto serio» = giovane pro, non un U18 né un veterano milionario */,txt:"🚗 Nuova auto acquistata dopo il primo contratto serio. Senso di realizzazione.",ef:{morale:13,fatigue:-6}},
   {w:3,txt:"🎬 Invitato a un evento di gala in città. Sei ufficialmente un personaggio pubblico.",ef:{popularity:14,morale:8}},
   {w:3,txt:"🤝 Collaborazione con un'associazione benefica. Immagine pubblica alle stelle.",ef:{popularity:12,morale:11}},
@@ -243,7 +258,7 @@ const WEEKLY_RANDOM_EVENTS=[
   {txt:"🌅 Mercato estivo: trattativa sfumata per un big. Lo spogliatoio si concentra sul campo.",ef:{morale:-3,coachTrust:4},cond:p=>(p.week||1)<=6&&(p.proStatus||"u18")==="pro"},
   {txt:"📈 Record storico del club in vista: mancano pochissimo per raggiungerlo.",ef:{morale:12,form:7}},
   {txt:"🗺️ Ritiro tattico in montagna. Il mister presenta il nuovo modulo: eccitazione e curiosità.",ef:{coachTrust:7,mentalità:1,fatigue:8}},
-  {txt:"🎙️ Intervista a un media internazionale: sei definito 'il talento del momento'. Brividi.",ef:{popularity:12,morale:9,value:0.05}},
+  {txt:"🎙️ Intervista a un media internazionale: sei definito 'il talento del momento'. Brividi.",ef:{popularity:12,morale:9,value:0.05},cond:p=>no352()||eta352(p)<=26/* [giro 352] «talento» si dice di un giovane */},
   {txt:"🏟️ Un tifoso ti riconosce per strada e scoppia in lacrime. L'impatto del calcio sulla gente.",ef:{morale:13,popularity:7}},
   {txt:"🏕️ Training camp pre-stagionale intensissimo. Ne esci più forte e con la testa giusta.",ef:{fisico:1,mentalità:1,fatigue:14},cond:p=>(p.week||1)<=3},
   {txt:"🎂 Il club festeggia il centenario. Atmosfera storica, responsabilità enorme.",ef:{morale:10,popularity:8,coachTrust:3}},
@@ -557,7 +572,7 @@ const WEEKLY_IMPULSES=[
     {txt:"⚽ Un pomeriggio intero, palloni per tutti",ef:{morale:8,popularity:6,fatigue:3}},
     {txt:"📅 Dopo il ritiro avremo tutto il tempo — promesso",ef:{morale:2}},
   ]},
-  {id:"wi_orologio",once:true,cat:"conseguenza",cond:p=>!p.isCaptain/* [7.161.0 M1] */,txt:"Il capitano ti prende in giro: sei l'unico senza «l'orologio della squadra». Costa quanto un mese del tuo ingaggio."/* [7.161.0 BASSA] via il riferimento allo «stipendio» settimanale (display solo annuale, 7.36.1) */,choices:[
+  {id:"wi_orologio",once:true,cat:"conseguenza",cond:p=>!p.isCaptain/* [7.161.0 M1] */&&(no352()||nuovo352(p))/* [giro 352] «l'unico senza»: e' il nuovo arrivato */,txt:"Il capitano ti prende in giro: sei l'unico senza «l'orologio della squadra». Costa quanto un mese del tuo ingaggio."/* [7.161.0 BASSA] via il riferimento allo «stipendio» settimanale (display solo annuale, 7.36.1) */,choices:[
     {txt:"⌚ Lo compro — rito di passaggio",ef:{bank:-30000,chem:7,morale:4}},
     {txt:"💸 Follia — passo",ef:{chem:-3,morale:1}},
   ]},
@@ -692,7 +707,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🧊 Ci provo — tutto per la forma",ef:{fatigue:-16,form:6,morale:3}},
     {txt:"🚿 Preferisco la doccia calda normale",ef:{fatigue:-7,morale:5}},
   ]},
-  {id:"wi_veterano_allenamento",cond:p=>(p.proStatus||"u18")==="pro"/* [7.453.0] in Primavera il ragazzo da allenare sei TU */,cat:"formazione",txt:"Un veterano della squadra si offre di allenarti in privato. È un'opportunità rara.",choices:[
+  {id:"wi_veterano_allenamento",cond:p=>(p.proStatus||"u18")==="pro"&&(no352()||giovane352(p))/* [giro 352 PO-613] il veterano allena il giovane, non un coetaneo *//* [7.453.0] in Primavera il ragazzo da allenare sei TU */,cat:"formazione",txt:"Un veterano della squadra si offre di allenarti in privato. È un'opportunità rara.",choices:[
     {txt:"💪 Accetto subito — esperienza preziosa",ef:{form:7,coachTrust:5,morale:7,fatigue:6}},
     {txt:"😐 Ho già il mio programma",ef:{morale:2}},
   ]},
@@ -886,7 +901,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🕊 Mi siedo a un tavolo nuovo, in mezzo",ef:{chem:5,fatigue:2}},
     {txt:"🙈 Mangio in camera",ef:{chem:-4,morale:-2}},
   ]},
-  {id:"wi_seg_lite_mister",seg:{da:"wi_seg_lite_clan",c:1,min:3,max:10,spo:1},cond:_sg154("wi_seg_lite_mister"),cat:"seguito",txt:"Il mister ha notato lo spogliatoio diviso e chiede ai più esperti di intervenire. Guarda te, che a pranzo non ti fai più vedere.",choices:[
+  {id:"wi_seg_lite_mister",seg:{da:"wi_seg_lite_clan",c:1,min:3,max:10,spo:1},cond:p=>_sg154("wi_seg_lite_mister")(p)&&(no352()||eta352(p)>=22)/* [giro 352] «ai piu' esperti»: non a un ragazzo */,cat:"seguito",txt:"Il mister ha notato lo spogliatoio diviso e chiede ai più esperti di intervenire. Guarda te, che a pranzo non ti fai più vedere.",choices:[
     {txt:"🗣️ Parlo al gruppo prima dell'allenamento",ef:{chem:8,coachTrust:5,morale:-1}},
     {txt:"😶 Non tocca a me",ef:{coachTrust:-5,chem:-3}},
   ]},
@@ -1047,8 +1062,8 @@ const VITA_EVENTS=[
   // ---- SPOGLIATOIO E COMPAGNI ----
   {id:"vita_sfotto_gol",cat:"squadra",r:"c",cond:p=>{const mh=p.matchHistory||[];const lm=mh[mh.length-1];return !!(lm&&(lm.goals||0)>=1);}/* [7.438.0 collaudo PO «la partita precedente l'eroe non ha segnato! ci deve essere un filo conduttore»] lo sfotto' sul «bel gol» esce solo se il gol c'e' stato DAVVERO nell'ultima partita */,txt:"💬 Gruppo squadra: «Bel gol. Però ammettilo: volevi crossare 😂». Rispondi con la foto della tua esultanza e la scritta \"tutto voluto\". Pioggia di risate.",ef:{morale:5}},
   {id:"vita_cena_squadra",cat:"squadra",r:"c",txt:"🍕 Cena di squadra improvvisata dopo l'allenamento: il portiere paga per una scommessa persa. Si ride fino a mezzanotte.",ef:{morale:7,chem:3}},
-  {id:"vita_scherzo_scarpe",cat:"squadra",r:"c",txt:"🧦 Trovi gli scarpini appesi alla traversa. Il veterano fischietta innocente. La tradizione va rispettata: domani tocca a te scegliere la vittima.",ef:{morale:4}},
-  {id:"vita_consiglio_veterano",cat:"squadra",r:"c",cond:p=>(p.ovr||60)<78,txt:"🎙️ Il capitano ti trattiene a fine allenamento: «Guarda meno il pallone e più lo spazio. Il resto viene da sé.» Te lo scrivi mentalmente.",ef:{form:3,morale:4}},
+  {id:"vita_scherzo_scarpe",cat:"squadra",r:"c",cond:p=>no352()||veterano352(p)||giovane352(p)||(nuovo352(p)&&eta352(p)<=27)/* [giro 352 PO-613] la vittima e' il giovane o il nuovo arrivato; il trentenne e' il veterano */,txt:p=>(!no352()&&veterano352(p))?"🧦 Il ragazzo salito dalla Primavera trova gli scarpini appesi alla traversa. Tu fischietti innocente: la tradizione l'hai portata tu, anni fa. Domani lo aiuti a scegliere la sua prima vittima.":"🧦 Trovi gli scarpini appesi alla traversa. Il veterano fischietta innocente. La tradizione va rispettata: domani tocca a te scegliere la vittima.",ef:{morale:4}},
+  {id:"vita_consiglio_veterano",cat:"squadra",r:"c",cond:p=>no352()?((p.ovr||60)<78):(((p.ovr||60)<78&&giovane352(p)&&!p.isCaptain)||veterano352(p))/* [giro 352 PO-613] il consiglio lo riceve il giovane; il trentenne lo da' */,txt:p=>(!no352()&&veterano352(p))?"🎙️ A fine allenamento trattieni il ragazzo nuovo: «Guarda meno il pallone e più lo spazio. Il resto viene da sé.» Annuisce serio. Te l'aveva detto il tuo primo capitano.":"🎙️ Il capitano ti trattiene a fine allenamento: «Guarda meno il pallone e più lo spazio. Il resto viene da sé.» Te lo scrivi mentalmente.",ef:{form:3,morale:4}},
   {id:"vita_aiuto_compagno",cat:"squadra",r:"r",cond:p=>_no190("A")||(p.proStatus||"u18")==="pro",/* [giro 190 G181-01] «il ragazzo della Primavera» lo racconta chi non e' piu' della Primavera */txt:"🤝 Il ragazzo della Primavera ti chiede di restare dopo l'allenamento per i tiri. Un'ora dopo segna il suo primo gol in partitella e corre ad abbracciare TE.",ef:{morale:6,coachTrust:4},mem:"Il giorno in cui hai fatto da maestro"},
   {id:"vita_sale_pranzo",cat:"squadra",r:"c",cond:p=>(p.coachTrust||60)<60,txt:"😠 Il tuo concorrente di reparto non ti passa il sale a pranzo da tre giorni. La panchina pesa a tutti — ma il sale, dai.",ef:{morale:-3}},
   {id:"vita_gruppo_meme",cat:"squadra",r:"c",cond:p=>(p.popularity||20)>=40,txt:"📱 Il gruppo squadra è pieno di meme sulla tua ultima intervista. Il migliore lo ha fatto il magazziniere. Lo salvi anche tu.",ef:{morale:4,popularity:2}},
@@ -1057,7 +1072,7 @@ const VITA_EVENTS=[
   {id:"vita_telecronaca",cat:"social",r:"c",cond:p=>(p.goals||0)>=3,txt:"📱 Un tifoso ha montato il tuo ultimo gol con una telecronaca argentina d'epoca. 200mila visualizzazioni. Non capisci una parola, ma ti emozioni pure tu.",ef:{popularity:6,morale:4}},
   {id:"vita_tendenza",cat:"social",r:"r",cond:p=>(p.popularity||20)>=55,txt:p=>`🔥 Sei in tendenza. Migliaia di post sul tuo nome, metà complimenti e metà consigli tattici non richiesti. ${(p.club&&p.club.n)||"Il club"} ripubblica il migliore.`,ef:{popularity:8,morale:5},mem:"Il giorno in tendenza"},
   {id:"vita_opinionista",cat:"social",r:"c",cond:p=>(p.form||70)<55,txt:"💬 Un opinionista ti definisce «discontinuo come il wifi in galleria». Fa male perché è scritto bene.",ef:{morale:-4}},
-  {id:"vita_bimbo_maglia",cat:"social",r:"r",txt:"🧒 Allo stadio un bambino ha la maglia bianca col tuo nome scritto a pennarello: non c'erano ancora le tue nella sua taglia. Gliela firmi. Non smette più di saltare.",ef:{morale:8,popularity:3},mem:"La maglia scritta a pennarello"},
+  {id:"vita_bimbo_maglia",cat:"social",r:"r",cond:p=>no352()||nuovo352(p)/* [giro 352] «non c'erano ancora le tue»: il primo anno nel club */,txt:"🧒 Allo stadio un bambino ha la maglia bianca col tuo nome scritto a pennarello: non c'erano ancora le tue nella sua taglia. Gliela firmi. Non smette più di saltare.",ef:{morale:8,popularity:3},mem:"La maglia scritta a pennarello"},
   {id:"vita_mixed_zone",cat:"social",r:"c",txt:"🎙️ In mixed zone: «Preferisci segnare o far segnare?» Rispondi «Vincere» e te ne vai. Il clip diventa un gif.",ef:{popularity:3,morale:2}},
   {id:"vita_meme_scivolata",cat:"social",r:"c",cond:p=>(p.form||70)<50,txt:"🙈 La tua scivolata a vuoto è diventata un meme. Lo posti tu per primo con scritto «pattinaggio artistico: 9.5». I tifosi ti perdonano tutto.",ef:{morale:2,popularity:4}},
   // ---- VITA DELL'EROE ----
@@ -1066,7 +1081,7 @@ const VITA_EVENTS=[
   {id:"vita_casa",cat:"vita",r:"u",cond:p=>no289()?vitaSaldo281(p)>=250000/* [PO-281] idem */:uffOk289(p,"bene:casa")/* [PO-289] la casa dell'Ufficio, se non e' gia' tua */,txt:p=>no289()?"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.":"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai. (La trovi nell'Ufficio, fra i beni.)",get ef(){return no289()?{bank:-180000,morale:12}:{bank:-250000,popularity:1,coachTrust:2,uff289:"bene:casa"};},mem:"La prima casa"},
   {id:"vita_compleanno",cat:"vita",r:"c",cond:p=>((p.week||1)%38)===(((typeof hashStr==="function"?Math.abs(hashStr((p.name||"eroe")+"_bday")):7)%30)+3),txt:"🎂 Compleanno. Lo spogliatoio ti aspetta con una torta e una foto tua da bambino trovata chissà dove, stampata in formato POSTER.",ef:{morale:6}},
   {id:"vita_caffe_oratorio",cat:"vita",r:"r",txt:"☕ Al bar un signore ti paga il caffè senza dire una parola. Poi, sulla porta: «Ti vedevo giocare all'oratorio. Non cambiare.»",ef:{morale:7},mem:"Il caffè dell'oratorio"},
-  {id:"vita_famiglia_stadio",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=30,txt:"👨‍👩‍👦 I tuoi in tribuna per la prima volta nello stadio grande. Li cerchi con lo sguardo al riscaldamento. Ci sono. Basta quello.",ef:{morale:9},mem:"La famiglia in tribuna"},
+  {id:"vita_famiglia_stadio",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=30&&(no352()||primiAnni352(p))/* [giro 352] «per la prima volta nello stadio grande»: i primi anni da professionista */,txt:"👨‍👩‍👦 I tuoi in tribuna per la prima volta nello stadio grande. Li cerchi con lo sguardo al riscaldamento. Ci sono. Basta quello.",ef:{morale:9},mem:"La famiglia in tribuna"},
   {id:"vita_torneo_quartiere",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=60,txt:"🏅 Il tuo quartiere ti ha intitolato il torneo estivo. La targa è storta e il campo è quello di sempre, con le buche. È il premio più bello dell'anno.",ef:{popularity:6,morale:7},mem:"Il torneo del quartiere"},
   // ---- EVENTI ASSURDI E MEMORABILI ----
   {id:"vita_tutto_calcolato",cat:"assurdo",r:"r",cond:p=>{const mh=p.matchHistory||[];const lm=mh[mh.length-1];return !!(lm&&(lm.goals||0)>=1);}/* [7.438.0] «ho APPENA visto il tuo gol»: idem, ultima partita */,txt:"😂 Messaggio di un compagno: «Ho appena visto il tuo gol. Era tutto calcolato?» Rispondi: «Ovviamente no.» «Lo sapevo.»",ef:{morale:6},mem:"«Era tutto calcolato?»"},
