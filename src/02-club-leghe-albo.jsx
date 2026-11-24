@@ -476,7 +476,7 @@ const euroSig=k=>EURO_SIGLA[k]||k||"";
    stamparle: compLbl è il filtro DISPLAY unico da applicare ovunque si renderizzi il nome di una competizione
    arrivato dai dati (trofei, timeline, palmarès, premi, notifiche). Converte la chiave nella sigla di fantasia
    (KCC/KEC/KCF) e lascia intatto qualunque altro nome (nomi di lega, «Coppa Nazionale», …). */
-const compLbl=x=>{const v=String(x==null?"":x);return EURO_SIGLA[v]||v;};
+const compLbl=x=>{const v=String(x==null?"":x);if(typeof window!=="undefined"&&window.__CPM_NO_G357)return v;return EURO_SIGLA[v]||v;};/* [giro 357 · PO-654] rosso __CPM_NO_G357: il filtro lascia passare la chiave (guardiano sigle-357) */
 
 // Sprint 137: historical continental competition winners
 const EURO_COMP_WINNERS={
