@@ -117,7 +117,22 @@ function vitaConto281(p,ef){if(_no281("VITA"))return {chem:clamp((p.chem||50)+(e
   return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),...(ef.uff289?uffPatch289(p,ef.uff289,true):{})/* [PO-289] bene/sponsor dell'Ufficio scritti davvero */};}
 const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
-function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
+/* [giro 356 · PO-557, economia riaperta dal PO il 24/11 «Apri 557»] LO STAFF DI LIVELLO ALTO E' UN TRAGUARDO. Misurato prima (misura-356.mjs,
+   carriere di 14 stagioni sugli handler veri): il costo era una QUOTA FISSA dello stipendio (tutti e tre al livello 3 = 34%, il solo
+   trainer 14%), quindi alla portata dalla prima settimana da professionista (giocatore medio: tutto il livello 2 alla settimana 1, tutto il
+   livello 3 alla settimana 13) mentre il conto arrivava a milioni. Ora: (1) salire a un livello mai pagato costa un INGAGGIO una tantum dal
+   conto, fisso (livello 2 €300.000, livello 3 €2.500.000 per figura): segue la carriera, non lo stipendio; (2) il costo settimanale dei
+   livelli 2 e 3 sale (minimo fisso x4/x12, quota dello stipendio x2,2/x4: tutti e tre al livello 3 = 48%). Il livello 1 non cambia.
+   Salvataggi: nessun campo obbligatorio. Il livello gia' tenuto (perk*Lv) conta come pagato e resta al PREZZO DI PRIMA; il prezzo nuovo vale
+   per i livelli comprati con l'ingaggio (registro staffIng356 = livello piu' alto pagato per figura). Rosso window.__CPM_NO_G356 = prezzi di prima. */
+function no356(){return typeof window!=="undefined"&&!!window.__CPM_NO_G356;}
+const STAFF_MINX356=[0,1,4,12],STAFF_PCTX356=[0,1,2.2,4],STAFF_ING356=[0,0,300000,2500000];
+function staffPagato356(p,k){const d=STAFF24.find(function(s){return s.k===k;});if(!p||!d)return 0;const v=p[d.lv];
+  const m=(typeof v==="number"&&v>=1)?Math.min(3,v|0):(p[k]?1:0),r=(p.staffIng356&&p.staffIng356[k])|0;return Math.max(m,Math.min(3,r));}
+function staffIngaggio356(p,k,L){if(no356()||!L)return 0;let t=0;for(let i=staffPagato356(p,k)+1;i<=Math.min(3,L);i++)t+=STAFF_ING356[i];return t;}
+function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;
+  if(!no356()&&(L>staffPagato356(p,k)||((p&&p.staffIng356&&p.staffIng356[k])|0)>=L))return Math.round(Math.max(d.min*STAFF_MINX356[L],wg*d.pct*STAFF_PCTX356[L]));
+  return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
 function staffCostTot24(p){return STAFF24.reduce(function(a,d){return a+staffCost24(p,d.k);},0);}
 /* [7.990.0 Patrimonio F2] ACCADEMIA COL TUO NOME. Fondazione una tantum max(150k, 8 stipendi), gestione
    max(400, 2% stipendio) a settimana (sospesa in pausa; a fondi finiti va in pausa da sola). A ogni fine
