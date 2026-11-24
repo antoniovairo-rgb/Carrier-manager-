@@ -28,7 +28,12 @@ export async function banco({ rosso = false, stati = +(process.env.CPM_STATI || 
       const mov = (c, br) => { const d = 2.5 * c.mm, s = c.mm; return br === 'fermo' ? null : br === 'migliore' ? { dx: d, dy: 0, sm: s } : br === 'avanti' ? { dx: d, dy: 0, sm: 0 } : br === 'addosso' ? { dx: d, dy: 0, sm: -s } : br === 'indietro' ? { dx: -d, dy: 0, sm: s } : { dx: -d, dy: 0, sm: -s }; };
       const acc = {}; for (const f of ['tiro', 'assist']) { acc[f] = {}; for (const br of BR) acc[f][br] = { s: 0, n: 0 }; } const tasto = { tiro: { s: 0, n: 0 }, assist: { s: 0, n: 0 } };
       /* identita' «senza passi = come prima»: PRIMA di ogni altro conto (stesso stato in ogni braccio), il gol atteso di ogni tiro da fermo */
-      const primo = casi.filter(c => c.fam === 'tiro').map(c => { const g = M.giocaScena({ fam: c.fam, stat: c.stat, intent: c.intent, x: c.x, y: c.y, stats: st, mov: null }); return g ? g.xg : null; });
+      const xg0 = () => casi.filter(c => c.fam === 'tiro').map(c => { const g = M.giocaScena({ fam: c.fam, stat: c.stat, intent: c.intent, x: c.x, y: c.y, stats: st, mov: null }); return g ? g.xg : null; });
+      const primo = xg0();
+      /* [giro 350] l'identita' si misura NELLA STESSA PAGINA, sullo STESSO stato: prima il conto cosi' com'e', poi lo stesso conto col rosso
+         acceso per un istante (nessun tick in mezzo). Confrontare due pagine diverse misurava il cronometro: la partita aperta avanza in
+         tempo reale fra openMatch e il conto, e due pagine verdi davano 1-4 gol attesi diversi su 109 (anche su v7.999.207, prima del 346). */
+      const r0 = !!window.__CPM_NO_G346B; window.__CPM_NO_G346B = 1; const primoRosso = xg0(); if (!r0) delete window.__CPM_NO_G346B;
       let min = 1; const B = 22; let diversi = 0, uguali = 0;
       for (let t = 0; t < stati; t++) { for (let k = 0; k < 4; k++) { for (let q = 0; q < B; q++) M.tick({ min: Math.min(min, 44), dt: 1 / B, dec: true }); min++; }
         for (const c of casi) { const base = { fam: c.fam, stat: c.stat, intent: c.intent, x: c.x, y: c.y, stats: st };
@@ -40,7 +45,7 @@ export async function banco({ rosso = false, stati = +(process.env.CPM_STATI || 
             acc[c.fam][br].s += v; acc[c.fam][br].n++;
             if (c.fam === 'tiro') { if (br === 'fermo') pf = v; else if (br === 'migliore' && pf != null) { if (Math.abs(v - pf) > 1e-9) diversi++; else uguali++; } } } } }
       const R = {}; for (const f of ['tiro', 'assist']) { R[f] = {}; for (const br of BR) R[f][br] = acc[f][br].n ? +(acc[f][br].s / acc[f][br].n).toFixed(4) : null; R[f].n = acc[f].fermo.n; R[f].tasto = tasto[f].n ? +(tasto[f].s / tasto[f].n).toFixed(4) : null; }
-      return { R, primo, casi: casi.length, scene: new Set(casi.map(c => c.gi)).size, stati, diversi, uguali, passi: { uno: casi.filter(c => c.mm === 1).length, due: casi.filter(c => c.mm >= 2).length } }; }, [stati, rep, liv, BRACCI]);
+      return { R, primo, primoRosso, casi: casi.length, scene: new Set(casi.map(c => c.gi)).size, stati, diversi, uguali, passi: { uno: casi.filter(c => c.mm === 1).length, due: casi.filter(c => c.mm >= 2).length } }; }, [stati, rep, liv, BRACCI]);
   } catch (e) { out = { err: String(e.message || e).slice(0, 200) }; }
   await b.close(); srv.close(); return out; }
 export function stampa(o, et) { if (!o || o.err) { console.log(`  ?? ${et}: ${o && o.err}`); return; }
@@ -49,5 +54,5 @@ export function stampa(o, et) { if (!o || o.err) { console.log(`  ?? ${et}: ${o 
     console.log(`    ${f.padEnd(6)} (${r.n} campioni) ` + BRACCI.map(b => `${b} ${(r[b] * 100).toFixed(2)}%${b !== 'fermo' ? ' (' + (r[b] / r.fermo >= 1 ? '+' : '') + ((r[b] / r.fermo - 1) * 100).toFixed(1) + '%)' : ''}`).join(' · ') + ` · tasto ${(r.tasto * 100).toFixed(1)}%`); }
   console.log(`    tiri in cui la mossa migliore cambia il gol atteso: ${o.diversi} su ${o.diversi + o.uguali}`); }
 if (import.meta.url === `file://${process.argv[1]}`) { const v = await banco({}); stampa(v, 'verde'); const r = await banco({ rosso: true }); stampa(r, 'ROSSO __CPM_NO_G346B');
-  if (v.primo && r.primo) { const d = v.primo.filter((q, i) => q !== r.primo[i]).length; console.log(`  identita' senza passi (gol atteso da fermo, primo conto, verde contro rosso): ${v.primo.length - d} uguali su ${v.primo.length}`); }
+  if (v.primo && v.primoRosso) { const d = v.primo.filter((q, i) => q !== v.primoRosso[i]).length; console.log(`  identita' senza passi (gol atteso da fermo, primo conto, verde contro rosso): ${v.primo.length - d} uguali su ${v.primo.length}`); }
   process.exit(0); }

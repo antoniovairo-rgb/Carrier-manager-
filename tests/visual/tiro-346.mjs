@@ -67,7 +67,7 @@ if (!SOLO || SOLO === 'B') { console.log('\n── B · BANCO SUL MOTORE · rius
       if (!(q(A.migliore, A.fermo) >= 0.03)) fail.push(`B verde: sull'assist la mossa migliore vale ${(q(A.migliore, A.fermo) * 100).toFixed(1)}% (serve >= +3%)`);
       if (!(q(A.peggiore, A.fermo) <= -0.05)) fail.push(`B verde: sull'assist la mossa peggiore vale ${(q(A.peggiore, A.fermo) * 100).toFixed(1)}% (serve <= -5%)`);
       if (v.diversi !== v.diversi + v.uguali) fail.push(`B verde: la mossa migliore cambia il gol atteso solo in ${v.diversi} tiri su ${v.diversi + v.uguali}`); }
-    const d = (v.primo || []).filter((x, i) => x == null || x !== r.primo[i]).length; console.log(`  identita' senza passi (gol atteso da fermo, primo conto, verde contro rosso): ${(v.primo || []).length - d} uguali su ${(v.primo || []).length}`);
+    const d = (v.primo || []).filter((x, i) => x == null || !v.primoRosso || x !== v.primoRosso[i]).length;/* [giro 350] stessa pagina, stesso stato: verde contro rosso acceso per un istante (movimenti-346.mjs) */ console.log(`  identita' senza passi (gol atteso da fermo, primo conto, verde contro rosso): ${(v.primo || []).length - d} uguali su ${(v.primo || []).length}`);
     if (!(v.primo && v.primo.length >= 50) || d) fail.push(`B verde: senza passi il gol atteso non e' identico a prima (${d} diversi su ${(v.primo || []).length})`);
     if (!(r.diversi === 0 && r.uguali >= 500)) fail.push(`B rosso: col rosso la mossa cambia ancora il gol atteso in ${r.diversi} tiri (uguali ${r.uguali}): il guardiano non vede il difetto`);
     riep.B = { verde: v.R, rosso: r.R, casi: v.casi, scene: v.scene, stati: v.stati, identita: (v.primo || []).length - d }; } }
