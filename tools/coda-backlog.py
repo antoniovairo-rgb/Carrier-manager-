@@ -11,7 +11,7 @@ Ordine (priorita' del PO, DECISIONI 22/11 17:20):
   3. difetti nell'ordine AREA3 confermato dal PO il 23/11 (A partita, B carriera, C Primavera, D scene 3D);
   4. il resto per ordine di arrivo;
   5. le idee dei questionari di novembre (PO-381…PO-447), per ordine di arrivo.
-Non toccate: IN CORSO e PARZIALE con un giro in corso. Idempotente: si rilancia dopo ogni modifica del BACKLOG.
+Non toccate: IN CORSO, FATTO e CHIUSO/A (da spostare nello storico). Idempotente: si rilancia dopo ogni modifica del BACKLOG.
 Uso: python3 tools/coda-backlog.py
 """
 import re, pathlib
@@ -43,7 +43,7 @@ def main():
         if not l.startswith('| PO-'): continue
         c = l.split('|')
         st = c[5].strip()
-        if st.startswith('IN CORSO'): continue
+        if st.startswith(('IN CORSO', 'FATTO', 'CHIUS')): continue  # le voci chiuse vanno nello storico, non in coda
         righe.append((rango(int(c[1].strip()[3:])), i))
     righe.sort()
     for k, (_, i) in enumerate(righe, 1):
