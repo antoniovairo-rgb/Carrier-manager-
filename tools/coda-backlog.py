@@ -43,7 +43,7 @@ def main():
         if not l.startswith('| PO-'): continue
         c = l.split('|')
         st = c[5].strip()
-        if st.startswith(('IN CORSO', 'FATTO', 'CHIUS')): continue  # le voci chiuse vanno nello storico, non in coda
+        if st.startswith(('IN CORSO', 'FATTO', 'CHIUS', 'DA VERIFICARE DAL PO')) or re.match(r'IN CODA · n° \d+ — DAL PO', st): continue  # chiuse o in attesa del collaudo del PO  # le voci chiuse vanno nello storico, non in coda
         righe.append((rango(int(c[1].strip()[3:])), i))
     righe.sort()
     for k, (_, i) in enumerate(righe, 1):
