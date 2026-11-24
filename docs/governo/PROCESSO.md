@@ -17,6 +17,8 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 
 **Richieste nuove (PO 24/11 08:15: «le richieste nuove devono andare sempre in coda per arrivo, non creiamo treni giganti, mi raccomando!»).** Ogni richiesta nuova entra nel BACKLOG «IN CODA» per ordine di arrivo, senza chiedere al PO se anticiparla: la priorità la dichiara il PO di sua iniziativa. Un giro nuovo parte dalla testa della coda; un vagone pronto sale sul primo treno libero, al massimo 6 vagoni (meglio pochi).
 
+**Il treno in corsa non prende MAI richieste nuove (PO 24/11 13:20: «le nuove richieste non devono entrare nel treno in corsa...MAI!»).** Una richiesta nuova va in coda per arrivo anche se è un difetto grave o una regressione dell'ultima versione: sale su un treno successivo. Sul treno in corsa entra solo la riparazione dei SUOI rossi (giri come 344/348/349/350), che non è lavoro nuovo ma la chiusura dei suoi vagoni.
+
 **Vagoni che non si pestano i piedi (PO 24/11 11:10).** Sullo stesso treno salgono solo vagoni che non toccano lo stesso file di gioco (`src/*`), lo stesso guardiano o la stessa macchina del treno: prima di unire, `python3 tools/vagoni-incrocio.py --base <ultimo tag v*> origin/sviluppo/<giro> …` (esce 1 se c'è un incrocio; i registri `ci-runner.mjs` e `package.json` contano solo come avviso). Due vagoni che si incrociano vanno su treni diversi, uno dopo l'altro. Anche i giri da lanciare insieme si scelgono, a parità di posizione in coda, su zone diverse del gioco. Lezione del treno della 7.999.208: 345, 346 e 347 toccavano tutti `src/14-motore-possesso.jsx` e il treno si è fermato su tiro-346.
 
 ## Smistamento (triage) — entro la risposta successiva
