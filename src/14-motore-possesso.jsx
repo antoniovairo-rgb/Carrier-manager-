@@ -39,6 +39,7 @@ const TATTICHE_MOTORE={
     Bilanciato:{press:0,linea:0,amp:0,ment:0,diretto:0},Pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},
     Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
 try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
+const GOL347_K=1.25;/* [giro 347 PO-599] fattore dei tiri su azione nella sola simulazione rapida (vedi esitoTiroV2) */
 const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2). Taratura 05/10 sulla VISSUTA (dove il giocatore tira a ogni occasione): K=3 dava 1,38 gol dell'eroe dalle scene, K=1 stimato ~0,8; nella simulazione rapida K=1 da' 0,48 */
 /* [PO-226, decisione PO 12/10 «Sì, avvia il piano» — LE INTERAZIONI NASCONO DAI FATTI DEL MOTORE. Rosso __CPM_NO_INT226]
    Censimento (docs/sviluppo/RAPPORTO-giro10.md): in partita uscivano 4-5 schede a orologio (finestra 18'-88', sorteggio) e quattro
@@ -674,6 +675,14 @@ function creaMotorePossesso(cfg){
     if(P.eroe&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TAL202)){
       const _k=(typeof window!=='undefined'&&window&&window.__CPM_TAL202_K!=null)?+window.__CPM_TAL202_K:TAL202_K;const _o=+((cfg.eroe&&cfg.eroe.ovr)||70);
       xg=clamp(xg*(1+_k*Math.max(0,_o-60)/40),0.005,0.9);}
+    /* [giro 347 PO-599, PO 21/11 «Tarare i gol del motore». Rosso __CPM_NO_G347 = taratura di oggi] SOLO LA SIMULAZIONE RAPIDA
+       (cfg.gol347, passato da simulaPartitaMotore): la partita vissuta non passa di qui. MISURATO prima (17.136 partite, 14 leghe, percorso
+       Simula): 2,33 gol a partita contro 3,22 della Bundesliga 2023/24; bersaglio PO 2,6-2,9. Un solo fattore, uguale per le due squadre,
+       su ogni tiro su azione (rigore e punizione diretta restano il loro xG): il rapporto fra le pericolosita' delle due squadre non cambia,
+       e nessun sorteggio in piu' (stessa sequenza di numeri a parita' di esiti). Gestione del vantaggio e debito dell'eroe restano a valle.
+       Tabelle prima/dopo in docs/sviluppo/RAPPORTO-giro347.md. __CPM_GOL347_K solo per tarare. */
+    if(cfg.gol347&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G347)){
+      const _k347=(typeof window!=='undefined'&&window&&window.__CPM_GOL347_K!=null)?+window.__CPM_GOL347_K:GOL347_K;xg=clamp(xg*_k347,0.005,0.9);}
     if(ctx&&ctx.res221&&ctx.res221!==1)xg=clamp(xg*ctx.res221,0.005,0.9);/* [7.999.156 PO-221] resa del tiro nelle SCENE dell'eroe (solo giocaScena, non la simulazione rapida) */
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
@@ -1975,7 +1984,7 @@ function simulaPartitaMotore(o){o=o||{};
   let _fH157=+o.forzaH||65,_fA157=+o.forzaA||65;
   if(!(typeof window!=='undefined'&&window.__CPM_NO_G157)){const _lo157=Math.min(_fH157,_fA157);if(_lo157<40){_fH157+=40-_lo157;_fA157+=40-_lo157;}}
   const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:_fH157,away:_fA157},tattica:o.tattica||null,lato:'home'});
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:_fH157,away:_fA157},tattica:o.tattica||null,lato:'home',gol347:true/* [giro 347 PO-599] */});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});

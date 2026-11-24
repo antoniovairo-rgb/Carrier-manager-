@@ -489,6 +489,123 @@
   ]
  },
  {
+  "data": "2026-11-23 12:41",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "sim-motore",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "gol-347",
+    "ok": true,
+    "s": 194
+   },
+   {
+    "passo": "bilancio-310",
+    "ok": true,
+    "s": 90
+   },
+   {
+    "passo": "match-sequence",
+    "ok": true,
+    "s": 979
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "career-sim",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 210
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 299
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 325
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 412
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 684
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 204
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 123
+   }
+  ]
+ },
+ {
   "data": "2026-11-23 12:31",
   "versione": "7.999.206",
   "catena": "giro",

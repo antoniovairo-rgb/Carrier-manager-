@@ -772,7 +772,8 @@
     "deploy-326": "node deploy-326.mjs",
     "treno-330": "node treno-330.mjs",
     "notte-333": "node notte-333.mjs",
-    "ci:sentinelle": "node ci-runner.mjs sentinelle"
+    "ci:sentinelle": "node ci-runner.mjs sentinelle",
+    "gol-347": "node gol-347-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
