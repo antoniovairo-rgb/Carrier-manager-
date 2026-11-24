@@ -55557,6 +55557,7 @@ const getThisWeekMatchday=()=>{
        presentazione, ritiro, intervista, rinnovo) «Avanza» non fa nulla — si decide prima quella; (2) dopo ogni avanzamento
        il tasto resta fermo 1,2 s (era 0,6). Misura: sonda tests/visual/avanza-compulsivo.mjs. Rosso __CPM_NO_FRENO23. */
     const _r23=(typeof window!=='undefined'&&window.__CPM_NO_FRENO23);
+    if(attesa354){const _t354=_att354()&&(weekLiveModal||careerMomentModal||(coachModal&&!coachModal.chosen)||milestoneModal||monthlyReviewModal);setAttesa354(null);if(_t354)return;}/* [giro 354] un tocco su Avanza chiude la coda: la finestra in attesa si mostra (si decide prima quella) */
     if(!_r23&&(weekLiveModal||showMatchPrompt||transferOffer||agentIntro||milestoneModal||careerMomentModal||negoModal||presEvent||ritiroEvent||interviewModal||(player.agentCheckin&&player.agentCheckin.due&&player.hasAgent))){try{window.__CPM_FRENO23=(window.__CPM_FRENO23|0)+1;}catch(_e){}return;}
     if(continuaBusyRef.current)return; // debounce rapid keypresses
     continuaBusyRef.current=true;
@@ -55594,6 +55595,7 @@ const getThisWeekMatchday=()=>{
     if((player.season||1)===((player.richiamo198&&player.richiamo198.s)||0)&&(player.renewalSeason||0)!==(player.season||1)&&!player.contractExpired)setRichiamo198(r);},[salta163]);// eslint-disable-line
   const[saltaTick163,setSaltaTick163]=useState(0);
   const[saltaFine163,setSaltaFine163]=useState(null);
+  const[attesa354,setAttesa354]=useState(null);/* [giro 354 · PO-522] la fermata sul rinnovo tiene in coda le finestre della settimana (chiave della settimana in cui e' nata) */
   const _salta163Ref=useRef({fermo:0,firma:"",passi:0});
   const _saltaVisti163=useRef("");/* l'ultimo stato persistente che ha gia' fermato la corsa (vedi sotto): non riferma nella stessa settimana */
   const _saltaOn163=()=>!(typeof window!=='undefined'&&window.__CPM_NO_SALTA153);
@@ -55627,6 +55629,16 @@ const getThisWeekMatchday=()=>{
   const _clubTratta198=(p)=>{try{const ro=(typeof calcSquadRole==="function")?calcSquadRole(p):null;return !((p.coachTrust||60)<40||(ro==="riserva"&&(p.coachTrust||60)<52));}catch(_e){return true;}};
   /* [giro 198 · PO-446] il tasto che si ferma porta dove c'e' la cosa da fare: la scheda Agente, col riquadro «Da fare ora» in vista */
   const _vaiAgente198=()=>{try{goTab("agente");setTimeout(()=>{try{const el=document.querySelector('[data-cpm="agente198-ora"]');if(el)el.scrollIntoView({block:"start",behavior:"instant"});}catch(_e){}},120);}catch(_e){}};
+  /* [giro 354 · PO-522, decisione PO «Mai coperto»] quando «Vai al prossimo momento» si ferma sul rinnovo, l'evento della settimana
+     (settimana vissuta, momento di carriera, «Il mister ti cerca», traguardo, verifica del mister) NON si apre sopra il tasto
+     «Vai al rinnovo →»: resta nel suo stato (e nella copia salvata del giro 201, quindi non si perde) ma non si disegna, finche'
+     il rinnovo e' da gestire o la trattativa e' aperta. Misurato (misura-354, 8 corse): il momento di carriera arriva ~250 ms DOPO
+     la fermata (timer di 450 ms dal cambio settimana), 2 corse su 8. Esce da solo appena il rinnovo e' firmato o rifiutato; la
+     coda finisce anche alla prossima azione (cambio di settimana/vissuta/partite, o un tocco su Avanza/Simula, che la mostra).
+     Rosso window.__CPM_NO_G354 = come prima. */
+  const _rinnPend354=(p)=>_pro165(p)&&(!!p.contractExpired||(_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1)));
+  const _chiave354=(p)=>[p.season||1,p.week||1,p.weekLived?1:0,(p.matchHistory||[]).length].join("|");
+  const _att354=()=>!!attesa354&&!(typeof window!=='undefined'&&window.__CPM_NO_G354)&&attesa354===_chiave354(player)&&(_rinnPend354(player)||!!negoModal);
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
     const id=String((wl&&wl.impId)||""),tx=String((wl&&wl.event&&wl.event.txt)||"");
@@ -55662,6 +55674,7 @@ const getThisWeekMatchday=()=>{
     if(weekLiveModal||showMatchPrompt||transferOffer||negoModal||agentIntro||milestoneModal||careerMomentModal||presEvent||ritiroEvent||interviewModal||monthlyReviewModal||nationalCallupData)return "chiudi prima la finestra aperta";
     return null;};
   const _saltaStop163=(motivo,extra)=>{const st=salta163||{};
+    if(motivo==="rinnovo"&&_g198()&&_rinnPend354(player))setAttesa354(_chiave354(player));/* [giro 354] */
     try{const mh=(player.matchHistory||[]).slice(st.mh0||0).filter(m=>m&&!m.national);
       const v=mh.filter(m=>m.won).length,n=mh.filter(m=>m.drew).length,pe=mh.length-v-n,g=mh.reduce((s,m)=>s+(m.goals||0),0),a=mh.reduce((s,m)=>s+(m.assists||0),0);
       const sett=((player.season||1)-(st.s0||player.season||1))*38+(player.week||1)-(st.w0||player.week||1);
@@ -55678,6 +55691,8 @@ const getThisWeekMatchday=()=>{
     if(R.fn!==saltaFine163){R.fn=saltaFine163;R.f=f;if(screen!=="match")return;}
     if(f!==R.f||screen==="match")setSaltaFine163(null);}catch(_e){}
   },[saltaFine163,player.season,player.week,player.weekLived,(player.matchHistory||[]).length,screen]);// eslint-disable-line
+  useEffect(()=>{if(typeof window==='undefined'||!(_CPM_TEST||_SIT_TEST))return;try{const a=_att354();/* [giro 354] testimone: coda attiva e finestre tenute */
+    window.__CPM_ATT354={attivo:a,chiave:attesa354,tenute:[weekLiveModal&&"settimana",careerMomentModal&&"momento",coachModal&&!coachModal.chosen&&"mister",milestoneModal&&"traguardo",monthlyReviewModal&&"verifica"].filter(Boolean)};}catch(_e){}});
   const _saltaAvvia163=()=>{if(!_saltaOn163()||_saltaMotivo163())return;
     _salta163Ref.current={fermo:0,firma:"",passi:0};setSaltaFine163(null);
     setSalta163({fase:"corsa",ps0:player.proStatus||"u18",s0:player.season||1,w0:player.week||1,mh0:(player.matchHistory||[]).length,inj0:!!player.injured,scelte:[]});};
@@ -60981,7 +60996,7 @@ const getThisWeekMatchday=()=>{
           </Card>
           </>} onClose={()=>setShowSettings(false)} onExitToMenu={onExitToMenu}/>}
       {/* Sprint 217 — Milestone celebration modal */}
-      {milestoneModal&&<MilestoneCelebrationModal milestone={milestoneModal} onDismiss={()=>setMilestoneModal(null)}/>}
+      {milestoneModal&&!_att354()&&<MilestoneCelebrationModal milestone={milestoneModal} onDismiss={()=>setMilestoneModal(null)}/>}
       {/* Sprint 56 — Tutorial onboarding (solo primo avvio) */}
       {!player.tutorialDone&&screen==="dashboard"&&(
         <TutorialOverlay
@@ -61039,7 +61054,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* == WeekLife modal == */}
-      {weekLiveModal&&(
+      {weekLiveModal&&!_att354()&&(
         /* [23/09 POC — collaudo PO «impulsi non standard, uniforma con la grafica»] il pop-up della settimana usa il
            Modal del kit (scrim, pannello, raggio e ombra di tutte le altre finestre), non un velo e una Card fatti a
            mano; il compagno che parla e' la sua FIGURINA; le scelte sono Btn del kit, larghe come il pollice.
@@ -61161,7 +61176,7 @@ const getThisWeekMatchday=()=>{
         ))}
 
       {/* == Sprint 25A — Career Moment Modal == */}
-      {careerMomentModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC — anteprima 05: il «momento» si apriva SOPRA il confronto col procuratore, due finestre impilate] il momento aspetta in coda che l'altra finestra sia chiusa. Rosso __CPM_NO_CODA23 */
+      {careerMomentModal&&!_att354()&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC — anteprima 05: il «momento» si apriva SOPRA il confronto col procuratore, due finestre impilate] il momento aspetta in coda che l'altra finestra sia chiusa. Rosso __CPM_NO_CODA23 */
         // [7.159.0 B] TIER DI RARITÀ: "epico" → presentazione PREMIUM dorata (glow + label leggendaria);
         //   "raro"/default → viola storico. Il tier è dichiarato sul momento (i vecchi restano "raro").
         const _epic=careerMomentModal.tier==="epico";
@@ -61340,7 +61355,7 @@ const getThisWeekMatchday=()=>{
       ),document.body);})()}
 
       {/* == Coach Dialogue Modal == */}
-      {coachModal&&!coachModal.chosen&&(
+      {coachModal&&!coachModal.chosen&&!_att354()&&(
         <Modal open dismissable={false} width={420}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
               <NpcFaceCoach coachName={player.coach?.name||"mister"} size={52}/>
@@ -61382,7 +61397,7 @@ const getThisWeekMatchday=()=>{
       {/* == Sprint 60: Verifica Trimestrale del Mister == */}
       {/* [7.999.49 parte A] CODA DELLE FINESTRE: la verifica del mister aspetta che la settimana vissuta, l'offerta e il
           momento narrativo siano chiusi (prima si apriva SOPRA la settimana e ne nascondeva evento e «Morale +5»). */}
-      {monthlyReviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal))&&(
+      {monthlyReviewModal&&!_att354()&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal))&&(
         <Modal open dismissable={false} width={380} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
               🧑‍💼 Verifica Trimestrale · S.{monthlyReviewModal.season} W.{monthlyReviewModal.week}
