@@ -32,4 +32,19 @@ per un'identità; tetto d'attesa e non di qualità).
 
 ## Rigiocata dopo le correzioni
 
-(vedi sotto: catena del giro)
+Banco, punta del ramo (056ca50f): tiro-346 **verde** (B: 109 uguali su 109, rosso del braccio B visto) · solo-highlight-166
+**verde** (controllo 10: 245/245 voci, 4-1 identico; 12b chiuso in entrambe le partite; rosso: cade su 3, 7 e 8).
+
+Catena del giro (`node ci-runner.mjs giro tiro-346 solo-highlight-166 fasce-345 gol-347 esiti-241 partita-vera career-critical`,
++ sentinelle, 22 passi): **22/22 verdi** — tiro-346 524 s · fasce-345 115 s · gol-347 248 s · esiti-241 358 s ·
+solo-highlight-166 1078 s · partita-vera 750 s · career-critical 353 s · le sentinelle tutte verdi. Esito registrato in
+`docs/governo/STABILITA.json`. (Il runner stampa «su 7.999.207»: è la `GAME_VERSION` del file, non toccata.) Le foto che la
+sentinella grafica rigenera in `docs/collaudo-grafico/g0` non sono state committate.
+
+## Da sapere (fuori ambito)
+
+- `ROSSI-DICHIARATI.json` è cambiato solo sul ramo: il rilascio lo legge da **main**. Le due righe `solo_runner` (tiro-346,
+  solo-highlight-166) servono solo se il prossimo treno li rivede rossi sul runner; tiro-346 dopo la correzione dovrebbe essere verde
+  anche lì, e la sua riga si può togliere al primo treno verde. Non le ho portate su main (push sul ramo di produzione non chiesto).
+- Il controllo 10 di solo-highlight-166 resta l'unico punto senza causa misurata. Se torna rosso sul runner, il passo successivo è
+  una sonda che registri `ballPosRef` e lo stato `ballPos` nello stesso battito (CPM_G166_DUMP salva già le due sequenze).
