@@ -201,6 +201,7 @@
     "career-critical": "npm run recovery-competition && npm run save-monotonic && npm run playing-mdref && npm run double-tap && npm run stale-matchday && npm run playedmd-registry && npm run career-invariants && npm run pending-mr-durable && npm run cup-final-replay && npm run coppa-nazioni && npm run coppa-intera",
     "playedmd-registry": "node playedmd-registry-test.mjs",
     "impulsi-contesto": "node impulsi-contesto-test.mjs",
+    "eta-352": "CPM_PROVA_ROSSO=1 node eta-352.mjs",
     "impulsi-memoria-154": "node impulsi-memoria-154.mjs",
     "slot-card-layout": "node slot-card-layout-test.mjs",
     "parata-legibility": "node parata-legibility-test.mjs",
