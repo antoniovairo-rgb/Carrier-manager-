@@ -73,7 +73,7 @@ async function gioca(page, forza) {
   await page.evaluate(() => { window.__P253 = { maxPanca: -1, entrata: null }; const iv = setInterval(() => { try { const lm = window.__CPM_LM215 ? window.__CPM_LM215() : null; const m = window.__CPM_BALL3 ? ((window.__CPM_BALL3() || {}).c | 0) : null;
     if (!lm || m == null || !(window.__CPM_PHASE && window.__CPM_PHASE() === 'playing' || window.__P253.maxPanca >= 0)) return;
     if (lm.onBench) window.__P253.maxPanca = Math.max(window.__P253.maxPanca, m); else if (window.__P253.maxPanca >= 0 && window.__P253.entrata == null) { window.__P253.entrata = m; clearInterval(iv); } } catch (e) {} }, 5); });
-  if (forza) await page.evaluate(() => [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim())).click());
+  if (forza) await page.evaluate(() => [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^(?:Vedi le formazioni|Gioca la partita)/.test((x.textContent || '').trim())).click());
   else await page.evaluate(() => document.querySelector('[data-cpm="solo-243"]').click());
   const t0 = Date.now(); let auto = false, fP = null, ult = Date.now(), panca0 = null, dopo0 = null, minUlt = 0, bP = true;
   while (Date.now() - t0 < 480000) {

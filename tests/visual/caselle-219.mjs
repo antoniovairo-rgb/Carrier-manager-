@@ -17,7 +17,7 @@ await p.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="par
 const R = []; let fatto = false;
 for (let i = 0; i < 700; i++) { const f = await fase(); if (f === 'playing') break;
   if (f === 'walkout') { const pr = await p.evaluate(() => { try { return !!window.__CPM_PRONTI196().pronti && !window.__CPM_ATT196; } catch (e) { return false; } }); if (pr && !fatto) { fatto = true; await sleep(3000); R.push(await conta('ingresso')); await p.evaluate(() => { const b = document.querySelector('[data-cpm="salta-ingresso-v2"]'); if (b) b.click(); }); } }
-  else await p.evaluate(() => { const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent && /^(Vedi le formazioni|Ingresso in campo|Continua|Avanti|Siamo pronti)/i.test((x.textContent || '').trim()) && !/Salta/i.test(x.textContent || '')); if (B.length) B[B.length - 1].click(); });
+  else await p.evaluate(() => { const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent && /^(Vedi le formazioni|Gioca la partita|Ingresso in campo|Continua|Avanti|Siamo pronti)/i.test((x.textContent || '').trim()) && !/Salta/i.test(x.textContent || '')); if (B.length) B[B.length - 1].click(); });
   await sleep(500); }
 await sleep(8000); R.push(await conta('partita'));
 await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'CAMPIONI!', kind: 'league' })); await sleep(9000); R.push(await conta('premiazione'));

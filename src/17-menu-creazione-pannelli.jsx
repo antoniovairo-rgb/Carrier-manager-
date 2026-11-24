@@ -1596,6 +1596,69 @@ const generateLeagueScorers=(player,opts)=>{
   const _sorted=scorers.sort((a,b)=>b.goals-a.goals);
   return (opts&&opts.all)?_sorted:_sorted.slice(0,12);/* [7.9.2] all → lista intera per i premi (l'eroe può essere oltre il 12°) */
 };
+/* [giro 340 PO-569/570] MARCATORI DI QUALSIASI LEGA. La lega dell'eroe resta su generateLeagueScorers (con i suoi gol veri);
+   per le altre leghe la STESSA formula e gli STESSI semi per club (hashStr(id_stagione_s59)), sui club che la carriera
+   mette davvero in quella lega (leagueOverrides, come calcWorldStandings). Nessun campo salvato: e' una derivazione
+   deterministica della stagione, identica a ogni apertura. */
+const marcatoriLega340=(player,lg,opts)=>{
+  const my=player&&player.club&&player.club.lg;
+  if(!lg||lg===my)return generateLeagueScorers(player,opts);
+  const week=Math.min((opts&&opts.week)||player.week||1,38);
+  if(week<=1)return[];
+  const season=player.season||1,ov=player.leagueOverrides||{};
+  const clubs=CLUBS.filter(c=>c&&!c.isU18&&((ov[c.id])||c.lg)===lg).slice(0,18);
+  if(clubs.length<2)return[];
+  const FNAMES=["Luca","Marco","Diego","Carlos","Ahmed","Kai","Lucas","Leon","Robert","Daniel","Victor","Andre","Erik","Tomas","Marko"];
+  const LNAMES=["Gomez","Silva","Bauer","Romano","Moretti","Andersson","Novak","Costa","Laurent","Fischer","Moreau","Nielsen","Ferreira","Petrov","Schmidt"];
+  const played=Math.min(Math.max(0,week-1),2*(clubs.length-1));
+  const sc=clubs.map(c=>{
+    const seed=hashStr(c.id+"_"+season+"_s59"),seed2=hashStr(c.id+"_ln_"+season+"_s59");
+    const rate=0.30+(c.p||60)/99*0.45;
+    const goals=Math.max(0,Math.round(rate*played)+((seed%3)-1));
+    return{name:FNAMES[seed%FNAMES.length]+" "+LNAMES[seed2%LNAMES.length],club:(opts&&opts.fullClub)?(c.n||c.a):(c.a||c.n),goals,isPlayer:false};
+  }).sort((a,b)=>b.goals-a.goals);
+  return(opts&&opts.all)?sc:sc.slice(0,12);
+};
+/* [giro 340 PO-569/570] FOTOGRAFIA DI FINE STAGIONE, scritta al rollover in player.albo340 (campo FACOLTATIVO: assente = []
+   nei salvataggi vecchi, nessuna migration). Per OGNI lega: podio, numero di squadre e capocannoniere, dalle STESSE sorgenti
+   che il gioco mostra (classifica dell'eroe ordinata; calcWorldStandings a G38 con gli spostamenti della stagione per le altre).
+   Riga compatta: {s,lg,podio:[1°,2°,3°],n,cap:[nome,club,gol,eroe?]}. */
+const fotoLeghe340=(p,sortedHero)=>{try{
+  const ov=p.leagueOverrides||{},s=p.season||1,my=p.club&&p.club.lg,pro=(p.proStatus||"u18")==="pro";
+  const leghe=[...new Set(CLUBS.filter(c=>c&&!c.isU18).map(c=>(ov[c.id])||c.lg).filter(Boolean))];
+  if(pro&&my&&!leghe.includes(my))leghe.push(my);
+  return leghe.map(lg=>{
+    const st=(pro&&lg===my&&sortedHero&&sortedHero.length)?sortedHero:calcWorldStandings(lg,s,38,ov);
+    if(!st||st.length<2)return null;
+    const sc=(pro||lg!==my)?marcatoriLega340(p,lg,{week:38,fullClub:true,all:true}):[];
+    const c=sc&&sc[0];
+    return{s,lg,podio:st.slice(0,3).map(t=>t.n||t.name||""),n:st.length,cap:c?[c.name,c.club,c.goals|0,c.isPlayer?1:0]:null};
+  }).filter(Boolean);
+}catch(_e){return[];}};
+/* vincitore europeo derivato: STESSA formula dell'«Ultimi vincitori» del Tab Coppe (7.35.1), cosi' le due viste non divergono */
+const vincitoreEuro340=(ec,s)=>{const _band={UCL:[84,99],UEL:[72,86],UECL:[62,78]}[ec]||[70,90];
+  const pool=CLUBS.filter(c=>c&&c.lg&&!c.isU18&&c.p>=_band[0]&&c.p<=_band[1]);
+  return pool.length?pool[Math.abs(hashStr(ec+"|albo|"+s))%pool.length].n:null;};
+/* Coppe: per la coppa nazionale della lega dell'eroe vincitore/finale/capocannoniere dal tabellone VERO (cup.cupBracketMatches,
+   completato dal simulatore quando l'eroe esce); per le tre europee il vincitore (l'eroe se l'ha vinta, altrimenti la
+   derivazione qui sopra), la finale solo se l'ha giocata l'eroe, il capocannoniere solo della coppa giocata dall'eroe.
+   Riga: {s,cup:{lg,w,f:[casa,ospite,gc,go]|null,cap},eu:{UCL:{w,f,cap},UEL:{…},UECL:{…}}}. */
+const fotoCoppe340=(p)=>{try{
+  const s=p.season||1,out={s};if((p.proStatus||"u18")!=="pro")return null;
+  const nm=id=>{const c=CLUBS.find(c=>c.id===id||c.n===id);return c?c.n:(id?String(id):null);};
+  const cup=p.cup;
+  if(cup){const f=((cup.cupBracketMatches||{}).final||[])[0];const cs=(typeof generateCupScorers==="function")?generateCupScorers(p,"cup"):[];const c=cs&&cs[0];
+    const w=cup.champion?(p.club&&p.club.n):(cup.winnerId?nm(cup.winnerId):(f&&f.winner?nm(f.winner):null));
+    out.cup={lg:(cup.club&&p.club&&cup.club!==p.club.id)?null:(p.club&&p.club.lg)||null,w,f:f?[nm(f.home),nm(f.away),f.homeScore,f.awayScore]:null,cap:c&&(c.goals|0)>0?[c.name,c.club,c.goals|0,c.isPlayer?1:0]:null};}
+  const eu=p.euro,mine=eu&&eu.active&&eu.competition;out.eu={};
+  ["UCL","UEL","UECL"].forEach(ec=>{
+    const won=mine===ec&&eu.champion;const r={w:won?(p.club&&p.club.n):vincitoreEuro340(ec,s),f:null,cap:null};
+    if(mine===ec){const fin=(eu.koResults||[]).find(k=>k&&k.phase==="final");/* stessa forma del Tab Coppe: {phase,opp,homeScore,awayScore,won} */
+      if(fin&&fin.opp)r.f=[p.club&&p.club.n,fin.opp,fin.homeScore,fin.awayScore];
+      const cs=(typeof generateCupScorers==="function")?generateCupScorers(p,"euro"):[];const c=cs&&cs[0];if(c&&(c.goals|0)>0)r.cap=[c.name,c.club,c.goals|0,c.isPlayer?1:0];}
+    out.eu[ec]=r;});
+  return out;
+}catch(_e){return null;}};
 /* [7.8.18 collaudo tester «le classifiche cannonieri devono essere divise per competizione, i marcatori delle
    coppe consultabili nella relativa sezione»] marcatori di COPPA (nazionale) / EUROPA, deterministici. I gol
    dell'EROE sono REALI, sommati dalle voci di matchHistory marcate (m.cup / m.euro) → stagionali, coerenti con

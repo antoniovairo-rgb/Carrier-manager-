@@ -265,6 +265,11 @@ const FS_BASE234={...FS};
    (cpm-testo-grande): «15» = +15%, «30» = +30%, «0» = normale; il vecchio «1» del giro 234 era il ×1,3 e resta +30% (chi l'aveva
    acceso ritrova le stesse scritte). _g235 = le correzioni del giro 235; col rosso __CPM_NO_G235 torna un gradino solo (×1,3). */
 const _g235=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G235);
+/* [giro 341 · PO-618 «Non riesco a richiudere questo box»] le sezioni dentro un gruppo del Profilo si aprono e chiudono dalla testata
+   (stessa freccia della Fisarmonica) e non hanno piu' scorrimento interno: la pagina scorre tutta, il telefono non resta intrappolato.
+   Rosso window.__CPM_NO_G341 = sezioni fisse senza freccia + liste con maxHeight/overflow (comportamento di prima). */
+const _g341=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G341);
+const _scorri341=(h)=>_g341()?{}:{maxHeight:h,overflowY:"auto",WebkitOverflowScrolling:"touch"};
 /* [giro 260 · decisioni PO 17/11 B C D] interruttore del giro: rosso window.__CPM_NO_G260 = come prima (Sostieni anche nell'app, titolo
    grande nel contenuto di Stagione/Agente/Ufficio, «Under 18»/«U18» a schermo). */
 const _g260=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G260);
@@ -296,6 +301,9 @@ const _g287=()=>!(typeof window!='undefined'&&window.__CPM_NO_G287);
 /* [giro 300 · PO-565/551/552/553] pre-partita e PC: tasto dei salienti col bordo d'accento, «Inizia il provino» attaccato al contenuto da PC, tasti 1 2 3 della Home cliccabili, nessun suggerimento di tasti nelle scritte (le scorciatoie restano). Rosso __CPM_NO_G300 = tutto come nella 7.999.198. */
 const _g300=()=>!(typeof window!='undefined'&&window.__CPM_NO_G300);
 const _g302=()=>!(typeof window!='undefined'&&window.__CPM_NO_G302);/* [giro 302] rosso dei tre ritocchi PO-552 (riga «1 2 3» via) · PO-589 (striscia di scarico nei colori del tema) · PO-590 (fascia al piu' anziano) */
+/* [giro 336 · PO-608/609] pre-partita a due strade parallele («Gioca la partita» · «Gioca solo i momenti salienti», formazioni/analisi
+   secondarie) e rassegna di fine partita con classifica e numeri DOPO la giornata. Rosso __CPM_NO_G336 = la 7.999.208. */
+const _g336=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G336);
 const sotto287=(cpm,testo)=><span data-cpm={cpm} style={{display:"block",marginTop:3,fontSize:FS.caption,fontWeight:FW.regular,color:TH.muted,lineHeight:1.35,letterSpacing:0,whiteSpace:"normal",textTransform:"none"}}>{testo}</span>;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,

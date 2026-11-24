@@ -908,8 +908,13 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo,ancora)
   /* [giro 126 PO-328] l'ancora la puo' spostare solo lo strato, DOPO la scelta delle opzioni (nessun sorteggio in piu' o in meno):
      serve a sapere se la scena offre davvero una conclusione. Senza «ancora» il costruttore e' identico a prima. */
   if(typeof ancora==='function'){const _a126=ancora(scelte,occ);if(_a126)occ={...occ,x:_a126.x,y:_a126.y,_g126:{x:+occ.x,y:+occ.y}};}
+  /* [giro 343 PO-611 — rosso __CPM_NO_G343] LA SCENA DI PUNIZIONE NASCE SUL PUNTO DEL FALLO, FUORI AREA. La zona di partenza era il
+     punto del fallo ±2 in profondita' e ±3 di lato, e il punto veniva sorteggiato li' dentro: un fallo a 83,5 apriva la scena col
+     pallone fino a 85,5 (3,4 unita' dentro l'area disegnata: e' la foto del PO). Ora, per la sola punizione, il punto esce dall'area
+     (fuoriArea343, src/14) e la zona di partenza e' quel punto esatto: il titolo dice gia' la distanza da li'. */
+  if(tipo==='punizione'&&typeof fuoriArea343==='function'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343)){const _f343=fuoriArea343(+occ.x,+occ.y);if(_f343.sp>0)occ={...occ,x:_f343.adv,y:_f343.y};}
   const x=+occ.x,y=+occ.y;
-  const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
+  const sz=(tipo==='punizione'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343))?{x:[x,x],y:[y,y]}:{x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */

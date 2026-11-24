@@ -2,7 +2,7 @@
 /* ============================================================================
    trenino-317.mjs — TRENINO, TRENO GRANDE DI NOTTE E BLOCCO DEI RILASCI (giro 317, PO-604)
 
-   Decisioni PO del 21/11 22:35 (docs/governo/DECISIONI.md sul ramo poc): «Trenino + treno grande di notte»; rosso nuovo di
+   Decisioni PO del 21/11 22:35 (docs/governo/DECISIONI.md): «Trenino + treno grande di notte»; rosso nuovo di
    notte → «Rilasci fermi finche' non si ripara».
 
      1. TRENINO: a ogni unione in lavoro/** girano SOLO i guardiani delle righe della mappa unica (MAPPA di
@@ -12,7 +12,7 @@
         intera) e lo dichiara.
      2. TRENO GRANDE: ogni notte (schedule) e a mano, mappa intera, sulla punta del lavoro corrente (lavoro/<numero piu' alto>) o
         di main se il lavoro e' gia' tutto rilasciato.
-     3. BLOCCO: il treno grande scrive docs/governo/BLOCCO-RILASCI.json sul poc con i suoi rossi nuovi e non giudicati; la decisione
+     3. BLOCCO: il treno grande scrive docs/governo/BLOCCO-RILASCI.json su main (giro 338) con i suoi rossi nuovi e non giudicati; la decisione
         del rilascio lo legge e si ferma finche' un treno grande successivo non ha piu' quel rosso, oppure il guardiano entra in
         ROSSI-DICHIARATI per scelta del PO.
 
@@ -171,7 +171,7 @@ export function nuovoBlocco(prec, esito, meta = {}) {
   const sbloccati = [...prima].filter(g => !male.some(x => x.guardiano === g));
   const storia = [...((prec && prec.storia) || []), ...(prec && prec.quando ? [{ quando: prec.quando, commit: prec.commit, corsa: prec.corsa, rossi: (prec.rossi || []).map(x => x.guardiano) }] : [])].slice(-20);
   return {
-    _: 'giro 317 (PO-604): BLOCCO DEI RILASCI AUTOMATICI. Lo scrive il treno grande (notte o a mano) di .github/workflows/verifica-guardiani.yml; la decisione del rilascio (tools/rilascio-vagone-312.mjs decidi) lo legge dal poc e si ferma finche\' «rossi» contiene un guardiano che non sta in ROSSI-DICHIARATI. Si sblocca da solo quando un treno grande successivo non ha piu\' quel rosso, oppure quando il PO mette il guardiano in ROSSI-DICHIARATI.',
+    _: 'giro 317 (PO-604): BLOCCO DEI RILASCI AUTOMATICI. Lo scrive il treno grande (notte o a mano) di .github/workflows/verifica-guardiani.yml; la decisione del rilascio (tools/rilascio-vagone-312.mjs decidi) lo legge da main (giro 338) e si ferma finche\' «rossi» contiene un guardiano che non sta in ROSSI-DICHIARATI. Si sblocca da solo quando un treno grande successivo non ha piu\' quel rosso, oppure quando il PO mette il guardiano in ROSSI-DICHIARATI.',
     attivo: male.length > 0, rossi: male, sbloccati, quando: meta.quando || new Date().toISOString(), commit: (esito && esito.commit) || meta.commit || null,
     ramo: meta.ramo || (esito && esito.ramo) || null, corsa: meta.corsa || (esito && esito.corsa) || null, corsa_url: meta.corsa_url || null,
     treno: esito ? { guardiani: esito.guardiani, verdi: esito.verdi, parti: `${esito.parti_arrivate}/${esito.parti_attese}` } : null, storia,

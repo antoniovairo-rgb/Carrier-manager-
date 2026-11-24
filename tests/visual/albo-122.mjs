@@ -25,6 +25,7 @@ for (const rosso of [false, true]) for (const f of FORMATI) {
   const arm = rosso ? 'rosso' : 'verde'; const D = (m) => difetti[arm].push(f.k + ' · ' + m);
   const { ctx, page } = await apriBancoV2(b, port, f, { errs, prep: PREP });
   if (!page) { cieco.push('banco non aperto ' + f.k); continue; }
+  await page.evaluate(() => { window.__CPM_NO_G340 = true; }); /* [giro 340 PO-616] l'albo del giro 122 (riepilogo «I tuoi titoli» + sezioni per lega) esiste ormai solo come rosso del giro 340: questo guardiano lo custodisce li' */
   if (rosso) await page.evaluate(() => { window.__CPM_NO_G122 = true; });
   await page.evaluate(() => window.__CPM_CAREER.goTab('standings')); await frame2(page);
   const alb = page.locator('button', { hasText: /Albo d.oro/i }).first();

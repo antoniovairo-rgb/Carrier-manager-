@@ -234,6 +234,20 @@ function rigorista257(player,context,xi){if(no257()||!player)return null;
   try{const pr=(typeof premiMotore238==="function")?premiMotore238(player,context):null;if(pr&&pr.rig)return {eroe:true,nome:player.name||""};}catch(_e){}
   const k=rigoristaXI257(xi);return k>=0?{eroe:false,i:k,nome:String(xi[k].name||"")}:null;}
 if(typeof window!=='undefined')window.__CPM_RIG257={rigorista:rigorista257,xi:rigoristaXI257,att:attitudine257};
+/* [giro 343 PO-611 — rosso __CPM_NO_G343] LA PUNIZIONE SI BATTE FUORI DALL'AREA. PO (foto 200-punizione-in-area): «punizione in area!».
+   L'area DISEGNATA dal 3D (src/12: linea di porta 48,6, profondita' 16,5, mezza larghezza 20,16 di mondo) in unita' di gioco e'
+   avanzamento >= 82,1 e |y-50| <= 29,65; la regola del rigore del motore (fallo()) e' piu' stretta: avanzamento >= 84 e |y-50| <= 20.
+   Nella cornice fra le due il fallo era una punizione col pallone dentro l'area disegnata (banco 192 partite: 208 falli su 5.031).
+   Qui il punto di battuta di una punizione che cadrebbe nell'area avversaria esce dal lato piu' vicino, 1,6 unita' fuori dalla linea
+   (dal limite: avanzamento 80,5; di fianco: |y-50| 31,25). La regola del rigore NON cambia (decisione PO-190 sui rigori a partita).
+   Funzione pura, senza sorteggi: stesso flusso del generatore nei due bracci. */
+const AREA343={adv:82.1,hy:20.16/0.68,m:1.6,riga:0.3};/* riga: la linea fa parte dell'area (un pallone entro 0,3 dalla linea e' sulla linea) */
+function fuoriArea343(adv,y){adv=+adv;y=+y;const dy=Math.abs(y-50);
+  if(!(adv>=AREA343.adv-AREA343.riga&&dy<=AREA343.hy+AREA343.riga)||(typeof window!=='undefined'&&window&&window.__CPM_NO_G343))return{adv:adv,y:y,sp:0};
+  const cx=adv-(AREA343.adv-AREA343.m),cy=(AREA343.hy+AREA343.m)-dy;
+  if(cy<cx)return{adv:adv,y:50+(y>=50?1:-1)*(AREA343.hy+AREA343.m),sp:+cy.toFixed(2)};
+  return{adv:AREA343.adv-AREA343.m,y:y,sp:+cx.toFixed(2)};}
+if(typeof window!=='undefined'){try{window.__CPM_FUORI343=fuoriArea343;}catch(_e){}}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -488,6 +502,7 @@ function creaMotorePossesso(cfg){
      (il pallone DEVE uscire: e' calcio) ma accorciare la pausa: una rimessa laterale e un rinvio si
      battono in un tick, angolo e rigore restano a 3 perche' la squadra si deve schierare. */
   const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};
+    if(kind==="foul"){const _f343=fuoriArea343(advDi(clamp(x,0,100),lato),clamp(y,0,100));if(_f343.sp>0){x=xDa(_f343.adv,lato);y=_f343.y;S.conta.fuori343=(S.conta.fuori343|0)+1;}}/* [giro 343 PO-611] la punizione si batte fuori dall'area avversaria */
     /* [7.881 v2] e anche la PUNIZIONE lontana dalla porta si batte in fretta: nel calcio vero si riparte
        subito, la barriera si forma solo vicino all'area. Misurato sulla scheda n° 12: a Vairo i 20 minuti
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
@@ -1888,7 +1903,12 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
    0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
 const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
 if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
-const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+/* [giro 349 · esiti-241] GANCIO DI COLLAUDO (solo sonde, spento in gioco): __CPM_COMPAGNO_SBAGLIA349 fa sbagliare il tiro del compagno
+   DOPO averlo sorteggiato (stessi sorteggi consumati), cosi' la sonda provoca la scena che giudica — la consegna riuscita che resta in
+   area («chance») — invece di sperare di trovarla: con la grande occasione del PO-298 il compagno segna spesso e tre pagine «assist» di
+   fila davano un «non giudicato» (treno 45255159673). */
+if(es==='goal'&&typeof window!=='undefined'&&window&&window.__CPM_COMPAGNO_SBAGLIA349)es='saved';
         return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}
       return null;}finally{H.x=x0;H.y=y0;}}catch(_e){return null;}};
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno

@@ -2,12 +2,14 @@
 /* Analisi dei campioni di hl-credibilita.mjs. Metri: x logico × 1,05, y logico × 0,68 (campo 0-100 su 105 × 68 m).
    Tre domande del PO: (1) passaggi a vuoto, (2) compagni fermi o sbagliati, (3) difensori finti. */
 import fs from 'fs';
-const D = JSON.parse(fs.readFileSync(process.argv[2] || 'out/hl-credibilita.json', 'utf8'));
+const D = (process.argv.length > 3 ? process.argv.slice(2) : [process.argv[2] || 'out/hl-credibilita.json']).flatMap(f => JSON.parse(fs.readFileSync(f, 'utf8')));/* [giro 331] piu' file = piu' raccolte unite */
 const M = (x, y) => [x * 1.05, y * 0.68], dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const med = a => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return +s[s.length >> 1].toFixed(2); };
 const pct = (n, d) => d ? +(100 * n / d).toFixed(1) : null;
 const W2L = (wx, wz) => [wx + 50, wz / 0.68 + 50];
 const perFase = {};
+const BASE = +(process.env.CPM_BASE_SCENA || 0);/* secondi di scena fra i due campioni di una velocita' (0 = campioni consecutivi, come prima) */
+let rS = 0, rR = 0;
 let voli = [], comp = { campioni: 0, fermi: 0, avanti: 0, indietro: 0, liberi: [], smarcati0: 0, frames: 0 }, dif = { frames: 0, distPort: [], senzaPressione: 0, chiude: 0, apre: 0, fermi: 0, camp: 0 }, scene = 0;
 for (const camp of D) {
   // scene: salto di tempo > 1,5 s
@@ -38,9 +40,14 @@ for (const camp of D) {
     }
     // (2)(3) movimento
     for (let k = 1; k < S.length; k++) {
-      const f0 = S[k - 1], f1 = S[k], dtR = (f1.t - f0.t) / 1000; if (dtR <= 0.05 || dtR > 0.6) continue;
+      let f0 = S[k - 1]; const f1 = S[k]; let dtR = (f1.t - f0.t) / 1000;
+      if (BASE) {/* [giro 331] velocita' su una BASE FISSA di tempo di scena: il campione piu' vicino che sta almeno BASE secondi di scena prima (al massimo 2×BASE), nella stessa scena.
+           Fra due campioni consecutivi (40-150 ms a seconda della macchina) lo spostamento di chi fa 0,5 m/s vale 2-7 cm, sotto l'arrotondamento
+           delle posizioni (0,1 unita' = 7-10 cm): «fermo» o «in moto» lo decideva l'arrotondamento, e in modo diverso a seconda dell'intervallo. */
+        if (f1.st == null) continue; let j = k - 1; while (j >= 0 && S[j].st != null && f1.st - S[j].st < BASE) j--; if (j < 0 || S[j].st == null || f1.st - S[j].st > 2 * BASE) continue; f0 = S[j]; dtR = (f1.t - f0.t) / 1000; }
+      else if (dtR <= 0.05 || dtR > 0.6) continue;
       /* [06/10] il tempo di SCENA, se c'e': nell'esito gira al rallentatore (0,28x) e in headless a una frazione del reale — misurare la velocita' a orologio chiamava «fermo» chi correva al rallentatore */
-      const dS = (f1.st != null && f0.st != null) ? (f1.st - f0.st) : null; const dt = (process.env.CPM_ORA_REALE || dS == null) ? dtR : dS; if (!(dt > 0.01)) continue;
+      const dS = (f1.st != null && f0.st != null) ? (f1.st - f0.st) : null; const dt = (process.env.CPM_ORA_REALE || dS == null) ? dtR : dS; if (!(dt > 0.01)) continue; if (dS != null && /^hl_(intro|move|choose)$/.test(f1.ph)) { rS += dS; rR += dtR; }
       const C0 = corpi(f0), C1 = corpi(f1), b = M(f1.B[0], f1.B[1]);
       const port = C1.reduce((m, c) => (!m || dist(c.m, b) < dist(m.m, b)) ? c : m, null); if (!port || dist(port.m, b) > 2) continue;
       if (port.team !== 1) continue; /* solo quando la squadra dell'eroe ha il pallone */
@@ -69,7 +76,7 @@ const R = {
     indietro: pct(pas.filter(v => v.avanti < -3).length, pas.length), lunghezzaMediana: med(pas.map(v => v.lung)), perTipo: pas.reduce((o, v) => { const k = v.ht || 'cronaca'; o[k] = (o[k] | 0) + 1; return o; }, {}) },
   compagni: { fotogrammi: comp.frames, fermi: pct(comp.fermi, comp.campioni), avanti: pct(comp.avanti, comp.campioni), indietro: pct(comp.indietro, comp.campioni), distanzaMedianaDalMarcatore: med(comp.liberi), fotogrammiSenzaUnCompagnoLibero: pct(comp.smarcati0, comp.frames) },
   difensori: { fotogrammi: dif.frames, distanzaMedianaDalPortatore: med(dif.distPort), portatoreSenzaNessunoEntro5m: pct(dif.senzaPressione, dif.frames), ilPiuVicinoChiude: pct(dif.chiude, dif.frames), ilPiuVicinoSiAllontana: pct(dif.apre, dif.frames), avversariFermiEntro35m: pct(dif.fermi, dif.camp) },
-  primaAzione: (() => { const F = ['hl_intro', 'hl_move', 'hl_choose'].map(k => perFase[k]).filter(Boolean); const cN = F.reduce((a, f) => a + f.cN, 0), cF = F.reduce((a, f) => a + f.cF, 0), dN = F.reduce((a, f) => a + f.dN, 0), dF = F.reduce((a, f) => a + f.dF, 0); return { compagniFermi: pct(cF, cN), avversariFermi: pct(dF, dN), campioniCompagni: cN, campioniAvversari: dN }; })(),
+  primaAzione: (() => { const F = ['hl_intro', 'hl_move', 'hl_choose'].map(k => perFase[k]).filter(Boolean); const cN = F.reduce((a, f) => a + f.cN, 0), cF = F.reduce((a, f) => a + f.cF, 0), dN = F.reduce((a, f) => a + f.dN, 0), dF = F.reduce((a, f) => a + f.dF, 0); return { compagniFermi: pct(cF, cN), avversariFermi: pct(dF, dN), campioniCompagni: cN, campioniAvversari: dN, scenaSuReale: rR ? +(rS / rR).toFixed(2) : null }; })(),
   perFase: Object.fromEntries(Object.entries(perFase).map(([k, v]) => [k, { fotogrammi: v.fr, compagniFermi: pct(v.cF, v.cN), avversariFermi: pct(v.dF, v.dN), portatoreLibero5m: pct(v.press, v.fr) }])),
   esempiVoli: pas.slice(0, 12)
 };

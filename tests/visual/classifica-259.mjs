@@ -8,7 +8,8 @@
    riga «riga-mia-v2». Parte A (seme della sorpresa, src/07): con lo stesso id del club la decisione dell'intervista non cambia col
    nome (FC Köln · FC Domstadt · FC Koln), su 60 nomi di collaudo. Parte statica: nessun ordinamento della classifica per punti fuori dalla funzione unica (5 esenti dichiarati).
    Bracci: verde (gioco di oggi) e rosso __CPM_NO_G259 (ogni sito col suo ordinamento di prima). Verde = tutte e quattro uguali
-   alla posizione attesa (3°) e statico pulito; il rosso deve dare posizioni DIVERSE fra le schermate. Una schermata non letta =
+   alla posizione attesa (3°) e statico pulito [giro 348, PO-609: le due righe della rassegna di fine partita contro la
+   classifica salvata DOPO la giornata, ordinata dal guardiano; testata e scheda contro il 3°]; il rosso deve dare posizioni DIVERSE fra le schermate. Una schermata non letta =
    non giudicato = rosso. */
 import fs from 'node:fs';
 import { apriCarriera166, apriPrompt166, gioca166, chiudi166, sleep } from './lib/partita-166.mjs';
@@ -61,6 +62,17 @@ async function braccio(rosso) {
           ob: [...document.querySelectorAll('[data-cpm="obiettivo224"]')].map(x => ((x.lastElementChild || {}).textContent) || '').find(t => /ora/.test(t)) || null }));
         if (d.io) { r.fineTab = posTesto(d.io); r.fineObj = posTesto(d.ob); r.fineTxt = (d.ob || '').trim().slice(0, 60); } }
       await chiudi166(A.page);
+      /* [giro 348] decisione PO-609 (giro 336): la rassegna di fine partita mostra la classifica DOPO la giornata (partita appena
+         giocata + altri campi), la stessa che il gioco salva tornando alla carriera. La sua posizione attesa non e' piu' POS_ATTESA
+         (classifica di prova PRIMA della giornata) ma quella della classifica salvata, ordinata QUI con la regola dichiarata
+         (punti · differenza reti · gol fatti · ordine salvato), senza la funzione del gioco. Sul commit fd2b9334 il verde passava
+         per caso (la partita lasciava l'eroe 3°); dal treno 45186665202 la stessa partita lo lascia 4° e il confronto con la
+         classifica di prima bocciava una schermata giusta. */
+      const sv = await A.page.evaluate(() => window.__CPM_CAREER.snapshot().standings).catch(() => null);
+      if (Array.isArray(sv) && sv.length) { const gd = t => (t.gd != null ? t.gd : (t.gf | 0) - (t.ga | 0));
+        const ord = sv.map((t, i) => ({ t, i })).sort((a, b) => (b.t.pts | 0) - (a.t.pts | 0) || gd(b.t) - gd(a.t) || (b.t.gf | 0) - (a.t.gf | 0) || a.i - b.i);
+        const k = ord.findIndex(x => x.t.id === 'b04'); r.attesaDopo = k < 0 ? null : k + 1;
+        r.dopoGiocate = (sv.find(t => t.id === 'b04') || {}).played; }
     }
     await A.page.evaluate(({ st, o }) => window.__CPM_CAREER.patch({ standings: st, seasonObjectives: o }), { st: P.st, o: OBJ });
     await A.page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); await sleep(900);
@@ -76,10 +88,14 @@ const V = await braccio(false), R = await braccio(true);
 const pos = r => [r.fineTab, r.fineObj, r.testata, r.tabella];
 const letto = r => pos(r).every(x => Number.isInteger(x));
 const ivOk = V.ivA && V.ivA.diverse === 0 && V.ivA.sorprese > 0, ivRosso = R.ivA && R.ivA.diverse > 0;
-const verdeOk = ivOk && letto(V) && pos(V).every(x => x === POS_ATTESA) && !(V.errs || []).length;
+/* [giro 348] le due righe della rassegna contro la classifica salvata dopo la giornata (PO-609); testata e scheda Classifica, lette
+   dopo aver rimesso la classifica di prova, contro POS_ATTESA (il caso di spareggio). Uguaglianza esatta in entrambi i casi;
+   posizione attesa non letta (classifica salvata assente o senza la giornata in piu') = non giudicato = rosso. */
+const dopoOk = r => Number.isInteger(r.attesaDopo) && r.dopoGiocate === 11 && r.fineTab === r.attesaDopo && r.fineObj === r.attesaDopo;
+const verdeOk = ivOk && letto(V) && dopoOk(V) && V.testata === POS_ATTESA && V.tabella === POS_ATTESA && !(V.errs || []).length;
 const rossoDiverge = ivRosso && letto(R) && new Set(pos(R)).size > 1;
 console.log(`statico: ${statOk ? 'pulito' : 'residui ' + residui.join(', ')}`);
-for (const r of [V, R]) console.log(`${r.rosso ? 'ROSSO __CPM_NO_G259' : 'VERDE'}: finale tabella ${r.fineTab} · finale obiettivo ${r.fineObj} («${r.fineTxt || ''}») · testata ${r.testata} · scheda Classifica ${r.tabella} · attesa ${POS_ATTESA} · finita ${r.finita} · intervista (60 nomi × 3 nomi del club kol): decisioni diverse ${r.ivA ? r.ivA.diverse : '?'} · con sorpresa ${r.ivA ? r.ivA.sorprese : '?'}${r.ivA && r.ivA.err ? ' ERR ' + r.ivA.err : ''}${r.note.length ? ' · note ' + r.note.join(' | ') : ''}${(r.errs || []).length ? ' · errori ' + r.errs.join(' | ') : ''}`);
+for (const r of [V, R]) console.log(`${r.rosso ? 'ROSSO __CPM_NO_G259' : 'VERDE'}: finale tabella ${r.fineTab} · finale obiettivo ${r.fineObj} («${r.fineTxt || ''}») · attesa dopo la giornata ${r.attesaDopo ?? '?'} (giocate ${r.dopoGiocate ?? '?'}) · testata ${r.testata} · scheda Classifica ${r.tabella} · attesa ${POS_ATTESA} · finita ${r.finita} · intervista (60 nomi × 3 nomi del club kol): decisioni diverse ${r.ivA ? r.ivA.diverse : '?'} · con sorpresa ${r.ivA ? r.ivA.sorprese : '?'}${r.ivA && r.ivA.err ? ' ERR ' + r.ivA.err : ''}${r.note.length ? ' · note ' + r.note.join(' | ') : ''}${(r.errs || []).length ? ' · errori ' + r.errs.join(' | ') : ''}`);
 const ok = statOk && verdeOk && rossoDiverge;
 console.log(`${ok ? '✅' : '❌'} classifica-259: verde ${verdeOk ? 'stessa posizione ovunque' : 'NO'} · rosso ${rossoDiverge ? 'posizioni diverse (il rosso vede)' : 'NON GIUDICATO o uguale'} · statico ${statOk ? 'ok' : 'NO'}`);
 fs.writeFileSync(new URL('./out/classifica-259.json', import.meta.url), JSON.stringify({ ok, statOk, residui, V, R }, null, 1));

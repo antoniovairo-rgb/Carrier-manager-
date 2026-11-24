@@ -86,7 +86,15 @@ function trainerAiuto288(p,lv){
   const st=(p&&p.stats)||{};const pl={...p,perkTrainer:true,perkTrainerLv:lv>=1?Math.min(3,lv|0):1};
   const righe=TRAINER_ATTR281.map(function(a){const v=Math.round(st[a]||0);const q=v>=99?0:trainerQuota281(pl,v);
     return{a:a,v:v,q:q,sett:q>0?Math.round(1/q):null,score:PESI_OVR288[a]*(99-v),cons:false};});
-  righe.filter(function(r){return r.v<85;}).sort(function(x,y){return y.score-x.score||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);}).slice(0,2).forEach(function(r){r.cons=true;});
+  /* [giro 341 · PO-622 «consigliato deve essere sui punti deboli!»] REGOLA NUOVA: candidate le caratteristiche che pesano nel giudizio
+     (peso OVR >= 1: oggi tutte e otto, calcOvr non ha pesi per ruolo) e sotto 85; si ordinano per VALORE crescente (a parita' di valore
+     prima chi pesa di piu', poi l'ordine di TRAINER_ATTR281); «consigliato» va alle due piu' basse e a chi e' a pari merito con la
+     seconda (tetto 3). Esempio della foto PO: passaggio 55, velocita' 59, mentalita' 59 → tutte e tre (la terza e' a pari con la seconda);
+     tecnica 68 e tiro 72 no. Prima (rosso __CPM_NO_G341): punteggio peso x (99 - valore) → tiro 72 (67,5) e tecnica 68 (62) davanti a
+     passaggio 55 (44). */
+  if(_g341()){const cand=righe.filter(function(r){return r.v<85&&(PESI_OVR288[r.a]||0)>=1;}).sort(function(x,y){return x.v-y.v||(PESI_OVR288[y.a]-PESI_OVR288[x.a])||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);});
+    const soglia=cand.length>=2?cand[1].v:(cand[0]?cand[0].v:-1);cand.filter(function(r){return r.v<=soglia;}).slice(0,3).forEach(function(r){r.cons=true;});}
+  else righe.filter(function(r){return r.v<85;}).sort(function(x,y){return y.score-x.score||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);}).slice(0,2).forEach(function(r){r.cons=true;});
   return{ovr:calcOvr(st),pct:[10,15,20][Math.max(1,Math.min(3,lv|0||1))-1],righe:righe};}
 function prepLv281(p){return staffLv24(p,"perkNutrition");}
 function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */

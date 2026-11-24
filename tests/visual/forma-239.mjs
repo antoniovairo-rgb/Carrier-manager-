@@ -15,7 +15,7 @@
    striscia sparisce → DEVE essere bocciato in tutte e tre le parti. «Non giudicato» = rosso. Verde e rosso stampati per ultimi.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node forma-239.mjs   (CPM_SOLO239=L|T|A per una parte sola) */
 import { sleep } from './lib/harness.mjs';
-import { apriCarriera166, apriPrompt166, gioca166 } from './lib/partita-166.mjs';
+import { apriCarriera166, apriPrompt166, gioca166, chiudi166 } from './lib/partita-166.mjs';
 import { festa } from './misura-202.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 const SOLO = process.env.CPM_SOLO239 || '';
@@ -57,7 +57,7 @@ async function leggiTV(page) {
       if (tv && /Forma · ultime 5/i.test(tv.innerText || '')) { const riga = [...tv.querySelectorAll('div')].find(d => /^Forma · ultime 5$/i.test((d.textContent || '').trim()));
         const r = riga ? riga.parentElement : null; const lati = r ? [...r.children] : [];
         return { f, fatto: true, casa: lati[0] ? [...lati[0].querySelectorAll('span')].map(x => x.textContent.trim()).join(' ') : null, ospite: lati[2] ? [...lati[2].querySelectorAll('span')].map(x => x.textContent.trim()).join(' ') : null }; }
-      if (f === 'matchday') { const b = [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^Vedi le formazioni/.test((x.textContent || '').trim())); if (b) b.click(); }
+      if (f === 'matchday') { const b = [...document.querySelectorAll('[data-cpm="prepartita23"] button')].find(x => /^(?:Vedi le formazioni|Gioca la partita)/.test((x.textContent || '').trim())); if (b) b.click(); }
       else if (f) {
         const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null && /^(Ingresso in campo|Continua|Avanti|Vai in campo|In campo|Entra in campo|Chiudi|OK|Ok)/i.test((x.textContent || '').trim())); if (B[0] && f !== 'walkout') B[0].click(); }
       return { f, fatto: false, bb: [...document.querySelectorAll("button")].filter(x => x.offsetParent).map(x => x.textContent.trim().slice(0, 30)).slice(0, 8) };
@@ -98,8 +98,14 @@ async function parteA(init) {
       m = await A.page.evaluate(() => { const p = window.__CPM_CAREER.snapshot(); const wk = p.week || 1;
         const nx = [...(p.calendar || [])].filter(x => x && !x.played && (x.week | 0) > wk).sort((a, b) => (a.week | 0) - (b.week | 0))[0] || null;
         const r = nx ? (p.standings || []).find(x => x.id === nx.opponentId) : null; const q = document.querySelector('[data-cpm="anteprima224-forma"]');
-        return { scheda: !!document.querySelector('[data-cpm="prossima200"]'), avv: nx ? nx.opponentName : null, f239: r ? r.f239 : null, played: r ? r.played : null,
+        return { scheda: !!document.querySelector('[data-cpm="prossima200"]'), avv: nx ? nx.opponentName : null, avvId: nx ? nx.opponentId : null, f239: r ? r.f239 : null, played: r ? r.played : null,
           forma: q ? [...q.querySelectorAll('span span')].map(x => x.textContent.trim()).join(' ') : null }; });
+      /* [giro 344] DECISIONE PO-609 (giro 336): la rassegna mostra la classifica DOPO la giornata, quindi la forma dell'avversario
+         include il suo risultato di questa giornata. Il riferimento e' la forma che il gioco SALVA tornando alla carriera (come
+         partita-336 F5), non quella del banco prima della giornata. Confronto esatto, soglie invariate. */
+      if (m && m.avvId) { await chiudi166(A.page); await sleep(1500);
+        const d = await A.page.evaluate((id) => { const r = (window.__CPM_CAREER.snapshot().standings || []).find(x => x.id === id); return r ? { f239: r.f239 || null, played: r.played } : null; }, m.avvId);
+        m.f239Banco = m.f239; m.f239 = d ? d.f239 : null; m.played = d ? d.played : null; }
     }
   } catch (e) { m = { err: String(e.message).slice(0, 160) }; }
   await A.b.close(); A.srv.close();
@@ -135,7 +141,7 @@ if (!SOLO || SOLO === 'A') {
     ok(verde, !!(g && g.finita && m && m.scheda && att && m.forma === att), `partita finita ${!!(g && g.finita)} · avversario «${m && m.avv}» · striscia «${m && m.forma}» · forma salvata «${att}»${m && m.err ? ' · ' + m.err : ''}`);
     ok(verde, errs.length === 0, `zero errori di pagina ${JSON.stringify(errs.slice(0, 2))}`); }
   console.log('A) rosso __CPM_NO_G239');
-  { const { g, m } = await parteA(ROSSO); const att = m && m.f239 ? VNP(m.f239) : null; const giud = !!(g && g.finita && m && m.scheda && att);
+  { const { g, m } = await parteA(ROSSO); const att = m && m.f239Banco ? VNP(m.f239Banco) : null;/* [giro 344] il rosso giudica la striscia sparita contro la forma che il banco ha messo */ const giud = !!(g && g.finita && m && m.scheda && att);
     console.log(`    striscia «${m && m.forma}» · forma salvata «${att}»`);
     ok(rosso, giud && m.forma !== att, `rosso bocciato: ${giud && m.forma !== att} (giudicato ${giud})`); }
 }
