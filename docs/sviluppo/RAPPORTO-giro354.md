@@ -51,7 +51,9 @@ sperare nel caso.
 
 ## 4. Verifica
 
-`node ci-runner.mjs giro rinnovo-354 career-critical` (+ 17 sentinelle): esito in fondo.
+`node ci-runner.mjs giro rinnovo-354 career-critical` (+ 17 sentinelle), sul commit c32217c: **18/18 verdi**, nessun passo
+instabile. Passi: mappa-unica (0s) · test:logic (3s) · save-compat (1s) · replay (59s) · migrazione-194 (26s) · design-system (0s) · tema-unico (14s) · griglia-mobile (185s) · render-3d-023 (38s) · tunnel-285 (275s) · home-298 (120s) · web-237 (51s) · rinnovo-354 (36s) · career-critical (310s) · battito-264 (418s) · partita-vera (666s) · gk-dive-sync (188s) · schermate-97 (131s).
+Sonde a parte: `rinnovo-354` verde + rosso bocciato (anche da solo, prima della catena); `misura-354` rosso 2/4 coperte, verde 0/8.
 
 ## Dubbi per il PO
 
