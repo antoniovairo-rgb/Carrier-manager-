@@ -1107,7 +1107,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const diaryMoments=(()=>{try{const out=[];
     const _wT=t=>t&&t.type==="int"?5:(t&&t.type==="euro"?4:(t&&t.type==="cup"?2:3));
     const _tr=[...(p.trophies||[])].sort((a,b)=>_wT(b)-_wT(a)||(a.season||0)-(b.season||0));
-    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:TH.goldText,headline:`${t.league||"Titolo"}${t.isNational?" con la Nazionale":""}`,body:`${t.club||""} · S.${t.season||"?"}`}));
+    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:TH.goldText,headline:`${compLbl(t.league)||"Titolo"}${t.isNational?" con la Nazionale":""}`/* [giro 357 · PO-654] la chiave interna UCL/UEL/UECL passa da compLbl (era «UEL · FC Rotterdam · S.3») */,body:`${t.club||""} · S.${t.season||"?"}`}));
     const _dS=(p.diary||[]).filter(d=>["pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","first_goal","hattrick"].includes(d.type)).slice(-5).reverse();
     for(const d of _dS){if(out.length>=5)break;out.push(d);}
     return out.slice(0,5);}catch(_e){return (p.diary||[]).slice(-5).reverse();}})();
