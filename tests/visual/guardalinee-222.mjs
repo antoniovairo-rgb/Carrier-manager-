@@ -52,7 +52,7 @@ async function svuota(page, nome) { const fr = await page.evaluate(() => (window
 async function guarda(page, nome, ms) { const t0 = Date.now(); while (Date.now() - t0 < ms) { await sleep(600); await svuota(page, nome); } }
 async function nuovaPagina(v, ls) {
   const ctx = await b.newContext({ viewport: { width: VP[v].width, height: VP[v].height }, deviceScaleFactor: 1, isMobile: !!VP[v].isMobile, hasTouch: !!VP[v].hasTouch, serviceWorkers: 'block' });
-  await installCdnRoutes(ctx); const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
+  await installCdnRoutes(ctx); const page = await ctx.newPage(); if (+process.env.CPM_CPU_LENTO > 1) { /* [giro 353] solo misura: CPU rallentata come un runner conteso */ const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU_LENTO }); } const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_G222W = []; if (o.r) window.__CPM_NO_G222 = 1; if (o.tod) window.__CPM_TOD = o.tod;
     try { localStorage.setItem('cpm-intro-seen', '1'); if (o.ls) for (const k in o.ls) localStorage.setItem(k, o.ls[k]); } catch (e) {} }, { r: ROSSO, ls: ls || null, tod: TOD });
   return { ctx, page, errs };
@@ -60,20 +60,26 @@ async function nuovaPagina(v, ls) {
 /* colore a schermo di un pezzo della divisa: due fotografie a scena ferma, la seconda col pezzo dipinto di magenta SUL SUO materiale (colore nero +
    emissivo magenta: un materiale nuovo usciva in un'altra posa, misurato); la maschera sono i
    pixel magenta della seconda con i 4 vicini magenta (bordi esclusi); il colore e' la MEDIANA della prima su quella maschera */
+const fotogrammi353 = (page) => page.evaluate(() => new Promise(r => { const t = setTimeout(r, 15000); requestAnimationFrame(() => requestAnimationFrame(() => { clearTimeout(t); r(); })); }));
 async function coloreDi(page, i, chi) {
   const a = await page.screenshot({ type: 'png' });
   await page.evaluate(({ i, chi }) => { const m = window.__CPM_HYPER_ASSISTANT_LIST[i]; window.__g222rip = []; m.traverse(o => { if (!o.isMesh || !o.material) return; const n = o.material.name || '';
     if ((chi === 'maglia' && n === 'HyperShirt') || (chi === 'pantaloncini' && n === 'HyperShorts') || (chi === 'gambe' && /^HyperLeg/.test(n))) { const mt = o.material; window.__g222rip.push([mt, mt.color.getHex(), mt.emissive ? mt.emissive.getHex() : null, mt.emissiveIntensity, mt.toneMapped]); mt.color.setHex(0x000000); mt.toneMapped = false; mt.needsUpdate = true; if (mt.emissive) { mt.emissive.setHex(0xff00ff); mt.emissiveIntensity = 1; } } }); }, { i, chi });
-  await sleep(120); const m = await page.screenshot({ type: 'png' }); if (process.env.CPM_DEBUG) { fs.writeFileSync(path.join(FOTO, `debug-${chi}-${i}.png`), m); fs.writeFileSync(path.join(FOTO, `debug-${chi}-${i}-a.png`), a); }
+  /* [giro 353] dopo la pittura si aspettano due fotogrammi VERI della pagina, non solo 120 ms: sul runner un fotogramma e' arrivato a 750 ms
+     (render-3d-023, treno 45406157539) e la foto della maschera usciva senza magenta ("gambe 0 px") */
+  await sleep(120); await fotogrammi353(page); const m = await page.screenshot({ type: 'png' }); if (process.env.CPM_DEBUG) { fs.writeFileSync(path.join(FOTO, `debug-${chi}-${i}.png`), m); fs.writeFileSync(path.join(FOTO, `debug-${chi}-${i}-a.png`), a); }
   await page.evaluate(() => { for (const [mt, c, e, ei, tm] of window.__g222rip || []) { mt.color.setHex(c); mt.toneMapped = tm; mt.needsUpdate = true; if (e != null) { mt.emissive.setHex(e); mt.emissiveIntensity = ei; } } });
+  await fotogrammi353(page); /* [giro 353] il ripristino si vede prima della foto del pezzo dopo */
   return await page.evaluate(async ({ a, m, chi }) => {
     const img = async (b64) => { const im = new Image(); im.src = 'data:image/png;base64,' + b64; await im.decode(); const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const x = c.getContext('2d'); x.drawImage(im, 0, 0); return x.getImageData(0, 0, c.width, c.height); };
     const A = await img(a), M = await img(m), W = A.width, H = A.height; const mg = (k) => M.data[k] > 200 && M.data[k + 1] < 60 && M.data[k + 2] > 200;
     let pix = []; let y0 = H, y1 = 0;
     for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) { const k = 4 * (y * W + x); if (mg(k) && mg(k - 4) && mg(k + 4) && mg(k - 4 * W) && mg(k + 4 * W)) { pix.push([y, A.data[k], A.data[k + 1], A.data[k + 2]]); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } }
     /* gambe: i calzettoni sono la parte fra il 25% e il 65% dell'altezza visibile della gamba (sopra il ginocchio, sotto lo scarpino: misurato sulla foto della maschera) */
+    const tot353 = pix.length;
     if (chi === 'gambe') { const h = y1 - y0; pix = pix.filter(p => p[0] > y0 + h * 0.25 && p[0] < y0 + h * 0.65); }
-    if (pix.length < 30) return { n: pix.length };
+    /* [giro 353] sotto 30 px si dice anche quanta maschera c'era prima del filtro: 0 = magenta non disegnato, >0 = fascia dei calzettoni vuota */
+    if (pix.length < 30) return { n: pix.length, maschera353: tot353, y0, y1 };
     const med = (j) => { const v = pix.map(p => p[j]).sort((p, q) => p - q); return v[v.length >> 1]; };
     const r = med(1), g = med(2), bb = med(3); const mx = Math.max(r, g, bb), mn = Math.min(r, g, bb); let h = 0;
     if (mx > mn) { if (mx === r) h = 60 * (((g - bb) / (mx - mn)) % 6); else if (mx === g) h = 60 * ((bb - r) / (mx - mn) + 2); else h = 60 * ((r - g) / (mx - mn) + 4); } if (h < 0) h += 360;
