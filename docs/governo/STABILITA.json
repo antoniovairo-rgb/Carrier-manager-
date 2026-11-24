@@ -1,5 +1,102 @@
 [
  {
+  "data": "2026-11-24 19:23",
+  "versione": "7.999.209",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "sigle-357",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 174
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 272
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 307
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 408
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 671
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 220
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 116
+   }
+  ]
+ },
+ {
   "data": "2026-11-24 17:30",
   "versione": "7.999.208",
   "catena": "giro",
@@ -20987,300 +21084,5 @@
     "s": 1111
    }
   ]
- },
- {
-  "data": "2026-10-14 09:19",
-  "versione": "7.999.166",
-  "catena": "notte",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 42
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 88
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 35
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 47
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 30
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 60
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 550
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 47
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 680
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 9
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 196
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 505
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": false,
-    "s": 981,
-    "coda": "{\"verde\":{\"ripartenze\":1,\"alCentro\":0,\"gol\":1,\"tentativi\":1,\"fine\":{\"f\":\"playing\",\"sc\":{\"home\":1,\"away\":0}},\"s\":105},\"rosso\":{\"ripartenze\":0,\"alCentro\":0,\"gol\":1,\"tentativi\":1,\"fine\":{\"f\":\"playing\",\"sc\":{\"home\":1,\"away\":0}},\"s\":102}} | ❌ ri",
-    "prove": 3
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 44
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 593
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 437
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 540
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 537
-   },
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 724
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "popup-224",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "lessico-218",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "fila-227",
-    "ok": true,
-    "s": 332
-   },
-   {
-    "passo": "finestra-230",
-    "ok": true,
-    "s": 125
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "giornata-233",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 909
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 518
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1115
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1133
-   },
-   {
-    "passo": "cross-218",
-    "ok": true,
-    "s": 248
-   },
-   {
-    "passo": "testata-209",
-    "ok": true,
-    "s": 541
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 242
-   },
-   {
-    "passo": "gk-miss-229",
-    "ok": true,
-    "s": 506
-   },
-   {
-    "passo": "goal-postarc",
-    "ok": true,
-    "s": 122
-   },
-   {
-    "passo": "nomi-219",
-    "ok": true,
-    "s": 8830,
-    "instabile": true,
-    "prove": 2
-   },
-   {
-    "passo": "difesa-220",
-    "ok": true,
-    "s": 2272
-   },
-   {
-    "passo": "scene-221",
-    "ok": true,
-    "s": 1730
-   },
-   {
-    "passo": "intervista-231",
-    "ok": true,
-    "s": 525
-   },
-   {
-    "passo": "tabellino-228",
-    "ok": true,
-    "s": 326
-   }
-  ],
-  "deroghe": [
-   "ripartenza-207"
-  ],
-  "nota_deroga": "Decisione PO 14/10 «Pubblico la 166» e autorizzazione esplicita alla deroga: ripartenza-207 rosso già presente sul sito dalla 7.999.163 (regressione del seme 7.999.162), in correzione al giro 18."
  }
 ]
