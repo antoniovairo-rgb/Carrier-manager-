@@ -119,7 +119,11 @@ carriera3-94 sono tutti verdi.
 
 ## 5. Catena del giro
 
-`node ci-runner.mjs giro staff-356 career-critical save-compat` (+ 17 sentinelle, 18 passi): esito in fondo.
+`node ci-runner.mjs giro staff-356 career-critical save-compat` (+ 17 sentinelle, 18 passi) su 7.999.209 + questo ramo:
+**18/18 verdi, nessuna ripetizione** — staff-356 (25 s), save-compat, mappa-unica, test:logic, replay, migrazione-194,
+design-system, tema-unico, griglia-mobile, render-3d-023, tunnel-285, home-298, web-237, career-critical (316 s),
+battito-264, partita-vera (684 s), gk-dive-sync, schermate-97. Le foto di `docs/collaudo-grafico` riscritte dal giro sono
+state rimesse com'erano (sottoprodotto, non parte della modifica).
 
 ## Fuori ambito (non toccato)
 
