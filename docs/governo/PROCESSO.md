@@ -15,6 +15,8 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 - **Quanti vagoni (PO 23/11 17:55):** un treno porta **al massimo 6 vagoni** e parte appena ce n'è uno pronto, senza aspettare di riempirlo (PO 23/11 20:55: «Meglio poco alla volta ma rapidamente»): con 13 vagoni un rosso fa ripartire tutto da capo. Se ci sono più vagoni pronti, il resto aspetta il treno dopo.
 - **Treno completo / treno grande:** gira la mappa intera; il treno grande è quello di notte.
 
+**Richieste nuove (PO 24/11 08:15: «le richieste nuove devono andare sempre in coda per arrivo, non creiamo treni giganti, mi raccomando!»).** Ogni richiesta nuova entra nel BACKLOG «IN CODA» per ordine di arrivo, senza chiedere al PO se anticiparla: la priorità la dichiara il PO di sua iniziativa. Un giro nuovo parte dalla testa della coda; un vagone pronto sale sul primo treno libero, al massimo 6 vagoni (meglio pochi).
+
 ## Smistamento (triage) — entro la risposta successiva
 
 Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglioramento · nuova funzione · debito tecnico · processo · ricerca · conflitto. Un'incertezza («da verificare», «da decidere») va nello **Stato**, non nel tipo. `node tools/governo-html.mjs` avvisa delle voci fuori categoria e la scheda «Stato settimanale» le conta (PO-159, 01/10). Ogni risposta al PO apre con «Richieste nuove registrate: PO-…»: è la prova che lo smistamento è avvenuto nel turno.
