@@ -4010,15 +4010,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 93,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 85,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 18,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#d97706",
@@ -4041,7 +4041,7 @@
       "soglia": 4.5,
       "n": 3,
       "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "sel": "div:nth-child(6)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stagione"
      },
      {
@@ -4057,6 +4057,18 @@
       "esempio": "28"
      },
      {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 13,
+      "fw": 400,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Non ora"
+     },
+     {
       "testo": "#9aa3b2",
       "fondo": "#1a1e27",
       "fs": 12,
@@ -4067,24 +4079,12 @@
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "Partite"
-     },
-     {
-      "testo": "#9aa3b2",
-      "fondo": "#1a1e27",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.56,
-      "soglia": 4.5,
-      "n": 6,
-      "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Voto medio sulle ultime"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 9,
-    "nFondi": 5,
+    "nColTesto": 10,
+    "nFondi": 6,
     "nCorpi": 6,
     "nRaggi": 6,
     "nPesi": 5,
@@ -4107,11 +4107,11 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 57
+      "n": 67
      },
      {
       "f": "Barlow Condensed",
-      "n": 17
+      "n": 18
      }
     ],
     "nFamiglie": 2,
@@ -4120,34 +4120,40 @@
     "figTipi": [],
     "tinteTesto": [
      {
-      "c": "#f4f1ea",
-      "n": 29,
-      "fs": 32,
-      "esempio": "Home"
-     },
-     {
       "c": "#9aa3b2",
-      "n": 26,
+      "n": 33,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
      {
-      "c": "#8f98a8",
-      "n": 5,
-      "fs": 12,
-      "esempio": "Stagione"
-     },
-     {
-      "c": "#ffffff",
-      "n": 4,
-      "fs": 20,
-      "esempio": "⚡ Vivi la Settimana"
+      "c": "#f4f1ea",
+      "n": 30,
+      "fs": 32,
+      "esempio": "Home"
      },
      {
       "c": "#e8b44a",
-      "n": 4,
+      "n": 6,
       "fs": 32,
       "esempio": "7,4"
+     },
+     {
+      "c": "#8f98a8",
+      "n": 6,
+      "fs": 13,
+      "esempio": "Non ora"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 2,
+      "fs": 12,
+      "esempio": "1"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 20,
+      "esempio": "⚡ Vivi la Settimana"
      },
      {
       "c": "#86efac",
@@ -4162,30 +4168,30 @@
       "esempio": "FATTO"
      },
      {
+      "c": "#93c5fd",
+      "n": 1,
+      "fs": 12,
+      "esempio": "Sponsor — nuova offerta"
+     },
+     {
       "c": "#d97706",
       "n": 1,
       "fs": 12,
       "esempio": "Nel pieno della carriera"
-     },
-     {
-      "c": "#0d0f14",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Home"
      }
     ],
     "corpiDet": [
      {
       "fs": 12,
-      "n": 47,
+      "n": 56,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 13,
-      "esempio": "Il gruppo prima di tutto →",
-      "sel": "div.cpm-career>div:nth-child(8)>button.cpm-press.cpm-focus"
+      "n": 16,
+      "esempio": "Offerta di sponsor · Kappa",
+      "sel": "div:nth-child(1)>button.cpm-focus.cpm-t40>span:nth-child(1)"
      },
      {
       "fs": 15,
@@ -4195,9 +4201,9 @@
      },
      {
       "fs": 17,
-      "n": 2,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(1)>button.cpm-press>span:nth-child(1)"
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
      },
      {
       "fs": 20,
@@ -4213,81 +4219,81 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1887,
-    "schermate": 2.06,
+    "altezzaPx": 2031,
+    "schermate": 2.22,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
+      "px": 241,
+      "quota": 11.8,
+      "txt": "⚡ Da decidere1Offerta di sponsor · Kappa R",
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(3)"
+     },
+     {
       "px": 201,
-      "quota": 10.7,
+      "quota": 9.9,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 199,
-      "quota": 10.6,
+      "quota": 9.8,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
-      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(6)"
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(7)"
      },
      {
       "px": 178,
-      "quota": 9.5,
+      "quota": 8.8,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 145,
-      "quota": 7.7,
+      "quota": 7.2,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(19)"
      },
      {
       "px": 111,
-      "quota": 5.9,
+      "quota": 5.5,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 101,
-      "quota": 5.3,
+      "quota": 5,
       "txt": "SLRFC Salernum 1919Lega B · St. 12 · Sett.",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 101,
-      "quota": 5.3,
-      "txt": "⏩ Vai al prossimo momentofino alla partita",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+      "px": 79,
+      "quota": 3.9,
+      "txt": "Fiducia del misterFiducioso78/100Popolarit",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      },
      {
-      "px": 79,
-      "quota": 4.2,
-      "txt": "Fiducia del misterFiducioso78/100Popolarit",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 75,
+      "quota": 3.7,
+      "txt": "🎯Vai al prossimo momentosalta 1 partita d",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 72,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Adesso guardano te›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(13)"
-     },
-     {
-      "px": 62,
-      "quota": 3.3,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      }
     ],
     "etichette": {
@@ -4298,22 +4304,24 @@
      "Forma": 1,
      "Morale": 1,
      "Fatica": 1,
+     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 4,
-     "Settimana": 3,
+     "Settimana": 4,
      "Obiettivi": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 12,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "⚡ Da decidere",
+     "👟",
+     "✍️ Firmo l’accordo",
      "⚡ Vivi la Settimana",
-     "⏩ Vai al prossimo momento",
+     "🎯",
      "🎁",
      "🌱 Il tuo allievo",
      "🔥",
-     "✅",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "✅"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -4339,15 +4347,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 93,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 85,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 18,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#d97706",
@@ -4370,7 +4378,7 @@
       "soglia": 4.5,
       "n": 3,
       "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "sel": "div:nth-child(6)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stagione"
      },
      {
@@ -4386,6 +4394,18 @@
       "esempio": "28"
      },
      {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 13,
+      "fw": 400,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Non ora"
+     },
+     {
       "testo": "#9aa3b2",
       "fondo": "#1a1e27",
       "fs": 12,
@@ -4396,24 +4416,12 @@
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "Partite"
-     },
-     {
-      "testo": "#9aa3b2",
-      "fondo": "#1a1e27",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.56,
-      "soglia": 4.5,
-      "n": 6,
-      "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Voto medio sulle ultime"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 9,
-    "nFondi": 5,
+    "nColTesto": 10,
+    "nFondi": 6,
     "nCorpi": 6,
     "nRaggi": 6,
     "nPesi": 5,
@@ -4436,11 +4444,11 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 57
+      "n": 67
      },
      {
       "f": "Barlow Condensed",
-      "n": 17
+      "n": 18
      }
     ],
     "nFamiglie": 2,
@@ -4449,34 +4457,40 @@
     "figTipi": [],
     "tinteTesto": [
      {
-      "c": "#f4f1ea",
-      "n": 29,
-      "fs": 32,
-      "esempio": "Home"
-     },
-     {
       "c": "#9aa3b2",
-      "n": 26,
+      "n": 33,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
      {
-      "c": "#8f98a8",
-      "n": 5,
-      "fs": 12,
-      "esempio": "Stagione"
-     },
-     {
-      "c": "#ffffff",
-      "n": 4,
-      "fs": 20,
-      "esempio": "⚡ Vivi la Settimana"
+      "c": "#f4f1ea",
+      "n": 30,
+      "fs": 32,
+      "esempio": "Home"
      },
      {
       "c": "#e8b44a",
-      "n": 4,
+      "n": 6,
       "fs": 32,
       "esempio": "7,4"
+     },
+     {
+      "c": "#8f98a8",
+      "n": 6,
+      "fs": 13,
+      "esempio": "Non ora"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 2,
+      "fs": 12,
+      "esempio": "1"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 20,
+      "esempio": "⚡ Vivi la Settimana"
      },
      {
       "c": "#86efac",
@@ -4491,30 +4505,30 @@
       "esempio": "FATTO"
      },
      {
+      "c": "#93c5fd",
+      "n": 1,
+      "fs": 12,
+      "esempio": "Sponsor — nuova offerta"
+     },
+     {
       "c": "#d97706",
       "n": 1,
       "fs": 12,
       "esempio": "Nel pieno della carriera"
-     },
-     {
-      "c": "#0d0f14",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Home"
      }
     ],
     "corpiDet": [
      {
       "fs": 12,
-      "n": 47,
+      "n": 56,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 13,
-      "esempio": "Il gruppo prima di tutto →",
-      "sel": "div.cpm-career>div:nth-child(8)>button.cpm-press.cpm-focus"
+      "n": 16,
+      "esempio": "Offerta di sponsor · Kappa",
+      "sel": "div:nth-child(1)>button.cpm-focus.cpm-t40>span:nth-child(1)"
      },
      {
       "fs": 15,
@@ -4524,9 +4538,9 @@
      },
      {
       "fs": 17,
-      "n": 2,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(1)>button.cpm-press>span:nth-child(1)"
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
      },
      {
       "fs": 20,
@@ -4542,81 +4556,81 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1887,
-    "schermate": 2.06,
+    "altezzaPx": 2031,
+    "schermate": 2.22,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
+      "px": 241,
+      "quota": 11.8,
+      "txt": "⚡ Da decidere1Offerta di sponsor · Kappa R",
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(3)"
+     },
+     {
       "px": 201,
-      "quota": 10.7,
+      "quota": 9.9,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 199,
-      "quota": 10.6,
+      "quota": 9.8,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
-      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(6)"
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(7)"
      },
      {
       "px": 178,
-      "quota": 9.5,
+      "quota": 8.8,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 145,
-      "quota": 7.7,
+      "quota": 7.2,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(19)"
      },
      {
       "px": 111,
-      "quota": 5.9,
+      "quota": 5.5,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 101,
-      "quota": 5.3,
+      "quota": 5,
       "txt": "SLRFC Salernum 1919Lega B · St. 12 · Sett.",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 101,
-      "quota": 5.3,
-      "txt": "⏩ Vai al prossimo momentofino alla partita",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+      "px": 79,
+      "quota": 3.9,
+      "txt": "Fiducia del misterFiducioso78/100Popolarit",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      },
      {
-      "px": 79,
-      "quota": 4.2,
-      "txt": "Fiducia del misterFiducioso78/100Popolarit",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 75,
+      "quota": 3.7,
+      "txt": "🎯Vai al prossimo momentosalta 1 partita d",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 72,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Adesso guardano te›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(13)"
-     },
-     {
-      "px": 62,
-      "quota": 3.3,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      }
     ],
     "etichette": {
@@ -4627,22 +4641,24 @@
      "Forma": 1,
      "Morale": 1,
      "Fatica": 1,
+     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 4,
-     "Settimana": 3,
+     "Settimana": 4,
      "Obiettivi": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 12,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "⚡ Da decidere",
+     "👟",
+     "✍️ Firmo l’accordo",
      "⚡ Vivi la Settimana",
-     "⏩ Vai al prossimo momento",
+     "🎯",
      "🎁",
      "🌱 Il tuo allievo",
      "🔥",
-     "✅",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "✅"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -4668,15 +4684,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 93,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 85,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 18,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#d97706",
@@ -4699,7 +4715,7 @@
       "soglia": 4.5,
       "n": 3,
       "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "sel": "div:nth-child(6)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stagione"
      },
      {
@@ -4715,6 +4731,18 @@
       "esempio": "28"
      },
      {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 13,
+      "fw": 400,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Non ora"
+     },
+     {
       "testo": "#9aa3b2",
       "fondo": "#1a1e27",
       "fs": 12,
@@ -4725,24 +4753,12 @@
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "Partite"
-     },
-     {
-      "testo": "#9aa3b2",
-      "fondo": "#1a1e27",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.56,
-      "soglia": 4.5,
-      "n": 6,
-      "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Voto medio sulle ultime"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 9,
-    "nFondi": 5,
+    "nColTesto": 10,
+    "nFondi": 6,
     "nCorpi": 6,
     "nRaggi": 7,
     "nPesi": 5,
@@ -4766,11 +4782,11 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 57
+      "n": 67
      },
      {
       "f": "Barlow Condensed",
-      "n": 17
+      "n": 18
      }
     ],
     "nFamiglie": 2,
@@ -4779,34 +4795,40 @@
     "figTipi": [],
     "tinteTesto": [
      {
-      "c": "#f4f1ea",
-      "n": 29,
-      "fs": 32,
-      "esempio": "Home"
-     },
-     {
       "c": "#9aa3b2",
-      "n": 26,
+      "n": 33,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
      {
-      "c": "#8f98a8",
-      "n": 5,
-      "fs": 12,
-      "esempio": "Stagione"
-     },
-     {
-      "c": "#ffffff",
-      "n": 4,
-      "fs": 20,
-      "esempio": "⚡ Vivi la Settimana"
+      "c": "#f4f1ea",
+      "n": 30,
+      "fs": 32,
+      "esempio": "Home"
      },
      {
       "c": "#e8b44a",
-      "n": 4,
+      "n": 6,
       "fs": 32,
       "esempio": "7,4"
+     },
+     {
+      "c": "#8f98a8",
+      "n": 6,
+      "fs": 13,
+      "esempio": "Non ora"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 2,
+      "fs": 12,
+      "esempio": "1"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 20,
+      "esempio": "⚡ Vivi la Settimana"
      },
      {
       "c": "#86efac",
@@ -4821,30 +4843,30 @@
       "esempio": "FATTO"
      },
      {
+      "c": "#93c5fd",
+      "n": 1,
+      "fs": 12,
+      "esempio": "Sponsor — nuova offerta"
+     },
+     {
       "c": "#d97706",
       "n": 1,
       "fs": 12,
       "esempio": "Nel pieno della carriera"
-     },
-     {
-      "c": "#0d0f14",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Home"
      }
     ],
     "corpiDet": [
      {
       "fs": 12,
-      "n": 47,
+      "n": 56,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 13,
-      "esempio": "Il gruppo prima di tutto →",
-      "sel": "div.cpm-career>div:nth-child(8)>button.cpm-press.cpm-focus"
+      "n": 16,
+      "esempio": "Offerta di sponsor · Kappa",
+      "sel": "div:nth-child(1)>button.cpm-focus.cpm-t40>span:nth-child(1)"
      },
      {
       "fs": 15,
@@ -4854,9 +4876,9 @@
      },
      {
       "fs": 17,
-      "n": 2,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(1)>button.cpm-press>span:nth-child(1)"
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
      },
      {
       "fs": 20,
@@ -4872,81 +4894,81 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1887,
-    "schermate": 2.06,
+    "altezzaPx": 2031,
+    "schermate": 2.22,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
+      "px": 241,
+      "quota": 11.8,
+      "txt": "⚡ Da decidere1Offerta di sponsor · Kappa R",
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(3)"
+     },
+     {
       "px": 201,
-      "quota": 10.7,
+      "quota": 9.9,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 199,
-      "quota": 10.6,
+      "quota": 9.8,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
-      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(6)"
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(7)"
      },
      {
       "px": 178,
-      "quota": 9.5,
+      "quota": 8.8,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 145,
-      "quota": 7.7,
+      "quota": 7.2,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(19)"
      },
      {
       "px": 118,
-      "quota": 6.2,
+      "quota": 5.8,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 101,
-      "quota": 5.3,
+      "quota": 5,
       "txt": "SLRFC Salernum 1919Lega B · St. 12 · Sett.",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 101,
-      "quota": 5.3,
-      "txt": "⏩ Vai al prossimo momentofino alla partita",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+      "px": 79,
+      "quota": 3.9,
+      "txt": "Fiducia del misterFiducioso78/100Popolarit",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      },
      {
-      "px": 79,
-      "quota": 4.2,
-      "txt": "Fiducia del misterFiducioso78/100Popolarit",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 75,
+      "quota": 3.7,
+      "txt": "🎯Vai al prossimo momentosalta 1 partita d",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 72,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Adesso guardano te›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.5,
       "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(13)"
-     },
-     {
-      "px": 62,
-      "quota": 3.3,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      }
     ],
     "etichette": {
@@ -4957,22 +4979,24 @@
      "Forma": 1,
      "Morale": 1,
      "Fatica": 1,
+     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 4,
-     "Settimana": 3,
+     "Settimana": 4,
      "Obiettivi": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 12,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "⚡ Da decidere",
+     "👟",
+     "✍️ Firmo l’accordo",
      "⚡ Vivi la Settimana",
-     "⏩ Vai al prossimo momento",
+     "🎯",
      "🎁",
      "🌱 Il tuo allievo",
      "🔥",
-     "✅",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "✅"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -4998,15 +5022,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 93,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 85,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 18,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#d97706",
@@ -5029,7 +5053,7 @@
       "soglia": 4.5,
       "n": 3,
       "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "sel": "div:nth-child(6)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stagione"
      },
      {
@@ -5045,6 +5069,18 @@
       "esempio": "28"
      },
      {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 13,
+      "fw": 400,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Non ora"
+     },
+     {
       "testo": "#9aa3b2",
       "fondo": "#1a1e27",
       "fs": 12,
@@ -5055,24 +5091,12 @@
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "Partite"
-     },
-     {
-      "testo": "#9aa3b2",
-      "fondo": "#1a1e27",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.56,
-      "soglia": 4.5,
-      "n": 6,
-      "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Voto medio sulle ultime"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 9,
-    "nFondi": 5,
+    "nColTesto": 10,
+    "nFondi": 6,
     "nCorpi": 6,
     "nRaggi": 7,
     "nPesi": 5,
@@ -5096,11 +5120,11 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 57
+      "n": 67
      },
      {
       "f": "Barlow Condensed",
-      "n": 17
+      "n": 18
      }
     ],
     "nFamiglie": 2,
@@ -5109,34 +5133,40 @@
     "figTipi": [],
     "tinteTesto": [
      {
-      "c": "#f4f1ea",
-      "n": 29,
-      "fs": 32,
-      "esempio": "Home"
-     },
-     {
       "c": "#9aa3b2",
-      "n": 26,
+      "n": 33,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
      {
-      "c": "#8f98a8",
-      "n": 5,
-      "fs": 12,
-      "esempio": "Stagione"
-     },
-     {
-      "c": "#ffffff",
-      "n": 4,
-      "fs": 20,
-      "esempio": "⚡ Vivi la Settimana"
+      "c": "#f4f1ea",
+      "n": 30,
+      "fs": 32,
+      "esempio": "Home"
      },
      {
       "c": "#e8b44a",
-      "n": 4,
+      "n": 6,
       "fs": 32,
       "esempio": "7,4"
+     },
+     {
+      "c": "#8f98a8",
+      "n": 6,
+      "fs": 13,
+      "esempio": "Non ora"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 2,
+      "fs": 12,
+      "esempio": "1"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 20,
+      "esempio": "⚡ Vivi la Settimana"
      },
      {
       "c": "#86efac",
@@ -5151,30 +5181,30 @@
       "esempio": "FATTO"
      },
      {
+      "c": "#93c5fd",
+      "n": 1,
+      "fs": 12,
+      "esempio": "Sponsor — nuova offerta"
+     },
+     {
       "c": "#d97706",
       "n": 1,
       "fs": 12,
       "esempio": "Nel pieno della carriera"
-     },
-     {
-      "c": "#0d0f14",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Home"
      }
     ],
     "corpiDet": [
      {
       "fs": 12,
-      "n": 47,
+      "n": 56,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 13,
-      "esempio": "Il gruppo prima di tutto →",
-      "sel": "div.cpm-career>div:nth-child(8)>button.cpm-press.cpm-focus"
+      "n": 16,
+      "esempio": "Offerta di sponsor · Kappa",
+      "sel": "div:nth-child(1)>button.cpm-focus.cpm-t40>span:nth-child(1)"
      },
      {
       "fs": 15,
@@ -5184,9 +5214,9 @@
      },
      {
       "fs": 17,
-      "n": 2,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(1)>button.cpm-press>span:nth-child(1)"
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
      },
      {
       "fs": 20,
@@ -5202,81 +5232,81 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1873,
-    "schermate": 2.05,
+    "altezzaPx": 2002,
+    "schermate": 2.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
+      "px": 224,
+      "quota": 11.2,
+      "txt": "⚡ Da decidere1Offerta di sponsor · Kappa R",
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(3)"
+     },
+     {
       "px": 199,
-      "quota": 10.6,
+      "quota": 10,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
-      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(6)"
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(7)"
      },
      {
       "px": 185,
-      "quota": 9.9,
+      "quota": 9.2,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 178,
-      "quota": 9.5,
+      "quota": 8.9,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 145,
-      "quota": 7.8,
+      "quota": 7.3,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(19)"
      },
      {
       "px": 118,
-      "quota": 6.3,
+      "quota": 5.9,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 101,
-      "quota": 5.4,
+      "quota": 5,
       "txt": "SLRFC Salernum 1919Lega B · St. 12 · Sett.",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "⏩ Vai al prossimo momentofino alla partita",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+      "px": 79,
+      "quota": 3.9,
+      "txt": "Fiducia del misterFiducioso78/100Popolarit",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      },
      {
-      "px": 79,
-      "quota": 4.2,
-      "txt": "Fiducia del misterFiducioso78/100Popolarit",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 75,
+      "quota": 3.8,
+      "txt": "🎯Vai al prossimo momentosalta 1 partita d",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 72,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "Adesso guardano te›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(13)"
-     },
-     {
-      "px": 62,
-      "quota": 3.3,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      }
     ],
     "etichette": {
@@ -5287,22 +5317,24 @@
      "Forma": 1,
      "Morale": 1,
      "Fatica": 1,
+     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 4,
-     "Settimana": 3,
+     "Settimana": 4,
      "Obiettivi": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 12,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "⚡ Da decidere",
+     "👟",
+     "✍️ Firmo l’accordo",
      "⚡ Vivi la Settimana",
-     "⏩ Vai al prossimo momento",
+     "🎯",
      "🎁",
      "🌱 Il tuo allievo",
      "🔥",
-     "✅",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "✅"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -5328,15 +5360,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 93,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 85,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 18,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#d97706",
@@ -5359,7 +5391,7 @@
       "soglia": 4.5,
       "n": 3,
       "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "sel": "div:nth-child(6)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stagione"
      },
      {
@@ -5375,6 +5407,18 @@
       "esempio": "28"
      },
      {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 13,
+      "fw": 400,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Non ora"
+     },
+     {
       "testo": "#9aa3b2",
       "fondo": "#1a1e27",
       "fs": 12,
@@ -5385,24 +5429,12 @@
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "Partite"
-     },
-     {
-      "testo": "#9aa3b2",
-      "fondo": "#1a1e27",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.56,
-      "soglia": 4.5,
-      "n": 6,
-      "svg": false,
-      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
-      "esempio": "Voto medio sulle ultime"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 9,
-    "nFondi": 5,
+    "nColTesto": 10,
+    "nFondi": 6,
     "nCorpi": 6,
     "nRaggi": 7,
     "nPesi": 5,
@@ -5426,11 +5458,11 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 57
+      "n": 67
      },
      {
       "f": "Barlow Condensed",
-      "n": 17
+      "n": 18
      }
     ],
     "nFamiglie": 2,
@@ -5439,34 +5471,40 @@
     "figTipi": [],
     "tinteTesto": [
      {
-      "c": "#f4f1ea",
-      "n": 29,
-      "fs": 32,
-      "esempio": "Home"
-     },
-     {
       "c": "#9aa3b2",
-      "n": 26,
+      "n": 33,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
      {
-      "c": "#8f98a8",
-      "n": 5,
-      "fs": 12,
-      "esempio": "Stagione"
-     },
-     {
-      "c": "#ffffff",
-      "n": 4,
-      "fs": 20,
-      "esempio": "⚡ Vivi la Settimana"
+      "c": "#f4f1ea",
+      "n": 30,
+      "fs": 32,
+      "esempio": "Home"
      },
      {
       "c": "#e8b44a",
-      "n": 4,
+      "n": 6,
       "fs": 32,
       "esempio": "7,4"
+     },
+     {
+      "c": "#8f98a8",
+      "n": 6,
+      "fs": 13,
+      "esempio": "Non ora"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 2,
+      "fs": 12,
+      "esempio": "1"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 20,
+      "esempio": "⚡ Vivi la Settimana"
      },
      {
       "c": "#86efac",
@@ -5481,30 +5519,30 @@
       "esempio": "FATTO"
      },
      {
+      "c": "#93c5fd",
+      "n": 1,
+      "fs": 12,
+      "esempio": "Sponsor — nuova offerta"
+     },
+     {
       "c": "#d97706",
       "n": 1,
       "fs": 12,
       "esempio": "Nel pieno della carriera"
-     },
-     {
-      "c": "#0d0f14",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Home"
      }
     ],
     "corpiDet": [
      {
       "fs": 12,
-      "n": 47,
+      "n": 56,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
      {
       "fs": 13,
-      "n": 13,
-      "esempio": "Il gruppo prima di tutto →",
-      "sel": "div.cpm-career>div:nth-child(8)>button.cpm-press.cpm-focus"
+      "n": 16,
+      "esempio": "Offerta di sponsor · Kappa",
+      "sel": "div:nth-child(1)>button.cpm-focus.cpm-t40>span:nth-child(1)"
      },
      {
       "fs": 15,
@@ -5514,9 +5552,9 @@
      },
      {
       "fs": 17,
-      "n": 2,
-      "esempio": "⏩ Vai al prossimo momento",
-      "sel": "div:nth-child(1)>button.cpm-press>span:nth-child(1)"
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
      },
      {
       "fs": 20,
@@ -5532,81 +5570,81 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1873,
-    "schermate": 2.05,
+    "altezzaPx": 2002,
+    "schermate": 2.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
+      "px": 224,
+      "quota": 11.2,
+      "txt": "⚡ Da decidere1Offerta di sponsor · Kappa R",
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(3)"
+     },
+     {
       "px": 199,
-      "quota": 10.6,
+      "quota": 10,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
-      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(6)"
+      "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(7)"
      },
      {
       "px": 185,
-      "quota": 9.9,
+      "quota": 9.2,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 178,
-      "quota": 9.5,
+      "quota": 8.9,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 145,
-      "quota": 7.8,
+      "quota": 7.3,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(19)"
      },
      {
       "px": 118,
-      "quota": 6.3,
+      "quota": 5.9,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 101,
-      "quota": 5.4,
+      "quota": 5,
       "txt": "SLRFC Salernum 1919Lega B · St. 12 · Sett.",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "⏩ Vai al prossimo momentofino alla partita",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+      "px": 79,
+      "quota": 3.9,
+      "txt": "Fiducia del misterFiducioso78/100Popolarit",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      },
      {
-      "px": 79,
-      "quota": 4.2,
-      "txt": "Fiducia del misterFiducioso78/100Popolarit",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 75,
+      "quota": 3.8,
+      "txt": "🎯Vai al prossimo momentosalta 1 partita d",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 72,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "Adesso guardano te›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 71,
-      "quota": 3.8,
+      "quota": 3.6,
       "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(13)"
-     },
-     {
-      "px": 62,
-      "quota": 3.3,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      }
     ],
     "etichette": {
@@ -5617,22 +5655,24 @@
      "Forma": 1,
      "Morale": 1,
      "Fatica": 1,
+     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 4,
-     "Settimana": 3,
+     "Settimana": 4,
      "Obiettivi": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 12,
     "doveEmoji": [
      "Si scende in campo! ⚽",
+     "⚡ Da decidere",
+     "👟",
+     "✍️ Firmo l’accordo",
      "⚡ Vivi la Settimana",
-     "⏩ Vai al prossimo momento",
+     "🎯",
      "🎁",
      "🌱 Il tuo allievo",
      "🔥",
-     "✅",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "✅"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -7970,15 +8010,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 31,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 25,
+    "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 7,
+    "nEmoji": 8,
     "peggiori": [
      {
       "testo": "#9aa3b2",
@@ -8063,7 +8103,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 17
+      "n": 18
      },
      {
       "f": "Barlow Condensed",
@@ -8083,7 +8123,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 9,
+      "n": 10,
       "fs": 32,
       "esempio": "Stagione: coppe"
      },
@@ -8103,7 +8143,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 21,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -8127,8 +8167,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 800,
-    "schermate": 0.87,
+    "altezzaPx": 814,
+    "schermate": 0.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -8136,12 +8176,13 @@
      "Stagione": 4,
      "Settimana": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
+     "📜 Storico delle coppe",
      "⭐",
      "🌍",
      "☕ Sostieni il progetto",
@@ -8171,15 +8212,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 31,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 25,
+    "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 7,
+    "nEmoji": 8,
     "peggiori": [
      {
       "testo": "#9aa3b2",
@@ -8264,7 +8305,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 17
+      "n": 18
      },
      {
       "f": "Barlow Condensed",
@@ -8284,7 +8325,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 9,
+      "n": 10,
       "fs": 32,
       "esempio": "Stagione: coppe"
      },
@@ -8304,7 +8345,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 21,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -8328,8 +8369,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 735,
-    "schermate": 0.8,
+    "altezzaPx": 778,
+    "schermate": 0.85,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -8337,12 +8378,13 @@
      "Stagione": 4,
      "Settimana": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
+     "📜 Storico delle coppe",
      "⭐",
      "🌍",
      "☕ Sostieni il progetto",
@@ -8372,15 +8414,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 31,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 25,
+    "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 7,
+    "nEmoji": 8,
     "peggiori": [
      {
       "testo": "#9aa3b2",
@@ -8466,7 +8508,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 17
+      "n": 18
      },
      {
       "f": "Barlow Condensed",
@@ -8486,7 +8528,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 9,
+      "n": 10,
       "fs": 32,
       "esempio": "Stagione: coppe"
      },
@@ -8506,7 +8548,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 21,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -8532,19 +8574,20 @@
     "nSvgTesto": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento",
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Presenze": 1,
      "Stagione": 4,
      "Settimana": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
+     "📜 Storico delle coppe",
      "⭐",
      "🌍",
      "☕ Sostieni il progetto",
@@ -8574,15 +8617,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 31,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 25,
+    "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 7,
+    "nEmoji": 8,
     "peggiori": [
      {
       "testo": "#9aa3b2",
@@ -8668,7 +8711,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 17
+      "n": 18
      },
      {
       "f": "Barlow Condensed",
@@ -8688,7 +8731,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 9,
+      "n": 10,
       "fs": 32,
       "esempio": "Stagione: coppe"
      },
@@ -8708,7 +8751,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 21,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -8741,12 +8784,13 @@
      "Stagione": 4,
      "Settimana": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
+     "📜 Storico delle coppe",
      "⭐",
      "🌍",
      "☕ Sostieni il progetto",
@@ -8776,15 +8820,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 31,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 25,
+    "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 7,
+    "nEmoji": 8,
     "peggiori": [
      {
       "testo": "#9aa3b2",
@@ -8870,7 +8914,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 17
+      "n": 18
      },
      {
       "f": "Barlow Condensed",
@@ -8890,7 +8934,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 9,
+      "n": 10,
       "fs": 32,
       "esempio": "Stagione: coppe"
      },
@@ -8910,7 +8954,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 20,
+      "n": 21,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
      },
@@ -8943,12 +8987,13 @@
      "Stagione": 4,
      "Settimana": 2
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
+     "📜 Storico delle coppe",
      "⭐",
      "🌍",
      "☕ Sostieni il progetto",
@@ -8980,15 +9025,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 92,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 87,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 23,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -9021,7 +9066,7 @@
       "fw": 600,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 11,
+      "n": 18,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "Fiducia del mister"
@@ -9033,10 +9078,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 4,
+      "n": 6,
       "svg": false,
-      "sel": "div:nth-child(3)>button.cpm-press.cpm-t40>span:nth-child(1)",
-      "esempio": "scade a fine stagione 13 ("
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Ambizione del club"
      },
      {
       "testo": "#9aa3b2",
@@ -9055,11 +9100,12 @@
     "marca": [],
     "nColTesto": 7,
     "nFondi": 5,
-    "nCorpi": 4,
+    "nCorpi": 5,
     "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
+     13,
      15,
      24,
      32
@@ -9074,7 +9120,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 64
+      "n": 77
      },
      {
       "f": "Barlow Condensed",
@@ -9093,13 +9139,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 29,
+      "n": 31,
       "fs": 32,
       "esempio": "Club"
      },
      {
       "c": "#9aa3b2",
-      "n": 18,
+      "n": 27,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -9116,16 +9162,16 @@
       "esempio": "24"
      },
      {
-      "c": "#e8b44a",
-      "n": 2,
-      "fs": 12,
-      "esempio": "Dettagli in Agente ›"
+      "c": "#4ade80",
+      "n": 4,
+      "fs": 13,
+      "esempio": "4° · in linea"
      },
      {
-      "c": "#4ade80",
+      "c": "#e8b44a",
       "n": 1,
       "fs": 12,
-      "esempio": "72/100"
+      "esempio": "☕ Sostieni il progetto"
      },
      {
       "c": "#0d0f14",
@@ -9137,9 +9183,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 67,
+      "n": 77,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Salire di categoria",
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(2)"
      },
      {
       "fs": 15,
@@ -9161,29 +9213,32 @@
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 1296,
-    "schermate": 1.42,
+    "altezzaPx": 1496,
+    "schermate": 1.63,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 2,
+     "Media voto": 1,
      "Forma": 3,
      "Morale": 3,
-     "Contratto": 1,
      "Fiducia": 2,
-     "Stagione": 3,
-     "Settimana": 1
+     "Stagione": 2,
+     "Settimana": 1,
+     "Obiettivi": 1
     },
-    "nEmojiChar": 10,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🧭",
      "🧣",
      "🩺 Dr.",
      "(medico sociale) · 📋",
+     "⬆️",
+     "✅",
      "✨ Forma e morale",
      "😐",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "☕ Sostieni il progetto"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -9209,15 +9264,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 92,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 87,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 23,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -9250,7 +9305,7 @@
       "fw": 600,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 11,
+      "n": 18,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "Fiducia del mister"
@@ -9262,10 +9317,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 4,
+      "n": 6,
       "svg": false,
-      "sel": "div:nth-child(3)>button.cpm-press.cpm-t40>span:nth-child(1)",
-      "esempio": "scade a fine stagione 13 ("
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Ambizione del club"
      },
      {
       "testo": "#9aa3b2",
@@ -9284,11 +9339,12 @@
     "marca": [],
     "nColTesto": 7,
     "nFondi": 5,
-    "nCorpi": 4,
+    "nCorpi": 5,
     "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
+     13,
      15,
      24,
      32
@@ -9303,7 +9359,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 64
+      "n": 77
      },
      {
       "f": "Barlow Condensed",
@@ -9322,13 +9378,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 29,
+      "n": 31,
       "fs": 32,
       "esempio": "Club"
      },
      {
       "c": "#9aa3b2",
-      "n": 18,
+      "n": 27,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -9345,16 +9401,16 @@
       "esempio": "24"
      },
      {
-      "c": "#e8b44a",
-      "n": 2,
-      "fs": 12,
-      "esempio": "Dettagli in Agente ›"
+      "c": "#4ade80",
+      "n": 4,
+      "fs": 13,
+      "esempio": "4° · in linea"
      },
      {
-      "c": "#4ade80",
+      "c": "#e8b44a",
       "n": 1,
       "fs": 12,
-      "esempio": "72/100"
+      "esempio": "☕ Sostieni il progetto"
      },
      {
       "c": "#0d0f14",
@@ -9366,9 +9422,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 67,
+      "n": 77,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Salire di categoria",
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(2)"
      },
      {
       "fs": 15,
@@ -9390,29 +9452,32 @@
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 1243,
-    "schermate": 1.36,
+    "altezzaPx": 1443,
+    "schermate": 1.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 2,
+     "Media voto": 1,
      "Forma": 3,
      "Morale": 3,
-     "Contratto": 1,
      "Fiducia": 2,
-     "Stagione": 3,
-     "Settimana": 1
+     "Stagione": 2,
+     "Settimana": 1,
+     "Obiettivi": 1
     },
-    "nEmojiChar": 10,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🧭",
      "🧣",
      "🩺 Dr.",
      "(medico sociale) · 📋",
+     "⬆️",
+     "✅",
      "✨ Forma e morale",
      "😐",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "☕ Sostieni il progetto"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -9438,15 +9503,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 92,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 87,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 23,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -9479,7 +9544,7 @@
       "fw": 600,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 11,
+      "n": 18,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "Fiducia del mister"
@@ -9491,10 +9556,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 4,
+      "n": 6,
       "svg": false,
-      "sel": "div:nth-child(3)>button.cpm-press.cpm-t40>span:nth-child(1)",
-      "esempio": "scade a fine stagione 13 ("
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Ambizione del club"
      },
      {
       "testo": "#9aa3b2",
@@ -9513,11 +9578,12 @@
     "marca": [],
     "nColTesto": 7,
     "nFondi": 5,
-    "nCorpi": 4,
+    "nCorpi": 5,
     "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
+     13,
      15,
      24,
      32
@@ -9532,7 +9598,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 64
+      "n": 77
      },
      {
       "f": "Barlow Condensed",
@@ -9551,13 +9617,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 29,
+      "n": 31,
       "fs": 32,
       "esempio": "Club"
      },
      {
       "c": "#9aa3b2",
-      "n": 18,
+      "n": 27,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -9574,16 +9640,16 @@
       "esempio": "24"
      },
      {
-      "c": "#e8b44a",
-      "n": 2,
-      "fs": 12,
-      "esempio": "Dettagli in Agente ›"
+      "c": "#4ade80",
+      "n": 4,
+      "fs": 13,
+      "esempio": "4° · in linea"
      },
      {
-      "c": "#4ade80",
+      "c": "#e8b44a",
       "n": 1,
       "fs": 12,
-      "esempio": "72/100"
+      "esempio": "☕ Sostieni il progetto"
      },
      {
       "c": "#0d0f14",
@@ -9595,9 +9661,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 67,
+      "n": 77,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Salire di categoria",
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(2)"
      },
      {
       "fs": 15,
@@ -9619,29 +9691,32 @@
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 1243,
-    "schermate": 1.36,
+    "altezzaPx": 1443,
+    "schermate": 1.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 2,
+     "Media voto": 1,
      "Forma": 3,
      "Morale": 3,
-     "Contratto": 1,
      "Fiducia": 2,
-     "Stagione": 3,
-     "Settimana": 1
+     "Stagione": 2,
+     "Settimana": 1,
+     "Obiettivi": 1
     },
-    "nEmojiChar": 10,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🧭",
      "🧣",
      "🩺 Dr.",
      "(medico sociale) · 📋",
+     "⬆️",
+     "✅",
      "✨ Forma e morale",
      "😐",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "☕ Sostieni il progetto"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -9667,15 +9742,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 92,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 87,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 23,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -9708,7 +9783,7 @@
       "fw": 600,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 11,
+      "n": 18,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "Fiducia del mister"
@@ -9720,10 +9795,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 4,
+      "n": 6,
       "svg": false,
-      "sel": "div:nth-child(3)>button.cpm-press.cpm-t40>span:nth-child(1)",
-      "esempio": "scade a fine stagione 13 ("
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Ambizione del club"
      },
      {
       "testo": "#9aa3b2",
@@ -9742,11 +9817,12 @@
     "marca": [],
     "nColTesto": 7,
     "nFondi": 5,
-    "nCorpi": 4,
+    "nCorpi": 5,
     "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
+     13,
      15,
      24,
      32
@@ -9761,7 +9837,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 64
+      "n": 77
      },
      {
       "f": "Barlow Condensed",
@@ -9780,13 +9856,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 29,
+      "n": 31,
       "fs": 32,
       "esempio": "Club"
      },
      {
       "c": "#9aa3b2",
-      "n": 18,
+      "n": 27,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -9803,16 +9879,16 @@
       "esempio": "24"
      },
      {
-      "c": "#e8b44a",
-      "n": 2,
-      "fs": 12,
-      "esempio": "Dettagli in Agente ›"
+      "c": "#4ade80",
+      "n": 4,
+      "fs": 13,
+      "esempio": "4° · in linea"
      },
      {
-      "c": "#4ade80",
+      "c": "#e8b44a",
       "n": 1,
       "fs": 12,
-      "esempio": "72/100"
+      "esempio": "☕ Sostieni il progetto"
      },
      {
       "c": "#0d0f14",
@@ -9824,9 +9900,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 67,
+      "n": 77,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Salire di categoria",
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(2)"
      },
      {
       "fs": 15,
@@ -9848,29 +9930,32 @@
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 1243,
-    "schermate": 1.36,
+    "altezzaPx": 1443,
+    "schermate": 1.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 2,
+     "Media voto": 1,
      "Forma": 3,
      "Morale": 3,
-     "Contratto": 1,
      "Fiducia": 2,
-     "Stagione": 3,
-     "Settimana": 1
+     "Stagione": 2,
+     "Settimana": 1,
+     "Obiettivi": 1
     },
-    "nEmojiChar": 10,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🧭",
      "🧣",
      "🩺 Dr.",
      "(medico sociale) · 📋",
+     "⬆️",
+     "✅",
      "✨ Forma e morale",
      "😐",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "☕ Sostieni il progetto"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -9896,15 +9981,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 92,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 74,
+    "nMisurati": 87,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 23,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -9937,7 +10022,7 @@
       "fw": 600,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 11,
+      "n": 18,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "Fiducia del mister"
@@ -9949,10 +10034,10 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 4,
+      "n": 6,
       "svg": false,
-      "sel": "div:nth-child(3)>button.cpm-press.cpm-t40>span:nth-child(1)",
-      "esempio": "scade a fine stagione 13 ("
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Ambizione del club"
      },
      {
       "testo": "#9aa3b2",
@@ -9971,11 +10056,12 @@
     "marca": [],
     "nColTesto": 7,
     "nFondi": 5,
-    "nCorpi": 4,
+    "nCorpi": 5,
     "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      12,
+     13,
      15,
      24,
      32
@@ -9990,7 +10076,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 64
+      "n": 77
      },
      {
       "f": "Barlow Condensed",
@@ -10009,13 +10095,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 29,
+      "n": 31,
       "fs": 32,
       "esempio": "Club"
      },
      {
       "c": "#9aa3b2",
-      "n": 18,
+      "n": 27,
       "fs": 12,
       "esempio": "Lega B · St. 12 · Sett. 11"
      },
@@ -10032,16 +10118,16 @@
       "esempio": "24"
      },
      {
-      "c": "#e8b44a",
-      "n": 2,
-      "fs": 12,
-      "esempio": "Dettagli in Agente ›"
+      "c": "#4ade80",
+      "n": 4,
+      "fs": 13,
+      "esempio": "4° · in linea"
      },
      {
-      "c": "#4ade80",
+      "c": "#e8b44a",
       "n": 1,
       "fs": 12,
-      "esempio": "72/100"
+      "esempio": "☕ Sostieni il progetto"
      },
      {
       "c": "#0d0f14",
@@ -10053,9 +10139,15 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 67,
+      "n": 77,
       "esempio": "Lega B · St. 12 · Sett. 11",
       "sel": "div.cpm-career>header:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Salire di categoria",
+      "sel": "section:nth-child(3)>div:nth-child(2)>span:nth-child(2)"
      },
      {
       "fs": 15,
@@ -10077,29 +10169,32 @@
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 1243,
-    "schermate": 1.36,
+    "altezzaPx": 1443,
+    "schermate": 1.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 2,
+     "Media voto": 1,
      "Forma": 3,
      "Morale": 3,
-     "Contratto": 1,
      "Fiducia": 2,
-     "Stagione": 3,
-     "Settimana": 1
+     "Stagione": 2,
+     "Settimana": 1,
+     "Obiettivi": 1
     },
-    "nEmojiChar": 10,
+    "nEmojiChar": 13,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🧭",
      "🧣",
      "🩺 Dr.",
      "(medico sociale) · 📋",
+     "⬆️",
+     "✅",
      "✨ Forma e morale",
      "😐",
-     "☕ Sostieni il progetto",
-     "💡 Idee e feedback"
+     "☕ Sostieni il progetto"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -14944,12 +15039,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 34,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 31,
+    "nMisurati": 32,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 4,
@@ -15042,7 +15137,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 1
+      "n": 2
      }
     ],
     "nFamiglie": 2,
@@ -15052,7 +15147,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 16,
+      "n": 14,
       "fs": 27,
       "esempio": "SLR"
      },
@@ -15064,21 +15159,21 @@
      },
      {
       "c": "#8f98a8",
-      "n": 3,
+      "n": 5,
       "fs": 15,
       "esempio": "VS"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "Gioca la partita"
      },
      {
       "c": "#e8b44a",
       "n": 1,
       "fs": 12,
       "esempio": "La tua squadra · Casa"
-     },
-     {
-      "c": "#ffffff",
-      "n": 1,
-      "fs": 17,
-      "esempio": "Vedi le formazioni"
      },
      {
       "c": "#b48d94",
@@ -15090,7 +15185,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 21,
+      "n": 22,
       "esempio": "Lega B",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -15109,7 +15204,7 @@
      {
       "fs": 17,
       "n": 1,
-      "esempio": "Vedi le formazioni",
+      "esempio": "Gioca la partita",
       "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus"
      }
     ],
@@ -15150,12 +15245,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 34,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 31,
+    "nMisurati": 32,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 4,
@@ -15248,7 +15343,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 1
+      "n": 2
      }
     ],
     "nFamiglie": 2,
@@ -15258,7 +15353,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 16,
+      "n": 14,
       "fs": 27,
       "esempio": "SLR"
      },
@@ -15270,21 +15365,21 @@
      },
      {
       "c": "#8f98a8",
-      "n": 3,
+      "n": 5,
       "fs": 15,
       "esempio": "VS"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "Gioca la partita"
      },
      {
       "c": "#e8b44a",
       "n": 1,
       "fs": 12,
       "esempio": "La tua squadra · Casa"
-     },
-     {
-      "c": "#ffffff",
-      "n": 1,
-      "fs": 17,
-      "esempio": "Vedi le formazioni"
      },
      {
       "c": "#b48d94",
@@ -15296,7 +15391,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 21,
+      "n": 22,
       "esempio": "Lega B",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -15315,13 +15410,13 @@
      {
       "fs": 17,
       "n": 1,
-      "esempio": "Vedi le formazioni",
+      "esempio": "Gioca la partita",
       "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus"
      }
     ],
     "nSvgTesto": 2,
-    "altezzaPx": 730,
-    "schermate": 0.8,
+    "altezzaPx": 759,
+    "schermate": 0.83,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {},
@@ -15356,12 +15451,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 34,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 31,
+    "nMisurati": 32,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 4,
@@ -15454,7 +15549,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 1
+      "n": 2
      }
     ],
     "nFamiglie": 2,
@@ -15464,7 +15559,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 16,
+      "n": 14,
       "fs": 27,
       "esempio": "SLR"
      },
@@ -15476,21 +15571,21 @@
      },
      {
       "c": "#8f98a8",
-      "n": 3,
+      "n": 5,
       "fs": 15,
       "esempio": "VS"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "Gioca la partita"
      },
      {
       "c": "#e8b44a",
       "n": 1,
       "fs": 12,
       "esempio": "La tua squadra · Casa"
-     },
-     {
-      "c": "#ffffff",
-      "n": 1,
-      "fs": 17,
-      "esempio": "Vedi le formazioni"
      },
      {
       "c": "#b48d94",
@@ -15502,7 +15597,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 21,
+      "n": 22,
       "esempio": "Lega B",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -15521,7 +15616,7 @@
      {
       "fs": 17,
       "n": 1,
-      "esempio": "Vedi le formazioni",
+      "esempio": "Gioca la partita",
       "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus"
      }
     ],
@@ -15562,12 +15657,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 34,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 31,
+    "nMisurati": 32,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 4,
@@ -15660,7 +15755,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 1
+      "n": 2
      }
     ],
     "nFamiglie": 2,
@@ -15670,7 +15765,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 16,
+      "n": 14,
       "fs": 27,
       "esempio": "SLR"
      },
@@ -15682,21 +15777,21 @@
      },
      {
       "c": "#8f98a8",
-      "n": 3,
+      "n": 5,
       "fs": 15,
       "esempio": "VS"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "Gioca la partita"
      },
      {
       "c": "#e8b44a",
       "n": 1,
       "fs": 12,
       "esempio": "La tua squadra · Casa"
-     },
-     {
-      "c": "#ffffff",
-      "n": 1,
-      "fs": 17,
-      "esempio": "Vedi le formazioni"
      },
      {
       "c": "#b48d94",
@@ -15708,7 +15803,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 21,
+      "n": 22,
       "esempio": "Lega B",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -15727,7 +15822,7 @@
      {
       "fs": 17,
       "n": 1,
-      "esempio": "Vedi le formazioni",
+      "esempio": "Gioca la partita",
       "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus"
      }
     ],
@@ -15768,12 +15863,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 33,
+    "nTesto": 34,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 31,
+    "nMisurati": 32,
     "nSotto": 0,
     "nGradiente": 0,
     "nEmoji": 4,
@@ -15866,7 +15961,7 @@
      },
      {
       "f": "Barlow Condensed",
-      "n": 1
+      "n": 2
      }
     ],
     "nFamiglie": 2,
@@ -15876,7 +15971,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 16,
+      "n": 14,
       "fs": 27,
       "esempio": "SLR"
      },
@@ -15888,21 +15983,21 @@
      },
      {
       "c": "#8f98a8",
-      "n": 3,
+      "n": 5,
       "fs": 15,
       "esempio": "VS"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 17,
+      "esempio": "Gioca la partita"
      },
      {
       "c": "#e8b44a",
       "n": 1,
       "fs": 12,
       "esempio": "La tua squadra · Casa"
-     },
-     {
-      "c": "#ffffff",
-      "n": 1,
-      "fs": 17,
-      "esempio": "Vedi le formazioni"
      },
      {
       "c": "#b48d94",
@@ -15914,7 +16009,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 21,
+      "n": 22,
       "esempio": "Lega B",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -15933,7 +16028,7 @@
      {
       "fs": 17,
       "n": 1,
-      "esempio": "Vedi le formazioni",
+      "esempio": "Gioca la partita",
       "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus"
      }
     ],
