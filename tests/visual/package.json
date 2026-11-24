@@ -707,6 +707,7 @@
     "formazioni-262": "node formazioni-262.mjs",
     "formazioni-339": "node formazioni-339.mjs",
     "offerta-249": "node offerta-249.mjs",
+    "offerte-351": "node offerte-351.mjs",
     "provini-201": "node provini-201.mjs",
     "scelte-201": "node scelte-201.mjs && (CPM_ROSSO332=1 node scelte-201.mjs; test $? -eq 1)",
     "figurina-199": "node figurina-199.mjs",
