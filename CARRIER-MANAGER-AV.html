@@ -1692,7 +1692,7 @@ const euroSig=k=>EURO_SIGLA[k]||k||"";
    stamparle: compLbl è il filtro DISPLAY unico da applicare ovunque si renderizzi il nome di una competizione
    arrivato dai dati (trofei, timeline, palmarès, premi, notifiche). Converte la chiave nella sigla di fantasia
    (KCC/KEC/KCF) e lascia intatto qualunque altro nome (nomi di lega, «Coppa Nazionale», …). */
-const compLbl=x=>{const v=String(x==null?"":x);return EURO_SIGLA[v]||v;};
+const compLbl=x=>{const v=String(x==null?"":x);if(typeof window!=="undefined"&&window.__CPM_NO_G357)return v;return EURO_SIGLA[v]||v;};/* [giro 357 · PO-654] rosso __CPM_NO_G357: il filtro lascia passare la chiave (guardiano sigle-357) */
 
 // Sprint 137: historical continental competition winners
 const EURO_COMP_WINNERS={
@@ -52035,7 +52035,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const diaryMoments=(()=>{try{const out=[];
     const _wT=t=>t&&t.type==="int"?5:(t&&t.type==="euro"?4:(t&&t.type==="cup"?2:3));
     const _tr=[...(p.trophies||[])].sort((a,b)=>_wT(b)-_wT(a)||(a.season||0)-(b.season||0));
-    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:TH.goldText,headline:`${t.league||"Titolo"}${t.isNational?" con la Nazionale":""}`,body:`${t.club||""} · S.${t.season||"?"}`}));
+    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:TH.goldText,headline:`${compLbl(t.league)||"Titolo"}${t.isNational?" con la Nazionale":""}`/* [giro 357 · PO-654] la chiave interna UCL/UEL/UECL passa da compLbl (era «UEL · FC Rotterdam · S.3») */,body:`${t.club||""} · S.${t.season||"?"}`}));
     const _dS=(p.diary||[]).filter(d=>["pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","first_goal","hattrick"].includes(d.type)).slice(-5).reverse();
     for(const d of _dS){if(out.length>=5)break;out.push(d);}
     return out.slice(0,5);}catch(_e){return (p.diary||[]).slice(-5).reverse();}})();
