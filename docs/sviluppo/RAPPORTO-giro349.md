@@ -38,4 +38,14 @@ Banco, punta del ramo: cerimonie **verde 9/22**, rosso **0/22** · esiti-241 **v
 (prima della correzione: è solo `solo_runner`).
 
 Catena del giro (`node ci-runner.mjs giro cerimonie esiti-96 esiti-241 cerimonie-192 testa-342 difesa-343 career-critical`, + 17
-sentinelle, 23 passi): _in corsa_.
+sentinelle, 23 passi): **23/23 verdi** — cerimonie 40 s · esiti-241 326 s · cerimonie-192 456 s · testa-342 694 s · difesa-343 256 s ·
+esiti-96 816 s · career-critical 370 s · le 17 sentinelle verdi, partita-vera compresa (618 s). Esito registrato in
+`docs/governo/STABILITA.json`. (Il runner stampa «su 7.999.206»: è la `GAME_VERSION` del file, non toccata.)
+
+## Da sapere (fuori ambito)
+
+- `ROSSI-DICHIARATI.json` è cambiato solo sul ramo: il rilascio lo legge da **main**. Non l'ho portato su main io (è un push sul ramo
+  di produzione, che non mi è stato chiesto); se il PO vuole che il prossimo treno conti esiti-96 come «noto del runner» la riga va
+  copiata su main come nel giro 348.
+- I due ganci nuovi sono di solo collaudo: `__CPM_CER349` si scrive solo sotto `?cpmtest=1`, `__CPM_COMPAGNO_SBAGLIA349` lo accende
+  soltanto la sonda. In gioco non cambia niente (catena del giro verde, partita-vera compresa).
