@@ -368,6 +368,127 @@
   ]
  },
  {
+  "data": "2026-11-23 12:47",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "tiro-346",
+    "ok": true,
+    "s": 481
+   },
+   {
+    "passo": "ball-owner",
+    "ok": true,
+    "s": 734
+   },
+   {
+    "passo": "ball-jump-census",
+    "ok": false,
+    "s": 1821,
+    "coda": " | copertura: 3/26 scene giocate su 1 partite · 10272 fotogrammi visti dal varco | ❌ COPERTURA INSUFFICIENTE: 3 scene su un minimo di 13 — «nessun salto» su cosi' poco non e' un risultato | log out/ci-rossi/ball-jump-census-2026-11-23T13-37-58-266Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "match-sequence",
+    "ok": true,
+    "s": 980
+   },
+   {
+    "passo": "sim-motore",
+    "ok": false,
+    "s": 43,
+    "coda": "C · carriera: 7 passi (opening-resolved,lived,simulated,lived,simulated,lived,simulated), settimane +3, partite simulate dal motore 3 (ms [103,95,71]) | ❌ FAIL sim-motore |   B: gol a partita 2.29 fuori da 2,3-3,5 | log out/ci-rossi/sim-motore-2026-11-23T13-55-01-125Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 218
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 310
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 334
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 416
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 703
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 245
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 123
+   }
+  ]
+ },
+ {
   "data": "2026-11-23 12:31",
   "versione": "7.999.206",
   "catena": "giro",

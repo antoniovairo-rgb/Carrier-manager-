@@ -20943,7 +20943,21 @@ function ThreeMatchView(props){
         else if(hlPostArcType==="post_rebound"){// CINE-3: palla rimbalza via dal palo
           hlPostVY-=aDt*20;ball.position.y+=hlPostVY*aDt;
           if(ball.position.y<=0.22&&hlPostVY<0){ball.position.y=0.22;hlPostVY*=-0.22;contactFlashT=0;}
-          ball.position.x+=(34-ball.position.x)*aDt*1.8;// torna indietro dal palo
+          /* [giro 346 PO-585 «c'e' uno scambio con un compagno di squadra invisibile» — nota 7.999.198, «Ricevi fra le linee» → «Tiro da
+             fuori» → miss, bozza: codice 012 pallone tornato INDIETRO di 19,0 u, scrittore 16 (= questo blocco d'esito). Rosso __CPM_NO_G346A]
+             MISURATO (misura-346, 7 pali su 7 da quattro posizioni): dal legno il pallone tornava SEMPRE a x 34 — un punto fisso del campo,
+             13,8-14,2 u indietro — cioe' ai piedi di chi ha tirato da fuori (eroe a x 33,9, pallone fermo a x 34,1): va, torna, e nessuno
+             lo ha toccato. Ora il rimbalzo ricade in area, 5-8 u dalla linea (frazione deterministica di bersaglio e durata del volo, come
+             la respinta 7.514), e lo va a prendere l'avversario di movimento piu' vicino (il raccoglitore del 7.618, che il palo non armava):
+             il pallone va a un uomo, non a un punto. */
+          const _g346=!(typeof window!=='undefined'&&window.__CPM_NO_G346A);
+          if(_g346&&(!sr.current._reb346||sr.current._reb346.k!==P.hlSitKey))sr.current._reb346={k:P.hlSitKey,x:GOAL_LINE_X-(5+3*((Math.abs((ballArcTgtZ||0)*7.13)+Math.max(ballArcDur||0.5,0.2)*11.7)%1))};
+          ball.position.x+=((_g346?sr.current._reb346.x:34)-ball.position.x)*aDt*1.8;// torna indietro dal palo
+          if(_g346&&!P.hlDef&&!sr.current._pkCol415&&hlPostArcT>0.5&&!(typeof window!=='undefined'&&window.__CPM_NO618)){let _cm346=null,_cd346=1e9;
+            sr.current.players.forEach((pp,ii)=>{const _s6=(P.allPlayers||[])[ii];if(!_s6||_s6.team!=='away'||_s6.gk||!pp.mesh)return;
+              const _d6=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(_d6<_cd346){_cd346=_d6;_cm346=pp.mesh;}});
+            if(_cm346&&_cd346<26)sr.current._pkCol415={m:_cm346,k:P.hlSitKey};}
+          if(typeof window!=='undefined'&&window.__CPM_G346W&&window.__CPM_G346W.length<400){try{window.__CPM_G346W.push({k:P.hlSitKey,tx:+(_g346?sr.current._reb346.x:34).toFixed(2),bx:+ball.position.x.toFixed(2),col:sr.current._pkCol415?1:0});}catch(_e){}}
           if((sr.current._ws524=6)&&sr.current._bj0)(sr.current._bj0.src='palo',sr.current._bj0.srcs.push('palo'));/* [7.515.0 R2/4] firma */
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*2.2);
           if(hlPostVX){ball.position.x+=hlPostVX*aDt;hlPostVX*=(1-aDt*2.2);if(ball.position.x<G2X(3))ball.position.x=G2X(3);}/* [7.514.0] la respinta rientra in campo, con lo stesso smorzamento della z */
@@ -33161,16 +33175,27 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
      L'assist e' il passaggio (stessa formula del duello di probEroe) piu' il tiro del compagno qualche metro avanti, deciso da
      esitoTiroV2. Il motore DECIDE e restituisce l'esito; i fatti si registrano come prima (risolviEroe.eventi). */
   const giocaScena=(o)=>{try{if(!V2)return null;o=o||{};const H=g[HERO];if(!H)return null;const st=o.stats||{};const A=(k)=>clamp(+st[k]||60,30,99);
-    const x=clamp(+o.x||60,0,100),y=clamp(+o.y||50,0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
+    /* [giro 346 PO-561, rosso __CPM_NO_G346B] I PASSI DELL'EROE CONTANO NELL'ESITO. MISURATO: dal 7.999.137 tiro e assist su azione li gioca
+       questa funzione dal punto dove il motore ha visto l'occasione, con la pressione dei difensori del motore: ne' la posizione dopo i
+       passi ne' la marcatura della scena (defDist) arrivavano qui — riuscita identica fermo o mosso, mentre la percentuale sul tasto
+       (probEroe) si muoveva. Ora `o.mov` porta i passi: (1) il punto del tiro si sposta di quanto si e' spostato l'eroe (K346.pos), e
+       con lui distanza, angolo verso la porta e pressione dei difensori veri del motore; (2) lo stacco dal marcatore (sm, da -2 a +2)
+       vale ±K346.sp per unita' sui gol attesi del tiro, ±K346.pas sulla riuscita del passaggio (o del duello di protezione) e
+       ±K346.ass sul tiro del compagno servito (il passaggio gia' buono era al tetto: staccarsi non dava niente, misurato +0,6%).
+       Senza passi (mov nullo) il conto e' identico a prima, sorteggi compresi. __CPM_K346 solo per tarare. */
+    const _mv346=(o.mov&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G346B))?o.mov:null;
+    const K346=(typeof window!=='undefined'&&window&&window.__CPM_K346)||{pos:1,sp:0.10,pas:0.03,ass:0.05};
+    const _sm346=_mv346?clamp(+_mv346.sm||0,-2,2):0,_sp346=1+K346.sp*_sm346;
+    const x=clamp((+o.x||60)+(_mv346?K346.pos*(+_mv346.dx||0):0),0,100),y=clamp((+o.y||50)+(_mv346?K346.pos*(+_mv346.dy||0):0),0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
     try{const press=pressioneSu(H);const intent=o.intent||(o.fam==='tiro'?'shot':null);
-      if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8):1;/* [7.999.159] 1,4 → 1,8: col tetto di 7 scene i gol dell'eroe erano scesi a 0,50 su 60 partite (collaudatrice 2), sotto 0,6-0,9; misura su 16 partite: 0,62 → 0,75 *//* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
+      if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8):1;/* [7.999.159] 1,4 → 1,8: col tetto di 7 scene i gol dell'eroe erano scesi a 0,50 su 60 partite (collaudatrice 2), sotto 0,6-0,9; misura su 16 partite: 0,62 → 0,75 *//* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221*_sp346});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro',mov:_mv346?{x:+x.toFixed(1),y:+y.toFixed(1),sp:+_sp346.toFixed(3)}:null};}
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
-        const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
+        const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95)+K346.pas*_sm346,0.4,0.97);/* [giro 346] lo stacco apre (o chiude) la linea di passaggio */
         /* [giro 98 D3-bis, collaudo carriera 177 n.4: «Proteggi palla e scarica» giocata come un passaggio, 11 intercetti su 11] LA PROTEZIONE
            E' UN DUELLO FISICO COL MARCATORE: si perde (palla portata via, duello:true) secondo fisico dell'eroe contro fisico del marcatore,
            non secondo passaggio contro posizionamento; vinto il duello lo scarico corto arriva e il compagno conclude come in ogni assist.
            Rosso __CPM_NO_G98D3 */
-        if(o.prot&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G98D3)){const _du98=clamp(0.82+(A('fisico')-b.fisico)*0.008,0.55,0.95);if(rnd()>=_du98)return{ok:false,esito:'intercettato',duello:true,fam:'assist'};}
+        if(o.prot&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G98D3)){const _du98=clamp(clamp(0.82+(A('fisico')-b.fisico)*0.008,0.55,0.95)+K346.pas*_sm346,0.45,0.97);if(rnd()>=_du98)return{ok:false,esito:'intercettato',duello:true,fam:'assist'};}
         else if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
         const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) *//* [giro 93 PO-298, rosso __CPM_NO_ASSIST298] IL COMPAGNO SERVITO DAVANTI ALLA PORTA HA UNA GRANDE OCCASIONE. Misurato (12 partite,
    politica «assist»): passaggio arrivato 42 volte su 44, compagno a segno 8 volte su 42 (19%) — il suo tiro era un tiro qualunque del
@@ -33178,7 +33203,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
    0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
 const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
 if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
-let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298*(1+(+K346.ass||0)*_sm346)});
 /* [giro 349 · esiti-241] GANCIO DI COLLAUDO (solo sonde, spento in gioco): __CPM_COMPAGNO_SBAGLIA349 fa sbagliare il tiro del compagno
    DOPO averlo sorteggiato (stessi sorteggi consumati), cosi' la sonda provoca la scena che giudica — la consegna riuscita che resta in
    area («chance») — invece di sperare di trovarla: con la grande occasione del PO-298 il compagno segna spesso e tre pagine «assist» di
@@ -37187,7 +37212,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
   /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
-  const chiestaScena879Ref=useRef(null);const promEroe44Ref=useRef(null);/* [giro 44 PO-226] la promessa della scheda «la risolvo io» */const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
+  const chiestaScena879Ref=useRef(null);const promEroe44Ref=useRef(null);/* [giro 44 PO-226] la promessa della scheda «la risolvo io» */const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const mov346Ref=useRef({dx:0,dy:0,sm:0,n:0});/* [giro 346 PO-561] i passi dell'eroe nella scena: spostamento vero e stacco dal marcatore */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
   const bgCoolRef=useRef(0);
   const msPend167Ref=useRef(null);/* [giro 167] conti (tiri/falli/angoli) dei fatti vecchi non raccontati, in attesa della prossima riga */
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
@@ -37919,7 +37944,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _nd21=(sit&&sit.tactic&&sit.tactic.nearby_def!=null)?sit.tactic.nearby_def:({none:0,low:1,medium:2,high:3}[sit&&sit.tactic&&sit.tactic.pressure]||1);
     const _ddBase21=[88,74,58,44][clamp(Math.round(_nd21),0,3)];
     const _ddJit21=(Math.abs(hashStr(((sit&&sit.text)||"")+"|dd|"+hlIdx))%13)-6;
-    apPassi175Ref.current=0;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
+    apPassi175Ref.current=0;mov346Ref.current={dx:0,dy:0,sm:0,n:0};movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
     // CINE-TAC: aerial/immediate situations skip hl_move and go straight to action choice
     if(mm===0&&!sit?.lockMovement){setPhase("hl_choose");}else{setPhase("hl_move");}
   };
@@ -43276,7 +43301,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();
+          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();_passo346(dx,dy,_g210k,mz);
           defDistRef.current=Math.min(100,defDistRef.current+_g210k);/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
@@ -43335,12 +43360,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _dot=((dx/_ml)*(_ax/_al))+((dy/_ml)*(_ay/_al));/* +1 = gli scappi via · −1 = gli vai addosso */
     return clamp(12+8*_dot,3,20);
   }catch(_e){return 12;}};
+  /* [giro 346 PO-561 «I movimenti incidono sulla probabilita' di successo della giocata o e' solo "un abbellimento", dovrebbero contare
+     davvero!»] Ogni passo (pad o tasti) lascia due numeri: lo spostamento vero sul campo (dopo il limite della zona di movimento) e lo
+     STACCO dal marcatore, +1 se gli scappi via, -1 se gli vai addosso (lo stesso prodotto scalare di _moveGain317: guadagno 12+8·s).
+     Li legge il motore quando gioca la scena (giocaScena, src/14). Si azzerano all'apertura di ogni scena. */
+  const _passo346=(dx,dy,gain,mz)=>{try{const m=mov346Ref.current;const ax=clamp(pPos.x+dx,mz.x[0],mz.x[1])-pPos.x,ay=clamp(pPos.y+dy,mz.y[0],mz.y[1])-pPos.y;
+    m.dx+=ax;m.dy+=ay;m.sm+=clamp(((+gain||12)-12)/8,-1,1);m.n++;}catch(_e){}};
   const handleDPad=(dx,dy)=>{
     if(phase!=="hl_move"&&phase!=="hl_choose")return;
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();
+    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();_passo346(dx,dy,_g210p,mz);
     defDistRef.current=Math.min(100,defDistRef.current+_g210p);/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
@@ -43472,8 +43503,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _op137=(occPos137Ref.current&&occPos137Ref.current.hl===hlIdx)?occPos137Ref.current:null;/* il punto dove il motore ha visto l'occasione; altrimenti quello della scena */
         /* l'origine dice che tiro e': dalla punizione e' una punizione diretta (xG del piazzato, senza talento), dal cross o dall'angolo un colpo di testa */
         const _int137=(_op137&&_op137.orig==='punizione'&&_o137.fam==='tiro')?'freekick':(_op137&&_op137.orig==='rigore'&&_o137.fam==='tiro')?'penalty':(_op137&&(_op137.orig==='cross'||_op137.orig==='angolo')&&!_o137.intent)?'header':(_o137.intent||null);
-        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,prot:!!(action&&action.prot98),/* [giro 98 D3-bis] */intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
-        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,prot:!!(action&&action.prot98),/* [giro 98 D3-bis] */intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{},mov:(_op137&&mov346Ref.current.n>0)?{dx:mov346Ref.current.dx,dy:mov346Ref.current.dy,sm:mov346Ref.current.sm}:(mov346Ref.current.n>0?{dx:0,dy:0,sm:mov346Ref.current.sm}:null)/* [giro 346 PO-561] i passi contano: col punto dell'occasione del motore si porta lo spostamento; senza, il punto e' gia' quello dell'eroe dopo i passi e si porta solo lo stacco */});
+        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2,mov:{...mov346Ref.current}});}catch(_e){}}}
     }catch(_e137){_g137=null;}}
     let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
