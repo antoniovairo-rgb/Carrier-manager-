@@ -151,7 +151,7 @@ await ctx.close();
 // ---------------- D) cambio di club: regola sul catalogo
 const D1 = await (async () => { const { ctx: c2, page: p2 } = await apri(baseSave('Collaudo Spogliatoio', { teamChemistry: 60 }));
   const r = await p2.evaluate(() => { const L = window.__CPM_IMPULSES || [];
-    const p0 = { proStatus: 'pro', season: 5, week: 18, club: { id: 'b04', n: 'FC Werkstadt' }, teamChemistry: 60, calendar: [{ week: 18, played: false }] };
+    const p0 = { proStatus: 'pro', season: 5, week: 18, age: 24 /* [giro 353] un pro alla 5a stagione ha un'eta': senza, eta352 vale 18 e il seguito «ai piu' esperti» (>=22, giro 352, PO 24/11 13:50) si spegne per l'eta', non per il club */, club: { id: 'b04', n: 'FC Werkstadt' }, teamChemistry: 60, calendar: [{ week: 18, played: false }] };
     const now = 4 * 38 + 18; const idoneo = (im, p) => { try { return !im.cond || !!im.cond(p); } catch (e) { return false; } };
     const out = [];
     for (const sg of L.filter(im => im.seg)) { const s = sg.seg; if (s.ctx && !s.ctx(p0)) continue;
