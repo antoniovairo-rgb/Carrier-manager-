@@ -1,0 +1,83 @@
+name: Pulizia dei rami
+# [PO 24/11 07:50, «Archivia e cancella»] Pulizia dei rami che non servono piu', avviata SOLO a mano (Actions → «Pulizia dei rami»
+# → Run workflow). La sessione madre non puo' cancellare rami (proxy 403): il workflow lo fa col GITHUB_TOKEN.
+#   - ramo gia' tutto dentro main            → si cancella (nessun commit perso);
+#   - ramo con commit che main non ha        → si archivia come etichetta «archivio/<nome>» e poi si cancella (nessun commit perso:
+#                                               si ritrova con `git fetch origin tag archivio/<nome>`);
+#   - si tengono SEMPRE: main, staging, gh-pages, il lavoro/<numero piu' alto> (lo legge il treno) e ogni ramo con un commit negli
+#     ultimi GIORNI giorni (giri in corso o appena consegnati).
+# modo=elenco (predefinito) non tocca niente e scrive soltanto l'elenco nel riepilogo; modo=esegui archivia e cancella.
+# Le etichette archivio/* non fanno partire nessun workflow (android-build ascolta v*, twa-build twa-v*).
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'elenco = solo l''elenco · esegui = archivia e cancella'
+        type: choice
+        options: [elenco, esegui]
+        default: elenco
+      giorni:
+        description: 'tieni i rami con un commit negli ultimi N giorni'
+        default: '2'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pulizia-rami
+  cancel-in-progress: false
+
+jobs:
+  pulizia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Classifica e (se richiesto) archivia e cancella
+        env:
+          MODO: ${{ inputs.modo }}
+          GIORNI: ${{ inputs.giorni }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin '+refs/heads/*:refs/remotes/origin/*' --prune
+          git fetch -q origin 'refs/tags/archivio/*:refs/tags/archivio/*' || true
+          LAVORO=$(git for-each-ref --format='%(refname:strip=3)' 'refs/remotes/origin/lavoro/' | grep -E '^lavoro/[0-9]+$' | sort -t/ -k2 -n | tail -1 || true)
+          LIMITE=$(date -d "-${GIORNI} days" +%s)
+          : > tieni.txt; : > cancella.txt; : > archivia.txt
+          for b in $(git for-each-ref --format='%(refname:strip=3)' refs/remotes/origin/); do
+            [ "$b" = "HEAD" ] && continue
+            case "$b" in main|staging|gh-pages) echo "$b · protetto" >> tieni.txt; continue;; esac
+            if [ "$b" = "$LAVORO" ]; then echo "$b · lavoro corrente del treno" >> tieni.txt; continue; fi
+            t=$(git log -1 --format=%ct "origin/$b")
+            if [ "$t" -ge "$LIMITE" ]; then echo "$b · commit recente ($(date -d @$t +%F))" >> tieni.txt; continue; fi
+            if git merge-base --is-ancestor "origin/$b" origin/main; then echo "$b" >> cancella.txt
+            else echo "$b" >> archivia.txt; fi
+          done
+          {
+            echo "## Pulizia dei rami — modo: $MODO"
+            echo "- tenuti: $(wc -l < tieni.txt) · gia' in main, da cancellare: $(wc -l < cancella.txt) · con commit propri, da archiviare e cancellare: $(wc -l < archivia.txt)"
+            echo; echo "### Tenuti"; sed 's/^/- /' tieni.txt
+            echo; echo "<details><summary>Da archiviare (archivio/&lt;nome&gt;) e cancellare</summary>"; echo; sed 's/^/- /' archivia.txt; echo "</details>"
+            echo; echo "<details><summary>Gia' in main, da cancellare</summary>"; echo; sed 's/^/- /' cancella.txt; echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$MODO" != "esegui" ]; then echo "modo elenco: nessun ramo toccato"; exit 0; fi
+          # 1) etichette d'archivio (mai sovrascritte: se esiste gia' un archivio/<nome> diverso, il ramo resta)
+          : > archiviati.txt
+          while read -r b; do
+            tag="archivio/$b"; sha=$(git rev-parse "origin/$b")
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              [ "$(git rev-parse "refs/tags/$tag^{commit}")" = "$sha" ] && echo "$b" >> archiviati.txt || echo "::warning::$tag esiste gia' con un altro commit: $b resta"
+            else
+              git tag "$tag" "$sha" && echo "$b" >> archiviati.txt
+            fi
+          done < archivia.txt
+          if [ -s archiviati.txt ]; then
+            sed 's#^#refs/tags/archivio/#' archiviati.txt | xargs -n 50 git push -q origin
+          fi
+          # 2) cancellazione a blocchi, mai force: un ramo che non si cancella resta e lo dice
+          cat cancella.txt archiviati.txt | sed 's#^#:refs/heads/#' | xargs -r -n 50 git push -q origin || echo "::warning::alcuni rami non si sono cancellati (vedi log)"
+          git ls-remote --heads origin | wc -l | xargs -I{} echo "### Rami rimasti: {}" >> "$GITHUB_STEP_SUMMARY"
