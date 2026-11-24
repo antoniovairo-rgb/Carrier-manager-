@@ -753,7 +753,22 @@ function generateTransferOffer(player,pref){
   // E-3: 4 transfer types with realistic loan sub-types
   const _types4=["prestito","prestito con opzione","prestito con obbligo","trasferimento definitivo"];
   const _noLoan28=player.contractExpired||(player.proStatus||"u18")==="u18";/* [7.8.28 QA, stessa ratio STAB-10] uno SVINCOLATO non può andare «in prestito» (il club madre sarebbe quello che l'ha scaricato, col contratto SCADUTO come parentContract → a fine stagione rientro d'ufficio con contratto fantasma); un U18 idem (parentClub U18 → al rientro un PRO tornava nel pool Primavera bypassando ProTransitionScreen) */
-  const type=_noLoan28?"trasferimento definitivo":pOvr<63?"prestito":pOvr<70?pick(_types4.slice(0,2)):pOvr<75?pick(_types4.slice(0,3)):pick(_types4);
+  let type=_noLoan28?"trasferimento definitivo":pOvr<63?"prestito":pOvr<70?pick(_types4.slice(0,2)):pOvr<75?pick(_types4.slice(0,3)):pick(_types4);
+  /* [giro 351, PO-607 «queste offerte sono ridicole» — rosso window.__CPM_NO_G351] UN'OFFERTA E' UN PASSO AVANTI O LATERALE PER
+     QUALCOSA. Misurato (tests/visual/offerte-351.mjs, 8.064 offerte): il 19% erano «assurde» (club piu' debole di 5+ punti che offre
+     a chi gioca un prestito o un ruolo peggiore), il 46% non miglioravano niente (ne' prestigio, ne' ruolo, ne' stipendio, ne' durata),
+     il 43% mostravano morale/crescita alti senza un guadagno vero (erano dadi rng(5,20)/rng(5,15)). Regole, per un professionista
+     sotto contratto (svincolati e Primavera restano come prima):
+       · club PIU' FORTE (+5): ambizione — tipo e minuti come prima, stipendio non sotto quello di oggi (prestito: non sotto il 90%);
+       · club ALLA PARI (±4): almeno lo stesso ruolo (chi e' riserva sale), e se il ruolo non sale lo stipendio cresce del 10-25%;
+       · club PIU' DEBOLE (-5): a chi e' in rotazione o titolare solo trasferimento definitivo, da titolare, con +15-35% di stipendio;
+         a una riserva anche un prestito, ma da giocatore in rotazione o titolare.
+     Morale e crescita si calcolano da cio' che l'offerta e' davvero (prestigio, ruolo, stipendio), non piu' a caso. */
+  const _g351=!(typeof window!=='undefined'&&window.__CPM_NO_G351)&&!_noLoan28&&!!player.club&&player.club.p!=null;
+  const _rv351={primavera:0,riserva:1,rotazione:2,titolare:3,leader:3};/* il minutaggio arriva fino a «Titolare»: un leader che resta titolare non scende */
+  const _rNow351=_rv351[player.squadRole]!=null?_rv351[player.squadRole]:2;
+  const _dp351=club.p-currentP,_verso351=_dp351>=5?"su":_dp351<=-5?"giu":"pari";
+  if(_g351&&_verso351==="giu"&&_rNow351>=2)type="trasferimento definitivo";
   const isPrestito=type.includes("prest");
   const isLoanOpt=type==="prestito con opzione";
   const isLoanObl=type==="prestito con obbligo";
@@ -761,9 +776,21 @@ function generateTransferOffer(player,pref){
   const _buyClause=(isLoanOpt||isLoanObl)?Math.round((pOvr*35000+club.p*20000)*(player.hasAgent?1.12:1.0)/100)*100:null;
   const _minMatches=isLoanObl?10:null;
   const _baseWage=_ovrToWageWeekly133(pOvr,club.p);
-  const wage=Math.round(_baseWage*(1+rngF(-0.1,0.1))*(player.hasAgent?1.15:1.0));
+  let wage=Math.round(_baseWage*(1+rngF(-0.1,0.1))*(player.hasAgent?1.15:1.0));
   const duration=isPrestito?1:rng(2,4);
-  return{club,type,minutaggio:isPrestito?rng(30,70):rng(50,90),moralBonus:rng(5,20),growthBonus:rng(5,15),prestigeRatio:club.p/Math.max(1,currentP),wage,duration,...((isLoanOpt||isLoanObl)?{buyClause:_buyClause,minMatches:_minMatches}:{})};
+  let minutaggio=isPrestito?rng(30,70):rng(50,90),moralBonus=rng(5,20),growthBonus=rng(5,15);
+  if(_g351){/* [giro 351] vedi sopra */
+    const _fl=_verso351==="su"?30:_verso351==="pari"?(_rNow351>=2?70:45):(_rNow351>=3?75:_rNow351===2?70:45);
+    if(minutaggio<_fl)minutaggio=rng(_fl,Math.max(_fl,90));
+    const _rNew=minutaggio>=70?3:minutaggio>=45?2:1;
+    const _curW=Math.max(1,(player.contract&&player.contract.wage)||_ovrToWageWeekly133(pOvr,currentP));
+    const _wMin=_verso351==="giu"?_curW*rngF(1.15,1.35):_verso351==="pari"?(_rNew>_rNow351?_curW:_curW*rngF(1.10,1.25)):_curW*(isPrestito?0.9:1.0);
+    wage=Math.round(Math.max(wage,_wMin));
+    const _gp=Math.max(0,_dp351),_lp=Math.max(0,-_dp351),_wr=wage/_curW;
+    moralBonus=clamp(Math.round(2+_gp*0.5+Math.max(0,_rNew-_rNow351)*4+Math.max(0,_wr-1)*15-Math.max(0,_rNow351-_rNew)*3-_lp*0.15),1,20);
+    growthBonus=clamp(Math.round(3+_gp*0.3+(_rNew-_rNow351)*2+(club.p>=80?2:0)),1,15);
+  }
+  return{club,type,minutaggio,moralBonus,growthBonus,prestigeRatio:club.p/Math.max(1,currentP),wage,duration,...((isLoanOpt||isLoanObl)?{buyClause:_buyClause,minMatches:_minMatches}:{})};
 }
 // Generate pro contract offers at end of U18 career
 function generateProContracts(player){
