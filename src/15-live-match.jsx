@@ -3985,7 +3985,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
   /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
-  const chiestaScena879Ref=useRef(null);const promEroe44Ref=useRef(null);/* [giro 44 PO-226] la promessa della scheda «la risolvo io» */const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
+  const chiestaScena879Ref=useRef(null);const promEroe44Ref=useRef(null);/* [giro 44 PO-226] la promessa della scheda «la risolvo io» */const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const mov346Ref=useRef({dx:0,dy:0,sm:0,n:0});/* [giro 346 PO-561] i passi dell'eroe nella scena: spostamento vero e stacco dal marcatore */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
   const bgCoolRef=useRef(0);
   const msPend167Ref=useRef(null);/* [giro 167] conti (tiri/falli/angoli) dei fatti vecchi non raccontati, in attesa della prossima riga */
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
@@ -4717,7 +4717,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _nd21=(sit&&sit.tactic&&sit.tactic.nearby_def!=null)?sit.tactic.nearby_def:({none:0,low:1,medium:2,high:3}[sit&&sit.tactic&&sit.tactic.pressure]||1);
     const _ddBase21=[88,74,58,44][clamp(Math.round(_nd21),0,3)];
     const _ddJit21=(Math.abs(hashStr(((sit&&sit.text)||"")+"|dd|"+hlIdx))%13)-6;
-    apPassi175Ref.current=0;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
+    apPassi175Ref.current=0;mov346Ref.current={dx:0,dy:0,sm:0,n:0};movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
     // CINE-TAC: aerial/immediate situations skip hl_move and go straight to action choice
     if(mm===0&&!sit?.lockMovement){setPhase("hl_choose");}else{setPhase("hl_move");}
   };
@@ -10074,7 +10074,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();
+          const _g210k=_moveGain317(dx,dy),_m210k=_mk210();_passo346(dx,dy,_g210k,mz);
           defDistRef.current=Math.min(100,defDistRef.current+_g210k);/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
@@ -10133,12 +10133,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _dot=((dx/_ml)*(_ax/_al))+((dy/_ml)*(_ay/_al));/* +1 = gli scappi via · −1 = gli vai addosso */
     return clamp(12+8*_dot,3,20);
   }catch(_e){return 12;}};
+  /* [giro 346 PO-561 «I movimenti incidono sulla probabilita' di successo della giocata o e' solo "un abbellimento", dovrebbero contare
+     davvero!»] Ogni passo (pad o tasti) lascia due numeri: lo spostamento vero sul campo (dopo il limite della zona di movimento) e lo
+     STACCO dal marcatore, +1 se gli scappi via, -1 se gli vai addosso (lo stesso prodotto scalare di _moveGain317: guadagno 12+8·s).
+     Li legge il motore quando gioca la scena (giocaScena, src/14). Si azzerano all'apertura di ogni scena. */
+  const _passo346=(dx,dy,gain,mz)=>{try{const m=mov346Ref.current;const ax=clamp(pPos.x+dx,mz.x[0],mz.x[1])-pPos.x,ay=clamp(pPos.y+dy,mz.y[0],mz.y[1])-pPos.y;
+    m.dx+=ax;m.dy+=ay;m.sm+=clamp(((+gain||12)-12)/8,-1,1);m.n++;}catch(_e){}};
   const handleDPad=(dx,dy)=>{
     if(phase!=="hl_move"&&phase!=="hl_choose")return;
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();
+    const _g210p=_moveGain317(dx,dy),_m210p=_mk210();_passo346(dx,dy,_g210p,mz);
     defDistRef.current=Math.min(100,defDistRef.current+_g210p);/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
@@ -10270,8 +10276,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _op137=(occPos137Ref.current&&occPos137Ref.current.hl===hlIdx)?occPos137Ref.current:null;/* il punto dove il motore ha visto l'occasione; altrimenti quello della scena */
         /* l'origine dice che tiro e': dalla punizione e' una punizione diretta (xG del piazzato, senza talento), dal cross o dall'angolo un colpo di testa */
         const _int137=(_op137&&_op137.orig==='punizione'&&_o137.fam==='tiro')?'freekick':(_op137&&_op137.orig==='rigore'&&_o137.fam==='tiro')?'penalty':(_op137&&(_op137.orig==='cross'||_op137.orig==='angolo')&&!_o137.intent)?'header':(_o137.intent||null);
-        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,prot:!!(action&&action.prot98),/* [giro 98 D3-bis] */intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
-        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,prot:!!(action&&action.prot98),/* [giro 98 D3-bis] */intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{},mov:(_op137&&mov346Ref.current.n>0)?{dx:mov346Ref.current.dx,dy:mov346Ref.current.dy,sm:mov346Ref.current.sm}:(mov346Ref.current.n>0?{dx:0,dy:0,sm:mov346Ref.current.sm}:null)/* [giro 346 PO-561] i passi contano: col punto dell'occasione del motore si porta lo spostamento; senza, il punto e' gia' quello dell'eroe dopo i passi e si porta solo lo stacco */});
+        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2,mov:{...mov346Ref.current}});}catch(_e){}}}
     }catch(_e137){_g137=null;}}
     let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */

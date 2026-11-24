@@ -489,6 +489,7 @@
     "volee-d3-119": "CPM_GUARDIANO=1 node volee-d3-119.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
+    "fasce-345": "node fasce-345.mjs",
     "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",
     "statistiche-228-vivo": "node statistiche-228-vivo.mjs",
     "difesa-220-misura": "node difesa-220-misura.mjs",
@@ -572,6 +573,9 @@
     "schede-259": "node schede-259.mjs",
     "esito-280": "node esito-280.mjs",
     "esito-rete-301": "node esito-rete-301.mjs",
+    "tiro-346": "node tiro-346.mjs",
+    "misura-346": "node misura-346.mjs",
+    "movimenti-346": "node movimenti-346.mjs",
     "convocazione-235": "node convocazione-235.mjs",
     "bambini-236": "node bambini-236.mjs",
     "conduci-242": "node conduci-242.mjs",
@@ -768,7 +772,8 @@
     "deploy-326": "node deploy-326.mjs",
     "treno-330": "node treno-330.mjs",
     "notte-333": "node notte-333.mjs",
-    "ci:sentinelle": "node ci-runner.mjs sentinelle"
+    "ci:sentinelle": "node ci-runner.mjs sentinelle",
+    "gol-347": "node gol-347-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

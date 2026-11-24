@@ -1,5 +1,122 @@
 [
  {
+  "data": "2026-11-24 10:33",
+  "versione": "7.999.207",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "tiro-346",
+    "ok": true,
+    "s": 524
+   },
+   {
+    "passo": "fasce-345",
+    "ok": true,
+    "s": 115
+   },
+   {
+    "passo": "gol-347",
+    "ok": true,
+    "s": 248
+   },
+   {
+    "passo": "esiti-241",
+    "ok": true,
+    "s": 358
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 67
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 204
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 329
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "solo-highlight-166",
+    "ok": true,
+    "s": 1078
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 750
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 353
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 464
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 243
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 140
+   }
+  ]
+ },
+ {
   "data": "2026-11-23 23:52",
   "versione": "7.999.206",
   "catena": "giro",
@@ -255,6 +372,353 @@
     "passo": "schermate-97",
     "ok": true,
     "s": 130
+   }
+  ]
+ },
+ {
+  "data": "2026-11-23 13:55",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "fasce-345",
+    "ok": true,
+    "s": 79
+   },
+   {
+    "passo": "match-sequence",
+    "ok": true,
+    "s": 978
+   },
+   {
+    "passo": "sim-motore",
+    "ok": false,
+    "s": 35,
+    "coda": "C · carriera: 7 passi (opening-resolved,lived,simulated,lived,simulated,lived,simulated), settimane +3, partite simulate dal motore 3 (ms [104,112,63]) | ❌ FAIL sim-motore |   B: gol a partita 2.29 fuori da 2,3-3,5 | log out/ci-rossi/sim-motore-2026-11-23T14-13-39-321Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 68
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 198
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 290
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 436
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 402
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 631
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 243
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 121
+   }
+  ]
+ },
+ {
+  "data": "2026-11-23 12:47",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "tiro-346",
+    "ok": true,
+    "s": 481
+   },
+   {
+    "passo": "ball-owner",
+    "ok": true,
+    "s": 734
+   },
+   {
+    "passo": "ball-jump-census",
+    "ok": false,
+    "s": 1821,
+    "coda": " | copertura: 3/26 scene giocate su 1 partite · 10272 fotogrammi visti dal varco | ❌ COPERTURA INSUFFICIENTE: 3 scene su un minimo di 13 — «nessun salto» su cosi' poco non e' un risultato | log out/ci-rossi/ball-jump-census-2026-11-23T13-37-58-266Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "match-sequence",
+    "ok": true,
+    "s": 980
+   },
+   {
+    "passo": "sim-motore",
+    "ok": false,
+    "s": 43,
+    "coda": "C · carriera: 7 passi (opening-resolved,lived,simulated,lived,simulated,lived,simulated), settimane +3, partite simulate dal motore 3 (ms [103,95,71]) | ❌ FAIL sim-motore |   B: gol a partita 2.29 fuori da 2,3-3,5 | log out/ci-rossi/sim-motore-2026-11-23T13-55-01-125Z.log",
+    "prove": 2
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 218
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 310
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 334
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 416
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 703
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 245
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 123
+   }
+  ]
+ },
+ {
+  "data": "2026-11-23 12:41",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "sim-motore",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "gol-347",
+    "ok": true,
+    "s": 194
+   },
+   {
+    "passo": "bilancio-310",
+    "ok": true,
+    "s": 90
+   },
+   {
+    "passo": "match-sequence",
+    "ok": true,
+    "s": 979
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "career-sim",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 210
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 299
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 325
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 412
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 684
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 204
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 123
    }
   ]
  },
@@ -21080,650 +21544,6 @@
     "passo": "tabellino-228",
     "ok": true,
     "s": 317
-   }
-  ]
- },
- {
-  "data": "2026-10-13 20:36",
-  "versione": "7.999.163",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 748
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "popup-224",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "lessico-218",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "fila-227",
-    "ok": true,
-    "s": 310
-   },
-   {
-    "passo": "finestra-230",
-    "ok": true,
-    "s": 109
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 849
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 520
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1105
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1111
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 231
-   },
-   {
-    "passo": "gk-miss-229",
-    "ok": true,
-    "s": 326
-   },
-   {
-    "passo": "goal-postarc",
-    "ok": true,
-    "s": 120
-   },
-   {
-    "passo": "nomi-219",
-    "ok": true,
-    "s": 4303
-   },
-   {
-    "passo": "difesa-220",
-    "ok": true,
-    "s": 2201
-   },
-   {
-    "passo": "scene-221",
-    "ok": true,
-    "s": 1672
-   },
-   {
-    "passo": "intervista-231",
-    "ok": true,
-    "s": 495
-   },
-   {
-    "passo": "tabellino-228",
-    "ok": true,
-    "s": 312
-   }
-  ]
- },
- {
-  "data": "2026-10-13 09:40",
-  "versione": "7.999.162",
-  "catena": "mirata",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 30
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 545
-   },
-   {
-    "passo": "finestra-230",
-    "ok": true,
-    "s": 116
-   },
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 217
-   },
-   {
-    "passo": "popup-224",
-    "ok": true,
-    "s": 41
-   },
-   {
-    "passo": "buildup-sync",
-    "ok": true,
-    "s": 170
-   },
-   {
-    "passo": "po229-gi38",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "fila-227",
-    "ok": true,
-    "s": 321
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 739
-   },
-   {
-    "passo": "lessico-218",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 193
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 673
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 502
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 9
-   },
-   {
-    "passo": "tempo-138",
-    "ok": false,
-    "s": 1080,
-    "coda": "rosso {\"fase\":\"ceremony\",\"pagato\":198,\"residuo\":0,\"aperto\":198} | ❌ tempo-138 |   · rosso: il difetto non si vede {\"fase\":\"ceremony\",\"pagato\":198,\"residuo\":0,\"aperto\":198}",
-    "prove": 2
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 86
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 33
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 64
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 1160
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 244
-   },
-   {
-    "passo": "gk-miss-229",
-    "ok": true,
-    "s": 313
-   },
-   {
-    "passo": "goal-postarc",
-    "ok": true,
-    "s": 132
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1123
-   },
-   {
-    "passo": "scene-221",
-    "ok": true,
-    "s": 1676
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 533
-   },
-   {
-    "passo": "tabellino-228",
-    "ok": true,
-    "s": 328
-   },
-   {
-    "passo": "intervista-231",
-    "ok": true,
-    "s": 458
-   }
-  ]
- },
- {
-  "data": "2026-10-12 19:55",
-  "versione": "7.999.161",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 709
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "popup-224",
-    "ok": true,
-    "s": 36
-   },
-   {
-    "passo": "lessico-218",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "fila-227",
-    "ok": true,
-    "s": 308
-   },
-   {
-    "passo": "finestra-230",
-    "ok": true,
-    "s": 34
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 732
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 519
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1067
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1078
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 234
-   },
-   {
-    "passo": "goal-postarc",
-    "ok": true,
-    "s": 474
-   },
-   {
-    "passo": "nomi-219",
-    "ok": true,
-    "s": 12832,
-    "instabile": true,
-    "prove": 3
-   },
-   {
-    "passo": "difesa-220",
-    "ok": true,
-    "s": 2174
-   },
-   {
-    "passo": "scene-221",
-    "ok": true,
-    "s": 1608
-   },
-   {
-    "passo": "intervista-231",
-    "ok": true,
-    "s": 458
-   },
-   {
-    "passo": "tabellino-228",
-    "ok": true,
-    "s": 295
-   }
-  ]
- },
- {
-  "data": "2026-10-12 18:16",
-  "versione": "7.999.161",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 61
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 33
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 73
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 29
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 54
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 26
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 531
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 378
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 8
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 197
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 486
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 385
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 585
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 418
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 1070,
-    "instabile": true,
-    "prove": 2
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 544
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 672
    }
   ]
  }

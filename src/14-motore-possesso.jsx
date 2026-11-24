@@ -39,6 +39,7 @@ const TATTICHE_MOTORE={
     Bilanciato:{press:0,linea:0,amp:0,ment:0,diretto:0},Pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},
     Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
 try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
+const GOL347_K=1.25;/* [giro 347 PO-599] fattore dei tiri su azione nella sola simulazione rapida (vedi esitoTiroV2) */
 const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2). Taratura 05/10 sulla VISSUTA (dove il giocatore tira a ogni occasione): K=3 dava 1,38 gol dell'eroe dalle scene, K=1 stimato ~0,8; nella simulazione rapida K=1 da' 0,48 */
 /* [PO-226, decisione PO 12/10 «Sì, avvia il piano» — LE INTERAZIONI NASCONO DAI FATTI DEL MOTORE. Rosso __CPM_NO_INT226]
    Censimento (docs/sviluppo/RAPPORTO-giro10.md): in partita uscivano 4-5 schede a orologio (finestra 18'-88', sorteggio) e quattro
@@ -280,6 +281,16 @@ function creaMotorePossesso(cfg){
      aspettava fino a 8 occasioni del «tipo» chiesto: l'occasione era fabbricata. Ora i compagni lo cercano per la FIDUCIA del mister
      e la FORMA (senza questi dati il bonus resta 2, come prima) e un difensore avversario lo marca: le occasioni sono quelle che nascono. */
   const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
+  /* [giro 345 PO-376] la richiesta «fascia» della partita vissuta sposta l'eroe (vedi il passo dei giocatori). Rosso __CPM_NO_G345 */
+  const _si345=()=>_EG&&!!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G345);
+  const _g345=()=>{if(!(_si345()&&S.richieste.scenaEroe&&S.richieste.scenaTipo==="fascia"&&((S.min|0)-(S._ultOccV2==null?-99:S._ultOccV2))>=11))return false;
+    if(S.richieste.t345==null){S.richieste.t345=S.min|0;S.richieste.lato345=S.palla.y>=50?1:-1;}/* il lato e il minuto si fissano alla prima lettura: il lato del pallone in quel momento */
+    return true;};
+  /* finche' l'eroe non e' arrivato largo (22 dal centro) la richiesta «fascia» ASPETTA: niente premio da prima scelta sul passaggio e
+     niente occasione se il pallone gli arriva lo stesso. Al massimo 8 minuti di gioco dal momento in cui si e' mosso (valore di
+     progetto, dichiarato), poi vale la prima occasione che capita: un highlight non si perde. Nessun sorteggio. */
+  const V345=11;/* la corsa dell'eroe verso la fascia, unita' al minuto: sotto il tetto di 12 del passo umano. Misurato al banco (1.000 partite): a 9 la quota «fascia» e' 7,6 %, a 11 e' 9,4 % */
+  const _aspetta345=(q)=>_g345()&&S.richieste.t345!=null&&((S.min|0)-S.richieste.t345)<12&&Math.abs(q.y-50)<22;
   const _eroeNonTira14=(P)=>!!(P&&P.eroe&&cfg.v2&&_EG&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14));/* [7.999.13] l'eroe tira solo nelle sue scene (vedi il ramo del tiro) */
   /* [giro 154, decisione PO PO-357 «i gol dell'eroe nascono solo negli highlight». Rosso __CPM_NO_G154] Nella partita vissuta (brainLive)
      l'eroe non segna e non serve assist in gioco fluido. I suoi piazzati restano scene (_piaz27); quando la scena non e' possibile
@@ -535,7 +546,7 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44()+_bStile67(q);}/* [giro 67 PO-098] + lo stile *//* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
+      if(q.eroe&&_EG){if(!_aspetta345(q))sc+=BONUS_EROE+_cerca44()+_bStile67(q);}/* [giro 67 PO-098] + lo stile *//* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
       else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
@@ -626,7 +637,7 @@ function creaMotorePossesso(cfg){
        perche' la scena si apriva solo con l'eroe in possesso. Ora, a richiesta di scena aperta, il cross (anche da angolo o punizione)
        destinato all'eroe si ferma sul piede del crossatore e diventa l'occasione, con la sua ORIGINE (chi crossa, da dove): il live
        apre la scena e il 3D fa partire il cross da li'. Nessun sorteggio in piu'. Rosso __CPM_NO_ORIG26. */
-    if(R&&R.eroe&&_puo26()&&!opt.noScena&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)){
+    if(R&&R.eroe&&_puo26()&&!opt.noScena&&!(_g345()&&!opt.corner&&!opt.punizione)/* [giro 345 PO-376] chiesta la fascia, il cross in gioco aperto verso l'eroe che si sta allargando non e' la sua scena: il pallone gli arriva e l'occasione nasce da li' (misurato: 85 richieste «fascia» su 237 chiuse da un cross verso l'eroe largo) */&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)){
       const _k26=opt.corner?"angolo":(opt.punizione?"punizione":"cross");S.conta.occEroe=(S.conta.occEroe|0)+1;S._ult26=S.min|0;
       const D=piuVicino(R.x,R.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(R),zona:zonaDi(advDi(R.x,l),R.y),press:+pressioneSu(R).toFixed(1),x:+R.x.toFixed(1),y:+R.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
@@ -664,6 +675,14 @@ function creaMotorePossesso(cfg){
     if(P.eroe&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TAL202)){
       const _k=(typeof window!=='undefined'&&window&&window.__CPM_TAL202_K!=null)?+window.__CPM_TAL202_K:TAL202_K;const _o=+((cfg.eroe&&cfg.eroe.ovr)||70);
       xg=clamp(xg*(1+_k*Math.max(0,_o-60)/40),0.005,0.9);}
+    /* [giro 347 PO-599, PO 21/11 «Tarare i gol del motore». Rosso __CPM_NO_G347 = taratura di oggi] SOLO LA SIMULAZIONE RAPIDA
+       (cfg.gol347, passato da simulaPartitaMotore): la partita vissuta non passa di qui. MISURATO prima (17.136 partite, 14 leghe, percorso
+       Simula): 2,33 gol a partita contro 3,22 della Bundesliga 2023/24; bersaglio PO 2,6-2,9. Un solo fattore, uguale per le due squadre,
+       su ogni tiro su azione (rigore e punizione diretta restano il loro xG): il rapporto fra le pericolosita' delle due squadre non cambia,
+       e nessun sorteggio in piu' (stessa sequenza di numeri a parita' di esiti). Gestione del vantaggio e debito dell'eroe restano a valle.
+       Tabelle prima/dopo in docs/sviluppo/RAPPORTO-giro347.md. __CPM_GOL347_K solo per tarare. */
+    if(cfg.gol347&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G347)){
+      const _k347=(typeof window!=='undefined'&&window&&window.__CPM_GOL347_K!=null)?+window.__CPM_GOL347_K:GOL347_K;xg=clamp(xg*_k347,0.005,0.9);}
     if(ctx&&ctx.res221&&ctx.res221!==1)xg=clamp(xg*ctx.res221,0.005,0.9);/* [7.999.156 PO-221] resa del tiro nelle SCENE dell'eroe (solo giocaScena, non la simulazione rapida) */
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
@@ -898,7 +917,7 @@ function creaMotorePossesso(cfg){
     if(_nat137){}else if(cfg.brainLive){}else if(!_EG&&S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
     if(_nat137||(!cfg.brainLive&&S.richieste.scenaEroe&&P.eroe&&adv>=52)){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
-        tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
+        tipo:(_si345()&&_z==="limite"&&Math.abs(P.y-50)>=22)?"fascia"/* [giro 345] oltre la trequarti e a 22 o piu' dal centro (fuori dalla larghezza dell'area, la stessa soglia di zonaDi) l'eroe e' sulla fascia, non al limite dell'area: prima usciva «conclusione» dalla linea laterale */:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
         liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
         /* [23/09 POC — B4: IL CAST DELLA SCENA LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain».] Chi riceve, chi
            difende, quale portiere: SOLO letture deterministiche (nessun rnd(): il flusso dei sorteggi non si sposta, la partita
@@ -1062,6 +1081,7 @@ function creaMotorePossesso(cfg){
   /* [v2] un'occasione ogni 5 minuti al massimo, quando l'eroe ha palla da avanzamento 64 in su. Funzione PURA (nessun sorteggio):
      il chiamante la puo' interrogare prima del battito per fermarsi e chiedere la scelta, e il motore la rivaluta identica. */
   function _occV2Pronta(P){if(!V2||(cfg.occasioniV2===false&&!cfg.brainLive)||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
+    if(_aspetta345(P))return false;/* [giro 345 PO-376] chiesta la fascia, l'occasione aspetta che l'eroe ci sia arrivato */
     /* [7.999.13] come le scene della partita vera: almeno 12 minuti fra due occasioni e al massimo 6 a partita (prima 5 minuti e nessun tetto:
        fino a 13 occasioni, 13 tiri dell'eroe nella simulazione rapida). Rosso __CPM_NO_TIRO14 */
     const _v14=!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14);
@@ -1312,7 +1332,7 @@ function creaMotorePossesso(cfg){
     let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
     for(const p of g){if(!attivo(p))continue;
       if(p.i===S.poss.padrone&&st==="tenuta")continue;/* il padrone si muove solo con la conduzione */
-      const sl=slotDi(p);let tx,ty,v=4.5;
+      const sl=(!p.eroe&&p.rl==="AT"&&p.team===g[HERO].team&&_g345()&&(slotDi(p).y-50)*S.richieste.lato345>=20)?SLOT_EROE:slotDi(p);/* [giro 345 PO-376] SCAMBIO DI POSIZIONE: mentre l'eroe si allarga, l'ala di quel lato taglia dentro al suo posto. Misurato senza scambio: gol della squadra -5,1 % su 1.000 partite (al centro non restava nessuno) */let tx,ty,v=4.5;
       const inPoss=(p.team===l)&&(st==="tenuta"||st==="volo"||st==="kickoff");
       const dp=dirDi(p.team);
       if(p.gk){tx=sl.x+dp*(inPoss?1.5:0);ty=50+(by-50)*0.18;v=2.5;}
@@ -1342,6 +1362,17 @@ function creaMotorePossesso(cfg){
            else if(tq==="fra-le-linee"){tx=xDa(68,p.team);ty=50+(p.y>=50?4:-4);}
            else if(tq==="costruzione"){tx=xDa(46,p.team);ty=p.y;}
            v=6;}}
+        /* [giro 345 PO-376, decisione PO 22/11 «B: riaccendo lo spostamento». Rosso __CPM_NO_G345] MISURATO (giro 324: 1 scena di fascia su
+           66 in 12 partite vere; banco fasce-345, 2.000 partite: 10 occasioni «fascia» su 10.049, 1 richiesta «fascia» esaudita su
+           1.788): il blocco qui sopra e' spento da «l'eroe dal gioco» (_EG, 7.999.6) e l'eroe resta al suo posto (x 60, y 50), che dal
+           centro si scosta al massimo di 15 contro i 22 che la scena «fascia» chiede. Riacceso per la SOLA richiesta «fascia» nella
+           partita vissuta: con la squadra in possesso l'eroe senza palla si allarga sul lato deciso all'apertura della richiesta
+           (il lato del pallone in quel momento: una lettura, nessun sorteggio, la partita resta riproducibile) e ci resta finche'
+           la richiesta e' aperta. Parte 11' dopo l'ultima occasione (la prossima puo' arrivare dai 13'-16' di
+           _occV2Pronta): prima starebbe largo a vuoto. Guardiano fasce-345. */
+        if(_g345()&&p.eroe&&st!=="fermo"){
+          if(inPoss){tx=xDa(72,p.team);ty=S.richieste.lato345>0?84:16;v=V345;}
+          else{ty=S.richieste.lato345>0?78:22;v=Math.max(v,V345-3);}}/* senza palla tiene la corsia larga alla sua altezza di sempre: da (60,50) alla fascia sono 36 unita', e tornando al centro a ogni palla persa non ci arrivava mai (misurato: 7 richieste esaudite su 1.828) */
         /* [7.883 v2 — L'AREA LA RIEMPIE CHI STA DAL LATO OPPOSTO AL PALLONE.
            MISURATO al banco (16 partite): cross in gioco aperto 0,38 a partita. La condizione che il
            motore richiede (portatore avanzato e largo) ricorre 2,81 volte a partita, ma in 27 casi su
@@ -1524,7 +1555,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         return g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2)}));
       }catch(_e){return null;}
       finally{for(let i=0;i<g.length;i++){if(g[i]&&_foto[i]){for(const k in g[i])if(!(k in _foto[i]))delete g[i][k];Object.assign(g[i],_foto[i]);}}S.poss.padrone=salva.padrone;S.poss.stato=salva.stato;S.poss.lato=salva.lato;S.poss.ricevente=salva.ricevente;S.dt=salva.dt;S.palla.x=salva.px;S.palla.y=salva.py;S.inseguitore=salva.ins;S._rjScena=null;}},
-    scenaEroe(on,tipo){if(on&&typeof window!=='undefined'&&window&&window.__CPM_COLL_NOSCENA202)on=false;/* [7.999.131 collaudo PO-202, solo sonda] */S.richieste.scenaEroe=!!on;S.richieste.scenaTipo=on?(tipo||null):null;S.richieste.scenaAttese=0;if(!on)S.conta.occEroe=0;},/* [23/09 POC] il live puo' chiedere un TIPO di occasione */
+    scenaEroe(on,tipo){if(on&&typeof window!=='undefined'&&window&&window.__CPM_COLL_NOSCENA202)on=false;/* [7.999.131 collaudo PO-202, solo sonda] */S.richieste.scenaEroe=!!on;S.richieste.scenaTipo=on?(tipo||null):null;S.richieste.scenaAttese=0;S.richieste.lato345=null;S.richieste.t345=null;if(!on)S.conta.occEroe=0;},/* [23/09 POC] il live puo' chiedere un TIPO di occasione */
     urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
@@ -1886,16 +1917,27 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
      L'assist e' il passaggio (stessa formula del duello di probEroe) piu' il tiro del compagno qualche metro avanti, deciso da
      esitoTiroV2. Il motore DECIDE e restituisce l'esito; i fatti si registrano come prima (risolviEroe.eventi). */
   const giocaScena=(o)=>{try{if(!V2)return null;o=o||{};const H=g[HERO];if(!H)return null;const st=o.stats||{};const A=(k)=>clamp(+st[k]||60,30,99);
-    const x=clamp(+o.x||60,0,100),y=clamp(+o.y||50,0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
+    /* [giro 346 PO-561, rosso __CPM_NO_G346B] I PASSI DELL'EROE CONTANO NELL'ESITO. MISURATO: dal 7.999.137 tiro e assist su azione li gioca
+       questa funzione dal punto dove il motore ha visto l'occasione, con la pressione dei difensori del motore: ne' la posizione dopo i
+       passi ne' la marcatura della scena (defDist) arrivavano qui — riuscita identica fermo o mosso, mentre la percentuale sul tasto
+       (probEroe) si muoveva. Ora `o.mov` porta i passi: (1) il punto del tiro si sposta di quanto si e' spostato l'eroe (K346.pos), e
+       con lui distanza, angolo verso la porta e pressione dei difensori veri del motore; (2) lo stacco dal marcatore (sm, da -2 a +2)
+       vale ±K346.sp per unita' sui gol attesi del tiro, ±K346.pas sulla riuscita del passaggio (o del duello di protezione) e
+       ±K346.ass sul tiro del compagno servito (il passaggio gia' buono era al tetto: staccarsi non dava niente, misurato +0,6%).
+       Senza passi (mov nullo) il conto e' identico a prima, sorteggi compresi. __CPM_K346 solo per tarare. */
+    const _mv346=(o.mov&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G346B))?o.mov:null;
+    const K346=(typeof window!=='undefined'&&window&&window.__CPM_K346)||{pos:1,sp:0.10,pas:0.03,ass:0.05};
+    const _sm346=_mv346?clamp(+_mv346.sm||0,-2,2):0,_sp346=1+K346.sp*_sm346;
+    const x=clamp((+o.x||60)+(_mv346?K346.pos*(+_mv346.dx||0):0),0,100),y=clamp((+o.y||50)+(_mv346?K346.pos*(+_mv346.dy||0):0),0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
     try{const press=pressioneSu(H);const intent=o.intent||(o.fam==='tiro'?'shot':null);
-      if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8):1;/* [7.999.159] 1,4 → 1,8: col tetto di 7 scene i gol dell'eroe erano scesi a 0,50 su 60 partite (collaudatrice 2), sotto 0,6-0,9; misura su 16 partite: 0,62 → 0,75 *//* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
+      if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8):1;/* [7.999.159] 1,4 → 1,8: col tetto di 7 scene i gol dell'eroe erano scesi a 0,50 su 60 partite (collaudatrice 2), sotto 0,6-0,9; misura su 16 partite: 0,62 → 0,75 *//* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221*_sp346});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro',mov:_mv346?{x:+x.toFixed(1),y:+y.toFixed(1),sp:+_sp346.toFixed(3)}:null};}
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
-        const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
+        const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95)+K346.pas*_sm346,0.4,0.97);/* [giro 346] lo stacco apre (o chiude) la linea di passaggio */
         /* [giro 98 D3-bis, collaudo carriera 177 n.4: «Proteggi palla e scarica» giocata come un passaggio, 11 intercetti su 11] LA PROTEZIONE
            E' UN DUELLO FISICO COL MARCATORE: si perde (palla portata via, duello:true) secondo fisico dell'eroe contro fisico del marcatore,
            non secondo passaggio contro posizionamento; vinto il duello lo scarico corto arriva e il compagno conclude come in ogni assist.
            Rosso __CPM_NO_G98D3 */
-        if(o.prot&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G98D3)){const _du98=clamp(0.82+(A('fisico')-b.fisico)*0.008,0.55,0.95);if(rnd()>=_du98)return{ok:false,esito:'intercettato',duello:true,fam:'assist'};}
+        if(o.prot&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G98D3)){const _du98=clamp(clamp(0.82+(A('fisico')-b.fisico)*0.008,0.55,0.95)+K346.pas*_sm346,0.45,0.97);if(rnd()>=_du98)return{ok:false,esito:'intercettato',duello:true,fam:'assist'};}
         else if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
         const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) *//* [giro 93 PO-298, rosso __CPM_NO_ASSIST298] IL COMPAGNO SERVITO DAVANTI ALLA PORTA HA UNA GRANDE OCCASIONE. Misurato (12 partite,
    politica «assist»): passaggio arrivato 42 volte su 44, compagno a segno 8 volte su 42 (19%) — il suo tiro era un tiro qualunque del
@@ -1903,7 +1945,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
    0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
 const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
 if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
-let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298*(1+(+K346.ass||0)*_sm346)});
 /* [giro 349 · esiti-241] GANCIO DI COLLAUDO (solo sonde, spento in gioco): __CPM_COMPAGNO_SBAGLIA349 fa sbagliare il tiro del compagno
    DOPO averlo sorteggiato (stessi sorteggi consumati), cosi' la sonda provoca la scena che giudica — la consegna riuscita che resta in
    area («chance») — invece di sperare di trovarla: con la grande occasione del PO-298 il compagno segna spesso e tre pagine «assist» di
@@ -1942,7 +1984,7 @@ function simulaPartitaMotore(o){o=o||{};
   let _fH157=+o.forzaH||65,_fA157=+o.forzaA||65;
   if(!(typeof window!=='undefined'&&window.__CPM_NO_G157)){const _lo157=Math.min(_fH157,_fA157);if(_lo157<40){_fH157+=40-_lo157;_fA157+=40-_lo157;}}
   const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:_fH157,away:_fA157},tattica:o.tattica||null,lato:'home'});
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:_fH157,away:_fA157},tattica:o.tattica||null,lato:'home',gol347:true/* [giro 347 PO-599] */});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});

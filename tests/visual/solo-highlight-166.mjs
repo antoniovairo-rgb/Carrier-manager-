@@ -83,7 +83,11 @@ async function partita(modo, init, opz, nome) {
   try {
     if (!A.W) throw new Error('nessuna settimana con giornata di lega');
     await apriPrompt166(A.page);
-    r = await gioca166(A.page, modo, { seme: SEME, ...(opz || {}) }); velo = !!r.velo; lm = r.lm || null;
+    /* [giro 350] tetto d'ATTESA della partita 420 → 600 s (non una soglia: una partita che non chiude resta «non giudicato» = rosso).
+       MISURATO sul banco cloud: la partita intera «Collaudo Sorpresa 4» chiude al 93' dopo 422-425 s reali, identica sulla punta del
+       treno 7.999.208 e su v7.999.207 (stessi eventi, stesso 3-0, fine «clock»): col tetto di 420 s il 12b usciva «partita non chiusa»
+       3 volte su 3 senza che il gioco avesse niente. Sul runner la stessa partita sta sotto i 210 s. */
+    r = await gioca166(A.page, modo, { seme: SEME, tetto: 600000, ...(opz || {}) }); velo = !!r.velo; lm = r.lm || null;
     if (r.finita) c = await chiudi166(A.page);
     r.errs = A.errs.slice(0, 3);
   } catch (e) { r.note = [...(r.note || []), 'flusso: ' + String(e.message).slice(0, 140)]; r.errs = A.errs.slice(0, 3); }
