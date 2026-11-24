@@ -17,6 +17,8 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 
 **Richieste nuove (PO 24/11 08:15: «le richieste nuove devono andare sempre in coda per arrivo, non creiamo treni giganti, mi raccomando!»).** Ogni richiesta nuova entra nel BACKLOG «IN CODA» per ordine di arrivo, senza chiedere al PO se anticiparla: la priorità la dichiara il PO di sua iniziativa. Un giro nuovo parte dalla testa della coda; un vagone pronto sale sul primo treno libero, al massimo 6 vagoni (meglio pochi).
 
+**Vagoni che non si pestano i piedi (PO 24/11 11:10).** Sullo stesso treno salgono solo vagoni che non toccano lo stesso file di gioco (`src/*`), lo stesso guardiano o la stessa macchina del treno: prima di unire, `python3 tools/vagoni-incrocio.py --base <ultimo tag v*> origin/sviluppo/<giro> …` (esce 1 se c'è un incrocio; i registri `ci-runner.mjs` e `package.json` contano solo come avviso). Due vagoni che si incrociano vanno su treni diversi, uno dopo l'altro. Anche i giri da lanciare insieme si scelgono, a parità di posizione in coda, su zone diverse del gioco. Lezione del treno della 7.999.208: 345, 346 e 347 toccavano tutti `src/14-motore-possesso.jsx` e il treno si è fermato su tiro-346.
+
 ## Smistamento (triage) — entro la risposta successiva
 
 Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglioramento · nuova funzione · debito tecnico · processo · ricerca · conflitto. Un'incertezza («da verificare», «da decidere») va nello **Stato**, non nel tipo. `node tools/governo-html.mjs` avvisa delle voci fuori categoria e la scheda «Stato settimanale» le conta (PO-159, 01/10). Ogni risposta al PO apre con «Richieste nuove registrate: PO-…»: è la prova che lo smistamento è avvenuto nel turno.
