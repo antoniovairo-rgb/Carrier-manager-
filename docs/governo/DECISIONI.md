@@ -2060,3 +2060,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 20:00 (24/11) 7.999.209 pubblicata a mano (giri 351, 352 + 353). PO-607 e PO-613 a FATTO. Righe solo_runner di render-3d-023 e guardalinee-222 su main (dall'unione).
 - 19:45 (24/11) Lanciati dalla testa della coda i giri 354 (PO-522 evento sopra il rinnovo) e 355 (PO-586 «da anni» nella Tua storia), su zone diverse. PO-557 resta fermo: tocca l'economia chiusa il 20/10, serve la decisione del PO.
 - 19:50 (24/11) PO: «Apri 557» → economia riaperta per PO-557 (staff personale troppo economico). Lanciato il giro 356: misura prima, taratura proposta con dubbi al PO, salvataggi esistenti intatti. Se tocca lo stesso file del giro 354 (rinnovo), viaggia su un treno diverso (vagoni-incrocio).
+- 20:10 (24/11) PO-654 (sigle vere UCL/UEL in «Momenti indimenticabili»): trattato come BUG GRAVE per il precedente PO-619 (copyright bloccante per lo store) → fuori coda, giro 357 lanciato subito.
