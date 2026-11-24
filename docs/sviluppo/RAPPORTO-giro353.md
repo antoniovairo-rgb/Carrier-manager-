@@ -31,7 +31,12 @@ non abbassando una soglia né togliendo la condizione.
 ## Rigiocata dopo le correzioni
 
 Catena del giro: `node ci-runner.mjs giro impulsi-memoria-154 render-3d-023 guardalinee-222 eta-352 offerte-351 career-critical`
-(+ sentinelle). Esito: **in corsa** (scritto sotto a fine giro).
+(+ sentinelle, 21 passi), sulla punta del ramo 5f68ca12: **21/21 verdi**, nessun passo ripetuto — impulsi-memoria-154 41 s ·
+render-3d-023 36 s · guardalinee-222 472 s · eta-352 11 s · offerte-351 3 s · career-critical 303 s · partita-vera 681 s ·
+battito-264 401 s · tunnel-285 257 s · gk-dive-sync 189 s · griglia-mobile 172 s · home-298 119 s · schermate-97 115 s · replay 48 s ·
+web-237 45 s · migrazione-194 24 s · tema-unico 14 s · test:logic · save-compat · design-system · mappa-unica. Esito registrato in
+`docs/governo/STABILITA.json`. (Il runner stampa «su 7.999.208»: è la `GAME_VERSION` del file, non toccata.) Le foto rigenerate
+dalla sentinella grafica in `docs/collaudo-grafico/g0` non sono state committate.
 
 ## Da sapere (fuori ambito)
 
