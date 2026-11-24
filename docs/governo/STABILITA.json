@@ -194,6 +194,103 @@
   ]
  },
  {
+  "data": "2026-11-24 18:48",
+  "versione": "7.999.209",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "storia-355",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 187
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 296
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 65
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 365
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 426
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 684
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 244
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 120
+   }
+  ]
+ },
+ {
   "data": "2026-11-24 17:30",
   "versione": "7.999.208",
   "catena": "giro",
