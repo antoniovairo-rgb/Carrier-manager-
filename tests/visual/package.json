@@ -202,6 +202,7 @@
     "playedmd-registry": "node playedmd-registry-test.mjs",
     "impulsi-contesto": "node impulsi-contesto-test.mjs",
     "eta-352": "CPM_PROVA_ROSSO=1 node eta-352.mjs",
+    "storia-355": "CPM_PROVA_ROSSO=1 node storia-355.mjs",
     "impulsi-memoria-154": "node impulsi-memoria-154.mjs",
     "slot-card-layout": "node slot-card-layout-test.mjs",
     "parata-legibility": "node parata-legibility-test.mjs",
