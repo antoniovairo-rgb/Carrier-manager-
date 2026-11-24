@@ -10364,13 +10364,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                e lo stesso puo' capitare a fine partita normale. La camera taglia comunque sulla
                scena nuova: i compagni di squadra si RI-PIAZZANO sull'anello della festa attorno
                all'eroe (3,5-6u, mai dentro il futuro palco), gli avversari restano dove sono. */
-            try{let _ri439=0;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G349))try{let _ri439=0;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
               if(!pp.mesh||pp.mesh===hero||!src||src.team!=="home"||src.gk)return;
               const _dh439=Math.hypot(pp.mesh.position.x-_cerHx0,pp.mesh.position.z-_cerHz0);
               if(_dh439>7){const _a439=(_ri439/9)*Math.PI*2+0.7,_rr439=3.5+(_ri439%3)*1.2;
                 pp.mesh.position.x=_cerHx0+Math.cos(_a439)*_rr439;pp.mesh.position.z=_cerHz0+Math.sin(_a439)*_rr439;
                 pp.mesh.rotation.y=Math.atan2(_cerHx0-pp.mesh.position.x,_cerHz0-pp.mesh.position.z);}
               _ri439++;});}catch(_e439){}
+            /* [giro 349 · cerimonie (11)] TESTIMONE DELL'APERTURA: la premiazione di squadra (POC 24/09, giro 47) porta eroe e
+               compagni al palco pochi fotogrammi dopo questo stacco, e li' i compagni stanno a ~6-7,2u (foto di gruppo). La sonda
+               che leggeva «subito dopo» coglieva l'anello o il palco a seconda dei fotogrammi (verde sul runner del 23/11 mattina,
+               rosso sul banco da almeno il giro 301): misura il fotogramma dello stacco, qui. Solo collaudo. Rosso __CPM_NO_G349
+               (niente anello: il gioco di prima del 7.443). */
+            if(typeof window!=="undefined"&&(_CPM_TEST||_SIT_TEST)){try{let _n349=0,_t349=0;scene.traverse(g=>{if(g&&g._aL&&g!==hero&&g.visible){_t349++;if(Math.hypot(g.position.x-hero.position.x,g.position.z-hero.position.z)<6.5)_n349++;}});
+              window.__CPM_CER349={k:_ck422,near:_n349,tot:_t349,hx:+hero.position.x.toFixed(2),hz:+hero.position.z.toFixed(2),x0:+_cerHx0.toFixed(2),z0:+_cerHz0.toFixed(2)};}catch(_e349){}}
             /* [7.426.0] LE BANDIERE DELLA CURVA: durante la cerimonia la curva dei tuoi espone dieci
                bandiere nei colori del club che sventolano — costruite pigre una volta, riusate, mai
                attive fuori dalla premiazione (zero costo in partita). */

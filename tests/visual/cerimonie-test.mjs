@@ -86,6 +86,10 @@ const wg = [];
    nazionale arriva dalla lotteria dei rigori coi giocatori sparsi per il campo, e 2,4s di hug non
    bastano ad arrivare), trofeo int a scala 0,8 (il piu' grosso di tutti). */
 {
+  /* [giro 349] la cerimonia di campionato della sezione warp va CHIUSA prima di aprire la Nazionale, come fa il primo ciclo
+     (Invio): nel gioco due premiazioni non si sovrappongono. Aprendola sopra l'altra la posizione d'apertura (_cerHx0)
+     restava quella della premiazione precedente e l'anello si piazzava lontano dall'eroe (misurato: 0/22 col testimone). */
+  await page.keyboard.press('Enter'); await sleep(900);
   const ok = await page.evaluate(() => window.__CPM_FORCE_CEREMONY && window.__CPM_FORCE_CEREMONY({ name: 'W int', kind: 'int' }));
   if (ok) {
     await page.waitForFunction(() => window.__CPM_CER425 && window.__CPM_CER425.beatsD, { timeout: 10000 }).catch(() => {});
@@ -107,11 +111,19 @@ const wg = [];
          all'eroe — l'anello di staging (3,5-6u) e' un fatto d'apertura, misurabile anche a 4fps.
          (A meta' beat il headless non regge: il burst disperde e la convergenza non fa in tempo —
          e' un artefatto, non il difetto del PO.) */
-      const mInit = await probeInt();
+      /* [giro 349] l'apertura si legge dal TESTIMONE del fotogramma dello stacco (__CPM_CER349), non piu' da una
+         probe «subito dopo»: la premiazione di squadra (POC 24/09 · giro 47: present>captain>pass>fest>lift) porta
+         eroe e compagni al palco pochi fotogrammi dopo, e li' la foto di gruppo sta a ~6-7,2u. La vecchia probe
+         coglieva l'uno o l'altro a seconda dei fotogrammi: verde sul runner fino al treno 45186665202, rosso sul
+         banco su v7.999.203 e sul commit del giro 301 (5/22, sempre il palco). Soglie invariate (6,5u · >= 6).
+         Braccio rosso: CPM_ROSSO=__CPM_NO_G349 (niente anello d'apertura) deve far cadere (11). */
+      await page.waitForFunction(() => window.__CPM_CER349 && window.__CPM_CER349.k === 'int', { timeout: 10000 }).catch(() => {});
+      const w349 = await page.evaluate(() => window.__CPM_CER349 || null);
+      const mInit = w349 && w349.k === 'int' ? { matesNear: w349.near, matesTot: w349.tot } : null;
       const tLift = mid('lift');
       await page.evaluate(t => { window.__CPM_CERT_SET = t; }, tLift); await sleep(2600);
       const mLift2 = await probeInt();
-      if (!mInit || !mLift2) wg.push('warp int: probe cieca');
+      if (!mInit || !mLift2) wg.push('warp int: probe cieca (testimone __CPM_CER349 assente = non giudicato)');
       else {
         console.log(`warp int: init compagni vicini ${mInit.matesNear}/${mInit.matesTot} (entro 6,5u) · trofeo scala ${mLift2.troScale}`);
         if (mInit.matesTot >= 5 && mInit.matesNear < 6) wg.push(`(11) NAZIONALE: all'apertura della cerimonia i compagni non sono attorno all'eroe (${mInit.matesNear}/${mInit.matesTot} entro 6,5u) — la squadra «si riscalda» sparsa per il campo invece di festeggiare`);

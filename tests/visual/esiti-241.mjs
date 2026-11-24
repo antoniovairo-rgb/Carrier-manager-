@@ -14,6 +14,10 @@
    Parte D [giro 102] — braccio rosso __CPM_NO_G102 (la conversione del giro 100 D3 «consegna → incornata sul portiere» torna su ogni
      consegna in area): gi14/gi16 riusciti devono mostrare il portiere che si tuffa su una consegna (>=1 su 2). Nel verde: 0.
      MISURATO sul build 7.999.178 (catena notte 178): verde B 2/3 contraddizioni (gi14, gi16); dopo la correzione 0/3.
+   [giro 349] SCENA PROVOCATA: dal PO-298 (grande occasione del compagno, 0,28-0,6) la consegna riuscita esce spesso «assist» (il
+     compagno segna) e non e' la scena sotto esame; sul runner (treno 45255159673) tre pagine «assist» di fila hanno dato «non
+     giudicato» su gi16 (verde) e gi14 (rosso G102). Le pagine della parte B accendono __CPM_COMPAGNO_SBAGLIA349 (src/14, giocaScena):
+     il tiro del compagno si sorteggia come sempre e, se e' gol, diventa parata. La ripetizione su pagina nuova resta come rete.
    Uso: node esiti-241.mjs */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import { contraddizioni } from './lib/esiti-241.mjs';
@@ -51,7 +55,7 @@ for (const rosso of [false, true, 'g102']) {
        scartate passano dal classificatore (una contraddizione li' e' rossa lo stesso). Tre pagine senza «chance» = non giudicata = rosso. */
     for (let tent = 1; ; tent++) {
     const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-    await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_V241 = {}; if (r === true) window.__CPM_NO_ESITI241 = 1; if (r === 'g102') window.__CPM_NO_G102 = 1; }, rosso);
+    await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_V241 = {}; window.__CPM_COMPAGNO_SBAGLIA349 = 1;/* [giro 349] la consegna riuscita resta in area: il compagno non segna (scena provocata, non sperata) */ if (r === true) window.__CPM_NO_ESITI241 = 1; if (r === 'g102') window.__CPM_NO_G102 = 1; }, rosso);
     await openMatch(page, port, { skipLoadAll: true, name: 'Esiti241' });
     await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7, policy: 'seeded', tickMs: 300 }));
     await page.waitForFunction(() => window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ() && typeof window.__CPM_FORCE_SIT === 'function', null, { timeout: 90000 }).catch(() => {});

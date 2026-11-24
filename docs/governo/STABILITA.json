@@ -1,5 +1,127 @@
 [
  {
+  "data": "2026-11-23 23:52",
+  "versione": "7.999.206",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "cerimonie",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "esiti-241",
+    "ok": true,
+    "s": 326
+   },
+   {
+    "passo": "cerimonie-192",
+    "ok": true,
+    "s": 456
+   },
+   {
+    "passo": "testa-342",
+    "ok": true,
+    "s": 694
+   },
+   {
+    "passo": "difesa-343",
+    "ok": true,
+    "s": 256
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 194
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 286
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "esiti-96",
+    "ok": true,
+    "s": 816
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 370
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 422
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 618
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 151
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 128
+   }
+  ]
+ },
+ {
   "data": "2026-11-23 18:16",
   "versione": "7.999.206",
   "catena": "giro",
@@ -21602,134 +21724,6 @@
     "passo": "career-critical",
     "ok": true,
     "s": 672
-   }
-  ]
- },
- {
-  "data": "2026-10-12 10:16",
-  "versione": "7.999.161",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "validate-situations",
-    "ok": false,
-    "s": 3182,
-    "coda": "gate-history → 187 run · ↔ fingerprint cambiato (Δfailure -1) |  | ❌ FAIL — motion",
-    "prove": 3
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 60
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "popup-224",
-    "ok": true,
-    "s": 42
-   },
-   {
-    "passo": "lessico-218",
-    "ok": true,
-    "s": 26
-   },
-   {
-    "passo": "fila-227",
-    "ok": true,
-    "s": 369
-   },
-   {
-    "passo": "finestra-230",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 982
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 524
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1103
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 2152,
-    "instabile": true,
-    "prove": 2
-   },
-   {
-    "passo": "gk-dive-sync",
-    "ok": true,
-    "s": 230
-   },
-   {
-    "passo": "goal-postarc",
-    "ok": true,
-    "s": 339
-   },
-   {
-    "passo": "nomi-219",
-    "ok": true,
-    "s": 4440
-   },
-   {
-    "passo": "difesa-220",
-    "ok": true,
-    "s": 2222
-   },
-   {
-    "passo": "scene-221",
-    "ok": true,
-    "s": 1641
-   },
-   {
-    "passo": "intervista-231",
-    "ok": true,
-    "s": 467
-   },
-   {
-    "passo": "tabellino-228",
-    "ok": false,
-    "s": 901,
-    "coda": "k4 rosso: tabellino 3-2 (mio-loro), tabellone 3-2, motore 3-2, golLog [{\"min\":18,\"tick\":430,\"lato\":\"away\",\"scena\":false,\"chi\":19},{\"min\":58,\"tick\":1347,\"lato\":\"away\",\"scena\":false,\"chi\":18},{\"min\":63,\"tick\":1467,\"lato\":\"home\",\"scena\":false,",
-    "prove": 3
    }
   ]
  }

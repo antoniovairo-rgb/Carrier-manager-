@@ -25881,13 +25881,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                e lo stesso puo' capitare a fine partita normale. La camera taglia comunque sulla
                scena nuova: i compagni di squadra si RI-PIAZZANO sull'anello della festa attorno
                all'eroe (3,5-6u, mai dentro il futuro palco), gli avversari restano dove sono. */
-            try{let _ri439=0;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G349))try{let _ri439=0;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
               if(!pp.mesh||pp.mesh===hero||!src||src.team!=="home"||src.gk)return;
               const _dh439=Math.hypot(pp.mesh.position.x-_cerHx0,pp.mesh.position.z-_cerHz0);
               if(_dh439>7){const _a439=(_ri439/9)*Math.PI*2+0.7,_rr439=3.5+(_ri439%3)*1.2;
                 pp.mesh.position.x=_cerHx0+Math.cos(_a439)*_rr439;pp.mesh.position.z=_cerHz0+Math.sin(_a439)*_rr439;
                 pp.mesh.rotation.y=Math.atan2(_cerHx0-pp.mesh.position.x,_cerHz0-pp.mesh.position.z);}
               _ri439++;});}catch(_e439){}
+            /* [giro 349 · cerimonie (11)] TESTIMONE DELL'APERTURA: la premiazione di squadra (POC 24/09, giro 47) porta eroe e
+               compagni al palco pochi fotogrammi dopo questo stacco, e li' i compagni stanno a ~6-7,2u (foto di gruppo). La sonda
+               che leggeva «subito dopo» coglieva l'anello o il palco a seconda dei fotogrammi (verde sul runner del 23/11 mattina,
+               rosso sul banco da almeno il giro 301): misura il fotogramma dello stacco, qui. Solo collaudo. Rosso __CPM_NO_G349
+               (niente anello: il gioco di prima del 7.443). */
+            if(typeof window!=="undefined"&&(_CPM_TEST||_SIT_TEST)){try{let _n349=0,_t349=0;scene.traverse(g=>{if(g&&g._aL&&g!==hero&&g.visible){_t349++;if(Math.hypot(g.position.x-hero.position.x,g.position.z-hero.position.z)<6.5)_n349++;}});
+              window.__CPM_CER349={k:_ck422,near:_n349,tot:_t349,hx:+hero.position.x.toFixed(2),hz:+hero.position.z.toFixed(2),x0:+_cerHx0.toFixed(2),z0:+_cerHz0.toFixed(2)};}catch(_e349){}}
             /* [7.426.0] LE BANDIERE DELLA CURVA: durante la cerimonia la curva dei tuoi espone dieci
                bandiere nei colori del club che sventolano — costruite pigre una volta, riusate, mai
                attive fuori dalla premiazione (zero costo in partita). */
@@ -33149,7 +33156,12 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
    0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
 const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
 if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
-const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+let es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
+/* [giro 349 · esiti-241] GANCIO DI COLLAUDO (solo sonde, spento in gioco): __CPM_COMPAGNO_SBAGLIA349 fa sbagliare il tiro del compagno
+   DOPO averlo sorteggiato (stessi sorteggi consumati), cosi' la sonda provoca la scena che giudica — la consegna riuscita che resta in
+   area («chance») — invece di sperare di trovarla: con la grande occasione del PO-298 il compagno segna spesso e tre pagine «assist» di
+   fila davano un «non giudicato» (treno 45255159673). */
+if(es==='goal'&&typeof window!=='undefined'&&window&&window.__CPM_COMPAGNO_SBAGLIA349)es='saved';
         return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}
       return null;}finally{H.x=x0;H.y=y0;}}catch(_e){return null;}};
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno
