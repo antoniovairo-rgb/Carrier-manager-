@@ -29,8 +29,9 @@ La storia viene dai `riepilogo-totale` di 18 corse riuscite fra il 21 e il 24/11
 | commit | braccio | durata | esito |
 |---|---|---|---|
 | cfbb7729 (punta) | verde | **2.868 s** | ❌ «solo 3 finte giudicate (pavimento 4)», vedi §4 |
+| cfbb7729 (punta) | verde, ripetuto da solo | **2.840 s** | ❌ uguale (115 highlight, stessi esiti) |
 | cfbb7729 (punta) | rosso | **2.735 s** | ✅ «il rosso si vede» |
-| 926d409e (7.999.210) | verde | vedi §5 | |
+| 926d409e (7.999.210) | verde | **2.884 s** | ✅ (4 finte, 112 highlight) |
 
 Sulla punta i due bracci sommano 5.603 s, nell'ordine delle corse sul runner (mediana 5.658). Sul banco il runner non è più lento.
 
@@ -40,7 +41,7 @@ No, per tre ragioni:
 
 1. Il vagone 355 cambia solo i testi di «La tua storia» (src/18, capitolo del rivale), più `storia-355.mjs` e una riga della MAPPA. `highlight-95` carica tre salvataggi e gioca partite: quei testi non sono sul suo percorso.
 2. La partita più lenta, s5/seme 1234, fa la stessa cosa sui due commit, isolata e con un solo braccio: **546 s sulla punta, 555 s sulla 7.999.210**. In entrambi resta in `playing` senza highlight fino al tetto di parete.
-3. Il braccio verde intero sulla 7.999.210 è al §5.
+3. Il braccio verde dura 2.884 s sulla 7.999.210 e 2.868 / 2.840 s sulla punta: nessun rallentamento.
 
 ## 2. Cosa ho scelto e perché
 
@@ -83,4 +84,22 @@ Verde: uscita 0. Rosso: 13 controlli rossi, uscita 1. Il guardiano finto è lo s
 - **ROADMAP**: questo giro non spedisce una versione (GAME_VERSION la fa il rilascio automatico del vagone). Il titolo dell'unione fa da nota. Non ho toccato `docs/governo/ROADMAP.md`, che vive su main.
 - La causa esatta del passo rimasto vivo sul runner dopo il bilancio non è confermabile senza log (vedi §1).
 
-## 5. Misure finali
+## 5. Il verde/rosso di highlight-95 fra punta e 7.999.210 non viene dal vagone 355
+
+Sulle tre corse intere del braccio verde (punta ×2, 210 ×1), **18 partite su 19 sono identiche**: stessi highlight e stesso tabellone. Cambia solo s12 / seme 7 / politica dribbling:
+
+| corsa | s12/7/drib |
+|---|---|
+| punta, intera (×2) | 7 highlight, 1-1, nessuna finta |
+| 210, intera | 4 highlight, 2-0, con una «Finta e cambio di passo» |
+| punta, isolata | **4 highlight, 2-0, con la finta** |
+| 210, isolata | **7 highlight, 1-1, nessuna finta** |
+
+La partita ha due esiti e li dà **su tutti e due i commit**: dipende da come gira la corsa, non dal codice. Le altre partite portano 3 finte, e il pavimento è 4. Il braccio verde passa sul banco se e solo se quella partita prende l'esito «con la finta». È un guardiano al limite del suo pavimento sul banco, non una regressione del vagone 355, e la soglia non l'ho toccata. Sul runner è verde in 18 corse su 18. Da aprire come voce di backlog insieme al blocco di s5/1234 (§4): «highlight-95 sul banco: s5/1234 senza highlight, s12/7/drib a due esiti; finte a 3+1 contro un pavimento di 4».
+
+## 6. Misure finali
+
+- Guardiani della macchina del treno sulla punta del ramo, dopo l'aggiornamento delle durate: `trenino-317` ✅ · `mappa-unica` ✅ · `rilascio-312` ✅. Più quelli del §3: `via-poc-338`, `deploy-326`, `notte-333`, `treno-330`, `treno-tempo-358` (verde ✅, rosso ❌ come atteso).
+- `highlight-95`: il giro non tocca né il gioco né il guardiano, quindi il suo esito è quello del §1 e del §5. Il braccio rosso è verde. Il braccio verde sul banco è al limite: rosso sulla punta, verde sulla 210, per la partita a due esiti.
+- Piano del trenino ricalcolato su cfbb7729 col ramo nuovo: 8 parti da ~63-64 min, `highlight-95@verde` nella parte 01 e `highlight-95@rosso` nella 02 (prima: una parte da ~100 min col guardiano intero).
+- Atteso alla prossima corsa: nessuna parte oltre i ~64 min stimati. Se un pezzo sfora comunque, la sua parte consegna il riepilogo con il pezzo «tetto», cioè non giudicato, e la corsa non viene annullata.
