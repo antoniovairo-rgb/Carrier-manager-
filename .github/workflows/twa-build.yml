@@ -36,13 +36,13 @@ jobs:
           gradle-version: '8.14.3'
 
       # versionCode: Play rifiuta un numero gia' visto (anche di bozze cancellate). 2000 + numero della corsa, sopra ogni
-      # codice che il workflow Capacitor puo' aver stampato (100 + corsa). versionName = GAME_VERSION del gioco.
-      - name: Stamp versionCode/versionName
+      # codice che il workflow Capacitor puo' aver stampato (100 + corsa). versionName: numero dell'APP, non la GAME_VERSION
+      # (giro 365, decisione PO 25/11 «Numero da app, 1.0»: la TWA apre il sito, il gioco si aggiorna senza nuovo pacchetto);
+      # si cambia a mano (build.gradle + twa-manifest.json) solo quando cambia il pacchetto. Guardiano store-236 S8.
+      - name: Stamp versionCode
         run: |
           VC=$((2000 + ${{ github.run_number }}))
-          VN=$(grep -o 'const GAME_VERSION="[0-9.]*' CARRIER-MANAGER-AV.html | head -1 | cut -d'"' -f2)
           sed -i -E "s/versionCode [0-9]+/versionCode $VC/" twa/android/app/build.gradle
-          sed -i -E "s/versionName '[^']*'/versionName '$VN'/" twa/android/app/build.gradle
           grep -E "versionCode|versionName" twa/android/app/build.gradle
 
       - name: Build AAB (release, non firmato)
