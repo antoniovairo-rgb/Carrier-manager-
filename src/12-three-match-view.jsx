@@ -6816,14 +6816,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;
                 /* [giro 367 PO-651 «quando l'eroe sbaglia una conclusione a volte la palla esce davvero di tanto, ridimensiona le distanze!». Rosso __CPM_NO_G367]
                    MISURATO (misura-367, 69 tiri fuori su 23 scene, corpi accesi, pallone e porta dalle mesh): scarto dal palo all'uscita mediana 0,99 m,
-                   massimo 7,47 m. Due cause in questa riga: la ricerca del punto libero dal portiere partiva dal bersaglio della variante cosi' com'era
+                   massimo 7,47 m; in 6 partite vere (partite-367, 11 tiri fuori) mediana 6,33 m, massimo 10,21 m. Due cause in questa riga, una terza piu' sotto: la ricerca del punto libero dal portiere partiva dal bersaglio della variante cosi' com'era
                    (fino a 13 di lato per giro e secondo palo) e, se il lato scelto era coperto, si allargava SULLO STESSO LATO fino a 12 prima di provare
                    l'altro. Ora il punto di partenza ha un tetto che cresce con la distanza del tiro (errore d'angolo: 1,8 m dal palo da 8 m, 3 m da
                    20 m, mai oltre 4 m) e fra i due lati vince il punto libero PIU' VICINO al palo; il lato del tiro resta se sta sotto il tetto.
                    Le regole del giro 223 (mai attraverso il portiere, mai davanti allo specchio) non cambiano: sono le stesse funzioni a dire «libero».
                    Se nessuno dei due lati ha un punto libero sotto il tetto resta il piu' vicino, e il testimone lo dichiara (oltre:1). */
                 if(!(typeof window!=='undefined'&&window.__CPM_NO_G367)){
-                  const _d367=Math.hypot(_tx223-_sx223,_sz223),_tetto367=3.66+clamp(1.0+0.10*_d367,1.5,4.0),_m367=Math.min(_m0,_tetto367);
+                  const _d367=Math.hypot(_tx223-_sx223,_sz223),_tetto367=3.66+clamp(1.0+0.10*_d367,1.5,4.0);
+                  /* quanto largo, sotto il tetto: senza questo quasi ogni tiro fuori finiva sul minimo del giro 223 (0,70 m dal palo: misurato, 3 su 5
+                     in partita). Lo scarto parte da 0,70 e sale verso il tetto con un numero che viene dai decimali del bersaglio gia' sorteggiato
+                     (nessun sorteggio nuovo), al quadrato perche' i piu' restino vicini al palo, e pesa di piu' quando la qualita' decisa dal motore
+                     e' bassa (traiettoria = conseguenza della decisione). */
+                  const _q367=P.hlQuality!=null?P.hlQuality:0.6,_u367=(Math.abs(_pz223)*7.13+_d367*0.37)%1;
+                  const _m367=Math.min(Math.max(_m0,3.66+0.7+(_tetto367-3.66-0.7)*clamp(_u367*_u367*(1.15-_q367),0,1)),_tetto367);
                   /* [giro 367] LA TERZA CAUSA, la piu' frequente nelle PARTITE VERE (partite-367: 4 tiri fuori su 7 senza un punto libero sotto il tetto,
                      3,7-6,7 m dal palo; uno contro uno da 9 m col portiere 3,6 m fuori dai pali → bersaglio a z 10,4). `_ok223` chiede che il pallone
                      passi ad almeno 1,3 u dal punto dove arriva il tuffo che sfiora, ma quel punto sta PER COSTRUZIONE a 1,3 u di lato dal pallone:
@@ -6842,7 +6848,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   if(_a367==null&&_b367==null){_a367=_cerca(_ok367,_s,_m367);_b367=_cerca(_ok367,-_s,4.36);}
                   let _n367=null;
                   if(_a367!=null&&(Math.abs(_a367)<=_tetto367+0.001||_b367==null||Math.abs(_a367)<=Math.abs(_b367)))_n367=_a367;else if(_b367!=null)_n367=_b367;
+                  /* oltre il tetto, mai piu' largo di quanto sceglieva il giro 223: se il suo punto (anche quello di ripiego, libero dal portiere ma non
+                     «fuori vero») sta piu' vicino al palo, resta quello. MISURATO: pallonetto gi0, il «fuori vero» piu' vicino era a 7,45 m dal palo, il ripiego del 223 a 1,45. */
                   const _v367=_z223;if(_n367!=null)_z223=_n367;else _z223=_s*_m367;
+                  if(_zz!=null&&Math.abs(_z223)>_tetto367+0.001&&Math.abs(_v367)<Math.abs(_z223))_z223=_v367;
                   if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TIRI367=window.__CPM_TIRI367||[]);if(W.length<200)W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,v:P.hlVariant||null,d:+_d367.toFixed(1),tetto:+(_tetto367-3.66).toFixed(2),pz:+_pz223.toFixed(2),prima:+_v367.toFixed(2),z:+_z223.toFixed(2),oltre:Math.abs(_z223)>_tetto367+0.001?1:0});}catch(_e){}}
                 }
                 else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TIRI367=window.__CPM_TIRI367||[]);const _d367=Math.hypot(_tx223-_sx223,_sz223),_t367=clamp(1.0+0.10*_d367,1.5,4.0);if(W.length<200)W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,v:P.hlVariant||null,d:+_d367.toFixed(1),tetto:+_t367.toFixed(2),pz:+_pz223.toFixed(2),prima:+_z223.toFixed(2),z:+_z223.toFixed(2),oltre:Math.abs(_z223)>3.66+_t367+0.001?1:0});}catch(_e){}}}
