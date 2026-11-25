@@ -75,6 +75,13 @@ I due pezzi girati IN PARALLELO (6 browser su 4 core): ogni partita ha toccato i
 il verde ha comunque 13 finte. La provocazione regge proprio nella condizione peggiore, quella in cui le
 partite si accorciano.
 
+| guardiano intero (`npm run highlight-95`, da solo) | ✅ «verde (e il rosso si vede)», 6.483 s | verde **15** (riuscite 40%) · rosso 16 | verde: 105 highlight · passaggi 34, arrivati 88,2% · D4 0 · difetti 0 · non giudicabili 0. Rosso: D1..D4 visibili |
+
+Catena del giro (`node ci-runner.mjs sentinelle`, girata insieme al guardiano intero): **17/17 verdi**
+(mappa-unica · test:logic · save-compat · replay · migrazione-194 · design-system · tema-unico · griglia-mobile ·
+render-3d-023 · tunnel-285 · home-298 · web-237 · career-critical · battito-264 · partita-vera · gk-dive-sync ·
+schermate-97).
+
 Senza provocazione, sul banco: 3 finte (rapporto 358, stessa misura sulla 7.999.210 e su cfbb7729).
 
 Guardiani della macchina del treno: `treno-tempo-358` ✅ · `trenino-317` ✅ (la scelta del trenino comprende
