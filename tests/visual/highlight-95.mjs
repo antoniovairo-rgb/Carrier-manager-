@@ -56,6 +56,18 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
     setInterval(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); if (!M || M.__p138 || typeof M.giocaScena !== 'function') return; const f = M.giocaScena;
       M.giocaScena = function (o) { const r = f.apply(this, arguments); if (r && r.fam === 'assist' && r.esito && r.esito !== 'intercettato') { window.__P138.forzate++; return Object.assign({}, r, { ok: false, esito: 'saved' }); } return r; };
       M.__p138 = 1; window.__P138.avvolto++; } catch (e) {} }, 50); });
+  /* [giro 363] LE FINTE SI PROVOCANO, NON SI SPERANO. Il pavimento (4 finte giudicate) era raggiunto con margine zero in quattro treni di
+     fila (4·4·4·4) e il treno 45571168039 ne ha avute 3: la «Finta e cambio di passo» esce solo nelle scene «fra le linee» e solo se il
+     sorteggio delle tre opzioni la pesca. Nelle partite a politica «drib» la sonda avvolge _p6Costruisci (globale, src/04) e moltiplica
+     per 25 il peso della sola finta: le altre opzioni, il motore che la gioca, il 3D e l'esito restano quelli del gioco. Il gioco non
+     cambia; il testimone __P363 dice quante scene fra le linee sono nate e in quante la finta era offerta. CPM_NO_P363=1 = sonda di prima. */
+  if (pol === 'drib' && !process.env.CPM_NO_P363) await page.addInitScript(() => { window.__P363 = { avvolto: 0, linee: 0, finta: 0 };
+    const av = () => { try { const f = window._p6Costruisci; if (typeof f !== 'function' || f.__p363) return; const g = function (occ, player, seed, REG, c, titoli, intro, zones, ctx, tipo) {
+        const R2 = Array.isArray(REG) && REG.some(t => t && t.k === 'finta' && t.drb) ? REG.map(t => (t && t.k === 'finta' && t.drb) ? Object.assign({}, t, { w: (cc) => 25 * t.w(cc) }) : t) : REG;
+        const args = Array.prototype.slice.call(arguments); args[3] = R2; const r = f.apply(this, args);
+        if (R2 !== REG) { window.__P363.linee++; try { if (r && (r.actions || []).some(a => /Finta e cambio/i.test(String(a && (a.l || a.label || a.t || a.text) || '')))) window.__P363.finta++; } catch (e) {} }
+        return r; }; g.__p363 = 1; window._p6Costruisci = g; window.__P363.avvolto++; } catch (e) {} };
+    const iv = setInterval(() => { av(); if (window.__P363.avvolto) clearInterval(iv); }, 20); });
   if (process.env.CPM_G104FAIL) await page.addInitScript(() => {/* [giro 104] solo sonda: ogni highlight forzato a fallire (__CPM_FORCE_OUTCOME, gia' esistente) -> ogni uno-due diventa un intercetto, il caso D3 della catena 178 */
     setInterval(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if ((ph === 'hl_choose' || ph === 'hl_move') && !window.__CPM_FORCE_OUTCOME) window.__CPM_FORCE_OUTCOME = 'fail'; } catch (e) {} }, 60); });
   if (+process.env.CPM_CPU > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [giro 103] carico riproducibile per le misure (CDP) */
@@ -104,6 +116,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   if (G104 && (G104.x || G104.d)) console.log(`  [g104] ${saveKey}/${sd} ${pol}: riserva su riquadro altrui ${G104.x} ${JSON.stringify(G104.xs)} · via dichiarata prima del pavimento ${G104.d} ${JSON.stringify(G104.ds)}`);/* [giro 104] testimoni del gioco *//* [giro 104] tutte le rivelazioni della partita, per abbinarle alla scena per indice (hl) e non per ordine di lettura */
   if (process.env.CPM_G103DIAG) { const H = await page.evaluate(() => window.__H103 || []).catch(() => []); for (const x of H) if (x.occ != null) console.log(`  [g103] ${saveKey}/${sd} ${pol} occupata ${(x.occ - x.ck0).toFixed(2)} s di scena · esito a ${x.rev != null ? (x.rev - x.ck0).toFixed(2) : '-'} s (${x.revMs != null ? Math.round(x.revMs) : '-'} ms) · fotogrammi ${x.fr}`); }
   if (/__CPM_G145GEO/.test(process.env.CPM_FLAG || '')) { const W = await page.evaluate(() => window.__CPM_G145W || null).catch(() => null); console.log(`  [g145] ${saveKey}/${sd} ${pol}: geometria di prova del portiere applicata a ${W ? W.scene : 0} voli (${W ? W.n : 0} fotogrammi)`); }
+  const P363 = await page.evaluate(() => window.__P363 || null).catch(() => null); if (P363) console.log(`  [p363] ${saveKey}/${sd} ${pol}: sonda avvolta ${P363.avvolto} · scene fra le linee ${P363.linee} · con la finta offerta ${P363.finta}`);
   if (process.env.CPM_G138PARATA) { const P = await page.evaluate(() => window.__P138 || null).catch(() => null); console.log(`  [g138] ${saveKey}/${sd} ${pol}: motore avvolto ${P ? P.avvolto : 0} · passaggi arrivati resi parata del compagno ${P ? P.forzate : 0}`); }
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
