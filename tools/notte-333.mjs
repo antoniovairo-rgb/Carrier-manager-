@@ -15,7 +15,7 @@
      notteDi(adesso)                → la notte (AAAA-MM-GG UTC) a cui appartiene un istante: dalle 01:07 UTC in poi e' la notte del giorno
      scadenza({avvio, scadenzaMin, entro}) → istante (ms) oltre il quale il custode smette di vegliare
      registra(prec, nuovo)          → il record da scrivere, o null se quello che c'e' gia' basta (niente commit inutili)
-     statoNotte(rec, adesso)        → { esito: 'partito'|'non_partito'|'in_attesa', testo, cls } per la pagina di governo
+     statoNotte(rec, adesso)        → { esito: 'partito'|'in_ritardo'|'non_partito'|'in_attesa', testo, cls }   [in_ritardo: giro 359] per la pagina di governo
    Comando: node tools/notte-333.mjs registra --esito <esito-custode.json> --prec <TRENO-NOTTE.json> --uscita <nuovo.json>
             (uscita 0 sempre; se non c'e' niente da scrivere non crea --uscita)
    Rosso del guardiano: CPM_NO_G333=1 = comportamento del giro 330 (scadenza solo relativa, nessun record, pagina muta).
@@ -27,6 +27,9 @@ import { fileURLToPath } from 'node:url';
 export const FILE_NOTTE = 'docs/governo/TRENO-NOTTE.json';
 export const ORA_NOTTE = '01:07';      // primo orario del custode (UTC)
 export const ENTRO = '05:47';          // 01:07 + 280 minuti: la notte finisce qui per tutti i custodi
+/* [giro 359, PO-630] «in ritardo»: un treno grande avviato dopo l'orario di riserva, o nessun esito ancora dopo quell'ora (rosso CPM_NO_G359=1) */
+export const RITARDO = '02:43';
+const NO359 = () => process.env.CPM_NO_G359 === '1';
 const NO = () => process.env.CPM_NO_G333 === '1';
 const min = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
 const giorno = ms => new Date(ms).toISOString().slice(0, 10);
@@ -60,9 +63,12 @@ export function statoNotte(rec, adesso) {
   if (NO()) return null;
   const t = +new Date(adesso), n = notteDi(t), fine = Date.parse(n + 'T' + ENTRO + ':00Z') + 15 * 60000;
   if (rec && rec.notte === n) {
+    const tardi = !NO359() && rec.esito === 'partito' && rec.scritto && Date.parse(rec.scritto) > Date.parse(n + 'T' + RITARDO + ':00Z');
+    if (tardi) return { esito: 'in_ritardo', cls: 'c-run', testo: `treno grande di stanotte (${n}): partito in ritardo — alle ${new Date(rec.scritto).toISOString().slice(11, 16)} UTC, dopo le ${RITARDO}${rec.treno ? ' — corsa ' + rec.treno : ''}` };
     if (rec.esito === 'partito') return { esito: 'partito', cls: 'c-ok', testo: `treno grande di stanotte (${n}): partito${rec.treno ? ' — corsa ' + rec.treno : ''}` };
     return { esito: 'non_partito', cls: 'c-open', testo: `treno grande di stanotte (${n}): non partito — ${rec.perche || 'il custode non si e\' accodato entro la scadenza'}` };
   }
+  if (t < fine && !NO359() && t > Date.parse(n + 'T' + RITARDO + ':00Z')) return { esito: 'in_ritardo', cls: 'c-run', testo: `treno grande di stanotte (${n}): in ritardo — nessun treno grande alle ${RITARDO} UTC, custode e sveglia al lavoro fino alle ${ENTRO} UTC${rec ? ' · ultima notte registrata ' + rec.notte + ' (' + rec.esito + ')' : ''}` };
   if (t < fine) return { esito: 'in_attesa', cls: 'c-wait', testo: `treno grande di stanotte (${n}): custode al lavoro fino alle ${ENTRO} UTC${rec ? ' · ultima notte registrata ' + rec.notte + ' (' + rec.esito + ')' : ''}` };
   return { esito: 'non_partito', cls: 'c-open', testo: `treno grande di stanotte (${n}): non partito — nessun esito scritto dal custode (il cron non e' scattato?)${rec ? ' · ultima notte registrata ' + rec.notte + ' (' + rec.esito + ')' : ''}` };
 }
