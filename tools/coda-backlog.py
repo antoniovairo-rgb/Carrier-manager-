@@ -5,12 +5,13 @@ Lo stato di una voce aperta che nessun giro sta lavorando diventa «IN CODA · n
 diventa «in coda». La versione compare solo quando un giro ci lavora («IN CORSO — <versione>») o e' uscita («FATTO —
 <versione>»): niente piu' etichette «— 206» spostate in blocco a ogni rilascio.
 
-Ordine (priorita' del PO, DECISIONI 22/11 17:20):
-  1. velocita' dei rilasci, nell'ordine dichiarato;
-  2. chiarezza delle schermate, nell'ordine dichiarato;
-  3. difetti nell'ordine AREA3 confermato dal PO il 23/11 (A partita, B carriera, C Primavera, D scene 3D);
-  4. il resto per ordine di arrivo;
-  5. le idee dei questionari di novembre (PO-381…PO-447), per ordine di arrivo.
+Ordine (decisione PO 25/11 15:40, «Fasce, poi per arrivo»; prima: aree del 22-23/11):
+  0. scelta esplicita del PO (TESTA_PO: PO-649 primo giro dopo la 7.999.213);
+  1. difetti che si vedono giocando (tipo «difetto…», esclusi gli strumenti; testi incoerenti 656/657);
+  2. controlli e strumenti (controlli, decisioni sui rossi, misure, prestazioni, strumento, salvataggi, fluidita');
+  3. grafica e miglioramenti (tutto il resto);
+  4. funzioni nuove (tipo «nuova funzione»/«funzione», e le idee dei questionari PO-381…PO-447, che restano in fondo: PO 25/11).
+  Dentro ogni fascia: per ordine di arrivo (numero della voce).
 Non toccate: IN CORSO, FATTO e CHIUSO/A (da spostare nello storico). Idempotente: si rilancia dopo ogni modifica del BACKLOG.
 Uso: python3 tools/coda-backlog.py
 """
@@ -25,12 +26,23 @@ AREA3 = [629, 587, 611, 585, 376, 561, 599, 607, 613, 522, 557, 586, 463, 462, 3
 TESTA = re.compile(r'^(?:IN CODA · n° \d+|(?:DA FARE|IN CODA|DA DECIDERE|DA VERIFICARE|DA MISURARE)(?: — \d+)?)\s*(?:—\s*)?')
 
 
-def rango(n):
-    if n in AREA1: return (1, AREA1.index(n))
-    if n in AREA2: return (2, AREA2.index(n))
-    if n in AREA3: return (3, AREA3.index(n))
-    if n in IDEE: return (5, n)
-    return (4, n)
+TESTA_PO = [649]
+TESTI_F1 = [656, 657]
+
+
+def rango(n, tipo=''):
+    t = tipo.lower()
+    if n in TESTA_PO: return (0, TESTA_PO.index(n))
+    if re.search(r'strumento', t) and t.startswith('difetto'): return (2, n)
+    if t.startswith('difetto') or n in TESTI_F1: return (1, n)  # anche i difetti dentro le idee (417, 419-421)
+    if n in IDEE or t.startswith(('nuova funzione', 'funzione')): return (4, n)
+    if re.search(r'controll|decisione|misura|verifica|prestazioni|strumento|salvataggi|fluidit|peso modelli|processo', t): return (2, n)
+    return (3, n)
+
+
+VECCHIE = [re.compile(r'\s*—?\s*nella 20\d(?: \(PO 20/11: 198 = blocchi 1\+2\))?'),
+           re.compile(r'\s*—?\s*PO 20/11: 198 = blocchi 1\+2; prima: 198(?: \(non fatta nella 197; PO 19/11: «Tutte nella 198»\))?;?'),
+           re.compile(r'^\((PO \d+/\d+:.*)\)$')]  # resta il contenuto della decisione, senza le parentesi
 
 
 def main():
@@ -44,7 +56,7 @@ def main():
         c = l.split('|')
         st = c[5].strip()
         if st.startswith(('IN CORSO', 'FATTO', 'CHIUS', 'DA VERIFICARE DAL PO')) or re.match(r'IN CODA · n° \d+ — DAL PO', st): continue  # chiuse o in attesa del collaudo del PO  # le voci chiuse vanno nello storico, non in coda
-        righe.append((rango(int(c[1].strip()[3:])), i))
+        righe.append((rango(int(c[1].strip()[3:]), c[4].strip()), i))
     righe.sort()
     for k, (_, i) in enumerate(righe, 1):
         c = L[i].split('|')
@@ -56,6 +68,8 @@ def main():
             nuovo = f'IN CODA · n° {k} — già uscita una parte: {st}'
         else:
             resto = TESTA.sub('', st).strip()
+            for v in VECCHIE[:2]: resto = v.sub('', resto).strip(' —;')
+            resto = VECCHIE[2].sub(r'\1', resto)  # piani scaduti (198/202): PO 25/11, storia in DECISIONI
             resto = re.sub(r'^\((.*)\)$', r'\1', resto)
             nuovo = f'IN CODA · n° {k}' + (f' — {resto}' if resto else '')
         c[5] = f' {nuovo} '
