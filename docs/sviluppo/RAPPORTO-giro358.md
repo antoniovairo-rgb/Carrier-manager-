@@ -76,7 +76,7 @@ Verde: uscita 0. Rosso: 13 controlli rossi, uscita 1. Il guardiano finto è lo s
 
 `mappa-unica` ✅ · `via-poc-338` ✅ · `deploy-326` ✅ · `notte-333` ✅ · `trenino-317` ✅ · `rilascio-312` ✅ · `treno-330` ✅ · `treno-tempo-358` ✅ (e rosso col rosso).
 
-`trenino-317` e `rilascio-312` erano usciti rossi al primo giro sia sul ramo sia sulla base, per cause d'ambiente della sessione: `origin/main` assente e clone corto («Could not read 234aa9f…»). Dopo `git fetch` di main e `--unshallow` sono verdi tutti e due. Dettagli dell'ultimo giro al §5.
+`trenino-317` e `rilascio-312` erano usciti rossi al primo giro sia sul ramo sia sulla base, per cause d'ambiente della sessione: `origin/main` assente e clone corto («Could not read 234aa9f…»). Dopo `git fetch` di main e `--unshallow` sono verdi tutti e due. Dettagli dell'ultimo giro al §6.
 
 ## 4. Fuori ambito, dichiarato
 
