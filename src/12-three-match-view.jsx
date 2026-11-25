@@ -1139,6 +1139,87 @@ function ThreeMatchView(props){
       bone.quaternion.copy(pw.clone().invert().multiply(rq).multiply(pw).multiply(bone.quaternion.clone()));};
     const _AX904=new THREE.Vector3(1,0,0),_AZ904=new THREE.Vector3(0,0,1);
     const _findBone904=(root,re)=>{let b=null;root.traverse(o=>{if(!b&&o.isBone&&re.test(o.name||""))b=o;});return b;};
+    /* [giro 366, PO-649 «i giocatori volano sul campo» — TESTIMONE, sola lettura, solo banco (?cpmtest=1 o __CPM_REC)]
+       Una sorgente sola per corpi e prato: le OSSA del piede dei corpi disegnati (caviglia foot_*, avampiede ball_*) nel mondo, lette
+       dall'ultimo fotogramma, e il prato a y 0. `__CPM_VOLA366()` = istantanea di tutti i corpi GLB (i 22 + l'arbitro).
+       `__CPM_VOLA366({prato:i,lato:4,px:96})` = l'OMBRA DISEGNATA sotto il corpo i: il prato visto a piombo (camera ortografica a
+       y 0,03, quindi senza il corpo davanti) disegnato due volte, col sole che fa ombra e senza; restituisce lo scurimento
+       (1 - acceso/spento) pixel per pixel, in unita' di mondo attorno al punto a terra fra i due piedi. */
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_VOLA366=(cmd)=>{try{
+      const _v=new THREE.Vector3();const _P=(b)=>{if(!b)return null;_v.setFromMatrixPosition(b.matrixWorld);return [+_v.x.toFixed(3),+_v.y.toFixed(3),+_v.z.toFixed(3)];};
+      const _A=glbAvatars||[];
+      if(cmd&&cmd.prato!=null){const a=_A[cmd.prato];if(!a||!a.root)return {errore:'corpo'};
+        const L=_P(a._ballL||a._footL),R=_P(a._ballR||a._footR);if(!L||!R)return {errore:'ossa'};
+        const cx=(L[0]+R[0])/2,cz=(L[2]+R[2])/2,lato=cmd.lato||4,px=cmd.px||96,h=lato/2;
+        const cam=new THREE.OrthographicCamera(-h,h,h,-h,0.001,1);cam.position.set(cx,0.03,cz);cam.up.set(1,0,0);cam.lookAt(cx,0,cz);cam.updateMatrixWorld(true);
+        const rt=new THREE.WebGLRenderTarget(px,px);rt.texture.encoding=renderer.outputEncoding;const prev=renderer.getRenderTarget(),cs=sun.castShadow;
+        const tira=(on)=>{sun.castShadow=on;renderer.setRenderTarget(rt);renderer.render(scene,cam);const b=new Uint8Array(px*px*4);renderer.readRenderTargetPixels(rt,0,0,px,px,b);return b;};
+        /* i dischi d'ombra finti (telefono) e l'ombra del pallone non sono «ombra del sole»: restano in entrambe le pose, si elidono */
+        const on=tira(true),off=tira(false);sun.castShadow=cs;renderer.setRenderTarget(prev);rt.dispose();
+        const d=new Array(px*px);for(let i=0;i<px*px;i++){const a1=on[i*4]+on[i*4+1]+on[i*4+2],a0=off[i*4]+off[i*4+1]+off[i*4+2];d[i]=a0>0?+Math.max(0,1-a1/a0).toFixed(3):0;}
+        return {i:cmd.prato,cx:+cx.toFixed(3),cz:+cz.toFixed(3),lato,px,L,R,d,sole:[sun.position.x,sun.position.y,sun.position.z],fa:!!cs,mappa:sun.shadow.mapSize.x};}
+      if(cmd&&cmd.suola!=null){const a=_A[cmd.suola];if(!a||!a.root)return {errore:'corpo'};const u=_suola366(a.root);const L=_P(a._ballL),R=_P(a._ballR);return {suola:u.y==null?null:+u.y.toFixed(3),vertici:u.n,maglie:u.m,ball:L&&R?Math.min(L[1],R[1]):null};}
+      if(cmd&&cmd.clip){const a=_A.find(x=>x&&x.proc&&x.proc._isHero)||_A[0];const cc=((a&&a._mx342)||[]).concat(a&&a.mx&&a.mx._actions?a.mx._actions.map(x=>x.getClip()):[]);
+        const out={};for(const c of cc){if(!c||out[c.name]||(cmd.clip!=='*'&&c.name!==cmd.clip))continue;const N=24,T=[];for(let j=0;j<N;j++)T.push(c.duration*j/(N-1));const m=_alza366(a,c,T,true);if(!m)continue;
+          const tr=c.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));let y0=null,y1=null;if(tr){y0=1e9;y1=-1e9;for(let j=1;j<tr.values.length;j+=3){y0=Math.min(y0,tr.values[j]);y1=Math.max(y1,tr.values[j]);}}
+          out[c.name]={dur:+c.duration.toFixed(2),min:+(Math.min(...m.alza)/m.alt).toFixed(3),med:+([...m.alza].sort((p,q)=>p-q)[N>>1]/m.alt).toFixed(3),max:+(Math.max(...m.alza)/m.alt).toFixed(3),corpoMin:+(Math.min(...m.corpo)/m.alt).toFixed(3),corpoMed:+([...m.corpo].sort((p,q)=>p-q)[N>>1]/m.alt).toFixed(3),corpoMax:+(Math.max(...m.corpo)/m.alt).toFixed(3),bacino:tr?[+y0.toFixed(1),+y1.toFixed(1)]:null};}
+        return out;}
+      const corpi=[];_A.forEach((a,i)=>{if(!a||!a.root)return;let vis=true;for(let o=a.root;o;o=o.parent)if(!o.visible){vis=false;break;}
+        let gett=false;try{a.root.traverse(o=>{if(o.isMesh&&o.castShadow&&o.visible)gett=true;});}catch(_e){}
+        if(!a._hd366)a._hd366=_findBone904(a.root,/head$/i);
+        corpi.push({i,sq:a._team||null,gk:!!a._isGk,arb:!!a._isRef,eroe:!!(a.proc&&a.proc._isHero),vis,gett,r:[+a.root.position.x.toFixed(3),+a.root.position.y.toFixed(3),+a.root.position.z.toFixed(3)],
+          py:a.proc?+a.proc.position.y.toFixed(3):null,vy:a.visualRoot?+a.visualRoot.position.y.toFixed(3):null,sc:a.root.scale?+a.root.scale.y.toFixed(3):null,
+          fl:_P(a._footL),fr:_P(a._footR),bl:_P(a._ballL),br:_P(a._ballR),hd:_P(a._hd366),g:a._gName||'',gw:a._gw!=null?+a._gw.toFixed(2):0,
+          run:a.run?+a.run.weight.toFixed(2):0,idle:a.idle?+a.idle.weight.toFixed(2):0,loco:a._locoName||'',lod:a._cgLod||'',disco:!!_blob366(a),su:(()=>{if(!vis)return null;const u=_suola366(a.root);return u.y==null?null:+u.y.toFixed(3);})(),
+          cl:(()=>{try{return ((a.mx&&a.mx._actions)||[]).filter(x=>x.isRunning()&&x.getEffectiveWeight()>0.05).map(x=>x.getClip().name+':'+x.getEffectiveWeight().toFixed(2)+'@'+x.time.toFixed(2)).join(' ');}catch(_e){return '';}})()});});
+      return {fase:(propsRef.current&&propsRef.current.matchPhase)||null,sk:(propsRef.current&&propsRef.current.hlSitKey)||null,corpi,
+        palla:(typeof ball!=='undefined'&&ball)?[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)]:null,
+        sole:{fa:!!sun.castShadow,mappa:sun.shadow.mapSize.x,int:+sun.intensity.toFixed(2)},desktop:!!isDesktop};
+    }catch(e){return {errore:String(e&&e.message)};}};
+    const _blob366=(a)=>{try{return a&&a._blob366&&a._blob366.visible?a._blob366:null;}catch(_e){return null;}};
+    /* [giro 366] LA SUOLA: il vertice piu' basso della pelle dei PIEDI (vertici pesati sulle ossa foot_ e ball_) delle sole maglie
+       davvero disegnate (visibili con tutti gli antenati), con le ossa come stanno ora. E' la quota a cui il corpo tocca il prato. */
+    const _w366=new THREE.Vector3();
+    const _suola366=(radice,tutto)=>{let lo=null,n=0,m=0;radice.traverse(o=>{if(!o.isSkinnedMesh||!o.geometry||!o.skeleton)return;for(let q=o;q&&q!==radice.parent;q=q.parent)if(!q.visible)return;
+      const g=o.geometry,si=g.attributes.skinIndex,sw=g.attributes.skinWeight;if(!si||!sw)return;
+      if(!g._piedi366){const ok=o.skeleton.bones.map(b=>/^(?:foot|ball)[._][lr]/i.test(b.name||''));const L=[];for(let i=0;i<si.count;i++){const w=(ok[si.getX(i)]?sw.getX(i):0)+(ok[si.getY(i)]?sw.getY(i):0)+(ok[si.getZ(i)]?sw.getZ(i):0)+(ok[si.getW(i)]?sw.getW(i):0);if(w>0.5)L.push(i);}
+        const st=Math.max(1,Math.floor(L.length/400));g._piedi366=L.filter((_,j)=>j%st===0);}
+      if(tutto&&!g._tutti366){const st=Math.max(1,Math.floor(si.count/1500));g._tutti366=[];for(let i=0;i<si.count;i+=st)g._tutti366.push(i);}
+      m++;for(const i of (tutto?g._tutti366:g._piedi366)){o.boneTransform(i,_w366);_w366.applyMatrix4(o.matrixWorld);if(lo==null||_w366.y<lo)lo=_w366.y;n++;}});return {y:lo,n,m};};
+    /* [giro 366] quanto una clip ALZA I PIEDI a radice ferma: su un clone fuori scena si suona la clip e a ogni istante si legge la quota
+       della suola (_suola366) rispetto a quella della posa ferma (`idle` a t 0). Restituisce i campioni nello spazio
+       del clone, il fattore che porta la quota del bacino (traccia pelvis.position, indice 1) in quota di mondo del clone, e l'altezza. */
+    const _alza366=(av,clip,tempi,anche)=>{const src=av.visualRoot||av.root;const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+      const bl=_findBone904(c,/^(?:ball\.l_|ball_l)$/i),br=_findBone904(c,/^(?:ball\.r_|ball_r)$/i),pv=_findBone904(c,/^pelvis$/i),hd=_findBone904(c,/head$/i);if(!bl||!br||!pv||!pv.parent)return null;
+      const v=new THREE.Vector3();const basso=()=>{c.updateMatrixWorld(true);const u=_suola366(c);if(u.y!=null)return u.y;v.setFromMatrixPosition(bl.matrixWorld);const l=v.y;v.setFromMatrixPosition(br.matrixWorld);return Math.min(l,v.y);};
+      const mx=new THREE.AnimationMixer(c);let f0=null,alt=1;
+      if(av.idle&&av.idle.getClip){const ai=mx.clipAction(av.idle.getClip());ai.play();mx.setTime(0);f0=basso();if(hd){v.setFromMatrixPosition(hd.matrixWorld);alt=v.y-f0;}ai.stop();mx.uncacheAction(av.idle.getClip());}
+      if(f0==null)return null;
+      const k=pv.parent.matrixWorld.elements[5];const act=mx.clipAction(clip);act.play();const out=[],corpo=[];
+      for(const t of tempi){mx.setTime(t);out.push(basso()-f0);if(anche){const u=_suola366(c,true);corpo.push(u.y==null?0:u.y-f0);}}
+      act.stop();mx.uncacheRoot(c);return {alza:out,corpo,k,alt,f0};};
+    /* [giro 366, PO-649 «i giocatori volano sul campo» (foto docs/collaudo-po/208-giocatori-volano.png) — rosso __CPM_NO_G366, guardiano
+       volano-366] LA POSA DI GUARDIA TIENE I PIEDI SUL PRATO. MISURATO (misura-366, partite vere, corpi accesi, ossa dei corpi disegnati):
+       il 15-17% dei corpi x fotogrammi delle scene 3D ha l'avampiede piu' basso oltre 0,15 u dal prato, e piu' di meta' di quelli sono
+       difensori FERMI con la radice a terra che suonano `mx-defend-ready` (l'attesa in difesa del 7.999.32): la clip piega le gambe ma
+       il suo bacino non scende, quindi a scendere non e' il corpo: sono i piedi a salire (0,16-0,30 u, per tutta la scena). Con le ombre
+       vere del PC l'ombra resta a terra e il corpo sta sospeso sopra: e' la foto. Stessa classe di riparaCadute7 e del disappunto del
+       giro 73. Qui la clip si ripara UNA volta al caricamento: a ogni chiave il bacino scende di quanto l'avampiede piu' basso sta sopra
+       la quota della posa ferma (solo verso il basso). Nessun costo per fotogramma. Testimone __CPM_T366 (prima/dopo, in entrambi i bracci). */
+    const _aTerra366=(clip,av)=>{try{if(!clip||clip._t366)return;
+      const tr=clip.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));if(!tr||!(clip.duration>0))return;
+      /* la traccia del bacino di questa clip ha due chiavi uguali, mentre i piedi si muovono per tutta la durata: si ricampiona a 30 al secondo */
+      const N=Math.max(2,Math.min(240,Math.round(clip.duration*30)+1)),T=[],n=N;for(let i=0;i<N;i++)T.push(clip.duration*i/(N-1));
+      const t0=tr.times,v0=tr.values,n0=t0.length,V=new Float32Array(3*N);
+      for(let i=0;i<N;i++){let k=1;while(k<n0-1&&t0[k]<T[i])k++;const u=n0<2?0:Math.max(0,Math.min(1,(T[i]-t0[k-1])/Math.max(1e-5,t0[k]-t0[k-1])));for(let c=0;c<3;c++)V[3*i+c]=n0<2?v0[c]:v0[3*(k-1)+c]+(v0[3*k+c]-v0[3*(k-1)+c])*u;}
+      const m0=_alza366(av,clip,T);if(!m0||Math.abs(m0.k)<1e-6)return;clip._t366=1;
+      const W=(typeof window!=='undefined')?(window.__CPM_T366=window.__CPM_T366||{}):{};const mx0=Math.max(...m0.alza),md0=m0.alza.reduce((a,b)=>a+b,0)/n;
+      const rec={chiavi:n,alt:+m0.alt.toFixed(3),primaMax:+(mx0/m0.alt).toFixed(4),primaMedia:+(md0/m0.alt).toFixed(4),riparata:false};W[clip.name]=rec;
+      if(typeof window!=='undefined'&&window.__CPM_NO_G366)return;
+      for(let i=0;i<n;i++){const a=m0.alza[i];if(a>0.004*m0.alt)V[3*i+1]-=a/m0.k;}
+      tr.times=Float32Array.from(T);tr.values=V;
+      const m1=_alza366(av,clip,T);if(m1){rec.dopoMax=+(Math.max(...m1.alza)/m1.alt).toFixed(4);rec.dopoMedia=+(m1.alza.reduce((a,b)=>a+b,0)/n/m1.alt).toFixed(4);}rec.riparata=true;
+    }catch(_e366){try{(window.__CPM_T366=window.__CPM_T366||{}).errore=String(_e366&&_e366.message);}catch(_e){}}};
     /* [7.999.7 IL PASSO SEGUE LA VELOCITA' — scelta PO: «correggi, giudico a occhio». Rosso __CPM_NO_PASSO7]
        La cadenza della corsa era una formula fissa (0,62 + velocita'*0,185, scelta a mano): se il ciclo delle gambe non corrisponde
        allo spostamento, il piede d'appoggio scivola per forza. Qui si misura UNA volta per clip, su un clone fuori scena, quanto scorre
@@ -1706,7 +1787,7 @@ function ThreeMatchView(props){
         catch:['mx-goalkeeper-catch-3','mx-goalkeeper-catch-4'],
         gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
       const _PESO23={};
-      const _mkGestures=(av,map)=>{if(!av)return;const out={};av._mx342=_mxAnims23;/* [giro 342] le clip del pacchetto, per il profilo di collaudo __CPM_CLIP342 e per la variante di testa */for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */if(!av._idleDif&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32)){const _cd=_mxAnims23.find(x=>x&&x.name==='mx-defend-ready');if(_cd){const a=av.mx.clipAction(_cd);a.play();a.setEffectiveWeight(0);a.time=(_cd.duration||1)*((av.lx||0)*0.37%1+1)%1;av._idleDif=a;}}/* [7.999.32] seconda posa ferma: l'attesa in difesa (Goalkeeper Idle del PO) */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+      const _mkGestures=(av,map)=>{if(!av)return;const out={};av._mx342=_mxAnims23;/* [giro 342] le clip del pacchetto, per il profilo di collaudo __CPM_CLIP342 e per la variante di testa */for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */if(!av._idleDif&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32)){const _cd=_mxAnims23.find(x=>x&&x.name==='mx-defend-ready');if(_cd){_aTerra366(_cd,av);const a=av.mx.clipAction(_cd);a.play();a.setEffectiveWeight(0);a.time=(_cd.duration||1)*((av.lx||0)*0.37%1+1)%1;av._idleDif=a;}}/* [7.999.32] seconda posa ferma: l'attesa in difesa (Goalkeeper Idle del PO) */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){for(const [k,n] of [['trip','mx-soccer-trip'],['fallen','mx-fallen-idle'],['standUp','mx-standing-up']]){const c=_mxAnims23.find(x=>x&&x.name===n);if(!c||out[k])continue;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}}/* [7.999.8] i tre gesti della caduta */
         av._gHead145=null;av._gThigh145=null;{const _h5=_mxAnims23.find(x=>x&&x.name==='mx-header-stand'),_t5=_mxAnims23.find(x=>x&&x.name==='mx-receive-thigh');if(_h5){const a=av.mx.clipAction(_h5);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gHead145=a;}if(_t5){const a=av.mx.clipAction(_t5);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gThigh145=a;}}av._gDisapp=null;{const _ds=_mxAnims23.find(x=>x&&x.name==='mx-disappunto');if(_ds&&!(typeof window!=='undefined'&&window.__CPM_NO_DISAPP41)){const a=av.mx.clipAction(_ds);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gDisapp=a;}}/* [7.999.41] disappunto (clip del PO «Golf Bad Shot», tratto 0,5-2,6 s: mani alla testa, si piega) */av._gRuleta=null;{const _ru=_mxAnims23.find(x=>x&&x.name==='mx-ruleta');if(_ru&&!(typeof window!=='undefined'&&window.__CPM_NO_RULETA39)){const a=av.mx.clipAction(_ru);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gRuleta=a;}}/* [7.999.39] la ruleta (clip del PO «Soccer Spin», 1,27 s, sul posto) */av._gScissor=null;{const _sc=_mxAnims23.find(x=>x&&x.name==='mx-scissor-kick');if(_sc&&!(typeof window!=='undefined'&&window.__CPM_NO_ROVESCIATA23)){const a=av.mx.clipAction(_sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gScissor=a;}}
         av._gStrike34=null;if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRO34)){const _R34=_mxAnims23.find(x=>x&&x.name==='mx-strike-foward-jog'),_L34=_mxAnims23.find(x=>x&&x.name==='mx-strike-foward-jog~m');if(_R34&&_R34._root34){const _mk34=c=>{if(!c)return null;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);return a;};const _r=_mk34(_R34);av._gStrike34={R:_r,L:_mk34(_L34)||_r};}}/* [7.999.34] tiro caricato dell'eroe */
