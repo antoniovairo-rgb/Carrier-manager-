@@ -129,3 +129,52 @@ state rimesse com'erano (sottoprodotto, non parte della modifica).
 
 Il flusso della settimana e del rinnovo del contratto (giro 354), «la Tua storia» (giro 355), src/03, src/14, src/12 e
 src/16, GAME_VERSION. Il registro di governo (BACKLOG / ROADMAP) si aggiorna al rilascio, sul ramo di lavoro.
+
+## Giro 361: decisione del PO
+
+**Decisione (25/11 09:10):** D1 «ingaggio fisso» confermato; D2 ingaggio del livello 3 = **€2.000.000** (non 2,5). Il
+livello 2 resta €300.000 e il costo settimanale resta quello applicato sopra (minimo ×4/×12, quota ×2,2/×4).
+
+**Modifica:** un punto solo, `STAFF_ING356` in `src/08-panchina-derby-meteo-cori.jsx` (`[0,0,300000,2000000]`), più il
+commento accanto; `CARRIER-MANAGER-AV.html` ricomposto con `tools/build-src.mjs`. L'Ufficio scrive l'importo dalla
+costante, quindi nessun testo da cambiare in `src/18`. GAME_VERSION non toccata.
+
+### Misura (stessa sonda, stesso criterio, stesse traiettorie)
+
+`CPM_STAGIONI=14 CPM_OVR=58|63|68 node misura-356.mjs` sul ramo con l'importo nuovo: 14 stagioni per profilo, 4 rinnovi,
+0 pageerror. L'ingaggio letto dal gioco a ogni settimana è 2.300.000 per salire dal livello 0 al 3 (300k + 2 mln), cioè
+l'importo nuovo. Il costo settimanale non dipende dall'ingaggio, quindi la colonna «2,5 mln» è ricalcolata **sulle stesse
+carriere** cambiando solo l'ingaggio nel criterio: il confronto prima/dopo non ha la variabilità fra un giro e l'altro.
+
+| Profilo | Un livello 3 (trainer) · 2,5 mln → **2 mln** | Tutti e tre al livello 3 · 2,5 mln → **2 mln** | Tutti e tre al livello 2 (invariato) |
+|---|---|---|---|
+| debole (58) | 27 anni (st. 10, sett. 2) → **26 anni (st. 9, sett. 22)** | 29 anni (st. 12, sett. 32) → **29 anni (st. 12, sett. 10)** | 24 anni |
+| **medio (63)** | 25 anni (st. 8, sett. 6) → **24 anni (st. 7, sett. 30)** | 27 anni (st. 10, sett. 29) → **27 anni (st. 10, sett. 3)** | 22 anni |
+| buono (68) | 23 anni (st. 6, sett. 11) → **22 anni (st. 5, sett. 38)** | 25 anni (st. 8, sett. 23) → **25 anni (st. 8, sett. 10)** | 22 anni |
+
+Un livello 2 singolo (invariato): debole 22 anni, medio 22, buono 20. A fine carriera (32 anni) il conto è 20,7 / 33,5 /
+59,9 milioni.
+
+**Lettura:** con 2 milioni il singolo livello 3 arriva circa una stagione prima (il medio a 24 anni invece di 25) e i tre
+al livello 3 circa mezza stagione prima (il medio a 27 anni, poco dopo la metà della carriera 19-33). Il traguardo resta
+a metà carriera; la stima di D2 («tutto a circa 26-27 anni») è confermata sul valore alto.
+
+⚠️ Questa carriera media non coincide con quella del giro 356 (il passo della carriera ha parti casuali: qui il singolo
+livello 2 cade a 22 anni contro i 21 del 356). Per questo il confronto è fatto sulle stesse traiettorie e non contro la
+tabella «dopo» del 356.
+
+### Guardiano
+
+`staff-356.mjs` legge l'importo in un solo controllo, T3 (l'Ufficio vero con 3 milioni sul conto, L1→L2→L3): il conto
+atteso dopo il livello 3 passa da 200.000 a **700.000** (3 mln − 300k − 2 mln). Non è una soglia: è il valore esatto che
+discende dalla decisione. Le soglie restano tutte uguali: T1 (stati misurati del medio a 19 / 21 / 22 anni non alla
+portata, a 26 sì: con 2 mln i tre livelli 3 costano 6,9 milioni d'ingaggio, il conto a 22 anni è 1,42 mln e a 26 è 9,31
+mln), T2 ≥ 45% (misurato 48%), T4, T5. Verde 5/5, pageerror 0; rosso `__CPM_NO_G356`: T1, T2, T3 cadono.
+
+### Catena del giro 361
+
+`node ci-runner.mjs giro staff-356 career-critical save-compat` (+ 17 sentinelle, 18 passi) su 7.999.209 + questo ramo:
+**18/18 verdi, nessuna ripetizione** — staff-356 (26 s), save-compat, mappa-unica, test:logic, replay, migrazione-194,
+design-system, tema-unico, griglia-mobile, render-3d-023, tunnel-285, home-298, web-237, career-critical (330 s),
+battito-264, partita-vera (715 s), gk-dive-sync, schermate-97. Le foto di `docs/collaudo-grafico` riscritte dal giro sono
+state rimesse com'erano.

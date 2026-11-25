@@ -5,7 +5,7 @@
  *   S1 prima stagione da pro (stip. 3.808, conto 130k) · S4 21 anni (3.808, 262k) · S5 22 anni (33.462, 1,42 mln) · S9 26 anni (84.615, 9,31 mln)
  *   T1 traguardo  tutti e tre al livello 3 NON alla portata in S1/S4/S5, alla portata in S9 (meta' carriera)
  *   T2 sentito    a meta' carriera tutti e tre al livello 3 costano almeno il 45% dello stipendio a settimana
- *   T3 Ufficio    conto 130k: «+» dal livello 1 al 2 disabilitato col motivo; conto 3 mln: L1→L2→L3 scala 300k + 2,5 mln, registra staffIng356
+ *   T3 Ufficio    conto 130k: «+» dal livello 1 al 2 disabilitato col motivo; conto 3 mln: L1→L2→L3 scala 300k + 2 mln (decisione PO 25/11, giro 361), registra staffIng356
  *   T4 economia   la settimana addebita il costo nuovo (weeklyEconomyFields: conto = conto + stipendio − procuratore − staff)
  *   T5 salvataggi save vecchio con trainer/preparatore/mental al livello 3 e nessun registro: lo tiene, nessun ingaggio, prezzo di prima
  * Uso: node staff-356.mjs → verde (uscita 0 se 5/5). CPM_PROVA_ROSSO=1 → in piu' accende __CPM_NO_G356 e pretende T1+T2+T3 rossi. */
@@ -65,7 +65,7 @@ async function giro(rosso) {
     if (b1 && !b1.dis) { await page.locator('[data-cpm="staff24-perkTrainer"] button[aria-label^="Alza"]').click(); await sleep(500); }
     const s3 = await page.evaluate(() => { const P = window.__CPM_CAREER.snapshot(); return { lv: P.perkTrainerLv, bank: P.bankBalance, reg: P.staffIng356 || null }; });
     o.T3 = { vis, primo: a, dopo3mln: b0, s2, s3, ok: vis && !!a && a.dis && /servono/.test(a.ing || '') && b0 && !b0.dis && s2.lv === 2 && s2.bank === 2700000 && s2.reg && s2.reg.perkTrainer === 2
-      && s3.lv === 3 && s3.bank === 200000 && s3.reg && s3.reg.perkTrainer === 3 };
+      && s3.lv === 3 && s3.bank === 700000 && s3.reg && s3.reg.perkTrainer === 3 };
     o.err2 = err.length; await ctx.close(); }
   // T5: salvataggio vecchio (nessun registro) con tutto al livello 3
   { const old = { ...BASE, perkTrainerLv: 3, perkNutrition: true, perkNutritionLv: 3, perkMental: true, perkMentalLv: 3, prep281: 1 };
