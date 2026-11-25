@@ -21,7 +21,7 @@
     "path": "../chiavi-fuori-dal-repo/korward-upload.jks",
     "alias": "korward-upload"
   },
-  "appVersionName": "7.999.197",
+  "appVersionName": "1.0",
   "appVersionCode": 2001,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
@@ -38,5 +38,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "7.999.197"
+  "appVersion": "1.0"
 }

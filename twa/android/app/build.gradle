@@ -33,7 +33,7 @@ android {
         // [giro 260 · decisione PO 17/11 A «TWA, come PLINTO»] 2000 → 2001 per la 7.999.197 (cresce di uno: il valore delle build locali;
         // il workflow lo riscrive comunque con 2000 + numero della corsa).
         versionCode 2001
-        versionName '7.999.197'
+        versionName '1.0'
     }
 
     buildTypes {
