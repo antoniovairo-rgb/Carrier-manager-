@@ -3734,6 +3734,12 @@ const getThisWeekMatchday=()=>{
           const _anniRv355=Math.max(1,p.rival.seasons||1),_anniPro355=(typeof p.proSeason==="number")?Math.max(1,sn-p.proSeason+1):_anniRv355;
           const _anni355=_no355?99:Math.min(_anniRv355,_anniPro355);
           const _visti355=_no355||_anni355>=2||lh.some(m=>m&&m.opponent===_rvC.n&&(m.week||0)<wk);
+          /* [giro 362 · decisione PO 25/11 09:10 sul dubbio 3 del 355: «Sempre il numero»] la rivalita' non dice mai «da anni»,
+             «eterni», «di sempre»: dice le stagioni vere (_anni355, dalla terza: «da N stagioni»; seconda: «dalla scorsa
+             stagione»; prima: nessuna frase sugli anni). Anche «vi inseguite da N stagioni» usa lo stesso numero.
+             Rosso: window.__CPM_NO_G362 = testi del 355 (formule vaghe dalla terza stagione). */
+          const _vago362=_no355||(()=>{try{return typeof window!=="undefined"&&!!window.__CPM_NO_G362;}catch(_e){return false;}})();
+          const _st362=`${_anni355} stagion${_anni355===1?"e":"i"}`;
           const _at=mdR.isHome?"davanti alla nostra gente":"nel loro stadio bollente";
           const _open=[`Settimana di ${_rvC.n}, ${_at}: dall'altra parte c'è ${p.rival.name}.`,
             `${_rvC.n} all'orizzonte, e con loro ${p.rival.name}: la gara che senti diversa dal risveglio.`,
@@ -3776,18 +3782,19 @@ const getThisWeekMatchday=()=>{
           const _rel=p.rival.relationship||"rivale";
           if(_rel==="amico")_ang.push(`Fuori dal campo ormai vi sentite: siete cresciuti nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`);
           else if(_rel==="rispettato")_ang.push(`Col tempo tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`);
-          if(p.rival.age&&Math.abs((p.rival.age||0)-(p.age||0))<=1&&(p.rival.seasons||0)>=3)
-            _ang.push(`Siete della stessa annata e vi inseguite da ${p.rival.seasons} stagioni: ogni volta che uno alza l'asticella, l'altro la rialza.`);
+          if(p.rival.age&&Math.abs((p.rival.age||0)-(p.age||0))<=1&&(_vago362?(p.rival.seasons||0):_anni355)>=3)
+            _ang.push(`Siete della stessa annata e vi inseguite da ${_vago362?p.rival.seasons:_anni355} stagioni: ogni volta che uno alza l'asticella, l'altro la rialza.`);
           const _rt=(_myG+1)/(_rvG+1);
           _ang.push(_rt>=2?`In carriera l'hai staccato (${_myG} a ${_rvG}) — e proprio per questo lui vive per battere te.`
             :_rt<=0.5?`In carriera ti guarda dall'alto (${_rvG} a ${_myG}): l'unico modo di accorciare è cominciare da oggi.`
-            :Math.abs(_gp)<=Math.max(4,Math.round(_myG*0.12))?(_anni355>=3?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): un equilibrio che dura da anni.`
+            :Math.abs(_gp)<=Math.max(4,Math.round(_myG*0.12))?(_anni355>=3?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): un equilibrio che dura da ${_vago362?"anni":_st362}.`
               :_anni355===2?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): un equilibrio che dura dalla scorsa stagione.`
-              :`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): la vostra storia da professionisti è appena cominciata, e già non c'è un padrone.`)
+              :_vago362?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): la vostra storia da professionisti è appena cominciata, e già non c'è un padrone.`
+              :`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): fra voi due non c'è un padrone.`)
             :(_gp>0?(_visti355?`Sei avanti in carriera (${_myG} a ${_rvG}), ma con lui il conto riparte sempre da zero.`:`Sei avanti in carriera (${_myG} a ${_rvG}), ma al primo incrocio diretto i numeri valgono zero.`):`Lui è avanti (${_rvG} a ${_myG}) e non te lo lascia dimenticare.`));
           const _mid=_ang[_rvSeed(11)%_ang.length];
           const _close=[`I giornali non parlano d'altro.`,`La città si spacca in due: chi c'è, non se la perde.`,`Novanta minuti per un anno di sfottò.`,`Lo sai come finiscono queste gare: conta solo chi segna per ultimo.`,`Il resto della classifica, oggi, non esiste.`,`Domenica sera uno dei due dovrà stare zitto per sei mesi.`,`Non è una gara qualunque, e lo sapete entrambi.`];
-          return{key:K("rivw1_w"+wk),e:"🆚",title:_pk([_anni355>=3?"Gli eterni rivali":_visti355?"Rivali a viso aperto":"Il primo incrocio",_visti355?"Di nuovo faccia a faccia":"Faccia a faccia",_anni355>=3?"La sfida di sempre":"La sfida nella sfida","Il duello che aspettavi","Quello che conta è oggi",_visti355?"Ancora voi due":"Voi due, per la prima volta"],9),body:`${_pk(_open,1)} ${_mid} ${_pk(_close,2)}`,fx:{morale:1}};
+          return{key:K("rivw1_w"+wk),e:"🆚",title:_pk([_anni355>=3?(_vago362?"Gli eterni rivali":`Rivali da ${_st362}`):_visti355?"Rivali a viso aperto":"Il primo incrocio",_visti355?"Di nuovo faccia a faccia":"Faccia a faccia",_anni355>=3?(_vago362?"La sfida di sempre":`${_st362} di sfide`):"La sfida nella sfida","Il duello che aspettavi","Quello che conta è oggi",_visti355?"Ancora voi due":"Voi due, per la prima volta"],9),body:`${_pk(_open,1)} ${_mid} ${_pk(_close,2)}`,fx:{morale:1}};
         }
         const plR=lh.find(m=>m.week===wk&&m.opponent===_rvC.n);
         if(plR&&!seen[K("rivw2_w"+wk)])return (plR.goals||0)>0
