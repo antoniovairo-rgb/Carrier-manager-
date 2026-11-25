@@ -20931,7 +20931,18 @@ function ThreeMatchView(props){
                    terra, -0,22/-0,30), piu' la spazzata della mano nella direzione del tuffo. La varieta' e'
                    DETERMINISTICA (frazione dei decimali di bersaglio+durata): stessa scena, stessa respinta —
                    niente Math.random che sfugge al replay. __CPM_NO514 = rosso (dado vecchio, VX=0). */
-                if(_isShotHL&&!(typeof window!=='undefined'&&window.__CPM_NO514)){
+                /* [giro 367 PO-651, rosso __CPM_NO_G367] IL TIRO FUORI NON E' UNA RESPINTA. Il ramo qui sotto (7.514) da' al pallone la riflessione del
+                   volo piu' la spazzata della mano del portiere: giusto sulla parata, ma veniva applicato anche all'esito «fuori», dove nessuno tocca
+                   il pallone. MISURATO: dopo l'uscita il pallone rimbalzava a quota 1-2 m e scivolava lungo la linea di fondo fino a 11,68 m dal palo
+                   (uscita a 5,2 m). Ora, se il bersaglio dell'arco e' gia' oltre il palo (tiro e testa: lo decide il blocco del giro 223), nessuna
+                   spinta: il pallone finisce la sua linea sul punto deciso (`_z367`, letto dal post-arco) con un rimbalzo basso. Finire sul punto
+                   serve anche a pochi fotogrammi al secondo, dove l'arco si chiude un passo prima del bersaglio (misurato: 0,8 u di lato a 12 fps).
+                   Punizione e rigore (bersaglio dentro i pali, uscita a meno di 1,05 m dal palo: misurato) restano com'erano. */
+                sr.current._z367=null;/* il punto deciso vale per questa sola conclusione */
+                if(_isShotHL&&hlOutcomeVariant==="wide"&&Math.abs(ballArcTgtZ)>=4.1&&!(typeof window!=='undefined'&&window.__CPM_NO_G367)){
+                  hlPostVX=0;hlPostVZ=0;hlPostVY=Math.min(2.2,1.2+(ballArcH||1.5)*0.5);sr.current._z367={k:P.hlSitKey,z:ballArcTgtZ};
+                }
+                else if(_isShotHL&&!(typeof window!=='undefined'&&window.__CPM_NO514)){
                   const _dur514=Math.max(ballArcDur||0.5,0.2);
                   const _vxIn=(ballArcTgtX-(hero?hero.position.x:ballArcTgtX-20))/_dur514;
                   const _vzIn=(ballArcTgtZ-(hero?hero.position.z:0))/_dur514;
@@ -21429,6 +21440,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               2,5s): geometria esatta del caso gi45. Ora, oltre la linea e dentro lo specchio, la z scivola
               oltre il palo dal verso gia' preso dalla palla — la stessa espulsione del guardiano 7.530,
               anticipata nel canale che la rendeva cieca. Rosso __CPM_NO546. */
+           if(_wide83&&_sf83&&!P.hlDef&&sr.current._z367&&sr.current._z367.k===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_G367))ball.position.z+=(sr.current._z367.z-ball.position.z)*Math.min(aDt*6,1);/* [giro 367 PO-651] il tiro fuori finisce la sua linea sul punto deciso all'armo dell'arco */
            if(_wide83&&!P.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO546)&&ball.position.x>GOAL_LINE_X-1.5&&Math.abs(ball.position.z)<3.66){
              const _zw546=((Math.abs(ball.position.z)>0.25?ball.position.z:(ballArcTgtZ||1))>=0)?4.5:-4.5;
              ball.position.z+=(_zw546-ball.position.z)*Math.min(aDt*5,1);
@@ -22355,6 +22367,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           /* sul bordo della portata (entro 0,25 u da una delle tre soglie) il verdetto dipenderebbe dallo scarto della stima: il fuori sceglie un bersaglio che non ci cada */
           const _ambiguo223=(sx,sz,tx,tz,curl,gx,gz)=>{const a=_avv223(sx,sz,tx,tz,curl,gx,gz),B=0.25,lat=a.lat<=4.5+B,d=a.m<=5.5+B,y=a.y<=2.6+B;
             return lat&&d&&y&&(Math.abs(a.lat-4.5)<B||Math.abs(a.m-5.5)<B||Math.abs(a.y-2.6)<B);};
+          /* [giro 367, SOLO COLLAUDO ?cpmtest=1] provocazione del guardiano tiri-367: il bersaglio di lato della variante viene messo dove la sonda chiede
+             (es. ±11, cioe' dentro cio' che giro e secondo palo producono da soli: 6-13). Il gioco lo sorteggia: per giudicare i due bracci serve lo stesso tiro. */
+          if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_PZ367!=null&&ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="wide")ballArcTgtZ=+window.__CPM_PZ367;
           if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="header")&&!_amico43&&awayGkMesh&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="post")&&!(typeof window!=='undefined'&&window.__CPM_NO_G223)){
             const _gx223=awayGkMesh.position.x,_gz223=awayGkMesh.position.z,_sx223=ball.position.x,_sz223=ball.position.z,_px223=ballArcTgtX,_pz223=ballArcTgtZ;
             const _post223=P.hlOutcomeKind==="post",_bar223=_post223&&((P.hlWood!=null)?(P.hlWood==="bar"):(ballArcTgtY!=null&&ballArcTgtY>=1.55));
@@ -22372,7 +22387,39 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               else if(_post223){_z223=(_pz223>=0?1:-1)*3.66;if(!_ok223(_z223)&&(_ok223(-_z223)||_clr223(-_z223)>_clr223(_z223)))_z223=-_z223;}
               else{let _s=_pz223>=0?1:-1;if(Math.abs(_pz223)<0.3)_s=_gz223>=0?-1:1;
                 const _m0=Math.max(4.36,Math.abs(_pz223)),_cerca=(f,s,m)=>{for(let mm=m;mm<=Math.max(12,m);mm+=0.25)if(f(s*mm))return s*mm;return null;};
-                let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;}
+                let _zz=_cerca(_fuori223,_s,_m0);if(_zz==null)_zz=_cerca(_fuori223,-_s,4.36);if(_zz==null)_zz=_cerca(_ok223,_s,_m0);if(_zz==null)_zz=_cerca(_ok223,-_s,4.36);_z223=_zz!=null?_zz:_s*_m0;
+                /* [giro 367 PO-651 «quando l'eroe sbaglia una conclusione a volte la palla esce davvero di tanto, ridimensiona le distanze!». Rosso __CPM_NO_G367]
+                   MISURATO (misura-367, 69 tiri fuori su 23 scene, corpi accesi, pallone e porta dalle mesh): scarto dal palo all'uscita mediana 0,99 m,
+                   massimo 7,47 m. Due cause in questa riga: la ricerca del punto libero dal portiere partiva dal bersaglio della variante cosi' com'era
+                   (fino a 13 di lato per giro e secondo palo) e, se il lato scelto era coperto, si allargava SULLO STESSO LATO fino a 12 prima di provare
+                   l'altro. Ora il punto di partenza ha un tetto che cresce con la distanza del tiro (errore d'angolo: 1,8 m dal palo da 8 m, 3 m da
+                   20 m, mai oltre 4 m) e fra i due lati vince il punto libero PIU' VICINO al palo; il lato del tiro resta se sta sotto il tetto.
+                   Le regole del giro 223 (mai attraverso il portiere, mai davanti allo specchio) non cambiano: sono le stesse funzioni a dire «libero».
+                   Se nessuno dei due lati ha un punto libero sotto il tetto resta il piu' vicino, e il testimone lo dichiara (oltre:1). */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G367)){
+                  const _d367=Math.hypot(_tx223-_sx223,_sz223),_tetto367=3.66+clamp(1.0+0.10*_d367,1.5,4.0),_m367=Math.min(_m0,_tetto367);
+                  /* [giro 367] LA TERZA CAUSA, la piu' frequente nelle PARTITE VERE (partite-367: 4 tiri fuori su 7 senza un punto libero sotto il tetto,
+                     3,7-6,7 m dal palo; uno contro uno da 9 m col portiere 3,6 m fuori dai pali → bersaglio a z 10,4). `_ok223` chiede che il pallone
+                     passi ad almeno 1,3 u dal punto dove arriva il tuffo che sfiora, ma quel punto sta PER COSTRUZIONE a 1,3 u di lato dal pallone:
+                     la distanza in pianta dalla traiettoria vale 1,3 × coseno dell'angolo del tiro, cioe' sempre meno di 1,3 su un tiro obliquo. La
+                     condizione passava solo quando il tuffo era tagliato dai suoi tetti (4,5 u o l'80% dello scarto), cioe' col pallone a ~6 u dal
+                     portiere sul suo piano. Sul banco il portiere sta sulla linea e non si vedeva; in partita sta 3-4 u avanti e il bersaglio si
+                     allargava di conseguenza. Qui la stessa condizione si confronta con 1,3 × quel coseno (meno 2 cm di stima): restano identiche le
+                     altre due del giro 223 — almeno 2,6 u in pianta dal corpo del portiere, uno scarto di lato sopra 1,3 u — e «fuori vero»
+                     (mai davanti allo specchio, mai sul filo della portata). */
+                  const _ok367=(z)=>{if(_minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223,3.2)<_CL223)return false;const zc=_zAt223(z);if(zc==null)return true;
+                    const a=Math.abs(zc-_gz223);if(a<=1.3)return false;const ge=_gz223+Math.sign(zc-_gz223)*Math.min(4.5,a*0.8,a-1.3);
+                    const c=(_tx223-_sx223)/(Math.hypot(_tx223-_sx223,z-_sz223)||1);
+                    return _minD223(_sx223,_sz223,_tx223,z,_curl223,_gx223,ge,3.2)>=(_CL223-1.3)*c-0.02;};
+                  const _fuori367=(z)=>{const zl=_zAt223(z,GOAL_LINE_X-1.2);return _ok367(z)&&(zl==null||(Math.sign(zl)===Math.sign(z)&&Math.abs(zl)>=3.86))&&!_ambiguo223(_sx223,_sz223,_tx223,z,_curl223,_gx223,_gz223);};
+                  let _a367=_cerca(_fuori367,_s,_m367),_b367=_cerca(_fuori367,-_s,4.36);
+                  if(_a367==null&&_b367==null){_a367=_cerca(_ok367,_s,_m367);_b367=_cerca(_ok367,-_s,4.36);}
+                  let _n367=null;
+                  if(_a367!=null&&(Math.abs(_a367)<=_tetto367+0.001||_b367==null||Math.abs(_a367)<=Math.abs(_b367)))_n367=_a367;else if(_b367!=null)_n367=_b367;
+                  const _v367=_z223;if(_n367!=null)_z223=_n367;else _z223=_s*_m367;
+                  if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TIRI367=window.__CPM_TIRI367||[]);if(W.length<200)W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,v:P.hlVariant||null,d:+_d367.toFixed(1),tetto:+(_tetto367-3.66).toFixed(2),pz:+_pz223.toFixed(2),prima:+_v367.toFixed(2),z:+_z223.toFixed(2),oltre:Math.abs(_z223)>_tetto367+0.001?1:0});}catch(_e){}}
+                }
+                else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TIRI367=window.__CPM_TIRI367||[]);const _d367=Math.hypot(_tx223-_sx223,_sz223),_t367=clamp(1.0+0.10*_d367,1.5,4.0);if(W.length<200)W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,v:P.hlVariant||null,d:+_d367.toFixed(1),tetto:+_t367.toFixed(2),pz:+_pz223.toFixed(2),prima:+_z223.toFixed(2),z:+_z223.toFixed(2),oltre:Math.abs(_z223)>3.66+_t367+0.001?1:0});}catch(_e){}}}
               const _c0=Math.hypot(_px223-_sx223,_pz223-_sz223)||1,_c1=Math.hypot(_tx223-_sx223,_z223-_sz223);
               ballArcTgtX=_tx223;ballArcTgtZ=_z223;ballArcDur=Math.min(1.6,ballArcDur*Math.max(1,_c1/_c0));
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_G223ARC=window.__CPM_G223ARC||[]);if(W.length<100){const zc=_zAt223(_z223);W.push({sk:P.hlSitKey!=null?String(P.hlSitKey):null,sx:+_sx223.toFixed(2),sz:+_sz223.toFixed(2),sy:+ball.position.y.toFixed(2),o1:_post223?(_ok223(3.66)?1:0):null,o2:_post223?(_ok223(-3.66)?1:0):null,c1:_post223?+_clr223(3.66).toFixed(2):null,c2:_post223?+_clr223(-3.66).toFixed(2):null,/* [giro 241, solo prova] i due pali: libero dal portiere si/no e margine */k:P.hlOutcomeKind,v:P.hlVariant||null,px:+_px223.toFixed(2),pz:+_pz223.toFixed(2),tx:+_tx223.toFixed(2),tz:+_z223.toFixed(2),gx:+_gx223.toFixed(2),gz:+_gz223.toFixed(2),zc:zc==null?null:+zc.toFixed(2),dur:+ballArcDur.toFixed(2)});}}catch(_e){}}
@@ -24853,6 +24900,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_R.length<3000&&awayGkMesh)_R.push({ck:+sr.current._ck229.toFixed(3),ph:P.matchPhase||null,ok:P.hlOutcomeKind||null,at:ballArcActive?1:0,aT:+(+ballArcT).toFixed(3),aD:+(+ballArcDur).toFixed(2),
             bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gy:+awayGkMesh.position.y.toFixed(2),
             op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null,/* [giro 295, solo testimone] guide del portiere nel fotogramma (gn) coi loro bersagli, build-up acceso, bersaglio dell'arco, post-arco */gn:sr.current._w295?sr.current._w295.n:null,g1x:(sr.current._w295&&sr.current._w295.n>0)?+sr.current._w295.x1.toFixed(2):null,g1z:(sr.current._w295&&sr.current._w295.n>0)?+sr.current._w295.z1.toFixed(2):null,g2x:(sr.current._w295&&sr.current._w295.n>1)?+sr.current._w295.x2.toFixed(2):null,g2z:(sr.current._w295&&sr.current._w295.n>1)?+sr.current._w295.z2.toFixed(2):null,tl:tlOn?1:0,atx:+(+ballArcTgtX).toFixed(2),atz:+(+ballArcTgtZ).toFixed(2),pa:hlPostArcType||null,hk:P.hlSitKey,ht:P.hlType||null,/* [giro 265, solo testimone] bersaglio commesso, velocita' e stacco di scena: chi porta il portiere lontano dal suo punto */cx:awayGkMesh._ctx==null?null:+(+awayGkMesh._ctx).toFixed(2),cz:awayGkMesh._ctz==null?null:+(+awayGkMesh._ctz).toFixed(2),vx:+(+(awayGkMesh._vx||0)).toFixed(2),vz:+(+(awayGkMesh._vz||0)).toFixed(2),sn:sr.current._snap265|0,sk:P.hlSitKey,ex:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+(window.__CPM_GKT705.away.x-50).toFixed(2):null,ez:(window.__CPM_GKT705&&window.__CPM_GKT705.away)?+((window.__CPM_GKT705.away.y-50)*0.68).toFixed(2):null/* bersaglio del portiere in coordinate di mondo (da __CPM_GKT705, solo con __CPM_REC) */});sr.current._snap265=0;sr.current._w295={n:0};}catch(_e229){}}
+        /* [giro 367 PO-651, solo testimone] LA PORTA LETTA DALLE MESH, una volta: i due pali anteriori di buildStadium (cilindri di raggio 0,15 a x>40) danno
+           piano dei pali, mezza luce e altezza della traversa; gli oggetti di bordo campo etichettati `ost245` oltre la linea di fondo danno il primo
+           ostacolo dietro la porta. Serve alla sonda dei tiri sbagliati: pallone e porta dalla stessa scena. */
+        if(typeof window!=='undefined'&&window.__CPM_REC229&&(_CPM_TEST||_SIT_TEST)&&!window.__CPM_PORTA367){try{const _pp=[];let _fd=null;const _bb=new THREE.Box3();
+          scene.traverse(o=>{if(!o.isMesh||!o.geometry)return;const g=o.geometry,q=g.parameters||{};
+            if(g.type==='CylinderGeometry'&&Math.abs((q.radiusTop||0)-0.15)<0.001&&o.position.x>40)_pp.push({x:+o.position.x.toFixed(2),z:+o.position.z.toFixed(2),h:+(+q.height).toFixed(2)});
+            if(o.userData&&o.userData.ost245&&o.visible!==false){o.updateMatrixWorld(true);_bb.setFromObject(o);if(_bb.min.x>49&&_bb.min.z<8&&_bb.max.z>-8&&(_fd==null||_bb.min.x<_fd.x))_fd={x:+_bb.min.x.toFixed(2),y:+_bb.max.y.toFixed(2),k:String(o.userData.ost245)};}});
+          if(_pp.length>=2)window.__CPM_PORTA367={pali:_pp,fondo:_fd};}catch(_e367){}}
         sr.current._pk96=!!(oppActType&&/^gk_/.test(String(oppActType))&&oppMesh&&oppMesh===awayGkMesh&&ballArcActive&&ballArcT<0&&(P.hlType==='penalty'||P.hlType==='freekick')&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D4));/* [giro 96a D4] portiere fermo finche' il piazzato non e' calciato */
         if(oppActType&&oppMesh){
           /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
