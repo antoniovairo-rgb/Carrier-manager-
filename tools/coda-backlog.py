@@ -26,7 +26,7 @@ AREA3 = [629, 587, 611, 585, 376, 561, 599, 607, 613, 522, 557, 586, 463, 462, 3
 TESTA = re.compile(r'^(?:IN CODA · n° \d+|(?:DA FARE|IN CODA|DA DECIDERE|DA VERIFICARE|DA MISURARE)(?: — \d+)?)\s*(?:—\s*)?')
 
 
-TESTA_PO = [649]
+TESTA_PO = [650, 649]  # PO 25/11 16:00: fasce priorità alta, poi 649
 TESTI_F1 = [656, 657]
 
 
