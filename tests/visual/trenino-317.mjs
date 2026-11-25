@@ -122,6 +122,30 @@ ok(sent.length === 17, `sentinelle lette dalla mappa: ${sent.length} (attese 17)
     ok(t308 && +t308[1] === T.TETTI_328.grande && +t308[2] === T.TETTI_328.trenino, `tetti del confronto = tetti di ci-treno-308 (${t308 ? t308.slice(1).join('/') : '?'})`); }
 }
 
+/* ---------------------------------------------------------------- H. giro 360: gli script di sola prova non sono guardiani */
+{ const NO0 = process.env.CPM_NO_G360 === '1';
+  console.log(`\n== H. giro 360: uno script di sola prova non e' mai scelto dal treno${NO0 ? ' (CPM_NO_G360=1: comportamento di prima, atteso ROSSO)' : ''} ==`);
+  /* il caso vero: il vagone del giro 358 (db4da95) contro il package.json di prima (suo primo genitore) */
+  const pk = r => { try { return JSON.parse(execFileSync('git', ['show', r + ':tests/visual/package.json'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 26 })); } catch { return null; } };
+  const p0 = pk('db4da95^1'), p1 = pk('db4da95');
+  if (!p0 || !p1) ok(false, 'commit db4da95 non raggiungibile: caso del treno 45550618332 NON GIUDICATO (serve la storia di lavoro/201)');
+  else { const s = T.scegli({ toccati: ['tests/visual/package.json'], mappa, mappaBase: mappa, pkg: p1, pkgBase: p0 });
+    const l = s.perFile['tests/visual/package.json'] || [];
+    ok(s.tipo === 'trenino' && l.includes('treno-tempo-358') && !l.includes('finto-358') && !s.guardiani.includes('finto-358'),
+      `vagone del giro 358 (package.json, script nuovi ${JSON.stringify(l)}): finto-358 ${s.guardiani.includes('finto-358') ? 'SCELTO come guardiano' : 'escluso'}, treno-tempo-358 ${l.includes('treno-tempo-358') ? 'scelto' : 'MANCANTE'}`); }
+  /* elenco dichiarato completo: ogni script npm con «finto» nel nome o che chiama un guardiano col modo «finto» sta in PROVA_360 */
+  const finti = Object.entries(pkg.scripts).filter(([n, c]) => /finto/i.test(n) || /\.mjs\s+finto\b/.test(c)).map(([n]) => n);
+  const fuori = finti.filter(n => !T.PROVA_360.includes(n));
+  ok(finti.length > 0 && !fuori.length && T.PROVA_360.every(n => pkg.scripts[n]), `script di prova dichiarati in PROVA_360: ${T.PROVA_360.join(', ')}${fuori.length ? ` — NON dichiarati: ${fuori.join(', ')}` : ''}`);
+  ok(finti.every(n => T.fuoriTreno360(n)) && !T.fuoriTreno360('treno-tempo-358') && !T.fuoriTreno360('tema-unico'), `fuoriTreno360: esclude ${finti.join(', ')}, tiene i guardiani veri (treno-tempo-358, tema-unico)`);
+  /* nessun guardiano vero tolto: le catene e la mappa non contengono script di prova, e nessun loro nome e' escluso */
+  const veri = [...new Set([...Object.values(mappa.CATENE).flat(), ...mappa.MAPPA.flatMap(r => r[1])])];
+  ok(!veri.some(n => T.PROVA_360.includes(n)), `nessuno dei ${veri.length} guardiani di catene e mappa e' dichiarato script di prova`);
+  /* il piano di ci-treno-308 non mette mai uno script di prova in una parte (anche se arriva in un elenco) */
+  const p = spawnSync('node', ['ci-treno-308.mjs', 'piano'], { cwd: QUI, encoding: 'utf8', env: { ...process.env, CPM_TRENO_ELENCO: 'finto-358 tema-unico', GITHUB_SHA: '', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '' } });
+  ok(p.status === 0 && !/finto-358/.test(p.stdout) && /tema-unico/.test(p.stdout), `piano con elenco «finto-358 tema-unico»: ${/finto-358/.test(p.stdout) ? 'finto-358 IN UNA PARTE' : 'solo tema-unico'}${p.status ? ' (uscita ' + p.status + ': ' + p.stderr.slice(-200) + ')' : ''}`);
+}
+
 /* ---------------------------------------------------------------- B. decisione */
 console.log('\n== B. decisione con l\'esito del trenino ==');
 const SHA = 'a'.repeat(40), MB = 'b'.repeat(40);
@@ -259,5 +283,5 @@ try {
 } catch (err) { ok(false, 'percorso D interrotto: ' + (err.stderr || err.message).toString().slice(-600)); }
 finally { try { fs.rmSync(TMP, { recursive: true, force: true }); } catch {} }
 
-console.log(`\n${fall ? `❌ ROSSO: ${fall} controlli falliti` : '✅ VERDE'}${NO ? ' (CPM_NO_G317=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G328 === '1' ? ' (CPM_NO_G328=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G329 === '1' ? ' (CPM_NO_G329=1: atteso ROSSO)' : ''}`);
+console.log(`\n${fall ? `❌ ROSSO: ${fall} controlli falliti` : '✅ VERDE'}${NO ? ' (CPM_NO_G317=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G328 === '1' ? ' (CPM_NO_G328=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G329 === '1' ? ' (CPM_NO_G329=1: atteso ROSSO)' : ''}${process.env.CPM_NO_G360 === '1' ? ' (CPM_NO_G360=1: atteso ROSSO)' : ''}`);
 process.exit(fall ? 1 : 0);

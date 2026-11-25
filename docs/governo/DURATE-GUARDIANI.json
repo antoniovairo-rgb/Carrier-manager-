@@ -1659,12 +1659,23 @@
    }
   },
   "highlight-95": {
-   "s": 6016,
+   "s": 6600,
    "fonte": "runner",
    "runner": [
     4940,
-    6016
+    6016,
+    6600
    ],
+   "pezzi": {
+    "verde": 3385,
+    "rosso": 3228
+   },
+   "banco358": {
+    "verde": 2868,
+    "rosso": 2735,
+    "commit": "cfbb7729"
+   },
+   "nota358": "25/11 giro 358: corsa 45509361966 (trenino, lavoro/201 cfbb7729) oltre 6.600 s, parte annullata al timeout del job. Storia di 18 corse 21-24/11: mediana 5.658 s, massimo 6.016. Banco sulla punta: braccio verde 2.868 s + rosso 2.735 s = 5.603 s. Dal giro 358 il piano lo spezza in due pezzi (PEZZI_358 in ci-treno-308.mjs): pezzi = banco x 1,18 (rapporto 6.600 / 5.603, il caso peggiore misurato).",
    "rapporti": {
     "mediana": 3600,
     "n": 3,

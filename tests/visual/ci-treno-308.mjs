@@ -36,6 +36,27 @@ function leggiCatene() {
 }
 /* script che lanciano a loro volta una catena (o il gate pesante gia' coperto da validate-situations.yml): fuori dal treno */
 const FUORI = /^ci(:|$)/;
+/* [giro 358] PEZZI. Un guardiano che da solo sfora la parte non deve far annullare la corsa per tempo (corsa 45509361966: la parte
+   01 con il solo highlight-95 e' arrivata al timeout di 120 min del job, «cancelled», nessun esito per lui, rilascio fermo). Un guardiano
+   che giudica a bracci indipendenti si spezza in PEZZI, uno per braccio, ognuno con la sua parte: il nome nella matrice e'
+   «guardiano@pezzo», l'esecuzione e' lo STESSO script npm con le variabili del pezzo, e il riepilogo li ricompone in un solo guardiano
+   (verde solo se TUTTI i pezzi sono verdi; un pezzo rosso = rosso; un pezzo mancante/fermato = non giudicato). Nessuna soglia cambia:
+   highlight-95 con CPM_ARMI=verde giudica il braccio verde con le stesse regole, con CPM_ARMI=rosso pretende che si vedano D1..D4.
+   Durata di un pezzo: DURATE-GUARDIANI.json voci[g].pezzi[p] se misurata, altrimenti s diviso il numero dei pezzi. */
+export const PEZZI_358 = { 'highlight-95': { verde: { CPM_ARMI: 'verde' }, rosso: { CPM_ARMI: 'rosso' } } };
+export const spezza358 = n => PEZZI_358[n] ? Object.keys(PEZZI_358[n]).map(k => n + '@' + k) : [n];
+export function piega358(passi) {
+  const out = [], gruppi = new Map();
+  for (const x of passi) { const m = /^(.+)@([^@]+)$/.exec(x.guardiano || ''); if (!m) { out.push(x); continue; }
+    if (!gruppi.has(m[1])) { gruppi.set(m[1], []); out.push({ guardiano: m[1], _g358: true }); } gruppi.get(m[1]).push({ ...x, pezzo: m[2] }); }
+  return out.map(x => { if (!x._g358) return x; const ps = gruppi.get(x.guardiano), attesi = Object.keys(PEZZI_358[x.guardiano] || {});
+    const mancano = attesi.filter(k => !ps.some(q => q.pezzo === k)), ignoti = ps.filter(q => !attesi.includes(q.pezzo)).map(q => q.pezzo);
+    const ok = !mancano.length && !ignoti.length && ps.every(q => q.ok);
+    const esito = ok ? 'verde' : ps.some(q => q.esito === 'rosso') ? 'rosso' : mancano.length ? 'pezzo_mancante' : ignoti.length ? 'pezzo_ignoto' : (ps.find(q => !q.ok) || {}).esito || 'non_giudicato';
+    const coda = [...ps.filter(q => !q.ok).map(q => `[${q.pezzo}: ${q.esito}] ${q.coda || ''}`), ...mancano.map(k => `[${k}: mancante]`), ...ignoti.map(k => `[${k}: pezzo non previsto]`)].join(' ‖ ').slice(0, 300);
+    return { guardiano: x.guardiano, ok, esito, uscita: ok ? 0 : null, s: ps.reduce((a, q) => a + (q.s || 0), 0), parte: [...new Set(ps.map(q => q.parte).filter(Boolean))].join(' + '),
+      coda, pezzi: ps.map(q => ({ pezzo: q.pezzo, esito: q.esito, s: q.s || 0, parte: q.parte })) }; });
+}
 
 /* [giro 317 PO-604] TIPO del treno (CPM_TRENO_TIPO): «trenino» = guardiani delle righe della mappa toccate dal vagone + sentinelle
    (tools/trenino-317.mjs scegli: diff fra l'ultimo rilascio e la punta; un file non coperto lo fa diventare «completo» = mappa intera);
@@ -50,6 +71,7 @@ async function scelta317() {
   return { tipo: s.tipo, guardiani: s.guardiani, scelta: { base: s.base.sha, base_come: s.base.come, merge_base: s.base.merge_base, toccati: s.toccati.length, scoperti: s.scoperti, motivo: s.motivo } };
 }
 const S317 = cmd === 'piano' ? await scelta317() : null;
+const T360 = cmd === 'piano' ? await import(path.join(ROOT, 'tools/trenino-317.mjs')) : null;/* [giro 360] elenco unico degli script di prova */
 /* [giro 330, PO-624] RIEPILOGO DELLA PARTE NEL LOG. `esegui` stampa a fine parte il suo riepilogo.json come righe
      CPM_PARTE330 <i>/<n> <base64>   e   CPM_PARTE330_FINE <sha256 del json> <n>
    `riunisci`, per una parte della matrice senza artifact, legge il log del job (API di GitHub col GITHUB_TOKEN del job, o la
@@ -93,10 +115,12 @@ function piano() {
   let nomi = process.env.CPM_TRENO_ELENCO ? process.env.CPM_TRENO_ELENCO.split(/\s+/).filter(Boolean)
     : S317 && S317.tipo === 'trenino' ? S317.guardiani
     : [...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])];
-  nomi = [...new Set(nomi)].filter(n => !FUORI.test(n));
+  nomi = [...new Set(nomi)].filter(n => !FUORI.test(n) && !(T360 && T360.fuoriTreno360(n)));/* [giro 360] script di sola prova: mai un guardiano del treno */
   const senza = nomi.filter(n => !script[n]); nomi = nomi.filter(n => script[n]);
   const D = leggiJSON(path.join(ROOT, 'docs/governo/DURATE-GUARDIANI.json'), { voci: {} }).voci;
-  const voci = nomi.map(n => ({ n, s: (D[n] && D[n].s) || 300, fonte: (D[n] && D[n].fonte) || 'stimata' }));
+  const voci = nomi.flatMap(n => spezza358(n).map(q => { const k = q.split('@')[1], d = D[n] || {};
+    const s = k ? (d.pezzi && d.pezzi[k]) || Math.round((d.s || 300) / Object.keys(PEZZI_358[n]).length) : d.s || 300;
+    return { n: q, s, fonte: d.fonte || 'stimata' }; }));
   const OB = +process.env.CPM_TRENO_OBIETTIVO_S || 4200, tot = voci.reduce((a, v) => a + v.s, 0);
   /* il piu' lungo per primo nella parte piu' leggera; si aggiungono parti finche' la piu' lunga sta nell'obiettivo
      (o contiene un guardiano solo, che piu' corto di cosi' non si fa) */
@@ -138,21 +162,43 @@ if (cmd === 'piano') {
   const OUT = process.env.CPM_PARTE_OUT || path.join(QUI, 'out/ci-parte');/* [giro 330] cartella propria per il guardiano treno-330 */ fs.mkdirSync(OUT, { recursive: true });
   const env = { ...process.env, VISION_PROVIDER: process.env.VISION_PROVIDER || 'none' };
   const BIL = (+process.env.CPM_TRENO_BILANCIO_S || 6600) * 1000, T0 = Date.now();
+  /* [giro 358] SCADENZA DEL JOB. Il bilancio contava dall'inizio di questo passo, non del job: checkout + npm + Chromium (1,5 min nella
+     corsa 45509361966) e il caricamento stavano fuori dal conto. Il workflow scrive CPM_JOB_T0 (inizio del job, secondi) e
+     CPM_JOB_TIMEOUT_MIN: il guardiano si ferma al primo dei due, sempre CPM_TRENO_MARGINE_S (default 480 s) prima del timeout. */
+  const SCAD = +process.env.CPM_JOB_T0 && +process.env.CPM_JOB_TIMEOUT_MIN ? (+process.env.CPM_JOB_T0 + +process.env.CPM_JOB_TIMEOUT_MIN * 60 - (+process.env.CPM_TRENO_MARGINE_S || 480)) * 1000 : Infinity;
   const corri = (n, maxMs) => new Promise(res => { const t0 = Date.now(); const log = fs.createWriteStream(path.join(OUT, n.replace(/[^\w.-]/g, '_') + '.log'));
+    /* [giro 358] un pezzo («guardiano@pezzo») e' lo script del guardiano con le variabili del pezzo */
+    const [base, pz] = n.split('@'), extra = pz ? (PEZZI_358[base] || {})[pz] : {};
+    if (!extra) return res({ guardiano: n, ok: false, esito: 'rosso', uscita: null, s: 0, coda: `pezzo «${pz}» non previsto in PEZZI_358` });
     /* gruppo di processi proprio: al tetto si ferma il guardiano CON i suoi figli (browser compresi), per pid, non per nome */
-    const ch = spawn('npm', ['run', '-s', n], { cwd: QUI, env, detached: true }); let coda = '', tetto = false;
+    const ch = spawn('npm', ['run', '-s', base], { cwd: QUI, env: { ...env, ...extra }, detached: true }); let coda = '', tetto = false, chiuso = false;
     const su = d => { process.stdout.write(d); log.write(d); coda = (coda + d).slice(-4000); };
     ch.stdout.on('data', su); ch.stderr.on('data', su);
-    const tm = setTimeout(() => { tetto = true; su(`\n⛔ ${n}: fermato al bilancio della parte (${Math.round(maxMs / 1000)} s)\n`); try { process.kill(-ch.pid, 'SIGTERM'); } catch {} setTimeout(() => { try { process.kill(-ch.pid, 'SIGKILL'); } catch {} }, 15000); }, maxMs);
-    ch.on('close', code => { clearTimeout(tm); log.end(); res({ guardiano: n, ok: code === 0 && !tetto, esito: tetto ? 'tetto' : code === 0 ? 'verde' : 'rosso', uscita: code, s: Math.round((Date.now() - t0) / 1000), coda: coda.trim().split('\n').slice(-3).join(' | ').slice(0, 300) }); }); });
+    /* [giro 358] la chiusura non aspetta solo 'close' (= tutti i descrittori dell'uscita chiusi): un nipote uscito dal gruppo che tiene
+       l'uscita aperta lo rimanda per sempre. Al tetto: TERM, KILL dopo 15 s, e dopo altri 30 s il guardiano si chiude comunque come
+       «tetto»; su 'exit' si concedono 10 s per svuotare l'uscita. */
+    const fine = code => { if (chiuso) return; chiuso = true; clearTimeout(tm); clearTimeout(tmDuro); try { ch.stdout.destroy(); ch.stderr.destroy(); } catch {} log.end();
+      res({ guardiano: n, ok: code === 0 && !tetto, esito: tetto ? 'tetto' : code === 0 ? 'verde' : 'rosso', uscita: code, s: Math.round((Date.now() - t0) / 1000), coda: coda.trim().split('\n').slice(-3).join(' | ').slice(0, 300) }); };
+    let tmDuro = null;
+    const tm = setTimeout(() => { tetto = true; su(`\n⛔ ${n}: fermato al bilancio della parte (${Math.round(maxMs / 1000)} s)\n`); try { process.kill(-ch.pid, 'SIGTERM'); } catch {}
+      setTimeout(() => { try { process.kill(-ch.pid, 'SIGKILL'); } catch {} }, 15000);
+      tmDuro = setTimeout(() => { su(`\n⛔ ${n}: l'uscita resta aperta dopo l'arresto, chiuso d'ufficio\n`); fine(null); }, 45000); }, maxMs);
+    ch.on('exit', code => setTimeout(() => fine(code), 10000).unref()); ch.on('close', code => fine(code)); });
   const r = { parte: process.env.CPM_PARTE || '', inizio: new Date().toISOString(), macchina: { cpu: os.cpus().length, modello: (os.cpus()[0] || {}).model, ram_gb: +(os.totalmem() / 2 ** 30).toFixed(1), node: process.version, so: os.platform() + ' ' + os.release() },
     installazione_s: +process.env.CPM_INSTALL_S || null, chromium_s: +process.env.CPM_CHROMIUM_S || null, attesi_s: +process.env.CPM_ATTESI_S || null, bilancio_s: BIL / 1000, passi: [] };
+  /* [giro 358] riepilogo PROGRESSIVO: scritto prima di ogni guardiano col guardiano in corso dichiarato «tetto» (= non giudicato) e i
+     successivi «non partiti». Se il passo viene ucciso da fuori (timeout del passo o del job) l'artifact porta comunque la parte. */
+  const scriviParziale = i => { try { fs.writeFileSync(path.join(OUT, 'riepilogo.json'), JSON.stringify({ ...r, parziale: true, fine: new Date().toISOString(),
+    passi: [...r.passi, ...nomi.slice(i).map((g, j) => ({ guardiano: g, ok: false, esito: j === 0 ? 'tetto' : 'non_partito', uscita: null, s: j === 0 ? Math.round((Date.now() - T0) / 1000) - r.passi.reduce((a, x) => a + x.s, 0) : 0,
+      coda: j === 0 ? 'parte interrotta da fuori mentre questo guardiano girava (giro 358)' : 'parte interrotta prima della partenza (giro 358)' }))] }, null, 1) + '\n'); } catch {} };
+  let iN = 0, battito = null;
   for (const n of nomi) {
-    const resto = BIL - (Date.now() - T0);
+    const iQ = iN++; scriviParziale(iQ); clearInterval(battito); battito = setInterval(() => scriviParziale(iQ), 60000); battito.unref();
+    const resto = Math.min(BIL - (Date.now() - T0), SCAD - Date.now());
     if (resto < 60000) { r.passi.push({ guardiano: n, ok: false, esito: 'non_partito', uscita: null, s: 0, coda: 'bilancio della parte esaurito prima della partenza' }); console.log(`⏭️ ${n}: non partito (bilancio esaurito)`); continue; }
     console.log(`\n══ ${n} ══`); const x = await corri(n, resto); r.passi.push(x); console.log(`${x.ok ? '✅' : x.esito === 'tetto' ? '⛔' : '❌'} ${n} (${x.s}s, uscita ${x.uscita})`);
   }
-  r.fine = new Date().toISOString(); r.guardiani_s = r.passi.reduce((a, x) => a + x.s, 0);
+  clearInterval(battito); r.fine = new Date().toISOString(); r.guardiani_s = r.passi.reduce((a, x) => a + x.s, 0);
   fs.writeFileSync(path.join(OUT, 'riepilogo.json'), JSON.stringify(r, null, 1) + '\n');
   const sim = { verde: '✅ verde', rosso: '❌ rosso', tetto: '⛔ tetto', non_partito: '⏭️ non partito' };
   const md = `### ${r.parte || nomi.join(' ')}\n\nmacchina: ${r.macchina.cpu} cpu · ${r.macchina.ram_gb} GB · node ${r.macchina.node} · npm ${r.installazione_s ?? '?'} s · Chromium ${r.chromium_s ?? '?'} s · attesi ${r.attesi_s ?? '?'} s · fatti ${r.guardiani_s} s\n\n| guardiano | esito | durata | coda |\n|---|---|---|---|\n`
@@ -183,8 +229,9 @@ if (cmd === 'piano') {
   tutti.sort((a, b) => (a.inizio < b.inizio ? -1 : 1));
   const arrivate = new Set(tutti.map(r => r.parte)), mancanti = matrice ? matrice.include.filter(p => !arrivate.has(p.nome)) : [];
   const R = leggiJSON(path.join(ROOT, 'docs/governo/ROSSI-DICHIARATI.json'), { banco: {}, solo_runner: {} });
-  const passi = tutti.flatMap(r => r.passi.map(x => ({ ...x, parte: r.parte, ...(r.fonte === 'log' ? { fonte: 'log' } : {}) })));
-  for (const p of mancanti) for (const g of p.guardiani.split(' ')) passi.push({ guardiano: g, ok: false, esito: 'parte_mancante', s: 0, parte: p.nome, coda: 'la parte non ha consegnato il suo riepilogo' });
+  const passi0 = tutti.flatMap(r => r.passi.map(x => ({ ...x, parte: r.parte, ...(r.fonte === 'log' ? { fonte: 'log' } : {}) })));
+  for (const p of mancanti) for (const g of p.guardiani.split(' ')) passi0.push({ guardiano: g, ok: false, esito: 'parte_mancante', s: 0, parte: p.nome, coda: 'la parte non ha consegnato il suo riepilogo' });
+  const passi = piega358(passi0);/* [giro 358] i pezzi tornano un guardiano solo: rossi dichiarati, scelta del trenino e rilascio vedono il nome vero */
   const classe = x => x.ok ? 'verde' : x.esito === 'rosso' ? (R.banco[x.guardiano] ? 'rosso_noto' : R.solo_runner[x.guardiano] ? 'rosso_noto_runner' : 'rosso_nuovo') : 'non_giudicato';
   for (const x of passi) x.classe = classe(x);
   const per = c => passi.filter(x => x.classe === c).map(x => x.guardiano);
