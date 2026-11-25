@@ -33,8 +33,14 @@ const roadmap = leggi('docs/governo/ROADMAP.md');
 
 const aperte = tabella(sezione(backlog, 'Voci aperte o parziali'));
 const chiuse = tabella(sezione(backlog, 'Storico — voci chiuse'));
-const bCols = ['Sezione', ...aperte.cols];
-const bRows = [...aperte.rows.map(r => ['Aperta', ...r]), ...chiuse.rows.map(r => ['Chiusa', ...r])];
+// [PO 25/11] la scheda Backlog contiene SOLO le voci aperte, in ordine di coda (in corso, da verificare, poi n° 1, 2, …);
+// le chiuse stanno nella scheda dedicata «Chiuse».
+const bCols = aperte.cols;
+const posto = r => { const st = r[4] || ''; const m = st.match(/IN CODA · n° (\d+)/);
+  return /^IN CORSO/.test(st) ? -2 : /^DA VERIFICARE/.test(st) ? -1 : m ? +m[1] : 1e6; };
+const bRows = [...aperte.rows].sort((x, y) => posto(x) - posto(y));
+const cCols = chiuse.cols;
+const cRows = [...chiuse.rows].sort((x, y) => (+(y[0].match(/\d+/) || [0])[0]) - (+(x[0].match(/\d+/) || [0])[0]));
 
 const lotti = tabella(sezione(roadmap, 'Lotti'));
 const reg = tabella(sezione(roadmap, 'Registro delle release'));
@@ -109,8 +115,10 @@ const quando = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 const DATI = {
   meta: { ver, commit, quando, notte },
   tabs: [
-    { id: 'backlog', nome: 'Backlog', cols: bCols, rows: bRows, ordine: [0, 6, 1],
-      menu: ['Sezione', 'Tipo', 'Stato', 'Lotto'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
+    { id: 'backlog', nome: 'Backlog', cols: bCols, rows: bRows, ordine: [],
+      menu: ['Tipo', 'Lotto'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
+    { id: 'chiuse', nome: 'Chiuse', cols: cCols, rows: cRows, ordine: [],
+      menu: ['Tipo'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
     { id: 'lotti', nome: 'Lotti', cols: lotti.cols, rows: lotti.rows, ordine: [],
       menu: ['Lotto', 'Stato'], larga: ['Osservazioni del team', 'Lotto'] },
     { id: 'registro', nome: 'Registro release', cols: rCols, rows: rRows, ordine: [],
@@ -125,7 +133,7 @@ const html = `<title>Governo Korward Elite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Registro di cantiere: una testata stretta, sei schede, tabelle dense e filtrabili colonna per colonna. */
+/* Registro di cantiere: una testata stretta, sette schede, tabelle dense e filtrabili colonna per colonna. */
 :root{
   --bg:#f3f5f1; --panel:#ffffff; --ink:#17201b; --muted:#5b6a61; --rule:#d5ddd6; --accent:#1f7a4d; --accent-ink:#ffffff;
   --st-ok:#1f7a4d; --st-ok-bg:#e1f1e7; --st-run:#8a5a00; --st-run-bg:#fbefd6; --st-open:#a3321f; --st-open-bg:#f8e2dc; --st-wait:#3b5aa8; --st-wait-bg:#e2e8f7;
@@ -235,4 +243,4 @@ disegna();
 `;
 const out = process.env.CPM_GOVERNO_OUT || path.join(ROOT, 'docs/governo/governo.html');
 fs.writeFileSync(out, html);
-console.log(`governo.html: backlog ${bRows.length} (aperte ${aperte.rows.length}, chiuse ${chiuse.rows.length}) · lotti ${lotti.rows.length} · registro ${rRows.length} · ${Math.round(html.length / 1024)} KB`);
+console.log(`governo.html: backlog ${bRows.length} aperte · chiuse ${cRows.length} · lotti ${lotti.rows.length} · registro ${rRows.length} · ${Math.round(html.length / 1024)} KB`);
