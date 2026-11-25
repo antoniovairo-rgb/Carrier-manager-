@@ -33,6 +33,12 @@ Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglior
 
 Una segnalazione non apre mai da sola una release.
 
+## Consegna rapida dei giri (PO 26/11 00:55: «Si applica subito, acceleriamo»)
+Un giro consegna (spinge il ramo) appena sono verdi **il suo guardiano (verde + rosso) e le 17 sentinelle**:
+`node ci-runner.mjs giro <suo-guardiano>`. Gli altri guardiani della zona toccata NON si girano nel giro: li giudica il
+treno, che è già il giudice del rilascio. Nel rapporto il giro scrive quali guardiani della zona non ha girato. Un rosso
+nuovo trovato dal treno si ripara con un giro di riparazione (come oggi). Vale dai giri lanciati dopo il 26/11 00:55.
+
 ## Definizione di «pronto» (si può iniziare)
 Obiettivo chiaro · criteri di accettazione scritti e misurabili · dipendenze risolte · domande al PO chiuse
 (questionario registrato in `DECISIONI.md`) · stima con ipotesi.
