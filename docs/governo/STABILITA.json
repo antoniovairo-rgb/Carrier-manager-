@@ -1,5 +1,102 @@
 [
  {
+  "data": "2026-11-25 09:11",
+  "versione": "7.999.209",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "staff-356",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 197
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 205
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 330
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 417
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 715
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 180
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 120
+   }
+  ]
+ },
+ {
   "data": "2026-11-24 19:23",
   "versione": "7.999.209",
   "catena": "giro",
@@ -93,6 +190,103 @@
     "passo": "schermate-97",
     "ok": true,
     "s": 116
+   }
+  ]
+ },
+ {
+  "data": "2026-11-24 19:04",
+  "versione": "7.999.209",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "staff-356",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 190
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 288
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 316
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 406
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 684
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 243
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 121
    }
   ]
  },

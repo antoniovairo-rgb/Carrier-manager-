@@ -426,6 +426,7 @@
     "svincolato-264": "node svincolato-264.mjs",
     "meta-conto-265": "node meta-conto-265.mjs",
     "acquisti-281": "CPM_PROVA_ROSSO=1 node acquisti-281.mjs",
+    "staff-356": "CPM_PROVA_ROSSO=1 node staff-356.mjs",
     "trainer-288": "CPM_PROVA_ROSSO=1 node trainer-288.mjs",
     "fisarmonica-341": "node fisarmonica-341.mjs",
     "carriera3-94": "node carriera3-94.mjs",
@@ -779,6 +780,7 @@
     "finto-358": "node treno-tempo-358.mjs finto",
     "treno-330": "node treno-330.mjs",
     "notte-333": "node notte-333.mjs",
+    "notte-359": "node notte-359.mjs",
     "ci:sentinelle": "node ci-runner.mjs sentinelle",
     "gol-347": "node gol-347-test.mjs"
   },
