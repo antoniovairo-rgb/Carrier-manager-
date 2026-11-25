@@ -128,7 +128,7 @@ jobs:
     name: ${{ matrix.nome }}
     needs: piano
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 120   # [giro 358] = CPM_JOB_TIMEOUT_MIN qui sotto: cambiarli insieme (guardiano treno-tempo-358)
     continue-on-error: true   # un job caduto non fa fallire la corsa: se manca il suo riepilogo, il Riepilogo lo dichiara «non giudicato»
     strategy:
       fail-fast: false
@@ -144,7 +144,11 @@ jobs:
       CPM_CI_PAR: '0'
       VISION_PROVIDER: none
       CPM_TRENO_BILANCIO_S: '6600'   # 110 min per i guardiani: la parte si chiude da sola prima del timeout del job
+      CPM_JOB_TIMEOUT_MIN: '120'     # [giro 358] il bilancio si conta anche dall'inizio del JOB (CPM_JOB_T0), con 8 min di margine per il caricamento
     steps:
+      - name: Inizio del job (giro 358)
+        working-directory: ${{ github.workspace }}
+        run: echo "CPM_JOB_T0=$(date +%s)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.piano.outputs.sha }}   # [giro 317] di notte il bersaglio non e' il ramo dell'evento
@@ -167,6 +171,7 @@ jobs:
           echo "CPM_CHROMIUM_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
           "$chrome" --version; nproc; free -m | head -2
       - name: Guardiani di questa parte (esce sempre 0)
+        timeout-minutes: 113   # [giro 358] rete dietro la rete: il passo muore prima del job e il caricamento (if: always) porta il riepilogo progressivo
         env:
           CPM_PARTE: ${{ matrix.nome }}
           CPM_ATTESI_S: ${{ matrix.attesi_s }}
