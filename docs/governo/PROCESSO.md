@@ -39,6 +39,12 @@ Un giro consegna (spinge il ramo) appena sono verdi **il suo guardiano (verde + 
 treno, che è già il giudice del rilascio. Nel rapporto il giro scrive quali guardiani della zona non ha girato. Un rosso
 nuovo trovato dal treno si ripara con un giro di riparazione (come oggi). Vale dai giri lanciati dopo il 26/11 00:55.
 
+## Catena di montaggio (PO 26/11 01:00: «Deve essere una catena di montaggio velocissima»)
+- **4 giri sempre al lavoro.** Appena uno consegna, ne parte un altro dalla testa della coda, scegliendo aree diverse
+  (partita 3D, carriera, testi, schermate) perché i vagoni non si pestino i piedi; i treni portano 2-4 vagoni insieme.
+- **Dubbi dei giri: consigliata subito, domanda dopo.** Il giro applica la consigliata e il vagone parte; la domanda al PO arriva
+  dopo e, se sceglie altro, diventa una voce nuova in coda.
+
 ## Definizione di «pronto» (si può iniziare)
 Obiettivo chiaro · criteri di accettazione scritti e misurabili · dipendenze risolte · domande al PO chiuse
 (questionario registrato in `DECISIONI.md`) · stima con ipotesi.
