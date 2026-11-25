@@ -2084,3 +2084,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 16:21 (25/11) Giro 366 (PO-649 giocatori che volano, Fable) lanciato su lavoro/201 d98d8bb6; il treno della 7.999.214 porta il solo giro 365 (pacchetto TWA 1.0).
 - 19:10 (25/11) Dubbi del giro 366 (questionario): scivolate a terra → PO-663 (dopo il 364); clip di testa nella salita del compagno → PO-664 (dopo il 364); «scivolano» → PO-665 giro di sola misura; quota dei piedi fra posa ferma e clip (0,13 u) → niente per ora (consigliata). Dubbio 5 (da quale versione) non chiesto: consigliata «non indagare» (la causa è nella clip dalla 7.999.32).
 - 19:15 (25/11) 7.999.214 uscita (tag v7.999.214, sito verificato): pacchetto TWA 1.0 su main, il PO può avviare «Android AAB (TWA)». Treno del giro 366 (PO-649) partito su lavoro/201 4a4bcdb0.
+- 20:50 (25/11) 7.999.215 uscita dal rilascio automatico (treno 45672152539 verde, tag v7.999.215, sito verificato). PO-649 FATTO.
