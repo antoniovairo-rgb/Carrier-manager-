@@ -27,8 +27,14 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      # PO 25/11 (prima corsa fallita): il default di setup-android installa il pacchetto «tools», che nei cmdline-tools 16.0
+      # delle macchine GitHub non esiste piu' («Failed to find package 'tools'», exit 1). Si chiede solo platform-tools;
+      # piattaforma 36 e build-tools li scarica Gradle (le licenze le accetta questo passo).
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
 
       - name: Setup Gradle 8.14.3
         uses: gradle/actions/setup-gradle@v4
