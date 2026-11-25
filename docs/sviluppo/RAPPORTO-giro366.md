@@ -86,7 +86,25 @@ highlight» dà 0 su 0 in questa prova (non classifica le fasi), e il numero ass
 
 ## Catena
 
-CATENA_DA_COMPILARE
+`node ci-runner.mjs giro volano-366 attesa-difesa spalle-146 portatore-286 salti-274 difesa-343` sul commit del giro
+(6 guardiani + 17 sentinelle): **22 verdi su 23**.
+
+| Passo | Esito |
+|---|---|
+| volano-366 (verde + rosso) | verde |
+| attesa-difesa · spalle-146 · difesa-343 | verdi |
+| salti-274 | verde alla seconda prova, segnato «instabile». Il primo rosso: «velocità massima del pallone nel caricamento 62,4 u/s» (riguarda il pallone, non i corpi) |
+| **portatore-286** | **rosso** nella catena: braccio verde, gi54 difensiva «si sposta» (1 difetto su 9) |
+| le 17 sentinelle (mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico, griglia-mobile, career-critical, battito-264, partita-vera, render-3d-023, tunnel-285, home-298, web-237, gk-dive-sync, schermate-97) | verdi |
+
+**Su `portatore-286`:** rigiocato da solo, braccio verde, sulla **base d98d8bb6 senza questo giro**: rosso, stessa scena (gi54,
+0,69 u fra due inversioni). Sul ramo del giro, da solo: verde (gi54 0 inversioni). È già in `docs/governo/ROSSI-DICHIARATI.json`
+su `main` («già rosso nel treno della 7.999.200: da verificare»). Lo dichiaro quindi rosso noto e instabile sulla base, non di
+questo giro; non l'ho riparato.
+
+Altre verifiche: `tools/check-src.mjs` identico · `mappa-unica` verde col guardiano nuovo nella riga `src/12-|src/13-`.
+Una nota di metodo: per errore mio sono partite due catene sovrapposte per circa dieci minuti (la prima non si era fermata);
+ho fermato la prima per PID. I passi contati sopra sono tutti della seconda, che gira sul commit.
 
 ## Dubbi per il PO
 
