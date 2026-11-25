@@ -71,6 +71,7 @@ async function scelta317() {
   return { tipo: s.tipo, guardiani: s.guardiani, scelta: { base: s.base.sha, base_come: s.base.come, merge_base: s.base.merge_base, toccati: s.toccati.length, scoperti: s.scoperti, motivo: s.motivo } };
 }
 const S317 = cmd === 'piano' ? await scelta317() : null;
+const T360 = cmd === 'piano' ? await import(path.join(ROOT, 'tools/trenino-317.mjs')) : null;/* [giro 360] elenco unico degli script di prova */
 /* [giro 330, PO-624] RIEPILOGO DELLA PARTE NEL LOG. `esegui` stampa a fine parte il suo riepilogo.json come righe
      CPM_PARTE330 <i>/<n> <base64>   e   CPM_PARTE330_FINE <sha256 del json> <n>
    `riunisci`, per una parte della matrice senza artifact, legge il log del job (API di GitHub col GITHUB_TOKEN del job, o la
@@ -114,7 +115,7 @@ function piano() {
   let nomi = process.env.CPM_TRENO_ELENCO ? process.env.CPM_TRENO_ELENCO.split(/\s+/).filter(Boolean)
     : S317 && S317.tipo === 'trenino' ? S317.guardiani
     : [...Object.values(CATENE).flat(), ...MAPPA.flatMap(r => r[1])];
-  nomi = [...new Set(nomi)].filter(n => !FUORI.test(n));
+  nomi = [...new Set(nomi)].filter(n => !FUORI.test(n) && !(T360 && T360.fuoriTreno360(n)));/* [giro 360] script di sola prova: mai un guardiano del treno */
   const senza = nomi.filter(n => !script[n]); nomi = nomi.filter(n => script[n]);
   const D = leggiJSON(path.join(ROOT, 'docs/governo/DURATE-GUARDIANI.json'), { voci: {} }).voci;
   const voci = nomi.flatMap(n => spezza358(n).map(q => { const k = q.split('@')[1], d = D[n] || {};

@@ -48,7 +48,15 @@ const ROOT_DEF = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 export const FILE_BLOCCO = 'docs/governo/BLOCCO-RILASCI.json';
 export const FILE_RUNNER = 'tests/visual/ci-runner.mjs';
 export const FILE_PKG = 'tests/visual/package.json';
-const FUORI = /^ci(:|$)/;
+const FUORI_CI = /^ci(:|$)/;
+/* [giro 360] SCRIPT DI SOLA PROVA: non sono guardiani e il treno non li gioca MAI (ne' il trenino ne' il piano della mappa). Li usa
+   soltanto il guardiano che li nomina, dentro la sua prova (finto-358 = guardiano finto che non finisce: il trenino 45550618332 lo ha
+   scelto perche' era uno script nuovo di package.json, ha mangiato il bilancio della parte 06 e 15 guardiani veri sono «non partiti»).
+   Elenco DICHIARATO e unico: chi aggiunge uno script di prova lo scrive qui (trenino-317 sezione H pretende che ogni script con
+   «finto» nel nome o nel comando ci stia). Rosso del guardiano: CPM_NO_G360=1 = comportamento di prima (solo ci/ci:*). */
+export const PROVA_360 = ['finto-358'];
+export const fuoriTreno360 = n => FUORI_CI.test(n) || (process.env.CPM_NO_G360 !== '1' && PROVA_360.includes(n));
+const FUORI = { test: fuoriTreno360 };
 /* [giro 328] file che possono essere una sonda (vedi regola f2) */
 export const SONDA328 = /^(?:tests\/visual\/(?!lib\/|checks\/|fixtures\/)[^\s]+|tools\/[^\s]+)\.(?:mjs|js|cjs|py|sh)$/;
 
