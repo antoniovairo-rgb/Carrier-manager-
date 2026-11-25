@@ -19,7 +19,7 @@
      S5 testi della scheda (docs/store/SCHEDA-PLAY.md): titolo <= 30, breve <= 80, completa <= 4000 caratteri, in italiano;
      S6 checklist (docs/store/CHECKLIST-PLAY-CONSOLE.md): il primo passo e' il parere legale sui nomi dei club;
      S7 pacchetto costruibile: tools/build-dist.mjs rifatto qui, dist/index.html presente e senza richiami a CDN;
-     S8 [giro 260] TWA alla versione che si carica (versionName = GAME_VERSION o la successiva, coerente con twa-manifest, versionCode > 2000);
+     S8 [giro 260 → 365] TWA col numero d'app (versionName a due parti, es. 1.0, mai la GAME_VERSION; coerente con twa-manifest, versionCode > 2000);
      S9 [giro 260] nessun «Sostieni il progetto» dentro l'app (?app=twa), che resta sul sito (rosso: window.__CPM_NO_G260).
    PROVA DEL ROSSO (CPM_PROVA_ROSSO=1): la parte G gira con window.__CPM_NO_G236 (+ __CPM_NO_G224 per G2, che e' del giro 224);
    la parte S gira su una COPIA guastata dei file (appId diverso, icona sbagliata, screenshot 1:1, email estranea, titolo lungo,
@@ -94,15 +94,16 @@ function parteS(R, distDir) {
     const primo = (md.match(/^\s*1\.\s+(.+)$/m) || [])[1] || ''; const ok = /parere legale/i.test(primo) && /nomi/i.test(primo);
     metti('S6', ok, 'primo passo: «' + primo.slice(0, 90) + '»');
   } catch (e) { metti('S6', false, 'non giudicato: ' + e.message); }
-  // S8 [giro 260 · decisione PO 17/11 A «TWA, come PLINTO»] la TWA alla versione giusta: versionName di build.gradle uguale ad
-  //    appVersionName e appVersion di twa-manifest, e pari a GAME_VERSION o alla versione successiva (quella che si carica: il gioco
-  //    passa alla nuova al rilascio); versionCode uguale nei due file e oltre il 2000 del giro 120 (cresce a ogni caricamento).
+  // S8 [giro 260 · decisione PO 17/11 A «TWA, come PLINTO»; giro 365 · decisione PO 25/11 «Numero da app, 1.0»] versionName di
+  //    build.gradle uguale ad appVersionName e appVersion di twa-manifest, ed e' il numero dell'APP (due parti, es. 1.0), MAI la
+  //    GAME_VERSION (tre parti): il gioco si aggiorna dal sito, il pacchetto no; il workflow non lo timbra piu'. versionCode uguale
+  //    nei due file e oltre il 2000 del giro 120 (cresce a ogni caricamento).
   try { const gr = fs.readFileSync(path.join(R, 'twa/android/app/build.gradle'), 'utf8'); const tm = JSON.parse(fs.readFileSync(path.join(R, 'twa/twa-manifest.json'), 'utf8'));
     const src = fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.jsx'), 'utf8'); const gv = (src.match(/const GAME_VERSION="([0-9.]+)"/) || [])[1] || '';
     const vn = (gr.match(/versionName\s+'([^']+)'/) || [])[1] || ''; const vc = +((gr.match(/versionCode\s+(\d+)/) || [])[1] || 0);
     const num = v => v.split('.').map(Number); const succ = v => { const a = num(v); a[a.length - 1]++; return a.join('.'); };
-    const ok = gv && vn && (vn === gv || vn === succ(gv)) && tm.appVersionName === vn && tm.appVersion === vn && tm.appVersionCode === vc && vc > 2000;
-    metti('S8', ok, `TWA versionName ${vn} · twa-manifest ${tm.appVersionName}/${tm.appVersion} · versionCode ${vc}/${tm.appVersionCode} · GAME_VERSION ${gv} (ammesse ${gv} o ${gv ? succ(gv) : '?'})`);
+    const ok = gv && /^\d+\.\d+$/.test(vn) && vn !== gv && tm.appVersionName === vn && tm.appVersion === vn && tm.appVersionCode === vc && vc > 2000;
+    metti('S8', ok, `TWA versionName ${vn} · twa-manifest ${tm.appVersionName}/${tm.appVersion} · versionCode ${vc}/${tm.appVersionCode} · GAME_VERSION ${gv} (ammesso solo un numero d'app a due parti, mai la GAME_VERSION)`);
   } catch (e) { metti('S8', false, 'non giudicato: ' + e.message); }
   // S7
   try { const ix = path.join(distDir, 'index.html'); if (!fs.existsSync(ix)) throw new Error('dist/index.html assente');
