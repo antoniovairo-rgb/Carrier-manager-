@@ -779,6 +779,7 @@
     "finto-358": "node treno-tempo-358.mjs finto",
     "treno-330": "node treno-330.mjs",
     "notte-333": "node notte-333.mjs",
+    "notte-359": "node notte-359.mjs",
     "ci:sentinelle": "node ci-runner.mjs sentinelle",
     "gol-347": "node gol-347-test.mjs"
   },

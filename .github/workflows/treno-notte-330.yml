@@ -14,19 +14,54 @@ on:
     # orario (02:43 UTC, minuto lontano dall'inizio dell'ora) rifa' la veglia: se stanotte il treno grande c'e' gia' non fa nulla,
     # se il primo custode e' ancora sveglio aspetta in coda nel gruppo custode-notte, e la notte finisce per tutti alle 05:47 UTC.
     - cron: '43 2 * * *'
+  # [giro 359, PO-630 riaperta] lo schedule su questo repository NON basta (misurato: una corsa schedule in quattro finestre utili, alle
+  # 10:49 UTC). Seconda rete: la fine di ogni treno o deploy (eventi che ci sono ogni sera, dai push del PO) sveglia il job «sveglia»,
+  # che dalle 20:30 UTC dorme fino alle 01:09 e, se stanotte nessun custode e' partito, avvia il custode con workflow_dispatch
+  # (col GITHUB_TOKEN crea sempre una corsa). Logica: tools/sveglia-359.mjs, guardiano npm run notte-359 (rosso CPM_NO_G359=1).
+  workflow_run:
+    workflows: ['Treno — trenino a ogni unione, treno grande di notte', 'Deploy to GitHub Pages']
+    types: [completed]
   workflow_dispatch:
+    inputs:
+      notte:
+        description: 'giro 359: corsa della notte (avviata dalla sveglia) — fine alle 05:47 UTC ed esito scritto su main'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write   # [giro 333, PO-631] scrivere docs/governo/TRENO-NOTTE.json su main (push senza force)
   actions: write   # leggere le corse del treno e avviare verifica-guardiani.yml (workflow_dispatch)
 
-concurrency:
-  group: custode-notte
-  cancel-in-progress: false
-
+# [giro 359] la concorrenza sta sui job: la sveglia che dorme la sera non deve tenere in coda il custode che lei stessa avvia.
 jobs:
+  sveglia:
+    name: Sveglia della notte (giro 359)
+    if: github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    # dorme al massimo dalle 20:30 alle 01:09 UTC (4 h 39); una macchina sola, mai nel gruppo treno-guardiani
+    timeout-minutes: 300
+    concurrency:
+      group: sveglia-notte
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sveglia (avvia il custode se stanotte non c'e')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/sveglia-359.mjs sveglia --ref "${{ github.event.repository.default_branch }}"
+
   custode:
     name: Custode della coda notturna
+    if: github.event_name != 'workflow_run'
+    concurrency:
+      group: custode-notte
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 300
     steps:
@@ -41,12 +76,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           # [giro 333] di notte la veglia finisce alle 05:47 UTC per tutti i custodi; avviato a mano conta solo la scadenza relativa
           CPM_ENTRO_NOTTE: ${{ github.event_name == 'schedule' && '05:47' || '' }}
+          CPM_ENTRO_SVEGLIA359: ${{ inputs.notte && '05:47' || '' }}
         run: node tools/custode-notte-330.mjs veglia --scadenza-min 280 --passo-s 60 --ref "${{ github.event.repository.default_branch }}" --esito /tmp/esito-notte.json
       # [giro 333, PO-631] l'esito della notte (partito / non partito) va in docs/governo/TRENO-NOTTE.json su main, dove lo legge la
-      # pagina di governo. Solo per le corse del cron; un record gia' presente per la stessa notte non si riscrive (niente commit inutili).
+      # pagina di governo. Solo per le corse del cron (giro 359: e per quelle della sveglia, inputs.notte); un record gia' presente per la stessa notte non si riscrive (niente commit inutili).
       # Push senza force sulla punta di main, riprova fino a 4 volte rileggendolo. Non fa mai fallire la corsa.
       - name: Esito della notte su main (PO-631)
-        if: always() && github.event_name == 'schedule'
+        if: always() && github.event_name == 'schedule' || always() && inputs.notte
         continue-on-error: true
         env:
           RAMO: main  # [giro 338] il ramo di appoggio non esiste piu': l'esito della notte va su main (solo docs/governo: nessun deploy)
