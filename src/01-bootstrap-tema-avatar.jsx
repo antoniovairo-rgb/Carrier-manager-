@@ -486,6 +486,7 @@ function voltoUrl(tipo,chiave,voltoId){
 function _g236(){return !(typeof window!=='undefined'&&window.__CPM_NO_G236);}
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,voltoId,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
+  const _fis369=rest.fisico369;delete rest.fisico369;/* [giro 369] statura/peso dichiarati da chi disegna (creazione) */
   const [,_rif23]=React.useReducer(x=>x+1,0);
   React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rif23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rif23);};},[]);
   const _sc23=React.useContext(ScenaCtx23);
@@ -501,7 +502,7 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
      mai tagliato) e la cornice diventa per tutte grigio chiaro, invece del colore del club. Prima stesura (riquadro bianco col volto in
      alto) bocciata dalla prova fotografica: volto piccolo e fascia vuota sotto. Rosso __CPM_NO_FIG208. */
   const _fig208=!(typeof window!=='undefined'&&window.__CPM_NO_FIG208);
-  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} chiave={chiave} nome={nome} ruolo={ruolo} col={_fig208?"#e2e8f0":col} col2={_fig208?"#cbd5e1":col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
+  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} fis369={_fis369} tipo={tipo} chiave={chiave} nome={nome} ruolo={ruolo} col={_fig208?"#e2e8f0":col} col2={_fig208?"#cbd5e1":col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
   const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
@@ -542,8 +543,16 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
    - altri giocatori: aspetto da `appearanceFromSeed(hashStr(chiave))`, stesso calcolo (165-195 cm) — stabile per costruzione;
    - staff: nessun dato fisico, solo il mestiere.
    NOTA: l'handoff del 22/09 diceva «non scrivere statura»; il PO oggi chiede altezza e peso: vince la direttiva del PO. */
+/* [giro 369 · PO-419] UNA SOLA SORGENTE per statura e peso dell'eroe. Misura prima (misura-369, 5 carriere): la creazione
+   calcolava la figurina sulla chiave «avatar-N» (seme qualunque: 187/80) e la carriera sull'aspetto del corpo 3D (170/63) → 5
+   coppie diverse su 5. Ora il numero nasce qui, dalla stessa formula del corpo 3D (`_heroAppr`: statura 1,86-2,02, corporatura
+   0,97-1,07), si scrive nel salvataggio (player.altezzaCm/pesoKg, alla creazione o con la migration additiva: gli stessi
+   valori che la carriera mostrava gia') e ogni figurina dell'eroe legge il campo salvato. Rosso __CPM_NO_G369 = com'era. */
+function fisicoEroe369(avatarId){const a=Math.abs(avatarId|0),hh=1.86+((a*73)%100)/100*0.16,gg=0.97+((a*131)%100)/100*0.10;
+  const cm=Math.round(165+(hh-1.82)/0.24*30);return {cm,kg:Math.round(22.4*(cm/100)*(cm/100)*gg)};}
+function piedeTesto369(f){return f==="L"?"piede sinistro":"piede destro";}
 const _MESTIERE23={giornalista_f:"Giornalista",mister:"Allenatore",arbitro:"Arbitro",giornalista:"Giornalista",procuratore:"Procuratore",dirigente:"Dirigente"};
-function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
+function datiFigurina23(tipo,chiave,nome,ruolo,col,col2,fis369){
   const t=tipo||"giocatore",sl=_slugVolto(chiave!=null?chiave:nome),E=_eroe23();
   const eroe=t==="giocatore"&&E&&(/^eroe(-|$)/.test(sl)||(E.nome&&(sl===_slugVolto(E.nome)||_slugVolto(nome||"")===_slugVolto(E.nome))));
   let n=nome||(eroe?E.nome:null);if(!n&&t!=="giocatore"&&t!=="avversario"&&chiave&&/[a-zà-ü]\s+[a-zà-ü]/i.test(String(chiave)))n=String(chiave);
@@ -553,7 +562,8 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
   if(t==="giocatore"||t==="avversario"){try{let hh,gg;
     if(eroe&&E.avatarId!=null){const a=E.avatarId|0;hh=1.86+((a*73)%100)/100*0.16;gg=0.97+((a*131)%100)/100*0.10;}
     else if(typeof appearanceFromSeed==='function'){const ap=appearanceFromSeed(hashStr(t+"/"+sl));hh=ap.height;gg=ap.girth;}
-    if(hh){cm=Math.round(165+(hh-1.82)/0.24*30);kg=Math.round(22.4*(cm/100)*(cm/100)*gg);}}catch(_e){}}
+    if(hh){cm=Math.round(165+(hh-1.82)/0.24*30);kg=Math.round(22.4*(cm/100)*(cm/100)*gg);}}catch(_e){}
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G369)){const F=fis369||(eroe&&E&&E.cm?{cm:E.cm,kg:E.kg}:null);if(F&&F.cm){cm=F.cm;kg=F.kg;}}}/* [giro 369] campo salvato (o quello passato dalla creazione) */
   /* in partita: compagni nei colori di casa, avversari nei colori dell'avversario (maglie in campo, `__CPM_PARTITA23`) */
   const PT=(typeof window!=='undefined'&&window.__CPM_PARTITA23)||null;const sq=PT?(t==="avversario"?PT.avv:(t==="giocatore"?PT.casa:null)):null;
   return {eroe,nome:nomeP,cognome,ruolo:ruolo||(eroe?E.ruolo:null)||_MESTIERE23[t]||(t==="avversario"?"Avversario":null),cm,kg,
@@ -578,8 +588,8 @@ const _FONT23="'Barlow','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-ser
 function _passoFS23(t,disp,scala,peso){for(const f of scala){if(_largTesto23(t,f,peso)<=disp)return f;}return null;}
 /* [23/09 POC] cifre in euro leggibili: 1.000 €, 25.000 €, 1,2 mln € */
 function fmtEuro23(v){v=Math.round(+v||0);if(Math.abs(v)>=1e6)return (v/1e6).toLocaleString('it-IT',{maximumFractionDigits:1})+" mln €";return v.toLocaleString('it-IT')+" €";}
-function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,chiave}){
-  const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2);
+function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,chiave,fis369}){
+  const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2,fis369);
   const c1=D.col||TH.primary,c2=D.col2||TH.primaryDk||TH.primary;
   const vecchia=typeof window!=='undefined'&&window.__CPM_NO_CORNICE23B;
   /* [23/09 POC — collaudo PO «il contorno della figurina taglia troppo la foto», miniatura 41 px del pop-up]

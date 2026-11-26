@@ -423,6 +423,8 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
   const _cand23=candidatiEroe23(avatarId);const voltoScelto=_cand23.length?_cand23[voltoVar%_cand23.length]:null;
   const[archetypeId,setArchetypeId]=useState("finalizzatore");/* [giro 67 PO-098] 4 stili */
+  /* [giro 369 · PO-419] piede scelto alla creazione: il preselezionato e' quello di sempre (F8, da nome+nazione) finche' non lo si tocca */
+  const[piede369,setPiede369]=useState(null);const _no369=(typeof window!=='undefined'&&window.__CPM_NO_G369);const _piedeDef369=(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R";const _piede369=(!_no369&&piede369)||_piedeDef369;const _fis369=fisicoEroe369(avatarId);
   const[enfant67,setEnfant67]=useState(false);/* [giro 67 PO-098] Enfant Prodige: tratto di crescita, non piu' uno stile */
   const _unico75=stileUnico75();/* [giro 75 PO 19/10] stile unico: niente griglia degli stili, niente Enfant. Rosso __CPM_NO_STILEUNICO75 */
   const[challengeId,setChallengeId]=useState(null);
@@ -440,7 +442,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!_unico75&&!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:_piede369,...(_no369?{}:{altezzaCm:_fis369.cm,pesoKg:_fis369.kg}),archetype:arc,tratti:{enfant:!_unico75&&!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -460,7 +462,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>👤 Identità</div>
           <div style={{display:"flex",justifyContent:"center"}}>
-            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} voltoId={voltoScelto} nome={name.trim()||"Il tuo nome"} ruolo="Attaccante" larg={143}/>
+            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} voltoId={voltoScelto} nome={name.trim()||"Il tuo nome"} ruolo="Attaccante" larg={143} fisico369={_no369?null:_fis369}/>
           </div>
           <div>
             <label style={lbl}>Aspetto calciatore</label>
@@ -487,6 +489,9 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
             onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>
             {!_no115("30")&&<div data-cpm="nome-contatore" aria-live="polite" style={{display:"flex",justifyContent:"space-between",gap:8,marginTop:4,fontSize:FS.caption,color:name.length>=NOME_MAX115?TH.txAmber:TH.muted}}><span>{name.length>=NOME_MAX115?"Hai raggiunto il limite: abbrevia il secondo nome se serve":" "}</span><span style={{fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{name.length}/{NOME_MAX115}</span></div>}{/* [giro 115 G184-30] il limite si vede: prima il nome veniva troncato in silenzio · [G184-31] Invio porta alla nazionalita', non avvia i provini · [G184-32] il campo resta in vista quando si apre la tastiera */}{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
           <div><label style={lbl}>Nazionalità</label><select data-cpm="crea-nazione" className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
+          {!_no369&&<div><label style={lbl}>Piede preferito</label><div data-cpm="crea-piede369" role="group" aria-label="Piede preferito" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+            {[["R","Destro"],["L","Sinistro"]].map(([k,t])=>{const sel=_piede369===k;return(<button key={k} type="button" data-piede={k} aria-pressed={sel} onClick={()=>setPiede369(k)} className="cpm-t40" style={{padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,color:sel?TH.brandText:TH.text,fontSize:FS.small,fontWeight:FW.bold,cursor:"pointer",fontFamily:"inherit"}}>{t}</button>);})}
+          </div></div>}{/* [giro 369 · PO-419] piede scelto alla creazione (default = F8) */}
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -2744,6 +2749,8 @@ function migratePlayer(player){
     if(!('teamChemistry' in newP)){newP={...newP,teamChemistry:60};changed=true;}
     // F8 (5.29.0): piede preferito (~22% mancini, deterministico da nome+nazione)
     if(!('foot' in newP)){newP={...newP,foot:(Math.abs(hashStr((newP.name||"")+(newP.nation||"")))%100)<22?"L":"R"};changed=true;}
+    // [giro 369 · PO-419] statura e peso salvati (sorgente unica): additiva, gli stessi numeri che la carriera mostrava gia' (formula del corpo 3D)
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G369)&&!(newP.altezzaCm>0&&newP.pesoKg>0)&&newP.avatarId!=null){const _f369=fisicoEroe369(newP.avatarId);newP={...newP,altezzaCm:_f369.cm,pesoKg:_f369.kg};changed=true;}
     // [giro 6, decisione PO 11/10] club con nomi reali rinominati: rimappo i nomi salvati. Idempotente, senza bump SAVE.
     {const _ncl=_renameClub6(newP.club&&newP.club.n);
      const _chg=(arr,k)=>(arr||[]).some(x=>x&&_renameClub6(x[k])!==x[k]);

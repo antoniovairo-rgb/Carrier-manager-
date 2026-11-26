@@ -32,7 +32,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.215";/* [7.999.215] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45672152539): Unione sviluppo/giro366-volano in lavoro/201. Rossi dichiarati: quelli della 7.999.214. */
+const GAME_VERSION="7.999.216";/* [7.999.216] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45817258043): Unione sviluppo/giro364-fasce in lavoro/201 · Unione sviluppo/giro367-tiri-fuori in lavoro/201 · Unione sviluppo/giro368-nomi in lavoro/201 · Unione sviluppo/giro369-profilo in lavoro/201 · Unione sviluppo/giro370-sostieni in lavoro/201 · Unione sviluppo/giro371-prima-giornata in lavoro/201 · Unione sviluppo/giro382-reazione in lavoro/201. Rossi dichiarati: quelli della 7.999.215. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -72,7 +72,11 @@ const privacy134On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G134P);
    (start_url del manifest TWA e urlAvvio del progetto Android) oppure il referrer comincia con android-app://com.korward.elite; il segno
    resta per la sessione della scheda (sessionStorage «cpm-app-twa»). display-mode standalone NON basta: e' vero anche per la PWA
    installata dal sito, che non passa dallo store. Rosso: window.__CPM_NO_G260 (il pulsante torna anche nell'app). */
-const donazioneVisibile260=()=>!!DONATION_URL&&!(typeof window!=="undefined"&&window.__CPM_APP_TWA&&!window.__CPM_NO_G260);
+/* [giro 370 · decisione PO 26/11 01:30 «Mostralo subito, come PLINTO»] la decisione del 17/11 e' ANNULLATA: il «Sostieni il progetto»
+   torna anche dentro l'app (TWA), con la stessa disposizione del sito (filo a sinistra di «Idee e feedback»). Il criterio del giro 120
+   (window.__CPM_APP_TWA) resta per le altre differenze sito/app, che non cambiano. __CPM_NO_G260 non ha piu' effetto. Rosso:
+   window.__CPM_NO_G370 rinasconde il pulsante nell'app (comportamento del giro 260). */
+const donazioneVisibile260=()=>!!DONATION_URL&&!(typeof window!=="undefined"&&window.__CPM_APP_TWA&&window.__CPM_NO_G370);
 const openDonation=()=>{try{if(!donazioneVisibile260())return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
 // #6: indirizzo feedback OFFUSCATO (non in chiaro nel sorgente) — ricomposto a runtime dai char-code → niente scraping banale
 const _feedbackTo=()=>String.fromCharCode(107,111,114,119,97,114,100,46,100,101,118,116,101,97,109,64,103,109,97,105,108,46,99,111,109);/* [21/09 · direttiva PO: «la mail delle idee non deve essere inviata piu' alla mia mail, ma a korward.devteam@gmail.com»] La casella personale del PO esce dal gioco. Resta l'offuscamento in codici di carattere: e' li' perche' un indirizzo scritto in chiaro dentro una pagina pubblica viene raccolto dai raccoglitori di spam, e la casella nuova merita la stessa protezione della vecchia. */

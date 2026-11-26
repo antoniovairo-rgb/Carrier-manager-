@@ -2893,6 +2893,9 @@ function buildHLTimeline(hl,o){
   /* [7.775.0] il terzo uomo entra solo se la scena dichiara supporto: senza compagni vicini la giocata resta a due. */
   const _tre775=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO775)return false;}catch(_e){}const _s=o.support;return (typeof _s==='number')?_s>=1:!!_s;})();
   const set=(id,x,y)=>{A[id]=[clamp(x,2,98),clamp(y,2,98)];};
+  /* [giro 364 PO-650 «le azioni sulle fasce»] interruttori: __CPM_NO_G364 (tutto il giro) · A = l'eroe resta largo · R = «rientra e tira» rientra davvero */
+  const _no364=(k)=>{try{return typeof window!=='undefined'&&!!(window.__CPM_NO_G364||window['__CPM_NO_G364'+k]);}catch(_e){return false;}};
+  const _lat364=Math.abs(sy-50),_sg364=sy>=50?1:-1;let _m364=null;
   /* [7.999.79 taccuino PO SIT #151 «l'eroe entra troppo nella porta, si accavalla con il palo»] MISURATO: le corse del
      build-up spostano l'eroe di +15/+24 limitate solo dalla LINEA DI PORTA (98): da x 92 finiva a 97-98, nello specchio,
      e il pallone rotolava lungo la linea prima di entrare. Chi attacca (eroe e compagni) conclude DENTRO l'area, mai
@@ -2930,6 +2933,16 @@ function buildHLTimeline(hl,o){
     set('DEF1',sx+8,sy);
     B('slow',0.35,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+5,sy,true),mv('DEF1',sx+7,sy)]);
     B('feint',0.30,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+6,clamp(sy+side*3,6,94),true),mv('DEF1',sx+8,clamp(sy+side*5,6,94))]);
+    /* [giro 364 PO-650, rosso __CPM_NO_G364R] «RIENTRA E TIRA» RIENTRA. MISURATO (misura-364, 4 punti di fascia): l'eroe partiva
+       a z 19-23 e tirava da z 19-23 (accentramento 0,2-0,5 u), cioe' dalla linea laterale a 18-28 u dalla porta, quasi senza angolo:
+       lo scatto finale andava di 2 verso l'ESTERNO. Da largo (18 o piu' dal centro), se l'azione promette il rientro, lo scatto
+       taglia dentro fino a 11 dal centro (dentro la larghezza dell'area piccola piu' un passo) e avanza meno; il marcatore resta
+       sull'esterno, saltato. Le altre conduzioni e i dribbling non larghi restano com'erano. */
+    if(_lat364>=18&&!_no364('R')&&/rientr|accentr|converg|taglia dentro/i.test(String(o.lbl||''))){
+      const _yi=50+_sg364*11,_xb=Math.min(sx+11,90);
+      beats[beats.length-1]={tag:'feint',dur:0.30,ball:{from:'HERO',to:'HERO',kind:'dribble'},moves:[mv('HERO',sx+5,clamp(sy-_sg364*4,6,94),true),mv('DEF1',sx+8,clamp(sy+_sg364*2,6,94))]};
+      B('burst',0.40,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',_xb,_yi,true),mv('DEF1',sx+7,clamp(sy+_sg364*1,6,94))]);
+    } else
     B('burst',0.40,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+16,clamp(sy-side*2,6,94),true),mv('DEF1',sx+7,clamp(sy+side*6,6,94))]);
     concl('HERO','shot');
   } else if(pat==='BALL_CARRY'){// CONDUZIONE PALLA AL PIEDE: l'eroe guida il pallone in avanti, cambia direzione per evitare un avversario in chiusura, poi accelera nello spazio e conclude. La palla resta sui piedi dell'eroe per tutta la conduzione (no teletrasporti).
@@ -2938,6 +2951,33 @@ function buildHLTimeline(hl,o){
     B('carry',0.46,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+8,clamp(sy+side*2,6,94),true),mv('DEF1',sx+11,clamp(sy,6,94))]);
     B('drive',0.54,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+24,clamp(sy+side*1,6,94),true),mv('DEF1',sx+13,clamp(sy+side*3,6,94))]);
     concl('HERO','shot');
+  } else if((pat==='NEAR_POST_CROSS'||pat==='FAR_POST_CROSS'||pat==='CUTBACK')&&_lat364>=18&&!_no364('A')){
+    /* [giro 364 PO-650 «si accentra l'eroe», rosso __CPM_NO_G364A] IL CROSS DALLA FASCIA SI FA DALLA FASCIA.
+       MISURATO (misura-364, GLB acceso, 33 scene dal motore in 4 punti): in OGNI scena di cross l'eroe si accentrava di 8,4-8,5 u
+       prima di crossare (z 23,1 -> 14,7; 19 -> 10,6: dentro la larghezza dell'area), il cross era lungo 2,7-19 u (mediana 9) e i due
+       compagni piu' vicini venivano richiamati ACCANTO a lui sulla fascia invece di attaccare l'area. Causa: nel ramo qui sotto
+       `side` punta verso il CENTRO (e' -1 con y >= 50), quindi «sy+side*11/12» portava l'eroe 12 unita' dentro il campo; e nel
+       motore, all'apertura di una scena di fascia, in area non c'e' nessun compagno 128 volte su 154 (banco node, 300 partite).
+       Ora, da largo (18 o piu' dal centro): l'eroe corre LUNGO la fascia e si allarga fino a 32-42 dal centro (fuori dall'area
+       disegnata, che e' larga 29,65); mentre lui corre, il rifinitore attacca il suo palo e un secondo uomo l'altro (MATE3), con
+       due marcatori che li seguono; la spalla resta in appoggio interno. Niente scambio corto prima del cross: l'azione e'
+       conduzione, uno contro uno, cross. Il volo vero lo fa la conclusione (src/12), che parte dal punto raggiunto dal rifinitore. */
+    const far=(pat==='FAR_POST_CROSS'),cut=(pat==='CUTBACK');
+    const yW=50+_sg364*clamp(_lat364+3,32,42),xC=Math.min(sx+15,93),yIn=(k)=>clamp(yW-_sg364*k,4,96);
+    const tgt=far?[GX-6.5,50-_sg364*7.5]:cut?[GX-11,50+_sg364*2.5]:[GX-6.5,50+_sg364*6.5];
+    const tg2=far?[GX-7,50+_sg364*6]:[GX-8,50-_sg364*8];
+    const fin=far?'MATE2':'MATE1',sp=far?'MATE1':'MATE2';
+    const xa=Math.max(sx+3,79);
+    set(fin,xa,50+_sg364*(far?-13:14)); set(sp,sx+5,yIn(9)); set('MATE3',xa,50+_sg364*(far?12:-12));
+    set('DEF1',GX-13,tgt[1]+_sg364*2); set('DEF2',GX-12,tg2[1]-_sg364*2); set('DEF3',sx+7,yIn(3));
+    const mid=(a,b,k)=>[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];
+    const f1=mid(A[fin],tgt,0.45),f2=mid(A[fin],tgt,0.78),s1=mid(A.MATE3,tg2,0.45),s2=mid(A.MATE3,tg2,0.8);
+    B('carry',1.15,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+9,sy+(yW-sy)*0.6,true),mv('DEF3',sx+11,yIn(2.5)),mv(fin,f1[0],f1[1],true),mv('MATE3',s1[0],s1[1],true),mv(sp,sx+9,yIn(10),true)]);
+    B('beat',0.80,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',xC,yW,true),mv('DEF3',xC-3,yIn(4)),mv(fin,f2[0],f2[1],true),mv('MATE3',s2[0],s2[1],true),mv(sp,xC-7,yIn(11),true),mv('DEF1',tgt[0]+1,tgt[1]+_sg364*2.5),mv('DEF2',tg2[0]+1,tg2[1]-_sg364*2.5)]);
+    B('cross',0.55,{from:'HERO',to:{pt:tgt},kind:'cross'},[mv(fin,tgt[0],tgt[1],true),mv('MATE3',tg2[0],tg2[1],true),mv('DEF1',tgt[0]+1,tgt[1]+_sg364*2),mv('DEF2',tg2[0]+1,tg2[1]-_sg364*2)]);
+    B('control',0.18,{from:{pt:tgt},to:fin,kind:'carry'},[]);
+    concl(fin,headerFinish?'header':'shot');
+    _m364={fin,sp,due:'MATE3',tgt:tgt.slice(),tg2:tg2.slice(),sg:_sg364,yW,xC};
   } else if(pat==='NEAR_POST_CROSS'||pat==='FAR_POST_CROSS'||pat==='CUTBACK'){// CROSS: conduzione, 1v1, cross, inserimenti, marcature, conclusione
     set('MATE1',sx+6,clamp(sy+side*4,6,94)); set('MATE2',sx+10,clamp(sy-side*8,6,94));
     set('DEF1',sx+12,clamp(sy-side*2,6,94)); set('DEF2',sx+14,clamp(sy-side*6,6,94)); set('DEF3',sx+6,clamp(sy+side*9,6,94));
@@ -3009,7 +3049,7 @@ function buildHLTimeline(hl,o){
     const _i148=beats.findIndex(b=>b&&b.ball&&b.ball.from==='HERO');
     if(_i148>=0)beats.splice(_i148,0,{tag:'feint',dur:hl.pre==='roulette'?0.9:0.5,ball:{from:'HERO',to:'HERO',kind:'dribble'},moves:[]});
   }
-  return{actors:A,beats,meta:{pattern:pat,type,variant,pre:hl.pre||null}};
+  return{actors:A,beats,meta:{pattern:pat,type,variant,pre:hl.pre||null,...(_m364?{g364:_m364}:{})}};
 }
 // Validatore delle INVARIANTI calcistiche (le "regole obbligatorie" come check logici).
 // Ritorna un array di violazioni (vuoto = timeline coerente).

@@ -333,7 +333,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[figAperta23,setFigAperta23]=useState(false);/* [23/09 POC] la figurina completa dell'eroe, aperta toccando la miniatura in testata */
   /* [23/09 POC — FIGURINE] l'eroe pubblica chi e' e quale volto ha: tutte le schermate che lo chiamano per nome, «eroe-N» o
      «avatar-N» portano allo stesso volto, che nessun altro attore puo' ricevere. */
-  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n)};}catch(_e){}}
+  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n),cm:player&&player.altezzaCm,kg:player&&player.pesoKg};}catch(_e){}}
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
@@ -3762,7 +3762,7 @@ const getThisWeekMatchday=()=>{
           const _stR=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
           const _iM=_stR.findIndex(t=>t&&(t.id===(p.club&&p.club.id)||(t.n||t.name)===(p.club&&p.club.n)));
           const _iR=_stR.findIndex(t=>t&&(t.id===_rvC.id||(t.n||t.name)===_rvC.n));
-          if(_iM>=0&&_iR>=0){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
+          if(_iM>=0&&_iR>=0&&classificaViva371(_stR,p.club&&p.club.id,p.club&&p.club.n)/* [giro 371 · PO-420] a 0 punti l'ordine non e' un verdetto */){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
             _ang.push(_a<_b?`Voi ${_a}° e loro ${_b}°: vincere oggi è il messaggio più chiaro che possiate mandare al campionato.`
               :_a>_b?`Loro ${_b}°, voi ${_a}°: ${_dp} punt${_dp===1?"o":"i"} da recuperare, e la prima occasione arriva proprio contro di lui.`
               :`Stesso posto in classifica, ${_a}° in condivisione: chi vince oggi resta lassù, l'altro scivola.`);}
@@ -8319,7 +8319,7 @@ const getThisWeekMatchday=()=>{
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
         const mi=st.findIndex(x=>x.id===player.club?.id);
-        const gap0=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        const gap0=mi<0?null:!classificaViva371(st,player.club&&player.club.id,player.club&&player.club.n)?"Si parte da zero"/* [giro 371 · PO-420] niente «−0 dalla vetta» */:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
         /* [giro 298 PO-571] la riga segue l'obiettivo del club (rigaObiettivo298). Finche' nessuno ha giocato resta la riga di prima: la 1ª giornata e' di PO-420 (199). Rosso __CPM_NO_G298 */
         const r298=(_g298()&&mi>=0&&st.some(x=>(x.played||0)>0))?rigaObiettivo298(player,st):null;const gap=r298?r298.testo:gap0;
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
@@ -8516,8 +8516,9 @@ const getThisWeekMatchday=()=>{
         const home=md.isHome!==false;
         const comp=_naz35?(md.competition||"Amichevole Internazionale"):md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
         const st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-        const myPos=_naz35?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
-        const oppPos=_naz35?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
+        const _viva371=classificaViva371(st,me.id,me.n);/* [giro 371 · PO-420] alla 1ª giornata nessuna posizione: c'e' il pronostico */
+        const myPos=(_naz35||!_viva371)?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
+        const oppPos=(_naz35||!_viva371)?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
         const cs=getContinuaState();
         const lab=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted}}>{t}</div>;
         const lab2=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.muted,whiteSpace:"nowrap"}}>{t}</div>;
@@ -8536,6 +8537,7 @@ const getThisWeekMatchday=()=>{
           if(_der)_imp=`${_der.e} ${_der.name}`;
           else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
             if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp=(typeof window!=="undefined"&&window.__CPM_NO_G106D)?"⚠️ Zona retrocessione":"⚠️ Avversario in zona retrocessione";/* [giro 106 D] la frase parla dell'AVVERSARIO (op = sua posizione): da sola finiva sotto la colonna del club del giocatore. Rosso __CPM_NO_G106D */else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          if(!_imp&&!_viva371&&!_naz35)_imp=pronostico371(_fm,_fo,home);/* [giro 371 · PO-420] */
           const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
           const _inf=[];if(_fo!=null)_inf.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_inf.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
           const _io=(t)=>t===me;
@@ -8646,6 +8648,7 @@ const getThisWeekMatchday=()=>{
               if(_der)_imp=`${_der.e} ${_der.name}`;
               else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
                 if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp=(typeof window!=="undefined"&&window.__CPM_NO_G106D)?"⚠️ Zona retrocessione":"⚠️ Avversario in zona retrocessione";/* [giro 106 D] la frase parla dell'AVVERSARIO (op = sua posizione): da sola finiva sotto la colonna del club del giocatore. Rosso __CPM_NO_G106D */else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          if(!_imp&&!_viva371&&!_naz35)_imp=pronostico371(_fm,_fo,home);/* [giro 371 · PO-420] */
               const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
               const _p=[];if(_fo!=null)_p.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_p.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
               if(!_p.length&&!_imp)return null;
@@ -11053,6 +11056,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textAlign:"center"}}>
                   <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:TINTE.testo}}>{player.name}</span>
                   <span style={{fontSize:FS.body,color:TINTE.sec}}>{[(player.age||18)+" anni",player.club&&(player.club.n||player.club.name),_rl].filter(Boolean).join(" · ")}</span>
+                  {!(typeof window!=='undefined'&&window.__CPM_NO_G369)&&<span data-cpm="profilo369" className="cpm-num" style={{fontSize:FS.body,color:TINTE.sec}}>{[player.altezzaCm?player.altezzaCm+" cm":"",player.pesoKg?player.pesoKg+" kg":"",piedeTesto369(player.foot)].filter(Boolean).join(" · ")}</span>}{/* [giro 369 · PO-419] statura, peso e piede dal salvataggio (sorgente unica) */}
                 </div>
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:_sb(10),flex:"1 1 300px",minWidth:0,maxWidth:560}}>
@@ -13352,7 +13356,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
         {donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:donazioneVisibile260()?"1px solid "+TH.cardBorder:"none"/* [giro 260] da solo nella riga (app), niente filo a sinistra */,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:donazioneVisibile260()?"1px solid "+TH.cardBorder:"none"/* [giro 260] da solo nella riga (app), niente filo a sinistra · [giro 370] di nuovo in coppia anche nell'app: il filo torna; senza filo solo col rosso __CPM_NO_G370 */,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:(_g234()&&testoGrande234())?"normal":"nowrap",lineHeight:(_g234()&&testoGrande234())?1.2:undefined}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&donazioneVisibile260()&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}

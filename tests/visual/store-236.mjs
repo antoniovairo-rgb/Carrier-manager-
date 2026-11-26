@@ -20,7 +20,8 @@
      S6 checklist (docs/store/CHECKLIST-PLAY-CONSOLE.md): il primo passo e' il parere legale sui nomi dei club;
      S7 pacchetto costruibile: tools/build-dist.mjs rifatto qui, dist/index.html presente e senza richiami a CDN;
      S8 [giro 260 → 365] TWA col numero d'app (versionName a due parti, es. 1.0, mai la GAME_VERSION; coerente con twa-manifest, versionCode > 2000);
-     S9 [giro 260] nessun «Sostieni il progetto» dentro l'app (?app=twa), che resta sul sito (rosso: window.__CPM_NO_G260).
+     S9 [giro 260 → 370] «Sostieni il progetto» presente sia sul sito sia dentro l'app (?app=twa), col filo a sinistra di «Idee»
+        (giro 260: assente nell'app; decisione PO 26/11 «Mostralo subito, come PLINTO»; rosso: window.__CPM_NO_G370 lo rinasconde nell'app).
    PROVA DEL ROSSO (CPM_PROVA_ROSSO=1): la parte G gira con window.__CPM_NO_G236 (+ __CPM_NO_G224 per G2, che e' del giro 224);
    la parte S gira su una COPIA guastata dei file (appId diverso, icona sbagliata, screenshot 1:1, email estranea, titolo lungo,
    checklist senza parere legale, dist vuota). Ogni controllo DEVE cadere; uscita 1 se un rosso non si vede.
@@ -220,33 +221,39 @@ async function parteG() {
   } finally { await browser.close(); srv.close(); }
 }
 
-/* ───────────────────── PARTE A (app): S9 — niente «Sostieni» dentro la TWA ───────────────────── */
+/* ───────────────────── PARTE A (app): S9 — «Sostieni» anche dentro la TWA (giro 370; fino al giro 260: niente «Sostieni») ───────────────────── */
 /* [giro 260 · decisione PO 17/11 B «Toglierlo nell'app store»] gioco vero SENZA ?cpmtest (dentro l'app le sonde sono spente: e' la
    build store), salvataggio di carriera, CONTINUA, poi si cerca il tasto per titolo nel DOM. Sito (nessun parametro): il tasto c'e'.
    App (?app=twa, il criterio del giro 120 in src/00-head.html): il tasto non c'e' e «Idee e feedback» si' (la riga e' disegnata, quindi
-   l'assenza e' giudicata). Rosso: app + window.__CPM_NO_G260 → il tasto torna e S9 deve cadere. */
+   l'assenza e' giudicata). Rosso: app + window.__CPM_NO_G260 → il tasto torna e S9 deve cadere.
+   [giro 370 · decisione PO 26/11 01:30 «Mostralo subito, come PLINTO»] rovesciato: il tasto deve esserci in ENTRAMBI, e «Idee e
+   feedback» deve avere il filo a sinistra in entrambi (stessa disposizione). Rosso: app + window.__CPM_NO_G370 → il tasto sparisce
+   dall'app e S9 deve cadere. Foto della barra a deviceScaleFactor 2 in out/store-370-barra-{sito,app}.png. */
 async function parteA() {
   const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser(); const out = {};
   try {
     for (const [k, q] of [['sito', ''], ['app', '?app=twa']]) {
-      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' }); const page = await ctx.newPage(); await installCdnRoutes(page);
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block' }); const page = await ctx.newPage(); await installCdnRoutes(page);
       const err = []; page.on('pageerror', e => err.push(String(e.message).slice(0, 140)));
-      await page.addInitScript(({ s, rosso }) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G260 = true; localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: s })); },
+      await page.addInitScript(({ s, rosso }) => { window.__CPM_GLB = false; if (rosso) window.__CPM_NO_G370 = true; localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: s })); },
         { s: { ...BASE, proStatus: 'pro', club: { ...CLUB, lg: 'Lega B', n: 'FC Cremona' }, week: 10, season: 2 }, rosso: ROSSO });
       await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${q}`, { waitUntil: 'load', timeout: 120000 });
       await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
       await sleep(1500); try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
       try { await page.waitForSelector('button[title="Invia idee e feedback allo sviluppatore"]', { state: 'attached', timeout: 30000 }); } catch (e) {}
       out[k] = await page.evaluate(() => ({ app: !!window.__CPM_APP_TWA, sost: document.querySelectorAll('button[title="Sostieni lo sviluppo di Korward Elite"]').length,
-        idee: document.querySelectorAll('button[title="Invia idee e feedback allo sviluppatore"]').length, testo: /Sostieni il progetto|Sostieni lo sviluppo/.test(document.body.innerText) }));
+        idee: document.querySelectorAll('button[title="Invia idee e feedback allo sviluppatore"]').length, testo: /Sostieni il progetto|Sostieni lo sviluppo/.test(document.body.innerText),
+        filo: (() => { const b = document.querySelector('button[title="Invia idee e feedback allo sviluppatore"]'); return !!b && getComputedStyle(b).borderLeftStyle === 'solid'; })() }));
       out[k].err = err.length;
-      if (!ROSSO && k === 'app') { fs.mkdirSync(path.join(ROOT, 'tests/visual/out'), { recursive: true }); await page.screenshot({ path: path.join(ROOT, 'tests/visual/out/store-260-app-senza-sostieni.png') }); }
+      if (!ROSSO) { fs.mkdirSync(path.join(ROOT, 'tests/visual/out'), { recursive: true });
+        const b = await page.$('button[title="Invia idee e feedback allo sviluppatore"]'); const r = b && await b.evaluate(x => { const p = x.parentElement.getBoundingClientRect(); return { x: 0, y: Math.max(0, p.top - 70), width: innerWidth, height: Math.min(innerHeight - Math.max(0, p.top - 70), p.height + 140) }; });
+        await page.screenshot({ path: path.join(ROOT, `tests/visual/out/store-370-barra-${k}.png`), ...(r ? { clip: r } : {}) }); }
       await ctx.close();
     }
   } finally { await browser.close(); srv.close(); }
   const S = out.sito || {}, A = out.app || {};
   const giudicato = S.idee > 0 && A.idee > 0 && A.app === true && S.app === false;
-  metti('S9', giudicato && S.sost > 0 && A.sost === 0 && !A.testo, `${giudicato ? '' : 'NON GIUDICATO · '}sito: app ${S.app} · «Sostieni» ${S.sost} · «Idee» ${S.idee} — app (?app=twa): app ${A.app} · «Sostieni» ${A.sost} (testo ${A.testo ? 'presente' : 'assente'}) · «Idee» ${A.idee}`);
+  metti('S9', giudicato && S.sost > 0 && A.sost > 0 && A.testo && S.filo && A.filo, `${giudicato ? '' : 'NON GIUDICATO · '}sito: app ${S.app} · «Sostieni» ${S.sost} · «Idee» ${S.idee} (filo ${S.filo ? 'si' : 'no'}) — app (?app=twa): app ${A.app} · «Sostieni» ${A.sost} (testo ${A.testo ? 'presente' : 'assente'}) · «Idee» ${A.idee} (filo ${A.filo ? 'si' : 'no'})`);
 }
 
 /* ───────────────────────────── esecuzione ───────────────────────────── */

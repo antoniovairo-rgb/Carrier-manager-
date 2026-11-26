@@ -23,7 +23,8 @@ async function pagina(init) { const ctx = await browser.newContext(VP); const pa
   if (init) await page.addInitScript(init.fn, init.arg); return { ctx, page }; }
 const scatta = async (page, nome) => { const f = path.join(OUT, nome); await page.screenshot({ path: f }); fatti.push(nome); console.log('  ✔ ' + nome); };
 /* [giro 260 · decisione PO 17/11 B] le schermate fuori partita si scattano COME NELL'APP (?app=twa, criterio del giro 120): e' cio' che
-   vede chi scarica dallo store, quindi senza «Sostieni il progetto». Dentro l'app le sonde di collaudo sono spente: la partita (05), che
+   vede chi scarica dallo store, quindi senza «Sostieni il progetto» [giro 370 · decisione PO 26/11 «Mostralo subito, come PLINTO»: ora
+   CON «Sostieni il progetto», come sul sito; gli screenshot gia' scattati senza restano validi finche' non si rifanno]. Dentro l'app le sonde di collaudo sono spente: la partita (05), che
    ha bisogno di una scena forzata, resta col banco ?cpmtest=1 (in partita il pulsante non c'e' comunque). */
 async function apri(page, q = '?app=twa') { await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${q}`, { waitUntil: 'load', timeout: 120000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); }
@@ -44,7 +45,8 @@ try {
       if (!chiuso) break; await sleep(900); }
     await page.evaluate(() => scrollTo(0, 0)); await sleep(600);
     const sost = await page.evaluate(() => document.querySelectorAll('button[title="Sostieni lo sviluppo di Korward Elite"]').length);
-    if (sost) throw new Error('«Sostieni il progetto» presente nella plancia scattata come app: screenshot non validi');
+    /* [giro 260] si fermava se trovava il tasto; [giro 370] ora il tasto ci deve essere anche nell'app: si ferma se MANCA */
+    if (!sost) throw new Error('«Sostieni il progetto» assente nella plancia scattata come app (giro 370: deve esserci): screenshot non validi');
     await scatta(page, '03-carriera.png');
     if (await clickByText(page, '^Classifica', 5000)) { await sleep(1800); await scatta(page, '04-plancia-classifica.png'); }
     await ctx.close(); }
