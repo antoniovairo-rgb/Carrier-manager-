@@ -38,7 +38,19 @@ async function costruisci(tpl, cap, rosso) {
   await page.evaluate(() => window.__CPM_FORCE_SIT(13, true));
   await page.waitForFunction(() => !!window.__CPM_PALI69, null, { timeout: 30000 }).catch(() => {});
   await page.evaluate(c => { window.__CPM_CAM904 = c; }, TV); await sleep(1800);
-  const w = await page.evaluate(() => ({ s: window.__CPM_STADI246 || null, fail: window.__CPM_STADFAIL || null, ri: (window.__CPM_RINFO769 && window.__CPM_RINFO769()) || null }));
+  /* [giro 386 · PO-516, stadi-071 instabile: 3 rossi su 5 sul banco] la vista TV non ha un costo fisso: a camera fissata, nella STESSA
+     pagina, i draw call vanno da 186 a 352 in 4 s (borgo, 10 letture ogni 400 ms) perche' la scena si muove; una vista «ferma» per 1,8 s
+     non arriva mai entro 25 s. Leggere UNA volta a 1,8 s confrontava due istanti a caso, sui riferimenti come sugli stadi nuovi (tedesco
+     fra 268 e 337 draw call in cinque corse). Ora ogni stadio si legge 20 volte (6 s) e si confronta il PICCO con il PICCO degli stadi di
+     oggi: la statistica piu' severa per il nuovo (il suo fotogramma piu' caro). Tetti e margine invariati. */
+  let calls = 0, tri = 0, n = 0, last = null;
+  const N386 = process.env.CPM_NO_G386 === '1' ? 1 : 20;/* CPM_NO_G386=1: lettura singola a 1,8 s come prima (rimisura dell'instabilita') */
+  for (let i = 0; i < N386; i++) {
+    const r = await page.evaluate(() => (window.__CPM_RINFO769 && window.__CPM_RINFO769()) || null);
+    if (r && r.calls > 0) { n++; calls = Math.max(calls, r.calls); tri = Math.max(tri, r.tri); last = r; } await sleep(300);
+  }
+  const w = await page.evaluate(() => ({ s: window.__CPM_STADI246 || null, fail: window.__CPM_STADFAIL || null }));
+  w.ri = n >= Math.ceil(N386 * 0.75) ? { ...last, calls, tri } : null; w.letture = n;
   await page.close(); return { ...w, errs };
 }
 const g = [];

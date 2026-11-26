@@ -8,12 +8,20 @@ import path from 'node:path';
 import { ROOT } from './lib/harness.mjs';
 const src = fs.readFileSync(path.join(ROOT, 'src', '14-motore-possesso.jsx'), 'utf8');
 const code = src.slice(src.indexOf('/* CMAV-SRC-HEADER-END */') + '/* CMAV-SRC-HEADER-END */'.length)
-  .replace("forza:{home:+o.forzaH||65,away:+o.forzaA||65},", "forza:{home:+o.forzaH||65,away:+o.forzaA||65},fin202:o.fin202||null,");
+  /* [giro 386 PO-516] dal giro 157 la chiamata di simulaPartitaMotore passa le forze corrette (_fH157/_fA157): la vecchia ancora
+     non esisteva piu' e il guardiano usciva rosso senza misurare niente (cieco). Ancora nuova, stessa misura, stesse soglie. */
+  .replace("forza:{home:_fH157,away:_fA157},", "forza:{home:_fH157,away:_fA157},fin202:o.fin202||null,")
+  /* [giro 386] la leva vive solo nella partita VISSUTA, e la vissuta non ha il fattore gol347 (giro 347: SOLO la simulazione rapida).
+     Misurando la leva sopra gol347 il guardiano giudicava un contesto che il gioco non produce mai (leva +2,8% invece di +28%). */
+  .replace("lato:'home',gol347:true", "lato:'home',gol347:false");
+if (!code.includes("gol347:false")) { console.error('❌ finale-202: ancora gol347 della simulazione non trovata (non giudicato)'); process.exit(1); }
 if (!code.includes('fin202:o.fin202')) { console.error('❌ finale-202: ancora della simulazione non trovata'); process.exit(1); }
 const sim = Function('decideExecution', 'window', code + '\nreturn simulaPartitaMotore;')(undefined, {});
 const LEVA = { home: 0.85, away: 1.3 };
 const braccio = (fin) => { let gf = 0, ga = 0; const N = 60; for (let s = 1; s <= N; s++) { const r = sim({ seed: s * 131, forzaH: 96, forzaA: 98, ovr: 93, stadio: s % 2 ? 'home' : 'away', fin202: fin }); gf += r.home; ga += r.away; } return { gf: +(gf / N).toFixed(3), ga: +(ga / N).toFixed(3) }; };
-const senza = braccio(null), con = braccio(LEVA);
+/* [giro 386] braccio rosso: CPM_ROSSO=1 (o CPM_NO_G386=1) toglie la leva anche al secondo braccio → i bracci coincidono e il guardiano DEVE uscire rosso */
+const ROSSO = process.env.CPM_ROSSO === '1' || process.env.CPM_NO_G386 === '1';
+const senza = braccio(null), con = braccio(ROSSO ? null : LEVA);
 console.log(JSON.stringify({ senza, con }));
 const ok = con.ga >= senza.ga * 1.12 && con.gf <= senza.gf;
 console.log(ok ? '✅ finale-202 verde (la leva sposta i gol subiti e non gonfia i fatti)' : '❌ finale-202 ROSSO'); process.exit(ok ? 0 : 1);

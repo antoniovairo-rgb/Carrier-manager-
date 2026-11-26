@@ -47044,14 +47044,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {(()=>{/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] le connessioni della gara */
             const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
             if(!_gv.length&&!_rc.length)return null;
-            const _row=(icon,lbl,arr,col)=>arr.length?(<div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 9px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`,marginBottom:6}}>
-              <span style={{fontSize:FS.body,flexShrink:0}}>{icon}</span>
+            /* [giro 386] _st386 (righe affiancate): l'icona passa sulla riga dei nomi, cosi' l'etichetta non va a capo nella colonna stretta */
+            const _row=(icon,lbl,arr,col,_st386)=>arr.length?(<div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 9px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`,marginBottom:6}}>
+              {!_st386&&<span style={{fontSize:FS.body,flexShrink:0}}>{icon}</span>}
               <div style={{minWidth:0}}><div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5}}>{lbl}</div>
-                <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
+                <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,lineHeight:1.5}}>{_st386?icon+" ":null}{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
             </div>):null;
+            /* [giro 386 · PO-516, rassegna-200 rosso dalla 196: scheda 2 a 1,35 schermi su 375x667, tetto 1,3] con entrambe le connessioni
+               le due righe stanno AFFIANCATE (come «in numeri») invece che impilate: stesso contenuto, una riga in meno (~54 px).
+               Rosso __CPM_NO_G386 = impilate. */
+            const _due386=_gv.length&&_rc.length&&!(typeof window!=='undefined'&&window.__CPM_NO_G386);
             return(<Sez210 id="post-connessioni" titolo="Le connessioni" icona="🔗">
+              {_due386?(<div data-cpm="conn386" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+                {_row("🎯","Assist serviti a",_gv,TH.primary,true)}
+                {_row("⚽","Gol su assist di",_rc,TH.warning,true)}
+              </div>):(<>
               {_row("🎯","Assist serviti a",_gv,TH.primary)}
               {_row("⚽","Gol su assist di",_rc,TH.warning)}
+              </>)}
             </Sez210>);
           })()}
           </div>

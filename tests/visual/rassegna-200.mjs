@@ -38,9 +38,12 @@ async function giocaFino(modo, init, vel) {
   return { A, g };
 }
 /* ---------- A. verde, soli highlight ---------- */
-console.log('A) verde — soli highlight');
+/* [giro 386 · PO-516] CPM_NO_G386=1: braccio A con __CPM_NO_G386 (connessioni impilate, come fino alla 7.999.215): la scheda 2
+   torna oltre il tetto e il guardiano DEVE uscire rosso (prova che il rimedio e' quello che lo fa passare). */
+const NO386 = process.env.CPM_NO_G386 === '1';
+console.log('A) verde — soli highlight' + (NO386 ? ' · ROSSO DEL GIRO 386 (__CPM_NO_G386)' : ''));
 {
-  const { A, g } = await giocaFino('solo', {});
+  const { A, g } = await giocaFino('solo', NO386 ? { __CPM_NO_G386: 1 } : {});
   const p = A.page;
   try {
     ok(verde, g.finita, `partita a soli highlight finita (${JSON.stringify(g.score)})`);
@@ -70,6 +73,11 @@ console.log('A) verde — soli highlight');
     ok(verde, true, `misure schede ${misure.join(' ')} · pagina unica ${mR ? mR.schermi : '?'}`);
   } catch (e) { ok(verde, false, 'non giudicato: ' + String(e.message).slice(0, 160)); }
   await A.b.close(); A.srv.close();
+}
+if (NO386) {/* [giro 386] solo il braccio A: B, C e R non dipendono dalle connessioni. Verde qui = guardiano cieco al rimedio. */
+  const passa = verde.every(x => x[0]);
+  console.log(passa ? '✗ rosso del giro 386 NON bocciato (A verde con le connessioni impilate)' : '✓ rosso del giro 386 bocciato (A rosso con le connessioni impilate)');
+  console.log('✗ rassegna-200 ROSSO (braccio CPM_NO_G386)'); process.exit(1);
 }
 /* ---------- B. verde, partita intera ---------- */
 console.log('B) verde — partita intera (velocita\' 2)');
