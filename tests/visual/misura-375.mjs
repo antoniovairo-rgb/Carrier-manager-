@@ -10,17 +10,19 @@ export async function misura375(b, port, rosso, log = console.log) {
   await pg.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PUN343 = []; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; if (r) window.__CPM_NO_G375 = 1; }, rosso);
   await openMatch(pg, port, { skipLoadAll: true, name: 'Bar375' }); await sleep(800);
   await pg.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 60000 }).catch(() => {});
-  const cat = await pg.evaluate(() => SITUATIONS.map((s, i) => ({ i, ok: /punizion/i.test(s.text || '') || s.intent === 'freekick' })).filter(q => q.ok).map(q => q.i));
+  const cat = await pg.evaluate(() => SITUATIONS.map((s, i) => ({ i, ok: s.intent === 'freekick' /* [giro 406] la stessa regola del gioco (_hlSetPiece, src/15): «Guadagna una punizione!» (gi150) e' un dribbling, non una punizione */ })).filter(q => q.ok).map(q => q.i));
   const PUNTI = [[79, 50], [80.5, 38], [78, 64], [74, 30], [72, 72]];
   const motore = await pg.evaluate((PU) => PU.map(([x, y]) => { try { const sit = scenaDalMotorePiazzato({ tipo: 'punizione', x, y, cast: {} }, { name: 'Validator', stats: { tiro: 70, tecnica: 70, passaggio: 70 }, ovr: 70 }, 7);
     if (!sit) return null; const z = sit.startZone; return { idx: SITUATIONS.push(sit) - 1, pos: { x: z.x[1], y: Math.round((z.y[0] + z.y[1]) / 2 * 10) / 10 } }; } catch (e) { return null; } }).filter(Boolean), PUNTI);
   const scene = [...cat.map(i => ({ idx: i, pos: null })), ...motore];
-  const out = [];
+  const out = []; const visti = []; /* [giro 406] chiavi delle scene gia' lette: una voce col tasto della scena PRIMA (scritta dopo
+     l'azzeramento, finche' il cambio di scena non e' arrivato al 3D) non e' una misura della scena nuova — in locale gi150 «passava» coi dati di gi81 */
   for (const sc of scene) {
     await pg.evaluate(([i, p]) => { window.__CPM_PUN343.length = 0; window.__CPM_FORCE_SIT(i, true, p || undefined); window.__CPM_FROZEN = false; }, [sc.idx, sc.pos]);
     await pg.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose', null, { timeout: 20000 }).catch(() => {});
     await sleep(+(process.env.CPM_ATTESA375 || 3600));
-    const w = await pg.evaluate(() => { const W = window.__CPM_PUN343; const r = W.length ? JSON.parse(JSON.stringify(W[W.length - 1])) : null; if (r) r.tg = (window.__CPM_MUR72 || []).map(t => [+((t.x + (t.rx || 0)) - 50).toFixed(2), +(((t.y + (t.ry || 0)) - 50) * 0.68).toFixed(2)]); return r; });
+    const w = await pg.evaluate((V) => { const W = window.__CPM_PUN343.filter(q => !V.includes(q.k)); const r = W.length ? JSON.parse(JSON.stringify(W[W.length - 1])) : null; if (r) r.tg = (window.__CPM_MUR72 || []).map(t => [+((t.x + (t.rx || 0)) - 50).toFixed(2), +(((t.y + (t.ry || 0)) - 50) * 0.68).toFixed(2)]); return r; }, visti);
+    if (w && w.k != null) visti.push(w.k);
     if (!w || !w.pm || !w.pm.length) { out.push({ idx: sc.idx, ng: w ? 'barriera assente' : 'non punizione' }); continue; }
     const gx = 48.6, gz = 0, dx = gx - w.x, dz = gz - w.z, dn = Math.hypot(dx, dz) || 1, ux = dx / dn, uz = dz / dn;
     const cx = w.pm.reduce((a, q) => a + q[0], 0) / w.pm.length, cz = w.pm.reduce((a, q) => a + q[1], 0) / w.pm.length;
