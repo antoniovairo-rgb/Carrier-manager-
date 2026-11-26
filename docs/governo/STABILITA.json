@@ -1,5 +1,102 @@
 [
  {
+  "data": "2026-11-26 00:02",
+  "versione": "7.999.215",
+  "catena": "giro",
+  "passi": [
+   {
+    "passo": "profilo-369",
+    "ok": true,
+    "s": 88
+   },
+   {
+    "passo": "mappa-unica",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 169
+   },
+   {
+    "passo": "render-3d-023",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "tunnel-285",
+    "ok": true,
+    "s": 164
+   },
+   {
+    "passo": "home-298",
+    "ok": true,
+    "s": 119
+   },
+   {
+    "passo": "web-237",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 300
+   },
+   {
+    "passo": "battito-264",
+    "ok": true,
+    "s": 375
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 632
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 185
+   },
+   {
+    "passo": "schermate-97",
+    "ok": true,
+    "s": 111
+   }
+  ]
+ },
+ {
   "data": "2026-11-25 21:35",
   "versione": "7.999.212",
   "catena": "giro",
