@@ -94,7 +94,7 @@ Fuori ambito, non toccato: decisione del mister, `calcSquadRole`, interviste, im
 
 - `npm run giudizi-372` (verde + rosso, ~1,5 min a braccio con le impostazioni di base 3 carriere × 2 stagioni): **verde**; il
   rosso cade come deve: «più panchina» con fiducia ≥ 70 e sfiducia nella verifica con fiducia alta.
-- `node ci-runner.mjs giro giudizi-372` (guardiano + 17 sentinelle): esito nella sezione «Esito del giro» qui sotto.
+- `node ci-runner.mjs giro giudizi-372` (guardiano + 17 sentinelle): **18/18 verdi** (sezione «Esito del giro»).
 - `npm run mappa-unica`: verde.
 
 **Guardiani della zona NON girati** (li giudica il treno): gli altri della riga `src/18-|src/10-` (tra cui `rinnovo-354`,
@@ -126,4 +126,10 @@ hanno gli stessi valori.
 
 ## Esito del giro
 
-(compilato a fine corsa)
+`node ci-runner.mjs giro giudizi-372` sul commit 1f22551 (build 7.999.215): **18/18 verdi**, nessun passo instabile.
+giudizi-372 68 s (verde + rosso) · mappa-unica · test:logic · save-compat · replay · migrazione-194 · design-system · tema-unico ·
+griglia-mobile · render-3d-023 · tunnel-285 · home-298 · web-237 · career-critical · battito-264 · partita-vera · gk-dive-sync ·
+schermate-97.
+
+Il runner aveva riscritto `docs/governo/STABILITA.json` e i provini in `docs/collaudo-grafico/g0` (griglia-mobile): li ho
+ripristinati senza committarli, perché `docs/governo` è fuori dal mio ambito e i provini sono artefatti della sentinella.
