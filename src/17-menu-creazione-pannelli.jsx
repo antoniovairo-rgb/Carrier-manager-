@@ -1968,7 +1968,7 @@ const MONTHLY_COACH_REVIEWS=[
     {txt:"🗣️ Ho bisogno di più spazio per esprimermi.",ef:{coachTrust:-4,morale:8,fatigue:-6}},
     {txt:"😔 Mi assumo le mie responsabilità. Cambio marcia.",ef:{coachTrust:8,morale:-2,form:4}},
     {txt:"💬 C'è qualcosa che mi pesa fuori dal campo. Ne parliamo?",ef:{coachTrust:5,morale:6}},
-    {txt:"🔥 Mi dia una chance da titolare e le ricambio la fiducia.",ef:{coachTrust:-2,morale:7,form:3}},
+    {txt:"🔥 Mi dia una chance da titolare e le ricambio la fiducia.",ef:{coachTrust:-2,morale:7,form:3},cond:p=>(typeof _g372==="function"&&!_g372())||["titolare","leader"].indexOf(p.squadRole||"")<0/* [giro 372] chi e' titolare non chiede la chance da titolare */},
     {txt:"🧊 Resto tranquillo: le difficoltà fanno parte del percorso.",ef:{coachTrust:-3,morale:4}},
     {txt:"🏋️ Lavoro extra in palestra e sul campo. Nessun alibi.",ef:{coachTrust:7,form:6,fatigue:10,morale:-3}},
     {txt:"🤝 Non voglio deluderla. Mi dica esattamente cosa cambiare.",ef:{coachTrust:10,morale:-2,form:3}},
@@ -2022,11 +2022,20 @@ function pickCoachWeekMsg(p){
 
 }
 
+/* [giro 372 · PO-421] la battuta della verifica si sceglie per FORMA (la fascia, invariata) ma non puo' smentire la barra della
+   fiducia: con fiducia da Fiducioso in su (gradino 3+, src/08 gradoFiducia372) il mister non dice «ti ho tolto dai titolari» o «un
+   ragazzo della Primavera mi darebbe le stesse garanzie»; sotto Neutro (gradino 0-1) non dice «sei il nostro faro». Rosso
+   __CPM_NO_G372. Le righe restano tutte nel mazzo: cambia solo quando possono uscire. */
+const SFIDUCIA372=["Sono preoccupato. Se non cambia qualcosa, dovrò prendere decisioni difficili.","Ti ho tolto dai titolari in qualche gara e non mi è piaciuto farlo. Dammi un motivo per rimetterti.","Lo spogliatoio ha bisogno di te, ma io devo scegliere chi mi dà garanzie. Oggi non me ne dai.","Ti ho voluto io in questa rosa. Non farmi passare per quello che ha sbagliato valutazione.","In questo momento un ragazzo della Primavera mi darebbe le stesse garanzie. È dura da sentire, lo so.","Non ti mollo, ma non posso nemmeno aspettarti in eterno. Il tempo nel calcio è tiranno.","Ti sto valutando, come valuto tutti. Dammi tre buone gare di fila e cambia tutto, per te.","La media è un posto comodo, ma pericoloso. Da lì si scivola in panchina senza accorgersene."];
+const FIDUCIA_PIENA372=["Il presidente mi ha chiesto di te. Gli ho detto una cosa sola: è il nostro faro.","Non ricordo un giocatore così determinante da quando alleno. Godiamocelo, ma con la fame di sempre.","Sei l'esempio che porto ai giovani del vivaio. Sappi che questo, per un tecnico, vale più di dieci gol.","Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia."];
+function rigaAmmessa372(p,l){if(typeof _g372==="function"&&!_g372())return true;const g=gradoFiducia372(p.coachTrust||60);
+  if(g>=3&&SFIDUCIA372.indexOf(l)>=0)return false;if(g<=1&&FIDUCIA_PIENA372.indexOf(l)>=0)return false;return true;}
 function pickCoachReview(p,perf,week){
   const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===perf)||MONTHLY_COACH_REVIEWS[1];
   const _sd=hashStr("cmc|"+(p.season||1)+"|"+(week||1)+"|"+perf);
   const _seenL=(p.recentCoachLines||[]);
-  const _lShuf=seededShuffle(_rev.lines,_sd);
+  const _lShuf0=seededShuffle(_rev.lines,_sd);const _lAmm372=_lShuf0.filter(l=>rigaAmmessa372(p,l));
+  const _lShuf=_lAmm372.length?_lAmm372:_lShuf0;
   const _lFresh=_lShuf.filter(l=>!_seenL.includes(l));
   const line=(_lFresh.length?_lFresh:_lShuf)[0];
   const _cPool=_rev.choicePool||_rev.choices||[];
