@@ -8418,6 +8418,14 @@ function gradinoLeader155(p){const a=p.age||18,m=p.totalMatches||0,t=p.coachTrus
   if(_g155("D14"))return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}))`;
   const ok=a>=27&&m>=130&&t>=90&&o>=80&&o>=cp&&po>=58;
   return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}) · OVR 80+ e non sotto il livello della squadra, ${cp} (ora ${o}) · popolarità 58+ (ora ${po}))`+(ok?". Ci sei: la fascia può arrivare in una qualunque delle prossime settimane.":". Con tutte e sei, la fascia arriva nelle settimane successive, non subito.");}
+/* [giro 372 · PO-421 «giudizi che non si contraddicono: fiducia 93/100 e "piu' panchina"»] LE SOGLIE DELLA FIDUCIA SONO UNE.
+   La barra (GradiniV235, scheda Club) dice In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale sopra 30/50/70/85; i testi
+   del mister che parlano di fiducia (esame del nuovo mister, verifica trimestrale, convocazione) si scelgono dallo STESSO gradino.
+   Rosso __CPM_NO_G372 = i testi di prima (soglie proprie: esame dalla sola media voti, verifica dalla sola forma, «uomo di
+   fiducia» da 80). Guardiano `npm run giudizi-372`. */
+const SOGLIE_FIDUCIA372=[30,50,70,85];
+const _g372=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G372);
+function gradoFiducia372(t){const x=Math.round(+t||0);return SOGLIE_FIDUCIA372.filter(v=>x>=v).length;}/* 0 crisi · 1 dubbio · 2 neutro · 3 fiducioso · 4 totale */
 function calcSquadRole(player){
   const ovr=player.ovr||60;
   const trust=player.coachTrust||60;
@@ -8504,7 +8512,7 @@ function calcCoachDecision(player,matchWeight=1,rng){
     status="starter";
     reason=_ovrEdge>=8
       ?"Sei tra i migliori della rosa — il mister non può lasciarti fuori. Titolare."
-      :trust>=80
+      :(_g372()?gradoFiducia372(trust)>=4:trust>=80)
       ?"Sei il suo uomo di fiducia. Titolare inamovibile."
       :matchWeight>=7
       ?"Partita cruciale — il mister conta su di te dal primo minuto."
@@ -8536,7 +8544,7 @@ function fraseConvocazione190(player,status,base,f){
     if(f.fatigue>=55)c.push(`Le gambe sono un po' pesanti, ma${avv?" contro "+avv:""} il mister non rinuncia a te: titolare, dosa le energie.`);
     if(f.matchWeight>=7&&avv)c.push(`Contro ${avv} si decide molto: il mister conta su di te dal primo minuto.`);
     if(avv&&f.ovrEdge>=8)c.push(`Contro ${avv} il mister non ci pensa due volte: sei tra i migliori della rosa, titolare.`);
-    if(avv&&f.trust>=80)c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
+    if(avv&&(_g372()?gradoFiducia372(f.trust)>=4:f.trust>=80))c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
     if(avv&&f.form>=75)c.push(`In settimana in allenamento sei stato il più brillante: contro ${avv} giochi dall'inizio.`);
     if(avv)c.push(`Contro ${avv} parti dal primo minuto: il mister ti ha comunicato la formazione dopo la rifinitura.`);
   }else if(status==="bench"){
@@ -12689,7 +12697,7 @@ function TaccheV2({n,tot=3,col,label,w=14}){
    gradini (tacche), la parola del gradino e il numero piccolo. Le soglie della fiducia sono quelle del giudizio «Allenatore» del Club
    (85/70/50/30: In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale), cosi' tacche e parole non si contraddicono; la
    popolarita' sale per quinti (20/40/60/80). Rosso __CPM_NO_G235: barre in Home e anelli in Club. */
-const GRADINI235={fiducia:{s:[30,50,70,85],p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
+const GRADINI235={fiducia:{s:SOGLIE_FIDUCIA372/* [giro 372] la stessa sorgente dei testi del mister (src/08) */,p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
   popolarita:{s:[20,40,60,80],p:["Poco conosciuto","Conosciuto","Apprezzato","Popolare","Idolo"],col:TINTE.oro}};
 function GradiniV235({k,l,v}){
   const g=GRADINI235[k]||GRADINI235.fiducia;const x=Math.round(+v||0);const n=1+g.s.filter(t=>x>=t).length;
@@ -53333,7 +53341,7 @@ const MONTHLY_COACH_REVIEWS=[
     {txt:"🗣️ Ho bisogno di più spazio per esprimermi.",ef:{coachTrust:-4,morale:8,fatigue:-6}},
     {txt:"😔 Mi assumo le mie responsabilità. Cambio marcia.",ef:{coachTrust:8,morale:-2,form:4}},
     {txt:"💬 C'è qualcosa che mi pesa fuori dal campo. Ne parliamo?",ef:{coachTrust:5,morale:6}},
-    {txt:"🔥 Mi dia una chance da titolare e le ricambio la fiducia.",ef:{coachTrust:-2,morale:7,form:3}},
+    {txt:"🔥 Mi dia una chance da titolare e le ricambio la fiducia.",ef:{coachTrust:-2,morale:7,form:3},cond:p=>(typeof _g372==="function"&&!_g372())||["titolare","leader"].indexOf(p.squadRole||"")<0/* [giro 372] chi e' titolare non chiede la chance da titolare */},
     {txt:"🧊 Resto tranquillo: le difficoltà fanno parte del percorso.",ef:{coachTrust:-3,morale:4}},
     {txt:"🏋️ Lavoro extra in palestra e sul campo. Nessun alibi.",ef:{coachTrust:7,form:6,fatigue:10,morale:-3}},
     {txt:"🤝 Non voglio deluderla. Mi dica esattamente cosa cambiare.",ef:{coachTrust:10,morale:-2,form:3}},
@@ -53387,11 +53395,20 @@ function pickCoachWeekMsg(p){
 
 }
 
+/* [giro 372 · PO-421] la battuta della verifica si sceglie per FORMA (la fascia, invariata) ma non puo' smentire la barra della
+   fiducia: con fiducia da Fiducioso in su (gradino 3+, src/08 gradoFiducia372) il mister non dice «ti ho tolto dai titolari» o «un
+   ragazzo della Primavera mi darebbe le stesse garanzie»; sotto Neutro (gradino 0-1) non dice «sei il nostro faro». Rosso
+   __CPM_NO_G372. Le righe restano tutte nel mazzo: cambia solo quando possono uscire. */
+const SFIDUCIA372=["Sono preoccupato. Se non cambia qualcosa, dovrò prendere decisioni difficili.","Ti ho tolto dai titolari in qualche gara e non mi è piaciuto farlo. Dammi un motivo per rimetterti.","Lo spogliatoio ha bisogno di te, ma io devo scegliere chi mi dà garanzie. Oggi non me ne dai.","Ti ho voluto io in questa rosa. Non farmi passare per quello che ha sbagliato valutazione.","In questo momento un ragazzo della Primavera mi darebbe le stesse garanzie. È dura da sentire, lo so.","Non ti mollo, ma non posso nemmeno aspettarti in eterno. Il tempo nel calcio è tiranno.","Ti sto valutando, come valuto tutti. Dammi tre buone gare di fila e cambia tutto, per te.","La media è un posto comodo, ma pericoloso. Da lì si scivola in panchina senza accorgersene."];
+const FIDUCIA_PIENA372=["Il presidente mi ha chiesto di te. Gli ho detto una cosa sola: è il nostro faro.","Non ricordo un giocatore così determinante da quando alleno. Godiamocelo, ma con la fame di sempre.","Sei l'esempio che porto ai giovani del vivaio. Sappi che questo, per un tecnico, vale più di dieci gol.","Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia."];
+function rigaAmmessa372(p,l){if(typeof _g372==="function"&&!_g372())return true;const g=gradoFiducia372(p.coachTrust||60);
+  if(g>=3&&SFIDUCIA372.indexOf(l)>=0)return false;if(g<=1&&FIDUCIA_PIENA372.indexOf(l)>=0)return false;return true;}
 function pickCoachReview(p,perf,week){
   const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===perf)||MONTHLY_COACH_REVIEWS[1];
   const _sd=hashStr("cmc|"+(p.season||1)+"|"+(week||1)+"|"+perf);
   const _seenL=(p.recentCoachLines||[]);
-  const _lShuf=seededShuffle(_rev.lines,_sd);
+  const _lShuf0=seededShuffle(_rev.lines,_sd);const _lAmm372=_lShuf0.filter(l=>rigaAmmessa372(p,l));
+  const _lShuf=_lAmm372.length?_lAmm372:_lShuf0;
   const _lFresh=_lShuf.filter(l=>!_seenL.includes(l));
   const line=(_lFresh.length?_lFresh:_lShuf)[0];
   const _cPool=_rev.choicePool||_rev.choices||[];
@@ -56222,6 +56239,14 @@ const getThisWeekMatchday=()=>{
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
+      giudizi372:(o)=>{try{/* [giro 372] solo collaudo: i giudizi del mister calcolati dalle funzioni VERE del gioco sullo stato dato (o = sovrascritture) */
+        const q={...player,...(o||{})},out={trust:Math.round(q.coachTrust||60),form:Math.round(q.form||70),morale:Math.round(q.morale||70),role:q.squadRole||null,grado:gradoFiducia372(q.coachTrust||60),barra:GRADINI235.fiducia.p[gradoFiducia372(q.coachTrust||60)],testi:[]};
+        const sv=sackView(q);if(sv&&sv.st!=="sack"){const e=esame372(sv,q);out.testi.push({f:"esame",k:e.k,t:e.txt});}
+        const cd=calcCoachDecision(q,1,()=>0.5);out.dec=cd.status;out.testi.push({f:"convocazione",k:cd.status,t:cd.reason});
+        const f=q.form||70,perf=f>=72?"excellent":f>=55?"medium":"bad";const w=[8,16,24,32].indexOf(q.week||1)>=0?q.week:8;const r=pickCoachReview(q,perf,w);
+        out.testi.push({f:"verifica",k:perf,t:r.line});r.choices.forEach(c=>out.testi.push({f:"risposta",k:perf,t:c.txt}));
+        const m=pickCoachWeekMsg(q);if(m)out.testi.push({f:"settimana",t:m});
+        return out;}catch(e){return "error:"+(e&&e.message);}},
       storyChapter:(q)=>{try{return storyChapter(q);}catch(e){return "error:"+(e&&e.message);}},/* [giro 355] «La tua storia» interrogabile su un eroe qualsiasi (guardiano storia-355) */
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
@@ -57148,6 +57173,18 @@ const getThisWeekMatchday=()=>{
   //   zona pericolo, mai casuale), max 1/stagione (p.coachSackSeason). Il nuovo mister (nome/stile SEEDATI) ti
   //   mette «sotto esame» per 4 gare (p.newCoachExam) con verdetto automatico dalla media voti; i patti S4
   //   decadono e il ledger ricorda. Tutto lazy, nessun bump SAVE.
+  /* [giro 372 · PO-421 «fiducia 93/100 e "piu' panchina"»] IL VERDETTO DELL'ESAME PARLA COME LA BARRA. Il riquadro dell'esame resta
+     sulla home finche' non si preme il tasto, e intanto la fiducia del mister cambia ogni settimana: il verdetto nasceva dalla sola
+     media voti e diceva «Ti aspetta piu' panchina» accanto a «Fiducia totale». Ora il testo (ed il suo effetto) si sceglie dalla
+     media E dal gradino della barra (gradoFiducia372, src/08): esame mancato con fiducia da Fiducioso in su = «il posto te lo
+     giochi»; esame superato con fiducia sotto Neutro = «il posto non e' ancora tuo». Rosso __CPM_NO_G372 = i due testi di prima. */
+  const esame372=(sv,p)=>{const pass=sv.st==="exam_pass",t=Math.round(p.coachTrust||60),g=gradoFiducia372(t),on=_g372();
+    const k=!on?(pass?"pass":"fail"):pass?(g<=1?"pass_dub":"pass"):(g>=3?"fail_fid":"fail");
+    const M=`Media ${sv.avg} nelle ${sv.games} gare dell'esame`;
+    return k==="pass"?{k,ok:true,txt:`${M}: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`,dT:10,e:"👔",h:"Esame superato: il posto è riconquistato",b:`Media ${sv.avg} sotto gli occhi del nuovo mister.`,lg:`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`,bt:"Il posto è mio →"}
+      :k==="pass_dub"?{k,ok:true,txt:`${M}: il campo ti dà ragione. «Bene in partita — ma per me sei ancora da scoprire.» La fiducia del mister (${t}/100) è da costruire: il posto non è ancora tuo.`,dT:6,e:"👔",h:"Esame superato, fiducia da costruire",b:`Media ${sv.avg}: il nuovo mister vuole conferme.`,lg:`👔 Esame superato (media ${sv.avg}) — la fiducia del nuovo mister è da costruire.`,bt:"Me lo prendo in campo →"}
+      :k==="fail_fid"?{k,ok:false,txt:`${M}: sotto le attese. «I voti non mi bastano, ma in settimana ti ho visto lavorare.» La fiducia del mister regge (${t}/100): il posto te lo giochi partita per partita.`,dT:-2,e:"🪑",h:"Esame a metà: il posto si gioca",b:`Media ${sv.avg}: la fiducia del nuovo mister regge, i voti no.`,lg:`🪑 Esame a metà (media ${sv.avg}): la fiducia regge, il posto si gioca partita per partita.`,bt:"Partita per partita →"}
+      :{k,ok:false,txt:`${M}: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`,dT:-4,e:"🪑",h:"L'esame non è bastato",b:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,lg:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,bt:"Testa bassa e lavorare →"};};
   const sackView=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;
@@ -63222,12 +63259,12 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.82)",TH.muted),lineHeight:1.5,marginBottom:8}}>{sv.losses} sconfitte nelle ultime 7 e il {sv.pos}° posto hanno presentato il conto: via {player.coach?.name||"il mister"}, arriva <strong>{sv.newName}</strong> ({sv.newStyle}). Lo spogliatoio è scosso — e per il nuovo tecnico sei un nome sulla lavagna, non una certezza: <strong>4 partite per convincerlo</strong>.</div>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coach:{name:sv.newName,style:sv.newStyle,trustMod:0},coachTrust:48,teamChemistry:clamp((p.teamChemistry||60)-8,0,100),coachSackSeason:p.season||1,newCoachExam:{season:p.season||1,fromWeek:p.week||1,games:4},...(p.coachPact&&p.coachPact.status==="active"?{coachPact:{...p.coachPact,status:"void"}}:{}),...ledgerPush(p,{t:"esonero",who:"il club",what:`esonerato il mister al ${sv.pos}° posto — con ${sv.newName} riparti da zero`}),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"⚡",headline:"Esonero: arriva "+sv.newName,body:"Il nuovo mister ti mette sotto esame: 4 partite per riconquistare il posto.",color:_n30("#dc2626",semTesto945("#dc2626"))}]),log:[`⚡ ESONERO — ${sv.newName} è il nuovo mister: sei sotto esame per 4 gare.`,...(p.log||[])].slice(0,60)}))}>Il nuovo corso comincia →</Btn>
           </Card>);
-        const _pass=sv.st==="exam_pass";
+        const _es372=esame372(sv,player),_pass=_es372.ok;
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+          <Card data-esame372={_es372.k} style={{marginBottom:8,padding:"9px 12px",background:_n30(_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30(_pass?"#6ee7b7":TH.txAmber,_pass?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>L'esame del nuovo mister</div>
-            <div style={{fontSize:FS.caption,color:_n30(_pass?"rgba(255,255,255,0.85)":TH.txAmber,_pass?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_pass?`Media ${sv.avg} nelle ${sv.games} gare dell'esame: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`:`Media ${sv.avg} nelle ${sv.games} gare dell'esame: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`}</div>
-            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
+            <div style={{fontSize:FS.caption,color:_n30(_pass?"rgba(255,255,255,0.85)":TH.txAmber,_pass?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_es372.txt}</div>
+            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+_es372.dT,0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_es372.e,headline:_es372.h,body:_es372.b,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_es372.lg,...(p.log||[])].slice(0,60)}))}>{_es372.bt}</Btn>
           </Card>);
       })()}
       {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra */}
@@ -65153,7 +65190,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{
               const _cs=COACH_STYLES.find(s=>s.style===(player.coach?.style||"Bilanciato"));
               const _ct=player.coachTrust||60;
-              const _ctLabel=_ct>=85?"Fiducia Totale":_ct>=70?"Fiducioso":_ct>=50?"Neutro":_ct>=30?"In Dubbio":"In Crisi";
+              const _ctLabel=GRADINI235.fiducia.p[gradoFiducia372(_ct)];/* [giro 372] lo stesso gradino della barra e dei testi del mister */
               const _ctColor=_ct>=70?TH.success:_ct>=50?TH.primary:_ct>=30?TH.warning:TH.danger;
               return(
               <Fisarmonica id="club-allenatore" titolo="Allenatore">
