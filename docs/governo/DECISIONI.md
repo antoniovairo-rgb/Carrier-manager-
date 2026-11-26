@@ -2171,3 +2171,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 19:20 — Registrata PO-673 (presentazione alla nuova squadra troppo nascosta nella home, foto del PO). Lanciato giro 407; non sale sui treni già in corsa.
 
 - 26/11 19:25 — Registrata PO-674 (cornice del ritratto del procuratore sballata, foto del PO). Lanciato giro 408.
+
+- 26/11 19:30 — Registrata PO-675 («sei felice qui?» troppo presto dopo un trasferimento). In coda n° 1: parte al primo giro libero (oggi 7 giri attivi).
