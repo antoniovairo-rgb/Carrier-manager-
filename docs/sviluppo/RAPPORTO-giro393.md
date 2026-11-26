@@ -56,3 +56,10 @@ nel treno è verde, non l'ho misurata in questo giro.
 - verde: 18 tiri giudicati su 18, mediana 1,07 m, massimo 4,10; gi5 rigore a 0,76 m dal palo, 0,00 dal bersaglio.
 - rosso 367: invariato (provocati fino a 11,32 m, scivolata 4,11). Rosso 393: rigori a 0,15 · 0,21 · 0,03 m dal palo.
 - `✅ tiri-367 VERDE (verde + rosso)`.
+
+### Sentinelle (`node ci-runner.mjs giro tiri-367`)
+`✅ catena giro: 18/18 verdi`, nessun passo instabile: tiri-367 324 s · partita-vera 672 s · career-critical 406 s ·
+battito-264 399 s · tunnel-285 202 s · griglia-mobile 196 s · gk-dive-sync 162 s · home-298 120 s · schermate-97 119 s ·
+replay 53 s · web-237 54 s · render-3d-023 37 s · migrazione-194 28 s · tema-unico 15 s · test:logic · save-compat ·
+design-system · mappa-unica. (Il runner scrive «su 7.999.215»: GAME_VERSION non toccata da questo giro.)
+I provini rigenerati in `docs/collaudo-grafico` e `docs/governo/STABILITA.json` sono stati riportati allo stato del commit.
