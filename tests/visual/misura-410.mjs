@@ -12,10 +12,10 @@
      CPM_CHROME=… node misura-410.mjs   (CPM_SCENE='165:0,90:0,…' · CPM_DZ='0.4,1.6,3' · CPM_PAR=2 · CPM_FLAG=__CPM_NO_G410) */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 export const SCENE_DEF = '165:0,90:0,9:0,11:0,10:0,7:0,4:0,17:2';
-export async function misura410(b, port, sc, dz, flag) {
+export async function misura410(b, port, sc, dz, flag, foto) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   await page.addInitScript(([fl]) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_REC = true; window.__CPM_CINE = 1; (fl || '').split(',').forEach(k => { if (k) window[k] = 1; });
-    const L = window.__M410 = []; const f = () => { try { const R = window.__CPM_GKTL; if (R && R.length) { for (const q of R) if (L.length < 20000) L.push(q); window.__CPM_GKTL = []; } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [flag || '']);
+    const L = window.__M410 = []; const f = () => { try { const R = window.__CPM_GKTL; if (R && R.length) { for (const q of R) { if (L.length < 20000) L.push(q); if (window.__F410 === 1 && q.gx > 20 && q.arcT > 0.01 && q.bx >= q.gx - 1.0) { window.__CPM_FROZEN = true; window.__F410 = 2; } } window.__CPM_GKTL = []; } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [flag || '']);
   const o = { sc, dz };
   try {
     await openMatch(page, port); await sleep(800);
@@ -23,11 +23,13 @@ export async function misura410(b, port, sc, dz, flag) {
     await sleep(300);
     await page.evaluate(d => { window.__CPM_FROZEN = false; window.__CPM_GKTL = []; window.__M410.length = 0; window.__CPM_GKACT = {}; window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_FORCE_KIND = 'saved'; window.__CPM_SVZ410 = d; window.__CPM_W410 = null; }, dz);
     await sleep(400);
+    if (foto) await page.evaluate(() => { window.__F410 = 1; });
     await page.evaluate(a => window.__CPM_RESOLVE(a), sc.ai);
     /* EVENTO: arco armato, poi spento, + 1,2 s di arco (tetto di parete 240 s) */
     const t0 = Date.now(); let ok = false;
     while (Date.now() - t0 < 240000) { await sleep(500);
       const s = await page.evaluate(() => { const R = (window.__M410 || []).filter(f => f.gx > 20); let arm = -1, end = -1; for (let i = 0; i < R.length; i++) { if (R[i].arcT > 0 && arm < 0) arm = i; if (arm >= 0 && i > arm + 3 && Math.abs(R[i].arcT - R[i - 1].arcT) < 1e-3 && Math.abs(R[i - 1].arcT - R[i - 2].arcT) < 1e-3) { end = i; break; } } return { n: R.length, arm, end, ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, opp: R.length ? R[R.length - 1].opp : null }; });
+      if (foto && await page.evaluate(() => window.__F410 === 2)) { await sleep(700); await page.screenshot({ path: foto }); o.foto = foto; await page.evaluate(() => { window.__F410 = 3; window.__CPM_FROZEN = false; }); }
       if (s.arm >= 0 && (s.end >= 0 || (s.ph && s.ph !== 'hl_result' && s.n > 5))) { ok = true; await sleep(1500); break; } }
     const [R, A] = await page.evaluate(() => [(window.__M410 || []).slice(), window.__CPM_GKACT || {}]); await page.close();
     const G = R.filter(f => f.gx > 20);
@@ -59,6 +61,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const DZ = (process.env.CPM_DZ || '0.4,1.6,3').split(',').map(Number), PAR = +(process.env.CPM_PAR || 2);
   const srv = await startServer(), port = srv.address().port, b = await launchBrowser();
   const coda = []; for (const sc of SC) for (const dz of DZ) coda.push({ sc, dz });
-  await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const q = coda.shift(); const o = await misura410(b, port, q.sc, q.dz, process.env.CPM_FLAG); console.log(riga410(o)); } }));
+  await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const q = coda.shift(); const o = await misura410(b, port, q.sc, q.dz, process.env.CPM_FLAG, process.env.CPM_FOTO ? `${process.env.CPM_FOTO}/gi${q.sc.gi}-dz${q.dz}${process.env.CPM_FLAG ? '-rosso' : '-verde'}.png` : null); console.log(riga410(o)); } }));
   await b.close(); srv.close();
 }

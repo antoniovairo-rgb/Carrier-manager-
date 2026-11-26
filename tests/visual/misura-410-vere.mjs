@@ -16,12 +16,12 @@ async function gioca(sd, flag) {
   let ls; if (SALVA['cpm-v3']) { ls = { ...SALVA }; const sv = JSON.parse(ls['cpm-v3']); (sv.player || sv).name += ' ' + sd; ls['cpm-v3'] = JSON.stringify(sv); delete ls['cpm-v3-riserva']; delete ls['cpm-match-resume']; }
   else { const sv = JSON.parse(JSON.stringify(SALVA)); (sv.player || sv).name += ' ' + sd; ls = { 'cpm-v3': JSON.stringify(sv) }; }
   ls['cpm-match-speed'] = '2';
-  await page.addInitScript(([s, fl]) => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1;
+  await page.addInitScript(([s, fl]) => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_REC229 = 1;
     (fl || '').split(',').forEach(k => { if (k) window[k] = 1; });
     if (!sessionStorage.getItem('__m410')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__m410', '1'); }
-    const L = window.__V410 = [], A = window.__V410A = []; let last = null;
-    const f = () => { try { const R = window.__CPM_GKTL; if (R && R.length) { for (const q of R) if (L.length < 80000 && q.gx > 20) L.push(q); window.__CPM_GKTL = []; }
-      const g = window.__CPM_GKACT; if (g && g.d148) { const k = JSON.stringify([g.last, g.lastDz, g.d148.sx, g.d148.sz]); if (k !== last) { last = k; A.push({ t: performance.now(), act: g.last, kind: g.lastKind, lat: +Math.abs(g.d148.zq - g.d148.gz).toFixed(2), tt: g.tt410, tp: g.t410 }); } } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [ls, flag || '']);
+    const L = window.__V410 = [], A = window.__V410A = [], T = window.__V410T = []; let last = null;
+    let sc = { hk: null, ok: null, ht: null }; const f = () => { try { const W = window.__CPM_GK229; if (W && W.length) { const z = W[W.length - 1]; sc = { hk: z.hk, ok: z.ok, ht: z.ht }; window.__CPM_GK229 = []; } const R = window.__CPM_GKTL; if (R && R.length) { for (const q of R) if (L.length < 80000 && q.gx > 20) L.push({ ...q, hk: sc.hk, ok: sc.ok, ht: sc.ht }); window.__CPM_GKTL = []; }
+      const g = window.__CPM_GKACT; if (g && g.d148) { const k = JSON.stringify([g.last, g.lastDz, g.d148.sx, g.d148.sz]); if (k !== last) { last = k; A.push({ hk: sc.hk, t: performance.now(), act: g.last, kind: g.lastKind, ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, lat: +Math.abs(g.d148.zq - g.d148.gz).toFixed(2), tt: g.tt410, tp: g.t410 }); } } } catch (e) {} const g7 = window.__CPM_GK799; if (g7 && g7.length) { for (const q of g7) T.push({ ...q, hk: sc.hk, t: performance.now() }); window.__CPM_GK799 = []; } requestAnimationFrame(f); }; requestAnimationFrame(f); }, [ls, flag || '']);
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 90000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -32,27 +32,27 @@ async function gioca(sd, flag) {
   await page.evaluate(s => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, tickMs: 150 }), sd);
   const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < TETTO) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => 'x'); if (ph === 'ended' || ph === 'ceremony' || ph === 'x') break; await sleep(1000); }
-  const [L, A] = await page.evaluate(() => [window.__V410 || [], window.__V410A || []]).catch(() => [[], []]);
-  await ctx.close(); return { L, A, ph, sec: Math.round((Date.now() - t0) / 1000) };
+  const [L, A, T] = await page.evaluate(() => [window.__V410 || [], window.__V410A || [], window.__V410T || []]).catch(() => [[], [], []]);
+  await ctx.close(); return { L, A, T, ph, sec: Math.round((Date.now() - t0) / 1000) };
 }
-function analizza(L, A) {
+function analizza(L, A, T) {
   const seg = []; let cur = null;
   for (const f of L) { const r = f.isOpp && (f.cur === 'dive' || f.cur === 'block' || f.opp === 'gk_dive' || f.opp === 'gk_block');
     if (!r) { cur = null; continue; } if (!cur) { cur = { fr: [] }; seg.push(cur); } cur.fr.push(f); }
   const out = [];
-  for (const s of seg) { const F = s.fr, t0 = F[0].t; const a = A.filter(q => q.t <= t0 + 50).pop() || null;
+  for (const s of seg) { const F = s.fr, t0 = F[0].t; const a = A.filter(q => q.t <= F[0].t + 50 && q.hk === F[0].hk).pop() || null;
     const iA = F.findIndex(f => f.arcT > 0.01); if (iA < 0) continue;
     let iC = -1; for (let i = iA; i < F.length; i++) if (F[i].bx >= F[i].gx - 0.6) { iC = i; break; }
-    const o = { act: F[0].opp, kind: a && a.kind, lat: a && a.lat, tt: a && a.tt, tp: a && a.tp, n: F.length };
+    const hk = F[0].hk; const tg = T.filter(q => q.t <= t0 + 50 && q.hk === hk).pop() || null; const o = { act: F[0].opp, deciso: a && a.act, sito: tg && tg.tag, fase: a && a.ph, kind: F[0].ok, hk: F[0].hk, ht: F[0].ht, lat: a && a.lat, tt: a && a.tt, tp: a && a.tp, n: F.length };
     if (iC < 0 || F[iA].bx >= F[iA].gx - 0.6) { o.nc = 1; out.push(o); continue; }
     const C = F[iC]; o.cur = C.cur; o.ct = C.ct; o.terra = C.cur === 'dive' && C.ct >= 1.25; o.vis = C.vz != null ? +Math.abs(C.bz - C.vz).toFixed(2) : null; o.vy = C.vy; o.by = C.by;
     const iS = F.findIndex(f => f.cur === 'dive' && f.ct >= 0.8); o.ant = iS >= 0 && iS <= iC ? +(C.arcT - F[iS].arcT).toFixed(2) : null; out.push(o); }
   return out;
 }
 const flag = process.env.CPM_FLAG || ''; const coda = [...SEMI], tutte = [];
-await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const sd = coda.shift(); const r = await gioca(sd, flag); const S = analizza(r.L, r.A);
+await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const sd = coda.shift(); const r = await gioca(sd, flag); const S = analizza(r.L, r.A, r.T);
   console.log(`\n== seme ${sd}${flag ? ' ' + flag : ''}: fase finale ${r.ph} · ${r.sec} s · fotogrammi del portiere ${r.L.length} · reazioni ${S.length}`);
-  for (const o of S) console.log(`  ${o.kind || '?'} ${o.tp || '?'} lato ${o.lat} testo-tuffo ${o.tt} · gesto ${o.act}` + (o.nc ? ' · contatto non trovato' : ` · al contatto clip ${o.cur} ${o.ct}${o.terra ? ' A TERRA' : ''} · stacco ${o.ant} s prima · pallone a ${o.vis} u dal bacino visibile (bacino a quota ${o.vy}, pallone a ${o.by})`));
+  for (const o of S) console.log(`  scena ${o.hk} ${o.ht || '?'} esito ${o.kind || '?'} tipo-arco ${o.tp || '?'} lato ${o.lat} testo-tuffo ${o.tt} · gesto ${o.act} (deciso ${o.deciso}, armato dal sito ${o.sito})` + (o.nc ? ' · contatto non trovato' : ` · al contatto clip ${o.cur} ${o.ct}${o.terra ? ' A TERRA' : ''} · stacco ${o.ant} s prima · pallone a ${o.vis} u dal bacino visibile (bacino a quota ${o.vy}, pallone a ${o.by})`));
   tutte.push(...S); } }));
 const P = tutte.filter(o => (o.kind === 'saved' || o.kind === 'save') && !o.nc);
 const cen = P.filter(o => o.lat < 2), lat = P.filter(o => o.lat >= 2);

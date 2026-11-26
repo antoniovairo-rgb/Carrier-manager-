@@ -10,7 +10,8 @@
 
    BRACCIO C «sul tiro centrale resta sulla traiettoria» (lato < 2,0 u): ✗ se il portiere si tuffa (gk_dive), o se al contatto il
      pallone passa a piu' di 1,0 u di lato dal bacino visibile, o se il riflesso al contatto e' gia' oltre la sua posa (clip > 1,25 s:
-     le clip del riflesso a terra sono giu' da 0,83-0,97 s, quindi il corpo e' sceso prima del pallone).
+     le clip del riflesso a terra sono giu' da 0,83-0,97 s, quindi il corpo e' sceso prima del pallone), o se col pallone a 0,6 o piu' di
+     quota il bacino visibile sta sotto 0,45 (corpo steso sotto il pallone).
    BRACCIO L «sul tiro laterale il tuffo parte in tempo» (lato >= 2,0 u): ✗ se non si tuffa, se al contatto e' gia' a terra (clip >= 1,25 s),
      se lo stacco (clip a 0,8 s) non viene almeno 0,08 s prima del contatto, o se il pallone passa a piu' di 1,6 u dal bacino visibile
      (le mani arrivano ~1,3 u oltre il centro del corpo disteso, nota del giro 223).
@@ -33,7 +34,7 @@ function giudica(o) {
   if (o.err) return { ng: o.err };
   if (o.lat == null) return { ng: 'lato non calcolato dal gioco' };
   if (o.vis == null) return { ng: 'bacino visibile non letto' };
-  if (o.lat < SOGLIA) { const d = []; if (o.act === 'gk_dive') d.push('si tuffa'); if (o.vis > VIS_C) d.push(`pallone a ${o.vis} u dal bacino visibile (> ${VIS_C})`); if (o.ctC === 'block' && o.ctT != null && o.ctT > BLK) d.push(`riflesso gia' oltre la sua posa al contatto (clip ${o.ctT} s > ${BLK})`); return { br: 'C', dif: d }; }
+  if (o.lat < SOGLIA) { const d = []; if (o.act === 'gk_dive') d.push('si tuffa'); if (o.vis > VIS_C) d.push(`pallone a ${o.vis} u dal bacino visibile (> ${VIS_C})`); if (o.by != null && o.by >= 0.6 && o.vy != null && o.vy < 0.45) d.push(`corpo steso sotto un pallone a mezz'altezza (bacino a ${o.vy}, pallone a ${o.by})`); if (o.ctC === 'block' && o.ctT != null && o.ctT > BLK) d.push(`riflesso gia' oltre la sua posa al contatto (clip ${o.ctT} s > ${BLK})`); return { br: 'C', dif: d }; }
   const d = []; if (o.act !== 'gk_dive') d.push('non si tuffa (' + o.act + ')');
   else { if (o.terra) d.push(`gia' a terra al contatto (clip ${o.ctT})`); if (o.anticipo == null || o.anticipo < ANT) d.push(`stacco ${o.anticipo == null ? 'mai' : o.anticipo + ' s'} prima del contatto (< ${ANT})`); }
   if (o.vis > VIS_L) d.push(`pallone a ${o.vis} u dal bacino visibile (> ${VIS_L})`);
