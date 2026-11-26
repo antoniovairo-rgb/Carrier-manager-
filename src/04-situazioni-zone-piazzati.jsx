@@ -915,7 +915,12 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo,ancora)
   if(tipo==='punizione'&&typeof fuoriArea343==='function'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343)){const _f343=fuoriArea343(+occ.x,+occ.y);if(_f343.sp>0)occ={...occ,x:_f343.adv,y:_f343.y};}
   const x=+occ.x,y=+occ.y;
   const sz=(tipo==='punizione'&&!(typeof window!=='undefined'&&window.__CPM_NO_G343))?{x:[x,x],y:[y,y]}:{x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
-  const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
+  let mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
+  /* [giro 364 PO-650 «al contatto l'eroe sta a z -0,4, cioe' al CENTRO, in una scena sulla fascia», rosso __CPM_NO_G364A] NELLA SCENA
+     DI FASCIA L'EROE RESTA SULLA FASCIA. La zona di movimento era il punto dell'occasione ±12 di lato: da 22 dal centro (la soglia
+     con cui il motore dichiara «fascia») si poteva portare l'eroe a 10 dal centro, e da li' la costruzione lo accentrava di altri 12.
+     Ora il bordo interno della zona di movimento e' a 20 dal centro (z 13,6: fuori dall'area piccola, sul lato del testo). */
+  if(tipo==='fascia'&&!(typeof window!=='undefined'&&(window.__CPM_NO_G364||window.__CPM_NO_G364A))){if(y>=50)mz={x:mz.x,y:[Math.max(mz.y[0],70),Math.max(mz.y[1],78)]};else mz={x:mz.x,y:[Math.min(mz.y[0],22),Math.min(mz.y[1],30)]};}
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
   const s=S(text,zones,_pz?sz:mz,sz,actions,_pz,_pz?0:-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
