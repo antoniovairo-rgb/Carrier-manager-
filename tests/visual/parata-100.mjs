@@ -19,6 +19,7 @@ const SEMI = (process.env.CPM_SEMI || '7,2021').split(',').map(Number);
 const SAVES = (process.env.CPM_SALVA || 's5').split(',');
 const REGIMI = (process.env.CPM_REGIMI || 'gioco,prova').split(',');
 const PAR = +(process.env.CPM_PAR || 2);
+const TETTO = +(process.env.CPM_TETTO || 480000);/* [giro 397] tetto di parete della partita (ms): scaduto, si chiude solo fuori da una scena */
 const RE_PASS = 'Filtrante|Uno-due|Lancio smarcante|Servi .* libero|Sponda|scarica su|Appoggio|Cross|Palla in area';
 const RE_PARATA = /parat|parar|portiere|respint|dice di no|centrale/i;/* [giro 103] anche «si fa parare il tiro» */
 const srv = await startServer(); const b = await launchBrowser();
@@ -43,7 +44,16 @@ async function gioca(sk, sd, rosso, regime) {
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate(([s, re]) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 're', re, tickMs: 150 }), [sd, RE_PASS]);
   const t0 = Date.now(); let ph = '';
-  while (Date.now() - t0 < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => 'x'); if (ph === 'ended' || ph === 'ceremony' || ph === 'x') break; await sleep(1000); }
+  while (Date.now() - t0 < TETTO) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => 'x'); if (ph === 'ended' || ph === 'ceremony' || ph === 'x') break;
+    if (process.env.CPM_TAGLIA_PARATA && ph === 'hl_result' && await page.evaluate(re => { const R = window.__CPM_RES218 || []; const x = R[R.length - 1]; return !!x && new RegExp(re, 'i').test(String(x.ovl || '')) && !window.__CPM_REVAT95; }, RE_PARATA.source).catch(() => false)) break;/* [giro 397] solo misura dello strumento: il tetto che scade dentro una parata, provocato */
+    await sleep(1000); }
+  /* [giro 397 PO-537] il tetto non taglia piu' una scena a meta': se scade dentro un highlight si aspetta l'EVENTO dell'uscita dalla
+     scena (fase non piu' hl_*), con una guardia di 180 s. Prima (giri 237 e 271) la partita s5/7 tagliata «fine hl_result» lasciava
+     una parata senza il tiro del compagno (minGB 13,3 e 16,0, rivelazione mai avvenuta) e il guardiano la contava come difetto.
+     CPM_TAGLIO_VECCHIO=1 rimette il taglio di prima (solo per misurare lo strumento). */
+  let taglio = !(ph === 'ended' || ph === 'ceremony' || ph === 'x');
+  if (taglio && !process.env.CPM_TAGLIO_VECCHIO && /^hl_/.test(ph || '')) { const t1 = Date.now();
+    while (Date.now() - t1 < 180000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => 'x'); if (!/^hl_/.test(ph || '')) break; await sleep(500); } }
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
   const L = await page.evaluate(() => window.__P100 || []).catch(() => []);
   const REV = await page.evaluate(() => window.__CPM_REV95 || []).catch(() => []);
@@ -60,9 +70,12 @@ async function gioca(sk, sd, rosso, regime) {
     const fs0 = s.fr.find(f => f[3] === 'assist_shot' || f[3] === 'cross_goal'); const dive = s.fr.find(f => f[5] === 'gk_dive');
     const pas = [...new Set(s.fr.map(f => f[3]))].join('>');
     out.push({ lab: r.label, ovl, key: r.key, min: r.min != null ? r.min : (r.clock != null ? r.clock : null), g: r.g137 ? r.g137.fam + ':' + r.g137.esito : '-', minGB, rev: !!rev,
-      tr: (() => { const x = []; let k = ''; for (const f of s.fr) { const q = (f[3] || '-') + (f[7] ? '/tl' : '') + (f[8] ? '/arc' : ''); if (q !== k) { x.push((rev ? f[0] - rev : f[0] - s.fr[0][0]) + ':' + q + '@' + (f[2] != null ? f[2].toFixed(0) : '-')); k = q; } } return x.slice(0, 30).join(' '); })(), tiro: fs0 && rev ? fs0[0] - rev : null, tuffo: dive && rev ? dive[0] - rev : null, pas, nfr: s.fr.length, dur: s.fr[s.fr.length - 1][0] - s.fr[0][0], rv: REV.find(x => x.hl === r.hl) || null });
+      tr: (() => { const x = []; let k = ''; for (const f of s.fr) { const q = (f[3] || '-') + (f[7] ? '/tl' : '') + (f[8] ? '/arc' : ''); if (q !== k) { x.push((rev ? f[0] - rev : f[0] - s.fr[0][0]) + ':' + q + '@' + (f[2] != null ? f[2].toFixed(0) : '-')); k = q; } } return x.slice(0, 30).join(' '); })(), tiro: fs0 && rev ? fs0[0] - rev : null, cop: (() => { const u = s.fr[s.fr.length - 1]; return limSc != null && u[9] != null ? +(u[9] - limSc).toFixed(2) : null; })(), ultima: s === scene[scene.length - 1], tuffo: dive && rev ? dive[0] - rev : null, pas, nfr: s.fr.length, dur: s.fr[s.fr.length - 1][0] - s.fr[0][0], rv: REV.find(x => x.hl === r.hl) || null });
   }
-  return { out, ph, n: scene.length };
+  /* [giro 397] una scena e' giudicabile solo se completa: esito rivelato e scena chiusa (non l'ultima di una partita ferma in hl_*) */
+  const aperta = /^hl_/.test(ph || '');
+  for (const o of out) o.inc = !o.rev || (o.ultima && aperta);
+  return { out, ph: ph + (taglio ? ' (tetto)' : ''), n: scene.length };
 }
 /* [giro 174 PO-371] SCENE PROVOCATE. Le partite vere non incontravano mai la parata sul ramo cross_goal (0 su 6 partite per braccio, sul
    ramo e su main: «non giudicato» in verde e rosso). Dal giro 102 quel ramo finisce sul portiere solo col tiro sprecato del compagno
@@ -102,27 +115,30 @@ for (const arm of ARMI) { const rosso = arm === 'rosso'; const lav = []; for (co
   /* [giro 103] copertura: il pilota gioca in tempo reale e la stessa partita non e' riproducibile a seme fisso. Se un braccio resta senza
      la scena che deve giudicare (verde: nessuna parata sul ramo cross_goal o meno di 3 del compagno; rosso: nessuna parata giudicabile)
      si rigiocano le stesse partite, al massimo due volte, dichiarandolo. Le soglie non cambiano. */
-  const _cieco = () => { const o = fatti.flatMap(M => (M && M.out) || []).filter(x => !(x.rv && x.rv.cap === 'parete'));
+  const _cieco = () => { const o = fatti.flatMap(M => (M && M.out) || []).filter(x => !(x.rv && x.rv.cap === 'parete') && !x.inc);
     return rosso ? !(o.length + prov.length) : (o.filter(x => /assist/.test(x.g)).length < 3 || !(o.some(x => /cross_goal/.test(x.pas)) || prov.some(x => /cross_goal/.test(x.pas)))); };
-  for (let giro = 1; giro <= 2 && _cieco(); giro++) { console.log(arm + ' copertura insufficiente: secondo giro ' + giro); const base = lav.length; const ext = lav.slice(0, base).map(L => ({ ...L, rip: giro }));
+  for (let giro = 1; giro <= 2 && _cieco(); giro++) { console.log(arm + ' copertura insufficiente: secondo giro ' + giro); const base = lav.filter(L => !L.rip).length; const ext = lav.slice(0, base)/* [giro 397] si rigiocano le partite di partenza, non anche le ripetute */.map(L => ({ ...L, rip: giro }));
     let j = 0; await Promise.all(Array.from({ length: Math.min(PAR, ext.length) }, async () => { while (j < ext.length) { const i = j++; const L = ext[i];
       try { fatti.push(await gioca(L.sk, L.sd, rosso, L.rg)); } catch (e) { fatti.push({ out: [], ph: 'errore ' + String(e).slice(0, 80), n: 0 }); } lav.push(L); } })); }
   const T = { par: 0, dif: [], comp: 0 };
   lav.forEach((L, i) => { const M = fatti[i]; console.log(arm + ' ' + L.rg + ' ' + L.sk + '/' + L.sd + (L.rip ? ' (ripetuta ' + L.rip + ')' : '') + ' fine ' + M.ph + ' scene ' + M.n + ' parate ' + M.out.length);
     for (const o of M.out) { T.par++; if (/assist/.test(o.g)) T.comp++; if (/cross_goal/.test(o.pas)) T.cg = (T.cg | 0) + 1; const tag = L.rg + ' ' + L.sk + '/' + L.sd + ' «' + String(o.lab).slice(0, 30) + '»';
       if (o.rv && o.rv.cap === 'parete') { T.ng = (T.ng | 0) + 1; continue; }
+      if (o.inc) { T.inc = (T.inc | 0) + 1; T.incL = (T.incL || []).concat(tag + ' minGB ' + o.minGB.toFixed(1) + ' rev=' + o.rev); continue; }
       if (o.minGB > 6) T.dif.push(tag + ' «' + o.ovl + '» minGB ' + o.minGB.toFixed(1));
-      if (process.env.CPM_RIGHE) console.log('    ' + tag + ' g=' + o.g + ' key=' + o.key + ' minGB=' + o.minGB.toFixed(1) + ' tiro=' + o.tiro + ' tuffo=' + o.tuffo + ' rev=' + o.rev + ' via=' + (o.rv ? o.rv.via + (o.rv.wpa ? '+wpa' : '') + (o.rv.cap ? '+' + o.rv.cap : '') : '-') + ' dur=' + o.dur + ' fr=' + o.nfr + ' pa=' + o.pas + ' «' + o.ovl + '»' + (process.env.CPM_TR ? '\n      ' + o.tr : '')); } });
+      if (process.env.CPM_RIGHE) console.log('    ' + tag + ' g=' + o.g + ' key=' + o.key + ' minGB=' + o.minGB.toFixed(1) + ' tiro=' + o.tiro + ' tuffo=' + o.tuffo + ' rev=' + o.rev + ' via=' + (o.rv ? o.rv.via + (o.rv.wpa ? '+wpa' : '') + (o.rv.cap ? '+' + o.rv.cap : '') : '-') + ' cop=' + o.cop + (o.ultima ? ' ULTIMA(fine ' + M.ph + ')' : '') + ' dur=' + o.dur + ' fr=' + o.nfr + ' pa=' + o.pas + ' «' + o.ovl + '»' + (process.env.CPM_TR ? '\n      ' + o.tr : '')); } });
   for (const o of prov) { T.par++; T.prov = (T.prov | 0) + 1; if (/cross_goal/.test(o.pas)) T.cg = (T.cg | 0) + 1;
     if (o.minGB > 6) T.dif.push('provocata gi' + o.gi + ' «' + o.ovl + '» minGB ' + o.minGB.toFixed(1) + ' (' + o.pas + ')'); }
   if (PROV.length && prov.length < PROV.length) T.provMancanti = PROV.length - prov.length;
-  esito[arm] = T; console.log((T.prov | 0) + ' scene provocate giudicate su ' + PROV.length + '; '); console.log(arm.toUpperCase() + ' parate ' + T.par + ' (tiro del compagno ' + T.comp + ') · sul ramo cross_goal ' + (T.cg | 0) + ' · non giudicabili ' + (T.ng | 0) + ' · difetti ' + T.dif.length); T.dif.slice(0, 12).forEach(x => console.log('  · ' + x));
+  esito[arm] = T; console.log((T.prov | 0) + ' scene provocate giudicate su ' + PROV.length + '; '); console.log(arm.toUpperCase() + ' parate ' + T.par + ' (tiro del compagno ' + T.comp + ') · sul ramo cross_goal ' + (T.cg | 0) + ' · non giudicabili ' + (T.ng | 0) + ' · scene incomplete ' + (T.inc | 0) + ' · difetti ' + T.dif.length); (T.incL || []).forEach(x => console.log('  ~ incompleta ' + x)); T.dif.slice(0, 12).forEach(x => console.log('  · ' + x));
 }
 await b.close(); srv.close();
 if (process.env.CPM_MISURA) process.exit(0);
 const g = [], V = esito.verde, R = esito.rosso;
 if (V) { if (V.comp < 3) g.push('verde: cieco, solo ' + V.comp + ' parate sul tiro del compagno (pavimento 3)'); if (!(V.cg > 0)) g.push('verde: nessuna parata sul ramo cross_goal (il ramo corretto dal giro 100 non e\' stato guardato)'); if (V.dif.length) g.push('verde: ' + V.dif.length + ' parate senza pallone al portiere'); }
 if (R && !R.dif.length) g.push('rosso: il difetto non si vede (' + R.par + ' parate)');
+/* [giro 397] una scena incompleta (esito mai rivelato o scena ancora aperta a fine partita) e' «non giudicata», quindi rossa */
+for (const [n, T] of [['verde', V], ['rosso', R]]) if (T && T.inc) g.push(n + ': ' + T.inc + ' parate in scene incomplete, non giudicate');
 /* [giro 174] una scena provocata che non arriva al riquadro di parata e' «non giudicata», quindi rossa */
 for (const [n, T] of [['verde', V], ['rosso', R]]) if (T && T.provMancanti) g.push(n + ': ' + T.provMancanti + ' scene provocate non giudicate');
 if (g.length) { console.log('❌ parata-100'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
