@@ -163,6 +163,15 @@ dallo stesso esito.
 Punto d'attenzione per l'unione: il post-arco `deflect` è condiviso col cross fuori del giro 11; la mia riga vale solo per
 tiro/testa/punizione/rigore (`_sf83`) e solo se `_z367` è della scena in corso.
 
+### Unione con `lavoro/201` dopo il giro 364 (verificato a secco, senza unire)
+
+Mentre giravo, `lavoro/201` è avanzato a `8543a9c` (unione del giro 364, fasce). Prova a secco con `git merge-tree`:
+`src/12-three-match-view.jsx` e `package.json` si uniscono da soli; **due conflitti, entrambi «tenere tutte e due le aggiunte»**:
+`CLAUDE.md` (due invarianti nuovi nello stesso punto) e `tests/visual/ci-runner.mjs` (due guardiani nuovi in testa alla stessa riga
+`src/12-|src/13-` della MAPPA). `CARRIER-MANAGER-AV.html` va ricomposto con `node tools/build-src.mjs` dopo l'unione, non unito a mano.
+La mia catena ha giudicato il build **senza** il giro 364: dopo l'unione vanno rigiocati almeno `tiri-367` e `portiere-223`, perché
+tutti e due i giri toccano il dispatcher della conclusione.
+
 ## Catena
 
 Tutto sul build definitivo (commit `6381d87`, `check-src` identico byte per byte), eseguito dentro il turno.
