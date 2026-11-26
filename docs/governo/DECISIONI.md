@@ -2161,3 +2161,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 16:20 — PO: «sono iniziati i test chiusi ufficialmente con il primo tester» (versione in prova: 7.999.216). Produzione non prima del 10/12.
 
 - 26/11 16:30 — Partito il treno della 217 (lavoro/201 ccbed196): vagoni 372 (giudizi), 373 (interviste), 374 (PO-633), 375 (barriera 9,15 m), 376 (trofeo), 377 (impulsi). Le riparazioni 393 (rigore) e 396 (gol-eroe-154) e gli altri consegnati vanno nella 218.
+
+- 26/11 18:05 — Consegnati 397, 398, 399, 400, 401 (PO-672 urgente: in testa al treno della 218). Lanciati 402 (PO-577), 403 (PO-579), 404 (PO-580/581), 405 (PO-582). Treno della 217 (45847072319) a 16/32 parti.
