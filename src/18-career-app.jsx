@@ -1584,6 +1584,32 @@ const getThisWeekMatchday=()=>{
   useEffect(()=>{try{const x=player.salto323;if(!_g323()||!x||!x.aperta||x.accettato||transferOffer)return;
     if((player.proStatus||"u18")!=="u18"||x.s!==(player.season||1)||(player.week||1)>23||_offAtt201(player))return;
     setTransferOffer(x.aperta);}catch(_e){}},[player.salto323,player.week,transferOffer]);// eslint-disable-line
+  /* [giro 377 · PO-646] LE PROMESSE DI MERCATO DEGLI IMPULSI SI MANTENGONO (attesa377, src/03). Un solo punto, all'arrivo di ogni
+     settimana, qualunque percorso l'abbia fatta avanzare (vissuta, simulata, partita giocata): se una scelta «aspetto/ascolto/vado»
+     e' nella sua finestra, col tiro deterministico della settimana arriva l'offerta VERA (stesso generatore e stessa finestra
+     dell'offerta del mercato); a finestra chiusa senza offerta la pista e' dichiarata sfumata. Un'offerta gia' aperta fa slittare
+     il tiro alla settimana dopo. Testimone __CPM_ATT377 (solo collaudo). Rosso __CPM_NO_G377 (attesa377 → null). */
+  const _att377Ref=useRef(null);
+  useEffect(()=>{try{const p=player;const at=attesa377(p);if(!at)return;
+    const _T=(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))?(window.__CPM_ATT377=window.__CPM_ATT377||{log:[]}):null;
+    const key=at.id+"|"+at.now;if(_att377Ref.current===key)return;_att377Ref.current=key;
+    if(_T&&!_T.log.some(e=>e.ev==="scelta"&&e.id===at.id&&e.a===at.o.a))_T.log.push({ev:"scelta",id:at.id,a:at.o.a,fin:at.f});
+    if(at.stato==="attesa")return;
+    const _m=MSG377[at.id]||{a:(c)=>`📩 ${c} presenta un'offerta.`,s:"La pista di mercato è sfumata."};
+    if(at.stato==="ora"){
+      if(p.loan||p.contractExpired||(p.proStatus||"u18")!=="pro"||p.retireAnnounced===(p.season||1))return;/* bloccata: a finestra chiusa diventa «sfumata» */
+      if(transferOffer||_offAtt201(p)){if(_T)_T.log.push({ev:"rinvio",id:at.id,w:at.now});return;}/* un'offerta gia' aperta: il tiro slitta alla settimana dopo */
+      if(!tiro377(p,at))return;
+      const off=offerta377(p,at);if(!off)return;
+      const cn=(off.club&&off.club.n)||"Un club";
+      setPlayer(q=>({...q,impMem:{...(q.impMem||{}),[at.id]:{...((q.impMem||{})[at.id]||{}),f377:at.now}},log:[_m.a(cn),...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>{setTransferOffer(o=>o||off);notify(_m.a(cn),"#22c55e");},700);
+      if(_T)_T.log.push({ev:"arrivo",id:at.id,a:at.o.a,w:at.now,fin:at.f,club:cn,tipo:off.type});
+      return;}
+    setPlayer(q=>({...q,impMem:{...(q.impMem||{}),[at.id]:{...((q.impMem||{})[at.id]||{}),f377:-at.now}},log:[_m.s,...(q.log||[])].slice(0,60)}));
+    setTimeout(()=>notify(_m.s,"#64748b"),700);
+    if(_T)_T.log.push({ev:"sfumata",id:at.id,a:at.o.a,w:at.now,fin:at.f});
+  }catch(_e){}},[player.season,player.week,player.impMem]);// eslint-disable-line
   const _mktDoneRef=useRef(null);
   const _mktWkRef=useRef(null);
   useEffect(()=>{
@@ -4700,6 +4726,7 @@ const getThisWeekMatchday=()=>{
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         ...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),// [5.91.0 BIL-9] i bivi muovono i SOLDI veri (economia 3.2)
         ...(choice.flag==="investment"?{investmentPending:true,...((typeof window!=="undefined"&&window.__CPM_NO_INV223)?{}:{investimenti223:[...(p.investimenti223||[]),{amt:ef.bank!=null?Math.max(0,Math.round(p.bankBalance||0)-Math.max(0,Math.round((p.bankBalance||0)+ef.bank))):0,prof:choice.inv||"bilanciato",s:p.season||1,w:p.week||1}]})}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE · [PO-223] e registra QUANTO e' uscito davvero dal conto e con che profilo */
+        ...(ef.jerseyNum!=null&&!no377()?{jerseyNum:ef.jerseyNum,jerseyNumSeason:p.season||1}:{}),/* [giro 377] «La prendo» (maglia 10) cambia davvero il numero, per questa stagione */
         ...(ef.transferListed===true?{transferListed:true}:{}),/* [7.430.0] «voglio muovermi ora» produce il FATTO: in lista, ed e' il flag che il mercato legge davvero */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
         ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
