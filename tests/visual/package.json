@@ -42,6 +42,7 @@
     "linee-61": "node linee-61.mjs --guardiano",
     "intercetto-291": "node intercetto-291.mjs --guardiano",
     "testa-342": "node testa-342.mjs --guardiano && CPM_ROSSO=__CPM_NO_G342 node testa-342.mjs --guardiano --eti=rosso",
+    "testa-380": "node misura-380.mjs --guardiano && CPM_ROSSO=__CPM_NO_G380 node misura-380.mjs --guardiano && node testa-342.mjs --guardiano --casi=53:1,1:1,103:1,124:0,126:0 --eti=testa380",
     "salti-274": "node salti-274.mjs --guardiano && CPM_ROSSO=__CPM_NO_G274 node salti-274.mjs --guardiano",
     "memoria-275": "CPM_STOP275=1 CPM_VIAHOOK275=1 node memoria-275.mjs --guardiano",
     "memoria-275:rosso276": "CPM_ROSSO=__CPM_NO_G276 CPM_STOP275=1 CPM_VIAHOOK275=1 node memoria-275.mjs --guardiano",
