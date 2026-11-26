@@ -1,0 +1,2 @@
+Avvio del treno della 7.999.216 (26/11): il commit 18a58a06 toccava solo docs/ e non aveva fatto partire il treno.
+File neutro per il gioco: nessun codice lo legge.
