@@ -69,3 +69,8 @@ src/12): **non ho toccato il gioco**. La CI non salvava i fotogrammi (`CPM_DUMP`
 
 Per il blocco dei rilasci: i due rossi non sono difetti nuovi del gioco; la sessione madre decide se metterli in `ROSSI-DICHIARATI`
 o aspettare il treno grande successivo con questi guardiani riparati.
+
+## 6. Catena del giro
+`node ci-runner.mjs giro consegna-103 testa-342` sul ramo (7.999.215): **19/19 verdi** — consegna-103 926 s, testa-342 478 s, piu' le
+17 sentinelle (mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico, griglia-mobile, render-3d-023,
+tunnel-285, home-298, web-237, career-critical, battito-264, partita-vera, gk-dive-sync, schermate-97). Nessun passo instabile.
