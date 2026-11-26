@@ -27,6 +27,10 @@ async function braccio(nome, flags) {
   try {
     if (!ok) { R.errore = 'ingresso in campo mai raggiunto coi corpi pronti'; return R; }
     const C = (await leggiCorpi(p)).filter(c => c.ruolo !== 'eroe' && c.cm > 0);
+    /* [giro 414] la statura si legge in TRE momenti (0,8 s fra uno e l'altro) e per ogni corpo vale la piu' alta osservata: in una sola
+       lettura un corpo colto con la suola sollevata (oscillazione della fila) misurava 2-3 cm in meno e usciva dal ±3% (Daniel White
+       190 cm → 192-193, 1 corsa su 3 sia sulla base 412 sia col giro 414). I piedi (suola) restano giudicati sulla prima lettura. */
+    for (let k = 0; k < 2; k++) { await sleep(800); const D = await leggiCorpi(p); for (const c of C) { const d = D.find(x => x.nome === c.nome); if (d && d.alt3d > c.alt3d) c.alt3d = d.alt3d; } }
     R.n = C.length; R.conTest = C.filter(c => c.g412 && c.g412.cm === c.cm && c.g412.kg === c.kg).length;
     R.rho = +spearman(C.map(c => c.cm), C.map(c => c.alt3d)).toFixed(3);
     const rap = C.map(c => c.alt3d / (c.cm / 100)), med = rap.slice().sort((x, y) => x - y)[rap.length >> 1];

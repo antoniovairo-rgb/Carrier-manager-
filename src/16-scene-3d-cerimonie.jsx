@@ -1267,6 +1267,7 @@ function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.Da
    corpi animati 869→1846 all'avvio della seconda partita). Stessa classe dei due trattenitori del giro 53 (_glbCache, _kitTexCache).
    Allo smontaggio la texture si libera: il suo 'dispose' toglie l'ascoltatore; l'immagine resta e il renderer successivo la ricarica al primo uso. */
 function _rilascia276(){try{if(typeof window!=='undefined'&&window.__CPM_NO_G276)return 0;const t=_MASC240.u.value;if(t&&t.isTexture){t.dispose();return 1;}return 0;}catch(_e){return 0;}}
+const _g414=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G414);
 function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255],auto240=lineare0==='auto';
   const fL=(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}),fS=(v=>v/255);let fatti=0;if(!_UNO240)_UNO240=new T.Vector3(1,1,1);
   av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
@@ -1282,9 +1283,15 @@ function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof 
       const masc=(nome==='Material.002'&&_g240())?_maschera240():null;c.userData.masc240=!!masc;
       /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: i capelli — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
       const dec=!!(masc&&auto240&&!lineare&&uscitaLin);
+      /* [giro 414 · PO-678] LA FASCIA CHIARA ALL'ATTACCATURA. Col ramo «dec» la maschera entrava DUE volte: nella tinta (k225*=m240) e nel
+         miscuglio finale mix(capelli decodificati, pelle tinta, m240). Dove la maschera filtrata (256 px, lineare + mipmap) vale fra 0 e 1 —
+         cioe' lungo tutto il bordo della calotta — il risultato non stava fra «capelli» e «pelle»: la parte m240 era pelle GREZZA (ne' tinta ne'
+         decodificata), il colore piu' chiaro dei tre. Misurato su Connor Quinn (notte, maschera uniforme): m 0 → L* 62,1 · m 0,25 → 65,7 ·
+         m 1 → 37,5. Ora la tinta e' piena e la maschera decide UNA volta sola: il bordo e' un miscuglio monotono fra i due lati. Rosso __CPM_NO_G414. */
+      const g414=_g414();
       c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};if(masc)sh.uniforms.uMasc240=masc;sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+(masc?'uniform sampler2D uMasc240;\n':'')+sh.fragmentShader.replace('#include <map_fragment>',
-        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;k225*=m240;':'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
-      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
+        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;'+(dec&&g414?'':'k225*=m240;'):'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
+      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'')+(dec&&g414?'G':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
     m.material=Array.isArray(m.material)?nx:nx[0];});
   av.userData.pelle225=hex;return fatti;}catch(_e){return 0;}}
 /* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
