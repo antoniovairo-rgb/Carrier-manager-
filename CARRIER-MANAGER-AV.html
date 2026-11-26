@@ -311,6 +311,8 @@ html.cpm-t213 [data-premuto213="b"],html.cpm-t213 [data-premuto213="a"]{scale:.9
 html.cpm-t213 [data-pos213]{position:relative;}
 html.cpm-t213 [data-premuto213="b"]::before,html.cpm-t213 [data-premuto213="a"]::after{content:"";position:absolute;inset:-2.5%;}
 @media(prefers-reduced-motion:reduce){html.cpm-t213 [data-premuto213]{scale:none!important;}}
+/* [giro 417 PO-681] partita in pausa: i comandi di gioco sono spenti (il contenitore della partita li marca data-spento417; pausa, velo, audio e taccuino restano vivi) */
+[data-pausa417] button[data-spento417]{opacity:.35!important;filter:grayscale(.85)!important;pointer-events:none!important;cursor:default!important;}
 /* [giro 221 PO-486] tasto spento toccato: la scritta del motivo vibra di lato (translate, non transform: non tocca le transform di posizione); col moto ridotto solo un lampo di colore */
 html.cpm-t213 [data-scuoti221]{animation:cpmScuoti221 .32s ease-in-out 1;}
 @keyframes cpmScuoti221{0%,100%{translate:0}20%{translate:-4px}40%{translate:4px}60%{translate:-3px}80%{translate:2px}}
@@ -36758,6 +36760,21 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_DD221=(v)=>{defDistRef.current=v;setDefDist(v);};window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [giro 417 PO-681] «se il gioco e' in pausa i pulsanti non devono essere cliccabili». Misurato prima (misura-417.mjs): su PC il velo
+     della pausa copre solo il campo e la colonna delle scelte restava viva — 1 clic su 1 eseguiva la scelta con la PAUSA ancora sopra
+     (fase hl_result); al telefono il tocco lo prendeva il velo, ma Invio/Spazio su un tasto a fuoco la eseguiva (1 su 1); su entrambi la
+     velocita' cambiava in pausa. Ora, in pausa, OGNI tasto del contenitore della partita e' spento (aria-disabled, data-spento417, aspetto
+     spento via CSS in src/00) e un filtro di cattura sul contenitore ferma clic e pointerdown prima dei gestori; restano vivi solo i
+     comandi di pausa marcati data-pausa417ok (pausa/ripresa, velo «per riprendere», audio, taccuino). handleAction e handleSetPiece
+     rifiutano in pausa SENZA consumare la scelta: alla ripresa la stessa scelta funziona. Rosso window.__CPM_NO_G417. */
+  const _g417=!(typeof window!=='undefined'&&window.__CPM_NO_G417);
+  const _pausa417=_g417&&paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase);
+  const pausa417Ref=useRef(false);pausa417Ref.current=_pausa417;const radice417Ref=useRef(null);
+  const _blocca417=e=>{if(!pausa417Ref.current)return;const t=e.target;if(t&&t.closest&&t.closest('[data-pausa417ok]'))return;e.preventDefault();e.stopPropagation();};
+  React.useLayoutEffect(()=>{const r=radice417Ref.current;if(!r)return;
+    if(_pausa417){r.querySelectorAll('button').forEach(b=>{if(b.closest('[data-pausa417ok]')||b.hasAttribute('data-spento417'))return;b.setAttribute('data-spento417',b.getAttribute('aria-disabled')||'');b.setAttribute('aria-disabled','true');});}
+    else r.querySelectorAll('[data-spento417]').forEach(b=>{const v=b.getAttribute('data-spento417');if(v)b.setAttribute('aria-disabled',v);else b.removeAttribute('aria-disabled');b.removeAttribute('data-spento417');});
+  });/* senza dipendenze: un tasto che nasce durante la pausa si spegne anche lui */
   /* [giro 210 PO-471, decisione PO 15/11 «stesso comportamento del PC»] SUL TELEFONO IL PAD RESTA FINCHE' CI SONO MOSSE. Prima la prima mossa
      portava la fase a `hl_choose` e la scheda del telefono passava alle giocate: il pad spariva anche con mosse rimaste (sul PC no: li' pad
      e giocate stanno insieme). La FASE resta quella del PC (stessi timer, stesso motore: `hl_choose` dopo la prima mossa); cambia solo che
@@ -43866,6 +43883,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
   const handleAction=useCallback((action)=>{
     if(phase!=="hl_choose")return;
+    if(pausa417Ref.current)return;/* [giro 417] in pausa la scelta non parte e non si consuma (la guardia doppio-tap sta sotto) */
     if(_hlActionFiredRef.current)return; // prevent double-fire (tap bleed / stale closure)
     _hlActionFiredRef.current=true;
     /* [7.194.0 S1] LA CONSEGNA È COMPLETATA. Prima dell'azione la palla ora vive dove deve (bandierina, fascia,
@@ -44488,6 +44506,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      esistente. Emissioni timeline/coerenza IDENTICHE al vecchio handleRigore (taxonomy invariata). */
   const handleSetPiece=(opt)=>{
     if(phase!=="hl_choose")return;
+    if(pausa417Ref.current)return;/* [giro 417] */
     if(_hlActionFiredRef.current)return;
     const _sitAim=situationsRef.current[hlIdxRef.current];
     if(opt&&opt.kind==="delivery"&&opt.act){handleAction(opt.act);return;}/* la guardia doppio-tap la mette handleAction */
@@ -44908,9 +44927,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   useEffect(()=>{
     if(phase!=="hl_choose")return;
     if(!pendingActionRef.current)return;
+    if(pausa417Ref.current)return;/* [giro 417] la scelta in sospeso aspetta la ripresa invece di perdersi */
     const a=pendingActionRef.current;pendingActionRef.current=null;
     handleAction(a);
-  },[phase,handleAction]);// eslint-disable-line
+  },[phase,handleAction,paused]);// eslint-disable-line
 
   // Post-highlight: durata DINAMICA in base ad azione/esito (4.85.0) — sostituisce il fisso 1s che
   // tagliava palla in volo e slow-mo. Sempre ≥ durata arco/slow-mo + tempo di lettura dell'esito.
@@ -45408,7 +45428,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _strisciaV2=(f,lato)=>({background:f.c,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 10px, rgba(255,255,255,0) 10px 20px)",alignSelf:"stretch",margin:"8px 0",padding:"0 8px",borderRadius:RAD.sm});
   const _aVal901=_so214?(isMatchHome?soState.as:soState.hs):isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
-    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column",...((_g253&&context==="trial")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:{})}/* [giro 114 G184-01] il pre-partita riempie l'area utile *//* [giro 253] nel provino 16 px di margine (il contenitore del provino non ne ha) */:(_g253&&context==="trial"&&phase==="formations")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column",...((_g253&&context==="trial")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:{})}/* [giro 114 G184-01] il pre-partita riempie l'area utile *//* [giro 253] nel provino 16 px di margine (il contenitore del provino non ne ha) */:(_g253&&context==="trial"&&phase==="formations")?{paddingLeft:SP.lg,paddingRight:SP.lg,boxSizing:"border-box"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}} ref={radice417Ref} data-pausa417={_pausa417?"":undefined} onClickCapture={_blocca417} onPointerDownCapture={_blocca417}>{/* [giro 417] */}
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -45463,12 +45483,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>
+                  <button data-pausa417ok="" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>
                     {paused?"▶":"⏸"}
                   </button>
                 )}
                 {_g172&&_fasiAudio294.includes(phase)&&(
-                  <button data-cpm="audio-partita" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.7)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -4px"}:{})}}>{_icoAudio172()}</button>
+                  <button data-cpm="audio-partita" data-pausa417ok="" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.7)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -4px"}:{})}}>{_icoAudio172()}</button>
                 )}
                 {/* [7.484.0] VELOCITA' DELLA PARTITA, scelta dal giocatore. Sta accanto alla pausa perche'
                     e' lo stesso gesto — «quanto in fretta scorre» — e perche' l'intestazione e' l'unica
@@ -45500,7 +45520,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     L'intestazione esiste anche a fine partita (mostra «FT») e il testimone regge: l'anello
                     vive nel ref del componente e la closure di __CPM_WATCH_SNAP continua a leggerlo. */}
                 {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                  <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.small,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                  <button data-pausa417ok="" onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.small,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                 )}
               </div>
               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
@@ -45564,10 +45584,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div data-cpm="minuto-v2" style={{fontSize:FS.small,fontWeight:800,color:TINTE.oro,letterSpacing:.3,fontVariantNumeric:"tabular-nums",fontFamily:FONT_TV,fontSize:FS.bodyLg}}>{_so214?"RIGORI":phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button className="cpm-t40m" data-pausa417ok="" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {_g172&&_fasiAudio294.includes(phase)&&(
-                    <button data-cpm="audio-partita" className="cpm-t40m" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.75)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginRight:_no108("13")?22:26}:{})}}>{_icoAudio172()}</button>
+                    <button data-cpm="audio-partita" data-pausa417ok="" className="cpm-t40m" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.75)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginRight:_no108("13")?22:26}:{})}}>{_icoAudio172()}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&!_sh173/* [giro 173] */&&(
                     <button className="cpm-t40m"
@@ -45579,7 +45599,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </button>
                   )}
                   {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} className="cpm-t40m" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:TINTE.sec,lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                    <button data-pausa417ok="" onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} className="cpm-t40m" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:TINTE.sec,lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                   )}
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
@@ -46262,7 +46282,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
                   Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
               {bugNote&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(3,6,16,0.92)",backdropFilter:"blur(6px)",zIndex:41,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:14}} onClick={e=>e.stopPropagation()}>
+                <div data-pausa417ok="" style={{position:"absolute",inset:0,background:"rgba(3,6,16,0.92)",backdropFilter:"blur(6px)",zIndex:41,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:14}} onClick={e=>e.stopPropagation()}>
                   <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:RAD.md,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                       <span style={{fontSize:FS.subhead}}>⚠️</span>
@@ -46333,9 +46353,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {/* Pause overlay */}
-              {_g172&&audio172&&<PannelloAudio172 onClose={_chiudiAudio172}/>}
+              {_g172&&audio172&&<div data-pausa417ok="" style={{display:"contents"}}><PannelloAudio172 onClose={_chiudiAudio172}/></div>}
               {paused&&!bugNote&&!(_g172&&audio172)&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
+                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} data-pausa417ok="" onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>{(_g234()&&!_tastiera234())?"Tocca per riprendere":(_g300()?"Clicca per riprendere":"Premi P o tocca per riprendere")}{/* [giro 300 PO-553] via il nome del tasto; P funziona ancora */}</div>{/* [giro 234 PO-459 · G195-15] sul telefono il tasto P non c'e' */}
