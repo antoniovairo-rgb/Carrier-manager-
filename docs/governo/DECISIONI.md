@@ -2125,3 +2125,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 07:45 — Applicata la decisione PO «Decide la diagnosi»: il giro 387 prova che consegna-103 e testa-342 sono instabilità (stesso commit 8543a9cc verde sul trenino e rosso sul treno grande, nessun effetto del 364) → messi in ROSSI-DICHIARATI (solo_runner). La 216 può uscire a fine del suo treno; le riparazioni dei due guardiani vanno nella 217.
 
 - 26/11 07:55 — Registrata PO-671 (fallo cercato: in area rigore, fuori area punizione). In coda n° 1: parte al primo giro libero (oggi 5 giri attivi). Non sale sul treno della 216.
+
+- 26/11 07:46 — Consegnati 379 (PO-658/659), 380 (PO-640/664), 385 (PO-521). Lanciati 388 (PO-642), 389 (PO-671 fallo cercato), 390 (PO-653 ricevente nella scena). Attivi: 386, 387 (riparazione), 388, 389, 390.
