@@ -58524,7 +58524,7 @@ const getThisWeekMatchday=()=>{
             const ncTrophies=trophyWon?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
             const ncMoraleB=trophyWon?18:isFinalStage?6:qualified?10:0;/* finale persa: comunque una cavalcata */
             const ncPopB=trophyWon?20:isFinalStage?9:qualified?10:3;
-            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false}};
+            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false,...((typeof window!=='undefined'&&window.__CPM_NO_G373B)?{}:{trophyWon,qualified})}};/* [giro 373 PO-463] l'esito anche nella coda: la scheda «Coppa delle Nazioni S.x» (bordo, colore) lo legge da li'. Campi facoltativi, nessun SAVE. Rosso __CPM_NO_G373B */
           });
           setTimeout(()=>setNationsCupModal({myNat:player.nation||"Italia",season:player.season||1,matches:allMatches,pts:groupPts,qualified,trophyWon,final:isFinalStage?{opp:result.opponent,won:trophyWon,pen:!!result.drew,hs:result.homeScore,as:result.awayScore}:null}),500);
           if(trophyWon)setTimeout(()=>notify(_finPen?"🏆 Coppa delle Nazioni VINTA AI RIGORI! Leggenda nazionale!":"🏆 Coppa delle Nazioni VINTA IN FINALE! Leggenda nazionale!","#f59e0b"),1200);
@@ -59817,8 +59817,20 @@ const getThisWeekMatchday=()=>{
   const doRetire=()=>{
     const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr,league:player.club?.lg,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))};/* [7.262.0] stesso campo su tutti i writer di storico */
     const updPlayer={...player,history:((player.history||[]).some(h=>h.season===player.season)?(player.history||[]):[...(player.history||[]),hist]).slice(-50),trophies:player.trophies||[]};/* [6.74.0 QA-4] la stagione era già stata chiusa (e pushata) dal blocco premi → niente terza copia al ritiro */
+    /* [giro 373 PO-463] la sfida si valutava solo al passaggio di stagione, e il ritiro (addio annunciato, 40 anni, «Ritirati») esce
+       PRIMA di quel controllo: «Sempreverde» non si completava mai a chi chiudeva la carriera a 34 anni giocati. Al ritiro la sfida
+       si giudica sui dati della stagione che si chiude: compiuta → completata; altrimenti, a carriera finita, fallita. Deterministico
+       (le regole di CHALLENGES), nessun campo nuovo. Testimone __CPM_SFIDA373. Rosso __CPM_NO_G373B = com'era. */
+    let _sf373=null;
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G373B)&&player.challenge&&!player.challenge.completed&&!player.challenge.failed){
+      const _d373=CHALLENGES.find(c=>c.id===player.challenge.id);
+      if(_d373){let _ok373=false;try{_ok373=!!_d373.check(updPlayer);}catch(_e){}
+        _sf373={def:_d373,k:_ok373?"completed":"failed"};updPlayer.challenge={...player.challenge,[_sf373.k]:true};}
+    }
+    try{if(typeof window!=='undefined')window.__CPM_SFIDA373=_sf373?{id:_sf373.def.id,esito:_sf373.k}:null;}catch(_e){}
     const score=calcLegacyScore(updPlayer);
-    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies}));/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
+    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies,...(_sf373?{challenge:updPlayer.challenge}:{})}));
+    if(_sf373)setTimeout(()=>notify(_sf373.k==="completed"?`🏆 SFIDA COMPLETATA: ${_sf373.def.name}! ${_sf373.def.reward}`:`❌ Sfida non completata: ${_sf373.def.name}`,_sf373.k==="completed"?"#7c3aed":TH.danger),500);/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
     setRetirementData({player:updPlayer,legacyScore:score});
     setSeasonEndData(null);
     setScreen("careerEnd");
@@ -68626,6 +68638,11 @@ function App(){
         @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G150)?'':`/* [giro 150 PO-352 «Finestra centrata col velo»] UNA REGOLA PER TUTTE LE FINESTRE in primo piano, da 768 px (PC e tablet; il telefono resta com'e'): velo scuro TH.scrimForte su tutta la pagina, finestra alta quanto il contenuto e centrata in verticale (scorre dentro se e' piu' alta dello schermo), larga almeno 520 px. Lo strato porta .cpm-velo150, il pannello .cpm-pan150 (Modal, finestre degli impulsi, momento di carriera, intervista). Dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) le misure si dividono per 1,12, altrimenti la finestra esce dallo schermo (misurato: offerta alta 774 px su 768). Con la scena della sala stampa (.cpm-scena150) la finestra si centra nello spazio SOTTO la scena (31% alto). Il foglio del giro 114 (768-899 px) resta foglio. Rosso __CPM_NO_G150. */
         @media(min-width:768px){.cpm-velo150{background:${TH.scrimForte}!important;padding:${SP.lg}px!important;overflow:hidden!important;}.cpm-velo150:not(.cpm-foglio114){align-items:center!important;}.cpm-velo150>.cpm-pan150{min-width:min(520px,100%);height:auto!important;min-height:0!important;max-height:calc(100vh - ${2*SP.lg}px)!important;overflow-y:auto!important;}.cpm-velo150:not(.cpm-foglio114)>.cpm-pan150{border-radius:${RAD.xl}px!important;}.cpm-scroll .cpm-velo150>.cpm-pan150{min-width:min(464px,100%);max-height:calc((100vh - ${2*SP.lg}px) / 1.12)!important;}.cpm-velo150.cpm-scena150{padding-top:calc(31vh + ${SP.lg}px)!important;}.cpm-velo150.cpm-scena150>.cpm-pan150{max-height:calc(69vh - ${3*SP.lg}px)!important;box-shadow:${TH.el3}!important;}}`}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G373A)?'':`/* [giro 373 PO-462] PC e tablet: la fascia della scena (31% alto) era fissa e la finestra dell'intervista non poteva superare 69vh-48:
+           a 1366x768 contenuto 550 px in 480 visibili, la terza risposta solo scorrendo. Ora la fascia e' un distanziatore che CEDE (::before,
+           flex 0 1 31vh): se la finestra ci sta resta centrata sotto la scena come prima, se no la fascia si accorcia quanto serve e la
+           finestra sale (al massimo tutta l'altezza meno i margini). Il telefono (<768) non cambia. Rosso __CPM_NO_G373A = com'era. */
+        @media(min-width:768px){.cpm-velo150.cpm-scena150{flex-direction:column!important;justify-content:flex-start!important;padding-top:${SP.lg}px!important;}.cpm-velo150.cpm-scena150::before{content:"";display:block;flex:0 1 31vh;min-height:0;}.cpm-velo150.cpm-scena150>.cpm-pan150{flex-shrink:0;margin-top:auto!important;margin-bottom:auto!important;max-height:calc(100vh - ${2*SP.lg}px)!important;}}`}
         ${_noG160()?'':`/* [giro 160, aperto dal giro 150] SUL TELEFONO le finestre dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) uscivano di 3-4 px sopra e sotto: il pannello porta maxHeight 90vh, che sotto lo zoom diventa ~101vh (misurato 806 px su 800 al 360, 851 su 844 al 390: offerta e privacy). Stessa correzione del giro 150 per PC e tablet: la misura si divide per 1,12. Rosso: banco noG160. */
         @media(max-width:767px){.cpm-scroll .cpm-velo150>.cpm-pan150{max-height:calc(90vh / 1.12)!important;}}`}
         .cpm-page{width:100%;}

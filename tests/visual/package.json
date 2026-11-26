@@ -775,6 +775,7 @@
     "ritocchi-302": "node ritocchi-302.mjs",
     "rosa-angoli-299-censimento": "CPM_CENSIMENTO=1 node rosa-angoli-299.mjs",
     "mappa-unica": "node mappa-unica-308.mjs",
+    "difetti-373": "node difetti-373.mjs && (CPM_ROSSO373=1 node difetti-373.mjs; test $? -eq 1)",
     "rilascio-312": "node rilascio-312.mjs",
     "trenino-317": "node trenino-317.mjs",
     "via-poc-338": "node via-poc-338.mjs",
