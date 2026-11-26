@@ -10,7 +10,7 @@
    CAMPIONE DICHIARATO: otto scene, una per famiglia di tiro/testa (da fuori, potenza, di prima, uno contro uno, a giro, pallonetto,
    volee, testa), ciascuna DUE volte nel verde: una «provocata» (il bersaglio di lato della variante messo a ±11 dal gancio di solo
    collaudo __CPM_PZ367: e' il valore che giro e secondo palo sorteggiano da soli, 6-13) e una «naturale» (sorteggio del gioco);
-   piu' punizione e rigore naturali. Nel rosso (window.__CPM_NO_G367) solo le otto provocate.
+   piu' punizione e rigore naturali. Nel rosso (window.__CPM_NO_G367) solo le otto provocate, piu' tre rigori fuori con window.__CPM_NO_G393 (giro 393: almeno due a meno di 0,5 m dal palo o nello specchio); nel verde anche il rigore passa ad almeno 0,5 m dal palo.
    VERDE, per ogni tiro:
      (1) l'esito non cambia: il motore dichiara «wide» in ogni fotogramma, nessun post-arco di rete o di legno, il pallone non entra
          mai in porta, il tabellone non si muove;
@@ -39,9 +39,11 @@ async function braccio(port, nome) {
   const rosso = nome === 'rosso'; const lavori = [];
   FAM.forEach((sc, i) => lavori.push({ sc, pz: i % 2 ? -11 : 11, foto: FOTO && [1, 2, 4].includes(i) ? path.join(ROOT, 'docs', 'collaudo-po', `367-${sc.fam}-${rosso ? 'prima' : 'dopo'}.png`) : null }));
   if (!rosso) { FAM.forEach(sc => lavori.push({ sc, pz: null })); PIAZZATI.forEach(sc => lavori.push({ sc, pz: null })); }
+  /* [giro 393] rosso del rigore fuori: senza la correzione (__CPM_NO_G393) il pallone si ferma a 0,02-0,29 m dal palo (12 corse su 12 sotto 0,5) */
+  if (rosso) for (let k = 0; k < 3; k++) lavori.push({ sc: PIAZZATI[1], pz: null, no393: true });
   const ris = []; let nx = 0;
   await Promise.all(Array.from({ length: PAR }, async () => { while (nx < lavori.length) { const L = lavori[nx++];
-    let o = await tiro(null, port, L.sc, { rosso, pz: L.pz, foto: L.foto }); if (o.skip && /^errore/.test(o.skip)) o = await tiro(null, port, L.sc, { rosso, pz: L.pz, foto: L.foto }); /* un guasto del browser si riprova una volta */
+    let o = await tiro(null, port, L.sc, { rosso: rosso && !L.no393, pz: L.pz, foto: L.foto, no393: !!L.no393 }); if (o.skip && /^errore/.test(o.skip)) o = await tiro(null, port, L.sc, { rosso: rosso && !L.no393, pz: L.pz, foto: L.foto, no393: !!L.no393 }); /* un guasto del browser si riprova una volta */
     const m = misura(o); ris.push({ ...L, o, m });
     console.log(`  [${nome}] gi${L.sc.gi} ${L.sc.fam.padEnd(14)} ${L.pz == null ? 'naturale ' : 'provocato'} ` + (m.nonGiud ? 'NON GIUDICATO: ' + m.nonGiud : m.nonLinea ? `non arriva alla linea (x max ${f(m.xMax, 1)})` : `da ${f(m.dist, 0)} m · esce a ${f(m.lato)} m dal palo (tetto ${f(TETTO(m.dist))}) · a ${f(m.daBersaglio)} m dal bersaglio dell'arco · dopo l'uscita fino a ${f(m.dopoLato)} · esito ${m.tipi.join('/')} · post-arco ${m.post.join('/') || '—'}${m.inRete ? ' · IN RETE' : ''}${o.foto ? ' · foto' : ''}`)); } }));
   return ris;
@@ -60,11 +62,14 @@ function giudica(nome, ris) {
     if (m.inRete) motivi.push(`${chi}: (1) il pallone entra in porta`);
     if (r.o.esito && r.o.esito.score0 !== r.o.esito.score) motivi.push(`${chi}: (1) il tabellone si muove (${r.o.esito.score0} → ${r.o.esito.score})`);
     if (m.nelloSpecchio) motivi.push(`${chi}: (2) all'uscita il pallone e' nello specchio`);
-    if (tiroTesta && m.lato < 0.5 && m.sopra <= 0) motivi.push(`${chi}: (2) esce a ${f(m.lato)} m dal palo (minimo 0,5)`);
+    if ((tiroTesta || r.sc.fam === 'rigore') && m.lato < 0.5 && m.sopra <= 0) motivi.push(`${chi}: (2) esce a ${f(m.lato)} m dal palo (minimo 0,5)`); /* [giro 393] anche il rigore: a 0,02-0,29 m dal palo l'uscita era a volte ancora nello specchio, secondo il fotogramma campionato */
     if (m.lato > TETTO(m.dist) + 0.35) motivi.push(`${chi}: (3) esce a ${f(m.lato)} m dal palo da ${f(m.dist, 0)} m (tetto ${f(TETTO(m.dist))} + 0,35)`);
     if (tiroTesta && m.daBersaglio > 0.35) motivi.push(`${chi}: (4) il pallone arriva sul fondo a ${f(m.daBersaglio)} m dal bersaglio dell'arco (tetto 0,35)`);
     if (m.dopoLato != null && m.dopoLato - m.lato > 1.2) motivi.push(`${chi}: (4) dopo l'uscita scivola di ${f(m.dopoLato - m.lato)} m (tetto 1,2)`);
   }
+  if (nome === 'rosso') { const r393 = ris.filter(r => r.no393), g393 = r393.filter(r => r.m.lato != null), s393 = g393.filter(r => r.m.nelloSpecchio || (r.m.lato < 0.5 && r.m.sopra <= 0)).length;
+    console.log(`[rosso] rigore fuori senza la correzione 393 (m dal palo): ${r393.map(r => r.m.lato == null ? 'non giudicato' : f(r.m.lato)).join(' · ')}`);
+    if (s393 < 2) motivi.push(`il rosso 393 non riproduce: ${s393} rigori fuori su ${r393.length} a meno di 0,5 m dal palo o nello specchio (servono 2)`); }
   if (nome === 'rosso') { const g = prov.filter(r => r.m.lato != null), larghi = g.filter(r => r.m.lato > 4.35).length, sciv = Math.max(0, ...g.map(r => r.m.dopoLato - r.m.lato));
     if (larghi < 3) motivi.push(`il rosso non riproduce: ${larghi} tiri provocati su ${g.length} oltre 4,35 m dal palo (servono 3)`);
     const spinti = g.filter(r => r.m.daBersaglio > 0.35).length;

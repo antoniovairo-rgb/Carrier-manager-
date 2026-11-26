@@ -19,7 +19,7 @@ const pct = (a, p) => { const s = [...a].sort((x, y) => x - y); return s.length 
 export const stat = a => ({ n: a.length, med: pct(a, 0.5), p90: pct(a, 0.9), max: a.length ? Math.max(...a) : null });
 const f = (x, n = 2) => x == null ? '—' : (+x).toFixed(n);
 
-export async function tiro(b, port, sc, { rosso = false, kind = 'wide', foto = null, pz = null } = {}) {
+export async function tiro(b, port, sc, { rosso = false, kind = 'wide', foto = null, pz = null, no393 = false } = {}) {
   /* un browser per tiro: con piu' pagine GLB nello stesso browser la scheda grafica software cade (misurato: «Failed to open a new tab») */
   const mio = !b; let ctx = null; const errs = [];
   try {
@@ -27,7 +27,7 @@ export async function tiro(b, port, sc, { rosso = false, kind = 'wide', foto = n
     ctx = await b.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: foto ? 2 : 1 });
     const page = await ctx.newPage(); await installCdnRoutes(page);
     page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-    await page.addInitScript(([r, z, pr]) => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_CINE = 1; window.__CPM_TOD = 'day'; if (r) window.__CPM_NO_G367 = 1; if (z != null) window.__CPM_PZ367 = z; if (pr) window.__CPM_PRESENT = 1; }, [rosso, pz, !!process.env.CPM_PRESENT]);
+    await page.addInitScript(([r, z, pr, n393]) => { if (n393) window.__CPM_NO_G393 = 1; window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_CINE = 1; window.__CPM_TOD = 'day'; if (r) window.__CPM_NO_G367 = 1; if (z != null) window.__CPM_PZ367 = z; if (pr) window.__CPM_PRESENT = 1; }, [rosso, pz, !!process.env.CPM_PRESENT, no393 || !!process.env.CPM_NO393]);
     await openMatch(page, port, { name: 'Tiri367' });
     await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 90000 }).catch(() => {});
     const glb = await page.evaluate(() => !!window.__CPM_GLB && (window.__CPM_MXCLIP | 0) > 0);

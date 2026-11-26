@@ -6127,6 +6127,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 scelto non veniva letto (solo il cucchiaio). Ora, se il pallone va nello specchio (gol o parata), lo stile
                 decide il punto: incrocio = angolo alto, angolato/rasoterra = angolo basso, centro-alto = centrale alto.
                 I pali sono a ±3,35 e la traversa a 2,44: sempre dentro. Rosso: __CPM_NO_STILE79. */
+             /* [giro 393] IL RIGORE FUORI ESCE FUORI DAI PALI. Misurato (misura-367, gi5, 6+6 corse su punta e su 8543a9cc): il bersaglio
+                era _rz*7 scalato per q, cioe' |z|<=3,5 DENTRO i pali (3,66); arrivato sulla linea il pallone scivolava di lato (wide_slide 7.533)
+                e si fermava appena oltre il palo, a 0,02-0,29 m: nel fotogramma d'arrivo stava ancora nello specchio (rosso di tiri-367 sul treno
+                della 216). Ora il fuori mira oltre il palo dal suo lato, 0,6-1,2 m (q alta = piu' vicino), e l'arco arriva sulla linea.
+                Rosso __CPM_NO_G393. */
+             if((P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&!(typeof window!=='undefined'&&window.__CPM_NO_G393)){ballArcTgtZ=(_rz<0?-1:1)*(3.66+0.6+0.6*(1-clamp(_q,0,1)));ballArcTgtX=Math.max(ballArcTgtX,48.0);}
              if(!(typeof window!=='undefined'&&window.__CPM_NO_STILE79)&&P.hlVariant!=="penalty_panenka"&&!/post|wide|miss|over|fuori|palo|out/i.test(String(P.hlOutcomeKind||""))){
                const _lb79=String(P.hlActLbl||""),_sg79=_rz<0?-1:1;let _st79=null;
                if(/incrocio/i.test(_lb79)){ballArcTgtZ=_sg79*(2.55+0.35*_q);ballArcTgtY=clamp(1.92+0.18*_q,1.9,2.12);_st79='incrocio';}
