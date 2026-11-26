@@ -1,0 +1,31 @@
+s1 seme 2 (fine, 414 s, 92') scene di fascia 3
+  s1/2 37' «↗️ Palla sulla fascia: metti i» → «🌀 Dribbling sul fondo e c» pp 81,75 cross/cross_after_dribble chance | z ape 16.9 cont 8.4 (acc 8.5) | fermo 0.05s | salto palla - | cam - | arco 6.7u q3.19 →(38,10.3) area 1 | ric cross q1 dCad 1.3 dArr 2.6 | ricApe (36.4,-2.4) q0 a1 inArea 3 | rete 0
+  s1/2 55' «↗️ Palla sulla fascia: metti i» → «🌀 Sterzata esterna e cros» pp 64,73 cross/cross_after_dribble chance | z ape 15.4 cont 7.9 (acc 7.5) | fermo 0.85s | salto palla - | cam - | arco 11u q3.15 →(35,3.9) area 1 | ric cross q1 dCad 4.1 dArr 2.6 | ricApe (34.1,0.5) q1 a1 inArea 3 | rete 0
+  s1/2 77' «↗️ Palla sulla fascia: metti i» → «↗️ Cross sul secondo palo» pp 65,77 CIECO pochi fotogrammi (0)
+s5 seme 1 (fine, 457 s, 92') scene di fascia 2
+  s5/1 48' «↗️ Palla sulla fascia: metti i» → «⚡ Cross basso teso» pp 72,71 cross/cross_low_driven chance | z ape 14 cont 6.6 (acc 7.4) | fermo 0.75s | salto palla - | cam - | arco 0.9u q1.46 →(33.3,6.7) area 1 | ric cross q1 dCad 1.3 dArr 1.7 | ricApe (32.54,8.1) q1 a1 inArea 2 | rete 0
+  s5/1 70' «↗️ Sei sulla fascia, JUNG ti c» → «↗️ Cross a rientrare» pp 86,30 cross/cross_cutback goal | z ape 13.3 cont 6.2 (acc 7.1) | fermo 0.35s | salto palla - | cam - | arco 14.3u q1.12 →(29.3,3.5) area 0 | ric cross q0 dCad 0.8 dArr 3.2 | ricApe (27.09,3.2) q0 a0 inArea 3 | rete 1
+s1 seme 1 (fine, 503 s, 92') scene di fascia 2
+  s1/1 59' «↗️ Sei sulla fascia, CATTANEO » → «↗️ Cross sul primo palo» pp 72,79 cross/cross_near_post chance | z ape 19.6 cont 12.3 (acc 7.3) | fermo 0.05s | salto palla - | cam - | arco 8.5u q3.13 →(35.3,4.7) area 1 | ric cross q0 dCad 2.5 dArr 2.8 | ricApe (39.4,1.7) q0 a1 inArea 3 | rete 0
+  s1/1 75' «↗️ Palla sulla fascia: metti i» → «↗️ Cross a rientrare» pp 64,73 cross/cross_cutback chance | z ape 15.9 cont 8.6 (acc 7.3) | fermo 0.85s | salto palla - | cam - | arco 16.6u q1.33 →(39.9,2.5) area 1 | ric cross q1 dCad 2.9 dArr 2.9 | ricApe (42.72,1.9) q1 a1 inArea 2 | rete 0
+s12 seme 1 (fine, 393 s, 93') scene di fascia 3
+  s12/1 36' «↗️ Palla sulla fascia: metti i» → «🌀 Doppio passo e cross» pp 67,76 cross/cross_after_dribble chance | z ape 17.8 cont 9.4 (acc 8.4) | fermo 1.05s | salto palla - | cam - | arco 4.4u q3.11 →(29.8,12) area 0 | ric cross q1 dCad 1.9 dArr 1.2 | ricApe (30.55,11.2) q1 a0 inArea 2 | rete 0
+  s12/1 54' «↗️ Sei sulla fascia, HAYES ti » → «⚡ Cross basso teso» pp 66,75 cross/cross_low_driven chance | z ape 17 cont 9.6 (acc 7.4) | fermo 1s | salto palla - | cam - | arco 6.4u q1.76 →(32.8,9.1) area 1 | ric cross q1 dCad 3 dArr 0.7 | ricApe (32.1,9.9) q1 a1 inArea 3 | rete 0
+  s12/1 73' «↗️ Palla sulla fascia: metti i» → «⚡ Cross basso teso» pp 63,26 cross/cross_low_driven chance | z ape 16.7 cont 9.3 (acc 7.4) | fermo 0.05s | salto palla - | cam - | arco 19.6u q1.42 →(40.1,-0.2) area 1 | ric cross q1 dCad 4.1 dArr 3.5 | ricApe (45.44,-3.2) q1 a1 inArea 2 | rete 0
+s12 seme 2 (fine, 449 s, 92') scene di fascia 0
+s5 seme 2 (fine, 583 s, 92') scene di fascia 2
+  s5/2 70' «↗️ Sei sulla fascia, JUNG ti c» → «↗️ Cross sul primo palo» pp 63,19 cross/cross_near_post chance | z ape 20.9 cont 13.6 (acc 7.3) | fermo 0.1s | salto palla - | cam - | arco 6.6u q3.08 →(29,15.7) area 0 | ric cross q0 dCad 4.8 dArr 1.3 | ricApe (25.01,15.5) q1 a0 inArea 2 | rete 0
+  s5/2 86' «↗️ Palla sulla fascia: metti i» → «⚡ Cross basso teso» pp 72,25 cross/cross_low_driven chance | z ape 16.9 cont 8.5 (acc 8.4) | fermo 1.05s | salto palla - | cam - | arco 1.5u q1.46 →(38.3,7) area 1 | ric cross q1 dCad 1.4 dArr 1.6 | ricApe (38.09,8.4) q1 a1 inArea 2 | rete 0
+
+misura-364-vere verde: partite 6, finite 6
+
+RIEPILOGO (11 giudicate, 1 non giudicate)
+  eroe al contatto dentro |z| 12 (non sulla fascia): 9/11 · mediana z contatto 8.6 · mediana accentramento 7.4 u
+  apertura dentro |z| 12: 0/11 · mediana z apertura 16.9
+  pallone fermo oltre 0,5 s di scena: 6/11 · massimo 1.05 s
+  salto del pallone fuori stacco: 0/11 · massimo 0 u
+  salto della camera fuori stacco: 0/11 · massimo 0 u
+  conclusione mai partita (nessun arco): 0/11
+  cross (11): caduta fuori area 3/11 · quota mediana 1.76 · senza ricevente 0/11 · ricevente fuori quadro all'armo 3/11 · ricevente oltre 2 u dal pallone all'arrivo 6/11
+  esito «chance»/«assist» riuscito col pallone IN RETE: 0/10 (chance) · dichiarato non-gol in rete (tutte): 0/10
+FINE
