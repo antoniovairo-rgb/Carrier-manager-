@@ -205,6 +205,7 @@
     "eta-352": "CPM_PROVA_ROSSO=1 node eta-352.mjs",
     "storia-355": "CPM_PROVA_ROSSO=1 node storia-355.mjs",
     "storia-362": "CPM_PROVA_ROSSO=1 node storia-362.mjs",
+    "rivale-378": "CPM_PROVA_ROSSO=1 node rivale-378.mjs",
     "impulsi-memoria-154": "node impulsi-memoria-154.mjs",
     "slot-card-layout": "node slot-card-layout-test.mjs",
     "parata-legibility": "node parata-legibility-test.mjs",

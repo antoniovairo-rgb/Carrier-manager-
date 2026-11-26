@@ -1694,7 +1694,21 @@ function fatti183(p,r,posta){
 }
 const _POSTA183=["f_derby","f_ex","f_rivale","f_vertice","f_titolo","f_salvezza","f_scontro","f_finale","f_presenze","f_traguardo_gol","f_rientro","f_contratto","f_coppa","f_europa","f_nazionale"];
 /* memoria della stagione nel salvataggio: hash delle domande gia' fatte */
-const hIv183=q=>hashStr(String((q&&q.q)||q||""));
+/* [giro 378 · PO-656, stessa regola della «Tua storia» (giro 362, decisione PO «Sempre il numero»)] «il tuo rivale di sempre»
+   usciva anche alla prima stagione. Le stagioni vere della rivalita' sono le stesse di storyChapter (src/18, _anni355): il minore fra
+   stagioni da professionista (season-proSeason+1) e stagioni del rivale (rival.seasons). Dalla terza «da N stagioni», in seconda
+   «dalla scorsa stagione», in prima nessuna frase sugli anni. Il testo cambia solo all'uscita (testoRivale378): la memoria della
+   stagione (hIv183) resta sul testo del catalogo (_q378), cosi' la domanda non si ripete. Rosso: window.__CPM_NO_G378 = testo di prima. */
+const _no378=()=>{try{return typeof window!=="undefined"&&!!window.__CPM_NO_G378;}catch(_e){return false;}};
+function anniRivale378(p){try{const r=p&&p.rival,sn=(p&&p.season)||1;const aR=Math.max(1,(r&&r.seasons)||1);
+  const aP=(p&&typeof p.proSeason==="number")?Math.max(1,sn-p.proSeason+1):aR;return Math.min(aR,aP);}catch(_e){return 1;}}
+function testoRivale378(p,q){try{
+  if(!q||_no378()||String(q.q||"").indexOf("il tuo rivale di sempre")<0)return q;
+  const n=anniRivale378(p);
+  const chi=n>=3?`il tuo rivale da ${n} stagioni`:n===2?"il tuo rivale dalla scorsa stagione":"il tuo rivale";
+  return{...q,q:String(q.q).replace("il tuo rivale di sempre",chi),_q378:q._q378||q.q};
+}catch(_e){return q;}}
+const hIv183=q=>hashStr(String((q&&(q._q378||q.q))||q||""));
 function memSetIv183(p){const m=p&&p.ivMem183;return new Set((m&&m.s===(p.season||1)&&Array.isArray(m.h))?m.h:[]);}
 function memIv183(p,q){const sn=(p&&p.season)||1;const m=p&&p.ivMem183;const h=(m&&m.s===sn&&Array.isArray(m.h))?m.h:[];const k=hIv183(q);
   return{...p,ivMem183:{s:sn,h:h.indexOf(k)>=0?h:[...h,k].slice(-400)}};}
@@ -1794,7 +1808,7 @@ function intervista183(p,md,r){try{
   const _avv259=(!_no259()&&md&&md.opponentId)?md.opponentId:(r.opponent||"");
   const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+_avv259+"|sorpresa183")%8===0);
   if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
-  const q=scegliPost183(p,r,posta);
+  const q=testoRivale378(p,scegliPost183(p,r,posta));/* [giro 378] */
   if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};
   return{si:true,q,paper:NEWSPAPERS[hashStr((p.name||"")+"|"+(p.week||1)+"|carta183")%NEWSPAPERS.length],motivo:posta||"🎲 Sorpresa"};
 }catch(e){return{si:false,motivo:"errore "+(e&&e.message)};}}
