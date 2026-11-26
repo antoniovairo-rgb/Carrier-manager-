@@ -28,6 +28,7 @@
     "d7-corpi": "node d7-corpi.mjs",
     "ci": "node ci-runner.mjs completa",
     "partita-vera": "node partita-vera-guardian.mjs",
+    "lentezza-384": "node lentezza-384.mjs",
     "prima-partita-237": "node prima-partita-237.mjs",
     "crediti-254": "node crediti-254.mjs",
     "rinnovo-270": "node rinnovo-270.mjs",
