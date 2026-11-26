@@ -86,6 +86,7 @@
     "portiere-223": "node portiere-223.mjs && CPM_ROSSO=1 node portiere-223.mjs",
     "portiere-265": "node portiere-265.mjs",
     "portiere-295": "node portiere-295.mjs",
+    "portiere-410": "node portiere-410.mjs",
     "portatore-286": "node portatore-286.mjs",
     "volano-366": "node volano-366.mjs",
     "tiri-367": "node tiri-367.mjs",
