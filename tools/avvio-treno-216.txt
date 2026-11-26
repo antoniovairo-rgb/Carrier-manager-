@@ -1,2 +1,3 @@
-Avvio del treno della 7.999.216 (26/11): il commit 18a58a06 toccava solo docs/ e non aveva fatto partire il treno.
+Avvio del treno della 7.999.216 (26/11).
+13:05: secondo avvio dopo la dichiarazione di gol-eroe-154 (decisione PO).
 File neutro per il gioco: nessun codice lo legge.
