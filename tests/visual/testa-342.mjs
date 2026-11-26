@@ -151,7 +151,7 @@ async function scena(b, port, gi, k, esito, opt = {}) {
     const F = W.f, tc = r.tc; const dir = path.join(OUT, 'foto-' + ETI); fs.mkdirSync(dir, { recursive: true });
     for (const off of [-0.45, -0.25, -0.1, 0, 0.12, 0.3, 0.6]) { let bi = 0; for (let i = 1; i < F.length; i++) if (Math.abs(F[i][0] - tc - off) < Math.abs(F[bi][0] - tc - off)) bi = i; const trT = F[bi][1]; let bf = null; for (const f of foto) if (!bf || Math.abs(f.tr - trT) < Math.abs(bf.tr - trT)) bf = f;
       if (bf && Math.abs(bf.tr - trT) < 1500) fs.writeFileSync(path.join(dir, `gi${gi}-a${k}-${esito}_${off >= 0 ? 'p' : 'm'}${Math.abs(off).toFixed(2)}.jpg`), bf.buf); } }
-  if (process.env.CPM_DUMP && W && W.f) fs.writeFileSync(path.join(OUT, `dump-${ETI}-gi${gi}-a${k}-${esito}.json`), JSON.stringify(W));
+  if ((process.env.CPM_DUMP || (GUARD && !r.err && giudica({ ...r }).length)) && W && W.f) fs.writeFileSync(/* [giro 387] in guardiano ogni bocciata lascia i suoi fotogrammi (finiscono nell'artifact del treno) */path.join(OUT, `dump-${ETI}-gi${gi}-a${k}-${esito}.json`), JSON.stringify(W));
   return { gi, k, esito, ...r };
 }
 
@@ -166,6 +166,19 @@ async function main() {
     if (r.err) r = await scena(b, port, L.gi, L.k, L.e, { foto: FOTO });/* una sola riprova dichiarata se la pagina non ha prodotto il testimone */
     r.tipo = L.tipo; out.push(r); console.log(JSON.stringify(r)); } };
   await Promise.all(Array.from({ length: FOTO ? 1 : PAR }, worker));
+  /* [giro 387] RIPROVA DICHIARATA, soglie invariate. Treno grande del 26/11 (corsa 45735203524): gi6 «scatto della testa 14,55 u/s > 14» a
+     −0,58 s dal contatto, mentre sullo STESSO commit (8543a9cc) il trenino del push aveva misurato 9,9 e le cinque corse verdi prima 9,72-9,9;
+     sul banco la scena da' 10,97 in 10 corse su 10 (punta, prima del 364, prima del 366). Nel braccio VERDE una scena bocciata su misura si
+     rigioca UNA volta su pagina nuova: resta bocciata se la riprova boccia ancora (il difetto si ripete); se la riprova passa la scena e'
+     «INSTABILE», stampata con le due misure nell'ultima riga, e i fotogrammi della prima restano in out/giro342/dump-*. Il rosso non si
+     riprova (deve cadere comunque). CPM_NO_G387=1 = nessuna riprova (regola di prima); CPM_GIUDICA_VERDE=1 con CPM_ROSSO = pagine rosse
+     giudicate come il verde (prova che la riprova non salva un difetto che si ripete). */
+  const RIPROVA = GUARD && (!ROSSO || process.env.CPM_GIUDICA_VERDE) && !process.env.CPM_NO_G387;
+  if (RIPROVA) for (let i = 0; i < out.length; i++) { const r0 = out[i]; if (r0.err || !giudica(r0).length) continue;
+    let r1 = await scena(b, port, r0.gi, r0.k, r0.esito, {}); if (r1.err) r1 = await scena(b, port, r0.gi, r0.k, r0.esito, {}); r1.tipo = r0.tipo;
+    const m0 = giudica(r0).join(' · '), m1 = r1.err ? 'non giudicato' : giudica(r1).join(' · ');
+    console.log(`riprova gi${r0.gi} a${r0.k}: prima «${m0}» · riprova ${m1 ? '«' + m1 + '»' : 'dentro le soglie (scatto ' + r1.scatto + ')'}`);
+    if (!m1) { r1.instabile = m0; out[i] = r1; } else r0.ripetuto = m1; }
   await b.close(); srv.close();
   return riepilogo(out, ETI, GUARD);
 }
@@ -184,7 +197,8 @@ function riepilogo(out, ETI, GUARD) {
   /* GIUDIZIO. Verde: tutte le scene passano tutte le soglie. Rosso (CPM_ROSSO): il guardiano e' valido solo se il comportamento di
      prima CADE — almeno 3 scene bocciate su soglie di sincronia o di contatto; allora il braccio rosso esce 0 («rosso col rosso»). */
   let boc = 0, ng = 0; for (const r of out) { const m = giudica(r); if (m.length) { boc++; if (m.some(x => /non giudicato/.test(x))) ng++; console.log(`NO   gi${r.gi} a${r.k} (${r.tipo}): ${m.join(' · ')}`); } else console.log(`ok   gi${r.gi} a${r.k} (${r.tipo}): dCont ${r.dCont} · scPicco ${r.scPicco} · peso ${r.peso} · scatto ${r.scatto} · scivolo ${r.scivolo}`); }
-  if (ROSSO) { const veri = boc - ng; const ok = veri >= 3; console.log(`\nbraccio ROSSO (${ROSSO}): ${veri} scene bocciate su misura (${ng} non giudicate, non contano) — ${ok ? 'il difetto si vede: ROSSO COL ROSSO, valido' : 'IL ROSSO NON CADE: guardiano cieco'}`); return ok ? 0 : 1; }
-  console.log(`\nbraccio VERDE: ${out.length - boc}/${out.length} scene dentro le soglie${ng ? ' · ' + ng + ' NON GIUDICATE (= rosso)' : ''} — ${boc ? 'FALLITO' : 'PASS'}`); return boc ? 1 : 0;
+  if (ROSSO && !process.env.CPM_GIUDICA_VERDE) { const veri = boc - ng; const ok = veri >= 3; console.log(`\nbraccio ROSSO (${ROSSO}): ${veri} scene bocciate su misura (${ng} non giudicate, non contano) — ${ok ? 'il difetto si vede: ROSSO COL ROSSO, valido' : 'IL ROSSO NON CADE: guardiano cieco'}`); return ok ? 0 : 1; }
+  const ins = out.filter(x => x.instabile).map(x => `gi${x.gi} a${x.k} (prima: ${x.instabile})`);/* [giro 387] */
+  console.log(`\nbraccio VERDE${ROSSO ? ' (pagine ' + ROSSO + ')' : ''}: ${out.length - boc}/${out.length} scene dentro le soglie${ng ? ' · ' + ng + ' NON GIUDICATE (= rosso)' : ''} — ${boc ? 'FALLITO' : 'PASS'}${ins.length ? ' · INSTABILI ' + ins.length + ' (riprova verde): ' + ins.join(' ; ') : ''}`); return boc ? 1 : 0;
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__dirname, '..', 'testa-342.mjs')) { main().then(c => process.exit(c)).catch(e => { console.error('FATALE', e); process.exit(2); }); }
