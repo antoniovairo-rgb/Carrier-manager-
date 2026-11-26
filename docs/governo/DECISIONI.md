@@ -2108,3 +2108,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 02:35 (26/11) Giro 372 (PO-421) consegnato; lanciato il giro 377 (PO-646 impulsi). In attesa di unione: 367, 368, 369, 370, 371, 372, 373 (7 > 6 vagoni): dopo la 216 due treni, il primo coi 6 più vecchi.
 - 03:00 (26/11) Giro 374 (PO-633) consegnato; lanciato il giro 378 (PO-656 + PO-657). PO-640/642/653 rinviati: zona src/12 occupata da 375 e 376.
 - 03:05 (26/11) Giro 376 (PO-647) consegnato; lanciato il giro 379 (PO-658 + PO-659, verifica dei residui).
+- 03:10 (26/11) Giro 375 (PO-637) consegnato; lanciato il giro 380 (PO-640 + PO-664 colpi di testa).
