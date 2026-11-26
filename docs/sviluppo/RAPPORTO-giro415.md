@@ -135,4 +135,7 @@ Vedi la sezione «Rituali» in fondo.
   in 443 s, più le 17 sentinelle: mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico,
   griglia-mobile, render-3d-023, tunnel-285, home-298, web-237, career-critical, battito-264, partita-vera, gk-dive-sync,
   schermate-97).
-- Guardiani di camera e di cross già esistenti: vedi sotto (aggiunti dopo la consegna rapida).
+- Guardiani di camera e di cross già esistenti, girati dopo la consegna rapida sullo stesso build:
+  - `camera-241` VERDE (verde col verde, rosso col rosso, 633 s);
+  - `cross-218` verde, e il rosso si vede;
+  - `fasce-364` verde (14 cross giudicati, 0 bocciati, nessun salto di camera) e rosso visto (14/14 bocciati).
