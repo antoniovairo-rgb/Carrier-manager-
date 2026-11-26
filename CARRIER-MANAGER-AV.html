@@ -27750,7 +27750,10 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            const _el2D=_elLD+(_pinED-_elLD)*_wED;tLy=clamp(tPy+Math.tan(_el2D)*_hlD,0.4,26);}}
       }
       // Sprint 3D-11A: camera shake al gol — rumore sul target, decade in ~0.4s
-      if(shakePow>0.01){tPx+=Math.sin(now*24)*shakePow*0.7;tPz+=Math.cos(now*18)*shakePow*0.7;shakePow*=(1-dt*6);}else shakePow=0;
+      /* [giro 405 PO-582] col rosso __CPM_NO_G405 la scossa resta qui, sul BERSAGLIO di posizione: passa dal lerp di posizione (kp ~ dt*2)
+         e dalle passate di regia che vengono dopo, e a schermo arriva smorzata (misura in docs/sviluppo/RAPPORTO-giro405.md). Senza il
+         rosso la scossa si scrive solo sul fotogramma DISEGNATO, subito prima del disegno (blocco «SCOSSA DEL FOTOGRAMMA»). */
+      if(typeof window!=='undefined'&&window.__CPM_NO_G405){if(shakePow>0.01){const _ox405=Math.sin(now*24)*shakePow*0.7,_oz405=Math.cos(now*18)*shakePow*0.7;tPx+=_ox405;tPz+=_oz405;sr.current._sc405r={x:_ox405,z:_oz405,p:shakePow};shakePow*=(1-dt*6);}else shakePow=0;}
       // [7.63.0 BL-10] STACCO d'esito: al primo frame drammatico TAGLIO NETTO (niente lerp) → regia TV, poi il punch-in stringe
       /* [7.306.0 collaudo PO «azione con rimorchio, un vero casino... la palla vola!» — chiude il residuo
          dichiarato nel 7.305.0] L'INQUADRATURA CONTIENE L'AZIONE. La rete del 7.305.0 agisce sul solo
@@ -30076,8 +30079,36 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(!_no301)ball.position.x=GOAL_LINE_X-0.05;}
       }catch(_e301){}
       __w266c('R');
+      /* [giro 405 PO-582 — SCOSSA DEL FOTOGRAMMA, rosso __CPM_NO_G405] La scossa (gol, legno, rigore segnato) e' un effetto dello SCHERMO,
+         non una decisione della regia: si somma alla posizione della camera DISEGNATA dopo ogni passata (arbitro d'inerzia 7.521, lerp,
+         quadro dell'eroe 96a) e si toglie subito dopo il disegno, cosi' nessun lerp la smorza e la regia (codice 007) non la vede mai.
+         Ampiezza e decadimento quelli di prima (0,7 x potenza, x(1-6dt) a fotogramma); frequenze 24 e 18 rad al SECONDO (prima il tempo
+         era in millisecondi: 24 rad/ms e' rumore a frequenza di fotogramma, cioe' un ronzio e non una scossa). */
+      let _ap405=null;
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G405)){
+        if(shakePow>0.01&&camera){const _s405=now/1000,_ox405=Math.sin(_s405*24)*shakePow*0.7,_oz405=Math.cos(_s405*18)*shakePow*0.7;
+          sr.current._sc405r={x:_ox405,z:_oz405,p:shakePow};camera.position.x+=_ox405;camera.position.z+=_oz405;_ap405=[_ox405,_oz405];shakePow*=(1-dt*6);}
+        else shakePow=0;}
+      /* testimone (solo collaudo, window.__CPM_SCOSSA405 = []): per fotogramma la scossa chiesta e dove sta sullo schermo un punto fermo
+         (lo sguardo al primo fotogramma registrato) visto dalla camera di REGIA e da quella DISEGNATA; «chiesta» = lo stesso punto visto
+         dalla regia spostata della scossa chiesta. */
+      if(typeof window!=='undefined'&&Array.isArray(window.__CPM_SCOSSA405)&&camera){try{const W=window.__CPM_SCOSSA405;
+        const R=sr.current._sc405r,K=sr.current._k96,c=sr.current._c405||(sr.current._c405=new THREE.PerspectiveCamera()),v=sr.current._v405||(sr.current._v405=new THREE.Vector3());
+        if(!W.length||!sr.current._ref405)sr.current._ref405=[camLook.x,camLook.y,camLook.z];/* un punto FERMO per tutta la registrazione (fondo e scossa sullo stesso punto) */
+        const ref=sr.current._ref405;
+        camera.updateMatrixWorld(true);v.set(ref[0],ref[1],ref[2]).project(camera);const dx=v.x,dy=v.y;
+        c.fov=(K&&K.on)?K.fov:camera.fov;c.aspect=camera.aspect;c.near=camera.near;c.far=camera.far;c.updateProjectionMatrix();
+        c.position.copy(camera.position);if(_ap405){c.position.x-=_ap405[0];c.position.z-=_ap405[1];}
+        c.quaternion.copy((K&&K.on)?K.q:camera.quaternion);c.updateMatrixWorld(true);v.set(ref[0],ref[1],ref[2]).project(c);const rx=v.x,ry=v.y;
+        const gx0=c.position.x,gz0=c.position.z;
+        let qx=rx,qy=ry;if(R){c.position.x+=R.x;c.position.z+=R.z;c.updateMatrixWorld(true);v.set(ref[0],ref[1],ref[2]).project(c);qx=v.x;qy=v.y;}
+        if(W.length<6000)W.push({t:+now.toFixed(1),dt:+dt.toFixed(3),ph:(propsRef.current&&propsRef.current.matchPhase)||null,p:R?+R.p.toFixed(3):0,ox:R?+R.x.toFixed(3):0,oz:R?+R.z.toFixed(3):0,
+          cx:+camera.position.x.toFixed(3),cz:+camera.position.z.toFixed(3),gx:+gx0.toFixed(3),gz:+gz0.toFixed(3),dx:+dx.toFixed(5),dy:+dy.toFixed(5),rx:+rx.toFixed(5),ry:+ry.toFixed(5),qx:+(qx-rx).toFixed(5),qy:+(qy-ry).toFixed(5),k96:!!(K&&K.on)});
+      }catch(_e405){}}
+      sr.current._sc405r=null;
       if(sr.current._cut204!=null&&now-sr.current._cut204<300)renderer.clear();/* [giro 204] lo stacco della premiazione: 0,3 s di nero (il colore di sfondo e' quasi nero) */
-      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196)){if(sr.current._noDis219)sr.current._noDis219=0;else if(!_pend219())renderer.render(scene,camera);/* [giro 219] un tocco in coda passa prima del disegno */}/* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
+      else if(!(typeof window!=='undefined'&&window.__CPM_ATT196===true&&!window.__CPM_NO_G196)){if(sr.current._noDis219)sr.current._noDis219=0;else if(!_pend219())renderer.render(scene,camera);/* [giro 219] un tocco in coda passa prima del disegno */}
+      if(_ap405&&camera){camera.position.x-=_ap405[0];camera.position.z-=_ap405[1];}/* [giro 405] la scossa vale solo per il fotogramma disegnato *//* [giro 196 PO-449] durante l'attesa dei corpi non si disegna: nessun fotogramma con corpi di riserva o in T-pose, nemmeno prima che la schermata opaca arrivi a schermo */
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
       if(typeof window!=='undefined'&&window.__CPM_T196W&&!(window.__CPM_ATT196===true&&!window.__CPM_NO_G196))_t196();/* [giro 196] testimone per fotogramma DISEGNATO */
