@@ -2167,3 +2167,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 19:12 — Treno della 217 (45847072319) finito 32/32: rilascio FERMATO da 4 rossi nuovi: stadi-071 (329 draw call contro il tetto 322), difetti-373 (2 parti non giudicate), barriera-375 (gi150 non giudicata), scatto-305 (001 in 13/23). Lanciato giro 406 di riparazione (trova il vagone colpevole fra 372-377).
 
 - 26/11 19:15 — PO (questionario): primo avvio «Esce da solo, subito» → nuovo ramo lavoro/202 da main (= 7.999.216) con il solo vagone 401 (PO-672); treno 45874255363 partito alle 19:14. La 217 (lavoro/201, vagoni 372-377) esce dopo la riparazione del giro 406, unendo main in lavoro/201.
+
+- 26/11 19:20 — Registrata PO-673 (presentazione alla nuova squadra troppo nascosta nella home, foto del PO). Lanciato giro 407; non sale sui treni già in corsa.
