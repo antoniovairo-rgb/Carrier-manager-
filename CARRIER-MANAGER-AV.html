@@ -9348,7 +9348,28 @@ function posta165(p,md){try{
    in try/catch; AudioContext creato/resumed SOLO al primo gesto utente (autoplay policy).
    ============================================================================ */
 const AudioMgr=(function(){
-  const SILENT=()=>((typeof _CPM_TEST!=='undefined'&&_CPM_TEST)||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST)||(typeof window!=='undefined'&&!!window.__CPM_REVIEW));/* [7.243.0 direttiva PO «Elimina audio ed effetti sonori dal wizard!»] FUNZIONE, non costante: il flag __CPM_REVIEW nasce quando si ENTRA in revisione (non al boot) → va letto a ogni chiamata; copre musica, sfx, folla, fischietto e campioni */
+  /* [giro 402 · PO-577] MISURA DELLA SONORITA' DELLA PARTITA. Solo collaudo: sotto ?cpmtest=1 E con window.__CPM_AUDIO402 l'AudioMgr
+     NON e' muto e un ScriptProcessor sull'uscita del master copia i campioni PCM veri (window.__CPM_CAP402_PULL li consegna alla sonda,
+     che calcola LUFS integrati / a breve termine / picco vero ITU-R BS.1770). Fuori da quella coppia di condizioni non nasce nulla.
+     GUADAGNI DI BUS DICHIARATI _P402 (folla · effetti di gioco · arbitro, SOLO in partita) + limitatore d'uscita (misure prima/dopo in
+     docs/sviluppo/RAPPORTO-giro402.md); rosso window.__CPM_NO_G402 = guadagni 1 e nessun limitatore (comportamento di prima). Vale in gioco. */
+  const _A402=()=>{try{return typeof window!=='undefined'&&!!window.__CPM_AUDIO402&&/[?&]cpmtest=1/.test(window.location.search||'');}catch(_e){return false;}};
+  const _no402=()=>{try{return typeof window!=='undefined'&&!!window.__CPM_NO_G402;}catch(_e){return false;}};
+  /* guadagni di bus della partita + limitatore d'uscita (un guadagno puro non basta: il rapporto picco/sonorita' misurato e' 26 dB,
+     l'obiettivo ne lascia 17). Per bus e non sul master perche' il giro 172 vuole il letto >= 6 dB sotto gli effetti e i menu bassi:
+     i guadagni valgono SOLO in partita (inMatch: enterMatch → exitMatch) e mai sui bus sfx (menu) e music.
+     Il limitatore e' sempre in uscita ma e' trasparente sotto soglia: il DynamicsCompressor di Chromium/WebKit aggiunge da se' un guadagno
+     di compensazione = 0,6 × la riduzione della curva a 0 dBFS (ginocchio 0: |soglia|×(1−1/rapporto)); un guadagno dopo di lui lo toglie.
+     __CPM_T402 {db,thr,knee,ratio,att,rel} = manopola di taratura, letta SOLO sotto il collaudo 402. */
+  /* taratura (misura-402.mjs, partita seme 402 registrata senza correzione: −30,2 LUFS, −3,8 dBTP; effetti isolati per il margine del
+     giro 172): folla +13 · effetti di gioco +20 · arbitro +12, limitatore RAPIDO a −3 dB (rilascio 10 ms: taglia il colpo senza abbassarne
+     la coda, cosi' gli effetti restano >= 6 dB sopra il letto) e limitatore di SICUREZZA a −2,5 dB (rilascio 200 ms: il rapido da solo
+     sfora a +2,4 dBTP) → −18,4 LUFS, −1,6 dBTP, margine ~7,2 dB. Il guadagno unico +15 sul master dava −18,3 ma margine 0,8 dB. */
+  const _P402={crowd:13,match:20,referee:12,thr:-3,knee:0,ratio:20,att:0.0005,rel:0.01,thr2:-2.5,att2:0.001,rel2:0.2};
+  const _p402=()=>{const o={..._P402};try{if(_A402()&&window.__CPM_T402)Object.assign(o,window.__CPM_T402);}catch(_e){}return o;};
+  const _bg402=c=>{if(_no402()||!inMatch)return 1;const d=_p402()[c];return d?Math.pow(10,d/20):1;};
+  const _comp402=P=>Math.pow(10,-0.6*Math.abs(P.thr)*(1-1/P.ratio)/20);
+  const SILENT=()=>((typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&!_A402())||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST&&!_A402())||(typeof window!=='undefined'&&!!window.__CPM_REVIEW));/* [7.243.0 direttiva PO «Elimina audio ed effetti sonori dal wizard!»] FUNZIONE, non costante: il flag __CPM_REVIEW nasce quando si ENTRA in revisione (non al boot) → va letto a ogni chiamata; copre musica, sfx, folla, fischietto e campioni */
   const LSK='cpm-audio';
   const CATS=['music','match','sfx','crowd','referee'];// bus reali; tel/vibr = predisposti (nessun bus)
   const DEF={master:0.85,
@@ -9480,8 +9501,22 @@ const AudioMgr=(function(){
     try{
       const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
       ctx=new AC();
-      master=ctx.createGain();master.gain.value=cfg.mute?0:cfg.master;master.connect(ctx.destination);
-      CATS.forEach(c=>{const g=ctx.createGain();g.gain.value=cfg.on[c]?cfg.vol[c]:0;g.connect(master);bus[c]=g;});
+      master=ctx.createGain();master.gain.value=cfg.mute?0:cfg.master;
+      let _out402=master;/* [giro 402] ultimo nodo prima dell'uscita: il limitatore, o il master nel rosso */
+      if(!_no402()){try{const P=_p402();const lim=(src,thr,att,rel)=>{const L=ctx.createDynamicsCompressor();L.threshold.value=thr;L.knee.value=P.knee;L.ratio.value=P.ratio;L.attack.value=att;L.release.value=rel;const C=ctx.createGain();C.gain.value=_comp402({thr,ratio:P.ratio});src.connect(L);L.connect(C);return C;};
+        _out402=lim(lim(master,P.thr,P.att,P.rel),P.thr2,P.att2,P.rel2);}catch(_e){_out402=master;}}/* rapido poi sicurezza, ciascuno con la sua compensazione */
+      _out402.connect(ctx.destination);
+      CATS.forEach(c=>{const g=ctx.createGain();g.gain.value=cfg.on[c]?cfg.vol[c]*_bg402(c):0;g.connect(master);bus[c]=g;});
+      if(_A402()){try{/* [giro 402] cattura a 4 canali allineati: 0-1 uscita, 2-3 bus della folla (per tarare i guadagni per bus offline) */
+        const sp=ctx.createScriptProcessor(4096,4,1);const mg=ctx.createChannelMerger(4),s1=ctx.createChannelSplitter(2),s2=ctx.createChannelSplitter(2);
+        const st2=()=>{const g=ctx.createGain();g.channelCount=2;g.channelCountMode='explicit';g.channelInterpretation='speakers';return g;};/* il mono va ai due canali come sull'altoparlante: lo splitter e' «discreto» e lascerebbe il destro a zero (−3 dB misurati) */
+        const u1=st2(),u2=st2();_out402.connect(u1);u1.connect(s1);bus.crowd.connect(u2);u2.connect(s2);s1.connect(mg,0,0);s1.connect(mg,1,1);s2.connect(mg,0,2);s2.connect(mg,1,3);mg.connect(sp);
+        const Q=[];let n=0;sp.onaudioprocess=e=>{const b=e.inputBuffer;Q.push([0,1,2,3].map(k=>new Float32Array(b.getChannelData(Math.min(k,b.numberOfChannels-1)))));n+=b.length;};
+        sp.connect(ctx.destination);window.__CPM_SP402=sp;/* l'uscita del processore resta a zero: serve solo perche' il grafo lo tiri */
+        const b64=a=>{const u=new Uint8Array(a.buffer);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);};
+        window.__CPM_CAP402_PULL=()=>{const L=Q.splice(0,Q.length);let t=0;L.forEach(c=>t+=c[0].length);const o=new Float32Array(t*2),f=new Float32Array(t*2);let k=0;
+          L.forEach(c=>{for(let i=0;i<c[0].length;i++){o[k]=c[0][i];f[k++]=c[2][i];o[k]=c[1][i];f[k++]=c[3][i];}});
+          return {sr:ctx.sampleRate,frames:t,tot:n,state:ctx.state,trim:{crowd:_bg402('crowd'),match:_bg402('match'),referee:_bg402('referee')},b64:b64(o),b64f:b64(f)};};}catch(_e402){}}
       noiseBuf=mkNoise(2.0);
       ready=true;
     }catch(_e){ready=false;}
@@ -9490,7 +9525,7 @@ const AudioMgr=(function(){
   function applyBus(){
     if(!ready)return;
     try{master.gain.setTargetAtTime(cfg.mute?0:cfg.master,now(),0.05);
-      CATS.forEach(c=>bus[c].gain.setTargetAtTime(cfg.on[c]?cfg.vol[c]:0,now(),0.06));}catch(_e){}
+      CATS.forEach(c=>bus[c].gain.setTargetAtTime(cfg.on[c]?cfg.vol[c]*_bg402(c):0,now(),0.06));/* [giro 402] guadagno di bus della partita */}catch(_e){}
   }
   const dest=c=>bus[c]||master;
 
@@ -9861,8 +9896,8 @@ const AudioMgr=(function(){
     else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];if(!_g172On())delete _last149[k];});/* [giro 172] l'ultimo campione si ricorda anche fra una partita e l'altra: mai lo stesso due volte di fila nemmeno al cambio di partita */ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
+  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];if(!_g172On())delete _last149[k];});/* [giro 172] l'ultimo campione si ricorda anche fra una partita e l'altra: mai lo stesso due volte di fila nemmeno al cambio di partita */ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; applyBus();/* [giro 402] guadagno della partita */ musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function exitMatch(){ if(SILENT())return; inMatch=false; applyBus();/* [giro 402] fuori partita guadagno 1 */ crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
