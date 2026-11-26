@@ -2163,3 +2163,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 16:30 — Partito il treno della 217 (lavoro/201 ccbed196): vagoni 372 (giudizi), 373 (interviste), 374 (PO-633), 375 (barriera 9,15 m), 376 (trofeo), 377 (impulsi). Le riparazioni 393 (rigore) e 396 (gol-eroe-154) e gli altri consegnati vanno nella 218.
 
 - 26/11 18:05 — Consegnati 397, 398, 399, 400, 401 (PO-672 urgente: in testa al treno della 218). Lanciati 402 (PO-577), 403 (PO-579), 404 (PO-580/581), 405 (PO-582). Treno della 217 (45847072319) a 16/32 parti.
+
+- 26/11 19:12 — Treno della 217 (45847072319) finito 32/32: rilascio FERMATO da 4 rossi nuovi: stadi-071 (329 draw call contro il tetto 322), difetti-373 (2 parti non giudicate), barriera-375 (gi150 non giudicata), scatto-305 (001 in 13/23). Lanciato giro 406 di riparazione (trova il vagone colpevole fra 372-377).
