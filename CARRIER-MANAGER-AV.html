@@ -36362,12 +36362,14 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       if(!soDoneRef.current&&_koSeed&&_scS.home===_scS.away&&context!=="trial"){_startShootout();return;}
     }catch(_e){}
     try{const _sc=(scoreRef&&scoreRef.current)?scoreRef.current:score;
-      if(titleStakes&&((_sc.home>_sc.away)||titleStakes.late)){setPhase("ceremony");return;}
+      /* [giro 385 PO-521] testimone inerte, solo banco: quale ramo del fischio ha deciso la scena (titolo · big win · festa · nessuna) e su quale tabellone */
+      const _w385=(r)=>{try{if(_CPM_TEST)window.__CPM_FESTA385={ramo:r,home:_sc.home|0,away:_sc.away|0,mw,late:!!(titleStakes&&titleStakes.late),ctx:context};}catch(_e){}};_w385("nessuna");
+      if(titleStakes&&((_sc.home>_sc.away)||titleStakes.late)){_w385("titolo");setPhase("ceremony");return;}
       /* [7.42.0 Sprint 5 — chiude il follow-up 6.88 «coreografie 3D VERE post-partita»] BIG WIN senza titolo:
          vittoria in una finale KO o in un big match (mw≥9) → festa BREVE sotto la curva in 3D prima del
          post-partita (cerimonia LIGHT: niente trofeo/podio, ~9.5s, skippabile). Provini esclusi. */
       if(_sc.home>_sc.away&&(_isFinalKO||mw>=9)&&context!=="trial"){
-        setCeremony({name:_isFinalKO?"Trionfo in finale":"Notte da grandi",kind:"bigwin",light:true});
+        _w385("bigwin");setCeremony({name:_isFinalKO?"Trionfo in finale":"Notte da grandi",kind:"bigwin",light:true});
         setPhase("ceremony");return;
       }
       /* [7.942] LA FESTA CHE PRIMA NON C'ERA. Quando non c'e' un titolo ne' un big match, la partita
@@ -36407,7 +36409,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         const _super23=_voto>=8||(_ms.goals|0)>=2||((_ms.goals|0)+(_ms.assists|0))>=3;
         const _vecchia23=(typeof window!=='undefined'&&window.__CPM_NO_FESTA23);
         try{if(typeof window!=='undefined'&&window.__CPM_FESTA942)Object.assign(window.__CPM_FESTA942,{importante:_imp23,super:_super23,voto:+(+_voto).toFixed(2)});}catch(_e){}
-        if(_vecchia23?((_ms.goals|0)>0||_voto>=7.5||_fuoriCasaSuPiuForte):(_vinta&&(_imp23||_super23))){
+        /* [giro 385 PO-521] DIFETTO PROVOCATO, solo banco (?cpmtest=1): __CPM_PROVA385 fa la festa su OGNI partita (anche pari/persa) e rovescia il punteggio della fascia. Serve al braccio rosso di festa-385; per i giocatori _CPM_TEST e' falso e il gancio non esiste */const _p385=_CPM_TEST&&typeof window!=='undefined'&&!!window.__CPM_PROVA385;
+        if(_p385||(_vecchia23?((_ms.goals|0)>0||_voto>=7.5||_fuoriCasaSuPiuForte):(_vinta&&(_imp23||_super23)))){
           const _nomi=[];
           try{const _r=(isMatchHome?homeRoster:awayRoster)||[];
             for(const q of _r){if(_nomi.length>=2)break;const _n=q&&(q.name||q.n);if(_n&&_n!==(player&&player.name))_nomi.push(String(_n));}}catch(_e){}
@@ -36417,7 +36420,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           _voci.push({n:_voto.toFixed(1).replace('.',','),et:"voto",oro:_voto>=7.5});
           const _fd47={
             titolo:(_ms.goals|0)>=3?"Tripletta":((_ms.goals|0)>=2?"Doppietta":(_imp23&&!_super23?"Vittoria pesante":(_fuoriCasaSuPiuForte?"Colpo fuori casa":"Prestazione da campione"))),
-            punteggio:(isMatchHome?_sc.home:_sc.away)+" – "+(isMatchHome?_sc.away:_sc.home),
+            punteggio:((isMatchHome!==!!_p385)?_sc.home:_sc.away)+" – "+((isMatchHome!==!!_p385)?_sc.away:_sc.home),
             avversario:((_oppClubObj&&(_oppClubObj.n||_oppClubObj.a))||"l'avversario"),casa:!!isMatchHome,
             facce:[{eroe:true,id:(player&&player.avatarId)||0}].concat(_nomi.map(x=>({nome:x}))),
             voci:_voci.slice(0,3)};
@@ -36426,7 +36429,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
              chiaro, facce da 31-41 px, stessi numeri che il tabellino ripete subito dopo): la partita entra nella cerimonia 3D
              LEGGERA che esisteva solo per finali e big match (burst, abbraccio dei compagni, festa sotto la curva, ~9,5 s,
              saltabile), con i numeri della gara in una fascia TV. Rosso __CPM_NO_FESTA3D47 = il riquadro di prima. */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47)){setCeremony({name:_fd47.titolo,kind:"bigwin",light:true,festa:_fd47});setPhase("ceremony");return;}
+          _w385("festa");if(!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47)){setCeremony({name:_fd47.titolo,kind:"bigwin",light:true,festa:_fd47});setPhase("ceremony");return;}
           setFesta942(_fd47);
           return;/* la card di fine gara arriva quando la festa si chiude */
         }
