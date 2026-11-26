@@ -62,9 +62,9 @@ Nessun file di gioco (`src/`) toccato, nessun `GAME_VERSION`, nessun file di `do
 | `flussi-115` verde, prima (solo PC) | 17 controlli · 15 OK · **2 NO** (pre-1 21,4% · pre-2 43,4%) |
 | `flussi-115` verde, dopo (s360, s412, pc) | **54 controlli · 54 OK · 0 non giudicati**; pc pre-1: tasto a 8 px, fondo 707/900 · pc pre-2: tasto a 10 px, fondo 509/900 |
 | `flussi-115` rosso, prima della correzione 2 | 51 controlli · 44 NO · **cieco su 22, 32** |
-| `flussi-115` rosso, dopo | vedi sotto (RISULTATO_ROSSO) |
+| `flussi-115` rosso, dopo | 51 controlli · 49 NO · **cade su tutti i 17 punti** |
 | `primo-avvio-401` | verde, rosso bocciato (13 controlli) |
-| sentinelle (`node ci-runner.mjs giro flussi-115 primo-avvio-401`) | vedi sotto (RISULTATO_SENTINELLE) |
+| catena del giro (`node ci-runner.mjs giro flussi-115 primo-avvio-401`) | **19/19 verdi** su 7.999.216 (flussi-115 1630 s, primo-avvio-401 52 s, 17 sentinelle) |
 
 Foto (in `docs/collaudo-po/`):
 - `413-pre1-pc1280-punta.png` — PC 1280×900, punta: tasto attaccato, vuoto sotto (la scelta PO-551);
