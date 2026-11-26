@@ -70,8 +70,8 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
     {momento!=null&&(
       <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus cpm-t40 cpm-t40h"
         style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:(_mouse110()?36:32),padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
-        <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
-        {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
+        <span className="cpm-mom400"/* [giro 400] col carattere di sistema ingrandito va a capo invece di tagliarsi (src/19, testoGrande400) */ style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
+        {momentoNota&&!_ap?<span className="cpm-momn400" style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
       </button>)}
     {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{_senzaDoppione068(children,momento)}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);

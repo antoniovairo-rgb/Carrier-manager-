@@ -1,0 +1,53 @@
+{
+ "nota": "giro 400 · difetti del testo ingrandito NOTI (130%/200%), uno per uno nel rapporto docs/sviluppo/RAPPORTO-giro400.md. Chi ne corregge uno lo toglie da qui.",
+ "noti": [
+  {
+   "schermata": "carriera",
+   "k": "tagliato|span|☕ Sostieni il progetto",
+   "tipo": "tagliato",
+   "dove": "360/130 360/200 375/200 390/130 390/200 412/200 430/200"
+  },
+  {
+   "schermata": "carriera",
+   "k": "tagliato|span|💡 Idee e feedback",
+   "tipo": "tagliato",
+   "dove": "360/200 375/200 390/200 412/200 430/200"
+  },
+  {
+   "schermata": "prepartita",
+   "k": "tagliato|div.cpm-num@pp-info287|Stadio Salernum",
+   "tipo": "tagliato",
+   "dove": "360/200 375/200"
+  },
+  {
+   "schermata": "partita",
+   "k": "tagliato|div@barra-nome-182",
+   "tipo": "tagliato",
+   "dove": "375/200 375/200 390/130 390/130 430/130 430/200 430/200"
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|span@tab280-sx|Selezione Granata",
+   "tipo": "tagliato",
+   "dove": "360/130 360/200 375/200 390/200 412/200 430/200"
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|span@tab280-dx|Polisportiva Centro",
+   "tipo": "tagliato",
+   "dove": "360/130 360/200 375/130 375/200 390/200 412/200 430/200"
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|div@post-nome-squadra|Selezione Granata",
+   "tipo": "tagliato",
+   "dove": "360/200 375/200 390/200 412/200 430/200"
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|div@post-nome-squadra|Polisportiva Centro",
+   "tipo": "tagliato",
+   "dove": "360/200 375/200 390/200 412/200 430/200"
+  }
+ ]
+}

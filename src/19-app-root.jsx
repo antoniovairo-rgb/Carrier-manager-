@@ -1420,5 +1420,31 @@ const TIENI213=120,ROTELLA213=300,TETTO213=4000,GUARDIA213=1500;
     if(e.isTrusted)prec219(el,1,TETTO213,false);/* [giro 219] anche la schermata che il clic apre passa prima del disegno 3D */
   },true);
 })();
+/* [giro 400 · PO-575] IL CARATTERE DI SISTEMA INGRANDITO. Chi sul telefono ha il testo di sistema al 130% o al 200% riceve dal browser
+   tutti i corpi moltiplicati (anche quelli scritti in px): misurato dal guardiano testo-grande-400, a 200% i titoli delle schede
+   richiudibili (Card con `momento`, src/11) finivano in «…» e la nota accanto (flex-shrink 0) ci passava sopra, e le voci della
+   barra di navigazione (flex 1 1 auto, min-width 0) si accavallavano. Qui si MISURA il
+   moltiplicatore con un campione nascosto da 100 px (ResizeObserver: se l'utente cambia il carattere, il campione cambia taglia e la
+   classe si aggiorna da sola) e con >= 1,15 la radice prende `cpm-tg400`: solo allora il titolo va a capo invece di tagliarsi e la nota
+   si restringe. A 100% nessuna regola cambia (griglia-mobile e design-system misurano lo stesso disegno). Il gioco ha anche il suo
+   «Testo grande» nelle Opzioni (giro 234, token FS): e' un'altra cosa e non passa di qui. Rosso: window.__CPM_NO_G400. */
+(function testoGrande400(){
+  if(typeof window==='undefined'||typeof document==='undefined'||window.__CPM_NO_G400)return;
+  try{
+    const st=document.createElement('style');st.id='cpm-tg400';
+    st.textContent='.cpm-tg400 .cpm-mom400{white-space:normal!important;overflow-wrap:anywhere}.cpm-tg400 .cpm-momn400{flex-shrink:1!important;min-width:0;text-align:right}'
+      /* barra di navigazione: le voci tengono la larghezza del loro nome (a 200% si accavallavano: HOME·STAGIONE·CLUB…) e la barra scorre */
+      +'.cpm-tg400 .cpm-nav-tabs{overflow-x:auto}.cpm-tg400 .cpm-nav-tabs>button{flex-shrink:0!important;min-width:auto!important;padding-left:8px!important;padding-right:8px!important}';
+    document.head.appendChild(st);
+    const box=document.createElement('div');box.setAttribute('aria-hidden','true');
+    box.style.cssText='position:fixed;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none';
+    const c=document.createElement('span');c.style.cssText='position:absolute;left:0;top:0;font-size:100px;line-height:1;white-space:nowrap';c.textContent='M';
+    box.appendChild(c);document.body.appendChild(box);
+    const leggi=()=>{const k=(parseFloat(getComputedStyle(c).fontSize)||100)/100;window.__CPM_TG400=k;document.documentElement.classList.toggle('cpm-tg400',k>=1.15);};
+    leggi();
+    if(typeof ResizeObserver!=='undefined')new ResizeObserver(leggi).observe(c);
+    document.addEventListener('visibilitychange',leggi);
+  }catch(_e){}
+})();
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootErrorBoundary,null,React.createElement(App)));
 requestAnimationFrame(window._hide);

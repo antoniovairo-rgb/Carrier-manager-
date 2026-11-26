@@ -1,0 +1,846 @@
+{
+ "build": "7.999.215",
+ "scale": [
+  100,
+  130,
+  200
+ ],
+ "larghezze": [
+  360,
+  375,
+  390,
+  412,
+  430
+ ],
+ "conteggi": {
+  "home": {
+   "360": {
+    "100": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 14,
+     "tasti": 6,
+     "radice": "body",
+     "scala": 2
+    }
+   }
+  },
+  "impostazioni": {
+   "360": {
+    "100": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": null
+    },
+    "130": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 2
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": null
+    },
+    "130": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 2
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": null
+    },
+    "130": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 2
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": null
+    },
+    "130": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 2
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": null
+    },
+    "130": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 33,
+     "tasti": 13,
+     "radice": "div",
+     "scala": 2
+    }
+   }
+  },
+  "carriera": {
+   "360": {
+    "100": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": null,
+     "sovrapposto": 1
+    },
+    "130": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 1.3,
+     "sovrapposto": 1,
+     "tagliato": 1
+    },
+    "200": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 2,
+     "sovrapposto": 1,
+     "tagliato": 2
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": null,
+     "sovrapposto": 1
+    },
+    "130": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 1.3,
+     "sovrapposto": 1
+    },
+    "200": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 2,
+     "sovrapposto": 1,
+     "tagliato": 2
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": null,
+     "sovrapposto": 1
+    },
+    "130": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 1.3,
+     "sovrapposto": 1,
+     "tagliato": 1
+    },
+    "200": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 2,
+     "sovrapposto": 1,
+     "tagliato": 2
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": null,
+     "sovrapposto": 1
+    },
+    "130": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 1.3,
+     "sovrapposto": 1
+    },
+    "200": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 2,
+     "sovrapposto": 1,
+     "tagliato": 2
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": null,
+     "sovrapposto": 1
+    },
+    "130": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 1.3,
+     "sovrapposto": 1
+    },
+    "200": {
+     "testi": 108,
+     "tasti": 28,
+     "radice": "body",
+     "scala": 2,
+     "sovrapposto": 1,
+     "tagliato": 2
+    }
+   }
+  },
+  "prepartita": {
+   "360": {
+    "100": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 1
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 1
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 36,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2
+    }
+   }
+  },
+  "partita": {
+   "360": {
+    "100": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": null,
+     "tagliato": 2
+    },
+    "130": {
+     "testi": 52,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 2
+    },
+    "200": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 2
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": null,
+     "tagliato": 2
+    },
+    "130": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 2
+    },
+    "200": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 52,
+     "tasti": 7,
+     "radice": "body",
+     "scala": null,
+     "tagliato": 2
+    },
+    "130": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 4
+    },
+    "200": {
+     "testi": 48,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 2
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": null,
+     "tagliato": 2
+    },
+    "130": {
+     "testi": 50,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 2
+    },
+    "200": {
+     "testi": 48,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 2
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 49,
+     "tasti": 7,
+     "radice": "body",
+     "scala": null,
+     "tagliato": 2
+    },
+    "130": {
+     "testi": 52,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 3
+    },
+    "200": {
+     "testi": 52,
+     "tasti": 7,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   }
+  },
+  "fine-partita": {
+   "360": {
+    "100": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 2
+    },
+    "200": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   },
+   "375": {
+    "100": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3,
+     "tagliato": 1
+    },
+    "200": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   },
+   "390": {
+    "100": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   },
+   "412": {
+    "100": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   },
+   "430": {
+    "100": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": null
+    },
+    "130": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 1.3
+    },
+    "200": {
+     "testi": 123,
+     "tasti": 5,
+     "radice": "body",
+     "scala": 2,
+     "tagliato": 4
+    }
+   }
+  }
+ },
+ "difetti": [
+  {
+   "schermata": "carriera",
+   "k": "sovrapposto|span@sponsor335|›",
+   "tipo": "sovrapposto",
+   "extra": "esce dal tasto di 5px",
+   "dove": [
+    "360/100",
+    "360/130",
+    "360/200",
+    "375/100",
+    "375/130",
+    "375/200",
+    "390/100",
+    "390/130",
+    "390/200",
+    "412/100",
+    "412/130",
+    "412/200",
+    "430/100",
+    "430/130",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "carriera",
+   "k": "tagliato|span|☕ Sostieni il progetto",
+   "tipo": "tagliato",
+   "extra": "ellissi",
+   "dove": [
+    "360/130",
+    "360/200",
+    "375/200",
+    "390/130",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "carriera",
+   "k": "tagliato|span|💡 Idee e feedback",
+   "tipo": "tagliato",
+   "extra": "ellissi",
+   "dove": [
+    "360/200",
+    "375/200",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "prepartita",
+   "k": "tagliato|div.cpm-num@pp-info287|Stadio Salernum",
+   "tipo": "tagliato",
+   "extra": "ellissi",
+   "dove": [
+    "360/200",
+    "375/200"
+   ]
+  },
+  {
+   "schermata": "partita",
+   "k": "tagliato|span@risultato-v2",
+   "tipo": "tagliato",
+   "extra": "y 3px",
+   "dove": [
+    "360/100",
+    "360/100",
+    "360/130",
+    "360/130",
+    "360/200",
+    "360/200",
+    "375/100",
+    "375/100",
+    "375/130",
+    "375/130",
+    "375/200",
+    "375/200",
+    "390/100",
+    "390/100",
+    "390/130",
+    "390/130",
+    "390/200",
+    "390/200",
+    "412/100",
+    "412/100",
+    "412/130",
+    "412/130",
+    "412/200",
+    "412/200",
+    "430/100",
+    "430/100",
+    "430/130",
+    "430/130",
+    "430/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "partita",
+   "k": "tagliato|div@barra-nome-182",
+   "tipo": "tagliato",
+   "extra": "x 31px",
+   "dove": [
+    "375/200",
+    "375/200",
+    "390/130",
+    "390/130",
+    "430/130",
+    "430/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|span@tab280-sx|Selezione Granata",
+   "tipo": "tagliato",
+   "extra": "ellissi",
+   "dove": [
+    "360/130",
+    "360/200",
+    "375/200",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|span@tab280-dx|Polisportiva Centro",
+   "tipo": "tagliato",
+   "extra": "ellissi",
+   "dove": [
+    "360/130",
+    "360/200",
+    "375/130",
+    "375/200",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|div@post-nome-squadra|Selezione Granata",
+   "tipo": "tagliato",
+   "extra": "line-clamp",
+   "dove": [
+    "360/200",
+    "375/200",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  },
+  {
+   "schermata": "fine-partita",
+   "k": "tagliato|div@post-nome-squadra|Polisportiva Centro",
+   "tipo": "tagliato",
+   "extra": "line-clamp",
+   "dove": [
+    "360/200",
+    "375/200",
+    "390/200",
+    "412/200",
+    "430/200"
+   ]
+  }
+ ]
+}
