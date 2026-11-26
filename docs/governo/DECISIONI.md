@@ -2187,3 +2187,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 21:10 — PO (questionario sui dubbi): (1) voto delle simulate: si tiene il voto attuale (PO-360 + «+0,3»), difficolta-156 resta rosso dichiarato sulle 3 celle del voto (giro 383, opzione 1); (2) presentazione: card in cima + tasto principale in sala stampa (giro 407, opzione 1); (3) risoluzione adattiva: pavimento 1,0 (giro 404, D1 opzione 1); (4) primo avvio: tocchi invariati per ora, si aspettano i tester (giro 401).
 
 - 26/11 21:20 — Registrata PO-678 (strisce bianche nelle anteprime di capelli/barba): fascia bianca all'attaccatura dei capelli = difetto vero del gioco; traversa nelle foto della prova barba = errore della sonda. Lanciato giro 414.
+
+- 26/11 22:20 — Registrata PO-679 dal taccuino (cross a rientrare: il compagno segna di spalle alla porta, codice 000; salto di camera codice 007). In coda n° 1.
