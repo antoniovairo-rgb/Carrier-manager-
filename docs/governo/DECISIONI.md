@@ -2115,3 +2115,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 05:10 (26/11) Il treno della 216 (45751390281) è in attesa: davanti c'è il treno grande della notte su main (45735203524, 31 parti, PO-630), stessa coda «treno-guardiani». Giro 381 consegnato; lanciato il giro 384 (PO-524 lentezza della partita).
 
 - 26/11 05:12 — Giro 384 (PO-524) consegnato: la lentezza dentro la partita era il velo caldo del campo 2D (una sfocatura per cella a ogni fotogramma); ora una sola, fotogramma piatto a 17-19 ms. Lanciato giro 385 (PO-521 festa). Treno 216 ancora in coda dietro al treno grande della notte (31/32 parti finite).
+
+- 26/11 05:28 — Giro 383 (PO-515) consegnato: curva delle simulate da 9/20 a 16-17/20 senza toccare bersagli; restano fuori le 3 celle del voto, conflitto fra bersagli PO-156 e decisioni PO-360/«+0,3»: domanda al PO dopo le 07:00. Lanciato giro 386 (PO-516).
