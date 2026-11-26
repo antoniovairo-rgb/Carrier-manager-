@@ -675,6 +675,7 @@
     "licenze-184": "node licenze-184.mjs && CPM_PROVA_ROSSO=1 node licenze-184.mjs",
     "store-236": "node store-236.mjs && CPM_PROVA_ROSSO=1 node store-236.mjs",
     "web-237": "node web-237.mjs && CPM_PROVA_ROSSO=1 node web-237.mjs",
+    "peso-403": "node peso-403.mjs && CPM_PROVA_ROSSO=1 node peso-403.mjs",
     "indice-163": "node indice-163.mjs",
     "salta-163": "node salta-163.mjs",
     "salto-323": "node salto-323.mjs",
