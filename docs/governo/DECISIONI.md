@@ -2189,3 +2189,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 21:20 — Registrata PO-678 (strisce bianche nelle anteprime di capelli/barba): fascia bianca all'attaccatura dei capelli = difetto vero del gioco; traversa nelle foto della prova barba = errore della sonda. Lanciato giro 414.
 
 - 26/11 22:20 — Registrata PO-679 dal taccuino (cross a rientrare: il compagno segna di spalle alla porta, codice 000; salto di camera codice 007). In coda n° 1.
+
+- 26/11 22:30 — Registrata PO-680 (intervista impaginata male su PC, foto del PO). In coda n° 2, dopo PO-679.
