@@ -39,7 +39,7 @@ const rete = []; const errs = []; let troncato = null;
 await ctx.route(/\/assets\/.*\.glb(\?|$)/, async r => {
   const u = decodeURIComponent(new URL(r.request().url()).pathname); let body;
   try { body = fs.readFileSync(path.join(ROOT, u)); } catch (e) { rete.push({ u, b: 0 }); return r.fulfill({ status: 404, body: '' }); }
-  if (ROSSO && !troncato && /cgtrader-review/.test(u)) { troncato = u; body = body.subarray(0, body.length >> 1); }
+  if (ROSSO && /cgtrader-review/.test(u) && (!troncato || troncato === u)) { troncato = u; body = body.subarray(0, body.length >> 1); } /* ogni richiesta di quel file: il gioco riprova, una sola copia rotta la ricarica pulita */
   rete.push({ u, b: body.length }); return r.fulfill({ status: 200, contentType: 'model/gltf-binary', body });
 });
 page.on('pageerror', e => errs.push('pageerror ' + e.message.slice(0, 160)));
