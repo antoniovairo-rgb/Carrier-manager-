@@ -2159,3 +2159,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 16:15 — Registrata PO-672 URGENTE (wizard dei nuovi giocatori, intro, schermata iniziale di nuova carriera): lanciato subito il giro 401, fuori coda (quinto giro attivo). Non sale sul treno della 217 già pronto: va nel primo treno dopo la consegna.
 
 - 26/11 16:20 — PO: «sono iniziati i test chiusi ufficialmente con il primo tester» (versione in prova: 7.999.216). Produzione non prima del 10/12.
+
+- 26/11 16:30 — Partito il treno della 217 (lavoro/201 ccbed196): vagoni 372 (giudizi), 373 (interviste), 374 (PO-633), 375 (barriera 9,15 m), 376 (trofeo), 377 (impulsi). Le riparazioni 393 (rigore) e 396 (gol-eroe-154) e gli altri consegnati vanno nella 218.
