@@ -32,10 +32,13 @@
 
 export const CHIAVE_395 = 'cpm-v3';
 export const NON_GIUDICATI_395 = [];
+export const TEMPI_395 = [];/* ms di ogni attesa riuscita (CPM_T395=1 ne stampa il riepilogo all'uscita, prima del verdetto «non giudicato») */
 let agganciato = false;
 function aggancia() {
   if (agganciato) return; agganciato = true;
   process.on('exit', () => {
+    if (process.env.CPM_T395 === '1' && TEMPI_395.length) { const v = TEMPI_395.map(x => x.ms).sort((a, b) => a - b), mx = TEMPI_395.reduce((a, b) => (b.ms > a.ms ? b : a));
+      console.log(`attese-395: ${v.length} attese riuscite · mediana ${v[v.length >> 1]} ms · massimo ${mx.ms} ms (${mx.motivo}) · oltre 1,5 s: ${v.filter(x => x > 1500).length}`); }
     if (!NON_GIUDICATI_395.length) return;
     console.log(`❌ non giudicato (attese-395): ${NON_GIUDICATI_395.length} letture del salvataggio senza evento — ${NON_GIUDICATI_395.slice(0, 2).join(' · ')}`);
     process.exitCode = 1;
@@ -80,7 +83,7 @@ export async function attendiSalvataggio395(page, o = {}) {
       let cond = true; if (quando) { try { cond = !!(0, eval)('(' + quando + ')')(p || {}); } catch (e) { cond = false; } }
       return { n: T.n, fermo_ms: T.n ? Math.round(performance.now() - T.t) : 1e9, allineato, cond, carriera: !!snap };
     }, { k: chiave, quando: quando ? String(quando) : null });
-    if (visto.allineato && visto.cond && (dopo == null || visto.n > dopo) && visto.fermo_ms >= quiete) return { ok: true, ms: Date.now() - t0, motivo, visto };
+    if (visto.allineato && visto.cond && (dopo == null || visto.n > dopo) && visto.fermo_ms >= quiete) { const ms = Date.now() - t0; TEMPI_395.push({ ms, motivo }); return { ok: true, ms, motivo, visto }; }
     await new Promise(r => setTimeout(r, 100));
   }
   const m = `${motivo}: tetto ${tetto} ms scaduto (allineato ${visto && visto.allineato} · scritture ${visto && visto.n}${dopo != null ? ' > ' + dopo + '?' : ''} · fermo ${visto && visto.fermo_ms} ms · condizione ${visto && visto.cond} · carriera ${visto && visto.carriera})`;

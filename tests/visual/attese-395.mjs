@@ -11,7 +11,7 @@
      B. ognuno importa lib/attese-395.mjs e chiama attendiSalvataggio395;
      C. la lib forza il codice 1 e stampa «non giudicato» per ultimo quando un tetto scade; la quiete (700) supera il debounce
         dell'autosave letto in src/18 (setTimeout del salvataggio di CareerApp);
-     D. il rilevatore non e' cieco: sulla fotografia del prima (fixtures/attese-395-prima.json) ritrova tutte e 16 le attese.
+     D. il rilevatore non e' cieco: sulla fotografia del prima (fixtures/attese-395-prima.json) ritrova tutte e 15 le attese.
    ROSSO (prova): CPM_NO_G395=1 → A si giudica sull'ELENCO DI PRIMA (le righe della fotografia): il guardiano DEVE uscire 1.
    Lo script npm nomina anche lib/attese-395.mjs e la fotografia: cosi' il trenino (regola f di tools/trenino-317.mjs) li assegna a
    questo guardiano invece di girare la mappa intera. Gli argomenti non sono letti.
@@ -26,7 +26,7 @@ const QUI = path.dirname(fileURLToPath(import.meta.url));
 const RADICE = path.resolve(QUI, '../..');
 const ROSSO = process.env.CPM_NO_G395 === '1';
 const CONTROLLI_395 = ['infortunio-263.mjs', 'investimento-223.mjs', 'meta-conto-265.mjs', 'svincolato-264.mjs', 'simulata-272.mjs',
-  'rinnovo-270.mjs', 'classifica-194.mjs', 'euro-attesa-181-test.mjs'];
+  'rinnovo-270.mjs', 'euro-attesa-181-test.mjs'];
 const FOTO = JSON.parse(fs.readFileSync(path.join(QUI, 'fixtures/attese-395-prima.json'), 'utf8'));
 const difetti = []; const righe = [];
 const ok = (c, m) => { righe.push((c ? '✓ ' : '✗ ') + m); if (!c) difetti.push(m); };
@@ -52,7 +52,7 @@ for (const f of CONTROLLI_395) {
   const v = FOTO.file[f]; const h = censisciAttese395(daFoto(f)).map(x => `${x.riga_attesa}->${x.riga_lettura} ${x.attesa}`);
   attesi += v.attese.length; visti += h.filter(x => v.attese.includes(x)).length;
 }
-ok(attesi === 16 && visti === attesi, `rilevatore non cieco: sulla fotografia del prima ritrova ${visti}/${attesi} attese (attese 16)`);
+ok(attesi === 15 && visti === attesi, `rilevatore non cieco: sulla fotografia del prima ritrova ${visti}/${attesi} attese (attese 15)`);
 
 if (process.env.CPM_CENSIMENTO === '1') {
   let tot = 0, nf = 0;

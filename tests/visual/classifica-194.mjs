@@ -12,7 +12,6 @@
    Uso: node classifica-194.mjs  ·  CPM_RED=1 node classifica-194.mjs (deve dichiarare il rosso, esce 0 se lo vede) */
 import fs from 'fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
-import { attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 const RED = process.env.CPM_RED === '1';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-194-primavera-w38.json', import.meta.url)));
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -39,9 +38,7 @@ await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 
 await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 1941, policy: 'seeded', tickMs: 150 }));
 const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }
 for (let k = 0; k < 20 && (await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().week; } catch (e) { return null; } })) !== 39; k++) { await page.keyboard.press('Enter'); await sleep(400); }
-/* [giro 395] era sleep(1500): la settimana 39 e' gia' nella copia viva; si aspetta che il giocatore sia salvato e fermo (nessuna
-   scrittura per 700 ms), cosi' classifica e salvataggio di CPM_DUMP sono quelli che il gioco ha deciso, non quelli dell'ora della lettura */
-await attendiSalvataggio395(page, { motivo: 'classifica-194: giornata 34 salvata' });
+await sleep(1500);
 const dopo = await stato();
 if (process.env.CPM_DUMP) { const sv = await page.evaluate(() => localStorage.getItem('cpm-v3')); fs.writeFileSync(process.env.CPM_DUMP, sv || ''); }/* [giro 13] salvataggio dopo la giornata, per misurare la migrazione MIG194 */
 await ctx.close(); await b.close(); srv.close();

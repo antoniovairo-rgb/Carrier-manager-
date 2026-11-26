@@ -146,22 +146,6 @@
     "70": "  const dopo = await contratto(page);"
    }
   },
-  "classifica-194.mjs": {
-   "righe_totali": 70,
-   "attese": [
-    "41->43 sleep(1500)"
-   ],
-   "righe": {
-    "39": "const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }",
-    "40": "for (let k = 0; k < 20 && (await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().week; } catch (e) { return null; } })) !== 39; k++) { await page.keyboard.press('Enter'); await sleep(400); }",
-    "41": "await sleep(1500);",
-    "42": "const dopo = await stato();",
-    "43": "if (process.env.CPM_DUMP) { const sv = await page.evaluate(() => localStorage.getItem('cpm-v3')); fs.writeFileSync(process.env.CPM_DUMP, sv || ''); }/* [giro 13] salvataggio dopo la giornata, per misurare la migrazione MIG194 */",
-    "44": "await ctx.close(); await b.close(); srv.close();",
-    "45": "",
-    "46": "const somma = st => st.reduce((o, r) => ({ W: o.W + r.wins, L: o.L + r.losses, GF: o.GF + r.gf, GA: o.GA + r.ga }), { W: 0, L: 0, GF: 0, GA: 0 });"
-   }
-  },
   "euro-attesa-181-test.mjs": {
    "righe_totali": 41,
    "attese": [

@@ -76,15 +76,17 @@ for (const nome of NOMI) for (const sc of SCELTE) {
   await page.evaluate(() => window.__CPM_CAREER.dismiss());
   await attendiSalvataggio395(page, { motivo: `investimento-223 ${nome}/${sc.prof}: chiusura dell'impulso salvata` });
   const s1 = await salvato(page);
-  let fine = false, nStep = 0;
+  let fine = false;
   for (let i = 0; i < 60 && !fine; i++) {
-    nStep = await contaSalvataggi395(page);
     const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
     if (r === 'seasonEnd') fine = true;
     else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments());
     await sleep(250);
   }
-  await attendiSalvataggio395(page, { dopo: nStep, motivo: `investimento-223 ${nome}/${sc.prof}: fine stagione salvata` });/* [giro 395] si leggeva 250 ms dopo l'ultimo step */
+  /* [giro 395] si leggeva 250 ms dopo l'ultimo step. Niente «dopo»: l'ultimo passo («seasonEnd») puo' non cambiare il giocatore e non
+     scrivere (misurato: 2 corse su 3 «non giudicate» pretendendo la scrittura); dopo i 250 ms del passo la copia viva e' gia' quella
+     nuova, quindi basta che il salvataggio sia identico e fermo */
+  await attendiSalvataggio395(page, { motivo: `investimento-223 ${nome}/${sc.prof}: fine stagione salvata` });
   const s2 = await salvato(page);
   const atteso = await page.evaluate(() => { try { const p = window.__CPM_CAREER.snapshot(); return invEsiti223(p); } catch (e) { return 'err:' + e.message; } });
   // l'avviso si legge ALLA SORGENTE: __CPM_NOTIFQ223 = cio' che il gioco accoda, __CPM_TOAST223 = cio' che va a schermo (il DOM perdeva i toast brevi)
@@ -112,10 +114,10 @@ for (const nome of NOMI) for (const sc of SCELTE) {
 let V = null;
 { const { ctx, page, errori } = await apri(baseSave('Collaudo Zona G', { investmentPending: true, bankBalance: 60000 }));
   await attendiSalvataggio395(page, { motivo: 'investimento-223 volo: caricamento salvato' });/* [giro 395] */
-  const s1 = await salvato(page); let fine = false, nStep = 0;
-  for (let i = 0; i < 60 && !fine; i++) { nStep = await contaSalvataggi395(page); const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
+  const s1 = await salvato(page); let fine = false;
+  for (let i = 0; i < 60 && !fine; i++) { const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
     if (r === 'seasonEnd') fine = true; else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments()); await sleep(250); }
-  await attendiSalvataggio395(page, { dopo: nStep, motivo: 'investimento-223 volo: fine stagione salvata' });/* [giro 395] si leggeva 250 ms dopo l'ultimo step */
+  await attendiSalvataggio395(page, { motivo: 'investimento-223 volo: fine stagione salvata' });/* [giro 395] si leggeva 250 ms dopo l'ultimo step; senza «dopo», come sopra */
   const s2 = await salvato(page);
   const nNuova = await contaSalvataggi395(page);
   await page.evaluate(() => { window.__CPM_NOTIFQ223 = []; window.__CPM_CAREER.startNewSeason(); });
