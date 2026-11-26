@@ -2197,3 +2197,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 22:35 — Treno su lavoro/201 (main 7.999.217 + vagoni 372-377 + riparazione 406), corsa 45898863971. Lanciati giro 415 (PO-679) e 416 (PO-680). Archiviati 402, 406, 408, 409, 411, 412, 413 (consegnati).
 
 - 26/11 22:45 — Registrata PO-681 (in pausa i tasti delle scelte restano cliccabili, foto del PO). Giro 417 lanciato subito (difetto piccolo, 4 giri già attivi).
+
+- 26/11 22:50 — Registrata PO-682 (taccuino: «Testa di potenza» letta come tiro potente; corpo girato di 72° al colpo di testa). La scelta era davvero un colpo di testa: esito coerente, etichetta ambigua.
