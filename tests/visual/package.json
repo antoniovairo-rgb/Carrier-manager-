@@ -114,6 +114,7 @@
     "box-fischio-169": "node box-fischio-169.mjs && CPM_PROVA_ROSSO=1 node box-fischio-169.mjs",
     "cori-291": "CPM_PROVA_ROSSO=1 node cori-291.mjs",
     "crea-home-295": "CPM_PROVA_ROSSO=1 node crea-home-295.mjs",
+    "primo-avvio-401": "node primo-avvio-401.mjs",
     "decisioni-50": "node decisioni-50.mjs",
     "ball-alive": "node ball-alive-test.mjs",
     "trama": "node trama-test.mjs",

@@ -33,8 +33,14 @@ const roadmap = leggi('docs/governo/ROADMAP.md');
 
 const aperte = tabella(sezione(backlog, 'Voci aperte o parziali'));
 const chiuse = tabella(sezione(backlog, 'Storico — voci chiuse'));
-const bCols = ['Sezione', ...aperte.cols];
-const bRows = [...aperte.rows.map(r => ['Aperta', ...r]), ...chiuse.rows.map(r => ['Chiusa', ...r])];
+// [PO 25/11] la scheda Backlog contiene SOLO le voci aperte, in ordine di coda (in corso, da verificare, poi n° 1, 2, …);
+// le chiuse stanno nella scheda dedicata «Chiuse».
+const bCols = aperte.cols;
+const posto = r => { const st = r[4] || ''; const m = st.match(/IN CODA · n° (\d+)/);
+  return /^IN CORSO/.test(st) ? -2 : /^DA VERIFICARE/.test(st) ? -1 : m ? +m[1] : 1e6; };
+const bRows = [...aperte.rows].sort((x, y) => posto(x) - posto(y));
+const cCols = chiuse.cols;
+const cRows = [...chiuse.rows].sort((x, y) => (+(y[0].match(/\d+/) || [0])[0]) - (+(x[0].match(/\d+/) || [0])[0]));
 
 const lotti = tabella(sezione(roadmap, 'Lotti'));
 const reg = tabella(sezione(roadmap, 'Registro delle release'));
@@ -44,6 +50,12 @@ const rRows = reg.rows.map(([ora, passo, num]) => {
   const m = passo.match(/^\*\*(\d+\.\d+(?:\.\d+)?)/);
   return [ora, m ? m[1] : '', passo, num];
 });
+// Registro in ordine cronologico decrescente (PO 21/11): data gg/mm [hh:mm], poi versione, poi ordine di scrittura (piu' recente prima)
+const _chiaveReg = (r, i) => { const d = String(r[0]).match(/(\d{2})\/(\d{2})(?:\s+(\d{2}):(\d{2}))?/);
+  const v = (r[1] || '').split('.').map(Number); while (v.length < 3) v.push(0);
+  return d ? [+d[2], +d[1], d[3] ? +d[3] : -1, d[4] ? +d[4] : -1, ...v, i] : [-1, -1, -1, -1, ...v, i]; };
+const _k = new Map(rRows.map((r, i) => [r, _chiaveReg(r, i)]));
+rRows.sort((a, b) => { const x = _k.get(a), y = _k.get(b); for (let j = 0; j < x.length; j++) if (x[j] !== y[j]) return y[j] - x[j]; return 0; });
 
 // [PO-163] STABILITA': dagli esiti registrati da tests/visual/ci-runner.mjs (docs/governo/STABILITA.json)
 const COPRE = {
@@ -103,8 +115,10 @@ const quando = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 const DATI = {
   meta: { ver, commit, quando, notte },
   tabs: [
-    { id: 'backlog', nome: 'Backlog', cols: bCols, rows: bRows, ordine: [0, 6, 1],
-      menu: ['Sezione', 'Tipo', 'Stato', 'Lotto'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
+    { id: 'backlog', nome: 'Backlog', cols: bCols, rows: bRows, ordine: [],
+      menu: ['Tipo', 'Lotto'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
+    { id: 'chiuse', nome: 'Chiuse', cols: cCols, rows: cRows, ordine: [],
+      menu: ['Tipo'], larga: ['Titolo', 'Fonte/citazione', 'Stato', 'Release'] },
     { id: 'lotti', nome: 'Lotti', cols: lotti.cols, rows: lotti.rows, ordine: [],
       menu: ['Lotto', 'Stato'], larga: ['Osservazioni del team', 'Lotto'] },
     { id: 'registro', nome: 'Registro release', cols: rCols, rows: rRows, ordine: [],
@@ -119,7 +133,7 @@ const html = `<title>Governo Korward Elite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Registro di cantiere: una testata stretta, sei schede, tabelle dense e filtrabili colonna per colonna. */
+/* Registro di cantiere: una testata stretta, sette schede, tabelle dense e filtrabili colonna per colonna. */
 :root{
   --bg:#f3f5f1; --panel:#ffffff; --ink:#17201b; --muted:#5b6a61; --rule:#d5ddd6; --accent:#1f7a4d; --accent-ink:#ffffff;
   --st-ok:#1f7a4d; --st-ok-bg:#e1f1e7; --st-run:#8a5a00; --st-run-bg:#fbefd6; --st-open:#a3321f; --st-open-bg:#f8e2dc; --st-wait:#3b5aa8; --st-wait-bg:#e2e8f7;
@@ -187,9 +201,9 @@ const md=s=>esc(s).replace(/\\*\\*([^*]+)\\*\\*/g,'<strong>$1</strong>').replace
 const testo=s=>String(s).replace(/\\*\\*|\`/g,'');
 // stato normalizzato: la prima parola chiave, per il menu a tendina
 const statoBase=s=>{const t=testo(s).toUpperCase();
-  for(const k of ['FATTO','DOPPIONE','VERIFICATO','CHIUSO','CHIUSA','PARZIALE','APERTO','IN CORSO','IN ATTESA','DA COLLAUDARE','NON RIPRODOTTO','SOSPESO','NON POSSO CONFERMARLO'])if(t.startsWith(k))return k.charAt(0)+k.slice(1).toLowerCase();
+  for(const k of ['FATTO','DOPPIONE','VERIFICATO','CHIUSO','CHIUSA','PARZIALE','APERTO','IN CORSO','IN CODA','IN ATTESA','DA COLLAUDARE','NON RIPRODOTTO','SOSPESO','NON POSSO CONFERMARLO'])if(t.startsWith(k))return k.charAt(0)+k.slice(1).toLowerCase();
   return testo(s).split(/[ —(,]/)[0]||'—';};
-const chipCls=b=>/^(Fatto|Doppione|Verificato|Chiuso|Chiusa)/.test(b)?'c-ok':/^(Parziale|In corso)/.test(b)?'c-run':/^(Aperto|Non riprodotto)/.test(b)?'c-open':'c-wait';
+const chipCls=b=>/^(Fatto|Doppione|Verificato|Chiuso|Chiusa)/.test(b)?'c-ok':/^(Parziale|In corso)/.test(b)?'c-run':/^In coda/.test(b)?'c-wait':/^(Aperto|Non riprodotto)/.test(b)?'c-open':'c-wait';
 let tab=0;try{const v=localStorage.getItem('gov-tab');if(v!==null&&DATI.tabs[+v])tab=+v;}catch(e){}
 const F={};let ord=null;
 function valMenu(T,c,v){return T.cols[c]==='Stato'?statoBase(v):testo(v)||'—';}
@@ -229,4 +243,4 @@ disegna();
 `;
 const out = process.env.CPM_GOVERNO_OUT || path.join(ROOT, 'docs/governo/governo.html');
 fs.writeFileSync(out, html);
-console.log(`governo.html: backlog ${bRows.length} (aperte ${aperte.rows.length}, chiuse ${chiuse.rows.length}) · lotti ${lotti.rows.length} · registro ${rRows.length} · ${Math.round(html.length / 1024)} KB`);
+console.log(`governo.html: backlog ${bRows.length} aperte · chiuse ${cRows.length} · lotti ${lotti.rows.length} · registro ${rRows.length} · ${Math.round(html.length / 1024)} KB`);

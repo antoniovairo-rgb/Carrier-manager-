@@ -16,7 +16,7 @@ const INIT = () => { window.__CPM_GLB = false; try { localStorage.setItem('cpm-i
   let s = 4242; Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
 const fase = p => p.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null).catch(() => null);
 const premi = (page, rx) => page.evaluate(s => { const r = new RegExp(s); const x = [...document.querySelectorAll('button')].filter(y => y.getBoundingClientRect().width > 0 && !y.disabled).find(y => r.test((y.textContent || '').trim())); if (x) { x.click(); return (x.textContent || '').trim().slice(0, 40); } return false; }, rx);
-const schermo = p => p.evaluate(() => { const t = document.body.innerText || ''; if (/IL PROVINO · PASSO (\d)/.test(t)) return 'provino-pre-' + RegExp.$1; if (/PROVINO (\d) DI 3 · COMPLETATO/.test(t)) return 'provino-post-' + RegExp.$1;
+const schermo = p => p.evaluate(() => { const t = document.body.innerText || ''; { const m = /IL PROVINO · PASSO (\d)|PROVINO (\d) DI 3(?! · COMPLETATO)/.exec(t); if (m) return 'provino-pre-' + (m[1] || m[2]); } if (/PROVINO (\d) DI 3 · COMPLETATO/.test(t)) return 'provino-post-' + RegExp.$1;
   if (/Offerte ricevute/.test(t)) return 'offerte'; if (/Crea il tuo calciatore/i.test(t)) return 'creazione'; if (window.__CPM_CAREER) return 'carriera'; return null; }).catch(() => null);
 const OUT = {};
 for (const f of scelti()) {
@@ -49,7 +49,7 @@ for (const f of scelti()) {
     await page.evaluate(() => { for (const d of document.querySelectorAll('details')) d.open = false; for (const e of document.querySelectorAll('*')) if (e.scrollTop) e.scrollTop = 0; window.scrollTo(0, 0); }); await sleep(300);
     const tc = Date.now(); await inp.focus().catch(() => {}); await page.keyboard.press('Enter'); await sleep(400); crea.enterAvvia = (await schermo(page)) !== 'creazione';
     if (!crea.enterAvvia) await page.locator('[data-cpm="crea-avanti-v2"]').click(); crea.clickAvanti = (await page.evaluate(() => (document.querySelector('[data-cpm="crea-avanti-v2"]') || {}).innerText || '')).trim();
-    await page.waitForFunction(() => /IL PROVINO · PASSO/.test(document.body.innerText || ''), null, { timeout: 20000 }).catch(() => {}); crea.msAlProvino = Date.now() - tc; }
+    await page.waitForFunction(() => /IL PROVINO · PASSO|PROVINO \d DI 3/.test(document.body.innerText || ''), null, { timeout: 20000 }).catch(() => {}); crea.msAlProvino = Date.now() - tc; }
   R.crea = crea; ev('creazione-fine', { ...crea });
   /* ── PROVINI ── */
   const visti = new Set(); let ricaricato = false, hlGiocati = 0, saltato = false, ultimoFase = null, ultimoSch = null; const t1 = Date.now();

@@ -1,0 +1,26 @@
+{
+ "_": "giro 317 (PO-604): BLOCCO DEI RILASCI AUTOMATICI. Lo scrive il treno grande (notte o a mano) di .github/workflows/verifica-guardiani.yml; la decisione del rilascio (tools/rilascio-vagone-312.mjs decidi) lo legge da main (giro 338) e si ferma finche' «rossi» contiene un guardiano che non sta in ROSSI-DICHIARATI. Si sblocca da solo quando un treno grande successivo non ha piu' quel rosso, oppure quando il PO mette il guardiano in ROSSI-DICHIARATI.",
+ "attivo": true,
+ "rossi": [
+  {
+   "guardiano": "consegna-103",
+   "classe": "rosso_nuovo"
+  },
+  {
+   "guardiano": "testa-342",
+   "classe": "rosso_nuovo"
+  }
+ ],
+ "sbloccati": [],
+ "quando": "2026-11-26T05:24:41.391Z",
+ "commit": "8543a9cc8d56f53de70d7337302a56b85b9941d1",
+ "ramo": "lavoro/201",
+ "corsa": "45735203524",
+ "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45735203524",
+ "treno": {
+  "guardiani": 384,
+  "verdi": 352,
+  "parti": "31/31"
+ },
+ "storia": []
+}

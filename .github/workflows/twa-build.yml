@@ -27,8 +27,14 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      # PO 25/11 (prima corsa fallita): il default di setup-android installa il pacchetto «tools», che nei cmdline-tools 16.0
+      # delle macchine GitHub non esiste piu' («Failed to find package 'tools'», exit 1). Si chiede solo platform-tools;
+      # piattaforma 36 e build-tools li scarica Gradle (le licenze le accetta questo passo).
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
 
       - name: Setup Gradle 8.14.3
         uses: gradle/actions/setup-gradle@v4
@@ -54,16 +60,32 @@ jobs:
       # ANDROID_KEY_ALIAS · ANDROID_KEY_PASSWORD — gli stessi del workflow Capacitor.
       - name: Sign AAB (se keystore configurata)
         if: env.HAS_KEYSTORE == 'true'
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/upload.jks
+          KS=$RUNNER_TEMP/upload.ks
+          echo "$KS_B64" | base64 -d > "$KS"
           AAB=twa/android/app/build/outputs/bundle/release/app-release.aab
-          jarsigner -keystore $RUNNER_TEMP/upload.jks \
-            -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
-            -keypass "${{ secrets.ANDROID_KEY_PASSWORD }}" \
-            -sigalg SHA256withRSA -digestalg SHA-256 \
-            "$AAB" "${{ secrets.ANDROID_KEY_ALIAS }}"
-          jarsigner -verify "$AAB" && echo "AAB firmato e verificato"
-          rm -f $RUNNER_TEMP/upload.jks
+          # [PO 25/11, seconda corsa] Un .p12 creato da PowerShell (Export-PfxCertificate) non usa il nome dato come alias:
+          # jarsigner «Certificate chain not found». Se l'alias del segreto non c'e' e il file ha UNA sola chiave privata,
+          # si usa quella (l'alias trovato non si stampa). Con piu' chiavi o nessuna: errore chiaro, niente firma a caso.
+          ALIAS="$KEY_ALIAS"
+          if ! keytool -list -keystore "$KS" -storepass "$KS_PASS" -alias "$ALIAS" >/dev/null 2>&1; then
+            keytool -list -keystore "$KS" -storepass "$KS_PASS" >/dev/null 2>&1 || { echo "::error::Keystore illeggibile: password del file (ANDROID_KEYSTORE_PASSWORD) o testo base64 sbagliati"; exit 1; }
+            N=$(keytool -list -keystore "$KS" -storepass "$KS_PASS" 2>/dev/null | grep -c 'PrivateKeyEntry')
+            if [ "$N" != "1" ]; then echo "::error::Alias del segreto non trovato e il file ha $N chiavi private: correggere ANDROID_KEY_ALIAS"; exit 1; fi
+            ALIAS=$(keytool -list -keystore "$KS" -storepass "$KS_PASS" 2>/dev/null | grep 'PrivateKeyEntry' | head -1 | sed 's/,.*//')
+            echo "::add-mask::$ALIAS"
+            echo "Alias del segreto non presente nel file: uso l'unica chiave privata che contiene"
+          fi
+          KP="$KEY_PASS"; [ -n "$KP" ] || KP="$KS_PASS"
+          jarsigner -keystore "$KS" -storepass "$KS_PASS" -keypass "$KP" \
+            -sigalg SHA256withRSA -digestalg SHA-256 "$AAB" "$ALIAS"
+          jarsigner -verify "$AAB" | grep -q 'jar verified' && echo "AAB firmato e verificato"
+          rm -f "$KS"
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4

@@ -7,6 +7,20 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 ## Ogni risposta al PO comincia con
 `Lotto in corso: … · Voci toccate: PO-… · Richieste nuove registrate: PO-…`
 
+## Parole del treno (PO 23/11)
+
+- **Vagone (carrozza):** un pezzo del treno = un giro unito in `lavoro/**` («Unione sviluppo/giroNNN …»). Un giro = un vagone.
+- **Treno:** la corsa dei controlli su GitHub che porta uno o più vagoni verso una versione (es. «il treno della 7.999.208 con 6 vagoni: giri 331, 333, 335, 336, 337, 338»). Mai «il vagone della 208» per dire l'insieme.
+- **Trenino:** un treno con pochi vagoni, che gira solo i controlli toccati da quei vagoni (più le sentinelle).
+- **Quanti vagoni (PO 23/11 17:55):** un treno porta **al massimo 6 vagoni** e parte appena ce n'è uno pronto, senza aspettare di riempirlo (PO 23/11 20:55: «Meglio poco alla volta ma rapidamente»): con 13 vagoni un rosso fa ripartire tutto da capo. Se ci sono più vagoni pronti, il resto aspetta il treno dopo.
+- **Treno completo / treno grande:** gira la mappa intera; il treno grande è quello di notte.
+
+**Richieste nuove (PO 24/11 08:15: «le richieste nuove devono andare sempre in coda per arrivo, non creiamo treni giganti, mi raccomando!»).** Ogni richiesta nuova entra nel BACKLOG «IN CODA» per ordine di arrivo, senza chiedere al PO se anticiparla: la priorità la dichiara il PO di sua iniziativa. Un giro nuovo parte dalla testa della coda; un vagone pronto sale sul primo treno libero, al massimo 6 vagoni (meglio pochi).
+
+**Il treno in corsa non prende richieste nuove, eccezione solo per i bug gravi (PO 24/11 13:20 «le nuove richieste non devono entrare nel treno in corsa...MAI!» e 13:25 «eccezione solo per i bug gravi!»).** Una richiesta nuova va in coda per arrivo e sale su un treno successivo. Unica eccezione: un bug grave (gioco bloccato, salvataggio perso o rotto, partita che non si gioca, regressione grave dell'ultima versione); se non è chiaro che lo sia, decide il PO. Sul treno in corsa entra anche la riparazione dei SUOI rossi (giri come 344/348/349/350), che chiude i suoi vagoni.
+
+**Vagoni che non si pestano i piedi (PO 24/11 11:10).** Sullo stesso treno salgono solo vagoni che non toccano lo stesso file di gioco (`src/*`), lo stesso guardiano o la stessa macchina del treno: prima di unire, `python3 tools/vagoni-incrocio.py --base <ultimo tag v*> origin/sviluppo/<giro> …` (esce 1 se c'è un incrocio; i registri `ci-runner.mjs` e `package.json` contano solo come avviso). Due vagoni che si incrociano vanno su treni diversi, uno dopo l'altro. Anche i giri da lanciare insieme si scelgono, a parità di posizione in coda, su zone diverse del gioco. Lezione del treno della 7.999.208: 345, 346 e 347 toccavano tutti `src/14-motore-possesso.jsx` e il treno si è fermato su tiro-346.
+
 ## Smistamento (triage) — entro la risposta successiva
 
 Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglioramento · nuova funzione · debito tecnico · processo · ricerca · conflitto. Un'incertezza («da verificare», «da decidere») va nello **Stato**, non nel tipo. `node tools/governo-html.mjs` avvisa delle voci fuori categoria e la scheda «Stato settimanale» le conta (PO-159, 01/10). Ogni risposta al PO apre con «Richieste nuove registrate: PO-…»: è la prova che lo smistamento è avvenuto nel turno.
@@ -18,6 +32,18 @@ Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglior
 | **In conflitto** con decisioni prese o lavoro in corso | lo diciamo subito, con alternative, in un questionario |
 
 Una segnalazione non apre mai da sola una release.
+
+## Consegna rapida dei giri (PO 26/11 00:55: «Si applica subito, acceleriamo»)
+Un giro consegna (spinge il ramo) appena sono verdi **il suo guardiano (verde + rosso) e le 17 sentinelle**:
+`node ci-runner.mjs giro <suo-guardiano>`. Gli altri guardiani della zona toccata NON si girano nel giro: li giudica il
+treno, che è già il giudice del rilascio. Nel rapporto il giro scrive quali guardiani della zona non ha girato. Un rosso
+nuovo trovato dal treno si ripara con un giro di riparazione (come oggi). Vale dai giri lanciati dopo il 26/11 00:55.
+
+## Catena di montaggio (PO 26/11 01:00: «Deve essere una catena di montaggio velocissima»)
+- **4 giri sempre al lavoro.** Appena uno consegna, ne parte un altro dalla testa della coda, scegliendo aree diverse
+  (partita 3D, carriera, testi, schermate) perché i vagoni non si pestino i piedi; i treni portano 2-4 vagoni insieme.
+- **Dubbi dei giri: consigliata subito, domanda dopo.** Il giro applica la consigliata e il vagone parte; la domanda al PO arriva
+  dopo e, se sceglie altro, diventa una voce nuova in coda.
 
 ## Definizione di «pronto» (si può iniziare)
 Obiettivo chiaro · criteri di accettazione scritti e misurabili · dipendenze risolte · domande al PO chiuse
