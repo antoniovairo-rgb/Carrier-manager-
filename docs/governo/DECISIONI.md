@@ -2147,3 +2147,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 10:20 — PO: «chiudi anche la PO-630» → FATTO (treno grande del 26/11 partito e completo 31/31). Da verificare resta solo PO-585.
 
 - 26/11 11:05 — Consegnati 388 (PO-642), 391 (PO-523), 393 (riparazione tiri-367: il rigore sbagliato mira 0,6-1,2 m oltre il palo → 217). Lanciati 394 (PO-529) e 395 (PO-532). Attivi: 390, 392, 394, 395. Treno della 216 (45787013506) a 13/32 parti.
+
+- 26/11 12:52 — Treno della 216 (45787013506) finito 32/32: rilascio FERMATO. Cause: (1) il blocco scritto dalla corsa su main avviata per errore e ANNULLATA (45786317311: 1/31 parti, 383 guardiani «non giudicati») ferma ogni rilascio, e fa diventare rosso anche rilascio-312, che legge il blocco vero; (2) rosso nuovo gol-eroe-154 («9/10 partite valide»). Azione: BLOCCO-RILASCI.json riportato alla versione del treno grande vero (corsa 45735203524, i suoi due rossi sono dichiarati). Una corsa annullata non giudica niente. Lanciato giro 396 per gol-eroe-154.
