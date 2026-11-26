@@ -2169,3 +2169,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 19:15 — PO (questionario): primo avvio «Esce da solo, subito» → nuovo ramo lavoro/202 da main (= 7.999.216) con il solo vagone 401 (PO-672); treno 45874255363 partito alle 19:14. La 217 (lavoro/201, vagoni 372-377) esce dopo la riparazione del giro 406, unendo main in lavoro/201.
 
 - 26/11 19:20 — Registrata PO-673 (presentazione alla nuova squadra troppo nascosta nella home, foto del PO). Lanciato giro 407; non sale sui treni già in corsa.
+
+- 26/11 19:25 — Registrata PO-674 (cornice del ritratto del procuratore sballata, foto del PO). Lanciato giro 408.
