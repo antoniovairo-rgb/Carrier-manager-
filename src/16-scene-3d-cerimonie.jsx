@@ -2109,7 +2109,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
   React.useEffect(()=>{
     const el=ref.current;if(!el||typeof THREE==="undefined")return;
     const W=()=>el.clientWidth||360,H=()=>el.clientHeight||640;
-    const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(W(),H());renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));el.appendChild(renderer.domElement);
+    let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(_e581){return;}renderer.setPixelRatio((typeof window!=='undefined'&&window.__CPM_NO_G404)?Math.min(2,window.devicePixelRatio||1):Math.min(window.devicePixelRatio||1,1.6));renderer.setSize(W(),H());el.appendChild(renderer.domElement);/* [giro 404 · PO-581] la parata si allinea alle altre scene: tetto di nitidezza 1,6 (era 2) e costruttore WebGL in try/catch (senza, su un telefono senza WebGL l'eccezione nell'effetto non la prende nessuno). Rosso __CPM_NO_G404 = tetto 2 */
     const scene=new THREE.Scene();scene.background=new THREE.Color(0x141b30);scene.fog=new THREE.Fog(0x141b30,70,170);
     if(typeof sviluppoColore178==='function')sviluppoColore178(renderer,scene,{luce:LUCE178.parata,nome:'parata'});/* [giro 178 · D6] lo sviluppo del colore della partita *//* [7.453.0] il fondo era quasi nero (0x070a16) e la nebbia mangiava il viale gia' a 55u: la citta' in festa spariva nel buio */
     const cam=new THREE.PerspectiveCamera(52,W()/H(),0.1,400);

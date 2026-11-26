@@ -619,6 +619,27 @@ function ThreeMatchView(props){
       return()=>{};
     }
     renderer.setSize(W,H);renderer.setPixelRatio(isDesktop?Math.min(devicePixelRatio,2):Math.min(devicePixelRatio,1.5));
+    /* [giro 404 · PO-580 «risoluzione adattiva in partita sui telefoni lenti»] Sul telefono, se il tempo del fotogramma resta lento
+       per un tratto, il pixelRatio scende a passi di 0,25 fino a un PAVIMENTO dichiarato (1,0 = un pixel di disegno per pixel CSS),
+       e risale quando torna fluido. Isteresi su due soglie (lento > 1/24 s, fluido < 1/45 s, media mobile del tempo reale del
+       fotogramma) e su due durate (1,5 s di lento per scendere, 4 s di fluido per risalire, 2 s fra due passi); se dopo una risalita
+       torna lento entro 10 s, la risalita successiva aspetta il doppio (fino a 60 s: niente altalena). Solo telefono (!isDesktop);
+       sotto ?cpmtest=1 e' spenta come ogni regola di presentazione, la arma __CPM_ADATTA404. Testimone __CPM_ADA404 (sempre scritto),
+       rosso __CPM_NO_G404 (pixelRatio fisso come prima). Una chiamata a fotogramma, nessuna allocazione: il passo e' setPixelRatio,
+       che ridimensiona la tela (stessa dimensione CSS) e nient'altro. */
+    const _a404={base:renderer.getPixelRatio(),pr:renderer.getPixelRatio(),pav:Math.min(renderer.getPixelRatio(),1.0),ft:1/60,lento:0,fluido:0,ult:0,giu:0,su:0,tSu:-1e9,attesa:4};
+    try{if(typeof window!=='undefined')window.__CPM_ADA404=_a404;}catch(_e404){}
+    const _adatta404=(now,raw)=>{try{_a404.n=(_a404.n|0)+1;_a404.raw=raw;
+      if(isDesktop||!(raw>0.001&&raw<1))return;
+      if(typeof window!=='undefined'&&(window.__CPM_NO_G404||(_CPM_TEST&&!window.__CPM_ADATTA404)))return;
+      const A=_a404;let fx=raw;if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FT404>0)fx=+window.__CPM_FT404;/* solo collaudo: tempo del fotogramma dichiarato dalla sonda (il banco headless non ha un telefono fluido); le durate restano in tempo vero */
+      A.ft=A.ft*0.9+fx*0.1;
+      if(A.ft>1/24){A.lento+=raw;A.fluido=0;}else if(A.ft<1/45){A.fluido+=raw;A.lento=0;}else{A.lento=0;A.fluido=0;}
+      if(now-A.ult<2000)return;
+      if(A.lento>=1.5&&A.pr>A.pav+1e-6){A.pr=Math.max(A.pav,+(A.pr-0.25).toFixed(2));renderer.setPixelRatio(A.pr);A.giu++;A.ult=now;A.lento=0;A.fluido=0;
+        if(now-A.tSu<10000)A.attesa=Math.min(60,A.attesa*2);}
+      else if(A.fluido>=A.attesa&&A.pr<A.base-1e-6){A.pr=Math.min(A.base,+(A.pr+0.25).toFixed(2));renderer.setPixelRatio(A.pr);A.su++;A.ult=now;A.tSu=now;A.lento=0;A.fluido=0;}
+    }catch(_e404){}};
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=isDesktop?THREE.PCFSoftShadowMap:THREE.BasicShadowMap;
     /* [23/09 — BUDGET RENDERER della review ottimizzata, ricostruito dalla copia di recupero.
        Solo un TESTIMONE: dice a che densita' di pixel e con quali ombre sta girando la scena, cosi' il
@@ -4435,7 +4456,7 @@ function ThreeMatchView(props){
          «10u in 30 ms») il morsetto non morde. Con questo gancio la scena avanza del tempo davvero
          trascorso (tetto 0,3 s): pochi fotogrammi, ma nel tempo giusto. E' la regola del banco del
          06/09 vista dall'altro lato: chi rallenta il fotogramma non deve rallentare la partita. */
-      try{if(typeof window!=='undefined'&&window.__CPM_DTREAL)_rdt=Math.min(_raw708,0.3);}catch(_e819){}sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      try{if(typeof window!=='undefined'&&window.__CPM_DTREAL)_rdt=Math.min(_raw708,0.3);}catch(_e819){}sr.current._dtReal708=Math.min(_raw708,0.3);_adatta404(now,_raw708);/* [giro 404] risoluzione adattiva */if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
          una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
