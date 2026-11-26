@@ -67,16 +67,21 @@ async function gioca(b, url, k, rosso) {
     rec.prov = prov;
     rec.provWhy = await page.evaluate(() => window.__G249W || null);
     rec.fine = ph; await sleep(2500);
-    Object.assign(rec, await page.evaluate(() => {
+    Object.assign(rec, await page.evaluate((no396) => {
       const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ();
       const H = M ? M.HERO : null;
       const E = M && M.pagelle ? (M.pagelle() || []).find(p => p && p.eroe) : null;
-      const log = (M && M._S && M._S._golLog) || null;
+      /* [giro 396] il registro _golLog nasce al primo gol (src/14, case 'gol'): su uno 0-0 non esiste e la partita usciva «non valida»
+         (k7 verde, treno 45787013506). Assente vale «nessun gol» SOLO se il tabellone del motore dice 0 gol per entrambe le squadre;
+         altrimenti resta null (dato mancante = non valida). CPM_NO_G396=1: il comportamento di prima (rosso del giro). */
+      const T = M && M._S && M._S.tab; const zero396 = !!(T && T.home && T.away && ((T.home.gol | 0) + (T.away.gol | 0)) === 0);
+      const log = (M && M._S && M._S._golLog) || ((!no396 && zero396) ? [] : null);
       const ev = (window.__CPM_EV && window.__CPM_EV()) || [];
       const chron = ev.filter(e => e && e.ev === 'chronicle').map(e => ({ min: e.min, txt: String(e.txt || '').slice(0, 110) }));
       return { hero: H, log, pagella: E ? { gol: E.gol | 0, assist: E.assist | 0, voto: E.voto } : null, chron,
-        acc75: window.__CPM_PAG75 | 0, voto20: window.__CPM_VOTO20, g154: (M && M._S && M._S.conta) ? (M._S.conta.g154 | 0) : null };
-    }));
+        acc75: window.__CPM_PAG75 | 0, voto20: window.__CPM_VOTO20, g154: (M && M._S && M._S.conta) ? (M._S.conta.g154 | 0) : null,
+        vuoto396: !(M && M._S && M._S._golLog) && zero396 && !no396 };
+    }, !!process.env.CPM_NO_G396));
     rec.score = await page.evaluate(() => window.__CPM_SCORE && window.__CPM_SCORE());
     for (let i = 0; i < 6 && rec.registrato == null; i++) {
       rec.registrato = await page.evaluate(() => { const r = window.__CPM_ENDRESULT20 && window.__CPM_ENDRESULT20(); return r ? { gol: r.goals | 0, assist: r.assists | 0, rating: r.rating } : null; });
@@ -110,7 +115,7 @@ await Promise.all(browsers.map(async (b) => {
     let x = await gioca(b, url, k, r);
     if (x.err || !x.log || !x.registrato) { console.log(`  k${k} ${r ? 'rosso' : 'verde'}: ${x.err || 'misura incompleta'} — riprovo una volta`); x = await gioca(b, url, k, r); }
     ris.push(x); if (OUT) fs.appendFileSync(OUT, JSON.stringify(x) + '\n');
-    console.log(`k${k} ${x.save} ${r ? 'rosso' : 'verde'}: ${JSON.stringify(x.score)} · provocato ${x.prov ? x.prov.min + "'" + (x.prov.eroeBatt ? ' eroe' : ' NON eroe' + (x.prov.fuori ? ' (eroe fuori dal campo)' : x.prov.fuori === false ? ' (eroe in campo)' : '')) + ' g154 ' + x.prov.g154 + '→' + x.g154 : '—'} · eroe fluido gol ${x.golFluido ? x.golFluido.length : '?'}${x.golFluido && x.golFluido.length ? ' ' + JSON.stringify(x.golFluido) : ''} · assist fluido ${x.assFluido ? x.assFluido.length : '?'} · scena gol ${x.golScena} ass ${x.assScena} · registrato ${JSON.stringify(x.registrato)} · pagella ${JSON.stringify(x.pagella)} · ${x.fine} ${x.sec}s${x.err ? ' ERR ' + x.err : ''}`);
+    console.log(`k${k} ${x.save} ${r ? 'rosso' : 'verde'}: ${JSON.stringify(x.score)} · provocato ${x.prov ? x.prov.min + "'" + (x.prov.eroeBatt ? ' eroe' : ' NON eroe' + (x.prov.fuori ? ' (eroe fuori dal campo)' : x.prov.fuori === false ? ' (eroe in campo)' : '')) + ' g154 ' + x.prov.g154 + '→' + x.g154 : '—'} · eroe fluido gol ${x.golFluido ? x.golFluido.length : '?'}${x.golFluido && x.golFluido.length ? ' ' + JSON.stringify(x.golFluido) : ''} · assist fluido ${x.assFluido ? x.assFluido.length : '?'} · scena gol ${x.golScena} ass ${x.assScena} · registrato ${JSON.stringify(x.registrato)} · pagella ${JSON.stringify(x.pagella)} · ${x.fine} ${x.sec}s${x.vuoto396 ? ' · registro gol assente col tabellone del motore a 0-0 (giro 396)' : ''}${x.err ? ' ERR ' + x.err : ''}`);
     if (x.racconto && x.racconto.some(a => a.length)) console.log('    cronaca: ' + JSON.stringify(x.racconto));
   }
 }));
@@ -133,7 +138,7 @@ if (SOLO !== 'rosso') {
   for (const x of V) if (x.registrato.gol !== x.pagella.gol || x.registrato.assist !== x.pagella.assist) err.push(`k${x.k} verde: registrato ${x.registrato.gol}+${x.registrato.assist} ≠ pagella ${x.pagella.gol}+${x.pagella.assist}`);
   for (const x of V) if (x.acc75 > 0) err.push(`k${x.k} verde: ${x.acc75} gol dell'eroe accreditati dal live come gioco fluido (giro 75)`);
   if (V.length && !(media >= BMIN && media <= BMAX)) err.push(`verde: gol dell'eroe per partita ${media.toFixed(2)} fuori dalla fascia [${BMIN}, ${BMAX}]`);
-  righe.push(`VERDE: ${V.length}/${N} partite valide · rigori provocati all'eroe passati al compagno ${V.filter(x => x.prov && x.prov.eroeBatt && (x.g154 | 0) > (x.prov.g154 | 0)).length}/${V.filter(x => x.prov && x.prov.eroeBatt).length} · gol eroe fluido ${gf} · assist eroe fluido ${af} · gol eroe in scena ${gs} · gol eroe registrati per partita ${Number.isFinite(media) ? media.toFixed(2) : '—'} (fascia ${BMIN}-${BMAX}) · partite con gol dell'eroe ${V.filter(x => x.registrato.gol > 0).length}/${V.length}`);
+  righe.push(`VERDE: ${V.length}/${N} partite valide · rigori provocati all'eroe passati al compagno ${V.filter(x => x.prov && x.prov.eroeBatt && (x.g154 | 0) > (x.prov.g154 | 0)).length}/${V.filter(x => x.prov && x.prov.eroeBatt).length} · gol eroe fluido ${gf} · assist eroe fluido ${af} · gol eroe in scena ${gs} · gol eroe registrati per partita ${Number.isFinite(media) ? media.toFixed(2) : '—'} (fascia ${BMIN}-${BMAX}) · partite con gol dell'eroe ${V.filter(x => x.registrato.gol > 0).length}/${V.length} · partite 0-0 senza registro (giro 396) ${V.filter(x => x.vuoto396).length}`);
 }
 if (SOLO !== 'verde') {
   const gf = sum(R, x => x.golFluido.length), af = sum(R, x => x.assFluido.length);
