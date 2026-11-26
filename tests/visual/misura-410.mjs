@@ -5,7 +5,7 @@
    dal portiere (__CPM_SVZ410, solo ?cpmtest=1). Testimoni letti a ogni fotogramma DENTRO la pagina:
      __CPM_GKTL  (per avatar portiere: gesto GLB montato, tempo della clip ct, pallone, arco ballArcT/ballArcDur, posizione)
      __CPM_GKACT (gesto armato all'armo dell'arco e distanza di lato stimata dal gioco: d148.zq − d148.gz)
-   Per scena stampa: lato stimato, gesto, CONTATTO = primo fotogramma col pallone sul piano del portiere (bx >= gx − 0,6) in tempo
+   Per scena stampa: lato stimato, gesto, CONTATTO = primo fotogramma col pallone sul piano del portiere (bx >= gx − 0,25; giro 410: con 0,6 un tiro obliquo era ancora a 1 u di lato a 0,6 u dal piano) in tempo
    d'arco (= tempo di scena), STACCO = primo fotogramma con la clip del tuffo oltre 0,80 s (il corpo lascia terra; misurato sulla clip
    nel 7.855: in piedi fino a 0,8 s, in volo 0,8-1,25, a terra da 1,25), TERRA = clip oltre 1,25 s; anticipo = contatto − stacco;
    «a terra al contatto» = clip >= 1,25 nel fotogramma del contatto; lateralita' del pallone dal corpo al contatto |bz − gz|.
@@ -38,8 +38,8 @@ export async function misura410(b, port, sc, dz, flag, foto) {
     if (!ok || !G.length) { o.err = 'arco non visto (' + G.length + ' fotogrammi del portiere)'; return o; }
     /* contatto: primo fotogramma con l'arco vivo e il pallone sul piano del portiere */
     let iA = G.findIndex(f => f.arcT > 0.01); if (iA < 0) { o.err = 'arco mai partito'; return o; }
-    if (G[iA].bx >= G[iA].gx - 0.6) { o.err = 'il pallone parte gia\' sul piano del portiere (portiere uscito)'; return o; }
-    let iC = -1; for (let i = iA; i < G.length; i++) { const f = G[i]; if (f.bx >= f.gx - 0.6) { iC = i; break; } if (i > iA + 1 && Math.abs(f.arcT - G[i - 1].arcT) < 1e-3) { iC = i - 1; o.cFine = 1; break; } }
+    if (G[iA].bx >= G[iA].gx - 0.25) { o.err = 'il pallone parte gia\' sul piano del portiere (portiere uscito)'; return o; }
+    let iC = -1; for (let i = iA; i < G.length; i++) { const f = G[i]; if (f.bx >= f.gx - 0.25) { iC = i; break; } if (i > iA + 1 && Math.abs(f.arcT - G[i - 1].arcT) < 1e-3) { iC = i - 1; o.cFine = 1; break; } }
     if (iC < 0) { o.err = 'contatto non trovato'; return o; }
     const C = G[iC]; o.arcD = C.arcD; o.tC = C.arcT;
     const iS = G.findIndex((f, i) => i >= iA - 30 && f.cur === 'dive' && f.ct != null && f.ct >= 0.8);

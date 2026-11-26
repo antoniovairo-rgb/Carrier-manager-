@@ -25,7 +25,7 @@ import { startServer, launchBrowser } from './lib/harness.mjs';
 import { misura410, riga410 } from './misura-410.mjs';
 const P = s => s.split(',').filter(Boolean).map(q => { const [gi, ai, dz] = q.split(':'); return { sc: { gi: +gi, ai: +ai }, dz: +dz }; });
 const CEN = P(process.env.CPM_C || '165:0:0.4,9:0:0.4,7:0:0.4,90:0:0.4,165:0:-1.3,9:0:1.3,7:0:-1.3,90:0:1.3,165:0:1.0,9:0:-1.0');
-const LAT = P(process.env.CPM_L || '165:0:3,9:0:3,7:0:-3,90:0:3,165:0:-3,9:0:-3,7:0:3,90:0:-3,165:0:2.6,9:0:2.6');
+const LAT = P(process.env.CPM_L || '165:0:3,9:0:3,7:0:-3,90:0:3,165:0:-3,9:0:-3,7:0:3,90:0:-3,165:0:2.6,9:0:2.6,165:0:-2.6,7:0:2.6,90:0:2.6,9:0:-2.6');/* [giro 410] 14 pagine laterali: col rosso una parte esce con lato < 2 (misurato 6 su 10 nella catena) e il braccio deve avere >= 8 giudicate in entrambi i colori */
 const PAR = +(process.env.CPM_PAR || 4), SOLO = process.env.CPM_SOLO || '';
 const SOGLIA = 2.0, VIS_C = 1.0, VIS_L = 1.6, ANT = 0.08, BLK = 1.25;
 const srv = await startServer(), port = srv.address().port, b = await launchBrowser();

@@ -42,9 +42,9 @@ function analizza(L, A, T) {
   const out = [];
   for (const s of seg) { const F = s.fr, t0 = F[0].t; const a = A.filter(q => q.t <= F[0].t + 50 && q.hk === F[0].hk).pop() || null;
     const iA = F.findIndex(f => f.arcT > 0.01); if (iA < 0) continue;
-    let iC = -1; for (let i = iA; i < F.length; i++) if (F[i].bx >= F[i].gx - 0.6) { iC = i; break; }
+    let iC = -1; for (let i = iA; i < F.length; i++) if (F[i].bx >= F[i].gx - 0.25) { iC = i; break; }
     const hk = F[0].hk; const tg = T.filter(q => q.t <= t0 + 50 && q.hk === hk).pop() || null; const o = { act: F[0].opp, deciso: a && a.act, sito: tg && tg.tag, fase: a && a.ph, kind: F[0].ok, hk: F[0].hk, ht: F[0].ht, lat: a && a.lat, tt: a && a.tt, tp: a && a.tp, n: F.length };
-    if (iC < 0 || F[iA].bx >= F[iA].gx - 0.6) { o.nc = 1; out.push(o); continue; }
+    if (iC < 0 || F[iA].bx >= F[iA].gx - 0.25) { o.nc = 1; out.push(o); continue; }
     const C = F[iC]; o.cur = C.cur; o.ct = C.ct; o.terra = C.cur === 'dive' && C.ct >= 1.25; o.vis = C.vz != null ? +Math.abs(C.bz - C.vz).toFixed(2) : null; o.vy = C.vy; o.by = C.by;
     const iS = F.findIndex(f => f.cur === 'dive' && f.ct >= 0.8); o.ant = iS >= 0 && iS <= iC ? +(C.arcT - F[iS].arcT).toFixed(2) : null; out.push(o); }
   return out;
