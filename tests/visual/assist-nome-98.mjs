@@ -35,7 +35,7 @@ const ult = (s) => String(s || '').trim().split(/\s+/).pop().toLowerCase();
 async function partita(sd, rosso, pol) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-  await page.addInitScript(([s, r, R, d4]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (d4) { window.__CPM_NO_BRAIN137 = 1; setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose') window.__CPM_FORCE_OUTCOME = 'success'; } catch (e) {} }, 60); } if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI, pol === 'd4']);
+  await page.addInitScript(([s, r, R, d4]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (d4) { window.__CPM_NO_BRAIN137 = 1; setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose') window.__CPM_FORCE_OUTCOME = 'success'; } catch (e) {} }, 60); } if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '2');/* [giro 392 PO-528] '4' non esiste (MATCH_SPEEDS 1/1,5/2): il gioco lo riscriveva a 1× */ localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI, pol === 'd4']);
   await page.goto(URL0, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}

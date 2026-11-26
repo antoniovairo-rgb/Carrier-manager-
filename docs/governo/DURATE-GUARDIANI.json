@@ -244,14 +244,32 @@
    ],
    "tetto30": [
     "VERIFICA198-V2a.md"
-   ]
+   ],
+   "giro392": {
+    "prima_treno_s": 1856,
+    "prima_fonte": "treno grande 45735203524 (26/11, runner, velocita' 1x reale)",
+    "dopo_s": 2558,
+    "dopo_condizioni": "banco cloud 4 CPU, 26/11, due controlli alla volta (come ci-runner), velocita' 2 (prima '4' = 1x reale)",
+    "esito": "verde, rosso visto",
+    "ab_partita": "stessa partita vera S12 sul banco: 338->281 s (seme 1234) e 297->263 s (seme 2021), -14% in media, scene e risultato identici",
+    "nota": "s NON abbassato: la durata dopo e' del banco in contesa, non confrontabile col runner; un valore stimato troppo basso lascia non giudicati i guardiani dietro (giro 358). Lo aggiorna la prossima misura del treno."
+   }
   },
   "assist-nome-98": {
    "s": 2964,
    "fonte": "runner",
    "runner": [
     2964
-   ]
+   ],
+   "giro392": {
+    "prima_treno_s": 3055,
+    "prima_fonte": "treno grande 45735203524 (26/11, runner, velocita' 1x reale)",
+    "dopo_s": 3817,
+    "dopo_condizioni": "banco cloud 4 CPU, 26/11, due controlli alla volta (come ci-runner), velocita' 2 (prima '4' = 1x reale)",
+    "esito": "stessi 3 rossi della notte (D7, ROSSI-DICHIARATI), partite verdi, rosso visto",
+    "ab_partita": "stessa partita vera S12 sul banco: 338->281 s (seme 1234) e 297->263 s (seme 2021), -14% in media, scene e risultato identici",
+    "nota": "s NON abbassato: la durata dopo e' del banco in contesa, non confrontabile col runner; un valore stimato troppo basso lascia non giudicati i guardiani dietro (giro 358). Lo aggiorna la prossima misura del treno."
+   }
   },
   "attesa-241": {
    "s": 61,
@@ -1031,7 +1049,16 @@
    },
    "tetto30": [
     "VERIFICA198-R1.md"
-   ]
+   ],
+   "giro392": {
+    "prima_treno_s": 2101,
+    "prima_fonte": "treno grande 45735203524 (26/11, runner, velocita' 1x reale)",
+    "dopo_s": 2814,
+    "dopo_condizioni": "banco cloud 4 CPU, 26/11, due controlli alla volta (come ci-runner), velocita' 2 (prima '4' = 1x reale)",
+    "esito": "verde, rosso visto (gesti uguali alla notte)",
+    "ab_partita": "stessa partita vera S12 sul banco: 338->281 s (seme 1234) e 297->263 s (seme 2021), -14% in media, scene e risultato identici",
+    "nota": "s NON abbassato: la durata dopo e' del banco in contesa, non confrontabile col runner; un valore stimato troppo basso lascia non giudicati i guardiani dietro (giro 358). Lo aggiorna la prossima misura del treno."
+   }
   },
   "difesa-220-giro31": {
    "s": 1633,
@@ -1581,7 +1608,11 @@
    },
    "tetto30": [
     "VERIFICA198-R1.md"
-   ]
+   ],
+   "giro392": {
+    "leva": "non applicata",
+    "motivo": "sul banco k7 verde e' misura non valida sia a '4' (1x, 746 s per k6+k7) sia a '2' (673 s): non giudicato = rosso, il verde a 2x non e' dimostrabile. k6 verde 523 -> 282 s a 2x."
+   }
   },
   "goleade": {
    "s": 19,
@@ -2283,7 +2314,16 @@
    "tetto30": [
     "VERIFICA198-R2.md",
     "VERIFICA198-R2.md"
-   ]
+   ],
+   "giro392": {
+    "prima_treno_s": 2495,
+    "prima_fonte": "treno grande 45735203524 (26/11, runner, velocita' 1x reale)",
+    "dopo_s": 4077,
+    "dopo_condizioni": "banco cloud 4 CPU, 26/11, due controlli alla volta (come ci-runner), velocita' 2 (prima '4' = 1x reale)",
+    "esito": "verde, rosso visto",
+    "ab_partita": "stessa partita vera S12 sul banco: 338->281 s (seme 1234) e 297->263 s (seme 2021), -14% in media, scene e risultato identici",
+    "nota": "s NON abbassato: la durata dopo e' del banco in contesa, non confrontabile col runner; un valore stimato troppo basso lascia non giudicati i guardiani dietro (giro 358). Lo aggiorna la prossima misura del treno."
+   }
   },
   "nomi-248": {
    "s": 50,
@@ -4505,5 +4545,6 @@
     15
    ]
   }
- }
+ },
+ "giro392": "26/11 giro 392 PO-528: leva «velocita' 2x nel banco» (cpm-match-speed '4' -> '2': '4' non esiste e il gioco lo riscriveva a 1x) su assist-nome-98, nomi-219, difesa-220, assist-298; voci giro392. Guardiano npm run controlli-lunghi-392."
 }

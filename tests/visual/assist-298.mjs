@@ -48,7 +48,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso'; const tot = { scene: 0,
   for (const sd of (rosso ? SEMI_R : SEMI_V)) {
     const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
     const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO_ASSIST298 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO_ASSIST298 = 1; localStorage.setItem('cpm-match-speed', '2');/* [giro 392 PO-528] '4' non esiste (MATCH_SPEEDS 1/1,5/2): il gioco lo riscriveva a 1× */ localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
     await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
     try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
