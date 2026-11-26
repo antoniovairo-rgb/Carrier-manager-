@@ -2173,3 +2173,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 19:25 — Registrata PO-674 (cornice del ritratto del procuratore sballata, foto del PO). Lanciato giro 408.
 
 - 26/11 19:30 — Registrata PO-675 («sei felice qui?» troppo presto dopo un trasferimento). In coda n° 1: parte al primo giro libero (oggi 7 giri attivi).
+
+- 26/11 19:35 — Registrata PO-676 (tiri centrali parati che sembrano gol: il portiere si tuffa prima). In coda n° 2, dopo PO-675.
