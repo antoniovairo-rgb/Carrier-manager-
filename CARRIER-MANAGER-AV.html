@@ -22269,6 +22269,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _fam519=(t==="shot"||t==="penalty"||t==="freekick")?"tiro":(t==="header")?"testa":(t==="cross")?"cross":null;
             if(_fam519){
               const _px519=(_fam519==="cross")?ballArcTgtX:hero.position.x,_pz519=(_fam519==="cross")?ballArcTgtZ:hero.position.z;
+              /* [giro 382, SOLO SONDE ?cpmtest=1] __CPM_LON382=<u>: all'armo, ogni avversario di movimento (non il diretto) piu' vicino di <u> al punto
+                 della reazione viene spostato in linea retta a <u> da quel punto, fermo. Serve al guardiano reazione-252: dal giro 364 il cross di
+                 gi148 cade sul rifinitore e il difensore sta a 7-13u, a cavallo della soglia dei 9u (in CI sempre sotto): il caso «oltre 9u» non
+                 nasceva piu' e il rosso era cieco. La scelta del difensore e la reazione qui sotto restano quelle del gioco. */
+              if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_LON382!=null){try{const _L382=+window.__CPM_LON382;
+                sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='away'||src.gk)return;const _m=pp.mesh;if(!_m||_m===oppMesh)return;
+                  const _dx=_m.position.x-_px519,_dz=_m.position.z-_pz519,_d=Math.hypot(_dx,_dz);if(_d>=_L382)return;const _ux=_d>0.01?_dx/_d:1,_uz=_d>0.01?_dz/_d:0;
+                  _m.position.x=_px519+_ux*_L382;_m.position.z=_pz519+_uz*_L382;_m._ctx=_m.position.x;_m._ctz=_m.position.z;_m._vx=0;_m._vz=0;});
+                (window.__CPM_LON382N=window.__CPM_LON382N||[]).push({f:_fam519,L:_L382});}catch(_e382){}}
               let _bm519=null,_bd519=1e9;
               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='away'||src.gk)return;
                 const _m=pp.mesh;if(!_m||_m===oppMesh)return;const _d=Math.hypot(_m.position.x-_px519,_m.position.z-_pz519);
