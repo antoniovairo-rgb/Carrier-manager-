@@ -249,6 +249,17 @@ function fuoriArea343(adv,y){adv=+adv;y=+y;const dy=Math.abs(y-50);
   if(cy<cx)return{adv:adv,y:50+(y>=50?1:-1)*(AREA343.hy+AREA343.m),sp:+cy.toFixed(2)};
   return{adv:AREA343.adv-AREA343.m,y:y,sp:+cx.toFixed(2)};}
 if(typeof window!=='undefined'){try{window.__CPM_FUORI343=fuoriArea343;}catch(_e){}}
+/* [giro 389 PO-671 «se il fallo avviene in area deve esserci un rigore, fuori area una punizione» — rosso window.__CPM_NO_G389] IL FALLO
+   CERCATO DALL'EROE E' UN FALLO VERO. Misurato prima (misura-389, scena 150 forzata, esito riuscito): il motore scriveva solo una riga
+   «fallo» ASSEGNATA AGLI AVVERSARI (per = squadra di chi difende) nel punto dell'eroe del motore (69,3/34,4 con l'eroe caduto a 88/50),
+   poi `riprendi` ripartiva su azione: nessun rigore, nessuna punizione, sia dentro sia fuori area. Qui la regola del fischio: comanda
+   l'AREA DISEGNATA, quella che il giocatore vede (AREA343, linea compresa) — dentro e' rigore; fuori e' punizione dal punto del fallo,
+   che per costruzione e' gia' fuori dall'area disegnata. La regola dei falli del motore (fallo(): >= 84 e entro 20, un contatto su
+   quattro, PO-190) NON cambia: vale per i falli che decide il motore, non per quello che la scena ha gia' deciso. Funzione pura. */
+function falloCercato389(adv,y){adv=+adv;y=+y;const dy=Math.abs(y-50);
+  const dentro=adv>=AREA343.adv-AREA343.riga&&dy<=AREA343.hy+AREA343.riga;
+  return dentro?{kind:'pen',adv:adv,y:y}:{kind:'foul',adv:adv,y:y};}
+if(typeof window!=='undefined'){try{window.__CPM_FALLO389=falloCercato389;}catch(_e){}}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -512,6 +523,15 @@ function creaMotorePossesso(cfg){
      a gioco fermo a 19-21 contro un tetto di 15, in 3 partite su 4. Il rimedio non e' togliere le rimesse
      (il pallone DEVE uscire: e' calcio) ma accorciare la pausa: una rimessa laterale e un rinvio si
      battono in un tick, angolo e rigore restano a 3 perche' la squadra si deve schierare. */
+  const no389=()=>typeof window!=='undefined'&&!!window&&!!window.__CPM_NO_G389;
+  /* [giro 389] fischia il fallo cercato della scena: rigore (dischetto) se in area disegnata, altrimenti punizione dal punto. Il battitore
+     lo chiede come il ponte verso una scena a palla ferma (eroe, con la regola del patto per il rigore: giro 249/257). Il fallo e' nuovo:
+     il blocco «niente secondo piazzato dell'eroe» del giro 94 (noPiaz94) vale per lo STESSO piazzato gia' calciato, non per questo. */
+  function _fischia389(){const P=S.pend389;S.pend389=null;if(!P||no389())return;S.noPiaz94=null;
+    const pen=P.kind==='pen';S.richieste.verso=null;S.conta.f389=(S.conta.f389|0)+1;
+    fermoSet(pen?'pen':'foul',P.lato,pen?xDa(89,P.lato):P.x,pen?50:P.y,{chi:P.chi,su:P.su,scena:1,f389:1});
+    if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,6);const _pz=pen&&_senzaEroe257(P.lato)&&!no257();if(!_pz&&mio(g[HERO],P.lato)&&eroeAttivo&&!g[HERO].gk&&(pen||advDi(S.fermo.x,P.lato)>=70))S.fermo.batt=HERO;}
+    if(typeof window!=='undefined'&&window){try{const _w=(window.__CPM_F389=window.__CPM_F389||[]);if(_w.length<60)_w.push({fase:'fischiato',kind:S.fermo?S.fermo.kind:null,x:S.fermo?+S.fermo.x.toFixed(1):null,y:S.fermo?+S.fermo.y.toFixed(1):null,batt:S.fermo?S.fermo.batt:null,min:S.min|0});}catch(_eW){}}}
   const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};
     if(kind==="foul"){const _f343=fuoriArea343(advDi(clamp(x,0,100),lato),clamp(y,0,100));if(_f343.sp>0){x=xDa(_f343.adv,lato);y=_f343.y;S.conta.fuori343=(S.conta.fuori343|0)+1;}}/* [giro 343 PO-611] la punizione si batte fuori dall'area avversaria */
     /* [7.881 v2] e anche la PUNIZIONE lontana dalla porta si batte in fretta: nel calcio vero si riparte
@@ -1481,6 +1501,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
 
   /* ---------- API ---------- */
   function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;
+    if(S.pend389&&!S.scena)_fischia389();/* [giro 389] il fallo cercato in scena si fischia alla ripresa del gioco */
     /* [7.914.0] il possesso e' tempo, non eventi: si accumula qui, dove si sa chi ha la palla */
     try{const _s=S.poss.stato;if((_s==='tenuta'||_s==='volo')&&S.tab[S.poss.lato])S.tab[S.poss.lato].possesso+=_dt;}catch(_e){}/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _dec=(ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9);if(ctx.dec)S.fase=0;
     /* [7.987 — UN TETTO UNICO AL PASSO, a fine battito] test:logic «i passi sono umani» e' andato rosso due volte (12,7u nella 7.984,
@@ -1583,7 +1604,8 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
           for(const q of g){if(!attivo(q))continue;const sl=slotDi(q);if(q.gk){q.x=sl.x;q.y=50;continue;}q.x=clamp(q.team===HOME?Math.min(sl.x,46):Math.max(sl.x,54),2,98);q.y=clamp(sl.y,3,97);if(q.team===l)c.push(q);}
           c.sort((a,b)=>hyp(a.x,a.y,50,50)-hyp(b.x,b.y,50,50));if(c[0]){c[0].x=50-dirDi(l)*0.8;c[0].y=50;}if(c[1]){c[1].x=50-dirDi(l)*3;c[1].y=53;}}
         return;}
-      const W=piuVicino(x,y,l,{noGk:true});if(W){W.p.x=x-dirDi(l)*0.4;W.p.y=y;S.palla.x=x;S.palla.y=y;tenuta(W.p,null);S.poss.t=1;}else libero(x,y);},
+      const W=piuVicino(x,y,l,{noGk:true});if(W){W.p.x=x-dirDi(l)*0.4;W.p.y=y;S.palla.x=x;S.palla.y=y;tenuta(W.p,null);S.poss.t=1;}else libero(x,y);
+      if(S.pend389)_fischia389();},/* [giro 389] il fallo cercato della scena appena chiusa: rigore o punizione, non gioco su azione */
     posiziona(x,y){S.palla.x=clamp(+x,0,100);S.palla.y=clamp(+y,0,100);},
     /* [7.891] IL CALCIO PIAZZATO DELLA SCENA LO SCHIERA IL MOTORE. Il live match, due minuti prima di una
        scena a palla ferma (rigore, corner, punizione dell'eroe), non chiede piu' «vai verso quel punto»
@@ -1848,7 +1870,15 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(!famDef&&(!ok||out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&(e.esito==='fuori'||e.esito==='post'||e.esito==='saved'))))E('rammarico',{chi:chi(H)});/* l'eroe si prende la testa fra le mani quando la sua giocata non riesce */
       if(d.gkCall&&MIO_GK&&ok){E('presa',{gk:chi(MIO_GK)});E('rilancio',{gk:chi(MIO_GK)});}/* chiamato il portiere: presa e rilancio con le mani */
       if(D&&out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&e.esito!=='blocked'))E('pressione',{chi:chi(D),su:chi(H)});/* il difensore del cast chiude sul tiro dell'eroe (il 3D lo mostra con la reazione del reparto) */
-      if(key==='fouled'||key==='win_freekick'){E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+      /* [giro 389] col punto della scena (d.punto389, coordinate del live = motore) il fallo subito dall'eroe diventa un piazzato della SUA
+         squadra, fischiato alla ripresa (_fischia389): niente riga «fallo» qui, la scrive il fermo (rigore o punizione) col nome di chi
+         l'ha commesso. Senza il punto (o col rosso) resta il comportamento di prima. */
+      const _p389=(key==='win_freekick'&&d.punto389&&d.punto389.x!=null&&!no389())?d.punto389:null;
+      if(_p389){const _lA=altro(H.team);const _px=clamp(+_p389.x,0,100),_py=clamp(+_p389.y,0,100);
+        const _F=(D&&D.team===_lA)?D:((piuVicino(_px,_py,_lA,{noGk:true})||{}).p||null);const _dec=falloCercato389(advDi(_px,H.team),_py);
+        S.pend389={kind:_dec.kind,lato:H.team,x:_px,y:_py,chi:chi(_F),su:chi(H),min:S.min|0};
+        if(typeof window!=='undefined'&&window){try{const _w=(window.__CPM_F389=window.__CPM_F389||[]);if(_w.length<60)_w.push({fase:'deciso',kind:_dec.kind,x:+_px.toFixed(1),y:+_py.toFixed(1),adv:+_dec.adv.toFixed(1),min:S.min|0});}catch(_eW){}}}
+      if(key==='fouled'||key==='win_freekick'){if(!_p389)E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
         /* [7.999.9 CARTELLINO — Passo 4. Rosso __CPM_NO_CARTA9] chi ferma l'eroe col fallo rischia il cartellino con la STESSA regola
            di ogni fallo della partita (_cart913: un giallo ogni 5-6 falli, di piu' se l'azione era avanzata). Prima il fallo
            subito in scena non passava mai dall'arbitro. Colpevole: il duellante del cast se avversario, altrimenti il piu' vicino. */

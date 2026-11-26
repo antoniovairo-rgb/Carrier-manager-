@@ -900,6 +900,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo,ancora)
   if(scelte.length<2)return null;
   if(!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PASS221))&&!/^(difesa|rigore)$/.test(tipo||'')&&!scelte.some(t=>_rew95(t)==='assist')){/* [7.999.156 PO-221, decisione PO 09/10] ogni scena offensiva offre almeno un'opzione di passaggio/assist: la piu' pesante disponibile prende il posto dell'ultima scelta (nessun sorteggio in piu') */
     const _c221=REG.filter(t=>_rew95(t)==='assist'&&t.w(c)>0&&scelte.indexOf(t)<0).sort((a,b)=>b.w(c)-a.w(c));if(_c221.length)scelte[scelte.length-1]=_c221[0];}
+  if(_offri389()&&!/^(difesa|rigore)$/.test(tipo||'')&&!scelte.some(t=>t.k==='fallo')){const _f389=P6_SPALLE.find(t=>t.k==='fallo');if(_f389)scelte[scelte.length-1]=_f389;}/* [giro 389] solo collaudo (?cpmtest=1): ogni scena offensiva del motore offre il fallo cercato, per provocare il caso in partita vera (nessun sorteggio in piu') */
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,_rew95(t),t.fail,t.n));
   actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].drb&&_rew95(scelte[i])==='chance')a.drb95=true;});/* [giro 95 D2] */
   actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].prot)a.prot98=true;});/* [giro 98 D3-bis] la protezione porta il suo segno fino al motore e al riquadro */
@@ -950,6 +951,7 @@ function _p6Nomi(occ){const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p
    sponda di prima, il fallo cercato resistendo alla carica; il tiro di potenza resta ma pesa poco. Il compagno citato e' il
    ricevente del motore: se non e' libero lo scarico resta (e' un appoggio corto), la sponda «per il compagno libero» no.
    Rosso __CPM_NO_P6S. */
+const _offri389=()=>{try{return typeof window!=='undefined'&&!!window.__CPM_OFFRI389&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||'');}catch(_e){return false;}};
 const P6_SPALLE=[
   {k:'girata',l:'🔄 Girata secca e tiro',st:'tecnica',b:-2,rew:'goal',fail:'miss',n:14,w:(c)=>1.3},
   {k:'protegge',l:(c)=>'🛡️ Proteggi palla e scarica su '+(c.ricVicino||'un compagno'),st:'fisico',b:5,rew:'assist',fail:'intercept',n:10,w:(c)=>1.1,prot:1},/* [giro 98 D3-bis] prot: si gioca da protezione (duello fisico col marcatore, poi lo scarico) */
