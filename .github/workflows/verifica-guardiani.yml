@@ -145,6 +145,7 @@ jobs:
       VISION_PROVIDER: none
       CPM_TRENO_BILANCIO_S: '6600'   # 110 min per i guardiani: la parte si chiude da sola prima del timeout del job
       CPM_JOB_TIMEOUT_MIN: '120'     # [giro 358] il bilancio si conta anche dall'inizio del JOB (CPM_JOB_T0), con 8 min di margine per il caricamento
+      CPM_PARTITA_INTERA: '1'        # [giro 391, PO-523 «Entrambi»] il treno gioca il dopo-partita a PARTITA INTERA (lib/fischio-270.mjs); i giri col salto all'85' (guardiano dopo-partita-391)
     steps:
       - name: Inizio del job (giro 358)
         working-directory: ${{ github.workspace }}

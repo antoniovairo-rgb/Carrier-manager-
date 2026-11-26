@@ -118,9 +118,14 @@ function piano() {
   nomi = [...new Set(nomi)].filter(n => !FUORI.test(n) && !(T360 && T360.fuoriTreno360(n)));/* [giro 360] script di sola prova: mai un guardiano del treno */
   const senza = nomi.filter(n => !script[n]); nomi = nomi.filter(n => script[n]);
   const D = leggiJSON(path.join(ROOT, 'docs/governo/DURATE-GUARDIANI.json'), { voci: {} }).voci;
+  /* [giro 391, PO-523] nel treno il dopo-partita si gioca a PARTITA INTERA (CPM_PARTITA_INTERA=1 nel job delle parti): DURATE-GUARDIANI
+     conosce solo il tempo col salto. Finche' le durate non si ritarano sulle corse vere, il piano usa la stima misurata sul banco
+     (RAPPORTO-giro391: banco x0,74 = rapporto runner/banco di partita-rigiocata-194). Rosso CPM_NO_G391=1 = durate di prima. */
+  const INTERA_391 = { 'partita-rigiocata-194': 1600, 'spazio-296': 1800 };
   const voci = nomi.flatMap(n => spezza358(n).map(q => { const k = q.split('@')[1], d = D[n] || {};
     const s = k ? (d.pezzi && d.pezzi[k]) || Math.round((d.s || 300) / Object.keys(PEZZI_358[n]).length) : d.s || 300;
-    return { n: q, s, fonte: d.fonte || 'stimata' }; }));
+    const s391 = !k && process.env.CPM_NO_G391 !== '1' && INTERA_391[n] ? Math.max(s, INTERA_391[n]) : s;
+    return { n: q, s: s391, fonte: s391 !== s ? 'intera391' : d.fonte || 'stimata' }; }));
   const OB = +process.env.CPM_TRENO_OBIETTIVO_S || 4200, tot = voci.reduce((a, v) => a + v.s, 0);
   /* il piu' lungo per primo nella parte piu' leggera; si aggiungono parti finche' la piu' lunga sta nell'obiettivo
      (o contiene un guardiano solo, che piu' corto di cosi' non si fa) */
