@@ -2157,3 +2157,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 16:12 — ✅ 7.999.216 PUBBLICATA (rilascio automatico 16:07, corsa 45817258043, tag v7.999.216, sito verificato). FATTO: PO-650, PO-651, PO-417, PO-419, PO-668, PO-420. Prossimo: 217 con i vagoni 372-377.
 
 - 26/11 16:15 — Registrata PO-672 URGENTE (wizard dei nuovi giocatori, intro, schermata iniziale di nuova carriera): lanciato subito il giro 401, fuori coda (quinto giro attivo). Non sale sul treno della 217 già pronto: va nel primo treno dopo la consegna.
+
+- 26/11 16:20 — PO: «sono iniziati i test chiusi ufficialmente con il primo tester» (versione in prova: 7.999.216). Produzione non prima del 10/12.
