@@ -703,6 +703,7 @@
     "rinnovo-354": "node rinnovo-354.mjs",
     "svincolato-198": "node svincolato-198.mjs",
     "home-199": "node home-199.mjs",
+    "prima-giornata-371": "node prima-giornata-371.mjs",
     "home-298": "node home-298.mjs && CPM_ROSSO=1 node home-298.mjs",
     "home-335": "node home-335.mjs",
     "club-337": "node club-337.mjs && CPM_ROSSO=1 node club-337.mjs",

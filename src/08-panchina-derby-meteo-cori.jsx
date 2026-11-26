@@ -1154,6 +1154,23 @@ function partitaChiave163(p,md){try{
   if(op>=0&&op<=2)return "🏆 Sfida alla capolista";
   return null;
 }catch(_e){return null;}}
+/* [giro 371 · PO-420] IL CAMPIONATO PARTE DA ZERO. Finche' la squadra non ha giocato una gara di campionato (o sono tutte
+   a 0 punti) l'ordine della classifica e' quello dell'elenco, non un verdetto: niente «17ª in classifica», niente «scontro al
+   vertice» o «zona retrocessione». classificaViva371 dice se le posizioni valgono; pronostico371 e' cio' che si mostra al
+   loro posto, dalla forza delle squadre (la stessa «Forza N/99» della card) con 3 punti al fattore campo. Funzioni pure,
+   nessun sorteggio, nessun campo nel salvataggio. Rosso __CPM_NO_G371 = le posizioni contano sempre (com'era). */
+function _g371(){return !(typeof window!=="undefined"&&window.__CPM_NO_G371);}
+function classificaViva371(st,myId,myN){try{
+  if(!_g371())return true;
+  const a=st||[];if(!a.some(t=>t&&(t.pts||0)>0))return false;
+  const me=a.find(t=>t&&((myId!=null&&t.id===myId)||(myN&&(t.n||t.name)===myN)));
+  return !me||(me.played||0)>0;
+}catch(_e){return true;}}
+function pronostico371(fm,fo,home){
+  if(fm==null||fo==null)return null;
+  const d=(fm-fo)+(home===false?-3:3);
+  return d>=8?"📈 Pronostico: favoriti":d<=-8?"📉 Pronostico: sfavoriti":"⚖️ Pronostico: partita aperta";}
+if(typeof window!=="undefined"){window.__CPM_VIVA371=classificaViva371;window.__CPM_PRON371=pronostico371;}
 /* [giro 165 · PO-364 opzione B, decisione PO «B e C insieme»] LA POSTA IN GIOCO DA PROFESSIONISTA, allargata. La regola del
    giro 164 (gara non di campionato, oppure calcMatchWeight >= 5) lasciava a un club di prestigio basso 1-4 partite con posta
    su 38-40: il tasto «Vai al prossimo momento» avrebbe simulato quasi tutta la stagione. Ora una partita ha posta se e':

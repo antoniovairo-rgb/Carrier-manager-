@@ -3762,7 +3762,7 @@ const getThisWeekMatchday=()=>{
           const _stR=ordinaClassifica259(p.standings||[],(a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
           const _iM=_stR.findIndex(t=>t&&(t.id===(p.club&&p.club.id)||(t.n||t.name)===(p.club&&p.club.n)));
           const _iR=_stR.findIndex(t=>t&&(t.id===_rvC.id||(t.n||t.name)===_rvC.n));
-          if(_iM>=0&&_iR>=0){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
+          if(_iM>=0&&_iR>=0&&classificaViva371(_stR,p.club&&p.club.id,p.club&&p.club.n)/* [giro 371 · PO-420] a 0 punti l'ordine non e' un verdetto */){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
             _ang.push(_a<_b?`Voi ${_a}° e loro ${_b}°: vincere oggi è il messaggio più chiaro che possiate mandare al campionato.`
               :_a>_b?`Loro ${_b}°, voi ${_a}°: ${_dp} punt${_dp===1?"o":"i"} da recuperare, e la prima occasione arriva proprio contro di lui.`
               :`Stesso posto in classifica, ${_a}° in condivisione: chi vince oggi resta lassù, l'altro scivola.`);}
@@ -8319,7 +8319,7 @@ const getThisWeekMatchday=()=>{
           classifica a destra la distanza dalla vetta (o il vantaggio) e la forma V/N/P della tua squadra, l'unica di cui il gioco tiene i risultati */
         const st=ordinaClassifica259(player.standings||[],(a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));
         const mi=st.findIndex(x=>x.id===player.club?.id);
-        const gap0=mi<0?null:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
+        const gap0=mi<0?null:!classificaViva371(st,player.club&&player.club.id,player.club&&player.club.n)?"Si parte da zero"/* [giro 371 · PO-420] niente «−0 dalla vetta» */:mi===0?(st[1]?("+"+(st[0].pts-st[1].pts)+" sulla seconda"):"In vetta"):("\u2212"+(st[0].pts-st[mi].pts)+" dalla vetta");
         /* [giro 298 PO-571] la riga segue l'obiettivo del club (rigaObiettivo298). Finche' nessuno ha giocato resta la riga di prima: la 1ª giornata e' di PO-420 (199). Rosso __CPM_NO_G298 */
         const r298=(_g298()&&mi>=0&&st.some(x=>(x.played||0)>0))?rigaObiettivo298(player,st):null;const gap=r298?r298.testo:gap0;
         const lg=player.club?.lg||(player.proStatus==="u18"?"Primavera":"");
@@ -8516,8 +8516,9 @@ const getThisWeekMatchday=()=>{
         const home=md.isHome!==false;
         const comp=_naz35?(md.competition||"Amichevole Internazionale"):md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
         const st=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-        const myPos=_naz35?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
-        const oppPos=_naz35?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
+        const _viva371=classificaViva371(st,me.id,me.n);/* [giro 371 · PO-420] alla 1ª giornata nessuna posizione: c'e' il pronostico */
+        const myPos=(_naz35||!_viva371)?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
+        const oppPos=(_naz35||!_viva371)?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
         const cs=getContinuaState();
         const lab=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted}}>{t}</div>;
         const lab2=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.muted,whiteSpace:"nowrap"}}>{t}</div>;
@@ -8536,6 +8537,7 @@ const getThisWeekMatchday=()=>{
           if(_der)_imp=`${_der.e} ${_der.name}`;
           else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
             if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp=(typeof window!=="undefined"&&window.__CPM_NO_G106D)?"⚠️ Zona retrocessione":"⚠️ Avversario in zona retrocessione";/* [giro 106 D] la frase parla dell'AVVERSARIO (op = sua posizione): da sola finiva sotto la colonna del club del giocatore. Rosso __CPM_NO_G106D */else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          if(!_imp&&!_viva371&&!_naz35)_imp=pronostico371(_fm,_fo,home);/* [giro 371 · PO-420] */
           const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
           const _inf=[];if(_fo!=null)_inf.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_inf.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
           const _io=(t)=>t===me;
@@ -8646,6 +8648,7 @@ const getThisWeekMatchday=()=>{
               if(_der)_imp=`${_der.e} ${_der.name}`;
               else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
                 if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp=(typeof window!=="undefined"&&window.__CPM_NO_G106D)?"⚠️ Zona retrocessione":"⚠️ Avversario in zona retrocessione";/* [giro 106 D] la frase parla dell'AVVERSARIO (op = sua posizione): da sola finiva sotto la colonna del club del giocatore. Rosso __CPM_NO_G106D */else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          if(!_imp&&!_viva371&&!_naz35)_imp=pronostico371(_fm,_fo,home);/* [giro 371 · PO-420] */
               const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
               const _p=[];if(_fo!=null)_p.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_p.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
               if(!_p.length&&!_imp)return null;
