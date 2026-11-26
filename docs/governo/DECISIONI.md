@@ -2095,3 +2095,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 01:00 (26/11) PO: «Deve essere una catena di montaggio velocissima» → questionario: 4 giri sempre attivi (aree diverse, treni da 2-4 vagoni); dubbi: consigliata subito, domanda dopo. Lanciati subito i giri 368 (PO-417 nomi, Opus) e 369 (PO-419 profilo coerente, Opus) accanto a 364 e 367.
 - 01:05 (26/11) PO sul mister 3D («sembra uno zombie», «meglio in tuta o giacca e cravatta») → nota aggiunta a PO-648 (stessa voce del 24/11, non una voce nuova); resta in coda nella sua fascia (grafica e miglioramenti).
 - 01:12 (26/11) PO: «Cerca nuovi gesti funzionali e divertenti!» → PO-666 (ricerca di clip con licenza libera: partita, esultanze, contorno; proposta con foto prima di adottare), in coda per arrivo (questionario).
+- 01:20 (26/11) PO (foto Home, card «Prossima» marrone-oro a strisce): «Evitiamo colori così brutti» → PO-667, in coda per arrivo (fascia grafica e miglioramenti).
