@@ -3826,8 +3826,18 @@ const getThisWeekMatchday=()=>{
           const _rvPO=((p.rival.awards&&p.rival.awards.palloneOros)||[]).length;
           if(_rvPO)_ang.push(`Ha già alzato il Trofeo d'Oro${_rvPO>1?` ${_rvPO} volte`:""}: quando entra in campo lo sanno tutti. Oggi tocca a te ricordare che il migliore si decide in novanta minuti.`);
           const _rel=p.rival.relationship||"rivale";
-          if(_rel==="amico")_ang.push(`Fuori dal campo ormai vi sentite: siete cresciuti nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`);
-          else if(_rel==="rispettato")_ang.push(`Col tempo tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`);
+          /* [giro 378 · PO-657, decisione PO «Riscriverle col numero»] «ormai» e «col tempo» diventano le stagioni vere (_anni355,
+             stessa regola del 362: dalla terza «In N stagioni», in seconda «dalla scorsa stagione», in prima nessuna frase sugli anni).
+             Rosso: window.__CPM_NO_G378 = frasi di prima. */
+          const _vago378=_vago362||(()=>{try{return typeof window!=="undefined"&&!!window.__CPM_NO_G378;}catch(_e){return false;}})();
+          if(_rel==="amico")_ang.push(_vago378?`Fuori dal campo ormai vi sentite: siete cresciuti nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`
+            :_anni355>=3?`In ${_st362} fuori dal campo siete diventati amici: siete cresciuti nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`
+            :_anni355===2?`Dalla scorsa stagione fuori dal campo vi sentite: state crescendo nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`
+            :`Fuori dal campo vi sentite: state crescendo nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`);
+          else if(_rel==="rispettato")_ang.push(_vago378?`Col tempo tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`
+            :_anni355>=3?`In ${_st362} tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`
+            :_anni355===2?`Dalla scorsa stagione tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`
+            :`Tra voi c'è rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`);
           if(p.rival.age&&Math.abs((p.rival.age||0)-(p.age||0))<=1&&(_vago362?(p.rival.seasons||0):_anni355)>=3)
             _ang.push(`Siete della stessa annata e vi inseguite da ${_vago362?p.rival.seasons:_anni355} stagioni: ogni volta che uno alza l'asticella, l'altro la rialza.`);
           const _rt=(_myG+1)/(_rvG+1);
