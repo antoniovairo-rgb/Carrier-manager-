@@ -2145,3 +2145,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 10:15 — PO (questionario sui 50 «da verificare»): «Chiudi tutte le vecchie» → chiuse come FATTO-superato 46 voci precedenti alla 7.999.175 (PO-002, PO-023, PO-066, PO-071, PO-072, PO-123, PO-137, PO-143, PO-171, PO-180, PO-205, PO-209, PO-217, PO-218, PO-227, PO-229, PO-230, PO-233, PO-235, PO-242, PO-245, PO-251, PO-252, PO-253, PO-254, PO-255, PO-256, PO-257, PO-259, PO-267, PO-268, PO-269, PO-270, PO-271, PO-272, PO-273, PO-274, PO-275, PO-276, PO-277, PO-278, PO-279, PO-280, PO-282, PO-283, PO-284). Chiuse anche PO-243 e PO-244 (14/10, senza versione). Restano da verificare: PO-585 (7.999.208), PO-630 (7.999.212). Un difetto che ricompare diventa una voce nuova.
 
 - 26/11 10:20 — PO: «chiudi anche la PO-630» → FATTO (treno grande del 26/11 partito e completo 31/31). Da verificare resta solo PO-585.
+
+- 26/11 11:05 — Consegnati 388 (PO-642), 391 (PO-523), 393 (riparazione tiri-367: il rigore sbagliato mira 0,6-1,2 m oltre il palo → 217). Lanciati 394 (PO-529) e 395 (PO-532). Attivi: 390, 392, 394, 395. Treno della 216 (45787013506) a 13/32 parti.
