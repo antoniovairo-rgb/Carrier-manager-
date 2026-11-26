@@ -2153,3 +2153,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 13:05 — PO (questionario): «Dichiaro e riparto subito» → gol-eroe-154 in ROSSI-DICHIARATI (main e lavoro/201), nuovo treno della 216. Rischio dichiarato: se è un difetto vero resta fino alla 217 (giro 396).
 
 - 26/11 15:05 — Consegnati 390 (PO-653), 392 (PO-528), 394 (PO-529), 395 (PO-532), 396 (riparazione gol-eroe-154: uno 0-0 vero contava come partita non valida → 217). Lanciati 397 (PO-537), 398 (PO-538), 399 (PO-573), 400 (PO-575). Treno della 216 (45817258043) a 20/32 parti.
+
+- 26/11 16:12 — ✅ 7.999.216 PUBBLICATA (rilascio automatico 16:07, corsa 45817258043, tag v7.999.216, sito verificato). FATTO: PO-650, PO-651, PO-417, PO-419, PO-668, PO-420. Prossimo: 217 con i vagoni 372-377.
