@@ -9,7 +9,7 @@
      D (PO-571) la riga sotto la testata della Classifica segue l'obiettivo del club: 4 club veri di prestigio diverso (obiettivo
        titolo · Europa · meta' classifica · salvezza, dato da generateSeasonObjectives) x 4 posizioni in classifica, piu' una seconda
        divisione e una lega senza seconda serie; il testo atteso lo calcola QUI il guardiano, con la sua copia della regola.
-       A classifica ferma (nessuna giornata giocata) la riga resta quella di prima (la 1ª giornata e' di PO-420, 199);
+       A classifica ferma (nessuna giornata giocata) la riga e' «Si parte da zero» (giro 371, PO-420);
      E (PO-572) in Opzioni, con gli Strumenti di collaudo accesi, non c'e' «Tempo della partita simulata».
    «Non giudicato» = rosso: ogni giudizio dichiara cosa ha guardato. Rosso: __CPM_NO_G298 (CPM_ROSSO=1) deve riprodurre TUTTI e cinque.
    Uso: node home-298.mjs · CPM_ROSSO=1 node home-298.mjs · CPM_FOTO=1 salva la Home in docs/sviluppo/giro298/ (prima = rosso, dopo = verde) */
@@ -176,7 +176,9 @@ for (const [w, h] of RIS) {
     if (!ok) no('D', `${R}: ${caso.c.n} (${caso.c.lg}, prestigio ${caso.c.p}, primi ${r.target}) ${r.io + 1}°: «${r.testo}» ≠ «${att}»${r.vis ? '' : ' · non visibile'}${r.dentro ? '' : ' · fuori schermo'}`);
   }
   const f = await leggiRiga(page, casi[1], 'quarto', true); nD++;
-  if (norm(f.testo) !== vecchio(f)) no('D', `${R}: a classifica ferma «${f.testo}» ≠ regola di prima «${vecchio(f)}»`); else nOk++;
+  /* [giro 371 · PO-420] a classifica ferma la riga e' «Si parte da zero» (non piu' «−0 dalla vetta»): la 1ª giornata rimandata qui a PO-420 */
+  const fermo371 = norm('Si parte da zero');
+  if (norm(f.testo) !== fermo371) no('D', `${R}: a classifica ferma «${f.testo}» ≠ «Si parte da zero» (PO-420; la regola di prima era «${vecchio(f)}»)`); else nOk++;
   visti.D += nD; console.log(`   D: ${nOk}/${nD} righe coerenti con l'obiettivo (${casi.length} club, ${ob4.size} obiettivi di prima divisione)`);
   if (P.err.length) no('X', `${R}: ${P.err.length} errori di pagina (${P.err[0]})`);
   await P.ctx.close();
