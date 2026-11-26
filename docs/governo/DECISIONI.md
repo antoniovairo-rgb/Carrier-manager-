@@ -2201,3 +2201,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 22:50 — Registrata PO-682 (taccuino: «Testa di potenza» letta come tiro potente; corpo girato di 72° al colpo di testa). La scelta era davvero un colpo di testa: esito coerente, etichetta ambigua.
 
 - 26/11 22:55 — Registrata PO-683 (mai esultare sotto la curva avversaria, regola del PO). In coda.
+
+- 26/11 23:00 — Registrata PO-684 (verifica trimestrale calorosa con un mister nuovo e diffidente, foto del PO). In coda.
