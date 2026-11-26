@@ -4543,6 +4543,7 @@ function ThreeMatchView(props){
         if(nome673!=='kick'&&nome673!=='header'&&nome673!=='volley')return;
         const _gx673=(m673.position.x<0&&nome673==='kick'&&false)?HOME_GOAL_X:AWAY_GOAL_X;
         m673.rotation.y=Math.atan2(_gx673-m673.position.x,0-m673.position.z);
+        m673._porta415={sk:P.hlSitKey,y:m673.rotation.y};/* [giro 415] la mira verso la porta la legge anche il corpo GLB (che non eredita la rotazione della mesh logica) */
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_FACE673=window.__CPM_FACE673||[]).push({g:nome673,x:+m673.position.x.toFixed(1),ry:+m673.rotation.y.toFixed(2)});}catch(_e){}}
       }catch(_e673){}};
       if(sr.current._mateFx){sr.current._mateFx.t-=dt;if(sr.current._mateFx.t<=0)sr.current._mateFx=null;}
@@ -13185,13 +13186,29 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
             _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
             _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_mira20(_a,_p.position.x,_p.position.z,ballArcTgtX,ballArcTgtZ,AWAY_GOAL_X,_ai===0);/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
+          /* [giro 415, PO-679 — taccuino PO 7.999.216 «il compagno ha segnato calciando come se fosse spalla alla porta» (Cross a rientrare,
+             assist riuscito). MISURATO (misura-415, GLB acceso, testimone __CPM_FIN415 dalle spalle e dalle anche del corpo disegnato): la
+             mesh logica del finalizzatore guardava la porta (1°, giro 7.673), il CORPO DISEGNATO no — 146-176° al contatto. Il corpo GLB
+             non eredita la rotazione della mesh: si gira col proprio movimento (ramo _gsp qui sotto), e chi attacca il cross arretrato
+             INSEGUE il pallone che torna indietro dal fondo, quindi corre verso la propria meta' campo e calcia con le spalle alla porta;
+             il latch 7.636 non scatta perche' il pallone parte in post-arco, senza arco vivo. Ora chi attacca il cross nella scena
+             dell'eroe (dalla seconda meta' del volo) e chi chiede il gesto di conclusione verso la porta (_versoPorta673) girano il CORPO
+             verso la porta, prima del contatto; nel gesto la mira e' la porta. Rosso __CPM_NO_G415 = comportamento di prima. */
+          let _fin415=false;
+          if(!_a._isGk&&_ai!==0&&!(typeof window!=='undefined'&&window.__CPM_NO_G415)){const _P415=propsRef.current||{};
+            if(_P415.matchPhase==='hl_result'&&!_P415.hlDef){const _mf415=sr.current._mateFx;
+              _fin415=(crossRcvMesh===_p&&_P415.hlType==='cross'&&(!ballArcActive||!(ballArcDur>0)||ballArcT/ballArcDur>=0.35))
+                ||(!!_mf415&&_mf415.mesh===_p&&_mf415.t>0&&/^(kick|header|volley)$/.test(_mf415.name)&&!!_p._porta415&&_p._porta415.sk===_P415.hlSitKey);}
+            if(_fin415){const _ty415=Math.atan2(AWAY_GOAL_X-_p.position.x,0-_p.position.z);
+              if(_a._gName){_a._tgt517=_ty415;_a._aim517=_ty415;}
+              else{let _da415=((_ty415-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da415*Math.min(dt*9,1);}}}
           if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
             let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);
             if(_ai===0&&_a._tgt517!=null&&ballArcTgtX!=null&&ballArcTgtX>=AWAY_GOAL_X-6&&typeof window!=='undefined'){try{const _df20=(t)=>((t-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI,_pa20=_df20(Math.atan2(GOAL_LINE_X-_p.position.x,-3.66-_p.position.z)),_pb20=_df20(Math.atan2(GOAL_LINE_X-_p.position.x,3.66-_p.position.z));const _fuori20=(Math.sign(_pa20)!==Math.sign(_pb20)&&Math.abs(_pa20)+Math.abs(_pb20)<Math.PI)?0:Math.min(Math.abs(_pa20),Math.abs(_pb20));(window.__CPM_MIRA20=window.__CPM_MIRA20||[]).length<400&&window.__CPM_MIRA20.push({g:_a._gName,porta:+(_fuori20*180/Math.PI).toFixed(0),tz:+ballArcTgtZ.toFixed(1)});/* [7.999.21] quanto il corpo guarda FUORI dallo specchio fra i pali (0 = dentro), non la distanza dal centro */}catch(_e){}}
             if(_a._gAct&&_a._gAct===_a._gScissor&&_a._tgt517!=null&&typeof window!=='undefined'){try{const _d19=Math.abs(((_a._tgt517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI);window.__CPM_ROV19={spalle:+(_d19*180/Math.PI).toFixed(0),t:+((_a._gAct.time)||0).toFixed(2)};}catch(_e){}}}
-          else if(_gsp>0.03&&!_a._isGk){const _ta=Math.atan2(_gdx,_gdz);let _da=((_ta-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*5.5,1);}
+          else if(_gsp>0.03&&!_a._isGk&&!_fin415){const _ta=Math.atan2(_gdx,_gdz);let _da=((_ta-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*5.5,1);}
           else if(_ai===0&&!_a._gName&&propsRef.current&&(propsRef.current.hlType==="penalty"||propsRef.current.hlType==="freekick"||propsRef.current.hlSetPiece)){
             /* [7.311.0 collaudo PO «postura sbagliata sulle punizioni»] il CH38 ruota SOLO col movimento: fermo
                sul pallone del piazzato non si girava mai. Qui eredita il facing del modello procedurale, che
@@ -13280,7 +13297,17 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           const _bg23=(sr.current._brainOn&&_a.proc&&_a.proc._brainG&&_a.gestures)?_a.proc._brainG:null;
           const _brainWant=_bg23?(_bg23.nomi.find(n=>_a.gestures[n])||null):null;/* [23/09 POC] il primo gesto della riga che QUESTO corpo possiede */
           const _mateWant=(_mfx&&_mfx.mesh===_a.proc&&_mfx.t>0)?_mfx.name:_brainWant;
-          if(_mfx&&_mfx.w343&&_mfx.w343.g==null&&_mfx.mesh===_a.proc&&_mfx.t>0)_mfx.w343.g=+(sr.current._clk343||0).toFixed(3);/* [giro 343] testimone: il corpo GLB ha chiesto la clip dell'intervento */
+          if(_mfx&&_mfx.w343&&_mfx.w343.g==null&&_mfx.mesh===_a.proc&&_mfx.t>0)_mfx.w343.g=+(sr.current._clk343||0).toFixed(3);
+          /* [giro 415, PO-679 «il compagno ha segnato calciando come se fosse spalla alla porta»] TESTIMONE (solo collaudo): per ogni fotogramma
+             del gesto di conclusione del compagno, l'angolo fra il davanti VERO del corpo (perpendicolare alla linea delle spalle e delle anche
+             del corpo disegnato, non la rotazione della mesh logica) e la porta avversaria. */
+          if(typeof window!=='undefined'&&window.__CPM_FIN415&&_mfx&&_mfx.mesh===_a.proc&&_mfx.t>0&&/^(kick|header|volley)$/.test(_mfx.name)){try{
+            const _r415=_a.visualRoot||_a.root;const _b415=_a._b415||(_a._b415={sl:_findBone904(_r415,/^(upperarm_l|(mixamorig:?)?LeftArm)$/i),sr:_findBone904(_r415,/^(upperarm_r|(mixamorig:?)?RightArm)$/i),hl:_findBone904(_r415,/^(thigh_l|(mixamorig:?)?LeftUpLeg)$/i),hr:_findBone904(_r415,/^(thigh_r|(mixamorig:?)?RightUpLeg)$/i)});
+            const _V415=sr.current._v415||(sr.current._v415=[new THREE.Vector3(),new THREE.Vector3()]);
+            const _yaw415=(L,R)=>{if(!L||!R)return null;L.getWorldPosition(_V415[0]);R.getWorldPosition(_V415[1]);const bx=_V415[1].x-_V415[0].x,bz=_V415[1].z-_V415[0].z;return Math.atan2(bz,-bx);};/* davanti = su x (destra-sinistra) */
+            const _m415=_a.proc,_gy415=Math.atan2(AWAY_GOAL_X-_m415.position.x,0-_m415.position.z);
+            const W=window.__CPM_FIN415;if(W.length<3000)W.push({k:(propsRef.current||{}).hlSitKey,g:_mfx.name,c:+(sr.current._clk343||0).toFixed(3),x:+_m415.position.x.toFixed(2),z:+_m415.position.z.toFixed(2),ry:+_m415.rotation.y.toFixed(3),gy:+_gy415.toFixed(3),sh:_yaw415(_b415.sl,_b415.sr),hp:_yaw415(_b415.hl,_b415.hr),gn:_a._gName||null,gt:_a._gAct?+_a._gAct.time.toFixed(3):null,gw:+(_a._gw||0).toFixed(2),bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),nd:(()=>{try{camera.updateMatrixWorld(true);const v=new THREE.Vector3(_m415.position.x,0.9,_m415.position.z).project(camera);return [+v.x.toFixed(3),+v.y.toFixed(3)];}catch(_e){return null;}})()});
+          }catch(_e415){}}/* [giro 343] testimone: il corpo GLB ha chiesto la clip dell'intervento */
           /* [7.516.0 R3/1 — IL RILASCIO NON DIPENDE DALLA CONDIZIONE D'INGRESSO: audit critica «il compagno
              resta deformato per il resto della partita»] Il decadimento del peso del gesto (righe _gw piu'
              sotto) vive DENTRO questo ramo: quando il timer _mateFx scadeva, il compagno non entrava piu' e
