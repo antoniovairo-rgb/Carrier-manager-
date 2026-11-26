@@ -481,6 +481,7 @@
     "tabellone-214": "node tabellone-214.mjs",
     "sonda-214": "node sonda-214.mjs",
     "pullman-204": "node pullman-204.mjs",
+    "trofeo-376": "node trofeo-376.mjs",
     "voto-79": "node voto-79.mjs",
     "livello-79": "node livello-79.mjs",
     "quota-190-vivo": "node quota-190-vivo.mjs",

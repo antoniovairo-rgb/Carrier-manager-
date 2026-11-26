@@ -19184,7 +19184,16 @@ function ThreeMatchView(props){
     /* [7.474.0 collaudo PO «la coppa non e' disegnata bene, ha le orecchie separate»] LE ORECCHIE ERANO STACCATE, E IL DISTACCO SI CALCOLA. L'attacco del manico stava piu' in fuori del bordo della coppa in TUTTI E TRE i trofei: 0,10-0,15u sul trofeo base, 0,30u sulle orecchie larghe internazionali (con l'estremo superiore addirittura sopra il bordo, dove la coppa non c'e' piu'), 0,24-0,47u su quello della parata. Non era una questione di stile: era un manico che galleggia accanto alla coppa. Ora il centro del toro sta dove il PROFILO della coppa passa, cosi' gli estremi dell'arco nascono dalla superficie invece di sfiorarla — numeri ricavati dal profilo stesso (cono r(y) per il trofeo, sfera per quello della parata), non scelti a occhio. */
     {const _hL=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.04,8,16,Math.PI),_goldMat);_hL.position.set(-0.26,0.95,0);_hL.rotation.z=Math.PI/2;trophyGrp.add(_hL);
      const _hR=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.04,8,16,Math.PI),_goldMat);_hR.position.set(0.26,0.95,0);_hR.rotation.z=-Math.PI/2;trophyGrp.add(_hR);}
-    trophyGrp.scale.setScalar(0.62);trophyGrp.visible=false;trophyGrp.position.y=-50;scene.add(trophyGrp);/* [7.5.1] trofeo PROPORZIONATO al giocatore (~2.2u): scala 1.7→0.62 (era enorme, quasi alto come un calciatore) */
+    trophyGrp.scale.setScalar(0.62);trophyGrp.visible=false;trophyGrp.position.y=-50;scene.add(trophyGrp);
+    /* [giro 376 PO-647] base del trofeo = vertice visibile piu' basso, nel riferimento del gruppo senza scala (una volta per tipo di trofeo).
+       _low376: lo stesso punto nel mondo, solo per il testimone del collaudo. */
+    const _vis376=(o,root)=>{for(let q=o;q&&q!==root;q=q.parent)if(!q.visible)return false;return true;};
+    const _base376=(g)=>{const _k=g._kind24||'std';if(g._b376k===_k&&g._b376!=null)return g._b376;let mn=1e9;const v=new THREE.Vector3(),M=new THREE.Matrix4();
+      g.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position||!_vis376(o,g))return;M.identity();const ch=[];for(let q=o;q&&q!==g;q=q.parent)ch.push(q);
+        for(let i=ch.length-1;i>=0;i--){ch[i].updateMatrix();M.multiply(ch[i].matrix);}const A=o.geometry.attributes.position;for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(M);if(v.y<mn)mn=v.y;}});
+      g._b376k=_k;g._b376=(mn<1e8)?mn:0.10;return g._b376;};
+    const _low376=(g)=>{let mn=1e9;const v=new THREE.Vector3();g.updateMatrixWorld(true);g.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position||!_vis376(o,g))return;const A=o.geometry.attributes.position;
+      for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(o.matrixWorld);if(v.y<mn)mn=v.y;}});return mn;};/* [7.5.1] trofeo PROPORZIONATO al giocatore (~2.2u): scala 1.7→0.62 (era enorme, quasi alto come un calciatore) */
     // [7.2.0] PODIO a centrocampo per la premiazione finale (beat 4). Nascosto fino alla cerimonia.
     const podiumGrp=new THREE.Group();
     {const _podMat=new THREE.MeshStandardMaterial({color:0x243049,metalness:0.35,roughness:0.6});
@@ -26509,7 +26518,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ry=Math.atan2(_cSgn*0.781,-0.625),_c=Math.cos(_ry),_s=Math.sin(_ry);
             const _hx=-_cSgn*2.3,_hz=1.4,_hl=_hx*_c-_hz*_s,_hlz=_hx*_s+_hz*_c;
             const _ql=_cap23?_hl+1.25:_hl,_qz=_hlz+(_hlz<0?0.5:-0.5);
-            const _R={x:_ql*_c+_qz*_s,z:-_ql*_s+_qz*_c};const _top=1.05,_ry0=_top-0.25*(trophyGrp.scale.y||0.62);
+            const _R={x:_ql*_c+_qz*_s,z:-_ql*_s+_qz*_c};const _top=1.05;
+            /* [giro 376 PO-647 — rosso __CPM_NO_G376] APPOGGIO ESATTO SUL PIEDISTALLO. La quota fissa «_top-0,25·scala» non era la base di nessun
+               trofeo: misurato sulle mesh, la coppa standard affondava 0,09 nel piano, quella internazionale 0,10 e il piatto di campionato 0,36
+               (il disco sta in piedi sul bordo, centrato a y 0,14 locale). Ora la base e' il punto piu' basso della geometria VISIBILE del
+               trofeo (vertici veri, nel riferimento del gruppo, una volta per tipo: la rotazione attorno a y non la cambia) e il trofeo ci si posa. */
+            const _ry0=(typeof window!=='undefined'&&window.__CPM_NO_G376)?_top-0.25*(trophyGrp.scale.y||0.62):_top-_base376(trophyGrp)*(trophyGrp.scale.y||0.62);
             if(!sr.current._ped192){const _pg=new THREE.Group();const _pm=new THREE.MeshLambertMaterial({color:0x1d1a28});
               const _col=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.26,_top-0.06,16),_pm);_col.position.y=(_top-0.06)/2;_pg.add(_col);
               const _tp=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.06,20),_goldMat);_tp.position.y=_top-0.03;_pg.add(_tp);
@@ -26538,7 +26552,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 192] testimone: coppa e mani di eroe e capitano nello stesso fotogramma */
             const _W=window.__CPM_G192B||(window.__CPM_G192B={fr:[]});if(_W.fr.length<900){const _mm=(m)=>{const a=m&&(glbAvatars||[]).find(x=>x&&x.proc===m);if(!a||!a._handL||!a._handR)return null;const v1=new THREE.Vector3().setFromMatrixPosition(a._handL.matrixWorld),v2=new THREE.Vector3().setFromMatrixPosition(a._handR.matrixWorld);return [+((v1.x+v2.x)/2).toFixed(3),+((v1.y+v2.y)/2+0.10).toFixed(3),+((v1.z+v2.z)/2).toFixed(3)];};
               _W.fr.push({b:_bk,bp:+_bp.toFixed(3),t:[+trophyGrp.position.x.toFixed(3),+trophyGrp.position.y.toFixed(3),+trophyGrp.position.z.toFixed(3)],e:_mm(hero),c:_cap23?_mm(_cap23):null,r:!!sr.current._rest192,cap:!!_cap23});}}catch(_e){}}
-          trophyGrp.rotation.y+=aDt*1.3;
+          /* [giro 376 PO-647 — rosso __CPM_NO_G376] IL TROFEO GIRA SOLO QUANDO E' APPOGGIATO. Prima girava sempre a 1,3 rad/s, anche fra le mani.
+             In mano e' RIGIDO col corpo di chi lo tiene (il piu' vicino fra eroe e capitano): manici sulla linea delle mani, cioe' verso del
+             trofeo = verso del corpo a meno di mezzo giro (coppa e piatto sono simmetrici), scelto il piu' vicino al verso attuale. Per questo
+             il passaggio capitano->eroe (i due si guardano: versi opposti) non fa girare il trofeo. Unico tratto in moto: la presa dal
+             piedistallo, dove il verso va da quello di riposo a quello delle mani con la stessa curva della presa (_grab192). Una misura
+             precedente con inseguimento esponenziale lasciava il 24% dei fotogrammi in mano oltre 0,6 rad/s (le transizioni): bocciata. */
+          if((typeof window!=='undefined'&&window.__CPM_NO_G376)||sr.current._rest192){trophyGrp.rotation.y+=aDt*1.3;sr.current._ry376=trophyGrp.rotation.y;}
+          else{const _wr376=(a)=>{a%=2*Math.PI;if(a>Math.PI)a-=2*Math.PI;if(a<-Math.PI)a+=2*Math.PI;return a;};
+            const _al376=(Y,cur)=>{const a=_wr376(Y-cur),b=_wr376(Y+Math.PI-cur);return cur+(Math.abs(a)<=Math.abs(b)?a:b);};
+            const _hd376=(m)=>m?Math.hypot(m.position.x-trophyGrp.position.x,m.position.z-trophyGrp.position.z):1e9;
+            const _gr376=_g192b&&_team23&&(_bk==="present"||_bk==="captain")&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>0&&sr.current._grab192<1&&sr.current._ry376!=null;
+            if(_gr376){const _u=sr.current._grab192,_w=_u*_u*(3-2*_u),_r0=sr.current._ry376;trophyGrp.rotation.y=_r0+(_al376((_cap23||hero).rotation.y,_r0)-_r0)*_w;}
+            else{const _who376=(_cap23&&_hd376(_cap23)<_hd376(hero))?_cap23:hero;trophyGrp.rotation.y=_al376(_who376.rotation.y,trophyGrp.rotation.y);}}
+          if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_T376&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 376] testimone: base del trofeo contro il piano del piedistallo, verso del trofeo contro chi lo tiene */
+            const W=window.__CPM_T376;if(!W.fr)W.fr=[];if(W.fr.length<4000){const _hd=(m)=>m?Math.hypot(m.position.x-trophyGrp.position.x,m.position.z-trophyGrp.position.z):1e9;const _w=(_cap23&&_hd(_cap23)<_hd(hero))?_cap23:hero;
+              const _pd=sr.current._ped192;W.fr.push({b:_bk,k:trophyGrp._kind24||null,r:!!sr.current._rest192,dt:+aDt.toFixed(4),ry:+trophyGrp.rotation.y.toFixed(4),hy:+_w.rotation.y.toFixed(4),
+                low:+_low376(trophyGrp).toFixed(4),ped:(_pd&&_pd.visible)?{x:+_pd.position.x.toFixed(4),z:+_pd.position.z.toFixed(4),top:1.05}:null,t:[+trophyGrp.position.x.toFixed(4),+trophyGrp.position.y.toFixed(4),+trophyGrp.position.z.toFixed(4)],dh:+_hd(_w).toFixed(3),h:_w===hero?'e':'c',g:(_bk==="present"||_bk==="captain")&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>0&&sr.current._grab192<1});}}catch(_e){}}
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
           /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
              Nel beat HUG convergono sull'eroe (gli abbracciatori addosso, gli inginocchiati a terra,
@@ -49573,6 +49603,13 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       const hub=new THREE.Mesh(new THREE.SphereGeometry(0.2,12,9),gold);hub.position.set(0,0.98,0.1);_spin429.add(hub);
     }
     _spin429.scale.setScalar(_TSC453);/* [7.453.0] proporzione umana: il trofeo torna sotto il mezzo busto */
+    /* [giro 376 PO-647 — rosso __CPM_NO_G376] LA COPPA POSA SUL PIEDISTALLO. Il piano stava a y 0,2 e la base vera del trofeo piu' in alto
+       (misurato sui vertici: coppa europea +0,14, piatto di campionato +0,15): il trofeo galleggiava sopra il trespolo. Il piedistallo ora
+       sale fino al vertice visibile piu' basso del trofeo (stessa base a -0,2); il trofeo non si sposta, perche' la presa in mano
+       (presaCoppa192) conta da quota 0,2. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G376)){try{let mn=1e9;const v=new THREE.Vector3();_spin429.updateMatrixWorld(true);cup.updateMatrixWorld(true);const iM=new THREE.Matrix4().copy(cup.matrixWorld).invert();
+      _spin429.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position)return;const A=o.geometry.attributes.position;for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(o.matrixWorld).applyMatrix4(iM);if(v.y<mn)mn=v.y;}});
+      if(mn>-0.1&&mn<2){cped.scale.y=(mn+0.2)/0.4;cped.position.y=(mn-0.2)/2;}}catch(_e){}}
     try{const _gl453=new THREE.PointLight(0xffd88a,1.15,14,2);_gl453.position.set(0,1.1,0.5);cup.add(_gl453);}catch(_e){}
     /* la SQUADRA sul tetto */
     const men=[];const mixers=[];const st240={f:0};const NM=8;/* [7.429.0] otto uomini: sei lasciavano il tetto mezzo vuoto */
