@@ -13,7 +13,7 @@
       C2 con CPM_PARTITA_INTERA=1 → nessun salto, l'orologio passa da tutti i minuti fino al 90', il fischio arriva, tetto di parete
          alzato (una partita intera sul banco costa di piu'); le soglie di giudizio dei controlli non cambiano.
    E. PIANO: ci-treno-308.mjs piano usa per partita-rigiocata-194 e spazio-296 la durata a partita intera (tabella INTERA_391), cosi'
-      le parti restano bilanciate sotto l'obiettivo (misurato: 32 parti, la piu' lunga 4.090 → 4.174 s, obiettivo 4.200, bilancio 6.600).
+      le parti restano bilanciate sotto l'obiettivo (misurato: 32 parti, la piu' lunga 4.090 → 4.144 s, obiettivo 4.200, bilancio 6.600).
    D. NESSUNA SCORCIATOIA: i tre controlli del dopo-partita importano aspettaFischio270 e nessuno chiama __CPM_SALTA297 da se'.
 
    Rosso: CPM_NO_G391=1 = comportamento di prima (workflow e ci-runner della base del giro 29d758c8, lib che salta sempre): DEVE uscire
@@ -57,7 +57,7 @@ async function braccio(rosso) {
   } finally { if (prec == null) delete process.env.CPM_NO_G391; else process.env.CPM_NO_G391 = prec; }
   const pt = leggi('tests/visual/ci-treno-308.mjs', rosso);
   const tab = (pt.match(/const INTERA_391 = \{([^}]*)\}/) || [])[1] || '';
-  metti('E piano del treno: durate a partita intera (194 e 296) piu\' lunghe di quelle col salto', /'partita-rigiocata-194': \d{4}/.test(tab) && /'spazio-296': \d{4}/.test(tab) && /Math\.max\(s, INTERA_391\[n\]\)/.test(pt), tab ? tab.trim() : 'tabella INTERA_391 NON trovata');
+  metti('E piano del treno: durate a partita intera (194 e 296) piu\' lunghe di quelle col salto', /'partita-rigiocata-194': \d{4}/.test(tab) && /'spazio-296': \d{3,}/.test(tab) && /Math\.max\(s, INTERA_391\[n\]\)/.test(pt), tab ? tab.trim() : 'tabella INTERA_391 NON trovata');
   const lib = fs.readFileSync(path.join(QUI, 'lib/fischio-270.mjs'), 'utf8');
   metti('C3 tetto di parete alzato solo a partita intera', /TETTO_INTERA391_MS\s*=\s*\d{7,}/.test(lib) && /if \(intera\) tettoMs = Math\.max\(tettoMs, TETTO_INTERA391_MS\)/.test(lib), 'lib/fischio-270.mjs');
   for (const f of ['partita-rigiocata-194.mjs', 'spazio-296.mjs', 'spazio-270.mjs']) { const t = fs.readFileSync(path.join(QUI, f), 'utf8');

@@ -22,7 +22,7 @@ Altri salti con `__CPM_SALTA297`, **non** in ambito (non sono attese del fischio
 | controllo | col salto | a partita intera | note |
 |---|---|---|---|
 | `partita-rigiocata-194` (2 bracci) | **328 s** totali · attesa del fischio 98 s + 92 s | **2.099 s** totali · attesa 971 s + 985 s | verde in entrambi i modi; la partita intera girava in parallelo con l'altra misura e poi col giro delle sentinelle (contesa: il numero assoluto è alto, vedi sotto) |
-| `spazio-296` (tel, braccio verde) | **122 s** · attesa 55 s | **non misurato fino in fondo**: lanciato alla fine del giro, non concluso prima della consegna | stima sotto |
+| `spazio-296` (tel, braccio verde) | **122 s** · attesa 55 s | **364 s** · attesa 298 s | senza contesa (misurato dopo il giro); +242 s per formato |
 
 ⚠️ A partita intera un braccio ha aspettato 971-985 s: **oltre il vecchio tetto di parete di 900 s**. Senza alzarlo, il
 controllo sarebbe uscito «niente fischio» (rosso falso). Per questo a partita intera il tetto di sicurezza sale a 2.400 s
@@ -49,7 +49,7 @@ non è identica a quella corta.
 ## 4. Effetto sulla durata del treno
 
 Stima runner = banco × 0,74 (rapporto runner/banco di `partita-rigiocata-194` col salto: 243 s in DURATE-GUARDIANI contro 328 s qui):
-`partita-rigiocata-194` 243 → **1.600 s**, `spazio-296` 468 → **1.800 s** (due attese a partita intera, ~+650 s l'una). Sono i valori
+`partita-rigiocata-194` 243 → **1.600 s** (numero del banco con contesa: probabilmente largo), `spazio-296` 468 → **900 s** (due formati × +242 s × 0,74 = +358 s, arrotondato in su). Sono i valori
 di `INTERA_391`. `spazio-270` non cambia (salto di provocazione).
 
 Piano della mappa intera ricalcolato sul ramo (`node ci-treno-308.mjs piano`, `CPM_TRENO_TIPO=mappa`):
@@ -57,7 +57,7 @@ Piano della mappa intera ricalcolato sul ramo (`node ci-treno-308.mjs piano`, `C
 | | parti | parte più lunga | somma |
 |---|---|---|---|
 | prima (`CPM_NO_G391=1`) | 32 | 4.090 s | 130.773 s |
-| dopo | **32** | **4.174 s** | 133.462 s (+2.689 s, +2,1%) |
+| dopo (tabella finale: 1.600 / 900) | **32** | **4.144 s** | 132.562 s (+1.789 s, +1,4%) |
 
 Dentro i tetti: obiettivo per parte 4.200 s, bilancio 6.600 s, timeout del job 120 min; stesso numero di parti → stesse ondate col
 tetto di 15 macchine. Il trenino paga la partita intera solo quando tocca una riga che contiene uno dei due controlli.
