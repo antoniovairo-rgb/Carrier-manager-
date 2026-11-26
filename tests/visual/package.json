@@ -468,7 +468,7 @@
     "debito-190": "node debito-190.mjs",
     "scene-190": "node scene-190.mjs",
     "stili-098": "node stili-098.mjs",
-    "difficolta-156": "node difficolta-156.mjs && node difficolta-156.mjs --rosso",
+    "difficolta-156": "node difficolta-156.mjs && node difficolta-156.mjs --rosso && node difficolta-156.mjs --rosso383",
     "stili-098-migrazione": "node stili-098-migrazione.mjs",
     "stile-unico-75": "node stile-unico-75.mjs",
     "neutro-287": "node neutro-287.mjs",
