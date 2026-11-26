@@ -971,9 +971,23 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
         const GX=21,GY=14;if(!M.heat)M.heat=new Float32Array(GX*GY);
         const hx=Math.max(0,Math.min(GX-1,Math.floor(st.palla.x/100*GX))),hy=Math.max(0,Math.min(GY-1,Math.floor(st.palla.y/100*GY)));
         M.heat[hy*GX+hx]+=dt;let mx=0;for(let i=0;i<M.heat.length;i++)if(M.heat[i]>mx)mx=M.heat[i];
-        if(mx>0.5){const _f0=g.filter;try{g.filter="blur("+Math.round(s*2.2)+"px)";}catch(_e){}for(let j=0;j<GY;j++)for(let i=0;i<GX;i++){const v=M.heat[j*GX+i]/mx;if(v<0.08)continue;
+        /* [giro 384 PO-524 — LA PARTITA SUL BANCO RALLENTAVA DENTRO LA STESSA PARTITA] MISURATO (sonda misura-384, save-194, PC):
+           il fotogramma passava da 17 a 396 ms in 28 minuti di gioco (un minuto da 1,7 a 15 s di parete) con il thread principale
+           fermo al 94% e geometrie, texture, programmi, DOM, ascoltatori, heap e timer piatti. Il costo era il raster di questo velo:
+           ogni cella toccata dal pallone era un fillRect SFOCATO a parte (una sfocatura per cella, fino a 294 per fotogramma) e le
+           celle crescono col tempo di gioco; si azzeravano solo al rimontaggio del campo dopo un highlight. Con __CPM_NO_HEAT23 il
+           fotogramma restava a 17 ms. Ora le celle si disegnano SENZA filtro su una tela fuori schermo e la sfocatura si applica UNA
+           volta, con lo stesso trasformato e lo stesso raggio: stesse celle, stessi colori (le celle non si sovrappongono, quindi la
+           sfocatura dell'insieme e' la somma delle sfocature). Rosso __CPM_NO_G384 (una sfocatura per cella, come prima). */
+        if(mx>0.5){const _f0=g.filter,_hb="blur("+Math.round(s*2.2)+"px)",_g384=!(typeof window!=='undefined'&&window.__CPM_NO_G384);
+          let hg=g;if(_g384){let hc=M.heatCv;if(!hc||hc.width!==cv.width||hc.height!==cv.height){hc=M.heatCv=document.createElement('canvas');hc.width=cv.width;hc.height=cv.height;M.heatCx=hc.getContext('2d');}
+            hg=M.heatCx;if(!hg)_g384=false;else{hg.setTransform(1,0,0,1,0,0);hg.clearRect(0,0,hc.width,hc.height);hg.setTransform(dpr,0,0,dpr,0,0);}}
+          if(!_g384){hg=g;try{g.filter=_hb;}catch(_e){}}
+          let _nc384=0;for(let j=0;j<GY;j++)for(let i=0;i<GX;i++){const v=M.heat[j*GX+i]/mx;if(v<0.08)continue;_nc384++;
           const x1=PX(i/GX*LUN,j/GY*LAR),y1=PY(i/GX*LUN,j/GY*LAR),x2=PX((i+1)/GX*LUN,(j+1)/GY*LAR),y2=PY((i+1)/GX*LUN,(j+1)/GY*LAR);
-          g.fillStyle="rgba(255,196,70,"+(0.13*Math.sqrt(v)).toFixed(3)+")";g.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1),Math.abs(y2-y1));}
+          hg.fillStyle="rgba(255,196,70,"+(0.13*Math.sqrt(v)).toFixed(3)+")";hg.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1),Math.abs(y2-y1));}
+          if(_g384){try{g.filter=_hb;}catch(_e){}g.drawImage(M.heatCv,0,0,cv.width/dpr,cv.height/dpr);}
+          try{const _w384=typeof window!=='undefined'&&window.__CPM_SFOC384;if(_w384){_w384.sfoc=_g384?1:_nc384;_w384.celle=_nc384;_w384.max=Math.max(_w384.max|0,_w384.sfoc);_w384.n=(_w384.n|0)+1;}}catch(_e){}/* [giro 384] testimone di collaudo (inerte se la sonda non lo arma): sfocature nell'ultimo fotogramma */
           try{g.filter=_f0||"none";}catch(_e){}
           try{window.__CPM_HEAT23={celle:M.heat.filter(v=>v/mx>=0.08).length,max:+mx.toFixed(1)};}catch(_e){}}
       }
