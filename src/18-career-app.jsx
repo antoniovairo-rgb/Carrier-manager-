@@ -333,7 +333,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[figAperta23,setFigAperta23]=useState(false);/* [23/09 POC] la figurina completa dell'eroe, aperta toccando la miniatura in testata */
   /* [23/09 POC — FIGURINE] l'eroe pubblica chi e' e quale volto ha: tutte le schermate che lo chiamano per nome, «eroe-N» o
      «avatar-N» portano allo stesso volto, che nessun altro attore puo' ricevere. */
-  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n)};}catch(_e){}}
+  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n),cm:player&&player.altezzaCm,kg:player&&player.pesoKg};}catch(_e){}}
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
@@ -11053,6 +11053,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textAlign:"center"}}>
                   <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:TINTE.testo}}>{player.name}</span>
                   <span style={{fontSize:FS.body,color:TINTE.sec}}>{[(player.age||18)+" anni",player.club&&(player.club.n||player.club.name),_rl].filter(Boolean).join(" · ")}</span>
+                  {!(typeof window!=='undefined'&&window.__CPM_NO_G369)&&<span data-cpm="profilo369" className="cpm-num" style={{fontSize:FS.body,color:TINTE.sec}}>{[player.altezzaCm?player.altezzaCm+" cm":"",player.pesoKg?player.pesoKg+" kg":"",piedeTesto369(player.foot)].filter(Boolean).join(" · ")}</span>}{/* [giro 369 · PO-419] statura, peso e piede dal salvataggio (sorgente unica) */}
                 </div>
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:_sb(10),flex:"1 1 300px",minWidth:0,maxWidth:560}}>
