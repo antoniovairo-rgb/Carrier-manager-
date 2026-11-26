@@ -1220,6 +1220,39 @@ function ThreeMatchView(props){
       tr.times=Float32Array.from(T);tr.values=V;
       const m1=_alza366(av,clip,T);if(m1){rec.dopoMax=+(Math.max(...m1.alza)/m1.alt).toFixed(4);rec.dopoMedia=+(m1.alza.reduce((a,b)=>a+b,0)/n/m1.alt).toFixed(4);}rec.riparata=true;
     }catch(_e366){try{(window.__CPM_T366=window.__CPM_T366||{}).errore=String(_e366&&_e366.message);}catch(_e){}}};
+    /* [giro 381, PO-663 «le scivolate si fanno a mezz'aria» — rosso __CPM_NO_G381A, guardiano scivolate-381] LA SCIVOLATA SI FA SUL PRATO.
+       MISURATO (misura-381, profilo delle clip col testimone __CPM_VOLA366 {clip}): `tackle` e `slide-tackle` hanno il bacino inchiodato
+       (due chiavi a 95,3) mentre il corpo si stende: il punto piu' basso del CORPO INTERO sta a 0,389 / 0,352 altezze-corpo (mediana)
+       sopra la suola della posa ferma, fino a 0,551 / 0,520 — il difensore scivola a mezz'aria (75 righe su 175 del residuo del 366).
+       Le tre `mx-soccer-tackle*` invece scendono (corpo 0,034-0,079). Stessa riparazione del 366 ma col criterio del CORPO INTERO
+       (non la suola: in scivolata a terra c'e' il fianco o la gamba tesa): a ogni chiave il bacino scende di quanto il punto piu' basso
+       del corpo sta sopra la suola della posa ferma (solo verso il basso). Una volta per clip, al caricamento. Testimone __CPM_T381. */
+    const _aTerra381=(clip,av)=>{try{if(!clip||clip._t381)return false;
+      const tr=clip.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));if(!tr||!(clip.duration>0))return false;
+      const N=Math.max(2,Math.min(240,Math.round(clip.duration*30)+1)),T=[];for(let i=0;i<N;i++)T.push(clip.duration*i/(N-1));
+      const t0=tr.times,v0=tr.values,n0=t0.length,V=new Float32Array(3*N);
+      for(let i=0;i<N;i++){let k=1;while(k<n0-1&&t0[k]<T[i])k++;const u=n0<2?0:Math.max(0,Math.min(1,(T[i]-t0[k-1])/Math.max(1e-5,t0[k]-t0[k-1])));for(let c=0;c<3;c++)V[3*i+c]=n0<2?v0[c]:v0[3*(k-1)+c]+(v0[3*k+c]-v0[3*(k-1)+c])*u;}
+      const m0=_alza366(av,clip,T,true);if(!m0||Math.abs(m0.k)<1e-6||!m0.corpo.length)return false;clip._t381=1;
+      const W=(typeof window!=='undefined')?(window.__CPM_T381=window.__CPM_T381||{}):{};const S=a=>[...a].sort((p,q)=>p-q)[a.length>>1];
+      const mez=a=>a.slice(Math.floor(N/3),Math.ceil(2*N/3));/* il terzo centrale: il difensore e' steso e il piede va sul pallone */
+      const rec={chiavi:N,alt:+m0.alt.toFixed(3),primaCorpoMax:+(Math.max(...m0.corpo)/m0.alt).toFixed(4),primaCorpoMed:+(S(m0.corpo)/m0.alt).toFixed(4),primaPiedeMez:+(S(mez(m0.alza))/m0.alt).toFixed(4),riparata:false};W[clip.name]=rec;
+      if(typeof window!=='undefined'&&window.__CPM_NO_G381A)return false;
+      for(let i=0;i<N;i++){const a=m0.corpo[i];if(a>0.004*m0.alt)V[3*i+1]-=a/m0.k;}
+      tr.times=Float32Array.from(T);tr.values=V;
+      const m1=_alza366(av,clip,T,true);if(m1){rec.dopoCorpoMax=+(Math.max(...m1.corpo)/m1.alt).toFixed(4);rec.dopoCorpoMed=+(S(m1.corpo)/m1.alt).toFixed(4);rec.dopoCorpoMin=+(Math.min(...m1.corpo)/m1.alt).toFixed(4);rec.dopoPiedeMez=+(S(mez(m1.alza))/m1.alt).toFixed(4);}rec.riparata=true;return true;
+    }catch(_e381){try{(window.__CPM_T381=window.__CPM_T381||{}).errore=String(_e381&&_e381.message);}catch(_e){}return false;}};
+    /* [giro 381] TESTIMONE (sola lettura, solo banco): per ogni corpo che sta suonando una clip di contrasto (`tackle`, `slide-tackle`, `mx-soccer-tackle*`, `mx-soccer-trip`; peso >= 0,3) il punto piu'
+       basso del CORPO INTERO e la suola nel mondo (prato a y 0), la distanza fra il pallone e il piede piu' vicino (ossa foot/ball), il
+       tempo della clip. Le stesse maglie disegnate di __CPM_VOLA366. */
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_SCIV381=()=>{try{const out=[];const _v=new THREE.Vector3();
+      const bp=(typeof ball!=='undefined'&&ball)?ball.position:null;
+      (glbAvatars||[]).forEach((a,i)=>{if(!a||!a.root||!a.mx)return;let vis=true;for(let o=a.root;o;o=o.parent)if(!o.visible){vis=false;break;}if(!vis)return;
+        let act=null;for(const x of (a.mx._actions||[])){const n=x.getClip().name;if(/tackle|trip/.test(n)&&x.isRunning()&&x.getEffectiveWeight()>=0.3&&(!act||x.getEffectiveWeight()>act.getEffectiveWeight()))act=x;}
+        if(!act)return;const u=_suola366(a.root,true),f=_suola366(a.root);let pd=null;
+        if(bp)for(const b of [a._ballL,a._ballR,a._footL,a._footR]){if(!b)continue;_v.setFromMatrixPosition(b.matrixWorld);const d=_v.distanceTo(bp);if(pd==null||d<pd)pd=d;}
+        out.push({i,eroe:!!(a.proc&&a.proc._isHero),gk:!!a._isGk,clip:act.getClip().name,t:+(act.time/Math.max(1e-3,act.getClip().duration)).toFixed(3),w:+act.getEffectiveWeight().toFixed(2),
+          corpo:u.y==null?null:+u.y.toFixed(3),suola:f.y==null?null:+f.y.toFixed(3),ry:+a.root.position.y.toFixed(3),piedePalla:pd==null?null:+pd.toFixed(3),pallaY:bp?+bp.y.toFixed(3):null});});
+      return {fase:(propsRef.current&&propsRef.current.matchPhase)||null,sk:(propsRef.current&&propsRef.current.hlSitKey)||null,corpi:out};}catch(e){return {errore:String(e&&e.message)};}};
     /* [7.999.7 IL PASSO SEGUE LA VELOCITA' — scelta PO: «correggi, giudico a occhio». Rosso __CPM_NO_PASSO7]
        La cadenza della corsa era una formula fissa (0,62 + velocita'*0,185, scelta a mano): se il ciclo delle gambe non corrisponde
        allo spostamento, il piede d'appoggio scivola per forza. Qui si misura UNA volta per clip, su un clone fuori scena, quanto scorre
@@ -1788,6 +1821,7 @@ function ThreeMatchView(props){
         gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
       const _PESO23={};
       const _mkGestures=(av,map)=>{if(!av)return;const out={};av._mx342=_mxAnims23;/* [giro 342] le clip del pacchetto, per il profilo di collaudo __CPM_CLIP342 e per la variante di testa */for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */if(!av._idleDif&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32)){const _cd=_mxAnims23.find(x=>x&&x.name==='mx-defend-ready');if(_cd){_aTerra366(_cd,av);const a=av.mx.clipAction(_cd);a.play();a.setEffectiveWeight(0);a.time=(_cd.duration||1)*((av.lx||0)*0.37%1+1)%1;av._idleDif=a;}}/* [7.999.32] seconda posa ferma: l'attesa in difesa (Goalkeeper Idle del PO) */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+        for(const _k381 of ['tackle','standTackle']){const _a381=out[_k381];if(!_a381)continue;const _c381=_a381.getClip();if(_aTerra381(_c381,av)){/* [giro 381] la clip e' cambiata dopo che le azioni avevano gia' i loro interpolanti: si punta quello della traccia del bacino ai nuovi tempi e valori (niente uncache, che rompeva la cache del mixer) */const _ti381=_c381.tracks.findIndex(t=>/(^|\.|\/)pelvis\.position$/.test(t.name)),_tr381=_c381.tracks[_ti381];for(const _x381 of (av.mx._actions||[])){if(_x381.getClip()!==_c381)continue;const _ip=_x381._interpolants&&_x381._interpolants[_ti381];if(_ip){_ip.parameterPositions=_tr381.times;_ip.sampleValues=_tr381.values;_ip._cachedIndex=0;}}}}
         if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){for(const [k,n] of [['trip','mx-soccer-trip'],['fallen','mx-fallen-idle'],['standUp','mx-standing-up']]){const c=_mxAnims23.find(x=>x&&x.name===n);if(!c||out[k])continue;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}}/* [7.999.8] i tre gesti della caduta */
         av._gHead145=null;av._gThigh145=null;{const _h5=_mxAnims23.find(x=>x&&x.name==='mx-header-stand'),_t5=_mxAnims23.find(x=>x&&x.name==='mx-receive-thigh');if(_h5){const a=av.mx.clipAction(_h5);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gHead145=a;}if(_t5){const a=av.mx.clipAction(_t5);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gThigh145=a;}}av._gDisapp=null;{const _ds=_mxAnims23.find(x=>x&&x.name==='mx-disappunto');if(_ds&&!(typeof window!=='undefined'&&window.__CPM_NO_DISAPP41)){const a=av.mx.clipAction(_ds);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gDisapp=a;}}/* [7.999.41] disappunto (clip del PO «Golf Bad Shot», tratto 0,5-2,6 s: mani alla testa, si piega) */av._gRuleta=null;{const _ru=_mxAnims23.find(x=>x&&x.name==='mx-ruleta');if(_ru&&!(typeof window!=='undefined'&&window.__CPM_NO_RULETA39)){const a=av.mx.clipAction(_ru);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gRuleta=a;}}/* [7.999.39] la ruleta (clip del PO «Soccer Spin», 1,27 s, sul posto) */av._gScissor=null;{const _sc=_mxAnims23.find(x=>x&&x.name==='mx-scissor-kick');if(_sc&&!(typeof window!=='undefined'&&window.__CPM_NO_ROVESCIATA23)){const a=av.mx.clipAction(_sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gScissor=a;}}
         av._gStrike34=null;if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRO34)){const _R34=_mxAnims23.find(x=>x&&x.name==='mx-strike-foward-jog'),_L34=_mxAnims23.find(x=>x&&x.name==='mx-strike-foward-jog~m');if(_R34&&_R34._root34){const _mk34=c=>{if(!c)return null;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);return a;};const _r=_mk34(_R34);av._gStrike34={R:_r,L:_mk34(_L34)||_r};}}/* [7.999.34] tiro caricato dell'eroe */
@@ -7750,7 +7784,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _v227=(m._lp227&&dt>0)?Math.hypot(_px-m._lp227.x,_pz-m._lp227.z)/dt:0;
               m._lp227={x:_px,z:_pz};
               m._sp227=(m._sp227==null?_v227:m._sp227+(_v227-m._sp227)*Math.min(1,dt*6));
-              if(!(typeof window!=='undefined'&&window.__CPM_NO_FILA227)){_rw227=clamp((m._sp227-0.3)/1.5,0,1);_iw227=1-_rw227*0.75;}
+              if(!(typeof window!=='undefined'&&(window.__CPM_NO_FILA227||window.__CPM_NO_G381B))){/* [giro 381] __CPM_NO_G381B = braccio rosso del guardiano scivolate-381 (fila): rimette il difetto di PO-227 per provare che la sonda lo vede */_rw227=clamp((m._sp227-0.3)/1.5,0,1);_iw227=1-_rw227*0.75;}
               if(typeof window!=='undefined'&&_CPM_TEST){const _K=(window.__CPM_FILA227=window.__CPM_FILA227||{n:0,fermi:0,fermiCorsa:0});_K.n++;if(m._sp227<0.5){_K.fermi++;if(_rw227>0.3)_K.fermiCorsa++;}}
             }
             if(_av911.walk245&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){/* [giro 23 PO-245] il bambino CAMMINA: clip «walk» con la cadenza sulla velocita' vera (velocita' naturale della clip misurata una volta sul suo corpo) */
