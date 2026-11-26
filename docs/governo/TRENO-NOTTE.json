@@ -1,13 +1,18 @@
 {
   "_": "giro 333 (PO-631): esito del treno grande di notte, scritto dal custode (.github/workflows/treno-notte-330.yml) su main. Lo legge tools/governo-html.mjs. «non_partito» = il custode non e' riuscito ad accodarsi entro la scadenza; un record che manca dopo la scadenza vuol dire che il custode non e' nemmeno partito.",
-  "notte": "2026-11-25",
-  "esito": "non_partito",
-  "perche": "non accodato entro le 05:47 UTC — nessuna corsa in attesa: mi accodo",
-  "treno": null,
-  "custode": "45588404047",
-  "url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45588404047",
-  "scritto": "2026-11-25T09:45:27.570Z",
+  "notte": "2026-11-26",
+  "esito": "partito",
+  "perche": "treno grande 45735203524 partito",
+  "treno": 45735203524,
+  "custode": "45733747502",
+  "url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45733747502",
+  "scritto": "2026-11-26T02:34:00.626Z",
   "storia": [
+    {
+      "notte": "2026-11-26",
+      "esito": "partito",
+      "treno": 45735203524
+    },
     {
       "notte": "2026-11-25",
       "esito": "non_partito",
