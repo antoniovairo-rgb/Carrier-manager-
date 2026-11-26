@@ -2179,3 +2179,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 19:40 — Registrata PO-677 (uscita dal tunnel poco realistica: corpi «appiccicati» alla bocca). In coda n° 3.
 
 - 26/11 19:45 — PO (questionario): PO-612 (giocatore 3D uguale alla figurina: statura, barba, capelli, viso) sale dal n° 54 al n° 4. Primo giro = misura + prove con peso e licenze, poi proposta al PO.
+
+- 26/11 20:05 — Consegnati 403 (PO-579), 404 (PO-580/581), 405 (PO-582), 407 (PO-673). Lanciati 409 (PO-675), 410 (PO-676), 411 (PO-677), 412 (PO-612). Attivi: 402, 406, 408, 409-412. Treno del primo avvio (lavoro/202) è un trenino di 4 parti.
