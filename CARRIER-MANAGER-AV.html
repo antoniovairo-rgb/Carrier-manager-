@@ -56028,6 +56028,10 @@ const getThisWeekMatchday=()=>{
 
   // Smart "Continua" CTA — next logical step in the weekly flow
   // IMPORTANT: always shows match prompt when a pending match exists — never bypasses it
+  /* [giro 407] presentazione in sospeso per il tasto principale: mai alla W1 con l'apertura di stagione ancora da fare (prima il wizard,
+     invariante 7.491), mai col vecchio percorso del 7.283 (__CPM_NO_PRES214) */
+  const _pres407=()=>{try{if(!_g407()||(typeof window!=='undefined'&&window.__CPM_NO_PRES214))return false;if(!presentazioneView(player))return false;
+    if((player.week||1)===1&&!player.weekLived&&openingPending().length)return false;return true;}catch(_e){return false;}};
   const handleContinua=(simula)=>{/* [PO-302 tappa 2] simula===true: il tasto Simula della Home, stesso percorso con la scelta gia' fatta */
     /* [24/09 POC — commento PO «evitare che il player vada avanti nel gioco in maniera compulsiva, altrimenti si incasina
        il gioco»] FRENO AI TOCCHI RIPETUTI: (1) con una finestra aperta (settimana, partita, offerta, procuratore, momenti,
@@ -56039,6 +56043,9 @@ const getThisWeekMatchday=()=>{
     if(continuaBusyRef.current)return; // debounce rapid keypresses
     continuaBusyRef.current=true;
     setTimeout(()=>{continuaBusyRef.current=false;},_r23?600:1200); // unlock
+    /* [giro 407 · PO-673] con la presentazione al nuovo club ancora da fare il tasto principale apre la sala stampa (la stessa del
+       tasto della card) prima di vivere la settimana o di aprire la partita; il Simula resta il suo percorso. Rosso __CPM_NO_G407. */
+    if(simula!==true&&_pres407()){setInterviewModal(presIntervista214(player,null));return;}
     // Injured flow: rehab session if week not lived, else advance week
     if(player.injured){
       if(!player.weekLived){liveCurrentWeek();return;} // rehab session
@@ -57703,6 +57710,26 @@ const getThisWeekMatchday=()=>{
     return{club:p.club,num:p.jerseyNum||10,prestito:!!_l,
       occhiello:_l?`Arrivi in prestito: la sala stampa è comunque piena.`:`Presentazione ufficiale: sciarpa, maglia e prima domanda.`};
   }catch(_e){return null;}};
+  const _g407=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G407);
+  /* [giro 407] la card della presentazione, una sola: in «Da decidere» col verde, al posto del 7.283 col rosso */
+  const _presCard407=()=>{const pv=presentazioneView(player);if(!pv)return null;
+
+        const _c=pv.club||{};
+        return(
+        <Card data-cpm="presentazione407" style={{marginBottom:8,padding:"7px 12px",background:_n30(`linear-gradient(150deg,${_c.c||TH.primary}22,${TH.card})`,TH.card),border:_n30(`1px solid ${_c.c||TH.primary}66`,"1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:8}}>Presentazione · {_c.n||"nuovo club"}</div>
+          <div style={{display:"flex",gap:9,alignItems:"center",marginBottom:8}}>
+            <TeamBadge team={_c} size={44}/>
+            <JerseyIcon color={_c.c||"#3b82f6"} color2={_c.c2} pattern={typeof kitPatternFor==="function"?kitPatternFor(_c):null} number={pv.num} name={player.name} size={46}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:FS.small,fontWeight:900,color:TH.text,marginBottom:2}}>Il flash dei fotografi</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{pv.occhiello} Alzi la maglia numero <strong style={{color:TH.text}}>{pv.num}</strong> e ti siedi al tavolo.</div>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {(typeof window!=='undefined'&&window.__CPM_NO_PRES214)?PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"outline":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>)):(<Btn v="primary" fw onClick={()=>setInterviewModal(presIntervista214(player,null))}>🎙️ Vai in sala stampa</Btn>)}
+          </div>
+        </Card>);};
   const PRES_TONI=[
     {k:"ambizioso",e:"🔥",l:"«Sono qui per vincere qualcosa»",fx:(q)=>({popularity:clamp((q.popularity||20)+5,0,100),morale:clamp((q.morale||70)+3,0,100),coachTrust:clamp((q.coachTrust||60)-1,0,100)}),n:"la piazza si accende, ma adesso te lo ricorderanno"},
     {k:"equilibrato",e:"🎯",l:"«Voglio ripagare la fiducia, un passo alla volta»",fx:(q)=>({popularity:clamp((q.popularity||20)+2,0,100),coachTrust:clamp((q.coachTrust||60)+3,0,100),teamChemistry:clamp((q.teamChemistry||60)+2,0,100)}),n:"nessuno si scalda, nessuno storce il naso"},
@@ -58406,6 +58433,7 @@ const getThisWeekMatchday=()=>{
   }catch(_e){return null;}};
 
   const getContinuaState=()=>{
+    if(_pres407())return{label:"🎙️ Vai in sala stampa",sub:`Presentazione a ${(player.club&&player.club.n)||"il nuovo club"} · poi si gioca`,color:TH.brandText,disabled:false};/* [giro 407] */
     if(player.injured){
       const iWeeks=player.injuryWeeks||1;
       const iType=player.injuryType||"stiramento";
@@ -61372,7 +61400,11 @@ const getThisWeekMatchday=()=>{
           </div>
         </Card>);};
   _sc199.sponsor=(tab==="dashboard"&&_g335()&&_sponsorCard335(true))||null;
-  const _sc199ok={saga:(()=>{const sg=player.transferSaga;if(!sg||sg.delivered||sg.season!==(player.season||1))return false;const d=(player.week||1)-(sg.week||1);return (d===1&&!sg.tone)||d>=2;})(),
+  /* [giro 407 · PO-673, foto PO 26/11 «C'è il rischio che si perda la presentazione alla nuova squadra. Troppo nascosta»] la card della
+     presentazione stava sotto figurina, forma e morale (misurato a 412x915: 1097-1595 px, mai dentro la vista). Ora e' la PRIMA voce di
+     «Da decidere», in cima alla Home sopra il tasto principale; stessa card, stesso tasto, stesso stato. Rosso __CPM_NO_G407 = posto di prima. */
+  _sc199.presentazione=(tab==="dashboard"&&_g407()&&_presCard407())||null;
+  const _sc199ok={presentazione:true,saga:(()=>{const sg=player.transferSaga;if(!sg||sg.delivered||sg.season!==(player.season||1))return false;const d=(player.week||1)-(sg.week||1);return (d===1&&!sg.tone)||d>=2;})(),
     shooting:true,riconquista:true,allenamento:true,rinnovo:true,sponsor:true};
   const _sc199N=Object.keys(_sc199ok).filter(k=>_sc199ok[k]&&_sc199[k]);
   /* [giro 335 · PO-615] «Sei svincolato» + «Da decidere» come un pezzo solo: col verde sta SOPRA il tasto principale, col rosso
@@ -63268,25 +63300,9 @@ const getThisWeekMatchday=()=>{
             <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
           </Card>);
       })()}
-      {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra */}
-      {tab==="dashboard"&&(()=>{
-        const pv=presentazioneView(player);if(!pv)return null;
-        const _c=pv.club||{};
-        return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:_n30(`linear-gradient(150deg,${_c.c||TH.primary}22,${TH.card})`,TH.card),border:_n30(`1px solid ${_c.c||TH.primary}66`,"1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:8}}>Presentazione · {_c.n||"nuovo club"}</div>
-          <div style={{display:"flex",gap:9,alignItems:"center",marginBottom:8}}>
-            <TeamBadge team={_c} size={44}/>
-            <JerseyIcon color={_c.c||"#3b82f6"} color2={_c.c2} pattern={typeof kitPatternFor==="function"?kitPatternFor(_c):null} number={pv.num} name={player.name} size={46}/>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:TH.text,marginBottom:2}}>Il flash dei fotografi</div>
-              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{pv.occhiello} Alzi la maglia numero <strong style={{color:TH.text}}>{pv.num}</strong> e ti siedi al tavolo.</div>
-            </div>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",gap:6}}>
-            {(typeof window!=='undefined'&&window.__CPM_NO_PRES214)?PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"outline":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>)):(<Btn v="primary" fw onClick={()=>setInterviewModal(presIntervista214(player,null))}>🎙️ Vai in sala stampa</Btn>)}
-          </div>
-        </Card>);})()}
+      {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra · [giro 407] col verde sta in
+          cima a «Da decidere» (_sc199.presentazione); qui resta solo col rosso __CPM_NO_G407 o senza il blocco del giro 199 */}
+      {tab==="dashboard"&&!(_g407()&&_g199())&&_presCard407()}
       {/* [7.28.0 ONDA 3 — §S6] IL PROGETTO CLUB — l'annuncio della transizione di stato */}
       {tab==="dashboard"&&(player.week||1)>=2&&(()=>{
         const pj=clubProject(player);if(!pj)return null;
