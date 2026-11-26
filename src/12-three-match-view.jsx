@@ -8955,7 +8955,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  di lato (il banco lo leggeva come «indietro»: e' un teletrasporto in ogni caso). Ora, se il pallone e' gia' entro 8u dal
                  contatto lungo la linea del cross (e 3u di lato), non si riscrive: la planata _aerIn52 lo porta al contatto da dov'e'. */
               const _pg252=((ball.position.x-_lfx52)*_ddx52+(ball.position.z-_lfz52)*_ddz52)/_dl52,_lat252=Math.abs((ball.position.x-_lfx52)*_ddz52-(ball.position.z-_lfz52)*_ddx52)/_dl52;
-              const _gia252=!(typeof window!=='undefined'&&window.__CPM_NO_AER252)&&_pg252>=_dl52-8.0&&_pg252<=_dl52+0.5&&_lat252<=3.0;
+              let _gia252=!(typeof window!=='undefined'&&window.__CPM_NO_AER252)&&_pg252>=_dl52-8.0&&_pg252<=_dl52+0.5&&_lat252<=3.0;
+              /* [giro 380 PO-640 «frustata in anticipo di 0,38 s su gi53», rosso __CPM_NO_G380] MISURATO (testa-342 con le righe grezze, gi53
+                 «Di testa al volo» riuscito, 1 pagina su 4 nel verde e 1 su 3 col rosso del giro): a fine costruzione il pallone e' GIA' sulla
+                 testa dell'eroe (0,06 u) ma ha superato di oltre 0,5 u il punto di contatto dichiarato, quindi la riga qui sotto lo riscrive
+                 «3 u prima del contatto»: x 43,2 → 47,0, 3,8 u oltre la testa. L'arco del colpo parte da li' col suo caricamento, l'attesa
+                 TESTA146 lo riporta indietro, e intanto la frustata del pre-stacco (fasata sulla fine della costruzione) cade a vuoto: picco
+                 -0,35 s, nessuna clip di testa al contatto, peso 0,09. Se il pallone sta gia' sulla testa di chi colpisce (stessi limiti della
+                 regola 76: entro 0,8 u in pianta, quota 1,3-2,6) non si riscrive: il colpo parte da li', dove il pre-stacco lo aspetta.
+                 __CPM_FORZA380 (solo collaudo): ogni fine costruzione si comporta come se il pallone avesse superato il contatto (il caso
+                 misurato, provocato a ogni pagina per il guardiano testa-380). */
+              if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORZA380)_gia252=false;
+              if(!_gia252&&_g380On()&&P.hlType==='header'&&hero&&ball.position.y>=1.3&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8)_gia252=true;
               if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_AER252=window.__CPM_AER252||[]).length<100&&window.__CPM_AER252.push({pg:+(_pg252-_dl52).toFixed(2),lat:+_lat252.toFixed(2),salta:_gia252?0:1,tag:last.tag||null});}catch(_e){}}
               if(last.tag!=="orig26"&&!_gia252){ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;}/* [7.999.26] il cross del brain arriva gia' al contatto: niente ricollocazione 3u indietro (misurato: salto all'indietro all'arrivo) */if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
               sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};

@@ -125,7 +125,7 @@ export function giudica(r) {
   return m;
 }
 
-async function scena(b, port, gi, k, esito, opt = {}) {
+export async function scena(b, port, gi, k, esito, opt = {}) {/* [giro 380] esportata: testa-380 la usa per le scene di PO-640 */
   const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: opt.foto ? 2 : 1 }); await installCdnRoutes(page);
   await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else if (passo !== 'nativo') window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
   let W = null; const foto = [];

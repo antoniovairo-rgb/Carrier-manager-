@@ -11,11 +11,14 @@
                _TC342) cade prima (+) o dopo (-) il contatto
    Modi:  node misura-380.mjs                     tutte le azioni «cross» offensive delle situazioni (riuscite) → out/giro380/<eti>.json
           node misura-380.mjs --guardiano         scene fisse (GUARDIA): esce 0 solo se tutte dentro le soglie; non giudicata = rosso
-          CPM_ROSSO=__CPM_NO_G380 …               braccio rosso (comportamento di prima): valido solo se almeno 2 scene cadono su misura
+          CPM_ROSSO=__CPM_NO_G380 …               braccio rosso (comportamento di prima): valido solo se almeno 2 scene PO-664 e almeno 1
+                                                  scena PO-640 cadono su misura
+   Col --guardiano gira anche PO-640 (TESTA640: rimbalzi e sponde dell'eroe, grandezze e soglie di testa-342, provocazione __CPM_FORZA380).
           CPM_DUMP=1 · CPM_LOG=1 · --casi=gi:k,…  righe grezze · fasi stampate · scene a scelta
    SOGLIE (scritte prima della correzione, sulla regola del giro 342): senza = 0 fotogrammi · |scClip| <= 0,08 s. */
 import fs from 'node:fs'; import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, __dirname } from './lib/harness.mjs';
+import { scena as scena342, giudica as giudica342 } from './testa-342.mjs';
 
 const ARG = k => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=')[1] : null; };
 const GUARD = process.argv.includes('--guardiano');
@@ -23,15 +26,22 @@ const ROSSO = process.env.CPM_ROSSO || '';
 const ETI = ARG('eti') || (ROSSO ? 'rosso' : 'verde') + (GUARD ? '-guardiano' : '');
 const PAR = +(ARG('par') || process.env.CPM_PAR || 2);
 const OUT = path.join(__dirname, '..', 'out', 'giro380'); fs.mkdirSync(OUT, { recursive: true });
+/* [giro 380 PO-640] rimbalzi e sponde dell'eroe (testa-342, stesse grandezze e soglie del giro 342), con __CPM_FORZA380 in ENTRAMBI i bracci:
+   la fine costruzione si comporta come nel caso misurato (pallone sulla testa ma oltre il punto di contatto dichiarato, 1 pagina su 4 da
+   sola). Verde: tutte dentro le soglie del 342. Rosso: gi53 e gi1 cadono (misurato: picco -0,36/-0,37 s, nessuna clip al contatto). */
+export const TESTA640 = [[53, 1, 'rimbalzo'], [1, 1, 'rimbalzo'], [103, 1, 'rimbalzo'], [124, 0, 'sponda'], [126, 0, 'sponda']];
 export const SOGLIA = { senza: 0, aria: 0.05, scClip: 0.08 };
 /* scene del guardiano: cross offensivi riusciti con un compagno che incorna (scelte dal censimento del giro, vedi rapporto) */
-export const GUARDIA = (process.env.CPM_GUARDIA || '46:0,63:2,96:0,102:0,176:1,185:2').split(',').filter(Boolean).map(x => x.split(':').map(Number));
-/* 46:0 e 96:0 = rifinitore della scena larga (giro 364: incornata 0,14 s dopo l'arrivo) · 63:2 · 102:0 · 176:1 · 185:2 = consegna e incornata
-   (0,22 s): scelte fra le 18 azioni cross con incornata del compagno del censimento (rapporto giro 380 §2) */
+export const GUARDIA = (process.env.CPM_GUARDIA || '46:0,63:2,96:0,93:2,176:1,165:1').split(',').filter(Boolean).map(x => x.split(':').map(Number));
+/* 46:0 e 96:0 = rifinitore della scena larga (giro 364: incornata 0,14 s dopo l'arrivo) · 63:2 · 93:2 · 176:1 · 165:1 = consegna e incornata
+   (0,22 s): scelte fra le 18 azioni cross con incornata del compagno del censimento (rapporto giro 380 §2).
+   Tolte perche' la messa in scena forzata non porta sempre il compagno sul pallone (incornata assente, near 0): gi102:0 (passata nel
+   censimento, non giudicata nel rosso e nelle prove del giro), gi185:2 (passata nel censimento e nel giro, poi 9 pagine su 9 senza
+   incornata, a qualunque ora della partita), gi99:2 (incornata solo alla terza pagina). */
 
 async function scena(b, port, gi, k) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript((rosso) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_DT60 = 1; window.__CPM_G380_REC = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); }, ROSSO);
+  await page.addInitScript(([rosso, tod]) => { if (tod) window.__CPM_TOD = tod; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_DT60 = 1; window.__CPM_G380_REC = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); }, [ROSSO, process.env.CPM_TOD || '']);
   let R = null, post = null;
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Testa 380' }); await sleep(1200);
@@ -63,9 +73,9 @@ export function analizza(R) {
 }
 export function giudica(r) {
   if (!r || r.err) return ['non giudicato (' + ((r && r.err) || 'nessun dato') + ')'];
-  if (!r.contatto) return ['non giudicato (nessuna incornata del compagno)'];
-  if (!r.salto) return ['non giudicato (il compagno non ha saltato)'];
+  if (!r.contatto || !r.contatto.near || r.contatto.low) return ['non giudicato (nessuna incornata del compagno' + (r.contatto && !r.contatto.near ? ': non e\' arrivato sul pallone' : '') + ')'];
   const m = [];
+  if (!r.salto) m.push('il compagno ha incornato senza saltare');
   if (r.senza > SOGLIA.senza) m.push(`${r.senza} fotogrammi in aria senza la clip di testa (fino a ${r.quotaSenza} u, corsa ${r.corsa})`);
   if (!(r.scClip != null && Math.abs(r.scClip) <= SOGLIA.scClip)) m.push(`frustata della clip ${r.scClip == null ? 'assente al contatto (' + (r.contatto.g || 'nessuna clip') + ')' : 'a ' + (-r.scClip) + ' s dal contatto'} (oltre ±${SOGLIA.scClip})`);
   return m;
@@ -81,13 +91,22 @@ async function main() {
     await page.close(); console.log('azioni cross: ' + lista.length + ' → ' + lista.map(x => x.join(':')).join(','));
   }
   const out = []; let idx = 0;
-  const worker = async () => { while (idx < lista.length) { const [gi, k] = lista[idx++]; let r = await scena(b, port, gi, k); if (r.err) r = await scena(b, port, gi, k); out.push(r); console.log(JSON.stringify(r)); } };
-  await Promise.all(Array.from({ length: PAR }, worker)); await b.close(); srv.close();
+  const worker = async () => { while (idx < lista.length) { const [gi, k] = lista[idx++]; let r = null, prove = 0;
+    /* RIPETIZIONE DICHIARATA (PROCESSO.md, controlli instabili): la messa in scena forzata non porta sempre il compagno sul pallone (MISURATO
+       gi185:2, quattro pagine su sei: contatto con near 0, nessuna incornata). Cio' che il gioco non produce si provoca: fino a 3 pagine nuove
+       finche' l'incornata avviene; si giudica la prima che la produce; dopo 3 senza incornata la scena e' «non giudicata» = rosso. */
+    while (prove < 3) { prove++; r = await scena(b, port, gi, k); if (r.err) continue; if (r.contatto && r.contatto.near && !r.contatto.low && r.salto) break; if (r.contatto && r.contatto.near && !r.contatto.low && r.contatto.m) break; }
+    r.prove = prove; out.push(r); console.log(JSON.stringify(r)); } };
+  await Promise.all(Array.from({ length: PAR }, worker));
+  const out640 = []; if (GUARD) { let j = 0; const w640 = async () => { while (j < TESTA640.length) { const [gi, k, tipo] = TESTA640[j++]; let r = await scena342(b, port, gi, k, 'success', { extra: ['__CPM_FORZA380'] }); if (r.err) r = await scena342(b, port, gi, k, 'success', { extra: ['__CPM_FORZA380'] }); r.tipo = tipo; out640.push(r); } };
+    await Promise.all(Array.from({ length: PAR }, w640)); }
+  await b.close(); srv.close();
   out.sort((a, c) => a.gi - c.gi || a.k - c.k);
   fs.writeFileSync(path.join(OUT, ETI + '.json'), JSON.stringify({ quando: new Date().toISOString(), rosso: ROSSO || null, scene: out }, null, 1));
-  let boc = 0, ng = 0; for (const r of out) { const m = giudica(r); if (m.length) { boc++; if (m.some(x => /non giudicato/.test(x))) ng++; console.log(`NO   gi${r.gi} a${r.k}: ${m.join(' · ')}`); } else console.log(`ok   gi${r.gi} a${r.k}: in aria ${r.aria} fotogrammi (quota ${r.quota}), tutti con la clip di testa · frustata a ${r.scClip} s`); }
+  let boc = 0, ng = 0; for (const r of out) { const m = giudica(r); if (m.length) { boc++; if (m.some(x => /non giudicato/.test(x))) ng++; console.log(`NO   gi${r.gi} a${r.k} (${r.prove} pagine): ${m.join(' · ')}`); } else console.log(`ok   gi${r.gi} a${r.k} (pagina ${r.prove} di 3): in aria ${r.aria} fotogrammi (quota ${r.quota}), tutti con la clip di testa · frustata a ${r.scClip} s`); }
+  let boc640 = 0, ng640 = 0; for (const r of out640.sort((a, c) => a.gi - c.gi)) { const m = giudica342(r); if (m.length) { boc640++; if (m.some(x => /non giudicato/.test(x))) ng640++; console.log(`NO   PO-640 gi${r.gi} a${r.k} (${r.tipo}): ${m.join(' · ')}`); } else console.log(`ok   PO-640 gi${r.gi} a${r.k} (${r.tipo}): testa-pallone ${r.dCont} u · picco ${r.scPicco} s · frustata ${r.scClip} s · peso ${r.peso}`); }
   if (!GUARD) return 0;
-  if (ROSSO) { const veri = boc - ng; const ok = veri >= 2; console.log(`\nbraccio ROSSO (${ROSSO}): ${veri} scene bocciate su misura (${ng} non giudicate, non contano) — ${ok ? 'il difetto si vede: ROSSO COL ROSSO, valido' : 'IL ROSSO NON CADE: guardiano cieco'}`); return ok ? 0 : 1; }
-  console.log(`\nbraccio VERDE: ${out.length - boc}/${out.length} scene dentro la soglia${ng ? ' · ' + ng + ' NON GIUDICATE (= rosso)' : ''} — ${boc ? 'FALLITO' : 'PASS'}`); return boc ? 1 : 0;
+  if (ROSSO) { const veri640 = boc640 - ng640; console.log(`braccio ROSSO PO-640: ${veri640} scene bocciate su misura (${ng640} non giudicate)`); const veri = boc - ng; const ok = veri >= 2 && veri640 >= 1; console.log(`\nbraccio ROSSO (${ROSSO}): ${veri} scene bocciate su misura (${ng} non giudicate, non contano) — ${ok ? 'il difetto si vede: ROSSO COL ROSSO, valido' : 'IL ROSSO NON CADE: guardiano cieco'}`); return ok ? 0 : 1; }
+  console.log(`\nbraccio VERDE: PO-664 ${out.length - boc}/${out.length} scene dentro la soglia${ng ? ' · ' + ng + ' NON GIUDICATE (= rosso)' : ''} · PO-640 ${out640.length - boc640}/${out640.length}${ng640 ? ' · ' + ng640 + ' NON GIUDICATE (= rosso)' : ''} — ${boc || boc640 ? 'FALLITO' : 'PASS'}`); return (boc || boc640) ? 1 : 0;
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__dirname, '..', 'misura-380.mjs')) { main().then(c => process.exit(c)).catch(e => { console.error('FATALE', e); process.exit(2); }); }
