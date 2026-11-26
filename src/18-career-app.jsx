@@ -4390,7 +4390,7 @@ const getThisWeekMatchday=()=>{
             const ncTrophies=trophyWon?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
             const ncMoraleB=trophyWon?18:isFinalStage?6:qualified?10:0;/* finale persa: comunque una cavalcata */
             const ncPopB=trophyWon?20:isFinalStage?9:qualified?10:3;
-            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false}};
+            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false,...((typeof window!=='undefined'&&window.__CPM_NO_G373B)?{}:{trophyWon,qualified})}};/* [giro 373 PO-463] l'esito anche nella coda: la scheda «Coppa delle Nazioni S.x» (bordo, colore) lo legge da li'. Campi facoltativi, nessun SAVE. Rosso __CPM_NO_G373B */
           });
           setTimeout(()=>setNationsCupModal({myNat:player.nation||"Italia",season:player.season||1,matches:allMatches,pts:groupPts,qualified,trophyWon,final:isFinalStage?{opp:result.opponent,won:trophyWon,pen:!!result.drew,hs:result.homeScore,as:result.awayScore}:null}),500);
           if(trophyWon)setTimeout(()=>notify(_finPen?"🏆 Coppa delle Nazioni VINTA AI RIGORI! Leggenda nazionale!":"🏆 Coppa delle Nazioni VINTA IN FINALE! Leggenda nazionale!","#f59e0b"),1200);
@@ -5683,8 +5683,20 @@ const getThisWeekMatchday=()=>{
   const doRetire=()=>{
     const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr,league:player.club?.lg,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))};/* [7.262.0] stesso campo su tutti i writer di storico */
     const updPlayer={...player,history:((player.history||[]).some(h=>h.season===player.season)?(player.history||[]):[...(player.history||[]),hist]).slice(-50),trophies:player.trophies||[]};/* [6.74.0 QA-4] la stagione era già stata chiusa (e pushata) dal blocco premi → niente terza copia al ritiro */
+    /* [giro 373 PO-463] la sfida si valutava solo al passaggio di stagione, e il ritiro (addio annunciato, 40 anni, «Ritirati») esce
+       PRIMA di quel controllo: «Sempreverde» non si completava mai a chi chiudeva la carriera a 34 anni giocati. Al ritiro la sfida
+       si giudica sui dati della stagione che si chiude: compiuta → completata; altrimenti, a carriera finita, fallita. Deterministico
+       (le regole di CHALLENGES), nessun campo nuovo. Testimone __CPM_SFIDA373. Rosso __CPM_NO_G373B = com'era. */
+    let _sf373=null;
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G373B)&&player.challenge&&!player.challenge.completed&&!player.challenge.failed){
+      const _d373=CHALLENGES.find(c=>c.id===player.challenge.id);
+      if(_d373){let _ok373=false;try{_ok373=!!_d373.check(updPlayer);}catch(_e){}
+        _sf373={def:_d373,k:_ok373?"completed":"failed"};updPlayer.challenge={...player.challenge,[_sf373.k]:true};}
+    }
+    try{if(typeof window!=='undefined')window.__CPM_SFIDA373=_sf373?{id:_sf373.def.id,esito:_sf373.k}:null;}catch(_e){}
     const score=calcLegacyScore(updPlayer);
-    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies}));/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
+    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies,...(_sf373?{challenge:updPlayer.challenge}:{})}));
+    if(_sf373)setTimeout(()=>notify(_sf373.k==="completed"?`🏆 SFIDA COMPLETATA: ${_sf373.def.name}! ${_sf373.def.reward}`:`❌ Sfida non completata: ${_sf373.def.name}`,_sf373.k==="completed"?"#7c3aed":TH.danger),500);/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
     setRetirementData({player:updPlayer,legacyScore:score});
     setSeasonEndData(null);
     setScreen("careerEnd");
