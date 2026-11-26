@@ -13363,10 +13363,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                e' quella DOPO la giornata: la stessa chiamata che CareerApp fa tornando alla carriera (src/18, onMatchEnd: updateStandings con
                standingsSeed(club,stagione,settimana) e l'avversario della giornata servita) → partita appena giocata + altri campi, numeri identici
                a quelli che la Home mostrera'. Solo lettura: nulla si salva qui, quindi nessun doppio conteggio. Rosso __CPM_NO_G336. */
-            let _dopo336=null,_res336=null;
+            let _dopo336=null,_res336=null,_md0336=null;
             if(_g336()&&context==="career"&&!_isEG&&!_isNatCtx&&!_k232&&typeof updateStandings==="function"&&typeof standingsSeed==="function"){try{
               const _cid=_cl.id||_cl.n;const _wk0=player.week||1;const _sc0=(scoreRef&&scoreRef.current)?scoreRef.current:score;
-              const _md0=(player.calendar||[]).find(m=>m&&(m.week|0)===_wk0&&!m.played&&!m.type)||null;
+              const _md0=(player.calendar||[]).find(m=>m&&(m.week|0)===_wk0&&!m.played&&!m.type)||null;_md0336=_md0;
               const _h0=_sc0.home|0,_a0=_sc0.away|0;
               _dopo336=updateStandings(player.standings||initStandings(getLeagueClubs(player)),_cid,{homeScore:_h0,awayScore:_a0,won:_h0>_a0,drew:_h0===_a0},player.clubPrestigeShifts||{},{opponentId:(_md0&&_md0.opponentId)||(opponent&&(opponent.id||opponent.n||opponent.name))||null,seed:standingsSeed(_cid,player.season,_wk0)});
               if(!Array.isArray(_dopo336)||!_dopo336.length)_dopo336=null;}catch(_e){_dopo336=null;}
@@ -13405,7 +13405,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             let _obj=[];try{const _sp=(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0};const _sd=ordinaClassifica259(_dopo336||player.standings||[],(x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
               const _pi=_sd.findIndex(t=>t.id===_cl.id||t.n===_cl.n);
               _obj=(player.seasonObjectives||[]).filter(o=>o&&o.label&&typeof objCurrent==="function").map(o=>{if(o.type==="standing"&&_pi<0)return null;const cur=objCurrent(o,{g:_gN||0,a:_aN||0,m:_mN||0},_sp,_pi+1);
-                return{l:o.label,v:o.type==="standing"?(cur+"° ora"):(cur+"/"+o.target),ok:objDone(o,cur)};}).filter(Boolean);}catch(_e){_obj=[];}
+                const _s374=statoObiettivo374(o,cur,stagioneChiusa374(player,_dopo336?_md0336:null));/* [giro 374 · PO-633] classifica «fatta» solo a stagione chiusa; con la classifica DOPO la giornata la partita appena giocata conta come giocata */
+                return{l:o.label,v:o.type==="standing"?(cur+"° ora"+(_s374.k==="in_linea"?" · in linea":_s374.k==="sotto"?" · sotto":"")):(cur+"/"+o.target),ok:_s374.done,k:_s374.k};}).filter(Boolean);}catch(_e){_obj=[];}
             const _oggi=[mStats.goals>0?(mStats.goals+" gol"):null,mStats.assists>0?(mStats.assists+" assist"):null].filter(Boolean);
             /* (c) anteprima della prossima */
             let _av=null,_avS=null,_occ=null;
@@ -13441,7 +13442,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div data-cpm="stagione336-nota" style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(_g336n?"Con questa partita":"Prima di questa partita")+(_oggi.length?(" · oggi: "+_oggi.join(" e ")):"")}</div>
                   <div style={{display:"grid",gridTemplateColumns:"repeat("+_num.length+",1fr)",gap:6}}>{_num.map(([l,v])=>(<div key={l} style={{textAlign:"center",padding:"4px 2px",background:TH.surface2,borderRadius:RAD.sm}}>
                     <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
-                  {_obj.map((o,k)=>(<div key={k} data-cpm="obiettivo224" style={{display:"flex",alignItems:"baseline",gap:8,marginTop:k?2:6,fontSize:FS.small,color:TH.text}}>
+                  {_obj.map((o,k)=>(<div key={k} data-cpm="obiettivo224" data-obj374={o.k} style={{display:"flex",alignItems:"baseline",gap:8,marginTop:k?2:6,fontSize:FS.small,color:TH.text}}>
                     <span style={{flex:1,minWidth:0}}>{(o.ok?"✅ ":"🎯 ")+o.l}</span><span className="cpm-num" style={{fontWeight:FW.bold,color:o.ok?TH.success:TH.text}}>{o.v}</span></div>))}
                 </div>
               </Sez210>}
