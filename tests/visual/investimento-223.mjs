@@ -13,6 +13,7 @@
  * Uso: CPM_CHROME=/opt/pw-browsers/chromium node investimento-223.mjs   (CPM_JSON=1 stampa i numeri grezzi)
  */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port;
@@ -65,26 +66,32 @@ for (const nome of NOMI) for (const sc of SCELTE) {
   if (process.env.CPM_TRACCIA) console.error('braccio', nome, sc.prof);
   const { ctx, page, errori } = await apri(baseSave(nome, {}));
   if (process.env.CPM_TRACCIA) page.on('console', m => { if (m.type() === 'error') console.error('  console:', m.text().slice(0, 160)); });
+  await attendiSalvataggio395(page, { motivo: `investimento-223 ${nome}/${sc.prof}: apertura di stagione salvata` });/* [giro 395] s0 si leggeva subito dopo resolveOpening */
   const s0 = await salvato(page);
   await page.evaluate((id) => window.__CPM_CAREER.apriImpulso(id), sc.id); await sleep(600);
+  const nClic = await contaSalvataggi395(page);
   const clic = await page.evaluate((t) => { const b = [...document.querySelectorAll('button')].filter(x => (x.textContent || '').includes(t));
     if (!b.length) return false; b[b.length - 1].click(); return true; }, sc.btn);
-  await sleep(900);
+  await attendiSalvataggio395(page, { dopo: nClic, motivo: `investimento-223 ${nome}/${sc.prof}: puntata salvata` });/* [giro 395] era sleep(900) */
   await page.evaluate(() => window.__CPM_CAREER.dismiss());
+  await attendiSalvataggio395(page, { motivo: `investimento-223 ${nome}/${sc.prof}: chiusura dell'impulso salvata` });
   const s1 = await salvato(page);
-  let fine = false;
+  let fine = false, nStep = 0;
   for (let i = 0; i < 60 && !fine; i++) {
+    nStep = await contaSalvataggi395(page);
     const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
     if (r === 'seasonEnd') fine = true;
     else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments());
     await sleep(250);
   }
+  await attendiSalvataggio395(page, { dopo: nStep, motivo: `investimento-223 ${nome}/${sc.prof}: fine stagione salvata` });/* [giro 395] si leggeva 250 ms dopo l'ultimo step */
   const s2 = await salvato(page);
   const atteso = await page.evaluate(() => { try { const p = window.__CPM_CAREER.snapshot(); return invEsiti223(p); } catch (e) { return 'err:' + e.message; } });
   // l'avviso si legge ALLA SORGENTE: __CPM_NOTIFQ223 = cio' che il gioco accoda, __CPM_TOAST223 = cio' che va a schermo (il DOM perdeva i toast brevi)
   await page.evaluate(() => { window.__CPM_TOAST223 = []; window.__CPM_NOTIFQ223 = []; });
+  const nNuova = await contaSalvataggi395(page);
   await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
-  await sleep(1500);
+  await attendiSalvataggio395(page, { dopo: nNuova, motivo: `investimento-223 ${nome}/${sc.prof}: rollover salvato` });/* [giro 395] era sleep(1500) */
   const s3 = await salvato(page);/* letto PRIMA di risolvere l'apertura di stagione (ritiro/mercato possono muovere il conto) */
   await sleep(3500);/* l'avviso parte 3 s dopo il rollover (src/18 setTimeout 3000) */
   const accodati = await page.evaluate(() => (window.__CPM_NOTIFQ223 || []).filter(l => /nvestimento|cripto|ristorante/i.test(l)));
@@ -104,12 +111,18 @@ for (const nome of NOMI) for (const sc of SCELTE) {
 // ---------------- A2) salvataggio in volo: flag della versione vecchia, senza registro → la promessa vecchia (55.000, una volta)
 let V = null;
 { const { ctx, page, errori } = await apri(baseSave('Collaudo Zona G', { investmentPending: true, bankBalance: 60000 }));
-  const s1 = await salvato(page); let fine = false;
-  for (let i = 0; i < 60 && !fine; i++) { const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
+  await attendiSalvataggio395(page, { motivo: 'investimento-223 volo: caricamento salvato' });/* [giro 395] */
+  const s1 = await salvato(page); let fine = false, nStep = 0;
+  for (let i = 0; i < 60 && !fine; i++) { nStep = await contaSalvataggi395(page); const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
     if (r === 'seasonEnd') fine = true; else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments()); await sleep(250); }
+  await attendiSalvataggio395(page, { dopo: nStep, motivo: 'investimento-223 volo: fine stagione salvata' });/* [giro 395] si leggeva 250 ms dopo l'ultimo step */
   const s2 = await salvato(page);
-  await page.evaluate(() => { window.__CPM_NOTIFQ223 = []; window.__CPM_CAREER.startNewSeason(); }); await sleep(5000);
+  const nNuova = await contaSalvataggi395(page);
+  await page.evaluate(() => { window.__CPM_NOTIFQ223 = []; window.__CPM_CAREER.startNewSeason(); });
+  await attendiSalvataggio395(page, { dopo: nNuova, motivo: 'investimento-223 volo: rollover salvato' });/* [giro 395] era sleep(5000) */
   const s3 = await salvato(page);
+  /* l'avviso (solo stampato, non giudicato) parte 3 s dopo il rollover (src/18 setTimeout 3000): si attende che sia accodato, tetto 8 s */
+  for (let t0 = Date.now(); Date.now() - t0 < 8000;) { if (await page.evaluate(() => (window.__CPM_NOTIFQ223 || []).some(l => /nvestimento/.test(l)))) break; await sleep(200); }
   V = { caricato: s1.flag && !s1.reg, rientro: s3.bank - s2.bank, flagDopo: s3.flag, avviso: await page.evaluate(() => (window.__CPM_NOTIFQ223 || []).filter(l => /nvestimento/.test(l))), errori };
   await ctx.close(); }
 console.log(`salvataggio in volo (flag senza registro): rientro ${V && V.rientro} · avviso ${V && JSON.stringify(V.avviso)}`);

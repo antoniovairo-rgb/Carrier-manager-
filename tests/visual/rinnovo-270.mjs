@@ -14,6 +14,7 @@
    ROSSO: CPM_ROSSO=b arma window.__CPM_NO_RIN270b (solo il secondo percorso): il guardiano DEVE uscire 1.
    Uso: CPM_CHROME=/opt/pw-browsers/chromium node rinnovo-270.mjs */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 const ROSSO = process.env.CPM_ROSSO === '1'; const ROSSO_B = process.env.CPM_ROSSO === 'b';
 const CLUB = { id: 'b04', n: 'FC Werkstadt', a: 'WRK', p: 74, c: '#dc2626', c2: '#111111', nat: '🇩🇪', lg: 'Deutsche Liga' };
 const save = (name) => ({ phase: 'career', player: { name, nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 2, week: 1, age: 22, ovr: 72,
@@ -39,10 +40,13 @@ for (const [nome, anni] of (ROSSO_B ? [] : CASI)) {
   try { await btn.scrollIntoViewIfNeeded({ timeout: 5000 }); await btn.click({ timeout: 5000 }); } catch (e) { ko.push(`${nome}: pulsante «Negozia rinnovo» non trovato`); if (process.env.CPM_DEBUG) { console.log((await page.evaluate(() => document.body.innerText)).slice(0, 20000)); await page.screenshot({ path: 'out/rin270-debug.png', fullPage: true }); } await ctx.close(); continue; }
   await sleep(500);
   const prop = await page.evaluate(() => { const t = document.body.innerText; const m = t.match(/(\d) ann[oi] · /); return m ? +m[1] : null; });
+  const nFirma = await contaSalvataggi395(page);
   try { await page.getByText("Accetta l'offerta del club", { exact: false }).first().click({ timeout: 5000 }); } catch (e) { ko.push(`${nome}: opzione «Accetta l'offerta del club» assente`); await ctx.close(); continue; }
-  await sleep(800);
+  await attendiSalvataggio395(page, { dopo: nFirma, motivo: `rinnovo-270 ${nome}: firma salvata` });/* [giro 395] era sleep(800) */
   const firma = await contratto(page);
-  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason()); await sleep(1500);
+  const nNuova = await contaSalvataggi395(page);
+  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
+  await attendiSalvataggio395(page, { dopo: nNuova, motivo: `rinnovo-270 ${nome}: stagione nuova salvata` });/* [giro 395] era sleep(1500) */
   const dopo = await contratto(page);
   console.log(`  ${nome}: proposta ${prop} anni (attesa ${anni}) · dopo la firma ${JSON.stringify(firma)} · stagione nuova (${ns}) ${JSON.stringify(dopo)}`);
   if (prop !== anni) ko.push(`${nome}: la proposta e' di ${prop} anni, il guardiano se ne aspettava ${anni} (seme cambiato: aggiornare CASI)`);
@@ -64,9 +68,13 @@ for (const [durOff, anni] of (ROSSO ? [] : [[1, 1], [2, 2], [undefined, 2]])) {
   for (let i = 0; i < 12; i++) { const n = await page.evaluate(() => (window.__CPM_CAREER.openingPending() || []).length); if (!n) break; await page.evaluate(() => window.__CPM_CAREER.resolveOpening()); await sleep(300); }
   const off = { isRenewal: true, wage: 7000, moralBonus: 5, club: CLUB, ...(durOff ? { duration: durOff } : {}) };
   const posata = await page.evaluate((o) => window.__CPM_CAREER.setOffer(o), off); await sleep(600);
-  const acc = await page.evaluate(() => window.__CPM_CAREER.acceptOffer()); await sleep(800);
+  const nFirma = await contaSalvataggi395(page);
+  const acc = await page.evaluate(() => window.__CPM_CAREER.acceptOffer());
+  await attendiSalvataggio395(page, { dopo: nFirma, motivo: `rinnovo-270 offerta ${durOff}: firma salvata` });/* [giro 395] era sleep(800) */
   const firma = await contratto(page);
-  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason()); await sleep(1500);
+  const nNuova = await contaSalvataggi395(page);
+  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
+  await attendiSalvataggio395(page, { dopo: nNuova, motivo: `rinnovo-270 offerta ${durOff}: stagione nuova salvata` });/* [giro 395] era sleep(1500) */
   const dopo = await contratto(page);
   const tag = `offerta di rinnovo (durata ${durOff === undefined ? 'assente' : durOff})`;
   console.log(`  ${tag}: posata ${posata}, accettata ${acc} · dopo la firma ${JSON.stringify(firma)} · stagione nuova (${ns}) ${JSON.stringify(dopo)}`);

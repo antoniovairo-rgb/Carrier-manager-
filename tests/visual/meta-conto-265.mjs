@@ -9,6 +9,7 @@
  * Uso: CPM_CHROME=/opt/pw-browsers/chromium node meta-conto-265.mjs   (CPM_JSON=1 stampa i numeri grezzi)
  */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port;
@@ -50,12 +51,17 @@ const SALDI = [{ bank: 150000, esce: 75000 }, { bank: 60000, esce: 30000 }, { ba
 const R = [];
 for (const sa of SALDI) {
   const { ctx, page, errori } = await apri(baseSave(sa.bank));
+  await attendiSalvataggio395(page, { motivo: `meta-conto-265 saldo ${sa.bank}: apertura salvata` });/* [giro 395] s0 si leggeva subito dopo resolveOpening */
   const s0 = await salvato(page);
   const ap = await page.evaluate(() => window.__CPM_CAREER.apriImpulso('wi_investimento')); await sleep(700);
+  const nClic = await contaSalvataggi395(page);
   const btn = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => (x.textContent || '').includes('Investo metà del conto'));
     if (!b.length) return null; const x = b[b.length - 1]; const r = { testo: (x.textContent || '').trim(), spento: !!x.disabled }; if (!x.disabled) x.click(); return r; });
-  await sleep(900);
+  /* [giro 395] era sleep(900): col tasto premuto si pretende la scrittura della puntata; col tasto spento (saldo basso) nessuna
+     scrittura e' attesa e basta l'allineamento */
+  await attendiSalvataggio395(page, { dopo: btn && !btn.spento ? nClic : null, motivo: `meta-conto-265 saldo ${sa.bank}: puntata salvata` });
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+  await attendiSalvataggio395(page, { motivo: `meta-conto-265 saldo ${sa.bank}: chiusura salvata` });
   const s1 = await salvato(page);
   const ultima = s1.reg[s1.reg.length - 1] || null;
   R.push({ ...sa, ap, btn, prima: s0.bank, dopo: s1.bank, uscito: s0.bank - s1.bank, flag: s1.flag, reg: ultima, nReg: s1.reg.length, errori });

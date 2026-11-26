@@ -15,6 +15,7 @@
  * Uso: CPM_CHROME=/opt/pw-browsers/chromium node infortunio-263.mjs   (CPM_JSON=1 stampa i numeri grezzi)
  */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port;
@@ -97,10 +98,13 @@ async function braccio(id, extra, via, sett) {
     await sleep(600);
   }
   const suspVivo = await page.evaluate(() => !!(window.__CPM_CAREER.snapshot() || {}).isSuspended);
-  await page.evaluate(() => { const C = window.__CPM_CAREER; C.step(); C.dismiss(); }); await sleep(500);
+  const nVivi = await contaSalvataggi395(page);
+  await page.evaluate(() => { const C = window.__CPM_CAREER; C.step(); C.dismiss(); });
+  await attendiSalvataggio395(page, { dopo: nVivi, motivo: `infortunio-263 ${id}: settimana vissuta salvata` });/* [giro 395] era sleep(500) */
   const prima = await stato(page);
   const fatPrima = await page.evaluate(() => window.__CPM_CAREER.snapshot().fatigue);
   let azione = '';
+  const nAzione = await contaSalvataggi395(page);
   if (via === 'bottone' || via === 'nonconv') {
     await page.evaluate((st) => window.__CPM_CAREER.apriPartita(st), via === 'nonconv' ? 'not_called' : 'starter'); await sleep(500);
     azione = await page.evaluate(() => { const b = ((c => c.length ? c : [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || '') && x.getAttribute('data-cpm') !== 'simula-v2'))([...document.querySelectorAll('[data-cpm="simula-conferma"]')])) /* [giro 105] il bottone del PROMPT, non il tasto Simula della Home (PO-302, data-cpm simula-v2) che riapre il prompt */;
@@ -112,16 +116,13 @@ async function braccio(id, extra, via, sett) {
       if ((await page.evaluate(() => window.__CPM_CAREER.snapshot().week)) !== prima.week) break;
     }
   }
-  await sleep(900);
   /* [giro 270] si attende l'EVENTO «salvataggio allineato», non un tempo fisso (PROCESSO.md, controlli instabili): l'autosave ha un
      debounce di 600 ms che riparte a ogni cambio di player, e la copia delle finestre aperte (scelte201, giro 201) cambia player ~0,5 s
      dopo la simulazione quando si apre l'impulso della settimana: misurato 3 volte su 10 sia su 7.999.196 sia su lavoro/197, salvataggio
-     a ~1080 ms invece di ~650, e la lettura a 900 ms trovava la settimana vecchia. Tetto 10 s: se il salvataggio non arriva, si legge
-     comunque e il controllo resta rosso come prima. */
-  for (let t0 = Date.now(); Date.now() - t0 < 10000;) {
-    const al = await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot() || {}; const l = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};
-      const f = x => JSON.stringify([x.week, x.fatigue, !!x.injured, (x.matchHistory || []).length]); return f(p) === f(l); });
-    if (al) break; await sleep(100); }
+     a ~1080 ms invece di ~650, e la lettura a 900 ms trovava la settimana vecchia.
+     [giro 395 PO-532] l'attesa e' quella condivisa (lib/attese-395.mjs): sleep(900) tolto, l'allineamento e' sull'INTERO giocatore e
+     non su quattro campi, pretende una scrittura dopo l'azione e 700 ms fermi; se il tetto scade la lettura e' «non giudicata» (rosso). */
+  await attendiSalvataggio395(page, { dopo: nAzione, motivo: `infortunio-263 ${id}: simulazione salvata` });
   const dopo = await stato(page);
   await ctx.close();
   return { id, via, sett, azione, suspVivo, fatPrima, prima, dopo, errori, avanzata: dopo.week === prima.week + 1 };

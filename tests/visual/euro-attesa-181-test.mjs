@@ -4,6 +4,7 @@
    (__CPM_CAREER.step, quello dei banchi) deve far avanzare le settimane fino alla W.24 e aprire il girone. CPM_RED=1 → __CPM_NO181: il
    passo risponde «blocked:euroMondiale» e la settimana resta ferma → deve FALLIRE. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 const RED = process.env.CPM_RED === '1';
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const URL = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
@@ -26,8 +27,11 @@ try { await page.getByText('Continua', { exact: false }).first().click({ timeout
 await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 15000 }).catch(() => {}); await sleep(1000);
 const passi = [];
 for (let i = 0; i < 12; i++) {
+  const n0 = await contaSalvataggi395(page);
   const r = await page.evaluate(() => { try { return window.__CPM_CAREER.step(); } catch (e) { return 'errore:' + e.message; } });
-  await sleep(700);
+  /* [giro 395] era sleep(700): un passo che avanza scrive il salvataggio e si aspetta quella scrittura; un passo «blocked:…» (il rosso)
+     non cambia il giocatore e basta l'allineamento */
+  await attendiSalvataggio395(page, { dopo: /^(blocked|errore)/.test(String(r)) ? null : n0, motivo: `euro-attesa-181 passo ${i + 1} (${r}) salvato` });
   const s = await page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; return { w: p.week, f: p.euroMondiale && p.euroMondiale.phase }; });
   passi.push(`${r}→W${s.w}/${s.f}`);
   if (s.f !== 'qualificazioni') break;

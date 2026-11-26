@@ -8,6 +8,7 @@
    ROSSO: CPM_ROSSO=1 arma window.__CPM_NO_SIM272 → torna «(simulata)»: il guardiano DEVE uscire 1.
    Uso: CPM_CHROME=/opt/pw-browsers/chromium node simulata-272.mjs */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 const ROSSO = process.env.CPM_ROSSO === '1';
 const CLUB = { id: 'b04', n: 'FC Werkstadt', a: 'WRK', p: 74, c: '#dc2626', c2: '#111111', nat: '🇩🇪', lg: 'Deutsche Liga' };
 const SAVE = { phase: 'career', player: { name: 'Collaudo Settimana', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 2, week: 1, age: 22, ovr: 72,
@@ -32,11 +33,15 @@ for (let w = 2; w <= 20 && !W; w++) { await page.evaluate((w) => window.__CPM_CA
 if (!W) ko.push('nessuna settimana con giornata di lega: misura cieca');
 await page.evaluate(() => window.__T272.length = 0);
 await page.evaluate(() => window.__CPM_CAREER.apriPartita('starter')); await sleep(500);
+const nSim = await contaSalvataggi395(page);
 const azione = await page.evaluate(() => { const bt = ((c => c.length ? c : [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || '') && x.getAttribute('data-cpm') !== 'simula-v2'))([...document.querySelectorAll('[data-cpm="simula-conferma"]')])) /* [giro 105] il bottone del PROMPT, non il tasto Simula della Home (PO-302, data-cpm simula-v2) che riapre il prompt */;
   if (!bt.length) return null; bt[bt.length - 1].click(); return (bt[bt.length - 1].textContent || '').trim(); });
 if (!azione) ko.push('bottone «Simula» non trovato');
-await sleep(1500);
-await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.goTab('dashboard'); } catch (e) {} }); await sleep(900);
+await attendiSalvataggio395(page, { dopo: nSim, motivo: 'simulata-272: settimana simulata salvata' });/* [giro 395] era sleep(1500) */
+await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.goTab('dashboard'); } catch (e) {} });
+/* [giro 395] era sleep(900): salvataggio allineato e riga del risultato a schermo (la riga qui e' solo stampata: tetto 5 s, poi si legge) */
+await attendiSalvataggio395(page, { motivo: 'simulata-272: dashboard salvata' });
+try { await page.waitForFunction(() => /(Vittoria|Pareggio|Sconfitta) \d+–\d+ vs /.test(document.body.innerText), null, { timeout: 5000 }); } catch (e) {}
 const r = await page.evaluate(() => { const t = document.body.innerText; const riga = (t.match(/(Vittoria|Pareggio|Sconfitta) \d+–\d+ vs [^\n]*/) || [])[0] || null;
   const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {}; const h = (p.matchHistory || []).slice(-1)[0] || null;
   const _ix = t.search(/simulat/i); return { riga, simulataInPagina: _ix >= 0, ctxS: _ix >= 0 ? t.slice(Math.max(0, _ix - 120), _ix + 40).replace(/\s+/g, ' ') : '', visti: window.__T272.filter(x => /simulat/i.test(x)).slice(0, 5), esiti: window.__T272.filter(x => /(Vittoria|Pareggio|Sconfitta) \d+–\d+/.test(x)).slice(0, 3), simulated: h && !!h.simulated, settimana: p.week }; });

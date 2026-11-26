@@ -10,6 +10,7 @@
  * Uso: CPM_CHROME=/opt/pw-browsers/chromium node svincolato-264.mjs   (CPM_JSON=1 stampa i numeri grezzi)
  */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { contaSalvataggi395, attendiSalvataggio395 } from './lib/attese-395.mjs';/* [giro 395 PO-532] si aspetta il salvataggio, non un tempo fisso */
 
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port;
@@ -71,6 +72,7 @@ if (!WE || !WL || !OPP) { console.log(`✗ settimane/avversario non trovati (lib
 
 async function braccio(id, extra, comp) {
   const { ctx, page, errori } = await apri(baseSave({ week: comp === 'lega' ? WL : WE, weekLived: false, ...extra }));
+  const nPatch = await contaSalvataggi395(page);
   if (comp !== 'lega') {
     await page.evaluate(({ w, comp, opp }) => { const C = window.__CPM_CAREER, p = C.snapshot();
       const md = comp === 'cup' ? { matchday: 991, week: w, opponentId: 'b07', opponentName: 'SV Rheinau', isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: 1, cupRoundName: 'Ottavi di Finale' }
@@ -79,16 +81,18 @@ async function braccio(id, extra, comp) {
         ...(comp === 'cup' ? { cup: { active: true, round: 1, results: [], bracket: [], eliminated: false } }
           : { euro: { active: true, competition: 'UEL', phase: comp === 'euro' ? 'r16' : 'group', groupOpponents: [{ id: opp.id, n: opp.n }], pts: 0, groupResults: [], qualified: comp === 'euro', champion: false, eliminated: false, koResults: [], koRound: 0 } }),
         calendar: [...(p.calendar || []), md] }); }, { w: WE, comp, opp: OPP });
-    await sleep(600);
   }
+  /* [giro 395] era sleep(600) dopo la gara iniettata: si pretende che la gara iniettata sia nel salvataggio */
+  await attendiSalvataggio395(page, { dopo: comp !== 'lega' ? nPatch : null, motivo: `svincolato-264 ${id}: gara iniettata salvata` });
   const prima = await stato(page);
+  const nAzione = await contaSalvataggi395(page);
   let azione = '';
   for (let i = 0; i < 5; i++) {
     const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
     azione += r + ' '; await sleep(600);
     if ((await page.evaluate(() => window.__CPM_CAREER.snapshot().week)) !== prima.week) break;
   }
-  await sleep(900);
+  await attendiSalvataggio395(page, { dopo: nAzione, motivo: `svincolato-264 ${id}: settimana salvata` });/* [giro 395] era sleep(900) */
   const dopo = await stato(page);
   await ctx.close();
   return { id, comp, azione, prima, dopo, errori, dM: dopo.matches - prima.matches, avanzata: dopo.week === prima.week + 1 };

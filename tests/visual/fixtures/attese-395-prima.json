@@ -1,0 +1,181 @@
+{
+ "_": "giro 395 (PO-532): righe dei controlli toccati come erano sulla base 872aba4 (lavoro/201), solo gli intorni delle attese fisse prima di una lettura del salvataggio e gli aiutanti che lo leggono. Braccio rosso di `npm run attese-395` (CPM_NO_G395=1): il rilevatore deve ritrovarle tutte. Rigenerare non serve: e' la fotografia del prima.",
+ "base": "872aba4",
+ "file": {
+  "infortunio-263.mjs": {
+   "righe_totali": 177,
+   "attese": [
+    "100->101 sleep(500)"
+   ],
+   "righe": {
+    "55": "const stato = (page) => page.evaluate(() => {",
+    "56": "  const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "57": "  const h = p.matchHistory || []; const u = h[h.length - 1] || null;",
+    "58": "  return { week: p.week, fatigue: p.fatigue, injured: !!p.injured, injuryWeeks: p.injuryWeeks || 0, injuryType: p.injuryType || null, matches: p.matches || 0,",
+    "59": "    ultima: u && { cup: !!u.cup, nc: !!u.nonConvocato, sq: !!u.squalificato, svinc: !!u.svincolato, rating: u.rating } };",
+    "98": "  }",
+    "99": "  const suspVivo = await page.evaluate(() => !!(window.__CPM_CAREER.snapshot() || {}).isSuspended);",
+    "100": "  await page.evaluate(() => { const C = window.__CPM_CAREER; C.step(); C.dismiss(); }); await sleep(500);",
+    "101": "  const prima = await stato(page);",
+    "121": "  for (let t0 = Date.now(); Date.now() - t0 < 10000;) {",
+    "122": "    const al = await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot() || {}; const l = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "123": "      const f = x => JSON.stringify([x.week, x.fatigue, !!x.injured, (x.matchHistory || []).length]); return f(p) === f(l); });",
+    "124": "    if (al) break; await sleep(100); }",
+    "125": "  const dopo = await stato(page);"
+   }
+  },
+  "investimento-223.mjs": {
+   "righe_totali": 166,
+   "attese": [
+    "72->74 sleep(900)",
+    "80->82 sleep(250)",
+    "87->88 sleep(1500)",
+    "109->110 sleep(250)",
+    "111->112 sleep(5000)"
+   ],
+   "righe": {
+    "51": "const salvato = (page) => page.evaluate(() => { const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "52": "  return { season: p.season, week: p.week, bank: p.bankBalance || 0, flag: !!p.investmentPending, reg: p.investimenti223 || null }; });",
+    "53": "",
+    "54": "const SCELTE = [",
+    "70": "  const clic = await page.evaluate((t) => { const b = [...document.querySelectorAll('button')].filter(x => (x.textContent || '').includes(t));",
+    "71": "    if (!b.length) return false; b[b.length - 1].click(); return true; }, sc.btn);",
+    "72": "  await sleep(900);",
+    "73": "  await page.evaluate(() => window.__CPM_CAREER.dismiss());",
+    "74": "  const s1 = await salvato(page);",
+    "78": "    if (r === 'seasonEnd') fine = true;",
+    "79": "    else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments());",
+    "80": "    await sleep(250);",
+    "81": "  }",
+    "82": "  const s2 = await salvato(page);",
+    "85": "  await page.evaluate(() => { window.__CPM_TOAST223 = []; window.__CPM_NOTIFQ223 = []; });",
+    "86": "  await page.evaluate(() => window.__CPM_CAREER.startNewSeason());",
+    "87": "  await sleep(1500);",
+    "88": "  const s3 = await salvato(page);/* letto PRIMA di risolvere l'apertura di stagione (ritiro/mercato possono muovere il conto) */",
+    "107": "  const s1 = await salvato(page); let fine = false;",
+    "108": "  for (let i = 0; i < 60 && !fine; i++) { const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });",
+    "109": "    if (r === 'seasonEnd') fine = true; else if (String(r).startsWith('blocked')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments()); await sleep(250); }",
+    "110": "  const s2 = await salvato(page);",
+    "111": "  await page.evaluate(() => { window.__CPM_NOTIFQ223 = []; window.__CPM_CAREER.startNewSeason(); }); await sleep(5000);",
+    "112": "  const s3 = await salvato(page);"
+   }
+  },
+  "meta-conto-265.mjs": {
+   "righe_totali": 87,
+   "attese": [
+    "57->59 sleep(900)"
+   ],
+   "righe": {
+    "46": "const salvato = (page) => page.evaluate(() => { const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "47": "  return { bank: p.bankBalance || 0, flag: !!p.investmentPending, reg: p.investimenti223 || [] }; });",
+    "48": "",
+    "49": "const SALDI = [{ bank: 150000, esce: 75000 }, { bank: 60000, esce: 30000 }, { bank: 30000, esce: 15000 }, { bank: 8000, esce: null }];",
+    "55": "  const btn = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => (x.textContent || '').includes('Investo metà del conto'));",
+    "56": "    if (!b.length) return null; const x = b[b.length - 1]; const r = { testo: (x.textContent || '').trim(), spento: !!x.disabled }; if (!x.disabled) x.click(); return r; });",
+    "57": "  await sleep(900);",
+    "58": "  try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}",
+    "59": "  const s1 = await salvato(page);"
+   }
+  },
+  "svincolato-264.mjs": {
+   "righe_totali": 122,
+   "attese": [
+    "82->84 sleep(600)",
+    "91->92 sleep(900)"
+   ],
+   "righe": {
+    "50": "const stato = (page) => page.evaluate(() => {",
+    "51": "  const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "52": "  const h = p.matchHistory || []; const u = h[h.length - 1] || null;",
+    "53": "  return { week: p.week, matches: p.matches || 0, totalMatches: p.totalMatches || 0, goals: p.goals || 0, assists: p.assists || 0, histN: h.length,",
+    "54": "    ultima: u && { euro: !!u.euro, ko: u.euroPhase || null, cup: !!u.cup, svinc: !!u.svincolato, rating: u.rating, goals: u.goals, assists: u.assists } };",
+    "80": "          : { euro: { active: true, competition: 'UEL', phase: comp === 'euro' ? 'r16' : 'group', groupOpponents: [{ id: opp.id, n: opp.n }], pts: 0, groupResults: [], qualified: comp === 'euro', champion: false, eliminated: false, koResults: [], koRound: 0 } }),",
+    "81": "        calendar: [...(p.calendar || []), md] }); }, { w: WE, comp, opp: OPP });",
+    "82": "    await sleep(600);",
+    "83": "  }",
+    "84": "  const prima = await stato(page);",
+    "89": "    if ((await page.evaluate(() => window.__CPM_CAREER.snapshot().week)) !== prima.week) break;",
+    "90": "  }",
+    "91": "  await sleep(900);",
+    "92": "  const dopo = await stato(page);"
+   }
+  },
+  "simulata-272.mjs": {
+   "righe_totali": 60,
+   "attese": [
+    "39->41 sleep(900)"
+   ],
+   "righe": {
+    "37": "if (!azione) ko.push('bottone «Simula» non trovato');",
+    "38": "await sleep(1500);",
+    "39": "await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.goTab('dashboard'); } catch (e) {} }); await sleep(900);",
+    "40": "const r = await page.evaluate(() => { const t = document.body.innerText; const riga = (t.match(/(Vittoria|Pareggio|Sconfitta) \\d+–\\d+ vs [^\\n]*/) || [])[0] || null;",
+    "41": "  const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {}; const h = (p.matchHistory || []).slice(-1)[0] || null;",
+    "42": "  const _ix = t.search(/simulat/i); return { riga, simulataInPagina: _ix >= 0, ctxS: _ix >= 0 ? t.slice(Math.max(0, _ix - 120), _ix + 40).replace(/\\s+/g, ' ') : '', visti: window.__T272.filter(x => /simulat/i.test(x)).slice(0, 5), esiti: window.__T272.filter(x => /(Vittoria|Pareggio|Sconfitta) \\d+–\\d+/.test(x)).slice(0, 3), simulated: h && !!h.simulated, settimana: p.week }; });",
+    "43": "console.log(`  settimana ${W} · bottone «${azione}» · ultima partita simulated=${r.simulated} · riga «${r.riga}» · «simulata» in pagina ${r.simulataInPagina} · contesto «${r.ctxS}» · esito «${r.esiti[0] || ''}» · comparsi ${r.visti.length}${r.visti.length ? ': ' + r.visti.join(' | ') : ''}`);",
+    "44": "if (!r.simulated) ko.push('la partita non risulta simulata: misura cieca');"
+   }
+  },
+  "rinnovo-270.mjs": {
+   "righe_totali": 84,
+   "attese": [
+    "43->44 sleep(800)",
+    "45->46 sleep(1500)",
+    "67->68 sleep(800)",
+    "69->70 sleep(1500)"
+   ],
+   "righe": {
+    "23": "const CASI = [['Collaudo Rinnovo A', 1], ['Collaudo Rinnovo C', 2]];// durata proposta = 1+(hashStr(nome|nego|2)%3)",
+    "24": "const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();",
+    "25": "const ko = [];",
+    "26": "const contratto = (page) => page.evaluate(() => { const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {};",
+    "27": "  return { season: p.season, duration: p.contract && p.contract.duration, exp: p.contract && p.contract.expiresAtSeason, svincolato: !!p.contractExpired }; });",
+    "28": "for (const [nome, anni] of (ROSSO_B ? [] : CASI)) {",
+    "29": "  const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);",
+    "41": "  const prop = await page.evaluate(() => { const t = document.body.innerText; const m = t.match(/(\\d) ann[oi] · /); return m ? +m[1] : null; });",
+    "42": "  try { await page.getByText(\"Accetta l'offerta del club\", { exact: false }).first().click({ timeout: 5000 }); } catch (e) { ko.push(`${nome}: opzione «Accetta l'offerta del club» assente`); await ctx.close(); continue; }",
+    "43": "  await sleep(800);",
+    "44": "  const firma = await contratto(page);",
+    "45": "  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason()); await sleep(1500);",
+    "46": "  const dopo = await contratto(page);",
+    "65": "  const off = { isRenewal: true, wage: 7000, moralBonus: 5, club: CLUB, ...(durOff ? { duration: durOff } : {}) };",
+    "66": "  const posata = await page.evaluate((o) => window.__CPM_CAREER.setOffer(o), off); await sleep(600);",
+    "67": "  const acc = await page.evaluate(() => window.__CPM_CAREER.acceptOffer()); await sleep(800);",
+    "68": "  const firma = await contratto(page);",
+    "69": "  const ns = await page.evaluate(() => window.__CPM_CAREER.startNewSeason()); await sleep(1500);",
+    "70": "  const dopo = await contratto(page);"
+   }
+  },
+  "classifica-194.mjs": {
+   "righe_totali": 70,
+   "attese": [
+    "41->43 sleep(1500)"
+   ],
+   "righe": {
+    "39": "const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }",
+    "40": "for (let k = 0; k < 20 && (await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().week; } catch (e) { return null; } })) !== 39; k++) { await page.keyboard.press('Enter'); await sleep(400); }",
+    "41": "await sleep(1500);",
+    "42": "const dopo = await stato();",
+    "43": "if (process.env.CPM_DUMP) { const sv = await page.evaluate(() => localStorage.getItem('cpm-v3')); fs.writeFileSync(process.env.CPM_DUMP, sv || ''); }/* [giro 13] salvataggio dopo la giornata, per misurare la migrazione MIG194 */",
+    "44": "await ctx.close(); await b.close(); srv.close();",
+    "45": "",
+    "46": "const somma = st => st.reduce((o, r) => ({ W: o.W + r.wins, L: o.L + r.losses, GF: o.GF + r.gf, GA: o.GA + r.ga }), { W: 0, L: 0, GF: 0, GA: 0 });"
+   }
+  },
+  "euro-attesa-181-test.mjs": {
+   "righe_totali": 41,
+   "attese": [
+    "30->31 sleep(700)"
+   ],
+   "righe": {
+    "28": "for (let i = 0; i < 12; i++) {",
+    "29": "  const r = await page.evaluate(() => { try { return window.__CPM_CAREER.step(); } catch (e) { return 'errore:' + e.message; } });",
+    "30": "  await sleep(700);",
+    "31": "  const s = await page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; return { w: p.week, f: p.euroMondiale && p.euroMondiale.phase }; });",
+    "32": "  passi.push(`${r}→W${s.w}/${s.f}`);",
+    "33": "  if (s.f !== 'qualificazioni') break;",
+    "34": "}"
+   }
+  }
+ }
+}

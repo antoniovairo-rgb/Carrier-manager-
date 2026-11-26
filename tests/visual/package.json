@@ -783,6 +783,7 @@
     "trenino-317": "node trenino-317.mjs",
     "via-poc-338": "node via-poc-338.mjs",
     "deploy-326": "node deploy-326.mjs",
+    "attese-395": "node attese-395.mjs lib/attese-395.mjs fixtures/attese-395-prima.json",
     "treno-tempo-358": "node treno-tempo-358.mjs",
     "finto-358": "node treno-tempo-358.mjs finto",
     "treno-330": "node treno-330.mjs",
