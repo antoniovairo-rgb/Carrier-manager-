@@ -2110,3 +2110,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 03:05 (26/11) Giro 376 (PO-647) consegnato; lanciato il giro 379 (PO-658 + PO-659, verifica dei residui).
 - 03:10 (26/11) Giro 375 (PO-637) consegnato; lanciato il giro 380 (PO-640 + PO-664 colpi di testa).
 - 03:30 (26/11) Giro 377 (PO-646) consegnato; lanciato il giro 381 (PO-663 scivolate + PO-660 fila dell'ingresso).
+- 03:40 (26/11) 7.999.216 NON rilasciata: il treno è verde ma il rilascio si ferma su reazione-252 «rosso CIECO» (il guardiano non trova più casi di movimento su gi148, ipotesi: scene di cross cambiate dal 364). Lanciato il giro di riparazione 382 (5° giro attivo, eccezione per difetto bloccante). Giro 378 (PO-656/657) consegnato.
