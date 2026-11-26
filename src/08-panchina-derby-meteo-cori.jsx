@@ -428,7 +428,12 @@ function calcCoachDecision(player,matchWeight=1,rng){
   const form=clamp(player.form||70,30,95); // Sprint 153: canonical fallback + bounds
   const fatigue=clamp(player.fatigue||0,0,100);
   // recent 3-match average rating (fallback 6.0)
-  const recent=(player.matchHistory||[]).slice(-3).map(m=>m.rating||6.0);
+  /* [giro 383 PO-515, rosso __CPM_NO_G383] il mister legge i voti delle partite GIOCATE, come la media della Home («le simulate non
+     entrano nella media», src/18). Misurato (difficolta-156, 40 carriere simulate): col voto simulato dalla pagella del motore (PO-360,
+     giro 158) e +0,3 sotto OVR 72 (giro 310) il mister vedeva voti piu' alti e faceva giocare di piu' (titolare 65,6% in gavetta contro
+     45 del bersaglio PO-156). Il voto simulato resta quello deciso da PO-360; non decide piu' la titolarita'. */
+  const _mh383=(typeof window!=='undefined'&&window.__CPM_NO_G383)?(player.matchHistory||[]):(player.matchHistory||[]).filter(m=>m&&!m.simulated);
+  const recent=_mh383.slice(-3).map(m=>m.rating||6.0);
   const avgRating=recent.length>0?recent.reduce((s,r)=>s+r,0)/recent.length:6.0;
   // normalize form [30,95]→[0,100] so score thresholds stay calibrated
   const formNorm=((form-30)/65)*100;

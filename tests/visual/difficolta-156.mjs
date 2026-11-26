@@ -14,6 +14,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const SEMI = Number(args.semi || 10), STAG = Number(args.stagioni || 2), PAR = Number(args.par || 8), ROSSO = !!args.rosso || !!process.env.CPM_ROSSO156;
+const ROSSO383 = !!args.rosso383 || !!process.env.CPM_ROSSO383;/* [giro 383 PO-515] braccio rosso del giro 383 (__CPM_NO_G383): il mister torna a leggere i voti simulati e la titolarita' esce */
 const VECCHIO = !!args.finalizzatore || !!process.env.CPM_NO_NEUTRO287;/* [giro 82 PO-287] --finalizzatore: l'eroe di prima (Finalizzatore, __CPM_NO_NEUTRO287) per misurare la base della 7.999.176; senza, l'eroe e' neutro */
 const BERSAGLI = { gavetta: { voto: 6.0, gol: 0.15, vitt: 35, min: 55, tit: 45 }, affermazione: { voto: 6.4, gol: 0.30, vitt: 45, min: 75, tit: 75 },
   elite: { voto: 6.9, gol: 0.50, vitt: 55, min: 85, tit: 95 }, declino: { voto: 6.3, gol: 0.25, vitt: 45, min: 65, tit: 60 } };
@@ -49,9 +50,9 @@ async function carriera(P, st, f, seme) {
   const pp = P[st.id + '|' + f.f + '|' + f.club[(seme + 1) % f.club.length]];
   const save = { phase: 'career', player: { name: `Curva ${st.id} ${f.eta} ${seme}`, nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 1, week: 1, age: f.eta, ovr: pp.ovr, tutorialDone: true,
     archetype: pp.arc, position: st.pos, foot: 'R', club: pp.club, stats: pp.stats, form: 70, morale: 72, fatigue: 10, coachTrust: 60, contract: { duration: STAG + 2, wage: 6000, expiresAtSeason: STAG + 3 } } };
-  await page.addInitScript(([s, seed, rosso, vecchio]) => { let x = (seed >>> 0) || 1; Math.random = function () { x = (x * 1664525 + 1013904223) >>> 0; return x / 4294967296; };
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_156 = 1; if (vecchio) window.__CPM_NO_NEUTRO287 = 1;
-    try { if (!sessionStorage.getItem('c156')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('c156', '1'); } } catch (e) {} }, [JSON.stringify(save), 15600 + seme * 7919 + f.eta * 131 + st.id.length, ROSSO, VECCHIO]);
+  await page.addInitScript(([s, seed, rosso, vecchio, r383]) => { let x = (seed >>> 0) || 1; Math.random = function () { x = (x * 1664525 + 1013904223) >>> 0; return x / 4294967296; };
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_156 = 1; if (r383) window.__CPM_NO_G383 = 1; if (vecchio) window.__CPM_NO_NEUTRO287 = 1;
+    try { if (!sessionStorage.getItem('c156')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('c156', '1'); } } catch (e) {} }, [JSON.stringify(save), 15600 + seme * 7919 + f.eta * 131 + st.id.length, ROSSO, VECCHIO, ROSSO383]);
   await page.goto(URL, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 150000 });
   await sleep(1200);
@@ -98,7 +99,7 @@ const agg = (filtro) => { const A = {}; for (const F of Object.keys(BERSAGLI)) A
   const o = {}; for (const F in A) { const a = A[F]; o[F] = { gare: a.gare, decisioni: a.dN, voto: +(a.r / Math.max(a.rN, 1)).toFixed(2), gol: +(a.g / Math.max(a.gare, 1)).toFixed(3), vitt: +(100 * a.V / Math.max(a.gare, 1)).toFixed(1), min: +(a.min / Math.max(a.dN, 1)).toFixed(1), tit: +(100 * a.tit / Math.max(a.dN, 1)).toFixed(1) }; }
   return o; };
 const tutte = agg(() => true); const perStile = Object.fromEntries(STILI.map(s => [s.id, agg(x => x.stile === s.id)]));
-console.log(`\n══ DIFFICOLTA-156 · ${ROSSO ? 'ROSSO (__CPM_NO_156)' : 'VERDE'}${VECCHIO ? ' · FINALIZZATORE (__CPM_NO_NEUTRO287)' : ' · EROE NEUTRO'} · ${ris.length} carriere x ${STAG} stagioni · ${Math.round((Date.now() - t0) / 1000)} s ══`);
+console.log(`\n══ DIFFICOLTA-156 · ${ROSSO ? 'ROSSO (__CPM_NO_156)' : ROSSO383 ? 'ROSSO 383 (__CPM_NO_G383)' : 'VERDE'}${VECCHIO ? ' · FINALIZZATORE (__CPM_NO_NEUTRO287)' : ' · EROE NEUTRO'} · ${ris.length} carriere x ${STAG} stagioni · ${Math.round((Date.now() - t0) / 1000)} s ══`);
 console.log('fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)');
 let dentro = 0, celle = 0; const fuori = [];
 for (const F of Object.keys(BERSAGLI)) { const m = tutte[F], b = BERSAGLI[F]; const c = k => { const ok = Math.abs(m[k] - b[k]) <= TOLL[k] + 1e-9; celle++; if (ok) dentro++; else fuori.push(`${F}.${k} ${m[k]} (bersaglio ${b[k]})`); return (ok ? '✓' : '✗') + m[k]; };
@@ -108,6 +109,13 @@ const errori = ris.reduce((s, x) => s + x.errors.length, 0), rotte = ris.filter(
 if (args.json) fs.writeFileSync(args.json, JSON.stringify({ rosso: ROSSO, semi: SEMI, stagioni: STAG, tutte, perStile, fuori, carriere: ris.map(x => ({ stile: x.stile, fase: x.fase, seme: x.seme, gare: x.gare.length, dec: x.dec.length, fine: x.fine, errori: x.errors.length })) }, null, 1));
 console.log(`celle entro tolleranza: ${dentro}/${celle} · carriere non concluse ${rotte} · pageerror ${errori}`); if (fuori.length) console.log('fuori: ' + fuori.join(' · '));
 /* verde: tutte le 20 celle dentro; rosso: la curva piatta deve lasciarne fuori almeno 4 (oggi: titolarita' e minuti di gavetta, voto/gol dell'elite...) */
-const pass = rotte === 0 && errori === 0 && (ROSSO ? fuori.length >= 4 : fuori.length === 0);
-console.log(pass ? (ROSSO ? '\n✅ ROSSO VISTO — senza la correzione la curva esce di tolleranza' : '\n✅ CURVA OK — le quattro fasi nei bersagli A') : (ROSSO ? '\n❌ ROSSO CIECO — anche senza correzione la curva sta nei bersagli' : '\n❌ CURVA FUORI BERSAGLIO'));
+/* [giro 383 PO-515] CONFLITTO DICHIARATO, non giudicato a parte: i voti di gavetta/affermazione/declino li decidono PO-360 (voto simulato = pagella
+   del motore, giro 158) e la decisione PO del 21/11 «+0,3» sotto OVR 72 (giro 310); i bersagli voto di PO-156 sono di prima. La riga dice quali
+   celle fuori sono di quel conflitto e quali no; il verde resta «tutte e 20 dentro» (bersagli e tolleranze invariati, decisione del PO). */
+const conflitto383 = fuori.filter(x => /^(gavetta|affermazione|declino)\.voto /.test(x)), altre383 = fuori.filter(x => !conflitto383.includes(x));
+if (!ROSSO && !ROSSO383) console.log(`conflitto PO-360/PO-156 (voto, dichiarato giro 383): ${conflitto383.length} celle · fuori per altri motivi: ${altre383.length}${altre383.length ? ' (' + altre383.join(' · ') + ')' : ''}`);
+/* rosso 383: col mister che legge di nuovo i voti simulati (e la forza e i gol di prima) la titolarita' o i minuti devono uscire */
+const fuori383 = fuori.filter(x => /\.(tit|min) /.test(x));
+const pass = rotte === 0 && errori === 0 && (ROSSO ? fuori.length >= 4 : ROSSO383 ? fuori383.length >= 1 : fuori.length === 0);
+if (ROSSO383) console.log(pass ? `\n✅ ROSSO 383 VISTO — senza il giro 383 escono minuti/titolarita' (${fuori383.join(' · ')})` : '\n❌ ROSSO 383 CIECO — anche senza il giro 383 minuti e titolarita\' restano nei bersagli'); else console.log(pass ? (ROSSO ? '\n✅ ROSSO VISTO — senza la correzione la curva esce di tolleranza' : '\n✅ CURVA OK — le quattro fasi nei bersagli A') : (ROSSO ? '\n❌ ROSSO CIECO — anche senza correzione la curva sta nei bersagli' : '\n❌ CURVA FUORI BERSAGLIO'));
 process.exit(pass ? 0 : 1);
