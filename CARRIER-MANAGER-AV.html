@@ -12287,7 +12287,11 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simM
 function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato → G/A del giocatore riproducibili nelle partite simulate
   const R=rng||Math.random;
   const tg=sim.homeScore||0;
-  if(tg===0)return{goals:0,assists:0};
+  /* [giro 379 PO-658] l'espulsione dell'eroe decisa dalla stessa esecuzione del motore (sim.cart310, giro 310) viaggia col tabellino: la
+     riga dell'eroe (_heroSimLine) la dichiara accanto al voto. Misurato: l'unica goleada vinta con voto < 6 su 5.000 simulate (e quella
+     della corsa del treno) e' un eroe espulso: «3-0 · 2 assist · voto 5,6» senza la causa a schermo. Nessun sorteggio in piu'. */
+  const _e379=!!(sim&&sim.cart310&&sim.cart310.r);
+  if(tg===0)return _e379?{goals:0,assists:0,esp:true}:{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
   const _fin78=(archId&&archId.id||archId)==='finalizzatore'||(!archId&&typeof neutro287==='function'&&neutro287());/* [giro 82 PO-287] l'eroe neutro (senza archetipo) legge la stessa curva del Finalizzatore del giro 78 *//* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
@@ -12311,11 +12315,11 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const pe=x=>Math.exp(-x);
   const g=r1<pe(gL156)?0:r1<pe(gL156)*(1+gL156)?1:2;
   const a=r2<pe(aL156)?0:r2<pe(aL156)*(1+aL156)?1:2;
-  return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g))};
+  return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g)),...(_e379?{esp:true}:{})};
 }
 /* [7.261.0 collaudo PO «nel toast del risultato specifica se l'eroe ha fatto assist e gol ed il voto»] riga-eroe
    condivisa dai toast dei path SIMULA: G/A solo se >0, voto sempre (se disponibile). */
-function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
+function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(ps&&ps.esp&&!(typeof window!=='undefined'&&window.__CPM_NO_G379A))_p.push("espulso");/* [giro 379 PO-658] la causa del voto basso accanto al voto; rosso __CPM_NO_G379A */if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
 
 /* ========================================
    UI COMPONENTS  (light theme – req #1)
@@ -54765,6 +54769,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
   const attesaConf194Ref=useRef(false); // [7.999.113 PO-194] la partita aspetta la chiusura della conferenza pre-partita
   const pendingMisterDiscorsoRef=useRef(null); // Sprint D3: mister talk deferred until prematch press conf closes
+  const simDopoPres379Ref=useRef(false);/* [giro 379 PO-659] «Simula» rinviato alla chiusura della sala stampa della presentazione */
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const matchEntryMinuteRef=useRef(60); // Sprint 148: survives coachDecision reset
   const _resumeNat55=useRef(null);/* [7.999.55] ripresa di un'amichevole della Nazionale: parte quando la convocazione e' pronta */
@@ -56136,6 +56141,7 @@ const getThisWeekMatchday=()=>{
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
+        if(interviewModal&&interviewModal.matchCtx==="presentazione"&&simDopoPres379Ref.current){doPresentazione(PRES_TONI[1]);setInterviewModal(null);return "presentazione";}/* [giro 379] il banco risponde alla presentazione aperta da «Simula» come il giocatore (tono equilibrato); la gara si simula alla chiusura */
         /* [7.999.43 imbracatura per il collaudo massivo delle carriere] con window.__CPM_SIM_NAT=1 la partita della Nazionale si SIMULA con
            la funzione del bottone «Simula» (stessa del gioco) invece di fermarsi: senza, il banco doveva chiudere i tornei d'ufficio. Spento = identico a prima. */
         if(player.euroMondiale?.active&&!player.euroMondiale?.done&&!_emInAttesa(player.euroMondiale)){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateEuroMondialeMatch();return "nat:euroMondiale";}return "blocked:euroMondiale";}
@@ -57990,6 +57996,12 @@ const getThisWeekMatchday=()=>{
   // Simulate current week's match then advance
   const simulateAndAdvance=()=>{
     if(openingGate())return;/* [7.16.0] W1 vincolante */
+    /* [giro 379 PO-659, residuo di PO-214 «con Simula la presentazione resta un riquadro in Home»] la prima gara col club nuovo, anche
+       simulata, passa dalla sala stampa della presentazione (la stessa di «Gioca», presIntervista214): si apre la conferenza, la gara
+       resta ferma, e la si simula quando la sala stampa si chiude a presentazione fatta (effetto dopo questa funzione). Misurato prima:
+       trasferimento + Simula = settimana avanzata, presentedClub ancora il club vecchio, riquadro in Home. Rosso __CPM_NO_G379B. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G379B)){try{const _md379=getThisWeekMatchday();
+      if(_md379&&presentazioneView(player)){simDopoPres379Ref.current=true;setInterviewModal(presIntervista214(player,_md379.opponentName||null));return;}}catch(_e){}}
     setShowMatchPrompt(null);
     /* [PO-222 · giro 33, eccezione PO 15/10] LO SQUALIFICATO NON FA PRESENZA. Il bottone «Simula» azzera isSuspended nello stesso
        gestore PRIMA di chiamare questa funzione: dentro l'updater p.isSuspended e' gia' false, quindi la squalifica si legge qui,
@@ -58162,6 +58174,11 @@ const getThisWeekMatchday=()=>{
     applyNatTournamentTrigger(player);
     applySaltoGennaio323(player);/* [giro 323] salto a gennaio: stesso chokepoint dei tre percorsi */
   };
+  /* [giro 379 PO-659] la sala stampa della presentazione aperta da «Simula» si e' chiusa: a presentazione fatta si simula la gara (chiusure
+     del render fresco: giocatore, prompt e decisione del mister di quell'istante); chiusa senza rispondere, il riquadro resta e il prossimo
+     «Simula» la riapre. */
+  useEffect(()=>{if(!simDopoPres379Ref.current||interviewModal)return;simDopoPres379Ref.current=false;
+    try{if(!presentazioneView(player))simulateAndAdvance();}catch(_e){}},[interviewModal,player.presentedClub]);
 
   /* [giro 131 · PO-331, decisione PO 09/11 «Finale in primo piano»] UNA SOLA FONTE per la prossima gara della
      Nazionale. Prima il comando principale leggeva la coda della Coppa Nazioni / Euro-Mondiale e la card

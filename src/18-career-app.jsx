@@ -611,6 +611,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
   const attesaConf194Ref=useRef(false); // [7.999.113 PO-194] la partita aspetta la chiusura della conferenza pre-partita
   const pendingMisterDiscorsoRef=useRef(null); // Sprint D3: mister talk deferred until prematch press conf closes
+  const simDopoPres379Ref=useRef(false);/* [giro 379 PO-659] «Simula» rinviato alla chiusura della sala stampa della presentazione */
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const matchEntryMinuteRef=useRef(60); // Sprint 148: survives coachDecision reset
   const _resumeNat55=useRef(null);/* [7.999.55] ripresa di un'amichevole della Nazionale: parte quando la convocazione e' pronta */
@@ -1982,6 +1983,7 @@ const getThisWeekMatchday=()=>{
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
+        if(interviewModal&&interviewModal.matchCtx==="presentazione"&&simDopoPres379Ref.current){doPresentazione(PRES_TONI[1]);setInterviewModal(null);return "presentazione";}/* [giro 379] il banco risponde alla presentazione aperta da «Simula» come il giocatore (tono equilibrato); la gara si simula alla chiusura */
         /* [7.999.43 imbracatura per il collaudo massivo delle carriere] con window.__CPM_SIM_NAT=1 la partita della Nazionale si SIMULA con
            la funzione del bottone «Simula» (stessa del gioco) invece di fermarsi: senza, il banco doveva chiudere i tornei d'ufficio. Spento = identico a prima. */
         if(player.euroMondiale?.active&&!player.euroMondiale?.done&&!_emInAttesa(player.euroMondiale)){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateEuroMondialeMatch();return "nat:euroMondiale";}return "blocked:euroMondiale";}
@@ -3836,6 +3838,12 @@ const getThisWeekMatchday=()=>{
   // Simulate current week's match then advance
   const simulateAndAdvance=()=>{
     if(openingGate())return;/* [7.16.0] W1 vincolante */
+    /* [giro 379 PO-659, residuo di PO-214 «con Simula la presentazione resta un riquadro in Home»] la prima gara col club nuovo, anche
+       simulata, passa dalla sala stampa della presentazione (la stessa di «Gioca», presIntervista214): si apre la conferenza, la gara
+       resta ferma, e la si simula quando la sala stampa si chiude a presentazione fatta (effetto dopo questa funzione). Misurato prima:
+       trasferimento + Simula = settimana avanzata, presentedClub ancora il club vecchio, riquadro in Home. Rosso __CPM_NO_G379B. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G379B)){try{const _md379=getThisWeekMatchday();
+      if(_md379&&presentazioneView(player)){simDopoPres379Ref.current=true;setInterviewModal(presIntervista214(player,_md379.opponentName||null));return;}}catch(_e){}}
     setShowMatchPrompt(null);
     /* [PO-222 · giro 33, eccezione PO 15/10] LO SQUALIFICATO NON FA PRESENZA. Il bottone «Simula» azzera isSuspended nello stesso
        gestore PRIMA di chiamare questa funzione: dentro l'updater p.isSuspended e' gia' false, quindi la squalifica si legge qui,
@@ -4008,6 +4016,11 @@ const getThisWeekMatchday=()=>{
     applyNatTournamentTrigger(player);
     applySaltoGennaio323(player);/* [giro 323] salto a gennaio: stesso chokepoint dei tre percorsi */
   };
+  /* [giro 379 PO-659] la sala stampa della presentazione aperta da «Simula» si e' chiusa: a presentazione fatta si simula la gara (chiusure
+     del render fresco: giocatore, prompt e decisione del mister di quell'istante); chiusa senza rispondere, il riquadro resta e il prossimo
+     «Simula» la riapre. */
+  useEffect(()=>{if(!simDopoPres379Ref.current||interviewModal)return;simDopoPres379Ref.current=false;
+    try{if(!presentazioneView(player))simulateAndAdvance();}catch(_e){}},[interviewModal,player.presentedClub]);
 
   /* [giro 131 · PO-331, decisione PO 09/11 «Finale in primo piano»] UNA SOLA FONTE per la prossima gara della
      Nazionale. Prima il comando principale leggeva la coda della Coppa Nazioni / Euro-Mondiale e la card
