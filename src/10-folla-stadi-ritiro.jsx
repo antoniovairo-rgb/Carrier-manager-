@@ -1006,7 +1006,11 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simM
 function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato → G/A del giocatore riproducibili nelle partite simulate
   const R=rng||Math.random;
   const tg=sim.homeScore||0;
-  if(tg===0)return{goals:0,assists:0};
+  /* [giro 379 PO-658] l'espulsione dell'eroe decisa dalla stessa esecuzione del motore (sim.cart310, giro 310) viaggia col tabellino: la
+     riga dell'eroe (_heroSimLine) la dichiara accanto al voto. Misurato: l'unica goleada vinta con voto < 6 su 5.000 simulate (e quella
+     della corsa del treno) e' un eroe espulso: «3-0 · 2 assist · voto 5,6» senza la causa a schermo. Nessun sorteggio in piu'. */
+  const _e379=!!(sim&&sim.cart310&&sim.cart310.r);
+  if(tg===0)return _e379?{goals:0,assists:0,esp:true}:{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
   const _fin78=(archId&&archId.id||archId)==='finalizzatore'||(!archId&&typeof neutro287==='function'&&neutro287());/* [giro 82 PO-287] l'eroe neutro (senza archetipo) legge la stessa curva del Finalizzatore del giro 78 *//* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
@@ -1030,9 +1034,9 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const pe=x=>Math.exp(-x);
   const g=r1<pe(gL156)?0:r1<pe(gL156)*(1+gL156)?1:2;
   const a=r2<pe(aL156)?0:r2<pe(aL156)*(1+aL156)?1:2;
-  return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g))};
+  return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g)),...(_e379?{esp:true}:{})};
 }
 /* [7.261.0 collaudo PO «nel toast del risultato specifica se l'eroe ha fatto assist e gol ed il voto»] riga-eroe
    condivisa dai toast dei path SIMULA: G/A solo se >0, voto sempre (se disponibile). */
-function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
+function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(ps&&ps.esp&&!(typeof window!=='undefined'&&window.__CPM_NO_G379A))_p.push("espulso");/* [giro 379 PO-658] la causa del voto basso accanto al voto; rosso __CPM_NO_G379A */if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
 

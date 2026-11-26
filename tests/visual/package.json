@@ -708,6 +708,7 @@
     "misura-210": "node misura-210.mjs",
     "agente-198": "node agente-198.mjs",
     "rinnovo-354": "node rinnovo-354.mjs",
+    "residui-379": "node residui-379.mjs && CPM_ROSSO=1 node residui-379.mjs",
     "svincolato-198": "node svincolato-198.mjs",
     "home-199": "node home-199.mjs",
     "prima-giornata-371": "node prima-giornata-371.mjs",
