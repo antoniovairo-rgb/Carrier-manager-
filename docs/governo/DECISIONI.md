@@ -2133,3 +2133,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 08:20 — PO: «lascia tutto com'è» = resta la regola dei 6 vagoni (revocata la deroga delle 08:05). 217 = 372, 373, 374, 375, 376, 377 (pronta in locale, riserva sviluppo/treno-pronto-217-sei); 218 = 378, 379, 380, 381, 383, 384, 385 (7: il settimo slitta alla 219 o la 218 si ferma a 6).
 
 - 26/11 08:52 — Consegnati 387 (riparazione consegna-103/testa-342) e 386 (PO-516). Lanciato 391 (PO-523). Attivi: 388, 389, 390, 391.
+
+- 26/11 09:27 — Treno della 216 (corsa 45751390281) finito 32/32: 357 verdi su 388, rilascio FERMATO da 1 rosso nuovo: tiri-367 (braccio verde: «gi5 rigore: all'uscita il pallone è nello specchio»). Lanciato giro 393 di riparazione. Consegnato anche il giro 389 (PO-671), lanciato il 392 (PO-528).
