@@ -958,6 +958,7 @@ function App(){
   const[legacyBonus,setLegacyBonus]=useState(null);
   const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#1e40af"});setTimeout(()=>setAppMsg(null),2200);};
 
+  const[nuovo399,setNuovo399]=useState(null);/* [giro 399 PO-573] {slot|null, v}: salvataggio di una versione piu' nuova, rifiutato */
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
   const[riserve,setRiserve]=useState([]);const[riservaNo,setRiservaNo]=useState([]);/* [PO-167] slot ripristinabili dalla copia di riserva · slot rimandati in questa sessione */
@@ -980,7 +981,7 @@ function App(){
       if(!_test){
         let slot=null;try{const a=safeLS.get("cpm-active");if(a!=null&&a!=="")slot=parseInt(a,10);}catch(_e){}
         if(slot!=null&&slot>=0&&slot<=2){
-          try{const d=await storage.load(slot);if(d&&d.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");return;}}catch(_e){}
+          try{const d=await storage.load(slot);if(d&&d.player&&troppoNuovo399(d)){setNuovo399({slot,v:versioneSalvataggio399(d)});}else if(d&&d.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");return;}}catch(_e){}
         }
       }
       if(!_test){/* [7.330.0 collaudo PO «se non termino i provini non viene salvata la carriera»] AUTO-RIPRESA dei
@@ -1012,6 +1013,7 @@ function App(){
 
   const loadSave=async(slot=0)=>{
     const d=await storage.load(slot);
+    if(d?.player&&troppoNuovo399(d)){setNuovo399({slot,v:versioneSalvataggio399(d)});return;}/* [giro 399 PO-573] rifiutato: niente carriera, niente migrazione, niente scrittura */
     if(d?.player){
       if((d.saveVersion||0)>SAVE_VERSION)appNotify(`⚠️ Salvataggio creato con una versione più NUOVA del gioco (v${d.saveVersion} > v${SAVE_VERSION}): alcuni dati potrebbero non essere letti correttamente. Aggiorna l'app.`,TH.warning);/* [6.74.0 QA-19] prima un save "futuro" veniva caricato in silenzio */
       setPlayer(d.player);setCurrentSlot(slot);setPhase("career");
@@ -1046,6 +1048,7 @@ function App(){
             const raw=d.slots[KEYS[i]];if(!raw)continue;
             let sd;try{sd=JSON.parse(raw);}catch{continue;}
             if(!sd?.player?.name)continue;
+            if(troppoNuovo399(sd)){setNuovo399({slot:null,v:versioneSalvataggio399(sd)});continue;}/* [giro 399 PO-573] uno slot di una versione piu' nuova non si ripristina qui */
             if(slots[i]&&!window.confirm(`Lo Slot ${i+1} (${slots[i].name}) verrà sovrascritto dal backup. Continuare?`))continue;
             await storage.save({phase:"career",player:sd.player},i);rest++;
           }
@@ -1054,6 +1057,7 @@ function App(){
           return;
         }
         if(!d?.player?.name)throw new Error();
+        if(troppoNuovo399(d)){setNuovo399({slot:null,v:versioneSalvataggio399(d)});return;}/* [giro 399 PO-573] file di una versione piu' nuova: non si importa */
         const emptySlot=slots.findIndex(s=>!s);
         const slot=emptySlot>=0?emptySlot:0;
         if(emptySlot<0&&slots[0]&&!window.confirm(`Tutti gli slot sono pieni: lo Slot 1 (${slots[0].name}) verrà sovrascritto. Continuare?`)){appNotify("Import annullato.");return;}/* [6.74.0 QA-6b] prima sovrascriveva lo Slot 1 in silenzio */
@@ -1254,6 +1258,12 @@ function App(){
     return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
+    {nuovo399&&<Modal open cpm="nuovo-399" pannelloCpm="nuovo-399-pannello" onClose={()=>setNuovo399(null)} title="Salvataggio di una versione più nuova"
+      footer={<Btn v="primary" onClick={()=>setNuovo399(null)}>Ho capito</Btn>}>{/* [giro 399 PO-573] messaggio del rifiuto, grafica unica (Modal + TH) */}
+      <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{nuovo399.slot!=null?`Il salvataggio ${nuovo399.slot+1}`:"Questo salvataggio"} è stato creato con una versione più nuova del gioco. Questa versione non lo può aprire.</div>
+      <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.sm}}>La tua carriera è al sicuro: non abbiamo cambiato niente.</div>
+      <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>Aggiorna il gioco per riprenderla.</div>
+    </Modal>}
     {_ris167&&<Modal open cpm="riserva-167" pannelloCpm="riserva-167-pannello" dismissable={false} title="Copia di riserva trovata"
       footer={<><Btn v="secondary" onClick={()=>setRiservaNo(a=>[...a,_ris167.slot])}>Non ora</Btn><Btn v="primary" onClick={()=>ripristinaSlot(_ris167.slot)}>Ripristina</Btn></>}>
       <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{_ris167.motivo==="corrotto"?`Il salvataggio ${_ris167.slot+1} non si riesce a leggere.`:`Il salvataggio ${_ris167.slot+1} risulta vuoto.`} C'è una copia di riserva della tua carriera:</div>

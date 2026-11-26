@@ -35,6 +35,13 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
 const GAME_VERSION="7.999.215";/* [7.999.215] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45672152539): Unione sviluppo/giro366-volano in lavoro/201. Rossi dichiarati: quelli della 7.999.214. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
+/* [giro 399 PO-573] SALVATAGGIO DI UNA VERSIONE PIU' NUOVA. Prima veniva aperto e ritimbrato alla versione di
+   questo gioco (migrazione, src/17) e l'autosalvataggio lo riscriveva: i campi che questa versione non conosce si
+   perdevano. Ora si RIFIUTA (src/19: Continua, auto-ripresa, importazione, backup) e su disco non si tocca niente:
+   chi torna alla versione nuova lo ritrova. La versione e' la piu' alta fra busta e giocatore.
+   Rosso __CPM_NO_G399 = comportamento di prima. Guardiano npm run save-compat (caso 6, verde + rosso). */
+const versioneSalvataggio399=d=>Math.max(+(d&&d.saveVersion)||0,+(d&&d.player&&d.player.saveVersion)||0);
+const troppoNuovo399=d=>!(typeof window!=='undefined'&&window.__CPM_NO_G399)&&versioneSalvataggio399(d)>SAVE_VERSION;
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
 //   Ordine + etichette condivisi tra il gestore d'esito e la UI così round/label restano coerenti.

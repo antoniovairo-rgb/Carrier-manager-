@@ -2899,7 +2899,7 @@ function migratePlayer(player){
      è stato migrato, scritta una sola volta): (a) un save v7 riparato non resta marcato v7 per sempre —
      lo stamp rende possibile la migrazione VERSIONED (if saveVersion<N) oltre che per-presenza-campo;
      (b) migratedFrom è diagnostica permanente per i bug report («questo save nasce v7»). Lazy, no bump. */
-  if((newP.saveVersion||0)!==SAVE_VERSION){
+  if((newP.saveVersion||0)!==SAVE_VERSION&&!(troppoNuovo399(newP)&&(newP.saveVersion||0)>SAVE_VERSION)){/* [giro 399 PO-573] mai all'indietro */
     newP={...newP,...(newP.migratedFrom==null?{migratedFrom:(newP.saveVersion||0)}:{}),saveVersion:SAVE_VERSION};
     changed=true;
   }

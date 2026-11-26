@@ -6278,6 +6278,13 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
 const GAME_VERSION="7.999.215";/* [7.999.215] vagone rilasciato in automatico dal treno (giro 312, PO-600, corsa 45672152539): Unione sviluppo/giro366-volano in lavoro/201. Rossi dichiarati: quelli della 7.999.214. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
+/* [giro 399 PO-573] SALVATAGGIO DI UNA VERSIONE PIU' NUOVA. Prima veniva aperto e ritimbrato alla versione di
+   questo gioco (migrazione, src/17) e l'autosalvataggio lo riscriveva: i campi che questa versione non conosce si
+   perdevano. Ora si RIFIUTA (src/19: Continua, auto-ripresa, importazione, backup) e su disco non si tocca niente:
+   chi torna alla versione nuova lo ritrova. La versione e' la piu' alta fra busta e giocatore.
+   Rosso __CPM_NO_G399 = comportamento di prima. Guardiano npm run save-compat (caso 6, verde + rosso). */
+const versioneSalvataggio399=d=>Math.max(+(d&&d.saveVersion)||0,+(d&&d.player&&d.player.saveVersion)||0);
+const troppoNuovo399=d=>!(typeof window!=='undefined'&&window.__CPM_NO_G399)&&versioneSalvataggio399(d)>SAVE_VERSION;
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
 //   Ordine + etichette condivisi tra il gestore d'esito e la UI così round/label restano coerenti.
@@ -54259,7 +54266,7 @@ function migratePlayer(player){
      è stato migrato, scritta una sola volta): (a) un save v7 riparato non resta marcato v7 per sempre —
      lo stamp rende possibile la migrazione VERSIONED (if saveVersion<N) oltre che per-presenza-campo;
      (b) migratedFrom è diagnostica permanente per i bug report («questo save nasce v7»). Lazy, no bump. */
-  if((newP.saveVersion||0)!==SAVE_VERSION){
+  if((newP.saveVersion||0)!==SAVE_VERSION&&!(troppoNuovo399(newP)&&(newP.saveVersion||0)>SAVE_VERSION)){/* [giro 399 PO-573] mai all'indietro */
     newP={...newP,...(newP.migratedFrom==null?{migratedFrom:(newP.saveVersion||0)}:{}),saveVersion:SAVE_VERSION};
     changed=true;
   }
@@ -68612,6 +68619,7 @@ function App(){
   const[legacyBonus,setLegacyBonus]=useState(null);
   const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#1e40af"});setTimeout(()=>setAppMsg(null),2200);};
 
+  const[nuovo399,setNuovo399]=useState(null);/* [giro 399 PO-573] {slot|null, v}: salvataggio di una versione piu' nuova, rifiutato */
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
   const[riserve,setRiserve]=useState([]);const[riservaNo,setRiservaNo]=useState([]);/* [PO-167] slot ripristinabili dalla copia di riserva · slot rimandati in questa sessione */
@@ -68634,7 +68642,7 @@ function App(){
       if(!_test){
         let slot=null;try{const a=safeLS.get("cpm-active");if(a!=null&&a!=="")slot=parseInt(a,10);}catch(_e){}
         if(slot!=null&&slot>=0&&slot<=2){
-          try{const d=await storage.load(slot);if(d&&d.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");return;}}catch(_e){}
+          try{const d=await storage.load(slot);if(d&&d.player&&troppoNuovo399(d)){setNuovo399({slot,v:versioneSalvataggio399(d)});}else if(d&&d.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");return;}}catch(_e){}
         }
       }
       if(!_test){/* [7.330.0 collaudo PO «se non termino i provini non viene salvata la carriera»] AUTO-RIPRESA dei
@@ -68666,6 +68674,7 @@ function App(){
 
   const loadSave=async(slot=0)=>{
     const d=await storage.load(slot);
+    if(d?.player&&troppoNuovo399(d)){setNuovo399({slot,v:versioneSalvataggio399(d)});return;}/* [giro 399 PO-573] rifiutato: niente carriera, niente migrazione, niente scrittura */
     if(d?.player){
       if((d.saveVersion||0)>SAVE_VERSION)appNotify(`⚠️ Salvataggio creato con una versione più NUOVA del gioco (v${d.saveVersion} > v${SAVE_VERSION}): alcuni dati potrebbero non essere letti correttamente. Aggiorna l'app.`,TH.warning);/* [6.74.0 QA-19] prima un save "futuro" veniva caricato in silenzio */
       setPlayer(d.player);setCurrentSlot(slot);setPhase("career");
@@ -68700,6 +68709,7 @@ function App(){
             const raw=d.slots[KEYS[i]];if(!raw)continue;
             let sd;try{sd=JSON.parse(raw);}catch{continue;}
             if(!sd?.player?.name)continue;
+            if(troppoNuovo399(sd)){setNuovo399({slot:null,v:versioneSalvataggio399(sd)});continue;}/* [giro 399 PO-573] uno slot di una versione piu' nuova non si ripristina qui */
             if(slots[i]&&!window.confirm(`Lo Slot ${i+1} (${slots[i].name}) verrà sovrascritto dal backup. Continuare?`))continue;
             await storage.save({phase:"career",player:sd.player},i);rest++;
           }
@@ -68708,6 +68718,7 @@ function App(){
           return;
         }
         if(!d?.player?.name)throw new Error();
+        if(troppoNuovo399(d)){setNuovo399({slot:null,v:versioneSalvataggio399(d)});return;}/* [giro 399 PO-573] file di una versione piu' nuova: non si importa */
         const emptySlot=slots.findIndex(s=>!s);
         const slot=emptySlot>=0?emptySlot:0;
         if(emptySlot<0&&slots[0]&&!window.confirm(`Tutti gli slot sono pieni: lo Slot 1 (${slots[0].name}) verrà sovrascritto. Continuare?`)){appNotify("Import annullato.");return;}/* [6.74.0 QA-6b] prima sovrascriveva lo Slot 1 in silenzio */
@@ -68908,6 +68919,12 @@ function App(){
     return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
+    {nuovo399&&<Modal open cpm="nuovo-399" pannelloCpm="nuovo-399-pannello" onClose={()=>setNuovo399(null)} title="Salvataggio di una versione più nuova"
+      footer={<Btn v="primary" onClick={()=>setNuovo399(null)}>Ho capito</Btn>}>{/* [giro 399 PO-573] messaggio del rifiuto, grafica unica (Modal + TH) */}
+      <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{nuovo399.slot!=null?`Il salvataggio ${nuovo399.slot+1}`:"Questo salvataggio"} è stato creato con una versione più nuova del gioco. Questa versione non lo può aprire.</div>
+      <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.sm}}>La tua carriera è al sicuro: non abbiamo cambiato niente.</div>
+      <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>Aggiorna il gioco per riprenderla.</div>
+    </Modal>}
     {_ris167&&<Modal open cpm="riserva-167" pannelloCpm="riserva-167-pannello" dismissable={false} title="Copia di riserva trovata"
       footer={<><Btn v="secondary" onClick={()=>setRiservaNo(a=>[...a,_ris167.slot])}>Non ora</Btn><Btn v="primary" onClick={()=>ripristinaSlot(_ris167.slot)}>Ripristina</Btn></>}>
       <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{_ris167.motivo==="corrotto"?`Il salvataggio ${_ris167.slot+1} non si riesce a leggere.`:`Il salvataggio ${_ris167.slot+1} risulta vuoto.`} C'è una copia di riserva della tua carriera:</div>

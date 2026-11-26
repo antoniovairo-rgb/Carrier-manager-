@@ -18,6 +18,64 @@ const REQUIRED = [
   'patrimonio303', /* [PO-303] storico mensile del patrimonio: serie vuota sui salvataggi vecchi */
 ];
 
+/* [giro 399 PO-573] salvataggio di una versione PIU' NUOVA del gioco. Sintetico (mai un salvataggio del PO). */
+const KEYS399 = ['cpm-v3', 'cpm-v3-s2', 'cpm-v3-s3'];
+const save399 = (ver) => ({ phase: 'career', saveVersion: ver, savedAt: 1, player: {
+  campDone: true, tutorialDone: true, weekLived: true, name: 'Futuro Prova', nation: 'Italia', avatarId: 0, age: 22, position: 'ATT', foot: 'R',
+  season: 4, week: 6, proStatus: 'pro', ovr: 78, saveVersion: ver, campoFuturo399: { nato: 'versione nuova', n: 7 },
+  club: { id: 'mad', n: 'CF Madrid', a: 'CFM', p: 88, c: '#ffffff', c2: '#111111', nat: '🇪🇸', lg: 'Liga Ibérica' },
+  stats: { 'velocità': 80, tecnica: 80, fisico: 80, 'mentalità': 80, tiro: 80, passaggio: 80, dribbling: 80, posizionamento: 80 },
+  form: 70, morale: 70, fatigue: 10, popularity: 50, value: 20, bankBalance: 1000, goals: 5, assists: 2, matches: 10,
+  contract: { duration: 3, wage: 30000, expiresAtSeason: 8 } } });
+async function nuovo399(browser, port, rosso) {
+  const esiti = [], guasti = []; let giudicati = 0, difetto = 0;
+  const caso = async (nome, { slot, ver, via }) => {
+    const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
+    const page = await ctx.newPage(); await installCdnRoutes(page);
+    const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
+    const raw = JSON.stringify(save399(ver));
+    await page.addInitScript(c => { window.__CPM_GLB = false; if (c.rosso) window.__CPM_NO_G399 = 1;
+      if (!sessionStorage.getItem('seme399')) { sessionStorage.setItem('seme399', '1'); localStorage.setItem(c.k, c.raw); if (c.via === 'ripresa') localStorage.setItem('cpm-active', String(c.slot)); } },
+      { rosso, k: KEYS399[slot], raw, slot, via });
+    const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html${via === 'ripresa' ? '' : '?cpmtest=1'}`;
+    try {
+      await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+      if (via === 'continua') {
+        const b = page.getByRole('button', { name: /Continua/ }).first();
+        await b.waitFor({ timeout: 40000 }); await b.click();
+      } else {
+        await page.waitForFunction(() => document.querySelector('.cpm-nav-tabs') || document.querySelector('[data-cpm="nuovo-399"]') || /Continua/.test(document.body.innerText), null, { timeout: 40000 });
+      }
+      /* si attende l'esito (messaggio o carriera montata), poi 6 s di vita: l'autosalvataggio della carriera e' a debounce */
+      await page.waitForFunction(() => document.querySelector('.cpm-nav-tabs') || document.querySelector('[data-cpm="nuovo-399"]'), null, { timeout: 30000 }).catch(() => {});
+      await sleep(6000);
+      const st = await page.evaluate(k => ({ s: localStorage.getItem(k), car: (() => { const n = document.querySelector('.cpm-nav-tabs'); return !!n && !/Rivedi intro/i.test(n.innerText); })(),/* la Home ha la stessa barra (src/19 HomeNavBar): la carriera e' la barra SENZA «Rivedi intro» */
+        msg: (document.querySelector('[data-cpm="nuovo-399"]') || {}).innerText || '' }), KEYS399[slot]);
+      if (ver > 9) {
+        const intatto = st.s === raw, rifiutato = !st.car && /più nuova/.test(st.msg);
+        let v = null; try { const d = JSON.parse(st.s); v = `${d.saveVersion}/${d.player.saveVersion}`; } catch (_e) {}
+        esiti.push(`${nome}: carriera aperta=${st.car} · messaggio=${rifiutato ? 'si' : 'no'} · dati intatti=${intatto} (versione su disco ${v})`);
+        if (!intatto || !rifiutato) difetto++;
+        if (!intatto) guasti.push(`${nome}: il salvataggio su disco e' cambiato (versione ${v})`);
+        if (!rifiutato) guasti.push(`${nome}: non rifiutato con il messaggio (carriera aperta=${st.car})`);
+      } else {
+        let d = null; try { d = JSON.parse(st.s); } catch (_e) {}
+        const migr = d && d.player && d.player.saveVersion === 9 && d.player.migratedFrom === ver;
+        esiti.push(`${nome}: carriera aperta=${st.car} · migrato ${ver}->${d && d.player && d.player.saveVersion} (migratedFrom ${d && d.player && d.player.migratedFrom})`);
+        if (!st.car || !migr) guasti.push(`${nome}: il salvataggio vecchio non migra piu' come prima`);
+      }
+      if (errs.length) guasti.push(`${nome}: pageerror ${errs[0]}`);
+      giudicati++;
+    } catch (e) { guasti.push(`${nome}: non giudicato (${String(e.message).slice(0, 100)})`); }
+    await ctx.close();
+  };
+  for (const slot of [0, 1, 2]) await caso(`slot ${slot + 1} v10 · Continua`, { slot, ver: 10, via: 'continua' });
+  for (const slot of [0, 2]) await caso(`slot ${slot + 1} v10 · auto-ripresa`, { slot, ver: 10, via: 'ripresa' });
+  await caso('slot 2 v8 · Continua (vecchio)', { slot: 1, ver: 8, via: 'continua' });
+  await caso('slot 1 v8 · auto-ripresa (vecchio)', { slot: 0, ver: 8, via: 'ripresa' });
+  return { esiti, guasti, giudicati, difetto };
+}
+
 (async () => {
   const srv = await startServer(); const port = srv.address().port;
   const browser = await launchBrowser();
@@ -99,6 +157,21 @@ const REQUIRED = [
     const ns = get('null-safety');
     ok(!ns.threw, `null-safety ha lanciato: ${ns.err || ''}`);
     ok(ns.hasFoot === true, 'null-safety: campo foot non backfillato su save scarno');
+
+    // CASO 6 — [giro 399 PO-573] SALVATAGGIO PIU' NUOVO: rifiutato con un messaggio, dati intatti byte per byte,
+    // in ognuno dei tre slot, sia col tasto «Continua» sia con l'auto-ripresa; i vecchi migrano come prima.
+    // Due bracci: verde (gioco com'e') e rosso (__CPM_NO_G399 = comportamento di prima, il difetto deve vedersi).
+    for (const rosso of [false, true]) {
+      const r6 = await nuovo399(browser, port, rosso);
+      const tag = rosso ? 'rosso399' : 'verde399';
+      for (const x of r6.esiti) console.log(`  · [${tag}] ${x}`);
+      if (!rosso) { for (const g of r6.guasti) ok(false, `[${tag}] ${g}`); ok(r6.giudicati === 7, `[${tag}] casi giudicati ${r6.giudicati}/7 (non giudicato = rosso)`); }
+      else { ok(r6.difetto >= 3, `[${tag}] il braccio rosso deve mostrare il difetto in almeno 3 casi, visto in ${r6.difetto} (guardiano cieco)`); }
+    }
+    {
+      const M6 = await page.evaluate(() => { const { player } = window.__CPM_MIGRATE({ name: 'Futuro', nation: 'IT', proStatus: 'u18', club: { id: 'u18', n: 'U18', lg: 'Primavera 1' }, season: 1, week: 3, ovr: 62, stats: {}, form: 70, saveVersion: 99 }); return player.saveVersion; });
+      ok(M6 === 99, `[verde399] la migrazione non deve ritimbrare un salvataggio piu' nuovo: saveVersion ${M6} (atteso 99)`);
+    }
 
   } catch (e) {
     fails++; console.log('  ❌ FATAL: ' + (e && e.stack || e));
