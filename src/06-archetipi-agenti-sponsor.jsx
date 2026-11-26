@@ -389,9 +389,43 @@ if(typeof window!=='undefined'){window.agentIntroOptions=agentIntroOptions;windo
    ritmi diversi ma la STESSA carriera si comporta sempre allo stesso modo.
    E non si parla mai appena firmato: dopo l'incontro d'ingaggio servono almeno otto settimane
    prima che «come stai?» abbia senso. */
+/* [giro 409 · PO-675, parole del PO 26/11 «Dopo che mi sono trasferito in un club, la gente non può chiedermi se sto bene in
+   quel club, è troppo prematuro»] IL GRADIMENTO SI CHIEDE SOLO A CHI NEL CLUB CI HA VISSUTO. Misurato prima (dopo-trasferimento-409,
+   braccio rosso): con un procuratore che non ti sentiva da mesi «Dimmi sinceramente: sei felice qui?» arrivava UNA settimana dopo la
+   firma, e «Come ti trovi a {club}?» / «Ti mancano i vecchi tempi? — Sì, ma sono felice qui» erano in palio dalla settimana stessa.
+   Regola: nessuna domanda sul gradimento del club prima di 10 settimane nel club nuovo E 6 partite giocate con lui (circa meta' del
+   girone d'andata: 13-14 giornate in 19 settimane); a 16 settimane (quattro mesi, la cadenza minima del confronto) si sblocca comunque,
+   perche' un infortunio lungo non deve spegnere il procuratore per sempre. L'arrivo e' `clubArrivo409` {id,s,w}, timbrato da
+   CareerApp quando cambia `club.id` (un solo punto per tutti i percorsi: offerta, prestito e rientro, passaggio pro). Campo opzionale
+   e additivo: nessun SAVE bump; un salvataggio senza timbro e' «arrivo sconosciuto» = nessun freno, salvo che lo storico dica che il
+   club e' cambiato in questa stagione (ultima riga di `history` con un altro club: arrivo a settimana 1, il limite piu' indulgente).
+   Rosso __CPM_NO_G409: la regola non frena niente (comportamento di prima). */
+const GRAD409={sett:10,partite:6,tetto:16};
+function _no409(){try{return typeof window!=="undefined"&&!!window.__CPM_NO_G409;}catch(_e){return false;}}
+function arrivoClub409(p){const _p=p||{};const c=_p.club;if(!c||!c.id)return null;
+  const a=_p.clubArrivo409;if(a&&a.id===c.id)return(+a.s>0)?{s:+a.s,w:+a.w||1}:null;
+  return null;}
+function timbroArrivo409(p){/* cosa scrivere quando club.id non coincide col timbro (null = niente da scrivere) */
+  const _p=p||{};const c=_p.club;if(!c||!c.id)return null;const a=_p.clubArrivo409;if(a&&a.id===c.id)return null;
+  const S=+_p.season||1,W=+_p.week||1;
+  if(a)return{id:c.id,s:S,w:W};/* cambio di club visto dal vivo */
+  const h=_p.history||[];const u=h[h.length-1];/* salvataggio senza timbro: lo storico basta a dire «e' cambiato in questa stagione»? */
+  if(u&&u.clubId&&u.clubId!==c.id&&(+u.season||0)>=S-1)return{id:c.id,s:S,w:1};
+  return{id:c.id,s:0,w:0};/* arrivo sconosciuto: nessun freno */}
+function gradimento409(p){const _p=p||{};const a=arrivoClub409(_p);
+  if(!a)return{ok:true,sett:null,partite:null};
+  const S=+_p.season||1,W=+_p.week||1;const sett=(S-a.s)*38+(W-a.w);
+  const partite=(_p.matchHistory||[]).filter(m=>m&&m.rating!=null&&((+m.season||0)-a.s)*38+((+m.week||0)-a.w)>0).length;
+  const ok=_no409()||sett>=GRAD409.tetto||(sett>=GRAD409.sett&&partite>=GRAD409.partite);
+  return{ok,sett,partite};}
+function gradimentoOk409(p){try{return gradimento409(p).ok;}catch(_e){return true;}}
+if(typeof window!=='undefined'){window.gradimento409=gradimento409;window.timbroArrivo409=timbroArrivo409;window.GRAD409=GRAD409;
+  window.__CPM_Q409=()=>({iv:INTERVIEW_QS,ev:WEEKLY_IMPULSES});/* sola lettura e pigra (le tabelle nascono piu' avanti), per il guardiano dopo-trasferimento-409 */}
+
 function agentCheckinDue(p){
   const _p=p||{};const ag=_p.agent;
   if(!_p.hasAgent||!ag)return{due:false,att:0};
+  if(!gradimentoOk409(_p))return{due:false,att:0,attesa409:true};/* [giro 409] troppo presto nel club nuovo */
   if((_p.proStatus||"u18")!=="pro")return{due:false,att:0};
   const s0=+_p.season||1,w0=+_p.week||1;
   const lc=ag.lastCheckin||ag.since||{s:s0,w:w0};

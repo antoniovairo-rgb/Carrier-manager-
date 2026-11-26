@@ -629,7 +629,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Cavalco l'onda — oggi è un gran giorno",ef:{morale:10,form:5}},
     {txt:"😐 Era solo un sogno. Al lavoro.",ef:{form:2,fatigue:-4}},
   ]},
-  {id:"wi_ex_club",cond:_cx154(p=>_exClub154(p)/* serve un ex: un club lasciato o qualche stagione alle spalle */),cat:"tensione",txt:"Un tuo ex compagno ti scrive: «Ti mancano i vecchi tempi?»",choices:[
+  {id:"wi_ex_club",cond:_cx154(p=>_exClub154(p)/* serve un ex: un club lasciato o qualche stagione alle spalle */&&gradimentoOk409(p)/* [giro 409 PO-675] «sono felice qui» non si dice alla seconda settimana */),cat:"tensione",txt:"Un tuo ex compagno ti scrive: «Ti mancano i vecchi tempi?»",choices:[
     {txt:"❤️ «Sì, ma sono felice qui»",ef:{morale:8}},
     {txt:"😐 «È il calcio. Si va avanti»",ef:{morale:3}},
     {txt:"😔 «Onestamente, un po' sì»",ef:{morale:-4,popularity:3}},

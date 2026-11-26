@@ -529,6 +529,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const rich238Ref=useRef(null);/* [giro 238 · PO-501] il richiamo arrivato durante la corsa, mostrato a corsa finita */
   /* [giro 238 · PO-496] durata dei premi del patto: cambiando club si perdono (premiPulisci238 toglie le voci di un altro club) */
   useEffect(()=>{try{if(!premiPulisci238(player))return;setPlayer(q=>{const o=premiPulisci238(q);return o?{...q,premiPatto227:o,log:["🔁 Nuovo club: i premi del patto col mister restano dove te li eri guadagnati.",...(q.log||[])].slice(0,60)}:q;});}catch(_e){}},[player.club&&player.club.id]);// eslint-disable-line
+  /* [giro 409 · PO-675] il timbro d'arrivo nel club: un solo punto per tutti i percorsi che cambiano club.id. Cambiando club, un
+     confronto col procuratore gia' in sospeso (maturato col club di prima) decade: la domanda era per un altro posto. */
+  useEffect(()=>{try{if(!timbroArrivo409(player))return;setPlayer(q=>{const t=timbroArrivo409(q);if(!t)return q;
+    const vivo=!!q.clubArrivo409&&t.s>0&&!_no409();
+    return{...q,clubArrivo409:t,...(vivo&&q.agentCheckin&&q.agentCheckin.due?{agentCheckin:{due:false,s:q.season||1,w:q.week||1}}:{})};});}catch(_e){}},[player.club&&player.club.id]);// eslint-disable-line
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   // Sprint 116/123 — calculate and lock coach decision when match prompt opens

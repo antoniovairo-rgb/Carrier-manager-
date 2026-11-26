@@ -563,7 +563,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Le ho avute diverse. Ma la mia carriera è ancora in costruzione. Il meglio viene.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Non so. Forse quella in cui ho capito di poter giocare ad alto livello. È stata speciale.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Come ti trovi a {club}? Ti trovi bene ambientalmente?",a:[
+{ctx:["weekly"],y:1,cond:p=>gradimentoOk409(p)/* [giro 409 PO-675] non a chi e' appena arrivato */,q:"Come ti trovi a {club}? Ti trovi bene ambientalmente?",a:[
   {tone:"diplomatico",txt:"Benissimo. Il club è organizzato, i compagni fantastici. Mi sento a casa.",ef:{m:6,p:6,t:7}},
   {tone:"diretto",txt:"Bene. Mi hanno dato fiducia e io li sto ripagando con le prestazioni.",ef:{m:7,p:5,t:-1}},
   {tone:"umile",txt:"Molto bene. Ogni giorno imparo qualcosa di nuovo. Sono grato di essere qui.",ef:{m:5,p:6,t:7}},
