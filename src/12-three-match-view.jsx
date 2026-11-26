@@ -8428,7 +8428,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             pp.mesh._px592=_mx;pp.mesh._ptg592=t.x;
             D.n=(D.n||0)+1;}
         }catch(_e){}}
-        const _readFreeze=(_asIfPlay&&_inRead&&_chooseT>=0),_doSnap=(_hlSnap&&_asIfPlay);
+        const _readFreeze=(_asIfPlay&&_inRead&&_chooseT>=0),_doSnap=(_hlSnap&&_asIfPlay);if(_doSnap)sr.current._sn390=(sr.current._sn390|0)+1;/* [giro 390] contatore degli scatti di scena (lo legge solo il testimone) */
         /* ⚠️ [7.850.0 — IL PORTATORE E' DOVE LA SIMULAZIONE LO METTE (S2 v3). Rosso __CPM_NO850]
            Collaudo da telefono n°1 (09/09): pallone ai piedi del padrone della simulazione 6-17% (banda 60), «da due
            passi» col pallone lontano da tutti 3/3. Censimento (padroni/ritardo, Vairo casa): il corpo del portatore
@@ -8490,9 +8490,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            teletrasporto visibile) e poi tenuto col moto normale (animOne, velocita' limitata). */
         const _r99=(function(){try{if((typeof window!=='undefined'&&window.__CPM_NO_G99RIC)||P.hlDef||!/^hl_/.test(P.matchPhase||''))return null;
           const hx=+P.playerX,hy=+P.playerY;if(!isFinite(hx)||!isFinite(hy))return null;const ap=P.allPlayers||[];
-          let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
-            if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
-            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};}
+          let S=sr.current._r99;
+          /* [giro 390 PO-653 «il compagno che riceve non e' gia' nella scena». Rosso __CPM_NO_G390 (o __CPM_NO_G390A)] MISURATO (misura-390,
+             partite vere, testimone __CPM_W390): il punto si fissava al PRIMO fotogramma della scena, quando P.playerX/Y sono ancora quelli
+             della scena prima; un fotogramma dopo arriva la posizione vera e lo scatto di scena «staging» (sotto lo stacco nero) porta l'eroe
+             sul suo punto, ma il ricevente restava ancorato a quello vecchio: 1,5 u DIETRO l'eroe invece di 12 avanti («Uno-due con
+             GUNTHER»), fino a 21 u dietro («Servi SEIFERT libero»: 18 u di corsa dopo il passaggio, «e compare dopo»). Ora il punto si
+             riancora all'eroe a ogni scatto di scena in cui l'eroe e' cambiato (stesso compagno): il ricevente si sposta con lo scatto,
+             dentro lo stacco, e mai durante la lettura (i passi del giocatore non lo trascinano). */
+          const _ri390=!!(S&&S.k===P.hlSitKey&&_doSnap&&(S.hx!==hx||S.hy!==hy)&&!(typeof window!=='undefined'&&(window.__CPM_NO_G390||window.__CPM_NO_G390A)));
+          if(!S||S.k!==P.hlSitKey||_ri390){const C=P.castBrain&&P.castBrain.current;let ci=-1;
+            if(_ri390)ci=S.i;else if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
+            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92),hx,hy};}
           /* [giro 293] solo banco di prova (?cpmtest=1): la sonda dichiara «il ricevente del cast e' il battitore della scena», cioe' il caso del
              flusso vero (il motore nomina ricevente il crossatore) che le scene forzate non producono perche' non hanno il cast del motore. */
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RIC293==='batt'&&S.i<0){const _ss=P.stagedSpot&&P.stagedSpot.current;if(_ss&&_ss.taker!=null&&_ss.taker!==21){S.i=_ss.taker;S.p293=1;}}
@@ -14130,6 +14139,22 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           const _off=()=>K.a.set(0,0,-10).applyMatrix4(camera.projectionMatrix).y;
           camera.updateMatrixWorld(true);
           let H=_pt.map(_ang).filter(Boolean),B=_wB?_ang([ball.position.x,Math.max(0.11,ball.position.y),ball.position.z]):null;
+          /* [giro 390 PO-653 «quando l'eroe fa un passaggio ad un compagno, in particolare tentativi di assist, quest'ultimo non e' gia'
+             nella scena». Rosso __CPM_NO_G390] MISURATO (misura-390, partite vere, GLB acceso, teatro e costruzione accesi, camera
+             DISEGNATA): il ricevente c'e' gia' all'apertura (il compagno nominato dal motore sta sul punto di ricezione del giro 99,
+             12 u davanti all'eroe), ma questo blocco teneva nel quadro solo eroe e, sull'esito, pallone: in lettura la regia guarda fra
+             l'eroe e il pallone della consegna, e il ricevente finiva oltre il bordo (fuori per tutta l'introduzione, o al bordo
+             quando il passaggio parte, «e compare dopo»). Qui il ricevente entra fra i punti del fotogramma disegnato, DOPO l'eroe
+             e con le stesse regole del pallone: in lettura il nominato del motore (_r99 della scena), dal lancio del passaggio il
+             ricevente vero (passTargetMesh dopo fireConclusion) finche' l'arco vola o il post-arco lo serve. Se eroe e ricevente non
+             stanno insieme nemmeno all'apertura massima, il ricevente non conta (l'eroe resta la prima regola). */
+          const _R390=(function(){try{if(_W96.__CPM_NO_G390||_W96.__CPM_NO_G390B||P.hlDef)return null;const S=sr.current;let m=null;
+              if(_res&&S._ccx460&&passTargetMesh&&passTargetMesh!==hero&&(ballArcActive||hlPostArcType==='assist_recv'))m=passTargetMesh;
+              else if(!(_res&&S._ccx460)&&S._r99&&S._r99.k===P.hlSitKey&&S._r99.i>=0&&S.players&&S.players[S._r99.i])m=S.players[S._r99.i].mesh;
+              if(!m||m===hero||!m.parent)return null;S._ric390=m;return m;}catch(_e390){return null;}})();
+          if(!_R390)sr.current._ric390=null;
+          const _rPt390=()=>{if(!_R390)return null;const a=_ang([_R390.position.x,0.05,_R390.position.z]),b=_ang([_R390.position.x,1.85,_R390.position.z]);return(a&&b)?[a,b]:null;};
+          let R390=_rPt390();
           if(H.length===2){
             /* (2)+(4) ottica */
             let tV=Math.tan(camera.fov*Math.PI/360);
@@ -14138,6 +14163,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const _fMax=_land?56:62,_tMax=Math.tan(_fMax*Math.PI/360);
             let tN=_need(H);
             if(B){const tb=_need(H.concat([B]));const fb=Math.min(tb,_tMax);const w=clamp((_tMax*1.25-tb)/(_tMax*0.25),0,1);tN=Math.max(tN,tN+(fb-tN)*w);}
+            if(R390){const tr=_need(H.concat(R390,B?[B]:[]));if(tr<=_tMax)tN=Math.max(tN,tr);else{const tr2=_need(H.concat(R390));if(tr2<=_tMax)tN=Math.max(tN,tr2);else R390=null;}}/* [giro 390] il ricevente apre l'ottica solo se ci sta sotto il tetto */
             let tT=Math.max(tV,tN);
             if(_res&&!_W96.__CPM_NO_G96D8){const hg=(Math.tan(H[1][1])-Math.tan(H[0][1]))/tV/2;if(hg>0.005&&hg<0.07){const tIn=Math.max(Math.tan(15*Math.PI/180),tV*hg/0.07);tT=Math.max(Math.min(tV,tIn),tN);}}
             tT=Math.min(tT,Math.max(tV,_tMax));
@@ -14149,6 +14175,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
               let rp=0,rn=0;H.forEach(q=>{const d=nd(q[0]);if(d>rp)rp=d;if(d<rn)rn=d;});let r=(rp&&rn)?(rp+rn)/2:rp+rn;
               const AH=Math.atan(0.93*tH),lo=Math.max(...H.map(q=>q[0]))-AH,hi=Math.min(...H.map(q=>q[0]))+AH;
               if(B){r=r+nd(B[0]-r);if(lo<=hi)r=clamp(r,lo,hi);}
+              if(R390&&lo<=hi){R390=_rPt390();if(R390){const AR=Math.atan(0.85*tH),xr=R390.map(q=>q[0]),lR=Math.max(lo,Math.max(...xr)-AR),hR=Math.min(hi,Math.min(...xr)+AR);if(lR<=hR)r=clamp(r,lR,hR);}}/* [giro 390] dopo l'eroe (e il pallone), il ricevente dentro l'85 % del semiquadro, mai a costo dell'eroe */
               if(Math.abs(r)>1e-5){K.qq.setFromAxisAngle(K.y,-r);camera.quaternion.premultiply(K.qq);}}
             /* (1)+(2)+(3) verticale: inclinazione attorno all'asse orizzontale della camera */
             camera.updateMatrixWorld(true);H=_pt.map(_ang).filter(Boolean);B=_wB?_ang([ball.position.x,Math.max(0.11,ball.position.y),ball.position.z]):null;
@@ -14189,6 +14216,27 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             sb:S1._sb42?1:0,k61:(S1._keep61!=null)?1:0,g241:S1._g241on?1:0,gt:S1._g241on?S1._g241t:null,n241:S1._g241n|0,fov:+camera.fov.toFixed(1),cl:[+camLook.x.toFixed(1),+camLook.y.toFixed(1),+camLook.z.toFixed(1)],cut:_cut,arc:ballArcActive?1:0,pa:hlPostArcType||null,rp:(typeof replaying!=='undefined'&&replaying)?1:0,
             gk:awayGkMesh?[+awayGkMesh.position.x.toFixed(2),+awayGkMesh.position.y.toFixed(2),+awayGkMesh.position.z.toFixed(2)]:null});}
       }catch(_e241){}}
+      /* [giro 390 PO-653 — TESTIMONE DI SOLA PROVA, acceso solo da __CPM_REC390 sotto cpmtest] Un campione per fotogramma negli highlight
+         d'attacco sulla camera DISEGNATA (dopo la correzione del quadro, matrici aggiornate): il ricevente scelto con la STESSA regola del
+         blocco del quadro ma senza guardare l'interruttore (vale nei due bracci), piedi e testa in ndc, eroe in ndc, apertura dell'ottica,
+         stacco nero vivo, lancio avvenuto. Nessuna scrittura sullo stato del gioco. Lo leggono misura-390 e ricevente-390. */
+      if(typeof window!=='undefined'&&window.__CPM_REC390&&(_CPM_TEST||_SIT_TEST)&&hero&&/^hl_/.test(P.matchPhase||'')&&!P.hlDef){try{
+        const _W9=(window.__CPM_W390=window.__CPM_W390||[]);
+        if(_W9.length<30000){const S9=sr.current;if(S9._sk390!==P.hlSitKey){S9._sk390=P.hlSitKey;S9._ck390=0;}S9._ck390=(S9._ck390||0)+aDt;
+          const _res9=P.matchPhase==='hl_result',_dsp9=!!(_res9&&S9._ccx460);let m9=null,src9=0;
+          if(_dsp9&&passTargetMesh&&passTargetMesh!==hero&&(ballArcActive||hlPostArcType==='assist_recv')){m9=passTargetMesh;src9=2;}
+          else if(!_dsp9&&S9._r99&&S9._r99.k===P.hlSitKey&&S9._r99.i>=0&&S9.players&&S9.players[S9._r99.i]){m9=S9.players[S9._r99.i].mesh;src9=1;}
+          const _v9=(S9._v390||(S9._v390=new THREE.Vector3()));camera.updateMatrixWorld(true);
+          const _p9=(x,y,z)=>{_v9.set(x,y,z).project(camera);return[+_v9.x.toFixed(3),+_v9.y.toFixed(3),_v9.z<1?1:0];};
+          const _ps9=S9.players||[];let i9=-1;if(m9)for(let i=0;i<_ps9.length;i++)if(_ps9[i]&&_ps9[i].mesh===m9){i9=i;break;}
+          let _cut9=0;try{_cut9=(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())?1:0;}catch(_e){}
+          _W9.push({ck:+S9._ck390.toFixed(3),sn:S9._sn390|0,pp:[+(+P.playerX||0).toFixed(1),+(+P.playerY||0).toFixed(1)],r99:S9._r99&&S9._r99.k===P.hlSitKey?[S9._r99.i,+(+S9._r99.x).toFixed(1),+(+S9._r99.y).toFixed(1)]:null,ph:P.matchPhase,sk:P.hlSitKey!=null?String(P.hlSitKey):null,ht:P.hlType||null,cut:_cut9,tl:tlOn?1:0,arc:ballArcActive?1:0,dsp:_dsp9?1:0,src:src9,i:i9,
+            r:m9?[_p9(m9.position.x,0.05,m9.position.z),_p9(m9.position.x,1.85,m9.position.z),+m9.position.x.toFixed(2),+m9.position.z.toFixed(2),m9.visible?1:0]:null,
+            h:[_p9(hero.position.x,0.05,hero.position.z),_p9(hero.position.x,1.85,hero.position.z),+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],fov:+camera.fov.toFixed(1),asp:+(camera.aspect||0).toFixed(3),
+            b:ball?[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2)]:null,
+            /* tutti i compagni di movimento (indice, piedi, testa): il ricevente VERO si sa solo al lancio, la sonda lo ritrova qui */
+            a:(function(){const o=[];for(let i=0;i<_ps9.length;i++){const q=(P.allPlayers||[])[i];if(!q||q.team!=='home'||q.gk||!_ps9[i]||!_ps9[i].mesh||_ps9[i].mesh===hero)continue;const mm=_ps9[i].mesh;o.push([i,_p9(mm.position.x,0.05,mm.position.z),_p9(mm.position.x,1.85,mm.position.z),+mm.position.x.toFixed(1),+mm.position.z.toFixed(1)]);}return o;})()});}
+      }catch(_e390w){}}
       /* [giro 364 PO-650 «le azioni sulle fasce» — TESTIMONE DI SOLA PROVA, acceso solo da __CPM_REC364 sotto cpmtest] Un campione per
          FOTOGRAMMA negli highlight, tutto dalle mesh (una sorgente sola) e sulla camera DISEGNATA: tempo di scena, eroe, pallone (con
          lo scrittore _ws524 del fotogramma), camera e sguardo, arco e suo bersaglio, gesto, i due riceventi (passaggio / cross) con la
