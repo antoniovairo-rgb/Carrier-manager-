@@ -2193,3 +2193,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 22:30 — Registrata PO-680 (intervista impaginata male su PC, foto del PO). In coda n° 2, dopo PO-679.
 
 - 26/11 22:31 — Uscita 7.999.217 (primo avvio, PO-672) dal rilascio automatico; sito verificato. lavoro/201 riprenderà main prima del prossimo treno.
+
+- 26/11 22:35 — Treno su lavoro/201 (main 7.999.217 + vagoni 372-377 + riparazione 406), corsa 45898863971. Lanciati giro 415 (PO-679) e 416 (PO-680). Archiviati 402, 406, 408, 409, 411, 412, 413 (consegnati).
