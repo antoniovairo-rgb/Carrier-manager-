@@ -2137,3 +2137,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 09:27 — Treno della 216 (corsa 45751390281) finito 32/32: 357 verdi su 388, rilascio FERMATO da 1 rosso nuovo: tiri-367 (braccio verde: «gi5 rigore: all'uscita il pallone è nello specchio»). Lanciato giro 393 di riparazione. Consegnato anche il giro 389 (PO-671), lanciato il 392 (PO-528).
 
 - 26/11 09:30 — PO (questionario): «Dichiara tiri-367 e rilascia» → tiri-367 in ROSSI-DICHIARATI (solo_runner). Il rilascio si riavvia rilanciando il job «Rilascio del vagone» della corsa 45751390281 (la sessione non ha credenziali GitHub per farlo: lo fa il PO da Actions). Rischio dichiarato: se è un difetto vero del rigore, resta in gioco fino alla 217 (giro 393).
+
+- 26/11 09:45 — Il commit 18a58a06 su lavoro/201 (rossi dichiarati allineati a main) tocca solo docs/ → paths-ignore, nessun treno partito. PO: «Lo avvii tu ora» → il PO avvia a mano «Treno» (Run workflow, ramo lavoro/201, tipo mappa). Stima 216: 12:45-13:45.
