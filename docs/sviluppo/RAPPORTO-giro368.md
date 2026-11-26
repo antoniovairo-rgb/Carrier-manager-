@@ -72,7 +72,10 @@ Nessun file toccato in src/12, 13, 14 (giri 364/367) né nel profilo del calciat
 - **Rosso** (`__CPM_NO_G368`): A 9.531 incontri, B testa/cross/mediano, C stadio della Primavera con due nomi → tutti rossi.
 
 Esiti: guardiano verde + rosso visto rosso; `mappa-unica` verde; `node tools/audit-copyright.mjs` 0 hit;
-sentinelle `node ci-runner.mjs giro nomi-368`: vedi sotto.
+sentinelle `node ci-runner.mjs giro nomi-368`: **18/18 verdi** sul build esatto (nomi-368 301 s · mappa-unica · test:logic ·
+save-compat · replay · migrazione-194 · design-system · tema-unico · griglia-mobile · render-3d-023 · tunnel-285 · home-298 ·
+web-237 · career-critical · battito-264 · partita-vera 605 s · gk-dive-sync · schermate-97), nessun passo ripetuto.
+Le scritture del runner in `docs/governo/STABILITA.json` e `docs/collaudo-grafico/` sono state scartate (non toccare docs/governo).
 
 ## Guardiani della zona NON girati (li giudica il treno)
 
