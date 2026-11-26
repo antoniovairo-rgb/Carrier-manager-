@@ -6,11 +6,12 @@
 // I GLB candidati restano FUORI dal repo (cartella di prova): questa sonda li legge da un percorso assoluto.
 import { chromium } from 'playwright';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const REPO = path.resolve(QUI, '../..');
 const OUT = path.resolve(process.argv[2]); fs.mkdirSync(OUT, { recursive: true });
 const VOCI = process.argv.slice(3).map(s => { const [f, c, e] = s.split(':'); return { f: path.resolve(REPO, f), c, e: e || c }; });
 const CORPO = path.join(REPO, 'assets/cgtrader-review-lod1-kit-adapter.glb');
-const br = await chromium.launch({ executablePath: process.env.CPM_CHROME || undefined, args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
+const br = await chromium.launch(conPrivacy394({ executablePath: process.env.CPM_CHROME || undefined, args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] }));
 const page = await br.newPage({ viewport: { width: 1280, height: 900 } });
 page.on('pageerror', e => console.log('pageerror', e.message));
 await page.route('http://cpm.local/**', r => {

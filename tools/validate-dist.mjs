@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '../tests/visual/node_modules/playwright/index.mjs';
+import { conPrivacy394 } from '../tests/visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WEB = process.argv.includes('--web');/* [7.999.11] valida la build per il sito: flag store ASSENTE */
@@ -22,7 +23,7 @@ const port = srv.address().port;
 
 const _opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] };
 if (process.env.CPM_CHROME) _opts.executablePath = process.env.CPM_CHROME;
-const browser = await chromium.launch(_opts);
+const browser = await chromium.launch(conPrivacy394(_opts));
 const page = await browser.newPage();
 const errs = [], externalHits = [];
 page.on('console', m => { if (m.type() === 'error' && !/manifest|ServiceWorker|sw\.js/i.test(m.text())) errs.push(m.text().slice(0, 160)); });

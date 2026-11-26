@@ -10,6 +10,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './privacy-394.mjs';
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(__dirname, '..', '..', '..');           // repo root (tests/visual/lib → repo)
@@ -117,8 +118,11 @@ export function startServer(root = ROOT) {
   });
 }
 
-export async function launchBrowser() {
-  const _opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] };
+/* [giro 394 PO-529] opzioni facoltative: `args` in coda (es. il NetLog del guardiano privacy-394) e `privacy394:false` per il
+   braccio rosso. Senza argomenti il lancio e' quello di sempre + le opzioni di lib/privacy-394.mjs (servizi del browser spenti). */
+export async function launchBrowser({ args = [], privacy394 = true } = {}) {
+  const _opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox', ...args] };
+  if (privacy394) conPrivacy394(_opts);
   // CI may not have Playwright's bundled Chromium. Reuse an installed Chrome
   // on Windows so visual quality gates remain runnable without a new download.
   const systemChrome = process.platform === 'win32' && process.env.ProgramFiles

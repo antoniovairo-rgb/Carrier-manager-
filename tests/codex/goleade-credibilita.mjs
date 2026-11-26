@@ -8,6 +8,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { gzipSync, gunzipSync } from 'node:zlib';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = process.cwd();
 const output = path.join(root, 'tests/codex/goleade-credibilita.json.gz');
@@ -82,10 +83,10 @@ if (phase === 'A') {
   const command = 'node tests/codex/goleade-credibilita.mjs B';
   if (!data.commands.includes(command)) data.commands.push(command);
   const server = await startServer();
-  const browser = light ? await (await import('../visual/node_modules/playwright/index.mjs')).chromium.launch({
+  const browser = light ? await (await import('../visual/node_modules/playwright/index.mjs')).chromium.launch(conPrivacy394({
     headless: true, executablePath: process.env.CPM_CHROME,
     args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox']
-  }) : await launchBrowser();
+  })) : await launchBrowser();
   let memoryAbort = false;
   const guard = setInterval(() => {
     if (!memoryAbort && os.freemem() < 1.5 * 2 ** 30) {

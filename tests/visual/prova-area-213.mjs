@@ -1,6 +1,7 @@
 /* [giro 213] prova minima (pagina sintetica): un tasto scalato a .9 al pointerdown perde il tocco a 3 px dal bordo; con un ::before esteso no. Uso: node prova-area-213.mjs */
 import { chromium } from 'playwright';
-const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
+const b = await chromium.launch(conPrivacy394({ executablePath: '/opt/pw-browsers/chromium' }));
 for (const mobile of [true, false]) for (const modo of ['scale', 'scale+before']) {
   const ctx = await b.newContext(mobile ? { viewport: { width: 375, height: 667 }, isMobile: true, hasTouch: true } : { viewport: { width: 800, height: 600 } });
   const p = await ctx.newPage();

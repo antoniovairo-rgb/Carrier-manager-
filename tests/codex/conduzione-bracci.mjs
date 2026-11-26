@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { startServer, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { chromium } = createRequire(new URL('../visual/package.json', import.meta.url))('playwright');
@@ -57,7 +58,7 @@ for(let rep=1;rep<=repetitions;rep++)for(const gi of sceneIds)for(let ai=0;ai<ar
   plan.push({rep,gi,arm:arms[(ai+rep-1)%arms.length]}); // ogni blocco alterna l'ordine A/B/C/D
 let browser,server;
 try{
-  server=await startServer();browser=await chromium.launch(launch);
+  server=await startServer();browser=await chromium.launch(conPrivacy394(launch));
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:2});
   for(const item of plan){
     const key=`${item.rep}:${item.gi}:${item.arm}`;

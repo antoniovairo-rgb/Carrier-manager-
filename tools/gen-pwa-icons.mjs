@@ -5,6 +5,7 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { conPrivacy394 } from '../tests/visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -45,7 +46,7 @@ function mkIconSrc() {
   }`;
 }
 
-const browser = await chromium.launch({ executablePath: CHROME, headless: true });
+const browser = await chromium.launch(conPrivacy394({ executablePath: CHROME, headless: true }));
 const page = await browser.newPage();
 await page.setContent('<!doctype html><html><body></body></html>');
 const icons = await page.evaluate((src) => {

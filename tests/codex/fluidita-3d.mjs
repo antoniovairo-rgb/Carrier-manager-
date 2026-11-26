@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { startServer, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const requireVisual = createRequire(new URL('../visual/package.json', import.meta.url));
@@ -119,7 +120,7 @@ function summarize(gi, raw) {
 }
 let browser;
 try {
-  browser = await chromium.launch(launch);
+  browser = await chromium.launch(conPrivacy394(launch));
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 });
   const page = await context.newPage();
   page.on('pageerror', error => out.errors.push(String(error.message)));

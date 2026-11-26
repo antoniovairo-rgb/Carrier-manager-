@@ -19,6 +19,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -58,7 +59,7 @@ async function clickByText(page, src, timeout = 8000) {
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
   console.log('serving', url, SHOTS ? '(con screenshot per-situation)' : '(screenshot solo violazioni)');
 
-  const browser = await chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
+  const browser = await chromium.launch(conPrivacy394({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] }));
   const page = await browser.newPage({ viewport: { width: 900, height: 900 } });
   const consoleErrors = [];
   page.on('console', m => { if (m.type() === 'error' && !/BABEL|in-browser Babel/.test(m.text())) consoleErrors.push(m.text()); });

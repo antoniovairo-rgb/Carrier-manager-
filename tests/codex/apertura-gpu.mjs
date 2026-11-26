@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { startServer, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { chromium } = createRequire(new URL('../visual/package.json', import.meta.url))('playwright');
@@ -18,7 +19,7 @@ const result = { command: profileOn
   : 'CPM_GLB=1 CPM_ATTESA=15000 CPM_SCENES=5 CPM_PROFILE=0 node tests/codex/apertura-gpu.mjs',
   launch, viewport: [412, 915], deviceScaleFactor: 2, glbRequested: true, waitMs, nScenes, profileOn, openings: [], errors: [] };
 const server = await startServer();
-const browser = await chromium.launch(launch);
+const browser = await chromium.launch(conPrivacy394(launch));
 let page, context;
 try {
   context = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 });

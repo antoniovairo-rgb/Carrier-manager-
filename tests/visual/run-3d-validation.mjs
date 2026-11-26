@@ -25,6 +25,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');           // repo root
@@ -72,10 +73,10 @@ async function clickByText(page, re, timeout = 8000) {
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
   console.log('serving repo on', url);
 
-  const browser = await chromium.launch({
+  const browser = await chromium.launch(conPrivacy394({
     headless: true,
     args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--enable-webgl', '--no-sandbox']
-  });
+  }));
   const page = await browser.newPage({ viewport: { width: 900, height: 900 } });
 
   const consoleErrors = [];

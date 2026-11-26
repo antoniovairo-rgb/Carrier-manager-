@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const dist=path.join(root,'dist'), output=path.join(root,`reports/codex/2026-09-29-apertura-dist-${process.env.CPM_PROFILE==='1'?'profile':'no-profile'}.json`);
@@ -40,7 +41,7 @@ try{
   server=http.createServer((req,res)=>{let p=decodeURIComponent((req.url||'/').split('?')[0]);if(p==='/'||p==='/CARRIER-MANAGER-AV.html')p='/index.html';
     const fp=path.join(dist,p);if(!fp.startsWith(dist)){res.writeHead(403);res.end();return;}
     fs.readFile(fp,(e,b)=>{if(e){res.writeHead(404);res.end();return;}res.writeHead(200,{'content-type':mime[path.extname(fp).toLowerCase()]||'application/octet-stream'});res.end(b);});});
-  await new Promise(r=>server.listen(0,r));browser=await chromium.launch(launch);
+  await new Promise(r=>server.listen(0,r));browser=await chromium.launch(conPrivacy394(launch));
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:2});const page=await context.newPage();
   page.on('pageerror',e=>data.errors.push(String(e.message)));
   await page.addInitScript(()=>{window.__CPM_CINE=1;window.__CPM_PRESENT=1;window.__LT_DIST=[];window.__RAF_DIST=[];window.__PH_DIST=[];

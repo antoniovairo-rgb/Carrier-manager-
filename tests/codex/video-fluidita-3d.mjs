@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { startServer, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const outDir = path.join(root, 'reports/codex/video-fluidita-3d');
@@ -24,7 +25,7 @@ const groups = process.env.CPM_VIDEO_IDS
 const manifestName = process.env.CPM_VIDEO_IDS ? `manifest-${groups[0].name}.json` : 'manifest.json';
 const manifest = { command: 'node tests/codex/video-fluidita-3d.mjs', launch, viewport: [412, 915], deviceScaleFactor: 2, groups: [], errors: [] };
 const server = await startServer();
-const browser = await chromium.launch(launch);
+const browser = await chromium.launch(conPrivacy394(launch));
 try {
   for (const group of groups) {
     const context = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2,

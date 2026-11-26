@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { startServer, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const {chromium}=createRequire(new URL('../visual/package.json',import.meta.url))('playwright');
@@ -44,7 +45,7 @@ function analyze(trace,raf,metadata){
 }
 let server,browser;
 try{
-  server=await startServer();browser=await chromium.launch(launch);
+  server=await startServer();browser=await chromium.launch(conPrivacy394(launch));
   for(let match=1;match<=nMatches;match++){
     if(data.matches.some(x=>x.match===match&&x.finishedMatch))continue;
     let page,context;const result={match,name:`Naturale44_${match}`,scenes:[],errors:[],started:new Date().toISOString()};

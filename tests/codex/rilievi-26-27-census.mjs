@@ -7,6 +7,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { chromium } from '../visual/node_modules/playwright/index.mjs';
 import { startServer, installCdnRoutes, openMatch, matchPhase, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = process.cwd();
 const output = path.join(root, 'tests/codex/rilievi-26-27-census.json.gz');
@@ -28,8 +29,8 @@ try {
     if (freeGiB < 2.2) { console.log(`Pausa per memoria libera ${freeGiB.toFixed(2)} GiB`); break; }
     const name = `Rilievi${i + 1}`;
     const seed = 972600 + 97 * i;
-    const browser = await chromium.launch({ headless: true, executablePath: process.env.CPM_CHROME,
-      args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] });
+    const browser = await chromium.launch(conPrivacy394({ headless: true, executablePath: process.env.CPM_CHROME,
+      args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] }));
     let memoryAbort = false;
     const guard = setInterval(() => {
       if (!memoryAbort && os.freemem() < 1.5 * 2 ** 30) { memoryAbort = true; browser.close().catch(() => {}); }

@@ -9,6 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 if (!process.env.CPM_CHROME) {
@@ -41,7 +42,7 @@ const PAGINE = [
   { f: 'calendario.html',nome: 'Stagione · Calendario' },
 ];
 
-const browser = await chromium.launch({ executablePath: process.env.CPM_CHROME, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+const browser = await chromium.launch(conPrivacy394({ executablePath: process.env.CPM_CHROME, args: ['--no-sandbox', '--disable-dev-shm-usage'] }));
 const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 });
 const page = await ctx.newPage();
 const righe = [];

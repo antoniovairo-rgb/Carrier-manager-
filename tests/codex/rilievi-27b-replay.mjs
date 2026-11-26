@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { chromium } from '../visual/node_modules/playwright/index.mjs';
 import { startServer, installCdnRoutes, openMatch, matchPhase, sleep } from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root = process.cwd();
 const output = path.join(root, 'tests/codex/rilievi-27b-replay.json');
@@ -12,8 +13,8 @@ const fixture = fs.readFileSync(path.join(root, 'tests/codex/rilievi-precompiled
 const seed = Number(process.env.CPM_SEED || 974734);
 const name = process.env.CPM_NAME || 'Rilievi23';
 const server = await startServer();
-const browser = await chromium.launch({ headless: true, executablePath: process.env.CPM_CHROME,
-  args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] });
+const browser = await chromium.launch(conPrivacy394({ headless: true, executablePath: process.env.CPM_CHROME,
+  args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] }));
 let memoryAbort = false;
 const guard = setInterval(() => { if (!memoryAbort && os.freemem() < 1.5 * 2 ** 30) { memoryAbort = true; browser.close().catch(() => {}); } }, 250);
 const seen = new Set();

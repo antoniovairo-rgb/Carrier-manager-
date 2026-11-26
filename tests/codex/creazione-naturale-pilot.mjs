@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from '../visual/node_modules/playwright/index.mjs';
 import {startServer,installCdnRoutes,sleep} from '../visual/lib/harness.mjs';
+import { conPrivacy394 } from '../visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const output=path.join(root,'tests/codex/creazione-naturale-pilot.json');
@@ -17,7 +18,7 @@ const save=()=>fs.writeFileSync(output,JSON.stringify(run,null,2));
 const server=await startServer();let browser,context,page,memoryAbort=false;
 const guard=setInterval(()=>{if(!memoryAbort&&os.freemem()<1.5*2**30){memoryAbort=true;browser?.close().catch(()=>{});}},250);
 try{
-  browser=await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--headless=new','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--renderer-process-limit=1','--disable-extensions','--disable-background-networking','--no-sandbox']});
+  browser=await chromium.launch(conPrivacy394({headless:true,executablePath:process.env.CPM_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--headless=new','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--renderer-process-limit=1','--disable-extensions','--disable-background-networking','--no-sandbox']}));
   context=await browser.newContext({viewport:{width:360,height:640},deviceScaleFactor:1,serviceWorkers:'block'});
   page=await context.newPage();page.setDefaultTimeout(30000);
   page.on('pageerror',e=>run.errors.push(String(e.message)));

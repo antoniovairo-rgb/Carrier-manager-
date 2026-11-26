@@ -4,12 +4,13 @@
 // Non tocca il gioco: pagina vuota con i soli bundle locali. Uso: node clip-180-foto.mjs [cartella-uscita]
 import { chromium } from 'playwright';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const REPO = path.resolve(QUI, '../..');
 const OUT = path.resolve(process.argv[2] || path.join(REPO, 'docs/sviluppo/giro180'));
 fs.mkdirSync(OUT, { recursive: true });
 const CLIP = process.env.CPM_CLIP180 || 'assets/cgtrader-clip-rohr.glb';
 const CORPO = 'assets/cgtrader-review-lod1-kit-adapter.glb';
-const br = await chromium.launch({ executablePath: process.env.CPM_CHROME || undefined, args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
+const br = await chromium.launch(conPrivacy394({ executablePath: process.env.CPM_CHROME || undefined, args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] }));
 const page = await br.newPage({ viewport: { width: 1280, height: 900 } });
 page.on('pageerror', e => console.log('pageerror', e.message));
 await page.route('http://cpm.local/**', r => {

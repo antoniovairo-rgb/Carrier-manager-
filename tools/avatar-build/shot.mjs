@@ -1,5 +1,6 @@
 import { chromium } from '/home/user/Carrier-manager-/tests/visual/node_modules/playwright/index.mjs';
-const b = await chromium.launch({ executablePath: process.env.CPM_CHROME });
+import { conPrivacy394 } from '../../tests/visual/lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
+const b = await chromium.launch(conPrivacy394({ executablePath: process.env.CPM_CHROME }));
 const p = await b.newPage({ viewport:{width:560,height:1600}, deviceScaleFactor:2 });
 await p.goto('file:///tmp/claude-0/-home-user-Carrier-manager-/2f559cb2-4a90-52cc-818f-c4a2700303e9/scratchpad/avatar-styles.html');
 await p.waitForTimeout(800);

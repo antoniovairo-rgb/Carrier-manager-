@@ -783,6 +783,7 @@
     "trenino-317": "node trenino-317.mjs",
     "via-poc-338": "node via-poc-338.mjs",
     "deploy-326": "node deploy-326.mjs",
+    "privacy-394": "node privacy-394.mjs",
     "treno-tempo-358": "node treno-tempo-358.mjs",
     "finto-358": "node treno-tempo-358.mjs finto",
     "treno-330": "node treno-330.mjs",

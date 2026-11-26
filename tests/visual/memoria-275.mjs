@@ -7,11 +7,12 @@
    Uso: node memoria-275.mjs [--guardiano]  ·  CPM_ROSSO=__CPM_NO_X per il braccio rosso  ·  CPM_GLB=0 per GLB spento. */
 import { chromium } from 'playwright';
 import { startServer, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+import { conPrivacy394 } from './lib/privacy-394.mjs'; /* [giro 394 PO-529] servizi del browser spenti */
 const ROSSO = process.env.CPM_ROSSO || '', GLB = process.env.CPM_GLB !== '0', PARTITE = +(process.env.CPM_PARTITE275 || 2);
 const srv = await startServer(); const port = srv.address().port;
 const opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox', '--js-flags=--expose-gc'] };
 if (process.env.CPM_CHROME) opts.executablePath = process.env.CPM_CHROME;
-const b = await chromium.launch(opts);
+const b = await chromium.launch(conPrivacy394(opts));
 const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(ctx);
 const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
 await page.addInitScript(() => { /* [diagnosi] conta i callback rAF per sorgente: un ciclo di una partita smontata che gira ancora si vede qui */
