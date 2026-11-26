@@ -2119,3 +2119,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 05:28 — Giro 383 (PO-515) consegnato: curva delle simulate da 9/20 a 16-17/20 senza toccare bersagli; restano fuori le 3 celle del voto, conflitto fra bersagli PO-156 e decisioni PO-360/«+0,3»: domanda al PO dopo le 07:00. Lanciato giro 386 (PO-516).
 
 - 26/11 05:30 — Treno grande della notte (PO-630, corsa 45735203524) finito 31/31: 352 verdi su 384, 32 guardiani rossi tornati verdi, 2 rossi NUOVI (consegna-103, testa-342) → rilasci BLOCCATI (BLOCCO-RILASCI.json). La 216 non può uscire finché non c'è un treno grande senza quei rossi o il PO li dichiara. Lanciato giro 387 di riparazione. Domanda al PO dopo le 07:00.
+
+- 26/11 07:15 — PO (questionario): sblocco della 216 «Decide la diagnosi»: se il giro 387 prova che consegna-103/testa-342 sono guardiani ciechi → rossi dichiarati e la 216 esce a fine treno; se è difetto del gioco → correzione, unione e nuovo treno.
