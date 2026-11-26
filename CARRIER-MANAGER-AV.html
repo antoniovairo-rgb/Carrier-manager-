@@ -23452,7 +23452,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            finche' la scena e' in lettura: pallone nel mondo, «in area» (oltre la linea dei 16,5 disegnata: x >= 48,6-16,5 e |z| <= 20,16),
            uomini di barriera (bersagli mur72 della scena) e distanza del piu' vicino dal pallone, misurata sui CORPI. */
         if(isHL&&!isResult&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")&&typeof window!=='undefined'&&window.__CPM_PUN343!==undefined){try{const _W343=window.__CPM_PUN343,_k343=String(P.hlSitKey);let _w343=_W343.find(q=>q.k===_k343);if(!_w343&&_W343.length<80){_w343={k:_k343};_W343.push(_w343);}
-          if(_w343){_w343.x=+ball.position.x.toFixed(2);_w343.z=+ball.position.z.toFixed(2);_w343.area=(ball.position.x>=32.1&&Math.abs(ball.position.z)<=20.16)?1:0;let _n343=0,_md343=null;(sr.current._w72||[]).forEach((q,i)=>{if(!q||q.k!==P.hlSitKey)return;const _pm=sr.current.players[i]&&sr.current.players[i].mesh;if(!_pm)return;_n343++;const d=Math.hypot(_pm.position.x-ball.position.x,_pm.position.z-ball.position.z);if(_md343==null||d<_md343)_md343=d;});_w343.n=_n343;_w343.muro=_md343==null?null:+_md343.toFixed(2);_w343.ph=String(P.matchPhase||'');}}catch(_e343){}}
+          if(_w343){_w343.x=+ball.position.x.toFixed(2);_w343.z=+ball.position.z.toFixed(2);_w343.area=(ball.position.x>=32.1&&Math.abs(ball.position.z)<=20.16)?1:0;let _n343=0,_md343=null,_pm375=null;(sr.current._w72||[]).forEach((q,i)=>{if(!q||q.k!==P.hlSitKey)return;const _pm=sr.current.players[i]&&sr.current.players[i].mesh;if(!_pm)return;_n343++;(_pm375=_pm375||[]).push([+_pm.position.x.toFixed(2),+_pm.position.z.toFixed(2)]);const d=Math.hypot(_pm.position.x-ball.position.x,_pm.position.z-ball.position.z);if(_md343==null||d<_md343)_md343=d;});_w343.n=_n343;_w343.pm=_pm375;/* [giro 375] corpi della barriera nel mondo, per la misura 9,15 m sulla linea pallone-porta */_w343.muro=_md343==null?null:+_md343.toFixed(2);_w343.ph=String(P.matchPhase||'');}}catch(_e343){}}
         if(_setPiece&&hero&&actType==null&&heroPostT<0){
           const _spY=Math.atan2(AWAY_GOAL_X-hero.position.x,-hero.position.z);
           let _spD=((_spY-hero.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
@@ -23713,9 +23713,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ball=_bGX,_by=_bGY;
             if(!_hm){// avversari che DIFENDONO
               if(_li>=1&&_li<=4){// MURO compatto (4 difensori) a ~9m sulla linea palla→porta
-                tx=clamp(_ball+9,_ball+6,93);
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G375)){/* [giro 375 PO-637, decisione PO «Tutte le consigliate» dal giro 343] BARRIERA A 9,15 m SULLA LINEA
+                   PALLONE-PORTA. Misurato (misura-375, 13 scene, bersagli): fra 8,3 e 11,2 m e fuori linea fino a 9 m, perche' il conto era in unita'
+                   di GIOCO (y vale 0,68 m) con un passo fisso in x e una spinta del 25% verso il centro. Ora il conto e' nel MONDO (1 u = 1 m, il
+                   cerchio di centrocampo ha raggio 9,15): centro della barriera a 9,15 m dal pallone verso il centro della porta (48,6 · 0), i
+                   quattro spalla a spalla (1 m) sulla perpendicolare. Rosso __CPM_NO_G375 = conto di prima. */
+                  const _bx375=_ball-50,_bz375=(_by-50)*0.68,_dx375=48.6-_bx375,_dz375=-_bz375,_dn375=Math.hypot(_dx375,_dz375)||1,_ux375=_dx375/_dn375,_uz375=_dz375/_dn375;
+                  const _of375=(_li-2.5)*1.0,_wx375=_bx375+_ux375*9.15-_uz375*_of375,_wz375=_bz375+_uz375*9.15+_ux375*_of375;
+                  tx=_wx375+50;ty=_wz375/0.68+50;}
+                else{tx=clamp(_ball+9,_ball+6,93);
                 const _wy=_by+(50-_by)*0.25+(_by<50?-2.5:2.5);// ~sulla linea palla→centro porta, verso il palo vicino
-                ty=clamp(_wy+(_li-2.5)*1.5,12,88);// spaziatura ~1.5u → muro serrato
+                ty=clamp(_wy+(_li-2.5)*1.5,12,88);}// spaziatura ~1.5u → muro serrato
                 {const _W72=(sr.current._w72||(sr.current._w72=[]));_W72[i]={x:tx,y:ty,k:P.hlSitKey};}/* [7.999.73] posizione di barriera, reimposta dopo tutte le passate */
               } else {tx=clamp(_ball+15+((i*7)%9),_ball+12,91);ty=clamp(50+Math.sin(i*2.3)*24,12,88);}// resto: marcature in area, MAI dietro la palla
             } else {// la squadra dell'eroe che ATTACCA
@@ -23849,6 +23857,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           // l'eroe respinge i compagni (one-way): nessuna sovrapposizione col protagonista
           {const ex=a.x-_hxg,ey=a.y-_hyg,dd=Math.hypot(ex,ey);if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f*1.2;py+=ey/dd*f*1.2;}}
           a.rx=clamp(px*1.6,-5.5,5.5);a.ry=clamp(py*1.6,-5.5,5.5);// F3: repulsione rinforzata (target più ampi → più separazione)
+          if(a.mur72&&!(typeof window!=='undefined'&&window.__CPM_NO_G375)){a.rx=0;a.ry=0;}/* [giro 375 PO-637] la barriera sta sul suo punto (9,15 m): nessuna bolla la sposta */
         }
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _mw=[];for(let i=0;i<_tg.length;i++){const t=_tg[i];if(t&&t.mur72)_mw.push({i,x:+t.x.toFixed(1),y:+t.y.toFixed(1),rx:+(t.rx||0).toFixed(1),ry:+(t.ry||0).toFixed(1)});}if(_mw.length)window.__CPM_MUR72=_mw;}catch(_e){}}/* [7.999.73] testimone barriera: bersaglio e spinta */
         // APPLY — animOne sul target finale (target+repulsione), clamp dentro il campo
@@ -24113,7 +24122,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _sx5=G2X(clamp(_ss405.x,2,98)),_sz5=G2Z(clamp(_ss405.y,2,98));
               if(Math.hypot(_sx5-pp.mesh.position.x,_sz5-pp.mesh.position.z)>1.5){
                 pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;if(_g286)pp.mesh._frz685=null;continue;}
-              _tk286=true;}}
+              _tk286=true;}
+            /* [giro 375 PO-637] LA BARRIERA E' SCHIERATA QUANDO SI LEGGE LA SCENA. Misurato (misura-375, teatro acceso, GLB): nelle fasi di
+               lettura il congelamento tiene i corpi dove la scena li ha trovati, cioe' sulla linea difensiva (gi81: corpi a 15-30 m dal
+               pallone con i bersagli a 9 m) — la barriera non si formava mai. Come il battitore (giro 43): i quattro della barriera (mur72,
+               bersaglio di questa scena) vanno sul loro punto e ci restano fermi (niente attesa attiva: una barriera non passeggia). */
+            {const _w375=sr.current._w72&&sr.current._w72[i],_t375=_tg[i];
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G375)&&_w375&&_w375.k===P.hlSitKey&&_t375&&_t375.mur72&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")){
+                const _sx375=G2X(_w375.x),_sz375=G2Z(_w375.y);_tk286=true;
+                if(Math.hypot(_sx375-pp.mesh.position.x,_sz375-pp.mesh.position.z)>0.3){
+                  pp.mesh.position.x=_sx375;pp.mesh.position.z=_sz375;pp.mesh._ctx=_sx375;pp.mesh._ctz=_sz375;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx375;pp.mesh._pz=_sz375;pp.mesh._frz685=null;}}}}
           if(pp.mesh._mIdx==null)pp.mesh._mIdx=i;/* [7.198.0 S5] indice stabile: da qui derivano punta/spunto/prontezza del singolo giocatore */
           const _i143=(_sw219&&_sw219[i]!=null)?_sw219[i]:i;/* [giro 17 PO-123] l'indice logico dietro questa mesh (lo scambio _sw219 mette in scena il difensore nominato) */
           /* [giro 17 PO-123/PO-143 «difensori che pressano». Rosso __CPM_NO_MARCA143] MISURATO (sonda pressing-143-flusso, teatro acceso): il motore
