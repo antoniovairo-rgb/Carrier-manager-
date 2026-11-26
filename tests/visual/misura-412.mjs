@@ -54,7 +54,7 @@ export async function leggiCorpi(p) {
     return out; });
 }
 /* foto affiancate: figurina | corpo 3D (figura intera, gli altri corpi nascosti, luci della scena) */
-async function foto(p, nome, file) {
+export async function foto(p, nome, file) {
   const url = await p.evaluate(async (nome) => { const T = THREE, D = window.__CPM3D, S = D.scene, R = D.renderer; let o = null; S.traverseVisible(x => { if (!o && x.userData && x.userData.chi240 && x.userData.chi240.nome === nome) o = x; }); if (!o) return null;
     const fg = aspettoFigurina225(nome); const dati = datiFigurina23('giocatore', o.userData.chi240.ruolo === 'eroe' ? 'eroe' : nome, o.userData.chi240.ruolo === 'eroe' ? null : nome);
     const v = new T.Vector3(); let head = null, hips = null; o.traverse(b => { if (!b.isBone) return; if (/^head$/i.test(b.name)) head = b.getWorldPosition(new T.Vector3()); if (/^pelvis$|hips/i.test(b.name) && !hips) hips = b.getWorldPosition(new T.Vector3()); });
