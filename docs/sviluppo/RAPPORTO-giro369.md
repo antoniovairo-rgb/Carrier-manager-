@@ -73,7 +73,7 @@ l'unica schermata a mostrare un numero diverso dal corpo 3D.
 - rosso `__CPM_NO_G369`: **bocciato su 4 prove su 4** (creazione 187/80 contro testata 170/63, nessun campo salvato, nessuna
   scelta del piede, piede assente nel Profilo).
 
-Altre prove: `save-compat` 12 pass · 0 fail. `node ci-runner.mjs giro profilo-369`: vedi sezione 6.
+Altre prove: `save-compat` 12 pass · 0 fail. `node ci-runner.mjs giro profilo-369`: 18/18 verdi (sezione 6).
 
 ## 4. File e funzioni toccati
 
@@ -99,7 +99,7 @@ Non toccati: generazione dei nomi, `GAME_VERSION`, `SAVE_VERSION`, `docs/governo
 ## 6. Rituale e guardiani della zona NON girati
 
 Girati: `profilo-369` (verde + rosso), `mappa-unica`, `save-compat`, `node ci-runner.mjs giro profilo-369` (guardiano + 17
-sentinelle): ESITO_GIRO.
+sentinelle): **18/18 verdi**, nessun passo instabile (profilo-369, mappa-unica, test:logic, save-compat, replay, migrazione-194, design-system, tema-unico, griglia-mobile, render-3d-023, tunnel-285, home-298, web-237, career-critical, battito-264, partita-vera, gk-dive-sync, schermate-97).
 
 Non girati da me (consegna rapida, li giudica il treno): gli altri **140** guardiani delle righe della MAPPA che toccano
 src/01, src/17 e src/18, fra cui i piu' vicini a questa modifica: `figurina-199`, `crea-home-295`, `home-199`,

@@ -1946,12 +1946,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 563,
+    "nTesto": 566,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 804,
+    "nMisurati": 807,
     "nSotto": 0,
     "nGradiente": 1,
     "nEmoji": 10,
@@ -1999,7 +1999,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 9,
+      "n": 10,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>label:nth-child(1)",
       "esempio": "Aspetto calciatore"
@@ -2014,13 +2014,13 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div.cpm-num",
-      "esempio": "187 cm · 80 kg"
+      "esempio": "170 cm · 63 kg"
      }
     ],
     "nMarca": 0,
     "marca": [],
     "nColTesto": 6,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 5,
     "nRaggi": 4,
     "nPesi": 4,
@@ -2040,7 +2040,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 802
+      "n": 805
      },
      {
       "f": "Barlow Condensed",
@@ -2065,7 +2065,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 258,
+      "n": 259,
       "fs": 32,
       "esempio": "Crea il tuo calciatore"
      },
@@ -2077,15 +2077,15 @@
      },
      {
       "c": "#9aa3b2",
-      "n": 20,
+      "n": 21,
       "fs": 12,
       "esempio": "Nuova carriera · chi sei"
      },
      {
       "c": "#e8b44a",
-      "n": 9,
+      "n": 10,
       "fs": 12,
-      "esempio": "📋 Percorso carriera"
+      "esempio": "Destro"
      },
      {
       "c": "#0d0f14",
@@ -2097,7 +2097,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 548,
+      "n": 551,
       "esempio": "Nuova carriera · chi sei",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -2127,8 +2127,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1193,
-    "schermate": 1.3,
+    "altezzaPx": 1261,
+    "schermate": 1.38,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2171,12 +2171,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 563,
+    "nTesto": 566,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 804,
+    "nMisurati": 807,
     "nSotto": 0,
     "nGradiente": 1,
     "nEmoji": 10,
@@ -2224,7 +2224,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 9,
+      "n": 10,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>label:nth-child(1)",
       "esempio": "Aspetto calciatore"
@@ -2239,13 +2239,13 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div.cpm-num",
-      "esempio": "187 cm · 80 kg"
+      "esempio": "170 cm · 63 kg"
      }
     ],
     "nMarca": 0,
     "marca": [],
     "nColTesto": 6,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 5,
     "nRaggi": 4,
     "nPesi": 4,
@@ -2265,7 +2265,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 802
+      "n": 805
      },
      {
       "f": "Barlow Condensed",
@@ -2290,7 +2290,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 258,
+      "n": 259,
       "fs": 32,
       "esempio": "Crea il tuo calciatore"
      },
@@ -2302,15 +2302,15 @@
      },
      {
       "c": "#9aa3b2",
-      "n": 20,
+      "n": 21,
       "fs": 12,
       "esempio": "Nuova carriera · chi sei"
      },
      {
       "c": "#e8b44a",
-      "n": 9,
+      "n": 10,
       "fs": 12,
-      "esempio": "📋 Percorso carriera"
+      "esempio": "Destro"
      },
      {
       "c": "#0d0f14",
@@ -2322,7 +2322,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 548,
+      "n": 551,
       "esempio": "Nuova carriera · chi sei",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -2352,8 +2352,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1193,
-    "schermate": 1.3,
+    "altezzaPx": 1261,
+    "schermate": 1.38,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2396,12 +2396,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 563,
+    "nTesto": 566,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 804,
+    "nMisurati": 807,
     "nSotto": 0,
     "nGradiente": 1,
     "nEmoji": 10,
@@ -2449,7 +2449,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 9,
+      "n": 10,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>label:nth-child(1)",
       "esempio": "Aspetto calciatore"
@@ -2464,13 +2464,13 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div.cpm-num",
-      "esempio": "187 cm · 80 kg"
+      "esempio": "170 cm · 63 kg"
      }
     ],
     "nMarca": 0,
     "marca": [],
     "nColTesto": 6,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 5,
     "nRaggi": 4,
     "nPesi": 4,
@@ -2490,7 +2490,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 802
+      "n": 805
      },
      {
       "f": "Barlow Condensed",
@@ -2515,7 +2515,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 258,
+      "n": 259,
       "fs": 32,
       "esempio": "Crea il tuo calciatore"
      },
@@ -2527,15 +2527,15 @@
      },
      {
       "c": "#9aa3b2",
-      "n": 20,
+      "n": 21,
       "fs": 12,
       "esempio": "Nuova carriera · chi sei"
      },
      {
       "c": "#e8b44a",
-      "n": 9,
+      "n": 10,
       "fs": 12,
-      "esempio": "📋 Percorso carriera"
+      "esempio": "Destro"
      },
      {
       "c": "#0d0f14",
@@ -2547,7 +2547,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 548,
+      "n": 551,
       "esempio": "Nuova carriera · chi sei",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -2577,8 +2577,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1193,
-    "schermate": 1.3,
+    "altezzaPx": 1261,
+    "schermate": 1.38,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2621,12 +2621,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 563,
+    "nTesto": 566,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 804,
+    "nMisurati": 807,
     "nSotto": 0,
     "nGradiente": 1,
     "nEmoji": 10,
@@ -2674,7 +2674,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 9,
+      "n": 10,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>label:nth-child(1)",
       "esempio": "Aspetto calciatore"
@@ -2689,13 +2689,13 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div.cpm-num",
-      "esempio": "187 cm · 80 kg"
+      "esempio": "170 cm · 63 kg"
      }
     ],
     "nMarca": 0,
     "marca": [],
     "nColTesto": 6,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 5,
     "nRaggi": 4,
     "nPesi": 4,
@@ -2715,7 +2715,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 802
+      "n": 805
      },
      {
       "f": "Barlow Condensed",
@@ -2740,7 +2740,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 258,
+      "n": 259,
       "fs": 32,
       "esempio": "Crea il tuo calciatore"
      },
@@ -2752,15 +2752,15 @@
      },
      {
       "c": "#9aa3b2",
-      "n": 20,
+      "n": 21,
       "fs": 12,
       "esempio": "Nuova carriera · chi sei"
      },
      {
       "c": "#e8b44a",
-      "n": 9,
+      "n": 10,
       "fs": 12,
-      "esempio": "📋 Percorso carriera"
+      "esempio": "Destro"
      },
      {
       "c": "#0d0f14",
@@ -2772,7 +2772,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 548,
+      "n": 551,
       "esempio": "Nuova carriera · chi sei",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -2802,8 +2802,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1193,
-    "schermate": 1.3,
+    "altezzaPx": 1261,
+    "schermate": 1.38,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2846,12 +2846,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 563,
+    "nTesto": 566,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 804,
+    "nMisurati": 807,
     "nSotto": 0,
     "nGradiente": 1,
     "nEmoji": 10,
@@ -2899,7 +2899,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 9,
+      "n": 10,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>label:nth-child(1)",
       "esempio": "Aspetto calciatore"
@@ -2914,13 +2914,13 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div.cpm-num",
-      "esempio": "187 cm · 80 kg"
+      "esempio": "170 cm · 63 kg"
      }
     ],
     "nMarca": 0,
     "marca": [],
     "nColTesto": 6,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 5,
     "nRaggi": 4,
     "nPesi": 4,
@@ -2940,7 +2940,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 802
+      "n": 805
      },
      {
       "f": "Barlow Condensed",
@@ -2965,7 +2965,7 @@
      },
      {
       "c": "#f4f1ea",
-      "n": 258,
+      "n": 259,
       "fs": 32,
       "esempio": "Crea il tuo calciatore"
      },
@@ -2977,15 +2977,15 @@
      },
      {
       "c": "#9aa3b2",
-      "n": 20,
+      "n": 21,
       "fs": 12,
       "esempio": "Nuova carriera · chi sei"
      },
      {
       "c": "#e8b44a",
-      "n": 9,
+      "n": 10,
       "fs": 12,
-      "esempio": "📋 Percorso carriera"
+      "esempio": "Destro"
      },
      {
       "c": "#0d0f14",
@@ -2997,7 +2997,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 548,
+      "n": 551,
       "esempio": "Nuova carriera · chi sei",
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
      },
@@ -3027,8 +3027,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1193,
-    "schermate": 1.3,
+    "altezzaPx": 1261,
+    "schermate": 1.38,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10222,12 +10222,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 108,
+    "nTesto": 109,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 79,
+    "nMisurati": 80,
     "nSotto": 0,
     "nGradiente": 16,
     "nEmoji": 14,
@@ -10321,7 +10321,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 61
+      "n": 62
      },
      {
       "f": "Barlow Condensed",
@@ -10335,7 +10335,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 35,
+      "n": 36,
       "fs": 13,
       "esempio": "28 anni · FC Salernum 1919"
      },
@@ -10409,7 +10409,7 @@
      },
      {
       "fs": 13,
-      "n": 5,
+      "n": 6,
       "esempio": "28 anni · FC Salernum 1919",
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)"
      },
@@ -10439,8 +10439,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1750,
-    "schermate": 1.91,
+    "altezzaPx": 1768,
+    "schermate": 1.93,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10490,12 +10490,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 108,
+    "nTesto": 109,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 79,
+    "nMisurati": 80,
     "nSotto": 0,
     "nGradiente": 16,
     "nEmoji": 14,
@@ -10589,7 +10589,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 61
+      "n": 62
      },
      {
       "f": "Barlow Condensed",
@@ -10603,7 +10603,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 35,
+      "n": 36,
       "fs": 13,
       "esempio": "28 anni · FC Salernum 1919"
      },
@@ -10677,7 +10677,7 @@
      },
      {
       "fs": 13,
-      "n": 5,
+      "n": 6,
       "esempio": "28 anni · FC Salernum 1919",
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)"
      },
@@ -10707,8 +10707,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1727,
-    "schermate": 1.89,
+    "altezzaPx": 1745,
+    "schermate": 1.91,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10758,12 +10758,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 108,
+    "nTesto": 109,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 79,
+    "nMisurati": 80,
     "nSotto": 0,
     "nGradiente": 16,
     "nEmoji": 14,
@@ -10857,7 +10857,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 61
+      "n": 62
      },
      {
       "f": "Barlow Condensed",
@@ -10871,7 +10871,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 35,
+      "n": 36,
       "fs": 13,
       "esempio": "28 anni · FC Salernum 1919"
      },
@@ -10945,7 +10945,7 @@
      },
      {
       "fs": 13,
-      "n": 5,
+      "n": 6,
       "esempio": "28 anni · FC Salernum 1919",
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)"
      },
@@ -10975,8 +10975,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1712,
-    "schermate": 1.87,
+    "altezzaPx": 1730,
+    "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11026,12 +11026,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 108,
+    "nTesto": 109,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 79,
+    "nMisurati": 80,
     "nSotto": 0,
     "nGradiente": 16,
     "nEmoji": 14,
@@ -11125,7 +11125,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 61
+      "n": 62
      },
      {
       "f": "Barlow Condensed",
@@ -11139,7 +11139,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 35,
+      "n": 36,
       "fs": 13,
       "esempio": "28 anni · FC Salernum 1919"
      },
@@ -11213,7 +11213,7 @@
      },
      {
       "fs": 13,
-      "n": 5,
+      "n": 6,
       "esempio": "28 anni · FC Salernum 1919",
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)"
      },
@@ -11243,8 +11243,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1683,
-    "schermate": 1.84,
+    "altezzaPx": 1701,
+    "schermate": 1.86,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11294,12 +11294,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 108,
+    "nTesto": 109,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 79,
+    "nMisurati": 80,
     "nSotto": 0,
     "nGradiente": 16,
     "nEmoji": 14,
@@ -11393,7 +11393,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 61
+      "n": 62
      },
      {
       "f": "Barlow Condensed",
@@ -11407,7 +11407,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 35,
+      "n": 36,
       "fs": 13,
       "esempio": "28 anni · FC Salernum 1919"
      },
@@ -11481,7 +11481,7 @@
      },
      {
       "fs": 13,
-      "n": 5,
+      "n": 6,
       "esempio": "28 anni · FC Salernum 1919",
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)"
      },
@@ -11511,8 +11511,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1665,
-    "schermate": 1.82,
+    "altezzaPx": 1683,
+    "schermate": 1.84,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
