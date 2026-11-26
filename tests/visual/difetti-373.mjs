@@ -50,8 +50,10 @@ async function ritiro(sfida, extra) {
     const C = window.__CPM_CAREER; if (!C) return { err: 'nessun __CPM_CAREER' }; const s = C.snapshot();
     C.patch({ age: 34, proStatus: 'pro', matches: 22, challenge: { id: sfida }, retireAnnounced: s.season || 1, retired: false, ...extra });
     await new Promise(r => setTimeout(r, 800));
-    const ok = C.startNewSeason(); await new Promise(r => setTimeout(r, 1500));
-    const d = C.snapshot(); return { ok, retired: !!d.retired, challenge: d.challenge, sfida373: window.__CPM_SFIDA373 || null };
+    /* [giro 406] __CPM_CAREER si registra a ogni render: l'oggetto preso PRIMA di patch ha le closure del giocatore di prima
+       (senza addio annunciato) e il passaggio di stagione non arrivava mai al ritiro. Si rilegge dopo il render. */
+    const C2 = window.__CPM_CAREER; const ok = C2.startNewSeason(); await new Promise(r => setTimeout(r, 1500));
+    const d = window.__CPM_CAREER.snapshot(); return { ok, retired: !!d.retired, challenge: d.challenge, sfida373: window.__CPM_SFIDA373 || null };
   }, [sfida, extra]);
   await ctx.close(); return r;
 }
@@ -75,7 +77,12 @@ else metti('B1 Bomber (non riuscita)', true, !!(r2.challenge && r2.challenge.fai
     await sleep(900); }
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 40000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 3731, policy: 'seeded', tickMs: 150 }));
-  const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }
+  /* [giro 406] SI ATTENDE IL FISCHIO, NON 400 s. Misurato in sessione: la finale (1280x900, disegno software) scorreva a ~20 s di parete per
+     minuto di gioco ed era al 44' dopo 400 s: B2 «non giudicato» sui due bracci. Ora la partita si aspetta finche' il cronometro
+     (__CPM_CLOCK) o la fase si muovono: ferma per 120 s = non giudicata, tetto di sicurezza 1500 s. */
+  const t0 = Date.now(); let ph, tMosso = Date.now(), ult = null;
+  while (Date.now() - t0 < 1500000 && Date.now() - tMosso < 120000) { const st = await page.evaluate(() => [window.__CPM_PHASE ? window.__CPM_PHASE() : null, window.__CPM_CLOCK ? window.__CPM_CLOCK() : null]);
+    ph = st[0]; if (ph === 'ended' || ph === 'ceremony') break; const k = st.join('#'); if (k !== ult) { ult = k; tMosso = Date.now(); } await sleep(800); }
   let q = null, mem = null;
   for (let k = 0; k < 40; k++) { const d = await page.evaluate(() => { const s = window.__CPM_CAREER.snapshot(); return { q: s.nationsCupQueue, mem: (s.worldMemory || []).filter(m => m && m.type === 'nations_cup' && m.season === s.season).pop() || null }; });
     q = d.q; mem = d.mem; if (q && q.done) break; await page.keyboard.press('Enter').catch(() => {}); await sleep(700); }
