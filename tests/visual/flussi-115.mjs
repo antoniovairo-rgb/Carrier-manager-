@@ -150,12 +150,12 @@ for (const f of scelti()) {
     await page.setViewportSize({ width: f.w, height: f.h }); await sleep(300);
   }
   await inp.focus(); await page.keyboard.press('Enter');
-  const partito = await attendi(page, () => /IL PROVINO · PASSO/.test(document.body.innerText || ''), null, 1500);
+  const partito = await attendi(page, () => /IL PROVINO · PASSO|PROVINO \d DI 3/.test(document.body.innerText || ''), null, 1500);
   const fuoco = await page.evaluate(() => { const a = document.activeElement; return a ? a.tagName + (a.getAttribute('data-cpm') ? '[' + a.getAttribute('data-cpm') + ']' : '') : null; });
   const ekh = await inp.getAttribute('enterkeyhint').catch(() => null);
   esito(f, '31', !partito && /crea-nazione/.test(fuoco || '') && ekh === 'next', `Invio nel nome: ${partito ? 'AVVIA I PROVINI' : 'resta nella creazione'} · fuoco su ${fuoco} · enterkeyhint=${ekh}`);
   if (!partito) await page.locator('[data-cpm="crea-avanti-v2"]').click();
-  if (!(await attendi(page, () => /IL PROVINO · PASSO 1/.test(document.body.innerText || ''), null, 20000))) { console.log('  provino 1 non raggiunto'); await ctx.close(); continue; }
+  if (!(await attendi(page, () => /IL PROVINO · PASSO 1|PROVINO 1 DI 3/.test(document.body.innerText || ''), null, 20000))) { console.log('  provino 1 non raggiunto'); await ctx.close(); continue; }
   await sleep(600);
   /* ── PRE 1 ── */
   await foto(page, f, 'provino-pre-1'); await altezza(page, f, '02', 'pre-1');
@@ -173,11 +173,11 @@ for (const f of scelti()) {
   if (f.w <= 380) { const tr = (R1.nomi || []).filter(x => x.tronco); esito(f, '23', !!(R1.nomi && R1.nomi.length) && !tr.length, R1.nomi ? `nomi a fine partita: ${R1.nomi.map(x => '«' + x.t.replace(/\n/g, ' ') + '»' + (x.tronco ? ' TRONCO' : '')).join(' · ')}` : 'fine partita non vista'); }
   await attendi(page, () => /PROVINO 1 DI 3 · COMPLETATO/.test(document.body.innerText || ''), null, 15000); await sleep(500);
   await foto(page, f, 'provino-post-1'); await altezza(page, f, '02', 'post-1');
-  await premi(page, 'Vai al Provino'); await attendi(page, () => /IL PROVINO · PASSO 2/.test(document.body.innerText || ''), null, 10000); await sleep(500);
+  await premi(page, 'Vai al Provino'); await attendi(page, () => /IL PROVINO · PASSO 2|PROVINO 2 DI 3/.test(document.body.innerText || ''), null, 10000); await sleep(500);
   await foto(page, f, 'provino-pre-2'); await altezza(page, f, '02', 'pre-2');
   await premi(page, 'Inizia il provino'); await giocaProvino(page, f, 2);
   await attendi(page, () => /PROVINO 2 DI 3 · COMPLETATO/.test(document.body.innerText || ''), null, 15000); await premi(page, 'Vai al Provino');
-  await attendi(page, () => /IL PROVINO · PASSO 3/.test(document.body.innerText || ''), null, 10000); await premi(page, 'Inizia il provino'); await giocaProvino(page, f, 3);
+  await attendi(page, () => /IL PROVINO · PASSO 3|PROVINO 3 DI 3/.test(document.body.innerText || ''), null, 10000); await premi(page, 'Inizia il provino'); await giocaProvino(page, f, 3);
   /* G184-20: dopo il terzo, la schermata dei risultati deve RESTARE (riepilogo) e le offerte partire dal tasto */
   const offSubito = await attendi(page, () => /Offerte ricevute/.test(document.body.innerText || ''), null, 3000);
   const rie = await page.evaluate(() => { const r = document.querySelector('[data-cpm="provini-riepilogo"]'); const t = document.querySelector('[data-cpm="provini-offerte"]'); return { righe: r ? (r.innerText.match(/Provino \d/g) || []).length : 0, tasto: !!t }; });
