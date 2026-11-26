@@ -47,7 +47,7 @@ Il braccio rosso `window.__CPM_NO_G378` è il «prima».
 Memoria della stagione: registrata la domanda, la stessa partita non la ripropone (0 ripetute su 576 prove).
 Guardiani vicini rigirati: `storia-362` verde + rosso (il suo controllo B — nessun «N stagioni» sotto 3 — è il motivo
 per cui la 2ª stagione dice «dalla scorsa stagione» e non «in 2 stagioni»).
-`mappa-unica` verde. `node ci-runner.mjs giro rivale-378` (guardiano + 17 sentinelle): esito in fondo.
+`mappa-unica` verde. `node ci-runner.mjs giro rivale-378` (guardiano + 17 sentinelle): **18/18 verdi** sul build del ramo (base 7.999.215).
 
 ⚠️ Non misurato con `career-sim-test`: quella sonda non produce interviste né capitoli della storia (avanza settimane
 sugli handler veri senza aprire le finestre); il conteggio è fatto sulle funzioni vere che decidono quei testi.
