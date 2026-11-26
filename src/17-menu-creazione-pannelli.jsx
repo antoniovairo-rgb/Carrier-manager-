@@ -287,7 +287,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               <g className="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#5e0f1d" strokeWidth="1.3"/><clipPath id="homeBall"><circle cx="69.5" cy="15" r="10"/></clipPath><g clipPath="url(#homeBall)" fill="#5e0f1d"><polygon points="69.5,11.6 72.73,13.95 71.5,17.75 67.5,17.75 66.27,13.95"/><polygon points="73.44,9.58 72.24,5.89 75.38,3.61 78.52,5.89 77.32,9.58"/><polygon points="75.87,17.07 79.01,14.79 82.15,17.07 80.95,20.76 77.07,20.76"/><polygon points="69.5,21.7 72.64,23.98 71.44,27.67 67.56,27.67 66.36,23.98"/><polygon points="63.13,17.07 61.93,20.76 58.05,20.76 56.85,17.07 59.99,14.79"/><polygon points="65.56,9.58 61.68,9.58 60.48,5.89 63.62,3.61 66.76,5.89"/></g></g>
             </svg>
           </div>
-          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",lineHeight:1}}>
+          <div {...(_g401()?{role:"heading","aria-level":1,"aria-label":"Korward Elite","data-cpm":"home401-titolo"}:{})} style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",lineHeight:1}}>
             <span style={{fontFamily:"'Barlow','Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif",fontWeight:900,fontSize:40,letterSpacing:.5,color:"#fff",textShadow:"0 2px 8px rgba(0,0,0,0.3)",lineHeight:1}}>K<span style={{fontSize:31,verticalAlign:"baseline"}}>⚽</span>rward</span>
             <span style={{fontFamily:"'KWScript','Segoe Script','Snell Roundhand','Apple Chancery',cursive",fontWeight:400,fontSize:30,letterSpacing:1,color:TH.goldText,textShadow:"0 2px 8px rgba(0,0,0,0.3)",marginTop:0,lineHeight:1}}>Elite</span>
           </div>
@@ -342,7 +342,15 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         ))}
       </div>
-      {!hasAny&&<Card style={{marginBottom:_sb(9),padding:"7px 12px"}}>
+      {!hasAny&&_g401()&&<Card data-cpm="home401-come" style={{marginBottom:_sb(9),padding:"10px 14px"}}>{/* [giro 401 · PO-672] cosa si fa nel gioco, in tre passi: gli stessi che il giocatore ritrova numerati su creazione, provini e offerte */}
+        <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:FW.bold,marginBottom:SP.sm}}>Come si inizia</div>
+        <ol style={{margin:0,padding:0,listStyle:"none",display:"flex",flexDirection:"column",gap:SP.sm}}>
+          {[["Crea il tuo calciatore","nome, aspetto e piede: ti basta un minuto."],["Gioca tre provini","gli osservatori guardano gol, assist e voto."],["Scegli il club","firma con chi ti vuole e vivi la tua carriera, da ragazzo a campione."]].map(([t,d],i)=>(
+            <li key={i} style={{display:"flex",gap:SP.sm,alignItems:"flex-start"}}><span aria-hidden="true" style={{flex:"0 0 auto",width:22,height:22,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black,background:TH.warning,color:TINTE.bg,marginTop:1}}>{i+1}</span>
+              <span style={{fontSize:FS.small,color:TH.text,lineHeight:1.45}}><b>{t}</b><span style={{color:TH.muted}}> — {d}</span></span></li>))}
+        </ol>
+      </Card>}
+      {!hasAny&&!_g401()&&<Card style={{marginBottom:_sb(9),padding:"7px 12px"}}>
         <p style={{fontSize:FS.small,color:TH.muted,margin:"0 0 12px",lineHeight:1.7}}>Crea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.</p>
       </Card>}
       {/* Card di sovrascrittura: solo quando TUTTI gli slot sono pieni (nessuno slot vuoto disponibile) */}
@@ -414,6 +422,23 @@ function LogoMark({size=32,shadow=true}){
   );
 }
 /* [giro 115 PO-321] interruttori rossi del giro: __CPM_NO_G115_<NN> riporta il punto G184-<NN> com'era nella 183 */
+/* [giro 401 · PO-672 «migliora il wizard per i nuovi player, la intro e la schermata iniziale di nuova carriera»] il primo avvio e' un
+   percorso in TRE PASSI numerati, scritti uguali su ogni schermata: 1 Crea il calciatore · 2 I provini · 3 Scegli il club. Ogni schermata
+   ha il suo titolo («Passo N di 3 · ...») e UN'azione principale visibile senza scorrere. Rosso window.__CPM_NO_G401 = percorso di prima.
+   Guardiano npm run primo-avvio-401. */
+function _g401(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_G401);}catch(_e){return true;}}
+const PASSI401=["Crea il calciatore","I provini","Scegli il club"];
+function Passi401({n,sotto}){
+  return(<div data-cpm="passi401" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:SP.sm,margin:"0 auto "+SP.md+"px",maxWidth:560,width:"100%"}}>
+    <div data-cpm="passi401-titolo" role="heading" aria-level={2} style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:FW.black,textTransform:"uppercase",textAlign:"center"}}>Passo {n} di 3 · {PASSI401[n-1]}</div>
+    <ol aria-label="I passi per iniziare" style={{listStyle:"none",margin:0,padding:0,display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:SP.xs,width:"100%"}}>
+      {PASSI401.map((t,i)=>{const fatto=i+1<n,ora=i+1===n;return(<li key={i} aria-current={ora?"step":undefined} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,minWidth:0}}>
+        <span style={{width:26,height:26,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black,background:fatto?TH.success:ora?TH.warning:"transparent",color:fatto||ora?TINTE.bg:TH.muted,border:"2px solid "+(fatto?TH.success:ora?TH.warning:TH.cardBorder)}}>{fatto?"✓":i+1}</span>
+        <span style={{fontSize:FS.caption,lineHeight:1.25,textAlign:"center",color:ora?TH.text:TH.muted,fontWeight:ora?FW.bold:FW.semibold}}>{t}</span></li>);})}
+    </ol>
+    {sotto&&<div style={{fontSize:FS.small,color:TH.muted,textAlign:"center",lineHeight:1.45}}>{sotto}</div>}
+  </div>);
+}
 function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
 const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
@@ -445,6 +470,15 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
     const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:_piede369,...(_no369?{}:{altezzaCm:_fis369.cm,pesoKg:_fis369.kg}),archetype:arc,tratti:{enfant:!_unico75&&!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
+  const _nome401=(
+          <div><label style={lbl} htmlFor="cpm-nome401">{_g401()?"Come ti chiami? (obbligatorio)":"Nome (obbligatorio)"}</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder={"Es. "+EROE_INTRO_320.nome} maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" id="cpm-nome401"
+            enterKeyHint={_no115("31")?undefined:"next"}
+            onKeyDown={e=>{if(e.key!=="Enter")return;if(_no115("31")){go();return;}e.preventDefault();try{const n=document.querySelector('[data-cpm="crea-nazione"]');if(n){n.focus();}else e.target.blur();}catch(_e){}}}
+            onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>
+            {!_no115("30")&&<div data-cpm="nome-contatore" aria-live="polite" style={{display:"flex",justifyContent:"space-between",gap:8,marginTop:4,fontSize:FS.caption,color:name.length>=NOME_MAX115?TH.txAmber:TH.muted}}><span>{name.length>=NOME_MAX115?"Hai raggiunto il limite: abbrevia il secondo nome se serve":" "}</span><span style={{fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{name.length}/{NOME_MAX115}</span></div>}{/* [giro 115 G184-30] il limite si vede: prima il nome veniva troncato in silenzio · [G184-31] Invio porta alla nazionalita', non avvia i provini · [G184-32] il campo resta in vista quando si apre la tastiera */}{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+  );/* [giro 401] il campo del nome e' lo stesso: col percorso nuovo sta in cima, prima della figurina */
+  /* [giro 401] nella creazione non c'e' barra di navigazione: i suoi 80 px di riserva in fondo allo scorrimento tenevano la barra del tasto a meta' aria (come i provini, giro 115 G184-02) */
+  React.useEffect(()=>{if(!_g401())return;const el=document.querySelector('.cpm-scroll');if(!el)return;const pb=el.style.paddingBottom;el.style.paddingBottom="calc(10px + env(safe-area-inset-bottom,0px))";return()=>{el.style.paddingBottom=pb;};},[]);
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
@@ -456,11 +490,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         <div data-cpm="crea-v2" style={{display:"flex",justifyContent:"center"}}><TitoloV2 cpm="crea-titolo-v2" occhiello="Nuova carriera · chi sei" titolo="Crea il tuo calciatore"/></div>{/* [PO-302 tappa 3 · V2Creazione] titolo V2 (occhiello + carattere TV) */}
         {/* [7.999.49 parte A] tolta «Ruolo fisso: Attaccante»: il ruolo lo dice già la figurina */}
       </div>
+      {_g401()&&<Passi401 n={1} sotto="Scrivi il tuo nome e scegli l'aspetto: tutto il resto è facoltativo."/>}
       <Card style={{maxWidth:900,margin:"0 auto",padding:"16px 16px 18px"}}>
       <div className="cpm-create">
         {/* SINISTRA — Identità: 3D + avatar + nome + nazionalità */}
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>👤 Identità</div>
+          {_g401()&&_nome401}
           <div style={{display:"flex",justifyContent:"center"}}>
             <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} voltoId={voltoScelto} nome={name.trim()||"Il tuo nome"} ruolo="Attaccante" larg={143} fisico369={_no369?null:_fis369}/>
           </div>
@@ -483,11 +519,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
             {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" className="cpm-t40" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder={"Es. "+EROE_INTRO_320.nome} maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name"
-            enterKeyHint={_no115("31")?undefined:"next"}
-            onKeyDown={e=>{if(e.key!=="Enter")return;if(_no115("31")){go();return;}e.preventDefault();try{const n=document.querySelector('[data-cpm="crea-nazione"]');if(n){n.focus();}else e.target.blur();}catch(_e){}}}
-            onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>
-            {!_no115("30")&&<div data-cpm="nome-contatore" aria-live="polite" style={{display:"flex",justifyContent:"space-between",gap:8,marginTop:4,fontSize:FS.caption,color:name.length>=NOME_MAX115?TH.txAmber:TH.muted}}><span>{name.length>=NOME_MAX115?"Hai raggiunto il limite: abbrevia il secondo nome se serve":" "}</span><span style={{fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{name.length}/{NOME_MAX115}</span></div>}{/* [giro 115 G184-30] il limite si vede: prima il nome veniva troncato in silenzio · [G184-31] Invio porta alla nazionalita', non avvia i provini · [G184-32] il campo resta in vista quando si apre la tastiera */}{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+          {!_g401()&&_nome401}
           <div><label style={lbl}>Nazionalità</label><select data-cpm="crea-nazione" className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
           {!_no369&&<div><label style={lbl}>Piede preferito</label><div data-cpm="crea-piede369" role="group" aria-label="Piede preferito" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
             {[["R","Destro"],["L","Sinistro"]].map(([k,t])=>{const sel=_piede369===k;return(<button key={k} type="button" data-piede={k} aria-pressed={sel} onClick={()=>setPiede369(k)} className="cpm-t40" style={{padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,color:sel?TH.brandText:TH.text,fontSize:FS.small,fontWeight:FW.bold,cursor:"pointer",fontFamily:"inherit"}}>{t}</button>);})}
@@ -496,10 +528,10 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_unico75?"🗺️ Percorso":"🎯 Stile e percorso"}</div>
-          <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid "+TH.bdBlue}} shadow={false}>
+          {!_g401()&&<Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid "+TH.bdBlue}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
-          </Card>
+          </Card>}{/* [giro 401] il percorso lo dicono i tre passi in testa */}
           {/* S12.2: Archetype selection — [giro 75] nascosta con lo stile unico */}
           {!_unico75&&<div data-cpm="scelta-stile">
             <label style={lbl}>Stile di gioco</label>
@@ -560,11 +592,15 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:FS.body,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
-          <Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Inizia i provini</Btn>
-          {!name.trim()&&<div style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:-8}}>Scrivi il nome per iniziare</div>}{/* [7.999.49 parte A] il bottone disattivato dice perché */}
+          {!_g401()&&<Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Inizia i provini</Btn>}
+          {!_g401()&&!name.trim()&&<div style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:-8}}>Scrivi il nome per iniziare</div>}{/* [7.999.49 parte A] il bottone disattivato dice perché */}
         </div>
       </div>{/* end cpm-create */}
       </Card>
+      {_g401()&&<div data-cpm="crea401-barra" style={{position:"sticky",bottom:0,zIndex:5,maxWidth:900,margin:SP.sm+"px auto 0",padding:SP.sm+"px 0 "+SP.xs+"px",background:TINTE.bg,boxShadow:"0 -14px 18px -6px "+TINTE.bg}}>{/* [giro 401 · PO-672] l'azione principale sta sempre a schermo: al telefono era a 1.217 px su 915 (misurato), sotto tutta la creazione */}
+        <Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Inizia i provini →</Btn>
+        <div aria-live="polite" style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:4,minHeight:"1.3em"}}>{name.trim()?"Passo 2: tre provini davanti agli osservatori":"Scrivi il tuo nome per iniziare"}</div>
+      </div>}
     </div>
   );
 }
@@ -611,7 +647,8 @@ function OffersScreen({player,trialStats,onChoose}){
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
     <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */+" cpm-pc289"/* [giro 289] da PC: colonna compatta e centrata (src/19) */} style={{width:"100%"}}>
-      <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
+      {_g401()&&<Passi401 n={3}/>}
+      <div style={{textAlign:"center",marginBottom:10}}>{!_g401()&&<div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div>}<h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
       {!_no201&&<p data-cpm="offerte201-motivo" className="cpm-leggi289c" style={{color:TH.text,fontSize:FS.caption,lineHeight:1.5,margin:"0 0 10px",textAlign:"center"}}>{_mot201}</p>}{/* [giro 201 · PO-418] perché arrivano queste offerte */}
       
@@ -760,7 +797,8 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
-      <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:8}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
+      {_g401()?<Passi401 n={2}/>:null}{/* [giro 401] il passo del percorso; sotto, il numero del provino */}
+      <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:8}}>{_g401()?`PROVINO ${trialNum+1} DI 3`:`IL PROVINO · PASSO ${trialNum+1} DI 3`}</div>
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?(_no115("21")?"#fff":inkSu945(i<trialNum?TH.success:TH.warning)):TH.faint}} data-cpm="provino-passo">{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
     </div>
     {/* VS hero */}
