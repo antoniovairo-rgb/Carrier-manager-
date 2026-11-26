@@ -7414,6 +7414,7 @@ const getThisWeekMatchday=()=>{
               dell'intervista, larga 100%, veniva schiacciata e spinta a destra, tagliata fuori schermo, col
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
+          <Intervista416 attiva={_iv3d}>{/* [giro 416 PO-680] su PC scena e domanda composte insieme, sfondo coperto (src/16); telefono: i due figli come prima */}
           {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={((interviewModal&&interviewModal.club)||player.club)||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card className="cpm-pan150" style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":(typeof window!=="undefined"&&window.__CPM_NO_IV12)?"62vh":"71vh",...((typeof window!=="undefined"&&(window.__CPM_NO_IV12||window.__CPM_NO_IV25))?{}:{minHeight:"69vh"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] scena 40% → 31%, riquadro 62 → 71vh */,overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)",...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?{background:TH.surface3,border:`1px solid ${TH.divider}`,borderRadius:`${RAD.xl}px ${RAD.xl}px 0 0`}:{})/* [7.999.162 PO-230] foglio dal basso (la scena 3D sta sopra): fondo, filo e raggio della cornice standard */}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1,...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?finestraStd():{})}}>
             {/* Header */}
@@ -7506,6 +7507,7 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.caption,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli il tono della risposta: gli effetti li vedrai subito dopo.</div>{/* [7.999.49 parte A] gli effetti restano nascosti per scelta (6.5.4), la frase lo dice */}
             </>)}
           </Card>
+          </Intervista416>
         </div>
       ),document.body);})()}
 

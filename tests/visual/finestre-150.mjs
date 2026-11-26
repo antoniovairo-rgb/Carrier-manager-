@@ -64,7 +64,10 @@ function MISURA(sel) {
   const pad = parseFloat(getComputedStyle(pan).paddingBottom) || 0;
   const altoCont = pan.scrollHeight > pan.clientHeight + 2;
   const sbg = getComputedStyle(strato).backgroundColor;
-  return { strato: true, pannello: { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), sotto: Math.round(H - r.bottom),
+  /* [giro 416 PO-680] la scena della sala stampa misurata, non supposta: su PC (da 1100 px) sta ACCANTO alla finestra, sul telefono e sul tablet sopra */
+  const scEl = strato.querySelector('[data-cpm-scena]'); const scR = scEl ? scEl.getBoundingClientRect() : null;
+  const scena = scR && scR.width > 0 ? { l: Math.max(0, Math.round(scR.left)), t: Math.max(0, Math.round(scR.top)), r: Math.min(W, Math.round(scR.right)), b: Math.min(H, Math.round(scR.bottom)) } : null;
+  return { strato: true, scena, pannello: { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), sotto: Math.round(H - r.bottom),
     vuoto: altoCont ? 0 : Math.max(0, Math.round(r.bottom - fondo - pad)), scorre: altoCont, scorrevole: /auto|scroll/.test(getComputedStyle(pan).overflowY), velo: sbg }, W, H };
 }
 /* luminanza media (0..1) di una striscia dello screenshot: si legge l'immagine nella pagina stessa */
@@ -107,7 +110,8 @@ for (const braccio of BRACCI) {
           /* strisce della home a sinistra e a destra del pannello (a meta' altezza della parte alta, fuori dalla scena 2D della mixed zone) */
           const lx = Math.max(0, Math.min(p.x - 8, 260)), rx0 = p.x + p.w + 8, rw = Math.max(0, Math.min(m.W - rx0, 260));
           const ys = Math.round(m.H * (fin.scena ? 0.36 : 0.2)), hs = Math.round(m.H * (fin.scena ? 0.55 : 0.6));/* con la scena della sala stampa le strisce stanno sotto la scena */
-          const rects = [[Math.max(0, p.x - 8 - lx), ys, lx, hs], [rx0, ys, rw, hs]];
+          const rects = [[Math.max(0, p.x - 8 - lx), ys, lx, hs], [rx0, ys, rw, hs]]
+            .map(q => (m.scena && q[0] < m.scena.r && q[0] + q[2] > m.scena.l && q[1] < m.scena.b && q[1] + q[3] > m.scena.t) ? [0, 0, 0, 0] : q);/* [giro 416] una striscia che cade sulla scena non e' home: non si giudica (resta l'altra; nessuna = non giudicato) */
           L0 = await luminanze(page, prima, rects); L1 = await luminanze(page, dopo, rects);
           const rid = [0, 1].map(i => (L0[i] != null && L0[i] > 0.02) ? 1 - L1[i] / L0[i] : null).filter(x => x != null);
           m.riduzione = rid.length ? +Math.min(...rid).toFixed(3) : null;
@@ -115,7 +119,7 @@ for (const braccio of BRACCI) {
             if (m.riduzione == null) motivo.push('non giudicato (nessuna striscia di home ai lati della finestra)');
             else if (m.riduzione < SOGLIA_VELO) motivo.push(`velo debole: la home ai lati perde solo il ${Math.round(m.riduzione * 100)}% di luce (< ${SOGLIA_VELO * 100}%)`);
             {
-              const sopra = fin.scena ? p.y - Math.round(m.H * 0.31) : p.y;/* con la scena (31% alto) si centra nello spazio libero SOTTO la scena */
+              const sopra = fin.scena ? (m.scena && m.scena.b <= p.y + 1 ? p.y - m.scena.b : m.scena ? p.y : p.y - Math.round(m.H * 0.31)) : p.y;/* [giro 416] scena sopra → si centra sotto la scena; scena accanto → nello schermo intero *//* con la scena (31% alto) si centra nello spazio libero SOTTO la scena */
               if (p.vuoto > SOGLIA_VUOTO) motivo.push(`vuoto in basso ${p.vuoto}px (> ${SOGLIA_VUOTO})`);
               if (!p.scorre && Math.abs(sopra - p.sotto) > SOGLIA_CENTRO) motivo.push(`non centrata: sopra ${sopra}px, sotto ${p.sotto}px`);
               if (f.pc && p.w < LARGH_MIN) motivo.push(`stretta: ${p.w}px (< ${LARGH_MIN})`);

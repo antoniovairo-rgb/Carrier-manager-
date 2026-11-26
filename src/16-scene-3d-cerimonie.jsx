@@ -252,7 +252,34 @@ const _SPONSOR947=["Marelluce","Vesta Assicura","Caff\u00e8 Orvino","Banca Ponte
 function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
-function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null,eroe="",testate=[]}){
+/* [giro 416 · PO-680 «da PC l'intervista si vede male»] L'IMPAGINAZIONE DA PC DELLA SALA STAMPA. Rosso window.__CPM_NO_G416.
+   Misurato (intervista-pc-416, prima): su PC la scena era una fascia a tutta larghezza alta il 31% dello schermo (proporzioni
+   5,7-6,4 contro 1,49 del telefono), il tavolo occupava il 25-28% della scena, fra i marchi del pannello c'erano vuoti di
+   3,8-5,6 volte la loro larghezza, la home si vedeva in 118-140 punti su 160 e la finestra galleggiava 61-106 px sotto la scena.
+   Il disegno della scena e' pensato per il telefono: una scatola di 503x338 (il 129% x 40% dello schermo del telefono, ridotto
+   a 0,775). Qui su PC la STESSA scatola si ingrandisce intera (proporzioni del telefono, tavolo e marchi come li' ma piu'
+   grandi) e si mette ACCANTO alla finestra della domanda, i due insieme al centro di un fondo pieno che copre la home.
+   Il telefono, il tablet in verticale e le finestre strette (sotto 1100 px o meno larghe di 1,25 volte l'altezza) restano
+   com'erano: qui i due figli tornano tali e quali. */
+const SCATOLA416={w:503,h:338};
+function pc416(W,H){return !(typeof window!=='undefined'&&window.__CPM_NO_G416)&&W>=1100&&W>=1.25*H;}
+function Intervista416({attiva=false,children}){
+  const [vp,setVp]=React.useState(()=>({w:(typeof window!=='undefined'&&window.innerWidth)||0,h:(typeof window!=='undefined'&&window.innerHeight)||0}));
+  React.useEffect(()=>{const f=()=>setVp({w:window.innerWidth,h:window.innerHeight});window.addEventListener('resize',f);return()=>window.removeEventListener('resize',f);},[]);
+  if(!attiva||!pc416(vp.w,vp.h))return(<>{children}</>);
+  const figli=React.Children.toArray(children).filter(React.isValidElement);
+  const scena=figli.find(e=>e.type===InterviewScena2D), card=figli.find(e=>e.type!==InterviewScena2D);
+  const m=SP.lg, gap=SP.lg, cw=520;
+  const sw=Math.max(0,Math.min(vp.w-cw-gap-2*m,(vp.h-2*m)*SCATOLA416.w/SCATOLA416.h,1100));
+  const k=sw/SCATOLA416.w, sh=SCATOLA416.h*k;
+  return(
+    <div data-cpm="composizione416" style={{position:"fixed",inset:0,zIndex:1,background:"linear-gradient("+TH.scrimForte+","+TH.scrimForte+"),"+TINTE.bg/* fondo PIENO (la home non si vede) e scuro come il velo delle altre finestre da PC */,display:"flex",alignItems:"center",justifyContent:"center",gap,padding:m,boxSizing:"border-box"}}>
+      {scena&&(<div data-cpm="scena416" style={{position:"relative",flex:"0 0 auto",width:sw,height:sh,overflow:"hidden",borderRadius:RAD.xl,boxShadow:TH.el3,border:"1px solid "+TINTE.bordo,boxSizing:"border-box"}}>
+        {React.cloneElement(scena,{scala416:k})}</div>)}
+      {card&&React.cloneElement(card,{style:{...(card.props.style||{}),width:cw,maxWidth:cw,flex:"0 0 auto",minHeight:0,maxHeight:vp.h-2*m,borderRadius:RAD.xl}})}
+    </div>);
+}
+function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null,eroe="",testate=[],scala416=null}){
   /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
      COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
      carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
@@ -286,7 +313,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   const _rid=React.useMemo(()=>{const a=[];for(let r=0;r<6;r++){const n=(r%2)?2:3;const q=[];
     for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
-    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?((typeof window!=="undefined"&&window.__CPM_NO_IV12)?{left:0,right:0,top:0,height:"40%"}:{left:"-14.5%",width:"129%",top:0,height:"40%",transform:"scale(0.775)",transformOrigin:"top center"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] la scena resta com'e' ma in scala: occupa il 31% invece del 40%, senza deformarsi */:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
+    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...(scala416?{left:0,top:0,width:SCATOLA416.w,height:SCATOLA416.h,transform:"scale("+scala416+")",transformOrigin:"top left"}/* [giro 416] su PC la scatola del telefono, ingrandita intera */:(_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?((typeof window!=="undefined"&&window.__CPM_NO_IV12)?{left:0,right:0,top:0,height:"40%"}:{left:"-14.5%",width:"129%",top:0,height:"40%",transform:"scale(0.775)",transformOrigin:"top center"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] la scena resta com'e' ma in scala: occupa il 31% invece del 40%, senza deformarsi */:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
       background:_n108?"linear-gradient(180deg,"+TINTE.sup+" 0%,"+TINTE.inc+" 44%,"+TINTE.bg+" 100%)":"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
       <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,
