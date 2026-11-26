@@ -10597,9 +10597,37 @@ function generateTeamRoster(club,season){
     const _fn=firstPool[(i+_off)%firstPool.length];let _ln=lastPool[(i+_off)%lastPool.length];
     if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))_ln=lastPool[(i+_off+7)%lastPool.length];// [5.96.0 CR-1] mai un nome+cognome di calciatore reale in rosa
     if(!(typeof window!=='undefined'&&window.__CPM_NO_ROSA49)){for(let _k=1;_usati49.has(_fn+" "+_ln)&&_k<lastPool.length;_k++){_ln=lastPool[(i+_off+_k)%lastPool.length];if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))continue;}}
+    if(!_no368()){for(let _k=1;(_equivoco368(_ln)||_usati49.has(_fn+" "+_ln)||(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase())))&&_k<lastPool.length;_k++)_ln=lastPool[(i+_off+_k)%lastPool.length];}/* [giro 368 PO-417] un cognome che si legge come parola della cronaca («Testa», «Cross»: «Cross di Cross», «TESTA addosso») scala al cognome successivo del pool; tocca SOLO chi lo portava (rosso __CPM_NO_G368) */
     _usati49.add(_fn+" "+_ln);
     if(_mod112&&i<=10)return{name:`${_fn} ${_ln}`,role,ln:i===0?0:_q112.ln};
     return{name:`${_fn} ${_ln}`,role};});
+}
+/* [giro 368 PO-417 «Nomi senza equivoci»] MISURATO (misura-368.mjs, 13.770 incontri di lega in 3 stagioni, rose generate):
+   9.100 (66%) avevano almeno un cognome uguale fra i due undici in campo, 13.425 (97%) fra le due rose intere; nei testi della
+   cronaca (BG_MATCH, SITUATIONS) due cognomi del pool sono parole del racconto: «testa» 28 volte, «cross» 27 (+ «mediano»,
+   «franco», «quaranta» nelle frasi del narratore). Due regole alla sorgente, deterministiche, rosso __CPM_NO_G368:
+   · _equivoco368: generateTeamRoster non assegna mai un cognome che e' una parola della cronaca (scala al successivo);
+   · contro368: in partita la rosa AVVERSARIA cede — chi ha il cognome di uno della tua squadra (eroe compreso) prende il
+     primo cognome libero del pool della sua nazione (seme del club), nome di battesimo intatto. La tua squadra non cambia mai. */
+function _no368(){return typeof window!=="undefined"&&!!window.__CPM_NO_G368;}
+const _PAROLE368=new Set(["testa","cross","palla","pallone","porta","rete","tiro","gol","palo","traversa","angolo","fallo","area","campo","punta","ala","mediano","terzino","mezzala","regista","libero","portiere","rigore","corner","tacco","petto","piede","spalla","mischia","rimessa","barriera","franco","quaranta"]);
+function _equivoco368(ln){const w=String(ln||"").trim().toLowerCase();return !!w&&_PAROLE368.has(w);}
+const _VICINI368={"🇧🇪":["🇳🇱","🇫🇷"],"🇳🇱":["🇧🇪","🇩🇪"],"🇧🇷":["🇵🇹"],"🇦🇷":["🇪🇸"],"🇵🇹":["🇧🇷"],"🇪🇸":["🇦🇷"],"🇫🇷":["🇧🇪"],"🇹🇷":["🇩🇪"]};
+function contro368(opp,own,club,season){
+  if(!Array.isArray(opp)||_no368())return opp;
+  const cog=n=>String(((typeof _surnBG==="function")?_surnBG(n||""):"")||String(n||"").trim().split(/\s+/).pop()||"").toLowerCase();
+  const vietati=new Set((own||[]).map(x=>cog(x&&x.name)).filter(Boolean));
+  if(!opp.some(x=>x&&x.name&&vietati.has(cog(x.name))))return opp;
+  const _n368=(club&&club.nat&&NAME_BY_NAT[club.nat])?club.nat:"🇮🇹",_sd368=hashStr(String((club&&(club.id||club.n))||"x")+"|368|"+(season||1));
+  /* pool della nazione, poi (se si esaurisce: il belga ha 30 cognomi, una rosa ne vieta 23) quelli delle nazioni vicine, poi tutti */
+  const pool=[];[_n368,...(_VICINI368[_n368]||[]),...Object.keys(NAME_BY_NAT)].forEach((nt,j)=>{if(pool._v&&pool._v.has(nt))return;(pool._v=pool._v||new Set()).add(nt);seededShuffle([...NAME_BY_NAT[nt].last],_sd368^(j*0x9E3779B9)).forEach(x=>pool.push(x));});
+  const usati=new Set(opp.map(x=>cog(x&&x.name)));let k=0;
+  return opp.map(x=>{if(!x||!x.name)return x;const c=cog(x.name);if(!vietati.has(c))return x;
+    const full=String(x.name).trim();const fn=full.slice(0,Math.max(0,full.length-c.length)).trim();
+    for(;k<pool.length;k++){const ln=pool[k],l=ln.toLowerCase();if(vietati.has(l)||usati.has(l)||_equivoco368(ln))continue;
+      if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((fn+" "+ln).toLowerCase()))continue;
+      usati.add(l);k++;return {...x,name:(fn?fn+" ":"")+ln};}
+    return x;});
 }
 function seededShuffle(arr,seed){
   const a=[...arr];let s=(seed*1664525+1013904223)>>>0;
@@ -35912,6 +35940,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       return _stCfg89?{..._cc89,intensity:clamp(_cc89.intensity*(_stCfg89.atmo||1),0,1),stadiumTpl:_stCfg89}:_cc89;
     }catch(e){return {tier:"league",fill:0.7,awayFill:0.35,intensity:0.55,capacity:20000,attendance:14000,seed:1};}
   });
+  /* [giro 368 PO-417 «stadi con un nome solo»] la scheda della giornata (stadium: pick(STADIUMS) CASUALE per Primavera e provino,
+     «Stadio Internazionale» in finale) e l'insegna in partita (stadiumTpl.name) dicevano due nomi diversi dello stesso campo:
+     ora entrambe leggono questo nome. Club: il nome dell'impianto vero del padrone di casa; provino e finale: il nome della scheda.
+     Testimone __CPM_STADIO368 (con __CPM_TEST368), rosso __CPM_NO_G368. */
+  const _stadio368=(fb)=>{let out=fb;try{if(!(typeof window!=="undefined"&&window.__CPM_NO_G368))out=(context==="trial"||_isNeutralFinal)?stadium:((crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.name)||stadium);
+    if(typeof window!=="undefined"&&window.__CPM_TEST368)(window.__CPM_STADIO368=window.__CPM_STADIO368||{})[out]=1;}catch(_e368){}return out;};
   // Sprint 81 — attendance uses the HOME club (not always player.club) · ora derivato dal crowdCtx (coerenza card↔spalti)
   const [attendance]=useState(()=>crowdCtx.attendance);
   // responsive layout: narrow = stacked vertically (phones + tablets up to 640px)
@@ -35939,17 +35973,22 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      il club del RIVALE di carriera (arco «Gli eterni rivali»), il rivale DEVE essere in campo: sostituisce lo slot
      d attaccante (10) della rosa generata → formazioni, cronaca ({A}/marcatori) e pagelle lo vedono davvero. */
   const _rvInXI=!!(player.rival&&player.rival.name&&!/^(national|nationsCup|euroMondiale)/.test(context||"")&&(player.rival.club?.id===opponent?.id||player.rival.club?.n===opponent?.n));
+  /* [giro 368 PO-417] la rosa avversaria cede i cognomi della tua squadra (eroe compreso): mai lo stesso cognome nei due undici */
+  const _contro368=(ro)=>{try{if(typeof contro368!=="function")return ro;const _nat368=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
+    const _oc368=_nat368?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):(player.club||opponent);const _own368=(generateTeamRoster(_oc368,player.season||1)||[]).concat([{name:player.name||""}]);
+    return contro368(ro,_own368,opponent,player.season||1);}catch(_e368){return ro;}};
   const [homeRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
-    if(!isMatchHome){const r=generateTeamRoster(opponent,player.season||1).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;}/* [7.173.0 collaudo PO «partita col rivale ma non gioca»] il RIVALE di carriera è nell XI del suo club */
+    if(!isMatchHome){const r=_contro368(generateTeamRoster(opponent,player.season||1)).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;}/* [7.173.0 collaudo PO «partita col rivale ma non gioca»] il RIVALE di carriera è nell XI del suo club */
     const _hRosterClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;
     const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti",...(r[10]&&r[10].ln!=null?{ln:r[10].ln}:{})};/* [giro 112b] l'eroe tiene la linea della punta */return r;
   });
   const [awayRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
     if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti",...(r[10]&&r[10].ln!=null?{ln:r[10].ln}:{})};/* [giro 112b] l'eroe tiene la linea della punta */return r;}
-    const r=generateTeamRoster(opponent,player.season||1).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;/* [7.173.0] rivale nell XI avversario */
+    const r=_contro368(generateTeamRoster(opponent,player.season||1)).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;/* [7.173.0] rivale nell XI avversario */
   });
+  try{if(typeof window!=="undefined"&&window.__CPM_TEST368)window.__CPM_ROSE368={h:(homeRoster||[]).map(x=>x&&x.name),a:(awayRoster||[]).map(x=>x&&x.name),casa:isMatchHome!==false};}catch(_e368){}/* [giro 368] testimone delle due rose in campo */
   // [7.118.0 collaudo PO «compagni di squadra in nazionale errati, sono quelli del club!»] In una gara di
   //   NAZIONALE i nomi/sigla dei compagni nella cronaca e negli assist devono venire dalla NAZIONALE, non
   //   dal club dell'eroe (SAL). Il roster è già nazionale (NAT_CLUB_DATA) → deriviamo da lì sigla e pool
@@ -36409,7 +36448,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       /* nomi VERI: i tuoi dal roster (l'eroe calcia l'ULTIMO della tua serie — suspense), i loro dal roster
          avversario (generateTeamRoster funziona anche sulle nazionali: pesca i nomi dalla nat del club) */
       const _rosH=(typeof generateTeamRoster==="function")?generateTeamRoster(player.club||{id:"x",nat:"🇮🇹"},player.season||1):null;
-      const _rosA=(typeof generateTeamRoster==="function")?generateTeamRoster(opponent||{id:"y",nat:"🇮🇹"},player.season||1):null;
+      const _rosA=(typeof generateTeamRoster==="function")?((typeof contro368==="function")?contro368(generateTeamRoster(opponent||{id:"y",nat:"🇮🇹"},player.season||1),(_rosH||[]).concat([{name:player.name||""}]),opponent,player.season||1):generateTeamRoster(opponent||{id:"y",nat:"🇮🇹"},player.season||1)):null;/* [giro 368] cognomi senza doppioni anche nella serie dei rigori */
       const _nH=(_rosH||[]).slice(1).map(x=>x&&x.name).filter(Boolean).slice(-9);
       const _nA=(_rosA||[]).slice(1).map(x=>x&&x.name).filter(Boolean).slice(-9);
       const _hLast=seq.filter(k=>k.side==="H").length-1;
@@ -45355,7 +45394,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           const _line=`${_on} — ${_st} ${_pl(_st,"stagione","stagioni")}, ${_mt} ${_pl(_mt,"presenza","presenze")} e ${_g} ${_pl(_g,"gol","gol")} con quella maglia. Quella curva non ti ha dimenticato.`;
           return{name:_on,side:_side,line:_line};
         }catch(_e){return null;}})();
-        return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&(!benchStart||_g253)&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
+        return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={_stadio368(stadium)} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} onSolo243={(_g243&&!soloHL&&(!benchStart||_g253)&&(_g246||(context!=="trial"&&!primoProvino&&player.proStatus==="pro"))&&!player.injured&&!(typeof window!=="undefined"&&window.__CPM_NO_G166))?(()=>{soloScelto243Ref.current=true;setSoloScelto243(true);if(_g246)handleGoToFormations();/* [giro 246] «Vedere sempre l'ingresso»: formazioni → ingresso → partita a soli salienti */else setPhase("playing");}):null} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
       {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} rig257={rig257?rig257.nome:null} rigLato257={isMatchHome===false?"away":"home"} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} onBack={_g294?_indietro294:null}/* [giro 294 PO-566] */ oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
@@ -45967,7 +46006,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(0,0,0,0.32)",borderTop:"1px solid rgba(255,255,255,0.08)",fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.62)"}}>
                       <span style={{display:"inline-flex",alignItems:"center",gap:4,color:"#ff6b6b",letterSpacing:1}}><span style={{width:7,height:7,borderRadius:"50%",background:"#ff3b3b",animation:"pulse 1.1s ease-in-out infinite",display:"inline-block"}}/>DIRETTA</span>
                       <span style={{opacity:0.3}}>·</span>
-                      <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.name)||"Stadio"}</span>
+                      <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_stadio368((crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.name)||"Stadio")}</span>
                       {attendance?<span style={{whiteSpace:"nowrap"}}>👥 {attendance.toLocaleString("it-IT")}</span>:null}
                       {kickoffHour!=null?<span style={{whiteSpace:"nowrap"}}>🕐 {kickoffHour}:00</span>:null}
                     </div>

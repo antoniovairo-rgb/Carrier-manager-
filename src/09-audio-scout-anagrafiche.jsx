@@ -1360,9 +1360,37 @@ function generateTeamRoster(club,season){
     const _fn=firstPool[(i+_off)%firstPool.length];let _ln=lastPool[(i+_off)%lastPool.length];
     if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))_ln=lastPool[(i+_off+7)%lastPool.length];// [5.96.0 CR-1] mai un nome+cognome di calciatore reale in rosa
     if(!(typeof window!=='undefined'&&window.__CPM_NO_ROSA49)){for(let _k=1;_usati49.has(_fn+" "+_ln)&&_k<lastPool.length;_k++){_ln=lastPool[(i+_off+_k)%lastPool.length];if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))continue;}}
+    if(!_no368()){for(let _k=1;(_equivoco368(_ln)||_usati49.has(_fn+" "+_ln)||(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase())))&&_k<lastPool.length;_k++)_ln=lastPool[(i+_off+_k)%lastPool.length];}/* [giro 368 PO-417] un cognome che si legge come parola della cronaca («Testa», «Cross»: «Cross di Cross», «TESTA addosso») scala al cognome successivo del pool; tocca SOLO chi lo portava (rosso __CPM_NO_G368) */
     _usati49.add(_fn+" "+_ln);
     if(_mod112&&i<=10)return{name:`${_fn} ${_ln}`,role,ln:i===0?0:_q112.ln};
     return{name:`${_fn} ${_ln}`,role};});
+}
+/* [giro 368 PO-417 «Nomi senza equivoci»] MISURATO (misura-368.mjs, 13.770 incontri di lega in 3 stagioni, rose generate):
+   9.100 (66%) avevano almeno un cognome uguale fra i due undici in campo, 13.425 (97%) fra le due rose intere; nei testi della
+   cronaca (BG_MATCH, SITUATIONS) due cognomi del pool sono parole del racconto: «testa» 28 volte, «cross» 27 (+ «mediano»,
+   «franco», «quaranta» nelle frasi del narratore). Due regole alla sorgente, deterministiche, rosso __CPM_NO_G368:
+   · _equivoco368: generateTeamRoster non assegna mai un cognome che e' una parola della cronaca (scala al successivo);
+   · contro368: in partita la rosa AVVERSARIA cede — chi ha il cognome di uno della tua squadra (eroe compreso) prende il
+     primo cognome libero del pool della sua nazione (seme del club), nome di battesimo intatto. La tua squadra non cambia mai. */
+function _no368(){return typeof window!=="undefined"&&!!window.__CPM_NO_G368;}
+const _PAROLE368=new Set(["testa","cross","palla","pallone","porta","rete","tiro","gol","palo","traversa","angolo","fallo","area","campo","punta","ala","mediano","terzino","mezzala","regista","libero","portiere","rigore","corner","tacco","petto","piede","spalla","mischia","rimessa","barriera","franco","quaranta"]);
+function _equivoco368(ln){const w=String(ln||"").trim().toLowerCase();return !!w&&_PAROLE368.has(w);}
+const _VICINI368={"🇧🇪":["🇳🇱","🇫🇷"],"🇳🇱":["🇧🇪","🇩🇪"],"🇧🇷":["🇵🇹"],"🇦🇷":["🇪🇸"],"🇵🇹":["🇧🇷"],"🇪🇸":["🇦🇷"],"🇫🇷":["🇧🇪"],"🇹🇷":["🇩🇪"]};
+function contro368(opp,own,club,season){
+  if(!Array.isArray(opp)||_no368())return opp;
+  const cog=n=>String(((typeof _surnBG==="function")?_surnBG(n||""):"")||String(n||"").trim().split(/\s+/).pop()||"").toLowerCase();
+  const vietati=new Set((own||[]).map(x=>cog(x&&x.name)).filter(Boolean));
+  if(!opp.some(x=>x&&x.name&&vietati.has(cog(x.name))))return opp;
+  const _n368=(club&&club.nat&&NAME_BY_NAT[club.nat])?club.nat:"🇮🇹",_sd368=hashStr(String((club&&(club.id||club.n))||"x")+"|368|"+(season||1));
+  /* pool della nazione, poi (se si esaurisce: il belga ha 30 cognomi, una rosa ne vieta 23) quelli delle nazioni vicine, poi tutti */
+  const pool=[];[_n368,...(_VICINI368[_n368]||[]),...Object.keys(NAME_BY_NAT)].forEach((nt,j)=>{if(pool._v&&pool._v.has(nt))return;(pool._v=pool._v||new Set()).add(nt);seededShuffle([...NAME_BY_NAT[nt].last],_sd368^(j*0x9E3779B9)).forEach(x=>pool.push(x));});
+  const usati=new Set(opp.map(x=>cog(x&&x.name)));let k=0;
+  return opp.map(x=>{if(!x||!x.name)return x;const c=cog(x.name);if(!vietati.has(c))return x;
+    const full=String(x.name).trim();const fn=full.slice(0,Math.max(0,full.length-c.length)).trim();
+    for(;k<pool.length;k++){const ln=pool[k],l=ln.toLowerCase();if(vietati.has(l)||usati.has(l)||_equivoco368(ln))continue;
+      if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((fn+" "+ln).toLowerCase()))continue;
+      usati.add(l);k++;return {...x,name:(fn?fn+" ":"")+ln};}
+    return x;});
 }
 function seededShuffle(arr,seed){
   const a=[...arr];let s=(seed*1664525+1013904223)>>>0;
