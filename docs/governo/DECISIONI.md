@@ -2139,3 +2139,5 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 09:30 — PO (questionario): «Dichiara tiri-367 e rilascia» → tiri-367 in ROSSI-DICHIARATI (solo_runner). Il rilascio si riavvia rilanciando il job «Rilascio del vagone» della corsa 45751390281 (la sessione non ha credenziali GitHub per farlo: lo fa il PO da Actions). Rischio dichiarato: se è un difetto vero del rigore, resta in gioco fino alla 217 (giro 393).
 
 - 26/11 09:45 — Il commit 18a58a06 su lavoro/201 (rossi dichiarati allineati a main) tocca solo docs/ → paths-ignore, nessun treno partito. PO: «Lo avvii tu ora» → il PO avvia a mano «Treno» (Run workflow, ramo lavoro/201, tipo mappa). Stima 216: 12:45-13:45.
+
+- 26/11 09:55 — La corsa avviata a mano su main (45786317311) risulta annullata alle 09:52. PO in macchina: «avviala tu» → senza credenziali GitHub non posso avviare a mano, quindi push del file neutro tools/avvio-treno-216.txt su lavoro/201 (872aba4e) → treno 45787013506 partito alle 09:53. Stima 216: 12:45-13:45.
