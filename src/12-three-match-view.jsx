@@ -197,7 +197,7 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
   const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
   let lo=Infinity,hi=-Infinity;const v=new THREE.Vector3();av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(v);lo=Math.min(lo,v.y);hi=Math.max(hi,v.y);});
-  const hh=(hi-lo)>0.5?(hi-lo):1.8;av.scale.setScalar((altezza||1.82)/hh);av.updateMatrixWorld(true);
+  const hh=(hi-lo)>0.5?(hi-lo):1.8;av.scale.setScalar((altezza||1.82)/hh);av.updateMatrixWorld(true);av.userData.alt431={h:altezza||1.82};/* [giro 431] statura dichiarata (testimone) */
   const col={HyperShirt:shirt,HyperShorts:shorts,HyperSocks:socks||shirt,HyperBoots:shoes||'#15161a'};
   av.traverse(m=>{if(!m.isMesh||!m.material)return;m.frustumCulled=false;const pm=(m.name||'').match(/^HyperShirtPattern-([a-z]+)/);if(pm)m.visible=pm[1]==='solid';
     const src=Array.isArray(m.material)?m.material:[m.material];const nx=src.map(b=>{const hex=b&&col[b.name];if(hex==null)return b;const c=b.clone();c.map=null;c.color=new THREE.Color(hex);if('emissive' in c)c.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in c)c.roughness=.82;if(c.transparent){c.transparent=false;c.depthWrite=true;c.alphaTest=.5;}c.needsUpdate=true;return c;});
@@ -1775,7 +1775,8 @@ function ThreeMatchView(props){
       if(!(typeof window!=='undefined'&&window.__CPM_NO_GUANTI_PO201)){const _g201=c=>hexLum(c)<0.45?'#e8edf2':'#1b1f2a';try{_gkHomeKit.guanti=_g201(_gkA);_gkAwayKit.guanti=_g201(_gkB);}catch(_e){}}
       // 3D-VARIETY (Step B): protagonista dal SUO avatar (mai casuale); NPC con aspetto deterministico per club+slot (persistente).
       const _av=(typeof AVATARS!=='undefined'&&AVATARS[avatarId])||null;
-      const _heroAppr=_av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:_av.skin,hair:_av.hair,hairStyle:_av.hairStyle||'short',bodyType:_av.bodyType||'regular',bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
+      const _ce431=corpoEroe431(avatarId);/* [giro 431 PO-685] statura e corporatura dell'eroe dalla figurina, come i 21 (giro 412) */
+      const _heroAppr=_av?{height:_ce431.height,girth:_ce431.girth,skin:_av.skin,hair:_av.hair,hairStyle:_av.hairStyle||'short',bodyType:_av.bodyType||'regular',bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
       const _homeKey=(homeClub&&(homeClub.id||homeClub.n))||homeCol||'H',_awayKey=oppCol||'A';
       // gesti one-shot: EROE (offensivi: kick/penalty/header/tackle/volley) + PORTIERE avversario (parata: dive/catch/block).
       // helper riusabile: monta una mappa di clipAction one-shot (peso 0 a riposo) su un qualunque avatar.
@@ -1957,6 +1958,17 @@ function ThreeMatchView(props){
          _pelle225). Arbitro, panchine, mascotte e assistenti non hanno figurina: restano dal seme. Rosso __CPM_NO_G240. */
       const _resaViva240=new THREE.Vector3(1,1,1);sr.current._resa240=()=>{try{const q=resa240('partita',tod);_resaViva240.set(q[0],q[1],q[2]);}catch(_e){}};sr.current._resa240();/* la compensazione delle luci di base dell'ora (giorno · tramonto · notte): un vettore condiviso da tutti i materiali di pelle */
       const _aspetto240=(proc,appr)=>{try{if(!proc||proc._nf==null||proc._nf===''||typeof _g240!=='function'||!_g240()||typeof aspettoFigurina225!=='function')return appr;const fg=aspettoFigurina225(proc._nf);if(!fg)return appr;return Object.assign({},appr||{},fg.hair?{hair:fg.hair}:null,{_fig240:fg});}catch(_e){return appr;}};
+      /* [giro 412 · PO-612 — rosso __CPM_NO_G412] STATURA E CORPORATURA DALLA FIGURINA. Misurato (misura-412, ingresso, 22 corpi): la
+         figurina dichiara 165-195 cm e un peso, ma in partita ogni corpo non-eroe era alto 1,8 (fisso: ~189 cm suola-cima per tutti) e
+         la corporatura veniva da un seme diverso da quello della figurina. Ora la statura dichiarata di un corpo e' la statura della sua
+         figurina in metri (cm/100: la media dei semi e' 180, quindi la media della squadra resta 1,8 come prima) e la corporatura e' quella
+         da cui la figurina calcola il peso (stesso seme di datiFigurina23 'giocatore'). L'eroe resta com'era (proposta al PO nel rapporto;
+         solo banco: __CPM_G412E lo porta alla stessa regola). */
+      const _g412=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G412);
+      const _fig412=(proc)=>{try{if(!_g412()||!proc||proc._isHero||!proc._nf||typeof datiFigurina23!=='function'||typeof appearanceFromSeed!=='function')return null;const d=datiFigurina23('giocatore',proc._nf,proc._nf);if(!d||!(d.cm>=150&&d.cm<=205))return null;
+        const ap=appearanceFromSeed(hashStr('giocatore/'+_slugVolto(proc._nf)));return {h:d.cm/100,girth:ap.girth,cm:d.cm,kg:d.kg};}catch(_e){return null;}};
+      const _eroe412=()=>{try{const E=(typeof window!=='undefined'&&window.__CPM_G412E&&_CPM_TEST)?window.__CPM_EROE23:null;return E&&E.cm>=150&&E.cm<=205?E.cm/100:null;}catch(_e){return null;}};
+      const _corp412=(proc,appr)=>{const f=_fig412(proc);return f?Object.assign({},appr||{},{girth:f.girth}):appr;};
       const _chi240=(visual,proc,ruolo)=>{try{if(visual&&proc)visual.userData.chi240={nome:proc._nf||null,ruolo:ruolo||null};}catch(_e){}};
       const _pelleFig240=(visual,appearance)=>{try{const fg=appearance&&appearance._fig240;if(!fg||!fg.p||typeof _pelle225!=='function')return;_pelle225(visual,fg.p,'auto',_resaViva240,renderer.outputEncoding===THREE.sRGBEncoding,ESP240);}catch(_e){}};
       const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}};/* la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
@@ -2124,11 +2136,11 @@ function ThreeMatchView(props){
           const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lineup-'+(old.proc._sd||index)));
           root.add(visual);visual.updateMatrixWorld(true);
           const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;
-          const declaredHeight=(index===0?_heroAppr.height:1.8),procHeight=_worldObjectHeight(old.proc),legacyRootHeight=_worldObjectHeight(old.root),targetHeight=_footballerHeight(declaredHeight,1.8);try{const a=window.__CPM_CGTRADER_SCALE_AUDIT=window.__CPM_CGTRADER_SCALE_AUDIT||[];if(a.length<24)a.push({index,procHeight:+procHeight.toFixed(3),legacyRootHeight:+legacyRootHeight.toFixed(3),declaredHeight:+Number(declaredHeight).toFixed(3),targetHeight:+targetHeight.toFixed(3)});}catch(_e){}
+          const _f412=_fig412(old.proc),declaredHeight=(index===0?(_eroe412()||_heroAppr.height):(_f412?_f412.h:1.8)),procHeight=_worldObjectHeight(old.proc),legacyRootHeight=_worldObjectHeight(old.root),targetHeight=_footballerHeight(declaredHeight,1.8);try{const a=window.__CPM_CGTRADER_SCALE_AUDIT=window.__CPM_CGTRADER_SCALE_AUDIT||[];if(a.length<24)a.push({index,procHeight:+procHeight.toFixed(3),legacyRootHeight:+legacyRootHeight.toFixed(3),declaredHeight:+Number(declaredHeight).toFixed(3),targetHeight:+targetHeight.toFixed(3)});}catch(_e){}
           visual.scale.setScalar(_scalaCorpo21()*(targetHeight/rawHeight));visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          {const _ap240=_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
+          {const _ap240=_corp412(old.proc,_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index))));if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};visual.userData.alt431={h:declaredHeight,girth:+((_ap240&&_ap240.girth)||1).toFixed(3),eroe:index===0};_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -2155,7 +2167,7 @@ function ThreeMatchView(props){
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-            const appearance=_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
+            const appearance=_corp412(host.proc,_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index))));{const _f412=_fig412(host.proc);if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};visual.userData.alt431={h:host._h||1.8,girth:+((appearance&&appearance.girth)||1).toFixed(3),eroe:index===0};}_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};

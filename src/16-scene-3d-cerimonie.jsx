@@ -378,7 +378,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
     const camVX=(R(6)-0.5)*0.5,camVY=1.42+R(7)*0.12;
     // ── eroe: identità della CARRIERA (stessa fonte/formule del live match → riconoscibile) ──
     const hAv=(typeof AVATARS!=='undefined'&&AVATARS[(((avatarId|0)%AVATARS.length)+AVATARS.length)%AVATARS.length])||{skin:'#f0c8a0',hair:'#3a2410'};
-    const heroH=1.86+((avatarId*73)%100)/100*0.16,heroG=0.97+((avatarId*131)%100)/100*0.10;
+    const _ce431=corpoEroe431(avatarId),heroH=_ce431.height,heroG=_ce431.girth;/* [giro 431 PO-685] dalla figurina */
     const heroShirt=(club&&club.c)||'#8e1f33',heroC2=(club&&club.c2)||'#f0f0f0';
     const heroPat=(club&&typeof kitPatternFor==='function'&&kitPatternFor(club))||null;
     const heroShorts=(typeof hexLum==='function'&&hexLum(heroShirt)>=0.5)?'#16181d':'#e8e8ea';
@@ -1267,6 +1267,7 @@ function _maschera240(){try{const T=THREE;if(!_MASC240.u.value){const t=new T.Da
    corpi animati 869→1846 all'avvio della seconda partita). Stessa classe dei due trattenitori del giro 53 (_glbCache, _kitTexCache).
    Allo smontaggio la texture si libera: il suo 'dispose' toglie l'ascoltatore; l'immagine resta e il renderer successivo la ricarica al primo uso. */
 function _rilascia276(){try{if(typeof window!=='undefined'&&window.__CPM_NO_G276)return 0;const t=_MASC240.u.value;if(t&&t.isTexture){t.dispose();return 1;}return 0;}catch(_e){return 0;}}
+const _g414=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G414);
 function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof THREE==='undefined')return 0;const T=THREE,n=parseInt(hex,16),tg=[(n>>16)&255,(n>>8)&255,n&255],auto240=lineare0==='auto';
   const fL=(v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}),fS=(v=>v/255);let fatti=0;if(!_UNO240)_UNO240=new T.Vector3(1,1,1);
   av.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
@@ -1282,9 +1283,15 @@ function _pelle225(av,hex,lineare0,resa,uscitaLin,esp){try{if(!av||!hex||typeof 
       const masc=(nome==='Material.002'&&_g240())?_maschera240():null;c.userData.masc240=!!masc;
       /* in partita la mappa della testa non e' decodificata (il gioco la legge com'e') e l'uscita e' sRGB: i capelli — che la maschera lascia fuori dalla tinta — resterebbero SLAVATI accanto alla pelle corretta. Li' si applica la decodifica che manca (gamma 2,2): tornano del colore della loro texture */
       const dec=!!(masc&&auto240&&!lineare&&uscitaLin);
+      /* [giro 414 · PO-678] LA FASCIA CHIARA ALL'ATTACCATURA. Col ramo «dec» la maschera entrava DUE volte: nella tinta (k225*=m240) e nel
+         miscuglio finale mix(capelli decodificati, pelle tinta, m240). Dove la maschera filtrata (256 px, lineare + mipmap) vale fra 0 e 1 —
+         cioe' lungo tutto il bordo della calotta — il risultato non stava fra «capelli» e «pelle»: la parte m240 era pelle GREZZA (ne' tinta ne'
+         decodificata), il colore piu' chiaro dei tre. Misurato su Connor Quinn (notte, maschera uniforme): m 0 → L* 62,1 · m 0,25 → 65,7 ·
+         m 1 → 37,5. Ora la tinta e' piena e la maschera decide UNA volta sola: il bordo e' un miscuglio monotono fra i due lati. Rosso __CPM_NO_G414. */
+      const g414=_g414();
       c.onBeforeCompile=sh=>{sh.uniforms.uPelle225={value:u};sh.uniforms.uResa240={value:viva?resa:_UNO240};if(masc)sh.uniforms.uMasc240=masc;sh.fragmentShader='uniform vec3 uPelle225;\nuniform vec3 uResa240;\n'+(masc?'uniform sampler2D uMasc240;\n':'')+sh.fragmentShader.replace('#include <map_fragment>',
-        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;k225*=m240;':'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
-      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
+        '#include <map_fragment>\n{float mx225=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)),mn225=min(diffuseColor.r,min(diffuseColor.g,diffuseColor.b));float k225=smoothstep('+s0+','+s1+',(mx225-mn225)/max(mx225,0.0001))*step(diffuseColor.b,diffuseColor.r);'+(masc?'float m240=texture2D(uMasc240,vUv).r;'+(dec&&g414?'':'k225*=m240;'):'')+(dec?'vec3 c240=pow(max(diffuseColor.rgb,vec3(0.0)),vec3(2.2));':'')+'diffuseColor.rgb*=mix(vec3(1.0),uPelle225*uResa240,k225);'+(dec?'diffuseColor.rgb=mix(c240,diffuseColor.rgb,m240);':'')+'}');};
+      c.customProgramCacheKey=()=>'pelle225'+(lineare?'L':'S')+(masc?'M':'')+(dec?'D':'')+(dec&&g414?'G':'');c.userData.auto240=auto240;c.needsUpdate=true;fatti++;return c;});
     m.material=Array.isArray(m.material)?nx:nx[0];});
   av.userData.pelle225=hex;return fatti;}catch(_e){return 0;}}
 /* asse della cerniera del gomito destro e posa di riferimento dell'avambraccio, letti dalla clip (running, altrimenti walk): due campioni
@@ -1674,7 +1681,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     const _num=heroNum|0;
     /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
     const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
-      return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
+      const _ce431=corpoEroe431(avatarId);/* [giro 431 PO-685] dalla figurina */return av?{height:_ce431.height,girth:_ce431.girth,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
     /* [7.999.124 PO-200 collaudo PO 03/10 «Nella presentazione della squadra far vedere i CGTrader ed in piccolo come in televisione
        la figurina»] LA FILA SONO I CORPI CGTRADER degli highlight, della premiazione e della parata (stesso file, stessa postura): in
        piedi e fermi (idle in pausa su un istante diverso per uomo), maglia e calzettoni del club, pantaloncini nel secondo colore,
@@ -2366,7 +2373,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         const _kit204=(av)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G204)return;try{av.traverse(m=>{if(!m.isMesh||!m.material)return;const L=Array.isArray(m.material)?m.material:[m.material];
           const _re208=(typeof window!=='undefined'&&window.__CPM_NO_G208)?/^Hyper(Shirt|Shorts|Socks)$/:/^HyperShirt$/;/* [giro 208 PO-469 — rosso __CPM_NO_G208] decisione PO 15/11: la correzione del colore vale SOLO per la maglia; pantaloncini e calzettoni tornano come prima del giro 204 (misurato pullman-204: pantaloncini bianchi luminosita' 0,890 col 204 contro 0,984 prima) */
           for(const c of L){if(!c||!_re208.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
-        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);
+        const _ce431=corpoEroe431(avatarId),_alt431=i=>(i===0&&!(typeof window!=='undefined'&&window.__CPM_NO_G431))?_ce431.height:1.78+R(i*31)*0.12;/* [giro 431 PO-685] l'eroe (davanti) con la statura della figurina */
+        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:_alt431(i)});if(!av)continue;_kit204(av);
           /* [giro 240 PO-500] pelle e capelli dalla figurina: l'eroe la sua; i compagni sul tetto hanno le chiavi della parata disegnata (ParataScena2D: «parata-<club>-<i>») */
           figurina240(av,i===0?'eroe-'+(avatarId|0):'parata-'+((club&&club.id)||'x')+'-'+(i-1),'parata',i===0?'eroe':(slots[i].x<0?'tetto-sx':'tetto-dx'));
           const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
@@ -2378,7 +2386,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
                 for(let k=0;k<=40;k++){const tt=clip.duration*k/40;act.time=tt;mx.update(0);av.updateMatrixWorld(true);hd.getWorldPosition(va);let m=1e9;for(const h of hs){h.getWorldPosition(vb);m=Math.min(m,vb.y-va.y);}if(m>best){best=m;apice=tt;}}
                 try{if(window.__CPM_PARATA)window.__CPM_PARATA.apice23=+(apice/clip.duration).toFixed(3);}catch(_e){}}}catch(_e){}}
           av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;
-          if(eroe){av._alt192=1.78+R(i*31)*0.12;try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
+          if(eroe){av._alt192=_alt431(i);try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
           if(eroe&&po192){try{const _vc=(po192.animations||[]).find(c=>c&&c.name==='mx-victory');if(_vc){act.stop();ia.stop();const _va=mx.clipAction(_vc);_va.play();_va.paused=true;_va.time=_vc.duration*0.45;mx.update(0);av._cg23.act=_va;av._cg23.d=_vc.duration;av._cg23.vit192=_vc.duration*0.45;}}catch(_e){}}}
         men.forEach(m=>{if(m._cg23)m._cg23.apice=(m._cg23.vit192!=null)?m._cg23.vit192:apice;});
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
@@ -2693,7 +2701,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     const _gq=new THREE.Quaternion(),_gq2=new THREE.Quaternion(),_ge=new THREE.Euler();/* [7.143.0] busta bone-parented */
     let _bodyG=null,_idleG=null,_liftG=null,_walkG=null,_kw51=false;/* [7.999.51] _kw51: _bodyG e' il corpo della partita (korward), vestito in smoking da mkTux51 */
     const hAv=(typeof AVATARS!=='undefined'&&AVATARS[(((avatarId|0)%AVATARS.length)+AVATARS.length)%AVATARS.length])||{skin:'#f0c8a0',hair:'#3a2410'};
-    const heroH=1.86+((avatarId*73)%100)/100*0.16,heroG=0.97+((avatarId*131)%100)/100*0.10;
+    const _ce431=corpoEroe431(avatarId),heroH=_ce431.height,heroG=_ce431.girth;/* [giro 431 PO-685] dalla figurina */
     const mkElegant=(o)=>{/* CH38 in abito: giacca=shirt · pantaloni=shorts+socks in tinta · scarpe eleganti · camicia V + papillon su Spine2 · (donna) chioma 3 masse */
       const av=THREE.SkeletonUtils.clone(_bodyG.scene);
       const bb=new THREE.Box3().setFromObject(av);const hh=Math.max(0.1,bb.max.y-bb.min.y);const sc=(o.height||1.76)/hh;av.scale.set(sc*(o.girth||0.96),sc,sc*(o.girth||0.96));

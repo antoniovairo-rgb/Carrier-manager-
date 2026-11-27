@@ -550,6 +550,18 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
    valori che la carriera mostrava gia') e ogni figurina dell'eroe legge il campo salvato. Rosso __CPM_NO_G369 = com'era. */
 function fisicoEroe369(avatarId){const a=Math.abs(avatarId|0),hh=1.86+((a*73)%100)/100*0.16,gg=0.97+((a*131)%100)/100*0.10;
   const cm=Math.round(165+(hh-1.82)/0.24*30);return {cm,kg:Math.round(22.4*(cm/100)*(cm/100)*gg)};}
+/* [giro 431 · PO-685, decisione PO «Stessa regola degli altri»] STATURA E CORPORATURA DEL CORPO 3D DELL'EROE dalla sua figurina, con la
+   regola che il giro 412 ha dato agli altri 21: statura dichiarata = cm della figurina / 100, corporatura = quella da cui la figurina
+   calcola i kg. Misura prima (misura-431): l'eroe dichiarava 1,86-2,02 (seme dell'avatar, scala dei semi 1,82-2,06 = 165-195 cm) mentre
+   i compagni dichiarano i loro cm/100 → 179 cm in figurina, 206 in campo, sempre il piu' alto. Fonte: il campo salvato (player.altezzaCm/
+   pesoKg via __CPM_EROE23, giro 369), altrimenti la stessa formula di fisicoEroe369. Una sola funzione per partita, serata, parata,
+   intervista e gala. Rosso __CPM_NO_G431 = la statura di prima (seme dell'avatar). */
+function corpoEroe431(avatarId){const a=avatarId|0,hh=1.86+((a*73)%100)/100*0.16,gg=0.97+((a*131)%100)/100*0.10;
+  if(typeof window!=='undefined'&&window.__CPM_NO_G431)return {height:hh,girth:gg,cm:null,kg:null};
+  let F=null;try{const E=_eroe23();if(E&&E.cm>=150&&E.cm<=205&&E.kg>0&&(E.avatarId==null||(E.avatarId|0)===a))F={cm:E.cm,kg:E.kg};}catch(_e){}
+  const S=fisicoEroe369(a);if(!F)F=S;const h=F.cm/100;
+  const girth=(F.cm===S.cm&&F.kg===S.kg)?gg:Math.max(0.93,Math.min(1.08,F.kg/(22.4*h*h)));
+  return {height:h,girth,cm:F.cm,kg:F.kg};}
 function piedeTesto369(f){return f==="L"?"piede sinistro":"piede destro";}
 const _MESTIERE23={giornalista_f:"Giornalista",mister:"Allenatore",arbitro:"Arbitro",giornalista:"Giornalista",procuratore:"Procuratore",dirigente:"Dirigente"};
 function datiFigurina23(tipo,chiave,nome,ruolo,col,col2,fis369){
