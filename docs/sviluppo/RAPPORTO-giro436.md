@@ -58,7 +58,15 @@ Visto che la misura non trova difetti nel gioco, `__CPM_NO_G436` non esiste e il
 
 `node ci-runner.mjs giro event-ledger marcatore-325` (19 passi: i due guardiani + 17 sentinelle):
 
-ESITO_GIRO
+**19/19 verdi** sulla 7.999.218 (nessun passo riprovato):
+
+| passo | esito | tempo |
+|---|---|---|
+| `event-ledger` (verde 3 partite + rosso `__CPM_NOEV`) | ✅ | 480 s |
+| `marcatore-325` (verde + rosso `__CPM_NO_G325`, 8 partite per braccio, 2 intere) | ✅ | 1152 s |
+| 17 sentinelle (`mappa-unica`, `test:logic`, `save-compat`, `replay`, `migrazione-194`, `design-system`, `tema-unico`, `griglia-mobile`, `render-3d-023`, `tunnel-285`, `home-298`, `web-237`, `career-critical`, `battito-264`, `partita-vera`, `gk-dive-sync`, `schermate-97`) | ✅ | — |
+
+Il runner ha riscritto `docs/governo/STABILITA.json` e le foto di `docs/collaudo-grafico/`: le ho riportate allo stato della base, perché questo giro non tocca il governo.
 
 ## 4. Dubbi per il PO
 
