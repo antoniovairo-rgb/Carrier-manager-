@@ -2203,3 +2203,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 22:55 — Registrata PO-683 (mai esultare sotto la curva avversaria, regola del PO). In coda.
 
 - 26/11 23:00 — Registrata PO-684 (verifica trimestrale calorosa con un mister nuovo e diffidente, foto del PO). In coda.
+- 27/11 01:35 Roma — Treno 7.999.218 (corsa 45898863971, lavoro/201 d75ded1d, vagoni 372-377 + riparazione 406): 395/396 guardiani giudicati come attesi, FERMO su un solo rosso nuovo `barriera-73` (verde 15,0u contro soglia ≤ 6u; il giro 375 lo dava 4,4u sul suo ramo → probabile urto tra vagoni). Nessun rilascio, sito resta 7.999.217. Lanciato giro 418 di riparazione (sviluppo/giro418-riparazione-218). Archiviati i giri 410, 414, 415, 416, 417 (consegnati). Lanciati i giri 419 (PO-682), 420 (PO-683), 421 (PO-684).
