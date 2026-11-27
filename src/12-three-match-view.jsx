@@ -13307,7 +13307,19 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
             _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
             _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_mira20(_a,_p.position.x,_p.position.z,ballArcTgtX,ballArcTgtZ,AWAY_GOAL_X,_ai===0);/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
-          if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
+          /* [giro 419 PO-682 «Calcio d'angolo di GUNTHER: attacca il pallone! · Testa di potenza → miss · corpo↔porta al contatto 72°»,
+             rosso window.__CPM_NO_G419] IL COLPO DI TESTA SI ATTACCA COL CORPO VERSO LA PORTA. MISURATO (misura-419, 8 colpi di testa da
+             angolo e da cross, GLB acceso, PERCORSO VERO con l'origine _ORIG26 che il banco forzato non armava): il pallone vola dalla
+             bandierina (o dal crossatore) sul corpo dell'eroe DOVE STA, l'eroe lo va a prendere e il corpo guarda dove corre, cioe' il
+             pallone che arriva; la mira del gesto (7.517/7.636) gira a dt*7 solo dal montaggio della clip, a contatto quasi fatto.
+             Al contatto 8-84°, 7 su 8 oltre 35°. Ora, nella scena di testa dell'eroe (verso la porta: non la sponda ne' la scena
+             difensiva), quando il pallone e' entro 14 u dal corpo il corpo si gira verso la porta (dt*9, niente scatti) e resta cosi'
+             per tutto il gesto; la locomozione direzionale 7.518 sceglie da sola corsa laterale o all'indietro. */
+          const _P419=propsRef.current||{};
+          const _tst419=_ai===0&&!_a._isGk&&_P419.matchPhase==='hl_result'&&_P419.hlType==='header'&&_P419.hlVariant!=='header_flick'&&!_P419.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_G419)
+            &&(()=>{const _b419=sr.current.ball;return !!(_b419&&Math.hypot(_b419.position.x-_p.position.x,_b419.position.z-_p.position.z)<14);})();
+          if(_tst419){const _ta419=Math.atan2(GOAL_LINE_X-_p.position.x,0-_p.position.z);let _da419=((_ta419-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da419*Math.min(dt*9,1);}
+          else if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
             let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);
