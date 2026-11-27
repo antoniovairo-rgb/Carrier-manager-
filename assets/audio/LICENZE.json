@@ -2241,6 +2241,204 @@
    "licenza": "nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)",
    "cc0": true,
    "nota": "brusio in loop della partita, invariato dal giro 149"
+  },
+  "music/menu/429-a-orchestra.ogg": {
+   "evento": "music.home: home, menu e video intro (scelta PO 27/11, giro 430)",
+   "cc0": true,
+   "candidato": "A",
+   "titolo": "Determined Pursuit (Epic Orchestra Loop)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 54.0,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -8.1,
+   "loop": true,
+   "giunto": {
+    "salto": 0.01286,
+    "p99_passi": 0.07811
+   },
+   "byte": {
+    "ogg": 611007,
+    "mp3": 864788
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/determined-pursuit-epic-orchestra-loop",
+    "file": "https://opengameart.org/sites/default/files/determined_pursuit_loop.wav",
+    "autore": "Emma_MA",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Copyright/Attribution Notice dell'autore: «This track is in the public domain as of January 2017. No attribution necessary.»",
+    "letta": "2026-11-27",
+    "sha256": "e4f3be098b50213b56a60aefe60fffae79cd9f7c9008088f93c187ef1bbc856b",
+    "taglio": "tratto [36, 90) s: il brano si ripete identico con periodo 54 s (correlazione 0.9995)"
+   }
+  },
+  "music/menu/429-a-orchestra.mp3": {
+   "evento": "music.home: home, menu e video intro (scelta PO 27/11, giro 430)",
+   "cc0": true,
+   "candidato": "A",
+   "titolo": "Determined Pursuit (Epic Orchestra Loop)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 54.0,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -8.1,
+   "loop": true,
+   "giunto": {
+    "salto": 0.01286,
+    "p99_passi": 0.07811
+   },
+   "byte": {
+    "ogg": 611007,
+    "mp3": 864788
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/determined-pursuit-epic-orchestra-loop",
+    "file": "https://opengameart.org/sites/default/files/determined_pursuit_loop.wav",
+    "autore": "Emma_MA",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Copyright/Attribution Notice dell'autore: «This track is in the public domain as of January 2017. No attribution necessary.»",
+    "letta": "2026-11-27",
+    "sha256": "e4f3be098b50213b56a60aefe60fffae79cd9f7c9008088f93c187ef1bbc856b",
+    "taglio": "tratto [36, 90) s: il brano si ripete identico con periodo 54 s (correlazione 0.9995)"
+   }
+  },
+  "music/menu/429-b-elettronica.ogg": {
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
+   "cc0": true,
+   "candidato": "B",
+   "titolo": "Virtual Rush (loop)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 63.79,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -10.3,
+   "loop": true,
+   "giunto": {
+    "salto": 0.01278,
+    "p99_passi": 0.0527
+   },
+   "byte": {
+    "ogg": 822751,
+    "mp3": 1021460
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/virtual-rush",
+    "file": "https://opengameart.org/sites/default/files/virtual_rush_loop_0.flac",
+    "autore": "Vitalezzz",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Copyright/Attribution Notice: «Vitalezzz - Virtual Rush» (non richiesto dal CC0, lo diamo comunque)",
+    "letta": "2026-11-27",
+    "sha256": "dd30243c6aebc7a18f243c7c55694a0a6624456b6669a542a27a8a6c4eea0548",
+    "taglio": "tratto da 16 s, periodo 63.7899 s (correlazione 0.419), coda di 2 s fusa nella testa a potenza costante"
+   }
+  },
+  "music/menu/429-b-elettronica.mp3": {
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
+   "cc0": true,
+   "candidato": "B",
+   "titolo": "Virtual Rush (loop)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 63.79,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -10.3,
+   "loop": true,
+   "giunto": {
+    "salto": 0.01278,
+    "p99_passi": 0.0527
+   },
+   "byte": {
+    "ogg": 822751,
+    "mp3": 1021460
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/virtual-rush",
+    "file": "https://opengameart.org/sites/default/files/virtual_rush_loop_0.flac",
+    "autore": "Vitalezzz",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Copyright/Attribution Notice: «Vitalezzz - Virtual Rush» (non richiesto dal CC0, lo diamo comunque)",
+    "letta": "2026-11-27",
+    "sha256": "dd30243c6aebc7a18f243c7c55694a0a6624456b6669a542a27a8a6c4eea0548",
+    "taglio": "tratto da 16 s, periodo 63.7899 s (correlazione 0.419), coda di 2 s fusa nella testa a potenza costante"
+   }
+  },
+  "music/menu/429-c-stadio.ogg": {
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
+   "cc0": true,
+   "candidato": "C",
+   "titolo": "Fever Stadium (bpm165)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 85.818,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -8.9,
+   "loop": true,
+   "giunto": {
+    "salto": 0.00069,
+    "p99_passi": 0.06928
+   },
+   "byte": {
+    "ogg": 985974,
+    "mp3": 1373972
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/fever-stadium",
+    "file": "https://opengameart.org/sites/default/files/fever_stadium_bpm165_0.ogg",
+    "autore": "MintoDog",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Descrizione dell'autore: «This music is loopable.»",
+    "letta": "2026-11-27",
+    "sha256": "65c892eba361402e1519c01e5082781931879d247c39a80e45af044303766a6a",
+    "taglio": "brano intero, loop dell'autore"
+   }
+  },
+  "music/menu/429-c-stadio.mp3": {
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
+   "cc0": true,
+   "candidato": "C",
+   "titolo": "Fever Stadium (bpm165)",
+   "generatore": "tools/audio-429/prepara-429.py",
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 85.818,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -8.9,
+   "loop": true,
+   "giunto": {
+    "salto": 0.00069,
+    "p99_passi": 0.06928
+   },
+   "byte": {
+    "ogg": 985974,
+    "mp3": 1373972
+   },
+   "sorgente": {
+    "pagina": "https://opengameart.org/content/fever-stadium",
+    "file": "https://opengameart.org/sites/default/files/fever_stadium_bpm165_0.ogg",
+    "autore": "MintoDog",
+    "licenza": "CC0 (campo License(s) della pagina OpenGameArt). Descrizione dell'autore: «This music is loopable.»",
+    "letta": "2026-11-27",
+    "sha256": "65c892eba361402e1519c01e5082781931879d247c39a80e45af044303766a6a",
+    "taglio": "brano intero, loop dell'autore"
+   }
   }
  }
 }

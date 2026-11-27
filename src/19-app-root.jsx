@@ -977,6 +977,7 @@ function App(){
   useEffect(()=>{const clickH=(ev)=>{try{AudioMgr.unlock();AudioMgr.tocco(ev.target);/* [giro 172 PO-370] solo conferme importanti e finestre principali (data-suono); rosso __CPM_NO_G172: click su ogni tocco */}catch(_a){}};document.addEventListener('pointerdown',clickH,true);return()=>document.removeEventListener('pointerdown',clickH,true);},[]);
   // [7.62.0 AUDIO] musica di alto livello per schermata (un solo useEffect sul phase globale → crossfade menu↔partita)
   useEffect(()=>{try{AudioMgr.scene(phase);}catch(_a){}},[phase]);
+  useEffect(()=>{try{AudioMgr.intro(showIntro||phase==="cinematic");}catch(_a){}},[showIntro,phase]);/* [giro 430] il video intro (primo avvio o riascolto) suona il brano A sotto i suoi effetti */
   const[player,setPlayer]=useState(null);
   const[trials,setTrials]=useState([]);
   const trialResumeRef=React.useRef(null);/* [7.330.0] dati di ripresa provini letti al boot da cpm-trial-prog */

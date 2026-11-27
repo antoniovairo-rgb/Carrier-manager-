@@ -16,6 +16,8 @@
     "audio-149": "node audio-149.mjs",
     "audio-161": "node audio-161.mjs",
     "musica-316": "node musica-316.mjs",
+    "musica-menu-429": "node musica-menu-429.mjs",
+    "musica-avvio-430": "node musica-avvio-430.mjs",
     "audio-161b": "node audio-161b.mjs",
     "audio-172": "node audio-172.mjs",
     "misura-172": "node misura-172.mjs",
