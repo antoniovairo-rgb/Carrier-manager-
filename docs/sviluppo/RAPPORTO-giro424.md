@@ -76,7 +76,9 @@ all'eroe, verso la porta, già prima della scelta.
 - **Rosso (`__CPM_NO_G424`):** almeno 3 scene fuori dal quadro. Una scena non giudicata è rossa; servono almeno 8 scene giudicate.
 - **Esito:** verde 10/10, rosso visto 5/10.
 
-Giro: `node ci-runner.mjs giro ricevente-424` (guardiano + 17 sentinelle) — esito nella sezione 7.
+Giro: `node ci-runner.mjs giro ricevente-424` (guardiano + 17 sentinelle) su 7.999.217: **18/18 verdi**, nessun passo ripetuto. Le
+schermate di `docs/collaudo-grafico` e il file di `docs/governo` che le sentinelle riscrivono sono stati riportati com'erano (non sono
+parte della consegna).
 
 ## 6. Fuori ambito, visto misurando (non corretto)
 
