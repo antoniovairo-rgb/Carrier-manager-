@@ -413,6 +413,7 @@ function _caricaVolti23(){
   fetch("assets/portraits/ai/indice.json").then(r=>r.ok?r.json():null).then(j=>{
     VOLTI23.idx=(j&&j.g&&j.s)?j:null;VOLTI23.stato=VOLTI23.idx?"pronto":"assente";
     VOLTI23.ascolta.forEach(f=>{try{f();}catch(_e){}});
+    try{if(!window.__CPM_NO_G440&&typeof _g432==='function'&&_g432()&&typeof _tab432==='function')_tab432();}catch(_e){}/* [giro 440] la tabella dell'aspetto (3 KB) parte con l'indice dei volti, prima della partita: al montaggio della partita viaggiava in coda ai GLB (12-18 s sul banco, giro 432). Rosso __CPM_NO_G440 */
   }).catch(()=>{VOLTI23.stato="assente";});
 }
 const _FETTE23={mister:[0,0.30],procuratore:[0.30,0.50],giornalista:[0.50,0.70],arbitro:[0.70,0.85],dirigente:[0.85,1]};

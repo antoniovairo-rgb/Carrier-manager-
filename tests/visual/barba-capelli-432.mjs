@@ -67,7 +67,7 @@ if (out.verde) {
     (S.length >= 66 ? OK : KO)(`verde: scatti giudicati ${S.length}/66`);
     (T.length && tOk === T.length ? OK : KO)(`verde: taglio ${tOk}/${T.length} come la tabella (non coperti: ${C.length - T.length})${T.filter(c => !c.okT).map(c => ' · ' + c.nome + ' ' + c.taglio + '→' + c.t3d).join('')}`);
     (bOk === C.length ? OK : KO)(`verde: barba ${bOk}/${C.length} come la tabella${C.filter(c => !c.okB).map(c => ' · ' + c.nome + ' ' + c.barba + '→' + c.b3d).join('')}`);
-    const col = C.flatMap(c => [c.dEcal != null ? [c.nome + ' calotta', c.dEcal] : null, (c.dEbar != null && c.attesoBar === 'piena') ? [c.nome + ' barba', c.dEbar] : null]).filter(Boolean);
+    const col = C.flatMap(c => [(c.dEcal != null && c.t3d !== 'stempiato') ? [c.nome + ' calotta', c.dEcal] : null]).filter(Boolean); /* [giro 440] la BARBA non si confronta piu' coi capelli dipinti (verdetto del PO: «colori troppo scuri», la rossa di Bailey usciva marrone): il suo colore lo giudica resa-barba-440 contro la FIGURINA. Lo «stempiato» e' stoppia su pelle come il rasato: niente colore di capelli */
     const colKo = col.filter(x => x[1] > 12);
     (out.rosso && col.length >= 8 && !colKo.length ? OK : KO)(`verde: colore ${col.length - colKo.length}/${col.length} strati entro 12 CIE76 (massimo ${Math.max(...col.map(x => x[1]))})${colKo.map(x => ' · ' + x[0] + ' ' + x[1]).join('')}`);
     const ecc = S.map(x => x.eccesso); const oltre = S.filter(x => x.eccesso > 5);

@@ -1,5 +1,5 @@
 {
- "v": 1,
+ "v": 2,
  "nota": "giro 432 PO-686: UNICA tabella figurina→aspetto. Chiavi di «tagli» e «barbe» = parole del manifest dei ritratti (assets/portraits/ai/manifest.json, campi capelli senza il colore e barba). Un taglio o una barba nuovi: una riga qui + un file in assets/aspetto (trama o maschera). null = nessuno strato (resta la testa del corpo).",
  "tagli": {
   "rasati a zero": "rasato",
@@ -10,8 +10,8 @@
   "ricci corti": "ricci",
   "ricci medi": "ricci-medi",
   "afro corti": "afro",
-  "stempiati e corti": null,
-  "lunghi raccolti": null
+  "stempiati e corti": "stempiato",
+  "lunghi raccolti": "lunghi-raccolti"
  },
  "calotte": {
   "corto": {
@@ -48,6 +48,42 @@
    "rilievo": 0.006,
    "dil": 1,
    "ombra": 1.0
+  },
+  "stempiato": {
+   "g440": true,
+   "trama": "assets/aspetto/trama-rasato.png",
+   "rip": 28,
+   "spessore": 0.002,
+   "dil": 1,
+   "fondo": true,
+   "ombra": 1.0,
+   "stempia": {
+    "az": [
+     12,
+     64
+    ],
+    "prof": 12
+   }
+  },
+  "lunghi-raccolti": {
+   "g440": true,
+   "trama": "assets/aspetto/trama440-lisci.png",
+   "rip": 7,
+   "spessore": 0.005,
+   "rilievo": 0.0012,
+   "dil": 1,
+   "ombra": 1.0,
+   "chignon": {
+    "az": 180,
+    "el": 14,
+    "r": 0.034,
+    "s": [
+     1.0,
+     0.85,
+     0.75
+    ],
+    "fuori": 0.016
+   }
   }
  },
  "barbe": {
@@ -57,7 +93,9 @@
   "corta": "corta",
   "pizzetto": "pizzetto",
   "baffi sottili": "baffi",
-  "rasato": null
+  "rasato": null,
+  "stoppia": "stoppia",
+  "baffi e pizzetto": "baffi-pizzetto"
  },
  "barbe_tipi": {
   "piena": {
@@ -65,28 +103,51 @@
    "trama": "assets/aspetto/trama-barba.png",
    "rip": 14,
    "spessore": 0.0025,
-   "ombra": 1.0
+   "ombra": 1.0,
+   "densita": "assets/aspetto/barba440-piena.png",
+   "copertura": 0.8,
+   "ombra440": 1.1
   },
   "corta": {
    "maschera": "assets/aspetto/barba-corta.png",
    "trama": "assets/aspetto/trama-barba.png",
    "rip": 16,
    "spessore": 0.0018,
-   "ombra": 1.0
+   "ombra": 1.0,
+   "densita": "assets/aspetto/barba440-corta.png",
+   "copertura": 0.6,
+   "ombra440": 1.0
   },
   "pizzetto": {
    "maschera": "assets/aspetto/barba-pizzetto.png",
    "trama": "assets/aspetto/trama-barba.png",
    "rip": 14,
    "spessore": 0.0022,
-   "ombra": 1.0
+   "ombra": 1.0,
+   "densita": "assets/aspetto/barba440-pizzetto.png",
+   "copertura": 0.6
   },
   "baffi": {
    "maschera": "assets/aspetto/barba-baffi.png",
    "trama": "assets/aspetto/trama-barba.png",
    "rip": 14,
    "spessore": 0.0022,
-   "ombra": 1.0
+   "ombra": 1.0,
+   "densita": "assets/aspetto/barba440-baffi.png",
+   "copertura": 0.5,
+   "ombra440": 1.0
+  },
+  "stoppia": {
+   "densita": "assets/aspetto/barba440-stoppia.png",
+   "spessore": 0.0015,
+   "ombra": 1.0,
+   "copertura": 0.4
+  },
+  "baffi-pizzetto": {
+   "densita": "assets/aspetto/barba440-baffi-pizzetto.png",
+   "spessore": 0.0022,
+   "ombra": 1.0,
+   "copertura": 0.6
   }
  },
  "campo_barba": {
@@ -116,5 +177,15 @@
   "biondi": "#895d26",
   "rossi": "#5c2111",
   "nota": "colore degli strati per classe di capelli della figurina, tarato sul banco (notte) perche' calotta e barba piena stiano vicino ai capelli dipinti della stessa classe (CIE76): misura-432.mjs"
- }
+ },
+ "nota_440": "giro 440 PO-686 bis: ogni tipo di barba ha la sua MAPPA DI DENSITA' («densita», 0..1 sfumata, labbra sempre a 0; tools/aspetto-440.py) e il colore per classe «barba_tinte» (dalla figurina, tarato con misura-440.mjs). «maschera»/«trama»/«rip» e «tinte» per la barba restano come nel 432: sono il ROSSO window.__CPM_NO_G440.",
+ "barba_tinte": {
+  "neri": "#2e2119",
+  "castani": "#563621",
+  "biondi": "#a36a3e",
+  "rossi": "#a24c26",
+  "nota": "colore dei peli della barba per classe di capelli della figurina (pixel dei peli sul mento delle figurine con barba, poi tarato sul banco con misura-440.mjs: nucleo del mento 3D contro figurina, CIE76)"
+ },
+ "nota_440_tagli": "giro 440: «stempiati e corti» = come il rasato (fondo color pelle + stoppia) con la stoppia tolta alle tempie (profilo a campana fra 12 e 64 gradi di azimut, fino a 12 gradi sopra l'attaccatura): la prima prova, testa del corpo + fondo solo alle tempie, faceva due bozzi color pelle; «lunghi raccolti» = calotta a ciocche pettinate (trama440-lisci) + chignon dietro la testa. g440: nel rosso __CPM_NO_G440 restano alla testa del corpo come nel 432. Nel manifest dei giocatori non ci sono «lunghi sciolti» ne' capelli medi sopra le orecchie oltre ai «ricci medi» (gia' coperti).",
+ "nota_440_copertura": "copertura: quota di peli nel nucleo della barba di quel tipo (miscela nucleo = copertura x peli + resto x pelle), tarata sul banco con misura-440.mjs perche' il nucleo 3D stia vicino a quello della figurina"
 }

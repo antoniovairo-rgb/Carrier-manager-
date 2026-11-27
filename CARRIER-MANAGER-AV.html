@@ -763,6 +763,7 @@ function _caricaVolti23(){
   fetch("assets/portraits/ai/indice.json").then(r=>r.ok?r.json():null).then(j=>{
     VOLTI23.idx=(j&&j.g&&j.s)?j:null;VOLTI23.stato=VOLTI23.idx?"pronto":"assente";
     VOLTI23.ascolta.forEach(f=>{try{f();}catch(_e){}});
+    try{if(!window.__CPM_NO_G440&&typeof _g432==='function'&&_g432()&&typeof _tab432==='function')_tab432();}catch(_e){}/* [giro 440] la tabella dell'aspetto (3 KB) parte con l'indice dei volti, prima della partita: al montaggio della partita viaggiava in coda ai GLB (12-18 s sul banco, giro 432). Rosso __CPM_NO_G440 */
   }).catch(()=>{VOLTI23.stato="assente";});
 }
 const _FETTE23={mister:[0,0.30],procuratore:[0.30,0.50],giornalista:[0.50,0.70],arbitro:[0.70,0.85],dirigente:[0.85,1]};
@@ -16216,7 +16217,7 @@ const _g432=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G432);
 const NA432=96,NE432=64;
 const ASP432={tab:null,stato:0,att:[],img:new Map(),rete:new WeakMap(),geo:new Map(),tex:new Map(),mat:new Map(),ms:0};
 function _tab432(){try{if(ASP432.stato)return;ASP432.stato=1;const t0=(typeof performance!=='undefined')?performance.now():0;
-  fetch('assets/aspetto/aspetto-432.json').then(r=>r.ok?r.json():null).then(j=>{ASP432.tab=j;ASP432.stato=j?2:3;ASP432.msTab=+(((typeof performance!=='undefined')?performance.now():0)-t0).toFixed(1);_svuota432();}).catch(()=>{ASP432.stato=3;});}catch(_e){ASP432.stato=3;}}
+  ASP432.tRich=t0;fetch('assets/aspetto/aspetto-432.json').then(r=>r.ok?r.json():null).then(j=>{ASP432.tab=j;ASP432.stato=j?2:3;ASP432.msTab=+(((typeof performance!=='undefined')?performance.now():0)-t0).toFixed(1);ASP432.tPronto=+(t0+ASP432.msTab).toFixed(0);_svuota432();}).catch(()=>{ASP432.stato=3;});}catch(_e){ASP432.stato=3;}}
 function _img432(url){let p=ASP432.img.get(url);if(p)return p;p=new Promise(res=>{try{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src=url;}catch(_e){res(null);}});ASP432.img.set(url,p);return p;}
 /* la maschera dei capelli dipinti (giro 240) letta come pixel: 0 = capelli */
 function _mascDati432(){try{const t=_MASC240&&_MASC240.u&&_MASC240.u.value;if(!t||_MASC240.stato!==2||!t.image||!t.image.getContext)return null;if(ASP432.md)return ASP432.md;const c=t.image,g=c.getContext('2d');ASP432.md={N:c.width,d:g.getImageData(0,0,c.width,c.height).data};return ASP432.md;}catch(_e){return null;}}
@@ -16255,13 +16256,13 @@ function _rumore432(a,e,s){const h=(x,y)=>{let q=Math.imul(x*374761393+y*6682652
     const v00=h(w(x0),y0),v10=h(w(x0+1),y0),v01=h(w(x0),y0+1),v11=h(w(x0+1),y0+1);return (v00*(1-sx)+v10*sx)*(1-sy)+(v01*(1-sx)+v11*sx)*sy;};
   return f(a,e,2)*0.6+f(a,e,4)*0.4;}
 /* 2-3) geometria di uno strato: celle coperte (alfa > 0) → maglia nello spazio dell'osso head */
-function _strato432(mesh,R,chiave,cov,spess,rilievo,seme,uvCost){const key=mesh.geometry.uuid+'|'+chiave+(uvCost?'|f':'');let G=ASP432.geo.get(key);if(G)return G;
+function _strato432(mesh,R,chiave,cov,spess,rilievo,seme,uvCost,uvCampo){const key=mesh.geometry.uuid+'|'+chiave+(uvCost?'|f':'')+(uvCampo?'|c':'');let G=ASP432.geo.get(key);if(G)return G;
   const T=THREE,sk=mesh.skeleton,M=new T.Matrix4().multiplyMatrices(sk.boneInverses[R.hb],mesh.bindMatrix);
   const rm=_vic432(R.r,1,'max'),rs=_vic432(rm,1,'media');const pos=[],uv=[],ind=[],idx=new Int32Array(NA432*NE432).fill(-1);const v=new T.Vector3();
   const ps=mesh.geometry.attributes.position.count<1500?2:1;/* testa del LOD lontano: una cella su due (meta' dei vertici per lato, un quarto dei triangoli) */const usa=k=>cov[k]>0.02&&R.r[k]>0;const rk=new Float32Array(NA432*NE432);
   for(let e=0;e<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const k=e*NA432+a;let serve=false;for(let de=-ps;de<=ps&&!serve;de++)for(let da=-ps;da<=ps&&!serve;da++){const ee=e+de;if(ee<0||ee>=NE432)continue;if(usa(ee*NA432+((a+da+NA432)%NA432)))serve=true;}
     if(!serve||!(rs[k]>0))continue;const rr=Math.max(rm[k],rs[k])+spess+(rilievo?rilievo*(_rumore432(a,e,seme)-0.35):0);
-    rk[k]=rr;v.set(R.C[0]+R.DX[k]*rr,R.C[1]+R.DY[k]*rr,R.C[2]+R.DZ[k]*rr).applyMatrix4(M);idx[k]=pos.length/3;pos.push(v.x,v.y,v.z);if(uvCost)uv.push(uvCost[0],uvCost[1]);else uv.push((a+0.5)/NA432,(e+0.5)/NE432);}
+    rk[k]=rr;v.set(R.C[0]+R.DX[k]*rr,R.C[1]+R.DY[k]*rr,R.C[2]+R.DZ[k]*rr).applyMatrix4(M);idx[k]=pos.length/3;pos.push(v.x,v.y,v.z);if(uvCost)uv.push(uvCost[0],uvCost[1]);else if(uvCampo){const az=((a+0.5)/NA432-0.5)*360,el=((e+0.5)/NE432-0.5)*180;uv.push(Math.max(0,Math.min(1,(az-uvCampo.az[0])/(uvCampo.az[1]-uvCampo.az[0]))),Math.max(0,Math.min(1,(el-uvCampo.el[0])/(uvCampo.el[1]-uvCampo.el[0]))));}/* [giro 440] barba: UV nel solo campo del viso (texture 512x256 invece di 768x512 sull'intera sfera) */else uv.push((a+0.5)/NA432,(e+0.5)/NE432);}
   for(let e=0;e+ps<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const a2=(a+ps)%NA432,e2=e+ps,p=[e*NA432+a,e*NA432+a2,e2*NA432+a2,e2*NA432+a].map(k=>idx[k]);if(p.some(x=>x<0))continue;
     const k0=e*NA432+a;if(!(usa(k0)||usa(e*NA432+a2)||usa(e2*NA432+a)||usa(e2*NA432+a2)))continue;ind.push(p[0],p[1],p[2],p[0],p[2],p[3]);/* antiorario visto da fuori (a = verso +x davanti, e = verso l'alto) */}
   G=new T.BufferGeometry();G.setAttribute('position',new T.Float32BufferAttribute(pos,3));G.setAttribute('uv',new T.Float32BufferAttribute(uv,2));G.setIndex(ind);G.computeVertexNormals();G.computeBoundingSphere();
@@ -16286,22 +16287,76 @@ function _cop432(R,d,sopra,orec){const c=new Float32Array(NA432*NE432);for(let k
 function _copBarba432(R,img,campo){const c=new Float32Array(NA432*NE432);if(!img)return c;const W=64,H=64,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');g.drawImage(img,0,0,W,H);const d=g.getImageData(0,0,W,H).data;
   const [az0,az1]=campo.az,[el0,el1]=campo.el;for(let e=0;e<NE432;e++)for(let a=0;a<NA432;a++){const k=e*NA432+a,az=((a+0.5)/NA432-0.5)*360,el=((e+0.5)/NE432-0.5)*180,u=(az-az0)/(az1-az0),v=(el-el0)/(el1-el0);if(u<0||u>1||v<0||v>1||!(R.r[k]>0))continue;
     const px=Math.min(W-1,Math.floor(u*W)),py=Math.min(H-1,Math.floor((1-v)*H));c[k]=d[(py*W+px)*4+3]/255*(d[(py*W+px)*4]/255);}return c;}
+/* [giro 440 · PO-686 bis] BARBA CREDIBILE. Verdetto del PO sulle foto del 432: «barba terribile» — macchia nera opaca coi bordi netti che
+   copriva la bocca, pizzetto a rettangolo, baffi spariti, colori troppo scuri. Cause MISURATE (sonda misura-440.mjs): (1) le maschere del 432
+   stavano 6-7 gradi troppo in alto (bocca a -32 invece di -39 sulla texture della testa srotolata): baffi sotto il naso, pizzetto sul labbro
+   inferiore; (2) maschera binaria x trama coprente (alfa 0,98) x tinta tarata sui capelli dipinti: una tinta piatta quasi nera.
+   Ora: la tabella da' per ogni tipo una MAPPA DI DENSITA' (0..1, sfumata, labbra sempre a 0: tools/aspetto-440.py) e il gioco disegna la
+   trama a PELI: un velo sotto (alfa 0,5 x densita') e peli corti orientati come crescono (in giu' e verso l'esterno, i baffi a ventaglio),
+   piu' radi e piu' chiari dove la densita' cala; colore per classe dalla figurina (tabella «barba_tinte»), materiale opaco (ruvidita' 1).
+   Rosso window.__CPM_NO_G440 = la resa del 432 (maschere e tinte di allora). Misura: resa-barba-440. */
+const _g440=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G440);
+function _dens440(img,TW,TH){const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;const g=cv.getContext('2d');g.imageSmoothingEnabled=true;g.drawImage(img,0,0,TW,TH);const d=g.getImageData(0,0,TW,TH).data,o=new Float32Array(TW*TH);for(let i=0;i<o.length;i++)o[i]=d[i*4]/255*(d[i*4+3]/255);return o;}
+/* copertura delle celle per la geometria: massimo della densita' nell'impronta della cella (la trama fa il resto) */
+function _copBarba440(R,img,campo){const c=new Float32Array(NA432*NE432);if(!img)return c;const TW=200,TH=90,D=_dens440(img,TW,TH),[az0,az1]=campo.az,[el0,el1]=campo.el;
+  for(let e=0;e<NE432;e++)for(let a=0;a<NA432;a++){const k=e*NA432+a;if(!(R.r[k]>0))continue;const az=((a+0.5)/NA432-0.5)*360,el=((e+0.5)/NE432-0.5)*180;let m=0;
+    for(let i=-2;i<=2;i++)for(let j=-2;j<=2;j++){const u=(az+i*0.95-az0)/(az1-az0),v=(el+j*0.7-el0)/(el1-el0);if(u<0||u>1||v<0||v>1)continue;const x=Math.min(TW-1,Math.floor(u*TW)),y=Math.min(TH-1,Math.floor((1-v)*TH));m=Math.max(m,D[y*TW+x]);}c[k]=m;}return c;}
+function _rng440(seme){let t=seme>>>0;return()=>{t+=0x6D2B79F5;let r=Math.imul(t^(t>>>15),1|t);r^=r+Math.imul(r^(r>>>7),61|r);return((r^(r>>>14))>>>0)/4294967296;};}
+/* trama a peli nel campo del viso (512x256, 0,39 gradi/px in azimut, 0,35 in elevazione) */
+function _texBarba440(chiave,img,campo){let t=ASP432.tex.get(chiave);if(t)return t;const t0=performance.now(),T=THREE,TW=512,TH=256,D=_dens440(img,TW,TH),[az0,az1]=campo.az,[el0,el1]=campo.el;
+  /* trama in GRIGI (una per tipo, condivisa da tutti i corpi): il colore dei peli lo mette il materiale di ciascuno (dalla figurina) */const pxA=TW/(az1-az0),pxE=TH/(el1-el0),C=[204,204,204],chiaro=[255,255,255];
+  const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;const g=cv.getContext('2d'),I=g.createImageData(TW,TH);
+  for(let i=0;i<TW*TH;i++){const d=D[i];if(d<=0)continue;const l=(1-d)*0.55;I.data[i*4]=(C[0]*0.85)*(1-l)+chiaro[0]*l;I.data[i*4+1]=(C[1]*0.85)*(1-l)+chiaro[1]*l;I.data[i*4+2]=(C[2]*0.85)*(1-l)+chiaro[2]*l;I.data[i*4+3]=255*0.3*Math.pow(d,1.3);}
+  g.putImageData(I,0,0);const rnd=_rng440(440+chiave.length*131);g.lineCap='round';
+  for(let n=0;n<16000;n++){const x=rnd()*TW,y=rnd()*TH,d=D[(y|0)*TW+(x|0)];if(!(d>0.02)||rnd()>Math.pow(d,0.85))continue;
+    const az=az0+x/pxA,el=el1-y/pxE,baffo=el>-35&&el<-27&&Math.abs(az)<22;let th=Math.max(-1,Math.min(1,az/80))*0.5;if(baffo)th=Math.sign(az||1)*0.75+az/22*0.25;th+=(rnd()-0.5)*0.5;
+    const L=(1.2+3.0*d)*(0.7+0.6*rnd()),dx=Math.sin(th)*L*pxA,dy=Math.cos(th)*L*pxE,k=0.7+0.55*rnd(),l=(1-d)*0.6;
+    g.strokeStyle=`rgba(${Math.round(Math.min(255,(C[0]*(1-l)+chiaro[0]*l)*k))},${Math.round(Math.min(255,(C[1]*(1-l)+chiaro[1]*l)*k))},${Math.round(Math.min(255,(C[2]*(1-l)+chiaro[2]*l)*k))},${(0.3+0.55*d).toFixed(3)})`;
+    g.lineWidth=0.8+0.5*rnd();g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+dx*0.5+(rnd()-0.5)*1.5,y+dy*0.5,x+dx,y+dy);g.stroke();}
+  /* la densita' ritaglia: labbra pulite e bordo sfumato anche per i peli che sporgono */
+  const M=g.createImageData(TW,TH);for(let i=0;i<TW*TH;i++){M.data[i*4+3]=Math.round(255*Math.min(1,D[i]*2.5));}const mc=document.createElement('canvas');mc.width=TW;mc.height=TH;mc.getContext('2d').putImageData(M,0,0);g.globalCompositeOperation='destination-in';g.drawImage(mc,0,0);g.globalCompositeOperation='source-over';
+  t=new T.CanvasTexture(cv);t.flipY=true;if(T.sRGBEncoding)t.encoding=T.sRGBEncoding;t.wrapS=t.wrapT=T.ClampToEdgeWrapping;t.anisotropy=2;t.needsUpdate=true;ASP432.tex.set(chiave,t);ASP432.msTex440=(ASP432.msTex440||0)+(performance.now()-t0);return t;}
+/* colore dei peli dalla figurina: nucleo misurato = copertura x peli + (1-copertura) x pelle (lineare) → peli; senza misura, la tinta della classe */
+function _peliDa440(fg,bar,T){try{if(fg&&fg.bn&&fg.bp){const N=new THREE.Color('#'+fg.bn),P=new THREE.Color('#'+fg.bp);if(N.convertSRGBToLinear){N.convertSRGBToLinear();P.convertSRGBToLinear();}const c=bar.copertura||0.75,f=v=>Math.max(0.004,Math.min(1,v));const H=new THREE.Color(f((N.r-(1-c)*P.r)/c),f((N.g-(1-c)*P.g)/c),f((N.b-(1-c)*P.b)/c));if(H.convertLinearToSRGB)H.convertLinearToSRGB();return '#'+H.getHexString();}}catch(_e){}return (T.barba_tinte&&fg&&fg.h&&T.barba_tinte[fg.h])||'#3b2416';}
+function _matBarba440(chiave,tex,ombra,hex){let m=ASP432.mat.get(chiave);if(m)return m;const T=THREE;const cc=_col432(hex);cc.multiplyScalar(1/0.8);cc.r=Math.min(1,cc.r);cc.g=Math.min(1,cc.g);cc.b=Math.min(1,cc.b);m=new T.MeshStandardMaterial({map:tex,color:cc,roughness:1,metalness:0,transparent:true,depthWrite:false,alphaTest:0.01,side:T.FrontSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});
+  if(ombra!=null)m.color.multiplyScalar(ombra);m.name='Aspetto432';m.userData.g432=1;m.userData.g440=1;ASP432.mat.set(chiave,m);return m;}
+/* [giro 440] STEMPIATO: per ogni colonna di azimut davanti, l'attaccatura e' la prima cella di capelli dipinti salendo dalla fronte; le
+   tempie si scoprono fino a «prof» gradi sopra l'attaccatura, con un profilo a campana fra az[0] e az[1] (la «M» delle tempie). */
+function _copStempia440(R,st){const c=new Float32Array(NA432*NE432);let n=0;const [a0,a1]=st.az,pr=st.prof||10;
+  for(let a=0;a<NA432;a++){const az=((a+0.5)/NA432-0.5)*360,aa=Math.abs(az);if(aa<a0||aa>a1)continue;const prof=pr*Math.sin(Math.PI*(aa-a0)/(a1-a0));let eh=-1;
+    for(let e=Math.floor(NE432*0.45);e<NE432;e++){const k=e*NA432+a;if(R.r[k]>0&&R.cap[k]){eh=e;break;}}if(eh<0)continue;const elh=((eh+0.5)/NE432-0.5)*180;
+    for(let e=eh;e<NE432;e++){const k=e*NA432+a,el=((e+0.5)/NE432-0.5)*180;if(el>elh+prof)break;if(R.cap[k]&&R.r[k]>0&&R.hw[k]>=0.9){c[k]=1;n++;}}}
+  const sm=_vic432(c,1,'media');for(let k=0;k<sm.length;k++)if(!(R.r[k]>0)||R.hw[k]<0.9)sm[k]=0;/* bordo della stoppia sfumato di una cella */
+  return {c:sm,n};}
+/* [giro 440] CHIGNON dei «lunghi raccolti»: un volume nostro dietro la testa (direzione az/el della tabella), a «fuori» dalla superficie,
+   nelle coordinate dell'osso head (stessa trasformazione degli strati): segue la testa e sta lontano da collo e spalle (misurato nel guardiano). */
+function _chignon440(mesh,R,c,img,rip,hex,ombra,chiave){try{const T=THREE,key=mesh.geometry.uuid+'|chig-'+chiave;let G=ASP432.geo.get(key);
+  if(!G){const az=c.az*Math.PI/180,el=c.el*Math.PI/180,a=Math.min(NA432-1,Math.max(0,Math.floor((az/(2*Math.PI)+0.5)*NA432))),e=Math.min(NE432-1,Math.max(0,Math.floor((el/Math.PI+0.5)*NE432)));
+    let r=0;for(let de=-1;de<=1;de++)for(let da=-1;da<=1;da++){const kk=Math.min(NE432-1,Math.max(0,e+de))*NA432+((a+da+NA432)%NA432);r=Math.max(r,R.r[kk]||0);}if(!(r>0))return null;
+    const d=new T.Vector3(Math.sin(az)*Math.cos(el),Math.sin(el),Math.cos(az)*Math.cos(el)),cen=new T.Vector3(R.C[0],R.C[1],R.C[2]).addScaledVector(d,r+c.fuori);
+    G=new T.SphereGeometry(c.r,18,12);G.scale(c.s[0],c.s[1],c.s[2]);const q=new T.Quaternion().setFromUnitVectors(new T.Vector3(0,0,1),d);G.applyMatrix4(new T.Matrix4().makeRotationFromQuaternion(q));/* r128: niente applyQuaternion sulle geometrie */G.translate(cen.x,cen.y,cen.z);
+    G.applyMatrix4(new T.Matrix4().multiplyMatrices(mesh.skeleton.boneInverses[R.hb],mesh.bindMatrix));G.computeBoundingSphere();G.userData.g440={chignon:1};ASP432.geo.set(key,G);}
+  const one=new Float32Array(NA432*NE432).fill(1),tx=_tex432('chig-'+chiave,one,img,rip);const m=new T.Mesh(G,_mat432('chig-'+chiave+'|'+hex,tx,hex,ombra));m.name='Chignon440_'+chiave;m.renderOrder=2;return m;}catch(_e){ASP432.errChig=String(_e&&_e.message||_e);return null;}}
 /* l'aspetto di una figurina: dalla tabella */
-function aspetto432(fg){try{const T=ASP432.tab;if(!T||!fg)return null;const tg=fg.t!=null?T.tagli[fg.t]:null,bb=fg.b!=null?T.barbe[fg.b]:null;return {taglio:fg.t||null,calotta:tg||null,barba:bb||null,descr:fg.b||null};}catch(_e){return null;}}
+function aspetto432(fg){try{const T=ASP432.tab;if(!T||!fg)return null;let tg=fg.t!=null?T.tagli[fg.t]:null;if(tg&&T.calotte[tg]&&T.calotte[tg].g440&&!_g440())tg=null;/* [giro 440] tagli nuovi: nel rosso restano alla testa del corpo, come nel 432 */const bb=fg.b!=null?T.barbe[fg.b]:null;return {taglio:fg.t||null,calotta:tg||null,barba:bb||null,descr:fg.b||null};}catch(_e){return null;}}
 /* applica a un corpo (visual) gia' con la testa e la pelle della figurina */
-function _applica432(visual,fg){try{if(!_g432()||!visual||!fg||typeof THREE==='undefined'||typeof document==='undefined')return;if(visual.userData.g432&&visual.userData.g432.fatto)return;
-  _tab432();const md=_mascDati432();if(ASP432.stato<2||!md){if(ASP432.stato!==3&&_MASC240.stato!==3){if(!visual.userData.g432){visual.userData.g432={atteso:1};ASP432.att.push(()=>{visual.userData.g432=null;_applica432(visual,fg);});
+function _applica432(visual,fg,nome440){try{if(!_g432()||!visual||!fg||typeof THREE==='undefined'||typeof document==='undefined')return;
+  try{const fz=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&nome440&&window.__CPM_TAGLIO440)?window.__CPM_TAGLIO440[nome440]:null;if(fz)fg=Object.assign({},fg,{t:fz,forzato440:1});}catch(_e){}/* [giro 440] SOLO BANCO (?cpmtest=1): un taglio dato a un nome, per fotografare e misurare i tagli che il salvataggio di prova non ha */if(visual.userData.g432&&visual.userData.g432.fatto)return;
+  _tab432();const md=_mascDati432();if(ASP432.stato<2||!md){if(ASP432.stato!==3&&_MASC240.stato!==3){if(!visual.userData.g432){visual.userData.g432={atteso:1};ASP432.att.push(()=>{visual.userData.g432=null;_applica432(visual,fg,nome440);});
       if(!md&&!ASP432.poll){ASP432.poll=setInterval(()=>{if(_mascDati432()||_MASC240.stato===3){clearInterval(ASP432.poll);ASP432.poll=0;_svuota432();}},150);}}}return;}
   const A=aspetto432(fg);if(!A){visual.userData.g432={fatto:1,pronto:1,n:fg.n,calotta:null,barba:null,strati:[]};return;}let mesh=null;visual.traverse(m=>{if(!mesh&&m.isSkinnedMesh&&m.material&&/^(Material\.002|KorwardNativeHair_)/.test((Array.isArray(m.material)?m.material[0]:m.material).name||''))mesh=m;});if(!mesh)return;
   const R=_rete432(mesh);if(!R)return;const head=mesh.skeleton.bones[R.hb];const T=ASP432.tab,hair=(T.tinte&&fg.h&&T.tinte[fg.h])||fg.hair||'#3a2410',/* [giro 432] tinta degli strati tarata per classe nella tabella */out={fatto:1,n:fg.n,t:A.taglio,calotta:null,barba:null,hair,strati:[]};
   const nuovi=[];const asp=[];
   const cal=A.calotta&&T.calotte[A.calotta];
-  if(cal&&!cal.nativa){out.calotta=A.calotta;asp.push(_img432(cal.trama).then(img=>{const cov=_cop432(R,cal.dil|0,cal.sopra,T.orecchie);const G=_strato432(mesh,R,'cal-'+A.calotta,cov,cal.spessore,cal.rilievo||0,7);
+  if(cal&&!cal.nativa){out.calotta=A.calotta;asp.push(_img432(cal.trama).then(img=>{const cov0=_cop432(R,cal.dil|0,cal.sopra,T.orecchie);let cov=cov0;if(cal.stempia&&_g440()){const cs=_copStempia440(R,cal.stempia);out.stempia440=cs.n;cov=cov0.map((v,k)=>v*(1-cs.c[k]));}/* [giro 440] stempiato: la stoppia lascia scoperte le tempie, il fondo color pelle resta su tutta la calotta (nessuno scalino) */const G=_strato432(mesh,R,'cal-'+A.calotta,cov,cal.spessore,cal.rilievo||0,7);
       const tx=_tex432('cal-'+A.calotta,cov,img,cal.rip);/* una texture per tipo: la griglia azimut/elevazione e' la stessa su tutti i LOD (prima: una per LOD, 16 texture misurate) */const ms=new THREE.Mesh(G,_mat432('cal-'+A.calotta+'|'+hair,tx,hair,cal.ombra));ms.name='Calotta432_'+A.calotta;ms.renderOrder=2;nuovi.push(ms);
-      if(cal.fondo&&R.fr){const head0=Array.isArray(mesh.material)?mesh.material[0]:mesh.material;const Gf=_strato432(mesh,R,'cal-'+A.calotta,cov,cal.spessore-0.0015,0,7,R.fr);const mf=new THREE.Mesh(Gf,_fondo432(head0));mf.name='Fondo432_'+A.calotta;mf.renderOrder=1;nuovi.push(mf);}}));}
+      if(cal.chignon&&_g440()){const mc=_chignon440(mesh,R,cal.chignon,img,cal.rip,hair,cal.ombra,A.calotta);if(mc)nuovi.push(mc);}/* [giro 440] lunghi raccolti: lo chignon, figlio dell'osso head */
+      if(cal.fondo&&R.fr){const head0=Array.isArray(mesh.material)?mesh.material[0]:mesh.material;const Gf=_strato432(mesh,R,'cal-'+A.calotta,cov0,cal.spessore-0.0015,0,7,R.fr);const mf=new THREE.Mesh(Gf,_fondo432(head0));mf.name='Fondo432_'+A.calotta;mf.renderOrder=1;nuovi.push(mf);}}));}
   else if(cal&&cal.nativa)out.calotta=A.calotta;
   const bar=A.barba&&T.barbe_tipi[A.barba];
-  if(bar){out.barba=A.barba;asp.push(Promise.all([_img432(bar.maschera),bar.trama?_img432(bar.trama):null]).then(([img,tr])=>{const cov=_copBarba432(R,img,T.campo_barba);const G=_strato432(mesh,R,'bar-'+A.barba,cov,bar.spessore,0,11);
+  if(bar&&_g440()&&bar.densita){out.barba=A.barba;out.tipo440=A.barba;const bh=_peliDa440(fg,bar,T);out.hair440=bh;asp.push(_img432(bar.densita).then(img=>{const campo=T.campo_barba,cov=_copBarba440(R,img,campo);const G=_strato432(mesh,R,'bar440-'+A.barba,cov,bar.spessore,0,11,null,campo);
+      const tx=_texBarba440('bar440-'+A.barba,img,campo);const mb=new THREE.Mesh(G,_matBarba440('bar440-'+A.barba+'|'+bh,tx,bar.ombra440!=null?bar.ombra440:bar.ombra,bh));/* ombra440: schiarita misurata (la luce del mento in partita e' piu' bassa di quella del ritratto) */mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}/* [giro 440] barba a peli con densita' sfumata */
+  else if(bar&&bar.maschera){out.barba=A.barba;asp.push(Promise.all([_img432(bar.maschera),bar.trama?_img432(bar.trama):null]).then(([img,tr])=>{const cov=_copBarba432(R,img,T.campo_barba);const G=_strato432(mesh,R,'bar-'+A.barba,cov,bar.spessore,0,11);
       const tx=_tex432('bar-'+A.barba,cov,tr,bar.rip);const mb=new THREE.Mesh(G,_mat432('bar-'+A.barba+'|'+hair,tx,hair,bar.ombra));mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}
   visual.userData.g432=out;
   Promise.all(asp).then(()=>{nuovi.forEach(m=>{m.frustumCulled=false;m.castShadow=false;m.userData.g432=1;head.add(m);out.strati.push(m.name);});out.pronto=1;}).catch(()=>{out.pronto=1;});
@@ -17779,7 +17834,7 @@ function ThreeMatchView(props){try{if(_g432())_tab432();}catch(_e432){}/* [giro 
          sua figurina e la pelle dal colore misurato sul ritratto, con lo stesso metodo della serata (giro 225: aspettoFigurina225,
          _pelle225). Arbitro, panchine, mascotte e assistenti non hanno figurina: restano dal seme. Rosso __CPM_NO_G240. */
       const _resaViva240=new THREE.Vector3(1,1,1);sr.current._resa240=()=>{try{const q=resa240('partita',tod);_resaViva240.set(q[0],q[1],q[2]);}catch(_e){}};sr.current._resa240();/* la compensazione delle luci di base dell'ora (giorno · tramonto · notte): un vettore condiviso da tutti i materiali di pelle */
-      const _aspetto240=(proc,appr)=>{try{if(!proc||proc._nf==null||proc._nf===''||typeof _g240!=='function'||!_g240()||typeof aspettoFigurina225!=='function')return appr;const fg=aspettoFigurina225(proc._nf);if(!fg)return appr;return Object.assign({},appr||{},fg.hair?{hair:fg.hair}:null,{_fig240:fg});}catch(_e){return appr;}};
+      const _aspetto240=(proc,appr)=>{try{if(!proc||proc._nf==null||proc._nf===''||typeof _g240!=='function'||!_g240()||typeof aspettoFigurina225!=='function')return appr;const fg=aspettoFigurina225(proc._nf);if(!fg)return appr;return Object.assign({},appr||{},fg.hair?{hair:fg.hair}:null,{_fig240:fg,_nome440:proc._nf});}catch(_e){return appr;}};/* [giro 440] _nome440: solo per la forzatura del taglio dal banco (__CPM_TAGLIO440) */
       /* [giro 412 · PO-612 — rosso __CPM_NO_G412] STATURA E CORPORATURA DALLA FIGURINA. Misurato (misura-412, ingresso, 22 corpi): la
          figurina dichiara 165-195 cm e un peso, ma in partita ogni corpo non-eroe era alto 1,8 (fisso: ~189 cm suola-cima per tutti) e
          la corporatura veniva da un seme diverso da quello della figurina. Ora la statura dichiarata di un corpo e' la statura della sua
@@ -17793,7 +17848,7 @@ function ThreeMatchView(props){try{if(_g432())_tab432();}catch(_e432){}/* [giro 
       const _corp412=(proc,appr)=>{const f=_fig412(proc);return f?Object.assign({},appr||{},{girth:f.girth}):appr;};
       const _chi240=(visual,proc,ruolo)=>{try{if(visual&&proc)visual.userData.chi240={nome:proc._nf||null,ruolo:ruolo||null};}catch(_e){}};
       const _pelleFig240=(visual,appearance)=>{try{const fg=appearance&&appearance._fig240;if(!fg||!fg.p||typeof _pelle225!=='function')return;_pelle225(visual,fg.p,'auto',_resaViva240,renderer.outputEncoding===THREE.sRGBEncoding,ESP240);}catch(_e){}};
-      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending)&&appearance&&appearance._fig240)_applica432(visual,appearance._fig240);}catch(_e){}};/* [giro 432] barba e calotta DOPO la pelle (il fondo del rasato usa il materiale tinto della testa) · la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
+      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending)&&appearance&&appearance._fig240)_applica432(visual,appearance._fig240,appearance._nome440);}catch(_e){}};/* [giro 432] barba e calotta DOPO la pelle (il fondo del rasato usa il materiale tinto della testa) · la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
       const _applyCgtraderNativeHair0=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
@@ -48889,7 +48944,7 @@ const RESA225=[0.90,0.68,0.58];/* le luci della serata (guadagno 2,3 + sviluppo 
 const _CAP225={neri:'#141210',castani:'#3a2410',biondi:'#dcb64c',rossi:'#b5491f'};/* un colore per classe: cgVarianteCapelli li porta a black/brown/blond/auburn */
 const _BASE225={'Material.001':[208,143,113],'Material.002':[203,133,109],HyperLegLeft:[187,130,102],HyperLegRight:[187,130,102]};/* pelle delle texture del corpo CGTrader (mediana dei pixel di pelle, misurata sul GLB) */
 function aspettoFigurina225(chiave){try{const I=VOLTI23.idx;if(!I||chiave==null||chiave==="")return null;const n=voltoId23('giocatore',chiave,0);if(n==null)return null;
-  const r=I.g.find(x=>x.n===n)||I.s.find(x=>x.n===n);return r?{n,k:r.k,h:r.h,p:r.p||null,hair:_CAP225[r.h]||null,file:I.base+r.f,t:(I.dt&&r.t!=null)?I.dt[r.t]:null,b:(I.db&&r.b!=null)?I.db[r.b]:null}:null;}/* [giro 432] t/b = taglio e barba del manifest (indice.json dt/db) */catch(_e){return null;}}
+  const r=I.g.find(x=>x.n===n)||I.s.find(x=>x.n===n);return r?{n,k:r.k,h:r.h,p:r.p||null,hair:_CAP225[r.h]||null,file:I.base+r.f,t:(I.dt&&r.t!=null)?I.dt[r.t]:null,b:(I.db&&r.b!=null)?I.db[r.b]:null,bn:r.bn||null,bp:r.bp||null}:null;}/* [giro 440] bn/bp = nucleo della barba e pelle accanto misurati sul ritratto *//* [giro 432] t/b = taglio e barba del manifest (indice.json dt/db) */catch(_e){return null;}}
 try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_FIG240=(n)=>aspettoFigurina225(n);}catch(_e){}/* [giro 240] solo banco di prova: la figurina di un nome, per il guardiano pelle-240 */
 function voltiPronti225(ms){return new Promise(res=>{try{if(VOLTI23.idx||VOLTI23.stato==='assente'||VOLTI23.stato==='spento')return res();
   let fatto=false;const f=()=>{if(fatto)return;fatto=true;try{VOLTI23.ascolta.delete(f);}catch(_e){}res();};VOLTI23.ascolta.add(f);_caricaVolti23();setTimeout(f,ms||4000);}catch(_e){res();}});}

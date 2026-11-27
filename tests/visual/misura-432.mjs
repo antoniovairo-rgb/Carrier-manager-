@@ -98,8 +98,10 @@ export async function penetra432(p) {
     return { corpi, vert, buchi, mmMax: +(mx * 1000).toFixed(1), chi }; });
 }
 
-export async function apriEPronti(b, port, flags, tod, vp) {
-  process.env.CPM_TOD = tod; const r = await apriIngresso(b, port, flags, vp);
+export async function apriEPronti(b, port, flags, tod, vp, forza) {
+  /* [giro 440] forza = { nome: taglio }: taglio dato a un nome dal banco (window.__CPM_TAGLIO440, solo ?cpmtest=1) */
+  const bb = forza ? { newContext: async o => { const c = await b.newContext(o); await c.addInitScript(m => { window.__CPM_TAGLIO440 = m; }, forza); return c; } } : b;
+  process.env.CPM_TOD = tod; const r = await apriIngresso(bb, port, flags, vp);
   if (r.ok && !flags.includes('__CPM_NO_G432')) await r.p.waitForFunction(() => { const S = window.__CPM3D.scene; let n = 0, f = 0; S.traverseVisible(o => { const c = o.userData && o.userData.chi240; if (c && c.nome) { n++; const g = o.userData.g432; if (g && g.pronto) f++; } }); return n >= 22 && f === n; }, null, { timeout: 30000 }).catch(() => {});
   await sleep(600);
   return r;
@@ -109,7 +111,7 @@ export async function corpi432(p) {
     o.push({ nome: c.nome, ruolo: c.ruolo, t: fg && fg.t, b: fg && fg.b, h: fg && fg.h, attesoCal: A ? A.calotta : null, attesoBar: A ? A.barba : null, cal: g && g.fatto ? g.calotta : null, bar: g && g.fatto ? g.barba : null, strati: g && g.strati ? g.strati.slice() : [] }); }); return o; });
 }
 const TAB432 = JSON.parse(fs.readFileSync(new URL('../../assets/aspetto/aspetto-432.json', import.meta.url), 'utf8'));
-export const atteso432 = (t, b) => ({ cal: t != null && t in TAB432.tagli ? TAB432.tagli[t] : null, bar: b != null && b in TAB432.barbe ? TAB432.barbe[b] : null });
+export const atteso432 = (t, b) => ({ cal: t != null && t in TAB432.tagli ? ((TAB432.calotte[TAB432.tagli[t]] || {}).nativa ? 'corto' : TAB432.tagli[t]) : null, /* [giro 440] un taglio «nativo» (stempiato) e' la testa del corpo: si giudica come «corto» */ bar: b != null && b in TAB432.barbe ? TAB432.barbe[b] : null });
 export const ANG432 = [0, 0.6, -0.6];
 export async function misuraTutti(b, port, flags, tod, fotoDir) {
   const { ctx, p, err, ok } = await apriEPronti(b, port, flags, tod);
