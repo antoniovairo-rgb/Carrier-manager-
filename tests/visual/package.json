@@ -641,6 +641,7 @@
     "tpose-196": "node tpose-196.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=campionato-notte node tpose-196.mjs",
     "gigante-212": "node gigante-212.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=trasferta-tel node gigante-212.mjs",
     "tunnel-285": "node tunnel-285.mjs && CPM_PROVA_ROSSO=1 node tunnel-285.mjs",
+    "tunnel-411": "node tunnel-411.mjs && CPM_PROVA_ROSSO=1 CPM_FOTO=0 CPM_VISTE=tel node tunnel-411.mjs",
     "tunnel-304": "CPM_GUARDIANO=1 node misura-304.mjs && CPM_GUARDIANO=1 CPM_PROVA_ROSSO=1 node misura-304.mjs",
     "tunnel-245": "node tunnel-245.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=comunale,borgo,arena node tunnel-245.mjs && CPM_PROVA_ROSSO=255 CPM_SCENARI=comunale,nazionale,sost-comunale node tunnel-245.mjs",
     "guardalinee-222": "node guardalinee-222.mjs && CPM_PROVA_ROSSO=1 CPM_SCENARI=festa-tel node guardalinee-222.mjs",
