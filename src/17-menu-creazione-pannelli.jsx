@@ -755,7 +755,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     const _title=_r>=7.5?"Prestazione da predestinato!":_r>=6.5?"Bella prova, gli scout ti hanno notato":_r>=5.5?"Prova sufficiente":"Provino in salita";
     const _react=_r>=7.5?"Gli osservatori prendono appunti freneticamente: un talento così non passa inosservato.":_r>=6.5?"Diversi osservatori annuiscono in tribuna. Sei sul taccuino dei club.":_r>=5.5?"Una prova onesta. C'è margine per convincere del tutto i club nei prossimi provini.":"Non la tua giornata migliore. Testa alta: hai ancora occasioni per ribaltare il giudizio.";
     const _pieno02=!_no115("02"),_rie20=done&&!_no115("20")&&results.length>=3;
-    return <div data-cpm="provino-post" style={_pieno02?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+    return <div data-cpm="provino-post" style={_pieno02?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>{_g427()&&<Altoparlante427/>}{/* [giro 427 PO-690] l'altoparlante fra un provino e l'altro (nella partita c'e' quello della barra) */}
       <div style={_pieno02?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:4}:undefined}>{/* [giro 115 G184-02] «schermata piena»: il blocco centrale prende l'altezza che avanza, il tasto sta in fondo */}
       <div style={{textAlign:"center",marginBottom:10}}>
         <div style={{fontSize:46,marginBottom:4,animation:"pulse87 1.4s ease-in-out infinite"}}>{_emoji}</div>
@@ -793,7 +793,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       :<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>}
     </div>;}
   const _pieno02p=!_no115("02");
-  return <div data-cpm="provino-pre" className={_g300()?"cpm-provino300":undefined}/* [giro 300 PO-551] da PC il tasto segue il contenuto (regola in src/19) */ style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+  return <div data-cpm="provino-pre" className={_g300()?"cpm-provino300":undefined}/* [giro 300 PO-551] da PC il tasto segue il contenuto (regola in src/19) */ style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>{_g427()&&<Altoparlante427/>}{/* [giro 427 PO-690] l'altoparlante fra un provino e l'altro (nella partita c'e' quello della barra) */}
     <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
