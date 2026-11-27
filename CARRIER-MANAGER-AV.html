@@ -24389,6 +24389,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30*_k286;
               pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22*_k286;}
             }
+            /* [giro 418, riparazione del treno 7.999.218 — rosso __CPM_NO_G418] SU PUNIZIONE NESSUN AVVERSARIO FUORI DALLA BARRIERA STA PIU' VICINO
+               DI LEI. Misurato (misura-418, gi81, GLB acceso, teatro): barriera ferma a 9,2 m (giro 375), ma l'attesa attiva (147/334) fa oscillare
+               di ±1 u verso il pallone due difensori congelati a ~8,7 m: 7,6-9,7 m dal pallone, dentro i 9,15 m e davanti alla barriera, a fasi di
+               ~4,4 s (era il rosso del treno: il quarto «uomo di barriera» misurato era uno di loro). Ora chi difende e non e' della barriera
+               (ruolo: _w72 di questa scena, non la bandiera mur72, cosi' il rosso __CPM_NO_MURO72 resta quello di prima) sta ad almeno
+               9,15 + 1 m: un passo dietro la linea della barriera. Proiezione radiale sul corpo finale: nessuna deriva, la base resta quella. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G418)&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")){
+              const _s418=(P.allPlayers||[])[i]||{},_w418=sr.current._w72&&sr.current._w72[i];
+              if(_s418.team==='away'&&!_s418.gk&&!(_w418&&_w418.k===P.hlSitKey)){
+                const _dx418=pp.mesh.position.x-bx,_dz418=pp.mesh.position.z-bz,_d418=Math.hypot(_dx418,_dz418);
+                if(_d418<10.15){const _u418=_d418>0.01?1/_d418:0;const _ex418=_d418>0.01?_dx418*_u418:1,_ez418=_d418>0.01?_dz418*_u418:0;
+                  pp.mesh.position.x=bx+_ex418*10.15;pp.mesh.position.z=bz+_ez418*10.15;}}}
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
           {const _q850=_pt31?{x:_pt31.x,y:_pt31.y,gk:false}:(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:(_mk143?{x:_mk143.x,y:_mk143.y,gk:false}:null);/* [giro 31] il portatore della scena difensiva sul suo punto *//* [giro 17 PO-123] il marcatore del motore va sul suo punto (_mk143), come il portatore */
