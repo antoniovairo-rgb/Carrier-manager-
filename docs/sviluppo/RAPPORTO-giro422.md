@@ -107,4 +107,9 @@ a 1,98 delle scene col cross.
 
 ## 6. Esito della catena del giro
 
-(in corso — vedi sotto)
+`cd tests/visual && node ci-runner.mjs giro prestacco-422` sul commit del giro (build 7.999.217, GAME_VERSION non toccata):
+**18/18 verdi**, nessun passo instabile. prestacco-422 274 s · mappa-unica · test:logic · save-compat · replay · migrazione-194 ·
+design-system · tema-unico · griglia-mobile · render-3d-023 · tunnel-285 · home-298 · web-237 · career-critical · battito-264 ·
+partita-vera · gk-dive-sync · schermate-97. Fuori dalla catena, a mano: `npm run testa-342` verde 11/11 + rosso valido.
+I file che i guardiani riscrivono (`docs/collaudo-grafico/g0/*`, `docs/governo/STABILITA.json`) li ho ripristinati: non fanno
+parte del giro. Il resto della MAPPA lo giudica il treno.
