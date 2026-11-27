@@ -7273,7 +7273,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           const _fatte=(_N.fatte||[]).filter(x=>/^i259_/.test(x)).map(x=>x.slice(5));
           const _c={mn:nx,diff:(_sc.home|0)-(_sc.away|0),energia:((occ28Ctx.current||{}).energy),panchina:!!onBenchRef.current,
             ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),fatte:_fatte,ultima:(_fatte.length?(_N.ultima|0):null),
-            caloMin:(_e.calom!=null?_e.calom:null),espNoi:_e.eN|0,espNoiMin:_e.eNm,espLoro:_e.eL|0,espLoroMin:_e.eLm,rigContro:_e.rL|0,rigControMin:_e.rLm,finMin:(_e.finm!=null?_e.finm:null),finK:_e.fink||null};
+            caloMin:(_e.calom!=null?_e.calom:null),espNoi:_e.eN|0,espNoiMin:_e.eNm,espLoro:_e.eL|0,espLoroMin:_e.eLm,rigContro:_e.rL|0,rigControMin:_e.rLm,finMin:(_e.finm!=null?_e.finm:null),finK:_e.fink||null,
+            duelliP:(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORZA423)?9:(_N.duelliP|0)};/* [giro 423 PO-642] i duelli persi dall'eroe aprono la scheda eroe_marcato (src/14); __CPM_FORZA423 solo sonda (?cpmtest=1) */
           const _f=INT259.scegli(_c);
           if(_f&&INT259.SCHEDE[_f]){const _S=INT259.SCHEDE[_f];_intxK669={id:"i259_"+_f,fam:"MISTER",txt:_S.txt,sc:_S.sc.map(o=>({et:o.et,premio:o.premio,rischio:o.rischio,es:()=>null})),cons:{},i259:_f,finK:(_f==='pari_finale'&&INT259.recente(1,nx,_e.finm)&&!(typeof window!=='undefined'&&window.__CPM_NO_FIN252b))?(_e.fink||null):null,finMin:(_e.finm!=null?_e.finm:null)};}
         }catch(_e259){}}
