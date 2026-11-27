@@ -21687,6 +21687,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
+         /* [giro 426, riparazione del treno grande 45920908452 — rosso __CPM_NO_G426, guardiano tiro-caricato] COL MANCINO IL PALLONE STA DAL LATO
+            DEL SINISTRO. MISURATO (tiro-caricato gi0/L, 6 ripetizioni sul ramo, testimone __CPM_TIRO34 nel riferimento del corpo visibile):
+            prima del contatto il pallone e' tenuto 0,78 u davanti secondo hero.rotation.y, ma il corpo guarda la porta (_mira20): il pallone
+            sta a lato -0,70/-0,79 dal corpo in ENTRAMBE le esecuzioni. Il destro passa a -0,26/-0,35 (contatto 0,13-0,26 u); il sinistro
+            della clip specchiata a +0,24/+0,36, ~1 u lontano: il contatto lo salvava solo l'aggancio all'osso nella finestra stretta, che
+            parte uno o due fotogrammi prima dell'armo (0,165-0,81 u, una volta su sei sopra 0,7). Con la clip specchiata del tiro in corsa il
+            punto d'attesa si specchia rispetto all'asse del corpo visibile: il mancino ha la geometria del destro. Il destro non cambia. */
+         if(!(typeof window!=='undefined'&&window.__CPM_NO_G426)&&_cgAvatar.root&&(((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name)==='mx-strike-foward-jog~m'){
+           const _r426=_cgAvatar.root.rotation.y||0,_s426=Math.sin(_r426),_c426=Math.cos(_r426),_dx426=_cx-hero.position.x,_dz426=_cz-hero.position.z;
+           const _av426=_dx426*_s426+_dz426*_c426,_la426=-(_dx426*_c426-_dz426*_s426);_cx=hero.position.x+_av426*_s426+_la426*_c426;_cz=hero.position.z+_av426*_c426-_la426*_s426;_anchor="heading-mancino426";}
          let _cy23=0.22;/* rovesciata: la palla si prende in aria, all'altezza del piede */const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";if(_kc23.alto&&Number.isFinite(_bp.y))_cy23=_bp.y;}}catch(_e){}
          /* [7.999.62 taccuino PO #9 «volée: il gesto non e' sincronizzato con la velocita' del cross» (000). Rosso __CPM_NO_VOLEE62]
             MISURATO (gi9 «Volée potente», GLB-ON): durante il caricamento questo aggancio portava il pallone del cross da quota 2,2 a 0,2 —
@@ -24750,6 +24760,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              un quarto di seno sui 0,13 s rimasti. Ora la finestra copre la coda della costruzione (fino al tratto prima dell'ultimo, cioe' il
              volo del cross), la salita e' balistica (parte sqrt(2H/g) prima dell'arrivo e arriva all'apice col pallone) e la clip si monta
              _TC342/scala prima dell'arrivo, cosi' il suo contatto cade sul pallone (montaggio, sotto). */
+          /* [giro 426, riparazione del treno 7.999.218 — rosso __CPM_NO_G426, guardiano testa-tempismo] DOPO UN CROSS IL COLPO DI TESTA NON ASPETTA
+             IL «CONTROLLO». MISURATO (sonda __CPM_BU43 + __CPM_TESTA33, gi171 azione 0, GLB acceso, uguale su d75ded1d e su 9e876eb5: non e' il
+             giro 418): il cross (beat 2) consegna il pallone alla testa (0,16-0,30 u, 1,58-1,65 s), poi il beat «control» del giro 342 lo tiene
+             li' 0,13-0,16 s mentre lo stacco va all'apice alla fine di QUEL beat: colpo a 1,70-1,76 s, scarto 0,09-0,16 s contro la soglia 0,15
+             (treno: 0,16). Sul colpo di testa in TUFFO (header_diving, lo stacco basso del giro 342), quando il beat prima e' un cross aereo, il «control» dura un fotogramma (sui colpi di testa da
+             in piedi gi55/gi86/gi76 il cross NON arriva alla testa e il «control» la porta: accorciarlo li' dava scarto -0,36/-0,38 s, misurato): _end342 (apice dello stacco, clip,
+             fine della costruzione) cade dove il cross arriva alla testa. Una volta per copione (segno sul beat), prima che la finestra dello stacco si apra. */
+          if(P.hlType==='header'&&P.hlVariant==='header_diving'&&_tuffo109&&_g342On()&&!(typeof window!=='undefined'&&window.__CPM_NO_G426)&&_aerTL!=null&&tlBuildN>=2&&bi===tlBuildN-2){
+            const _u426=tlSeg[tlBuildN-1],_x426=tlSeg[tlBuildN-2];
+            if(_u426&&_x426&&_x426.kind==='cross'&&_u426.tag!=="orig26"&&(_u426.kind==='carry'||_u426.kind==='control')&&!_u426._s426){_u426._s426=1;_u426.dur=Math.min(_u426.dur||0,0.02);}}
           const _on342=_g342On();let _end342=acc+((tlSeg[bi]&&tlSeg[bi].dur)||0);if(_on342){_end342=0;for(let j=0;j<tlBuildN;j++)_end342+=tlSeg[j].dur;}
           if(P.hlType==='header'&&(P.hlVariant!=='header_diving'||_tuffo109)&&!actType&&tlBuildN>0&&(_on342?(bi>=tlBuildN-2&&bi<tlBuildN):bi===tlBuildN-1)&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
             const _rem33=_end342-tlT,_PRE33=0.5*gwOf('header','vita');
