@@ -672,6 +672,7 @@
     "testo-160": "node testo-160.mjs",
     "sim-voto-156": "node sim-voto-156.mjs",
     "spalle-146": "node spalle-146.mjs",
+    "intro-spalle-428": "node intro-spalle-428.mjs",
     "clip-180": "node clip-180.mjs",
     "sigle-203": "CPM_VISTE=360,375,390 node sigle-203.mjs && CPM_VISTE=1366 node sigle-203.mjs && CPM_ROSSO203=1 CPM_VISTE=360,375,390 node sigle-203.mjs && CPM_ROSSO254=1 CPM_VISTE=360 node sigle-203.mjs",
     "clip-180-foto": "node clip-180-foto.mjs",
