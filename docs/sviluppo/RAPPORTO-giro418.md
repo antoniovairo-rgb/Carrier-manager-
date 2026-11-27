@@ -63,7 +63,9 @@ Esiti locali: 3 su 3 verdi (verde 4,4u nel peggiore dei dieci momenti · MURO72 
 
 ## Catena
 
-`node ci-runner.mjs giro barriera-73 barriera-375` (= i due guardiani del giro 375 + le 17 sentinelle): esito in fondo a questo rapporto.
+`node ci-runner.mjs giro barriera-73 barriera-375` (= i due guardiani del giro 375 + le 17 sentinelle): **19/19 verdi**, nessuna ripetizione
+(barriera-73 62 s · barriera-375 114 s · partita-vera 645 s · career-critical 341 s). I file che la catena riscrive da sé
+(`docs/governo/STABILITA.json`, le foto di `griglia-mobile` in `docs/collaudo-grafico`) sono stati ripristinati e non sono nel commit.
 Riga della MAPPA: quella già presente per `src/12` (contiene `barriera-73` e `barriera-375`). Nessuna riga nuova.
 
 ## Dubbi per il PO
