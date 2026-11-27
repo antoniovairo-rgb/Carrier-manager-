@@ -538,6 +538,8 @@
     "serata-314": "node serata-314.mjs",
     "misura-261": "node misura-261.mjs",
     "pelle-240": "node pelle-240.mjs",
+    "pelle-scura-433": "node pelle-scura-433.mjs",
+    "misura-433": "node misura-433.mjs",
     "aspetto-412": "node aspetto-412.mjs",
     "misura-412": "node misura-412.mjs",
     "attaccatura-414": "node attaccatura-414.mjs",
