@@ -3,24 +3,37 @@
  "attivo": true,
  "rossi": [
   {
-   "guardiano": "consegna-103",
+   "guardiano": "tiro-caricato",
    "classe": "rosso_nuovo"
   },
   {
-   "guardiano": "testa-342",
+   "guardiano": "rilascio-312",
    "classe": "rosso_nuovo"
   }
  ],
- "sbloccati": [],
- "quando": "2026-11-26T05:24:41.391Z",
- "commit": "8543a9cc8d56f53de70d7337302a56b85b9941d1",
- "ramo": "lavoro/201",
- "corsa": "45735203524",
- "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45735203524",
+ "sbloccati": [
+  "consegna-103",
+  "testa-342"
+ ],
+ "quando": "2026-11-27T04:02:08.462Z",
+ "commit": "ceee52b2feddd3cf59b3743598bb690e0d633c83",
+ "ramo": "main",
+ "corsa": "45920908452",
+ "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45920908452",
  "treno": {
-  "guardiani": 384,
-  "verdi": 352,
-  "parti": "31/31"
+  "guardiani": 389,
+  "verdi": 357,
+  "parti": "32/32"
  },
- "storia": []
+ "storia": [
+  {
+   "quando": "2026-11-26T05:24:41.391Z",
+   "commit": "8543a9cc8d56f53de70d7337302a56b85b9941d1",
+   "corsa": "45735203524",
+   "rossi": [
+    "consegna-103",
+    "testa-342"
+   ]
+  }
+ ]
 }
