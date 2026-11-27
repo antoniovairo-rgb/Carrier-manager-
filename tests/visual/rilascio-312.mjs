@@ -74,7 +74,7 @@ console.log('\n== B. percorso vero su un remoto finto ==');
 const TMP = fs.mkdtempSync(path.join(process.env.CPM_TMP || os.tmpdir(), 'rilascio-312-'));
 const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const chi = ['-c', 'user.name=prova', '-c', 'user.email=prova@example.invalid'];
-const node = (cwd, ...a) => spawnSync('node', [T, ...a, '--cwd', cwd], { cwd, encoding: 'utf8', env: { ...process.env, CPM_RILASCIO_AUTO: '', CPM_CORSA: 'p312', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '' } });
+const node = (cwd, ...a) => spawnSync('node', [T, ...a, '--cwd', cwd], { cwd, encoding: 'utf8', env: { ...process.env, CPM_RILASCIO_AUTO: '', CPM_REF_BLOCCO: '', CPM_CORSA: 'p312', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '' } });
 try {
   const REM = path.join(TMP, 'remoto.git'), W = path.join(TMP, 'lavoro');
   const HEAD = g(ROOT, 'rev-parse', 'HEAD');
@@ -90,6 +90,10 @@ try {
   /* [giro 338] main: interruttore acceso + una modifica in docs/governo che va in conflitto col campo versione del lavoro */
   g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
   fs.writeFileSync(path.join(W, R.FILE_INTERRUTTORE), JSON.stringify({ attivo: true }) + '\n');
+  /* [giro 426] lo scenario porta il SUO blocco (spento): prima ereditava il BLOCCO-RILASCI vero di origin/main, e un treno grande che
+     bloccava i rilasci (corsa 45920908452) faceva fermare B2 e rosso questo guardiano — che entrava a sua volta nel blocco */
+  if (process.env.CPM_NO_G426 !== '1') /* rosso del giro 426: lo scenario torna a leggere il blocco vero */
+  fs.writeFileSync(path.join(W, 'docs/governo/BLOCCO-RILASCI.json'), JSON.stringify({ _: 'blocco finto dello scenario rilascio-312 (giro 426)', attivo: false, rossi: [], sbloccati: [], storia: [] }, null, 1) + '\n');
   const fr = path.join(W, R.FILE_ROSSI), jr = JSON.parse(fs.readFileSync(fr, 'utf8')); jr._ = jr._ + ' (modificato su main)'; jr.versione = '7.999.200-main'; fs.writeFileSync(fr, JSON.stringify(jr, null, 1) + '\n');
   g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
   const main1 = g(W, 'rev-parse', 'HEAD');

@@ -18,6 +18,8 @@ for (const [gs, as, piede] of CASI) {
   const page = await b.newPage({ viewport: { width: 380, height: 300 } }); await installCdnRoutes(page);
   await page.addInitScript(([r, p]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TIRO34_REC = 1; if (r) window.__CPM_NO_TIRO34 = 1; if (p) window.__CPM_FORCE_PIEDE31 = p; if (window.name === 'x') {} }, [RED, piede || null]);
   if (process.env.CPM_NOPASSO || RED) await page.addInitScript(() => { window.__CPM_NO_PASSO37 = 1; });
+  /* [giro 426] rosso del pallone dal lato del mancino: CPM_NO_G426=1 → gi0/L torna a 0,165-0,81 u (una volta su sei sopra 0,7) */
+  if (process.env.CPM_NO_G426 === '1') await page.addInitScript(() => { window.__CPM_NO_G426 = 1; });
   await openMatch(page, port, { skipLoadAll: true, name: 'Tiro34' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, { timeout: 60000 }).catch(() => {});
   await page.evaluate(g => { window.__CPM_TIRO34 = null; window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);
