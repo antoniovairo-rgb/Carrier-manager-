@@ -1754,7 +1754,16 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       /* [7.999.10 collaudo PO: vinta 3-0 con un gol e due assist, tabellino «1 gol»] il gol del compagno su assist si scriveva solo se la
          scena aveva un ricevente dichiarato dal motore: senza (scena non nata da un'occasione del motore) il gol spariva dal tabellino.
          Ora, se manca, il ricevente e' il compagno di movimento piu' vicino all'eroe. Rosso __CPM_NO_TAB10. */
-      const R=R0||((key!=='assist'||(typeof window!=='undefined'&&window.__CPM_NO_TAB10))?null:(()=>{/* solo sull'ASSIST: su un «goal» da passaggio (dai e vai) il gol lo segna la catena, non il primo tocco — misurato, motore-unico 4-0 contro tabellone 3-0 */const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;})());
+      /* [giro 437 PO-628 — UN GOL DELL'EROE, UNA VERSIONE. Rosso __CPM_NO_G437] Misurato su 16 partite vere (corpi accesi, misura-437.mjs):
+         sul gol dell'eroe «su assist di Y» la riga e i momenti chiave nominavano Y e qui il gol si scriveva con assist:null (3 su 3: Y
+         senza assist in pagella); sull'assist dell'eroe senza ricevente dal cast la riga nominava un compagno sorteggiato dalla rosa e qui
+         segnava il piu' vicino (3 su 13 con un altro marcatore in pagella). Ora il gioco passa il nome che ha scelto (d.nome437): se quel
+         compagno e' in campo e' lui; altrimenti resta il piu' vicino, e il gioco rilegge da qui chi ha segnato e chi ha servito. */
+      const _g437=!(typeof window!=='undefined'&&window.__CPM_NO_G437);
+      const _lc437=x=>String(x||'').trim().toLowerCase(),_ut437=x=>_lc437(x).split(/\s+/).pop();
+      const perNome437=(nm)=>{if(!_g437||!nm)return null;const a=_lc437(nm),u=_ut437(nm);let f=null;for(const q of g){if(!q||q.eroe||q.gk||q.team!==H.team||!attivo(q))continue;const n=_lc437(q.name);if(n===a){f=q;break;}if(!f&&n&&_ut437(q.name)===u)f=q;}return f;};
+      const vicino437=()=>{const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;};
+      const R=R0||((key!=='assist'||(typeof window!=='undefined'&&window.__CPM_NO_TAB10))?null:(_g437&&perNome437(d.nome437))||(()=>{/* solo sull'ASSIST: su un «goal» da passaggio (dai e vai) il gol lo segna la catena, non il primo tocco — misurato, motore-unico 4-0 contro tabellone 3-0 */const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;})());
       const E=(t,o)=>{const e=ev(t,Object.assign({scena:true,fam:d.tipo||null,variante:d.variante||null},o));out.push(e);return e;};/* famiglia e variante della scena: il gesto che il giocatore ha scelto */
       const da=q=>({x:+q.x.toFixed(1),y:+q.y.toFixed(1)});const rew=d.rew||'';const ok=!!d.ok;
       /* [23/09 POC — punto 3] la FAMIGLIA del gesto della scena (scelta dal giocatore) entra negli eventi: il tiro porta la sua
@@ -1820,7 +1829,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       }
       else{
         if(famDrib)E('conduzione',{chi:chi(H),from:da(H)});
-        if(key==='goal'){tiroEroe('goal');E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+        if(key==='goal'){tiroEroe('goal');const _A437=(_g437&&d.nome437)?(perNome437(d.nome437)||vicino437()):null;E('gol',{chi:chi(H),assist:chi(_A437),lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
         else if(key==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null});if(ok&&R){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
         /* [7.999.154 PO-218 «i pop di chiusura scena non rispecchiano la verita'»] UN SOLO TIPO D'ERRORE. Misurato (4 partite vere): il gioco
            decide il dettaglio dell'errore (outKind: parata, palo, murato, fuori, fallo subito) e da li' derivano 3D e riquadro, mentre qui il
