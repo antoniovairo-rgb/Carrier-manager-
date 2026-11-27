@@ -32,6 +32,11 @@ const INIT = ({ rosso, punti }) => { window.__CPM_GLB = false; try { localStorag
   /* [giro 178] il mondo della 183 comprende la regia e il colore dell'intro di allora: col nuovo inquadramento verticale dietro le didascalie
      c'e' scena scura e il velo (G184-11) non serve piu' a reggere il contrasto, quindi senza questi due rossi il braccio rosso diventava cieco su 11 */
   if (rosso) { window.__CPM_NO_G178_INTRO = true; window.__CPM_NO_G178_COLORE = true; }
+  /* [giro 413] misurato sulla 7.999.216 (c1efcce1): il rosso era CIECO su 32 e 22. 32: dal giro 401 il nome sta in cima alla creazione e
+     resta in vista con la tastiera anche senza il rimedio 32 → il mondo della 183 comprende la creazione di prima (__CPM_NO_G401).
+     22: dal 7.879 la scena nasce da un fatto (pallone all'eroe) e non piu' dalla finestra dei minuti 8'-17' → primo highlight al 6'
+     dopo 8,5 s di scena anche senza il rimedio 22; il mondo della 183 comprende l'apertura a minuti (__CPM_NO879). Soglie invariate. */
+  if (rosso) { window.__CPM_NO_G401 = true; window.__CPM_NO879 = true; }
   let s = 4242; Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
 const fase = p => p.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null).catch(() => null);
 const testo = p => p.evaluate(() => document.body.innerText || '').catch(() => '');
@@ -43,7 +48,19 @@ const foto = async (page, f, nome) => { if (!FOTO) return; try { await page.scre
 
 const ESITI = []; /* {f, p, ok:true|false|null, m} */
 const esito = (f, p, ok, m) => { ESITI.push({ f: f.k, p, ok, m }); console.log(`  [${f.k}] G184-${p} ${ok === true ? 'OK ' : ok === false ? 'NO ' : 'n.g.'} ${m}`); };
+/* [giro 413] DECISIONE PO 19/11 (PO-551 «Attaccato al contenuto, solo PC», giro 300; «Da PC vale la compattezza», DECISIONI.md 12:35-12:55,
+   stessa eccezione di altezza-114 `_ecc289`): da PC (>= 1024 px, braccio verde) la schermata «Inizia il provino» NON e' piena, il tasto segue il
+   contenuto e sotto resta vuoto. Li' il vuoto in fondo si stampa e NON si giudica; si giudica il criterio del PO: tasto attaccato all'ultimo
+   riquadro (<= 24 px, come prepartita-pc-300 B) e intero a schermo senza scorrere. Al telefono e nel braccio rosso resta la soglia del 12%. */
+const PC413 = (f, sch) => !ROSSO && f.w >= 1024 && /^pre-/.test(sch);
 const altezza = async (page, f, p, sch) => { await sleep(200); const a = await page.evaluate(ALTEZZA).catch(() => null); if (!a) return esito(f, p, null, `${sch}: misura fallita`);
+  if (PC413(f, sch)) { const t = await page.evaluate(() => { const pp = document.querySelector('[data-cpm="provino-pre"]'); if (!pp) return null;
+      const vis = el => { const cs = getComputedStyle(el); const q = el.getBoundingClientRect(); return cs.display !== 'none' && cs.visibility !== 'hidden' && q.width > 0 && q.height > 0; };
+      const btn = [...pp.querySelectorAll('button')].find(x => /Inizia il provino/i.test(x.textContent || '')); if (!btn) return null;
+      const figli = [...pp.firstElementChild.children].filter(vis); if (!figli.length) return null; const ult = figli[figli.length - 1].getBoundingClientRect(); const qb = btn.getBoundingClientRect();
+      return { attacco: Math.round(qb.top - ult.bottom), fondo: Math.round(qb.bottom), H: innerHeight }; }).catch(() => null);
+    if (!t) return esito(f, p, null, `${sch}: tasto o riquadri del provino non trovati (decisione PO-551)`);
+    return esito(f, p, t.attacco >= 0 && t.attacco <= 24 && t.fondo <= t.H, `${sch} da PC (decisione PO-551): tasto a ${t.attacco} px dall'ultimo riquadro (max 24), fondo del tasto ${t.fondo}/${t.H} · vuoto in fondo ${a.vuoto} px = ${a.pct}% stampato, non giudicato da PC`); }
   const ok = !!a.scorre || a.pct <= 12; esito(f, p, ok, `${sch}: ${a.scorre ? 'scorre' : 'vuoto ' + a.vuoto + ' px = ' + a.pct + '%'} (soglia 12%, ultimo «${a.ultimo}»)`); };
 
 async function intro(page, f, nomeAtteso) {

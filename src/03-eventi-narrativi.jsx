@@ -392,6 +392,41 @@ function segOk154(id,p){try{
   return !s.ctx||!!s.ctx(p);
 }catch(_e){return false;}}
 const _sg154=(id)=>(p)=>segOk154(id,p);
+/* [giro 377 · PO-646 «Rivedere tutti gli impulsi e renderli logici e realistici, credo che questo impulso sia solo abbellimento
+   inutile»] LE PROMESSE DI MERCATO SI MANTENGONO. Misurato (misura-377.mjs + lettura dei 138 impulsi): tre scelte annunciavano un
+   club che non arrivava mai — «Aspettiamo — la pazienza paga» (wi_procuratore), «Ascolto la proposta» (wi_dirigente_idolo),
+   «Vado — ho bisogno di giocare» (wi_prestito_inverno): solo morale/valore, nessun fatto. Ora la scelta resta nella memoria degli
+   impulsi (impMem del PO-154, nessun campo nuovo nel salvataggio: il solo `f377` dentro la voce gia' esistente, assente = in attesa)
+   e alla PRIMA finestra di mercato dopo la scelta il club si fa vivo davvero: ogni settimana di finestra con probabilita' P377
+   (dichiarata: 45%, cioe' ~95% su una finestra intera di 5 settimane), tiro deterministico sul seme della carriera (nome+nazione)
+   e sulla settimana; se la finestra si chiude senza offerta la pista e' «sfumata» e il gioco lo dice. L'impulso esce solo quando
+   quella finestra e' vicina (comincia entro 6 settimane e dura almeno 2): «serve pazienza» non vuol dire sei mesi.
+   Rosso window.__CPM_NO_G377 = comportamento di prima (nessuna offerta, condizioni e testi di prima). Guardiano impulsi-377. */
+const no377=()=>_off154("__CPM_NO_G377");
+const ATTESE377={wi_procuratore:{c:0,tipo:"club"},wi_dirigente_idolo:{c:0,tipo:"club"},wi_prestito_inverno:{c:0,tipo:"prestito"}};
+const P377=0.45;
+/* la prima finestra di mercato (settimane 1-5 · 19-23) che comincia DOPO la settimana assoluta della scelta, in settimane assolute */
+function finestra377(a){const s0=Math.floor((a-1)/38),w0=((a-1)%38)+1;
+  if(w0<=3)return[s0*38+w0+1,s0*38+5];
+  if(w0<=21)return[s0*38+Math.max(19,w0+1),s0*38+23];
+  return[(s0+1)*38+1,(s0+1)*38+5];}
+const vicino377=(p)=>{if(no377())return true;const a=absW154(p),f=finestra377(a);return f[0]-a<=6&&f[1]-f[0]>=1;};
+/* la promessa piu' vecchia ancora aperta: stato «attesa» (finestra non ancora aperta) · «ora» · «sfumata» (finestra chiusa) */
+function attesa377(p){try{if(no377()||!p)return null;const m=p.impMem||{},now=absW154(p);let b=null;
+  for(const id in ATTESE377){const o=m[id],sp=ATTESE377[id];if(!o||o.c!==sp.c||o.f377!=null||!o.a)continue;
+    const f=finestra377(o.a);if(now>f[1]+4)continue;/* scelta di un salvataggio vecchio (prima del giro 377) con la finestra chiusa da tempo: nessun annuncio tardivo */
+    const stato=now<f[0]?"attesa":now>f[1]?"sfumata":"ora";
+    if(!b||o.a<b.o.a)b={id,sp,o,f,now,stato};}
+  return b;}catch(_e){return null;}}
+const tiro377=(p,at)=>((hashStr("att377|"+((p&&p.name)||"")+"|"+((p&&p.nation)||"")+"|"+at.id+"|"+at.now)%1000)/1000)<P377;
+/* l'offerta vera: lo stesso generatore del mercato; per il prestito un club meno blasonato e il contratto e' un prestito secco */
+function offerta377(p,at){try{const cur=(p.club&&p.club.p)||60;
+  if(at.sp.tipo!=="prestito")return generateTransferOffer(p,p.transferRequest&&p.transferRequest.pref);
+  let o=null;for(let i=0;i<4&&!(o&&o.club&&o.club.p<cur);i++)o=generateTransferOffer(p,{mode:"prestige",prestigeTarget:Math.max(40,cur-12)});
+  if(!o)return null;const r={...o,type:"prestito",duration:1};delete r.buyClause;delete r.minMatches;return r;}catch(_e){return null;}}
+const MSG377={wi_procuratore:{a:(c)=>`📞 Il procuratore aveva ragione: ${c} presenta un'offerta ufficiale.`,s:"🤵 Il procuratore: «Il club si è raffreddato, la pista è sfumata.»"},
+  wi_dirigente_idolo:{a:(c)=>`📞 Il progetto del tuo vecchio idolo diventa un'offerta vera: ${c}.`,s:"📞 Il progetto del tuo vecchio idolo è sfumato: hanno scelto un altro."},
+  wi_prestito_inverno:{a:(c)=>`📩 ${c} formalizza la richiesta di prestito.`,s:"📩 Il prestito è saltato: il club ha preso un altro giocatore."}};
 
 /* ========================================
    SPRINT 24 — B: OGNI SETTIMANA CONTA (IMPULSI)
@@ -411,7 +446,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🥗 La seguo alla lettera",ef:{form:5,morale:-3}},
     {txt:"🍕 Uno sgarro me lo concedo",ef:{morale:4,form:-2}},
   ]},
-  {id:"wi_ex_compagno_cena",cat:"tensione",cond:p=>(p.history||[]).length>0&&(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played),txt:"Un ex compagno, ora avversario diretto della prossima giornata, ti invita a cena. Le foto girerebbero.",choices:[
+  {id:"wi_ex_compagno_cena",cat:"tensione",cond:p=>(p.history||[]).length>0&&(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played&&(no377()||(p.history||[]).some(h=>h&&h.clubId&&h.clubId===m.opponentId)))/* [giro 377] «ora avversario diretto della prossima giornata»: l'avversario della settimana dev'essere davvero un tuo ex club (prima bastava averne uno qualsiasi) */,txt:"Un ex compagno, ora avversario diretto della prossima giornata, ti invita a cena. Le foto girerebbero.",choices:[
     {txt:"🍽 Ci vado — l'amicizia viene prima",ef:{morale:5,coachTrust:-3}},
     {txt:"📵 Rimandiamo a dopo la partita",ef:{coachTrust:3,morale:-2}},
   ]},
@@ -576,7 +611,7 @@ const WEEKLY_IMPULSES=[
     {txt:"⌚ Lo compro — rito di passaggio",ef:{bank:-30000,chem:7,morale:4}},
     {txt:"💸 Follia — passo",ef:{chem:-3,morale:1}},
   ]},
-  {id:"wi_amichevole",cat:"opportunità",cond:p=>!(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played),txt:"Il tuo agente segnala un'amichevole internazionale extra. Alzerei la visibilità, ma è un viaggio impegnativo.",choices:[
+  {id:"wi_amichevole",cat:"opportunità",cond:p=>!(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played),get txt(){return no377()?"Il tuo agente segnala un'amichevole internazionale extra. Alzerei la visibilità, ma è un viaggio impegnativo.":"Settimana senza campionato: il club gioca un'amichevole internazionale all'estero. Il mister lascia scegliere chi partire: vetrina, ma viaggio impegnativo.";}/* [giro 377] parlava «il tuo agente» anche a chi non ne ha, e un agente non iscrive un giocatore a un'amichevole: la organizza il club */,choices:[
     {txt:"✅ Ci vado — voglio farmi vedere",ef:{popularity:12,fatigue:14,form:3}},
     {txt:"❌ Rimango a riposare",ef:{fatigue:-10,morale:5}},
   ]},
@@ -602,7 +637,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🙏 «Scusi, farò meglio»",ef:{popularity:6,morale:-3}},
     {txt:"🚶 Vai avanti senza rispondere",ef:{morale:2}},
   ]},
-  {id:"wi_procuratore",cat:"conseguenza",cond:p=>!!p.hasAgent&&!p.transferListed/* [7.161.0 M1] · [7.430.0 collaudo PO «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?»] ERA SGANCIATO: prometteva un club interessato e la scelta non produceva alcun fatto. Ora esce solo se il mercato NON si sta gia' muovendo (transferListed) e «voglio muovermi ora» METTE IN LISTA davvero — lo stesso flag che il mercato legge (4142) e che alza le offerte vere */,txt:"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza.",choices:[
+  {id:"wi_procuratore",cat:"conseguenza",cond:p=>!!p.hasAgent&&!p.transferListed&&(no377()||(_pro154(p)&&!p.loan&&_mktOk(p)&&vicino377(p)))/* [giro 377] il club interessato arriva alla prossima finestra (attesa377): l'impulso esce solo quando e' vicina, mai a chi e' in prestito o ha annunciato il ritiro */ /* [7.161.0 M1] · [7.430.0 collaudo PO «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?»] ERA SGANCIATO: prometteva un club interessato e la scelta non produceva alcun fatto. Ora esce solo se il mercato NON si sta gia' muovendo (transferListed) e «voglio muovermi ora» METTE IN LISTA davvero — lo stesso flag che il mercato legge (4142) e che alza le offerte vere */,get txt(){return no377()?"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza.":"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza: se ne riparla alla prossima finestra di mercato.";},choices:[
     {txt:"⏳ Aspettiamo — la pazienza paga",ef:{morale:4}},
     {txt:"📢 No, voglio muovermi ora — mettimi in lista",ef:{popularity:4,coachTrust:-5,morale:-4,transferListed:true}},
   ]},
@@ -651,7 +686,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🚗 Sorrido e saluto di corsa",ef:{popularity:4,morale:3}},
   ]},
   {id:"wi_sponsor",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"opportunità",txt:"Un marchio sportivo propone un contratto di endorsement minore. Un segnale di visibilità.",choices:[
-    {txt:"✅ Firmo — è riconoscimento",ef:{popularity:9,value:0.05,morale:5}},
+    {txt:"✅ Firmo — è riconoscimento",ef:{popularity:9,value:0.05,morale:5,bank:6000}},/* [giro 377] un contratto di endorsement paga: prima non entrava un euro */
     {txt:"⏳ Aspetto qualcosa di più grande",ef:{morale:2}},
   ]},
   {id:"wi_polemica",cat:"tensione",cond:_criticaOk,/* [7.35.2 collaudo PO «dopo una vittoria con l'Inter è fuori luogo!»] solo dopo una PRESTAZIONE davvero brutta · [7.472.0] il criterio e' ora UNO SOLO e vale per tutta la famiglia (vedi _criticaOk) */txt:"I media ti criticano aspramente dopo una brutta prestazione. Il club non difende nessuno.",choices:[
@@ -678,11 +713,12 @@ const WEEKLY_IMPULSES=[
     {txt:"💪 Prendo le responsabilità — sono pronto",ef:{coachTrust:10,morale:6,fatigue:5,form:4}},
     {txt:"😐 Faccio il mio — nient'altro",ef:{coachTrust:2,morale:2}},
   ]},
-  {id:"wi_prestito_inverno",cat:"opportunità",cond:p=>{/* [7.31.1 collaudo PO «l'opportunità non ha senso!»] il prestito in categoria inferiore ha senso SOLO per un giovane che NON gioca: mai per un titolare affermato (usciva a un 77 OVR da 117 gol in carriera) */const r=(typeof calcSquadRole==="function")?calcSquadRole(p):(p.squadRole||"rotazione");return(r==="riserva"||r==="primavera")&&(p.age||24)<=25&&(p.matches||0)<Math.max(3,Math.floor((p.week||1)/3));},txt:"Un club di una categoria inferiore ti vuole in prestito per giocare con continuità. Il club lascia a te la scelta.",choices:[
+  {id:"wi_prestito_inverno",cat:"opportunità",cond:p=>{/* [7.31.1 collaudo PO «l'opportunità non ha senso!»] il prestito in categoria inferiore ha senso SOLO per un giovane che NON gioca: mai per un titolare affermato (usciva a un 77 OVR da 117 gol in carriera) */const r=(typeof calcSquadRole==="function")?calcSquadRole(p):(p.squadRole||"rotazione");return(r==="riserva"||r==="primavera")&&(p.age||24)<=25&&(p.matches||0)<Math.max(3,Math.floor((p.week||1)/3))&&(no377()||(_pro154(p)&&!p.loan&&_mktOk(p)&&(p.week||1)>=13&&(p.week||1)<=21));}/* [giro 377] «inverno»: esce prima/durante il mercato di gennaio (settimane 13-21), mai in Primavera (il mercato del ragazzo lo decide il merito, giro 323), mai a chi e' gia' in prestito */,get txt(){return no377()?"Un club di una categoria inferiore ti vuole in prestito per giocare con continuità. Il club lascia a te la scelta.":"Un club meno blasonato ti vuole in prestito nel mercato di gennaio, per giocare con continuità. Il club lascia a te la scelta.";},get choices(){return no377()?[
     {txt:"✅ Vado — ho bisogno di giocare",ef:{form:8,morale:9,coachTrust:-5,value:0.06}},
-    {txt:"❌ Resto e mi batto qui",ef:{coachTrust:5,morale:4,fatigue:5}},
-  ]},
-  {id:"wi_nazionale_b",cat:"opportunità",cond:p=>(p.age||24)<=23&&(p.nationalCaps||0)===0&&((p.totalMatches||p.matches||0)>=10)/* [7.161.0 M1] mai «Under B» a chi gioca già in Nazionale maggiore · [7.453.0 collaudo PO «troppo presto!», screenshot S.1 W.5 in Primavera 2] la condizione guardava l'eta' e i gettoni in Nazionale, mai se il ragazzo AVESSE GIOCATO: un diciassettenne alla quinta settimana di sempre, con quattro presenze, le soddisfaceva entrambe il primo giorno. Una convocazione viene DOPO delle partite */,txt:"Sei convocato per un raduno della nazionale Under B. Opportunità di farti vedere a livello internazionale.",choices:[
+    {txt:"❌ Resto e mi batto qui",ef:{coachTrust:5,morale:4,fatigue:5}}]:[
+    {txt:"✅ Vado — ho bisogno di giocare",ef:{morale:6,coachTrust:-5}},/* [giro 377] prima dava +8 di forma e +9 di morale e nessun prestito: ora la forma te la dara' il campo, e l'offerta di prestito arriva davvero nella finestra (attesa377) */
+    {txt:"❌ Resto e mi batto qui",ef:{coachTrust:5,morale:4,fatigue:5}}];}},
+  {id:"wi_nazionale_b",cat:"opportunità",cond:p=>(p.age||24)<=23&&(p.nationalCaps||0)===0&&((p.totalMatches||p.matches||0)>=10)/* [7.161.0 M1] mai «Under B» a chi gioca già in Nazionale maggiore · [7.453.0 collaudo PO «troppo presto!», screenshot S.1 W.5 in Primavera 2] la condizione guardava l'eta' e i gettoni in Nazionale, mai se il ragazzo AVESSE GIOCATO: un diciassettenne alla quinta settimana di sempre, con quattro presenze, le soddisfaceva entrambe il primo giorno. Una convocazione viene DOPO delle partite */&&(no377()||!_gara154(p))/* [giro 377] i raduni si fanno nella sosta: mai nella settimana di una partita del club */,txt:"Sei convocato per un raduno della nazionale Under B. Opportunità di farti vedere a livello internazionale.",choices:[
     {txt:"🌍 Vado — mi metto in mostra",ef:{popularity:12,form:6,morale:10,fatigue:8}},
     {txt:"🏠 Resto con il club — è un momento delicato",ef:{coachTrust:8,morale:3,form:3}},
   ]},
@@ -834,8 +870,8 @@ const WEEKLY_IMPULSES=[
     {txt:"🚫 Rifiuto netto — è la regola",ef:{morale:3,coachTrust:3}},
     {txt:"🤫 Solo una piccola, che sarà mai…",ef:{morale:-4,coachTrust:-8,popularity:-3}},
   ]},
-  {id:"wi_maglia_dieci",cat:"scelta",cond:p=>(p.ovr||60)>=72,txt:"Si libera la maglia numero 10: prenderla è un onore, ma anche una pressione enorme.",choices:[
-    {txt:"🔟 La prendo — me la merito",ef:{morale:6,popularity:5,form:-1}},
+  {id:"wi_maglia_dieci",cat:"scelta",cond:p=>(p.ovr||60)>=72&&(no377()||(p.jerseyNum||10)!==10)/* il gioco mostra la 10 quando il numero non e' scelto (jerseyNum||10) *//* [giro 377] a chi ha gia' la 10 non «si libera» */,txt:"Si libera la maglia numero 10: prenderla è un onore, ma anche una pressione enorme.",choices:[
+    {txt:"🔟 La prendo — me la merito",ef:{morale:6,popularity:5,form:-1,jerseyNum:10}},/* [giro 377] prenderla vuol dire indossarla: il numero cambia davvero (campo jerseyNum esistente) */
     {txt:"🙅 Tengo il mio numero",ef:{morale:2}},
   ]},
   {id:"wi_sosta_nazionali",cat:"scelta",cond:p=>!((p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played)),txt:"Sosta per le nazionali: puoi staccare la spina o allenarti extra col preparatore.",choices:[
@@ -846,7 +882,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",inv:"bilanciato",note:"rendita se l'attività gira"},
     {txt:"🤔 Troppo rischio adesso",ef:{morale:1}},
   ]},
-  {id:"wi_dirigente_idolo",cond:_cx154(p=>_pro154(p)&&_mktOk(p)&&(p.ovr||60)>=66/* un dirigente chiama chi ha mercato */),cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[
+  {id:"wi_dirigente_idolo",cond:_cx154(p=>_pro154(p)&&_mktOk(p)&&(p.ovr||60)>=66/* un dirigente chiama chi ha mercato */&&!p.loan&&vicino377(p)/* [giro 377] il progetto diventa un'offerta alla prossima finestra: esce solo quando e' vicina */),cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[
     {txt:"👂 Ascolto la proposta",ef:{value:0.2,coachTrust:-4,morale:3}},
     {txt:"🔒 Sono concentrato qui",ef:{coachTrust:5}},
   ]},

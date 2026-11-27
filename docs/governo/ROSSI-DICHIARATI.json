@@ -1,6 +1,6 @@
 {
  "_": "giro 308 (PO-592): rossi DICHIARATI della versione pubblicata. Il riepilogo del treno (tests/visual/ci-treno-308.mjs riunisci) separa «rosso noto» (in `banco`: rosso anche sul banco, identico alla base) e «rosso noto del runner» (in `solo_runner`: rosso sul runner, verde sul banco) dal «rosso nuovo» (tutto il resto). Si aggiorna a ogni rilascio dalla riga della ROADMAP. Un guardiano tolto da qui torna a contare come rosso nuovo.",
- "versione": "7.999.216",
+ "versione": "7.999.218",
  "fonte": "docs/governo/ROADMAP.md (ramo poc/marioprada-character-system), riga del 21/11: «Rossi dichiarati identici alla base: prima-partita-237, scena-motore-147, tpose-196, interazioni-226, rassegna-200, store-236, difficolta-156, box-fischio-169, coreografie-244 e nomi-219 oltre tetto (braccio verde verde)»; solo_runner: taratura 44830113928 («5 parti fallite tutte verdi sul banco») · 22/11: rossi del treno della 201 (44947424529) dichiarati «da verificare» per scelta del PO",
  "banco": {
   "prima-partita-237": "rosso identico alla base",

@@ -2327,6 +2327,13 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       const hub=new THREE.Mesh(new THREE.SphereGeometry(0.2,12,9),gold);hub.position.set(0,0.98,0.1);_spin429.add(hub);
     }
     _spin429.scale.setScalar(_TSC453);/* [7.453.0] proporzione umana: il trofeo torna sotto il mezzo busto */
+    /* [giro 376 PO-647 — rosso __CPM_NO_G376] LA COPPA POSA SUL PIEDISTALLO. Il piano stava a y 0,2 e la base vera del trofeo piu' in alto
+       (misurato sui vertici: coppa europea +0,14, piatto di campionato +0,15): il trofeo galleggiava sopra il trespolo. Il piedistallo ora
+       sale fino al vertice visibile piu' basso del trofeo (stessa base a -0,2); il trofeo non si sposta, perche' la presa in mano
+       (presaCoppa192) conta da quota 0,2. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G376)){try{let mn=1e9;const v=new THREE.Vector3();_spin429.updateMatrixWorld(true);cup.updateMatrixWorld(true);const iM=new THREE.Matrix4().copy(cup.matrixWorld).invert();
+      _spin429.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position)return;const A=o.geometry.attributes.position;for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(o.matrixWorld).applyMatrix4(iM);if(v.y<mn)mn=v.y;}});
+      if(mn>-0.1&&mn<2){cped.scale.y=(mn+0.2)/0.4;cped.position.y=(mn-0.2)/2;}}catch(_e){}}
     try{const _gl453=new THREE.PointLight(0xffd88a,1.15,14,2);_gl453.position.set(0,1.1,0.5);cup.add(_gl453);}catch(_e){}
     /* la SQUADRA sul tetto */
     const men=[];const mixers=[];const st240={f:0};const NM=8;/* [7.429.0] otto uomini: sei lasciavano il tetto mezzo vuoto */
