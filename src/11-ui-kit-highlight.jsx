@@ -336,7 +336,7 @@ function TaccheV2({n,tot=3,col,label,w=14}){
    gradini (tacche), la parola del gradino e il numero piccolo. Le soglie della fiducia sono quelle del giudizio «Allenatore» del Club
    (85/70/50/30: In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale), cosi' tacche e parole non si contraddicono; la
    popolarita' sale per quinti (20/40/60/80). Rosso __CPM_NO_G235: barre in Home e anelli in Club. */
-const GRADINI235={fiducia:{s:[30,50,70,85],p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
+const GRADINI235={fiducia:{s:SOGLIE_FIDUCIA372/* [giro 372] la stessa sorgente dei testi del mister (src/08) */,p:["In crisi","In dubbio","Neutro","Fiducioso","Fiducia totale"],col:TINTE.verde},
   popolarita:{s:[20,40,60,80],p:["Poco conosciuto","Conosciuto","Apprezzato","Popolare","Idolo"],col:TINTE.oro}};
 function GradiniV235({k,l,v}){
   const g=GRADINI235[k]||GRADINI235.fiducia;const x=Math.round(+v||0);const n=1+g.s.filter(t=>x>=t).length;

@@ -14,6 +14,7 @@
    Uso: node stadi-071.mjs */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const MESH_MAX = +(process.env.CPM_MESH_MAX || 300), MARG = +(process.env.CPM_MARGINE || 0.08);
+const CAMPIONI = +(process.env.CPM_CAMPIONI406 || 40); /* [giro 406] fotogrammi per la mediana delle draw call */
 const NUOVE = ['borgo', 'catino', 'mattoni', 'arena'];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const TV = { x: 0, y: 16, z: 34, lx: 0, ly: 4, lz: -30 };
@@ -38,7 +39,17 @@ async function costruisci(tpl, cap, rosso) {
   await page.evaluate(() => window.__CPM_FORCE_SIT(13, true));
   await page.waitForFunction(() => !!window.__CPM_PALI69, null, { timeout: 30000 }).catch(() => {});
   await page.evaluate(c => { window.__CPM_CAM904 = c; }, TV); await sleep(1800);
-  const w = await page.evaluate(() => ({ s: window.__CPM_STADI246 || null, fail: window.__CPM_STADFAIL || null, ri: (window.__CPM_RINFO769 && window.__CPM_RINFO769()) || null }));
+  /* [giro 406] UN CAMPIONE SOLO NON E' UNA MISURA. Misurato (misura-406.mjs, camera ferma, stessa pagina): le draw call della vista TV
+     cambiano di fotogramma in fotogramma col contenuto vivo della scena (mattoni 257-354, catino 224-327, tedesco 271-382 in 40
+     fotogrammi), e sullo stesso commit due giri davano tetti 322 / 352 / 367. Il treno della 217 ha bocciato mattoni con 329 contro
+     un tetto 322 nato da un riferimento letto nel suo momento basso. Ora riferimento e candidato si leggono allo stesso modo:
+     MEDIANA di CAMPIONI fotogrammi (draw call e triangoli); tetto e margine non cambiano. */
+  const ri = await page.evaluate(async n => { const c = [], t = []; const t0 = performance.now();
+    while (c.length < n && performance.now() - t0 < 25000) { await new Promise(r => requestAnimationFrame(r)); const x = window.__CPM_RINFO769 && window.__CPM_RINFO769(); if (!x) break; c.push(x.calls); t.push(x.tri); var last = x; }
+    if (!c.length) return null; const med = a => { const s = [...a].sort((p, q) => p - q); return s[Math.floor(s.length / 2)]; };
+    return { ...last, calls: med(c), tri: med(t), n: c.length, cmin: Math.min(...c), cmax: Math.max(...c) }; }, CAMPIONI);
+  const w = await page.evaluate(() => ({ s: window.__CPM_STADI246 || null, fail: window.__CPM_STADFAIL || null }));
+  w.ri = (ri && ri.n >= CAMPIONI) ? ri : null; /* meno campioni del dovuto = draw call non lette (cieco), mai un verde */
   await page.close(); return { ...w, errs };
 }
 const g = [];
@@ -65,7 +76,7 @@ const rif = [];
 for (const [t, cap] of [['provincia', 3000], ['storico_it', 18000], ['moderno_it', 30000], ['tedesco', 50000]]) {
   const r = await costruisci(t, cap, true); const ri = r.ri || {};
   rif.push({ t, calls: ri.calls, tri: ri.tri, lights: ri.lights, mesh: (r.s || {}).meshes });
-  console.log(`riferimento oggi ${t}:${cap} — draw call ${ri.calls} · triangoli ${ri.tri} · luci ${ri.lights} · mesh ${(r.s || {}).meshes}`);
+  console.log(`riferimento oggi ${t}:${cap} — draw call ${ri.calls} (mediana di ${ri.n}, ${ri.cmin}-${ri.cmax}) · triangoli ${ri.tri} · luci ${ri.lights} · mesh ${(r.s || {}).meshes}`);
 }
 const CALLS_MAX = Math.round(Math.max(...rif.map(x => x.calls || 0)) * (1 + MARG)), TRI_MAX = Math.round(Math.max(...rif.map(x => x.tri || 0)) * (1 + MARG)), LUCI_MAX = Math.max(...rif.map(x => x.lights || 0));
 console.log(`tetti: draw call ${CALLS_MAX} · triangoli ${TRI_MAX} · luci ${LUCI_MAX} · mesh ${MESH_MAX}`);
@@ -75,7 +86,7 @@ for (const [t, cap] of [['borgo', 3000], ['catino', 24000], ['mattoni', 22000], 
   const v = await costruisci(t, cap, false);
   const s = v.s || {}, calls = v.ri ? v.ri.calls : null;
   const tri = v.ri ? v.ri.tri : null, luci = v.ri ? v.ri.lights : null;
-  console.log(`${t}:${cap} verde — tipo ${s.kind} · firma ${firma[t](s)} · tunnel ${s.tunnel ? s.tunnel.stile + ' L' + s.tunnel.L : 'NO'} · mesh ${s.meshes} · draw call TV ${calls} · triangoli TV ${tri} · luci ${luci} · errori ${v.errs.length}${v.fail ? ' · STADFAIL ' + v.fail.msg : ''}`);
+  console.log(`${t}:${cap} verde — tipo ${s.kind} · firma ${firma[t](s)} · tunnel ${s.tunnel ? s.tunnel.stile + ' L' + s.tunnel.L : 'NO'} · mesh ${s.meshes} · draw call TV ${calls}${v.ri ? ` (mediana di ${v.ri.n}, ${v.ri.cmin}-${v.ri.cmax})` : ''} · triangoli TV ${tri} · luci ${luci} · errori ${v.errs.length}${v.fail ? ' · STADFAIL ' + v.fail.msg : ''}`);
   if (tri != null && tri > TRI_MAX) g.push(`${t}: ${tri} triangoli oltre il tetto ${TRI_MAX}`);
   if (luci != null && luci > LUCI_MAX) g.push(`${t}: ${luci} luci, oggi al massimo ${LUCI_MAX}`);
   if (s.kind !== t) g.push(`${t}: la tipologia costruita e' ${s.kind}`);

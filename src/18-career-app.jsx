@@ -1584,6 +1584,32 @@ const getThisWeekMatchday=()=>{
   useEffect(()=>{try{const x=player.salto323;if(!_g323()||!x||!x.aperta||x.accettato||transferOffer)return;
     if((player.proStatus||"u18")!=="u18"||x.s!==(player.season||1)||(player.week||1)>23||_offAtt201(player))return;
     setTransferOffer(x.aperta);}catch(_e){}},[player.salto323,player.week,transferOffer]);// eslint-disable-line
+  /* [giro 377 · PO-646] LE PROMESSE DI MERCATO DEGLI IMPULSI SI MANTENGONO (attesa377, src/03). Un solo punto, all'arrivo di ogni
+     settimana, qualunque percorso l'abbia fatta avanzare (vissuta, simulata, partita giocata): se una scelta «aspetto/ascolto/vado»
+     e' nella sua finestra, col tiro deterministico della settimana arriva l'offerta VERA (stesso generatore e stessa finestra
+     dell'offerta del mercato); a finestra chiusa senza offerta la pista e' dichiarata sfumata. Un'offerta gia' aperta fa slittare
+     il tiro alla settimana dopo. Testimone __CPM_ATT377 (solo collaudo). Rosso __CPM_NO_G377 (attesa377 → null). */
+  const _att377Ref=useRef(null);
+  useEffect(()=>{try{const p=player;const at=attesa377(p);if(!at)return;
+    const _T=(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))?(window.__CPM_ATT377=window.__CPM_ATT377||{log:[]}):null;
+    const key=at.id+"|"+at.now;if(_att377Ref.current===key)return;_att377Ref.current=key;
+    if(_T&&!_T.log.some(e=>e.ev==="scelta"&&e.id===at.id&&e.a===at.o.a))_T.log.push({ev:"scelta",id:at.id,a:at.o.a,fin:at.f});
+    if(at.stato==="attesa")return;
+    const _m=MSG377[at.id]||{a:(c)=>`📩 ${c} presenta un'offerta.`,s:"La pista di mercato è sfumata."};
+    if(at.stato==="ora"){
+      if(p.loan||p.contractExpired||(p.proStatus||"u18")!=="pro"||p.retireAnnounced===(p.season||1))return;/* bloccata: a finestra chiusa diventa «sfumata» */
+      if(transferOffer||_offAtt201(p)){if(_T)_T.log.push({ev:"rinvio",id:at.id,w:at.now});return;}/* un'offerta gia' aperta: il tiro slitta alla settimana dopo */
+      if(!tiro377(p,at))return;
+      const off=offerta377(p,at);if(!off)return;
+      const cn=(off.club&&off.club.n)||"Un club";
+      setPlayer(q=>({...q,impMem:{...(q.impMem||{}),[at.id]:{...((q.impMem||{})[at.id]||{}),f377:at.now}},log:[_m.a(cn),...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>{setTransferOffer(o=>o||off);notify(_m.a(cn),"#22c55e");},700);
+      if(_T)_T.log.push({ev:"arrivo",id:at.id,a:at.o.a,w:at.now,fin:at.f,club:cn,tipo:off.type});
+      return;}
+    setPlayer(q=>({...q,impMem:{...(q.impMem||{}),[at.id]:{...((q.impMem||{})[at.id]||{}),f377:-at.now}},log:[_m.s,...(q.log||[])].slice(0,60)}));
+    setTimeout(()=>notify(_m.s,"#64748b"),700);
+    if(_T)_T.log.push({ev:"sfumata",id:at.id,a:at.o.a,w:at.now,fin:at.f});
+  }catch(_e){}},[player.season,player.week,player.impMem]);// eslint-disable-line
   const _mktDoneRef=useRef(null);
   const _mktWkRef=useRef(null);
   useEffect(()=>{
@@ -1918,6 +1944,14 @@ const getThisWeekMatchday=()=>{
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
+      giudizi372:(o)=>{try{/* [giro 372] solo collaudo: i giudizi del mister calcolati dalle funzioni VERE del gioco sullo stato dato (o = sovrascritture) */
+        const q={...player,...(o||{})},out={trust:Math.round(q.coachTrust||60),form:Math.round(q.form||70),morale:Math.round(q.morale||70),role:q.squadRole||null,grado:gradoFiducia372(q.coachTrust||60),barra:GRADINI235.fiducia.p[gradoFiducia372(q.coachTrust||60)],testi:[]};
+        const sv=sackView(q);if(sv&&sv.st!=="sack"){const e=esame372(sv,q);out.testi.push({f:"esame",k:e.k,t:e.txt});}
+        const cd=calcCoachDecision(q,1,()=>0.5);out.dec=cd.status;out.testi.push({f:"convocazione",k:cd.status,t:cd.reason});
+        const f=q.form||70,perf=f>=72?"excellent":f>=55?"medium":"bad";const w=[8,16,24,32].indexOf(q.week||1)>=0?q.week:8;const r=pickCoachReview(q,perf,w);
+        out.testi.push({f:"verifica",k:perf,t:r.line});r.choices.forEach(c=>out.testi.push({f:"risposta",k:perf,t:c.txt}));
+        const m=pickCoachWeekMsg(q);if(m)out.testi.push({f:"settimana",t:m});
+        return out;}catch(e){return "error:"+(e&&e.message);}},
       storyChapter:(q)=>{try{return storyChapter(q);}catch(e){return "error:"+(e&&e.message);}},/* [giro 355] «La tua storia» interrogabile su un eroe qualsiasi (guardiano storia-355) */
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
@@ -2844,6 +2878,18 @@ const getThisWeekMatchday=()=>{
   //   zona pericolo, mai casuale), max 1/stagione (p.coachSackSeason). Il nuovo mister (nome/stile SEEDATI) ti
   //   mette «sotto esame» per 4 gare (p.newCoachExam) con verdetto automatico dalla media voti; i patti S4
   //   decadono e il ledger ricorda. Tutto lazy, nessun bump SAVE.
+  /* [giro 372 · PO-421 «fiducia 93/100 e "piu' panchina"»] IL VERDETTO DELL'ESAME PARLA COME LA BARRA. Il riquadro dell'esame resta
+     sulla home finche' non si preme il tasto, e intanto la fiducia del mister cambia ogni settimana: il verdetto nasceva dalla sola
+     media voti e diceva «Ti aspetta piu' panchina» accanto a «Fiducia totale». Ora il testo (ed il suo effetto) si sceglie dalla
+     media E dal gradino della barra (gradoFiducia372, src/08): esame mancato con fiducia da Fiducioso in su = «il posto te lo
+     giochi»; esame superato con fiducia sotto Neutro = «il posto non e' ancora tuo». Rosso __CPM_NO_G372 = i due testi di prima. */
+  const esame372=(sv,p)=>{const pass=sv.st==="exam_pass",t=Math.round(p.coachTrust||60),g=gradoFiducia372(t),on=_g372();
+    const k=!on?(pass?"pass":"fail"):pass?(g<=1?"pass_dub":"pass"):(g>=3?"fail_fid":"fail");
+    const M=`Media ${sv.avg} nelle ${sv.games} gare dell'esame`;
+    return k==="pass"?{k,ok:true,txt:`${M}: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`,dT:10,e:"👔",h:"Esame superato: il posto è riconquistato",b:`Media ${sv.avg} sotto gli occhi del nuovo mister.`,lg:`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`,bt:"Il posto è mio →"}
+      :k==="pass_dub"?{k,ok:true,txt:`${M}: il campo ti dà ragione. «Bene in partita — ma per me sei ancora da scoprire.» La fiducia del mister (${t}/100) è da costruire: il posto non è ancora tuo.`,dT:6,e:"👔",h:"Esame superato, fiducia da costruire",b:`Media ${sv.avg}: il nuovo mister vuole conferme.`,lg:`👔 Esame superato (media ${sv.avg}) — la fiducia del nuovo mister è da costruire.`,bt:"Me lo prendo in campo →"}
+      :k==="fail_fid"?{k,ok:false,txt:`${M}: sotto le attese. «I voti non mi bastano, ma in settimana ti ho visto lavorare.» La fiducia del mister regge (${t}/100): il posto te lo giochi partita per partita.`,dT:-2,e:"🪑",h:"Esame a metà: il posto si gioca",b:`Media ${sv.avg}: la fiducia del nuovo mister regge, i voti no.`,lg:`🪑 Esame a metà (media ${sv.avg}): la fiducia regge, il posto si gioca partita per partita.`,bt:"Partita per partita →"}
+      :{k,ok:false,txt:`${M}: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`,dT:-4,e:"🪑",h:"L'esame non è bastato",b:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,lg:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,bt:"Testa bassa e lavorare →"};};
   const sackView=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;
@@ -4370,7 +4416,7 @@ const getThisWeekMatchday=()=>{
             const ncTrophies=trophyWon?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
             const ncMoraleB=trophyWon?18:isFinalStage?6:qualified?10:0;/* finale persa: comunque una cavalcata */
             const ncPopB=trophyWon?20:isFinalStage?9:qualified?10:3;
-            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false}};
+            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true,active:false,...((typeof window!=='undefined'&&window.__CPM_NO_G373B)?{}:{trophyWon,qualified})}};/* [giro 373 PO-463] l'esito anche nella coda: la scheda «Coppa delle Nazioni S.x» (bordo, colore) lo legge da li'. Campi facoltativi, nessun SAVE. Rosso __CPM_NO_G373B */
           });
           setTimeout(()=>setNationsCupModal({myNat:player.nation||"Italia",season:player.season||1,matches:allMatches,pts:groupPts,qualified,trophyWon,final:isFinalStage?{opp:result.opponent,won:trophyWon,pen:!!result.drew,hs:result.homeScore,as:result.awayScore}:null}),500);
           if(trophyWon)setTimeout(()=>notify(_finPen?"🏆 Coppa delle Nazioni VINTA AI RIGORI! Leggenda nazionale!":"🏆 Coppa delle Nazioni VINTA IN FINALE! Leggenda nazionale!","#f59e0b"),1200);
@@ -4700,6 +4746,7 @@ const getThisWeekMatchday=()=>{
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         ...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),// [5.91.0 BIL-9] i bivi muovono i SOLDI veri (economia 3.2)
         ...(choice.flag==="investment"?{investmentPending:true,...((typeof window!=="undefined"&&window.__CPM_NO_INV223)?{}:{investimenti223:[...(p.investimenti223||[]),{amt:ef.bank!=null?Math.max(0,Math.round(p.bankBalance||0)-Math.max(0,Math.round((p.bankBalance||0)+ef.bank))):0,prof:choice.inv||"bilanciato",s:p.season||1,w:p.week||1}]})}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE · [PO-223] e registra QUANTO e' uscito davvero dal conto e con che profilo */
+        ...(ef.jerseyNum!=null&&!no377()?{jerseyNum:ef.jerseyNum,jerseyNumSeason:p.season||1}:{}),/* [giro 377] «La prendo» (maglia 10) cambia davvero il numero, per questa stagione */
         ...(ef.transferListed===true?{transferListed:true}:{}),/* [7.430.0] «voglio muovermi ora» produce il FATTO: in lista, ed e' il flag che il mercato legge davvero */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
         ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
@@ -5663,8 +5710,20 @@ const getThisWeekMatchday=()=>{
   const doRetire=()=>{
     const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr,league:player.club?.lg,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))};/* [7.262.0] stesso campo su tutti i writer di storico */
     const updPlayer={...player,history:((player.history||[]).some(h=>h.season===player.season)?(player.history||[]):[...(player.history||[]),hist]).slice(-50),trophies:player.trophies||[]};/* [6.74.0 QA-4] la stagione era già stata chiusa (e pushata) dal blocco premi → niente terza copia al ritiro */
+    /* [giro 373 PO-463] la sfida si valutava solo al passaggio di stagione, e il ritiro (addio annunciato, 40 anni, «Ritirati») esce
+       PRIMA di quel controllo: «Sempreverde» non si completava mai a chi chiudeva la carriera a 34 anni giocati. Al ritiro la sfida
+       si giudica sui dati della stagione che si chiude: compiuta → completata; altrimenti, a carriera finita, fallita. Deterministico
+       (le regole di CHALLENGES), nessun campo nuovo. Testimone __CPM_SFIDA373. Rosso __CPM_NO_G373B = com'era. */
+    let _sf373=null;
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G373B)&&player.challenge&&!player.challenge.completed&&!player.challenge.failed){
+      const _d373=CHALLENGES.find(c=>c.id===player.challenge.id);
+      if(_d373){let _ok373=false;try{_ok373=!!_d373.check(updPlayer);}catch(_e){}
+        _sf373={def:_d373,k:_ok373?"completed":"failed"};updPlayer.challenge={...player.challenge,[_sf373.k]:true};}
+    }
+    try{if(typeof window!=='undefined')window.__CPM_SFIDA373=_sf373?{id:_sf373.def.id,esito:_sf373.k}:null;}catch(_e){}
     const score=calcLegacyScore(updPlayer);
-    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies}));/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
+    setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies,...(_sf373?{challenge:updPlayer.challenge}:{})}));
+    if(_sf373)setTimeout(()=>notify(_sf373.k==="completed"?`🏆 SFIDA COMPLETATA: ${_sf373.def.name}! ${_sf373.def.reward}`:`❌ Sfida non completata: ${_sf373.def.name}`,_sf373.k==="completed"?"#7c3aed":TH.danger),500);/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
     setRetirementData({player:updPlayer,legacyScore:score});
     setSeasonEndData(null);
     setScreen("careerEnd");
@@ -8918,12 +8977,12 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.82)",TH.muted),lineHeight:1.5,marginBottom:8}}>{sv.losses} sconfitte nelle ultime 7 e il {sv.pos}° posto hanno presentato il conto: via {player.coach?.name||"il mister"}, arriva <strong>{sv.newName}</strong> ({sv.newStyle}). Lo spogliatoio è scosso — e per il nuovo tecnico sei un nome sulla lavagna, non una certezza: <strong>4 partite per convincerlo</strong>.</div>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coach:{name:sv.newName,style:sv.newStyle,trustMod:0},coachTrust:48,teamChemistry:clamp((p.teamChemistry||60)-8,0,100),coachSackSeason:p.season||1,newCoachExam:{season:p.season||1,fromWeek:p.week||1,games:4},...(p.coachPact&&p.coachPact.status==="active"?{coachPact:{...p.coachPact,status:"void"}}:{}),...ledgerPush(p,{t:"esonero",who:"il club",what:`esonerato il mister al ${sv.pos}° posto — con ${sv.newName} riparti da zero`}),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"⚡",headline:"Esonero: arriva "+sv.newName,body:"Il nuovo mister ti mette sotto esame: 4 partite per riconquistare il posto.",color:_n30("#dc2626",semTesto945("#dc2626"))}]),log:[`⚡ ESONERO — ${sv.newName} è il nuovo mister: sei sotto esame per 4 gare.`,...(p.log||[])].slice(0,60)}))}>Il nuovo corso comincia →</Btn>
           </Card>);
-        const _pass=sv.st==="exam_pass";
+        const _es372=esame372(sv,player),_pass=_es372.ok;
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+          <Card data-esame372={_es372.k} style={{marginBottom:8,padding:"9px 12px",background:_n30(_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30(_pass?"#6ee7b7":TH.txAmber,_pass?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>L'esame del nuovo mister</div>
-            <div style={{fontSize:FS.caption,color:_n30(_pass?"rgba(255,255,255,0.85)":TH.txAmber,_pass?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_pass?`Media ${sv.avg} nelle ${sv.games} gare dell'esame: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`:`Media ${sv.avg} nelle ${sv.games} gare dell'esame: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`}</div>
-            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
+            <div style={{fontSize:FS.caption,color:_n30(_pass?"rgba(255,255,255,0.85)":TH.txAmber,_pass?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_es372.txt}</div>
+            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+_es372.dT,0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_es372.e,headline:_es372.h,body:_es372.b,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_es372.lg,...(p.log||[])].slice(0,60)}))}>{_es372.bt}</Btn>
           </Card>);
       })()}
       {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra */}
@@ -9728,14 +9787,14 @@ const getThisWeekMatchday=()=>{
             let _pos=99;
             if(obj.type==="standing"){const ss=ordinaClassifica259(player.standings||[],(a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));_pos=pi>=0?pi+1:99;}
             const cur=objCurrent(obj,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_objSpent(player),_pos);/* [7.294.0] club-scoped dopo un trasferimento */
-            const done=objDone(obj,cur);
+            const _s374=statoObiettivo374(obj,cur,stagioneChiusa374(player));const done=_s374.done;/* [giro 374 · PO-633] classifica «fatta» solo a stagione chiusa */
             const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
             return(
               <div key={i} style={{marginBottom:i<(player.seasonObjectives||[]).length-1?10:0}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                  <div style={{fontSize:FS.caption,color:done?TH.txGreen:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
+                  <div data-obj374={_s374.k} style={{fontSize:FS.caption,color:done?TH.txGreen:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
                   {/* Sprint 73 — badge completato */}
-                  {done?<span style={{fontSize:FS.caption,background:TH.winBg,color:TH.winFg,padding:"1px 7px",borderRadius:RAD.pill,fontWeight:FW.bold,flexShrink:0}}>FATTO</span>:<div className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,fontWeight:FW.semibold}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur} / ${obj.target}`}</div>}
+                  {done?<span style={{fontSize:FS.caption,background:TH.winBg,color:TH.winFg,padding:"1px 7px",borderRadius:RAD.pill,fontWeight:FW.bold,flexShrink:0}}>FATTO</span>:<div className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,fontWeight:FW.semibold}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}${_s374.k==="in_linea"?" · in linea":_s374.k==="sotto"?" · sotto":""}`:`${cur} / ${obj.target}`}</div>}
                 </div>
                 <div style={{height:5,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
                   <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/>
@@ -10849,7 +10908,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{
               const _cs=COACH_STYLES.find(s=>s.style===(player.coach?.style||"Bilanciato"));
               const _ct=player.coachTrust||60;
-              const _ctLabel=_ct>=85?"Fiducia Totale":_ct>=70?"Fiducioso":_ct>=50?"Neutro":_ct>=30?"In Dubbio":"In Crisi";
+              const _ctLabel=GRADINI235.fiducia.p[gradoFiducia372(_ct)];/* [giro 372] lo stesso gradino della barra e dei testi del mister */
               const _ctColor=_ct>=70?TH.success:_ct>=50?TH.primary:_ct>=30?TH.warning:TH.danger;
               return(
               <Fisarmonica id="club-allenatore" titolo="Allenatore">

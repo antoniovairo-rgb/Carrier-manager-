@@ -3576,7 +3576,16 @@ function ThreeMatchView(props){
     /* [7.474.0 collaudo PO «la coppa non e' disegnata bene, ha le orecchie separate»] LE ORECCHIE ERANO STACCATE, E IL DISTACCO SI CALCOLA. L'attacco del manico stava piu' in fuori del bordo della coppa in TUTTI E TRE i trofei: 0,10-0,15u sul trofeo base, 0,30u sulle orecchie larghe internazionali (con l'estremo superiore addirittura sopra il bordo, dove la coppa non c'e' piu'), 0,24-0,47u su quello della parata. Non era una questione di stile: era un manico che galleggia accanto alla coppa. Ora il centro del toro sta dove il PROFILO della coppa passa, cosi' gli estremi dell'arco nascono dalla superficie invece di sfiorarla — numeri ricavati dal profilo stesso (cono r(y) per il trofeo, sfera per quello della parata), non scelti a occhio. */
     {const _hL=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.04,8,16,Math.PI),_goldMat);_hL.position.set(-0.26,0.95,0);_hL.rotation.z=Math.PI/2;trophyGrp.add(_hL);
      const _hR=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.04,8,16,Math.PI),_goldMat);_hR.position.set(0.26,0.95,0);_hR.rotation.z=-Math.PI/2;trophyGrp.add(_hR);}
-    trophyGrp.scale.setScalar(0.62);trophyGrp.visible=false;trophyGrp.position.y=-50;scene.add(trophyGrp);/* [7.5.1] trofeo PROPORZIONATO al giocatore (~2.2u): scala 1.7→0.62 (era enorme, quasi alto come un calciatore) */
+    trophyGrp.scale.setScalar(0.62);trophyGrp.visible=false;trophyGrp.position.y=-50;scene.add(trophyGrp);
+    /* [giro 376 PO-647] base del trofeo = vertice visibile piu' basso, nel riferimento del gruppo senza scala (una volta per tipo di trofeo).
+       _low376: lo stesso punto nel mondo, solo per il testimone del collaudo. */
+    const _vis376=(o,root)=>{for(let q=o;q&&q!==root;q=q.parent)if(!q.visible)return false;return true;};
+    const _base376=(g)=>{const _k=g._kind24||'std';if(g._b376k===_k&&g._b376!=null)return g._b376;let mn=1e9;const v=new THREE.Vector3(),M=new THREE.Matrix4();
+      g.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position||!_vis376(o,g))return;M.identity();const ch=[];for(let q=o;q&&q!==g;q=q.parent)ch.push(q);
+        for(let i=ch.length-1;i>=0;i--){ch[i].updateMatrix();M.multiply(ch[i].matrix);}const A=o.geometry.attributes.position;for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(M);if(v.y<mn)mn=v.y;}});
+      g._b376k=_k;g._b376=(mn<1e8)?mn:0.10;return g._b376;};
+    const _low376=(g)=>{let mn=1e9;const v=new THREE.Vector3();g.updateMatrixWorld(true);g.traverse(o=>{if(!o.isMesh||!o.geometry||!o.geometry.attributes.position||!_vis376(o,g))return;const A=o.geometry.attributes.position;
+      for(let i=0;i<A.count;i++){v.fromBufferAttribute(A,i).applyMatrix4(o.matrixWorld);if(v.y<mn)mn=v.y;}});return mn;};/* [7.5.1] trofeo PROPORZIONATO al giocatore (~2.2u): scala 1.7→0.62 (era enorme, quasi alto come un calciatore) */
     // [7.2.0] PODIO a centrocampo per la premiazione finale (beat 4). Nascosto fino alla cerimonia.
     const podiumGrp=new THREE.Group();
     {const _podMat=new THREE.MeshStandardMaterial({color:0x243049,metalness:0.35,roughness:0.6});
@@ -5950,6 +5959,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
+         /* [giro 426, riparazione del treno grande 45920908452 — rosso __CPM_NO_G426, guardiano tiro-caricato] COL MANCINO IL PALLONE STA DAL LATO
+            DEL SINISTRO. MISURATO (tiro-caricato gi0/L, 6 ripetizioni sul ramo, testimone __CPM_TIRO34 nel riferimento del corpo visibile):
+            prima del contatto il pallone e' tenuto 0,78 u davanti secondo hero.rotation.y, ma il corpo guarda la porta (_mira20): il pallone
+            sta a lato -0,70/-0,79 dal corpo in ENTRAMBE le esecuzioni. Il destro passa a -0,26/-0,35 (contatto 0,13-0,26 u); il sinistro
+            della clip specchiata a +0,24/+0,36, ~1 u lontano: il contatto lo salvava solo l'aggancio all'osso nella finestra stretta, che
+            parte uno o due fotogrammi prima dell'armo (0,165-0,81 u, una volta su sei sopra 0,7). Con la clip specchiata del tiro in corsa il
+            punto d'attesa si specchia rispetto all'asse del corpo visibile: il mancino ha la geometria del destro. Il destro non cambia. */
+         if(!(typeof window!=='undefined'&&window.__CPM_NO_G426)&&_cgAvatar.root&&(((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name)==='mx-strike-foward-jog~m'){
+           const _r426=_cgAvatar.root.rotation.y||0,_s426=Math.sin(_r426),_c426=Math.cos(_r426),_dx426=_cx-hero.position.x,_dz426=_cz-hero.position.z;
+           const _av426=_dx426*_s426+_dz426*_c426,_la426=-(_dx426*_c426-_dz426*_s426);_cx=hero.position.x+_av426*_s426+_la426*_c426;_cz=hero.position.z+_av426*_c426-_la426*_s426;_anchor="heading-mancino426";}
          let _cy23=0.22;/* rovesciata: la palla si prende in aria, all'altezza del piede */const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";if(_kc23.alto&&Number.isFinite(_bp.y))_cy23=_bp.y;}}catch(_e){}
          /* [7.999.62 taccuino PO #9 «volée: il gesto non e' sincronizzato con la velocita' del cross» (000). Rosso __CPM_NO_VOLEE62]
             MISURATO (gi9 «Volée potente», GLB-ON): durante il caricamento questo aggancio portava il pallone del cross da quota 2,2 a 0,2 —
@@ -7909,7 +7928,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            finche' la scena e' in lettura: pallone nel mondo, «in area» (oltre la linea dei 16,5 disegnata: x >= 48,6-16,5 e |z| <= 20,16),
            uomini di barriera (bersagli mur72 della scena) e distanza del piu' vicino dal pallone, misurata sui CORPI. */
         if(isHL&&!isResult&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")&&typeof window!=='undefined'&&window.__CPM_PUN343!==undefined){try{const _W343=window.__CPM_PUN343,_k343=String(P.hlSitKey);let _w343=_W343.find(q=>q.k===_k343);if(!_w343&&_W343.length<80){_w343={k:_k343};_W343.push(_w343);}
-          if(_w343){_w343.x=+ball.position.x.toFixed(2);_w343.z=+ball.position.z.toFixed(2);_w343.area=(ball.position.x>=32.1&&Math.abs(ball.position.z)<=20.16)?1:0;let _n343=0,_md343=null;(sr.current._w72||[]).forEach((q,i)=>{if(!q||q.k!==P.hlSitKey)return;const _pm=sr.current.players[i]&&sr.current.players[i].mesh;if(!_pm)return;_n343++;const d=Math.hypot(_pm.position.x-ball.position.x,_pm.position.z-ball.position.z);if(_md343==null||d<_md343)_md343=d;});_w343.n=_n343;_w343.muro=_md343==null?null:+_md343.toFixed(2);_w343.ph=String(P.matchPhase||'');}}catch(_e343){}}
+          if(_w343){_w343.x=+ball.position.x.toFixed(2);_w343.z=+ball.position.z.toFixed(2);_w343.area=(ball.position.x>=32.1&&Math.abs(ball.position.z)<=20.16)?1:0;let _n343=0,_md343=null,_pm375=null;(sr.current._w72||[]).forEach((q,i)=>{if(!q||q.k!==P.hlSitKey)return;const _pm=sr.current.players[i]&&sr.current.players[i].mesh;if(!_pm)return;_n343++;(_pm375=_pm375||[]).push([+_pm.position.x.toFixed(2),+_pm.position.z.toFixed(2)]);const d=Math.hypot(_pm.position.x-ball.position.x,_pm.position.z-ball.position.z);if(_md343==null||d<_md343)_md343=d;});_w343.n=_n343;_w343.pm=_pm375;/* [giro 375] corpi della barriera nel mondo, per la misura 9,15 m sulla linea pallone-porta */_w343.muro=_md343==null?null:+_md343.toFixed(2);_w343.ph=String(P.matchPhase||'');}}catch(_e343){}}
         if(_setPiece&&hero&&actType==null&&heroPostT<0){
           const _spY=Math.atan2(AWAY_GOAL_X-hero.position.x,-hero.position.z);
           let _spD=((_spY-hero.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
@@ -8170,9 +8189,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ball=_bGX,_by=_bGY;
             if(!_hm){// avversari che DIFENDONO
               if(_li>=1&&_li<=4){// MURO compatto (4 difensori) a ~9m sulla linea palla→porta
-                tx=clamp(_ball+9,_ball+6,93);
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G375)){/* [giro 375 PO-637, decisione PO «Tutte le consigliate» dal giro 343] BARRIERA A 9,15 m SULLA LINEA
+                   PALLONE-PORTA. Misurato (misura-375, 13 scene, bersagli): fra 8,3 e 11,2 m e fuori linea fino a 9 m, perche' il conto era in unita'
+                   di GIOCO (y vale 0,68 m) con un passo fisso in x e una spinta del 25% verso il centro. Ora il conto e' nel MONDO (1 u = 1 m, il
+                   cerchio di centrocampo ha raggio 9,15): centro della barriera a 9,15 m dal pallone verso il centro della porta (48,6 · 0), i
+                   quattro spalla a spalla (1 m) sulla perpendicolare. Rosso __CPM_NO_G375 = conto di prima. */
+                  const _bx375=_ball-50,_bz375=(_by-50)*0.68,_dx375=48.6-_bx375,_dz375=-_bz375,_dn375=Math.hypot(_dx375,_dz375)||1,_ux375=_dx375/_dn375,_uz375=_dz375/_dn375;
+                  const _of375=(_li-2.5)*1.0,_wx375=_bx375+_ux375*9.15-_uz375*_of375,_wz375=_bz375+_uz375*9.15+_ux375*_of375;
+                  tx=_wx375+50;ty=_wz375/0.68+50;}
+                else{tx=clamp(_ball+9,_ball+6,93);
                 const _wy=_by+(50-_by)*0.25+(_by<50?-2.5:2.5);// ~sulla linea palla→centro porta, verso il palo vicino
-                ty=clamp(_wy+(_li-2.5)*1.5,12,88);// spaziatura ~1.5u → muro serrato
+                ty=clamp(_wy+(_li-2.5)*1.5,12,88);}// spaziatura ~1.5u → muro serrato
                 {const _W72=(sr.current._w72||(sr.current._w72=[]));_W72[i]={x:tx,y:ty,k:P.hlSitKey};}/* [7.999.73] posizione di barriera, reimposta dopo tutte le passate */
               } else {tx=clamp(_ball+15+((i*7)%9),_ball+12,91);ty=clamp(50+Math.sin(i*2.3)*24,12,88);}// resto: marcature in area, MAI dietro la palla
             } else {// la squadra dell'eroe che ATTACCA
@@ -8306,6 +8333,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           // l'eroe respinge i compagni (one-way): nessuna sovrapposizione col protagonista
           {const ex=a.x-_hxg,ey=a.y-_hyg,dd=Math.hypot(ex,ey);if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f*1.2;py+=ey/dd*f*1.2;}}
           a.rx=clamp(px*1.6,-5.5,5.5);a.ry=clamp(py*1.6,-5.5,5.5);// F3: repulsione rinforzata (target più ampi → più separazione)
+          if(a.mur72&&!(typeof window!=='undefined'&&window.__CPM_NO_G375)){a.rx=0;a.ry=0;}/* [giro 375 PO-637] la barriera sta sul suo punto (9,15 m): nessuna bolla la sposta */
         }
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _mw=[];for(let i=0;i<_tg.length;i++){const t=_tg[i];if(t&&t.mur72)_mw.push({i,x:+t.x.toFixed(1),y:+t.y.toFixed(1),rx:+(t.rx||0).toFixed(1),ry:+(t.ry||0).toFixed(1)});}if(_mw.length)window.__CPM_MUR72=_mw;}catch(_e){}}/* [7.999.73] testimone barriera: bersaglio e spinta */
         // APPLY — animOne sul target finale (target+repulsione), clamp dentro il campo
@@ -8570,7 +8598,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _sx5=G2X(clamp(_ss405.x,2,98)),_sz5=G2Z(clamp(_ss405.y,2,98));
               if(Math.hypot(_sx5-pp.mesh.position.x,_sz5-pp.mesh.position.z)>1.5){
                 pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;if(_g286)pp.mesh._frz685=null;continue;}
-              _tk286=true;}}
+              _tk286=true;}
+            /* [giro 375 PO-637] LA BARRIERA E' SCHIERATA QUANDO SI LEGGE LA SCENA. Misurato (misura-375, teatro acceso, GLB): nelle fasi di
+               lettura il congelamento tiene i corpi dove la scena li ha trovati, cioe' sulla linea difensiva (gi81: corpi a 15-30 m dal
+               pallone con i bersagli a 9 m) — la barriera non si formava mai. Come il battitore (giro 43): i quattro della barriera (mur72,
+               bersaglio di questa scena) vanno sul loro punto e ci restano fermi (niente attesa attiva: una barriera non passeggia). */
+            {const _w375=sr.current._w72&&sr.current._w72[i],_t375=_tg[i];
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G375)&&_w375&&_w375.k===P.hlSitKey&&_t375&&_t375.mur72&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")){
+                const _sx375=G2X(_w375.x),_sz375=G2Z(_w375.y);_tk286=true;
+                if(Math.hypot(_sx375-pp.mesh.position.x,_sz375-pp.mesh.position.z)>0.3){
+                  pp.mesh.position.x=_sx375;pp.mesh.position.z=_sz375;pp.mesh._ctx=_sx375;pp.mesh._ctz=_sz375;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx375;pp.mesh._pz=_sz375;pp.mesh._frz685=null;}}}}
           if(pp.mesh._mIdx==null)pp.mesh._mIdx=i;/* [7.198.0 S5] indice stabile: da qui derivano punta/spunto/prontezza del singolo giocatore */
           const _i143=(_sw219&&_sw219[i]!=null)?_sw219[i]:i;/* [giro 17 PO-123] l'indice logico dietro questa mesh (lo scambio _sw219 mette in scena il difensore nominato) */
           /* [giro 17 PO-123/PO-143 «difensori che pressano». Rosso __CPM_NO_MARCA143] MISURATO (sonda pressing-143-flusso, teatro acceso): il motore
@@ -8634,6 +8671,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30*_k286;
               pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22*_k286;}
             }
+            /* [giro 418, riparazione del treno 7.999.218 — rosso __CPM_NO_G418] SU PUNIZIONE NESSUN AVVERSARIO FUORI DALLA BARRIERA STA PIU' VICINO
+               DI LEI. Misurato (misura-418, gi81, GLB acceso, teatro): barriera ferma a 9,2 m (giro 375), ma l'attesa attiva (147/334) fa oscillare
+               di ±1 u verso il pallone due difensori congelati a ~8,7 m: 7,6-9,7 m dal pallone, dentro i 9,15 m e davanti alla barriera, a fasi di
+               ~4,4 s (era il rosso del treno: il quarto «uomo di barriera» misurato era uno di loro). Ora chi difende e non e' della barriera
+               (ruolo: _w72 di questa scena, non la bandiera mur72, cosi' il rosso __CPM_NO_MURO72 resta quello di prima) sta ad almeno
+               9,15 + 1 m: un passo dietro la linea della barriera. Proiezione radiale sul corpo finale: nessuna deriva, la base resta quella. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G418)&&(P.hlType==="freekick"||P.hlSetPiece==="freekick")){
+              const _s418=(P.allPlayers||[])[i]||{},_w418=sr.current._w72&&sr.current._w72[i];
+              if(_s418.team==='away'&&!_s418.gk&&!(_w418&&_w418.k===P.hlSitKey)){
+                const _dx418=pp.mesh.position.x-bx,_dz418=pp.mesh.position.z-bz,_d418=Math.hypot(_dx418,_dz418);
+                if(_d418<10.15){const _u418=_d418>0.01?1/_d418:0;const _ex418=_d418>0.01?_dx418*_u418:1,_ez418=_d418>0.01?_dz418*_u418:0;
+                  pp.mesh.position.x=bx+_ex418*10.15;pp.mesh.position.z=bz+_ez418*10.15;}}}
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
           {const _q850=_pt31?{x:_pt31.x,y:_pt31.y,gk:false}:(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:(_mk143?{x:_mk143.x,y:_mk143.y,gk:false}:null);/* [giro 31] il portatore della scena difensiva sul suo punto *//* [giro 17 PO-123] il marcatore del motore va sul suo punto (_mk143), come il portatore */
@@ -8983,6 +9032,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              un quarto di seno sui 0,13 s rimasti. Ora la finestra copre la coda della costruzione (fino al tratto prima dell'ultimo, cioe' il
              volo del cross), la salita e' balistica (parte sqrt(2H/g) prima dell'arrivo e arriva all'apice col pallone) e la clip si monta
              _TC342/scala prima dell'arrivo, cosi' il suo contatto cade sul pallone (montaggio, sotto). */
+          /* [giro 426, riparazione del treno 7.999.218 — rosso __CPM_NO_G426, guardiano testa-tempismo] DOPO UN CROSS IL COLPO DI TESTA NON ASPETTA
+             IL «CONTROLLO». MISURATO (sonda __CPM_BU43 + __CPM_TESTA33, gi171 azione 0, GLB acceso, uguale su d75ded1d e su 9e876eb5: non e' il
+             giro 418): il cross (beat 2) consegna il pallone alla testa (0,16-0,30 u, 1,58-1,65 s), poi il beat «control» del giro 342 lo tiene
+             li' 0,13-0,16 s mentre lo stacco va all'apice alla fine di QUEL beat: colpo a 1,70-1,76 s, scarto 0,09-0,16 s contro la soglia 0,15
+             (treno: 0,16). Sul colpo di testa in TUFFO (header_diving, lo stacco basso del giro 342), quando il beat prima e' un cross aereo, il «control» dura un fotogramma (sui colpi di testa da
+             in piedi gi55/gi86/gi76 il cross NON arriva alla testa e il «control» la porta: accorciarlo li' dava scarto -0,36/-0,38 s, misurato): _end342 (apice dello stacco, clip,
+             fine della costruzione) cade dove il cross arriva alla testa. Una volta per copione (segno sul beat), prima che la finestra dello stacco si apra. */
+          if(P.hlType==='header'&&P.hlVariant==='header_diving'&&_tuffo109&&_g342On()&&!(typeof window!=='undefined'&&window.__CPM_NO_G426)&&_aerTL!=null&&tlBuildN>=2&&bi===tlBuildN-2){
+            const _u426=tlSeg[tlBuildN-1],_x426=tlSeg[tlBuildN-2];
+            if(_u426&&_x426&&_x426.kind==='cross'&&_u426.tag!=="orig26"&&(_u426.kind==='carry'||_u426.kind==='control')&&!_u426._s426){_u426._s426=1;_u426.dur=Math.min(_u426.dur||0,0.02);}}
           const _on342=_g342On();let _end342=acc+((tlSeg[bi]&&tlSeg[bi].dur)||0);if(_on342){_end342=0;for(let j=0;j<tlBuildN;j++)_end342+=tlSeg[j].dur;}
           if(P.hlType==='header'&&(P.hlVariant!=='header_diving'||_tuffo109)&&!actType&&tlBuildN>0&&(_on342?(bi>=tlBuildN-2&&bi<tlBuildN):bi===tlBuildN-1)&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
             const _rem33=_end342-tlT,_PRE33=0.5*gwOf('header','vita');
@@ -10974,7 +11033,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ry=Math.atan2(_cSgn*0.781,-0.625),_c=Math.cos(_ry),_s=Math.sin(_ry);
             const _hx=-_cSgn*2.3,_hz=1.4,_hl=_hx*_c-_hz*_s,_hlz=_hx*_s+_hz*_c;
             const _ql=_cap23?_hl+1.25:_hl,_qz=_hlz+(_hlz<0?0.5:-0.5);
-            const _R={x:_ql*_c+_qz*_s,z:-_ql*_s+_qz*_c};const _top=1.05,_ry0=_top-0.25*(trophyGrp.scale.y||0.62);
+            const _R={x:_ql*_c+_qz*_s,z:-_ql*_s+_qz*_c};const _top=1.05;
+            /* [giro 376 PO-647 — rosso __CPM_NO_G376] APPOGGIO ESATTO SUL PIEDISTALLO. La quota fissa «_top-0,25·scala» non era la base di nessun
+               trofeo: misurato sulle mesh, la coppa standard affondava 0,09 nel piano, quella internazionale 0,10 e il piatto di campionato 0,36
+               (il disco sta in piedi sul bordo, centrato a y 0,14 locale). Ora la base e' il punto piu' basso della geometria VISIBILE del
+               trofeo (vertici veri, nel riferimento del gruppo, una volta per tipo: la rotazione attorno a y non la cambia) e il trofeo ci si posa. */
+            const _ry0=(typeof window!=='undefined'&&window.__CPM_NO_G376)?_top-0.25*(trophyGrp.scale.y||0.62):_top-_base376(trophyGrp)*(trophyGrp.scale.y||0.62);
             if(!sr.current._ped192){const _pg=new THREE.Group();const _pm=new THREE.MeshLambertMaterial({color:0x1d1a28});
               const _col=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.26,_top-0.06,16),_pm);_col.position.y=(_top-0.06)/2;_pg.add(_col);
               const _tp=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.06,20),_goldMat);_tp.position.y=_top-0.03;_pg.add(_tp);
@@ -11003,7 +11067,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(typeof window!=='undefined'&&_CPM_TEST&&_team23&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 192] testimone: coppa e mani di eroe e capitano nello stesso fotogramma */
             const _W=window.__CPM_G192B||(window.__CPM_G192B={fr:[]});if(_W.fr.length<900){const _mm=(m)=>{const a=m&&(glbAvatars||[]).find(x=>x&&x.proc===m);if(!a||!a._handL||!a._handR)return null;const v1=new THREE.Vector3().setFromMatrixPosition(a._handL.matrixWorld),v2=new THREE.Vector3().setFromMatrixPosition(a._handR.matrixWorld);return [+((v1.x+v2.x)/2).toFixed(3),+((v1.y+v2.y)/2+0.10).toFixed(3),+((v1.z+v2.z)/2).toFixed(3)];};
               _W.fr.push({b:_bk,bp:+_bp.toFixed(3),t:[+trophyGrp.position.x.toFixed(3),+trophyGrp.position.y.toFixed(3),+trophyGrp.position.z.toFixed(3)],e:_mm(hero),c:_cap23?_mm(_cap23):null,r:!!sr.current._rest192,cap:!!_cap23});}}catch(_e){}}
-          trophyGrp.rotation.y+=aDt*1.3;
+          /* [giro 376 PO-647 — rosso __CPM_NO_G376] IL TROFEO GIRA SOLO QUANDO E' APPOGGIATO. Prima girava sempre a 1,3 rad/s, anche fra le mani.
+             In mano e' RIGIDO col corpo di chi lo tiene (il piu' vicino fra eroe e capitano): manici sulla linea delle mani, cioe' verso del
+             trofeo = verso del corpo a meno di mezzo giro (coppa e piatto sono simmetrici), scelto il piu' vicino al verso attuale. Per questo
+             il passaggio capitano->eroe (i due si guardano: versi opposti) non fa girare il trofeo. Unico tratto in moto: la presa dal
+             piedistallo, dove il verso va da quello di riposo a quello delle mani con la stessa curva della presa (_grab192). Una misura
+             precedente con inseguimento esponenziale lasciava il 24% dei fotogrammi in mano oltre 0,6 rad/s (le transizioni): bocciata. */
+          if((typeof window!=='undefined'&&window.__CPM_NO_G376)||sr.current._rest192){trophyGrp.rotation.y+=aDt*1.3;sr.current._ry376=trophyGrp.rotation.y;}
+          else{const _wr376=(a)=>{a%=2*Math.PI;if(a>Math.PI)a-=2*Math.PI;if(a<-Math.PI)a+=2*Math.PI;return a;};
+            const _al376=(Y,cur)=>{const a=_wr376(Y-cur),b=_wr376(Y+Math.PI-cur);return cur+(Math.abs(a)<=Math.abs(b)?a:b);};
+            const _hd376=(m)=>m?Math.hypot(m.position.x-trophyGrp.position.x,m.position.z-trophyGrp.position.z):1e9;
+            const _gr376=_g192b&&_team23&&(_bk==="present"||_bk==="captain")&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>0&&sr.current._grab192<1&&sr.current._ry376!=null;
+            if(_gr376){const _u=sr.current._grab192,_w=_u*_u*(3-2*_u),_r0=sr.current._ry376;trophyGrp.rotation.y=_r0+(_al376((_cap23||hero).rotation.y,_r0)-_r0)*_w;}
+            else{const _who376=(_cap23&&_hd376(_cap23)<_hd376(hero))?_cap23:hero;trophyGrp.rotation.y=_al376(_who376.rotation.y,trophyGrp.rotation.y);}}
+          if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_T376&&trophyGrp.visible&&trophyGrp.position.y>-10){try{/* [giro 376] testimone: base del trofeo contro il piano del piedistallo, verso del trofeo contro chi lo tiene */
+            const W=window.__CPM_T376;if(!W.fr)W.fr=[];if(W.fr.length<4000){const _hd=(m)=>m?Math.hypot(m.position.x-trophyGrp.position.x,m.position.z-trophyGrp.position.z):1e9;const _w=(_cap23&&_hd(_cap23)<_hd(hero))?_cap23:hero;
+              const _pd=sr.current._ped192;W.fr.push({b:_bk,k:trophyGrp._kind24||null,r:!!sr.current._rest192,dt:+aDt.toFixed(4),ry:+trophyGrp.rotation.y.toFixed(4),hy:+_w.rotation.y.toFixed(4),
+                low:+_low376(trophyGrp).toFixed(4),ped:(_pd&&_pd.visible)?{x:+_pd.position.x.toFixed(4),z:+_pd.position.z.toFixed(4),top:1.05}:null,t:[+trophyGrp.position.x.toFixed(4),+trophyGrp.position.y.toFixed(4),+trophyGrp.position.z.toFixed(4)],dh:+_hd(_w).toFixed(3),h:_w===hero?'e':'c',g:(_bk==="present"||_bk==="captain")&&sr.current._grab192k===_SC&&(sr.current._grab192||0)>0&&sr.current._grab192<1});}}catch(_e){}}
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
           /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
              Nel beat HUG convergono sull'eroe (gli abbracciatori addosso, gli inginocchiati a terra,
