@@ -12916,7 +12916,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   );
                 })()
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(chosenAct?.label||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(giocataMostrata419(chosenAct?.label)||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
                 <div data-cpm="incorso94" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,boxSizing:"border-box",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.86) 30%,rgba(5,8,16,0.94) 100%)",padding:"16px 14px 14px",display:"flex",alignItems:"center",gap:11}}>
                   {/* [7.999.83 #94] «in corso»: prima una riga da 12 px con clessidra («⏳ 🎯 Assist filtrante…»), di un altro
                       vestito rispetto a scheda e esito. Ora lo stesso linguaggio della scheda delle scelte: riquadro
@@ -12933,7 +12933,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               );})():(
 
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.82)"/* [7.976.0 A17] la banda stava a 0,45: sul prato chiaro il fondo composito misurava #8f9095 e il testo 2,76:1. A 0,82 il fondo resta scuro qualunque cosa ci sia sotto */,padding:"12px 12px 14px"}}>
-                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {giocataMostrata419(chosenAct?.label)}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               ))}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {/* [giro 96b D6 — collaudo grafico 178: «il riquadro d'esito copre piedi e pallone dell'eroe»] Misurato su 30 scene
@@ -12963,7 +12963,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ):(()=>{
                   const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _voto901=Math.round(_raw901*10)/10;try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO20||window.__CPM_NO_VOTO29))&&motoreRef.current&&motoreRef.current.pagelle){const _k29=hlIdx+'|'+(outcome&&outcome.outKey)+'|'+score.home+'-'+score.away+'|'+mStats.goals+'|'+mStats.assists;const _C29=voto29Ref.current;if(_C29.k!==_k29){const _e29=motoreRef.current.pagelle().find(x=>x&&x.eroe);_C29.k=_k29;_C29.v=(_e29&&typeof _e29.voto==='number')?_e29.voto:null;}if(_C29.v!=null)_voto901=_C29.v;}}catch(_e29b){}/* [7.999.29] anche il voto nel riquadro di fine scena e' la pagella del motore: prima era una terza formula (bonus delle scene). Calcolato UNA volta per esito (cache voto29Ref): chiamato a ogni render faceva oscillare il guardiano passo-velocita (misurato: rosso 3 volte su 4, verde 3 su 3 con il riquadro spento) */
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
-                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":chosenAct?.label?(" · "+chosenAct.label):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
+                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":giocataMostrata419(chosenAct?.label)?(" · "+giocataMostrata419(chosenAct.label)):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
                   return(
                   <div data-cpm="esito" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
                     <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
@@ -13094,7 +13094,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
               {/* hl_result — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
-                <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
+                <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {giocataMostrata419(chosenAct?.label)}<span style={{opacity:0.5}}>…</span></div></div>
               )}
               {/* [giro 96b D12 — collaudo grafico 178, PC 1440x900: «il pannello destro e' quasi vuoto, l'esito e' una striscia
                   rossa sottile»] Sul largo l'esito diventa il CONTENUTO della colonna: scheda che prende lo spazio libero
@@ -13103,7 +13103,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(()=>{
                 const _tc=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
                 const _tt=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")));
-                const _az=outcome.timeout?"⏱ Troppo tardi":(chosenAct?.label||"");
+                const _az=outcome.timeout?"⏱ Troppo tardi":(giocataMostrata419(chosenAct?.label)||"");
                 return(
                 <div data-cpm="esito-pc" style={{flex:"1 1 auto",minHeight:0,overflowY:"auto",display:"flex",flexDirection:"column",gap:12,padding:"20px 18px",background:outcome.ok?"linear-gradient(180deg,rgba(5,50,20,0.55),rgba(15,23,42,0))":"linear-gradient(180deg,rgba(60,8,8,0.55),rgba(15,23,42,0))",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div data-cpm="esito-titolo" style={{fontSize:FS.title,fontWeight:900,lineHeight:1.15,color:_tc,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+_tt}</EmoText></div>
@@ -13120,7 +13120,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>);})()}
               {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                  <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {giocataMostrata419(chosenAct?.label)}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:4}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:TINTE.sec,fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}

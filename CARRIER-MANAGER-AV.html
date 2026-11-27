@@ -15592,6 +15592,23 @@ function resolveDefensiveOutcome(ctx){
 //   deriveHL e dal gate. Risultato: il giocatore sceglie un INTENTO/stile di rischio, non un'animazione.
 function intentLabel(lbl){
   if(!lbl)return lbl; const l=lbl.toLowerCase();
+  /* [giro 419 PO-682 «avevo scelto calcio potente ma ha fatto un colpo di testa», codice 003] Il tasto «✈️ Testa di potenza» si
+     mostrava «💥 Conclusione potente»: «testa di» non e' «di testa», la regola delle teste non lo prendeva e vinceva quella della
+     potenza. Misurato sulle 545 etichette del sorgente: 29 azioni aeree, 4 mostrate come un tiro di piede (Testa di potenza · Testa
+     potente angolato → Conclusione potente; Testa piazzata all'angolo → Conclusione precisa; Testa al volo → Conclusione di prima)
+     e 5 passaggi o interventi di testa mostrati come «Attacca il pallone». Ora un'azione aerea dice sempre «di testa» (con lo stile),
+     e una sponda, un passaggio o un intervento difensivo di testa resta col suo testo. Solo l'etichetta mostrata: act.label, deriveHL
+     e il gate non cambiano. Rosso window.__CPM_NO_G419. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G419)&&/\btesta\b|incornat|\bstacco\b|spizzat/.test(l)){
+    if(/compagn|smista|indirizz|sponda|difensiv/.test(l))return lbl;
+    if(/profondit/.test(l))return "✈️ Colpo di testa in profondità";
+    if(/in corsa|tuffo|piombo/.test(l))return "✈️ Colpo di testa in corsa";/* deriveHL: header_diving. Prima di «potente»: nella stessa scena del motore «Stacco in corsa potente» e «Testa di potenza» diventavano due «Colpo di testa potente» e lo scarto dei doppioni riportava la seconda al testo di prima */
+    if(/potenza|potente|dominante|decis/.test(l))return "✈️ Colpo di testa potente";
+    if(/piazzat|angolat|mirat|precis|angolo/.test(l))return "🎯 Colpo di testa piazzato";
+    if(/al volo/.test(l))return "✈️ Colpo di testa al volo";
+    if(/primo palo|palo corto/.test(l))return "✈️ Colpo di testa sul primo palo";
+    if(/secondo palo|palo lontano/.test(l))return "✈️ Colpo di testa sul secondo palo";
+    return "✈️ Colpo di testa";}
   if(/colpo di testa|stacco di testa|\bdi testa\b|incornata|\bstacco\b|spizzata/.test(l))return "✈️ Attacca il pallone";/* [7.404.0 collaudo PO gi115 «Attacca il pallone non e' una giocata aerea!»] la parola nuda `tacco` — messa per coprire «stacco», che pero' e' gia' coperto da \bstacco\b — catturava anche il TACCO (colpo di classe rasoterra): «Tacco in porta» diventava un'incornata. Il tacco tiene la sua etichetta, che dice gia' tutto. */
   if(/rovesciata|sforbiciata/.test(l))return "🤸 Giocata acrobatica";
   if(/pallonett|cucchiaio|scavetto|scavin|panenka/.test(l))return "🪄 Scavetto sul portiere";
@@ -15627,6 +15644,13 @@ function intentIntro(intro,scoreDiff){
   if(!intro)return intro;
   if(scoreDiff!=null&&stateIncoherent((intro||"").toLowerCase(),scoreDiff))return "";
   return intro;
+}
+/* [giro 419 PO-682] il nome della giocata nei riquadri DOPO la scelta («La giocata», esito, in corso) leggeva l'etichetta dei dati
+   («✈️ Testa di potenza»), il tasto quella mostrata: per un colpo di testa le due ora coincidono («✈️ Colpo di testa potente»). Le altre
+   azioni restano col testo dei dati, come prima. Rosso window.__CPM_NO_G419. */
+function giocataMostrata419(lbl){
+  if(!lbl||(typeof window!=='undefined'&&window.__CPM_NO_G419))return lbl;
+  const m=intentLabel(lbl);return /di testa/i.test(m)?m:lbl;
 }
 // FIX azioni duplicate: se il transform produce un'etichetta già usata da un'azione PRECEDENTE della stessa
 //   lista, mantieni l'etichetta ORIGINALE (distinta) — niente più due "Conclusione di prima" identiche.
@@ -28863,7 +28887,19 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
             _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
             _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_mira20(_a,_p.position.x,_p.position.z,ballArcTgtX,ballArcTgtZ,AWAY_GOAL_X,_ai===0);/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
-          if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
+          /* [giro 419 PO-682 «Calcio d'angolo di GUNTHER: attacca il pallone! · Testa di potenza → miss · corpo↔porta al contatto 72°»,
+             rosso window.__CPM_NO_G419] IL COLPO DI TESTA SI ATTACCA COL CORPO VERSO LA PORTA. MISURATO (misura-419, 8 colpi di testa da
+             angolo e da cross, GLB acceso, PERCORSO VERO con l'origine _ORIG26 che il banco forzato non armava): il pallone vola dalla
+             bandierina (o dal crossatore) sul corpo dell'eroe DOVE STA, l'eroe lo va a prendere e il corpo guarda dove corre, cioe' il
+             pallone che arriva; la mira del gesto (7.517/7.636) gira a dt*7 solo dal montaggio della clip, a contatto quasi fatto.
+             Al contatto 8-84°, 7 su 8 oltre 35°. Ora, nella scena di testa dell'eroe (verso la porta: non la sponda ne' la scena
+             difensiva), quando il pallone e' entro 14 u dal corpo il corpo si gira verso la porta (dt*9, niente scatti) e resta cosi'
+             per tutto il gesto; la locomozione direzionale 7.518 sceglie da sola corsa laterale o all'indietro. */
+          const _P419=propsRef.current||{};
+          const _tst419=_ai===0&&!_a._isGk&&_P419.matchPhase==='hl_result'&&_P419.hlType==='header'&&_P419.hlVariant!=='header_flick'&&!_P419.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_G419)
+            &&(()=>{const _b419=sr.current.ball;return !!(_b419&&Math.hypot(_b419.position.x-_p.position.x,_b419.position.z-_p.position.z)<14);})();
+          if(_tst419){const _ta419=Math.atan2(GOAL_LINE_X-_p.position.x,0-_p.position.z);let _da419=((_ta419-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da419*Math.min(dt*9,1);}
+          else if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
             let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);
@@ -46615,7 +46651,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   );
                 })()
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(chosenAct?.label||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(giocataMostrata419(chosenAct?.label)||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
                 <div data-cpm="incorso94" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,boxSizing:"border-box",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.86) 30%,rgba(5,8,16,0.94) 100%)",padding:"16px 14px 14px",display:"flex",alignItems:"center",gap:11}}>
                   {/* [7.999.83 #94] «in corso»: prima una riga da 12 px con clessidra («⏳ 🎯 Assist filtrante…»), di un altro
                       vestito rispetto a scheda e esito. Ora lo stesso linguaggio della scheda delle scelte: riquadro
@@ -46632,7 +46668,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               );})():(
 
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.82)"/* [7.976.0 A17] la banda stava a 0,45: sul prato chiaro il fondo composito misurava #8f9095 e il testo 2,76:1. A 0,82 il fondo resta scuro qualunque cosa ci sia sotto */,padding:"12px 12px 14px"}}>
-                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {giocataMostrata419(chosenAct?.label)}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               ))}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {/* [giro 96b D6 — collaudo grafico 178: «il riquadro d'esito copre piedi e pallone dell'eroe»] Misurato su 30 scene
@@ -46662,7 +46698,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ):(()=>{
                   const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _voto901=Math.round(_raw901*10)/10;try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO20||window.__CPM_NO_VOTO29))&&motoreRef.current&&motoreRef.current.pagelle){const _k29=hlIdx+'|'+(outcome&&outcome.outKey)+'|'+score.home+'-'+score.away+'|'+mStats.goals+'|'+mStats.assists;const _C29=voto29Ref.current;if(_C29.k!==_k29){const _e29=motoreRef.current.pagelle().find(x=>x&&x.eroe);_C29.k=_k29;_C29.v=(_e29&&typeof _e29.voto==='number')?_e29.voto:null;}if(_C29.v!=null)_voto901=_C29.v;}}catch(_e29b){}/* [7.999.29] anche il voto nel riquadro di fine scena e' la pagella del motore: prima era una terza formula (bonus delle scene). Calcolato UNA volta per esito (cache voto29Ref): chiamato a ogni render faceva oscillare il guardiano passo-velocita (misurato: rosso 3 volte su 4, verde 3 su 3 con il riquadro spento) */
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
-                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":chosenAct?.label?(" · "+chosenAct.label):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
+                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":giocataMostrata419(chosenAct?.label)?(" · "+giocataMostrata419(chosenAct.label)):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
                   return(
                   <div data-cpm="esito" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
                     <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
@@ -46793,7 +46829,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
               {/* hl_result — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
-                <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
+                <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {giocataMostrata419(chosenAct?.label)}<span style={{opacity:0.5}}>…</span></div></div>
               )}
               {/* [giro 96b D12 — collaudo grafico 178, PC 1440x900: «il pannello destro e' quasi vuoto, l'esito e' una striscia
                   rossa sottile»] Sul largo l'esito diventa il CONTENUTO della colonna: scheda che prende lo spazio libero
@@ -46802,7 +46838,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(()=>{
                 const _tc=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
                 const _tt=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")));
-                const _az=outcome.timeout?"⏱ Troppo tardi":(chosenAct?.label||"");
+                const _az=outcome.timeout?"⏱ Troppo tardi":(giocataMostrata419(chosenAct?.label)||"");
                 return(
                 <div data-cpm="esito-pc" style={{flex:"1 1 auto",minHeight:0,overflowY:"auto",display:"flex",flexDirection:"column",gap:12,padding:"20px 18px",background:outcome.ok?"linear-gradient(180deg,rgba(5,50,20,0.55),rgba(15,23,42,0))":"linear-gradient(180deg,rgba(60,8,8,0.55),rgba(15,23,42,0))",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div data-cpm="esito-titolo" style={{fontSize:FS.title,fontWeight:900,lineHeight:1.15,color:_tc,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+_tt}</EmoText></div>
@@ -46819,7 +46855,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>);})()}
               {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                  <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {giocataMostrata419(chosenAct?.label)}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:4}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:TINTE.sec,fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}

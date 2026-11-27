@@ -3239,6 +3239,23 @@ function resolveDefensiveOutcome(ctx){
 //   deriveHL e dal gate. Risultato: il giocatore sceglie un INTENTO/stile di rischio, non un'animazione.
 function intentLabel(lbl){
   if(!lbl)return lbl; const l=lbl.toLowerCase();
+  /* [giro 419 PO-682 «avevo scelto calcio potente ma ha fatto un colpo di testa», codice 003] Il tasto «✈️ Testa di potenza» si
+     mostrava «💥 Conclusione potente»: «testa di» non e' «di testa», la regola delle teste non lo prendeva e vinceva quella della
+     potenza. Misurato sulle 545 etichette del sorgente: 29 azioni aeree, 4 mostrate come un tiro di piede (Testa di potenza · Testa
+     potente angolato → Conclusione potente; Testa piazzata all'angolo → Conclusione precisa; Testa al volo → Conclusione di prima)
+     e 5 passaggi o interventi di testa mostrati come «Attacca il pallone». Ora un'azione aerea dice sempre «di testa» (con lo stile),
+     e una sponda, un passaggio o un intervento difensivo di testa resta col suo testo. Solo l'etichetta mostrata: act.label, deriveHL
+     e il gate non cambiano. Rosso window.__CPM_NO_G419. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G419)&&/\btesta\b|incornat|\bstacco\b|spizzat/.test(l)){
+    if(/compagn|smista|indirizz|sponda|difensiv/.test(l))return lbl;
+    if(/profondit/.test(l))return "✈️ Colpo di testa in profondità";
+    if(/in corsa|tuffo|piombo/.test(l))return "✈️ Colpo di testa in corsa";/* deriveHL: header_diving. Prima di «potente»: nella stessa scena del motore «Stacco in corsa potente» e «Testa di potenza» diventavano due «Colpo di testa potente» e lo scarto dei doppioni riportava la seconda al testo di prima */
+    if(/potenza|potente|dominante|decis/.test(l))return "✈️ Colpo di testa potente";
+    if(/piazzat|angolat|mirat|precis|angolo/.test(l))return "🎯 Colpo di testa piazzato";
+    if(/al volo/.test(l))return "✈️ Colpo di testa al volo";
+    if(/primo palo|palo corto/.test(l))return "✈️ Colpo di testa sul primo palo";
+    if(/secondo palo|palo lontano/.test(l))return "✈️ Colpo di testa sul secondo palo";
+    return "✈️ Colpo di testa";}
   if(/colpo di testa|stacco di testa|\bdi testa\b|incornata|\bstacco\b|spizzata/.test(l))return "✈️ Attacca il pallone";/* [7.404.0 collaudo PO gi115 «Attacca il pallone non e' una giocata aerea!»] la parola nuda `tacco` — messa per coprire «stacco», che pero' e' gia' coperto da \bstacco\b — catturava anche il TACCO (colpo di classe rasoterra): «Tacco in porta» diventava un'incornata. Il tacco tiene la sua etichetta, che dice gia' tutto. */
   if(/rovesciata|sforbiciata/.test(l))return "🤸 Giocata acrobatica";
   if(/pallonett|cucchiaio|scavetto|scavin|panenka/.test(l))return "🪄 Scavetto sul portiere";
@@ -3274,6 +3291,13 @@ function intentIntro(intro,scoreDiff){
   if(!intro)return intro;
   if(scoreDiff!=null&&stateIncoherent((intro||"").toLowerCase(),scoreDiff))return "";
   return intro;
+}
+/* [giro 419 PO-682] il nome della giocata nei riquadri DOPO la scelta («La giocata», esito, in corso) leggeva l'etichetta dei dati
+   («✈️ Testa di potenza»), il tasto quella mostrata: per un colpo di testa le due ora coincidono («✈️ Colpo di testa potente»). Le altre
+   azioni restano col testo dei dati, come prima. Rosso window.__CPM_NO_G419. */
+function giocataMostrata419(lbl){
+  if(!lbl||(typeof window!=='undefined'&&window.__CPM_NO_G419))return lbl;
+  const m=intentLabel(lbl);return /di testa/i.test(m)?m:lbl;
 }
 // FIX azioni duplicate: se il transform produce un'etichetta già usata da un'azione PRECEDENTE della stessa
 //   lista, mantieni l'etichetta ORIGINALE (distinta) — niente più due "Conclusione di prima" identiche.
