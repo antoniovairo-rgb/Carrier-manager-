@@ -1955,7 +1955,8 @@ const MONTHLY_COACH_REVIEWS=[
     {txt:"💪 Grazie, mister. Non mi fermo qui.",ef:{coachTrust:8,morale:9,form:4}},
     {txt:"😊 È il lavoro di squadra che fa la differenza.",ef:{coachTrust:6,morale:6,popularity:4}},
     {txt:"🔥 Voglio fare ancora meglio da qui alla fine.",ef:{coachTrust:4,morale:7,form:6}},/* [7.273.0 collaudo PO «la frase del girone di ritorno non ha senso se siamo già alla 28ª partita»] la verifica del mister esce a ogni trimestre: una risposta che nomina una FASE precisa della stagione è sbagliata in tre casi su quattro → formula valida sempre */
-    {txt:"🎯 Merito anche del suo lavoro. Mi ha reso un giocatore migliore.",ef:{coachTrust:10,morale:5}},
+    {txt:"🎯 Merito anche del suo lavoro. Mi ha reso un giocatore migliore.",ef:{coachTrust:10,morale:5},nonNuovo421:true},/* [giro 421 PO-684] un mister appena arrivato non puo' averti «reso migliore» */
+    {txt:"🎯 Sto cercando di entrare subito nelle sue idee, mister.",ef:{coachTrust:9,morale:4},soloNuovo421:true},/* [giro 421] la sua gemella per chi il mister lo conosce da poco */
     {txt:"😌 Resto coi piedi per terra: conta solo la prossima partita.",ef:{coachTrust:7,morale:4,form:3}},/* [7.273.0] stessa classe: «la stagione è ancora lunga» è falso alla 34ª */
     {txt:"🏆 Se continuo così, punto a qualcosa di grande quest'anno.",ef:{coachTrust:3,morale:8,popularity:5,form:4}},
     {txt:"🙏 I complimenti mi caricano, ma non voglio montarmi la testa.",ef:{coachTrust:8,morale:6}},
@@ -2073,8 +2074,84 @@ const SFIDUCIA372=["Sono preoccupato. Se non cambia qualcosa, dovrò prendere de
 const FIDUCIA_PIENA372=["Il presidente mi ha chiesto di te. Gli ho detto una cosa sola: è il nostro faro.","Non ricordo un giocatore così determinante da quando alleno. Godiamocelo, ma con la fame di sempre.","Sei l'esempio che porto ai giovani del vivaio. Sappi che questo, per un tecnico, vale più di dieci gol.","Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia."];
 function rigaAmmessa372(p,l){if(typeof _g372==="function"&&!_g372())return true;const g=gradoFiducia372(p.coachTrust||60);
   if(g>=3&&SFIDUCIA372.indexOf(l)>=0)return false;if(g<=1&&FIDUCIA_PIENA372.indexOf(l)>=0)return false;return true;}
+/* [giro 421 PO-684 collaudo PO «un po' contraddittorio, il nuovo mister non mi vedeva di buon occhio»]
+   LA VERIFICA TRIMESTRALE ASCOLTAVA SOLO LA FORMA. La battuta si sceglieva dalla fascia di rendimento
+   (`perf`, dalla forma) e basta: un mister appena arrivato e diffidente diceva «Il club e' orgoglioso di
+   te», e le risposte offrivano «Mi ha reso un giocatore migliore» a un tecnico che ti conosce da poche
+   settimane. Ora il RAPPORTO col mister (fiducia + da quanto c'e') filtra battute e risposte:
+     · freddo  = fiducia < 50 (la stessa soglia con cui lo Storico allenatori colora un rapporto teso)
+     · nuovo   = arrivato in questa stagione: esonero di quest'anno, cambio di panchina all'ultimo
+                 cambio di stagione, oppure prima stagione nel club attuale (trasferimento/prestito).
+   Con rendimento alto e mister freddo il riconoscimento e' A DENTI STRETTI (fascia propria); nelle altre
+   fasce col mister freddo non escono le battute calorose; col mister nuovo non escono le battute che
+   presuppongono una storia insieme. Nessun campo nuovo nel salvataggio: tutto si DEDUCE da campi che
+   esistono gia' (vale anche per le carriere in corso, come quella del PO). Rosso `__CPM_NO_G421`. */
+function rapportoMister421(p){
+  const s=(p&&p.season)||1;
+  /* [giro 441] stessa lettura della barra e del 372 (`coachTrust||60`): a fiducia salvata 0 la barra mostra 60 «Fiducioso»,
+     e prima il 421 lo chiamava «freddo» mentre il 372 lo trattava da fiducioso (mazzo che si contraddiceva) */
+  const fiducia=(p&&p.coachTrust)||60;
+  let nuovo=false,perche=null;
+  try{
+    if(p.coachSackSeason===s){nuovo=true;perche="esonero";}
+    const ch=p.coachHistory||[];const ul=ch[ch.length-1];
+    if(!nuovo&&ul&&ul.season===s-1&&ul.coachChanged){nuovo=true;perche="cambio-panchina";}
+    const cid=p.club&&p.club.id;
+    if(!nuovo&&cid&&!(p.history||[]).some(h=>h&&h.clubId===cid)){nuovo=true;perche="club-nuovo";}
+  }catch(_e){}
+  return {nuovo,perche,fiducia,freddo:fiducia<50};
+}
+/* battute che presuppongono CALORE (affetto, fiducia dichiarata, orgoglio): mai da un mister freddo */
+const CALDE421=new Set([
+  "Sei in un momento di forma straordinaria. Continua così e questa stagione sarà memorabile.",
+  "I numeri parlano chiaro: sei tra i migliori in questo momento. Il club è orgoglioso di te.",
+  "Non potrei chiedere di meglio. Stai dimostrando ogni settimana chi sei davvero.",
+  "Il presidente mi ha chiesto di te. Gli ho detto una cosa sola: è il nostro faro.",
+  "Non ricordo un giocatore così determinante da quando alleno. Godiamocelo, ma con la fame di sempre.",
+  "Sei l'esempio che porto ai giovani del vivaio. Sappi che questo, per un tecnico, vale più di dieci gol.",
+  "Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia.",
+  "Il potenziale lo vedo ogni giorno. Ma le partite si vincono con la continuità, non a sprazzi.",
+  "Guardami: io in te credo ancora. Ma devi darmi qualcosa a cui aggrapparmi, e presto.",
+  "Non ti mollo, ma non posso nemmeno aspettarti in eterno. Il tempo nel calcio è tiranno.",
+  "Ti ho voluto io in questa rosa. Non farmi passare per quello che ha sbagliato valutazione.",
+]);
+/* battute che presuppongono una STORIA insieme: mai da un mister appena arrivato */
+const STORICHE421=new Set([
+  "Ti ho voluto io in questa rosa. Non farmi passare per quello che ha sbagliato valutazione.",
+  "Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia.",
+  "Ti ho tolto dai titolari in qualche gara e non mi è piaciuto farlo. Dammi un motivo per rimetterti.",
+  "Guardami: io in te credo ancora. Ma devi darmi qualcosa a cui aggrapparmi, e presto.",
+]);
+/* rendimento alto + mister freddo: il riconoscimento a denti stretti */
+const VERIFICA_FREDDA421={perf:"excellent",lines:[
+  "I numeri sono buoni, non lo nego. Ma i numeri da soli non mi fanno cambiare idea.",
+  "Stai segnando e giocando bene, prendo atto. Adesso voglio vederlo anche quando la palla non ce l'hai.",
+  "Non ti dirò che sono sorpreso: ti dirò che è il minimo per chi vuole un posto fisso con me.",
+  "Bene, il campo ti dà ragione. Io però giudico anche gli allenamenti, e lì non mi hai ancora convinto.",
+  "Rendimento alto, d'accordo. Continua così e magari tra qualche settimana parliamo di altro.",
+  "Hai fatto il tuo. Non aspettarti complimenti da me: aspettati che ti chieda ancora di più.",
+  "I tifosi ti applaudono. Io prendo nota e aspetto la continuità prima di sbilanciarmi.",
+  "Sei in forma, si vede. Ma nel mio calcio conta anche come stai dentro il gruppo.",
+],choicePool:[
+  {txt:"😤 Allora continuerò finché non le farò cambiare idea.",ef:{coachTrust:6,morale:5,form:3}},
+  {txt:"🤝 Mi dica cosa vuole vedere e lo vedrà.",ef:{coachTrust:9,morale:2}},
+  {txt:"🧊 Parlano i numeri, mister. Io continuo così.",ef:{coachTrust:-2,morale:6,form:4}},
+  {txt:"🏋️ Allora lavoro anche su quello che in partita non si vede.",ef:{coachTrust:8,form:4,fatigue:5}},
+  {txt:"🎧 Accetto la critica. Mi faccia capire il suo sistema.",ef:{coachTrust:8,morale:3}},
+  {txt:"😐 Non cerco complimenti, cerco minuti.",ef:{coachTrust:-1,morale:5}},
+  {txt:"💪 Ricevuto. Alla prossima verifica avrà meno da obiettare.",ef:{coachTrust:7,morale:4,form:3}},
+]};
+
 function pickCoachReview(p,perf,week){
-  const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===perf)||MONTHLY_COACH_REVIEWS[1];
+  const _g421=!(typeof window!=='undefined'&&window.__CPM_NO_G421);
+  const _rap421=_g421?rapportoMister421(p):null;
+  let _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===perf)||MONTHLY_COACH_REVIEWS[1];
+  if(_rap421&&_rap421.freddo&&perf==="excellent")_rev=VERIFICA_FREDDA421;
+  if(_rap421){/* [giro 421] le battute e le risposte che il rapporto col mister rende false escono dal mazzo */
+    const _ln=_rev.lines.filter(l=>!(_rap421.freddo&&CALDE421.has(l))&&!(_rap421.nuovo&&STORICHE421.has(l)));
+    const _cp=(_rev.choicePool||_rev.choices||[]).filter(c=>!(_rap421.nuovo&&c.nonNuovo421)&&!(!_rap421.nuovo&&c.soloNuovo421));
+    _rev={..._rev,lines:_ln.length?_ln:_rev.lines,choicePool:_cp};
+  }else _rev={..._rev,choicePool:(_rev.choicePool||_rev.choices||[]).filter(c=>!c.soloNuovo421)};
   const _sd=hashStr("cmc|"+(p.season||1)+"|"+(week||1)+"|"+perf);
   const _seenL=(p.recentCoachLines||[]);
   const _lShuf0=seededShuffle(_rev.lines,_sd);const _lAmm372=_lShuf0.filter(l=>rigaAmmessa372(p,l));
@@ -2089,7 +2166,7 @@ function pickCoachReview(p,perf,week){
   /* si COMPLETA con le meno recenti invece di buttare via la freschezza appena non bastano tre: prima,
      con `_cFresh.length<3`, si ricadeva sull'intero mazzo e le risposte fresche trovate andavano perse */
   const choices=[..._cFresh,..._cOk.filter(c=>_cFresh.indexOf(c)<0),..._cShuf].filter((c,i,a)=>a.indexOf(c)===i).slice(0,3);
-  return {line,choices};
+  return {line,choices,rap421:_rap421};
 }
 
 const generateBio=(p)=>{
