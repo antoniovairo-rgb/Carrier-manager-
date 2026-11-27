@@ -197,7 +197,11 @@ console.log('\n== D. percorso vero su un remoto finto (vagone su src/16) ==');
 const TMP = fs.mkdtempSync(path.join(process.env.CPM_TMP || os.tmpdir(), 'trenino-317-'));
 const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const chi = ['-c', 'user.name=prova', '-c', 'user.email=prova@example.invalid'];
-const envN = { ...process.env, CPM_RILASCIO_AUTO: '', CPM_CORSA: 'p317', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '', CPM_NO_G312: '' };
+/* [giro 435] come il giro 426 per rilascio-312: lo scenario non lascia passare CPM_REF_BLOCCO dall'ambiente e porta il SUO blocco
+   (spento) nel commit di governo del main finto. Prima ereditava il BLOCCO-RILASCI vero (main = HEAD del banco): con un treno grande
+   che blocca, D1 si fermava «correttamente» e il guardiano diventava rosso. Rosso del giro: CPM_NO_G435=1 (blocco vero, come prima). */
+const NO435 = process.env.CPM_NO_G435 === '1';
+const envN = { ...process.env, CPM_RILASCIO_AUTO: '', CPM_CORSA: 'p317', GITHUB_OUTPUT: '', GITHUB_STEP_SUMMARY: '', CPM_NO_G312: '', ...(NO435 ? {} : { CPM_REF_BLOCCO: '' }) };
 const node = (cwd, file, ...a) => spawnSync('node', [file, ...a, '--cwd', cwd], { cwd, encoding: 'utf8', env: envN });
 try {
   const REM = path.join(TMP, 'remoto.git'), W = path.join(TMP, 'lavoro');
@@ -210,6 +214,7 @@ try {
   const rami0 = g(REM, 'for-each-ref', '--format=%(refname)', 'refs/heads');
   g(W, 'checkout', '-q', '-B', 'm', 'origin/main');
   fs.writeFileSync(path.join(W, R.FILE_INTERRUTTORE), JSON.stringify({ attivo: true }) + '\n');
+  if (!NO435) fs.writeFileSync(path.join(W, T.FILE_BLOCCO), JSON.stringify({ _: 'blocco finto dello scenario trenino-317 (giro 435)', attivo: false, rossi: [], sbloccati: [], storia: [] }, null, 1) + '\n');
   g(W, 'add', '-A'); g(W, ...chi, 'commit', '-q', '-m', 'Governo: interruttore acceso (prova 317)'); g(W, 'push', '-q', 'origin', 'HEAD:refs/heads/main');
   /* il vagone: un ritocco di src/16 (commento) + ricomposto, unito in lavoro/317 come fa la madre */
   g(W, 'checkout', '-q', '-B', 'svil', HEAD);
