@@ -10347,6 +10347,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _dx=_scorer373.position.x-hero.position.x,_dz=_scorer373.position.z-hero.position.z,_dd=Math.max(0.1,Math.hypot(_dx,_dz));
               const _k=Math.max(0,(_dd-2.4))/_dd;_ctx371=hero.position.x+_dx*_k;_ctz371=hero.position.z+_dz*_k;}
             const _sd371=(hero.position.z>=0)?1:-1;
+            /* [giro 420] dove stanno i tifosi dell'eroe: +1 = dietro la porta attaccata (x+), -1 = dietro la propria */
+            const _own420=((P.heroStandHome===false)?-1:1)*((P.half===2&&!(typeof window!=='undefined'&&window.__CPM_NO732))?-1:1);
+            const _pan420=_own420<0&&(_pl.toward==="crowd"||_pl.toward==="corner")&&!(typeof window!=='undefined'&&window.__CPM_NO_G420);
+            sr.current._own420=_own420;
             if(!_scorer373){/* [7.373.0] col marcatore-compagno il bersaglio e' gia' deciso: la catena per fascia/bandierina non deve sovrascriverlo */
             if(_pl.toward==="mates"){let _bd=1e9,_bm=null;
               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
@@ -10356,6 +10360,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_bm){const _dx=_bm.position.x-hero.position.x,_dz=_bm.position.z-hero.position.z,_dd=Math.max(0.1,Math.hypot(_dx,_dz));
                 const _k=Math.max(0,(_dd-2.4))/_dd;/* ci si ferma ACCANTO al compagno, non dentro */
                 _ctx371=hero.position.x+_dx*_k;_ctz371=hero.position.z+_dz*_k;}}
+            else if(_pan420){/* [giro 420 PO-683 «non bisogna mai festeggiare solo la curva avversaria, e' un gesto antisportivo». Rosso __CPM_NO_G420]
+                 La corsa «sotto la curva» e la corsa alla bandierina andavano SEMPRE verso x+, cioe' sotto la curva che sta dietro la porta
+                 appena battuta. Quella curva e' dei tifosi dell'eroe solo in casa nel primo tempo e in trasferta nel secondo (lo stadio gira
+                 alla ripresa, 7.732): negli altri due casi l'eroe andava a festeggiare sotto i tifosi avversari. Ora, quando i suoi tifosi
+                 stanno dietro l'altra porta, la corsa va verso la SUA panchina (x -14, lato panchine z -38,5) e i compagni lo raggiungono li'. */
+              const _bx=-14-hero.position.x,_bz=-27-hero.position.z,_bd=Math.max(0.1,Math.hypot(_bx,_bz)),_bl=Math.min(_bd,(_pl.run||8)+4);
+              _ctx371=hero.position.x+_bx/_bd*_bl;_ctz371=hero.position.z+_bz/_bd*_bl;}
             else if(_pl.toward==="corner"){_ctx371=Math.min(hero.position.x+_pl.run,GOAL_LINE_X-6);_ctz371=_sd371*Math.min(Math.abs(hero.position.z)+8,26);}
             else{/* curva: verso la linea di fondo avversaria, ma MAI nella bocca della porta */
               _ctx371=Math.min(hero.position.x+_pl.run,GOAL_LINE_X-7);
@@ -10363,6 +10374,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             if(_ctx371!=null){_ctx371=clamp(_ctx371,-GOAL_LINE_X+6,GOAL_LINE_X-6);_ctz371=clamp(_ctz371,-27,27);
               animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);_tgt152=[_ctx371,_ctz371];}}
+          /* [giro 420] testimone (solo collaudo): per ogni esultanza il punto di partenza, il bersaglio della corsa, dove stanno i tifosi
+             dell'eroe e, fotogramma per fotogramma, quale settore sta davanti alla camera (curva propria · curva avversaria · tribuna) */
+          if(_act&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&window.__CPM_G420W){try{const W=window.__CPM_G420W,k=(_pl&&_pl.key)||0;
+            let e=W[W.length-1];if(!e||e.k!==k){if(W.length>=400)throw 0;e={k,pk:_pl&&_pl.id,tw:_pl&&_pl.toward,run:_pl&&_pl.run,own:sr.current._own420||1,casa:P.heroStandHome!==false,half:P.half||1,x0:+hero.position.x.toFixed(2),z0:+hero.position.z.toFixed(2),tgt:_tgt152,cam:{propria:0,avversaria:0,tribuna:0},n:0};W.push(e);}
+            e.x1=+hero.position.x.toFixed(2);e.z1=+hero.position.z.toFixed(2);if(_tgt152)e.tgt=[+_tgt152[0].toFixed(2),+_tgt152[1].toFixed(2)];e.n++;
+            const _fw=sr.current._fw420||(sr.current._fw420=new THREE.Vector3());camera.getWorldDirection(_fw);const _cx=camera.position.x,_cz=camera.position.z;
+            const _tx=Math.abs(_fw.x)>1e-4?((_fw.x>0?60:-60)-_cx)/_fw.x:1e9,_tz=Math.abs(_fw.z)>1e-4?((_fw.z>0?42:-42)-_cz)/_fw.z:1e9;
+            if(_tx<_tz)e.cam[((_fw.x>0?1:-1)===(sr.current._own420||1))?'propria':'avversaria']++;else e.cam.tribuna++;}catch(_e420){}}
           /* [giro 152 PO-355 «occhio ai festeggiamenti dopo un gol, a volte l'eroe vola con le braccia alzate». Rosso __CPM_NO_G152]
              MISURATO (esultanza-152, corpi 3D accesi, 14 gol forzati con l'esultanza imposta): nelle corse a braccia alzate
              (run_to_crowd, run_wide) l'eroe si spostava fino a 13 u/s con la clip `lift` montata a peso pieno e IN PAUSA
