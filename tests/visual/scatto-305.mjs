@@ -6,7 +6,11 @@
    Le soglie sono quelle di corpi-073 (non cambiano). Uscita 0 = verde e rosso visibile · 1 = rosso · 2 = cieco.
    Uso: node scatto-305.mjs   (CPM_RIT305=<ms>, default 400; SEMI, default 29) */
 import { spawnSync } from 'node:child_process';
-const RIT = process.env.CPM_RIT305 || '400', SEMI = process.env.SEMI || '29';
+/* [giro 406] provocazione di default 400 -> 1200 ms. Misurato: col ritardo di 400 ms il braccio rosso ha due modi, uno netto (001 in
+   21/21) e uno al limite (16-17/21 in locale su base e punta, 13-14/23 sul treno della 217: sotto il 75% di corpi-073, rosso «non
+   visibile»). Il ritardo e' tempo di PARETE, quindi la quota dipende dalla velocita' della macchina. A 1200 ms: rosso 23/23 e 23/23,
+   verde 0/20 e 0/21. La soglia (75% delle aperture) non cambia: cambia solo quanto forte si provoca il difetto. */
+const RIT = process.env.CPM_RIT305 || '1200', SEMI = process.env.SEMI || '29';
 function braccio(nome, spenti) {
   const r = spawnSync(process.execPath, ['corpi-073.mjs', '284f'], { env: { ...process.env, SEMI, CPM_RIT073: RIT, CPM_SPENTI073: spenti, CPM_ROSSO073: '' }, encoding: 'utf8', timeout: 900000 });
   const out = (r.stdout || '') + (r.stderr || ''); const righe = out.split('\n').filter(l => /^284f seme/.test(l));

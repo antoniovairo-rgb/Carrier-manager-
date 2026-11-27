@@ -2165,3 +2165,56 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 26/11 18:05 — Consegnati 397, 398, 399, 400, 401 (PO-672 urgente: in testa al treno della 218). Lanciati 402 (PO-577), 403 (PO-579), 404 (PO-580/581), 405 (PO-582). Treno della 217 (45847072319) a 16/32 parti.
 
 - 26/11 19:12 — Treno della 217 (45847072319) finito 32/32: rilascio FERMATO da 4 rossi nuovi: stadi-071 (329 draw call contro il tetto 322), difetti-373 (2 parti non giudicate), barriera-375 (gi150 non giudicata), scatto-305 (001 in 13/23). Lanciato giro 406 di riparazione (trova il vagone colpevole fra 372-377).
+
+- 26/11 19:15 — PO (questionario): primo avvio «Esce da solo, subito» → nuovo ramo lavoro/202 da main (= 7.999.216) con il solo vagone 401 (PO-672); treno 45874255363 partito alle 19:14. La 217 (lavoro/201, vagoni 372-377) esce dopo la riparazione del giro 406, unendo main in lavoro/201.
+
+- 26/11 19:20 — Registrata PO-673 (presentazione alla nuova squadra troppo nascosta nella home, foto del PO). Lanciato giro 407; non sale sui treni già in corsa.
+
+- 26/11 19:25 — Registrata PO-674 (cornice del ritratto del procuratore sballata, foto del PO). Lanciato giro 408.
+
+- 26/11 19:30 — Registrata PO-675 («sei felice qui?» troppo presto dopo un trasferimento). In coda n° 1: parte al primo giro libero (oggi 7 giri attivi).
+
+- 26/11 19:35 — Registrata PO-676 (tiri centrali parati che sembrano gol: il portiere si tuffa prima). In coda n° 2, dopo PO-675.
+
+- 26/11 19:40 — Registrata PO-677 (uscita dal tunnel poco realistica: corpi «appiccicati» alla bocca). In coda n° 3.
+
+- 26/11 19:45 — PO (questionario): PO-612 (giocatore 3D uguale alla figurina: statura, barba, capelli, viso) sale dal n° 54 al n° 4. Primo giro = misura + prove con peso e licenze, poi proposta al PO.
+
+- 26/11 20:05 — Consegnati 403 (PO-579), 404 (PO-580/581), 405 (PO-582), 407 (PO-673). Lanciati 409 (PO-675), 410 (PO-676), 411 (PO-677), 412 (PO-612). Attivi: 402, 406, 408, 409-412. Treno del primo avvio (lavoro/202) è un trenino di 4 parti.
+
+- 26/11 20:35 — Treno del primo avvio (lavoro/202, 45874255363, trenino 3 parti) FERMATO da 1 rosso nuovo: flussi-115 (su PC 21,4% di schermo vuoto sotto il provino, soglia 12%) — causato dal layout del giro 401. Lanciato giro 413 di riparazione urgente.
+
+- 26/11 21:10 — PO (questionario sui dubbi): (1) voto delle simulate: si tiene il voto attuale (PO-360 + «+0,3»), difficolta-156 resta rosso dichiarato sulle 3 celle del voto (giro 383, opzione 1); (2) presentazione: card in cima + tasto principale in sala stampa (giro 407, opzione 1); (3) risoluzione adattiva: pavimento 1,0 (giro 404, D1 opzione 1); (4) primo avvio: tocchi invariati per ora, si aspettano i tester (giro 401).
+
+- 26/11 21:20 — Registrata PO-678 (strisce bianche nelle anteprime di capelli/barba): fascia bianca all'attaccatura dei capelli = difetto vero del gioco; traversa nelle foto della prova barba = errore della sonda. Lanciato giro 414.
+
+- 26/11 22:20 — Registrata PO-679 dal taccuino (cross a rientrare: il compagno segna di spalle alla porta, codice 000; salto di camera codice 007). In coda n° 1.
+
+- 26/11 22:30 — Registrata PO-680 (intervista impaginata male su PC, foto del PO). In coda n° 2, dopo PO-679.
+
+- 26/11 22:31 — Uscita 7.999.217 (primo avvio, PO-672) dal rilascio automatico; sito verificato. lavoro/201 riprenderà main prima del prossimo treno.
+
+- 26/11 22:35 — Treno su lavoro/201 (main 7.999.217 + vagoni 372-377 + riparazione 406), corsa 45898863971. Lanciati giro 415 (PO-679) e 416 (PO-680). Archiviati 402, 406, 408, 409, 411, 412, 413 (consegnati).
+
+- 26/11 22:45 — Registrata PO-681 (in pausa i tasti delle scelte restano cliccabili, foto del PO). Giro 417 lanciato subito (difetto piccolo, 4 giri già attivi).
+
+- 26/11 22:50 — Registrata PO-682 (taccuino: «Testa di potenza» letta come tiro potente; corpo girato di 72° al colpo di testa). La scelta era davvero un colpo di testa: esito coerente, etichetta ambigua.
+
+- 26/11 22:55 — Registrata PO-683 (mai esultare sotto la curva avversaria, regola del PO). In coda.
+
+- 26/11 23:00 — Registrata PO-684 (verifica trimestrale calorosa con un mister nuovo e diffidente, foto del PO). In coda.
+- 27/11 01:35 Roma — Treno 7.999.218 (corsa 45898863971, lavoro/201 d75ded1d, vagoni 372-377 + riparazione 406): 395/396 guardiani giudicati come attesi, FERMO su un solo rosso nuovo `barriera-73` (verde 15,0u contro soglia ≤ 6u; il giro 375 lo dava 4,4u sul suo ramo → probabile urto tra vagoni). Nessun rilascio, sito resta 7.999.217. Lanciato giro 418 di riparazione (sviluppo/giro418-riparazione-218). Archiviati i giri 410, 414, 415, 416, 417 (consegnati). Lanciati i giri 419 (PO-682), 420 (PO-683), 421 (PO-684).
+- 27/11 07:05 Roma — Giro 418 consegnato: `barriera-73` non era rotto da un'unione, era intermittente già sul ramo 375 (un difensore fuori barriera oscillava a 7,6-9,7 m dal pallone, sotto i 9,15 regolamentari). Corretto alla fonte in src/12 (avversari fuori barriera ad almeno 10,15 m su punizione, rosso `__CPM_NO_G418`), guardiano esteso a 10 misure con soglia invariata ≤ 6u. Unito in lavoro/201 (9e876eb5): treno 218 ripartito (corsa 45949544850). Consegnati e archiviati i giri 418-421 (419 PO-682, 420 PO-683, 421 PO-684 aspettano il prossimo treno). Lanciati i giri 422 (PO-640), 423 (PO-642), 424 (PO-653), 425 (PO-658).
+- 27/11 10:05 Roma — Treno 7.999.218 ripartito (corsa 45949544850, lavoro/201 9e876eb5): FERMO su 2 rossi nuovi `testa-tempismo` (gi171 ai0: salto 0,02 u al contatto, scarto 0,16 s; verde nella corsa precedente senza il giro 418) e `rilascio-312` (lo scenario B2 legge il BLOCCO-RILASCI vero di main). In più il treno grande di notte su main (corsa 45920908452) ha acceso il BLOCCO-RILASCI con `tiro-caricato` e `rilascio-312`. Nessun rilascio, sito alla 7.999.217. Lanciato giro 426 di riparazione sui tre (sviluppo/giro426-riparazione-218).
+- 27/11 11:15 Roma — PO: «dichiarali solo per la 218». `tiro-caricato` e `rilascio-312` aggiunti a ROSSI-DICHIARATI (banco) con la scadenza «solo 7.999.218»: sbloccano BLOCCO-RILASCI per questa uscita. Da togliere subito dopo il rilascio. `testa-tempismo` NON è dichiarato: lo deve chiudere il giro 426.
+- 27/11 11:40 Roma — PO sui dubbi aperti dei giri 410, 412, 414-421: «Ok a tutte» le consigliate già applicate (27 dubbi). Giro 412: statura dell'eroe con la stessa regola degli altri → PO-685; barba e capelli «soluzione migliore, solida e scalabile» → PO-686 (strato barba + calotte modellate da noi, tabella figurina→aspetto; prima la licenza CGTrader). Voci nuove: PO-687 carnagione scura, PO-688 premiazione nel 2° tempo, PO-689 testimone della bozza. NON aperta (scelta PO): pallone che parte al primo fotogramma del calcio (giro 415, dubbio 2).
+- 27/11 11:50 Roma — PO: PO-686 (barba e capelli 3D) «spostala in fascia alta»: tipo riscritto in «difetto (…)» come per PO-683.
+- 27/11 12:05 Roma — Giro 426 consegnato e unito in lavoro/201 (880955fd, con main per i rossi dichiarati): `testa-tempismo` era un difetto vero al limite su ogni base, non il 418 (gi171 tuffo dopo cross: «control» di un fotogramma, scarto −0,01 s); `rilascio-312` difetto della prova (lo scenario ora porta il suo blocco spento); `tiro-caricato` difetto vero 1 su 6 (mancino: punto d'attesa specchiato sul corpo visibile, contatto 0,29-0,39 u contro soglia 0,7). Rosso `__CPM_NO_G426`, catena del giro 22/22. Treno 218 ripartito: corsa 45987292717.
+- 27/11 12:15 Roma — PO: «andava solo rilasciato PO-591». Verifica: PO-591 (20/11) non era mai stato lavorato; lo stesso difetto è tornato come PO-677 (26/11) e il giro 411 l'ha risolto su sviluppo/giro411-tunnel (26/11 22:17), mai salito su un treno. PO-591 e PO-677 → «consegnato sul ramo», giro 411 primo vagone del treno 219 (non sale sul 218 in corsa, regola PO).
+- 27/11 12:25 Roma — PO-690 (audio non gestibile nella schermata iniziale al primo avvio): registrata come difetto, giro 427 lanciato subito (primo avvio = area urgente di PO-672). Sale sul treno 219.
+- 27/11 12:35 Roma — PO-691 URGENTE (video intro: eroe senza spalle larghe e corporatura uniforme, «è il biglietto da visita»): giro 428 lanciato subito. Sale sul treno 219 con 411 e 427; se il 218 esce prima delle 15:30 il 219 parte appena il 428 consegna.
+- 27/11 12:40 Roma — PO-692 (musica della schermata iniziale non bella): PO «Proponimi 3 brani». Giro 429 lanciato: 3 brani CC0 tarati, file da ascoltare in docs/collaudo-po/429-brano-{A,B,C}.mp3, brano in gioco invariato finché il PO non sceglie.
+- 27/11 13:25 Roma — PO-692: il PO ha ascoltato i 3 brani del giro 429 e sceglie A («Determined Pursuit», Emma_MA, CC0), da mettere in schermata iniziale e video intro (dove la sente). Il 429 aveva letto nel codice che lì la musica è spenta: misura rifatta senza cpmtest nel giro 430, che monta A. Giro 429 archiviato.
+- 27/11 15:20 Roma — 7.999.218 PUBBLICATA (corsa 45987292717, tag v7.999.218, deploy 46013863556, sito verificato a mano). FATTO: PO-421, 462, 463, 633, 637, 646, 647. tiro-caricato e rilascio-312 tolti da ROSSI-DICHIARATI come deciso (solo per la 218). Prossimo: treno 219 con i giri 411 (PO-591/677 tunnel), 419, 420, 421 e, appena consegnati, 427, 428, 430.
+- 27/11 15:25 Roma — Treno 219 partito: lavoro/203 da main 7.999.218, corsa 46015182581, 6 vagoni: 411 tunnel (PO-591/677), 427 audio del primo avvio (PO-690), 428 spalle dell'eroe nel video intro (PO-691), 430 brano A in home e intro (PO-692, con 429), 419 colpo di testa (PO-682), 420 esultanza (PO-683). Conflitto 427↔428 in src/19 e ci-runner risolto tenendo entrambi (fermo del pannello audio + postura dell'eroe). 421 e 422-425 al treno 220. Giro 430: sulla 7.999.217 in home e intro NON suonava musica; probabile che il PO sentisse il brusio sintetico della home (ipotesi). Archiviati 427, 428, 430.
+- 27/11 15:25 Roma — Lanciati i giri 431 (PO-685 statura eroe), 432 (PO-686 barba e capelli, passo 0 licenza CGTrader), 433 (PO-687 carnagione scura), 434 (PO-688 premiazione e curva). 421-425 consegnati, attendono il treno 220.
