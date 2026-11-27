@@ -125,7 +125,7 @@ export function giudica(r) {
   return m;
 }
 
-async function scena(b, port, gi, k, esito, opt = {}) {
+export async function scena(b, port, gi, k, esito, opt = {}) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: opt.foto ? 2 : 1 }); await installCdnRoutes(page);
   await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else if (passo !== 'nativo') window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
   let W = null; const foto = [];
@@ -145,6 +145,7 @@ async function scena(b, port, gi, k, esito, opt = {}) {
       if (st.ph && !/^hl_/.test(st.ph) && st.n > 0) break;
     }
     W = await page.evaluate(() => window.__CPM_G342W || null);
+    if (opt.w422) opt.w422.v = await page.evaluate(() => window.__CPM_W422 || null);/* [giro 422] testimone del pre-stacco nell'attesa (prestacco-422.mjs) */
   } catch (e) { W = W || { err: String(e && e.message || e).slice(0, 120) }; } finally { await page.close().catch(() => {}); }
   const r = (W && W.err && !W.f) ? { err: W.err } : analizza(W);
   if (opt.foto && W && W.f && !r.err) { /* fotogrammi piu' vicini a -0,30 -0,15 0 +0,15 +0,35 s di scena dal contatto */

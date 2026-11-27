@@ -3863,6 +3863,12 @@ function ThreeMatchView(props){
     const _g177On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G177);
     /* [giro 342 PO-629] interruttore dei colpi di testa: __CPM_NO_G342 = comportamento di prima del giro (rosso del guardiano testa-342) */
     const _g342On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G342);
+    /* [giro 422 PO-640, decisione PO del giro 342 dubbio D «Tutte le consigliate»] interruttore del pre-stacco esteso all'attesa del
+       pallone: __CPM_NO_G422 = comportamento di prima (rosso del guardiano prestacco-422). __CPM_TESTA422_PROVA (solo cpmtest/sit) e' la
+       provocazione di collaudo: la scena si gioca SENZA pre-stacco dalla costruzione (come una scena senza costruzione aerea) e all'esito
+       il pallone sta 6 u lontano dalla testa, cosi' il colpo deve aspettarlo (caricamento + volo 274: ~0,4 s). */
+    const _g422On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G422)&&_g342On();
+    const _prova422=()=>typeof window!=='undefined'&&!!window.__CPM_TESTA422_PROVA&&(_CPM_TEST||_SIT_TEST);
     /* [giro 342] istante del contatto nella clip `header` del corpo CGTrader, in secondi NATIVI della clip (misurato con __CPM_CLIP342:
        vedi rapporto giro 342 §3): la testa sta ferma fino a 0,34 s, si carica all'indietro (-0,23 u dal bacino a 0,63 s) e la frustata in
        avanti ha il picco di velocita' a 0,79 s. La clip si monta in modo che questo istante cada sull'arrivo del pallone. */
@@ -5061,6 +5067,35 @@ function ThreeMatchView(props){
           const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*3.0;ball.position.z=hero.position.z-_fz174*3.0;ball.position.y=(hero.position.y||0)+1.75;ballArcY0=ball.position.y;
           try{(window.__CPM_TESTA174=window.__CPM_TESTA174||[]).push(String(P.hlSitKey));}catch(_e){}}
         if(_preT74<0&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA76)&&ball.position.y>=((typeof window!=='undefined'&&window.__CPM_NO_TESTA76B)?1.5:1.3)&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8){ballArcT=-aDt;}
+        /* [giro 422 PO-640, rosso __CPM_NO_G422] IL PRE-STACCO SI ESTENDE ALL'ATTESA DEL PALLONE. Quando il colpo di testa si monta
+           all'esito con l'eroe ancora a terra (nessun pre-stacco dalla costruzione: rimbalzo, sponda diretta) e il pallone non e' ancora alla
+           testa, il colpo aspetta (caricamento dell'arco + attesa TESTA146 / volo 274) ma la clip era fasata sul solo caricamento: la frustata
+           arrivava e la clip restava ferma sulla frustata (giro 342 correzione 12) o finiva prima (gi53, 0,38 s nel censimento del giro 342),
+           e il corpo saliva col seno della vita invece che col pallone. Ora, finche' il colpo non e' partito: (1) si stima quanto manca al
+           contatto (caricamento che resta + volo 274 che resta, o d/32 se partira', o la convergenza ln(d/0,9)/14 entro il tetto 0,8 s);
+           (2) la clip si fasa su quel tempo (_TC342 cade sul pallone) cambiando passo fra fermo e 2x, mai a scatti salvo il primo fotogramma
+           col peso ancora basso; (3) il corpo sta a terra e stacca balistico (L=sqrt(2H/g)) per arrivare all'apice col pallone; (4) la vita
+           del gesto resta prima dell'apice. Al lancio il gesto riparte dal PICCO come col pre-stacco della costruzione (discesa balistica). */
+        if(_preT74<=0&&isResult&&P.hlType==='header'&&hero&&actType==='header'){try{const S=sr.current,_k422=P.hlSitKey;
+          const _hv=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hv&&(_hv._head145||(_hv._head145=_findBone904(_hv.visualRoot||_hv.root,/^head$/i)));
+          const _hp=S._hp422||(S._hp422=new THREE.Vector3());if(_hb)_hb.getWorldPosition(_hp);else _hp.set(hero.position.x,(hero.position.y||0)+1.67,hero.position.z);
+          if(S._w422k!==_k422){S._w422k=_k422;S._w422=null;
+            if(!(S._pre33&&S._pre33.k===_k422&&S._pre33.picco)){/* a terra all'esito: il pre-stacco della costruzione non c'e' stato */
+              if(_prova422()){let _dx=ball.position.x-_hp.x,_dz=ball.position.z-_hp.z,_dl=Math.hypot(_dx,_dz);if(_dl<0.3){_dx=-Math.sin(hero.rotation.y);_dz=-Math.cos(hero.rotation.y);_dl=1;}
+                ball.position.x=_hp.x+_dx/_dl*6;ball.position.z=_hp.z+_dz/_dl*6;ballArcY0=ball.position.y;if(S._bj0){S._bj0.x=ball.position.x;S._bj0.z=ball.position.z;}/* la provocazione non e' un salto del gioco */}
+              const _hs=_hp.y-(hero.position.y||0),_H=clamp(ball.position.y-(hero.position.y||0)-_hs+0.05,0.25,0.9);
+              S._w422={k:_k422,H:_H,L:clamp(Math.sqrt(2*_H/9.8),0.16,0.42),tau:null,n:0,on:_g422On(),lanc:false,w:null};
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const WW=(window.__CPM_W422=window.__CPM_W422||[]);if(WW.length<60){S._w422.w={k:String(_k422),prova:_prova422()?1:0,rosso:S._w422.on?0:1,tau0:null,tauLanc:null,maxTau:0};WW.push(S._w422.w);}}catch(_e){}}}}
+          const W=S._w422;
+          if(W&&W.k===_k422&&!W.lanc){const _d=_hp.distanceTo(ball.position),_mio=S._w146k===_k422,_Vt=_mio?S._v274t:null;let _tw;
+            if(_mio&&S._l146)_tw=0;else if(_Vt&&_Vt.on&&_Vt.f<_Vt.D&&_Vt.tr<6)_tw=_Vt.D-_Vt.f;else if(_d>4)_tw=_d/32;else if(_d>0.9)_tw=Math.min(Math.log(_d/0.9)/14,Math.max(0,0.8-(_mio?S._w146:0)));else _tw=0;
+            W.tau=Math.max(0,-_preT74)+_tw;if(W.w){if(W.w.tau0==null)W.w.tau0=+W.tau.toFixed(2);if(W.tau>W.w.maxTau)W.w.maxTau=+W.tau.toFixed(2);}
+            if(W.on){
+              if(!W.r&&W.tau<W.L){const _Lr=Math.max(0.05,W.tau);W.r={L:_Lr,H:W.H*(_Lr/W.L)*(_Lr/W.L)};}/* lo stacco parte da terra: se manca meno di L, salto piu' basso con la stessa gravita' (MISURATO senza: testa a 20,8 u/s nel primo fotogramma) */
+              if(_hv&&_hv._gName==='header'&&_hv._gAct){const _ts=+_hv._gAct.getEffectiveTimeScale()||1,_cur=+_hv._gAct.time||0,_tg=clamp(_TC342-(W.tau+aDt)*_ts,0,_TC342);
+                _hv._gAct.time=clamp(_tg,_cur-aDt*_ts,_cur+aDt*_ts);W.n++;}/* passo fra fermo e 2x, mai uno scatto: MISURATO col salto diretto al primo fotogramma (clip 0,47 → 0,22 a peso 0,31) la testa faceva 20,7 u/s */
+              const _vh422=0.5*gwOf('header','vita');if(actT>_vh422-0.02)actT=_vh422-0.02;}}
+        }catch(_e422){}}
         /* [7.999.144 decisione PO 06/10 «colpo di testa» in L1. Rosso __CPM_NO_TESTA146] MISURATO (testimone testa-pallone, scene forzate
            gi1/gi36/gi44 e una partita S12): quando parte l'arco del colpo di testa la testa dell'eroe e' a 3,1-3,3 u dal pallone in due scene
            su tre, e in partita non arriva mai sotto 2,6 u: l'arco del colpo parte subito (senza caricamento) dal punto di consegna del cross, 3 u prima della testa (7.237), e da li' va in porta. Ora il colpo
@@ -5090,6 +5125,7 @@ function ThreeMatchView(props){
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const W=(window.__CPM_TESTA274=window.__CPM_TESTA274||[]);if(W.length<100){S._v274t.w={k:String(P.hlSitKey),t0:Math.round(performance.now()),d0:+_d146.toFixed(1),D:+S._v274t.D.toFixed(2),vmax:0,arrivo:null,rosso:_no274t?1:0};W.push(S._v274t.w);}}catch(_e){}}}}
           const _Vt=S._v274t;const _vola274t=!!(_Vt&&_Vt.on&&_Vt.f<_Vt.D&&_Vt.tr<6);
           if(!S._l146&&!_vola274t&&((_Vt&&_Vt.on)/* volo finito (arrivato o al tetto): il colpo parte da dove il pallone e', nessun trascinamento */||!(_d146>0.9&&S._w146<0.8))){S._l146=true;if(_Vt&&_Vt.w&&_Vt.w.arrivo==null)_Vt.w.arrivo=+_d146.toFixed(2);}
+          {const W=S._w422;if(S._l146&&W&&W.k===P.hlSitKey&&!W.lanc){W.lanc=true;if(W.w)W.w.tauLanc=W.tau==null?null:+W.tau.toFixed(2);if(W.on){const _R=W.r||{H:W.H,L:W.L};S._pre33={k:P.hlSitKey,t:0,rem0:_R.L,rem:0,H:_R.H,L:_R.L,lead:_R.L,picco:true,w422:1};actT=0.5*gwOf('header','vita');}}}/* [giro 422] partito: discesa balistica dal picco */
           /* [giro 342 PO-629] IL COLPO DI TESTA PARTE DALLA TESTA. MISURATO (testa-342, gi108 spizzata): il pallone arriva a 0,06-0,11 u dalla
              testa, poi nel fotogramma dell'armo una scrittura non identificata ne abbassa la quota di 0,35 u (1,93 → 1,58: x e z fermi) e il colpo
              parte a 0,41-0,47 u, sotto il mento. Al lancio, col pallone gia' entro 0,9 u, il pallone si appoggia alla fronte (0,22 u: raggio +
@@ -8973,7 +9009,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              volo del cross), la salita e' balistica (parte sqrt(2H/g) prima dell'arrivo e arriva all'apice col pallone) e la clip si monta
              _TC342/scala prima dell'arrivo, cosi' il suo contatto cade sul pallone (montaggio, sotto). */
           const _on342=_g342On();let _end342=acc+((tlSeg[bi]&&tlSeg[bi].dur)||0);if(_on342){_end342=0;for(let j=0;j<tlBuildN;j++)_end342+=tlSeg[j].dur;}
-          if(P.hlType==='header'&&(P.hlVariant!=='header_diving'||_tuffo109)&&!actType&&tlBuildN>0&&(_on342?(bi>=tlBuildN-2&&bi<tlBuildN):bi===tlBuildN-1)&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
+          if(P.hlType==='header'&&(P.hlVariant!=='header_diving'||_tuffo109)&&!actType&&tlBuildN>0&&!_prova422()&&(_on342?(bi>=tlBuildN-2&&bi<tlBuildN):bi===tlBuildN-1)&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
             const _rem33=_end342-tlT,_PRE33=0.5*gwOf('header','vita');
             if(_rem33<=_PRE33){const S33=sr.current;
               if(!S33._pre33||S33._pre33.k!==P.hlSitKey){let _hs=1.67;try{const _hav=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hav&&_findBone904(_hav.visualRoot||_hav.root,/^(head|(mixamorig:?)?Head)$/i);if(_hb){const _v=new THREE.Vector3();_hb.getWorldPosition(_v);_hs=_v.y-(hero.position.y||0);}}catch(_e){}
@@ -10107,6 +10143,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }else{// near_post default: salto standard + nod testa
               hero.position.y=_g342Y(sw,(sr.current._pre33&&sr.current._pre33.picco&&sr.current._pre33.k===P.hlSitKey)?sr.current._pre33.H:2.2);if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;
             }
+            {const W=sr.current._w422,_p422=sr.current._pre33;if(isResult&&_g422On()&&!(_p422&&_p422.picco&&_p422.k===P.hlSitKey)&&!(W&&W.k===P.hlSitKey&&W.lanc))hero.position.y=(W&&W.k===P.hlSitKey&&W.r&&W.tau!=null)?W.r.H*Math.max(0,1-(W.tau/W.r.L)*(W.tau/W.r.L)):0;}/* [giro 422] nell'attesa lo stacco e' quello del pre-stacco: a terra, poi balistico fino all'apice col pallone */
           }
           else if(actType==="tackle"){
             /* [7.242.0 gi34 «Non si vede il gesto tecnico specifico»] tre pose per le tre famiglie
