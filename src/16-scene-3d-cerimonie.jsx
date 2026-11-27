@@ -378,7 +378,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
     const camVX=(R(6)-0.5)*0.5,camVY=1.42+R(7)*0.12;
     // ── eroe: identità della CARRIERA (stessa fonte/formule del live match → riconoscibile) ──
     const hAv=(typeof AVATARS!=='undefined'&&AVATARS[(((avatarId|0)%AVATARS.length)+AVATARS.length)%AVATARS.length])||{skin:'#f0c8a0',hair:'#3a2410'};
-    const heroH=1.86+((avatarId*73)%100)/100*0.16,heroG=0.97+((avatarId*131)%100)/100*0.10;
+    const _ce431=corpoEroe431(avatarId),heroH=_ce431.height,heroG=_ce431.girth;/* [giro 431 PO-685] dalla figurina */
     const heroShirt=(club&&club.c)||'#8e1f33',heroC2=(club&&club.c2)||'#f0f0f0';
     const heroPat=(club&&typeof kitPatternFor==='function'&&kitPatternFor(club))||null;
     const heroShorts=(typeof hexLum==='function'&&hexLum(heroShirt)>=0.5)?'#16181d':'#e8e8ea';
@@ -1681,7 +1681,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     const _num=heroNum|0;
     /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
     const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
-      return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
+      const _ce431=corpoEroe431(avatarId);/* [giro 431 PO-685] dalla figurina */return av?{height:_ce431.height,girth:_ce431.girth,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
     /* [7.999.124 PO-200 collaudo PO 03/10 «Nella presentazione della squadra far vedere i CGTrader ed in piccolo come in televisione
        la figurina»] LA FILA SONO I CORPI CGTRADER degli highlight, della premiazione e della parata (stesso file, stessa postura): in
        piedi e fermi (idle in pausa su un istante diverso per uomo), maglia e calzettoni del club, pantaloncini nel secondo colore,
@@ -2373,7 +2373,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
         const _kit204=(av)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G204)return;try{av.traverse(m=>{if(!m.isMesh||!m.material)return;const L=Array.isArray(m.material)?m.material:[m.material];
           const _re208=(typeof window!=='undefined'&&window.__CPM_NO_G208)?/^Hyper(Shirt|Shorts|Socks)$/:/^HyperShirt$/;/* [giro 208 PO-469 — rosso __CPM_NO_G208] decisione PO 15/11: la correzione del colore vale SOLO per la maglia; pantaloncini e calzettoni tornano come prima del giro 204 (misurato pullman-204: pantaloncini bianchi luminosita' 0,890 col 204 contro 0,984 prima) */
           for(const c of L){if(!c||!_re208.test(c.name||'')||!c.color||c._k204)continue;c._k204=1;c.color.convertSRGBToLinear().multiplyScalar(_KIT204);if(c.emissive)c.emissive.convertSRGBToLinear().multiplyScalar(_KIT204);if('metalness' in c)c.metalness=0;c.needsUpdate=true;}});}catch(_e){}};
-        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;_kit204(av);
+        const _ce431=corpoEroe431(avatarId),_alt431=i=>(i===0&&!(typeof window!=='undefined'&&window.__CPM_NO_G431))?_ce431.height:1.78+R(i*31)*0.12;/* [giro 431 PO-685] l'eroe (davanti) con la statura della figurina */
+        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:_alt431(i)});if(!av)continue;_kit204(av);
           /* [giro 240 PO-500] pelle e capelli dalla figurina: l'eroe la sua; i compagni sul tetto hanno le chiavi della parata disegnata (ParataScena2D: «parata-<club>-<i>») */
           figurina240(av,i===0?'eroe-'+(avatarId|0):'parata-'+((club&&club.id)||'x')+'-'+(i-1),'parata',i===0?'eroe':(slots[i].x<0?'tetto-sx':'tetto-dx'));
           const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
@@ -2385,7 +2386,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
                 for(let k=0;k<=40;k++){const tt=clip.duration*k/40;act.time=tt;mx.update(0);av.updateMatrixWorld(true);hd.getWorldPosition(va);let m=1e9;for(const h of hs){h.getWorldPosition(vb);m=Math.min(m,vb.y-va.y);}if(m>best){best=m;apice=tt;}}
                 try{if(window.__CPM_PARATA)window.__CPM_PARATA.apice23=+(apice/clip.duration).toFixed(3);}catch(_e){}}}catch(_e){}}
           av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;
-          if(eroe){av._alt192=1.78+R(i*31)*0.12;try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
+          if(eroe){av._alt192=_alt431(i);try{av.traverse(o=>{if(!o.isBone)return;if(o.name==='head')av._testa192=o;if(o.name==='upperarm_l')av._uaL=o;if(o.name==='upperarm_r')av._uaR=o;if(o.name==='lowerarm_l')av._laL=o;if(o.name==='lowerarm_r')av._laR=o;if(o.name==='hand_l')av._hdL=o;if(o.name==='hand_r')av._hdR=o;});}catch(_e){}}
           if(eroe&&po192){try{const _vc=(po192.animations||[]).find(c=>c&&c.name==='mx-victory');if(_vc){act.stop();ia.stop();const _va=mx.clipAction(_vc);_va.play();_va.paused=true;_va.time=_vc.duration*0.45;mx.update(0);av._cg23.act=_va;av._cg23.d=_vc.duration;av._cg23.vit192=_vc.duration*0.45;}}catch(_e){}}}
         men.forEach(m=>{if(m._cg23)m._cg23.apice=(m._cg23.vit192!=null)?m._cg23.vit192:apice;});
         if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
@@ -2700,7 +2701,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     const _gq=new THREE.Quaternion(),_gq2=new THREE.Quaternion(),_ge=new THREE.Euler();/* [7.143.0] busta bone-parented */
     let _bodyG=null,_idleG=null,_liftG=null,_walkG=null,_kw51=false;/* [7.999.51] _kw51: _bodyG e' il corpo della partita (korward), vestito in smoking da mkTux51 */
     const hAv=(typeof AVATARS!=='undefined'&&AVATARS[(((avatarId|0)%AVATARS.length)+AVATARS.length)%AVATARS.length])||{skin:'#f0c8a0',hair:'#3a2410'};
-    const heroH=1.86+((avatarId*73)%100)/100*0.16,heroG=0.97+((avatarId*131)%100)/100*0.10;
+    const _ce431=corpoEroe431(avatarId),heroH=_ce431.height,heroG=_ce431.girth;/* [giro 431 PO-685] dalla figurina */
     const mkElegant=(o)=>{/* CH38 in abito: giacca=shirt · pantaloni=shorts+socks in tinta · scarpe eleganti · camicia V + papillon su Spine2 · (donna) chioma 3 masse */
       const av=THREE.SkeletonUtils.clone(_bodyG.scene);
       const bb=new THREE.Box3().setFromObject(av);const hh=Math.max(0.1,bb.max.y-bb.min.y);const sc=(o.height||1.76)/hh;av.scale.set(sc*(o.girth||0.96),sc,sc*(o.girth||0.96));

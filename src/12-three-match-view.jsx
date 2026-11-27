@@ -197,7 +197,7 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
   const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
   let lo=Infinity,hi=-Infinity;const v=new THREE.Vector3();av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(v);lo=Math.min(lo,v.y);hi=Math.max(hi,v.y);});
-  const hh=(hi-lo)>0.5?(hi-lo):1.8;av.scale.setScalar((altezza||1.82)/hh);av.updateMatrixWorld(true);
+  const hh=(hi-lo)>0.5?(hi-lo):1.8;av.scale.setScalar((altezza||1.82)/hh);av.updateMatrixWorld(true);av.userData.alt431={h:altezza||1.82};/* [giro 431] statura dichiarata (testimone) */
   const col={HyperShirt:shirt,HyperShorts:shorts,HyperSocks:socks||shirt,HyperBoots:shoes||'#15161a'};
   av.traverse(m=>{if(!m.isMesh||!m.material)return;m.frustumCulled=false;const pm=(m.name||'').match(/^HyperShirtPattern-([a-z]+)/);if(pm)m.visible=pm[1]==='solid';
     const src=Array.isArray(m.material)?m.material:[m.material];const nx=src.map(b=>{const hex=b&&col[b.name];if(hex==null)return b;const c=b.clone();c.map=null;c.color=new THREE.Color(hex);if('emissive' in c)c.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in c)c.roughness=.82;if(c.transparent){c.transparent=false;c.depthWrite=true;c.alphaTest=.5;}c.needsUpdate=true;return c;});
@@ -1749,7 +1749,8 @@ function ThreeMatchView(props){
       if(!(typeof window!=='undefined'&&window.__CPM_NO_GUANTI_PO201)){const _g201=c=>hexLum(c)<0.45?'#e8edf2':'#1b1f2a';try{_gkHomeKit.guanti=_g201(_gkA);_gkAwayKit.guanti=_g201(_gkB);}catch(_e){}}
       // 3D-VARIETY (Step B): protagonista dal SUO avatar (mai casuale); NPC con aspetto deterministico per club+slot (persistente).
       const _av=(typeof AVATARS!=='undefined'&&AVATARS[avatarId])||null;
-      const _heroAppr=_av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:_av.skin,hair:_av.hair,hairStyle:_av.hairStyle||'short',bodyType:_av.bodyType||'regular',bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
+      const _ce431=corpoEroe431(avatarId);/* [giro 431 PO-685] statura e corporatura dell'eroe dalla figurina, come i 21 (giro 412) */
+      const _heroAppr=_av?{height:_ce431.height,girth:_ce431.girth,skin:_av.skin,hair:_av.hair,hairStyle:_av.hairStyle||'short',bodyType:_av.bodyType||'regular',bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
       const _homeKey=(homeClub&&(homeClub.id||homeClub.n))||homeCol||'H',_awayKey=oppCol||'A';
       // gesti one-shot: EROE (offensivi: kick/penalty/header/tackle/volley) + PORTIERE avversario (parata: dive/catch/block).
       // helper riusabile: monta una mappa di clipAction one-shot (peso 0 a riposo) su un qualunque avatar.
@@ -2113,7 +2114,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(_scalaCorpo21()*(targetHeight/rawHeight));visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          {const _ap240=_corp412(old.proc,_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index))));if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
+          {const _ap240=_corp412(old.proc,_aspetto240(old.proc,old._appearance||appearanceFromSeed(hashStr('hyper_'+index))));if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};visual.userData.alt431={h:declaredHeight,girth:+((_ap240&&_ap240.girth)||1).toFixed(3),eroe:index===0};_chi240(visual,old.proc,old._isRef?'arbitro':(index===0?'eroe':(old._team||'home')));_applyHyperBuild(visual,_ap240);_applyHyperKit(visual,old._kit||_homeKit,_ap240,old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,_ap240);}
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -2140,7 +2141,7 @@ function ThreeMatchView(props){
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-            const appearance=_corp412(host.proc,_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index))));{const _f412=_fig412(host.proc);if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};}_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
+            const appearance=_corp412(host.proc,_aspetto240(host.proc,host._appearance||appearanceFromSeed(hashStr('hyper_'+index))));{const _f412=_fig412(host.proc);if(_f412)visual.userData.g412={cm:_f412.cm,kg:_f412.kg,h:_f412.h,girth:+_f412.girth.toFixed(3)};visual.userData.alt431={h:host._h||1.8,girth:+((appearance&&appearance.girth)||1).toFixed(3),eroe:index===0};}_chi240(visual,host.proc,host._isRef?'arbitro':(host._isHero?'eroe':(host._team||'home')));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
