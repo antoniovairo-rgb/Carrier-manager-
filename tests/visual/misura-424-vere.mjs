@@ -39,7 +39,7 @@ async function gioca(sk, sd) {
     if (aperta && !inHL) {/* la scena si e' chiusa da sola: si prendono i suoi fotogrammi */
       const F = await page.evaluate((k) => (window.__CPM_F364 || []).filter(f => f.sk === k), aperta.sk);
       const n0 = F.findIndex(f => f.t >= aperta.tScelta); const run = { F, nScelta: n0 < 0 ? F.length : n0, st: { y0: aperta.pp ? +aperta.pp.y : 50, text: aperta.t } };
-      righe.push({ nome: `${sk}/${sd} ${aperta.min}'`, k: aperta.k, az: aperta.scelta, esito: 'vero', testo: aperta.t, fascia: aperta.fascia, pp: aperta.pp, m: metriche424(run), ...(process.env.CPM_GREZZO ? { F, nScelta: run.nScelta } : {}) });
+      righe.push({ nome: `${sk}/${sd} ${aperta.min}'`, k: aperta.k, az: aperta.scelta, esito: 'vero', testo: aperta.t, fascia: aperta.fascia, pp: aperta.pp, m: metriche424(run), r424: await page.evaluate((k) => [(window.__CPM_R424 || {})[k]].filter(Boolean), aperta.sk), ...(process.env.CPM_GREZZO ? { F, nScelta: run.nScelta } : {}) });
       aperta = null; await page.evaluate(() => { window.__CPM_F364.length = 0; });
     }
     if (st.ph === 'ended' || st.ph === 'ceremony') { chiusa = 'fine'; break; }
@@ -64,7 +64,7 @@ const fatti = []; let p = 0;
 await Promise.all(Array.from({ length: Math.min(PAR, lavori.length) }, async () => { while (p < lavori.length) { const i = p++;
   try { fatti[i] = await gioca(lavori[i].sk, lavori[i].sd); } catch (e) { fatti[i] = { ...lavori[i], err: String(e).slice(0, 160), righe: [] }; }
   const f = fatti[i]; console.log(`${f.sk} seme ${f.sd} (${f.chiusa || 'err'}, ${f.s || '-'} s, ${f.mMax || '-'}') scene di fascia ${f.righe.length}${f.err ? ' ERR ' + f.err : ''}`);
-  for (const r of f.righe) { const m = r.m, q = m.ric; console.log(`  ${r.nome} «${(r.testo || '').slice(0, 30)}» → «${(r.az || '').slice(0, 26)}» ${m.cieco ? 'CIECO ' + m.cieco : m.senzaRicevente ? 'senza ricevente' : m.ricEroe ? 'ricevente=eroe' : `ric#${m.id} lettura (${q.xA},${q.zA}) quadro ${q.qA} quota ${m.quotaQuadro} corsa ${m.corsa} dEroe ${m.dEroe}`}`); } } }));
+  for (const r of f.righe) { const m = r.m, q = m.ric; console.log(`  ${r.nome} «${(r.testo || '').slice(0, 30)}» → «${(r.az || '').slice(0, 26)}» ${m.cieco ? 'CIECO ' + m.cieco : m.senzaRicevente ? 'senza ricevente' : m.ricEroe ? 'ricevente=eroe' : `ric#${m.id} lettura (${q.xA},${q.zA}) quadro ${q.qA} quota ${m.quotaQuadro} corsa ${m.corsa} dEroe ${m.dEroe}`} R424 ${JSON.stringify((r.r424 || []).slice(-1)[0] || null)}`); } } }));
 await b.close(); srv.close();
 fs.mkdirSync('out', { recursive: true }); fs.writeFileSync(OUT, JSON.stringify({ flags: FLAGS, fatti }));
 console.log(`\nmisura-424-vere ${FLAGS.join(',') || 'verde'}: partite ${fatti.length}, finite ${fatti.filter(f => f && f.chiusa === 'fine').length}`);

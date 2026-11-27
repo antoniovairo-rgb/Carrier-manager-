@@ -4017,6 +4017,10 @@ function ThreeMatchView(props){
     let _chooseT=-1,_hlSnap=false; // FREEZE #2: timer della fase di LETTURA + flag di SNAP iniziale (i giocatori off-ball si posizionano e restano fermi finché l'eroe non sceglie o scatta il timer)
     let netBulgeT=-1,prevInNet=false,concededT=-1; // CINE-6: gonfiamento rete + delusione portiere al gol subìto
     let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
+    /* [giro 424 PO-653] il ricevente della scena scelto all'apertura (_r99: nominato dal motore o, senza cast, scelto li') e' quello che riceve
+       anche nei rami di ripiego (scarico, tacco), se sta davanti a chi passa: prima questi rami sceglievano un altro compagno al lancio. */
+    const _ric424=(hx,hr)=>{try{const P=propsRef.current,S=sr.current._r99;if(!P||!P.hlPass424||!S||S.k!==P.hlSitKey||S.i<0||(typeof window!=='undefined'&&window.__CPM_NO_G424))return null;
+      const q=sr.current.players&&sr.current.players[S.i],m=q&&q.mesh;return (m&&m!==hr&&(m.position.x-hx)>-2)?m:null;}catch(_e){return null;}};
     /* [23/09 POC — B4: IL DIFENSORE LO DICHIARA IL MOTORE. Rosso __CPM_NO_B4DIF] I quattro punti che scelgono l'avversario che
        interviene (contrasto, intercetto, inciampo) prendevano il piu' vicino: misurato, coincideva col difensore del motore 0
        volte su 5. Ora chiedono qui: il difensore del cast se e' in campo ed entro `maxD` dal punto dell'azione (oltre, il gesto
@@ -5217,7 +5221,7 @@ function ThreeMatchView(props){
                  prossimo lavoro su questa riga. */
               if(_ht==="freekick"){hlPostArcT=0;hlPostArcType="cross_goal";sr.current._cg102=false;}// punizione battuta in area (compagno incorna; chance→deflect)
               else{if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh._runToX=Math.min(passTargetMesh.position.x+12,AWAY_GOAL_X-6);passTargetMesh._runToZ=passTargetMesh.position.z;/* [7.240.0 gi26 «Non si vede il compagno che riceve»] il puntatore RESTA (vedi sito gemello del pass): senza, il ricevente del tacco/scarico spariva dal driver dopo il gesto */}
-                else{let _rdA712=1e9,_rmA712=null;const _hxA712=hero.position.x,_hzA712=hero.position.z;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk&&pp.mesh!==hero){const _fw=pp.mesh.position.x-_hxA712;if(_fw>-2){const _dh53=Math.hypot(_fw,pp.mesh.position.z-_hzA712);const _sc=_dh53-Math.max(0,_fw)*0.6+(_dh53<6?14:0);if(_sc<_rdA712){_rdA712=_sc;_rmA712=pp.mesh;}}}});if(_rmA712){_rmA712._rcvT=0;_rmA712._runToX=Math.min(_rmA712.position.x+12,AWAY_GOAL_X-6);_rmA712._runToZ=_rmA712.position.z;passTargetMesh=_rmA712;}}
+                else{let _rdA712=1e9,_rmA712=_ric424(hero.position.x,hero);const _hxA712=hero.position.x,_hzA712=hero.position.z;if(!_rmA712)sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk&&pp.mesh!==hero){const _fw=pp.mesh.position.x-_hxA712;if(_fw>-2){const _dh53=Math.hypot(_fw,pp.mesh.position.z-_hzA712);const _sc=_dh53-Math.max(0,_fw)*0.6+(_dh53<6?14:0);if(_sc<_rdA712){_rdA712=_sc;_rmA712=pp.mesh;}}}});if(_rmA712){_rmA712._rcvT=0;_rmA712._runToX=Math.min(_rmA712.position.x+12,AWAY_GOAL_X-6);_rmA712._runToZ=_rmA712.position.z;passTargetMesh=_rmA712;}}
                 hlPostArcT=0;hlPostArcType="assist_recv";sr.current._arRcv=null;sr.current._arLandX=null;}}// tacco/appoggio/scarico a terra → compagno finalizza
             /* [7.477.0 — RIMEDIO PROVATO E REVOCATO, e la traccia resta perche' vale piu' del rimedio]
                Le note #150/#31 dicono «l'esito dichiarato e' CHANCE/RECOVERY ma la palla e' finita IN
@@ -5275,8 +5279,8 @@ function ThreeMatchView(props){
                 //   una COSTRUZIONE/dribbling che vale ASSIST GIOCA la palla IN AVANTI a un compagno che avanza (stesso
                 //   flusso pass-assist assist_recv→assist_shot), NON un pugno fermo. Il ricevente (più avanzato in spazio,
                 //   davanti al portatore) è selezionato qui perché il ramo build/dribble non passa dal setup del pass.
-                let _rd711=1e9,_rmB711=null;const _hx711=hero.position.x,_hz711=hero.position.z;
-                sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk&&pp.mesh!==hero){const _fw=pp.mesh.position.x-_hx711;if(_fw>-2){const _dh53=Math.hypot(_fw,pp.mesh.position.z-_hz711);const _sc=_dh53-Math.max(0,_fw)*2.4+(_dh53<6?14:0);if(_sc<_rd711){_rd711=_sc;_rmB711=pp.mesh;}}/* [7.310.0 collaudo PO «scena surreale: assist a un compagno che ha segnato, la palla ha fatto un cerchio su se stesso»] il peso sull'AVANZAMENTO era 0.6 contro una distanza in unita' piene: su un chip «oltre la difesa» dalla trequarti vinceva il compagno piu' VICINO — quasi in linea con l'eroe, ma spostato di lato — e la palla, dopo l'arco in avanti, tornava indietro attraversando il campo per raggiungerlo: da qui il giro su se stessa. Con peso 2.4 vince chi e' davvero PIU' AVANTI, cioe' l'uomo che il chip stava cercando: la palla prosegue verso la porta e la conclusione arriva dove deve. *//* [7.254.0 gi57 «non si vede il compagno» — misurato: ricevente a 2.9u dall'EROE, il passaggio+tiro a 3 metri sembra la continuazione dell'eroe] penalità di punteggio ai compagni sotto i 6u: il servizio va a un uomo DISTINGUIBILE (fallback naturale se non c'è nessuno oltre) */}});
+                let _rd711=1e9,_rmB711=_ric424(hero.position.x,hero);const _hx711=hero.position.x,_hz711=hero.position.z;
+                if(!_rmB711)sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk&&pp.mesh!==hero){const _fw=pp.mesh.position.x-_hx711;if(_fw>-2){const _dh53=Math.hypot(_fw,pp.mesh.position.z-_hz711);const _sc=_dh53-Math.max(0,_fw)*2.4+(_dh53<6?14:0);if(_sc<_rd711){_rd711=_sc;_rmB711=pp.mesh;}}/* [7.310.0 collaudo PO «scena surreale: assist a un compagno che ha segnato, la palla ha fatto un cerchio su se stesso»] il peso sull'AVANZAMENTO era 0.6 contro una distanza in unita' piene: su un chip «oltre la difesa» dalla trequarti vinceva il compagno piu' VICINO — quasi in linea con l'eroe, ma spostato di lato — e la palla, dopo l'arco in avanti, tornava indietro attraversando il campo per raggiungerlo: da qui il giro su se stessa. Con peso 2.4 vince chi e' davvero PIU' AVANTI, cioe' l'uomo che il chip stava cercando: la palla prosegue verso la porta e la conclusione arriva dove deve. *//* [7.254.0 gi57 «non si vede il compagno» — misurato: ricevente a 2.9u dall'EROE, il passaggio+tiro a 3 metri sembra la continuazione dell'eroe] penalità di punteggio ai compagni sotto i 6u: il servizio va a un uomo DISTINGUIBILE (fallback naturale se non c'è nessuno oltre) */}});
                 if(_rmB711){_rmB711._rcvT=0;_rmB711._runToX=Math.min(_rmB711.position.x+12,AWAY_GOAL_X-6);_rmB711._runToZ=_rmB711.position.z;passTargetMesh=_rmB711;}
                 hlPostArcT=0;hlPostArcType="assist_recv";sr.current._arRcv=null;sr.current._arLandX=null;}
               else{heroPostT=0;heroPostType="fist";}}
@@ -6320,8 +6324,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&(Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40||(sr.current._r99&&sr.current._r99.k===P.hlSitKey&&sr.current._r99.i===_ri&&!(typeof window!=='undefined'&&window.__CPM_NO_G99RIC)));/* [giro 99] il nominato portato sul punto di ricezione si serve sempre se e' davanti alla palla (anche lungo) */
               if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
               /* [giro 424] senza cast: il ricevente scelto all'apertura (e portato sul punto di ricezione) e' quello che riceve, se sta davanti alla palla */
-              if(!_ok&&_ri==null&&sr.current._r99&&sr.current._r99.g424&&sr.current._r99.k===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_G424)){const _q4=sr.current.players[sr.current._r99.i];const _m4=_q4&&_q4.mesh;
-                if(_m4&&_m4!==hero&&(_m4.position.x-_phx)>-3){passTargetMesh=_m4;_ptX=_m4.position.x;_ptZ=_m4.position.z;}}
+              if(!_ok){const _m4=_ric424(_phx-1,hero);if(_m4){passTargetMesh=_m4;_ptX=_m4.position.x;_ptZ=_m4.position.z;}}
               if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
             }catch(_eB4r){}}
             /* [giro 104, solo sonde] il ricevente AL LANCIO del passaggio: il testimone B4 lo leggeva al primo fotogramma di hl_result, ma questo
@@ -8495,7 +8498,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const hx=+P.playerX,hy=+P.playerY;if(!isFinite(hx)||!isFinite(hy))return null;const ap=P.allPlayers||[];
           let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
             if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
-            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};
+            const sg=hy<50?1:-1;const _n424=!!(P.hlPass424&&!(typeof window!=='undefined'&&window.__CPM_NO_G424));
+            /* [giro 424] nelle scene di passaggio/assist il punto sta DENTRO il quadro: la camera di lettura sta ~25 u dietro l'eroe e sul telefono
+               (412x915) vede circa +-6 u di lato all'altezza dell'eroe; il punto del giro 99 (9 di y = 5,4 u, 14 = 8,4 u vicino alla porta) cadeva
+               fuori (misurato: gi3 a 9,5 u di lato, s12 28' «Uno-due con SPENCER» a 22,5 u). Qui 10 avanti e 6 di y (4,1 u), 8 vicino alla porta (5,4 u). */
+            S=sr.current._r99={k:P.hlSitKey,i:ci,n424:_n424,x:clamp(hx+(hx>80?6:(_n424?10:12)),4,93),y:clamp(hy+sg*(hx>80?(_n424?8:14):(_n424?6:9)),8,92)};
             /* [giro 424 PO-653 «quando l'eroe fa un passaggio ad un compagno, in particolare tentativi di assist, quest'ultimo non e' gia'
                nella scena!». Rosso __CPM_NO_G424] MISURATO (misura-424, GLB acceso, teatro acceso, 27 passaggi/assist del catalogo): senza il
                cast del motore il ricevente si sceglieva SOLO al lancio (fireConclusion, ramo `pass`) fra chi stava davanti entro 34 u, quindi
@@ -8507,6 +8514,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               for(let j=0;j<ap.length;j++){const q=ap[j];if(j===21||!q||q.team!=='home'||q.gk||q._taker402||(_ss&&_ss.taker===j)||!isFinite(+q.x)||!isFinite(+q.y))continue;
                 const d=Math.hypot(+q.x-S.x,(+q.y-S.y)*0.6);if(d<_bd){_bd=d;S.i=j;}}
               if(S.i>=0)S.g424=1;}}
+          /* [giro 424] il punto SEGUE L'EROE durante la lettura: misurato nel gioco vero (s12 28' e 69'), il ricevente stava esattamente sul suo
+             punto ma l'eroe a fine lettura era a 16-22 u da dove la scena l'aveva aperto (P.playerX/Y), e il compagno restava fuori dal quadro.
+             In tutta la lettura (anche hl_intro, dove il teatro sposta l'eroe: misurato al 69' da 12,-17 a 31,3) il punto si ricalcola dalla
+             posizione disegnata dell'eroe; il compagno ci va col moto normale, o sotto lo stesso stacco nero che ha spostato l'eroe (sotto). */
+          if(S.n424&&hero&&(P.matchPhase==='hl_intro'||P.matchPhase==='hl_move'||P.matchPhase==='hl_choose')){const ex=hero.position.x+50,ey=hero.position.z/0.68+50,sg2=ey<50?1:-1;
+            S.x=clamp(ex+(ex>80?6:10),4,93);S.y=clamp(ey+sg2*(ex>80?8:6),8,92);}
+          {const C=P.castBrain&&P.castBrain.current,ci=S.i;
+            if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_REC364){try{const W=(window.__CPM_R424=window.__CPM_R424||{});W[String(P.hlSitKey)]=({k:String(P.hlSitKey),ci,i:S.i,g:S.g424?1:0,e:hero?[+hero.position.x.toFixed(1),+hero.position.z.toFixed(1)]:null,x:+S.x.toFixed(1),y:+S.y.toFixed(1),hx:+hx.toFixed(1),hy:+hy.toFixed(1),cast:C&&C.ricevente?C.ricevente.i:null,ph:P.matchPhase});}catch(_e424){}}/* [giro 424] testimone di sola prova: chi e' il ricevente della scena e dove e' il suo punto (ultimo stato per scena) */}
           /* [giro 293] solo banco di prova (?cpmtest=1): la sonda dichiara «il ricevente del cast e' il battitore della scena», cioe' il caso del
              flusso vero (il motore nomina ricevente il crossatore) che le scene forzate non producono perche' non hanno il cast del motore. */
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RIC293==='batt'&&S.i<0){const _ss=P.stagedSpot&&P.stagedSpot.current;if(_ss&&_ss.taker!=null&&_ss.taker!==21){S.i=_ss.taker;S.p293=1;}}
@@ -8532,6 +8547,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(t.gk)continue;// 5.43.14b: i PORTIERI gestiti a parte (sotto), SENZA repulsione → niente jitter/"corsa sul posto"
           if(_doSnap&&!(_sw219&&_sw219[i]!=null)&&sr.current._w266m&&sr.current._w266m.ms[i]&&typeof window!=='undefined'&&window.__CPM_W266){try{(window.__CPM_W266S=window.__CPM_W266S||[]).push({k:P.hlSitKey,i,senza:1,sw:_sw219?1:0,S:sr.current._sw219?sr.current._sw219.k:null,src:sr.current._cutSrc456||null,ph:P.matchPhase,f:sr.current._w266m.f,t:[+t.x.toFixed(1),+t.y.toFixed(1)]});}catch(_e){}}
           if(_doSnap&&_sw219&&_sw219[i]!=null&&typeof window!=='undefined'&&window.__CPM_W266){try{if(!sr.current._w266m||sr.current._w266m.k!==P.hlSitKey){sr.current._w266m={k:P.hlSitKey,ms:{},f:0};window.__CPM_W266T=[];}sr.current._w266m.ms[i]=pp.mesh;(window.__CPM_W266S=window.__CPM_W266S||[]).push({k:P.hlSitKey,i,j:_sw219[i],t:[+t.x.toFixed(1),+t.y.toFixed(1),+(t.rx||0).toFixed(1),+(t.ry||0).toFixed(1)]});}catch(_e){}}/* [giro 43 PO-266] testimone: lo snap tocca davvero lo scambiato */
+          /* [giro 424] il ricevente della scena di passaggio arriva sul suo punto nello STESSO stacco nero dell'apertura che sposta l'eroe (teatro),
+             non correndo per tutta la lettura: misurato al 69' (s12), 14 u di corsa a 1,5 u ogni 0,25 s, fuori dal quadro fino alla scelta. */
+          if(!_doSnap&&_pt31&&_pt31.n424&&P.matchPhase==='hl_intro'&&_asIfPlay){let _nero=false;try{_nero=(performance.now()-_CUT471.at)<Math.max(300,_CUT471.dur||0);}catch(_e){}
+            const _sx=G2X(_pt31.x),_sz=G2Z(_pt31.y);if(_nero&&Math.hypot(pp.mesh.position.x-_sx,pp.mesh.position.z-_sz)>3){pp.mesh.position.x=_sx;pp.mesh.position.z=_sz;pp.mesh._ctx=_sx;pp.mesh._ctz=_sz;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx;pp.mesh._pz=_sz;continue;}}
           if(_doSnap){const _sx=_pt31?G2X(_pt31.x):G2X(clamp(t.x+(t.rx||0),2,98)),_sz=_pt31?G2Z(_pt31.y):G2Z(clamp(t.y+(t.ry||0),2,98));pp.mesh.position.x=_sx;pp.mesh.position.z=_sz;pp.mesh._ctx=_sx;pp.mesh._ctz=_sz;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx;pp.mesh._pz=_sz;continue;}// FREEZE #2: snap in posizione all'avvio (poi fermo)
           /* [7.402.0 — revocato il taglio per-uomo indiscriminato: strappava via il compagno della consegna. */
           /* [7.405.0 codice 001 — direttiva PO: «il compagno ad inizio scena deve avere il pallone TRA I
@@ -14217,7 +14236,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             h:_nd(hero),b:[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)],ws:S4._ws524|0,src:(S4._bj0&&S4._bj0.srcs&&S4._bj0.srcs.length)?S4._bj0.srcs.slice(0,4).join('+'):null,
             c:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],cl:[+camLook.x.toFixed(2),+camLook.y.toFixed(2),+camLook.z.toFixed(2)],cut:_cut4,
             arc:ballArcActive?[+ballArcTgtX.toFixed(1),+ballArcTgtZ.toFixed(1),+(+ballArcT||0).toFixed(2),+(+ballArcDur||0).toFixed(2),+(+ballArcH||0).toFixed(2)]:null,pa:hlPostArcType||null,at:actType||null,tl:tlOn?1:0,
-            pr:_nd(passTargetMesh),cr:_nd(crossRcvMesh),pt:P.hlPattern||null,pp:[+(+P.playerX||0).toFixed(1),+(+P.playerY||0).toFixed(1)],
+            pr:_nd(passTargetMesh),cr:_nd(crossRcvMesh),r4:(S4._r99&&S4._r99.k===P.hlSitKey)?[S4._r99.i,+G2X(S4._r99.x).toFixed(1),+G2Z(S4._r99.y).toFixed(1)]:null,pt:P.hlPattern||null,pp:[+(+P.playerX||0).toFixed(1),+(+P.playerY||0).toFixed(1)],
             hm:(function(){const o=[];const _ps=S4.players||[];for(let i=0;i<_ps.length;i++){const q=(P.allPlayers||[])[i];if(!q||q.team!=='home'||q.gk||!_ps[i]||!_ps[i].mesh||_ps[i].mesh===hero)continue;const n=_nd(_ps[i].mesh);const _mm=_ps[i].mesh;o.push([i,n[0],n[1],n[2],(_mm===crossRcvMesh||_mm===passTargetMesh)?1:0,_mm._ctx==null?null:+_mm._ctx.toFixed(1),_mm._ctz==null?null:+_mm._ctz.toFixed(1),(_mm._rea42&&_mm._rea42.k===P.hlSitKey)?1:0,_mm._rcvT==null?null:+(+_mm._rcvT).toFixed(2),_mm._runToX==null?null:+(+_mm._runToX).toFixed(1)]);}return o;})()});}
       }catch(_e364){}}
       /* [giro 96a PO-299 D5 — I CORPI NON SI COMPENETRANO. Rosso __CPM_NO_G96D5]
