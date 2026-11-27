@@ -12,6 +12,8 @@ const out = [];
 for (const [gi, ai] of CASI) {
   const page = await b.newPage({ viewport: { width: 380, height: 300 } }); await installCdnRoutes(page);
   await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TESTA33_REC = 1; if (r) { window.__CPM_NO_TESTA33 = 1; window.__CPM_NO_TUFFO109 = 1; } }, RED);
+  /* [giro 426] rosso della correzione del «control» dopo il cross: CPM_NO_G426=1 → gi171 azione 0 torna a 0,09-0,16 s (soglia 0,15) */
+  if (process.env.CPM_NO_G426 === '1') await page.addInitScript(() => { window.__CPM_NO_G426 = 1; });
   await openMatch(page, port, { skipLoadAll: true, name: 'Testa33' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, { timeout: 60000 }).catch(() => {});
   await page.evaluate(g => { window.__CPM_TESTA33 = null; window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);

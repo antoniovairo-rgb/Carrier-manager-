@@ -388,6 +388,14 @@ function gradinoLeader155(p){const a=p.age||18,m=p.totalMatches||0,t=p.coachTrus
   if(_g155("D14"))return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}))`;
   const ok=a>=27&&m>=130&&t>=90&&o>=80&&o>=cp&&po>=58;
   return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}) · OVR 80+ e non sotto il livello della squadra, ${cp} (ora ${o}) · popolarità 58+ (ora ${po}))`+(ok?". Ci sei: la fascia può arrivare in una qualunque delle prossime settimane.":". Con tutte e sei, la fascia arriva nelle settimane successive, non subito.");}
+/* [giro 372 · PO-421 «giudizi che non si contraddicono: fiducia 93/100 e "piu' panchina"»] LE SOGLIE DELLA FIDUCIA SONO UNE.
+   La barra (GradiniV235, scheda Club) dice In crisi · In dubbio · Neutro · Fiducioso · Fiducia totale sopra 30/50/70/85; i testi
+   del mister che parlano di fiducia (esame del nuovo mister, verifica trimestrale, convocazione) si scelgono dallo STESSO gradino.
+   Rosso __CPM_NO_G372 = i testi di prima (soglie proprie: esame dalla sola media voti, verifica dalla sola forma, «uomo di
+   fiducia» da 80). Guardiano `npm run giudizi-372`. */
+const SOGLIE_FIDUCIA372=[30,50,70,85];
+const _g372=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G372);
+function gradoFiducia372(t){const x=Math.round(+t||0);return SOGLIE_FIDUCIA372.filter(v=>x>=v).length;}/* 0 crisi · 1 dubbio · 2 neutro · 3 fiducioso · 4 totale */
 function calcSquadRole(player){
   const ovr=player.ovr||60;
   const trust=player.coachTrust||60;
@@ -474,7 +482,7 @@ function calcCoachDecision(player,matchWeight=1,rng){
     status="starter";
     reason=_ovrEdge>=8
       ?"Sei tra i migliori della rosa — il mister non può lasciarti fuori. Titolare."
-      :trust>=80
+      :(_g372()?gradoFiducia372(trust)>=4:trust>=80)
       ?"Sei il suo uomo di fiducia. Titolare inamovibile."
       :matchWeight>=7
       ?"Partita cruciale — il mister conta su di te dal primo minuto."
@@ -506,7 +514,7 @@ function fraseConvocazione190(player,status,base,f){
     if(f.fatigue>=55)c.push(`Le gambe sono un po' pesanti, ma${avv?" contro "+avv:""} il mister non rinuncia a te: titolare, dosa le energie.`);
     if(f.matchWeight>=7&&avv)c.push(`Contro ${avv} si decide molto: il mister conta su di te dal primo minuto.`);
     if(avv&&f.ovrEdge>=8)c.push(`Contro ${avv} il mister non ci pensa due volte: sei tra i migliori della rosa, titolare.`);
-    if(avv&&f.trust>=80)c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
+    if(avv&&(_g372()?gradoFiducia372(f.trust)>=4:f.trust>=80))c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
     if(avv&&f.form>=75)c.push(`In settimana in allenamento sei stato il più brillante: contro ${avv} giochi dall'inizio.`);
     if(avv)c.push(`Contro ${avv} parti dal primo minuto: il mister ti ha comunicato la formazione dopo la rifinitura.`);
   }else if(status==="bench"){

@@ -1536,6 +1536,23 @@ const objCurrent=(obj,tot,spent,pos)=>{const b=(obj&&obj.clubScoped)?(spent||{g:
     :obj.type==="assists"?Math.max(0,(tot.a||0)-(b.a||0))
     :obj.type==="matches"?Math.max(0,(tot.m||0)-(b.m||0)):pos;};
 const objDone=(obj,cur)=>obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+/* [giro 374 · PO-633, decisione PO «‹In linea› fino a fine stagione»] LO STATO DELL'OBIETTIVO E' UNO SOLO. objDone dice se la
+   posizione di ADESSO centra il bersaglio: per l'obiettivo di classifica a meta' stagione non e' un traguardo, e la Home e la
+   rassegna di fine partita mostravano ✅ «FATTO» appena si entrava nella zona. Ora la classifica e' «fatta» solo a stagione chiusa
+   (nessuna giornata di campionato ancora da giocare: `stagioneChiusa374`, la partita appena giocata si conta come giocata), prima
+   e' «in linea» (dentro la zona) o «sotto» (fuori). Gol, assist e presenze non cambiano: raggiunto il numero, il traguardo e' vero.
+   I siti di fine stagione (verdetto, presidente, conferenza) leggono objDone a stagione gia' chiusa: stessa regola, nessun cambio.
+   Nessun campo nuovo nel salvataggio. Rosso __CPM_NO_G374 = ✅ sulla posizione attuale come prima. Guardiano `npm run obiettivo-374`. */
+const _g374=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G374);
+function stagioneChiusa374(p,oraGiocata){try{
+  const lega=((p&&p.calendar)||[]).filter(m=>m&&(!m.type||m.type==="league"));
+  if(!lega.length)return true;/* calendario assente: nessun modo di saperlo, si resta alla regola di prima */
+  return !lega.some(m=>!m.played&&m!==oraGiocata);}catch(_e){return true;}}
+function statoObiettivo374(obj,cur,chiusa){
+  const ok=objDone(obj,cur);
+  if(!obj||obj.type!=="standing"||chiusa||!_g374())return{k:ok?"fatto":(obj&&obj.type==="standing")?"mancato":"in_corso",done:ok};
+  return{k:ok?"in_linea":"sotto",done:false};}
+if(typeof window!=="undefined"){window.__CPM_OBJ374=statoObiettivo374;window.__CPM_CHIUSA374=stagioneChiusa374;}
 /* [7.296.0 collaudo PO «obiettivi personali non allineati con la stessa logica al cambio club»] La quota di
    stagione giocata con la maglia ATTUALE, in UN solo criterio: giornate di campionato dell'eroe su giornate
    del suo club. La usano il bersaglio degli obiettivi di club e quello dei personali, cosi' non possono
