@@ -50,7 +50,7 @@ async function pagina({ rosso = false, cfg = null } = {}) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   await ctx.addInitScript(([r, c]) => { window.__CPM_AUDIO430 = true; if (r) window.__CPM_NO_G430 = true; try { localStorage.setItem('cpm-intro-seen', '1'); if (c) localStorage.setItem('cpm-audio', JSON.stringify(c)); } catch (_e) {} }, [rosso, cfg]);
   await ctx.addInitScript(AGGANCIO);
-  const p = await ctx.newPage(); await installCdnRoutes(p); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
+  const p = await ctx.newPage(); if (+process.env.CPM_CPU_LENTO > 1) { /* [giro 435] solo misura: CPU rallentata come un runner conteso */ const cdp = await ctx.newCDPSession(p); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU_LENTO }); } await installCdnRoutes(p); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
   await p.goto(`http://localhost:${PORT}/?cpmtest=1`, { waitUntil: 'load', timeout: 90000 }).catch(() => {});
   const monta = await p.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0 && typeof window.__A430R === 'function'; }, null, { timeout: 60000 }).then(() => true).catch(() => false);
   await sleep(800); await p.mouse.click(195, 60).catch(() => {});
@@ -93,7 +93,12 @@ async function braccio(rosso) {
     const esci = async (fn) => { const r0 = vivaMusica(await R(p)).filter(e => e.file === A); await p.evaluate(fn).catch(() => {}); await sleep(250); const r1 = await R(p); const m = r0[0] && r1.src.find(e => e.id === r0[0].id);
       await sleep(1600); const r2 = await R(p); const m2 = r0[0] && r2.src.find(e => e.id === r0[0].id); return { prima: r0[0] && r0[0].g, mezzo: m && m.g, finito: m2 && m2.finito, file: r0[0] && r0[0].file }; };
     const c = await esci(() => AudioMgr.scene('career'));
-    await p.evaluate(() => AudioMgr.scene('home')).catch(() => {}); const tornata = await aspetta(p, r => vivaMusica(r).some(e => e.file === A), 5000);
+    /* [giro 435] prima di misurare la dissolvenza d'uscita verso la partita si aspetta che A, ripartito in home, sia ARRIVATO al suo
+       volume (>= 90% del guadagno finale del controllo 1): prima bastava che fosse partito, cioe' la sonda misurava la partita nel
+       primo istante della dissolvenza d'entrata (guadagno 0,000-0,005, «partita {prima:0,…}» sul runner, treno 46015182581 parte 29).
+       Si aspetta l'evento, non un tempo fisso. Rosso del giro: CPM_NO_G435=1 (attesa di prima). */
+    const pronta435 = (r) => vivaMusica(r).some(e => e.file === A && (process.env.CPM_NO_G435 === '1' || (fin > 0 && e.g >= fin * 0.9)));
+    await p.evaluate(() => AudioMgr.scene('home')).catch(() => {}); const tornata = await aspetta(p, pronta435, 15000);
     const m = await esci(() => AudioMgr.enterMatch(7));
     await p.evaluate(() => AudioMgr.exitMatch()).catch(() => {}); const dopo = await aspetta(p, r => vivaMusica(r).some(e => e.file === A), 5000);
     const fade = (x) => x.file === A && x.prima > 0 && x.mezzo > 0 && x.mezzo < x.prima && x.finito;
