@@ -6319,6 +6319,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _pm=(_ri!=null&&_ri!==21&&sr.current.players[_ri])?sr.current.players[_ri].mesh:null;
               const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&(Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40||(sr.current._r99&&sr.current._r99.k===P.hlSitKey&&sr.current._r99.i===_ri&&!(typeof window!=='undefined'&&window.__CPM_NO_G99RIC)));/* [giro 99] il nominato portato sul punto di ricezione si serve sempre se e' davanti alla palla (anche lungo) */
               if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
+              /* [giro 424] senza cast: il ricevente scelto all'apertura (e portato sul punto di ricezione) e' quello che riceve, se sta davanti alla palla */
+              if(!_ok&&_ri==null&&sr.current._r99&&sr.current._r99.g424&&sr.current._r99.k===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_G424)){const _q4=sr.current.players[sr.current._r99.i];const _m4=_q4&&_q4.mesh;
+                if(_m4&&_m4!==hero&&(_m4.position.x-_phx)>-3){passTargetMesh=_m4;_ptX=_m4.position.x;_ptZ=_m4.position.z;}}
               if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
             }catch(_eB4r){}}
             /* [giro 104, solo sonde] il ricevente AL LANCIO del passaggio: il testimone B4 lo leggeva al primo fotogramma di hl_result, ma questo
@@ -8492,7 +8495,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const hx=+P.playerX,hy=+P.playerY;if(!isFinite(hx)||!isFinite(hy))return null;const ap=P.allPlayers||[];
           let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
             if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
-            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};}
+            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};
+            /* [giro 424 PO-653 «quando l'eroe fa un passaggio ad un compagno, in particolare tentativi di assist, quest'ultimo non e' gia'
+               nella scena!». Rosso __CPM_NO_G424] MISURATO (misura-424, GLB acceso, teatro acceso, 27 passaggi/assist del catalogo): senza il
+               cast del motore il ricevente si sceglieva SOLO al lancio (fireConclusion, ramo `pass`) fra chi stava davanti entro 34 u, quindi
+               a fine lettura era fuori dal quadro 8 volte su 27 (a 20-30 u dall'eroe: gi14, gi15, gi17, gi21) e 6 volte correva oltre 6 u dopo
+               la scelta (gi23 13,6 · gi27 14,7). Ora, se la scena ha un'azione di passaggio o di assist e il motore non ha nominato nessuno, il
+               ricevente si sceglie QUI all'apertura (il compagno di movimento piu' vicino al punto di ricezione, mai il battitore) e prende lo
+               stesso punto e lo stesso canale del nominato: allo snap d'apertura e' gia' li', in lettura resta li', e il ramo `pass` serve lui. */
+            if(ci<0&&P.hlPass424&&!(typeof window!=='undefined'&&window.__CPM_NO_G424)){const _ss=P.stagedSpot&&P.stagedSpot.current;let _bd=1e9;
+              for(let j=0;j<ap.length;j++){const q=ap[j];if(j===21||!q||q.team!=='home'||q.gk||q._taker402||(_ss&&_ss.taker===j)||!isFinite(+q.x)||!isFinite(+q.y))continue;
+                const d=Math.hypot(+q.x-S.x,(+q.y-S.y)*0.6);if(d<_bd){_bd=d;S.i=j;}}
+              if(S.i>=0)S.g424=1;}}
           /* [giro 293] solo banco di prova (?cpmtest=1): la sonda dichiara «il ricevente del cast e' il battitore della scena», cioe' il caso del
              flusso vero (il motore nomina ricevente il crossatore) che le scene forzate non producono perche' non hanno il cast del motore. */
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'&&window.__CPM_RIC293==='batt'&&S.i<0){const _ss=P.stagedSpot&&P.stagedSpot.current;if(_ss&&_ss.taker!=null&&_ss.taker!==21){S.i=_ss.taker;S.p293=1;}}
