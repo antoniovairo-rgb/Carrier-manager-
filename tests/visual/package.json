@@ -806,7 +806,8 @@
     "notte-333": "node notte-333.mjs",
     "notte-359": "node notte-359.mjs",
     "ci:sentinelle": "node ci-runner.mjs sentinelle",
-    "gol-347": "node gol-347-test.mjs"
+    "gol-347": "node gol-347-test.mjs",
+    "pagella-425": "node pagella-425.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
