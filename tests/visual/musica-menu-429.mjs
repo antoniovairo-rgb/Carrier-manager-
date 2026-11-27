@@ -9,9 +9,10 @@
       5. picco <= -1,5 dBFS; 6. loop senza scatto: salto fine→inizio <= 99° percentile dei passi fra campioni vicini del brano, e
          niente silenzio in testa o in coda oltre 5 ms (un buco nel giro).
    C. NEL GIOCO, sul sito servito come su GitHub Pages (dist-web, audio vero, niente ?cpmtest)
-      7. con localStorage cpm-menu429 = A, B, C: music.home carica il file scelto e nella home SUONA quel file (testimone __CPM_MENU429S);
-      8. senza scelta: music.home resta spiaggia-loop e nel menu non suona niente (come oggi, POC 23/09).
-   Bracci: VERDE deve passare; ROSSO (`__CPM_NO_G429` con la scelta A) deve CADERE sulla 7 (interruttore ignorato).
+      [giro 430: il PO ha scelto A, l'interruttore di prova cpm-menu429 e' stato TOLTO]
+      7. con il vecchio localStorage cpm-menu429 = B o C la scelta e' ignorata: il menu suona A;
+      8. senza nulla: music.home e' A e nella home SUONA A (testimone __CPM_MENU429S).
+   Bracci: VERDE deve passare; ROSSO (`__CPM_NO_G430`, la 7.999.217) deve CADERE (spiaggia-loop caricata, menu muto).
    «Non giudicato» (sonda assente, pagina che non monta, file non decodificati) = rosso. Verde e rosso stampati per ultimi. */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -103,7 +104,7 @@ for (const { L, e, m, reg } of misure) {
 async function gioco(scelta, rosso) {
   const b = await launchBrowser();
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
-  await ctx.addInitScript(([s, r]) => { try { if (s) localStorage.setItem('cpm-menu429', s); } catch (_e) {} if (r) window.__CPM_NO_G429 = true; }, [scelta, rosso]);
+  await ctx.addInitScript(([s, r]) => { try { if (s) localStorage.setItem('cpm-menu429', s); } catch (_e) {} if (r) window.__CPM_NO_G430 = true; }, [scelta, rosso]);
   const errs = []; const p = await ctx.newPage(); p.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
   await p.goto(URLG, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
   const monta = await p.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 30000 }).then(() => true).catch(() => false);
@@ -116,17 +117,12 @@ async function gioco(scelta, rosso) {
   await b.close(); return { monta, s, naturale: naturale || null, errs };
 }
 async function braccio(rosso) {
-  const passi = [];
-  for (const L of rosso ? ['A'] : ['A', 'B', 'C']) {
-    const r = await gioco(L, rosso), want = NOMI[L], reg = REG.altri[`${want}.ogg`];
-    passi.push({ nome: `7${L} con cpm-menu429=${L} il menu suona ${want.split('/').pop()}`, ok: r.monta && r.s && r.s.scelta === L && r.s.file === want && r.s.caricato && r.s.suona === want
-      && reg && Math.abs(r.s.durata - reg.durata_s) <= 0.06 && r.errs.length === 0,
-      info: r.s ? `scelta ${r.s.scelta} · file ${r.s.file} · durata ${r.s.durata} · suona ${r.s.suona} (da solo: ${r.naturale}) · errori ${r.errs.length}` : `monta=${r.monta} · sonda assente` });
-  }
-  if (!rosso) {
-    const r = await gioco(null, false);
-    passi.push({ nome: '8 senza scelta: music.home resta spiaggia-loop e il menu non suona', ok: r.monta && r.s && r.s.scelta === null && r.s.file === DEFAULT && r.s.caricato && r.s.suona === null && r.errs.length === 0,
-      info: r.s ? `scelta ${r.s.scelta} · file ${r.s.file} · suona ${r.s.suona} · errori ${r.errs.length}` : `monta=${r.monta} · sonda assente` });
+  const passi = []; const want = NOMI.A, reg = REG.altri[`${want}.ogg`];
+  for (const L of rosso ? [null] : ['B', 'C', null]) {
+    const r = await gioco(L, rosso);
+    passi.push({ nome: L ? `7${L} il vecchio cpm-menu429=${L} e' ignorato: il menu suona A` : '8 senza nulla il menu suona A',
+      ok: r.monta && r.s && r.s.g430 === true && r.s.file === want && r.s.caricato && r.s.suona === want && r.naturale === want && reg && Math.abs(r.s.durata - reg.durata_s) <= 0.06 && r.errs.length === 0,
+      info: r.s ? `g430 ${r.s.g430} · file ${r.s.file} · durata ${r.s.durata} · suona ${r.s.suona} (da solo: ${r.naturale}) · errori ${r.errs.length}` : `monta=${r.monta} · sonda assente` });
   }
   return passi;
 }
@@ -134,8 +130,8 @@ const V = await braccio(false), R = await braccio(true); srv.close();
 fs.mkdirSync(path.join(QUI, 'out'), { recursive: true });
 fs.writeFileSync(path.join(QUI, 'out/musica-menu-429.json'), JSON.stringify({ statico: st, misure, verde: V, rosso: R }, null, 1));
 const stampa = (t, L) => { console.log(t); for (const x of L) console.log(`  ${x.ok ? '✓' : '✗'} ${x.nome} — ${x.info}`); };
-stampa('STATICO E MISURE', st); stampa('VERDE', V); stampa('ROSSO (__CPM_NO_G429)', R);
-const sOk = st.every(x => x.ok), vOk = V.every(x => x.ok), rCade = R.some(x => /^7/.test(x.nome) && !x.ok);
+stampa('STATICO E MISURE', st); stampa('VERDE', V); stampa('ROSSO (__CPM_NO_G430)', R);
+const sOk = st.every(x => x.ok), vOk = V.every(x => x.ok), rCade = R.some(x => /^8/.test(x.nome) && !x.ok);
 const motivi = []; if (!sOk) motivi.push('statico/misure rosso'); if (!vOk) motivi.push('verde rosso'); if (!rCade) motivi.push('il rosso NON cade');
 if (motivi.length) { console.log('❌ musica-menu-429 — ' + motivi.join(' · ')); process.exit(1); }
-console.log('✅ musica-menu-429 verde (e il rosso __CPM_NO_G429 cade: l\'interruttore ignorato lascia il menu com\'e\')');
+console.log('✅ musica-menu-429 verde (e il rosso __CPM_NO_G430 cade: la 7.999.217 lascia il menu senza A)');

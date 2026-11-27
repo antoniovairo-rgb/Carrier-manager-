@@ -2243,7 +2243,7 @@
    "nota": "brusio in loop della partita, invariato dal giro 149"
   },
   "music/menu/429-a-orchestra.ogg": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "music.home: home, menu e video intro (scelta PO 27/11, giro 430)",
    "cc0": true,
    "candidato": "A",
    "titolo": "Determined Pursuit (Epic Orchestra Loop)",
@@ -2276,7 +2276,7 @@
    }
   },
   "music/menu/429-a-orchestra.mp3": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "music.home: home, menu e video intro (scelta PO 27/11, giro 430)",
    "cc0": true,
    "candidato": "A",
    "titolo": "Determined Pursuit (Epic Orchestra Loop)",
@@ -2309,7 +2309,7 @@
    }
   },
   "music/menu/429-b-elettronica.ogg": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
    "cc0": true,
    "candidato": "B",
    "titolo": "Virtual Rush (loop)",
@@ -2342,7 +2342,7 @@
    }
   },
   "music/menu/429-b-elettronica.mp3": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
    "cc0": true,
    "candidato": "B",
    "titolo": "Virtual Rush (loop)",
@@ -2375,7 +2375,7 @@
    }
   },
   "music/menu/429-c-stadio.ogg": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
    "cc0": true,
    "candidato": "C",
    "titolo": "Fever Stadium (bpm165)",
@@ -2408,7 +2408,7 @@
    }
   },
   "music/menu/429-c-stadio.mp3": {
-   "evento": "music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)",
+   "evento": "nessuno (candidato non scelto dal PO, giro 430)",
    "cc0": true,
    "candidato": "C",
    "titolo": "Fever Stadium (bpm165)",

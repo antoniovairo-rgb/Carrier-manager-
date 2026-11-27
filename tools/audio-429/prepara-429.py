@@ -112,7 +112,7 @@ def main():
         os.makedirs(os.path.join(ROOT, 'docs/collaudo-po'), exist_ok=True)
         shutil.copyfile(base + '.mp3', os.path.join(ROOT, f'docs/collaudo-po/429-brano-{L}.mp3'))
         salto, p99 = giunto(y); Lf = lufs(y)
-        riga = {'evento': 'music.home (solo prova: interruttore __CPM_MENU429 / cpm-menu429)', 'cc0': True, 'candidato': L, 'titolo': s['titolo'],
+        riga = {'evento': ('music.home: home, menu e video intro (scelta PO 27/11, giro 430)' if L == 'A' else 'nessuno (candidato non scelto dal PO, giro 430)'), 'cc0': True, 'candidato': L, 'titolo': s['titolo'],
                 'generatore': 'tools/audio-429/prepara-429.py', 'formati': ['ogg', 'mp3'], 'durata_s': round(len(y) / SR, 3), 'canali': 2,
                 'lufs': round(Lf, 1), 'picco_dbfs': round(float(20 * np.log10(np.abs(y).max() + 1e-12)), 1), 'loop': True,
                 'giunto': {'salto': round(salto, 5), 'p99_passi': round(p99, 5)},
