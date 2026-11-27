@@ -115,7 +115,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const ROSSO = process.argv.includes('--rosso'), TOD = process.env.CPM_TOD || 'night';
   fs.mkdirSync('out/g414', { recursive: true }); const fd = process.env.CPM_FOTO || null; if (fd) fs.mkdirSync(fd, { recursive: true });
   const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
-  const r = await misuraTutti(b, port, ROSSO ? ['__CPM_NO_G414'] : [], TOD, fd);
+  /* [giro 432] la sonda giudica lo SHADER della testa (attaccatura dipinta): le calotte del giro 432 la coprono e lasciavano 31-32 scatti
+     su 66 senza capelli dipinti visibili (non giudicati, in entrambi i bracci). Strati del 432 spenti qui; l'attaccatura con gli strati
+     la giudica barba-capelli-432 con lo stesso metodo. CPM_CON_G432=1 li lascia accesi. */
+  const r = await misuraTutti(b, port, [...(ROSSO ? ['__CPM_NO_G414'] : []), ...(process.env.CPM_CON_G432 ? [] : ['__CPM_NO_G432'])], TOD, fd);
   await b.close(); srv.close();
   if (!r.giudicato) { console.log('NON GIUDICATO:', r.motivo); process.exit(1); }
   const J = process.env.CPM_JSON || `out/g414/misura-414-${TOD}-${ROSSO ? 'rosso' : 'verde'}.json`; fs.writeFileSync(J, JSON.stringify(r, null, 1));

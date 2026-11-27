@@ -460,7 +460,117 @@ function coreo244Scegli(chiave,chi){
     localStorage.setItem("cpm-coreo244",JSON.stringify(M));}catch(_e){mem=false;}
   return{id,osp,mem};}
 try{if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_CATALOGO244=COREO244;window.__CPM_SCEGLI244=coreo244Scegli;}}catch(_e244){}
-function ThreeMatchView(props){
+/* [giro 432 · PO-686] BARBA E CALOTTE DI CAPELLI DALLA FIGURINA, COME STRATI NOSTRI.
+   La licenza del pacchetto CGTrader non e' verificabile per questo prodotto (rapporto giro 432): mesh e texture CGTrader NON si
+   modificano. Barba e calotte sono GUSCI NOSTRI, figli dell'osso «head» (rigidi con la testa: nessuna compenetrazione in movimento
+   dove la testa e' pesata sul solo osso head), costruiti a runtime:
+   1) RETE RADIALE della testa (una volta per geometria): dal centro della testa, 96x64 direzioni (azimut x elevazione); per ognuna la
+      distanza della superficie PIU' ESTERNA (raggio contro i triangoli, solo misura: nessun vertice CGTrader copiato), l'UV del punto
+      colpito (per sapere se li' ci sono i capelli dipinti, maschera del giro 240) e il peso dell'osso head.
+   2) Una CALOTTA = guscio sopra la superficie piu' esterna (inviluppo massimo + spessore + rilievo dei ricci), coperto dove ci sono i
+      capelli dipinti (dilatati o erosi di qualche cella), con una TRAMA nostra (PNG in assets/aspetto) del colore dei capelli della
+      figurina. «rasato» ha in piu' un fondo color pelle preso dal materiale della testa stesso (stessa tinta del giro 240).
+   3) Una BARBA = guscio sottile sul viso con una MASCHERA nostra (PNG in assets/aspetto, nel campo azimut/elevazione della tabella).
+   L'UNICA TABELLA figurina→aspetto e' assets/aspetto/aspetto-432.json: dal taglio e dalla barba del manifest dei ritratti (indice.json
+   campi t/b) alla calotta e alla maschera. Un taglio o una barba nuovi = una riga + un file. Rosso window.__CPM_NO_G432. */
+const _g432=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G432);
+const NA432=96,NE432=64;
+const ASP432={tab:null,stato:0,att:[],img:new Map(),rete:new WeakMap(),geo:new Map(),tex:new Map(),mat:new Map(),ms:0};
+function _tab432(){try{if(ASP432.stato)return;ASP432.stato=1;const t0=(typeof performance!=='undefined')?performance.now():0;
+  fetch('assets/aspetto/aspetto-432.json').then(r=>r.ok?r.json():null).then(j=>{ASP432.tab=j;ASP432.stato=j?2:3;ASP432.msTab=+(((typeof performance!=='undefined')?performance.now():0)-t0).toFixed(1);_svuota432();}).catch(()=>{ASP432.stato=3;});}catch(_e){ASP432.stato=3;}}
+function _img432(url){let p=ASP432.img.get(url);if(p)return p;p=new Promise(res=>{try{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src=url;}catch(_e){res(null);}});ASP432.img.set(url,p);return p;}
+/* la maschera dei capelli dipinti (giro 240) letta come pixel: 0 = capelli */
+function _mascDati432(){try{const t=_MASC240&&_MASC240.u&&_MASC240.u.value;if(!t||_MASC240.stato!==2||!t.image||!t.image.getContext)return null;if(ASP432.md)return ASP432.md;const c=t.image,g=c.getContext('2d');ASP432.md={N:c.width,d:g.getImageData(0,0,c.width,c.height).data};return ASP432.md;}catch(_e){return null;}}
+function _svuota432(){const L=ASP432.att.splice(0);L.forEach(f=>{try{f();}catch(_e){}});}
+/* 1) rete radiale, nello spazio di LEGAME della maglia della testa */
+function _rete432(mesh){try{const g=mesh.geometry;let R=ASP432.rete.get(g);if(R)return R;const t0=performance.now();
+  const P=g.attributes.position,UV=g.attributes.uv,SI=g.attributes.skinIndex,SW=g.attributes.skinWeight,sk=mesh.skeleton;if(!P||!UV||!SI||!sk)return null;
+  const hb=sk.bones.findIndex(b=>/^head$/i.test(b.name||''));if(hb<0)return null;const n=P.count;
+  const wh=new Float32Array(n);for(let i=0;i<n;i++){const ii=[SI.getX(i),SI.getY(i),SI.getZ(i),SI.getW(i)],ww=[SW.getX(i),SW.getY(i),SW.getZ(i),SW.getW(i)];let s=0;for(let k=0;k<4;k++)if(ii[k]===hb)s+=ww[k];wh[i]=s;}
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,z0=1e9,z1=-1e9;for(let i=0;i<n;i++){if(wh[i]<0.95)continue;const x=P.getX(i),y=P.getY(i),z=P.getZ(i);if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;if(z<z0)z0=z;if(z>z1)z1=z;}
+  if(!(x1>x0))return null;const C=[(x0+x1)/2,(y0+y1)/2,(z0+z1)/2];
+  const NC=NA432*NE432,DX=new Float32Array(NC),DY=new Float32Array(NC),DZ=new Float32Array(NC);
+  for(let e=0;e<NE432;e++){const el=((e+0.5)/NE432-0.5)*Math.PI,ce=Math.cos(el),se=Math.sin(el);for(let a=0;a<NA432;a++){const az=((a+0.5)/NA432-0.5)*2*Math.PI,k=e*NA432+a;DX[k]=Math.sin(az)*ce;DY[k]=se;DZ[k]=Math.cos(az)*ce;}}
+  const r=new Float32Array(NC),hu=new Float32Array(NC*2),hw=new Float32Array(NC);
+  const ix=g.index?g.index.array:null,nt=ix?ix.length/3:n/3;const fa=new Float32Array(3),fe=new Float32Array(3),V=[[0,0,0],[0,0,0],[0,0,0]],id=[0,0,0];
+  const prova=(k,A,B,Cc,ia,ib,ic)=>{const dx=DX[k],dy=DY[k],dz=DZ[k];const e1x=B[0]-A[0],e1y=B[1]-A[1],e1z=B[2]-A[2],e2x=Cc[0]-A[0],e2y=Cc[1]-A[1],e2z=Cc[2]-A[2];
+    const px=dy*e2z-dz*e2y,py=dz*e2x-dx*e2z,pz=dx*e2y-dy*e2x,det=e1x*px+e1y*py+e1z*pz;if(Math.abs(det)<1e-12)return;const inv=1/det,tx=-A[0],ty=-A[1],tz=-A[2];
+    const u=(tx*px+ty*py+tz*pz)*inv;if(u<-1e-6||u>1+1e-6)return;const qx=ty*e1z-tz*e1y,qy=tz*e1x-tx*e1z,qz=tx*e1y-ty*e1x,v=(dx*qx+dy*qy+dz*qz)*inv;if(v<-1e-6||u+v>1+1e-6)return;
+    const t=(e2x*qx+e2y*qy+e2z*qz)*inv;if(t<=r[k])return;r[k]=t;const w=1-u-v;hu[k*2]=w*UV.getX(ia)+u*UV.getX(ib)+v*UV.getX(ic);hu[k*2+1]=w*UV.getY(ia)+u*UV.getY(ib)+v*UV.getY(ic);hw[k]=w*wh[ia]+u*wh[ib]+v*wh[ic];};
+  for(let t=0;t<nt;t++){for(let j=0;j<3;j++){const vi=ix?ix[t*3+j]:t*3+j;id[j]=vi;const x=P.getX(vi)-C[0],y=P.getY(vi)-C[1],z=P.getZ(vi)-C[2];V[j][0]=x;V[j][1]=y;V[j][2]=z;const L=Math.hypot(x,y,z)||1e-9;fa[j]=(Math.atan2(x,z)/(2*Math.PI)+0.5)*NA432-0.5;fe[j]=(Math.asin(Math.max(-1,Math.min(1,y/L)))/Math.PI+0.5)*NE432-0.5;}
+    if(Math.max(wh[id[0]],wh[id[1]],wh[id[2]])<0.05)continue;/* busto e spalle: fuori dalla testa */
+    let amn=Math.min(fa[0],fa[1],fa[2]),amx=Math.max(fa[0],fa[1],fa[2]);const emn=Math.floor(Math.min(fe[0],fe[1],fe[2])),emx=Math.ceil(Math.max(fe[0],fe[1],fe[2]));
+    let tutti=false;if(amx-amn>NA432/2){const s=[fa[0],fa[1],fa[2]].map(v=>v<NA432/2?v+NA432:v);amn=Math.min(...s);amx=Math.max(...s);if(amx-amn>NA432/2||emx>=NE432-3||emn<=2)tutti=true;}
+    const a0=tutti?0:Math.floor(amn),a1=tutti?NA432-1:Math.ceil(amx);
+    for(let e=Math.max(0,emn);e<=Math.min(NE432-1,emx);e++)for(let a=a0;a<=a1;a++){const aa=((a%NA432)+NA432)%NA432;prova(e*NA432+aa,V[0],V[1],V[2],id[0],id[1],id[2]);}}
+  /* capelli dipinti nel punto colpito (maschera del giro 240: 0 = capelli) */
+  const md=_mascDati432();if(!md)return null;const cap=new Uint8Array(NC);
+  for(let k=0;k<NC;k++){if(!(r[k]>0))continue;const u=hu[k*2],v=hu[k*2+1],px=Math.min(md.N-1,Math.max(0,Math.floor(u*md.N))),py=Math.min(md.N-1,Math.max(0,Math.floor(v*md.N)));cap[k]=md.d[(py*md.N+px)*4]<128?1:0;}
+  /* fronte: la prima cella di pelle sotto l'attaccatura a azimut 0 (per il fondo del rasato) */
+  let fr=null;{const a=NA432>>1;let visti=false;for(let e=NE432-1;e>=0;e--){const k=e*NA432+a;if(!(r[k]>0))continue;if(cap[k])visti=true;else if(visti){const k2=Math.max(0,e-3)*NA432+a;fr=[hu[k2*2],hu[k2*2+1]];break;}}}
+  R={C,r,hu,hw,cap,DX,DY,DZ,hb,fr,ms:+(performance.now()-t0).toFixed(1)};ASP432.rete.set(g,R);ASP432.ms+=R.ms;return R;}catch(_e){return null;}}
+/* filtri di cella (azimut che si richiude) */
+function _vic432(src,k,op){const out=new Float32Array(src.length);for(let e=0;e<NE432;e++)for(let a=0;a<NA432;a++){let m=op==='max'?-1e9:op==='min'?1e9:0,c=0;for(let de=-k;de<=k;de++){const ee=e+de;if(ee<0||ee>=NE432)continue;for(let da=-k;da<=k;da++){const v=src[ee*NA432+((a+da+NA432)%NA432)];if(op==='max')m=Math.max(m,v);else if(op==='min')m=Math.min(m,v);else{m+=v;c++;}}}out[e*NA432+a]=op==='media'?m/Math.max(1,c):m;}return out;}
+function _rumore432(a,e,s){const h=(x,y)=>{let q=Math.imul(x*374761393+y*668265263+s*982451653,1274126177);q^=q>>>13;q=Math.imul(q,1103515245);return((q>>>0)%10000)/10000;};
+  const f=(x,y,sc)=>{const X=x/sc,Y=y/sc,x0=Math.floor(X),y0=Math.floor(Y),tx=X-x0,ty=Y-y0,sx=tx*tx*(3-2*tx),sy=ty*ty*(3-2*ty),w=(v)=>((v%((NA432/sc)|0||1))+((NA432/sc)|0||1))%((NA432/sc)|0||1);
+    const v00=h(w(x0),y0),v10=h(w(x0+1),y0),v01=h(w(x0),y0+1),v11=h(w(x0+1),y0+1);return (v00*(1-sx)+v10*sx)*(1-sy)+(v01*(1-sx)+v11*sx)*sy;};
+  return f(a,e,2)*0.6+f(a,e,4)*0.4;}
+/* 2-3) geometria di uno strato: celle coperte (alfa > 0) → maglia nello spazio dell'osso head */
+function _strato432(mesh,R,chiave,cov,spess,rilievo,seme,uvCost){const key=mesh.geometry.uuid+'|'+chiave+(uvCost?'|f':'');let G=ASP432.geo.get(key);if(G)return G;
+  const T=THREE,sk=mesh.skeleton,M=new T.Matrix4().multiplyMatrices(sk.boneInverses[R.hb],mesh.bindMatrix);
+  const rm=_vic432(R.r,1,'max'),rs=_vic432(rm,1,'media');const pos=[],uv=[],ind=[],idx=new Int32Array(NA432*NE432).fill(-1);const v=new T.Vector3();
+  const ps=mesh.geometry.attributes.position.count<1500?2:1;/* testa del LOD lontano: una cella su due (meta' dei vertici per lato, un quarto dei triangoli) */const usa=k=>cov[k]>0.02&&R.r[k]>0;const rk=new Float32Array(NA432*NE432);
+  for(let e=0;e<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const k=e*NA432+a;let serve=false;for(let de=-ps;de<=ps&&!serve;de++)for(let da=-ps;da<=ps&&!serve;da++){const ee=e+de;if(ee<0||ee>=NE432)continue;if(usa(ee*NA432+((a+da+NA432)%NA432)))serve=true;}
+    if(!serve||!(rs[k]>0))continue;const rr=Math.max(rm[k],rs[k])+spess+(rilievo?rilievo*(_rumore432(a,e,seme)-0.35):0);
+    rk[k]=rr;v.set(R.C[0]+R.DX[k]*rr,R.C[1]+R.DY[k]*rr,R.C[2]+R.DZ[k]*rr).applyMatrix4(M);idx[k]=pos.length/3;pos.push(v.x,v.y,v.z);if(uvCost)uv.push(uvCost[0],uvCost[1]);else uv.push((a+0.5)/NA432,(e+0.5)/NE432);}
+  for(let e=0;e+ps<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const a2=(a+ps)%NA432,e2=e+ps,p=[e*NA432+a,e*NA432+a2,e2*NA432+a2,e2*NA432+a].map(k=>idx[k]);if(p.some(x=>x<0))continue;
+    const k0=e*NA432+a;if(!(usa(k0)||usa(e*NA432+a2)||usa(e2*NA432+a)||usa(e2*NA432+a2)))continue;ind.push(p[0],p[1],p[2],p[0],p[2],p[3]);/* antiorario visto da fuori (a = verso +x davanti, e = verso l'alto) */}
+  G=new T.BufferGeometry();G.setAttribute('position',new T.Float32BufferAttribute(pos,3));G.setAttribute('uv',new T.Float32BufferAttribute(uv,2));G.setIndex(ind);G.computeVertexNormals();G.computeBoundingSphere();
+  G.userData.g432={vert:pos.length/3,tri:ind.length/3,rk,cov,C:R.C,Minv:M.clone().invert().elements.slice()};/* rk/cov/C/Minv: per il testimone della compenetrazione (barba-capelli-432) */ASP432.geo.set(key,G);return G;}
+/* texture di uno strato: copertura (celle, sfumata) x trama ripetuta; il colore lo mette il materiale */
+function _tex432(chiave,cov,img,rip){let t=ASP432.tex.get(chiave);if(t)return t;const t0=performance.now(),T=THREE,W=NA432*8,H=NE432*8,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
+  if(img){const pc=document.createElement('canvas'),s=Math.max(8,Math.round(W/(rip||12)));pc.width=s;pc.height=s;pc.getContext('2d').drawImage(img,0,0,s,s);g.fillStyle=g.createPattern(pc,'repeat');}else g.fillStyle='#fff';g.fillRect(0,0,W,H);
+  const cc=document.createElement('canvas');cc.width=NA432;cc.height=NE432;const cg=cc.getContext('2d'),D=cg.createImageData(NA432,NE432);for(let k=0;k<NA432*NE432;k++){const e=(k/NA432)|0,a=k%NA432,o=((NE432-1-e)*NA432+a)*4;D.data[o]=D.data[o+1]=D.data[o+2]=255;D.data[o+3]=Math.round(255*Math.max(0,Math.min(1,cov[k])));}
+  cg.putImageData(D,0,0);g.globalCompositeOperation='destination-in';g.imageSmoothingEnabled=true;g.drawImage(cc,0,0,W,H);
+  t=new T.CanvasTexture(cv);t.flipY=true;t.wrapS=T.RepeatWrapping;t.anisotropy=1;t.needsUpdate=true;ASP432.tex.set(chiave,t);ASP432.msTex=(ASP432.msTex||0)+(performance.now()-t0);return t;}
+function _col432(hex){const c=new THREE.Color(hex||'#3a2410');if(c.convertSRGBToLinear)c.convertSRGBToLinear();return c;}
+function _mat432(chiave,tex,hex,ombra){let m=ASP432.mat.get(chiave);if(m)return m;const T=THREE;m=new T.MeshStandardMaterial({map:tex,color:_col432(hex),roughness:0.95,metalness:0,transparent:true,depthWrite:false,alphaTest:0.04,side:T.FrontSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});
+  if(ombra!=null)m.color.multiplyScalar(ombra);m.name='Aspetto432';m.userData.g432=1;ASP432.mat.set(chiave,m);return m;}
+/* fondo del rasato: il materiale TINTO della testa (giro 240), senza skinning (la maglia e' figlia dell'osso), letto in un punto di pelle della fronte */
+function _fondo432(src){const k='fondo|'+src.uuid;let m=ASP432.mat.get(k);if(m)return m;m=src.clone();m.skinning=false;m.onBeforeCompile=src.onBeforeCompile;if(src.customProgramCacheKey)m.customProgramCacheKey=src.customProgramCacheKey;m.userData=Object.assign({},src.userData,{g432:1});m.name='Fondo432';m.needsUpdate=true;ASP432.mat.set(k,m);return m;}
+/* copertura della calotta: capelli dipinti, dilatati (d>0) o erosi (d<0) di |d| celle, poi sfumati di una cella */
+function _cop432(R,d,sopra,orec){const c=new Float32Array(NA432*NE432);for(let k=0;k<c.length;k++){const e=(k/NA432)|0,a=k%NA432,el=((e+0.5)/NE432-0.5)*180,az=Math.abs(((a+0.5)/NA432-0.5)*360);
+    const ore=!!(orec&&az>=orec.az[0]&&az<=orec.az[1]&&el>=orec.el[0]&&el<=orec.el[1]);/* le orecchie sporgono: il raggio le prende e la calotta le coprirebbe (misurato: «ali» ai lati della testa) */
+    c[k]=R.cap[k]&&R.r[k]>0&&R.hw[k]>0.9&&!ore&&(sopra==null||el>=sopra)?1:0;}
+  let x=c;if(d>0)x=_vic432(x,d,'max');else if(d<0)x=_vic432(x,-d,'min');for(let k=0;k<x.length;k++)if(R.hw[k]<0.9||!(R.r[k]>0))x[k]=0;return _vic432(x,1,'media');}
+/* copertura della barba: la maschera (file) nel campo azimut/elevazione della tabella */
+function _copBarba432(R,img,campo){const c=new Float32Array(NA432*NE432);if(!img)return c;const W=64,H=64,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');g.drawImage(img,0,0,W,H);const d=g.getImageData(0,0,W,H).data;
+  const [az0,az1]=campo.az,[el0,el1]=campo.el;for(let e=0;e<NE432;e++)for(let a=0;a<NA432;a++){const k=e*NA432+a,az=((a+0.5)/NA432-0.5)*360,el=((e+0.5)/NE432-0.5)*180,u=(az-az0)/(az1-az0),v=(el-el0)/(el1-el0);if(u<0||u>1||v<0||v>1||!(R.r[k]>0))continue;
+    const px=Math.min(W-1,Math.floor(u*W)),py=Math.min(H-1,Math.floor((1-v)*H));c[k]=d[(py*W+px)*4+3]/255*(d[(py*W+px)*4]/255);}return c;}
+/* l'aspetto di una figurina: dalla tabella */
+function aspetto432(fg){try{const T=ASP432.tab;if(!T||!fg)return null;const tg=fg.t!=null?T.tagli[fg.t]:null,bb=fg.b!=null?T.barbe[fg.b]:null;return {taglio:fg.t||null,calotta:tg||null,barba:bb||null,descr:fg.b||null};}catch(_e){return null;}}
+/* applica a un corpo (visual) gia' con la testa e la pelle della figurina */
+function _applica432(visual,fg){try{if(!_g432()||!visual||!fg||typeof THREE==='undefined'||typeof document==='undefined')return;if(visual.userData.g432&&visual.userData.g432.fatto)return;
+  _tab432();const md=_mascDati432();if(ASP432.stato<2||!md){if(ASP432.stato!==3&&_MASC240.stato!==3){if(!visual.userData.g432){visual.userData.g432={atteso:1};ASP432.att.push(()=>{visual.userData.g432=null;_applica432(visual,fg);});
+      if(!md&&!ASP432.poll){ASP432.poll=setInterval(()=>{if(_mascDati432()||_MASC240.stato===3){clearInterval(ASP432.poll);ASP432.poll=0;_svuota432();}},150);}}}return;}
+  const A=aspetto432(fg);if(!A){visual.userData.g432={fatto:1,pronto:1,n:fg.n,calotta:null,barba:null,strati:[]};return;}let mesh=null;visual.traverse(m=>{if(!mesh&&m.isSkinnedMesh&&m.material&&/^(Material\.002|KorwardNativeHair_)/.test((Array.isArray(m.material)?m.material[0]:m.material).name||''))mesh=m;});if(!mesh)return;
+  const R=_rete432(mesh);if(!R)return;const head=mesh.skeleton.bones[R.hb];const T=ASP432.tab,hair=(T.tinte&&fg.h&&T.tinte[fg.h])||fg.hair||'#3a2410',/* [giro 432] tinta degli strati tarata per classe nella tabella */out={fatto:1,n:fg.n,t:A.taglio,calotta:null,barba:null,hair,strati:[]};
+  const nuovi=[];const asp=[];
+  const cal=A.calotta&&T.calotte[A.calotta];
+  if(cal&&!cal.nativa){out.calotta=A.calotta;asp.push(_img432(cal.trama).then(img=>{const cov=_cop432(R,cal.dil|0,cal.sopra,T.orecchie);const G=_strato432(mesh,R,'cal-'+A.calotta,cov,cal.spessore,cal.rilievo||0,7);
+      const tx=_tex432('cal-'+A.calotta,cov,img,cal.rip);/* una texture per tipo: la griglia azimut/elevazione e' la stessa su tutti i LOD (prima: una per LOD, 16 texture misurate) */const ms=new THREE.Mesh(G,_mat432('cal-'+A.calotta+'|'+hair,tx,hair,cal.ombra));ms.name='Calotta432_'+A.calotta;ms.renderOrder=2;nuovi.push(ms);
+      if(cal.fondo&&R.fr){const head0=Array.isArray(mesh.material)?mesh.material[0]:mesh.material;const Gf=_strato432(mesh,R,'cal-'+A.calotta,cov,cal.spessore-0.0015,0,7,R.fr);const mf=new THREE.Mesh(Gf,_fondo432(head0));mf.name='Fondo432_'+A.calotta;mf.renderOrder=1;nuovi.push(mf);}}));}
+  else if(cal&&cal.nativa)out.calotta=A.calotta;
+  const bar=A.barba&&T.barbe_tipi[A.barba];
+  if(bar){out.barba=A.barba;asp.push(Promise.all([_img432(bar.maschera),bar.trama?_img432(bar.trama):null]).then(([img,tr])=>{const cov=_copBarba432(R,img,T.campo_barba);const G=_strato432(mesh,R,'bar-'+A.barba,cov,bar.spessore,0,11);
+      const tx=_tex432('bar-'+A.barba,cov,tr,bar.rip);const mb=new THREE.Mesh(G,_mat432('bar-'+A.barba+'|'+hair,tx,hair,bar.ombra));mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}
+  visual.userData.g432=out;
+  Promise.all(asp).then(()=>{nuovi.forEach(m=>{m.frustumCulled=false;m.castShadow=false;m.userData.g432=1;head.add(m);out.strati.push(m.name);});out.pronto=1;}).catch(()=>{out.pronto=1;});
+}catch(_e){}}
+/* smontaggio: geometrie, texture e materiali in cache registrano ascoltatori 'dispose' sul renderer (classe del giro 276) */
+function _rilascia432(){try{let n=0;ASP432.geo.forEach(g=>{g.dispose();n++;});ASP432.tex.forEach(t=>{t.dispose();n++;});ASP432.mat.forEach(m=>{m.dispose();n++;});return n;}catch(_e){return 0;}}
+try{if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST)window.__CPM_ASP432=ASP432;}catch(_e){}
+function ThreeMatchView(props){try{if(_g432())_tab432();}catch(_e432){}/* [giro 432] la tabella dell'aspetto (3 KB) parte al montaggio della partita, non dietro ai GLB */
   const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
     stadiumHomeCol,stadiumAwayCol,stadiumAwayCol2=null,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
@@ -1944,7 +2054,7 @@ function ThreeMatchView(props){
       const _corp412=(proc,appr)=>{const f=_fig412(proc);return f?Object.assign({},appr||{},{girth:f.girth}):appr;};
       const _chi240=(visual,proc,ruolo)=>{try{if(visual&&proc)visual.userData.chi240={nome:proc._nf||null,ruolo:ruolo||null};}catch(_e){}};
       const _pelleFig240=(visual,appearance)=>{try{const fg=appearance&&appearance._fig240;if(!fg||!fg.p||typeof _pelle225!=='function')return;_pelle225(visual,fg.p,'auto',_resaViva240,renderer.outputEncoding===THREE.sRGBEncoding,ESP240);}catch(_e){}};
-      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}};/* la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
+      const _applyCgtraderNativeHair=(visual,appearance)=>{_applyCgtraderNativeHair0(visual,appearance);try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending))_pelleFig240(visual,appearance);}catch(_e){}try{if(visual&&!(visual.userData.cpmNativeHair&&visual.userData.cpmNativeHair.pending)&&appearance&&appearance._fig240)_applica432(visual,appearance._fig240);}catch(_e){}};/* [giro 432] barba e calotta DOPO la pelle (il fondo del rasato usa il materiale tinto della testa) · la pelle DOPO la testa: la mappa dei capelli sostituisce il materiale */
       const _applyCgtraderNativeHair0=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
@@ -14438,7 +14548,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         /* secondo trattenitore, stessa classe (snapshot dopo il primo rimedio): _kitTexCache → texture della maglia → ascoltatore del renderer → contesto → canvas → scena */
         if(typeof _kitTexCache!=='undefined')Object.values(_kitTexCache).forEach(t=>{try{if(t&&t.isTexture)t.dispose();}catch(_e){}});
       }catch(_e275){}}
-      try{if(typeof _rilascia276==='function')_rilascia276();}catch(_e276){}/* [giro 276] terzo trattenitore della stessa classe: la maschera del viso del giro 240 (uniform, non proprieta' del materiale). Rosso __CPM_NO_G276 */
+      try{if(typeof _rilascia276==='function')_rilascia276();}catch(_e276){}try{if(typeof _rilascia432==='function')_rilascia432();}catch(_e432){}/* [giro 432] geometrie, texture e materiali di barba e calotte (cache di modulo, stessa classe del 276) *//* [giro 276] terzo trattenitore della stessa classe: la maschera del viso del giro 240 (uniform, non proprieta' del materiale). Rosso __CPM_NO_G276 */
 
       };const _p3_219=()=>{
       try{renderer.forceContextLoss();}catch(e){}try{renderer.dispose();}catch(e){}// 5.69.3: rilascia il contesto WebGL della partita a fine match → non si accumula tra una partita e l'altra

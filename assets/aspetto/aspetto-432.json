@@ -1,0 +1,120 @@
+{
+ "v": 1,
+ "nota": "giro 432 PO-686: UNICA tabella figurina→aspetto. Chiavi di «tagli» e «barbe» = parole del manifest dei ritratti (assets/portraits/ai/manifest.json, campi capelli senza il colore e barba). Un taglio o una barba nuovi: una riga qui + un file in assets/aspetto (trama o maschera). null = nessuno strato (resta la testa del corpo).",
+ "tagli": {
+  "rasati a zero": "rasato",
+  "rasati": "rasato",
+  "corti lisci": "corto",
+  "corti mossi": "corto",
+  "corti con tempie brizzolate": "corto",
+  "ricci corti": "ricci",
+  "ricci medi": "ricci-medi",
+  "afro corti": "afro",
+  "stempiati e corti": null,
+  "lunghi raccolti": null
+ },
+ "calotte": {
+  "corto": {
+   "nativa": true
+  },
+  "rasato": {
+   "trama": "assets/aspetto/trama-rasato.png",
+   "rip": 28,
+   "spessore": 0.002,
+   "dil": 1,
+   "fondo": true,
+   "ombra": 1.0
+  },
+  "ricci": {
+   "trama": "assets/aspetto/trama-ricci.png",
+   "rip": 9,
+   "spessore": 0.004,
+   "rilievo": 0.004,
+   "dil": 1,
+   "ombra": 1.0
+  },
+  "ricci-medi": {
+   "trama": "assets/aspetto/trama-ricci.png",
+   "rip": 8,
+   "spessore": 0.009,
+   "rilievo": 0.006,
+   "dil": 1,
+   "ombra": 1.0
+  },
+  "afro": {
+   "trama": "assets/aspetto/trama-afro.png",
+   "rip": 9,
+   "spessore": 0.014,
+   "rilievo": 0.006,
+   "dil": 1,
+   "ombra": 1.0
+  }
+ },
+ "barbe": {
+  "barba piena curata": "piena",
+  "piena corta": "piena",
+  "barba corta": "corta",
+  "corta": "corta",
+  "pizzetto": "pizzetto",
+  "baffi sottili": "baffi",
+  "rasato": null
+ },
+ "barbe_tipi": {
+  "piena": {
+   "maschera": "assets/aspetto/barba-piena.png",
+   "trama": "assets/aspetto/trama-barba.png",
+   "rip": 14,
+   "spessore": 0.0025,
+   "ombra": 1.0
+  },
+  "corta": {
+   "maschera": "assets/aspetto/barba-corta.png",
+   "trama": "assets/aspetto/trama-barba.png",
+   "rip": 16,
+   "spessore": 0.0018,
+   "ombra": 1.0
+  },
+  "pizzetto": {
+   "maschera": "assets/aspetto/barba-pizzetto.png",
+   "trama": "assets/aspetto/trama-barba.png",
+   "rip": 14,
+   "spessore": 0.0022,
+   "ombra": 1.0
+  },
+  "baffi": {
+   "maschera": "assets/aspetto/barba-baffi.png",
+   "trama": "assets/aspetto/trama-barba.png",
+   "rip": 14,
+   "spessore": 0.0022,
+   "ombra": 1.0
+  }
+ },
+ "campo_barba": {
+  "az": [
+   -100,
+   100
+  ],
+  "el": [
+   -75,
+   15
+  ]
+ },
+ "orecchie": {
+  "az": [
+   62,
+   118
+  ],
+  "el": [
+   -45,
+   13
+  ],
+  "nota": "zona delle orecchie (azimut in valore assoluto, elevazione): le calotte non la coprono"
+ },
+ "tinte": {
+  "neri": "#0b0c0c",
+  "castani": "#3a1c0c",
+  "biondi": "#895d26",
+  "rossi": "#5c2111",
+  "nota": "colore degli strati per classe di capelli della figurina, tarato sul banco (notte) perche' calotta e barba piena stiano vicino ai capelli dipinti della stessa classe (CIE76): misura-432.mjs"
+ }
+}

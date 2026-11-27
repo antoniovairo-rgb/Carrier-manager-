@@ -542,6 +542,8 @@
     "misura-412": "node misura-412.mjs",
     "attaccatura-414": "node attaccatura-414.mjs",
     "misura-414": "node misura-414.mjs",
+    "barba-capelli-432": "node barba-capelli-432.mjs",
+    "misura-432": "node misura-432.mjs",
     "cerimonie-192": "node cerimonie-192.mjs",
     "scene-178": "node scene-178.mjs && CPM_ROSSO=1 node scene-178.mjs && CPM_ROSSO=331 CPM_SCENE=intro CPM_INTRO_FMT=tel,tel412 node scene-178.mjs",
     "guanti-201": "node guanti-201.mjs",
