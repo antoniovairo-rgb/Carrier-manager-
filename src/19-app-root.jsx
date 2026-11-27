@@ -218,7 +218,7 @@ function SitTest({sitN}){
    per device (localStorage 'cpm-intro-seen'), sempre skippabile, SPENTA sotto ?cpmtest=1 (harness/validator
    attraversano il flusso create→trial). Pattern GalaStage3D: scena Three dedicata, dispose profondo,
    fallback poster se WebGL/reduced-motion. */
-function IntroCinematic({onDone,nome,riascolto}){
+function IntroCinematic({onDone,nome,riascolto,avatarId}){
   const ref=React.useRef(null);
   /* [giro 115 PO-321 «Sistemiamo anche il video iniziale»] sette correzioni del collaudo 184, ognuna col suo rosso
      (__CPM_NO_G115_<NN> = comportamento della 183):
@@ -256,7 +256,7 @@ function IntroCinematic({onDone,nome,riascolto}){
   React.useEffect(()=>{
     const _S13=[[0.2,"ref.whistle"],[8.8,"ball.kick"],[9.15,"ball.net"],[9.6,"crowd.roar"],[16.3,"crowd.applause"]];let _s13=0;
     const iv=setInterval(()=>{
-      const raw=(Date.now()-stRef.current.t0)/1000;const el=_el115(raw);
+      const raw=(_ora427(stRef)-stRef.current.t0)/1000;const el=_el115(raw);
       let b=0;for(let i=0;i<CAPS.length;i++)if(el>=CAPS[i].t)b=i;
       setBeat(b);
       while(_s13<_S13.length&&el>=_S13[_s13][0]){_suona115(_S13[_s13][1]);_s13++;}
@@ -418,7 +418,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     //   (footballer.glb + clip per NOME sul rig mixamorig, riusa loadGLB/_glbCache del prefetch al boot):
     //   i procedurali restano come FALLBACK finché il GLB non arriva (mai scena vuota) e guidano posizione/
     //   rotazione (pattern _glbDriven del match); i gesti sono clip vere (jog · kick al tiro · tuffo GK).
-    let disposed=false,glbOk=false,heroAv=null,gkAv=null,heroActs=null,gkActs=null;const mixers=[];const stG={kicked:false,kickBack:false,dived:false};
+    let _cg428=false,disposed=false,glbOk=false,heroAv=null,gkAv=null,heroActs=null,gkActs=null;const mixers=[];const stG={kicked:false,kickBack:false,dived:false};
     const _numTex=(hex)=>{/* [7.32.7 collaudo PO «metti il numero 9 alla maglia dell'eroe!»] canvas granata
         col 9 bianco ripetuto su 3 colonne: il busto CH38 copre ~5/16 della U (verifica UV 7.8.2) → il
         pannello posteriore ne cattura uno pulito qualunque sia la sua finestra U */
@@ -454,6 +454,15 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(!pkg||disposed)return;const A=n=>(pkg.animations||[]).find(c=>c&&c.name===n)||null;
         heroAv=corpoCG23(pkg,{shirt:_clb178.c,shorts:_clb178.c2,socks:_clb178.c,altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
         if(!heroAv||!gkAv)return;scene.add(heroAv);scene.add(gkAv);
+        /* [giro 428 · PO-691 «nel video intro l'eroe non ha le spalle larghe e la corporatura uniforme, e' il biglietto da visita!»]
+           MISURATO (intro-spalle-428, corpi accesi, 390x844 e 1920x1080): la regola delle spalle (_corrPostura23 → _spalle146) qui sotto
+           girava SOLO se window.__CPM_INTRO_CG23, che la build store e l'app Android (__CPM_STORE_BUILD) non scrivono mai: nell'app
+           l'eroe dell'intro aveva le spalle del modello nudo (Sj/Aj fuori dalla fascia [2,34 · 2,62] del giro 146). E la corporatura era
+           quella generica (scala uniforme a 1,82), non quella dell'eroe in partita. Ora: (1) la regola delle spalle parte quando il
+           corpo e' agganciato, in ogni build (_cg428, non piu' il testimone); (2) l'eroe prende il girth del suo avatar con la stessa
+           formula di _heroAppr (src/12) e la stessa funzione cgCorporatura della partita e delle cerimonie. Niente regola nuova.
+           Rosso window.__CPM_NO_G428 (= intro di prima). Guardiano npm run intro-spalle-428. */
+        if(!window.__CPM_NO_G428){_cg428=true;try{const _id428=+avatarId||0;if(typeof cgCorporatura==='function')cgCorporatura(heroAv,{girth:0.97+((_id428*131)%100)/100*0.10});}catch(_e){}}
         const mk=(av,defs)=>{const mx=new THREE.AnimationMixer(av);mixers.push(mx);const acts={};Object.keys(defs).forEach(k=>{if(defs[k])acts[k]=mx.clipAction(defs[k]);});return acts;};
         heroActs=mk(heroAv,{jog:A('jog'),idle:A('idle'),kick:A('kick'),lift:A('throwin')});gkActs=mk(gkAv,{idle:A('gk-ready')||A('idle'),dive:A('gk-dive')});
         if(heroActs.jog)heroActs.jog.play();else if(heroActs.idle)heroActs.idle.play();if(gkActs.idle)gkActs.idle.play();
@@ -509,7 +518,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     let raf=null;let netKick=0;let shakeIntro=0;
     const tick=()=>{
       if(_att233&&!glbOk)stRef.current.t0=Date.now();/* [giro 233] finche' il corpo non c'e' la scena resta al secondo zero */
-      const _raw115=(Date.now()-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
+      const _raw115=(_ora427(stRef)-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
       // ---- coreografia eroe/palla [7.32.3 collaudo PO «palla ANCORA dietro · movimenti lenti e poco
       //      fluidi · post-gol troppo lungo»] traiettoria PURA posAt(t): la direzione della palla è la
       //      DERIVATA ESATTA del moto (differenza finita sul path analitico) → davanti ai piedi in OGNI
@@ -571,8 +580,8 @@ function IntroCinematic({onDone,nome,riascolto}){
         if(heroActs.jog)heroActs.jog.timeScale=clamp(0.55+(stG.vNow||1)*0.55,0.6,1.7);/* [7.37.1 collaudo PO «movimenti da migliorare in fluidità»] cadenza del passo dalla VELOCITÀ REALE del path (anti foot-slide) */
         if(heroAv)heroAv.rotation.x=-0.05*Math.min(stG.vNow||0,2.4)*Math.min(1,run*1.4);/* [7.42.0] lean CONTINUO (il gate on/off a run>0.3 scattava = robotico) */
         const _mdt=Math.min(0.12,(Date.now()-(stG.lastT||Date.now()))/1000);stG.lastT=Date.now();/* [7.32.7] cap 0.05→0.12: a fps bassi le clip restavano in SLOW-MO rispetto al corpo (gliding) */
-        mixers.forEach(m=>m.update(_mdt*_rate115(_raw115)));/* [giro 115 G184-10] le clip rallentano col corpo (niente piedi che scivolano) */
-        try{if(typeof _corrPostura23==='function'&&window.__CPM_INTRO_CG23){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
+        mixers.forEach(m=>m.update(stRef.current.ferma427?0:_mdt*_rate115(_raw115)));/* [giro 427] col pannello audio aperto anche le clip stanno ferme *//* [giro 115 G184-10] le clip rallentano col corpo (niente piedi che scivolano) */
+        try{if(typeof _corrPostura23==='function'&&(_cg428||window.__CPM_INTRO_CG23)){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
         /* [giro 118 PO-325 «il portiere sembra che voli»] CAUSA MISURATA (intro-118): la clip gk-ready tiene i piedi del portiere
            sollevati di ~9 cm dal prato (osso ball_l/ball_r a +0,086..0,096 per tutta l'attesa, mentre l'attaccante in appoggio sta a
            -0,04..0) e, dopo il tuffo, y restava all'ULTIMO valore dell'arco sin(...) (0,22 a 8 fps, fino a 0,62) perche' dopo el=9,5 nessuno
@@ -698,6 +707,7 @@ function IntroCinematic({onDone,nome,riascolto}){
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
         <button data-cpm="intro-cta" onClick={_chiudi15} style={{padding:"15px 34px",minHeight:44,borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>{_chi15?"Chiudi ✕":"🎬 Comincia dal provino →"}</button>{/* [giro 115 G184-15] riascolto da Home/Profilo: si chiude e basta, quindi dice «Chiudi» */}
       </div>}
+      {_g427()&&<Altoparlante427 lato="sinistra" pausa={v=>{const st=stRef.current;if(v){if(!st.ferma427)st.ferma427=Date.now();}else if(st.ferma427){st.t0+=Date.now()-st.ferma427;st.ferma427=0;}}}/>}{/* [giro 427 PO-690] l'altoparlante anche nel video iniziale: a sinistra, perche' a destra c'e' «Salta»; col pannello aperto il video si ferma */}
       <button data-cpm="intro-salta" onClick={_chiudi15} style={{position:"absolute",top:_n12?14:"calc(14px + env(safe-area-inset-top, 0px))",right:_n12?14:"calc(14px + env(safe-area-inset-right, 0px))",padding:_n12?"8px 15px":"10px 18px",minHeight:_n12?undefined:44,minWidth:_n12?undefined:44,borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:_n12?FS.small:FS.body,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
   );
@@ -879,6 +889,25 @@ function AudioSettings(){
     </Card>
   );
 }
+/* [giro 427 PO-690 «all'avvio la prima volta del gioco l'audio nella schermata iniziale non e' gestibile»] MISURATO (audio-avvio-427): al
+   primo avvio il primo tocco sblocca l'audio (brusio di stadio in Home, Creazione, Provino e Offerte; fischio, tiro, rete, boato e
+   applauso nel video iniziale) ma l'unico comando era «Opzioni» nella barra della Home: in Creazione, video, Provino e Offerte nessun
+   comando. Ora in quelle schermate c'e' lo STESSO altoparlante della partita e della serata (giro 172/299: stessa icona, area di tocco
+   44 px) che apre lo STESSO pannello (PannelloAudio172 → AudioMgr → 'cpm-audio'): nessuna seconda interfaccia e nessun secondo
+   salvataggio. Nel provino giocato resta quello della barra di partita (questo non si monta). Rosso window.__CPM_NO_G427 = niente tasto. */
+function _g427(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_G427);}catch(_e){return true;}}
+function _ora427(r){const f=r&&r.current&&r.current.ferma427;return f||Date.now();}
+function Altoparlante427({lato,pausa}){
+  const[apri,setApri]=useState(false);const[,rif]=React.useReducer(x=>x+1,0);
+  let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}
+  const chiudi=()=>{setApri(false);rif();try{pausa&&pausa(false);}catch(_e){}};
+  const sx=lato==="sinistra";
+  return(<>
+    <button data-cpm="audio-avvio427" aria-label={m?"Audio (muto)":"Audio"} title="Audio" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{pausa&&pausa(true);}catch(_e){}setApri(true);}}
+      style={{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 6px)",...(sx?{left:"calc(env(safe-area-inset-left, 0px) + 8px)"}:{right:"calc(env(safe-area-inset-right, 0px) + 8px)"}),zIndex:120,minWidth:44,minHeight:44,background:"none",border:"none",cursor:"pointer",fontSize:FS.body,color:"rgba(255,255,255,0.7)",lineHeight:1,fontFamily:"inherit"}}>{m?"🔇":"🔊"}</button>
+    {apri&&<PannelloAudio172 onClose={chiudi} nota="Le scelte valgono anche nelle Impostazioni" chiudi="Chiudi" etichetta="Audio"/>}
+  </>);
+}
 /* [7.134.0 collaudo PO «il pulsante opzioni/impostazioni nella home deve essere UGUALE e nella STESSA POSIZIONE»]
    nelle schermate pre-carriera (home/provini) non c'è la nav bar col tasto Opzioni → il bottone fisso ora RISPECCHIA
    la cella «⚙️ Opzioni» della nav bar della carriera (stessa icona + label + colori TH), ancorato in basso a DESTRA
@@ -948,6 +977,7 @@ function App(){
   useEffect(()=>{const clickH=(ev)=>{try{AudioMgr.unlock();AudioMgr.tocco(ev.target);/* [giro 172 PO-370] solo conferme importanti e finestre principali (data-suono); rosso __CPM_NO_G172: click su ogni tocco */}catch(_a){}};document.addEventListener('pointerdown',clickH,true);return()=>document.removeEventListener('pointerdown',clickH,true);},[]);
   // [7.62.0 AUDIO] musica di alto livello per schermata (un solo useEffect sul phase globale → crossfade menu↔partita)
   useEffect(()=>{try{AudioMgr.scene(phase);}catch(_a){}},[phase]);
+  useEffect(()=>{try{AudioMgr.intro(showIntro||phase==="cinematic");}catch(_a){}},[showIntro,phase]);/* [giro 430] il video intro (primo avvio o riascolto) suona il brano A sotto i suoi effetti */
   const[player,setPlayer]=useState(null);
   const[trials,setTrials]=useState([]);
   const trialResumeRef=React.useRef(null);/* [7.330.0] dati di ripresa provini letti al boot da cpm-trial-prog */
@@ -1086,11 +1116,12 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,colorScheme:"dark",/* [G1.6 grafica] i controlli nativi (select/option, scrollbar) seguono il tema: senza color-scheme le <option> restano nere sul fondo scuro (541 nodi a 1,29:1 nella Creazione, tema scuro) */fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
-      {showIntro&&<IntroCinematic riascolto nome={player&&player.name} onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
+      {showIntro&&<IntroCinematic riascolto nome={player&&player.name} avatarId={player&&player.avatarId} onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
       {/* [7.331.0 direttiva PO «questo pulsante opzioni deve essere visibile solo nella home e a carriera avviata»]
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen onClose={()=>setShowSettings(false)}/>}
+      {_g427()&&(phase==="home"||phase==="create"||phase==="offers")&&<Altoparlante427 lato={phase==="home"&&typeof window!=="undefined"&&window.innerWidth<640?"sinistra":undefined}/>}{/* in Home al telefono a destra c'e' il numero di versione; al PC a sinistra c'e' la colonna della barra */}{/* [giro 427 PO-690] l'altoparlante nelle schermate del primo avvio (nel provino lo monta TrialFlow, fuori dalla partita) */}
       {_chipFisso269&&<div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
         {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
@@ -1270,7 +1301,7 @@ function App(){
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
-  if(phase==="cinematic"&&player)return wrap(<IntroCinematic nome={player&&player.name} onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
+  if(phase==="cinematic"&&player)return wrap(<IntroCinematic nome={player&&player.name} avatarId={player&&player.avatarId} onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
   if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots} lang={lang} toggleLang={toggleLang} onNewGamePlusCB={(bonus)=>{setLegacyBonus(bonus);setPhase("create");}} onExitToMenu={()=>{try{safeLS.set("cpm-active","");safeLS.set("cpm-match-resume","");}catch(_e){}setPlayer(null);setPhase("home");refreshSlots();}}/>);/* [7.149.0] uscita al menu: azzera l'auto-ripresa (carriera + partita) → prossimo boot torna alla home */

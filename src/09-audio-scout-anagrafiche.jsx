@@ -36,7 +36,7 @@
    in try/catch; AudioContext creato/resumed SOLO al primo gesto utente (autoplay policy).
    ============================================================================ */
 const AudioMgr=(function(){
-  const SILENT=()=>((typeof _CPM_TEST!=='undefined'&&_CPM_TEST)||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST)||(typeof window!=='undefined'&&!!window.__CPM_REVIEW));/* [7.243.0 direttiva PO «Elimina audio ed effetti sonori dal wizard!»] FUNZIONE, non costante: il flag __CPM_REVIEW nasce quando si ENTRA in revisione (non al boot) → va letto a ogni chiamata; copre musica, sfx, folla, fischietto e campioni */
+  const SILENT=()=>((typeof _CPM_TEST!=='undefined'&&_CPM_TEST)||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST)||(typeof window!=='undefined'&&!!window.__CPM_REVIEW))&&!(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_AUDIO430&&!window.__CPM_REVIEW);/* [giro 430] gancio SOLO di collaudo (?cpmtest=1 + window.__CPM_AUDIO430): l'audio non e' muto per costruzione, cosi' il guardiano misura i nodi veri (anche col muto delle Opzioni, che azzera il guadagno ma non impedisce i nodi) *//* [7.243.0 direttiva PO «Elimina audio ed effetti sonori dal wizard!»] FUNZIONE, non costante: il flag __CPM_REVIEW nasce quando si ENTRA in revisione (non al boot) → va letto a ogni chiamata; copre musica, sfx, folla, fischietto e campioni */
   const LSK='cpm-audio';
   const CATS=['music','match','sfx','crowd','referee'];// bus reali; tel/vibr = predisposti (nessun bus)
   const DEF={master:0.85,
@@ -91,6 +91,19 @@ const AudioMgr=(function(){
   //   («The Storm Chasers», Eldritch Grim, CC0: music.presentazione); la fine stagione tiene music.cerimonia. Stessa accensione e stessa
   //   dissolvenza all'uscita del giro 161 (musicStart/musicStop). Rosso: window.__CPM_NO_G316 → il brano della 7.999.200 anche nella serata.
   const _g316On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G316);
+  // [giro 429 — PO-692] tre candidati CC0 (tools/audio-429/prepara-429.py, righe in LICENZE.json «altri»); B e C restano nei file ma non si usano.
+  // [giro 430 — decisione PO 27/11, dopo l'ascolto: brano A «Determined Pursuit (Epic Orchestra Loop)», Emma_MA, CC0; «dove senti la musica
+  //   che non ti piace?» → «Schermata iniziale e Video intro»] MISURATO prima (tests/visual/misura-430.mjs, sito 7.999.217, telefono e PC,
+  //   primo avvio e successivi): in home e nell'intro NESSUN file di musica partiva (music.home e' spenta dal POC 23/09); suonavano solo il
+  //   brusio sintetico di ambienceStart (rumore 2 s in loop, guadagno 0,042, con applausi/«ohh» sintetici ogni 18-36 s) e, nell'intro, i
+  //   cinque effetti di _S13. Ora: home · offerte · creazione · provino (fuori dalla partita) e video intro suonano A in loop, con la
+  //   dissolvenza del giro 161 (musicStart/musicStop), SENZA il brusio sotto; la musica continua senza ripartire passando da una di queste
+  //   schermate all'altra (una sola scena 'home'); si ferma entrando in carriera o in partita. Rosso: window.__CPM_NO_G430 → la 7.999.217.
+  const _g430On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G430);
+  const MENU430='music/menu/429-a-orchestra';
+  const _MENU430=/^(home|offers|create|trial|cinematic)$/;
+  let _intro430=false;
+  let _suona429=null;
   const _cerMk316=(c)=>(c==='presentazione'&&_g316On())?'music.presentazione':CER161[c];
   let _cer161=null,_ga161=0;
   // [giro 172 — PO-369 «l'audio del pubblico e' terribile» (finto/sporco · troppo forte · sempre uguale) e PO-370 «effetti nel menu»
@@ -119,7 +132,8 @@ const AudioMgr=(function(){
   const _cat149=k=>/^(ball|gk)\./.test(k)?'match':/^ref\./.test(k)?'referee':/^crowd\./.test(k)?'crowd':/^music\./.test(k)?'music':'sfx';
   const _buf149={};let _seed149=0;const _cnt149={},_last149={},_plays149={};
   function _pick149(k,n){const c=_cnt149[k]=(_cnt149[k]|0)+1;let i=(hashStr(k+'|'+_seed149+'|'+c)>>>0)%n;if(n>1&&i===_last149[k])i=(i+1)%n;_last149[k]=i;return i;}
-  function _load149(){Object.keys(F149).forEach(k=>{if(K161[k]&&!_g161On())return;if(k==='music.presentazione'&&!_g316On())return;if(K172[k]&&!_g172On())return;F149[k].f.forEach((n,i)=>{if(N172[n]&&!_g172On())return;_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;if(_cer161&&CER161[_cer161]===k&&!mus)_cerStart161();
+  function _load149(){if(_g430On())F149['music.home'].f=[MENU430];/* [giro 430] brano A */Object.keys(F149).forEach(k=>{if(K161[k]&&!_g161On())return;if(k==='music.presentazione'&&!_g316On())return;if(K172[k]&&!_g172On())return;F149[k].f.forEach((n,i)=>{if(N172[n]&&!_g172On())return;_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;if(_cer161&&CER161[_cer161]===k&&!mus)_cerStart161();
+      if(k==='music.home'&&_g430On()&&!inMatch&&!_cer161&&(_intro430||_MENU430.test(String(_curPhase))))musicStart('home');/* [giro 430] il file arriva dopo lo sblocco: parte appena decodificato */
       if(k==='crowd.bed'&&inMatch&&bed&&!bed.g172&&!_matchHushed)_swapBed172();/* [giro 172] il letto vero arriva dopo l'avvio: passa ai grani in dissolvenza */});});});}
   function _play149(name,mul,catOver){
     if(!_g149On()||!ready)return false;
@@ -442,7 +456,7 @@ const AudioMgr=(function(){
       return;}
     {const mk=key==='career'?'music.career':'music.home',L=_g149On()&&_buf149[mk];
      if(L&&L[0])try{const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));g.gain.setTargetAtTime(F149[mk].g,now(),0.6);
-       const s=ctx.createBufferSource();s.buffer=L[0];s.loop=true;s.connect(g);s.start();_plays149[mk]=(_plays149[mk]|0)+1;
+       const s=ctx.createBufferSource();s.buffer=L[0];s.loop=true;s.connect(g);s.start();_plays149[mk]=(_plays149[mk]|0)+1;_suona429=F149[mk].f[0];
        mus={g,S:null,step:0,key,src:s};return;}catch(_e){}}
     try{
       const S=SCENES[key]||SCENES.menu;const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));
@@ -534,7 +548,11 @@ const AudioMgr=(function(){
       _played++;if(name!=='career.trophy'&&_play149(name))return;fn();}}catch(_e){}
   }
   /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
-  const _mus23=(k)=>{if(_cer161&&_g161On())return;/* [giro 161] una cerimonia in corso tiene la sua musica */if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
+  const _mus23=(k)=>{if(_cer161&&_g161On())return;/* [giro 161] una cerimonia in corso tiene la sua musica */
+    if(_g430On()&&(k==='home'||k==='menu'||k==='intro')){if(_buf149['music.home']&&_buf149['music.home'][0])musicStart('home');else musicStop(true);return;}/* [giro 430] brano A, una sola scena: mai la sintesi (se il file non e' pronto parte al caricamento) */
+    if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
+  /* [giro 430] il video intro suona A sopra qualunque schermata (riascolto dalla home o dalle Opzioni); alla chiusura torna la scena di prima */
+  function intro(on){on=!!on;if(!_g430On()||on===_intro430)return;_intro430=on;if(SILENT()||!ready||inMatch)return;if(on){_mus23('intro');ambienceStop();}else scene(_curPhase);}
   function _cerStart161(){if(!ready||SILENT()||!_g161On()||inMatch||!_cer161)return;musicStart('cer:'+_cer161);}
   // [giro 161] la cerimonia accende il suo brano all'ingresso e lo spegne in dissolvenza all'uscita (CareerApp, un solo effetto)
   function ceremony(k){const v=(k&&CER161[k])?k:null;if(v===_cer161)return;_cer161=v;
@@ -544,13 +562,14 @@ const AudioMgr=(function(){
     _curPhase=phase;
     if(SILENT())return;
     if(!ready){_pendingScene=phase;return;}
+    if(_g430On()&&!inMatch&&(_intro430||_MENU430.test(String(phase)))){_mus23(phase==='create'||phase==='trial'?'menu':'home');ambienceStop();return;}/* [giro 430] niente brusio sotto la musica del menu */
     if(phase==='career'){ if(!inMatch){_mus23('career');ambienceStart();} }
     else if(phase==='home'||phase==='offers'){ _mus23('home');ambienceStart(); }
     else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
   function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];if(!_g172On())delete _last149[k];});/* [giro 172] l'ultimo campione si ricorda anche fra una partita e l'altra: mai lo stesso due volte di fila nemmeno al cambio di partita */ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
+  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} else if(ready&&_g430On()&&(_intro430||_MENU430.test(String(_curPhase))))scene(_curPhase);/* [giro 430] finito il provino, sulla schermata dei provini torna A */ }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
@@ -628,6 +647,9 @@ const AudioMgr=(function(){
   // [giro 172] testimone (solo lettura): letto a grani, piano puro, campioni partiti per evento di folla
   if(typeof window!=='undefined')window.__CPM_AUDIO172=()=>({on:_g172On(),ready,seed:_seed149,letto:bed?{g172:!!bed.g172,real:!!bed.real,livello:+(bed.level||0).toFixed(3),guadagno:bed.g172?+_bedGain172(bed.level).toFixed(4):null,grani:_bedN172}:null,
     grani:_logBed172.slice(),scelte:_log172.slice(),plays:{..._plays149},piano:(seed,n,lens)=>{const o=[];let pr=null;for(let c=1;c<=n;c++){pr=_bedPlan172(seed,c,pr,lens);o.push(pr);}return o;},parametri:{...BED172}});
+  // [giro 429] testimone (solo lettura): scelta, file di music.home, se e' decodificato, cosa suona ORA in loop (null = niente)
+  if(typeof window!=='undefined')window.__CPM_MENU429S=()=>{const B=_buf149['music.home'],b=B&&B[0];return {g430:_g430On(),intro:_intro430,file:F149['music.home'].f[0],caricato:!!b,durata:b?+b.duration.toFixed(3):0,
+    suona:(mus&&mus.src&&(musScene==='home'||musScene==='menu'))?_suona429:null,scena:musScene||null,brusio:!!amb};};
   if(typeof window!=='undefined')window.__CPM_AUDIO161=()=>({on:_g161On(),ready,cerimonia:_cer161,musica:musScene,brano:(mus&&mus.mk)||null,g316:_g316On(),golSubiti:_ga161,plays:{..._plays149}});
   function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
@@ -637,7 +659,7 @@ const AudioMgr=(function(){
     if(!_g172On()){if(el&&el.closest&&el.closest('button,[role="button"],a[href],.cpm-clickable,label'))play('ui.click');return;}
     const m=el&&el.closest&&el.closest('[data-suono]');if(!m)return;const tn=Date.now();if(tn-_ui172<450)return;_ui172=tn;
     play(m.getAttribute('data-suono')==='apri'?'ui.popup':'ui.confirm');}catch(_e){}}
-  return {unlock,play,tocco,scene,ceremony,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
+  return {unlock,play,tocco,scene,ceremony,intro,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
     ui:{click:()=>play('ui.click'),nav:()=>play('ui.nav'),back:()=>play('ui.back')},
     setOn,setVol,setMaster,toggleMute,getCfg,preview,debug,catalog:()=>Object.keys(SFX),cats:CATS};
 })();

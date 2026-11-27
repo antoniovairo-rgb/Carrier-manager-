@@ -64,7 +64,7 @@ async function svuota(page, nome) { const fr = await page.evaluate(() => (window
 async function foto(page, nome) { await page.screenshot({ path: path.join(FOTO, `${TAG}-${nome}.jpg`), type: 'jpeg', quality: 70 }).catch(() => {}); }
 async function nuovaPagina(v, init) {
   const ctx = await b.newContext({ viewport: { width: VP[v].width, height: VP[v].height }, deviceScaleFactor: 1, isMobile: !!VP[v].isMobile, hasTouch: !!VP[v].hasTouch, serviceWorkers: 'block' });
-  await installCdnRoutes(ctx); const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
+  await installCdnRoutes(ctx); const page = await ctx.newPage(); if (+process.env.CPM_CPU_LENTO > 1) { /* [giro 435] solo misura: CPU rallentata come un runner conteso */ const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU_LENTO }); } const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_G212W = []; window.__CPM_G212MAX = 3000; if (o.r) { window.__CPM_NO_G212 = 1; window.__CPM_NO_G206 = 1; }/* [7.999.195 madre] dopo l'unione col giro 206 il gigante ha due correzioni (212 causa, 206 rete di sicurezza): il rosso le spegne entrambe */
     try { localStorage.setItem('cpm-intro-seen', '1'); if (o.ls) for (const k in o.ls) localStorage.setItem(k, o.ls[k]); } catch (e) {} }, { r: ROSSO, ls: init || null });
   return { ctx, page, errs };
@@ -85,8 +85,13 @@ async function partita(nomeSc, casa, v) {
     await carriera(page, salvataggio(casa));
     const pm = await page.evaluate(() => window.__CPM_CAREER.playMatch()).catch(e => 'errore ' + e.message); log.push(quando(`${nomeSc}: playMatch → ${JSON.stringify(pm)}`));
     const t0 = Date.now(); let fase = null, hl = 0, fotoW = 0, fotoH = 0, ultimaRich = -1;
-    while (Date.now() - t0 < 240000 && hl < 2) {
-      const s = await page.evaluate(() => ({ ph: window.__CPM_PHASE && window.__CPM_PHASE(), c: window.__CPM_CLOCK ? window.__CPM_CLOCK() : 0 })).catch(() => null); if (!s) break; fase = s.ph;
+    /* [giro 435] la raccolta finisce all'EVENTO (due highlight risolti e guardati, o partita finita), non a 240 s fissi: con il tunnel
+       del giro 411 l'ingresso e' passato da 82 a 97 s sul banco (primo highlight 111 → 132 s, misurato su main 7.999.218 e lavoro/203)
+       e sul runner, lento circa il doppio, i 240 s scadevano in hl_intro del primo highlight («casa-pc:highlight NON GIUDICATA (3
+       fotogrammi)», treno 46015182581 parte 26). Il tetto resta solo contro una partita appesa. Rosso del giro: CPM_NO_G435=1 (240 s). */
+    const tetto435 = process.env.CPM_NO_G435 === '1' ? 240000 : 900000;
+    while (Date.now() - t0 < tetto435 && hl < 2 && fase !== 'ended') {
+      const s = await page.evaluate(() => ({ ph: window.__CPM_PHASE && window.__CPM_PHASE(), c: window.__CPM_CLOCK ? window.__CPM_CLOCK() : 0 })).catch(() => null); if (!s) break; if (s.ph !== fase) log.push(quando(`${nomeSc}: fase ${s.ph} (minuto ${s.c}, ${((Date.now() - t0) / 1000).toFixed(0)} s)`)); /* [giro 435] dove va il tempo dell'apertura */ fase = s.ph;
       const k = s.ph === 'walkout' ? 'ingresso' : /^hl_/.test(s.ph || '') ? 'highlight' : s.ph === 'playing' ? 'gioco' : null;
       if (k) await svuota(page, `${nomeSc}:${k}`); else await page.evaluate(() => { window.__CPM_G212W = []; }).catch(() => {});
       if (k === 'ingresso' && !fotoW++) { await sleep(2500); await foto(page, `${nomeSc}-ingresso`); }
