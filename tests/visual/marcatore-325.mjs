@@ -8,7 +8,7 @@
 
    COSA MISURA. Partite VERE (nomi diversi = partite diverse; autoplay a seme fisso), giocate a soli highlight (il modo del PO, quello
    con l'avviso: stesso battito e stesso gestore dei gol della partita intera, che sul banco non arriva al fischio in 300 s —
-   misurato 2 su 2; CPM_INTERE=1 CPM_TETTO=600000 ne gioca una su quattro intera). Per ogni gol ambientale il testimone __CPM_M325 da', alla sorgente: la riga risolta,
+   misurato 2 su 2; dal giro 436 una su quattro e' INTERA, vedi sotto). Per ogni gol ambientale il testimone __CPM_M325 da', alla sorgente: la riga risolta,
    il testo dato a badge / momenti chiave / avviso, e marcatore e assist decisi dal motore. Discordanza =
      a) il motore ha deciso un marcatore e una voce ne nomina un altro;
      b) la riga nomina qualcuno della rosa ma non il nome di badge/avviso;
@@ -24,7 +24,14 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch } from './lib/h
 
 const PARTITE = +(process.env.CPM_PARTITE || 8);
 const TETTO_MS = +(process.env.CPM_TETTO || 300000);
-const INTERE = !!process.env.CPM_INTERE;
+/* [giro 436 PO-627] ANCHE LA PARTITA INTERA, DI DEFAULT, COL TETTO DI SEMPRE (300 s). Prima l'intera si chiedeva a mano
+   (CPM_INTERE=1 CPM_TETTO=600000) perche' sul banco non arrivava al fischio. MISURATO (misura-436.mjs, profilo CPU): il minuto di
+   gioco fluido costava ~5 s a qualunque velocita', perche' il 98% del tempo e' disegno nativo della pagina in software (nessun
+   GPU, 0 chiamate WebGL in gioco fluido) e cresce coi pixel. La partita intera si gioca quindi su uno schermo piccolo
+   (CPM_VW x CPM_VH, 360x360) alla velocita' 2x scelta dal giocatore (preferenza `cpm-match-speed`: la cronaca e' funzione pura del
+   minuto, 7.489, la partita e' la stessa). Le partite a soli highlight restano sul telefono 412x915. CPM_INTERE=0 le toglie. */
+const INTERE = process.env.CPM_INTERE !== '0';
+const VW = +(process.env.CPM_VW || 360), VH = +(process.env.CPM_VH || 360), VEL = process.env.CPM_VEL || '2';
 const BRACCI = process.env.CPM_BRACCIO ? [process.env.CPM_BRACCIO] : ['verde', 'rosso'];
 const MIN_GOL = +(process.env.CPM_MIN_GOL || 6), MIN_MOTORE = +(process.env.CPM_MIN_MOTORE || 3);
 
@@ -34,10 +41,10 @@ const N = (s) => String(s || '').trim().toUpperCase();
 
 async function partita(i, rosso) {
   const solo = !(INTERE && i % 4 === 3); const t0 = Date.now();
-  const page = await b.newPage({ viewport: { width: 412, height: 915 } });
+  const page = await b.newPage({ viewport: solo ? { width: 412, height: 915 } : { width: VW, height: VH } });
   await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(([r, s]) => { window.__CPM_GLB = false; window.__CPM_M325 = []; if (s) window.__CPM_SOLO166 = 1; if (r) window.__CPM_NO_G325 = 1; }, [rosso, solo]);
+  await page.addInitScript(([r, s, v]) => { window.__CPM_GLB = false; window.__CPM_M325 = []; if (s) window.__CPM_SOLO166 = 1; else { try { localStorage.setItem('cpm-match-speed', v); } catch (e) {} } if (r) window.__CPM_NO_G325 = 1; }, [rosso, solo, VEL]);
   let finita = false, d = null;
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Marcatore' + (i * 13 + 5) });
@@ -78,18 +85,18 @@ function giudica(g) {
 
 const esiti = {};
 for (const br of BRACCI) {
-  const T = { gol: 0, motore: 0, disc: 0, nong: 0, anonime: 0, assist: 0, valide: 0, scena: 0, perSrc: {} };
+  const T = { gol: 0, motore: 0, disc: 0, nong: 0, anonime: 0, assist: 0, valide: 0, scena: 0, perSrc: {}, intere: 0, intereOk: 0 };
   console.log(`\n=== MARCATORE 325 · braccio ${br.toUpperCase()}${br === 'rosso' ? ' (__CPM_NO_G325 = 7.999.203)' : ''} · ${PARTITE} partite ===`);
   for (let i = 0; i < PARTITE; i++) {
     const g = await partita(i, br === 'rosso'); const r = giudica(g);
-    if (g.finita) T.valide++;
+    if (g.finita) T.valide++; if (!g.solo) { T.intere++; if (g.finita) T.intereOk++; }
     for (const e of g.ev) { T.perSrc[e.src || '?'] = (T.perSrc[e.src || '?'] || 0) + 1; if (e.src === 'highlight' || e.src === 'setpiece') T.scena++; }
     T.gol += r.gol; T.motore += r.motore; T.disc += r.disc.length; T.nong += r.nong.length; T.anonime += r.anonime; T.assist += r.assist;
     console.log(`  partita ${i + 1} (${g.solo ? 'soli highlight' : 'intera'}) ${g.score ? (g.score.home | 0) + '-' + (g.score.away | 0) : '—'} · gol ambientali ${r.gol} (dal motore ${r.motore}) · discordanze ${r.disc.length} · ${g.sec} s${r.nong.length ? ' · NON GIUDICATO: ' + r.nong.join(' | ') : ''}`);
     for (const x of r.disc) console.log(`     ✗ ${x.dove}: ${x.motivi.join(' · ')}\n       «${x.riga}»`);
   }
   console.log(`  totale: ${T.gol} gol ambientali (${T.motore} col marcatore del motore, ${T.assist} con assist, ${T.anonime} righe senza nomi) · gol in scena dell'eroe ${T.scena} (solo contati) · percorsi: ${Object.entries(T.perSrc).map(([k, v]) => k + ' ' + v).join(' · ') || '—'}`);
-  console.log(`  DISCORDANZE: ${T.disc} su ${T.gol} gol · non giudicati: ${T.nong} · partite al fischio ${T.valide}/${PARTITE}`);
+  console.log(`  DISCORDANZE: ${T.disc} su ${T.gol} gol · non giudicati: ${T.nong} · partite al fischio ${T.valide}/${PARTITE} (intere ${T.intereOk}/${T.intere})`);
   esiti[br] = T;
 }
 await b.close(); srv.close();
@@ -98,6 +105,7 @@ let codice = 0; const motivi = [];
 for (const br of BRACCI) {
   const T = esiti[br];
   if (T.nong || T.valide < PARTITE) { codice = 2; motivi.push(`${br}: NON GIUDICATO (${T.nong} voci, ${T.valide}/${PARTITE} partite al fischio)`); continue; }
+  if (INTERE && !T.intere) { codice = 2; motivi.push(`${br}: NON GIUDICATO, nessuna partita intera (servono almeno 4 partite per braccio)`); continue; }
   if (T.gol < MIN_GOL || T.motore < MIN_MOTORE) { codice = 2; motivi.push(`${br}: copertura insufficiente (${T.gol} gol, ${T.motore} dal motore; servono ${MIN_GOL} e ${MIN_MOTORE})`); continue; }
   if (br === 'verde' && T.disc) { codice = 2; motivi.push(`verde: ${T.disc} discordanze su ${T.gol} gol (attese 0)`); }
   if (br === 'rosso' && !T.disc) { codice = 2; motivi.push(`rosso: 0 discordanze su ${T.gol} gol — il braccio rosso non fa ricomparire il difetto`); }
