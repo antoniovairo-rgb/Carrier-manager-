@@ -76,9 +76,15 @@ solo per la modifica del giro), `CPM_CHROME=/opt/pw-browsers/chromium`.
 | controllo | esito |
 |---|---|
 | `npm run marcatore-325` (due bracci, 16 partite ciascuno, corpi accesi) | **verde** (esito nella tabella sopra) |
-| `node ci-runner.mjs giro marcatore-325` | **18/18 verdi** (marcatore-325 1328 s · mappa-unica · test:logic · save-compat · replay 54 s · migrazione-194 · design-system · tema-unico · griglia-mobile 206 s · render-3d-023 · tunnel-285 214 s · home-298 · web-237 · career-critical 329 s · battito-264 391 s · partita-vera 599 s · gk-dive-sync 182 s · schermate-97) |
+| `node ci-runner.mjs giro marcatore-325`, prima corsa | **18/18 verdi** (marcatore-325 1328 s · mappa-unica · test:logic · save-compat · replay 54 s · migrazione-194 · design-system · tema-unico · griglia-mobile 206 s · render-3d-023 · tunnel-285 214 s · home-298 · web-237 · career-critical 329 s · battito-264 391 s · partita-vera 599 s · gk-dive-sync 182 s · schermate-97) |
 | `npm run mappa-unica` (dopo l'aggiunta alla riga `src/14`) | verde |
-| guardiani vicini (`assist-nome-98`, `gol-eroe-154`, `pagella-75`, `assist-298`) | VICINI |
+| `assist-nome-98`, prima corsa (su build della prima corsa) | **rosso**: D1 «rosso: il difetto non si vede» — la rilettura dal motore riparava anche il difetto che `__CPM_NO_G98D1` deve mostrare. Corretto: la rilettura dell'assist si spegne quando è armato il rosso del giro 98. D7 «Chiudi la stagione non raggiunto» in entrambi i bracci: **uguale su `main`** (stessa parte B girata su una copia di `main`), quindi non viene da questo giro |
+| `node ci-runner.mjs giro marcatore-325`, sul build finale | **18/18 verdi** (marcatore-325 1285 s · partita-vera 611 s · career-critical 319 s · battito-264 387 s · le altre come sopra) |
+| `CPM_PARTI=A node assist-nome-98.mjs`, build finale | **verde+rosso**: verde D1 nome coerente 100% (17 assist) · rosso 0% (15) |
+| `npm run assist-298`, build finale | **verde** (e il rosso si vede) |
+| `npm run pagella-75`, build finale | **rosso**: «nessuna partita con un gol dell'eroe in gioco fluido (il caso non è esercitato)». È in `ROSSI-DICHIARATI.json` dalla 7.999.200; non l'ho girato su `main`, quindi non posso confermare con una misura che sia identico lì |
+| `npm run gol-eroe-154` | **non giudicato**: fermato da me a metà (10 partite × 2 bracci ≈ 110 minuti, bloccava la ricomposizione del file); nelle 7 mezze partite arrivate nessun messaggio di errore. È in `ROSSI-DICHIARATI.json` (26/11) |
+| `assist-nome-98` completo (A+B) sul build finale | non rifatto: la parte B (D7) è la stessa di `main` |
 
 Le foto di `docs/collaudo-grafico/` rigenerate dalle sentinelle e `docs/governo/STABILITA.json` scritto dal runner sono
 state rimesse com'erano (`docs/governo` non si tocca in questo giro).
