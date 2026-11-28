@@ -13,7 +13,7 @@
 
    TESTI. Scansione statica dei frammenti src/*.jsx: nessun testo di esultanza «verso/sotto/davanti alla curva» senza dire
    di chi, nessun riferimento festoso alla panchina avversaria. Il rosso dei testi e' la stessa scansione sulla base
-   (git show <base>:src/..., CPM_BASE, default origin/main): deve trovare i testi di prima.
+   (git show <base>:src/..., CPM_BASE, default 49769faf = la base del giro 420; giro 442): deve trovare i testi di prima.
 
    VERDE: almeno 4 corse giudicate per lato (casa/trasferta), di cui almeno 2 con i tifosi dietro la PROPRIA porta (i casi
    del difetto), zero corse sotto la curva avversaria, zero pageerror, zero testi colpevoli.
@@ -47,8 +47,12 @@ function scansiona(leggi) {
   return out;
 }
 const testiOra = scansiona(f => fs.readFileSync(path.join(RADICE, 'src', f), 'utf8'));
-const BASE = process.env.CPM_BASE || 'origin/main';
-const testiBase = scansiona(f => { try { return execSync(`git show ${BASE}:src/${f}`, { cwd: RADICE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64e6 }); } catch (e) { return ''; } });
+/* [giro 442] la base del rosso dei testi e' FISSA: 49769faf, il genitore del commit del giro 420 (fb3c71f). Con `origin/main` il rosso e'
+   diventato rosso da solo appena la 7.999.219 ha portato i testi nuovi su main (treno 46082124679: «trova i testi di prima (0: )»).
+   Se il commit non c'e' (clone corto) si leggono le due righe di allora da fixtures/testi-esultanza-420-49769faf.txt. */
+const BASE = process.env.CPM_BASE || '49769faf';
+let testiBase = scansiona(f => { try { return execSync(`git show ${BASE}:src/${f}`, { cwd: RADICE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64e6 }); } catch (e) { return ''; } });
+if (!testiBase.length && !process.env.CPM_BASE) { const fx = fs.readFileSync(path.join(QUI, 'fixtures', 'testi-esultanza-420-49769faf.txt'), 'utf8'); testiBase = scansiona(f => f === '15-live-match.jsx' ? fx : ''); }
 
 /* ---------- 3D ---------- */
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();

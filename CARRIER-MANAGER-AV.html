@@ -20985,7 +20985,14 @@ function ThreeMatchView(props){
           if(S._w422k!==_k422){S._w422k=_k422;S._w422=null;
             if(!(S._pre33&&S._pre33.k===_k422&&S._pre33.picco)){/* a terra all'esito: il pre-stacco della costruzione non c'e' stato */
               if(_prova422()){let _dx=ball.position.x-_hp.x,_dz=ball.position.z-_hp.z,_dl=Math.hypot(_dx,_dz);if(_dl<0.3){_dx=-Math.sin(hero.rotation.y);_dz=-Math.cos(hero.rotation.y);_dl=1;}
-                ball.position.x=_hp.x+_dx/_dl*6;ball.position.z=_hp.z+_dz/_dl*6;ballArcY0=ball.position.y;if(S._bj0){S._bj0.x=ball.position.x;S._bj0.z=ball.position.z;}/* la provocazione non e' un salto del gioco */}
+                ball.position.x=_hp.x+_dx/_dl*6;ball.position.z=_hp.z+_dz/_dl*6;ballArcY0=ball.position.y;if(S._bj0){S._bj0.x=ball.position.x;S._bj0.z=ball.position.z;}/* la provocazione non e' un salto del gioco */
+                /* [giro 442, rosso __CPM_NO_G442] MISURATO (prestacco-422 col processore rallentato x4 via CDP, gi108 a0 e gi48 a1 del treno
+                   46082124679): quando il gesto di testa si monta tardi il pallone e' gia' alla testa (0,49 u) e l'attesa TESTA146 di questa
+                   scena si e' gia' armata UN fotogramma prima, senza volo 274 (pallone entro 4 u) e gia' rilasciata. La provocazione lo sposta
+                   poi a 6 u e il colpo parte con il pallone ancora a 0,9-1,2 u dalla testa. Lo stato «pallone a 6 u senza volo» lo crea solo la
+                   provocazione: l'attesa della scena riparte qui, cosi' la provocazione gioca il caso per cui esiste (pallone lontano, volo 274). */
+                if(typeof window!=='undefined'&&window.__CPM_PROVA442_TARDI&&S._w146k!==_k422){S._w146k=_k422;S._w146=0;S._l146=true;S._v274t=null;}/* [giro 442] provocazione di collaudo (solo cpmtest, come quella del 422): l'attesa armata e rilasciata un fotogramma prima, come nel caso misurato */
+                if(S._w146k===_k422&&!(typeof window!=='undefined'&&window.__CPM_NO_G442))S._w146k=null;}
               const _hs=_hp.y-(hero.position.y||0),_H=clamp(ball.position.y-(hero.position.y||0)-_hs+0.05,0.25,0.9);
               S._w422={k:_k422,H:_H,L:clamp(Math.sqrt(2*_H/9.8),0.16,0.42),tau:null,n:0,on:_g422On(),lanc:false,w:null};
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const WW=(window.__CPM_W422=window.__CPM_W422||[]);if(WW.length<60){S._w422.w={k:String(_k422),prova:_prova422()?1:0,rosso:S._w422.on?0:1,tau0:null,tauLanc:null,maxTau:0};WW.push(S._w422.w);}}catch(_e){}}}}
