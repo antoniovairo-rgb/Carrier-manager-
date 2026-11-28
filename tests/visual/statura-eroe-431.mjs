@@ -5,7 +5,7 @@
    GLB acceso, ora congelata (notte), salvataggio fixtures/save-190-s12-ovr93.json. Verde + rosso (window.__CPM_NO_G431) nello stesso comando.
    Scene misurate (tutte quelle in cui l'eroe ha un corpo CGTrader acceso per default):
      · INGRESSO in campo (i ventidue in fila): statura sui VERTICI DISEGNATI (suola → cima, maglie deformate dallo scheletro, in metri di
-       scena: la traversa e' 2,44), tre letture a 0,8 s, vale la piu' alta (giro 414);
+       scena: la traversa e' 2,44), fino a 16 letture ravvicinate in walkout (almeno 6), vale la piu' alta; la suola vale la piu' bassa (giro 443);
      · HIGHLIGHT (scene forzate, fasi hl_*) e PREMIAZIONE (stessi ventidue corpi): la posa cambia la statura sui vertici, quindi qui si
        giudica la SCALA del corpo per metro dichiarato (scala di mondo y / statura dichiarata), che per lo stesso modello e' la stessa
        regola; i vertici restano stampati;
@@ -69,8 +69,12 @@ async function braccio(nome, flags) {
       await p.evaluate(() => window.__CPM_CAREER.playMatch()); let ok = false;
       for (let k = 0; k < 140; k++) { const f = await fase(p); if (f === 'walkout' && await pronto(p)) { ok = true; break; } if (f === 'playing') break; await clic(p, 'Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua'); await sleep(700); }
       if (ok) { await p.waitForFunction(() => { const S = window.__CPM3D && window.__CPM3D.scene; if (!S) return false; let n = 0, pr = 0; S.traverseVisible(o => { if (o.userData && o.userData.chi240 && o.userData.chi240.nome) { n++; const h = o.userData.cpmNativeHair; if (h && h.applied) pr++; } }); return n >= 22 && pr === n; }, null, { timeout: 60000 }).catch(() => {}); await sleep(2500);
-        let L = await leggi(p, 'partita'); for (let k = 0; k < 2 && L && L.corpi; k++) { await sleep(800); const D = await leggi(p, 'partita'); if (D && D.corpi) for (const c of L.corpi) { const d = D.corpi.find(x => x.nome === c.nome && x.eroe === c.eroe); if (d && d.alt3d > c.alt3d) c.alt3d = d.alt3d; } }
-        R.scene.ingresso = sintesi(L, 'vertici'); R.tabIngresso = L && L.corpi ? L.corpi.map(c => `${c.eroe ? '*' : ' '}${(c.nome || '?').padEnd(20)} h ${c.h} 3D ${Math.round(c.alt3d * 100)} cm`) : null;
+        /* [giro 443] la suola dell'eroe oscilla col passo dell'ingresso (MISURATO, sonda misura-443.mjs, 24 letture in 15 s: da -0,086 a
+           +0,107, uguale nei due bracci). Una sola lettura per braccio confrontava due istanti del passo (in CI verde 0,101 contro rosso
+           -0,015). Ora 16 letture ravvicinate in fase walkout: vale la suola PIU' BASSA (il piede in appoggio), la statura piu' alta. */
+        let L = await leggi(p, 'partita'), nIng = L && L.corpi ? 1 : 0; for (let k = 0; k < 15 && L && L.corpi; k++) { await sleep(200); if (await fase(p) !== 'walkout') break; const D = await leggi(p, 'partita'); if (D && D.corpi) { nIng++; for (const c of L.corpi) { const d = D.corpi.find(x => x.nome === c.nome && x.eroe === c.eroe); if (d && d.alt3d > c.alt3d) c.alt3d = d.alt3d; if (d && d.suola < c.suola) c.suola = d.suola; } } }
+        if (L) L.nIng = nIng;
+        R.scene.ingresso = sintesi(L, 'vertici'); if (R.scene.ingresso && !R.scene.ingresso.errore) R.scene.ingresso.letture = L.nIng; if (R.scene.ingresso && !R.scene.ingresso.errore && !(L.nIng >= 6)) R.scene.ingresso = { errore: `ingresso: solo ${L.nIng} letture in walkout (servono 6 per la suola)` }; R.tabIngresso = L && L.corpi ? L.corpi.map(c => `${c.eroe ? '*' : ' '}${(c.nome || '?').padEnd(20)} h ${c.h} 3D ${Math.round(c.alt3d * 100)} cm`) : null;
         if (FOTO) { await p.screenshot({ path: `${FOTODIR}431-${tag}-ingresso.png` });
           /* primo piano di confronto: l'eroe fra i due compagni a lui piu' vicini, CLONATI nella posa del momento (SkeletonUtils) in una scena
              a parte, affiancati alla stessa distanza dalla camera, suola sul pavimento; righe a 1,8 · 1,9 · 2,0 m; sotto ogni corpo nome,

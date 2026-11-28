@@ -907,11 +907,11 @@ function fisicoEroe369(avatarId){const a=Math.abs(avatarId|0),hh=1.86+((a*73)%10
    pesoKg via __CPM_EROE23, giro 369), altrimenti la stessa formula di fisicoEroe369. Una sola funzione per partita, serata, parata,
    intervista e gala. Rosso __CPM_NO_G431 = la statura di prima (seme dell'avatar). */
 function corpoEroe431(avatarId){const a=avatarId|0,hh=1.86+((a*73)%100)/100*0.16,gg=0.97+((a*131)%100)/100*0.10;
-  if(typeof window!=='undefined'&&window.__CPM_NO_G431)return {height:hh,girth:gg,cm:null,kg:null};
+  if(typeof window!=='undefined'&&window.__CPM_NO_G431)return {height:hh,girth:gg,cm:null,kg:null,seme:hh};
   let F=null;try{const E=_eroe23();if(E&&E.cm>=150&&E.cm<=205&&E.kg>0&&(E.avatarId==null||(E.avatarId|0)===a))F={cm:E.cm,kg:E.kg};}catch(_e){}
   const S=fisicoEroe369(a);if(!F)F=S;const h=F.cm/100;
   const girth=(F.cm===S.cm&&F.kg===S.kg)?gg:Math.max(0.93,Math.min(1.08,F.kg/(22.4*h*h)));
-  return {height:h,girth,cm:F.cm,kg:F.kg};}
+  return {height:h,girth,cm:F.cm,kg:F.kg,seme:hh};}/* [giro 443] seme: la statura che l'eroe aveva prima del 431, con cui sono state tarate le quote fisse delle cerimonie */
 function piedeTesto369(f){return f==="L"?"piede sinistro":"piede destro";}
 const _MESTIERE23={giornalista_f:"Giornalista",mister:"Allenatore",arbitro:"Arbitro",giornalista:"Giornalista",procuratore:"Procuratore",dirigente:"Dirigente"};
 function datiFigurina23(tipo,chiave,nome,ruolo,col,col2,fis369){
@@ -26833,7 +26833,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_co2){_co2._px476=_co2.position.x;_co2._pz476=_co2.position.z;}
               const _mates191=_pod?(sr.current.players||[]).map(pp=>pp&&pp.mesh&&pp.mesh.visible!==false?+Math.hypot(pp.mesh.position.x-_pod.x,pp.mesh.position.z-_pod.z).toFixed(2):null).filter(v=>v!=null):[];/* [7.999.115 PO-191] distanza di ogni corpo dal centro del podio */
               let _mani191=null;try{const _hA=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;if(_hA&&_hA._handL&&_hA._handR){const _l=new THREE.Vector3().setFromMatrixPosition(_hA._handL.matrixWorld),_r=new THREE.Vector3().setFromMatrixPosition(_hA._handR.matrixWorld),_tp=trophyGrp.position;
-                _mani191={dL:+_l.distanceTo(_tp).toFixed(2),dR:+_r.distanceTo(_tp).toFixed(2),apert:+_l.distanceTo(_r).toFixed(2),lY:+_l.y.toFixed(2),rY:+_r.y.toFixed(2),tY:+_tp.y.toFixed(2),testaY:+(hero.position.y+1.75).toFixed(2)};if(_hA._footL&&_hA._footR){const _fl=new THREE.Vector3().setFromMatrixPosition(_hA._footL.matrixWorld),_fr=new THREE.Vector3().setFromMatrixPosition(_hA._footR.matrixWorld);_mani191.pL=+(_fl.y-hero.position.y).toFixed(2);_mani191.pR=+(_fr.y-hero.position.y).toFixed(2);_mani191.clipT=_hA._gAct?+((_hA._gAct.time||0)/((_hA._gAct.getClip&&_hA._gAct.getClip().duration)||1)).toFixed(3):null;}}}catch(_e191){}/* [7.999.117 PO-191] coppa e mani nello stesso fotogramma */
+                _mani191={dL:+_l.distanceTo(_tp).toFixed(2),dR:+_r.distanceTo(_tp).toFixed(2),apert:+_l.distanceTo(_r).toFixed(2),lY:+_l.y.toFixed(2),rY:+_r.y.toFixed(2),tY:+_tp.y.toFixed(2),testaY:+(hero.position.y+1.75).toFixed(2)};try{const _c443=corpoEroe431(avatarId);_mani191.h443=_c443.height;_mani191.seme443=_c443.seme;}catch(_e443){}/* [giro 443] statura dichiarata e seme nello stesso record: le quote si giudicano in proporzione */if(_hA._footL&&_hA._footR){const _fl=new THREE.Vector3().setFromMatrixPosition(_hA._footL.matrixWorld),_fr=new THREE.Vector3().setFromMatrixPosition(_hA._footR.matrixWorld);_mani191.pL=+(_fl.y-hero.position.y).toFixed(2);_mani191.pR=+(_fr.y-hero.position.y).toFixed(2);_mani191.clipT=_hA._gAct?+((_hA._gAct.time||0)/((_hA._gAct.getClip&&_hA._gAct.getClip().duration)||1)).toFixed(3):null;}}}catch(_e191){}/* [7.999.117 PO-191] coppa e mani nello stesso fotogramma */
               let _corpi191=null;if(_pod&&podiumGrp._rett24){const _c=Math.cos(podiumGrp.rotation.y),_s=Math.sin(podiumGrp.rotation.y);_corpi191=(sr.current.players||[]).filter(pp=>pp&&pp.mesh&&pp.mesh.visible!==false).map(pp=>{const dx=pp.mesh.position.x-_pod.x,dz=pp.mesh.position.z-_pod.z;return [pp.team==='home'?'c':'o',+(dx*_c-dz*_s).toFixed(2),+(dx*_s+dz*_c).toFixed(2),+pp.mesh.position.y.toFixed(2)];});}/* [7.999.119 PO-191] ogni corpo nel riferimento del palco: squadra, lx, lz, quota */
               _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,mani:_mani191,corpi:_corpi191,
                 hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
@@ -26944,7 +26944,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               /* [7.999.117 collaudo PO-191 «trofeo davanti / non in mano»] MISURATO (__CPM_CER476.mani): il riquadro dell'INTERO corpo con le
                  braccia alzate vale 2,31 — la regola credeva la testa sopra le mani e alzava la coppa 0,45 sopra la presa, staccata dalle mani.
                  La sommita' della testa e' quella di un uomo in piedi: tetto 1,85. Rosso __CPM_NO_COPPA191. */
-              if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA191))sr.current._hh24=Math.min(sr.current._hh24,1.85);}
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA191)){let _t443=1.85;
+                /* [giro 443] il tetto 1,85 e' stato misurato sull'eroe con la statura del seme (1,86-2,02): dal giro 431 l'eroe e' alto quanto la
+                   figurina (170-190 cm) e la testa vera sta piu' in basso. MISURATO (premiazione di campionato, eroe 1,70 contro seme 1,86): coppa
+                   ferma a quota 3,15 come col corpo alto, mani a 2,97, scarto presa-mani 0,26 (col corpo alto 0,08). Il tetto scala con la statura
+                   dichiarata / seme: col seme (rosso __CPM_NO_G431) resta 1,85. Rosso __CPM_NO_G443. */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G443)){try{const _c443=corpoEroe431(avatarId);if(_c443&&_c443.seme>0&&_c443.height>0)_t443=1.85*_c443.height/_c443.seme;}catch(_e443){}}
+                sr.current._hh24=Math.min(sr.current._hh24,_t443);}}
             const _sc24=trophyGrp.scale.y,_lg24=trophyGrp._kind24==="league";
             const _grip24=(_lg24?0.14:0.95)*_sc24,_low24=(_lg24?-0.44:0.25)*_sc24;
             const _top24=hero.position.y+sr.current._hh24;

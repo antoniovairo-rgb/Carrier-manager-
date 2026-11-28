@@ -557,11 +557,11 @@ function fisicoEroe369(avatarId){const a=Math.abs(avatarId|0),hh=1.86+((a*73)%10
    pesoKg via __CPM_EROE23, giro 369), altrimenti la stessa formula di fisicoEroe369. Una sola funzione per partita, serata, parata,
    intervista e gala. Rosso __CPM_NO_G431 = la statura di prima (seme dell'avatar). */
 function corpoEroe431(avatarId){const a=avatarId|0,hh=1.86+((a*73)%100)/100*0.16,gg=0.97+((a*131)%100)/100*0.10;
-  if(typeof window!=='undefined'&&window.__CPM_NO_G431)return {height:hh,girth:gg,cm:null,kg:null};
+  if(typeof window!=='undefined'&&window.__CPM_NO_G431)return {height:hh,girth:gg,cm:null,kg:null,seme:hh};
   let F=null;try{const E=_eroe23();if(E&&E.cm>=150&&E.cm<=205&&E.kg>0&&(E.avatarId==null||(E.avatarId|0)===a))F={cm:E.cm,kg:E.kg};}catch(_e){}
   const S=fisicoEroe369(a);if(!F)F=S;const h=F.cm/100;
   const girth=(F.cm===S.cm&&F.kg===S.kg)?gg:Math.max(0.93,Math.min(1.08,F.kg/(22.4*h*h)));
-  return {height:h,girth,cm:F.cm,kg:F.kg};}
+  return {height:h,girth,cm:F.cm,kg:F.kg,seme:hh};}/* [giro 443] seme: la statura che l'eroe aveva prima del 431, con cui sono state tarate le quote fisse delle cerimonie */
 function piedeTesto369(f){return f==="L"?"piede sinistro":"piede destro";}
 const _MESTIERE23={giornalista_f:"Giornalista",mister:"Allenatore",arbitro:"Arbitro",giornalista:"Giornalista",procuratore:"Procuratore",dirigente:"Dirigente"};
 function datiFigurina23(tipo,chiave,nome,ruolo,col,col2,fis369){
