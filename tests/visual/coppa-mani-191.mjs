@@ -3,13 +3,17 @@
    Cerimonia di campionato forzata coi corpi GLB, salto a meta' del sollevamento (__CPM_CERT_SET). Il testimone __CPM_CER476.mani da'
    nello stesso fotogramma la quota della coppa e delle due mani: si misura lo scarto fra il punto di presa (manici, 0,14 x scala 0,62
    sopra la base) e il punto medio delle mani. MISURATO prima: 0,45 (coppa staccata sopra le mani).
-   VERDE → scarto mediano ≤ 0,20 e la coppa non copre il volto (__CPM_PREM24.faccia = 0). ROSSO (__CPM_NO_COPPA191) → scarto ≥ 0,35. */
+   VERDE → scarto mediano ≤ 0,20 e la coppa non copre il volto (__CPM_PREM24.faccia = 0). ROSSO (__CPM_NO_COPPA191) → scarto ≥ 0,35.
+   [giro 443] Dal giro 431 l'eroe e' alto quanto la figurina (carriera nuova: 1,70 contro il seme 1,86 con cui il 191 e' stato tarato).
+   Il verde si giudica a DUE stature: quella vera e quella del seme (__CPM_NO_G431). Il rosso del 191 gira alla statura del seme, per cui
+   e' stato misurato (con l'eroe di 1,70 togliere il tetto mette la coppa 0,19 SOTTO le mani: non si distingue dal verde). Rosso del
+   giro 443 (__CPM_NO_G443: tetto della testa fisso a 1,85) → scarto > 0,20 alla statura vera (misurato 0,26). */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const med = a => { const s = [...a].sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : null; };
-async function braccio(rosso) {
+async function braccio(fl) {
   const p = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(p);
-  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_COPPA191 = 1; }, rosso);
+  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; for (const k of r) window[k] = 1; }, fl);
   await openMatch(p, port, { skipLoadAll: true, name: 'Coppa191' });
   await p.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 60000 }).catch(() => {}); await sleep(1500);
   await p.evaluate(() => window.__CPM_FORCE_CEREMONY({ name: 'CAMPIONI PREMIER DIVISION', kind: 'league' })); await sleep(3000);
@@ -20,10 +24,14 @@ async function braccio(rosso) {
   const faccia = await p.evaluate(() => (window.__CPM_PREM24 || {}).faccia);
   await p.close();
   const sc = W.map(w => Math.abs((w.mani.tY + 0.14 * 0.62) - (w.mani.lY + w.mani.rY) / 2));
-  return { campioni: W.length, scarto: med(sc) != null ? +med(sc).toFixed(2) : null, faccia };
+  const h = W.length ? W[W.length - 1].mani.h443 : null;
+  return { campioni: W.length, statura: h != null ? h : null, scarto: med(sc) != null ? +med(sc).toFixed(2) : null, faccia };
 }
-const v = await braccio(false), r = await braccio(true);
-console.log('VERDE:', JSON.stringify(v)); console.log('ROSSO (__CPM_NO_COPPA191):', JSON.stringify(r));
-const ok = v.campioni >= 10 && v.scarto <= 0.20 && !(v.faccia > 0) && r.campioni >= 10 && r.scarto >= 0.35;
+const v = await braccio([]), vs = await braccio(['__CPM_NO_G431']), r = await braccio(['__CPM_NO_G431', '__CPM_NO_COPPA191']), r4 = await braccio(['__CPM_NO_G443']);
+console.log('VERDE (statura vera):', JSON.stringify(v)); console.log('VERDE (statura del seme, __CPM_NO_G431):', JSON.stringify(vs));
+console.log('ROSSO (__CPM_NO_COPPA191, statura del seme):', JSON.stringify(r)); console.log('ROSSO (__CPM_NO_G443, statura vera):', JSON.stringify(r4));
+const vok = x => x.campioni >= 10 && x.scarto != null && x.scarto <= 0.20 && !(x.faccia > 0);
+const ok = vok(v) && vok(vs) && v.statura != null && vs.statura != null && v.statura !== vs.statura
+  && r.campioni >= 10 && r.scarto >= 0.35 && r4.campioni >= 10 && r4.scarto != null && r4.scarto > 0.20;
 await b.close(); srv.close();
 console.log(ok ? '✅ coppa-mani-191 verde (e il rosso si vede)' : '❌ coppa-mani-191 ROSSO'); process.exit(ok ? 0 : 1);
