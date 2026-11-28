@@ -18,8 +18,9 @@
      · COMPENETRAZIONE in movimento: all'ingresso, in 5 pose di sforzo della testa (+-35 gradi avanti/indietro, +-45 di lato, una mista) e
        in 6 scene hl_* forzate (almeno 4 scene e 8 campioni), 0 vertici della testa fuori dal
        guscio (tolleranza 0,5 mm) e 0 vertici di collo/spalle/busto dentro lo chignon.
-   Rosso del MOVIMENTO window.__CPM_NO_G445M: lo stesso guscio rigido sull'osso head anche sulla nuca deve compenetrare (> 0 vertici fuori),
-   altrimenti la misura e' cieca → rosso. Un corpo non giudicato = rosso. ROSSO window.__CPM_NO_G445 (= resa del 440): deve cadere su almeno meta' dei corpi, altrimenti la misura e'
+   Rosso dello STRUMENTO per il movimento, window.__CPM_NO_G445M: il guscio 1 mm sotto l'inviluppo della testa deve risultare fuori
+   (> 0 vertici), altrimenti la misura e' cieca → rosso. (Prima prova: guscio rigido sull'osso head; con il margine della nuca anche
+   quello resta a 0 nelle pose misurate, quindi non provava lo strumento: rapporto del giro 445.) Un corpo non giudicato = rosso. ROSSO window.__CPM_NO_G445 (= resa del 440): deve cadere su almeno meta' dei corpi, altrimenti la misura e'
    cieca → rosso. Uso: node capelli-445.mjs · CPM_SOLO=verde,giorno,rosso,movimento */
 import { startServer, launchBrowser, sleep } from './lib/harness.mjs';
 import { apriEPronti } from './misura-432.mjs';
@@ -63,7 +64,7 @@ export function giudica445(x) {
 async function movimento(b, port, flags = []) {
   const R = { scene: 0, campioni: 0, sforzo: 0, vert: 0, buchi: 0, mmMax: 0, dentro: 0, vistiCorpo: 0, chi: {} };
   const { ctx, p, ok } = await apriEPronti(conFig(b, FIG445G), port, flags, 'night', null, FORZA445G);
-  const somma = m => { if (!m) return; R.vert += m.vert; R.buchi += m.buchi; R.mmMax = Math.max(R.mmMax, m.mmMax); R.dentro += m.dentro; R.vistiCorpo += m.vistiCorpo; for (const [k, v] of Object.entries(m.chi)) R.chi[k] = (R.chi[k] | 0) + v; };
+  const somma = m => { if (!m) return; R.vert += m.vert; R.buchi += m.buchi; R.mmMax = Math.max(R.mmMax, m.mmMax); R.dentro += m.dentro; R.vistiCorpo += m.vistiCorpo; for (const [k, v] of Object.entries(m.chi)) R.chi[k] = (R.chi[k] | 0) + v; if (m.dove) { R.dove = R.dove || {}; for (const [k, v] of Object.entries(m.dove)) R.dove[k] = (R.dove[k] | 0) + v; } };
   try {
     if (!ok) { R.errore = 'ingresso non raggiunto'; return R; }
     somma(await penetra445(p));
@@ -97,8 +98,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (out.rosso) { const R = out.rosso; if (!R.giudicato) KO(`rosso: non giudicato (${R.motivo})`); else { const B = R.righe.filter(x => x.giudicato); const f = B.filter(x => giudica445(x).length);
     (B.length && f.length >= B.length / 2 ? OK : KO)(`rosso (resa del 440): il difetto si vede su ${f.length}/${B.length} corpi (>= meta')${f.slice(0, 9).map(x => ' · ' + x.nome + ' (' + giudica445(x).join(', ') + ')').join('')}`); } }
   if (out.movimento) { const C = out.movimento;
-    (!C.errore && C.scene >= 4 && C.campioni >= 8 && C.sforzo === 5 && C.vert > 0 && C.buchi === 0 ? OK : KO)(`movimento: ${C.buchi} vertici della testa fuori dal guscio su ${C.vert} (max ${C.mmMax} mm; ingresso + ${C.sforzo} pose di sforzo della testa + ${C.campioni} campioni in ${C.scene} scene hl_*)${C.errore ? ' · ' + C.errore : ''}${Object.keys(C.chi).length ? ' · ' + JSON.stringify(C.chi).slice(0, 300) : ''}`);
-    const M = out.movimentoRosso; (M && !M.errore && M.vert > 0 && M.buchi > 0 ? OK : KO)(`movimento, rosso __CPM_NO_G445M (guscio rigido sull'osso head anche sulla nuca): ${M ? M.buchi : '?'} vertici fuori su ${M ? M.vert : '?'} (max ${M ? M.mmMax : '?'} mm) — la misura vede la compenetrazione`);
+    (!C.errore && C.scene >= 4 && C.campioni >= 8 && C.sforzo === 5 && C.vert > 0 && C.buchi === 0 ? OK : KO)(`movimento: ${C.buchi} vertici della testa fuori dal guscio su ${C.vert} (max ${C.mmMax} mm; ingresso + ${C.sforzo} pose di sforzo della testa + ${C.campioni} campioni in ${C.scene} scene hl_*)${C.errore ? ' · ' + C.errore : ''}${Object.keys(C.chi).length ? ' · ' + JSON.stringify(C.chi).slice(0, 300) + ' · celle (az/el) ' + JSON.stringify(C.dove || {}).slice(0, 200) : ''}`);
+    const M = out.movimentoRosso; (M && !M.errore && M.vert > 0 && M.buchi > 0 ? OK : KO)(`movimento, rosso dello strumento __CPM_NO_G445M (guscio 1 mm sotto l'inviluppo): ${M ? M.buchi : '?'} vertici fuori su ${M ? M.vert : '?'} (max ${M ? M.mmMax : '?'} mm) — la misura vede la compenetrazione`);
     (!C.errore && C.vistiCorpo > 0 && C.dentro === 0 ? OK : KO)(`movimento: ${C.dentro} vertici di collo/spalle/busto dentro lo chignon su ${C.vistiCorpo} controllati`); }
   console.log(g.join('\n')); console.log(rosso ? '\ncapelli-445: ROSSO' : '\ncapelli-445: VERDE'); process.exit(rosso ? 1 : 0);
 }
