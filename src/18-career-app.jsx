@@ -6506,8 +6506,28 @@ const getThisWeekMatchday=()=>{
       const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,parentContract:(p.contract?{...p.contract}:null),type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;/* [5.98.0 EC-4] il contratto col club madre viene RICORDATO */
       const lcs=_L212.lcs;
       const currentWeek=p.week||1;
-      const newCalendar=_L212.newCalendar;
-      let newStandings=_L212.newStandings;
+      let newCalendar=_L212.newCalendar;
+      /* [giro 447 · PO-661, residuo di PO-212] NELLA STESSA LEGA LA CLASSIFICA NON SI RIFA'. Misurato (misura-447): con un club della
+         tua stessa lega l'anteprima mostra la classifica vera (player.standings, coi tuoi risultati e quelli degli altri) e la firma
+         buttava via tutto per una classifica ricostruita dal calendario del club nuovo: a fine S12 mcy 3a con 61 punti → 7a con 57, e
+         tutte le altre righe cambiate; anche alla settimana 1 cambiava l'ordine. Il campionato e' lo stesso: resta la classifica che
+         c'era. Lega diversa: invariato (gia' identico all'anteprima). Rosso __CPM_NO_G447 = classifica ricostruita come prima. */
+      const _stessa447=!(typeof window!=='undefined'&&window.__CPM_NO_G447)&&!!(p.club&&_lgEffAT===p.club.lg)&&(p.standings||[]).some(r=>r&&(r.id===newClub.id||r.n===newClub.n));
+      let newStandings=_stessa447?p.standings:_L212.newStandings;
+      /* [giro 447] e il calendario del club nuovo racconta la STESSA riga: le giornate passate (simulate, mai giocate dall'eroe) si
+         riallineano a vittorie/pareggi/sconfitte della riga in classifica, cambiando il minor numero di esiti dalla giornata piu'
+         vecchia (misurato a fine S12: calendario 17V-6N, riga 17V-10N). homeScore = gol del club (regola del giro 310). */
+      if(_stessa447){try{
+        const _rw=(p.standings||[]).find(r=>r&&(r.id===newClub.id||r.n===newClub.n))||{};
+        const _cls=r=>r.won?"v":r.drew?"n":"p";const _past=newCalendar.filter(e=>!e.type&&e.played&&e.result&&e.week<currentWeek).sort((x,y)=>(x.matchday||0)-(y.matchday||0));
+        const _need={v:(_rw.wins|0),n:(_rw.draws|0),p:(_rw.losses|0)};const _have={v:0,n:0,p:0};_past.forEach(e=>_have[_cls(e.result)]++);
+        if(_need.v+_need.n+_need.p===_past.length){const _fix={};
+          for(const e of _past){const k=_cls(e.result);if(_have[k]<=_need[k])continue;const t=["v","n","p"].find(c=>_have[c]<_need[c]);if(!t)break;
+            const r=e.result,g=Math.max(r.homeScore|0,r.awayScore|0);
+            _fix[e.matchday]=t==="v"?{...r,won:true,drew:false,homeScore:g+1,awayScore:Math.min(r.homeScore|0,r.awayScore|0)}:t==="n"?{...r,won:false,drew:true,homeScore:g,awayScore:g}:{...r,won:false,drew:false,homeScore:Math.min(r.homeScore|0,r.awayScore|0),awayScore:g+1};
+            _have[k]--;_have[t]++;}
+          if(Object.keys(_fix).length)newCalendar=newCalendar.map(e=>(!e.type&&_fix[e.matchday]&&e.week<currentWeek)?{...e,result:_fix[e.matchday]}:e);}
+      }catch(_e){}}
       // [5.93.0 BIL-7] LE COPPE SOPRAVVIVONO AL TRASFERIMENTO (regola: ogni competizione è giocabile).
       //   Prima la rigenerazione del calendario CANCELLAVA tutte le gare cup/euro non giocate mentre
       //   p.cup/p.euro restavano attivi → competizioni zombie ("R16 non ancora disputato", girone 0/6).
@@ -7834,7 +7854,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
               const _ante212=!(typeof window!=='undefined'&&window.__CPM_NO_ANTE212)&&!(lg&&player.club&&lg===player.club.lg)?(()=>{try{return legaDopoTrasferimento212(player,c,player.leagueOverrides||{});}catch(_e){return null;}})():null;/* [7.999.134 PO-212] la classifica che troverai dopo la firma */
               const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
-              try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo'};}}catch(_e){}
+              try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo',tab:rows.map(t=>(t&&(t.id||t.n))+':'+((t&&t.pts)|0)+':'+((t&&t.played)|0)).join(',')};}}catch(_e){}
               const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
               return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:_sb(SP.md)}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
