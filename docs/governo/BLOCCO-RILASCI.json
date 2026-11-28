@@ -3,27 +3,91 @@
  "attivo": true,
  "rossi": [
   {
-   "guardiano": "tiro-caricato",
+   "guardiano": "coppa-mani-191",
    "classe": "rosso_nuovo"
   },
   {
-   "guardiano": "rilascio-312",
+   "guardiano": "esultanza-420",
+   "classe": "rosso_nuovo"
+  },
+  {
+   "guardiano": "consegna-103",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "linee-61",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "testata-209",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "scelte-197",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "difetti-373",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "prestacco-422",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "rassegna-202",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "cross-218",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "grafica-v2",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "parata-258",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "prepartita-287",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "gioca-188",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "popup-224",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "pre-188",
+   "classe": "non_giudicato"
+  },
+  {
+   "guardiano": "posa-sollevamento-191",
+   "classe": "rosso_nuovo"
+  },
+  {
+   "guardiano": "statura-eroe-431",
    "classe": "rosso_nuovo"
   }
  ],
  "sbloccati": [
-  "consegna-103",
-  "testa-342"
+  "tiro-caricato",
+  "rilascio-312"
  ],
- "quando": "2026-11-27T04:02:08.462Z",
- "commit": "ceee52b2feddd3cf59b3743598bb690e0d633c83",
- "ramo": "main",
- "corsa": "45920908452",
- "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/45920908452",
+ "quando": "2026-11-28T05:29:30.842Z",
+ "commit": "b14d8ade0f614ba50534be289199bd61e53a40cd",
+ "ramo": "lavoro/204",
+ "corsa": "46091643062",
+ "corsa_url": "https://github.com/antoniovairo-rgb/Carrier-manager-/actions/runs/46091643062",
  "treno": {
-  "guardiani": 389,
-  "verdi": 357,
-  "parti": "32/32"
+  "guardiani": 411,
+  "verdi": 364,
+  "parti": "33/33"
  },
  "storia": [
   {
@@ -33,6 +97,15 @@
    "rossi": [
     "consegna-103",
     "testa-342"
+   ]
+  },
+  {
+   "quando": "2026-11-27T04:02:08.462Z",
+   "commit": "ceee52b2feddd3cf59b3743598bb690e0d633c83",
+   "corsa": "45920908452",
+   "rossi": [
+    "tiro-caricato",
+    "rilascio-312"
    ]
   }
  ]
