@@ -127,6 +127,7 @@ export function giudica(r) {
 
 export async function scena(b, port, gi, k, esito, opt = {}) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: opt.foto ? 2 : 1 }); await installCdnRoutes(page);
+  if (+process.env.CPM_CPU442 > 1) { try { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU442 }); } catch (e) {} }/* [giro 442] sonda: CPU rallentata via CDP (CPM_CPU442=4), solo misura */
   await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else if (passo !== 'nativo') window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
   let W = null; const foto = [];
   try {

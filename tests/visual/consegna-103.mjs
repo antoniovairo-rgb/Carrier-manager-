@@ -3,7 +3,7 @@
    pc-gi18-riesce, 3,9u in 0,05 s, scrittore esito:cross_goal subito dopo ricevente-pass). Sul passaggio RACCOLTO il pallone e' a terra e
    la consegna partiva dalla quota di un cross: scalino di ~2u in un fotogramma + partenza orizzontale oltre la velocita' da pallone.
    Il percorso (ricevente-pass → esito:cross_goal) esce in circa una scena su tre (posizioni del ricevente non seminate): il guardiano
-   gioca gi18 «riesce» su PC e telefono con scena3d-96 a blocchi di CPM_N scene, per braccio, finche' il braccio ha visto il percorso almeno
+   gioca (dal giro 442) quattro passaggi SWITCH «riesce» su PC e telefono con scena3d-96 a blocchi di CPM_N scene, per braccio, finche' il braccio ha visto il percorso almeno
    CPM_MIN volte (al massimo CPM_GIRI blocchi), e lo dichiara.
      verde: in ogni ingresso nella consegna lo scalino del pallone e' sotto 3u (soglia D11) e scena3d non segna salti;
      rosso __CPM_NO_G103B: almeno un ingresso con lo scalino oltre 3u.
@@ -11,6 +11,14 @@
 import { spawnSync } from 'node:child_process';
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
 const N = +(process.env.CPM_N || 4), MIN = +(process.env.CPM_MIN || 2), GIRI = +(process.env.CPM_GIRI || 8);
+/* [giro 442] LE SCENE. Dal giro 424 (PO-653) il ricevente di gi18 raccoglie il passaggio piu' avanti (pallone a x 25-26 invece di
+   19-22, misurato fotogramma per fotogramma su main e su lavoro/204) e la consegna `cross_goal` scatta solo con pallone a x < 22 o
+   pattern SWITCH (src/12, porta dell'arrivo «assist_recv»): su gi18 il percorso e' uscito 0 volte su 64 scene nel treno 46082124679 e
+   0 su 6 sul banco (main: 2 su 3), cosi' il guardiano girava 8 blocchi a vuoto per braccio e finiva al tetto della parte (6600 s).
+   Ora si giocano quattro passaggi SWITCH riusciti (gi105 «Lancio lungo di prima», gi119 «Lancio lungo 50m», gi122 «Parabola d'esterno
+   40m», gi188 «Sposta il pallone sul lato opposto»): sul banco il percorso e' uscito 8 volte su 8 (pc e telefono), gi105 e gi188 anche
+   con la sospensione dell'incornata. Soglie invariate (scalino 3u, pavimento MIN ingressi). */
+const SCENE = (process.env.CPM_SCENE103 || '105,119,122,188').split(',').map(Number);
 const esito = {};
 for (const arm of ARMI) {
   const T = { scene: 0, cg: 0, oltre: 0, max: 0, salti: 0 };
@@ -20,10 +28,10 @@ for (const arm of ARMI) {
      continua finche' il difetto si vede (un ingresso oltre 3u, una sospensione oltre 3u o un salto D11). */
   const visto = () => arm === 'rosso' ? !!(T.oltre || T.soOltre || T.salti) : T.cg >= MIN;
   for (let g = 0; g < GIRI && !visto(); g++) {
-    const env = { ...process.env, CPM_G96_FORMATI: 'pc,tel',/* la sospensione sull'incornata (ricevente-cross) si vede sul telefono */ CPM_G96_LISTA: Array(N).fill('18:riesce').join(','), CPM_G96_PER: String(N) };
+    const env = { ...process.env, CPM_G96_FORMATI: 'pc,tel',/* la sospensione sull'incornata (ricevente-cross) si vede sul telefono */ CPM_G96_LISTA: Array.from({ length: N }, (_, i) => SCENE[(g * N + i) % SCENE.length] + ':riesce').join(','), CPM_G96_PER: String(N) };
     delete env.CPM_FLAG; if (arm === 'rosso') env.CPM_FLAG = '__CPM_NO_G103B';
     const r = spawnSync(process.execPath, ['scena3d-96.mjs'], { env, encoding: 'utf8', cwd: new URL('.', import.meta.url).pathname, maxBuffer: 1 << 26 });
-    for (const l of (r.stdout || '').split('\n')) { const m = l.match(/^(?:pc|tel)-gi18-riesce\s.*salti (\d+) consegna (\d+)\/([\d.]+) sospensione (\d+)\/([\d.]+)/); if (!m) continue;
+    for (const l of (r.stdout || '').split('\n')) { const m = l.match(/^(?:pc|tel)-gi\d+-riesce\s.*salti (\d+) consegna (\d+)\/([\d.]+) sospensione (\d+)\/([\d.]+)/); if (!m) continue;
       T.scene++; T.salti += +m[1]; const n = +m[2], mx = +m[3]; T.cg += n; if (n && mx > 3) T.oltre++; T.max = Math.max(T.max, mx);
       const sn = +m[4], smx = +m[5]; T.so = (T.so | 0) + sn; if (sn && smx > 3) T.soOltre = (T.soOltre | 0) + 1; T.soMax = Math.max(T.soMax || 0, smx); }
     console.log(`  ${arm} blocco ${g + 1}: scene ${T.scene} · ingressi nella consegna ${T.cg} · scalino massimo ${T.max} u · oltre 3u ${T.oltre} · sospensione ${T.so | 0} fotogrammi, passo massimo ${T.soMax || 0} u, oltre 3u ${T.soOltre | 0} · salti D11 ${T.salti}`);

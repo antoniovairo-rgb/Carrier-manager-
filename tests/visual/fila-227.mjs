@@ -11,6 +11,7 @@ const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-194-primavera-w
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function braccio(rosso) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+  if (+process.env.CPM_CPU442 > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU442 }); }/* [giro 442] sonda: processore rallentato via CDP, solo misura */
   await page.addInitScript(([s, r]) => { window.__CPM_GLB = true; window.__CPM_WALKTEST74 = 1; if (r) window.__CPM_NO_FILA227 = 1; localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [save, rosso]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
@@ -21,13 +22,18 @@ async function braccio(rosso) {
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 40000 }).catch(() => {});
   await page.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 60000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_FORCE_WALKOUT && window.__CPM_FORCE_WALKOUT());
-  let visto = false; const t0 = Date.now();
-  while (Date.now() - t0 < 90000) { await sleep(500); const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph !== 'walkout') { if (visto) break; continue; } visto = true; }
+  /* [giro 442] SI ATTENDE LA FINE DELL'INGRESSO, NON UN TEMPO FISSO. MISURATO (treno 46082124679, parte 09): n 5632 e 5698 letture contro le
+     7040-7106 di un ingresso intero, fermi 97 e 122 contro 1272-2718: il ciclo smetteva a 90 s di parete con l'ingresso ancora in corso, e i
+     bambini si fermano in fila proprio alla fine. Ora: tetto 300 s, la sonda dichiara se l'ingresso e' finito e quanto e' durato; un ingresso
+     non finito e' NON GIUDICATO (= rosso), mai un conto parziale. */
+  let visto = false, finito = false, tIn = null; const t0 = Date.now();
+  while (Date.now() - t0 < 300000) { await sleep(500); const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph !== 'walkout') { if (visto) { finito = true; break; } continue; } if (!visto) tIn = Date.now(); visto = true; }
+  const durWalk = tIn ? +((Date.now() - tIn) / 1000).toFixed(1) : null;
   const K = await page.evaluate(() => window.__CPM_FILA227 || null);
-  await ctx.close(); return { pm, visto, ...(K || {}), quota: K && K.fermi ? +(K.fermiCorsa / K.fermi).toFixed(3) : null };
+  await ctx.close(); return { pm, visto, finito, durWalk, ...(K || {}), quota: K && K.fermi ? +(K.fermiCorsa / K.fermi).toFixed(3) : null };
 }
 const v = await braccio(false), r = await braccio(true);
 console.log('VERDE:', JSON.stringify(v)); console.log('ROSSO (__CPM_NO_FILA227):', JSON.stringify(r));
-const ok = v.fermi >= 100 && v.quota <= 0.10 && r.fermi >= 100 && r.quota >= 0.80;
+const ok = v.finito && r.finito && v.fermi >= 100 && v.quota <= 0.10 && r.fermi >= 100 && r.quota >= 0.80;
 await b.close(); srv.close();
 console.log(ok ? '✅ fila-227 verde (e il rosso si vede)' : '❌ fila-227 ROSSO'); process.exit(ok ? 0 : 1);
