@@ -790,7 +790,18 @@ function generateTransferOffer(player,pref){
     moralBonus=clamp(Math.round(2+_gp*0.5+Math.max(0,_rNew-_rNow351)*4+Math.max(0,_wr-1)*15-Math.max(0,_rNow351-_rNew)*3-_lp*0.15),1,20);
     growthBonus=clamp(Math.round(3+_gp*0.3+(_rNew-_rNow351)*2+(club.p>=80?2:0)),1,15);
   }
-  return{club,type,minutaggio,moralBonus,growthBonus,prestigeRatio:club.p/Math.max(1,currentP),wage,duration,...((isLoanOpt||isLoanObl)?{buyClause:_buyClause,minMatches:_minMatches}:{})};
+  const _o448={club,type,minutaggio,moralBonus,growthBonus,prestigeRatio:club.p/Math.max(1,currentP),wage,duration,...((isLoanOpt||isLoanObl)?{buyClause:_buyClause,minMatches:_minMatches}:{})};
+  /* [giro 448, PO-652 — dubbio 4 del giro 351] REGISTRO DELLE OFFERTE, INERTE come il libro mastro del 7.496: solo un push dentro
+     try/catch, il gioco non lo legge mai. Ogni offerta generata (finestra estiva, inverno, lista trasferimenti, saga, agente) lascia
+     una riga `cpmEv("offerta")` con il giocatore di oggi e i termini proposti: la sonda offerte-448 la raccoglie su carriere simulate
+     per contare quanto spesso capita ogni tipo e se le regole del giro 351 reggono su carriere vere. `n448` numera le offerte della
+     pagina (il registro e' un anello da 400 voci e si svuota a ogni partita dal vivo: la sonda lo legge a ogni settimana). */
+  try{if(typeof cpmEv==="function"&&!(typeof window!=="undefined"&&window.__CPM_NO_G448)){/* rosso __CPM_NO_G448: registro spento, il guardiano offerte-448 deve dichiararsi CIECO */generateTransferOffer._n448=(generateTransferOffer._n448||0)+1;
+    cpmEv("offerta",{n448:generateTransferOffer._n448,s:player.season||1,w:player.week||1,ovr:pOvr,eta:player.age||null,ruolo:player.squadRole||null,
+      pro:(player.proStatus||"u18"),svinc:!!player.contractExpired,da:(player.club&&player.club.id)||null,daP:currentP,daLg:(player.club&&player.club.lg)||null,
+      a:club.id||null,aN:club.n||null,aP:club.p,aLg:club.lg||null,tipo:type,min:minutaggio,mor:moralBonus,cre:growthBonus,stip:wage,
+      stipOggi:(player.contract&&player.contract.wage)||null,durOggi:(player.contract&&player.contract.duration)||null,dur:duration,g351:_g351,pref:(pref&&pref.mode)||null});}}catch(_e448){}
+  return _o448;
 }
 // Generate pro contract offers at end of U18 career
 function generateProContracts(player){
