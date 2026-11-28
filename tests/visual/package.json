@@ -549,6 +549,8 @@
     "misura-414": "node misura-414.mjs",
     "barba-capelli-432": "node barba-capelli-432.mjs",
     "resa-barba-440": "node resa-barba-440.mjs",
+    "resa-barba-444": "node resa-barba-444.mjs",
+    "foto-444": "node foto-444.mjs",
     "misura-440": "node misura-440.mjs",
     "foto-440": "node foto-440.mjs",
     "misura-432": "node misura-432.mjs",

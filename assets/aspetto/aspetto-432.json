@@ -10,8 +10,13 @@
   "ricci corti": "ricci",
   "ricci medi": "ricci-medi",
   "afro corti": "afro",
+  "stempiati e corti": null,
+  "lunghi raccolti": null
+ },
+ "spenti_444": {
   "stempiati e corti": "stempiato",
-  "lunghi raccolti": "lunghi-raccolti"
+  "lunghi raccolti": "lunghi-raccolti",
+  "nota": "giro 444, decisione PO 28/11 sulle foto del 440: stempiato (calotta liscia color pelle, nuca a gradini) e lunghi raccolti (da davanti un caschetto senza coda) tornano alla testa del corpo, come prima del 432. Per riaccenderli (giro 445) si rimette in «tagli» il valore scritto qui al posto di null: una riga per taglio. Le calotte restano descritte sotto."
  },
  "calotte": {
   "corto": {
@@ -128,6 +133,8 @@
    "copertura": 0.6
   },
   "baffi": {
+   "densita444": "assets/aspetto/barba444-baffi.png",
+   "copertura444": 0.85,
    "maschera": "assets/aspetto/barba-baffi.png",
    "trama": "assets/aspetto/trama-barba.png",
    "rip": 14,

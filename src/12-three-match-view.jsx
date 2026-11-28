@@ -516,17 +516,24 @@ function _rumore432(a,e,s){const h=(x,y)=>{let q=Math.imul(x*374761393+y*6682652
     const v00=h(w(x0),y0),v10=h(w(x0+1),y0),v01=h(w(x0),y0+1),v11=h(w(x0+1),y0+1);return (v00*(1-sx)+v10*sx)*(1-sy)+(v01*(1-sx)+v11*sx)*sy;};
   return f(a,e,2)*0.6+f(a,e,4)*0.4;}
 /* 2-3) geometria di uno strato: celle coperte (alfa > 0) → maglia nello spazio dell'osso head */
-function _strato432(mesh,R,chiave,cov,spess,rilievo,seme,uvCost,uvCampo){const key=mesh.geometry.uuid+'|'+chiave+(uvCost?'|f':'')+(uvCampo?'|c':'');let G=ASP432.geo.get(key);if(G)return G;
+function _strato432(mesh,R,chiave,cov,spess,rilievo,seme,uvCost,uvCampo,aderente){const key=mesh.geometry.uuid+'|'+chiave+(uvCost?'|f':'')+(uvCampo?'|c':'')+(aderente?'|a':'');let G=ASP432.geo.get(key);if(G)return G;
   const T=THREE,sk=mesh.skeleton,M=new T.Matrix4().multiplyMatrices(sk.boneInverses[R.hb],mesh.bindMatrix);
   const rm=_vic432(R.r,1,'max'),rs=_vic432(rm,1,'media');const pos=[],uv=[],ind=[],idx=new Int32Array(NA432*NE432).fill(-1);const v=new T.Vector3();
-  const ps=mesh.geometry.attributes.position.count<1500?2:1;/* testa del LOD lontano: una cella su due (meta' dei vertici per lato, un quarto dei triangoli) */const usa=k=>cov[k]>0.02&&R.r[k]>0;const rk=new Float32Array(NA432*NE432);
+  const ps=mesh.geometry.attributes.position.count<1500?2:1;const VM=aderente?_vmax444(mesh,R):null;/* testa del LOD lontano: una cella su due (meta' dei vertici per lato, un quarto dei triangoli) */const usa=k=>cov[k]>0.02&&R.r[k]>0;const rk=new Float32Array(NA432*NE432);
   for(let e=0;e<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const k=e*NA432+a;let serve=false;for(let de=-ps;de<=ps&&!serve;de++)for(let da=-ps;da<=ps&&!serve;da++){const ee=e+de;if(ee<0||ee>=NE432)continue;if(usa(ee*NA432+((a+da+NA432)%NA432)))serve=true;}
-    if(!serve||!(rs[k]>0))continue;const rr=Math.max(rm[k],rs[k])+spess+(rilievo?rilievo*(_rumore432(a,e,seme)-0.35):0);
+    if(!serve||!(rs[k]>0))continue;const rr=(aderente?Math.max(R.r[k]>0?R.r[k]:rs[k],VM[k]):Math.max(rm[k],rs[k]))+spess+/* [giro 444] aderente: il guscio dei baffi segue la pelle sotto il naso (col massimo dei vicini galleggiava all'altezza della punta del naso e la resa scendeva di 4 gradi) */(rilievo?rilievo*(_rumore432(a,e,seme)-0.35):0);
     rk[k]=rr;v.set(R.C[0]+R.DX[k]*rr,R.C[1]+R.DY[k]*rr,R.C[2]+R.DZ[k]*rr).applyMatrix4(M);idx[k]=pos.length/3;pos.push(v.x,v.y,v.z);if(uvCost)uv.push(uvCost[0],uvCost[1]);else if(uvCampo){const az=((a+0.5)/NA432-0.5)*360,el=((e+0.5)/NE432-0.5)*180;uv.push(Math.max(0,Math.min(1,(az-uvCampo.az[0])/(uvCampo.az[1]-uvCampo.az[0]))),Math.max(0,Math.min(1,(el-uvCampo.el[0])/(uvCampo.el[1]-uvCampo.el[0]))));}/* [giro 440] barba: UV nel solo campo del viso (texture 512x256 invece di 768x512 sull'intera sfera) */else uv.push((a+0.5)/NA432,(e+0.5)/NE432);}
   for(let e=0;e+ps<NE432;e+=ps)for(let a=0;a<NA432;a+=ps){const a2=(a+ps)%NA432,e2=e+ps,p=[e*NA432+a,e*NA432+a2,e2*NA432+a2,e2*NA432+a].map(k=>idx[k]);if(p.some(x=>x<0))continue;
     const k0=e*NA432+a;if(!(usa(k0)||usa(e*NA432+a2)||usa(e2*NA432+a)||usa(e2*NA432+a2)))continue;ind.push(p[0],p[1],p[2],p[0],p[2],p[3]);/* antiorario visto da fuori (a = verso +x davanti, e = verso l'alto) */}
   G=new T.BufferGeometry();G.setAttribute('position',new T.Float32BufferAttribute(pos,3));G.setAttribute('uv',new T.Float32BufferAttribute(uv,2));G.setIndex(ind);G.computeVertexNormals();G.computeBoundingSphere();
   G.userData.g432={vert:pos.length/3,tri:ind.length/3,rk,cov,C:R.C,Minv:M.clone().invert().elements.slice()};/* rk/cov/C/Minv: per il testimone della compenetrazione (barba-capelli-432) */ASP432.geo.set(key,G);return G;}
+/* [giro 444] raggio massimo dei vertici della testa per cella (entro 3 cm dal raggio al centro della cella, come la misura della
+   compenetrazione): il guscio aderente dei baffi non lascia uscire gli spigoli delle ali del naso e del labbro (misurato: 24 vertici su 3206) */
+function _vmax444(mesh,R){if(R.vm444)return R.vm444;const P=mesh.geometry.attributes.position,vm=new Float32Array(NA432*NE432);
+  for(let i=0;i<P.count;i++){const x=P.getX(i)-R.C[0],y=P.getY(i)-R.C[1],z=P.getZ(i)-R.C[2],r=Math.hypot(x,y,z);if(!(r>0))continue;
+    const a=Math.min(NA432-1,Math.max(0,Math.floor((Math.atan2(x,z)/(2*Math.PI)+0.5)*NA432))),e=Math.min(NE432-1,Math.max(0,Math.floor((Math.asin(Math.max(-1,Math.min(1,y/r)))/Math.PI+0.5)*NE432))),k=e*NA432+a;
+    if(R.r[k]>0&&Math.abs(r-R.r[k])<=0.03&&r>vm[k])vm[k]=r;}
+  R.vm444=vm;return vm;}
 /* texture di uno strato: copertura (celle, sfumata) x trama ripetuta; il colore lo mette il materiale */
 function _tex432(chiave,cov,img,rip){let t=ASP432.tex.get(chiave);if(t)return t;const t0=performance.now(),T=THREE,W=NA432*8,H=NE432*8,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
   if(img){const pc=document.createElement('canvas'),s=Math.max(8,Math.round(W/(rip||12)));pc.width=s;pc.height=s;pc.getContext('2d').drawImage(img,0,0,s,s);g.fillStyle=g.createPattern(pc,'repeat');}else g.fillStyle='#fff';g.fillRect(0,0,W,H);
@@ -556,6 +563,12 @@ function _copBarba432(R,img,campo){const c=new Float32Array(NA432*NE432);if(!img
    piu' radi e piu' chiari dove la densita' cala; colore per classe dalla figurina (tabella «barba_tinte»), materiale opaco (ruvidita' 1).
    Rosso window.__CPM_NO_G440 = la resa del 432 (maschere e tinte di allora). Misura: resa-barba-440. */
 const _g440=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G440);
+/* [giro 444 · PO-686 ter] BAFFI FOLTI E LARGHI. Decisione PO 28/11 sulle foto del 440: «baffi troppo piccoli e sottili rispetto alla
+   figurina (Quinn, Russell, Carr)». MISURATO (misura-444.mjs, mezza intensita'): la mappa del 440 era piena solo per 2,2 gradi al centro e
+   la resa 3D era una riga di 4 gradi sopra il labbro, contro le figurine che coprono il filtro dalla base del naso al labbro e arrivano
+   agli angoli della bocca. La tabella da' ai baffi una mappa nuova («densita444», tools/aspetto-444.py), labbra sempre a 0; i peli dei baffi
+   si orientano a ventaglio su tutta la zona nuova. Rosso window.__CPM_NO_G444 = i baffi del 440. Misura: resa-barba-444. */
+const _g444=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G444);
 function _dens440(img,TW,TH){const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;const g=cv.getContext('2d');g.imageSmoothingEnabled=true;g.drawImage(img,0,0,TW,TH);const d=g.getImageData(0,0,TW,TH).data,o=new Float32Array(TW*TH);for(let i=0;i<o.length;i++)o[i]=d[i*4]/255*(d[i*4+3]/255);return o;}
 /* copertura delle celle per la geometria: massimo della densita' nell'impronta della cella (la trama fa il resto) */
 function _copBarba440(R,img,campo){const c=new Float32Array(NA432*NE432);if(!img)return c;const TW=200,TH=90,D=_dens440(img,TW,TH),[az0,az1]=campo.az,[el0,el1]=campo.el;
@@ -567,9 +580,9 @@ function _texBarba440(chiave,img,campo){let t=ASP432.tex.get(chiave);if(t)return
   /* trama in GRIGI (una per tipo, condivisa da tutti i corpi): il colore dei peli lo mette il materiale di ciascuno (dalla figurina) */const pxA=TW/(az1-az0),pxE=TH/(el1-el0),C=[204,204,204],chiaro=[255,255,255];
   const cv=document.createElement('canvas');cv.width=TW;cv.height=TH;const g=cv.getContext('2d'),I=g.createImageData(TW,TH);
   for(let i=0;i<TW*TH;i++){const d=D[i];if(d<=0)continue;const l=(1-d)*0.55;I.data[i*4]=(C[0]*0.85)*(1-l)+chiaro[0]*l;I.data[i*4+1]=(C[1]*0.85)*(1-l)+chiaro[1]*l;I.data[i*4+2]=(C[2]*0.85)*(1-l)+chiaro[2]*l;I.data[i*4+3]=255*0.3*Math.pow(d,1.3);}
-  g.putImageData(I,0,0);const rnd=_rng440(440+chiave.length*131);g.lineCap='round';
+  g.putImageData(I,0,0);const rnd=_rng440(440+chiave.length*131),_z444=/^bar444-/.test(chiave);g.lineCap='round';
   for(let n=0;n<16000;n++){const x=rnd()*TW,y=rnd()*TH,d=D[(y|0)*TW+(x|0)];if(!(d>0.02)||rnd()>Math.pow(d,0.85))continue;
-    const az=az0+x/pxA,el=el1-y/pxE,baffo=el>-35&&el<-27&&Math.abs(az)<22;let th=Math.max(-1,Math.min(1,az/80))*0.5;if(baffo)th=Math.sign(az||1)*0.75+az/22*0.25;th+=(rnd()-0.5)*0.5;
+    const az=az0+x/pxA,el=el1-y/pxE,baffo=_z444?(el>-43&&el<-25&&Math.abs(az)<27):(el>-35&&el<-27&&Math.abs(az)<22);/* [giro 444] zona dei baffi nuovi */let th=Math.max(-1,Math.min(1,az/80))*0.5;if(baffo)th=Math.sign(az||1)*0.75+az/22*0.25;th+=(rnd()-0.5)*0.5;
     const L=(1.2+3.0*d)*(0.7+0.6*rnd()),dx=Math.sin(th)*L*pxA,dy=Math.cos(th)*L*pxE,k=0.7+0.55*rnd(),l=(1-d)*0.6;
     g.strokeStyle=`rgba(${Math.round(Math.min(255,(C[0]*(1-l)+chiaro[0]*l)*k))},${Math.round(Math.min(255,(C[1]*(1-l)+chiaro[1]*l)*k))},${Math.round(Math.min(255,(C[2]*(1-l)+chiaro[2]*l)*k))},${(0.3+0.55*d).toFixed(3)})`;
     g.lineWidth=0.8+0.5*rnd();g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+dx*0.5+(rnd()-0.5)*1.5,y+dy*0.5,x+dx,y+dy);g.stroke();}
@@ -577,7 +590,7 @@ function _texBarba440(chiave,img,campo){let t=ASP432.tex.get(chiave);if(t)return
   const M=g.createImageData(TW,TH);for(let i=0;i<TW*TH;i++){M.data[i*4+3]=Math.round(255*Math.min(1,D[i]*2.5));}const mc=document.createElement('canvas');mc.width=TW;mc.height=TH;mc.getContext('2d').putImageData(M,0,0);g.globalCompositeOperation='destination-in';g.drawImage(mc,0,0);g.globalCompositeOperation='source-over';
   t=new T.CanvasTexture(cv);t.flipY=true;if(T.sRGBEncoding)t.encoding=T.sRGBEncoding;t.wrapS=t.wrapT=T.ClampToEdgeWrapping;t.anisotropy=2;t.needsUpdate=true;ASP432.tex.set(chiave,t);ASP432.msTex440=(ASP432.msTex440||0)+(performance.now()-t0);return t;}
 /* colore dei peli dalla figurina: nucleo misurato = copertura x peli + (1-copertura) x pelle (lineare) → peli; senza misura, la tinta della classe */
-function _peliDa440(fg,bar,T){try{if(fg&&fg.bn&&fg.bp){const N=new THREE.Color('#'+fg.bn),P=new THREE.Color('#'+fg.bp);if(N.convertSRGBToLinear){N.convertSRGBToLinear();P.convertSRGBToLinear();}const c=bar.copertura||0.75,f=v=>Math.max(0.004,Math.min(1,v));const H=new THREE.Color(f((N.r-(1-c)*P.r)/c),f((N.g-(1-c)*P.g)/c),f((N.b-(1-c)*P.b)/c));if(H.convertLinearToSRGB)H.convertLinearToSRGB();return '#'+H.getHexString();}}catch(_e){}return (T.barba_tinte&&fg&&fg.h&&T.barba_tinte[fg.h])||'#3b2416';}
+function _peliDa440(fg,bar,T){try{if(fg&&fg.bn&&fg.bp){const N=new THREE.Color('#'+fg.bn),P=new THREE.Color('#'+fg.bp);if(N.convertSRGBToLinear){N.convertSRGBToLinear();P.convertSRGBToLinear();}const c=(bar.copertura444&&_g444()?bar.copertura444:bar.copertura)||0.75,/* [giro 444] baffi: il nucleo misurato e' il 40% piu' scuro (i peli) */f=v=>Math.max(0.004,Math.min(1,v));const H=new THREE.Color(f((N.r-(1-c)*P.r)/c),f((N.g-(1-c)*P.g)/c),f((N.b-(1-c)*P.b)/c));if(H.convertLinearToSRGB)H.convertLinearToSRGB();return '#'+H.getHexString();}}catch(_e){}return (T.barba_tinte&&fg&&fg.h&&T.barba_tinte[fg.h])||'#3b2416';}
 function _matBarba440(chiave,tex,ombra,hex){let m=ASP432.mat.get(chiave);if(m)return m;const T=THREE;const cc=_col432(hex);cc.multiplyScalar(1/0.8);cc.r=Math.min(1,cc.r);cc.g=Math.min(1,cc.g);cc.b=Math.min(1,cc.b);m=new T.MeshStandardMaterial({map:tex,color:cc,roughness:1,metalness:0,transparent:true,depthWrite:false,alphaTest:0.01,side:T.FrontSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});
   if(ombra!=null)m.color.multiplyScalar(ombra);m.name='Aspetto432';m.userData.g432=1;m.userData.g440=1;ASP432.mat.set(chiave,m);return m;}
 /* [giro 440] STEMPIATO: per ogni colonna di azimut davanti, l'attaccatura e' la prima cella di capelli dipinti salendo dalla fronte; le
@@ -598,7 +611,7 @@ function _chignon440(mesh,R,c,img,rip,hex,ombra,chiave){try{const T=THREE,key=me
     G.applyMatrix4(new T.Matrix4().multiplyMatrices(mesh.skeleton.boneInverses[R.hb],mesh.bindMatrix));G.computeBoundingSphere();G.userData.g440={chignon:1};ASP432.geo.set(key,G);}
   const one=new Float32Array(NA432*NE432).fill(1),tx=_tex432('chig-'+chiave,one,img,rip);const m=new T.Mesh(G,_mat432('chig-'+chiave+'|'+hex,tx,hex,ombra));m.name='Chignon440_'+chiave;m.renderOrder=2;return m;}catch(_e){ASP432.errChig=String(_e&&_e.message||_e);return null;}}
 /* l'aspetto di una figurina: dalla tabella */
-function aspetto432(fg){try{const T=ASP432.tab;if(!T||!fg)return null;let tg=fg.t!=null?T.tagli[fg.t]:null;if(tg&&T.calotte[tg]&&T.calotte[tg].g440&&!_g440())tg=null;/* [giro 440] tagli nuovi: nel rosso restano alla testa del corpo, come nel 432 */const bb=fg.b!=null?T.barbe[fg.b]:null;return {taglio:fg.t||null,calotta:tg||null,barba:bb||null,descr:fg.b||null};}catch(_e){return null;}}
+function aspetto432(fg){try{const T=ASP432.tab;if(!T||!fg)return null;let tg=fg.t!=null?T.tagli[fg.t]:null;try{if(tg==null&&fg.t!=null&&T.spenti_444&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_TAB444_PRIMA)tg=T.spenti_444[fg.t]||null;}catch(_e){}/* [giro 444] SOLO BANCO: la tabella del 440 coi due tagli spenti riaccesi (foto «prima» e rosso del guardiano) */if(tg&&T.calotte[tg]&&T.calotte[tg].g440&&!_g440())tg=null;/* [giro 440] tagli nuovi: nel rosso restano alla testa del corpo, come nel 432 */const bb=fg.b!=null?T.barbe[fg.b]:null;return {taglio:fg.t||null,calotta:tg||null,barba:bb||null,descr:fg.b||null};}catch(_e){return null;}}
 /* applica a un corpo (visual) gia' con la testa e la pelle della figurina */
 function _applica432(visual,fg,nome440){try{if(!_g432()||!visual||!fg||typeof THREE==='undefined'||typeof document==='undefined')return;
   try{const fz=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&nome440&&window.__CPM_TAGLIO440)?window.__CPM_TAGLIO440[nome440]:null;if(fz)fg=Object.assign({},fg,{t:fz,forzato440:1});}catch(_e){}/* [giro 440] SOLO BANCO (?cpmtest=1): un taglio dato a un nome, per fotografare e misurare i tagli che il salvataggio di prova non ha */if(visual.userData.g432&&visual.userData.g432.fatto)return;
@@ -614,8 +627,8 @@ function _applica432(visual,fg,nome440){try{if(!_g432()||!visual||!fg||typeof TH
       if(cal.fondo&&R.fr){const head0=Array.isArray(mesh.material)?mesh.material[0]:mesh.material;const Gf=_strato432(mesh,R,'cal-'+A.calotta,cov0,cal.spessore-0.0015,0,7,R.fr);const mf=new THREE.Mesh(Gf,_fondo432(head0));mf.name='Fondo432_'+A.calotta;mf.renderOrder=1;nuovi.push(mf);}}));}
   else if(cal&&cal.nativa)out.calotta=A.calotta;
   const bar=A.barba&&T.barbe_tipi[A.barba];
-  if(bar&&_g440()&&bar.densita){out.barba=A.barba;out.tipo440=A.barba;const bh=_peliDa440(fg,bar,T);out.hair440=bh;asp.push(_img432(bar.densita).then(img=>{const campo=T.campo_barba,cov=_copBarba440(R,img,campo);const G=_strato432(mesh,R,'bar440-'+A.barba,cov,bar.spessore,0,11,null,campo);
-      const tx=_texBarba440('bar440-'+A.barba,img,campo);const mb=new THREE.Mesh(G,_matBarba440('bar440-'+A.barba+'|'+bh,tx,bar.ombra440!=null?bar.ombra440:bar.ombra,bh));/* ombra440: schiarita misurata (la luce del mento in partita e' piu' bassa di quella del ritratto) */mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}/* [giro 440] barba a peli con densita' sfumata */
+  if(bar&&_g440()&&bar.densita){out.barba=A.barba;out.tipo440=A.barba;const bh=_peliDa440(fg,bar,T);out.hair440=bh;const _n444=(bar.densita444&&_g444())?'bar444-':'bar440-';if(_n444==='bar444-')out.baffi444=1;/* [giro 444] baffi folti: mappa e chiavi di cache proprie */asp.push(_img432(_n444==='bar444-'?bar.densita444:bar.densita).then(img=>{const campo=T.campo_barba,cov=_copBarba440(R,img,campo);const G=_strato432(mesh,R,_n444+A.barba,cov,bar.spessore,0,11,null,campo,_n444==='bar444-');
+      const tx=_texBarba440(_n444+A.barba,img,campo);const mb=new THREE.Mesh(G,_matBarba440(_n444+A.barba+'|'+bh,tx,bar.ombra440!=null?bar.ombra440:bar.ombra,bh));/* ombra440: schiarita misurata (la luce del mento in partita e' piu' bassa di quella del ritratto) */mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}/* [giro 440] barba a peli con densita' sfumata */
   else if(bar&&bar.maschera){out.barba=A.barba;asp.push(Promise.all([_img432(bar.maschera),bar.trama?_img432(bar.trama):null]).then(([img,tr])=>{const cov=_copBarba432(R,img,T.campo_barba);const G=_strato432(mesh,R,'bar-'+A.barba,cov,bar.spessore,0,11);
       const tx=_tex432('bar-'+A.barba,cov,tr,bar.rip);const mb=new THREE.Mesh(G,_mat432('bar-'+A.barba+'|'+hair,tx,hair,bar.ombra));mb.name='Barba432_'+A.barba;mb.renderOrder=3;nuovi.push(mb);}));}
   visual.userData.g432=out;

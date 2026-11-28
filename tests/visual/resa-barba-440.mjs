@@ -20,6 +20,7 @@ import { startServer, launchBrowser, sleep } from './lib/harness.mjs';
 import { misura440 } from './misura-440.mjs';
 import { apriEPronti, penetra432 } from './misura-432.mjs';
 import fs from 'node:fs';
+const TAB440 = JSON.parse(fs.readFileSync(new URL('../../assets/aspetto/aspetto-432.json', import.meta.url), 'utf8')); /* [giro 444] tagli accesi o spenti */
 fs.mkdirSync('out/g440', { recursive: true });
 const SOLO = (process.env.CPM_SOLO || 'verde,giorno,rosso,capelli').split(',');
 export const SOGLIE440 = { bocca: 0.90, dEc: 15, sd: { piena: 5.2, corta: 4.5, pizzetto: 4.9, baffi: 6.0, 'baffi-pizzetto': 4.9, stoppia: 4.5 }, bordo: 1.0 };
@@ -57,7 +58,7 @@ async function capelli(b, port) {
       for (let s = 0; s < 3; s++) {
         const ph = await p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
         if (/^hl_/.test(ph || '')) { const c = await chignon().catch(() => null); const m = await penetra432(p).catch(() => null);
-          if (c && c.n > 0) { visti++; R.campioni++; R.dentro += c.dentro; } if (m) { R.vert += m.vert; R.buchi += m.buchi; } }
+          if (c && c.n > 0) { visti++; R.campioni++; R.dentro += c.dentro; } if (m) { R.vert += m.vert; R.buchi += m.buchi; if (!(c && c.n > 0) && m.vert > 0) visti++; /* [giro 444] senza chignon la scena conta per la compenetrazione */ } }
         await sleep(400);
       }
       if (visti) R.scene++;
@@ -87,7 +88,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   if (out.rosso) { const R = out.rosso; if (!R.giudicato) KO(`rosso: non giudicato (${R.motivo})`); else { const B = R.righe.filter(x => !x.senza && x.giudicato); const f = B.filter(x => giudica440(x).length);
     (f.length >= B.length / 2 ? OK : KO)(`rosso (resa del 432): il difetto si vede su ${f.length}/${B.length} corpi (>= meta')${f.slice(0, 5).map(x => ' · ' + x.nome + ' (' + giudica440(x).join(', ') + ')').join('')}`); } }
-  if (out.capelli) { const C = out.capelli, cp = C.corpi || {};
+  /* [giro 444] decisione PO 28/11: stempiati e lunghi raccolti SPENTI nella tabella (null in «tagli», valori in «spenti_444»): qui si
+     giudica che tornino alla testa del corpo (nessuna calotta, nessuno chignon); il loro rosso e' in resa-barba-444 (__CPM_TAB444_PRIMA).
+     Compenetrazione in movimento invariata. Quando il giro 445 li riaccende, torna il giudizio del 440. */
+  const SPENTI444 = TAB440.tagli['lunghi raccolti'] == null && TAB440.tagli['stempiati e corti'] == null;
+  if (out.capelli && SPENTI444) { const C = out.capelli, cp = C.corpi || {};
+    const lr = Object.keys(FORZA).map(n => cp[n]).filter(Boolean); const st = ['Keith Carr', 'Noah Marshall'].map(n => cp[n]).filter(Boolean);
+    (lr.length >= 5 && lr.every(x => x.cal == null && !x.strati.some(s => /^(Calotta432_lunghi|Chignon440)/.test(s))) ? OK : KO)(`capelli (spenti, giro 444): «lunghi raccolti» forzati alla testa del corpo ${lr.filter(x => x.cal == null).length}/${lr.length}`);
+    (st.length === 2 && st.every(x => x.cal == null && !x.strati.some(s => /stempiato/.test(s))) ? OK : KO)(`capelli (spenti, giro 444): «stempiati e corti» alla testa del corpo ${st.filter(x => x.cal == null).length}/2`);
+    (!C.errore && C.scene >= 4 && C.dentro === 0 && C.vert > 0 && C.buchi === 0 ? OK : KO)(`capelli: in movimento ${C.buchi} vertici della testa fuori dagli strati su ${C.vert} (${C.scene} scene hl_*)${C.errore ? ' · ' + C.errore : ''}`);
+  }
+  else if (out.capelli) { const C = out.capelli, cp = C.corpi || {};
     const lr = Object.keys(FORZA).map(n => cp[n]).filter(Boolean); const st = ['Keith Carr', 'Noah Marshall'].map(n => cp[n]).filter(Boolean);
     (lr.length >= 5 && lr.every(x => x.cal === 'lunghi-raccolti' && x.strati.some(s => /^Calotta432_lunghi/.test(s)) && x.strati.some(s => /^Chignon440/.test(s))) ? OK : KO)(`capelli: «lunghi raccolti» con calotta e chignon ${lr.filter(x => x.strati.some(s => /^Chignon440/.test(s))).length}/${lr.length} (forzati ${Object.keys(FORZA).length})`);
     (st.length === 2 && st.every(x => x.cal === 'stempiato' && x.stempia > 0 && x.strati.some(s => /^Fondo432_stempiato/.test(s))) ? OK : KO)(`capelli: «stempiati e corti» con le tempie scoperte ${st.map(x => x.stempia + ' celle').join(' · ')}`);
