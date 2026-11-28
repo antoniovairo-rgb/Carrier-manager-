@@ -35,7 +35,18 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 360, height: 260 } });
 await installCdnRoutes(page);
-await page.addInitScript(([r, r2]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_DRB229 = 1; if (r2) window.__CPM_NO_BU229 = 1; }, [!!process.env.CPM_NO_DRB229, !!process.env.CPM_NO_BU229]);/* [7.999.161 PO-229] CPM_NO_BU229=1: prova del rosso del lucchetto-gol di scena, dei blocchi post-arco fermi durante la costruzione e del «vai» del dai-e-vai */
+/* [giro 450 PO-669] IL BANCO GIOCA LA SCENA COME LA PARTITA: `__CPM_PRESENT=1`. Sotto `?cpmtest=1` lo
+   stacco di scena e' spento (`_asIfPlay`, 7.345): una scena forzata trova il pallone ancora in viaggio
+   dalla scena precedente (lo porta l'«inseguitore»), e la testa della costruzione lo riporta ai piedi
+   dell'eroe in un fotogramma. Misurato sulla base (misura-450.mjs): gi91 26,3 u · gi92 22,8 u, scrittore
+   `buildup-volo+testa`, sempre sull'az0 (la prima scena dopo un'altra); col teatro armato le stesse scene
+   entrano a 0,2-1,0 u, e in partita vera (misura-450-vere.mjs, senza teatro) 0 ingressi oltre 3 u.
+   Era la misura, non il gioco: la regola delle aperture di scena (CLAUDE.md) vuole il teatro armato.
+   GLB ACCESO (CPM_GLB=0 per il percorso storico). Rosso `window.__CPM_NO_G450` (CPM_NO_G450=1): il
+   teatro resta spento e il guardiano deve tornare a vedere il salto. */
+const _G450 = !!process.env.CPM_NO_G450, _GLB450 = process.env.CPM_GLB !== '0';
+await page.addInitScript(([r, r2, g450, glb]) => { window.__CPM_GLB = glb; window.__CPM_REC = true; window.__CPM_CINE = 1; if (g450) window.__CPM_NO_G450 = 1; if (!window.__CPM_NO_G450) window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_DRB229 = 1; if (r2) window.__CPM_NO_BU229 = 1; }, [!!process.env.CPM_NO_DRB229, !!process.env.CPM_NO_BU229, _G450, _GLB450]);
+process.on('exit', () => console.log(`braccio: ${_G450 ? 'ROSSO (__CPM_NO_G450: teatro spento, deve fallire)' : 'VERDE (teatro armato)'} · GLB ${_GLB450 ? 'acceso' : 'spento'}`));/* braccio stampato per ultimo (PROCESSO.md, controlli instabili) *//* [7.999.161 PO-229] CPM_NO_BU229=1: prova del rosso del lucchetto-gol di scena, dei blocchi post-arco fermi durante la costruzione e del «vai» del dai-e-vai */
 await openMatch(page, port); await sleep(800);
 
 const righe = [], guasti = [];
