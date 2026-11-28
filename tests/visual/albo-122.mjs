@@ -38,7 +38,7 @@ for (const rosso of [false, true]) for (const f of FORMATI) {
   if (rosso) { if (nRie === 0) D('riepilogo assente (albo di prima)'); const tx = await page.evaluate(() => document.body.innerText); if (/Hai vinto la lega/.test(tx)) D('«Hai vinto la lega!» ambiguo ancora presente'); await ctx.close(); continue; }
   if (nRie !== 1) { D('riepilogo: ' + nRie); await ctx.close(); continue; }
   const rt = (await rie.innerText()).replace(/\s+/g, ' ');
-  if (!/4 campionati vinti/.test(rt) || !/FC Salernum 1919/.test(rt) || !/Lega B/.test(rt)) D('riepilogo senza «4 campionati vinti · FC Salernum 1919, Lega B»: ' + rt);
+  if (!/4 campionati vinti/.test(rt) || !/FC (?:Salernum 1919|Costiera)/.test(rt) /* [giro 453] il salvataggio di prova migra «FC Salernum 1919» a «FC Costiera» */ || !/Lega B/.test(rt)) D('riepilogo senza «4 campionati vinti · FC Salernum 1919, Lega B»: ' + rt);
   if (!/1 Coppa vinta/.test(rt) || !/1 Coppa europea vinta/.test(rt)) D('Coppa/Euro non esatte: ' + rt);
   if (/Nerazzurri|Rotterdam|Brescia|Verona|Utrecht/.test(rt)) D('club estraneo nel riepilogo: ' + rt);
   if (/Hai vinto la lega/.test(await page.evaluate(() => document.body.innerText))) D('«Hai vinto la lega!» ancora presente');
