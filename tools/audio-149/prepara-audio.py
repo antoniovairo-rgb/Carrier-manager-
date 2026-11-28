@@ -170,8 +170,11 @@ def main():
                   # [giro 161b] il boato di terzi «stadium joy shouting crowd» (licenza propria, non CC0) e' uscito dal repo: decisione PO 11/11 «Togliere il file»
                   # [giro 172] chiuse qui le due graffe che la riga tolta nel giro 161b si era portata via (il generatore non si compilava piu')
                 }}
+    # [giro 429] le righe «altri» scritte da un altro generatore (campo «generatore», es. tools/audio-429) sopravvivono a una rigenerazione
+    try: registro['altri'].update({n: v for n, v in json.load(open(os.path.join(OUT, 'LICENZE.json'), encoding='utf8')).get('altri', {}).items() if v.get('generatore')})
+    except FileNotFoundError: pass
     zips = {}
-    solo = sys.argv[sys.argv.index('--solo') + 1].split(',') if '--solo' in sys.argv else None
+    solo =sys.argv[sys.argv.index('--solo') + 1].split(',') if '--solo' in sys.argv else None
     if solo:  # [giro 161] rielabora solo queste uscite: le altre righe del registro restano quelle generate (stessa sorgente, stesso codice)
         vecchio = json.load(open(os.path.join(OUT, 'LICENZE.json'), encoding='utf8'))
         registro['file'] = {n: v for n, v in vecchio['file'].items() if n not in solo}
