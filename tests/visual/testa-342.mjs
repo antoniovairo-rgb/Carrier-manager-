@@ -128,6 +128,7 @@ export function giudica(r) {
 export async function scena(b, port, gi, k, esito, opt = {}) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: opt.foto ? 2 : 1 }); await installCdnRoutes(page);
   if (+process.env.CPM_CPU442 > 1) { try { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU442 }); } catch (e) {} }/* [giro 442] sonda: CPU rallentata via CDP (CPM_CPU442=4), solo misura */
+  if (+process.env.CPM_ZAVORRA452 > 0) await page.addInitScript(ms => { const raf = window.requestAnimationFrame.bind(window); window.requestAnimationFrame = cb => raf(t => { const t0 = performance.now(); while (performance.now() - t0 < ms) {} cb(t); }); }, +process.env.CPM_ZAVORRA452);/* [giro 452] sonda: zavorra fissa a fotogramma (ms di lavoro in piu' prima del disegno), per un fotogramma lungo come sul runner. Solo misura: il gioco non sa niente */
   await page.addInitScript(([rosso, passo, extra]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_G342_REC = 1; if (passo === 'reale') window.__CPM_DTREAL = 1; else if (passo !== 'nativo') window.__CPM_DT60 = 1; if (rosso) rosso.split(',').forEach(x => { if (x) window[x] = 1; }); (extra || []).forEach(x => { window[x] = 1; }); }, [ROSSO, PASSO, opt.extra || []]);
   let W = null; const foto = [];
   try {
@@ -142,11 +143,12 @@ export async function scena(b, port, gi, k, esito, opt = {}) {
     while (Date.now() - t0 < (PASSO === 'reale' ? 60000 : 240000)) {
       if (opt.foto) { const tr = await page.evaluate(() => Math.round(performance.now())); const buf = await page.screenshot({ type: 'jpeg', quality: 80 }).catch(() => null); if (buf) foto.push({ tr, buf }); if (foto.length > 400) foto.shift(); } else await sleep(900);
       const st = await page.evaluate(() => { const W = window.__CPM_G342W; if (!W || !W.f.length) return { n: 0, fine: 0, ph: window.__CPM_PHASE && window.__CPM_PHASE() }; const F = W.f; let c = -1; for (let i = 1; i < F.length; i++) if (F[i][27] && F[i][28] > 0 && (!F[i - 1][27] || F[i - 1][28] <= 0)) c = i; return { n: F.length, fine: c >= 0 ? F[F.length - 1][0] - F[c][0] : 0, ph: window.__CPM_PHASE && window.__CPM_PHASE() }; });
-      if (st.fine > 1.6) break; if (st.n === prev) { if (++fermo >= (st.n > 20 ? 4 : 30)) break; } else fermo = 0; prev = st.n;
+      if (st.fine > 1.6) break; if (st.n === prev) { if (++fermo >= (st.n > 20 ? 4 : (+process.env.CPM_ZAVORRA452 > 0 ? 1e9 : 30))) break; } else fermo = 0; prev = st.n;/* [giro 452] col fotogramma lungo (zavorra) la scena non ha ancora cominciato a scrivere: si aspetta l'evento (fase fuori da hl_ o contatto+1,6 s), mai 27 s fissi; resta il tetto della corsa */
       if (st.ph && !/^hl_/.test(st.ph) && st.n > 0) break;
     }
     W = await page.evaluate(() => window.__CPM_G342W || null);
-    if (opt.w422) opt.w422.v = await page.evaluate(() => window.__CPM_W422 || null);/* [giro 422] testimone del pre-stacco nell'attesa (prestacco-422.mjs) */
+    if (opt.w422) opt.w422.v = await page.evaluate(() => window.__CPM_W422 || null);
+    if (opt.cattura) opt.cattura.v = await page.evaluate(() => ({ t274: window.__CPM_TESTA274 || null, t146: (window.__CPM_TESTA146 || []).slice(-40), fps: window.__CPM_FPS708 || null }));/* [giro 452] sonda misura-452.mjs: volo 274 e attesa 146 della scena *//* [giro 422] testimone del pre-stacco nell'attesa (prestacco-422.mjs) */
   } catch (e) { W = W || { err: String(e && e.message || e).slice(0, 120) }; } finally { await page.close().catch(() => {}); }
   const r = (W && W.err && !W.f) ? { err: W.err } : analizza(W);
   if (opt.foto && W && W.f && !r.err) { /* fotogrammi piu' vicini a -0,30 -0,15 0 +0,15 +0,35 s di scena dal contatto */
