@@ -46,7 +46,15 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
 /* il testimone di bordo esiste solo coi DEVTOOLS accesi: senza questa riga la sonda gira e non guarda */
-await page.addInitScript(m => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; if (m) window.__CPM_BJMIN = m; try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {} }, +(process.env.CPM_BJMIN || 0));
+/* [giro 446 PO-643] DUE SCELTE DEL BANCO, MISURATE.
+   (a) GLB ACCESO (direttiva PO 29/07: le verifiche si fanno coi corpi CH38). Prima era spento. `CPM_GLB=0` lo rispegne.
+   (b) VELOCITA' 2x, la manopola del giocatore (`cpm-match-speed`, 1 · 1,5 · 2). Misurato sul banco: il cronometro della
+       partita gira a ~4 s reali per minuto di gioco (contro i 1,7 nominali: timer contesi in headless), una partita intera
+       dura ~6 minuti e da' 7-8 scene, quindi in 15 minuti ne stanno 19 al massimo su 26. La manopola muove SOLO il flusso
+       (`playing`): le finestre d'esito degli highlight non cambiano (7.484) e la sequenza della partita e' identica a ogni
+       velocita' (7.489, `match-speed-change`). `CPM_SPEED=1` torna a 1x. */
+const SPEED = String(process.env.CPM_SPEED || '2'), GLB = process.env.CPM_GLB !== '0';
+await page.addInitScript(([m, sp, glb]) => { window.__CPM_GLB = glb; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; if (m) window.__CPM_BJMIN = m; try { localStorage.setItem('cpm-devtools', '1'); localStorage.setItem('cpm-match-speed', sp); } catch (e) {} }, [+(process.env.CPM_BJMIN || 0), SPEED, GLB]);
 await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
@@ -61,7 +69,8 @@ const raccogli = async () => {
 };
 const riapri = async () => { await raccogli(); await openMatch(page, port, { skipLoadAll: true }); await sleep(700); partite++; };
 
-let secchi = 0, scene = 0;
+let secchi = 0, scene = 0, tasti = 0, attese = 0;
+const NO_G446 = process.env.CPM_NO_G446 === '1';
 const t0run = Date.now();
 while (scene < TARGET && Date.now() - t0run < BUDGET_MS) {
   const ph = await matchPhase(page);
@@ -84,8 +93,26 @@ while (scene < TARGET && Date.now() - t0run < BUDGET_MS) {
   if (ph === 'playing') await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   /* anche queste due attese leggevano la fase dalle props del 3D: stessa sorgente stantia, stesso rischio
      di aspettare per sempre una transizione gia' avvenuta */
-  const ok = await page.waitForFunction(() => { try { return window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose'; } catch (e) { return false; } }, { timeout: 30000 }).then(() => true).catch(() => false);
-  if (!ok) { await sleep(600); continue; }
+  /* [giro 446 PO-643] LA PARTITA SI FERMAVA IN `hl_move` E LA SONDA ASPETTAVA PER SEMPRE. Misurato (traccia delle fasi,
+     una lettura per giro): 5 scene nei primi 128 s, poi dal 220 s al 435 s SETTE attese da 30 s di fila tutte in `hl_move`,
+     stessa partita. Il timer di pressione che porta da solo `hl_move`→`hl_choose` in 8 s NON parte sulle scene a movimento
+     bloccato (`lockMovement`/`maxMoves===0`: rigori e punizioni, src/15 «no pressure on penalty/free kick"): li' il gioco
+     aspetta il giocatore, che preme «Tira» o il tasto 0. Non e' un difetto del gioco (e' la lettura del piazzato), e' la
+     sonda che non faceva la parte del giocatore: una scena piazzata bloccava il resto del censimento. Ora, se la fase resta
+     `hl_move` oltre il timer di pressione (9 s di parete), la sonda preme 0 — lo stesso tasto del giocatore, stesso
+     `setPhase("hl_choose")`. Rosso della sonda: `CPM_NO_G446=1` = attesa di prima (solo `hl_choose`). */
+  let ok = false;
+  { const tW = Date.now(); let tMove = 0;
+    while (Date.now() - tW < 30000) {
+      const f = await matchPhase(page);
+      if (f === 'hl_choose') { ok = true; break; }
+      if (f === 'ended' || f === 'ceremony' || f === 'shootout' || f == null) break;
+      if (f === 'hl_move' && !NO_G446) { if (!tMove) tMove = Date.now(); else if (Date.now() - tMove > 9000) { await page.keyboard.press('0').catch(() => {}); tasti++; tMove = 0; } }
+      else tMove = 0;
+      await sleep(250);
+    }
+  }
+  if (!ok) { attese++; await sleep(600); continue; }
   await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});
   await page.waitForFunction(() => { try { return !window.__CPM_PHASE || window.__CPM_PHASE() !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
   scene++;
@@ -149,7 +176,7 @@ for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
 /* il pavimento non e' «una scena»: con una sola scena «zero salti» non significa nulla. Meta' del
    bersaglio, mai sotto tre, e' il minimo perche' la frase «nessun salto osservato» valga qualcosa. */
 const MIN_SCENE = Math.max(3, Math.floor(TARGET / 2));
-console.log(`\ncopertura: ${scene}/${TARGET} scene giocate su ${partite} partite · ${visti} fotogrammi visti dal varco`);
+console.log(`\ncopertura: ${scene}/${TARGET} scene giocate su ${partite} partite · ${visti} fotogrammi visti dal varco · piazzati portati alla scelta col tasto 0: ${tasti} · attese di 30 s senza scena: ${attese} · velocita' ${SPEED}x · GLB ${GLB ? 'acceso' : 'SPENTO'}${NO_G446 ? ' · BRACCIO ROSSO CPM_NO_G446 (attesa di prima)' : ''}`);
 if (!visti) { console.log('❌ CIECO: il varco non ha guardato nessun fotogramma — la misura non esiste, non e\' un «nessun salto»'); process.exit(2); }
 if (scene < MIN_SCENE) { console.log(`❌ COPERTURA INSUFFICIENTE: ${scene} scene su un minimo di ${MIN_SCENE} — «nessun salto» su cosi' poco non e' un risultato`); process.exit(2); }
 console.log('✅ misura valida');
