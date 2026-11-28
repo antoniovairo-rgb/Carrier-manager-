@@ -1523,13 +1523,25 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
           vm.position.set(vx,standH*0.645+0.85,-standD*0.06);g.add(vm);}}
     }
     // Concrete base strip
-    const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),_bank46?_grassM46:cM);
-    base.position.set(0,1.5,0);g.add(base);
+    const _v411=opts.varco411||null;/* [giro 411 PO-677] il basamento della Tribuna Ovest ha il corridoio del tunnel: tre blocchi invece di uno */
+    if(!_v411){const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),_bank46?_grassM46:cM);
+    base.position.set(0,1.5,0);g.add(base);}
+    else{/* [giro 411 PO-677 «sembrano appiccicati al tunnel» — rosso __CPM_NO_G411: il blocco pieno col piano nero davanti]
+        in locale il campo sta a -z: il corridoio (largo _v411.w, profondo _v411.d dalla faccia campo) e' scavato al centro del
+        basamento; ai lati due blocchi a tutta profondita', dietro il corridoio il resto del blocco; sopra il corridoio il soffitto. */
+      const _BW=standW+2,_BD=standD+3,_cw=_v411.w,_cd=Math.min(_v411.d,_BD-0.4),_sw=(_BW-_cw)/2,_bm=_bank46?_grassM46:cM;
+      [-1,1].forEach(sd=>{const b=new THREE.Mesh(new THREE.BoxGeometry(_sw,3,_BD),_bm);b.position.set(sd*(_cw/2+_sw/2),1.5,0);g.add(b);});
+      const bk=new THREE.Mesh(new THREE.BoxGeometry(_cw,3,_BD-_cd),_bm);bk.position.set(0,1.5,-_BD/2+_cd+(_BD-_cd)/2);g.add(bk);
+      const cl=new THREE.Mesh(new THREE.BoxGeometry(_cw,0.25,_cd),_bm);cl.position.set(0,2.875,-_BD/2+_cd/2);g.add(cl);}
     if(_compBanner){/* [7.301.0] striscione della competizione sulla FACCIA CAMPO del muretto (in locale il campo
         sta a -z: stessa convenzione dei gradoni, che partono da -standD/2) */
       const _bw=standW+2,_bh=1.7,_m=_compBanner.clone();
       _m.wrapS=THREE.RepeatWrapping;_m.repeat.set(Math.max(1,Math.round(_bw/26)),1);_m.needsUpdate=true;
-      const _bn=new THREE.Mesh(new THREE.PlaneGeometry(_bw,_bh),new THREE.MeshBasicMaterial({map:_m}));
+      if(_v411){/* [giro 411] la fascia si interrompe sulla bocca del corridoio: due tratti, uno per lato */
+        const _sw=(_bw-_v411.w)/2,_m2=_compBanner.clone();_m2.wrapS=THREE.RepeatWrapping;_m2.repeat.set(Math.max(1,Math.round(_sw/26)),1);_m2.needsUpdate=true;
+        [-1,1].forEach(sd=>{const _bq=new THREE.Mesh(new THREE.PlaneGeometry(_sw,_bh),new THREE.MeshBasicMaterial({map:_m2}));_bq.position.set(sd*(_v411.w/2+_sw/2),1.85,-(standD+3)/2-0.06);_bq.rotation.y=Math.PI;g.add(_bq);});}
+      const _bn=_v411?null:new THREE.Mesh(new THREE.PlaneGeometry(_bw,_bh),new THREE.MeshBasicMaterial({map:_m}));
+      if(_bn){
       /* [7.306.1 collaudo PO «sui muretti gli striscioni della competizione non ci sono, solo quelli dei
          tifosi»] la fascia c'era ma spariva: per tenerla SOTTO ai teli degli ultras le avevo messo
          `renderOrder:-2` + `depthWrite:false`, cioe' disegnata PRIMA di tutto e senza scrivere profondita' —
@@ -1537,7 +1549,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
          ordine di traversata della scena: da qui il «a volte si vede».) Ora e' un opaco normale, 0.06 davanti
          alla faccia del muro: occlude il cemento per profondita' REALE. La gerarchia col tifo resta perche' i
          teli ultras sono TRASPARENTI (quindi disegnati dopo ogni opaco) e appesi piu' avanti, a 0.14. */
-      _bn.position.set(0,1.85,-(standD+3)/2-0.06);_bn.rotation.y=Math.PI;g.add(_bn);}
+      _bn.position.set(0,1.85,-(standD+3)/2-0.06);_bn.rotation.y=Math.PI;g.add(_bn);}}
     // Roof: PENSILINA arretrata sopra il fondo dell'anello alto — il vecchio sbalzo in avanti, visto
     // dalla camera broadcast alta, COPRIVA l'anello inferiore (banda opaca al posto dei tifosi)
     if(_roofOn){
@@ -1546,7 +1558,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       if(_lv<=0){/* PROVINCIA: la pensilina storica, con due pilastrini in piu' per non sembrare sospesa */
         const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.20),roofM);
         roof.position.set(0,_rTop,standD*((_nt>=3)?0.52:0.34));roof.rotation.x=0.10;g.add(roof);
-        [-standW/2+4,-standW/6,standW/6,standW/2-4].forEach(px=>{
+        [-standW/2+4,-standW/6,standW/6,standW/2-4].map(px=>(opts.varco411&&Math.abs(px)<opts.varco411.w/2+0.6)?(px<0?-1:1)*(opts.varco411.w/2+0.6):px).forEach(px=>{/* [giro 411] mai dentro il corridoio */
           const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.28,_rTop+0.2,8),stM);
           pl.position.set(px,_rTop/2,standD*((_nt>=3)?0.48:0.30));g.add(pl);});
       } else {/* [7.437.0] COPERTURA VERA A SBALZO: falda che copre l'anello alto, sottotetto scuro,
@@ -1576,7 +1588,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
         /* piloni posteriori */
         const _nPy=_lv>=3?5:_lv>=2?4:3;
         const _pyTop=_rTop+Math.sin(_slope)*_dp+1.0;/* appena sopra il colmo posteriore, mai antenne nel cielo */
-        for(let pi=0;pi<_nPy;pi++){const px=-standW/2+2+(pi+0.5)*(standW-4)/_nPy;
+        for(let pi=0;pi<_nPy;pi++){let px=-standW/2+2+(pi+0.5)*(standW-4)/_nPy;if(opts.varco411&&Math.abs(px)<opts.varco411.w/2+0.6)px=(px<0?-1:1)*(opts.varco411.w/2+0.6);/* [giro 411] nessun pilone dentro il corridoio del tunnel: si sposta di lato */
           const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.44,_pyTop,8),stM);
           pl.position.set(px,_pyTop/2,_zBack+0.6);g.add(pl);}
         if(_lv>=3){/* PORTALE posteriore: una trave di colmo continua che lega i piloni — il disegno
@@ -1648,7 +1660,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _roofFor=k=>{if(_roofT==="none")return false;/* catino aperto: identita' (sudamericano) */
     if(_lvl437>=2)return true;/* [7.438.0 collaudo PO «la copertura, soprattutto negli stadi importanti, deve esserci anche in curva!»] dal livello importante l'anello di copertura e' COMPLETO: le curve non restano scoperte */
     return _roofT==="legacy"||_roofT==="full"?true:_roofT==="west"?k==="ovest":(_roofT==="partial"?(k==="ovest"||k==="est"):true);};
-  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest"),gable:K46==="mattoni"});   // Tribuna Ovest — casa/famiglie/VIP
+  /* [giro 411 PO-677] corridoio del tunnel scavato nel basamento della Tribuna Ovest (bocca a meta' campo, giro 245): largo quanto la
+     luce della bocca (5,4), profondo fin davanti alla struttura posteriore della tribuna, al massimo 14. Rosso __CPM_NO_G411. */
+  const _G411=!(typeof window!=='undefined'&&(window.__CPM_NO_G411||window.__CPM_NO_STADI246||window.__CPM_NO_G245));
+  const _v411=_G411?{w:5.4,d:Math.max(4,Math.min(14,(endD+3)/2+0.23*endD-0.15))}:null;
+  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest"),gable:K46==="mattoni",varco411:_v411});   // Tribuna Ovest — casa/famiglie/VIP
   const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false,{tiers:(T&&T.asym)?1:_tiers,roofOn:_roofFor("est"),bank:K46==="borgo"});     // Tribuna Est — casa + spicchio ospiti (asym: bassa a 1 anello)
   const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,(_sudH>sideH?sideD*1.15:sideD),_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud"),bank:K46==="borgo"});// [5.89.1 HOTFIX] un argomento in PIÙ (sideD duplicato) scalava tutti i parametri → crowdObj arrivava come NUMERO → curva Sud BIANCA senza tifosi/bandiere in ogni partita (segnalazione PO con screenshot)   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
   const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true,{tiers:_tiers,roofOn:_roofFor("nord"),bank:K46==="borgo"});// Curva Nord — SOLO ospiti
@@ -2017,7 +2033,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=_g245?0:-22,_w=_g245?6.0:5.2,_h=3.0;/* [giro 245 PO-510] a meta' campo, 0,8 piu' larga: due file + bambini senza toccare pareti e pilastri */
     const _frM=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
     const _inM=new THREE.MeshBasicMaterial({color:0x07080c});
-    const mouth=new THREE.Mesh(new THREE.PlaneGeometry(_w-0.6,_h-0.3),_inM);mouth.position.set(_tx,(_h-0.3)/2,_fz+0.12);/* davanti allo striscione della competizione (+0,06), che altrimenti tappa la bocca */scene.add(mouth);
+    if(!_v411){const mouth=new THREE.Mesh(new THREE.PlaneGeometry(_w-0.6,_h-0.3),_inM);mouth.position.set(_tx,(_h-0.3)/2,_fz+0.12);/* davanti allo striscione della competizione (+0,06), che altrimenti tappa la bocca */scene.add(mouth);}
     [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);pl.userData.ost245='tunnel-pilastro';scene.add(pl);});
     const lin=new THREE.Mesh(new THREE.BoxGeometry(_w+0.4,0.5,0.55),_frM);lin.position.set(_tx,_h+0.2,_fz+0.2);scene.add(lin);
     let _stile="cemento";
@@ -2030,8 +2046,31 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const rf=new THREE.Mesh(new THREE.BoxGeometry(_w+0.5,0.3,_L),_isA?_roofDarkM:new THREE.MeshLambertMaterial({color:0x22262e}));rf.position.set(_tx,_h+0.15,_fz+_L/2);scene.add(rf);
       const band=new THREE.Mesh(new THREE.BoxGeometry(_w+0.6,0.32,0.3),_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.3)}):_frM);
       band.position.set(_tx,_h+0.05,_mz-0.1);scene.add(band);}
-    try{if(typeof window!=='undefined'){const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.tunnel={x:_tx,z0:+_fz.toFixed(2),z1:_mz,L:+_L.toFixed(2),stile:_stile};}}catch(_e){}
-    _tun46info={x:_tx,z1:_mz,L:_L,stile:_stile};
+    /* [giro 411 PO-677 «Tunnel dei giocatori ancora da migliorare. Sembrano appiccicati al tunnel e piano piano si staccano. Non c'e' un
+       effetto 3D realistico» — rosso __CPM_NO_G411: il piano nero sulla faccia del basamento]
+       MISURATO prima (misura-411, corpi accesi, telefono e PC, notte): la bocca era un piano nero sulla faccia di un blocco pieno, profondita'
+       visibile 0; i 12 corpi di squadra aspettavano tutti nello STESSO punto (x ±1,3, z -36, a 0,1 dalla bocca) e se ne staccavano uno ogni
+       0,65 s. Ora dietro la bocca c'e' un corridoio vero (pavimento, pareti, soffitto, fondo, tre plafoniere) scavato nel basamento, e il
+       buio cresce con la profondita': veli neri trasparenti in fila (uno ogni ~1 u, il primo piu' forte, sulla soglia) scuriscono tutto cio'
+       che sta dietro di loro, corpi compresi, senza toccare i materiali dei corpi (giro 412). Peso: 4 piani + 1 fondo + 3 plafoniere + fino a
+       14 veli, nessuna texture, nessun asset; geometrie condivise. Nel vetro dell'arena il tubo resta chiaro: il buio comincia nel basamento. */
+    let _i411=null;
+    if(_v411){
+      const _cw=_v411.w,_zEnd=_fz-_v411.d,_thr=(_L>0.6&&_stile!=="vetro")?_mz:_fz,_zF=_L>0.6?_mz:_fz+0.45,_hc=2.75;
+      const _dM=new THREE.MeshLambertMaterial({color:0x2c2f36}),_flM=new THREE.MeshLambertMaterial({color:0x24262b});
+      const _fl=new THREE.Mesh(new THREE.PlaneGeometry(_cw,_zF-_zEnd),_flM);_fl.rotation.x=-Math.PI/2;_fl.position.set(_tx,0.012,(_zF+_zEnd)/2);scene.add(_fl);
+      const _cl=new THREE.Mesh(new THREE.PlaneGeometry(_cw,_fz-_zEnd),_dM);_cl.rotation.x=Math.PI/2;_cl.position.set(_tx,_hc-0.012,(_fz+_zEnd)/2);scene.add(_cl);
+      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.PlaneGeometry(_fz-_zEnd,_hc),_dM);w.rotation.y=-sd*Math.PI/2;w.position.set(_tx+sd*(_cw/2-0.02),_hc/2,(_fz+_zEnd)/2);w.userData.ost245='tunnel-parete';scene.add(w);});
+      const _en=new THREE.Mesh(new THREE.PlaneGeometry(_cw,_hc),new THREE.MeshBasicMaterial({color:0x040506}));_en.position.set(_tx,_hc/2,_zEnd+0.01);scene.add(_en);
+      const _lpG=new THREE.BoxGeometry(1.6,0.05,0.35),_lpM=new THREE.MeshBasicMaterial({color:0xffe6bf});
+      [0.25,0.55,0.85].forEach(f=>{const lp=new THREE.Mesh(_lpG,_lpM);lp.position.set(_tx,_hc-0.03,_fz-(_fz-_zEnd)*f);scene.add(lp);});
+      const _vG=new THREE.PlaneGeometry(_cw-0.02,_hc-0.01),_D=_thr-_zEnd,_nv=Math.max(4,Math.min(14,Math.round(_D/1.0))),_sp=_D/_nv;
+      const _v0M=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.36,depthWrite:false}),_vM=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.20,depthWrite:false});
+      const _vGT=new THREE.PlaneGeometry(_w-0.18,_h-0.01);/* nel tratto telescopico il velo prende tutta la luce del tubo */
+      for(let k=0;k<_nv;k++){const _zv=_thr-0.15-k*_sp,_tel=_zv>_fz+0.05;const v=new THREE.Mesh(_tel?_vGT:_vG,k===0?_v0M:_vM);v.position.set(_tx,_tel?(_h-0.01)/2:(_hc-0.01)/2,_zv);v.userData.velo411=1;scene.add(v);}
+      _i411={zEnd:+_zEnd.toFixed(2),zMin:+(_fz-((endD+3)-0.6)).toFixed(2),thr:+_thr.toFixed(2),w:_cw,veli:_nv,a0:0.36,a:0.20,passo:+_sp.toFixed(2),d:+_v411.d.toFixed(2)};}
+    try{if(typeof window!=='undefined'){const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.tunnel={x:_tx,z0:+_fz.toFixed(2),z1:_mz,L:+_L.toFixed(2),stile:_stile,g411:_i411};}}catch(_e){}
+    _tun46info={x:_tx,z1:_mz,L:_L,stile:_stile,g411:_i411};
   }catch(_eT46){}}
   // [5.88.0 S2] INSEGNA col nome dello stadio (canvas wordmark) sopra la Tribuna Ovest — identità immediata
   // [7.661.0] PO: «il vecchio pannello/cartellone con il nome dello stadio deve essere eliminato» — il nome
@@ -3239,6 +3278,23 @@ function resolveDefensiveOutcome(ctx){
 //   deriveHL e dal gate. Risultato: il giocatore sceglie un INTENTO/stile di rischio, non un'animazione.
 function intentLabel(lbl){
   if(!lbl)return lbl; const l=lbl.toLowerCase();
+  /* [giro 419 PO-682 «avevo scelto calcio potente ma ha fatto un colpo di testa», codice 003] Il tasto «✈️ Testa di potenza» si
+     mostrava «💥 Conclusione potente»: «testa di» non e' «di testa», la regola delle teste non lo prendeva e vinceva quella della
+     potenza. Misurato sulle 545 etichette del sorgente: 29 azioni aeree, 4 mostrate come un tiro di piede (Testa di potenza · Testa
+     potente angolato → Conclusione potente; Testa piazzata all'angolo → Conclusione precisa; Testa al volo → Conclusione di prima)
+     e 5 passaggi o interventi di testa mostrati come «Attacca il pallone». Ora un'azione aerea dice sempre «di testa» (con lo stile),
+     e una sponda, un passaggio o un intervento difensivo di testa resta col suo testo. Solo l'etichetta mostrata: act.label, deriveHL
+     e il gate non cambiano. Rosso window.__CPM_NO_G419. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G419)&&/\btesta\b|incornat|\bstacco\b|spizzat/.test(l)){
+    if(/compagn|smista|indirizz|sponda|difensiv/.test(l))return lbl;
+    if(/profondit/.test(l))return "✈️ Colpo di testa in profondità";
+    if(/in corsa|tuffo|piombo/.test(l))return "✈️ Colpo di testa in corsa";/* deriveHL: header_diving. Prima di «potente»: nella stessa scena del motore «Stacco in corsa potente» e «Testa di potenza» diventavano due «Colpo di testa potente» e lo scarto dei doppioni riportava la seconda al testo di prima */
+    if(/potenza|potente|dominante|decis/.test(l))return "✈️ Colpo di testa potente";
+    if(/piazzat|angolat|mirat|precis|angolo/.test(l))return "🎯 Colpo di testa piazzato";
+    if(/al volo/.test(l))return "✈️ Colpo di testa al volo";
+    if(/primo palo|palo corto/.test(l))return "✈️ Colpo di testa sul primo palo";
+    if(/secondo palo|palo lontano/.test(l))return "✈️ Colpo di testa sul secondo palo";
+    return "✈️ Colpo di testa";}
   if(/colpo di testa|stacco di testa|\bdi testa\b|incornata|\bstacco\b|spizzata/.test(l))return "✈️ Attacca il pallone";/* [7.404.0 collaudo PO gi115 «Attacca il pallone non e' una giocata aerea!»] la parola nuda `tacco` — messa per coprire «stacco», che pero' e' gia' coperto da \bstacco\b — catturava anche il TACCO (colpo di classe rasoterra): «Tacco in porta» diventava un'incornata. Il tacco tiene la sua etichetta, che dice gia' tutto. */
   if(/rovesciata|sforbiciata/.test(l))return "🤸 Giocata acrobatica";
   if(/pallonett|cucchiaio|scavetto|scavin|panenka/.test(l))return "🪄 Scavetto sul portiere";
@@ -3274,6 +3330,13 @@ function intentIntro(intro,scoreDiff){
   if(!intro)return intro;
   if(scoreDiff!=null&&stateIncoherent((intro||"").toLowerCase(),scoreDiff))return "";
   return intro;
+}
+/* [giro 419 PO-682] il nome della giocata nei riquadri DOPO la scelta («La giocata», esito, in corso) leggeva l'etichetta dei dati
+   («✈️ Testa di potenza»), il tasto quella mostrata: per un colpo di testa le due ora coincidono («✈️ Colpo di testa potente»). Le altre
+   azioni restano col testo dei dati, come prima. Rosso window.__CPM_NO_G419. */
+function giocataMostrata419(lbl){
+  if(!lbl||(typeof window!=='undefined'&&window.__CPM_NO_G419))return lbl;
+  const m=intentLabel(lbl);return /di testa/i.test(m)?m:lbl;
 }
 // FIX azioni duplicate: se il transform produce un'etichetta già usata da un'azione PRECEDENTE della stessa
 //   lista, mantieni l'etichetta ORIGINALE (distinta) — niente più due "Conclusione di prima" identiche.
