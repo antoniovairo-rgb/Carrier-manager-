@@ -63,6 +63,26 @@
      64
     ],
     "prof": 12
+   },
+   "v445": {
+    "tipo": "corti",
+    "spessore": 0.0024,
+    "dil": 1,
+    "sfum": 6,
+    "stempia": {
+     "az": [
+      10,
+      64
+     ],
+     "prof": 22
+    },
+    "verso": [
+     180,
+     62
+    ],
+    "tratti": 16000,
+    "lung": 2.4,
+    "ombra": 1.0
    }
   },
   "lunghi-raccolti": {
@@ -83,6 +103,36 @@
      0.75
     ],
     "fuori": 0.016
+   },
+   "v445": {
+    "tipo": "raccolti",
+    "spessore": 0.0028,
+    "volume": 0.006,
+    "dil": 1,
+    "sfum": 5,
+    "verso": [
+     180,
+     50
+    ],
+    "tratti": 7000,
+    "lung": 9,
+    "ombra": 1.0,
+    "chignon": {
+     "az": 180,
+     "el": 50,
+     "r": 0.034,
+     "s": [
+      1.0,
+      0.85,
+      1.0
+     ],
+     "collo": 0.016
+    },
+    "fronte": [
+     66,
+     4,
+     11
+    ]
    }
   }
  },
@@ -187,5 +237,6 @@
   "nota": "colore dei peli della barba per classe di capelli della figurina (pixel dei peli sul mento delle figurine con barba, poi tarato sul banco con misura-440.mjs: nucleo del mento 3D contro figurina, CIE76)"
  },
  "nota_440_tagli": "giro 440: «stempiati e corti» = come il rasato (fondo color pelle + stoppia) con la stoppia tolta alle tempie (profilo a campana fra 12 e 64 gradi di azimut, fino a 12 gradi sopra l'attaccatura): la prima prova, testa del corpo + fondo solo alle tempie, faceva due bozzi color pelle; «lunghi raccolti» = calotta a ciocche pettinate (trama440-lisci) + chignon dietro la testa. g440: nel rosso __CPM_NO_G440 restano alla testa del corpo come nel 432. Nel manifest dei giocatori non ci sono «lunghi sciolti» ne' capelli medi sopra le orecchie oltre ai «ricci medi» (gia' coperti).",
- "nota_440_copertura": "copertura: quota di peli nel nucleo della barba di quel tipo (miscela nucleo = copertura x peli + resto x pelle), tarata sul banco con misura-440.mjs perche' il nucleo 3D stia vicino a quello della figurina"
+ "nota_440_copertura": "copertura: quota di peli nel nucleo della barba di quel tipo (miscela nucleo = copertura x peli + resto x pelle), tarata sul banco con misura-440.mjs perche' il nucleo 3D stia vicino a quello della figurina",
+ "nota_445": "giro 445: «v445» dentro le calotte stempiato e lunghi-raccolti = guscio con scheletro (pesi misti testa/collo, copre la nuca), fondo color pelle, capelli a ciocche disegnati dal gioco con attaccatura sfumata (sfum, gradi) e tempie arretrate (stempia), colore dalla figurina (hc), chignon alto per i raccolti. Senza v445 (o col rosso window.__CPM_NO_G445) resta la resa del 440."
 }
