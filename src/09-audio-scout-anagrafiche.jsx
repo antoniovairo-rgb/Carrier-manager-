@@ -1172,6 +1172,14 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   "FC Valmora","AC Dorvelli","FC Vellamare","FC Alcavera","FC Lumeranza","FC Torvelle","FC Brenvar","FC Marnesi","FC Caldoran","FC Ventrana","FC Oriolan","FC Dalvora","FC Pelvanni","FC Valdenau","FC Ravelmund","FC Rendalto",
   "Stadio Valmora","Stadio Alcavera","Stadio Vellamare","Stadio Torvelle","Estadio Ventrana","Estadio Oriolan","Estádio Rendalto","AC Milan","SSC Napoli",
   "Stadio Sabaudo","Stadio Meneghino","Stadio Capitolino","Stadio Vesuvio","Stade Phocéen","Estadi Blau","Stadion der Wand","Cannon Stadium","Bridge Stadium","Estádio Leonino","Kadıköy Stadyumu","Kartal Park","Stade Princier","Stadio Adriatico","Stade Gabriel Montpied","Arena Lviv","Estadio de la Cerámica Vieja","Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
+/* [giro 453 PO-694] parole che rimandano a un club vero delle leghe simulate (citta' della Championship, soprannomi, stadi, nomi veri,
+   anni di fondazione, nomi veri dei derby): cercate per parola intera nell'audit, non per sottostringa. Una citta' usata da un club di
+   fantasia di un'altra lega (FC Hannover, FC Lisboa…) NON e' qui: e' una scelta del PO del 17/11 (rapporto giro 453, dubbio 2). */
+const _CR_ZONE453=["Luton","Middlesbrough","Teesside","Coventry","Swansea","Sheffield","Ipswich","Leeds","Burnley","Norwich","West Bromwich",
+  "Bristol","Millwall","Bermondsey","Blackburn","Preston","Cardiff","Watford","Hornets","Stoke","Queens Park","Queensway","Hatters","Canaries",
+  "Clarets","Baggies","Hammers","Goodison","Foxes","Foxshire","Craven","Griffin","Stamford","Aston","Villa Park","Submarino","Sociedad","Pucela",
+  "Sarrià","Manzanares","Munchen","München","Koln","Köln","Salernitana","1919","Leonessa","Antwerp","Farense","Kasimpasa","Kasımpaşa","Monaco",
+  "FC Pau","Emscher 04","Klassiker","Klassieker","Clásico","Classique","Madrileño"];
 const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
 //   (i pool restano ricchi di nomi comuni; è la COPPIA a essere bloccata, in generazione e in audit).
@@ -1192,18 +1200,25 @@ const _CLUB_248=[["FC Nerazzurri","FC Valmora","FC Milano Brera","MBR"],["AC Ros
 /* [giro 251 PO-512] nomi definitivi del PO (tabella unica CLUB_NOMI_251 in src/02): ogni nome di oggi (righe mkT, cioe' giro 248
    compreso) e ogni nome reale o del giro 6 va al nome DEFINITIVO in un passo solo; identita' tolte (FC Nerazzurri, FC Partenope e
    FC Granata erano nomi reali di prima del giro 6 e ora sono le scelte del PO). Rosso __CPM_NO_G251 = migrazione del giro 248. */
-const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id,[n]])=>CLUB_NOMI_251[id][0]!==n).map(([id,[n]])=>[n,CLUB_NOMI_251[id][0]]));
+const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id])=>CLUB_NOMI_251[id]).filter(([id,[n]])=>_nc251(id,n)!==n).map(([id,[n]])=>[n,_nc251(id,n)]));
+/* [giro 453 PO-694] i nomi di prima (mkT e 251) dei club rinominati vanno al nome di FANTASIA in un passo solo (_nc251 = nome finale);
+   rosso __CPM_NO_G453 = nessuna migrazione 453. */
+const _DEF453=_NO_G453?{}:Object.fromEntries(Object.keys(CLUB_NOMI_453).flatMap(id=>[_PRIMA453[id],_NOMI_OGGI_251[id]].filter(Boolean).map(([n])=>[n,CLUB_NOMI_453[id][0]])).filter(([k,v])=>k!==v));
 const _def251=n=>_DEF251[n]||n;
-const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251)].filter(([k,v])=>k!==v));
+const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251),...Object.entries(_DEF453)].filter(([k,v])=>k!==v));
 const _CLUB_ABBR_248=_NO_G248?{}:(()=>{const byN=Object.fromEntries(CLUBS.map(c=>[c.n,c.a]));const ns=new Set(_CLUB_248.map(([,,n])=>_def251(n)));
-  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
+  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});if(!_NO_G453)CLUBS.forEach(c=>{if(CLUB_NOMI_453[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
 const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte",
-  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"})};
+  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"}),
+  ...(_NO_G453?{}:{"Stadio Salernum":"Stadio della Costiera","Aston Park":"Heathmoor Park","München Arena":"Alpenland Arena"})};/* [giro 453] */
 /* [giro 251] nomi definitivi che COMINCIANO con un nome da migrare («FC Paris Île-de-France» con «FC Paris», «FC Salernum 1919» con
    «FC Salernum»): si proteggono, o una seconda passata li allungherebbe («FC Paris Île-de-France Île-de-France»). */
 const _LUNGHI251=CLUBS.map(c=>c.n).filter(n=>Object.keys(CLUB_RENAME_6).some(k=>n.startsWith(k+" ")));
+/* [giro 453] il prefisso PIU' LUNGO vince: «FC Salernum 1919 Primavera» non deve prendere «FC Salernum» (misurato: «FC Costiera 1919 Primavera»).
+   Rosso __CPM_NO_G453 = ordine d'inserimento di prima. */
+const _CHIAVI453=_NO_G453?Object.keys(CLUB_RENAME_6):Object.keys(CLUB_RENAME_6).sort((a,b)=>b.length-a.length);
 // idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
-function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of _CHIAVI453){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
 /* [giro 248 PO-511] migrazione COMPLETA dei nomi salvati: i nomi del club non vivono solo in club/standings/calendar/matchHistory
    (misurato sul salvataggio fixtures/save-c177-s5w20.json: anche lastAwards…club, standings[].a, matchHistory[].oppAbbr).
    Una passata su tutto l'oggetto: (1) ogni stringa che CONTIENE un nome reale o del giro 6 (club o stadio, anche dentro un testo
@@ -1251,6 +1266,17 @@ function _auditCopyrightSafety(){
      CLUBS.forEach(c=>{const ab=_nrm(c.a),nm=_nrm(c.n);let i=0,ok=!!ab;
        for(const ch of ab){i=nm.indexOf(ch,i);if(i<0){ok=false;break;}i++;}
        if(!ok)hits.push("SIGLA: \""+(c.a||"")+"\" non deriva dal nome mostrato \""+(c.n||"")+"\"");});}
+    /* [giro 453 PO-694] CITTA', SOPRANNOMI, STADI e NOMI VERI dei club delle leghe simulate. La lista dei brand cerca i club famosi
+       per sottostringa e non vedeva «FC Ipswich»+IPS o «FC Hornets» (Watford). Qui si cerca per PAROLA INTERA (lettere senza accenti,
+       maiuscole ignorate) in nomi dei club, stadi, derby, record e albo europeo. Rosso __CPM_NO_G453 = nomi del 7.999.219 (40 hit). */
+    {const _n453=t=>" "+String(t||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()+" ";
+     const W=_CR_ZONE453.map(w=>[w,_n453(w)]);
+     const scan=(label,arr)=>{(arr||[]).forEach(t=>{if(typeof t!=="string"||!t)return;const x=_n453(t);W.forEach(([w,nw])=>{if(x.indexOf(nw)>=0)hits.push(label+"-453: \""+t+"\" ~ "+w);});});};
+     scan("CLUB",CLUBS.map(c=>c.n));
+     if(typeof CLUB_STADIUMS!=="undefined")scan("STADIUM",[...STADIUM_POOLS.flatMap(sp=>sp.s),...Object.values(CLUB_STADIUMS)]);
+     if(typeof DERBIES!=="undefined")scan("DERBY",Object.values(DERBIES).map(d=>d.name));
+     Object.values(EURO_COMP_WINNERS||{}).forEach(a=>scan("EURO",a.map(x=>x.club)));
+     Object.values(LEAGUE_RECORDS||{}).forEach(v=>scan("REC",[v.allTimeScorer&&v.allTimeScorer.club,v.seasonRecord&&v.seasonRecord.club]));}
     /* [giro 320] il nome dell'eroe dell'intro (didascalia, maglia, suggerimento del campo Nome) non e' mai un calciatore vero */
     {const _n320=String(EROE_INTRO_320.nome||"");if(_CR_FULLNAMES.has(_n320.toLowerCase()))hits.push("INTRO-EROE: \""+_n320+"\"");
      if(_CR_PLAYERS.some(w=>_n320.split(/\s+/).indexOf(w)>=0))hits.push("INTRO-EROE: \""+_n320+"\" ~ nome reale");}

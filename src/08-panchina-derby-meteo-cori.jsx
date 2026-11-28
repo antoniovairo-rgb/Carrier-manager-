@@ -303,15 +303,15 @@ const DERBIES={
   "ata-bres":{name:"Derby della Pianura Est",e:"🦁"},"bres-ata":{name:"Derby della Pianura Est",e:"🦁"},
   "fio-bol":{name:"Derby del Crinale Lungo",e:"⛰️"},"bol-fio":{name:"Derby del Crinale Lungo",e:"⛰️"},
   "cag-pal":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},"pal-cag":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},
-  "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
-  "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
+  "rma-bar":{name:_g453("El Duelo del Siglo","El Clásico"),e:"👑"},"bar-rma":{name:_g453("El Duelo del Siglo","El Clásico"),e:"👑"},
+  "rma-atm":{name:_g453("Derbi de la Meseta","Derbi Madrileño"),e:"🌆"},"atm-rma":{name:_g453("Derbi de la Meseta","Derbi Madrileño"),e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
   "mun-liv":{name:"Derby della Brughiera Rossa",e:"🥀"},"liv-mun":{name:"Derby della Brughiera Rossa",e:"🥀"},/* [giro 159 PO-359, decisione PO 11/11 «inventare anche i luoghi»] nome tutto inventato, come gli altri derby del mondo del gioco */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
-  "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
-  "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
+  "bay-bvb":{name:_g453("Der Gipfel","Der Klassiker"),e:"🦁"},"bvb-bay":{name:_g453("Der Gipfel","Der Klassiker"),e:"🦁"},
+  "psg-marse":{name:_g453("Le Grand Choc","Le Classique"),e:"🗼"},"marse-psg":{name:_g453("Le Grand Choc","Le Classique"),e:"🗼"},
   "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
-  "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
+  "ajax-feye":{name:_g453("De Grote Strijd","De Klassieker"),e:"🌷"},"feye-ajax":{name:_g453("De Grote Strijd","De Klassieker"),e:"🌷"},
 };
 function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
   /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC

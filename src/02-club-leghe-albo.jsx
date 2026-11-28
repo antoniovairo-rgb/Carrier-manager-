@@ -52,9 +52,32 @@ const CLUB_NOMI_251={
   bre:["FC Griffin","GRI"],che:["FC Stamford","STA"],cry:["FC Croydon","CYD"],eve:["FC Goodison","GDS"],ful:["FC Craven","CRA"],lei:["FC Foxshire","FOX"],
   mun:["Manchester Rovers","MCR"],whu:["FC Hammers","HAM"],alm2:["FC Murciano","MRC"],
 };
+/* [giro 453 PO-694 — PO 28/11, foto 220-championship-nomi: «Controlla i nomi delle squadre di championship, alcuni sono troppo
+   vicini alla realta'»] NOMI DI FANTASIA sopra le scelte del 251. Misura (rapporto giro 453): citta' vera + sigla vera (tutta la
+   Championship), soprannome o stadio veri (Hornets, Hammers, Goodison, Foxshire, Craven, Griffin, Stamford, Submarino, Pucela,
+   Sarrià, Leonessa), nome vero del club o quasi (Aston, Sociedad, Munchen, Koln, Antwerp, Farense, Kasimpasa, Pau, Monaco,
+   Manzanares + ATM, «04», «1919»). Gli id NON cambiano (salvataggi). La tabella 251 resta com'era: questa la sovrascrive al
+   caricamento e la migrazione porta ogni nome di prima (mkT, 251) al nome nuovo (src/09, _DEF251/_DEF453).
+   Rosso window.__CPM_NO_G453 = nomi e sigle del 7.999.219. */
+const _NO_G453=typeof window!=="undefined"&&!!window.__CPM_NO_G453;
+const _g453=(nuovo,prima)=>_NO_G453?prima:nuovo;
+const CLUB_NOMI_453={
+  lut:["FC Dunmere","DMR"],mid:["FC Ironmouth","IRM"],cov:["FC Spirewell","SPW"],swn:["FC Gowerhaven","GWH"],shu:["FC Forgeham","FGH"],
+  ips:["FC Orwick","ORK"],lee:["FC Wharfholm","WHM"],bur:["FC Pendleby","PDY"],nor:["FC Broadmere","BMR"],wba:["FC Tipworth","TPW"],
+  bri:["FC Brigport","BGP"],milw:["FC Riverlane","RVL"],bla:["FC Cottonford","CTF"],pre:["FC Ribblemead","RBM"],car:["FC Llanmere","LMR"],
+  wat:["FC Colnemead","CNM"],sto:["FC Kilnford","KLF"],qpr:["FC Whitlock","WTK"],
+  che:["FC Kingsreach","KGR"],whu:["FC Eastwharf","EWF"],eve:["FC Northdock","NDK"],lei:["FC Soarvale","SRV"],ful:["FC Millbourne","MLB"],
+  bre:["FC Bransholt","BHT"],avl:["FC Heathmoor","HTM"],
+  vill:["FC Naranjal","NRJ"],rsoc:["FC Donostiarra","DNS"],vld:["FC Vallisoletano","VLS"],esp:["FC Tibidabo","TBD"],atm:["FC Meseta Sur","MSU"],
+  bay:["FC Alpenland","APL"],kol:["FC Rheinbogen","RHB"],s04:["FC Emschertal","EMT"],
+  sal:["FC Costiera","CST"],bres:["FC Cidneo","CDN"],ant:["FC Schelde","SCD"],farense:["FC Algarvio","AGV"],kas:["FC Haliç","HLC"],
+  pau:["FC Béarnais","BEA"],mon:["FC Rocher","ROC"],
+};
+const _PRIMA453={};/* id → [nome, sigla] effettivi del 7.999.219 (251 se c'era, altrimenti mkT): la migrazione li porta al nome nuovo */
 const _NOMI_OGGI_251={};/* id → [nome, sigla] delle righe mkT (prima della tabella): la migrazione li porta al nome definitivo */
-const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];if(!t)return c;_NOMI_OGGI_251[c.id]=[c.n,c.a];return _NO_G251?c:{...c,n:t[0],a:t[1]};});
-const _nc251=(id,oggi)=>(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;
+const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];let r=c;if(t){_NOMI_OGGI_251[c.id]=[c.n,c.a];if(!_NO_G251)r={...c,n:t[0],a:t[1]};}
+  const t4=CLUB_NOMI_453[c.id];if(t4){if(!t)_NOMI_OGGI_251[c.id]=[c.n,c.a];_PRIMA453[c.id]=[r.n,r.a];if(!_NO_G453)r={...r,n:t4[0],a:t4[1]};}return r;});/* [giro 453] sopra il 251 */
+const _nc251=(id,oggi)=>(!_NO_G453&&CLUB_NOMI_453[id])?CLUB_NOMI_453[id][0]:(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;/* [giro 453] il nome finale */
 const CLUBS=_nomi251([
   // -- ITALIA Lega A --
   mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
@@ -361,7 +384,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Liga Ibérica 2":{
-    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_g248("FC Sarrià","FC Pelvanni"),era:"1990–2006"},
+    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_nc251("esp",_g248("FC Sarrià","FC Pelvanni")),era:"1990–2006"},
     seasonRecord:{name:"Iker Zubiaga",goals:30,club:_nc251("cel",_g248("FC Vigués","FC Oriolan")),season:"2012-13"},
     topScorers:[
       {name:"Andrés Cobeña",goals:208},{name:"Manolo Ledesmar",goals:182},
@@ -378,7 +401,7 @@ const LEAGUE_RECORDS={
   },
   "Premier Division":{
     allTimeScorer:{name:"Alan Fothergill",goals:292,club:"FC Manchester",era:"1992–2014"},
-    seasonRecord:{name:"Jamie Perkins",goals:41,club:"FC Stamford",season:"2011-12"},
+    seasonRecord:{name:"Jamie Perkins",goals:41,club:_nc251("che","FC Stamford"),season:"2011-12"},
     topScorers:[
       {name:"Alan Fothergill",goals:292},{name:"Wayne Dobbins",goals:254},
       {name:"Frank Mclaren",goals:219},{name:"Terry Blackwood",goals:187},{name:"Steve Hodgson",goals:162},
@@ -450,7 +473,7 @@ const LEAGUE_RECORDS={
   },
   "Championship":{
     allTimeScorer:{name:"Dean Whitfield",goals:163,club:_nc251("nor","FC Canaries"),era:"1988–2006"},
-    seasonRecord:{name:"Billy Horton",goals:34,club:"FC Foxshire",season:"2013-14"},
+    seasonRecord:{name:"Billy Horton",goals:34,club:_nc251("lei","FC Foxshire"),season:"2013-14"},
     topScorers:[
       {name:"Dean Whitfield",goals:163},{name:"Gary Pemberton",goals:141},
       {name:"Billy Horton",goals:119},{name:"Steve Charlton",goals:88},{name:"Tony Bainbridge",goals:72},
@@ -482,18 +505,18 @@ const compLbl=x=>{const v=String(x==null?"":x);if(typeof window!=="undefined"&&w
 const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2020,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[
     {s:2024,club:"FC Bergamo",nat:"🇮🇹"},{s:2023,club:"FC Hispalense",nat:"🇪🇸"},
-    {s:2022,club:"FC Frankfurt",nat:"🇩🇪"},{s:2021,club:"FC Submarino",nat:"🇪🇸"},
-    {s:2020,club:"FC Hispalense",nat:"🇪🇸"},{s:2019,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2018,club:"AT Manzanares",nat:"🇪🇸"},
+    {s:2022,club:"FC Frankfurt",nat:"🇩🇪"},{s:2021,club:_nc251("vill","FC Submarino"),nat:"🇪🇸"},
+    {s:2020,club:"FC Hispalense",nat:"🇪🇸"},{s:2019,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2018,club:_nc251("atm","AT Manzanares"),nat:"🇪🇸"},
   ],
   UECL:[
-    {s:2024,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:"FC Hammers",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2024,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:_nc251("whu","FC Hammers"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2022,club:"FC Capitale",nat:"🇮🇹"},
   ],
 };
@@ -537,8 +560,8 @@ const clubFoundedYear=(id)=>CLUB_FOUNDED[id]||(1897+(Math.abs(hashStr("fnd|"+Str
 const CLUB_CORTI_296={
   lazio:"Celesti",sam:"Sampierd.",mun:"Rovers",wol:"Wolverh.",cel:"Ría Vigo",ray:"Madrid E.",mgb:"Niederrh.",ber:"Köpenick",psg:"Paris IdF",
   mtp:"Montpell.",spo:"Lisboa N.",casa:"Lisboa O.",vsc:"Vimaran.",rioave:"Vila Conde",bav:"Foz Douro",fama:"Famalic.",spa:"Spangen",
-  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:"Salernum",shu:"Sheffield",
-  wba:"West Brom.",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
+  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:_NO_G453?"Salernum":"Costiera",shu:_NO_G453?"Sheffield":"Forgeham",
+  wba:_NO_G453?"West Brom.":"Tipworth",rsoc:_NO_G453?"":"Donostia.",vld:_NO_G453?"":"Valliso.",bla:_NO_G453?"":"Cottonford",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
 };
 const CORTO_MAX_296=10;
 const _PREF_SOC296=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;

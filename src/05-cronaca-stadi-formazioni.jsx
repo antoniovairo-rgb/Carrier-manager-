@@ -481,7 +481,7 @@ const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",intercepted:"✂️
 // Sprint 82 — ~100 stadium names across 6 tiers + U18 pool
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Terre Rosse","Stadio Accademia del Borgo","Arena della Gioventù","Campo Sportivo Lambro","Stadio Bertolotti","Arena Giovanile Sismondi","Centro Federale Valdarno","Stadio del Settore Giovanile","Campo dei Tigli","Arena Academy Nord"];// [5.96.0 CR-1] bonifica: via Coverciano/Braglia/Vismara/Galli (riferimenti reali)
 const STADIUM_POOLS=[
-  {min:88,s:[_g248("Stadio Milano Ovest","Stadio Valmora"),_g248("Stadio del Foro","Stadio Alcavera"),"Stadio Valcolle",_g248("Stadio di Fuorigrotta","Stadio Vellamare"),"Albion Stadium","Mersey Stadium","Estadi del Mar","Estadio Capital","Stadion am Hang","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena","München Arena","Estadio Coloso","Riverside Park","Islington Park","North Stadium","Stade du Littoral","Estádio Azul"]},
+  {min:88,s:[_g248("Stadio Milano Ovest","Stadio Valmora"),_g248("Stadio del Foro","Stadio Alcavera"),"Stadio Valcolle",_g248("Stadio di Fuorigrotta","Stadio Vellamare"),"Albion Stadium","Mersey Stadium","Estadi del Mar","Estadio Capital","Stadion am Hang","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena",_g453("Alpenland Arena","München Arena"),"Estadio Coloso","Riverside Park","Islington Park","North Stadium","Stade du Littoral","Estádio Azul"]},
   {min:76,s:["Stadio Toscano","Bergamo Stadium","Stadio dell'Arena Vecchia","Stadio Felsineo","Stadio Ligure","Volkswiese Stadion","Power Stadium","Estadio Naranja","Estadio Hispalense","Stade des Verts",_g248("Estádio Lisboa Norte","Estádio Rendalto"),"Estádio do Grifo","Estádio Norte","Stade de la Corniche","Stadio dei Navigli","Fiandria Stadion","Arena Halych","Stade de la Cathédrale","Estadio de los Naranjos","Stade du Littoral"]},
   {min:63,s:["Stadio Monferrato","Stadio Costa Est","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica",_g248("Estadio de la Ría","Estadio Oriolan"),"Estadio de la Sierra","Stade des Puys","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
   {min:50,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio del Piceno","Campo Crespi","Arena Cimini","Stadio Parmense","Stadio degli Etruschi","Stadio della Ghirlandina","Estadio del Sur","Arena Poltava","Stade des Volcans","Estadio de la Meseta","Stadio della Valle","Campo de la Costa Brava","Arena Kielce","Stadion Górniczy","Stade des Tilleuls","Estadio del Miño","Stadio delle Cave","Arena Cracovia"]},
@@ -497,16 +497,16 @@ const CLUB_STADIUMS={
   "tor":_g248("Stadio Santa Rita","Stadio Torvelle"),"bol":"Stadio Felsineo","udi":"Stadio Friulano",
   "gen":"Stadio Ligure","sam":"Stadio Ligure","par":"Stadio Parmense",
   "mon2":"Brianza Stadium","sas":"Emilia Stadium","lec":"Stadio Salentino",
-  "sal":"Stadio Salernum","ver":"Stadio Scaligero","spe":"Stadio Spezzino",
+  "sal":_g453("Stadio della Costiera","Stadio Salernum")/* [giro 453 PO-694] */,"ver":"Stadio Scaligero","spe":"Stadio Spezzino",
   "cre":"Stadio Cremonese","mcy":"City Stadium","liv":"Mersey Stadium","ars":"Islington Park",
   "che":"Riverside Park","mun":"Northwich Stadium","tot":"North Stadium",
-  "avl":"Aston Park","new":"Tyne Park","eve":"Merseyside Park","lei":"Midlands Stadium",
+  "avl":_g453("Heathmoor Park","Aston Park"),"new":"Tyne Park","eve":"Merseyside Park","lei":"Midlands Stadium",
   "whu":"East Stadium","wol":"Wanderers Stadium","cry":"Croydon Park",
   "bha":"Sussex Stadium","bur":"Lancashire Stadium","bou":"Dorset Stadium",
   "rma":"Estadio Capital","bar":"Estadi del Mar","atm":"Estadio Coloso",
   "sev":"Estadio Hispalense","bet":_g248("Estadio de Heliópolis","Estadio Ventrana"),"val":"Estadio Naranja",
   "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":_g248("Estadio de la Ría","Estadio Oriolan"),
-  "bay":"München Arena","bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
+  "bay":_g453("Alpenland Arena","München Arena"),"bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
   "fra":"Frankfurt Arena","s04":_g251("Emscher Arena","Gelsenkirchen Arena")/* [giro 251 PO-512] stadio col nome tolto dal PO */,"bsc":"Berlin Arena",
   "psg":"Parc Royal","marse":"Stade du Littoral","lyon":"Lyon Stadium","lille":"Lille Stadium",
   "mon":"Stade de la Corniche","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",

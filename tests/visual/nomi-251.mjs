@@ -50,7 +50,8 @@ function superati(txt) {
 const fails = [], oks = [], note = [];
 const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
 const giudica = (condVerde, mVerde, mRosso) => ROSSO ? ok(!condVerde, '[rosso] ' + mRosso) : ok(condVerde, mVerde);
-const flags = ROSSO ? ['__CPM_NO_G251'] : [];
+/* [giro 453] questo guardiano giudica il SUO livello di nomi: i nomi di fantasia del giro 453 (sopra) si spengono, li giudica nomi-453 */
+const flags = [...(ROSSO ? ['__CPM_NO_G251'] : []), '__CPM_NO_G453'];
 const nrm = t => String(t || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const sottoseq = (a, n) => { a = nrm(a); n = nrm(n); let i = 0; for (const ch of a) { i = n.indexOf(ch, i); if (i < 0) return false; i++; } return !!a; };
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -64,7 +65,7 @@ try {
     await page.waitForFunction(() => typeof window.__CPM_MIGRATE === 'function' && typeof window._auditCopyright === 'function', null, { timeout: 60000 });
     const d = await page.evaluate(() => ({ cl: CLUBS.map(c => [c.id, c.n, c.a]), st: { bvb: CLUB_STADIUMS.bvb, s04: CLUB_STADIUMS.s04 },
       testo: JSON.stringify([CLUBS.map(c => c.n), U18_CLUBS.map(c => c.n || c.name), U18_CLUBS_P2.map(c => c.n || c.name), STADIUM_POOLS, CLUB_STADIUMS, LEAGUE_RECORDS, EURO_COMP_WINNERS]),
-      hits: window._auditCopyright() }));
+      hits: window._auditCopyright().filter(h => !/-453: /.test(h)) /* [giro 453] le parole del 453 le giudica nomi-453 */ }));
     const by = Object.fromEntries(d.cl.map(([i, n, a]) => [i, [n, a]]));
     const diversi = Object.keys(DEF).filter(i => !by[i] || by[i][0] !== DEF[i][0] || by[i][1] !== DEF[i][1]);
     giudica(diversi.length === 0, `A · ${Object.keys(DEF).length}/${Object.keys(DEF).length} club col nome e la sigla definitivi`,

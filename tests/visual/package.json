@@ -699,6 +699,7 @@
     "nomi-211": "node nomi-211.mjs",
     "nomi-248": "node nomi-248.mjs && CPM_ROSSO248=1 node nomi-248.mjs",
     "nomi-251": "node nomi-251.mjs && CPM_ROSSO251=1 node nomi-251.mjs",
+    "nomi-453": "node nomi-453.mjs && CPM_ROSSO453=1 node nomi-453.mjs",
     "sigle-357": "node sigle-357.mjs && CPM_ROSSO357=1 node sigle-357.mjs",
     "calendario-218": "node calendario-218.mjs",
     "interviste-211": "node interviste-211.mjs && (CPM_ROSSO222=1 node interviste-211.mjs; test $? -eq 1) && (CPM_ROSSO239=1 node interviste-211.mjs; test $? -eq 1)",

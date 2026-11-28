@@ -1278,9 +1278,32 @@ const CLUB_NOMI_251={
   bre:["FC Griffin","GRI"],che:["FC Stamford","STA"],cry:["FC Croydon","CYD"],eve:["FC Goodison","GDS"],ful:["FC Craven","CRA"],lei:["FC Foxshire","FOX"],
   mun:["Manchester Rovers","MCR"],whu:["FC Hammers","HAM"],alm2:["FC Murciano","MRC"],
 };
+/* [giro 453 PO-694 — PO 28/11, foto 220-championship-nomi: «Controlla i nomi delle squadre di championship, alcuni sono troppo
+   vicini alla realta'»] NOMI DI FANTASIA sopra le scelte del 251. Misura (rapporto giro 453): citta' vera + sigla vera (tutta la
+   Championship), soprannome o stadio veri (Hornets, Hammers, Goodison, Foxshire, Craven, Griffin, Stamford, Submarino, Pucela,
+   Sarrià, Leonessa), nome vero del club o quasi (Aston, Sociedad, Munchen, Koln, Antwerp, Farense, Kasimpasa, Pau, Monaco,
+   Manzanares + ATM, «04», «1919»). Gli id NON cambiano (salvataggi). La tabella 251 resta com'era: questa la sovrascrive al
+   caricamento e la migrazione porta ogni nome di prima (mkT, 251) al nome nuovo (src/09, _DEF251/_DEF453).
+   Rosso window.__CPM_NO_G453 = nomi e sigle del 7.999.219. */
+const _NO_G453=typeof window!=="undefined"&&!!window.__CPM_NO_G453;
+const _g453=(nuovo,prima)=>_NO_G453?prima:nuovo;
+const CLUB_NOMI_453={
+  lut:["FC Dunmere","DMR"],mid:["FC Ironmouth","IRM"],cov:["FC Spirewell","SPW"],swn:["FC Gowerhaven","GWH"],shu:["FC Forgeham","FGH"],
+  ips:["FC Orwick","ORK"],lee:["FC Wharfholm","WHM"],bur:["FC Pendleby","PDY"],nor:["FC Broadmere","BMR"],wba:["FC Tipworth","TPW"],
+  bri:["FC Brigport","BGP"],milw:["FC Riverlane","RVL"],bla:["FC Cottonford","CTF"],pre:["FC Ribblemead","RBM"],car:["FC Llanmere","LMR"],
+  wat:["FC Colnemead","CNM"],sto:["FC Kilnford","KLF"],qpr:["FC Whitlock","WTK"],
+  che:["FC Kingsreach","KGR"],whu:["FC Eastwharf","EWF"],eve:["FC Northdock","NDK"],lei:["FC Soarvale","SRV"],ful:["FC Millbourne","MLB"],
+  bre:["FC Bransholt","BHT"],avl:["FC Heathmoor","HTM"],
+  vill:["FC Naranjal","NRJ"],rsoc:["FC Donostiarra","DNS"],vld:["FC Vallisoletano","VLS"],esp:["FC Tibidabo","TBD"],atm:["FC Meseta Sur","MSU"],
+  bay:["FC Alpenland","APL"],kol:["FC Rheinbogen","RHB"],s04:["FC Emschertal","EMT"],
+  sal:["FC Costiera","CST"],bres:["FC Cidneo","CDN"],ant:["FC Schelde","SCD"],farense:["FC Algarvio","AGV"],kas:["FC Haliç","HLC"],
+  pau:["FC Béarnais","BEA"],mon:["FC Rocher","ROC"],
+};
+const _PRIMA453={};/* id → [nome, sigla] effettivi del 7.999.219 (251 se c'era, altrimenti mkT): la migrazione li porta al nome nuovo */
 const _NOMI_OGGI_251={};/* id → [nome, sigla] delle righe mkT (prima della tabella): la migrazione li porta al nome definitivo */
-const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];if(!t)return c;_NOMI_OGGI_251[c.id]=[c.n,c.a];return _NO_G251?c:{...c,n:t[0],a:t[1]};});
-const _nc251=(id,oggi)=>(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;
+const _nomi251=(arr)=>arr.map(c=>{const t=CLUB_NOMI_251[c.id];let r=c;if(t){_NOMI_OGGI_251[c.id]=[c.n,c.a];if(!_NO_G251)r={...c,n:t[0],a:t[1]};}
+  const t4=CLUB_NOMI_453[c.id];if(t4){if(!t)_NOMI_OGGI_251[c.id]=[c.n,c.a];_PRIMA453[c.id]=[r.n,r.a];if(!_NO_G453)r={...r,n:t4[0],a:t4[1]};}return r;});/* [giro 453] sopra il 251 */
+const _nc251=(id,oggi)=>(!_NO_G453&&CLUB_NOMI_453[id])?CLUB_NOMI_453[id][0]:(!_NO_G251&&CLUB_NOMI_251[id])?CLUB_NOMI_251[id][0]:oggi;/* [giro 453] il nome finale */
 const CLUBS=_nomi251([
   // -- ITALIA Lega A --
   mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
@@ -1587,7 +1610,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Liga Ibérica 2":{
-    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_g248("FC Sarrià","FC Pelvanni"),era:"1990–2006"},
+    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:_nc251("esp",_g248("FC Sarrià","FC Pelvanni")),era:"1990–2006"},
     seasonRecord:{name:"Iker Zubiaga",goals:30,club:_nc251("cel",_g248("FC Vigués","FC Oriolan")),season:"2012-13"},
     topScorers:[
       {name:"Andrés Cobeña",goals:208},{name:"Manolo Ledesmar",goals:182},
@@ -1604,7 +1627,7 @@ const LEAGUE_RECORDS={
   },
   "Premier Division":{
     allTimeScorer:{name:"Alan Fothergill",goals:292,club:"FC Manchester",era:"1992–2014"},
-    seasonRecord:{name:"Jamie Perkins",goals:41,club:"FC Stamford",season:"2011-12"},
+    seasonRecord:{name:"Jamie Perkins",goals:41,club:_nc251("che","FC Stamford"),season:"2011-12"},
     topScorers:[
       {name:"Alan Fothergill",goals:292},{name:"Wayne Dobbins",goals:254},
       {name:"Frank Mclaren",goals:219},{name:"Terry Blackwood",goals:187},{name:"Steve Hodgson",goals:162},
@@ -1676,7 +1699,7 @@ const LEAGUE_RECORDS={
   },
   "Championship":{
     allTimeScorer:{name:"Dean Whitfield",goals:163,club:_nc251("nor","FC Canaries"),era:"1988–2006"},
-    seasonRecord:{name:"Billy Horton",goals:34,club:"FC Foxshire",season:"2013-14"},
+    seasonRecord:{name:"Billy Horton",goals:34,club:_nc251("lei","FC Foxshire"),season:"2013-14"},
     topScorers:[
       {name:"Dean Whitfield",goals:163},{name:"Gary Pemberton",goals:141},
       {name:"Billy Horton",goals:119},{name:"Steve Charlton",goals:88},{name:"Tony Bainbridge",goals:72},
@@ -1708,18 +1731,18 @@ const compLbl=x=>{const v=String(x==null?"":x);if(typeof window!=="undefined"&&w
 const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2020,club:_nc251("bay",_g248("FC Isar","FC Valdenau")),nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[
     {s:2024,club:"FC Bergamo",nat:"🇮🇹"},{s:2023,club:"FC Hispalense",nat:"🇪🇸"},
-    {s:2022,club:"FC Frankfurt",nat:"🇩🇪"},{s:2021,club:"FC Submarino",nat:"🇪🇸"},
-    {s:2020,club:"FC Hispalense",nat:"🇪🇸"},{s:2019,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2018,club:"AT Manzanares",nat:"🇪🇸"},
+    {s:2022,club:"FC Frankfurt",nat:"🇩🇪"},{s:2021,club:_nc251("vill","FC Submarino"),nat:"🇪🇸"},
+    {s:2020,club:"FC Hispalense",nat:"🇪🇸"},{s:2019,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2018,club:_nc251("atm","AT Manzanares"),nat:"🇪🇸"},
   ],
   UECL:[
-    {s:2024,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:"FC Hammers",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2024,club:_nc251("che","FC Stamford"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:_nc251("whu","FC Hammers"),nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2022,club:"FC Capitale",nat:"🇮🇹"},
   ],
 };
@@ -1763,8 +1786,8 @@ const clubFoundedYear=(id)=>CLUB_FOUNDED[id]||(1897+(Math.abs(hashStr("fnd|"+Str
 const CLUB_CORTI_296={
   lazio:"Celesti",sam:"Sampierd.",mun:"Rovers",wol:"Wolverh.",cel:"Ría Vigo",ray:"Madrid E.",mgb:"Niederrh.",ber:"Köpenick",psg:"Paris IdF",
   mtp:"Montpell.",spo:"Lisboa N.",casa:"Lisboa O.",vsc:"Vimaran.",rioave:"Vila Conde",bav:"Foz Douro",fama:"Famalic.",spa:"Spangen",
-  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:"Salernum",shu:"Sheffield",
-  wba:"West Brom.",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
+  exc:"Kralingen",usj:"Brux. Sud",stu2:"St-Truiden",bch:"Anversa S.",bas:"Ist. Ovest",cat:"Catanzar.",sal:_NO_G453?"Salernum":"Costiera",shu:_NO_G453?"Sheffield":"Forgeham",
+  wba:_NO_G453?"West Brom.":"Tipworth",rsoc:_NO_G453?"":"Donostia.",vld:_NO_G453?"":"Valliso.",bla:_NO_G453?"":"Cottonford",stp:"Hafen",brn:"Braunschw.",val2:"Valencien.",lev:"Val. Nord",
 };
 const CORTO_MAX_296=10;
 const _PREF_SOC296=/^(?:FC|AC|CF|AT|SC|SS|US|AS|U\.S\.|A\.C\.|A\.S\.)\s+(?=\S)/;
@@ -5232,7 +5255,7 @@ const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",intercepted:"✂️
 // Sprint 82 — ~100 stadium names across 6 tiers + U18 pool
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Terre Rosse","Stadio Accademia del Borgo","Arena della Gioventù","Campo Sportivo Lambro","Stadio Bertolotti","Arena Giovanile Sismondi","Centro Federale Valdarno","Stadio del Settore Giovanile","Campo dei Tigli","Arena Academy Nord"];// [5.96.0 CR-1] bonifica: via Coverciano/Braglia/Vismara/Galli (riferimenti reali)
 const STADIUM_POOLS=[
-  {min:88,s:[_g248("Stadio Milano Ovest","Stadio Valmora"),_g248("Stadio del Foro","Stadio Alcavera"),"Stadio Valcolle",_g248("Stadio di Fuorigrotta","Stadio Vellamare"),"Albion Stadium","Mersey Stadium","Estadi del Mar","Estadio Capital","Stadion am Hang","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena","München Arena","Estadio Coloso","Riverside Park","Islington Park","North Stadium","Stade du Littoral","Estádio Azul"]},
+  {min:88,s:[_g248("Stadio Milano Ovest","Stadio Valmora"),_g248("Stadio del Foro","Stadio Alcavera"),"Stadio Valcolle",_g248("Stadio di Fuorigrotta","Stadio Vellamare"),"Albion Stadium","Mersey Stadium","Estadi del Mar","Estadio Capital","Stadion am Hang","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena",_g453("Alpenland Arena","München Arena"),"Estadio Coloso","Riverside Park","Islington Park","North Stadium","Stade du Littoral","Estádio Azul"]},
   {min:76,s:["Stadio Toscano","Bergamo Stadium","Stadio dell'Arena Vecchia","Stadio Felsineo","Stadio Ligure","Volkswiese Stadion","Power Stadium","Estadio Naranja","Estadio Hispalense","Stade des Verts",_g248("Estádio Lisboa Norte","Estádio Rendalto"),"Estádio do Grifo","Estádio Norte","Stade de la Corniche","Stadio dei Navigli","Fiandria Stadion","Arena Halych","Stade de la Cathédrale","Estadio de los Naranjos","Stade du Littoral"]},
   {min:63,s:["Stadio Monferrato","Stadio Costa Est","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica",_g248("Estadio de la Ría","Estadio Oriolan"),"Estadio de la Sierra","Stade des Puys","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
   {min:50,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio del Piceno","Campo Crespi","Arena Cimini","Stadio Parmense","Stadio degli Etruschi","Stadio della Ghirlandina","Estadio del Sur","Arena Poltava","Stade des Volcans","Estadio de la Meseta","Stadio della Valle","Campo de la Costa Brava","Arena Kielce","Stadion Górniczy","Stade des Tilleuls","Estadio del Miño","Stadio delle Cave","Arena Cracovia"]},
@@ -5248,16 +5271,16 @@ const CLUB_STADIUMS={
   "tor":_g248("Stadio Santa Rita","Stadio Torvelle"),"bol":"Stadio Felsineo","udi":"Stadio Friulano",
   "gen":"Stadio Ligure","sam":"Stadio Ligure","par":"Stadio Parmense",
   "mon2":"Brianza Stadium","sas":"Emilia Stadium","lec":"Stadio Salentino",
-  "sal":"Stadio Salernum","ver":"Stadio Scaligero","spe":"Stadio Spezzino",
+  "sal":_g453("Stadio della Costiera","Stadio Salernum")/* [giro 453 PO-694] */,"ver":"Stadio Scaligero","spe":"Stadio Spezzino",
   "cre":"Stadio Cremonese","mcy":"City Stadium","liv":"Mersey Stadium","ars":"Islington Park",
   "che":"Riverside Park","mun":"Northwich Stadium","tot":"North Stadium",
-  "avl":"Aston Park","new":"Tyne Park","eve":"Merseyside Park","lei":"Midlands Stadium",
+  "avl":_g453("Heathmoor Park","Aston Park"),"new":"Tyne Park","eve":"Merseyside Park","lei":"Midlands Stadium",
   "whu":"East Stadium","wol":"Wanderers Stadium","cry":"Croydon Park",
   "bha":"Sussex Stadium","bur":"Lancashire Stadium","bou":"Dorset Stadium",
   "rma":"Estadio Capital","bar":"Estadi del Mar","atm":"Estadio Coloso",
   "sev":"Estadio Hispalense","bet":_g248("Estadio de Heliópolis","Estadio Ventrana"),"val":"Estadio Naranja",
   "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":_g248("Estadio de la Ría","Estadio Oriolan"),
-  "bay":"München Arena","bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
+  "bay":_g453("Alpenland Arena","München Arena"),"bvb":_g251("Hörde Stadion","Goldwald Stadion"),"rbl":"Leipzig Arena","b04":"Werkstadt Arena",
   "fra":"Frankfurt Arena","s04":_g251("Emscher Arena","Gelsenkirchen Arena")/* [giro 251 PO-512] stadio col nome tolto dal PO */,"bsc":"Berlin Arena",
   "psg":"Parc Royal","marse":"Stade du Littoral","lyon":"Lyon Stadium","lille":"Lille Stadium",
   "mon":"Stade de la Corniche","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",
@@ -8369,15 +8392,15 @@ const DERBIES={
   "ata-bres":{name:"Derby della Pianura Est",e:"🦁"},"bres-ata":{name:"Derby della Pianura Est",e:"🦁"},
   "fio-bol":{name:"Derby del Crinale Lungo",e:"⛰️"},"bol-fio":{name:"Derby del Crinale Lungo",e:"⛰️"},
   "cag-pal":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},"pal-cag":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},
-  "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
-  "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
+  "rma-bar":{name:_g453("El Duelo del Siglo","El Clásico"),e:"👑"},"bar-rma":{name:_g453("El Duelo del Siglo","El Clásico"),e:"👑"},
+  "rma-atm":{name:_g453("Derbi de la Meseta","Derbi Madrileño"),e:"🌆"},"atm-rma":{name:_g453("Derbi de la Meseta","Derbi Madrileño"),e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
   "mun-liv":{name:"Derby della Brughiera Rossa",e:"🥀"},"liv-mun":{name:"Derby della Brughiera Rossa",e:"🥀"},/* [giro 159 PO-359, decisione PO 11/11 «inventare anche i luoghi»] nome tutto inventato, come gli altri derby del mondo del gioco */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
-  "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
-  "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
+  "bay-bvb":{name:_g453("Der Gipfel","Der Klassiker"),e:"🦁"},"bvb-bay":{name:_g453("Der Gipfel","Der Klassiker"),e:"🦁"},
+  "psg-marse":{name:_g453("Le Grand Choc","Le Classique"),e:"🗼"},"marse-psg":{name:_g453("Le Grand Choc","Le Classique"),e:"🗼"},
   "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
-  "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
+  "ajax-feye":{name:_g453("De Grote Strijd","De Klassieker"),e:"🌷"},"feye-ajax":{name:_g453("De Grote Strijd","De Klassieker"),e:"🌷"},
 };
 function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
   /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
@@ -10484,6 +10507,14 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   "FC Valmora","AC Dorvelli","FC Vellamare","FC Alcavera","FC Lumeranza","FC Torvelle","FC Brenvar","FC Marnesi","FC Caldoran","FC Ventrana","FC Oriolan","FC Dalvora","FC Pelvanni","FC Valdenau","FC Ravelmund","FC Rendalto",
   "Stadio Valmora","Stadio Alcavera","Stadio Vellamare","Stadio Torvelle","Estadio Ventrana","Estadio Oriolan","Estádio Rendalto","AC Milan","SSC Napoli",
   "Stadio Sabaudo","Stadio Meneghino","Stadio Capitolino","Stadio Vesuvio","Stade Phocéen","Estadi Blau","Stadion der Wand","Cannon Stadium","Bridge Stadium","Estádio Leonino","Kadıköy Stadyumu","Kartal Park","Stade Princier","Stadio Adriatico","Stade Gabriel Montpied","Arena Lviv","Estadio de la Cerámica Vieja","Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
+/* [giro 453 PO-694] parole che rimandano a un club vero delle leghe simulate (citta' della Championship, soprannomi, stadi, nomi veri,
+   anni di fondazione, nomi veri dei derby): cercate per parola intera nell'audit, non per sottostringa. Una citta' usata da un club di
+   fantasia di un'altra lega (FC Hannover, FC Lisboa…) NON e' qui: e' una scelta del PO del 17/11 (rapporto giro 453, dubbio 2). */
+const _CR_ZONE453=["Luton","Middlesbrough","Teesside","Coventry","Swansea","Sheffield","Ipswich","Leeds","Burnley","Norwich","West Bromwich",
+  "Bristol","Millwall","Bermondsey","Blackburn","Preston","Cardiff","Watford","Hornets","Stoke","Queens Park","Queensway","Hatters","Canaries",
+  "Clarets","Baggies","Hammers","Goodison","Foxes","Foxshire","Craven","Griffin","Stamford","Aston","Villa Park","Submarino","Sociedad","Pucela",
+  "Sarrià","Manzanares","Munchen","München","Koln","Köln","Salernitana","1919","Leonessa","Antwerp","Farense","Kasimpasa","Kasımpaşa","Monaco",
+  "FC Pau","Emscher 04","Klassiker","Klassieker","Clásico","Classique","Madrileño"];
 const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
 //   (i pool restano ricchi di nomi comuni; è la COPPIA a essere bloccata, in generazione e in audit).
@@ -10504,18 +10535,25 @@ const _CLUB_248=[["FC Nerazzurri","FC Valmora","FC Milano Brera","MBR"],["AC Ros
 /* [giro 251 PO-512] nomi definitivi del PO (tabella unica CLUB_NOMI_251 in src/02): ogni nome di oggi (righe mkT, cioe' giro 248
    compreso) e ogni nome reale o del giro 6 va al nome DEFINITIVO in un passo solo; identita' tolte (FC Nerazzurri, FC Partenope e
    FC Granata erano nomi reali di prima del giro 6 e ora sono le scelte del PO). Rosso __CPM_NO_G251 = migrazione del giro 248. */
-const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id,[n]])=>CLUB_NOMI_251[id][0]!==n).map(([id,[n]])=>[n,CLUB_NOMI_251[id][0]]));
+const _DEF251=_NO_G251?{}:Object.fromEntries(Object.entries(_NOMI_OGGI_251).filter(([id])=>CLUB_NOMI_251[id]).filter(([id,[n]])=>_nc251(id,n)!==n).map(([id,[n]])=>[n,_nc251(id,n)]));
+/* [giro 453 PO-694] i nomi di prima (mkT e 251) dei club rinominati vanno al nome di FANTASIA in un passo solo (_nc251 = nome finale);
+   rosso __CPM_NO_G453 = nessuna migrazione 453. */
+const _DEF453=_NO_G453?{}:Object.fromEntries(Object.keys(CLUB_NOMI_453).flatMap(id=>[_PRIMA453[id],_NOMI_OGGI_251[id]].filter(Boolean).map(([n])=>[n,CLUB_NOMI_453[id][0]])).filter(([k,v])=>k!==v));
 const _def251=n=>_DEF251[n]||n;
-const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251)].filter(([k,v])=>k!==v));
+const CLUB_RENAME_6=_NO_G248?_CLUB_RENAME_6_OLD:Object.fromEntries([..._CLUB_248.flatMap(([r,g,n])=>[[r,_def251(n)],[g,_def251(n)]]),...Object.entries(_DEF251),...Object.entries(_DEF453)].filter(([k,v])=>k!==v));
 const _CLUB_ABBR_248=_NO_G248?{}:(()=>{const byN=Object.fromEntries(CLUBS.map(c=>[c.n,c.a]));const ns=new Set(_CLUB_248.map(([,,n])=>_def251(n)));
-  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
+  if(!_NO_G251)CLUBS.forEach(c=>{if(CLUB_NOMI_251[c.id])ns.add(c.n);});if(!_NO_G453)CLUBS.forEach(c=>{if(CLUB_NOMI_453[c.id])ns.add(c.n);});return Object.fromEntries([...ns].filter(n=>byN[n]).map(n=>[n,byN[n]]));})();
 const _STADI_248=_NO_G248?{}:{"Stadio Valmora":"Stadio Milano Ovest","Stadio Alcavera":"Stadio del Foro","Stadio Vellamare":"Stadio di Fuorigrotta","Stadio Torvelle":"Stadio Santa Rita","Estadio Ventrana":"Estadio de Heliópolis","Estadio Oriolan":"Estadio de la Ría","Estádio Rendalto":"Estádio Lisboa Norte",
-  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"})};
+  ...(_NO_G251?{}:{"Goldwald Stadion":"Hörde Stadion","Gelsenkirchen Arena":"Emscher Arena"}),
+  ...(_NO_G453?{}:{"Stadio Salernum":"Stadio della Costiera","Aston Park":"Heathmoor Park","München Arena":"Alpenland Arena"})};/* [giro 453] */
 /* [giro 251] nomi definitivi che COMINCIANO con un nome da migrare («FC Paris Île-de-France» con «FC Paris», «FC Salernum 1919» con
    «FC Salernum»): si proteggono, o una seconda passata li allungherebbe («FC Paris Île-de-France Île-de-France»). */
 const _LUNGHI251=CLUBS.map(c=>c.n).filter(n=>Object.keys(CLUB_RENAME_6).some(k=>n.startsWith(k+" ")));
+/* [giro 453] il prefisso PIU' LUNGO vince: «FC Salernum 1919 Primavera» non deve prendere «FC Salernum» (misurato: «FC Costiera 1919 Primavera»).
+   Rosso __CPM_NO_G453 = ordine d'inserimento di prima. */
+const _CHIAVI453=_NO_G453?Object.keys(CLUB_RENAME_6):Object.keys(CLUB_RENAME_6).sort((a,b)=>b.length-a.length);
 // idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
-function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
+function _renameClub6(v){if(typeof v!=="string")return v;for(const n of _LUNGHI251){if(v===n||v.startsWith(n+" "))return v;}for(const o of _CHIAVI453){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
 /* [giro 248 PO-511] migrazione COMPLETA dei nomi salvati: i nomi del club non vivono solo in club/standings/calendar/matchHistory
    (misurato sul salvataggio fixtures/save-c177-s5w20.json: anche lastAwards…club, standings[].a, matchHistory[].oppAbbr).
    Una passata su tutto l'oggetto: (1) ogni stringa che CONTIENE un nome reale o del giro 6 (club o stadio, anche dentro un testo
@@ -10563,6 +10601,17 @@ function _auditCopyrightSafety(){
      CLUBS.forEach(c=>{const ab=_nrm(c.a),nm=_nrm(c.n);let i=0,ok=!!ab;
        for(const ch of ab){i=nm.indexOf(ch,i);if(i<0){ok=false;break;}i++;}
        if(!ok)hits.push("SIGLA: \""+(c.a||"")+"\" non deriva dal nome mostrato \""+(c.n||"")+"\"");});}
+    /* [giro 453 PO-694] CITTA', SOPRANNOMI, STADI e NOMI VERI dei club delle leghe simulate. La lista dei brand cerca i club famosi
+       per sottostringa e non vedeva «FC Ipswich»+IPS o «FC Hornets» (Watford). Qui si cerca per PAROLA INTERA (lettere senza accenti,
+       maiuscole ignorate) in nomi dei club, stadi, derby, record e albo europeo. Rosso __CPM_NO_G453 = nomi del 7.999.219 (40 hit). */
+    {const _n453=t=>" "+String(t||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()+" ";
+     const W=_CR_ZONE453.map(w=>[w,_n453(w)]);
+     const scan=(label,arr)=>{(arr||[]).forEach(t=>{if(typeof t!=="string"||!t)return;const x=_n453(t);W.forEach(([w,nw])=>{if(x.indexOf(nw)>=0)hits.push(label+"-453: \""+t+"\" ~ "+w);});});};
+     scan("CLUB",CLUBS.map(c=>c.n));
+     if(typeof CLUB_STADIUMS!=="undefined")scan("STADIUM",[...STADIUM_POOLS.flatMap(sp=>sp.s),...Object.values(CLUB_STADIUMS)]);
+     if(typeof DERBIES!=="undefined")scan("DERBY",Object.values(DERBIES).map(d=>d.name));
+     Object.values(EURO_COMP_WINNERS||{}).forEach(a=>scan("EURO",a.map(x=>x.club)));
+     Object.values(LEAGUE_RECORDS||{}).forEach(v=>scan("REC",[v.allTimeScorer&&v.allTimeScorer.club,v.seasonRecord&&v.seasonRecord.club]));}
     /* [giro 320] il nome dell'eroe dell'intro (didascalia, maglia, suggerimento del campo Nome) non e' mai un calciatore vero */
     {const _n320=String(EROE_INTRO_320.nome||"");if(_CR_FULLNAMES.has(_n320.toLowerCase()))hits.push("INTRO-EROE: \""+_n320+"\"");
      if(_CR_PLAYERS.some(w=>_n320.split(/\s+/).indexOf(w)>=0))hits.push("INTRO-EROE: \""+_n320+"\" ~ nome reale");}

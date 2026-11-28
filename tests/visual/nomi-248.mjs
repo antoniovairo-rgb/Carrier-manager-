@@ -41,7 +41,8 @@ const fails = [], oks = [], note = [];
 const ok = (c, m) => { (c ? oks : fails).push(m); console.log((c ? '  ✓ ' : '  ✗ ') + m); };
 /* giudizio per braccio: verde = cond, rosso = il difetto si vede (cond falsa) */
 const giudica = (condVerde, mVerde, mRosso) => ROSSO ? ok(!condVerde, '[rosso] ' + mRosso) : ok(condVerde, mVerde);
-const flags = ROSSO ? ['__CPM_NO_G248'] : [];
+/* [giro 453] questo guardiano giudica il SUO livello di nomi: i nomi di fantasia del giro 453 (sopra) si spengono, li giudica nomi-453 */
+const flags = [...(ROSSO ? ['__CPM_NO_G248'] : []), '__CPM_NO_G453'];
 const conta = (txt, re) => (String(txt).match(new RegExp(re, 'g')) || []).length;
 
 const srv = await startServer(); const port = srv.address().port;
@@ -56,7 +57,7 @@ try {
       const cl = {}; for (const id in NUOVI) { const c = CLUBS.find(x => x.id === id); cl[id] = c ? [c.n, c.a] : null; }
       const st = {}; for (const id in STADI) st[id] = CLUB_STADIUMS[id] || null;
       const testo = JSON.stringify([CLUBS.map(c => c.n), U18_CLUBS.map(c => c.n || c.name), U18_CLUBS_P2.map(c => c.n || c.name), STADIUM_POOLS, CLUB_STADIUMS, LEAGUE_RECORDS, EURO_COMP_WINNERS]);
-      return { cl, st, testo, hits: window._auditCopyright() };
+      return { cl, st, testo, hits: window._auditCopyright().filter(h => !/-453: /.test(h)) /* [giro 453] le parole del 453 le giudica nomi-453 */ };
     }, [NUOVI, STADI]);
     const sbagliati = Object.keys(NUOVI).filter(id => !d.cl[id] || d.cl[id][0] !== NUOVI[id][0] || d.cl[id][1] !== NUOVI[id][1]);
     giudica(sbagliati.length === 0, `A · 16/16 club col nome e la sigla del PO`, `A · i club NON hanno i nomi del PO (${sbagliati.length}/16 diversi, es. ${sbagliati.slice(0, 2).map(i => i + '=' + (d.cl[i] || []).join('/')).join(', ')})`);
