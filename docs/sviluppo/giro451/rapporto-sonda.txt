@@ -1,0 +1,182 @@
+
+══ CONDIZIONE cpu1 (notte, GLB acceso) — 61 esecuzioni ══
+
+── per famiglia ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+tiro                             6276    7597   78.3%   79.8%    320.7    780   84.5  213.1   97.4%    117.8
+cross                            7897   10141   74.6%   76.0%    320.1    851   95.2  244.6   96.9%    107.7
+dribbling                        8520   11110   71.2%   73.0%    322.4    979   84.9  230.4   98.3%     95.7
+difesa                           7030    9449   69.4%   74.2%    316.1    936   67.5  205.1   96.5%     94.9
+piazzati                         8239   12401   40.0%   41.0%    172.3    717   64.7  234.3   97.1%    180.2
+ingresso                         5084    7414   43.9%   43.9%    172.4    678   66.0  135.6   97.2%     71.4
+TUTTE                           43046   58112   62.3%   64.1%    269.6   4941   76.0  217.5   97.2%    109.6
+
+── per classe di corpo (tutte le famiglie) ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+eroe                             6656    7386   48.9%   50.9%    169.8    546   42.2  205.0   84.4%  17900.0
+compagno                         8440   11087   78.6%   79.9%    366.1   1275   75.6  194.0   99.0%     78.6
+avversario                      23716   33739   65.7%   67.6%    290.6   2760   88.3  233.5   99.2%    100.0
+portiere                         4143    5718   29.9%   31.9%     94.9    360   42.5  112.7   95.8%  68400.0
+arbitro                            91     182    2.2%    2.2%     16.2      0      —      —       —        —
+
+── per famiglia × corpo ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+cross · avversario               4549    6192   84.8%   86.3%    380.5    542  114.0  262.4   99.4%     95.7
+cross · compagno                 1207    1560   88.1%   89.0%    350.8    148  110.9  247.5   98.0%    100.0
+cross · eroe                     1302    1127   53.1%   53.9%    220.0     99   38.0  218.7   83.8%    269.2
+cross · portiere                  839    1262   27.1%   29.4%     74.9     62   52.8  112.2   93.5%  54300.0
+difesa · avversario              3693    5138   73.2%   79.1%    349.8    508   83.7  239.9   99.2%     90.4
+difesa · compagno                1822    2391   88.5%   92.0%    410.5    302   64.7  174.6   99.7%     70.4
+difesa · eroe                    1286    1539   35.0%   37.8%    106.5     88   21.6  128.8   69.3% 141500.0
+difesa · portiere                 229     381   38.1%   43.8%    115.7     38   43.9   96.3   97.4% 217400.0
+dribbling · avversario           4526    5776   86.3%   87.8%    391.4    548  109.3  244.7   99.8%     91.7
+dribbling · compagno             1675    2042   92.4%   93.1%    527.4    276   87.7  224.4  100.0%     73.8
+dribbling · eroe                 1299    1616   44.1%   47.8%    107.1     94   46.4  119.3   84.0% 107300.0
+dribbling · portiere             1020    1676   19.3%   22.0%     42.3     61   34.9   86.0   98.4%  91600.0
+ingresso · arbitro                 91     182    2.2%    2.2%     16.2      0      —      —       —        —
+ingresso · avversario            2466    3616   44.8%   44.8%    171.7    297   70.1  142.6   98.0%     72.6
+ingresso · compagno              2061    2947   46.4%   46.4%    182.4    290   65.4  136.8   97.2%     70.1
+ingresso · eroe                   242     353   30.3%   30.3%    155.7     44   18.6   75.9   90.9%     18.3
+ingresso · portiere               224     316   49.4%   49.4%    195.2     47   45.4   76.1   97.9%     36.7
+piazzati · avversario            5182    8663   32.1%   32.9%    144.7    409   69.8  234.3   98.3%    171.4
+piazzati · compagno               718     915   91.4%   93.3%    419.3    110   79.4  206.6   99.1%     80.8
+piazzati · eroe                  1261    1587   57.0%   58.5%    191.9    104   62.3  271.5   92.3%   1682.4
+piazzati · portiere              1078    1236   35.6%   36.4%    157.2     94   32.5  225.5   94.7% 106200.0
+tiro · avversario                3300    4354   86.5%   88.3%    348.4    456   93.6  216.3   99.6%    109.5
+tiro · compagno                   957    1232   91.8%   92.9%    432.3    149   94.7  214.9  100.0%    103.7
+tiro · eroe                      1266    1164   64.4%   65.2%    266.3    117   47.6  264.8   87.2%    135.0
+tiro · portiere                   753     847   35.9%   37.0%     91.4     58   55.6  135.8   94.8%  87800.0
+
+── per modo della radice (ferma < 0,3 m/s · passo < 2,5 · corsa) ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+ferma                           14091   22382   22.6%   25.2%     60.1   1059   43.3  176.5   90.5% 105100.0
+passo                           14779   19670   80.0%   82.1%    231.0   1780   76.1  200.7   98.5%    131.9
+corsa                           14176   16060   96.0%   96.1%    608.7   2102   92.9  239.6   99.6%     71.4
+corsa · avversario               8443   10374   96.6%   96.8%    611.8   1368  100.3  242.7   99.9%     73.6
+corsa · compagno                 3374    4120   95.5%   95.8%    639.2    628   78.5  217.1  100.0%     66.4
+corsa · eroe                     2097    1408   92.0%   92.0%    481.6    100   81.9  301.1   93.0%     95.1
+corsa · portiere                  262     158  100.0%  100.0%    741.5      6   95.6  224.1  100.0%    118.3
+ferma · arbitro                    91     182    2.2%    2.2%     16.2      0      —      —       —        —
+ferma · avversario               6290   11197   18.3%   21.2%     52.3    334   62.9  223.1   97.0% 115400.0
+ferma · compagno                  712    1096   30.1%   35.8%     74.5     51  109.2  151.1   94.1%    146.4
+ferma · eroe                     3663    5020   31.8%   33.9%     76.3    375   28.8  190.3   80.3% 137200.0
+ferma · portiere                 3335    4887   21.9%   23.9%     59.8    299   40.9  115.5   95.3% 106200.0
+passo · avversario               8983   12168   83.0%   85.3%    236.0   1058   82.0  219.1   98.9%    133.4
+passo · compagno                 4354    5871   75.7%   76.9%    229.0    596   72.2  175.1   98.3%    126.7
+passo · eroe                      896     958   75.1%   79.0%    201.9     71   54.8  110.8   94.4%    147.4
+passo · portiere                  546     673   71.3%   74.1%    198.1     55   55.6   76.6   98.2%    272.0
+
+── per fase ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+hl_choose                        9138   13236   66.4%   66.4%    205.0   1596   75.0  191.1   96.6%    169.0
+hl_intro                         1372    2012   72.3%   72.3%    351.5    163   20.1  123.7   71.2%    238.9
+hl_result                       27452   35450   64.1%   67.0%    309.3   2504   86.4  250.3   99.4%     76.3
+walkout                          5084    7414   43.9%   43.9%    172.4    678   66.0  135.6   97.2%     71.4
+
+── appoggi: dove sta lo scivolamento (somma dei cm per classe · gesto/locomozione, prime 12) ──
+  avversario · loco run                         1685 appoggi · 200513 cm (40.4%) · mediana 93.7 cm · p90 239.0
+  compagno · loco run                            765 appoggi ·  77656 cm (15.7%) · mediana 76.7 cm · p90 213.1
+  avversario · loco strR                         273 appoggi ·  34275 cm (6.9%) · mediana 89.2 cm · p90 269.2
+  avversario · loco back                         293 appoggi ·  32868 cm (6.6%) · mediana 92.3 cm · p90 231.5
+  avversario · loco walk                         297 appoggi ·  22012 cm (4.4%) · mediana 70.1 cm · p90 142.6
+  avversario · loco strL                         201 appoggi ·  21409 cm (4.3%) · mediana 87.4 cm · p90 199.1
+  compagno · loco walk                           290 appoggi ·  19381 cm (3.9%) · mediana 65.4 cm · p90 136.8
+  portiere · loco run                            296 appoggi ·  17799 cm (3.6%) · mediana 42.6 cm · p90 118.9
+  eroe · loco run                                156 appoggi ·  12970 cm (2.6%) · mediana 45.6 cm · p90 225.7
+  compagno · loco strR                            87 appoggi ·   9652 cm (1.9%) · mediana 103.1 cm · p90 227.6
+  compagno · loco back                            77 appoggi ·   9037 cm (1.8%) · mediana 110.6 cm · p90 205.8
+  eroe · loco strR                                86 appoggi ·   5548 cm (1.1%) · mediana 27.0 cm · p90 171.3
+
+  fotogrammi scartati per salto della radice > 1,2 m: 1133 · appoggi oltre il tetto: 0 · testimone 7.999.7: highlight 39034 su 44179 corpi-fotogrammi
+  fps reali (EMA del gioco) mediana 14.6 · tempo di scena osservato mediano 5.2 s per esecuzione
+
+══ CONDIZIONE cpu4 (notte, GLB acceso) — 31 esecuzioni ══
+
+── per famiglia ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+tiro                             4406    5627   83.2%   84.0%    376.0    562   96.8  261.1   98.6%    118.0
+cross                            4749    6217   81.2%   82.7%    400.5    601  100.6  295.6   99.3%    101.1
+dribbling                        4288    5643   73.9%   75.1%    392.8    561   81.9  242.0   99.6%     96.0
+difesa                           3482    4780   72.4%   75.9%    337.9    479   75.8  232.5   98.7%    100.0
+piazzati                         3716    5290   49.2%   50.2%    251.7    368   81.4  274.5   96.2%    135.4
+ingresso                         5082    7416   43.8%   43.8%    172.3    678   66.0  130.9   97.6%     72.2
+TUTTE                           25723   34973   66.4%   67.6%    315.9   3249   79.0  241.7   98.5%    107.5
+
+── per classe di corpo (tutte le famiglie) ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+eroe                             3378    3877   50.3%   52.9%    175.2    276   51.0  204.4   92.4%    323.8
+compagno                         5678    7616   76.1%   76.7%    393.5    893   79.2  231.6   99.0%     85.6
+avversario                      14306   20305   70.7%   71.9%    343.9   1859   90.8  263.2   99.2%     99.0
+portiere                         2270    2993   37.0%   38.1%    128.6    221   42.5  128.4   97.3%  52300.0
+arbitro                            91     182    2.2%    2.2%     16.2      0      —      —       —        —
+
+── per famiglia × corpo ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+cross · avversario               2716    3752   86.9%   88.8%    447.3    382  106.9  306.9  100.0%     97.2
+cross · compagno                 1041    1344   94.3%   95.1%    462.7    135  104.4  310.6  100.0%     89.7
+cross · eroe                      640     636   54.6%   55.8%    211.2     51   52.8  200.8   92.2%    168.0
+cross · portiere                  352     485   35.3%   36.5%    114.3     33   44.3  139.2  100.0%  71800.0
+difesa · avversario              2111    2943   80.6%   83.7%    387.4    320   81.1  258.9   99.7%     87.8
+difesa · compagno                 557     737   91.6%   95.3%    465.6     95   85.7  217.9  100.0%     87.0
+difesa · eroe                     635     818   33.9%   38.1%    105.3     38   34.0  204.4   86.8% 125700.0
+difesa · portiere                 179     282   48.6%   53.9%    161.6     26   48.3  189.9  100.0% 174400.0
+dribbling · avversario           2257    2947   86.9%   87.3%    490.2    332   95.3  269.2  100.0%     88.7
+dribbling · compagno              825    1013   95.7%   95.8%    615.7    149   88.6  251.5  100.0%     74.8
+dribbling · eroe                  642     827   49.5%   55.3%    105.8     46   50.3  112.8   95.7% 244300.0
+dribbling · portiere              564     856   27.2%   27.8%     70.5     34   42.9  157.4  100.0% 100600.0
+ingresso · arbitro                 91     182    2.2%    2.2%     16.2      0      —      —       —        —
+ingresso · avversario            2465    3614   44.6%   44.6%    171.4    296   70.1  142.6   98.6%     72.6
+ingresso · compagno              2060    2951   46.4%   46.4%    182.6    291   65.4  136.8   97.6%     70.9
+ingresso · eroe                   242     353   30.3%   30.3%    155.7     44   18.6   75.9   90.9%     18.3
+ingresso · portiere               224     316   49.4%   49.4%    195.2     47   45.4   76.1   97.9%     36.7
+piazzati · avversario            2367    3777   41.0%   42.1%    208.6    214   90.6  257.0   96.3%    125.0
+piazzati · compagno               336     428   95.8%   97.2%    604.6     66  100.0  288.0   98.5%    108.9
+piazzati · eroe                   577     581   71.3%   71.8%    291.4     45   63.6  275.0   97.8%    197.5
+piazzati · portiere               436     504   45.8%   46.4%    229.8     43   32.2  412.9   90.7% 106300.0
+tiro · avversario                2390    3272   91.7%   92.6%    400.9    315  106.1  292.8   99.7%    114.4
+tiro · compagno                   859    1143   96.7%   97.0%    534.2    157   96.1  239.6   99.4%    102.1
+tiro · eroe                       642     662   59.7%   60.9%    222.3     52   57.8  311.4   90.4%    133.2
+tiro · portiere                   515     550   32.7%   33.5%     83.7     38   42.7  109.8   97.4% 239600.0
+
+── per modo della radice (ferma < 0,3 m/s · passo < 2,5 · corsa) ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+ferma                            7055   11140   25.6%   27.3%     67.3    545   50.6  178.1   95.0%  95200.0
+passo                            7986   10612   70.5%   72.5%    224.7    903   68.4  181.5   98.2%    101.9
+corsa                           10682   13221   97.5%   97.7%    598.5   1801   99.8  287.5   99.6%     88.3
+corsa · avversario               6706    8703   97.6%   97.8%    603.0   1213  100.6  292.1   99.8%     89.7
+corsa · compagno                 2822    3647   98.3%   98.4%    608.9    532   96.1  251.6   99.8%     85.5
+corsa · eroe                      937     708   90.3%   90.8%    486.7     47  112.2  311.4   91.5%     95.0
+corsa · portiere                  217     163  100.0%  100.0%    612.8      9   52.2  139.2  100.0%     97.8
+ferma · arbitro                    91     182    2.2%    2.2%     16.2      0      —      —       —        —
+ferma · avversario               3026    5462   22.4%   24.1%     58.5    173   68.6  175.3   95.4%  24200.0
+ferma · compagno                  438     718   26.7%   28.3%     71.7     41  106.9  146.6   97.6%    138.7
+ferma · eroe                     1824    2449   33.8%   36.4%     82.0    165   41.9  200.2   92.1% 164300.0
+ferma · portiere                 1676    2329   25.8%   26.9%     74.9    166   37.8  157.4   97.0% 128700.0
+passo · avversario               4574    6140   75.5%   77.7%    230.4    473   77.0  201.4   99.2%    108.2
+passo · compagno                 2418    3251   62.1%   63.1%    223.0    320   65.4  153.1   97.8%     74.4
+passo · eroe                      617     720   66.9%   71.8%    186.1     64   62.9  115.6   93.8%    160.5
+passo · portiere                  377     501   68.5%   70.1%    220.4     46   65.8   76.2   97.8%    255.8
+
+── per fase ──
+gruppo                         corpiF  piediF scivola sc.anim   v cm/s appogg med cm p90 cm   >5 cm    p/r %
+hl_choose                        5389    7916   78.9%   78.9%    393.6   1058  100.4  296.8   98.4%    137.4
+hl_intro                          588     865   77.2%   77.2%    483.2     41   69.4  190.4   92.7%    168.6
+hl_result                       14664   18776   69.5%   71.8%    332.1   1472   81.1  244.3   99.0%     77.2
+walkout                          5082    7416   43.8%   43.8%    172.3    678   66.0  130.9   97.6%     72.2
+
+── appoggi: dove sta lo scivolamento (somma dei cm per classe · gesto/locomozione, prime 12) ──
+  avversario · loco run                          996 appoggi · 118978 cm (33.4%) · mediana 90.5 cm · p90 257.5
+  compagno · loco run                            409 appoggi ·  45994 cm (12.9%) · mediana 83.1 cm · p90 239.0
+  avversario · loco strR                         226 appoggi ·  32109 cm (9.0%) · mediana 100.6 cm · p90 314.7
+  avversario · loco back                         177 appoggi ·  28895 cm (8.1%) · mediana 150.6 cm · p90 316.3
+  avversario · loco walk                         296 appoggi ·  21870 cm (6.1%) · mediana 70.1 cm · p90 142.6
+  avversario · loco strL                         154 appoggi ·  20496 cm (5.8%) · mediana 100.3 cm · p90 291.9
+  compagno · loco walk                           291 appoggi ·  19504 cm (5.5%) · mediana 65.4 cm · p90 136.8
+  compagno · loco strR                            92 appoggi ·  11750 cm (3.3%) · mediana 94.4 cm · p90 248.4
+  portiere · loco run                            165 appoggi ·  11722 cm (3.3%) · mediana 42.9 cm · p90 157.4
+  compagno · loco back                            50 appoggi ·  10316 cm (2.9%) · mediana 183.1 cm · p90 420.2
+  compagno · loco strL                            47 appoggi ·   7269 cm (2.0%) · mediana 107.7 cm · p90 312.4
+  eroe · loco run                                 85 appoggi ·   6569 cm (1.8%) · mediana 58.0 cm · p90 183.9
+
+  fotogrammi scartati per salto della radice > 1,2 m: 763 · appoggi oltre il tetto: 0 · testimone 7.999.7: highlight 21343 su 26486 corpi-fotogrammi
+  fps reali (EMA del gioco) mediana 7.2 · tempo di scena osservato mediano 5.2 s per esecuzione
